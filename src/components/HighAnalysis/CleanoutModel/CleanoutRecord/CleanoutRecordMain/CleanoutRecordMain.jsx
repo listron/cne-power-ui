@@ -24,31 +24,43 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
     }
   }
   componentDidMount() {
+    const { stationCodes, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
+    getMainList({
+      stationCodes:[],
+      pageNum,
+      pageSize,
+      sortField,
+      sortType
+    })
   }
   componentWillReceiveProps(nextProps) {
     const { getMainList, stationCodes, pageNum, pageSize, sortField, sortType } = nextProps;
-    if ( pageNum !== this.props.pageNum || pageSize !== this.props.pageSize || sortField !== this.props.sortField || sortType !== this.props.sortType) {
+    if (pageNum !== this.props.pageNum || pageSize !== this.props.pageSize || sortField !== this.props.sortField || sortType !== this.props.sortType) {
       getMainList({ stationCodes, pageNum, pageSize, sortField, sortType })
     }
   }
-  
-   onPaginationChange = ({ pageSize, currentPage }) => {
-    const { getMainList,stationCodes, sortField, sortType } = this.props;
+  componentWillUnmount(){
+    const { changeCleanoutRecordStore, } = this.props;
+    changeCleanoutRecordStore({mainListData:[]})
+  }
+
+  onPaginationChange = ({ pageSize, currentPage }) => {
+    const { getMainList, stationCodes, sortField, sortType } = this.props;
     getMainList({
       stationCodes,
       pageNum: currentPage,
-      pageSize, 
-      sortField, 
+      pageSize,
+      sortField,
       sortType
     })
   }
   filterCondition = (change) => {//选择电站
-    const { changeCleanoutRecordStore,getMainList, pageNum, pageSize, sortField, sortType } = this.props;
+    const { changeCleanoutRecordStore, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
     changeCleanoutRecordStore({ stationCodes: change.stationCodes })
-    getMainList({ stationCodes:change.stationCodes, pageNum, pageSize, sortField, sortType })
+    getMainList({ stationCodes: change.stationCodes, pageNum, pageSize, sortField, sortType })
   }
   render() {
-    const { stations,total,pageSize,pageNum } = this.props;
+    const { stations, total, pageSize, pageNum } = this.props;
     return (
       <div className={styles.cleanoutRecordMain}>
         <div className={styles.topFilter}>

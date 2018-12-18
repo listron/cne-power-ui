@@ -46,7 +46,7 @@ class CleanoutRecordTable extends Component {
     })
   }
   showDetailModal = (record) => {//跳转到单电站清洗模型详情
-    this.props.changeCleanoutRecordStore({ showPage: 'single',singleStationCode:record.stationCode })
+    this.props.changeCleanoutRecordStore({ showPage: 'single',singleStationCode:record.stationCode,mainListData:[] })
     this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
     // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
   }
@@ -224,7 +224,7 @@ class CleanoutRecordTable extends Component {
         title: '查看',
         key: 'check',
         render: (text, record, index) => {
-          return (<span title="查看" className="iconfont icon-plan" onClick={()=>this.showDetailModal(record)}></span>)
+          return (record.cleanPlanNum>0?<span title="查看" className="iconfont icon-plan" onClick={()=>this.showDetailModal(record)}></span>:'')
         }
       }
     ];

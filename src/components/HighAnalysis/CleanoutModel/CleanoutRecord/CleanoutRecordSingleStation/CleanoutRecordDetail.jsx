@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 
-import { Icon, Radio,Modal } from 'antd';
+import { Icon, Radio, Modal, Tabs, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordDetail.scss';
 import CleanoutPlanRecord from './CleanoutPlanRecord';
@@ -12,6 +12,8 @@ import ChangeStation from '../../../../Monitor/StationMonitor/SingleStation/Sing
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 import moment from 'moment';
+const TabPane = Tabs.TabPane;
+
 
 class CleanoutRecordDetail extends Component {
   static propTypes = {
@@ -36,19 +38,19 @@ class CleanoutRecordDetail extends Component {
   componentDidMount() {
     const main = document.getElementById('main');
     main && main.addEventListener('click', this.hideStationChange, true);
-    const{getDetailList,singleStationCode,detailPageNum,detailPageSize,cleanType}=this.props;
-    getDetailList({stationCode:singleStationCode,cleanType,pageNum:detailPageNum,pageSize:detailPageSize})
+    const { getDetailList, singleStationCode, detailPageNum, detailPageSize, cleanType } = this.props;
+    getDetailList({ stationCode: singleStationCode, cleanType, pageNum: detailPageNum, pageSize: detailPageSize })
   }
-  componentWillReceiveProps(nextProps){
-    const{getDetailList,detailPageNum,detailPageSize,cleanType,changeCleanoutRecordStore,singleStationCode}=nextProps;
+  componentWillReceiveProps(nextProps) {
+    const { getDetailList, detailPageNum, detailPageSize, cleanType, changeCleanoutRecordStore, singleStationCode } = nextProps;
     if (this.props.singleStationCode !== singleStationCode) {
-      getDetailList({stationCode:singleStationCode,cleanType,pageNum:detailPageNum,pageSize:detailPageSize})
+      getDetailList({ stationCode: singleStationCode, cleanType, pageNum: detailPageNum, pageSize: detailPageSize })
     }
   }
   componentWillUnmount() {
     const main = document.getElementById('main');
     main && main.removeEventListener('click', this.hideStationChange, true);
-    this.props.changeCleanoutRecordStore({showPage:'multiple'})
+    this.props.changeCleanoutRecordStore({ showPage: 'multiple' })
   }
   onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
@@ -60,21 +62,21 @@ class CleanoutRecordDetail extends Component {
     // });
   }
   onPaginationChange = ({ pageSize, currentPage }) => {//分页器
-    
-    const { changeCleanoutRecordStore,getDetailList,singleStationCode,cleanType } = this.props;
-    changeCleanoutRecordStore({detailPageNum:currentPage,detailPageSize:pageSize})
+
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType } = this.props;
+    changeCleanoutRecordStore({ detailPageNum: currentPage, detailPageSize: pageSize })
     getDetailList({
-      stationCode:singleStationCode,
+      stationCode: singleStationCode,
       cleanType,
       pageNum: currentPage,
-      pageSize, 
-    
+      pageSize,
+
     })
   }
   radioChange = (e) => {
-    const{changeCleanoutRecordStore,getDetailList,singleStationCode,cleanType,detailPageNum,detailPageSize}=this.props;
-    changeCleanoutRecordStore({cleanType:e.target.value})
-    getDetailList({stationCode:singleStationCode,cleanType:e.target.value,pageNum:detailPageNum,pageSize:detailPageSize})
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
+    changeCleanoutRecordStore({ cleanType: e.target.value })
+    getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize })
   }
   backToList = () => { // 返回列表页
     this.props.changeCleanoutRecordStore({
@@ -97,30 +99,33 @@ class CleanoutRecordDetail extends Component {
       showStationSelect: true
     });
   }
-  showDirtModal=()=>{//展示灰尘影响图
+  showDirtModal = () => {//展示灰尘影响图
     this.setState({
       showDirtModal: true
     });
   }
-  closeDirtModal=()=>{//关闭
+  closeDirtModal = () => {//关闭
     this.setState({
       showDirtModal: false
     });
   }
- 
+  tabsChange = () => {//灰尘modal
+
+  }
+
   render() {
-    const { stationDetail, stations, showPage,singleStationCode, stationName, pageNum, pageSize,changeCleanoutRecordStore,detailPageNum,detailPageSize,detailtotal,handCleanNum,rainCleanNum,cleanPlanNum ,cleanProfit,cleanCycle,cleanTime,detailListData} = this.props;
+    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData } = this.props;
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }
-    const { selectedRowKeys,showWarningTip,warningTipText ,showSidePage,showDirtModal} = this.state
+    const { selectedRowKeys, showWarningTip, warningTipText, showSidePage, showDirtModal } = this.state
     const stationItems = stations && stations;
- 
+
     const { showStationSelect } = this.state;
-    const stationItem = stationItems&&stationItems.filter(e => (e.stationCode.toString() === stationCode))[0];
-    const cleanStationName=stationItem&&stationItem.stationName;
-    const provinceName=stationItem&&stationItem.provinceName
+    const stationItem = stationItems && stationItems.filter(e => (e.stationCode.toString() === stationCode))[0];
+    const cleanStationName = stationItem && stationItem.stationName;
+    const provinceName = stationItem && stationItem.provinceName
     //请求的参数
     const queryListParams = {
       stationName, pageNum, pageSize,
@@ -144,17 +149,23 @@ class CleanoutRecordDetail extends Component {
               <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
             </span>
-            {showDirtModal? <Modal
-              title="Basic Modal"
+            {showDirtModal ? <Modal
               visible={this.state.showDirtModal}
               footer={null}
+              centered
               maskClosable={true}
+              closable={false}
               onCancel={this.closeDirtModal}
+              wrapClassName	={'dirtEffBox'}
+             
+              style={{ width: 1004,height: 560,top:200 }}
             >
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-            </Modal>:''}
+              <Button type="primary" disabled >最近30天</Button>
+              <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
+                <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> a picture1111</TabPane>
+                <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> a picture2222</TabPane>
+              </Tabs>
+            </Modal> : ''}
           </div>
           <div className={styles.statisticData}>
             <div className={styles.statisticTarget}>

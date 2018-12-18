@@ -39,10 +39,18 @@ class CleanoutPlanRecord extends Component {
       showAddRecordModal: false,
     }
   }
-
+  onPaginationChange = ({ pageSize, currentPage }) => {//分页器
+    const { changeCleanoutRecordStore, getPlanRecordList, planId, cleanType } = this.props;
+    changeCleanoutRecordStore({ cleanRecordPageNum: currentPage, cleanRecordPageSize: pageSize })
+    getPlanRecordList({
+      planId,
+      pageNum: currentPage,
+      pageSize,
+    })
+  }
   preStation = () => { // 上一个电站详情
-    const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList,  } = this.props;
-    detailPageSize,detailPageNum
+    const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
+  
     if (selectedStationIndex === 0 && detailPageNum === 1) { // 第一页第一条
       this.setState({
         showWarningTip: true,
@@ -58,17 +66,20 @@ class CleanoutPlanRecord extends Component {
       })
     } else {
       getPlanRecordList({ // 正常请求上一条电站详情数据
-        planId: detailListData[selectedStationIndex].planId,
-        pageNum: detailPageNum,
-        pageSize: detailPageSize,
+        planId: detailListData[selectedStationIndex-1].planId,
+        pageNum: cleanRecordPageNum,
+        pageSize: cleanRecordPageSize,
+        selectedStationIndex: selectedStationIndex - 1,
       })
     }
   }
 
   nextStation = () => { // 下一个电站详情
-    const { singleStationCode,detailListData, cleanType,selectedStationIndex, detailPageNum, detailPageSize, getDetailList, totalNum, getPlanRecordList,  } = this.props;
-    const maxPage = Math.ceil(totalNum / detailPageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * detailPageSize - 1;
+    const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
+    const maxPage = Math.ceil(5 / detailPageSize); // 最后一页页码
+  
+    const lastPageMaxIndex = 5 - (maxPage - 1) * detailPageSize - 1;
+  
     if (selectedStationIndex === lastPageMaxIndex && detailPageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
@@ -78,15 +89,16 @@ class CleanoutPlanRecord extends Component {
       getDetailList({
         singleStationCode,
         cleanType,
-        pageNum: detailPageNum - 1,
+        pageNum: detailPageNum + 1,
         pageSize: detailPageSize,
-        selectedStationIndex: detailPageSize - 1,
+        selectedStationIndex: 0,
       })
     } else {
       getPlanRecordList({ // 请求下一条电站详情数据
-        planId: detailListData[selectedStationIndex].planId,
-        pageNum: detailPageNum,
-        pageSize: detailPageSize,
+        planId: detailListData[selectedStationIndex+1].planId,
+        selectedStationIndex: selectedStationIndex + 1,
+        pageNum: cleanRecordPageNum,
+        pageSize: cleanRecordPageSize,
       })
     }
   }
@@ -111,28 +123,18 @@ class CleanoutPlanRecord extends Component {
   cancelAddRecord = () => {
     this.setState({ showAddRecordModal: false })
   }
-  onPaginationChange = ({ pageSize, currentPage }) => {//分页器
-    
-    const { changeCleanoutRecordStore,getPlanRecordList,planId,cleanType } = this.props;
-    changeCleanoutRecordStore({cleanRecordPageNum:currentPage,cleanRecordPageSize:pageSize})
-    getPlanRecordList({
-      planId,
-      pageNum: currentPage,
-      pageSize, 
-    
-    })
-  }
- 
+
+
   render() {
-    const{ cleanRecordTotal,cleanRecordCost, cleanRecordProfit,cleanRecordTime,cleanRecordPageSize,cleanRecordPageNum,cleanRecordPlanTime,stationName,provinceName}=this.props;
-    const { showWarningTip, warningTipText,showAddRecordModal } = this.state;
+    const { cleanRecordTotal, cleanRecordCost, cleanRecordProfit, cleanRecordTime, cleanRecordPageSize, cleanRecordPageNum, cleanRecordPlanTime, stationName, provinceName } = this.props;
+    const { showWarningTip, warningTipText, showAddRecordModal } = this.state;
     const record = { name: 'dali' }
     return (
       <div className={styles.CleanoutPlanRecord}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-          {cleanRecordPlanTime}
+            {cleanRecordPlanTime}
             <span className={styles.departmentInfo} >
               清洗计划-清洗记录
             </span>
@@ -160,8 +162,8 @@ class CleanoutPlanRecord extends Component {
         </div>
         <div className={styles.filterData}>
           <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
-        { /*  {this.addCleanoutRecord(record)} */}
-          {showAddRecordModal?<AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} />:''}
+          { /*  {this.addCleanoutRecord(record)} */}
+          {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
           <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <PlanRecordTable {...this.props} />
@@ -172,102 +174,3 @@ class CleanoutPlanRecord extends Component {
 
 export default Form.create()(CleanoutPlanRecord);
 
- // addCleanoutRecord(record) {
-  //   const formItemLayout = {
-  //     labelCol: {
-  //       xs: { span: 24 },
-  //       sm: { span: 8 },
-  //     },
-  //     wrapperCol: {
-  //       xs: { span: 24 },
-  //       sm: { span: 16 },
-  //     },
-  //   };
-  //   const { getFieldDecorator } = this.props.form;
-  //   const { stations } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
-  //   const rangeConfig = {
-  //     // initialValue: [moment('2018-12-10'), moment('2018-12-25')],
-  //     rules: [{ type: 'array', required: true, message: 'Please select time!' }],
-  //   };
-  //   const tmpDeviceTypes = [1, 2, 3, 4, 5, 6].map((e, i) => {
-  //     return {
-  //       title: e,
-  //       key: i.toString(),
-  //       value: e.toString(),
-  //     }
-  //   });
-  //   const treeProps = {
-  //     treeData: tmpDeviceTypes,
-  //     treeCheckable: true,
-  //     filterTreeNode: false,
-  //     showCheckedStrategy: SHOW_PARENT,
-  //     searchPlaceholder: '请选择设备类型',
-  //     style: {
-  //       width: 198,
-  //     },
-  //     disabled: stations.size === 0,
-  //   };
-  //   return (
-  //     <Modal
-  //       title={'电站3-清洗记录'}
-  //       visible={this.state.showAddRecordModal}
-  //       onOk={this.confirmAddRecord}
-  //       footer={null}
-  //       onCancel={this.cancelAddRecord}
-  //       mask={false}
-  //       centered={true}
-  //       closable={false}
-  //       maskClosable={false}
-  //     >
-  //       <div className={styles.modalStyle}>
-  //         <Form onSubmit={this.handleSubmit}>
-  //           <FormItem
-  //             {...formItemLayout}
-  //             label="清洗时间"
-  //           >
-  //             {getFieldDecorator('cleanDate', rangeConfig)(
-  //               <RangePicker />
-  //             )}
-  //           </FormItem>
-  //           <FormItem
-  //             {...formItemLayout}
-  //             label="清洗方阵"
-  //           >
-  //             {getFieldDecorator('matrix', {
-  //               rules: [{ required: true, message: '请选择方阵' }],
-  //             })(
-  //               <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
-  //             )}
-  //           </FormItem>
-
-  //           <FormItem
-  //             {...formItemLayout}
-  //             label="清洗备注"
-  //           >
-  //             {getFieldDecorator('cleanTip', {
-  //               rules: [{ required: true, message: '只能输入数字', whitespace: true },],
-  //             })(
-  //               <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
-  //             )}
-  //           </FormItem>
-  //         </Form>
-  //         <div className={styles.handle}>
-  //           <Button onClick={this.cancelAddRecord} >取消</Button>
-  //           <Button onClick={this.confirmAddRecord} className={styles.confirmExamine} >保存</Button>
-  //         </div>
-  //       </div>
-  //     </Modal>
-  //   )
-
-  // }
- 
-  // confirmAddRecord = () => {
-  //   this.setState({ showAddRecordModal: false })
-  //   const { getFieldsValue } = this.props.form;
-  //   let recordValue = getFieldsValue(['cleanDate', 'matrix', 'cleanTip']);
-  //   recordValue.estimateStartTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
-  //   recordValue.estimateEndTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
-  //   //发送添加清洗计划的函数
-  //   //此处还要传planid
-  //   this.props.getAddCleanRecord(recordValue)
-  // }

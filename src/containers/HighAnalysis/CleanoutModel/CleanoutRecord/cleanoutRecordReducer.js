@@ -14,13 +14,13 @@ var initState = Immutable.fromJS({
   pageNum: 1, // 当前页
   pageSize: 10, // 每页条数
   total: 0, // 各电站电站总数
-  sortField: '', // 排序字段：stationName-电站名称，cleanPlanNum-清洗计划(个) cleanCycle–平均清洗周期(天) –cleanProfit累计清洗收益(万Kwh) cleanTime–最近清洗时间
+  sortField: 'stationName', // 排序字段：stationName-电站名称，cleanPlanNum-清洗计划(个) cleanCycle–平均清洗周期(天) –cleanProfit累计清洗收益(万Kwh) cleanTime–最近清洗时间
   sortType: 0, // 排序方式 ;"0"升序; "1"降序
   mainListData: [], // 各电站清洗计划汇总列表数据
   cleanType:0,
   detailPageNum: 1,//单电站当前页
   detailPageSize: 10,//单电站每页条数
-  detailtotal: 0,//单电站详细电站总数
+  detailtotal: null,//单电站详细电站总数
   cleanPlanNum: 0,//人工清洗计划数
   cleanProfit: '',//累计清洗收益
   cleanCycle: '',//平均清洗周期
@@ -30,13 +30,13 @@ var initState = Immutable.fromJS({
   
   cleanRecordPageNum: 1,//清洗记录当前页
   cleanRecordPageSize: 10,//清洗记录每页条数
-  cleanRecordTotal: 0,//清洗记录总条数
+  cleanRecordTotal: null,//清洗记录总条数
   cleanRecordPlanTime: '',//清洗计划时间段
   cleanRecordCost: '',//清洗成本
   cleanRecordProfit: '',//累计清洗收益
-  cleanRecordTime: 0,//清洗用时
+  cleanRecordTime: null,//清洗用时
   cleanRecordListData: [],//清洗记录列表
-  selectedStationIndex: null, // 展示详情的电站index
+  selectedStationIndex: 0, // 展示详情的电站index
   stationDetail: {},// 电站详情
   allDepartmentData: [], // 所有部分列表信息
   stationBelongInfo: {}, // 电站的各种所属分类信息汇总。

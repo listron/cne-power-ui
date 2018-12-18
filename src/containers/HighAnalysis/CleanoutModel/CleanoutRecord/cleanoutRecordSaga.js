@@ -62,32 +62,42 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
-    // if (response.data.code === '10000') {
-    const total = response.data.data.total || 0;
-    let { pageNum, pageSize } = payload;
+    if (response.data.code === '10000') {
+      const total = response.data.data.total || 0;
+      let { pageNum, pageSize } = payload;
 
-    const maxPage = Math.ceil(total / pageSize);
-    if (total === 0) { // 总数为0时，展示0页
-      pageNum = 1;
-    } else if (maxPage < pageNum) { // 当前页已超出
-      pageNum = maxPage;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
+      yield put({
+        type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          total: response.data.data.total || 0,
+          mainListData: response.data.data.detailData || [],
+        },
+      });
+    } else {
+      throw response.data.data
     }
-    yield put({
-      type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
-      payload: {
-        ...payload,
-        total: response.data.data.total || 0,
-        mainListData: response.data.data.detailData || [],
-      },
-    });
-    // }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
+      payload: {
+        total: 0,
+        mainListData: [],
+        loading: false
+      },
+    });
   }
 }
 function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
   const { payload } = action;
-  const{selectedStationIndex,planId}=payload;
+  const { planId } = payload;
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getDetailList}`
   try {
@@ -107,21 +117,36 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
         payload: {
           detailtotal: response.data.data.total || 0,
           cleanPlanNum: response.data.data.cleanPlanNum ? response.data.data.cleanPlanNum : '',
-          rainCleanNum:response.data.data.rainCleanNum?response.data.data.rainCleanNum:'',
-          handCleanNum:(response.data.data.handCleanNum||response.data.data.handCleanNum===0)?response.data.data.handCleanNum:'--',
+          rainCleanNum: response.data.data.rainCleanNum ? response.data.data.rainCleanNum : '',
+          handCleanNum: (response.data.data.handCleanNum || response.data.data.handCleanNum === 0) ? response.data.data.handCleanNum : '--',
           cleanProfit: (response.data.data.cleanProfit || response.data.data.cleanProfit === 0) ? response.data.data.cleanProfit : '--',
-          cleanCycle: (response.data.data.cleanCycle || response.data.data.cleanCycle === 0) ? 
-          response.data.data.cleanCycle : '--',
-          cleanTime: (response.data.data.cleanTime || response.data.data.cleanTime===0)?
-          response.data.data.cleanTime:'--',
+          cleanCycle: (response.data.data.cleanCycle || response.data.data.cleanCycle === 0) ?
+            response.data.data.cleanCycle : '--',
+          cleanTime: (response.data.data.cleanTime || response.data.data.cleanTime === 0) ?
+            response.data.data.cleanTime : '--',
           detailListData: response.data.data.detailData || [],
-          selectedStationIndex,
           planId,
         },
       });
+    } else {
+      throw response.data.data
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
+      payload: {
+        detailtotal: 0,
+        cleanPlanNum: '',
+        rainCleanNum: '',
+        handCleanNum: '--',
+        cleanProfit: '--',
+        cleanCycle: '--',
+        cleanTime: '--',
+        detailListData: [],
+      },
+    });
+
   }
 }
 function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
@@ -233,18 +258,18 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-    const params = yield select(state => ({
-      stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
-      pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
-      pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
-      sortField: state.highAanlysisReducer.cleanoutRecordReducer.get('sortField'),
-      sortType: state.highAanlysisReducer.cleanoutRecordReducer.get('sortType'),
-    }));
-    yield put({ // 请求请求详情页数据
-      type: cleanoutRecordAction.getMainList,
-      payload: { ...params }
-    })
-  }
+      const params = yield select(state => ({
+        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
+        pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
+        sortField: state.highAanlysisReducer.cleanoutRecordReducer.get('sortField'),
+        sortType: state.highAanlysisReducer.cleanoutRecordReducer.get('sortType'),
+      }));
+      yield put({ // 请求请求详情页数据
+        type: cleanoutRecordAction.getMainList,
+        payload: { ...params }
+      })
+    }
   } catch (e) {
     console.log(e);
   }
@@ -299,13 +324,13 @@ function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
 }
 function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   const { payload } = action;
-  const{planId}=payload
+  const { planId } = payload
   //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
-   if (response.data.code === '10000') {
+    if (response.data.code === '10000') {
       const cleanRecordTotal = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(cleanRecordTotal / pageSize);
@@ -313,27 +338,42 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
         pageNum = 1;
       } else if (maxPage < pageNum) { // 当前页已超出
         pageNum = maxPage;
-     }
+      }
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
+          ...payload,
           planId,
           cleanRecordTotal: response.data.data.total || 0,
           cleanRecordPlanTime: response.data.data.planTime || '',
-          cleanRecordCost: response.data.data.cleanCost || '',
-          cleanRecordProfit: response.data.data.cleanProfit || '',
+          cleanRecordCost: response.data.data.cleanCost || '--',
+          cleanRecordProfit: response.data.data.cleanProfit || '--',
           cleanRecordTime: response.data.data.cleanTime || 0,
           cleanRecordListData: response.data.data.detailData || [],
         },
       });
+    }else{
+      throw response.data.data
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: cleanoutRecordAction.CHANGE_CLEANOUT_RECORD_STORE_SAGA,
+      payload: {
+        cleanRecordTotal:0,
+        cleanRecordPlanTime:'',
+        cleanRecordCost: '--',
+        cleanRecordProfit: '--',
+        cleanRecordTime: null,
+        cleanRecordListData:[],
+      },
+    });
+
   }
 }
 function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
   const { payload } = action;
-  
+
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanRecord}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
