@@ -24,12 +24,19 @@
                     position: relative;
                     cursor: pointer;
                 }
+                :global {
+                    .icon-pvlogo {
+                        color: $themeColor;
+                        margin-right: 40px;
+                        font-size: 18px;
+                    }
+                }
                 h3 {
                     font-size: 18px;
                     color: $darkColor;
                     margin-right: 20px;
                 }
-                span {
+                span { // 谁写的这个破烂样式代码。
                     color: $darkColor;
                     margin-right: 15px;
                 }
@@ -73,23 +80,18 @@
             display: flex;
             padding: 18px 25px;
             color: $darkColor;
-            >div {
-                margin: 0 4px;
-            }
-            .pvlogo {
-                :global {
-                    .iconfont {
-                        display: block;
-                        margin-top: 25px;
-                        color: $themeColor;
-                        cursor: pointer;
-                        font-size: 18px;
-                    }
-                    .iconfont:hover {
-                        color: $themeColor;
-                    }
+            .valueFormat{
+                .int{
+                    font-size: 24px;
+                }
+                .decimal{
+                    font-size: 18px;
                 }
             }
+            >div { // 谁写的垃圾代码。div样式不能这么写。待改
+                margin: 0 4px;
+            }
+            
             .powerScale {
                 width: 215px;
                 margin-right: 20px;
@@ -102,13 +104,14 @@
             .annualEnergyScale {
                 // width: 230px;
             }
-            div {
+            div { // 谁写的渣渣代码。div样式不能这么写。待改
                 .trueTimeValue {
                     font-size: 24px;
                     color: $themeColor;
                     display: flex;
                     justify-content: space-between;
                     line-height: 24px;
+                    height: 24px;
                     >div {
                         display: flex;
                         justify-content: space-between;
@@ -474,9 +477,6 @@
                     transform: translate(110px, -100px);
                     z-index: 999;
                 }
-            }
-            .elecnettingItem {
-                pointer-events: none;
             }
             :global {
                 .ant-radio-group {

@@ -18,6 +18,9 @@ var initState = Immutable.fromJS({
   inverterList: {},//逆变器列表
   confluenceBoxList: {}, // 汇流箱列表详细信息。
   boxTransformerList: {},//箱变列表
+  collectorList: [], // 集电线路信息列表
+  boosterList: [], // 升压站列表数据
+  powerNetList: [], // 电网信息列表
   error: {},//请求错误返回信息
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表

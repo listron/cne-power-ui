@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { Button,Select} from 'antd';
+import React, { Component } from 'react';
+import { Button, Select } from 'antd';
 import styles from './planMain.scss';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
@@ -17,14 +17,14 @@ class planSearch extends Component {
     stationCodes: PropTypes.array,
     planYearList: PropTypes.array,
     changePlanStore: PropTypes.func,
+    planYear: PropTypes.any,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      dateValue: '',
       stationCodes: [],
-      selectStation :[],
+      selectStation: [],
     }
   }
 
@@ -33,16 +33,16 @@ class planSearch extends Component {
       return item.stationCode
     });
     this.setState({
-      selectStation:rest,
+      selectStation: rest,
       stationCodes: stationCodes
     });
   };
 
   selectValue = () => {
-    let {stationCodes,dateValue} = this.state;
+    let { stationCodes } = this.state;
     const params = {
-      year: dateValue || this.props.planYearList[0],
-      stationCodes: stationCodes.length > 0 ? stationCodes: null,
+      year: this.props.planYear,
+      stationCodes: stationCodes.length > 0 ? stationCodes : null,
       sortField: this.props.sortField,
       sortMethod: this.props.sortMethod,
       pageNum: this.props.pageNum,
@@ -51,23 +51,19 @@ class planSearch extends Component {
     this.props.getPlanList(params)
   };
 
-  selectYear=(e)=>{
-    this.setState({dateValue:e})
-    this.props.changePlanStore({planYear: e});
+  selectYear = (e) => {
+    this.props.changePlanStore({ planYear: e });
   };
 
   render() {
-    const {stations,planYearList} = this.props;
-    const {selectStation,dateValue}=this.state;
-    const currentYear=new Date().getFullYear().toString();
-    const index=planYearList.indexOf(currentYear);
-    const defaultValue=dateValue || (index >-1 ? currentYear : planYearList[0])
+    const { stations, planYearList, planYear } = this.props;
+    const { selectStation } = this.state;
     return (
       <div className={styles.planSearch}>
         <div>
           <span className={styles.year}>年份选择</span>
-          <Select style={{width: 105}} onChange={this.selectYear} placeholder="--" value={defaultValue}>
-            {planYearList.map((year,index) => {
+          <Select style={{ width: 105 }} onChange={this.selectYear} placeholder="--" value={planYear}>
+            {planYearList.map((year, index) => {
               return <Option value={String(year)} key={year} selected>{year}</Option>
             })}
           </Select>
