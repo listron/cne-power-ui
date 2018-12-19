@@ -133,6 +133,15 @@
     }
 }
 
+.integrateLine, .boosterStation{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .deviceContent{
+        flex: 1;
+    }
+}
+
 .weatherstation {
     flex: 1;
     display: flex;
@@ -157,7 +166,6 @@
             cursor: pointer;
             line-height: 40px;
             color: $darkColor;
-            flex-basis: 60px;
             text-align: center;
             margin: 0 28px;
         }

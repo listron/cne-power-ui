@@ -13,7 +13,7 @@ const ValueFormat = ({ value,  points }) => { // value必为数值 或 '--'。
   if (value === '--' || (!points && points === 0)) { // value无值，或不需对数据进行浮点处理
     return <span>{value}</span>;
   } else { // value为数值且有浮点数展示要求
-    let stringValue = value.toFixed(points);
+    let stringValue = value.toFixed(points) || '';
     const valueArr = stringValue.split('.');
     return (
       <span className={styles.valueFormat}>
@@ -139,6 +139,7 @@ class WindStationTop extends Component {
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
     const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
+    const yearPlanRate = singleStationData.yearPlanRate || '';
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
@@ -222,10 +223,10 @@ class WindStationTop extends Component {
                 </div>
                 <ValueFormat value={dataFormat(singleStationData.yearPlanPower,'--', 4)}  points={4} />
               </div>
-              <Progress percent={+( singleStationData.yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+              <Progress percent={+( yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 (万kWh)</span><span>计划 (万kWh)</span></div>
             </div>
-            <div className={styles.yearPlanRate} >{ singleStationData.yearPlanRate}</div>
+            <div className={styles.yearPlanRate} >{ yearPlanRate }</div>
           </div>
         </div>
       </div>

@@ -4,21 +4,22 @@ import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import { dataFormat } from '../../../utils/utilFunc';
 
-class DeviceStatus extends Component{
+class DeviceStatus extends Component {
   static propTypes = {
     realTimeInfo: PropTypes.object,
     hasMultipleType: PropTypes.bool
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       statusType: 'all'
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { realTimeInfo } = nextProps;
     this.setStatusChart(realTimeInfo);
   }
@@ -27,17 +28,16 @@ class DeviceStatus extends Component{
     const statusBox = document.getElementById('homeDeviceStatus');
     const statusChart = echarts.init(statusBox);
     const { statusType } = this.state;
-    const deviceStatus = realTimeInfo.deviceStatus || {};
     let statusInfo = [];
-    if(statusType === 'all'){
-      statusInfo = deviceStatus.allDeviceStatus || [];
-    }else if(statusType === 'wind'){
-      statusInfo = deviceStatus.windDeviceStatus || [];
-    }else if(statusType === 'pv'){
-      statusInfo = deviceStatus.pvDeviceStatus || [];
+    if (statusType === 'all') {
+      statusInfo = realTimeInfo.allDeviceStatus || [];
+    } else if(statusType === 'wind') {
+      statusInfo = realTimeInfo.windDeviceStatus || [];
+    } else if(statusType === 'pv') {
+      statusInfo = realTimeInfo.pvDeviceStatus || [];
     }
-    let hasData = statusInfo.some(e=>e.deviceStatusName || e.deviceStatusName === 0);
-    const statusPieData = statusInfo.map(e=>({
+    let hasData = statusInfo.some(e => e.deviceStatusName || e.deviceStatusName === 0);
+    const statusPieData = statusInfo.map(e => ({
       value: e.deviceStatusNum, 
       name: e.deviceStatusName,
     }));
@@ -49,6 +49,22 @@ class DeviceStatus extends Component{
         },
         tooltip: {
           formatter: '{b}：{c}({d}%)'
+        },
+        tooltip: {
+          extraCssText: 'background-color: rgba(0, 0, 0, 0.8)',
+          padding: 10,
+          formatter: params => {
+            return `<div class=${styles.statusTool}>
+              <div class=${styles.status}>
+                <span class=${styles.name}>${params.name}</span>
+                <span class=${styles.value}>${params.value}</span>
+              </div>
+              <div class=${styles.percent}>
+                <span class=${styles.name}>占比</span>
+                <span class=${styles.value}>${dataFormat(params.percent, '--', 2)}%</span>
+              </div>
+            </div>`
+          },
         },
         legend: {
           show: false,
@@ -72,22 +88,23 @@ class DeviceStatus extends Component{
     statusChart.setOption(option);
   } 
 
-  changeStatusType = (statusType) => {
-    this.setState({ statusType });
+  changeStatusType = statusType => {
+    const { realTimeInfo } = this.props;
+    this.setState({ statusType }, () => { // 立刻重新渲染chart图
+      this.setStatusChart(realTimeInfo);
+    });
   }
-
 
   render(){
     const { realTimeInfo, hasMultipleType } = this.props;
     const { statusType } = this.state;
-    const deviceStatus = realTimeInfo.deviceStatus || {};
     let statusInfo = [];
     if(statusType === 'all'){
-      statusInfo = deviceStatus.allDeviceStatus || [];
+      statusInfo = realTimeInfo.allDeviceStatus || [];
     }else if(statusType === 'wind'){
-      statusInfo = deviceStatus.windDeviceStatus || [];
+      statusInfo = realTimeInfo.windDeviceStatus || [];
     }else if(statusType === 'pv'){
-      statusInfo = deviceStatus.pvDeviceStatus || [];
+      statusInfo = realTimeInfo.pvDeviceStatus || [];
     }
     return (
       <section className={styles.deviceStatus}>
