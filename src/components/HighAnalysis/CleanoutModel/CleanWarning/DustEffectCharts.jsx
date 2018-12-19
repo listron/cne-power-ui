@@ -11,8 +11,6 @@ const { RangePicker } = DatePicker;
 
 const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
-  console.log(chartBox)
-  console.log(id)
   if (chartBox) {
     const chartInitBox = echarts.init(chartBox);
     let xAxis = [], genArr = [], effctArr = [], effectRate = [], hasData = false;
@@ -20,11 +18,25 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
       xAxis.push(keyWord === 'total' ? e.date : e.matrix);
       genArr.push(e.actualPower);
       effctArr.push(e.influencePower);
-      effectRate.push(e.effectRate);
+      effectRate.push(e.influencePercent);
       (e.actualPower || e.influencePower) && (hasData = true);
     })
     const option = {
       color: ['#199475', '#f9b600', '#3e97d1'],
+      tooltip:{
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+        formatter: params => `<div>
+          <div>${params[0].name}</div>
+          ${params.map(e => `<div>
+            <span>${e.seriesType}</span>
+            <span>${e.seriesName}</span>
+            <span>${e.value}</span>
+          </div>`)}
+        </div>`
+      },
       xAxis: {
         type: 'category',
         data: xAxis,
@@ -84,22 +96,19 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
           name: '实际发电量',
           type: 'bar',
           stack: '发电量',
+          barWidth: 6,
           data: genArr,
         },
         {
           name: '灰尘影响电量',
           type: 'bar',
           stack: '发电量',
+          barWidth: 6,
           data: effctArr
         }, {
           name: '灰尘影响占比',
           type: 'line',
           yAxisIndex: 1,
-          lineStyle: {
-            color: '#199475',
-            width: 2,
-            type: 'dashed'
-          },
           data: effectRate
         }
       ]
