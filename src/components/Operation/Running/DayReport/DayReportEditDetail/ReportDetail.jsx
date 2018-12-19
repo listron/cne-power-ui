@@ -8,6 +8,7 @@ const loseColumn = [
   {
     title: '设备名称',
     dataIndex: 'deviceName',
+    className: 'deviceName',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -46,6 +47,7 @@ const limitColumn = [
   {
     title: '设备名称',
     dataIndex: 'deviceName',
+    className: 'deviceName',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),

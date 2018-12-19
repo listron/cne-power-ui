@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import styles from "./Unhandle.scss";
+import styles from "./newUnhandle.scss";
 import { unhandleAction } from './unhandleAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
