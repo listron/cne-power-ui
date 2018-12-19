@@ -133,65 +133,67 @@ class CleanoutRecordDetail extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.CleanoutRecordDetail}>
-          <div className={styles.detailTop}>
-            {showStationSelect &&
-              <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
-            }
-            <div className={styles.topInfoShow}>
-              <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
-                <Icon className={styles.icon} type="swap" />
+          <div className={styles.detailMain}>
+            <div className={styles.detailTop}>
+              {showStationSelect &&
+                <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
+              }
+              <div className={styles.topInfoShow}>
+                <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
+                  <Icon className={styles.icon} type="swap" />
+                </div>
+                <div className={styles.status}>
+                  <h3>{cleanStationName}--{provinceName}</h3>
+                </div>
               </div>
-              <div className={styles.status}>
-                <h3>{cleanStationName}--{provinceName}</h3>
+              <span className={styles.handleArea} >
+                <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
+                <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+              </span>
+              {showDirtModal ? <Modal
+                visible={this.state.showDirtModal}
+                footer={null}
+                centered
+                width={1000}
+                maskClosable={true}
+                closable={false}
+                onCancel={this.closeDirtModal}
+                wrapClassName={'dirtEffBox'}
+                style={{top: 200 }}
+              >
+                <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
+                <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
+                  <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> a picture1111</TabPane>
+                  <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> a picture2222</TabPane>
+                </Tabs>
+              </Modal> : ''}
+            </div>
+            <div className={styles.statisticData}>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanProfit}</div>
+                <div>累计清洗收益(万kWh)</div>
               </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{handCleanNum}</div>
+                <div>人工清洗次数(次)</div>
+              </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanCycle}</div>
+                <div>平均清洗周期(天)</div></div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanTime}</div>
+                <div>平均清洗用时(天)</div></div>
             </div>
-            <span className={styles.handleArea} >
-              <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
-              <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
-            </span>
-            {showDirtModal ? <Modal
-              visible={this.state.showDirtModal}
-              footer={null}
-              centered
-              maskClosable={true}
-              closable={false}
-              onCancel={this.closeDirtModal}
-              wrapClassName	={'dirtEffBox'}
-             
-              style={{ width: 1004,height: 560,top:200 }}
-            >
-              <Button type="primary" disabled >最近30天</Button>
-              <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
-                <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> a picture1111</TabPane>
-                <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> a picture2222</TabPane>
-              </Tabs>
-            </Modal> : ''}
-          </div>
-          <div className={styles.statisticData}>
-            <div className={styles.statisticTarget}>
-              <div className={styles.numberColor}>{cleanProfit}</div>
-              <div>累计清洗收益(万kWh)</div>
+            <div className={styles.filterData}>
+              <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
+                <Radio.Button value={0}>全部</Radio.Button>
+                <Radio.Button value={1}>人工{cleanPlanNum}</Radio.Button>
+                <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
+              </Radio.Group>
+              <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
             </div>
-            <div className={styles.statisticTarget}>
-              <div className={styles.numberColor}>{handCleanNum}</div>
-              <div>人工清洗次数(次)</div>
-            </div>
-            <div className={styles.statisticTarget}>
-              <div className={styles.numberColor}>{cleanCycle}</div>
-              <div>平均清洗周期(天)</div></div>
-            <div className={styles.statisticTarget}>
-              <div className={styles.numberColor}>{cleanTime}</div>
-              <div>平均清洗用时(天)</div></div>
+            <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
           </div>
-          <div className={styles.filterData}>
-            <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
-              <Radio.Button value={0}>全部</Radio.Button>
-              <Radio.Button value={1}>人工{cleanPlanNum}</Radio.Button>
-              <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
-            </Radio.Group>
-            <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
-          </div>
-          <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
         </div>
         <TransitionContainer
           show={showSidePage === 'recordPlan'}

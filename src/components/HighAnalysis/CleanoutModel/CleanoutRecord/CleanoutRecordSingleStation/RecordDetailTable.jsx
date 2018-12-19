@@ -193,7 +193,7 @@ class RecordDetailTable extends Component {
   render() {
     const { loading, detailListData } = this.props;
     const {  showWarningTip, warningTipText,  showAddRecordModal,cleanoutRecord ,editCleanoutPlan} = this.state;
-    // console.log(cleanoutRecord,'cleanoutRecord');
+ 
     // console.log(editCleanoutPlan,'editCleanoutPlan');
     const column = [
       {

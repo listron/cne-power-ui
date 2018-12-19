@@ -1,29 +1,77 @@
+@import '../../../../../theme/theme.scss';
     
     
-    
+    .sidePage{
+      display: flex;
+      flex: 1 0 auto;
+      width: 100%;
+      flex-direction: column;
+      background-color: #ececec;
+      z-index: 2;
+      padding-right: 24px;
+    }
     .CleanoutPlanRecord{
       display: flex;
       flex: 1 0 auto;
       width: 100%;
       flex-direction: column;
-      background-color: #fff;
-      padding: 24px 24px 0;
-      z-index: 2;
+      background-color: #ececec;
+      // padding: 24px 24px 0;
+     
+      .testBackground{
+        background-color: #fff;
+        display: flex;
+        flex: 1 0 auto;
+        width: 100%;
+        flex-direction: column;
+        
+      
+      }
+     
       .detailTop{
         display: flex;
         justify-content:space-between;
-        height: 48px;
+        height: 60px;
         border-bottom: 1px solid #ececec;
+        align-items: center;
+
         .topInfoShow{
           font-size: 20px;
         }
-       .handleArea{
-         i{ font-size: 24px;}
-        
-       }
+        .handleArea{ 
+          height: 100%;
+          display: flex;
+          align-items: center;
+          :global{
+            .iconfont{
+              font-size: 20px;
+              margin-right: 20px;
+              cursor: pointer;
+            }
+          }
+          .previous, .next, .backIcon{
+            font-size: 20px;
+            cursor: pointer;
+            color: $darkColor;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .previous,.next{
+            width: 40px;
+          }
+          .backIcon{
+            width: 60px;
+            border-left: solid 1px $promptColor;
+            margin-left: 20px;
+          }
+        }
        .backIcon{
+         width: 60px;
          border-left: 1px soild #ececec ;
-        font-size: 24px;
+         font-size: 20px;
+        //  margin-left: 20px;
        }
 
       }

@@ -19,7 +19,7 @@ function* resetStore() {
 }
 function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影响图表数据
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
+  
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -38,7 +38,6 @@ function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影�
 }
 function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -57,7 +56,6 @@ function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
 }
 function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMainList}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -98,7 +96,6 @@ function* getMainList(action) {//1.1.5.获取各电站清洗计划汇总列表
 function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
   const { payload } = action;
   const { planId } = payload;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getDetailList}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -151,7 +148,7 @@ function* getDetailList(action) {//1.1.6.获取清洗计划记录列表
 }
 function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
+  
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanPlan}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -175,7 +172,6 @@ function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
 }
 function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditCleanPlan}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -204,7 +200,6 @@ function* getEditCleanPlan(action) {//1.1.8.修改人工清洗计划
 }
 function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanPlanDetail}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -223,7 +218,6 @@ function* getCleanPlanDetail(action) {//1.1.9.获取人工清洗计划详情
 }
 function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下雨记录也是此接口
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanPlan}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -252,7 +246,6 @@ function* deleteCleanPlan(action) {//1.1.10.删除清洗计划详情,删除下�
 }
 function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddRainPlan}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -276,7 +269,6 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
 }
 function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getEditRainPlan}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -305,7 +297,7 @@ function* getEditRainPlan(action) {//1.1.12.修改下雨清洗计划
 }
 function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
+  
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getRainPlanDetail}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -325,7 +317,6 @@ function* getRainPlanDetail(action) {//1.1.13.获取下雨清洗计划详情
 function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   const { payload } = action;
   const { planId } = payload
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -368,12 +359,11 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
         cleanRecordListData:[],
       },
     });
-
   }
 }
 function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
   const { payload } = action;
-
+  const {planId}=payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getAddCleanRecord}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -387,7 +377,7 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
       }));
 
       const planRecordParams = yield select(state => ({
-        planId: state.highAanlysisReducer.cleanoutRecordReducer.get('planId'),
+        // planId: state.highAanlysisReducer.cleanoutRecordReducer.get('planId'),
         pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanRecordPageNum'),
         pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('cleanRecordPageSize'),
       }));
@@ -397,7 +387,7 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
       })
       yield put({ // 请求计划记录页数据
         type: cleanoutRecordAction.getPlanRecordList,
-        payload: { ...planRecordParams }
+        payload: {planId, ...planRecordParams }
       })
     }
   } catch (e) {
@@ -406,7 +396,6 @@ function* getAddCleanRecord(action) {//1.1.15.添加清洗记录
 }
 function* editCleanRecord(action) {//1.1.16.修改清洗记录
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.editCleanRecord}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -434,7 +423,6 @@ function* editCleanRecord(action) {//1.1.16.修改清洗记录
 }
 function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getCleanRecordDetail}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -453,7 +441,6 @@ function* getCleanRecordDetail(action) {//1.1.17.获取清洗记录详情
 }
 function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.deleteCleanRecord}/${payload.planId}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
@@ -481,8 +468,7 @@ function* deleteCleanRecord(action) {//1.1.18.删除清洗记录
 }
 function* getMatrix(action) {//获取单电站方阵
   const { payload } = action;
-  //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrix}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixList}`
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);

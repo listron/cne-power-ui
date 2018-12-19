@@ -41,7 +41,7 @@ var initState = Immutable.fromJS({
   allDepartmentData: [], // 所有部分列表信息
   stationBelongInfo: {}, // 电站的各种所属分类信息汇总。
   planId: '',//计划id
-  cleanRecorddetail: [],//获取清洗记录详情
+  cleanRecorddetail: {},//获取清洗记录详情
   getMatrixData:[],//获取电站下的方阵
 
 });
