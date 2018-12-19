@@ -2,11 +2,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './cleanStyle.scss';
-import { Button } from 'antd';
 import moment from 'moment';
-// import StationManageDetail from './StationManageDetail';
-// import StationManageEdit from './StationManageEdit';
 import { DustEffectStation, DustBaseInfo } from './DustEffectTop';
+import DustEffectCharts from './DustEffectCharts';
 import Footer from '../../../Common/Footer';
 
 class CleanWarningSide extends Component {
@@ -45,8 +43,8 @@ class CleanWarningSide extends Component {
     if (dustEffectInfo.stationCode === stationCode) {
       return;
     }
-    const endDay = moment();
-    const startDay = moment().subtract(30, 'day'); 
+    const endDay = moment().format('YYYY-MM-DD');
+    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD'); 
     this.setState({
       stationCheckActive: false,
     });
@@ -62,12 +60,10 @@ class CleanWarningSide extends Component {
     this.props.changeCleanWarningStore({showPage: 'list'});
   }
 
-  changeEffectDay = () => { // 切换时间并请求灰尘影响数据。
-
-  }
-
   render(){
-    const { stations, dustEffectInfo, weatherList } = this.props;
+    const {
+      stations, dustEffectInfo, weatherList,
+    } = this.props;
     const { stationCheckActive } = this.state;
     return (
       <div className={styles.clearWarningSide} onClick={this.hiddenStationList}>
@@ -84,7 +80,7 @@ class CleanWarningSide extends Component {
             dustEffectInfo={dustEffectInfo}
             weatherList={weatherList}
           />
-          <Button onClick={this.backToList}>返回主页面</Button>
+          <DustEffectCharts {...this.props} />
         </div>
         <Footer />
       </div>

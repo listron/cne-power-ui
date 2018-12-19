@@ -164,3 +164,15 @@
     }
   }
 }
+
+.effectCharts{
+  .eachChart{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .effectChart{
+    height: 400px;
+    flex: 1;
+  }
+}
