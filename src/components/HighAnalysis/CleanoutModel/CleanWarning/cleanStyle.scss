@@ -2,6 +2,10 @@
 
 .cleanWarningMain{
   @include contentBoxStyle();
+  .mainContent{
+    flex: 1;
+    background-color: #fff;
+  }
   .pagination{
     height: 50px;
     display: flex;
@@ -18,8 +22,11 @@
 }
 
 .clearWarningSide{
-  background-color: #fff;
   @include contentBoxStyle();
+  .sideContent{
+    flex: 1;
+    background-color: #fff;
+  }
 }
 
 .topStations{
@@ -29,7 +36,6 @@
   align-items: center;
   border-bottom: 1px solid $promptColor;
   position: relative;
-  background-color: #fff;
   .leftPart{
     height: 100%;
     line-height: 60px;
@@ -106,5 +112,55 @@
       }
     }
     
+  }
+}
+
+.dustInfo{
+  height: 124px;
+  display: flex;
+  border-bottom: 1px solid $promptColor;
+  .effectGen, .effectDay{
+    width: 140px;
+    margin: 12px 0 24px 24px;
+    border-right: 1px solid $promptColor;
+    display: flex;
+    flex-direction: column;
+    .text{
+      color: $darkColor;
+    }
+    .dustEffectValue, .lastCleanValue {
+      height: 52px;
+      line-height: 64px;
+      font-size: 24px;
+      color: $themeColor;
+    }
+  }
+  .effectGen{
+    width: 215px;
+    .demicalValue{
+      font-size: 16px;
+    }
+  }
+  .weather{
+    padding-left: 24px;
+    display: flex;
+    width: 252px;
+    .eachWeather{
+      margin-top: 12px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      font-size: 10px;
+      color: $darkColor;
+    }
+    img{
+      height: 24px;
+      margin: 4px 0;
+    }
+    .noWeather{
+      line-height: 96px;
+      font-size: 12px;
+    }
   }
 }

@@ -84,7 +84,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
     const { pageSize, pageNum } = listQueryParams;
     return (
       <div className={styles.cleanWarningMain}>
-        <div>
+        <div className={styles.mainContent}>
           <FilterCondition
             stations={stations.filter(e => e.stationType === 1)}
             onChange={this.selectStation}

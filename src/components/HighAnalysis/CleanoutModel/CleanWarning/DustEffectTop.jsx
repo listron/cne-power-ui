@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import styles from './cleanStyle.scss';
+import { dataFormat } from '../../../../utils/utilFunc';
 
-export const DustEffectStation = ({...props}) => {
+export const DustEffectStation = ({...props}) => { // 清洗预警=> 详情电站选择及返回
   const {
     stations, changeStation, showStationList, dustEffectInfo, stationCheckActive, backToList
   } = props;
@@ -11,7 +12,7 @@ export const DustEffectStation = ({...props}) => {
   const currentStation = stations.find(e => e.stationCode === stationCode) || {};
   const provinceSet = new Set(stations.map(e => e.provinceName));
   const provinceArr = [...provinceSet];
-  let groupedStation = provinceArr.map(e => ({
+  let groupedStation = provinceArr.map(e => ({ // 将电站按所属省份分组
     provinceName: e,
     innerStation: []
   }));
@@ -23,7 +24,6 @@ export const DustEffectStation = ({...props}) => {
       return info
     })
   })
-  // 将电站按所属省份分组
   return (
     <div className={styles.topStations}>
       {stationCheckActive && <div className={styles.stationList}>
@@ -40,8 +40,7 @@ export const DustEffectStation = ({...props}) => {
                   <span
                     key={station.stationName}
                     className={styles.stationName}
-                    // onClick={() => changeStation({stationCode: station.stationCode})}
-                    onClick={() => console.log('??????')}
+                    onClick={() => changeStation({stationCode: station.stationCode})}
                   >
                     {station.stationName}
                   </span>
@@ -73,29 +72,47 @@ DustEffectStation.propTypes = {
   backToList: PropTypes.func,
 }
 
-export const DustBaseInfo = ({}) => {
-  const arr = [1, 2, 3];
+export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 清洗预警 => 详情 影响数据及天气
+  const dateArr = ['今天', '明天', '后天'];
+  // const value = dataFormat(dustEffectInfo.influencePower, '--', 2);
+  const value = dataFormat(219.1844, '--', 2);
+  let showValue = [];
+  if (value >= 0 || `${value}`.includes('.')) {
+    showValue = `${value}`.split('.');
+  }
+  const filterWeather = weatherList.filter((e, i)=> i < 3); // 只要前三天数据。
   return (
     <div className={styles.dustInfo}>
-      <div>
-        <span>219.48</span>
-        <span>昨日灰尘影响电量(万kWh)</span>
+      <div className={styles.effectGen}>
+        <span className={styles.dustEffectValue}>
+          <span className={styles.intValue}>{showValue[0]}</span>
+          {showValue[1] && <span className={styles.demicalValue}>.{showValue[1]}</span>}
+        </span>
+        <span className={styles.text}>昨日灰尘影响电量(万kWh)</span>
       </div>
-      <div>
-        <span>9</span>
-        <span>距最近清洗(天)</span>
+      <div className={styles.effectDay}>
+        <span className={styles.lastCleanValue}>9</span>
+        <span className={styles.text}>距最近清洗(天)</span>
       </div>
-      <div>
-        {arr.map(e => (
-          <div>
-            <span>今天</span>
-            <span>天气图</span>
-            <span>温度</span>
-            <span>天气</span>
-            <span>风向风速</span>
-          </div>
-        ))}
+      <div className={styles.weather}>
+        {filterWeather.length > 0 ? filterWeather.map((e, i) => {
+          let weatherId = e.weatherId || '';
+          return (
+            <div className={styles.eachWeather} key={e.weatherDate}>
+              <span>{dateArr[i]}</span>
+              <img src={`/img/weathercn/${weatherId.split(',')[0]}.png`} />
+              <span>{e.temperature || '--'}</span>
+              <span>{e.weather || '--'}</span>
+              <span>{e.wind || '--'}</span>
+            </div>
+          )
+        }) : <div className={styles.noWeather}>暂无天气数据</div>}
       </div>
     </div>
   )
+}
+
+DustBaseInfo.propTypes = {
+  weatherList: PropTypes.array,
+  dustEffectInfo: PropTypes.object,
 }

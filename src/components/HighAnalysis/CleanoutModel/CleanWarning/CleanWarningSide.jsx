@@ -12,6 +12,7 @@ import Footer from '../../../Common/Footer';
 class CleanWarningSide extends Component {
   static propTypes = {
     stations: PropTypes.array,
+    weatherList: PropTypes.array,
     dustEffectInfo: PropTypes.object,
     getCleanWarningDetail: PropTypes.func,
     getTotalDustEffect: PropTypes.func,
@@ -26,18 +27,9 @@ class CleanWarningSide extends Component {
     }
   }
 
-  componentDidMount() {
-    const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hiddenStationList, true);
-  }
-
-  componentWillUnmount() {
-    const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hiddenStationList, true);
-  }
-
   hiddenStationList = () => { // 隐藏电站切换框
-    this.setState({
+    const { stationCheckActive } = this.state;
+    stationCheckActive && this.setState({
       stationCheckActive: false,
     });
   }
@@ -49,7 +41,10 @@ class CleanWarningSide extends Component {
   }
 
   changeStation = ({stationCode}) => { // 切换电站并隐藏切换框
-    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect } = this.props;
+    const { getCleanWarningDetail, getTotalDustEffect, getMatrixDustEffect, dustEffectInfo } = this.props;
+    if (dustEffectInfo.stationCode === stationCode) {
+      return;
+    }
     const endDay = moment();
     const startDay = moment().subtract(30, 'day'); 
     this.setState({
@@ -58,7 +53,6 @@ class CleanWarningSide extends Component {
     const effectParam = {
       stationCode, endDay, startDay
     }
-    console.log('？？？')
     getCleanWarningDetail({ stationCode });
     getTotalDustEffect(effectParam);
     getMatrixDustEffect(effectParam);
@@ -73,11 +67,11 @@ class CleanWarningSide extends Component {
   }
 
   render(){
-    const { stations, dustEffectInfo } = this.props;
+    const { stations, dustEffectInfo, weatherList } = this.props;
     const { stationCheckActive } = this.state;
     return (
-      <div className={styles.clearWarningSide}>
-        <div>
+      <div className={styles.clearWarningSide} onClick={this.hiddenStationList}>
+        <div className={styles.sideContent}>
           <DustEffectStation
             dustEffectInfo={dustEffectInfo}
             stations={stations.filter(e => e.stationType === 1)}
@@ -85,6 +79,10 @@ class CleanWarningSide extends Component {
             showStationList={this.showStationList}
             stationCheckActive={stationCheckActive}
             backToList={this.backToList}
+          />
+          <DustBaseInfo
+            dustEffectInfo={dustEffectInfo}
+            weatherList={weatherList}
           />
           <Button onClick={this.backToList}>返回主页面</Button>
         </div>
