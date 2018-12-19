@@ -31,7 +31,7 @@ class AlarmLevelFilter extends Component {
     const { deviceTypes, deviceTypeCode } = this.props;
     const options = deviceTypes.map((item,i)=>({
       label: item.deviceTypeName,
-      value: item.deviceTypeCode
+      value: `${item.deviceTypeCode}`
     }));
     const devieceCodeArr = deviceTypeCode;
     return (

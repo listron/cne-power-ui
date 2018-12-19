@@ -12,6 +12,7 @@ import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
 import AlarmLevelFilter from './AlarmLevelFilter';
 import AlarmTypeFilter from './AlarmTypeFilter';
+import RangeDateFilter from './RangeDateFilter';
 import styles from './filterCondition.scss';
 
 /** 
@@ -64,7 +65,7 @@ class FilterCondition extends Component {
       showFilter: '',
       createTimeEnd: '', //结束时间
       createTimeStart: '', //  开始时间
-      stationType: '2', // 电站类型
+      stationType: '', // 电站类型
       stationCodes: [], //所选电站
       defectLevel: [], //缺陷级别
       defectSource: [], // 缺陷来源
@@ -73,7 +74,8 @@ class FilterCondition extends Component {
       belongMatrixs: [],//所属方阵
       handleUser: [], // 操作人
       warningLevel: [],//告警级别
-      warningConfigName:[],//告警类型
+      warningConfigName: [],//告警类型
+      rangTime:[],// 时间段
     };
   }
 
@@ -121,6 +123,8 @@ class FilterCondition extends Component {
       case 'alarmLevel': result = '告警级别'; break;
       case 'alarmType': result = '告警类型'; break;
       case 'myJoin': result = '参与的'; break;
+      case 'rangeTime': result = '发生时间'; break;
+      default: result = ""; break;
     }
     return result
   }
@@ -128,7 +132,7 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel,warningConfigName } = this.state;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningConfigName,rangTime } = this.state;
     const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName } = this.props;
 
     const defectTypesArr = defectTypes || [];
@@ -167,6 +171,11 @@ class FilterCondition extends Component {
               onChangeFilter={this.onChangeFilter}
               createTimeStart={createTimeStart}
               createTimeEnd={createTimeEnd}
+            />}
+          {showFilter === 'rangeTime' &&
+            <RangeDateFilter
+              onChangeFilter={this.onChangeFilter}
+              rangTime={rangTime}
             />}
           {showFilter === 'stationType' &&
             <StationTypeFilter

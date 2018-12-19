@@ -31,7 +31,11 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
   try{
     yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
+    const response = yield call(axios.post,url,{
+      ...payload,
+      stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
+      startTime:payload.rangTime?payload.rangTime:payload.startTime,
+    });
     if(response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,

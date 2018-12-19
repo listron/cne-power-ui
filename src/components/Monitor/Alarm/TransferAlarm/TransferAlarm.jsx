@@ -4,6 +4,7 @@ import RealTimeAlarmFilter from '../RealTimeAlarm/RealTimeAlarmFilter';
 import RealTimeAlarmInfo from '../RealTimeAlarm/RealTimeAlarmInfo';
 import DeviceNameSearch from '../AlarmFilter/DeviceNameSearch';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import TransferAlarmTable from './TransferAlarmTable'
 import styles from './transferAlarm.scss';
 import PropTypes from 'prop-types';
 
@@ -47,41 +48,35 @@ class TransferAlarm extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   componentWillUnmount() {
     this.props.resetAlarm();
   }
 
-  onChangeFilter=(value)=>{
-    const {}=this.props;
+  onChangeFilter = (value) => {
+    const { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, } = this.props;
+    const params = { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, }
+    this.props.getRealTimeAlarm({ ...params, ...value })
   }
 
 
   render() {
     const alarmStatus = 3;
-    const { currentPage, pageSize, } = this.state;
-    const {stations,deviceTypes}=this.props;
-    console.log('this.props',this.props)
+    const { stations, deviceTypes, deviceName } = this.props;
     return (
-        <div className={styles.realTimeAlarm}>
-          <RealTimeAlarmInfo {...this.props} alarmStatus={alarmStatus} />
-          <FilterCondition
-            option={['alarmLevel','stationType','stationName','deviceType','alarmType','time']}
-            stations={stations || []}
-            deviceTypes={deviceTypes ||[]}
-          />
-          {/* <RealTimeAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} /> */}
-          <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
-          <RealTimeAlarmTable 
-          {...this.props} 
-          alarmStatus={alarmStatus} 
-          currentPage={currentPage} 
-          pageSize={pageSize} 
-          onPaginationChange={this.onPaginationChange}
+      <div className={styles.realTimeAlarm}>
+        <RealTimeAlarmInfo {...this.props} alarmStatus={alarmStatus} />
+        <FilterCondition
+          option={['alarmLevel', 'stationType', 'stationName', 'deviceType', 'alarmType', 'rangeTime']}
+          stations={stations || []}
+          deviceTypes={deviceTypes || []}
+          onChange={this.onChangeFilter}
         />
-        </div>
+        <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={deviceName} />
+        <TransferAlarmTable {...this.props} />
+      </div>
     );
   }
 }
