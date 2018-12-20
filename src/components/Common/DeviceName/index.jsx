@@ -21,7 +21,7 @@ class DeviceName extends Component {
     onChange: PropTypes.func,
     loadDeviceList: PropTypes.func,
     onChangeArea: PropTypes.func,
-    firstPartitionCode:PropTypes.string,
+    firstPartitionCode: PropTypes.string,
   }
 
   constructor(props) {
@@ -67,32 +67,32 @@ class DeviceName extends Component {
     const { allSeries, deviceTypeCode } = this.props;
     let { filteredSelectedStation } = this.state;
     filteredSelectedStation = filteredSelectedStation.toJS();
-    const allSeriesArray = allSeries.toJS();
-    if(deviceTypeCode === 509 && allSeriesArray.length > 20){ // 组串=>根据allSeries展示
+    const allSeriesArray = allSeries.size ? allSeries.toJS() : allSeries;
+    if (deviceTypeCode === 509 && allSeriesArray.length > 20) { // 组串=>根据allSeries展示
       return allSeriesArray.slice(0, 20).map((item, index) => (
         <Option key={item.deviceCode} value={item.deviceCode}>
           {item.deviceName}
         </Option>)).concat([
-        <Option disabled key="all" className="show-all">
-          点击图标查看所有设备
+          <Option disabled key="all" className="show-all">
+            点击图标查看所有设备
         </Option>,
-      ])
-    }else if(deviceTypeCode === 509 && allSeriesArray.length <= 20){ // 所有组串不足20项
+        ])
+    } else if (deviceTypeCode === 509 && allSeriesArray.length <= 20) { // 所有组串不足20项
       return allSeriesArray.map((item, index) => (
         <Option key={item.deviceCode} value={item.deviceCode}>
           {item.deviceName}
         </Option>
       ))
-    }else if(filteredSelectedStation.length > 20){ // 其他设备且超过20项
+    } else if (filteredSelectedStation.length > 20) { // 其他设备且超过20项
       return filteredSelectedStation.slice(0, 20).map((item, index) => (
         <Option key={item.deviceCode} value={item.deviceCode}>
           {item.deviceName}
         </Option>)).concat([
-        <Option disabled key="all" className="show-all">
-          点击图标查看所有设备
+          <Option disabled key="all" className="show-all">
+            点击图标查看所有设备
         </Option>,
-      ])
-    }else{ // 其他设备，且不足20项
+        ])
+    } else { // 其他设备，且不足20项
       return filteredSelectedStation.map((item, index) => (
         <Option key={item.deviceCode} value={item.deviceCode}>
           {item.deviceName}

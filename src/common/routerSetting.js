@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
-import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
 import PersonnelGps from '../containers/Operation/Ticket/PersonnelGps/PersonnelGps';
 
 import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
@@ -32,6 +31,7 @@ import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/Si
 import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
+import TransferAlarm from '../containers/Monitor/Alarm/TransferAlarm';
 
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 import Building from '../components/Common/Building/Building';
@@ -53,6 +53,7 @@ import CleanoutRecordDetail from '../components/HighAnalysis/CleanoutModel/Clean
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
+import Transfer from '../containers/HighAnalysis/EarlyWarning/Transfer/Transfer';
 
 
 
@@ -129,11 +130,7 @@ const routers = [
   }, { //实时监控-告警-已转工单
     path: '/monitor/alarm/transfer',
     exact: true,
-    component: RealTimeAlarm,
-  }, {
-    path: '/monitor/alarm/transfer/:defectId',
-    exact: true,
-    component: DefectDetail,
+    component: TransferAlarm,
   }, { //实时监控-告警-手动解除
     path: '/monitor/alarm/relieve',
     exact: true,
@@ -270,7 +267,8 @@ const routers = [
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',
     exact: true,
-    component: Building
+    // component: Building,
+    component: Transfer
   }, {  // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     exact: true,

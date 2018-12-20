@@ -1,4 +1,4 @@
-@import '../../../../../theme/theme.scss';
+@import '../../../../../theme/theme';
 .handleForm {
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@
     flex-direction: column;
     padding: 20px 24px;
     flex-shrink: 0;
-    :global { 
+    :global {
       .ant-form-item {
         display: flex;
         .ant-form-item-label {
@@ -49,7 +49,7 @@
         }
       }
       .ant-radio-button-wrapper {
-        padding: 0 8px; 
+        padding: 0 8px;
         color: $darkColor;
       }
       .ant-radio-button-wrapper-checked {
@@ -60,12 +60,12 @@
       input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
         color:$promptColor;
       }
-      input:-moz-placeholder, textarea:-moz-placeholder { 
-        color: $promptColor; 
+      input:-moz-placeholder, textarea:-moz-placeholder {
+        color: $promptColor;
       }
-      input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
-        color: $promptColor; 
-      } 
+      input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+        color: $promptColor;
+      }
     }
     .addImg {
       display: flex;
@@ -97,6 +97,9 @@
       :global {
         button {
           margin-right: 12px;
+        }
+        .ant-form-item-required:before{
+          margin-left: 0px;
         }
       }
     }
