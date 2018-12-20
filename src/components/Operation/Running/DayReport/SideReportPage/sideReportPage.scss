@@ -108,61 +108,98 @@
   }
 }
 
-.stationReportColumn{
+.stationReportColumn{ // 上报选定电站日报列表页
   display: flex;
-  flex-direction: row;
   border-top: 1px solid $promptColor;
   border-bottom: 1px solid $promptColor;
-  justify-content: space-between;
   height: 60px;
-  line-height: 30px;
-  text-align: center;
   background: #f4f4f4;
-  .withRequired{
+  align-items: center;
+  .valueRequired{
     color: #d0021b;
+    padding-left: 4px;
   }
-  .withBorder{
-    border-left: 1px solid $promptColor;
+  .stationName{
+    flex: 0 0 9%;
+    line-height: 60px;
+    text-align: center;
+    color: $darkColor;
     border-right: 1px solid $promptColor;
   }
-  .withBorder:last-child{
-    border-right: 0px;
+  .resource{
+    flex: 0 0 9%;
+    align-self: stretch;
+    text-align: center;
+    padding-top: 10px;
+    border-right: 1px solid $promptColor;
   }
-  .withBorderBottom{
-    border-bottom: 1px solid $promptColor;
+  .eachElecPart{
+    flex: 0 0 14%;
+    border-right: 1px solid $promptColor;
+    .elecTop, .elecBottom{
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .elecBottom{
+      border-top: 1px solid $promptColor;
+      justify-content: space-around;
+    }
+  }
+  .handle{
+    flex: 0 0 10%;
+    text-align: center;
   }
 }
 
-.eachStationReport{
+.eachStationReport{ // 各电站上报数据-各行样式。
   height: 40px;
   border-bottom: 1px solid #dfdfdf;
-  text-align: center;
-  line-height: 40px;
-  .deleteStationReport{
-    text-align: left;
-    color: $themeColor;
+  display: flex;
+  align-items: center;
+  .stationName{
+    flex: 0 0 9%;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: break-all;
+  }
+  .resource{
+    text-align: center;
+    flex: 0 0 9%;
+  }
+  .genParts, .modelParts{
+    flex: 0 0 14%;
     display: flex;
-    .removeStation{
-      width: 30px;
-      margin-top: 8px;
-      height: 24px;
-      line-height: 24px;
-      text-align: center;
+    justify-content: center;
+    padding: 0 8px;
+    input{
+      flex: 1 0 70px;
+      &:first-child{
+        margin-right: 3%;
+      }
+    }
+  }
+  .modelParts{
+    flex: 0 0 16%;
+  }
+  .handle{ // 操作
+    flex: 0 0 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .text{
       cursor: pointer;
+      border-radius: 4px;
       &:hover{
         background-color: #ececec;
       }
     }
-  }
-  .addAbnormal{
-    color: $themeColor;
-    display: flex;
-    .abnormalText{
-      width: 90px;
-      height: 24px;
-      line-height: 24px;
-      margin-top: 8px;
+    .removeStation{
       cursor: pointer;
+      border-radius: 5px;
       &:hover{
         background-color: #ececec;
       }
@@ -173,16 +210,15 @@
       background:#fcffe5;
       border:1px solid #f9b600;
       border-radius:4px;
+      padding: 0 4px;
+      text-align: center;
       width:76px;
       height:24px;
-      text-align: center;
-      margin: 7px auto;
-      line-height: 24px;
       &:hover{
-        border:1px solid #f9b600;
+        border-color: #f9b600;
       }
     }
-    .ant-input:not(.ant-input-disabled):hover {
+    .ant-input:not(.ant-input-disabled):hover{
       border-color: #f9b600;
     }
     .ant-input:focus {

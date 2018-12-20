@@ -37,9 +37,9 @@ class EachStationReport extends Component {
     const requireError = requireTargetArr.includes(reportBaseInfo.configName) && !paramValue; // 必填项未填。
     const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
     const dataFormatError = isNaN(paramValue) || paramPointLength > maxPointLength; // 数据格式错误;
-    if(requireError){ // 必填值未填
+    if (requireError) { // 必填值未填
       this.messageWarning(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
-    }else if(dataFormatError){ // 数据格式错误
+    } else if(dataFormatError) { // 数据格式错误
       this.messageWarning(
         `${stationInfo.stationName}${reportBaseInfo.configText}需填数字,且不超过${maxPointLength}位小数`
       );
@@ -50,15 +50,9 @@ class EachStationReport extends Component {
     if(genCalcType.stander === '1' && paramName === 'yearGenInverter' && stationCapacity > 0){ // 逆变器发电量计算等效小时数
       let { yesterdayyearGenInverter } = stationInfo;
       startOfYear && (yesterdayyearGenInverter = 0); 
-      const dayGen = (yesterdayyearGenInverter || yesterdayyearGenInverter === 0)?
-        (paramValue-yesterdayyearGenInverter):paramValue;
-      param.hour = (dayGen*valueGenUnit/1000/stationCapacity).toFixed(2);
     }else if(genCalcType.stander === '2' && paramName === 'yearGenInternet' && stationCapacity > 0){
       let { yesterdayyearGenInternet } = stationInfo;
       startOfYear && (yesterdayyearGenInternet = 0);
-      const dayGen = (yesterdayyearGenInternet || yesterdayyearGenInternet === 0)?
-        (paramValue-yesterdayyearGenInternet):paramValue;
-      param.hour = (dayGen*valueGenUnit/1000/stationCapacity).toFixed(2);
     }
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === stationInfo.stationCode){
@@ -98,56 +92,40 @@ class EachStationReport extends Component {
 
   render(){
     const { stationInfo, hasAbnormal } = this.props;
-    const stationCapacity = isNaN(stationInfo.stationCapacity)?'--':stationInfo.stationCapacity;
-    const eqpHour = isNaN(stationInfo.hour)?'--':stationInfo.hour;
     return (
-      <Row className={styles.eachStationReport}>
-        <Col span={3}>{stationInfo.stationName}</Col>
-        <Col span={2}>
+      <div className={styles.eachStationReport}>
+        <div className={styles.stationName} title={stationInfo.stationName}>{stationInfo.stationName}</div>
+        <div className={styles.resource}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ resourceValue: e.target.value })} />
-        </Col>
-        <Col span={5}>
-          <Row>
-            <Col span={8}>
-              <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
-            </Col>
-            <Col span={8}>
-              <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
-            </Col>
-            <Col span={8}>
-              <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
-            </Col>
-          </Row>
-        </Col>
-        <Col span={2}>
-          <span>{eqpHour}</span>
-        </Col>
-        <Col span={2}>
+        </div>
+        <div className={styles.genParts}>
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
+        </div>
+        <div className={styles.genParts}>
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
+        </div>
+        <div className={styles.genParts}>
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
+        </div>
+        <div className={styles.genParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
-        </Col>
-        <Col span={5}>
-          <Row>
-            <Col span={12}>
-              <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} />
-            </Col>
-            <Col span={12}>
-              <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} />
-            </Col>
-          </Row>
-        </Col>
-        <Col span={2}>
-          <span>{stationCapacity}</span>
-        </Col>
-        <Col span={2} className={styles.addAbnormal}>
-          <span className={styles.abnormalText}>
-            <span onClick={this.addAbnormal} >添加异常</span>
-            {hasAbnormal && <span><i className="iconfont icon-alert_01" ></i></span>}
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
+        </div>
+        <div className={styles.modelParts}>
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} />
+        </div>
+        <div className={styles.handle}>
+          <span onClick={this.addAbnormal} className={styles.left}>
+            <span className={styles.text}>添加异常</span>
+            {true && <i className="iconfont icon-alert_01" />}
           </span>
-        </Col>
-        <Col span={1} className={styles.deleteStationReport} >
-          <span onClick={this.removeStation} className={styles.removeStation}><Icon type="close-circle" theme="outlined" /></span>
-        </Col>
-      </Row>
+          <Icon onClick={this.removeStation} className={styles.removeStation} type="close-circle" theme="outlined" />
+        </div>
+      </div>
     )
   }
 }

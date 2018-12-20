@@ -40,6 +40,12 @@ class SideReportPage extends Component {
   componentDidMount(){ // 默认日期禁选电站列表。
     const { stationReportBaseData, showReportInputList } = this.props;
     showReportInputList && this.setOriginState(stationReportBaseData);
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
   }
 
   componentWillReceiveProps(nextProps){
@@ -184,7 +190,7 @@ class SideReportPage extends Component {
       return eachInfoError;
     })
     if(totalInfoError){ // 数据错误存在，提示
-      this.messageWarning(errorText);
+      message.warning(errorText,2);
     }else{ // 数据无误，调整数据结构并提交
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
@@ -228,16 +234,6 @@ class SideReportPage extends Component {
     return start && start > moment();
   }
 
-  messageWarning = (dataErrorText) => { // 信息错误展示
-    message.destroy();
-    message.config({
-      top: 400,
-      duration: 2,
-      maxCount: 1,
-    });
-    message.warning(dataErrorText,2);
-  }
-
   render(){
     const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
@@ -266,7 +262,6 @@ class SideReportPage extends Component {
             <StationSelect 
               value={reportStation}
               data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
-              multiple={true}
               onChange={this.stationSelected}
               oneStyleOnly={true}
             />

@@ -7,19 +7,19 @@ export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站�
       configName: 'resourceValue',
       pointLength: 2,
     },{
-      configText: '逆变器累计发电量',
+      configText: '逆变器年发电量',
       configName: 'yearGenInverter',
       pointLength: powerUnit==='kWh'?2:4
     },{
-      configText: '集电线路累计发电量',
+      configText: '集电线路年发电量',
       configName: 'yearGenIntegrated',
       pointLength: powerUnit==='kWh'?2:4
     },{
-      configText: '上网累计发电量',
+      configText: '年上网发电量',
       configName: 'yearGenInternet',
       pointLength: powerUnit==='kWh'?2:4
     },{
-      configText: '购网电量',
+      configText: '年购网电量',
       configName: 'buyPower',
       pointLength: powerUnit==='kWh'?2:4
     },{
