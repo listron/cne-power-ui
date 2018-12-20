@@ -5,6 +5,7 @@ import echarts from 'echarts';
 import { Tabs, DatePicker  } from 'antd';
 import styles from './cleanStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -22,20 +23,43 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
       (e.actualPower || e.influencePower) && (hasData = true);
     })
     const option = {
+      graphic: hasData ? hiddenNoData : showNoData,
       color: ['#199475', '#f9b600', '#3e97d1'],
+      legend: {
+        textStyle: {
+          color: '#666',
+          fontSize: 14,
+        },
+        icon: 'rect',
+        itemWidth: 5,
+        itemHeight: 5,
+      },
       tooltip:{
         trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-        formatter: params => `<div>
-          <div>${params[0].name}</div>
-          ${params.map(e => `<div>
-            <span>${e.seriesType}</span>
-            <span>${e.seriesName}</span>
-            <span>${e.value}</span>
-          </div>`)}
-        </div>`
+        extraCssText: 'background-color: rgba(255, 255, 255); box-shadow:0 1px 4px 0 rgba(0,0,0,0.20); border-radius:2px;',
+        padding: 0,
+        formatter: params => {
+          const chartInfo = params.map(e => {
+            if (e.seriesName === '实际发电量') {
+              e.itemStyle = styles.darkRect;
+            } else if (e.seriesName === '灰尘影响电量') {
+              e.itemStyle = styles.lightRect;
+            } else {
+              e.itemStyle = styles.round;
+            }
+            return e;
+          });
+          return (
+            `<div class=${styles.chartTool}>
+              <div class=${styles.title}>${chartInfo[0].name}</div>
+              ${chartInfo.map(e => `<div class=${styles.content}>
+                <span class=${e.itemStyle}></span>
+                <span class=${styles.text}>${e.seriesName}</span>
+                <span class=${styles.value}>${dataFormat(e.value)}${e.seriesType === 'line' ? '%' : ''}</span>
+              </div>`).join('')}
+            </div>`
+          )
+        }
       },
       xAxis: {
         type: 'category',
@@ -130,8 +154,11 @@ SingleChart.propTypes = {
 class DustEffectCharts extends Component {
 
   static propTypes = {
+    dustEffectInfo: PropTypes.object,
     totalEffects: PropTypes.array,
     matrixEffects: PropTypes.array,
+    getTotalDustEffect: PropTypes.func,
+    getMatrixDustEffect: PropTypes.func,
   }
 
   constructor(props) {
@@ -146,8 +173,15 @@ class DustEffectCharts extends Component {
     console.log(a,b,c,d,e,f,g)
   }
 
-  timeSelect = (a,b,c,d,e,f) => {
-    console.log(a,b,c,d,e,f);
+  timeSelect = (timeMoment,timeString) => {
+    const { dustEffectInfo, getTotalDustEffect, getMatrixDustEffect } = this.props;
+    const effectParam = {
+      stationCode: dustEffectInfo.stationCode,
+      startDay: timeString[0],
+      endDay: timeString[1],
+    }
+    getTotalDustEffect(effectParam);
+    getMatrixDustEffect(effectParam);
   }
 
   render() {
