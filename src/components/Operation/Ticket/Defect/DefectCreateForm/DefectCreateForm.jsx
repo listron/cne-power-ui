@@ -231,7 +231,6 @@ class TmpForm extends Component {
     })
     const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
 
-    console.log('this.props',this.props)
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>

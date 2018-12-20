@@ -29,7 +29,6 @@ class DefectReviewForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         values.dealResult = this.state.dealResult;
-        console.log(values);
         this.props.onSubmit(values);
       }
     });
