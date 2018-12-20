@@ -107,8 +107,13 @@
 }
 .dirtEffBox{
  height: 410px;
+ display:flex;
+ flex:1;
 }
 .dirtBox{
+  display: flex;
+  flex:1;
+  width: 100%;
   position: relative;
   .buttonStyle{
   position: absolute;
@@ -116,8 +121,14 @@
   right:20px;
     // margin-top: 50px;
     }
-.boxSize{
-  height:360px;
-  background: pink;
-}
+ .boxSize{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+ }
+ .effectChart{
+  height: 400px;
+  flex: 1;
+ }
 }

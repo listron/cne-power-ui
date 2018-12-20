@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import echarts from 'echarts';
 import { Tabs, DatePicker  } from 'antd';
-import styles from './cleanStyle.scss';
-import { dataFormat } from '../../../../utils/utilFunc';
+import styles from '../../CleanWarning/cleanStyle.scss';
+
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -127,11 +127,11 @@ SingleChart.propTypes = {
   id: PropTypes.string,
 }
 
-class DustEffectCharts extends Component {
+class DustCharts extends Component {
 
   static propTypes = {
-    totalEffects: PropTypes.array,
-    matrixEffects: PropTypes.array,
+    stationDustData: PropTypes.array,
+    matrixDustData: PropTypes.array,
   }
 
   constructor(props) {
@@ -149,10 +149,10 @@ class DustEffectCharts extends Component {
   timeSelect = (a,b,c,d,e,f) => {
     console.log(a,b,c,d,e,f);
   }
-
+  
   render() {
     const { startDay, endDay } = this.state;
-    const { totalEffects, matrixEffects } = this.props;
+    const { stationDustData, matrixDustData } = this.props;
     return (
       <div className={styles.effectCharts}>
         <RangePicker
@@ -164,12 +164,12 @@ class DustEffectCharts extends Component {
         <Tabs defaultActiveKey="1">
           <TabPane tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>} key="1" forceRender={true}>
             <div className={styles.eachChart}>
-              <SingleChart data={totalEffects} keyWord="total" id="cleanWarningTotalEffect" />
+              <SingleChart data={stationDustData} keyWord="total" id="cleanWarningTotalEffect" />
             </div>
           </TabPane>
           <TabPane className={styles.eachChart} tab={<span>方阵灰尘影响(基于系统效率/清洗板)</span>} key="2" forceRender={true}>
             <div className={styles.eachChart}>
-              <SingleChart data={matrixEffects} keyWord="matrix" id="cleanWarningMatrixEffect" />
+              <SingleChart data={matrixDustData} keyWord="matrix" id="cleanWarningMatrixEffect" />
             </div>
           </TabPane>
         </Tabs>
@@ -179,4 +179,4 @@ class DustEffectCharts extends Component {
 
 }
 
-export default DustEffectCharts;
+export default DustCharts;

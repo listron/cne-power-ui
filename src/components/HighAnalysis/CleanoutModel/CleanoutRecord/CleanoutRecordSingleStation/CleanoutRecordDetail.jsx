@@ -11,6 +11,9 @@ import RecordDetailTable from './RecordDetailTable.jsx';
 import ChangeStation from '../../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
+// import { SingleChart } from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
+import DustCharts from './DustCharts';
+
 import moment from 'moment';
 const TabPane = Tabs.TabPane;
 
@@ -118,13 +121,13 @@ class CleanoutRecordDetail extends Component {
     });
   }
   tabsChange = () => {//灰尘
-    
+
   }
 
   render() {
-    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData ,stationDustData,matrixDustData} = this.props;
+    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData, stationDustData, matrixDustData } = this.props;
     const { stationCode } = this.props.match.params;
-    console.log(stationDustData,matrixDustData);
+    console.log(stationDustData, matrixDustData);
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }
@@ -170,13 +173,22 @@ class CleanoutRecordDetail extends Component {
                 wrapClassName={'dirtEffBox'}
                 style={{ height: 410 }}
               >
-                <div className={styles.dirtBox}>
+              <DustCharts {...this.props} />
+                {/*<div className={styles.dirtBox}>
                   <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
                   <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
-                    <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> <div className={styles.boxSize}>a picture1111</div></TabPane>
-                    <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> <div className={styles.boxSize}>a222222</div></TabPane>
+                    <TabPane tab="全局灰尘影响(基于系统故障)" key="1">
+                      <div className={styles.boxSize}>
+                        <SingleChart data={stationDustData} keyWord="total" id="cleanWarningTotalEffect" />
+                      </div>
+                    </TabPane>
+                    <TabPane tab="方阵灰尘影响(基于系统故障)" key="2">
+                      <div className={styles.boxSize}>
+                        <SingleChart data={matrixDustData} keyWord="matrix" id="cleanWarningMatrixEffect" />
+                      </div>
+                    </TabPane>
                   </Tabs>
-                </div>
+                </div> */}
 
               </Modal> : ''}
             </div>
