@@ -77,7 +77,6 @@ class RecordDetailTable extends Component {
       this.props.getEditCleanPlan({...planValue,planId:editCleanoutPlan.planId})
     }else if(editCleanoutPlan.cleanType===2){
       let rainRecordValue=getFieldsValue(['rainPlanDate'])
-      console.log(rainRecordValue);
       rainRecordValue.estimateStartTime = rainRecordValue&&moment(rainRecordValue.rainPlanDate[0]).format('YYYY-MM-DD')
       rainRecordValue.estimateEndTime = rainRecordValue&&moment(rainRecordValue.rainPlanDate[1]).format('YYYY-MM-DD')
       this.props.getEditRainPlan({...rainRecordValue,planId:editCleanoutPlan.planId})
@@ -194,7 +193,6 @@ class RecordDetailTable extends Component {
     const { loading, detailListData } = this.props;
     const {  showWarningTip, warningTipText,  showAddRecordModal,cleanoutRecord ,editCleanoutPlan} = this.state;
  
-    // console.log(editCleanoutPlan,'editCleanoutPlan');
     const column = [
       {
         title: '计划清洗时间',

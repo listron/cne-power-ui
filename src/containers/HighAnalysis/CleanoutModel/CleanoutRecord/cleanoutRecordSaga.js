@@ -20,8 +20,8 @@ function* resetStore() {
 function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影响图表数据
   const { payload } = action;
   
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
-  const url = '/mock/cleanWarning/totalEffect';
+   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getStationDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  //const url = '/mock/cleanWarning/totalEffect';
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -29,7 +29,7 @@ function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影�
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
-          stationDustData: response.data.data || [],
+          totalEffects: response.data.data || [],
         },
       });
     }
@@ -39,8 +39,8 @@ function* getStationDust(action) {//1.1.3.获取清洗预警—全站灰尘影�
 }
 function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
   const { payload } = action;
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
-  const url = '/mock/cleanWarning/totalEffect';
+   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getMatrixDust}/${payload.stationCode}/${payload.startTime}/${payload.endTime}`
+  //const url = '/mock/cleanWarning/totalEffect';
   try {
     yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.get, url, payload);
@@ -48,7 +48,7 @@ function* getMatrixDust(action) {//1.1.4.方阵灰尘影响图表数据
       yield put({
         type: cleanoutRecordAction.GET_CLEANOUT_RECORD_FETCH_SUCCESS,
         payload: {
-          matrixDustData: response.data.data || [],
+          matrixEffects: response.data.data || [],
         },
       });
     }

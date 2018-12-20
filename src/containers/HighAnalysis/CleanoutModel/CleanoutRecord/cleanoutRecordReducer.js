@@ -8,8 +8,8 @@ var initState = Immutable.fromJS({
   singleStationCode:null,//单电站
   showPage: 'multiple', //默认展示列表页list ,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
-  stationDustData: [], // 全站灰尘影响图表数据
-  matrixDustData: [],//方阵灰尘影响图表数据
+  totalEffects: [], // 全站灰尘影响图表数据
+  matrixEffects: [],//方阵灰尘影响图表数据
   stationName: '', // 电站名称(模糊匹配)
   pageNum: 1, // 当前页
   pageSize: 10, // 每页条数

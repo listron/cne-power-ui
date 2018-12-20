@@ -11,8 +11,8 @@ import RecordDetailTable from './RecordDetailTable.jsx';
 import ChangeStation from '../../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
-// import { SingleChart } from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
-import DustCharts from './DustCharts';
+import DustCharts from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
+// import DustCharts from './DustCharts';
 
 import moment from 'moment';
 const TabPane = Tabs.TabPane;
@@ -107,7 +107,6 @@ class CleanoutRecordDetail extends Component {
     const stationCode = singleStationCode
     const endTime = moment().format('YYYY-MM-DD');
     const startTime = moment().subtract(30, 'days').format('YYYY-MM-DD');
-    console.log(stationCode, endTime, startTime);
     this.setState({
       showDirtModal: true
     });
@@ -127,7 +126,6 @@ class CleanoutRecordDetail extends Component {
   render() {
     const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData, stationDustData, matrixDustData } = this.props;
     const { stationCode } = this.props.match.params;
-    console.log(stationDustData, matrixDustData);
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }

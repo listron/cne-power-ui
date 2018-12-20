@@ -32,30 +32,31 @@ class AddCleanoutRecord extends Component {
   }
   confirmAddRecord = () => {
     // this.setState({ showAddRecordModal: false })
-    this.props.cancelAddRecord()
+   
     const { getFieldsValue } = this.props.form;
     let recordValue = getFieldsValue(['cleanDate', 'matrix', 'remark']);
-
     recordValue.startTime = moment(recordValue.cleanDate[0]).format('YYYY-MM-DD')
     recordValue.endTime = moment(recordValue.cleanDate[1]).format('YYYY-MM-DD')
     const matrix = recordValue.matrix.toString();
-    this.props.getAddOrEditCleanRecord({//添加某清洗计划的记录
-      ...recordValue,
-      planId: this.props.planId,
-      recordId: this.props.recordId,
-      stationCode: this.props.singleStationCode,
-      matrix
+    this.props.form.validateFieldsAndScroll((error, values) => {
+      if (!error) {
+        this.props.getAddOrEditCleanRecord({//添加某清洗计划的清洗记录
+          ...recordValue,
+          planId: this.props.planId,
+          recordId: this.props.recordId,
+          stationCode: this.props.singleStationCode,
+          matrix
+        })
+        this.props.changeCleanoutRecordStore({
+          cleanRecorddetail: {}
+        })
+        this.props.cancelAddRecord()
+      }
+     
     })
-    this.props.changeCleanoutRecordStore({
-      cleanRecorddetail: {}
-    })
-
   }
   render() {
     const { getMatrixData, cleanRecorddetail } = this.props;
-    console.log(this.props);
-    console.log('cleanRecorddetail', cleanRecorddetail);
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -117,7 +118,7 @@ class AddCleanoutRecord extends Component {
               label="清洗方阵"
             >
               {getFieldDecorator('matrix', {
-                initialValue: cleanRecorddetail.matrix ? ['2', '3'] : '',
+                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix : '',
                 rules: [{ required: true, message: '请选择方阵' }],
               })(
                 <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
@@ -129,8 +130,8 @@ class AddCleanoutRecord extends Component {
               label="清洗备注"
             >
               {getFieldDecorator('remark', {
-                initialValue: cleanRecorddetail.remark ? '12345asd' : '',
-                rules: [{ required: true, message: '只能输入数字', whitespace: true },],
+                initialValue: cleanRecorddetail.remark ? cleanRecorddetail.remark : '',
+                rules: [{ required: true, message: '请描述，不超过80个汉字', whitespace: true },],
               })(
                 <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
               )}
