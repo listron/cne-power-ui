@@ -305,8 +305,8 @@ export default {
       warnDetail:'/v3/forewarning',//预警信息
       getSequencechart:'/v3/pv/sequencechart',//电流时序图
       getMatrixList:'/v3/station/matrix', //获取电站下方阵
-      getStationDust:'/v3/pvclean/station/dustinfluence/',
-      getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      getStationDust:'/v3/pvclean/station/dustinfluence',
+      getMatrixDust: '/v3/pvclean/matrix/dustinfluence',
       unignore:'/v3/forewarning/unignore',//取消忽略列表
       //清洗模型的首页
       getMainList: '/v3/pvclean/plan/list',
@@ -322,11 +322,11 @@ export default {
       getEditRainPlan: '/v3/pvclean/plan/rainfall',
       getRainPlanDetail: '/v3/pvclean/plan/rainfall',
       //清洗记录列表，增，编辑，获取，删记录
-      getPlanRecordList: '/v3 pvclean/record/list',
-      getAddCleanRecord: '/v3/pvclean/record/',
-      editCleanRecord:'/v3/pvclean/record/',
-      getCleanRecordDetail: '/v3/pvclean/record/',
-      deleteCleanRecord: '/v3/pvclean/record/',
+      getPlanRecordList: '/v3/pvclean/record/list',
+      getAddCleanRecord: '/v3/pvclean/record',
+      editCleanRecord:'/v3/pvclean/record',
+      getCleanRecordDetail: '/v3/pvclean/record',
+      deleteCleanRecord: '/v3/pvclean/record',
       //通用报表
       dailyreport:'v3/performance/dailyreport', // 日报
       faultReport: 'v3/performance/generalreport/fault', // 故障日报

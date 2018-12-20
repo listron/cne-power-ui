@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import echarts from 'echarts';
 import { Tabs, DatePicker  } from 'antd';
-import styles from './cleanStyle.scss';
-import { dataFormat } from '../../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import styles from '../../CleanWarning/cleanStyle.scss';
+import { dataFormat } from '../../../../../utils/utilFunc';
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
+
  const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
   if (chartBox) {
@@ -189,6 +190,7 @@ class DustEffectCharts extends Component {
     return (
       <div className={styles.effectCharts}>
         <RangePicker
+          disabled 
           defaultValue={[ startDay, endDay ]}
           onChange={this.timeSelect}
           disabledDate={()=>false}

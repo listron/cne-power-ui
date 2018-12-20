@@ -38,6 +38,7 @@ class CleaningMain extends Component {
       isShow : false,
     })
     const {lossPowerPercent,enterpriseId} = this.props;
+    console.log(lossPowerPercent);
     this.props.addCleaningData({lossPowerPercent,enterpriseId});
   }
 
