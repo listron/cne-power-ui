@@ -100,22 +100,31 @@ class CleanoutRecordDetail extends Component {
     });
   }
   showDirtModal = () => {//展示灰尘影响图
+    const { singleStationCode, getMatrixDust, getStationDust } = this.props;
+    const stationCode = singleStationCode
+    const endTime = moment().format('YYYY-MM-DD');
+    const startTime = moment().subtract(30, 'days').format('YYYY-MM-DD');
+    console.log(stationCode, endTime, startTime);
     this.setState({
       showDirtModal: true
     });
+    getMatrixDust({ stationCode, endTime, startTime })
+    getStationDust({ stationCode, endTime, startTime })
+
   }
   closeDirtModal = () => {//关闭
     this.setState({
       showDirtModal: false
     });
   }
-  tabsChange = () => {//灰尘modal
-
+  tabsChange = () => {//灰尘
+    
   }
 
   render() {
-    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData } = this.props;
+    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData ,stationDustData,matrixDustData} = this.props;
     const { stationCode } = this.props.match.params;
+    console.log(stationDustData,matrixDustData);
     if (stationCode !== singleStationCode) {
       changeCleanoutRecordStore({ singleStationCode: stationCode });
     }
@@ -154,18 +163,21 @@ class CleanoutRecordDetail extends Component {
                 visible={this.state.showDirtModal}
                 footer={null}
                 centered
-                width={1000}
+                width={1220}
                 maskClosable={true}
                 closable={false}
                 onCancel={this.closeDirtModal}
                 wrapClassName={'dirtEffBox'}
-                style={{top: 200 }}
+                style={{ height: 410 }}
               >
-                <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
-                <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
-                  <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> a picture1111</TabPane>
-                  <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> a picture2222</TabPane>
-                </Tabs>
+                <div className={styles.dirtBox}>
+                  <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
+                  <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
+                    <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> <div className={styles.boxSize}>a picture1111</div></TabPane>
+                    <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> <div className={styles.boxSize}>a222222</div></TabPane>
+                  </Tabs>
+                </div>
+
               </Modal> : ''}
             </div>
             <div className={styles.statisticData}>

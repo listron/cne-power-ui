@@ -106,5 +106,18 @@
  
 }
 .dirtEffBox{
-  display: flex;
+ height: 410px;
+}
+.dirtBox{
+  position: relative;
+  .buttonStyle{
+  position: absolute;
+  top:50px;
+  right:20px;
+    // margin-top: 50px;
+    }
+.boxSize{
+  height:360px;
+  background: pink;
+}
 }
