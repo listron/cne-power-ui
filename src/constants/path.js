@@ -177,6 +177,12 @@ export default {
       addPlanList:'/v3/performance/stationplan', //  添加生产计划
       eddPlanList:'/v3/performance/stationplan', //  编辑生产计划
       getYearList:'/v3/station/yearlist',// 生产计划的年份
+
+      //预警配置
+      getSeriesData:'/v3/forewarning/conf',  //获取低效组串预警配置
+      addSeriesData:'/v3/forewarning/conf',  //设置低效组串预警配置
+      getCleaningData:'/v3/pvclean/conf', //获取清洗模型预警配置
+      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置     
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

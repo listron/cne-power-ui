@@ -22,6 +22,8 @@ import AlarmManage from '../containers/System/Station/AlarmManage/AlarmManage';
 import PowerCurve from '../containers/System/Station/PowerCurve/PowerCurve';
 // 系统管理-生产计划
 import Plan from "../containers/System/Production/Plan/Plan";
+//系统管理-计划配置
+import Warning from "../containers/System/Production/Warning/Warning";
 // 实时监控-电站监控
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
@@ -187,7 +189,11 @@ const routers = [
     path: '/system/config/plan',
     exact: true,
     component: Plan
-  }, { // 统计分析-电站分析-全部电站
+  }, { // 系统管理-预警配置
+    path: '/system/config/warning',
+    exact: true,
+    component:Warning
+  },{ // 统计分析-电站分析-全部电站
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis

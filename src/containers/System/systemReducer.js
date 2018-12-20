@@ -12,7 +12,8 @@ import pointManage from './Station/PointManage/pointManageReducer';
 import powerCurve from './Station/PowerCurve/powerCurveReducer';
 
 import plan from './Production/Plan/planReducer';
+import warning from './Production/Warning/warningReducer';
 
-const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage, plan,powerCurve });
+const systemReducer = combineReducers({ department, enterprise, role, user, alarmManage, stationManage, deviceManage, pointManage, plan,powerCurve,warning });
 
 export default systemReducer;
