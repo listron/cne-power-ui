@@ -44,6 +44,8 @@ import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
 
 
 import { watchPlan } from './System/Production/Plan/planSaga';
+import { watchWarning } from './System/Production/Warning/warningSaga';
+
 // root saga
 export default function* rootSaga() {
   yield all([
@@ -70,6 +72,7 @@ export default function* rootSaga() {
     watchPowerCurve(),
     // system-production
     watchPlan(),
+    watchWarning(), //预警配置
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
