@@ -34,16 +34,19 @@ class DefectCreate extends Component {
     }
   }
   componentDidMount() {
-    const { showContainer } = this.props;
-    if (showContainer === 'edit') {
-      const { defectDetail } = this.props;
+    this.props.getCommonList({ languageType: '1' });
+  }
+  
+
+  componentWillReceiveProps(nextProps){
+    const { showContainer,defectDetail } = nextProps;
+    if (showContainer === 'edit' && defectDetail.defectId!==this.props.defectDetail.defectId) {
       const stationCode = defectDetail.stationCode;
       const deviceTypeCode = defectDetail.deviceTypeCode;
       this.props.getStationDeviceTypes({ stationCodes: stationCode });
       this.props.getLostGenType({ stationCode, objectType: 1 });
       this.props.getDevices({ stationCode, deviceTypeCode })
     }
-    this.props.getCommonList({ languageType: '1' });
   }
 
   onCancelEdit = () => { //取消编辑
@@ -126,7 +129,7 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceTypes'
     }
   }),
-  getDevices: params => dispatch({
+  getDevices: params => dispatch({ // 获取设备类型
     type: commonAction.getDevices,
     payload: {
       params,

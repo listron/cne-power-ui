@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
-import DefectDetail from '../containers/Operation/Ticket/Defect/DefectDetail/DefectDetail';
 import PersonnelGps from '../containers/Operation/Ticket/PersonnelGps/PersonnelGps';
 
 import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
@@ -129,11 +128,6 @@ const routers = [
     path: '/monitor/alarm/transfer',
     exact: true,
     component: TransferAlarm,
-  }, {
-    path: '/monitor/alarm/transfer/:defectId',
-    exact: true,
-    // component: DefectDetail,
-    component:Building,
   }, { //实时监控-告警-手动解除
     path: '/monitor/alarm/relieve',
     exact: true,

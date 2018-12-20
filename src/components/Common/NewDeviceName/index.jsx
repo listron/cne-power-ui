@@ -137,7 +137,7 @@ class DeviceName extends Component {
         >
           <Input suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
-        {/* {showDeviceNameModal && <DeviceNameModal
+        {showDeviceNameModal && <DeviceNameModal
           show={this.state.showDeviceNameModal}
           stationName={stationName}
           deviceType={deviceType}
@@ -151,7 +151,7 @@ class DeviceName extends Component {
           onChangeArea={onChangeArea}
           deviceTypeCode={deviceTypeCode}
           firstPartitionCode={firstPartitionCode}
-        />} */}
+        />}
       </div>
     );
   }

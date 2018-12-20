@@ -94,7 +94,7 @@ class Ticket extends Component {
   }
 
   render() {
-    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum } = this.props;
+    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum,defectIdList } = this.props;
     const { tab } = this.state;
     return (
       <div className={styles.ticketBox}>
@@ -134,6 +134,8 @@ const mapStateToProps = (state) => {
     defectId: state.operation.defect.get('defectId'),
     pageNum: state.operation.defect.get('pageNum'),
     pageSize: state.operation.defect.get('pageSize'),
+    defectDetail:state.operation.defect.get('defectDetail').toJS(),
+    defectIdList:state.operation.defect.get('defectIdList').toJS()
   }
 }
 

@@ -39,7 +39,6 @@ class DefectDetailForm extends Component {
   }
 
   componentWillUnmount() {
-    console.log('卸载页面')
     this.props.resetStore()
   }
 
@@ -135,7 +134,6 @@ class DefectDetailForm extends Component {
 
   onNext = () => { // 向后
     const { defectIdList, defectId } = this.props;
-    console.log('defectId', this.props)
     let index = defectIdList.findIndex(e => e === defectId);
     if (index > -1) {
       if (index === defectIdList.length - 1) {
@@ -191,7 +189,6 @@ class DefectDetailForm extends Component {
   render() {
     const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom } = this.props;
     const { showWarningTip, warningTipText } = this.state;
-    console.log('test', this.props)
     const processData = defectDetail.processData;
     const status = defectDetail.defectStatus;
     const handleData = defectDetail.handleData

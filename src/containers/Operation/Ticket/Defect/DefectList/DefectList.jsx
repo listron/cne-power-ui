@@ -71,26 +71,40 @@ class DefectList extends Component {
       handleUser
     }
     this.props.getDefectList({ ...filter });
+    this.props.getDefectIdList({ ...filter }); // 获取道缺陷ID列表
     this.props.getLostGenType({ //获取所有损失缺陷类型
       objectType: 1
     })
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     // const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum,showTab } = this.props;
     // showTab!==this.props.showTab && this.props.getDefectList({ ...filter });
   }
 
 
-  componentWillUnmount(){
-    console.log('我测试一下，卸不卸载')
-    
+  componentWillUnmount() {
+    this.props.changeDefectStore({
+      stationType: '',
+      stationCodes: [],
+      defectSource: [],
+      defectLevel: [],
+      status: '',
+      pageNum: 1,
+      pageSize: 10,
+      createTimeStart: '',
+      createTimeEnd: '',
+      deviceTypeCode: [],
+      defectTypeCode: [],
+      sortField: 'create_time',
+      sortMethod: 'desc ',
+      handleUser: '',      //处理人
+    });//清除缺陷状态
   }
 
 
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
-    // console.log('看一下', changeValue)　
     let filter = {
       stationType,
       stationCodes,
@@ -109,6 +123,7 @@ class DefectList extends Component {
       handleUser
     }
     this.props.getDefectList({ ...filter, ...changeValue });
+    this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
   }
 
   render() {
