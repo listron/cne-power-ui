@@ -98,6 +98,9 @@
         button {
           margin-right: 12px;
         }
+        .ant-form-item-required:before{
+          margin-left: 0px;
+        }
       }
     }
     .actionBar {

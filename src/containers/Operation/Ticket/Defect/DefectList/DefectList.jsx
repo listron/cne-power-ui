@@ -82,6 +82,12 @@ class DefectList extends Component {
   }
 
 
+  componentWillUnmount(){
+    console.log('我测试一下，卸不卸载')
+    
+  }
+
+
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
     // console.log('看一下', changeValue)　
@@ -126,32 +132,6 @@ class DefectList extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // defectList: state.operation.defect.get('defectList').toJS(),
-  // defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
-  // loading: state.operation.defect.get('loading'),
-  // error: state.operation.defect.get('error'),
-  // total: state.operation.defect.get('total'),
-  // selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
-
-  // stationType: state.operation.defect.get('stationType'),
-  // stationCodes: state.operation.defect.get('stationCodes'),
-  // defectSource: state.operation.defect.get('defectSource'),
-  // defectLevel: state.operation.defect.get('defectLevel'),
-  // timeInterval: state.operation.defect.get('timeInterval'),
-  // status: state.operation.defect.get('status'),
-  // pageNum: state.operation.defect.get('pageNum'),
-  // pageSize: state.operation.defect.get('pageSize'),
-  // sort: state.operation.defect.get('sort'),
-  // createTimeStart: state.operation.defect.get('createTimeStart'),
-  // createTimeEnd: state.operation.defect.get('createTimeEnd'),
-  // deviceTypeCode: state.operation.defect.get('deviceTypeCode'),
-  // defectTypeCode: state.operation.defect.get('defectTypeCode'),
-  // defectTypes: state.operation.defect.get('defectTypes'),
-  // handleUser: state.operation.defect.get('handleUser'),
-  // username: Cookie.get('username'),
-  // stations: state.common.get('stations'),
-  // deviceTypes: state.common.get('deviceTypes'),
-
   ...state.operation.defect.toJS(),
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),

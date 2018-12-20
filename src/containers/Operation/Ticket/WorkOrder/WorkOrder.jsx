@@ -13,6 +13,7 @@ import WorkOrderContainer from '../../../../components/Operation/Ticket/WorkOrde
  *  5 pageNum  页数  现在为止，只有缺陷列表页有 选填
     6 pageSize  选填
     7 showPage  必填  判断是否显示  其他页面转工单需要的判断是否是正确的
+    8 listParms 选填 如果是上下箭头 则是必填
  */
 class WorkOrder extends Component {
   static propTypes = {
@@ -48,7 +49,7 @@ class WorkOrder extends Component {
     const { callBack, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
     defectId && defectId !== this.props.defectId && getDefectDetail({ defectId })
     callBack && onChange({ pageName })
-    stationType && this.props.stationType !== stationType && getDefectIdList({ stationType, defectSource, pageNum, pageSize })
+    stationType && this.props.stationType !== stationType && getDefectIdList({ stationType, defectSource })
   }
 
 

@@ -201,11 +201,13 @@ class DefectDetailForm extends Component {
         <div className={styles.defectDetail}>
           <div className={styles.header}>
             <div className={styles.text}>{this.renderTitle(status)}</div>
-            {!otherFrom && <div className={styles.action}>
-              <i className="iconfont icon-last" onClick={this.onPrev} />
-              <i className="iconfont icon-next" onClick={this.onNext} />
-            </div>}
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            <div className={styles.arrowBox}>
+              {!otherFrom && <div className={styles.action}>
+                <i className="iconfont icon-last" onClick={this.onPrev} />
+                <i className="iconfont icon-next" onClick={this.onNext} />
+              </div>}
+              <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
+            </div>
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>

@@ -9,15 +9,15 @@ import DeviceNameModal from './DeviceNameModal';
 class DeviceName extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
-    allSeries: PropTypes.object,
+    // allSeries: PropTypes.array, // 所有的设备类型
     placeholder: PropTypes.string,
     stationName: PropTypes.string,//电站名称
     deviceType: PropTypes.string,//设备类型
     deviceTypeCode: PropTypes.number, // 设备类型编码
     deviceAreaCode: PropTypes.string,//选中的设备分区编码
     value: PropTypes.string,//选中的设备编码
-    deviceAreaItems: PropTypes.object,//电站分区选项
-    deviceItems: PropTypes.object,//设备列表
+    deviceAreaItems: PropTypes.array,//电站分区选项
+    // deviceItems: PropTypes.array,//设备列表
     onChange: PropTypes.func,
     loadDeviceList: PropTypes.func,
     onChangeArea: PropTypes.func,
@@ -29,7 +29,7 @@ class DeviceName extends Component {
     this.state = {
       showDeviceNameModal: false,
       checkedStationName: '', // 选中的设备
-      filteredSelectedStation:[],
+      filteredSelectedStation: [],
     };
   }
 
@@ -65,7 +65,7 @@ class DeviceName extends Component {
     const { allSeries, deviceTypeCode } = this.props;
     let { filteredSelectedStation } = this.state;
     filteredSelectedStation = filteredSelectedStation;
-    const allSeriesArray =allSeries;
+    const allSeriesArray = allSeries;
     if (deviceTypeCode === 509 && allSeriesArray.length > 20) { // 组串=>根据allSeries展示
       return allSeriesArray.slice(0, 20).map((item, index) => (
         <Option key={item.deviceCode} value={item.deviceCode}>
@@ -122,8 +122,8 @@ class DeviceName extends Component {
 
   render() {
     let options = this.getDeviceItems();
-    const { checkedStationName,showDeviceNameModal } = this.state;
-    const {stationName,deviceType,value,deviceAreaItems, deviceItems,onChange, loadDeviceList,onChangeArea,deviceTypeCode,firstPartitionCode,deviceAreaCode,disabled}=this.props;
+    const { checkedStationName, showDeviceNameModal } = this.state;
+    const { stationName, deviceType, value, deviceAreaItems, deviceItems, onChange, loadDeviceList, onChangeArea, deviceTypeCode, firstPartitionCode, deviceAreaCode, disabled } = this.props;
     return (
       <div className={styles.deviceName}>
         <AutoComplete
@@ -137,7 +137,7 @@ class DeviceName extends Component {
         >
           <Input suffix={<i className="iconfont icon-filter" onClick={this.onShowDeviceNameModal} />} />
         </AutoComplete>
-        {showDeviceNameModal && <DeviceNameModal
+        {/* {showDeviceNameModal && <DeviceNameModal
           show={this.state.showDeviceNameModal}
           stationName={stationName}
           deviceType={deviceType}
@@ -151,7 +151,7 @@ class DeviceName extends Component {
           onChangeArea={onChangeArea}
           deviceTypeCode={deviceTypeCode}
           firstPartitionCode={firstPartitionCode}
-        />}
+        />} */}
       </div>
     );
   }

@@ -37,25 +37,24 @@ var initState = Immutable.fromJS({
   },
   total: 0,
   defectId: '',
-  // defectDetail: {//缺陷详情
-  //   defectId: '',
-  //   stationName: '',
-  //   deviceName: '',
-  //   defectTypeName: '',
-  //   defectLevel: 1,
-  //   defectDescribe: '',
-  //   defectStatus: '1',
-  //   photoAddress: '',
-  //   handleData: {
-  //     defectProposal: '',
-  //     defectSolveInfo: '',
-  //     replaceParts: '',
-  //     defectSolveResult: 0,
-  //     status: '1'
-  //   },
-  //   processData: []
-  // },
-  defectDetail:{},
+  defectDetail: {//缺陷详情
+    defectId: '',
+    stationName: '',
+    deviceName: '',
+    defectTypeName: '',
+    defectLevel: 1,
+    defectDescribe: '',
+    defectStatus: '1',
+    photoAddress: '',
+    handleData: {
+      defectProposal: '',
+      defectSolveInfo: '',
+      replaceParts: '',
+      defectSolveResult: 0,
+      status: '1'
+    },
+    processData: []
+  },
   defectTypes: [],
   devices: [], // 设备列表
   partitions: [], // 设备列表

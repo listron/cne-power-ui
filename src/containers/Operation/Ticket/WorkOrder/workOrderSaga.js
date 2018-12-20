@@ -37,10 +37,11 @@ function* getDefectDetail(action) {
         }
       });
     }else{
-      message.error('获取详情失败!!')
+      throw response.data
     }
   } catch (e) {
     console.log(e);
+    message.error('请求数据失败')
   }
 }
 
@@ -250,9 +251,6 @@ function* checkDefect(action) {
     console.log(e);
   }
 }
-
-
-
 
 
 export function* watchWorkOrder() {

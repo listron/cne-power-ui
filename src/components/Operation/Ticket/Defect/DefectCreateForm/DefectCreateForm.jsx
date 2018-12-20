@@ -40,7 +40,7 @@ class TmpForm extends Component {
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
-    allSeries: PropTypes.array,
+    // allSeries: PropTypes.array,
     firstPartitionCode: PropTypes.string,
   };
   constructor(props) {
@@ -51,13 +51,13 @@ class TmpForm extends Component {
     }
   }
 
-  onChangeArea = (value) => {
+  onChangeArea = (value) => { // 改变
     this.setState({
       deviceAreaCode: value
     });
   }
 
-  onChangeReplace = (checked) => {
+  onChangeReplace = (checked) => { // 更换部件
     this.setState({
       checked: checked,
     });
@@ -73,7 +73,7 @@ class TmpForm extends Component {
       objectType: 1
     });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null});
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 设备
@@ -105,7 +105,7 @@ class TmpForm extends Component {
 
   }
 
-  onDefectCreate = (isContinueAdd) => {
+  onDefectCreate = (isContinueAdd) => { // 保存的状态
     const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail, changeCommonStore } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -121,7 +121,8 @@ class TmpForm extends Component {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
             return e.response;
           }).join(',');
-        } else if (showContainer === 'edit') {
+        }
+        if (showContainer === 'edit') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
             return e.thumbUrl;
@@ -154,7 +155,8 @@ class TmpForm extends Component {
             stationDeviceTypes: [],
             devices: [],
           })
-        } else if (showContainer === 'edit') {
+        }
+        if (showContainer === 'edit') {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
@@ -165,7 +167,7 @@ class TmpForm extends Component {
     });
   }
 
-  getDeviceType = (code) => {
+  getDeviceType = (code) => { //  获取设备类型
     let deviceType = ''
     const { deviceTypes } = this.props;
     let index = deviceTypes.findIndex((item) => {
@@ -194,9 +196,8 @@ class TmpForm extends Component {
 
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode,commonList } = this.props;
-    console.log('deviceItems')
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode, commonList } = this.props;
+    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const stationCode = getFieldValue('stations') && getFieldValue('stations')[0] && getFieldValue('stations')[0].stationCode || [];
@@ -229,6 +230,8 @@ class TmpForm extends Component {
       return innerArr;
     })
     const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
+
+    console.log('this.props',this.props)
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -262,7 +265,8 @@ class TmpForm extends Component {
             })(
               <DeviceName
                 stationName={stationName}
-                allSeries={Immutable.fromJS(allSeries)}
+                // allSeries={Immutable.fromJS(allSeries)}
+                allSeries={allSeries}
                 disabled={devices.length === 0}
                 placeholder="输入关键字快速查询"
                 deviceAreaItems={this.props.partitions}
@@ -393,7 +397,6 @@ class TmpForm extends Component {
           </div>
           {!editDefect && <div className={styles.addTips}></div>}
         </div>
-
       </Form>
     );
   }
