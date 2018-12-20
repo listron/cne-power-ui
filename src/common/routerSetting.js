@@ -237,17 +237,19 @@ const routers = [
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
-    component: CleanWarning, // Building
+    // component: CleanWarning, // Building
+    component: Building
   }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
     // component: CleanoutRecordMain,
-     component: CleanoutRecord,
-    //component: Building
+    //  component: CleanoutRecord,
+    component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
-    component: CleanoutRecord
+    // component: CleanoutRecord
+    component: Building
   },
   { // 组串异常分析
     path: '/analysis/formation/abnormal',
@@ -267,8 +269,8 @@ const routers = [
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',
     exact: true,
-    // component: Building,
-    component: Transfer
+    component: Building,
+    // component: Transfer
   }, {  // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     exact: true,
