@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Row, Col, Input, Icon,message } from 'antd';
+import { Input, Icon,message } from 'antd';
 import { reportBasefun } from '../reportBaseFun';
 import moment from 'moment';
 
@@ -100,19 +100,19 @@ class EachStationReport extends Component {
         </div>
         <div className={styles.genParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ genInverter: e.target.value })} />
         </div>
         <div className={styles.genParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ genIntegrated: e.target.value })} />
         </div>
         <div className={styles.genParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ genInternet: e.target.value })} />
         </div>
         <div className={styles.genParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
+          <Input placeholder="--" onChange={(e)=>this.valueChange({ dailyBuyPower: e.target.value })} />
         </div>
         <div className={styles.modelParts}>
           <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} />
@@ -121,7 +121,7 @@ class EachStationReport extends Component {
         <div className={styles.handle}>
           <span onClick={this.addAbnormal} className={styles.left}>
             <span className={styles.text}>添加异常</span>
-            {true && <i className="iconfont icon-alert_01" />}
+            {hasAbnormal && <i className="iconfont icon-alert_01" />}
           </span>
           <Icon onClick={this.removeStation} className={styles.removeStation} type="close-circle" theme="outlined" />
         </div>
