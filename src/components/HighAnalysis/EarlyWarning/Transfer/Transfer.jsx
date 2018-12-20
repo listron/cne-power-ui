@@ -45,7 +45,6 @@ class Transfer extends Component {
 
 
   onShowDetail = (record) => {
-    console.log('record', record)
     const defectId = record.defectId;
     this.props.changeTransferStore({ pageName: 'detail', defectId })
 
@@ -60,7 +59,6 @@ class Transfer extends Component {
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
     const sortField = this.sortField(sorter.field);
-    console.log('sorter', sorter)
     let ascend = "";
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
     this.getTransferList({ sortField, sortMethod: ascend });
@@ -133,12 +131,14 @@ class Transfer extends Component {
         title: '查看工单',
         className: styles.iconDetail,
         render: (text, record) => (
-          <span>
-            <i className="iconfont icon-tranlist" onClick={() => {
-              this.onShowDetail
-              (record)
-            }} />
-          </span>
+          <div>
+            <span>
+              <i className="iconfont icon-tranlist icon-action" onClick={() => {
+                this.onShowDetail
+                  (record)
+              }} />
+            </span>
+          </div>
         )
       }
     ]
