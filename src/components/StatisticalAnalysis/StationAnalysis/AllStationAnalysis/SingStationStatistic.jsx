@@ -409,11 +409,11 @@ class SingleStationStatistic extends React.Component {
     });
   }
   render() {
+    const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData,getSingleStationStatisticData ,selectYear,changeAllStationStore} = this.props;
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
-      this.props.changeAllStationStore({ singleStationCode: stationCode });
+      changeAllStationStore({ singleStationCode: stationCode });
     }
-    const { stationType, stations, dateType, singleStationCode, year, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData,getSingleStationStatisticData ,selectYear,changeAllStationStore} = this.props;
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();

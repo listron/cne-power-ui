@@ -24,6 +24,10 @@ function *getStationList(action){ // 请求电站列表信息
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationList}`
   try{
     yield put({ type:stationManageAction.STATION_MANAGE_FETCH });
+    yield put({
+      type: stationManageAction.CHANGE_STATION_MANAGE_STORE,
+      payload: { stationListLoading: true },
+    })
     const response = yield call(axios.post, url, payload);
     // if(response.data.code === "10000"){
     const totalNum = response.data.data.total || 0;
@@ -42,6 +46,7 @@ function *getStationList(action){ // 请求电站列表信息
         stationList: response.data.data.list || [],
         totalNum,
         pageNum,
+        stationListLoading: false,
       }
     })
     // }
@@ -50,7 +55,7 @@ function *getStationList(action){ // 请求电站列表信息
     message.error('获取电站列表数据失败，请重试');
     yield put({
       type:  stationManageAction.CHANGE_STATION_MANAGE_STORE,
-      payload: { loading: false },
+      payload: { loading: false, stationListLoading: false, },
     })
   }
 }

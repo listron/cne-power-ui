@@ -339,6 +339,25 @@ function *getDictionaryInfo(action){ // 获取覆盖类型、并网电压等级�
   }
 }
 
+function *getWeather(action) { // 获取电站天气
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+    const url = `${APIBasePath}${commonPaths.getWeather}`;
+    const response = yield call(axios.get, url, params);
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || []
+        }
+      })
+    } else { throw '天气数据获取失败'; }
+  }catch(error) {
+    console.log(error)
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -387,5 +406,5 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
   yield takeLatest(commonAction.getDictionaryInfo, getDictionaryInfo);
   yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);
-  
+  yield takeEvery(commonAction.getWeather, getWeather);
 }

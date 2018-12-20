@@ -4,6 +4,7 @@ import { stationManageAction } from './stationManageAction';
 
 var initState = Immutable.fromJS({
   loading: false,
+  stationListLoading: false, // 电站列表的loading态。
   showPage: 'list', //默认展示列表页list ,   编辑edit,详情detail,
   stationType: "", // 电站类型("0"-风电、"1"-光伏、""全部)
   stationName: '', // 电站名称(模糊匹配)

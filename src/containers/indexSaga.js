@@ -14,6 +14,7 @@ import { watchDepartment } from './System/Account/Department/departmentSaga';
 import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
+import { watchWarning } from './System/Production/Warning/warningSaga';
 
 import { watchStationManage } from './System/Station/StationManage/stationManageSaga';
 import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSaga';
@@ -37,7 +38,7 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 
 
 import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
-import { watchCleanoutWarning } from "./HighAnalysis/CleanoutModel/CleanoutWarning/cleanoutWarningSaga";
+import { watchCleanWarning } from "./HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga";
 import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
 import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
 import { watchTransfer } from "./HighAnalysis/EarlyWarning/Transfer/transferSaga";
@@ -72,6 +73,7 @@ export default function* rootSaga() {
     watchPowerCurve(),
     // system-production
     watchPlan(),
+    watchWarning(), //预警配置
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
@@ -89,7 +91,7 @@ export default function* rootSaga() {
     watchPerformanceAnalysisSaga(),
     //高级分析>清洗模型>清洗记录+清洗预警
     watchCleanoutRecord(),
-    watchCleanoutWarning(),
+    watchCleanWarning(),
     // 高级分析-低效组串
     watchUnhandle(),
     watchIgnore(),

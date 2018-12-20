@@ -80,18 +80,23 @@ class WindStation extends Component {
               <div className={styles.deviceTypeFlow}>
                 {deviceTypeType.map((item, index) => {
                   const deviceInfo = item[0] || {};
-                  const activeClass = {
-                    backgroundColor: deviceTypeCode === deviceInfo.deviceTypeCode ? '#fff' : 'transparent'
-                  }
+                  const isActiveType = deviceTypeCode === deviceInfo.deviceTypeCode;
                   return (
                     <div
                       key={index}
                       className={styles.eachDeviceType}
-                      style={activeClass}
+                      style={{
+                        backgroundColor: isActiveType ? '#fff' : 'transparent'
+                      }}
                       onClick={() => this.onSelectedDeviceType(deviceInfo.deviceTypeCode)}
                     >
-                      <div className={styles.deviceTypeIcon} >
-                        <i className={this.getDeviceTypeIcon(deviceInfo.deviceTypeCode)} ></i>
+                      <div
+                        className={styles.deviceTypeIcon}
+                        style={{
+                          color: isActiveType ? '#199475' : '#dfdfdf'
+                        }}
+                      >
+                        <i className={this.getDeviceTypeIcon(deviceInfo.deviceTypeCode)} />
                         <span className={styles.text}>{deviceInfo.deviceTypeName}</span>
                       </div>
                       <img src="/img/arrowgo.png" className={styles.rightArrow} />
