@@ -45,7 +45,7 @@ function* getDefectDetail(action) {
   }
 }
 
-//获取缺陷工单Id列表(用于上一个，下一个)
+//获取缺陷工单Id列表(用于上一个，下一个) 暂时用不上
 function* getDefectIdList(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectIdList;
