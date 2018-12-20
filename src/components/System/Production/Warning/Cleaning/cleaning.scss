@@ -1,0 +1,42 @@
+@import "../../../../../theme/theme";
+
+.cleaningBox{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  .thresholdt{
+    display: flex;
+    line-height: 30px;
+    .thresholdtText{
+      width: 112px;
+      margin-right: 20px;
+      text-align: center;
+    }
+    .thresholdtNum{
+      width: 50px;
+      text-align: center;
+    }
+  }
+  .btn{
+    display: flex;
+    justify-content: flex-end;
+    margin-top:42px;
+  }
+}
+
+.cleaningBoxCopy{
+  @extend .cleaningBox;
+  .thresholdt{
+    .thresholdtNum{
+      width: 80px;
+      margin-right: 4px;
+      text-align: left;
+    }
+  }
+  .btn{
+    margin-left: 11px;
+    .btnBottom{
+      margin-right: 8px;
+    }
+  }
+}

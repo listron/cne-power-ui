@@ -33,13 +33,18 @@ class LostGenTable extends Component {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
+        className: 'deviceName',
+        render: text => (
+          <span title={text} >{text}</span>
+        ),
       },{
         title: '损失电量类型',
         dataIndex: 'faultName'
       },{
         title: '原因说明',
         dataIndex: 'reason',
-        render: (text, record) => {
+        className: 'reason',
+        render: text => {
           return (<span title={text} >{text}</span>)
         }
       },{
@@ -74,6 +79,7 @@ class LostGenTable extends Component {
       },{
         title: '处理进展及问题',
         dataIndex: 'process',
+        className: 'process',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_process`, {

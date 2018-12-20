@@ -45,28 +45,23 @@ class Ignore extends Component {
   }
 
   componentDidMount() { // 初始请求数据
-    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod, getIgnoreList, getMatrixlist } = this.props;
-    getIgnoreList({ stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod })
+    const { getMatrixlist,stationCodes } = this.props;
+    this.getIgnoreList()
     getMatrixlist({ stationCodes: stationCodes })
   }
 
-  onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
-    const { stationCodes, belongMatrixs, startTime, endTime, sortField, sortMethod } = this.props;
-    const param = { stationCodes, belongMatrixs, startTime, endTime, pageNum: currentPage, pageSize, sortField, sortMethod }
-    this.getIgnoreList(param);
-    this.props.changeIgnoreStore({ pageNum: currentPage, pageSize })
+  onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
+    this.getIgnoreList({pageNum: currentPage, pageSize,});
   }
 
   onSelectChange = (keys, record) => {  // 选择进行操作
-    this.setState({
-      selectedRowKeys: keys,
-    });
+    this.setState({  selectedRowKeys: keys });
   }
 
   getIgnoreList = (param) => { // 请求数据
-    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod } = param;
+    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod } = this.props;
     this.props.getIgnoreList({
-      stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod,
+      stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod,...param
     })
   }
 
@@ -75,16 +70,13 @@ class Ignore extends Component {
     const sortField = this.sortField(sorter.field);
     let ascend = "";
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
-    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize } = this.props;
-    const param = { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod: ascend }
-    this.getIgnoreList(param);
-    this.props.changeIgnoreStore({ sortField, sortMethod: ascend })
+    this.getIgnoreList({ sortField, sortMethod: ascend});
   };
 
   sortField(sortField) {
     let result = "";
     switch (sortField) {
-      case 'stationName': result = ' station_code'; break;
+      case 'stationName': result = 'station_code'; break;
       case 'ignoreTime': result = 'ignore_time'; break;
       default: result = ""; break;
     }
@@ -92,23 +84,16 @@ class Ignore extends Component {
   }
 
   filterCondition = (change) => { // 筛选条件
-    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod } = this.props;
-    const param = { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod }
-    this.getIgnoreList({ ...param, ...change });
-    this.props.changeIgnoreStore(change)
+    this.getIgnoreList(change);
     change.stationCodes && this.props.getMatrixlist({ stationCodes: change.stationCodes })
-
   }
 
   selectChange = (wayChange) => { // 进行操作 转工单 忽略
     if (wayChange === 'cancleIgnore') {
       this.setState({ showWarningTip: true })
-      const {selectedRowKeys}=this.state;
-      this.props.getUnignore({inefficiencyIds:selectedRowKeys})
     }
     if (wayChange === 'ReRequest') {
-      const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod, getIgnoreList } = this.props;
-      getIgnoreList({ stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod })
+      this.getIgnoreList()
     }
   }
 
@@ -119,10 +104,9 @@ class Ignore extends Component {
   }
 
   confirmWarningTip = () => { // 点击确定
-    const { getUnignore } = this.props;
-    const { selectedRowKeys } = this.state;
     this.setState({ showWarningTip: false, selectedRowKeys: [] })
-    getUnignore(selectedRowKeys)
+    const {selectedRowKeys}=this.state;
+    this.props.getUnignore({inefficiencyIds:selectedRowKeys})
   }
 
 
@@ -137,7 +121,7 @@ class Ignore extends Component {
         key: 'stationName',
         sorter: true,
         defaultSortOrder: 'descend',
-        render: text => (text || text === 0) ? text : '--'
+        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '所属方阵',
@@ -162,7 +146,7 @@ class Ignore extends Component {
         dataIndex: 'ignoreTime',
         key: 'ignoreTime',
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '忽略原因',

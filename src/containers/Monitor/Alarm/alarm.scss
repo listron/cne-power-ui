@@ -1,58 +1,75 @@
-.alarmStatisticBox{
-  display: flex;
-  flex: 1;
-  min-height: 100%;
-  flex-direction: column;
+.alarmStatisticBox {
+    display: flex;
+    flex: 1;
+    min-height: 100%;
+    flex-direction: column;
+    .alarmStatistic {
+        display: flex;
+        flex: 1; //min-height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px 24px 0;
+        background-color: #ececec;
+    }
+}
 
-.alarmStatistic{ 
-  display: flex;
-  flex: 1;
-  //min-height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 24px 0;
-  background-color: #ececec;
-}
-}
-    
-.realTimeAlarmBox{
-  display: flex;
-  flex: 1;
-  min-height: 100%;
-  flex-direction: column;
-.realTimeAlarmContainer {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 24px 0;
-  background-color: #ececec;
-  .realTimeAlarm {
+.realTimeAlarmBox {
     display: flex;
-    flex-direction: column;
     flex: 1;
-    background-color: #fff;
-  }
+    min-height: 100%;
+    flex-direction: column;
+    .realTimeAlarmContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px 24px 0;
+        background-color: #ececec;
+       
+    }
 }
-}
-.historyAlarmBox{
-  display: flex;
-  flex: 1;
-  min-height: 100%;
-  flex-direction: column;
-.historyAlarmContainer {
-  display: flex;
-  flex: 1;
- // min-height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 24px 0;
-  background-color: #ececec;
-  .historyAlarm {
+
+.historyAlarmBox {
     display: flex;
-    flex-direction: column;
     flex: 1;
-    background: #fff;
-  }
+    min-height: 100%;
+    flex-direction: column;
+    .historyAlarmContainer {
+        display: flex;
+        flex: 1; // min-height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 24px 24px 0;
+        background-color: #ececec;
+        .historyAlarm {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            background: #fff;
+        }
+    }
 }
+
+.transferAlarmBox{
+    display: flex;
+    flex: 1;
+    min-height: 100%;
+    flex-direction: column;
+    .transferColor{
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 24px 24px 0 24px;
+        background-color: #ececec;
+        overflow: hidden;
+    }
+    .transferAlarmContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-between;
+        background: #fff;
+        overflow: hidden;
+    }
 }

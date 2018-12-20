@@ -36,12 +36,20 @@ class LimitGenTable extends Component {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
+        className: 'deviceName',
+        render: text => (
+          <span title={text}>{text}</span>
+        ),
       },{
         title: '限功率',
         dataIndex: 'limitPower',
       },{
         title: '原因说明',
         dataIndex: 'reason',
+        className: 'reason',
+        render: text => (
+          <span title={text}>{text}</span>
+        ),
       },{
         title: '发生时间',
         dataIndex: 'startTime',
@@ -67,7 +75,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD hh:mm"   />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
             )}
           </Form.Item>)
         }
@@ -88,7 +96,6 @@ class LimitGenTable extends Component {
         dataIndex: 'handle',
         render : (text, record) => {
           const { id } = record;
-          // return text?<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}><i className="iconfont icon-del" ></i></span>:<span></span>
           return (<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}>
             <i className="iconfont icon-del" ></i>
           </span>)

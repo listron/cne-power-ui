@@ -9,33 +9,22 @@ class DefectHandleForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func,
     status: PropTypes.string,
-    commonList: PropTypes.object,
+    commonList: PropTypes.array,
   }
 
   constructor(props) {
     super(props);
   }
 
-  renderReviewForm() {
-    return (     
-      <DefectReviewForm 
-        onSubmit={this.props.onSubmit} />
-    );
-  }
-
-  renderProcessForm() {
-    return (     
-      <DefectProcessForm
-        commonList={this.props.commonList} 
-        onSubmit={this.props.onSubmit} />
-    );
-  }
-
-  renderCheckForm() {
-    return (     
-      <DefectCheckForm 
-        onSubmit={this.props.onSubmit} />
-    );
+  getDefaultTitle=(status)=>{ // 标题
+    let result='';
+    switch(status){
+      case '1':result='审核';break;
+      case '2':result='处理结果';break;
+      case '3':result='消缺验收';break;
+      default:result='';break;
+    }
+    return result;
   }
   
   render() {
@@ -43,24 +32,16 @@ class DefectHandleForm extends Component {
     const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
     const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
     const { status } = this.props;
-    let titleName = '';
-    if(status === '1' && reviewDefectRight){
-      titleName = '审核'
-    }else if(status === '2'){
-      titleName = '处理结果'
-    }else if(status === '3' && checkDefectRight){
-      titleName = '消缺验收'
-    }
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
           <div className={styles.border}></div>
-          <div className={styles.text}>{titleName}</div>
+          <div className={styles.text}>{this.getDefaultTitle(status)}</div>
           <div className={styles.border}></div>
         </div>
-        {(status === '1' && reviewDefectRight) ? this.renderReviewForm() : null}
-        {status === '2' ? this.renderProcessForm() : null}
-        {(status === '3' && checkDefectRight) ? this.renderCheckForm() : null}
+        {status === '1' && reviewDefectRight && <DefectReviewForm  onSubmit={this.props.onSubmit} /> }
+        {status === '2' &&  <DefectProcessForm commonList={this.props.commonList} onSubmit={this.props.onSubmit} />}
+        {status === '3' && checkDefectRight &&  <DefectCheckForm  onSubmit={this.props.onSubmit} />}
       </div>
     );
   }  

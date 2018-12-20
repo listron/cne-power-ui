@@ -18,7 +18,7 @@ export const YcPoints = ({ ycData = [] }) => {
             <div key={e.pointName} className={styles.eachYc}>
               <span className={styles.name}>{e.pointName}</span>
               <span className={styles.value}>{dataFormat(e.pointValue, '--', 2)}</span>
-              <span className={styles.unit}>{e.pointUnit}</span>
+              <span className={styles.unit}>{e.pointUnit || '--'}</span>
             </div>
           ))}
         </div>
@@ -32,6 +32,15 @@ YcPoints.propTypes = {
 }
 
 export const YxPoints = ({ yxData = [] }) => {
+  const valueColor = value => {
+    if (value === '1') {
+      return { backgroundColor: '#7ed321' };
+    } else if (value === '0') {
+      return { backgroundColor: '#d0021b' };
+    } else {
+      return { backgroundColor: '#dfdfdf' };
+    }
+  }
   return (
     <section className={styles.yxInfo}>
       <h3>YX</h3>
@@ -40,9 +49,9 @@ export const YxPoints = ({ yxData = [] }) => {
           <span key={e.pointName} className={styles.eachYx}>
             <span
               className={styles.round}
-              style={{ backgroundColor: e.pointValue > 0 ? '#7ed321': '#d0021b' }}
+              style={valueColor(e.pointValue)}
             />
-            <span className={styles.name}>{e.pointName}</span>
+            <span className={styles.name} title={e.pointName}>{e.pointName}</span>
           </span>
         ))}
       </div>
@@ -54,7 +63,7 @@ YxPoints.propTypes = {
   yxData: PropTypes.array,
 }
 
-export const YmPoints = ({ data = [], name = 'ym' }) => { //  遥脉测点或ycs展示。
+export const YmPoints = ({ data = [], name = 'YM' }) => { //  遥脉测点或ycs展示。
   const groupMax = 10;
   let groupedData = [];
   data.forEach((e, i) => {
