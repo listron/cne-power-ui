@@ -1,0 +1,29 @@
+@import '../../../../theme/theme';
+.transferMain {
+    border: 1px solid #e1e2e2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    background: #fff;
+    .selectCondition {
+        display: flex;
+        flex-direction: row;
+        justify-content:flex-end;
+        padding: 26px 0 20px 28px;
+        border-top: 1px solid $promptColor;
+    }
+    :global {
+        .ant-table-placeholder {
+            border-bottom: none
+        }
+    }
+    .iconDetail{
+        span{
+            display: block;
+            color: $themeColor;
+            cursor: pointer;
+        }
+    }
+   
+}

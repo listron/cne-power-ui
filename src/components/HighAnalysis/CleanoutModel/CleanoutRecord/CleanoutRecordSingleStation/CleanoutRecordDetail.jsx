@@ -2,142 +2,194 @@
 
 import React, { Component } from 'react';
 
-import WarningTip from '../../../../Common/WarningTip';
-import { Icon } from 'antd';
+
+import { Icon, Radio, Modal, Tabs, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutRecordDetail.scss';
 import CleanoutPlanRecord from './CleanoutPlanRecord';
 import RecordDetailTable from './RecordDetailTable.jsx';
 import ChangeStation from '../../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
+import Pagination from '../../../../../components/Common/CommonPagination/index';
 import moment from 'moment';
+const TabPane = Tabs.TabPane;
+
 
 class CleanoutRecordDetail extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    selectedStationIndex: PropTypes.number,
-    stationList: PropTypes.array,
-    queryListParams: PropTypes.object,
-    stationDetail: PropTypes.object,
+    match: PropTypes.object,
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
-    getStationDetail: PropTypes.func,
-    getOtherPageStationDetail: PropTypes.func,
+    getDetailList: PropTypes.func,
+    history: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      showWarningTip: false,
-      warningTipText: '',
       showStationSelect: false,
-      showSidePage: 'single'
+      showDirtModal: false,
+      showSidePage: 'single',
     }
-
   }
-
-  
+  componentDidMount() {
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.hideStationChange, true);
+    const { getDetailList, singleStationCode, detailPageNum, detailPageSize, cleanType } = this.props;
+    getDetailList({ stationCode: singleStationCode, cleanType, pageNum: detailPageNum, pageSize: detailPageSize })
+  }
+  componentWillReceiveProps(nextProps) {
+    const { getDetailList, detailPageNum, detailPageSize, cleanType, changeCleanoutRecordStore, singleStationCode } = nextProps;
+    if (this.props.singleStationCode !== singleStationCode) {
+      getDetailList({ stationCode: singleStationCode, cleanType, pageNum: detailPageNum, pageSize: detailPageSize })
+    }
+  }
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.hideStationChange, true);
+    this.props.changeCleanoutRecordStore({ showPage: 'multiple' })
+  }
   onShowSideChange = ({ showSidePage }) => {
     this.setState({ showSidePage });
   }
- 
   onToggleSide = () => {
     // const { showPage } = this.props;
     // this.setState({
     //   showSidePage: showPage
     // });
   }
-  confirmWarningTip = () => { // 提示框确认
-    this.setState({
-      showWarningTip: false,
-      warningTipText: '',
+  onPaginationChange = ({ pageSize, currentPage }) => {//分页器
+
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType } = this.props;
+    changeCleanoutRecordStore({ detailPageNum: currentPage, detailPageSize: pageSize })
+    getDetailList({
+      stationCode: singleStationCode,
+      cleanType,
+      pageNum: currentPage,
+      pageSize,
+
     })
   }
-
+  radioChange = (e) => {
+    const { changeCleanoutRecordStore, getDetailList, singleStationCode, cleanType, detailPageNum, detailPageSize } = this.props;
+    changeCleanoutRecordStore({ cleanType: e.target.value })
+    getDetailList({ stationCode: singleStationCode, cleanType: e.target.value, pageNum: detailPageNum, pageSize: detailPageSize })
+  }
   backToList = () => { // 返回列表页
     this.props.changeCleanoutRecordStore({
       showPage: 'multiple',
       selectedStationIndex: null,
     });
+    this.props.history.push(`/analysis/cleanout/record`);
   }
-
   editDetail = () => { // 编辑页
     // this.props.onShowSideChange({ showSidePage: 'edit' });
     // this.props.changeCleanoutRecordStore({ showPage: 'edit' });
   }
-
-  departmentInfoFun = (departmentList) => { // 根据部门信息，重组子部门/ 父部门，根据层级关系输出展示。
-    const parentDepartmentArray = [];
-    const subDepartmentArray = [];
-    departmentList.forEach(e => {
-      if (!e) { return; }
-      e.parentDepartmentId ? subDepartmentArray.push({
-        ...e
-      }) : parentDepartmentArray.push({
-        ...e
-      })
-    })
-    const departmentInfoTree = parentDepartmentArray.map(e => {
-      const subArray = subDepartmentArray.filter(sub => sub.parentDepartmentId === e.departmentId);
-      return {
-        ...e,
-        children: subArray,
-      }
-    })
-    const departmentInfo = departmentInfoTree.map(e => {
-      let subInfo = '';
-      if (e.children && e.children.length > 0) {
-        subInfo = `-${e.children.map(sub => sub.departmentName).join(',')}`;
-      }
-      return `${e.departmentName}${subInfo}`
-    })
-    return departmentInfo.join('；');
-  }
-  hideStationChange = () => {
+  hideStationChange = () => {//选择电站的隐藏
     this.setState({
       showStationSelect: false
     });
   }
-  showStationSelect = () => {
+  showStationSelect = () => {//选择电站的展示
     this.setState({
       showStationSelect: true
     });
   }
+  showDirtModal = () => {//展示灰尘影响图
+    this.setState({
+      showDirtModal: true
+    });
+  }
+  closeDirtModal = () => {//关闭
+    this.setState({
+      showDirtModal: false
+    });
+  }
+  tabsChange = () => {//灰尘modal
+
+  }
+
   render() {
-    const { stationDetail, stations, showPage , stationName, pageNum, pageSize,} = this.props;
-    const { showSidePage } = this.state;
-    const stationItems = stations && stations.toJS();
-    const { showWarningTip, warningTipText } = this.state;
+    const { stationDetail, stations, showPage, singleStationCode, stationName, pageNum, pageSize, changeCleanoutRecordStore, detailPageNum, detailPageSize, detailtotal, handCleanNum, rainCleanNum, cleanPlanNum, cleanProfit, cleanCycle, cleanTime, detailListData } = this.props;
+    const { stationCode } = this.props.match.params;
+    if (stationCode !== singleStationCode) {
+      changeCleanoutRecordStore({ singleStationCode: stationCode });
+    }
+    const { selectedRowKeys, showWarningTip, warningTipText, showSidePage, showDirtModal } = this.state
+    const stationItems = stations && stations;
+
     const { showStationSelect } = this.state;
-    const stationItem = stationItems.filter(e => (e.stationCode.toString() === '360'))[0];
+    const stationItem = stationItems && stationItems.filter(e => (e.stationCode.toString() === stationCode))[0];
+    const cleanStationName = stationItem && stationItem.stationName;
+    const provinceName = stationItem && stationItem.provinceName
     //请求的参数
     const queryListParams = {
-       stationName, pageNum, pageSize,
+      stationName, pageNum, pageSize,
     }
-    const departmentList = stationDetail.departmentList || [];
-    const departmentInfo = this.departmentInfoFun(departmentList);
-    
     return (
       <div className={styles.container}>
         <div className={styles.CleanoutRecordDetail}>
-          {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
           <div className={styles.detailTop}>
             {showStationSelect &&
-              <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="" hideStationChange={this.hideStationChange} />
+              <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
             }
             <div className={styles.topInfoShow}>
               <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
                 <Icon className={styles.icon} type="swap" />
               </div>
-              <div>xxxxxx</div>
+              <div className={styles.status}>
+                <h3>{cleanStationName}--{provinceName}</h3>
+              </div>
             </div>
             <span className={styles.handleArea} >
-              <span className={styles.dirtEff}>灰尘影响</span>
-
+              <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
               <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
             </span>
+            {showDirtModal ? <Modal
+              visible={this.state.showDirtModal}
+              footer={null}
+              centered
+              maskClosable={true}
+              closable={false}
+              onCancel={this.closeDirtModal}
+              wrapClassName	={'dirtEffBox'}
+             
+              style={{ width: 1004,height: 560,top:200 }}
+            >
+              <Button type="primary" disabled >最近30天</Button>
+              <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
+                <TabPane tab="全局灰尘影响(基于系统故障)" key="1"> a picture1111</TabPane>
+                <TabPane tab="方阵灰尘影响(基于系统故障)" key="2"> a picture2222</TabPane>
+              </Tabs>
+            </Modal> : ''}
+          </div>
+          <div className={styles.statisticData}>
+            <div className={styles.statisticTarget}>
+              <div className={styles.numberColor}>{cleanProfit}</div>
+              <div>累计清洗收益(万kWh)</div>
+            </div>
+            <div className={styles.statisticTarget}>
+              <div className={styles.numberColor}>{handCleanNum}</div>
+              <div>人工清洗次数(次)</div>
+            </div>
+            <div className={styles.statisticTarget}>
+              <div className={styles.numberColor}>{cleanCycle}</div>
+              <div>平均清洗周期(天)</div></div>
+            <div className={styles.statisticTarget}>
+              <div className={styles.numberColor}>{cleanTime}</div>
+              <div>平均清洗用时(天)</div></div>
+          </div>
+          <div className={styles.filterData}>
+            <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
+              <Radio.Button value={0}>全部</Radio.Button>
+              <Radio.Button value={1}>人工{cleanPlanNum}</Radio.Button>
+              <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
+            </Radio.Group>
+            <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
           </div>
           <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
         </div>
@@ -150,6 +202,8 @@ class CleanoutRecordDetail extends Component {
         >
           <CleanoutPlanRecord
             {...this.props}
+            stationName={cleanStationName}
+            provinceName={provinceName}
             showSidePage={showSidePage}
             queryListParams={queryListParams}
             onShowSideChange={this.onShowSideChange}
@@ -159,7 +213,6 @@ class CleanoutRecordDetail extends Component {
     )
   }
 }
-
 export default CleanoutRecordDetail;
 
 

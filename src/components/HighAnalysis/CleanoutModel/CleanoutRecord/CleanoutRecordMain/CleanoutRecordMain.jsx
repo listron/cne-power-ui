@@ -1,77 +1,77 @@
 
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DatePicker, Button, Icon } from 'antd';
-// import StationManageSearch from './StationManageSearch';
-// import StationManageTable from './StationManageTable';
 import styles from './cleanoutRecordMain.scss';
 import CleanoutRecordTable from './CleanoutRecordTable';
-import moment from 'moment';
-import StationFilter from './StationFilter';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
-
-
-
+import FilterCondition from '../../../../Common/FilterCondition/FilterCondition';
 
 class CleanoutRecordMain extends Component { // 电站管理列表页
   static propTypes = {
-  }
-  static defaultProps = {
-    value: {
-      startTime: moment().format('YYYY-MM-DD'), // 默认今年
-    }
+    changeCleanoutRecordStore: PropTypes.func,
+    getMainList: PropTypes.func,
+    stationCodes: PropTypes.array,
+    stations: PropTypes.array,
+    pageNum: PropTypes.number,
+    total: PropTypes.number,
+    pageSize: PropTypes.number,
+    sortType: PropTypes.number,
+    sortField: PropTypes.string,
   }
   constructor(props) {
     super(props);
     this.state = {
-      startTime: props.value.startTime,
-      panelOpen: false,
-      showFilter: '',
     }
   }
-  onYearSelect = ({ selectedYear }) => { // 选择年份
-    const { changeCleanoutRecordStore } = this.props;
-    changeCleanoutRecordStore({ startTime: selectedYear })
+  componentDidMount() {
+    const { stationCodes, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
+    getMainList({
+      stationCodes:[],
+      pageNum,
+      pageSize,
+      sortField,
+      sortType
+    })
   }
-  onOpenChange = (panelOpen) => { // 面板开关控制
-    this.setState({ panelOpen });
+  componentWillReceiveProps(nextProps) {
+    const { getMainList, stationCodes, pageNum, pageSize, sortField, sortType } = nextProps;
+    if (pageNum !== this.props.pageNum || pageSize !== this.props.pageSize || sortField !== this.props.sortField || sortType !== this.props.sortType) {
+      getMainList({ stationCodes, pageNum, pageSize, sortField, sortType })
+    }
+  }
+  componentWillUnmount(){
+    const { changeCleanoutRecordStore, } = this.props;
+    changeCleanoutRecordStore({mainListData:[]})
   }
 
-  onPanelChange = value => {
-    this.setState({ panelOpen: false });
-    this.onYearSelect({ selectedYear: value.format('YYYY') }) // 输出年份字符串。
+  onPaginationChange = ({ pageSize, currentPage }) => {
+    const { getMainList, stationCodes, sortField, sortType } = this.props;
+    getMainList({
+      stationCodes,
+      pageNum: currentPage,
+      pageSize,
+      sortField,
+      sortType
+    })
   }
-  onFilterShowChange = (filterText) => {
-    const { showFilter } = this.state;
-    if (showFilter === filterText) {
-      this.setState({
-        showFilter: ''
-      })
-    } else {
-      this.setState({
-        showFilter: filterText
-      })
-    }
+  filterCondition = (change) => {//选择电站
+    const { changeCleanoutRecordStore, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
+    changeCleanoutRecordStore({ stationCodes: change.stationCodes })
+    getMainList({ stationCodes: change.stationCodes, pageNum, pageSize, sortField, sortType })
   }
   render() {
-    const { stations } = this.props;
-    const {  showFilter } = this.state;
+    const { stations, total, pageSize, pageNum } = this.props;
     return (
       <div className={styles.cleanoutRecordMain}>
         <div className={styles.topFilter}>
-          <span>  筛选条件:</span>
-          <div className={styles.timeFilter}>
-          </div>
-          <Button onClick={() => this.onFilterShowChange('stationName')}>
-            电站名称{showFilter === 'stationName' ? <Icon type="up" /> : <Icon type="down" />}
-          </Button>
-        </div>
-        <div className={styles.filterBox}>
-          {showFilter === 'stationName' && <StationFilter {...this.props} />}
+          <FilterCondition
+            option={['stationName',]}
+            stations={stations}
+            onChange={this.filterCondition}
+          />
         </div>
         <div className={styles.paginationStyle}>
-          <Pagination />
+          <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <CleanoutRecordTable {...this.props} />
       </div>
@@ -80,14 +80,3 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
 }
 
 export default CleanoutRecordMain;
- {/*   <div className={styles.timeFilter}>
-          <DatePicker
-              placeholder="选择年"
-              format="YYYY年"
-              mode="year"
-              value={startTime ? moment(startTime) : null}
-              open={panelOpen}
-              onOpenChange={this.onOpenChange}
-              onPanelChange={this.onPanelChange}
-            /> 
-          </div> */}

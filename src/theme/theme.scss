@@ -28,3 +28,13 @@ $pageBackground: #ececec;
     box-shadow: 0 0 2px $color;
   }
 }
+
+@mixin contentBoxStyle(){ // 页面主内容区常用布局样式。
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background:#ececec;
+}

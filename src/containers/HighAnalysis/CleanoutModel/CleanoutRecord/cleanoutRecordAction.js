@@ -30,6 +30,8 @@ export const cleanoutRecordAction = {
   editCleanRecord:Symbol('editCleanRecord'),
   getCleanRecordDetail: Symbol('getCleanRecordDetail'),
   deleteCleanRecord: Symbol('deleteCleanRecord'),
+  //获取电站下的方阵
+  getMatrix:Symbol('getMatrix'),
 }
 
 
