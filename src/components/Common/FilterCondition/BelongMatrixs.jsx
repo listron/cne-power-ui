@@ -31,7 +31,7 @@ class AlarmLevelFilter extends Component {
     const { matrixList, belongMatrixs } = this.props;
     const options = matrixList.map((item,i)=>({
       label: item,
-      value: item,
+      value: `${item}`,
     }));
     const belongMatrixsArr = belongMatrixs;
     return (

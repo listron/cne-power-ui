@@ -1,0 +1,12 @@
+@import '../../../../theme/theme.scss';
+
+.cleanWarningBox{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .cleanWarningContainer{
+    display: flex;
+    flex: 1;                
+  }
+}

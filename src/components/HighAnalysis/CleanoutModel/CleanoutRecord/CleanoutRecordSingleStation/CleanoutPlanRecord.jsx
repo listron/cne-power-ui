@@ -3,12 +3,18 @@
 import React, { Component } from 'react';
 
 import WarningTip from '../../../../Common/WarningTip';
-import { Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './cleanoutPlanRecord.scss';
 import PlanRecordTable from './PlanRecordTable';
+import AddCleanoutRecord from './AddCleanoutRecord';
+import Pagination from '../../../../../components/Common/CommonPagination/index';
+import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
+const FormItem = Form.Item;
 
+const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+const { RangePicker } = DatePicker;
 class CleanoutPlanRecord extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -16,12 +22,13 @@ class CleanoutPlanRecord extends Component {
     pageSize: PropTypes.number,
     selectedStationIndex: PropTypes.number,
     stationList: PropTypes.array,
-    queryListParams: PropTypes.object,
+    singleStationCode: PropTypes.string,
     stationDetail: PropTypes.object,
     onShowSideChange: PropTypes.func,
     changeCleanoutRecordStore: PropTypes.func,
-    getStationDetail: PropTypes.func,
-    getOtherPageStationDetail: PropTypes.func,
+    getAddCleanRecord: PropTypes.func,
+    getPlanRecordList: PropTypes.func,
+    getDetailList: PropTypes.func,
   }
 
   constructor(props) {
@@ -29,51 +36,69 @@ class CleanoutPlanRecord extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
+      showAddRecordModal: false,
     }
   }
-
+  onPaginationChange = ({ pageSize, currentPage }) => {//分页器
+    const { changeCleanoutRecordStore, getPlanRecordList, planId, cleanType } = this.props;
+    changeCleanoutRecordStore({ cleanRecordPageNum: currentPage, cleanRecordPageSize: pageSize })
+    getPlanRecordList({
+      planId,
+      pageNum: currentPage,
+      pageSize,
+    })
+  }
   preStation = () => { // 上一个电站详情
-    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail, stationList } = this.props;
-    if (selectedStationIndex === 0 && pageNum === 1) { // 第一页第一条
+    const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
+  
+    if (selectedStationIndex === 0 && detailPageNum === 1) { // 第一页第一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
       })
-    } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
-      getOtherPageStationDetail({
-        ...queryListParams,
-        pageNum: pageNum - 1,
-        selectedStationIndex: pageSize - 1,
+    } else if (selectedStationIndex === 0 && detailPageNum > 1) { // 其他页向前翻页
+      getDetailList({
+        singleStationCode,
+        cleanType,
+        pageNum: detailPageNum - 1,
+        pageSize: detailPageSize,
+        selectedStationIndex: detailPageSize - 1,
       })
     } else {
-      getStationDetail({ // 正常请求上一条电站详情数据
-        ...queryListParams,
+      getPlanRecordList({ // 正常请求上一条电站详情数据
+        planId: detailListData[selectedStationIndex-1].planId,
+        pageNum: cleanRecordPageNum,
+        pageSize: cleanRecordPageSize,
         selectedStationIndex: selectedStationIndex - 1,
-        stationCode: stationList[selectedStationIndex].stationCode,
       })
     }
   }
 
   nextStation = () => { // 下一个电站详情
-    const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, totalNum, getStationDetail, stationList } = this.props;
-    const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
-    if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
+    const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
+    const maxPage = Math.ceil(5 / detailPageSize); // 最后一页页码
+  
+    const lastPageMaxIndex = 5 - (maxPage - 1) * detailPageSize - 1;
+  
+    if (selectedStationIndex === lastPageMaxIndex && detailPageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
       })
-    } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
-      getOtherPageStationDetail({
-        ...queryListParams,
-        pageNum: pageNum + 1,
+    } else if (selectedStationIndex === detailPageSize - 1 && detailPageNum < maxPage) { // 向后翻页
+      getDetailList({
+        singleStationCode,
+        cleanType,
+        pageNum: detailPageNum + 1,
+        pageSize: detailPageSize,
         selectedStationIndex: 0,
       })
     } else {
-      getStationDetail({ // 请求下一条电站详情数据
-        ...queryListParams,
+      getPlanRecordList({ // 请求下一条电站详情数据
+        planId: detailListData[selectedStationIndex+1].planId,
         selectedStationIndex: selectedStationIndex + 1,
-        stationCode: stationList[selectedStationIndex].stationCode,
+        pageNum: cleanRecordPageNum,
+        pageSize: cleanRecordPageSize,
       })
     }
   }
@@ -86,62 +111,34 @@ class CleanoutPlanRecord extends Component {
   }
 
   backToList = () => { // 返回列表页
-    // this.props.changeCleanoutRecordStore({
-    //   showPage: 'list',
-    //   selectedStationIndex: null,
-    // });
-    this.props.onShowSideChange({showSidePage:'detail'}) 
+    this.props.changeCleanoutRecordStore({
+      selectedStationIndex: null,
+    });
+    this.props.onShowSideChange({ showSidePage: 'detail' })
   }
 
-  editDetail = () => { // 编辑页
-    this.props.onShowSideChange({ showSidePage: 'edit' });
-    this.props.changeCleanoutRecordStore({ showPage: 'edit' });
+  addRecord = () => {
+    this.setState({ showAddRecordModal: true, })
+  }
+  cancelAddRecord = () => {
+    this.setState({ showAddRecordModal: false })
   }
 
-  departmentInfoFun = (departmentList) => { // 根据部门信息，重组子部门/ 父部门，根据层级关系输出展示。
-    const parentDepartmentArray = [];
-    const subDepartmentArray = [];
-    departmentList.forEach(e => {
-      if (!e) { return; }
-      e.parentDepartmentId ? subDepartmentArray.push({
-        ...e
-      }) : parentDepartmentArray.push({
-        ...e
-      })
-    })
-    const departmentInfoTree = parentDepartmentArray.map(e => {
-      const subArray = subDepartmentArray.filter(sub => sub.parentDepartmentId === e.departmentId);
-      return {
-        ...e,
-        children: subArray,
-      }
-    })
-    const departmentInfo = departmentInfoTree.map(e => {
-      let subInfo = '';
-      if (e.children && e.children.length > 0) {
-        subInfo = `-${e.children.map(sub => sub.departmentName).join(',')}`;
-      }
-      return `${e.departmentName}${subInfo}`
-    })
-    return departmentInfo.join('；');
-  }
 
   render() {
-    const { stationDetail } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
-
-    const departmentList = stationDetail.departmentList || [];
-    const departmentInfo = this.departmentInfoFun(departmentList);
+    const { cleanRecordTotal, cleanRecordCost, cleanRecordProfit, cleanRecordTime, cleanRecordPageSize, cleanRecordPageNum, cleanRecordPlanTime, stationName, provinceName } = this.props;
+    const { showWarningTip, warningTipText, showAddRecordModal } = this.state;
+    const record = { name: 'dali' }
     return (
       <div className={styles.CleanoutPlanRecord}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <span className={styles.title}>{stationDetail.stationName || '--'}详情</span>
-           
-            <span className={styles.departmentInfo} title={departmentInfo}>
-              {departmentInfo}
+            {cleanRecordPlanTime}
+            <span className={styles.departmentInfo} >
+              清洗计划-清洗记录
             </span>
+            ({stationName}-{provinceName})
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
@@ -149,12 +146,31 @@ class CleanoutPlanRecord extends Component {
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
+        <div className={styles.statisticData}>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>{cleanRecordProfit}(10%)</div>
+            <div>累计清洗收益(万kWh)</div>
+          </div>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>{cleanRecordCost}</div>
+            <div>清洗成本(万元)</div>
+          </div>
+          <div className={styles.statisticTarget}>
+            <div className={styles.numberColor}>{cleanRecordTime}</div>
+            <div>清洗用时(天)</div></div>
+
+        </div>
+        <div className={styles.filterData}>
+          <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
+          { /*  {this.addCleanoutRecord(record)} */}
+          {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
+          <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
+        </div>
         <PlanRecordTable {...this.props} />
       </div>
     )
   }
 }
 
-export default CleanoutPlanRecord;
-
+export default Form.create()(CleanoutPlanRecord);
 
