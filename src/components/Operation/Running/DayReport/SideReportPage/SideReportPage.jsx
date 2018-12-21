@@ -6,7 +6,7 @@ import { DatePicker, Button, Icon, message } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
-import { reportBasefun } from '../reportBaseFun';
+import { reportBasefun, allReportCheck } from '../reportBaseFun';
 import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
@@ -162,36 +162,16 @@ class SideReportPage extends Component {
   saveDayReport = () => { // 确认上报日报
     const { dayReportTotalInfoArr } = this.state;
     const { dayReportConfig } = this.props;
-    const unitConfig = dayReportConfig[0] || {}; // 电量单位
-    const requireTargetObj = dayReportConfig[1] || {}; 
-    const tmpRequireTargetArr = Object.keys(requireTargetObj); // 指标必填信息数组(有多余信息)
-    const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
-    const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
-    const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
-
-    let errorText = '';
-    const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
-      const eachStationInfo = info.dailyReport;
-      const eachInfoError = tmpReportBaseInfo.find(config => { 
-        const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
-        const eachReportValue = eachStationInfo[config.configName]; // 每一项指标数据
-        const maxPointLength = config.pointLength; // 指定的最大小数点位数
-        const paramPointLength = (eachReportValue && eachReportValue.split('.')[1]) ? eachReportValue.split('.')[1].length : 0;
-        const dataFormatError = (eachReportValue && isNaN(eachReportValue)) || paramPointLength > maxPointLength; // 数据格式错误;
-        if(configRequired && !eachReportValue && eachReportValue !== 0){ // 必填项未填
-          errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
-          return true;
-        }else if(dataFormatError){ // 填写数据不规范
-          errorText = `${eachStationInfo.stationName}${config.configText}需填写数字,且不超${maxPointLength}位小数!`;
-          return true;
-        }
-        return false;
-      })
-      return eachInfoError;
+    const totalInfoError = dayReportTotalInfoArr.find(info => { // 依次检测每个电站数据是否有不合格数据。
+      const stationCheckResult = allReportCheck(info.dailyReport, dayReportConfig);
+      if (!stationCheckResult.result) { // 有不合格数据
+        message.warn(stationCheckResult.message);
+        return true
+      }
     })
-    if(totalInfoError){ // 数据错误存在，提示
-      message.warning(errorText,2);
-    }else{ // 数据无误，调整数据结构并提交
+    if (totalInfoError) {
+      return;
+    } else {
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;

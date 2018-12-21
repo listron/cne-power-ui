@@ -30,7 +30,7 @@ class EachStationReport extends Component {
     const { stationInfo, totalInfoChange, dayReportTotalInfoArr, dayReportConfig } = this.props;
     const toCheckedInfo = dayReportTotalInfoArr.find(e => e.dailyReport.stationCode === stationInfo.stationCode); //找到要所在电站数据
     const { dailyReport } = toCheckedInfo;
-    const { stationCapacity, reportDate } = stationInfo;
+    const { reportDate } = stationInfo;
     const checkResult = valueCheck(stationInfo, dailyReport, dayReportConfig, keyWord);
     if (!checkResult.result) { // 数据检查. 展示校验结果。
       message.warn(checkResult.message);
@@ -48,7 +48,7 @@ class EachStationReport extends Component {
         const uploadParams = dayReportTotalInfoArr.map(info=>{
           if(info.dailyReport.stationCode === stationInfo.stationCode){
             const { dailyDetailList } = info;
-            dailyReport[dayValueKey[keyIndex]] = dayValue;
+            dailyReport[dayValueKey[keyIndex]] = `${dayValue}`;
             return {
               dailyReport,
               dailyDetailList,

@@ -77,9 +77,9 @@
       text-align: right;
     }
     .lostInfoTable, .limitInfoTable, .powerGenInfoCon{
-      padding: 0 56px;
+      padding: 0 16px;
       :global{
-        .reason, .deviceName, .process{
+        .deviceTypeName, .reason, .deviceName, .process{
           max-width: 180px;
           overflow: hidden;
           white-space: nowrap;
@@ -237,7 +237,7 @@
   }
 
   .lostGenTableBox{
-    padding: 0px 65px;
+    padding: 0px 16px;
     margin-bottom: -10px;
     :global{
       .ant-form-horizontal {

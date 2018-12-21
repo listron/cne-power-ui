@@ -292,6 +292,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeFaultList={this.faultListInfoChange} 
@@ -321,6 +322,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeLimitList={this.limitListInfoChange}

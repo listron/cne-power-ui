@@ -10,6 +10,7 @@ class LimitGenTable extends Component {
     rememberRemove: PropTypes.func,
     form: PropTypes.object,
     limitGenList: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     changeLimitList: PropTypes.func,
     reportDate: PropTypes.string,
   }
@@ -32,8 +33,17 @@ class LimitGenTable extends Component {
 
   _loseColumn = () => {
     const { getFieldDecorator } = this.props.form;
+    const { stationDeviceTypes } = this.props;
     const column = [
       {
+        title: '设备类型',
+        dataIndex: 'deviceTypeName',
+        className: 'deviceTypeName',
+        render: text => {
+          const deviceTypeInfo = stationDeviceTypes.find(e => `${e.deviceTypeCode}` === `${text}`) || {};
+          return deviceTypeInfo.deviceTypeName
+        },
+      },{
         title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',

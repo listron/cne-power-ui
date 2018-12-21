@@ -6,6 +6,10 @@ import moment from 'moment';
 
 const loseColumn = [
   {
+    title: '设备类型',
+    dataIndex: 'deviceTypeName',
+    className: 'deviceTypeName',
+  }, {
     title: '设备名称',
     dataIndex: 'deviceName',
     className: 'deviceName',
@@ -45,6 +49,10 @@ const loseColumn = [
 ]
 const limitColumn = [
   {
+    title: '设备类型',
+    dataIndex: 'deviceTypeName',
+    className: 'deviceTypeName',
+  }, {
     title: '设备名称',
     dataIndex: 'deviceName',
     className: 'deviceName',

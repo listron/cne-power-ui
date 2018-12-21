@@ -11,6 +11,7 @@ class LostGenTable extends Component {
     form: PropTypes.object,
     reportDate: PropTypes.string,
     faultGenList: PropTypes.array,
+    stationDeviceTypes: PropTypes.array,
     changeFaultList: PropTypes.func,
   }
 
@@ -29,8 +30,17 @@ class LostGenTable extends Component {
 
   _loseColumn = () => {
     const { getFieldDecorator } = this.props.form;
+    const { stationDeviceTypes } = this.props;
     const column = [
       {
+        title: '设备类型',
+        dataIndex: 'deviceTypeName',
+        className: 'deviceTypeName',
+        render: text => {
+          const deviceTypeInfo = stationDeviceTypes.find(e => `${e.deviceTypeCode}` === `${text}`) || {};
+          return deviceTypeInfo.deviceTypeName
+        },
+      },{
         title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',

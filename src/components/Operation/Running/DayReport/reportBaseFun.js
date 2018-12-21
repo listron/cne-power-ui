@@ -23,11 +23,11 @@ export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站�
       configName: 'buyPower',
       pointLength: powerUnit==='kWh'?2:4
     }, {
-      configText: '样板逆变器容量',
+      configText: stationType > 0 ? '样板逆变器容量' : '样板风机容量',
       configName: 'modelInverterCapacity',
       pointLength: 2,
     }, {
-      configText: '样板逆变器发电量',
+      configText: stationType > 0 ? '样板逆变器发电量' : '样板风机发电量',
       configName: 'modelInverterPowerGen',
       pointLength: powerUnit==='kWh'?2:4
     }, {
@@ -174,13 +174,13 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   }
   const yearValueCompare = ['yearGenInverter', 'yearGenIntegrated', 'yearGenInternet'];
   const dayValueCompare = ['genInverter', 'genIntegrated', 'genInternet'];
-  let valueCompareResult = {};
+  let valueCompareResult;
   if (yearValueCompare.includes(keyWord)) { // 规则4. 逆变器日发电量> =集电线路>=上网电量
     valueCompareResult = elecFlowCheck(keyWord, genData, yearValueCompare, stationType);
   } else if (dayValueCompare.includes(keyWord)) {
     valueCompareResult = elecFlowCheck(keyWord, genData, dayValueCompare, stationType);
   }
-  if (!valueCompareResult.result) {
+  if (valueCompareResult && !valueCompareResult.result) { // 未通过规则4
     return valueCompareResult;
   }
   const currentArr = ['yearGenInverter', 'yearGenIntegrated', 'yearGenInternet', 'buyPower'];
@@ -198,7 +198,33 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   return { result: true };
 }
 
-export const reportCheck = ( genData = {}, reportConfig = []) => { // 检测上报整条数据
-
+export const allReportCheck = (stationInfo, reportConfig = []) => { // 检测必填项
+  let { genUnit, requireArr } = getConfigInfo(reportConfig);
+  const { stationType } = stationInfo;
+  const totalInfo = reportBasefun(stationType, genUnit); // 需要依次校验的数据。
+  // 1. 必填项检测.
+  requireArr = requireArr.filter(e => e !== 'type'); // 去掉冗余必填项。
+  const lostKey = requireArr.find(e => !stationInfo[e] && stationInfo[e] !== 0); // 必填项未填。
+  if (lostKey) {
+    const message = totalInfo.find(e => e.configName === lostKey).configText;
+    return {
+      result: false,
+      message: `请填写${message}`,
+    }
+  }
+  // 2. 各值判断
+  const totalKeyWordArr = totalInfo.map(e => e.configName);
+  let wordError;
+  totalKeyWordArr.find(e => { // 依次校验所有数据。 有错误数据即停。
+    const eachCheckResult = valueCheck(stationInfo, stationInfo, reportConfig, e);
+    if (!eachCheckResult.result) {
+      wordError = eachCheckResult;
+      return true ;
+    }
+  })
+  if (wordError) {
+    return wordError; 
+  }
+  return { result: true };
 }
 

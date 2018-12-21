@@ -336,13 +336,13 @@
 }
 
 .lostGenTable{
-  padding: 20px;
+  padding: 20px 16px;
   .removeFaultInfo{
     color: $themeColor;
     cursor: pointer;
   }
   :global{
-    .deviceName, .reason, .process{
+    .deviceTypeName, .deviceName, .reason, .process{
       padding: 0 0;
       text-align: center;
       max-width: 150px;
