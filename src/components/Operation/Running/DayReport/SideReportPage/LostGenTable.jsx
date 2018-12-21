@@ -49,14 +49,15 @@ class LostGenTable extends Component {
         ),
       },{
         title: '损失电量类型',
-        dataIndex: 'faultName'
+        dataIndex: 'faultName',
+        className: 'faultName',
+        render: text => (
+          <span title={text} >{text}</span>
+        ),
       },{
         title: '原因说明',
         dataIndex: 'reason',
-        className: 'reason',
-        render: text => {
-          return (<span title={text} >{text}</span>)
-        }
+        width: 120,
       },{
         title: '发生时间',
         dataIndex: 'startTime',
@@ -68,9 +69,9 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${id}_startTime`, {
               initialValue: startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
             )}
-          </Form.Item>:<span>
+          </Form.Item>:<span className="startTime">
             {moment(startTime).format('YYYY-MM-DD HH:mm')}
           </span>
         }
@@ -82,20 +83,19 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
             )}
           </Form.Item>)
         }
       },{
         title: '处理进展及问题',
         dataIndex: 'process',
-        className: 'process',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_process`, {
               initialValue: record.process,
             })(
-              <Input placeholder="处理进展"  />
+              <Input placeholder="处理进展" />
             )}
           </Form.Item>)
         }
