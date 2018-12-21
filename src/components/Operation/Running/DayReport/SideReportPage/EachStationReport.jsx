@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Input, Icon,message } from 'antd';
-import { reportBasefun } from '../reportBaseFun';
+import { reportBasefun, valueCheck } from '../reportBaseFun';
 import moment from 'moment';
 
-const InputContent = ({ keyWord, dataCheck, valueChange, placeholder = '--' }) => {
+const InputContent = ({ keyWord, dataCheck, valueChange, genData = {} }) => {
   return (
     <Input placeholder="--"
+      value={genData[keyWord]}
       onBlur={e => dataCheck(keyWord)}
       onChange={e => valueChange({ [keyWord]: e.target.value })}
     />
@@ -25,86 +26,43 @@ class EachStationReport extends Component {
     addAbnormalInfo: PropTypes.func,
   }
 
-  constructor(props){
-    super(props);
-    this.state = {
-      value: { // 编辑中的数据
-        resourceValue: '',
-        yearGenInverter: '',
-        genInverter: '',
-        yearGenIntegrated: '',
-        genIntegrated: '',
-        yearGenInternet: '',
-        genInternet: '',
-        buyPower: '',
-        dailyBuyPower: '',
-        modelInverterCapacity: '',
-        modelInverterPowerGen: '',
-      },
-      checkedResult: { // 数据的检查加过，默认为true，检查通过。
-        resourceValue: true,
-        yearGenInverter: true,
-        genInverter: true,
-        yearGenIntegrated: true,
-        genIntegrated: true,
-        yearGenInternet: true,
-        genInternet: true,
-        buyPower: true,
-        dailyBuyPower: true,
-        modelInverterCapacity: true,
-        modelInverterPowerGen: true,
-      },
-    }
-  }
-
-  valueChange = (param) => { // 替换当前页面数据。
-    const { value } = this.state;
-    this.setState({
-      value: {
-        ...value,
-        ...param
-      }
-    })
-  }
-
-  dataCheck = () => { // input脱焦时，检查该脱焦数据。
-
-  }
-
-  valueChange = (param) => {
+  dataCheck = (keyWord) => { // input脱焦时，检查该脱焦数据
     const { stationInfo, totalInfoChange, dayReportTotalInfoArr, dayReportConfig } = this.props;
-    const unitConfig = dayReportConfig[0] || {}; // 电量单位
-    const genCalcType = dayReportConfig[2] || {}; // 发电量的计算方式 - '1'逆变器，'2'上网电量
-    const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
-    const paramName = Object.keys(param)[0]; // 填写项属性
-    const paramValue = Object.values(param)[0]; // 填写值
-    const tmpReportBaseInfo = reportBasefun(stationInfo.stationType, genUnit); // 指标数组
-    const requireTargetObj = dayReportConfig[1] || {};
-    const requireTargetArr = Object.keys(requireTargetObj); // 指标必填项
-
-    const reportBaseInfo = tmpReportBaseInfo.find(e=>e.configName === paramName) || {};
-    const maxPointLength = reportBaseInfo.pointLength; // 指定的最大小数点位数
-
-    const requireError = requireTargetArr.includes(reportBaseInfo.configName) && !paramValue; // 必填项未填。
-    const paramPointLength = paramValue.split('.')[1] ? paramValue.split('.')[1].length : 0;
-    const dataFormatError = isNaN(paramValue) || paramPointLength > maxPointLength; // 数据格式错误;
-    if (requireError) { // 必填值未填
-      this.messageWarning(`请填写${stationInfo.stationName}${reportBaseInfo.configText}!`);
-    } else if(dataFormatError) { // 数据格式错误
-      this.messageWarning(
-        `${stationInfo.stationName}${reportBaseInfo.configText}需填数字,且不超过${maxPointLength}位小数`
-      );
-    }
-    const valueGenUnit = genUnit === 'kWh'?1:10000; // 发电量单位转换
+    const toCheckedInfo = dayReportTotalInfoArr.find(e => e.dailyReport.stationCode === stationInfo.stationCode); //找到要所在电站数据
+    const { dailyReport } = toCheckedInfo;
     const { stationCapacity, reportDate } = stationInfo;
-    const startOfYear = moment(reportDate).startOf('year').isSame(moment(reportDate), 'day');
-    if(genCalcType.stander === '1' && paramName === 'yearGenInverter' && stationCapacity > 0){ // 逆变器发电量计算等效小时数
-      let { yesterdayyearGenInverter } = stationInfo;
-      startOfYear && (yesterdayyearGenInverter = 0); 
-    }else if(genCalcType.stander === '2' && paramName === 'yearGenInternet' && stationCapacity > 0){
-      let { yesterdayyearGenInternet } = stationInfo;
-      startOfYear && (yesterdayyearGenInternet = 0);
+    const checkResult = valueCheck(stationInfo, dailyReport, dayReportConfig, keyWord);
+    if (!checkResult.result) { // 数据检查. 展示校验结果。
+      message.warn(checkResult.message);
     }
+    const currentArr = ['yearGenInverter', 'yearGenIntegrated', 'yearGenInternet', 'buyPower'];
+    const yesterArr = ['yesterdayyearGenInverter', 'yesterdayyearGenIntegrated', 'yesterdayyearGenInternet', 'yesterdayyearBuyPower'];
+    const dayValueKey = ['genInverter', 'genIntegrated', 'genInternet', 'dailyBuyPower'];
+    if (currentArr.includes(keyWord)) { // 需检测昨日数据并相减填入自动计算数据。
+      const startOfYear = moment(reportDate).startOf('year').isSame(moment(reportDate), 'day');
+      const keyIndex = currentArr.findIndex(e => e === keyWord);
+      const currentValue = dailyReport[keyWord];
+      const yesterValue = dailyReport[yesterArr[keyIndex]];
+      const dayValue = currentValue - yesterValue;
+      if ((currentValue > 0 || currentValue === 0) && (startOfYear || dayValue > 0 || dayValue === 0)) {
+        const uploadParams = dayReportTotalInfoArr.map(info=>{
+          if(info.dailyReport.stationCode === stationInfo.stationCode){
+            const { dailyDetailList } = info;
+            dailyReport[dayValueKey[keyIndex]] = dayValue;
+            return {
+              dailyReport,
+              dailyDetailList,
+            }
+          }
+          return info;
+        })
+        totalInfoChange(uploadParams);
+      }
+    }
+  }
+
+  valueChange = (param) => { // 直接替换数据。
+    const { stationInfo, totalInfoChange, dayReportTotalInfoArr } = this.props;
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === stationInfo.stationCode){
         const { dailyReport, dailyDetailList } = info;
@@ -131,43 +89,45 @@ class EachStationReport extends Component {
     totalInfoChange(uploadParams);
   }
 
-  messageWarning = (text) => {
-    message.destroy();
-    message.config({
-      top: 400,
-      duration: 2,
-      maxCount: 1,
-    });
-    message.warning(text,2);
-  }
-
   render(){
-    const { stationInfo, hasAbnormal } = this.props;
+    const { stationInfo, hasAbnormal, dayReportTotalInfoArr } = this.props;
+    const genData = dayReportTotalInfoArr.find(e => e.dailyReport.stationCode === stationInfo.stationCode).dailyReport;
     return (
       <div className={styles.eachStationReport}>
         <div className={styles.stationName} title={stationInfo.stationName}>{stationInfo.stationName}</div>
         <div className={styles.resource}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ resourceValue: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ resourceValue: e.target.value })} /> */}
+          <InputContent genData={genData} keyWord="resourceValue" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ genInverter: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} /> */}
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genInverter: e.target.value })} /> */}
+          <InputContent  genData={genData} keyWord="yearGenInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent  genData={genData} keyWord="genInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ genIntegrated: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} /> */}
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genIntegrated: e.target.value })} /> */}
+          <InputContent  genData={genData} keyWord="yearGenIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent  genData={genData} keyWord="genIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ genInternet: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} /> */}
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genInternet: e.target.value })} /> */}
+          <InputContent  genData={genData} keyWord="yearGenInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent  genData={genData} keyWord="genInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ dailyBuyPower: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} /> */}
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ dailyBuyPower: e.target.value })} /> */}
+          <InputContent  genData={genData} keyWord="buyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent  genData={genData} keyWord="dailyBuyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.modelParts}>
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} />
-          <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} />
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} /> */}
+          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} /> */}
+          <InputContent  genData={genData} keyWord="modelInverterCapacity" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent  genData={genData} keyWord="modelInverterPowerGen" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.handle}>
           <span onClick={this.addAbnormal} className={styles.left}>
