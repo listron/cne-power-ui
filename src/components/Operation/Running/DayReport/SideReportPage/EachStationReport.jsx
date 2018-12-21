@@ -6,6 +6,15 @@ import { Input, Icon,message } from 'antd';
 import { reportBasefun } from '../reportBaseFun';
 import moment from 'moment';
 
+const InputContent = ({ keyWord, dataCheck, valueChange, placeholder = '--' }) => {
+  return (
+    <Input placeholder="--"
+      onBlur={e => dataCheck(keyWord)}
+      onChange={e => valueChange({ [keyWord]: e.target.value })}
+    />
+  )
+}
+
 class EachStationReport extends Component {
   static propTypes = {
     hasAbnormal: PropTypes.bool,
@@ -18,6 +27,48 @@ class EachStationReport extends Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      value: { // 编辑中的数据
+        resourceValue: '',
+        yearGenInverter: '',
+        genInverter: '',
+        yearGenIntegrated: '',
+        genIntegrated: '',
+        yearGenInternet: '',
+        genInternet: '',
+        buyPower: '',
+        dailyBuyPower: '',
+        modelInverterCapacity: '',
+        modelInverterPowerGen: '',
+      },
+      checkedResult: { // 数据的检查加过，默认为true，检查通过。
+        resourceValue: true,
+        yearGenInverter: true,
+        genInverter: true,
+        yearGenIntegrated: true,
+        genIntegrated: true,
+        yearGenInternet: true,
+        genInternet: true,
+        buyPower: true,
+        dailyBuyPower: true,
+        modelInverterCapacity: true,
+        modelInverterPowerGen: true,
+      },
+    }
+  }
+
+  valueChange = (param) => { // 替换当前页面数据。
+    const { value } = this.state;
+    this.setState({
+      value: {
+        ...value,
+        ...param
+      }
+    })
+  }
+
+  dataCheck = () => { // input脱焦时，检查该脱焦数据。
+
   }
 
   valueChange = (param) => {
