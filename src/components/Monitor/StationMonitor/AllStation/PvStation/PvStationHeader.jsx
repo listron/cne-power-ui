@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonProgress from '../../../../Common/CommonProgress'
+import { ValueFormat } from '../../../../Common/UtilComponent'
+import { dataFormat } from '../../../../../utils/utilFunc';
+
 class pvStationHeader extends React.Component {
   static propTypes = {
     pvMonitorStation: PropTypes.object,
@@ -23,33 +26,37 @@ class pvStationHeader extends React.Component {
     const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
     // const yearPlanRate =stationDataSummary.yearPlanRate&&stationDataSummary.yearPlanRate!=='0.00%'?stationDataSummary.yearPlanRate:'--';
     // console.log(yearPlanRate);
-    return (     
-        <div className={styles.headStation}>
-          <div className={styles.typeIcon}>
-            <div className={styles.leftIcon}>
-            </div>
+    return (
+      <div className={styles.headStation}>
+        <div className={styles.typeIcon}>
+          <div className={styles.leftIcon}>
           </div>
-          <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
-          <div className={styles.stationCollect}>
-            <div className={styles.equipmentNum}>
-              <div className={styles.dataValue}>{stationUnitCount}</div>
-              <div className={styles.dataName}>装机台数 台</div>
-            </div>
-            <div className={styles.pvInstantaneous}>
-              <div className={styles.dataPvValue}>{instantaneous}</div>
-              <div className={styles.dataName}>平均辐射 W/m²</div>
-            </div>
-            <div className={styles.dayStation}>
-              <div className={styles.dataValue}>{dayPower}</div>
-              <div className={styles.dataName}>日发电量 万kWh</div>
-            </div>
-            <div className={styles.monthStation}>
-              <div className={styles.dataValue}>{monthPower}</div>
-              <div className={styles.dataName}>月累计发电量 万kWh</div>
-            </div>
-          </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate ? yearPlanRate : ''} />
         </div>
+        <CommonProgress value={stationPower} total={stationCapacity} valueText={"实时功率 MW"} totalText={"装机容量 MW"} />
+        <div className={styles.stationCollect}>
+          <div className={styles.equipmentNum}>
+            <div className={styles.dataValue}>{stationUnitCount}</div>
+            <div className={styles.dataName}>装机台数 台</div>
+          </div>
+          <div className={styles.pvInstantaneous}>
+            <div className={styles.dataPvValue}>{instantaneous}</div>
+            <div className={styles.dataName}>平均辐射 W/m²</div>
+          </div>
+          <div className={styles.dayStation}>
+            <div className={styles.dataValue}>
+              <ValueFormat value={dataFormat(dayPower, '--', 4)} points={4} />
+            </div>
+            <div className={styles.dataName}>日发电量 万kWh</div>
+          </div>
+          <div className={styles.monthStation}>
+            <div className={styles.dataValue}>
+              <ValueFormat value={dataFormat(monthPower, '--', 4)} points={4} />
+            </div>
+            <div className={styles.dataName}>月累计发电量 万kWh</div>
+          </div>
+        </div>
+        <CommonProgress value={yearPower} total={yearPlanPower} valueText={"年累计发电量 万kWh"} totalText={"计划 万kWh"} percent={yearPlanRate ? yearPlanRate : ''} />
+      </div>
     )
   }
 }

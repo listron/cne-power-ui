@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { Progress } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
+import { ValueFormat } from '../UtilComponent/index'
+import { dataFormat } from '../../../utils/utilFunc';
 
 /*
   带文字输入的进度条组件：
@@ -35,8 +37,10 @@ class CommonProgress extends Component {
           <div className={styles.progressInfo}>
             <div className={styles.progressData}>
               <div className={styles.stationValue}>
-                <div>{value}</div>
-                <div className={styles.planOutput}>{total}</div>
+               {/** <div>{value}</div> */}
+               <div> <ValueFormat value={dataFormat(value, '--', 2)} points={2} /></div>
+                {/*<div className={styles.planOutput}>{total}</div> */}
+                <div className={styles.planOutput}><ValueFormat value={dataFormat(total, '--', 2)} points={2} /></div>
               </div>
               <div className={styles.progressBar}>
                 <Progress strokeWidth={3}  percent={value / total * 100} showInfo={false} status="active" />

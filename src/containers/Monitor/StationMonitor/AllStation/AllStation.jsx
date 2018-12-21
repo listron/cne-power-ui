@@ -96,7 +96,9 @@ class AllStation extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  ...state.monitor.stationMonitor.toJS()
+  ...state.monitor.stationMonitor.toJS(),
+  monitorDataUnit: state.common.get('monitorDataUnit').toJS(),
+  
 })
 const mapDispatchToProps = (dispatch) => ({
   getMonitorStation: payload => dispatch({ type: allStationAction.GET_MONITORSTATION_SAGA, payload }),

@@ -6,6 +6,7 @@ export const commonAction = {
   CHANGE_COMMON_STORE: Symbol('CHANGE_COMMON_STORE'),
   getStations: Symbol('getStations'), // 获取电站
   getDeviceTypes: Symbol('getDeviceTypes'), // 获取用户下所有设备类型
+  getMonitorDataUnit: Symbol('getMonitorDataUnit'),//获取电站监控的数据单位以及精确值
   
   getDevices: Symbol('getDevices'),
   getPartition: Symbol('getPartition'),

@@ -8,6 +8,7 @@ var initState = Immutable.fromJS({
   loading: false,
   stations: [], // 所有电站
   deviceTypes: [], // 设备类型
+  monitorDataUnit:{},//企业监控数据单位与精度
   deviceModels: [], // 设备型号
   devicePoints: [], // 设备测点
   stationDeviceTypes: [],//电站下的设备

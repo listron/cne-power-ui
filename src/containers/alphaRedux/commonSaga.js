@@ -49,6 +49,25 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
     console.log(e);
   }
 }
+function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内所有设备类型信息
+const url = `/mock/v3/station/monitor/conf`;
+// const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
+  yield put({ type: commonAction.COMMON_FETCH });
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      console.log(response.data.data,'testtestetet');
+      yield put({
+        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        payload: {
+          monitorDataUnit: response.data.data||{},
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电站==>与用户权限无关。
   try{
@@ -391,6 +410,8 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+  yield takeLatest(commonAction.getMonitorDataUnit, getMonitorDataUnit);
+
   yield takeLatest(commonAction.getStationOfEnterprise, getStationOfEnterprise);
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
   
