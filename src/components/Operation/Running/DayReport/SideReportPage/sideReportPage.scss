@@ -344,6 +344,7 @@
     }
     .ant-table tr {
       display: flex;
+      width: calc(100vw - 269px);
       .deviceTypeName, .deviceName, .faultName, .limitPower, .reason, .startTime, .endTime, .process, .lostPower, .handle{
         word-break: break-all;
         overflow: hidden;
@@ -367,7 +368,7 @@
         flex: 0 0 160px;
       }
       .lostPower{
-        flex: 0 0 100px;
+        flex: 0 0 115px;
       }
       .handle{
         text-align: center;

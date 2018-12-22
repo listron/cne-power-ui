@@ -9,6 +9,9 @@ const loseColumn = [
     title: '设备类型',
     dataIndex: 'deviceTypeName',
     className: 'deviceTypeName',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   }, {
     title: '设备名称',
     dataIndex: 'deviceName',
@@ -19,6 +22,7 @@ const loseColumn = [
   },{
     title: '损失电量类型',
     dataIndex: 'faultName',
+    className: 'faultName',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
@@ -32,9 +36,11 @@ const loseColumn = [
   },{
     title: '发生时间',
     dataIndex: 'startTime',
+    className: 'startTime',
   },{
     title: '结束时间',
     dataIndex: 'endTime',
+    className: 'endTime',
   },{
     title: '处理进展及问题',
     dataIndex: 'process',
@@ -45,6 +51,10 @@ const loseColumn = [
   },{
     title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
+    className: 'lostPower',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   }
 ]
 const limitColumn = [
@@ -52,6 +62,9 @@ const limitColumn = [
     title: '设备类型',
     dataIndex: 'deviceTypeName',
     className: 'deviceTypeName',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   }, {
     title: '设备名称',
     dataIndex: 'deviceName',
@@ -62,6 +75,10 @@ const limitColumn = [
   },{
     title: '限功率',
     dataIndex: 'limitPower',
+    className: 'limitPower',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '原因说明',
     dataIndex: 'reason',
@@ -72,12 +89,24 @@ const limitColumn = [
   },{
     title: '发生时间',
     dataIndex: 'startTime',
+    className: 'startTime',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '结束时间',
     dataIndex: 'endTime',
+    className: 'endTime',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   },{
     title: '日损失电量(kWh)',
     dataIndex: 'lostPower',
+    className: 'lostPower',
+    render: (text, record) => (
+      <span title={text} >{text}</span>
+    ),
   }
 ]
 
