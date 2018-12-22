@@ -41,7 +41,7 @@ class LimitGenTable extends Component {
         className: 'deviceTypeName',
         render: text => {
           const deviceTypeInfo = stationDeviceTypes.find(e => `${e.deviceTypeCode}` === `${text}`) || {};
-          return deviceTypeInfo.deviceTypeName
+          return <span title={deviceTypeInfo.deviceTypeName} >{deviceTypeInfo.deviceTypeName}</span>
         },
       },{
         title: '设备名称',
@@ -53,6 +53,10 @@ class LimitGenTable extends Component {
       },{
         title: '限功率',
         dataIndex: 'limitPower',
+        className: 'limitPower',
+        render: text => (
+          <span title={text}>{text}</span>
+        ),
       },{
         title: '原因说明',
         dataIndex: 'reason',
@@ -63,6 +67,7 @@ class LimitGenTable extends Component {
       },{
         title: '发生时间',
         dataIndex: 'startTime',
+        className: 'startTime',
         render : (text, record) => {
           const { reportDate, startTime, id } = record;
           let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
@@ -71,7 +76,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${id}_startTime`, {
               initialValue: startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+              <DatePicker placeholder="开始时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
             )}
           </Form.Item>:<span>
             {moment(startTime).format('YYYY-MM-DD HH:mm')}
@@ -80,18 +85,20 @@ class LimitGenTable extends Component {
       },{
         title: '结束时间',
         dataIndex: 'endTime',
+        className: 'endTime',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
+              <DatePicker placeholder="结束时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
             )}
           </Form.Item>)
         }
       },{
         title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
+        className: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
@@ -104,6 +111,7 @@ class LimitGenTable extends Component {
       },{
         title: '操作',
         dataIndex: 'handle',
+        className: 'handle',
         render : (text, record) => {
           const { id } = record;
           return (<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}>

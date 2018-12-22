@@ -344,13 +344,13 @@
     }
     .ant-table tr {
       display: flex;
-      .deviceTypeName, .deviceName, .faultName, .reason, .startTime, .endTime, .process, .lostPower, .handle{
+      .deviceTypeName, .deviceName, .faultName, .limitPower, .reason, .startTime, .endTime, .process, .lostPower, .handle{
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .deviceTypeName, .faultName, .deviceName, .reason{
+      .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower,{
         text-align: center;
         flex:0 0 110px;
       }
