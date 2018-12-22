@@ -308,13 +308,6 @@
             flex-direction: column;
             margin-top: 5px;
           }
-          .ant-form-item{
-            display: flex;
-            flex-direction: row;
-            .ant-form-item-control-wrapper{
-              margin: 0 auto;
-            }
-          }
         }
         .ant-modal-footer{
           background: #f1f1f1;
@@ -336,32 +329,51 @@
 }
 
 .lostGenTable{
-  padding: 20px 16px;
+  padding: 20px 0px;
   .removeFaultInfo{
     color: $themeColor;
     cursor: pointer;
   }
-  th,td{
-    padding: 0 8px;
-  }
   :global{
-    .deviceTypeName, .deviceName, .faultName, .startTime{
-      text-align: center;
-      max-width: 150px;
-      word-break: break-all;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .ant-form-item, .ant-form-horizontal {
-      margin-bottom: 0px;
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
     }
     .ant-input{
-      width: auto;
+      width: 100%;
+      padding: 4px;
     }
-  }
-  .lostPower{
-    width: 100px;
+    .ant-table tr {
+      display: flex;
+      .deviceTypeName, .deviceName, .faultName, .reason, .startTime, .endTime, .process, .lostPower, .handle{
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .deviceTypeName, .faultName, .deviceName, .reason{
+        text-align: center;
+        flex:0 0 110px;
+      }
+      .reason{
+        flex: 1 0 110px;
+      }
+      .deviceName{
+        flex: 1 0 150px;
+      }
+      .startTime, .endTime{
+        flex: 0 0 170px;
+      }
+      .process{
+        flex: 0 0 160px;
+      }
+      .lostPower{
+        flex: 0 0 100px;
+      }
+      .handle{
+        text-align: center;
+        flex: 0 0 60px;
+      }
+    }
   }
 }
 

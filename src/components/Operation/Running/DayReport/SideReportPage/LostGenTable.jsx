@@ -38,7 +38,7 @@ class LostGenTable extends Component {
         className: 'deviceTypeName',
         render: text => {
           const deviceTypeInfo = stationDeviceTypes.find(e => `${e.deviceTypeCode}` === `${text}`) || {};
-          return deviceTypeInfo.deviceTypeName
+          return <span title={deviceTypeInfo.deviceTypeName} >{deviceTypeInfo.deviceTypeName}</span>
         },
       },{
         title: '设备名称',
@@ -57,10 +57,14 @@ class LostGenTable extends Component {
       },{
         title: '原因说明',
         dataIndex: 'reason',
-        width: 120,
+        className: 'reason',
+        render: text => (
+          <span title={text} >{text}</span>
+        ),
       },{
         title: '发生时间',
         dataIndex: 'startTime',
+        className: 'startTime',
         render : (text, record) => {
           const { reportDate, startTime, id } = record;
           let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
@@ -69,27 +73,29 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${id}_startTime`, {
               initialValue: startTime,
             })(
-              <DatePicker placeholder="开始时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+              <DatePicker placeholder="开始时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
             )}
-          </Form.Item>:<span className="startTime">
+          </Form.Item>:<span>
             {moment(startTime).format('YYYY-MM-DD HH:mm')}
           </span>
         }
       },{
         title: '结束时间',
         dataIndex: 'endTime',
+        className: 'endTime',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+              <DatePicker placeholder="结束时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
             )}
           </Form.Item>)
         }
       },{
         title: '处理进展及问题',
         dataIndex: 'process',
+        className: 'process',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_process`, {
@@ -102,6 +108,7 @@ class LostGenTable extends Component {
       },{
         title: '日损失电量(kWh)',
         dataIndex: 'lostPower',
+        className: 'lostPower',
         render : (text, record) => {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_lostPower`, {
@@ -114,6 +121,7 @@ class LostGenTable extends Component {
       },{
         title: '操作',
         dataIndex: 'handle',
+        className: 'handle',
         render : (text, record) => {
           const { id, reportDate, defectId } = record;
           let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
