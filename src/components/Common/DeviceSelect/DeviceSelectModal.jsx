@@ -78,7 +78,6 @@ class DeviceSelectModal extends Component {
 
   render() {
     const { deviceModalShow, showModal, partitions } = this.props;
-    console.log(partitions)
     const { modalDevices, checkedDevice } = this.state;
     const { deviceTypeName, deviceTypeCode } = modalDevices[0] || {};
     const partitionCode = partitions[0] && partitions[0].deviceCode;

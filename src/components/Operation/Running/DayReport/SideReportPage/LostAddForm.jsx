@@ -5,6 +5,7 @@ import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
 import { Select, Cascader } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
+import DeviceSelect from '../../../../Common/DeviceSelect';
 const { Option } = Select;
 
 class LostAddForm extends Component {
@@ -37,52 +38,60 @@ class LostAddForm extends Component {
     getStationDeviceTypes({ stationCodes: stationCode });
   }
 
-  componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
-    const { deviceExistInfo } = this.props;
-    const newDeviceExistInfo = nextProp.deviceExistInfo;
-    if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      // if(false){
-      if(newDeviceExistInfo.existError){// 设备验证未通过，有未存在设备
-        const existErrorData = newDeviceExistInfo.existErrorData || [];
-        this.setState({
-          deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData}不存在!`
-        });
-        setTimeout(()=>{
-          this.setState({
-            deviceNameErroShow: false,
-          });
-        },2000);
-      }else{ // 设备验证通过
-        const { form, changeFaultList, faultGenList } = this.props;
-        const { selectLostTypeName } = this.state;
-        const { getFieldsValue } = form;
-        const lostInfo = getFieldsValue();
-        lostInfo.id = `lostAdd${faultGenList.length}`;
-        lostInfo.handle = true;
-        lostInfo.faultName = selectLostTypeName;
-        lostInfo.deviceId = newDeviceExistInfo.existErrorData;
-        lostInfo.faultId = lostInfo.faultId[lostInfo.faultId.length - 1];
-        lostInfo.deviceName = [...new Set(lostInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
-        lostInfo.type = 1;  // 损失type 1 => 后台接收。
-        changeFaultList([...faultGenList,lostInfo], true);
-      }
-    }
-  }
+  // componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
+  //   const { deviceExistInfo } = this.props;
+  //   const newDeviceExistInfo = nextProp.deviceExistInfo;
+  //   if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
+  //     // if(false){
+  //     if(newDeviceExistInfo.existError){// 设备验证未通过，有未存在设备
+  //       const existErrorData = newDeviceExistInfo.existErrorData || [];
+  //       this.setState({
+  //         deviceNameErroShow: true,
+  //         deviceNameErroInfo : `设备${existErrorData}不存在!`
+  //       });
+  //       setTimeout(()=>{
+  //         this.setState({
+  //           deviceNameErroShow: false,
+  //         });
+  //       },2000);
+  //     }else{ // 设备验证通过
+  //       const { form, changeFaultList, faultGenList } = this.props;
+  //       const { selectLostTypeName } = this.state;
+  //       const { getFieldsValue } = form;
+  //       const lostInfo = getFieldsValue();
+  //       lostInfo.id = `lostAdd${faultGenList.length}`;
+  //       lostInfo.handle = true;
+  //       lostInfo.faultName = selectLostTypeName;
+  //       lostInfo.deviceId = newDeviceExistInfo.existErrorData;
+  //       lostInfo.faultId = lostInfo.faultId[lostInfo.faultId.length - 1];
+  //       lostInfo.deviceName = [...new Set(lostInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
+  //       lostInfo.type = 1;  // 损失type 1 => 后台接收。
+  //       changeFaultList([...faultGenList,lostInfo], true);
+  //     }
+  //   }
+  // }
 
   confirmAddFault = () => {
-    const { form, findDeviceExist, stationCode } = this.props;
-    const { deviceTypeCode } = this.state;
+    const { form, findDeviceExist, stationCode, changeFaultList, faultGenList } = this.props;
+    const { deviceTypeCode, selectLostTypeName } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
-        const { deviceName } = values;
-        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
-        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
-        findDeviceExist({
-          deviceName: newDeviceName,
-          stationCode,
-          deviceTypeCode,
-        })
+        values.id = `lostAdd${faultGenList.length}`;
+        values.handle = true;
+        values.faultName = selectLostTypeName;
+        values.deviceId = values.deviceName.map(e => e.deviceId).join(',');
+        values.faultId = values.faultId[values.faultId.length - 1];
+        values.deviceName = values.deviceName.map(e => e.deviceName).join(',');
+        values.type = 1;  // 损失type 1 => 后台接收。
+        changeFaultList([...faultGenList,values], true);
+        // const { deviceName } = values;
+        // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        // const newDeviceName = [...new Set(tmpDeviceName)].join(',');
+        // findDeviceExist({
+        //   deviceName: newDeviceName,
+        //   stationCode,
+        //   deviceTypeCode,
+        // })
       }
     });
   }
@@ -93,12 +102,13 @@ class LostAddForm extends Component {
       stationType,
       deviceTypeCode: value
     })
-    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
-    const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
-    if (tmpName === '全场信息汇总') {
-      form.setFieldsValue({ deviceName: tmpName });
-    }
+    // const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    // const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
+    // if (tmpName === '全场信息汇总') {
+    //   form.setFieldsValue({ deviceName: tmpName });
+    // }
     form.setFieldsValue({ faultId: null });
+    form.setFieldsValue({ deviceName: [] });
     this.setState({
       deviceTypeCode: value,
     })
@@ -111,7 +121,6 @@ class LostAddForm extends Component {
     })
     return value
   }
-
 
 
   cancelAddFault = () => {
@@ -209,14 +218,21 @@ class LostAddForm extends Component {
         </Row>
         <Row className={styles.horizontal} >
           <Col span={8}>
-            <Form.Item label="设备名称" {...formItemLayout1}>
+            <Form.Item label="设备名称" {...formItemLayout1} >
               {getFieldDecorator('deviceName', {
-                rules: [{ required: true, message: '请填写设备名称' }],
+                rules: [{ required: true, message: '设备名称' }],
+                initialValue: [],
               })(
-                <Input disabled={disableDevice} />
+                <DeviceSelect
+                  // disabled={disableDevice}
+                  stationCode={stationCode}
+                  deviceTypeCode={deviceTypeCode}
+                  multiple={true}
+                  // onChange={this.selectedDevice}
+                />
               )}
-              <span className={styles.lostInputTip} >多个设备请以空格隔开，设备较多时，可填写上级设备</span>
-              {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}
+              {/* <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span> */}
+              {/* {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>} */}
             </Form.Item>
           </Col>
         </Row>
