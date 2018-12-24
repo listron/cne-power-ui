@@ -161,7 +161,6 @@ class LimitAddForm extends Component {
             <Form.Item label="限功率" {...formItemLayout1} >
               {getFieldDecorator('limitPower', {
                 rules: [{ 
-                  required: true, 
                   validator: (rule, value, callback)=>{
                     if(value && isNaN(value)){
                       callback('请填写数字');

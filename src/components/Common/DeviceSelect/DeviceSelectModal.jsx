@@ -1,174 +1,129 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Radio  } from 'antd';
-import ProvinceItem from './ProvinceItem';
-import WarningTip from '../WarningTip';
+import { Modal, Select  } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
+const { Option } = Select;
 
-class StationSelectModal extends Component {
+class DeviceSelectModal extends Component {
   static propTypes = {
-    stationModalShow: PropTypes.bool,
-    oneStyleOnly: PropTypes.bool,
-    checkedStations: PropTypes.array,
-    data: PropTypes.array,
-    disabledStation: PropTypes.array,
+    stationCode: PropTypes.number, // 需传props
+    deviceTypeCode: PropTypes.number,
+    deviceModalShow: PropTypes.bool,
+    checkedDevice: PropTypes.array,
+    filterDevices: PropTypes.array,
+    devices: PropTypes.array,
+    partitions: PropTypes.array,
+    filterKey: PropTypes.array,
     multiple: PropTypes.bool,
-    hideStationModal: PropTypes.func,
-    showStationModal: PropTypes.func,
-    handleOK: PropTypes.func
+    hideModal: PropTypes.func,
+    showModal: PropTypes.func,
+    handleOK: PropTypes.func,
+    getDevices: PropTypes.func,
   }
   constructor(props) {
     super(props);
     this.state = {
-      filterStationType: 2,//选中电站类型
-      stationType:[2,0,1],//2所有,0风电，1光伏
-      selectedStation: props.checkedStations, //暂存选中的电站数组
-      showWarningTip: false,
-      warningTipText: ''
+      modalDevices: [], // modal弹框中的所有设备。
+      checkedDevice: props.checkedDevice, // 选中的设备。
     }
+    this.partitionId = 0;
   }
 
-  componentWillReceiveProps(nextProps){
-    const tmpCheckedStations = this.props.checkedStations;
-    const { checkedStations } = nextProps;
-    const tmpCodes = tmpCheckedStations.map(e=>e.stationCode);
-    const newCodes = checkedStations.map(e=>e.stationCode);
-    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e=>tmpCodes.includes(e))
-    if(!isCodesSame){ // 电站数据不同。
-      this.setState({
-        selectedStation: checkedStations,
-      })
+  componentWillReceiveProps(nextProps) {
+    const { devices, filterKey, filterDevices  } = nextProps;
+    const { deviceTypeCode } = devices[0] || {};
+    if (filterKey.includes(deviceTypeCode)) { // 当前modal弹框需要直接默认分区
+      this.setState({ modalDevices: filterDevices });
+    } else { // 不需要默认分区的设备类型，先默认直接将所有设备作为展示。
+      if (this.partitionId > 0 ) { // 此时得到新数据必然是分区请求触发
+        this.setState({ modalDevices: filterDevices });
+      } else { // 此时未进行分区请求。使用全部数据。
+        this.setState({ modalDevices: devices });
+      }
     }
-  }
-
-  onSelectStationType = (e) => {
-    this.setState({
-      filterStationType:e.target.value
-    })
-  }
-
-  onClearSelected = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '确认取消所有已选电站么'
-    });
-  }
-
-  onCancelWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-    });
-  }
-
-  onConfirmWarningTip = () => {
-    this.setState({
-      showWarningTip: false,
-    });
-    this.setState({
-      selectedStation:[]
-    });
-  }
-  onDeleteOneStation = (stationInfor) => {
-    const { selectedStation } = this.state;
-    const tmpSelectedStation = selectedStation.filter(e=>e.stationCode !== stationInfor.stationCode);
-    this.setState({
-      selectedStation: tmpSelectedStation
-    })
   }
   
   handleOK = () => {
-    this.props.handleOK(this.state.selectedStation)
+    this.partitionId = 0; // 重置
+    this.props.handleOK(this.state.checkedDevice);
   }
 
-  checkStation = (selectedStation) => {
-    this.setState({
-      selectedStation
-    })
+  hideModal = () => {
+    this.partitionId = 0; // 重置
+    this.props.hideModal();
   }
 
+  matrixChange = partitionCode => { // 请求分区数据。
+    this.partitionId++; // 记录分区特殊标识。触发后开始使用filtered数据作为设备数据源。
+    const { stationCode, deviceTypeCode } = this.props;
+    this.props.getDevices({ stationCode, deviceTypeCode, partitionCode }, 'filterDevices' );
+  }
 
-  _filterStation = () => {
-    const { data, multiple, disabledStation, oneStyleOnly } = this.props;
-    const { filterStationType, selectedStation } = this.state;
-    const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType));
-    let filteredStation = [];
-    tmpStations && tmpStations.length > 0 && tmpStations.forEach(e=>{
-      let findExactStation = false;
-      filteredStation.forEach(m=>{
-        if(m.provinceCode === e.provinceCode){
-          findExactStation = true;
-          m.stations.push(e);
-        }
-      })
-      if(!findExactStation){
-        filteredStation.push({
-          provinceCode: e.provinceCode,
-          provinceName: e.provinceName,
-          stations:[e]
+  checkDevice = device => { // 点击选中设备
+    const { multiple } = this.props;
+    const { checkedDevice } = this.state;
+    if (multiple) { // 多选
+      if (checkedDevice.find(e => e.deviceCode === device.deviceCode)) { // 已选中删除
+        this.setState({
+          checkedDevice: checkedDevice.filter(e => e.deviceCode !== device.deviceCode)
         })
+      } else { // 添加选中
+        checkedDevice.push(device);
+        this.setState({ checkedDevice });
       }
-    })
-    return filteredStation.map(e=>(
-      <ProvinceItem 
-        key={e.provinceCode} 
-        oneStyleOnly={oneStyleOnly}
-        disabledStation={disabledStation}
-        multiple={multiple} 
-        checkStation={this.checkStation} 
-        provinceInfo={{...e}} 
-        selectedStation={selectedStation} 
-      />
-    ))
-  }
-  _selectedStation = () => {
-    const { selectedStation } = this.state;
-    return (
-      <div className={styles.selectedStationList}>
-        <div className={styles.selectedStationTitle}>
-          <span>已选电站{selectedStation.length}个</span>
-          {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>} 
-        </div>
-        <div className={styles.innerStationList}>
-          {selectedStation.map(e=>{
-            return <div key={e.stationCode} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
-          })}
-        </div>
-      </div>
-    )
+    } else { // 单选
+      this.setState({checkedDevice: [device] });
+    }
   }
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
-    const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
-    const tmpStationSet = new Set(data.map(e=>e.stationType));
-    const hasMultipleType = tmpStationSet.size > 1;
+    const { deviceModalShow, showModal, partitions } = this.props;
+    console.log(partitions)
+    const { modalDevices, checkedDevice } = this.state;
+    const { deviceTypeName, deviceTypeCode } = modalDevices[0] || {};
+    const partitionCode = partitions[0] && partitions[0].deviceCode;
     return (
-      <div className={styles.stationSelectModal}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <i className="iconfont icon-filter" onClick={showStationModal} />
+      <div className={styles.deviceSelectModal}>
+        <i className="iconfont icon-filter" onClick={showModal} />
         <Modal
-          visible={stationModalShow}
+          visible={deviceModalShow}
           onOk={this.handleOK}
-          onCancel={hideStationModal}
+          onCancel={this.hideModal}
           cancelText="取消"
           okText="保存"
           title="请选择"
           width={625}
-          wrapClassName={styles.stationModal}
+          wrapClassName={styles.deviceModal}
         >
-          <div className={styles.stationStyleModal}>
-            {hasMultipleType && <div className={styles.stationType}>
-              <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
-                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
-              </RadioGroup>
-            </div>}
-            <div className={styles.provinceList}>
-              {this._filterStation()}
+          <div className={styles.deviceContent}>
+            <div className={styles.header}>
+              <span>设备类型</span>
+              <span className={styles.deviceType}>{deviceTypeName}</span>
+              <span>所属分区</span>
+              <Select
+                onChange={this.matrixChange}
+                placeholder="请选择"
+                defaultValue={deviceTypeCode === 509 ? partitionCode : null}
+                style={{ width: 112 }}
+              >
+                {partitions.map(e => (<Option key={e.deviceCode} value={e.deviceCode}>
+                  {e.deviceName}
+                </Option>))}
+              </Select>
             </div>
-            <div className={styles.selectStations}>
-              {multiple && this._selectedStation()}
+            <div className={styles.deviceList}>
+              {modalDevices.map(e => {
+                const activeDevice = checkedDevice.find(info => info.deviceCode === e.deviceCode);
+                return (<span
+                  key={e.deviceCode}
+                  onClick={()=>this.checkDevice(e)}
+                  className={styles.eachDevice}
+                  style={{
+                    backgroundColor: activeDevice ? '#199475' : '#f1f1f1',
+                    color: activeDevice ? '#fff' : '#666',
+                  }}
+                >{e.deviceName}</span>)
+              })}
             </div>
           </div>
         </Modal>
@@ -177,4 +132,4 @@ class StationSelectModal extends Component {
     
   }
 }
-export default StationSelectModal;
+export default DeviceSelectModal;
