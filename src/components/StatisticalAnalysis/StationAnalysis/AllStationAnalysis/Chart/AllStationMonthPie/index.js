@@ -22,7 +22,6 @@ class AllStationMonthPie extends React.Component {
     const targetPieChart = echarts.init(document.getElementById(allStationMonthpie));
     let reg=/\((.+)\)/g;
     let unit=reg.exec(yAxisName)[1] || "";
-    targetPieChart.clear();
     targetPieChart.resize();
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetPieOption = {
@@ -38,7 +37,7 @@ class AllStationMonthPie extends React.Component {
         extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)",
         formatter: function (params) {
           if(params.seriesName==="PR"){
-            return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
+            return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:160px;overflow:hidden;">'+params.name+'</div>'
             + yAxisName.split('(')[0] + '：' + params.value +unit+ '<br>';
           }
           return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">'+params.name+'</div>'
@@ -50,7 +49,7 @@ class AllStationMonthPie extends React.Component {
         {
           name: xAxisName,
           type: 'pie',
-          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
+          color:['#a42b2c','#d48265','#91c7af','#749f83','#ca8622','#efc17e','#d8907a','#bda29a','#546570','#6e7074','#9b9b9b','#ceebe0'],
           radius: '55%',
           center: ['50%', '50%'],
           data:pieTargetData,
@@ -72,7 +71,7 @@ class AllStationMonthPie extends React.Component {
         }
       ]
     };
-    targetPieChart.setOption(targetPieOption);
+    targetPieChart.setOption(targetPieOption,'notMerge');
   };
 
   render() {

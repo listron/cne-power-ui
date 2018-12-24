@@ -57,13 +57,11 @@ class SingleStationStatistic extends React.Component {
   }
   componentDidMount() {
     const { year, dateType, singleStationCode, getSingleStationStatisticData, getSingleStationPvCompareData, getSingleStationPowerEffectiveData, getSingleStationTargetData, getSingleStationPlanRateData, getSingleStationMonthPieData } = this.props;
-    //console.log(singleStationCode);
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
     const curYearArray = [moment().format('YYYY')]
     const currentMonth = Number(moment().format('MM'));
     //let time = year ? year : [`${currentYear}`];
-    //console.log(time);
 
     this.props.changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
 
@@ -120,13 +118,11 @@ class SingleStationStatistic extends React.Component {
     const { stationCode } = this.props.match.params;
     let allStations=stations.toJS();
     let singleStationType=allStations.length>0&&allStations.filter(e=>e.stationCode===Number(stationCode))[0].stationType;
-      console.log(singleStationType);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     const curYearNum = nextProps.year[0].split('-')[0];
     const curMonthNum = nextProps.year[0].split('-')[1];
-    // console.log(curYearNum,curMonthNum);
     const curMonth = moment().format('YYYY-MM');
     const curMonthArray = [moment().format('YYYY-MM')]
     const curYear = Number(nextProps.year)
@@ -383,7 +379,6 @@ class SingleStationStatistic extends React.Component {
 
   }
   onTimeChange=(timeObj)=>{
-    // console.log(timeObj);
     timeObj.timeStyle === 'year' ? 
     this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime],selectYear:timeObj.endTime}) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
@@ -436,9 +431,7 @@ class SingleStationStatistic extends React.Component {
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: +e.monthPower===0 ?'':e.monthPower, name: `${e.month}月` }));
     const pieCompleteValue = Number(singleStationPlanRate) 
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
-    // console.log(pieData, pieComplete);
     //计划完成率
-    //console.log(singleStationPlanRateData);
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
     const planPowerData = singleStationPlanRateData.map(e =>e.planPower)||[];
     const actualPowerData = singleStationPlanRateData.map(e =>e.actualPower)||[];
@@ -475,9 +468,7 @@ class SingleStationStatistic extends React.Component {
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
     const stationGridTime = stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
-    //console.log(stationItem);
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
-    //console.log(stationItem);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
@@ -756,7 +747,7 @@ class SingleStationStatistic extends React.Component {
                   <BarGraph
                     graphId={'dayLostPower'}
                     yAxisName={'发电量 (万kWh)'}
-                    xAxisName={'损失电量同比'}
+                    xAxisName={'损失电量'}
                     dateType={dateType}
                     title={'损失电量同比'}
                     dateType={dateType}

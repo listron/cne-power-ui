@@ -126,6 +126,7 @@ class TimeSelect extends React.Component {
           value={moment(startTime)} 
           onChange={this.onMonthSelect} 
           placeholder="选择月份" 
+          allowClear={false}
         />}
         {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}
         {timeStyle === 'year' && <span>
