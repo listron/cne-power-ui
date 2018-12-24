@@ -132,59 +132,122 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       showPage: 'edit'
     });
   }
-  const sourceInfoArr = [
-    {name: '天气', value: 'weather', unit: ''},
-    {name: '温度', value: 'temperature', unit: ''},
-    {name: '电站名称', value: 'stationName', unit: ''},
-    {name: '实际容量', value: 'realCapacity', unit: 'MW'},
-    {name: '装机台数', value: 'machineCount', unit: '台'},
+  // const sourceInfoArr = [
+  //   // {name: '天气', value: 'weather', unit: ''},
+  //   // {name: '温度', value: 'temperature', unit: ''},
+  //   // {name: '电站名称', value: 'stationName', unit: ''},
+  //   // {name: '实际容量', value: 'realCapacity', unit: 'MW'},
+  //   // {name: '装机台数', value: 'machineCount', unit: '台'},
+  //   {
+  //     name: stationType>0? '日累计总量': '日均风速',
+  //     value: 'resourceValue', 
+  //     unit: stationType>0? radiationUnit: speedUnit,
+  //   }, {
+  //     name: `日发电量(${stationType>0?'逆变器':'风机机组'})`,
+  //     value: 'genInverter', 
+  //     unit: genUnit
+  //   },
+  //   {name: '日发电量(集电线路)', value: 'genIntegrated', unit: genUnit},
+  //   {name: '日发电量(上网电量)', value: 'genInternet', unit: genUnit},
+  //   {name: '日购网电量', value: 'dailyBuyPower', unit: genUnit},
+  //   {name: '等效小时数', value: 'equivalentHours', unit: 'h'},
+  //   {name: `${stationType>0?'样板逆变器':'样板风机'}容量`, value: 'modelInverterCapacity', unit: 'MW'},
+  //   {name: `${stationType>0?'样板逆变器':'样板风机'}发电量`, value: 'modelInverterPowerGen', unit: genUnit},
+  // ]
+  const totalInfo = [
     {
-      name: stationType>0? '日辐射总量(斜面)': '平均风速',
+      name: stationType>0? '日累计总量': '日均风速',
       value: 'resourceValue', 
       unit: stationType>0? radiationUnit: speedUnit,
-    },
-    {
-      name: `日发电量(${stationType>0?'逆变器':'风机机组'})`,
-      value: 'genInverter', 
-      unit: genUnit
-    },
-    {name: '日发电量(集电线路)', value: 'genIntegrated', unit: genUnit},
-    {name: '日发电量(上网电量)', value: 'genInternet', unit: genUnit},
-    {name: '日购网电量', value: 'dailyBuyPower', unit: genUnit},
-    {name: '等效小时数', value: 'equivalentHours', unit: 'h'},
-    {name: `${stationType>0?'样板逆变器':'样板风机'}容量`, value: 'modelInverterCapacity', unit: 'MW'},
-    {name: `${stationType>0?'样板逆变器':'样板风机'}发电量`, value: 'modelInverterPowerGen', unit: genUnit},
-  ]
-  let { reportDate, createTime, updateTime } = selectedDayReportDetail;
-  reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
+    }, 
+    { name: '日等效小时数', value: 'equivalentHours', unit: 'h' },
+    { name: '日故障损失电量', value: 'faultLost', unit: genUnit },
+    { name: '日限电损失电量', value: 'limitLost', unit: genUnit },
+  ];
+  const inverterInfo = [
+    { name: '日发电量', value: 'genInverter', unit: genUnit },
+    { name: '年发电量', value: 'yearGenInverter', unit: genUnit },
+    { name: '样板机容量', value: 'modelInverterCapacity', unit: 'MW' },
+    { name: '样板机日发电量', value: 'modelInverterPowerGen', unit: genUnit },
+  ];
+  const integrateInfo = [
+    { name: '日发电量', value: 'genIntegrated', unit: genUnit },
+    { name: '年发电量', value: 'yearGenIntegrated', unit: genUnit },
+  ];
+  const netInfo = [
+    { name: '日发电量', value: 'genInternet', unit: genUnit },
+    { name: '年发电量', value: 'yearGenInternet', unit: genUnit },
+    { name: '日购网电量', value: 'dailyBuyPower', unit: genUnit },
+    { name: '年购网电量', value: 'buyPower', unit: genUnit },
+  ];
+  let { createTime, updateTime } = selectedDayReportDetail;
+  // reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
   createTime = createTime? moment(createTime).format('YYYY-MM-DD HH:mm'): '--';
   updateTime = updateTime? moment(updateTime).format('YYYY-MM-DD HH:mm'): '--';
   const { errorInfo } = selectedDayReportDetail
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
-      <span className={styles.reportDetailTitleTip}>日报详情</span>
+      <div className={styles.reportDetailTitleTip}>
+        <span className={styles.mainTitle}>日报详情</span>
+        <span className={styles.titleInfo}>{selectedDayReportDetail.stationName || '--'}</span>
+        <span className={styles.titleInfo}>{selectedDayReportDetail.reportDate || '--'}</span>
+        <span className={styles.titleInfo}>实际容量 {selectedDayReportDetail.realCapacity || '--'}MW</span>
+        <span className={styles.titleInfo}>装机台数 {selectedDayReportDetail.machineCount || '--'}MW</span>
+        <span className={styles.weather}>天气 {selectedDayReportDetail.weather || '--'}</span>
+        <span className={styles.titleInfo}>温度 {selectedDayReportDetail.temperature || '--'}</span>
+      </div>
       <div className={styles.reportDetailTitleRight}>
         <Button onClick={toEditDetail}  className={styles.reportEdit}>编辑</Button>
         <Icon type="arrow-left" className={styles.backIcon}  onClick={toReportList} />
       </div>
     </div>
-    <div className={styles.resourceInfo} >
-      <h4 className={styles.reportSubTitle} >资源电量信息<Icon type="caret-right" theme="outlined" /></h4>
-      <div className={styles.resourceInfoCon}>
-        <span className={styles.eachResourceInfo} >
-          <span className={styles.eachResourceInfoName} >日报日期</span>
-          <span className={styles.eachResourceInfoValue} >{reportDate}</span>
-        </span>
-        {sourceInfoArr.map(e=>{
-          let targetValue = selectedDayReportDetail[e.value];
-          const stationValue = (targetValue || targetValue === 0)?targetValue: '--';
-          return (<span key={e.name} className={styles.eachResourceInfo} >
-            <span className={styles.eachResourceInfoName} >{e.name}</span>
-            <span className={styles.eachResourceInfoValue} >{stationValue}</span>
-            <span className={styles.eachResourceInfoUnit} >{e.unit}</span>
-          </span>)
-        })}
+    <div className={styles.totalInfo}>
+      <div className={styles.tooltip}>综合信息<Icon type="caret-right" theme="outlined" /></div>
+      <div className={styles.infoDetail}>
+        {totalInfo.map(e => (
+          <span className={styles.eachInfo}>
+            <span className={styles.name}>{e.name}</span>
+            <span className={styles.value}>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{e.unit}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+    <div className={styles.totalInfo}>
+      <div className={styles.tooltip}>逆变器信息<Icon type="caret-right" theme="outlined" /></div>
+      <div className={styles.infoDetail}>
+        {inverterInfo.map(e => (
+          <span className={styles.eachInfo}>
+            <span className={styles.name}>{e.name}</span>
+            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{e.unit}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+    <div className={styles.totalInfo}>
+      <div className={styles.tooltip}>集电线路信息<Icon type="caret-right" theme="outlined" /></div>
+      <div className={styles.infoDetail}>
+        {integrateInfo.map(e => (
+          <span className={styles.eachInfo}>
+            <span className={styles.name}>{e.name}</span>
+            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{e.unit}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+    <div className={styles.totalInfo}>
+      <div className={styles.tooltip}>关口表信息<Icon type="caret-right" theme="outlined" /></div>
+      <div className={styles.infoDetail}>
+        {netInfo.map(e => (
+          <span className={styles.eachInfo}>
+            <span className={styles.name}>{e.name}</span>
+            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{e.unit}</span>
+          </span>
+        ))}
       </div>
     </div>
     <div className={styles.lostInfo} >

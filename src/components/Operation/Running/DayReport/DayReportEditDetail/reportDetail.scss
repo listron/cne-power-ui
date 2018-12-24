@@ -17,7 +17,17 @@
     justify-content: space-between;
     .reportDetailTitleTip{
       margin-left: 30px;
-      font-size: 18px;
+      display: flex;
+      align-items: center;
+      .mainTitle {
+        font-size: 18px;
+      }
+      .titleInfo {
+        margin-left: 24px;
+      }
+      .weather{
+        margin-left: 120px;
+      }
     }
     .reportDetailTitleRight{
       display: flex;
@@ -41,27 +51,34 @@
       }
     }
   }
-  .resourceInfo{
-    padding: 20px 25px;
-    border-bottom:1px #dfdfdf dashed;
-    .resourceInfoCon{
-      :global{
-        .ant-form-item-label{
-          label::after{
-            margin:0px;
-          }
-        } 
+  .totalInfo{
+    display: flex;
+    margin-top: 24px;
+    .tooltip{
+      flex: 0 0 130px;
+      text-align: right;
+      font-weight: 500;
+      line-height: 30px;
+      svg{
+        width: 8px;
+        font-size: 10px;
       }
-      padding: 0 100px;
-      .eachResourceInfo{
-        display: inline-block;
-        width: 33.33%;
-        line-height: 40px;
-        .eachResourceInfoName{
-          width: 145px;
-          margin-right: 12px;
+    }
+    .infoDetail{
+      display: flex;
+      flex: 0 0 660px;
+      flex-wrap: wrap;
+      .eachInfo{
+        flex: 0 0 330px;
+        display: flex;
+        line-height: 30px;
+        .name{
+          flex: 0 0 120px;
           text-align: right;
-          display: inline-block;
+          margin-right: 24px;
+        }
+        .value{
+          margin-right: 8px;
         }
       }
     }
@@ -144,7 +161,17 @@
     justify-content: space-between;
     .reportDetailTitleTip{
       margin-left: 30px;
-      font-size: 18px;
+      display: flex;
+      align-items: center;
+      .mainTitle {
+        font-size: 18px;
+      }
+      .titleInfo {
+        margin-left: 24px;
+      }
+      .weather{
+        margin-left: 120px;
+      }
     }
     .reportDetailTitleRight{
       display: flex;
@@ -171,11 +198,43 @@
 
   .editResourceInfo{
     padding: 15px 0 30px 30px;
+    .totalInfo{
+      display: flex;
+      .tooltip{
+        flex: 0 0 130px;
+        text-align: right;
+        font-weight: 500;
+        line-height: 30px;
+        svg{
+          width: 8px;
+          font-size: 10px;
+        }
+      }
+      .editPart{
+        display: flex;
+        flex-wrap: wrap;
+        flex: 0 0 660px;
+        .info{
+          flex: 0 0 330px;
+          display: flex;
+          line-height: 30px;
+          margin-bottom: 21px;
+          .name {
+            flex: 0 0 120px;
+            text-align: right;
+            margin-right: 24px;
+          }
+          .value{
+
+          }
+        }
+      }
+    }
     :global{
       .ant-form-inline .ant-form-item {
-        width: 33.33%;
         margin-right: 0px;
         margin-bottom: 21px;
+        flex: 0 0 330px;
         > .ant-form-item-label {
           width: 145px;
           text-align: right;
@@ -189,7 +248,8 @@
         }
         .ant-form-item-control-wrapper{
           .ant-input{
-            width: 80px;
+            width: 90px;
+            padding: 0 4px;
           }
         }
       }
@@ -198,27 +258,15 @@
           position: absolute;
         }
       }
-
     }
     .resourceInfoCon{
-      padding: 20px 100px 0;
+      padding: 20px 0;
       :global{
         .ant-form-item-label{
           label::after{
             margin:0px;
           }
         } 
-      }
-      .eachResourceInfo{
-        display: inline-block;
-        width: 33.33%;
-        line-height: 40px;
-        .eachResourceInfoName{
-          width: 145px;
-          text-align: right;
-          display: inline-block;
-          margin-right: 12px;
-        }
       }
     }
   }
