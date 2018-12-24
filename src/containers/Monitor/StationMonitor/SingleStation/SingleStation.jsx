@@ -97,7 +97,7 @@ class SingleStation extends Component {
 
     this.timeOutId = setTimeout(() => {
       this.getTenSeconds(stationCode);
-    }, 10000);
+    }, 100000000);
   }
 
   getOutputDataTenMin = (stationCode,stationType) => { // 10min请求一次处理
@@ -150,6 +150,12 @@ const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
     // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
+    realTimePowerUnit: state.common.get('realTimePowerUnit'),
+    realTimePowerPoint: state.common.get('realTimePowerPoint'),
+    realCapacityUnit: state.common.get('realCapacityUnit'),
+    realCapacityPoint: state.common.get('realCapacityPoint'),
+    powerUnit: state.common.get('powerUnit'),
+    powerPoint: state.common.get('powerPoint'),
   })
 };
 

@@ -19,6 +19,8 @@ class CommonProgress extends Component {
     valueText: PropTypes.string,//实际值文字描述，左下角
     totalText: PropTypes.string,//计划值文字描述。右下角
     percent: PropTypes.string,//百分比，右边，选填，若无不显示
+    valueunit: PropTypes.string,//百分比，右边，选填，若无不显示
+    points: PropTypes.any,//百分比，右边，选填，若无不显示
   }
 
   static defaultProps = {
@@ -31,16 +33,16 @@ class CommonProgress extends Component {
   
 
   render(){
-    const { value, total, valueText, totalText, percent} = this.props;
+    const { value, total, valueText, totalText, percent,valueunit,points} = this.props;
     return (
       <div className={styles.commonProgress}>
           <div className={styles.progressInfo}>
             <div className={styles.progressData}>
               <div className={styles.stationValue}>
                {/** <div>{value}</div> */}
-               <div> <ValueFormat value={dataFormat(value, '--', 2)} points={2} /></div>
+               <div> <ValueFormat value={dataFormat(value, '--', points)} points={points} valueunit={valueunit} /></div>
                 {/*<div className={styles.planOutput}>{total}</div> */}
-                <div className={styles.planOutput}><ValueFormat value={dataFormat(total, '--', 2)} points={2} /></div>
+                <div className={styles.planOutput}><ValueFormat value={dataFormat(total, '--', points)} points={points} /></div>
               </div>
               <div className={styles.progressBar}>
                 <Progress strokeWidth={3}  percent={value / total * 100} showInfo={false} status="active" />

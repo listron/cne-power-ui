@@ -77,7 +77,7 @@ class WindStation extends React.Component {
   }
   statusDataList=()=>{
     let { checked, stationType } = this.state;
-    const { windMonitorStation } = this.props;
+    const { windMonitorStation, } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     const newStationDataList = stationDataList.filter(e => {
       return !checked || (checked && e.alarmNum > 0)
@@ -96,7 +96,7 @@ class WindStation extends React.Component {
     return newStationDataList
   }
   mapData=()=>{
-    const { windMonitorStation } = this.props;
+    const { windMonitorStation ,realTimePowerUnit,realCapacityUnit } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     let iconArray = [
       {
@@ -123,11 +123,13 @@ class WindStation extends React.Component {
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         symbolSize: stationType > 0 ? [30, 20]: [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: item.stationPower,
-        stationCapacity: item.stationCapacity,
+        stationPower: realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000),
+        stationCapacity: realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
         stationStatus:stationStatus,
+        realTimePowerUnit,
+        realCapacityUnit
       })
     })
     return data

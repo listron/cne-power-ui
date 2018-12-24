@@ -100,14 +100,9 @@ module.exports = [
       "code": "10000",
       "message": "请求成功",
       "data": {
-        realTimePower:['kW',2],
-        realCapacity:['kW',2],
-        accumulateRealCapacity:['kW',2],
-        accumulateTotalPower:['kW',2],
-        accumulateDayPower:['kWh',4],
-        accumulateMonthPower:['kWh',4],
-        ccumulateYearPower:['kWh',4],
-        planYearPower:['kWh',4],
+        realTimePower:['kW','2'],
+        realCapacity:['kW','2'],
+        power:['kWh','4'],
       }
     }
   }
