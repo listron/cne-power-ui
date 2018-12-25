@@ -67,6 +67,7 @@ class LimitAddForm extends Component {
 
   confirmAddLimit = () => {
     const { form, changeLimitList, limitGenList } = this.props;
+    const { deviceTypeName } = this.state;
     // const { form, findDeviceExist, stationCode, changeLimitList, limitGenList } = this.props;
     // const { deviceTypeCode } = this.state;
     form.validateFields((err, values) => {
@@ -76,6 +77,7 @@ class LimitAddForm extends Component {
         values.deviceId = values.deviceName.map(e => e.deviceId).join(',');
         values.deviceName = values.deviceName.map(e => e.deviceName).join(',');
         values.type = 0;  // 限电type 0 => 后台接收。
+        values.deviceTypeName = deviceTypeName;
         changeLimitList([...limitGenList,values], true);
         // const { deviceName } = values;
         // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
@@ -94,10 +96,12 @@ class LimitAddForm extends Component {
     // const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
     // const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
     // if (tmpName === '全场信息汇总') {
-      form.setFieldsValue({ deviceName: [] });
+    form.setFieldsValue({ deviceName: [] });
+    const { deviceTypeName } = stationDeviceTypes.find(e => e.deviceTypeCode === value);
     // }
     this.setState({
       deviceTypeCode: value,
+      deviceTypeName,
     })
     return value
   }
@@ -219,7 +223,6 @@ class LimitAddForm extends Component {
           <Col span={16}>
             <Form.Item label="结束时间" {...formItemLayout2} >
               {getFieldDecorator('endTime', {
-                // rules: [{ required: true, message: '结束时间' }],
               })(
                 <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
@@ -269,18 +272,6 @@ class LimitAddForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        {/* <Row className={styles.reasonBox}>
-          <Col span={8}>
-            <Form.Item label="处理进展及说明" {...formItemLayout1} >
-              {getFieldDecorator('process', {
-                rules: [{ required: true, message: '请填写处理进展及说明' }],
-              })(
-                <Input.TextArea className={styles.reasonArea}  />
-              )}
-              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
-            </Form.Item>
-          </Col>
-        </Row> */}
         <Row style={{marginTop: '0px'}}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>

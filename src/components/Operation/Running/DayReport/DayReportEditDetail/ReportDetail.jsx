@@ -206,7 +206,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.tooltip}>综合信息<Icon type="caret-right" theme="outlined" /></div>
       <div className={styles.infoDetail}>
         {totalInfo.map(e => (
-          <span className={styles.eachInfo}>
+          <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
             <span className={styles.value}>{selectedDayReportDetail[e.value] || '--'}</span>
             <span>{e.unit}</span>
@@ -218,7 +218,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.tooltip}>逆变器信息<Icon type="caret-right" theme="outlined" /></div>
       <div className={styles.infoDetail}>
         {inverterInfo.map(e => (
-          <span className={styles.eachInfo}>
+          <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
             <span>{selectedDayReportDetail[e.value] || '--'}</span>
             <span>{e.unit}</span>
@@ -230,7 +230,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.tooltip}>集电线路信息<Icon type="caret-right" theme="outlined" /></div>
       <div className={styles.infoDetail}>
         {integrateInfo.map(e => (
-          <span className={styles.eachInfo}>
+          <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
             <span>{selectedDayReportDetail[e.value] || '--'}</span>
             <span>{e.unit}</span>
@@ -242,7 +242,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       <div className={styles.tooltip}>关口表信息<Icon type="caret-right" theme="outlined" /></div>
       <div className={styles.infoDetail}>
         {netInfo.map(e => (
-          <span className={styles.eachInfo}>
+          <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
             <span>{selectedDayReportDetail[e.value] || '--'}</span>
             <span>{e.unit}</span>

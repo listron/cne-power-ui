@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Icon, message } from 'antd';
+import { DatePicker, Button, Icon, message, Popconfirm } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
@@ -224,11 +224,18 @@ class SideReportPage extends Component {
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
-            {showReportInputList && <Button
-              onClick={this.saveDayReport}
-              className={styles.saveDayReport}
-              loading={loading}
-            >保存</Button>}
+            {showReportInputList && <Popconfirm
+              placement="leftTop"
+              overlayClassName={styles.confirmBox}
+              title="你确定要提交?"
+              onConfirm={this.saveDayReport}
+              okText="确定"
+              cancelText="取消">
+                <Button
+                  className={styles.saveDayReport}
+                  loading={loading}
+                >提交</Button>
+            </Popconfirm>}
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backList} />
           </div>
         </div>

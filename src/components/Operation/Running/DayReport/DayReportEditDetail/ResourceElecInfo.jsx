@@ -310,8 +310,6 @@ class ResourceElecInfo extends Component {
               </Form.Item>
             </div>
           </div>
-          
-          
         </Form>
       </div>
     )

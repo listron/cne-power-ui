@@ -107,7 +107,7 @@
           }
           .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower{
             text-align: center;
-            flex:0 0 110px;
+            flex:1 0 110px;
           }
           .reason{
             flex: 1 0 110px;
@@ -119,10 +119,10 @@
             flex: 0 0 170px;
           }
           .process{
-            flex: 0 0 160px;
+            flex: 1 0 160px;
           }
           .lostPower{
-            flex: 0 0 115px;
+            flex: 1 0 115px;
           }
         }
       }
@@ -339,6 +339,26 @@
         height: 190px;
         width: 950px;
         padding: 10px 20px;
+      }
+    }
+  }
+}
+
+.confirmBox{
+  :global{
+    .ant-popover-inner-content{
+      width: 200px;
+    }
+    .ant-popover-message{
+      padding-bottom: 4px;
+    }
+    .ant-popover-buttons{
+      margin-bottom: 0;
+      .ant-btn-primary{
+        margin-left: 24px;
+      }
+      button{
+        border: none;
       }
     }
   }
