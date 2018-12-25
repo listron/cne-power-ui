@@ -46,6 +46,8 @@ class Main extends Component {
       if(authData) {
         this.props.getStations();
         this.props.getDeviceTypes();
+        //请求企业的数据单位
+        this.props.getMonitorDataUnit();
       }
     }
   }
@@ -161,6 +163,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.getDeviceTypes, payload }),
+  getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });

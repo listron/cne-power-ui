@@ -1,4 +1,4 @@
-import { call, put, takeLatest,all, takeEvery } from 'redux-saga/effects';
+import { call, put, takeLatest, all, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
 import { commonAction } from './commonAction';
@@ -49,14 +49,38 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
     console.log(e);
   }
 }
+function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内所有设备类型信息
+  // const url = `/mock/v3/station/monitor/conf`;
+   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
+  yield put({ type: commonAction.COMMON_FETCH });
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      let monitorDataUnit = response.data.data || {};
+      yield put({
+        type: commonAction.GET_COMMON_FETCH_SUCCESS,
+        payload: {
+          realTimePowerUnit: monitorDataUnit.realTimePower && monitorDataUnit.realTimePower.length > 0 ? monitorDataUnit.realTimePower[0] : 'MW',
+          realTimePowerPoint: monitorDataUnit.realTimePower && monitorDataUnit.realTimePower.length > 0 ? parseFloat(monitorDataUnit.realTimePower[1]) : 0,
+          realCapacityUnit: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? monitorDataUnit.realCapacity[0] : 'MW',
+          realCapacityPoint: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? parseFloat(monitorDataUnit.realCapacity[1]) : 0,
+          powerUnit: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? monitorDataUnit.power[0] : '万kMh',
+          powerPoint: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? parseFloat(monitorDataUnit.power[1]) : 0,
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
-function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电站==>与用户权限无关。
-  try{
+function* getStationOfEnterprise(action) { // 根据企业id获取下面所有电站==>与用户权限无关。
+  try {
     const { payload } = action;
     const { params, actionName, resultName } = payload;
     const url = `${APIBasePath}${APISubPaths.system.getAllStationBaseInfo}/${params.enterpriseId}`;
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: actionName,
         payload: {
@@ -64,18 +88,18 @@ function *getStationOfEnterprise(action){ // 根据企业id获取下面所有电
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
-function *getStationDeviceTypes(action){ // 新共用接口，获取电站下设备类型。
+function* getStationDeviceTypes(action) { // 新共用接口，获取电站下设备类型。
   const url = `${APIBasePath}${commonPaths.getStationDevicetypes}`;
-  try{
+  try {
     const { payload } = action;
     const { params, deviceTypeAction, resultName } = payload;
     const response = yield call(axios.get, url, { params });
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: deviceTypeAction,
         payload: {
@@ -83,7 +107,7 @@ function *getStationDeviceTypes(action){ // 新共用接口，获取电站下设
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
@@ -107,12 +131,12 @@ function* getDeviceModel(action) { // 新共用接口，获取电站设备类型
   }
 }
 
-function *getPoints(action){ // 新-获取电站下测点数据
+function* getPoints(action) { // 新-获取电站下测点数据
   const url = `${APIBasePath}${commonPaths.getStationPoints}`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
-  
+
     const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
@@ -203,17 +227,17 @@ function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设�
     const response = yield call(axios.get, getPartitionsUrl, { params }); // 所有分区信息
     if (response.data.code === '10000') {
       const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
-      const [ devices,allSeries ] = yield all([
+      const [devices, allSeries] = yield all([
         call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
         call(axios.get, getDevicesUrl, { params })
       ]);
-      if(devices.data.code==='10000' && allSeries.data.code==='10000'){
+      if (devices.data.code === '10000' && allSeries.data.code === '10000') {
         yield put({
           type: actionName,
           payload: {
             allSeries, // 所有光伏组件
             devices: devices.data.data || [],
-            firstPartitionCode:partitionCode,
+            firstPartitionCode: partitionCode,
             partitions: response.data.data.partitions || [],
           }
         })
@@ -245,40 +269,40 @@ function* getAllDepartment(action) {//获取所有部门基础信息
   }
 }
 
-function* findDeviceExist(action){ // 查询设备是否存在
+function* findDeviceExist(action) { // 查询设备是否存在
   // const url = '/mock/operation/dayReport/findDeviceExist';
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.findDeviceExist}`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
-    yield put({ 
-      type: actionName, 
+    yield put({
+      type: actionName,
       payload: {
         [resultName]: {
-          existLoading:true,
+          existLoading: true,
         }
       }
     });
     const response = yield call(axios.post, url, params);
 
     if (response.data.code === "20022") { // 设备不存在
-      yield put({ 
-        type: actionName, 
+      yield put({
+        type: actionName,
         payload: {
           [resultName]: {
-            existLoading:false,
+            existLoading: false,
             existError: true,
             existErrorData: response.data.data || '',
             existErroMessage: response.data.message,
           }
         }
       });
-    }else{
-      yield put({ 
-        type: actionName, 
+    } else {
+      yield put({
+        type: actionName,
         payload: {
           [resultName]: {
-            existLoading:false, 
+            existLoading: false,
             existErrorData: response.data.data || '',
             existError: false,
           }
@@ -288,11 +312,11 @@ function* findDeviceExist(action){ // 查询设备是否存在
   } catch (e) {
     const { actionName, resultName } = payload;
     message.error('请求失败，请重试!');
-    yield put({ 
-      type: actionName, 
+    yield put({
+      type: actionName,
       payload: {
         [resultName]: {
-          existLoading:false,
+          existLoading: false,
         }
       }
     });
@@ -300,71 +324,71 @@ function* findDeviceExist(action){ // 查询设备是否存在
   }
 }
 
-function *getLostGenType(action){ // 根据电站类型等指标查询电站故障类型
+function* getLostGenType(action) { // 根据电站类型等指标查询电站故障类型
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getLostGenType}`;
-  try{
+  try {
     const { params, actionName, resultName } = payload;
-    const response = yield call(axios.get, url, {params});
+    const response = yield call(axios.get, url, { params });
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || []}
+      payload: { [resultName]: response.data.data || [] }
     })
-  }catch(error){
+  } catch (error) {
     message.error('获取故障类型失败!');
   }
 }
 
-function *getStationBelongTypes(action){ // 获取电站可能的所属的各种分类信息
+function* getStationBelongTypes(action) { // 获取电站可能的所属的各种分类信息
   const { payload } = action;
   const url = `${APIBasePath}${commonPaths.getStationBelongTypes}`;
-  try{
+  try {
     const { actionName, resultName } = payload;
     const response = yield call(axios.get, url);
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || {}}
+      payload: { [resultName]: response.data.data || {} }
     })
-  }catch(error){
+  } catch (error) {
     message.error('获取电站分类信息失败!');
   }
 }
 
-function *getStationTargetInfo(action){ // 获取电站指定分类信息(省,市,县,分类等。)
+function* getStationTargetInfo(action) { // 获取电站指定分类信息(省,市,县,分类等。)
   const { payload } = action;
   const url = `${APIBasePath}${commonPaths.getStationTargetInfo}`;
-  try{
+  try {
     const { actionName, resultName, params } = payload;
-    const response = yield call(axios.get, url, {params});
+    const response = yield call(axios.get, url, { params });
     yield put({
       type: actionName,
-      payload: { [resultName]: response.data.data || []}
+      payload: { [resultName]: response.data.data || [] }
     })
-  }catch(error){
+  } catch (error) {
     message.error('获取数据失败!');
   }
 }
 
 
-function *getDictionaryInfo(action){ // 获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+function* getDictionaryInfo(action) { // 获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
   const { payload } = action;
   const url = `${APIBasePath}${commonPaths.getDictionaryInfo}`;
-  try{
+  try {
     const { actionName, resultName, params } = payload;
     const response = yield call(axios.post, url, params);
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       yield put({
         type: actionName,
-        payload: { [resultName]: response.data.data || []}
+        payload: { [resultName]: response.data.data || [] }
       })
     }
-   
-  }catch(error){
+
+  } catch (error) {
     message.error('获取数据失败!');
   }
 }
 
-function *getWeather(action) { // 获取电站天气
+function* getWeather(action) { // 获取电站天气
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
@@ -378,7 +402,7 @@ function *getWeather(action) { // 获取电站天气
         }
       })
     } else { throw '天气数据获取失败'; }
-  }catch(error) {
+  } catch (error) {
     console.log(error)
   }
 }
@@ -416,9 +440,11 @@ export function* watchCommon() {
   // yield takeLatest(commonAction.REFRESHTOKEN_SAGA, refreshToken);
   yield takeLatest(commonAction.getStations, getStations);
   yield takeLatest(commonAction.getAllDepartment, getAllDepartment);
+  yield takeLatest(commonAction.getMonitorDataUnit, getMonitorDataUnit);
+
   yield takeLatest(commonAction.getStationOfEnterprise, getStationOfEnterprise);
   yield takeLatest(commonAction.getDeviceTypes, getDeviceTypes);
-  
+
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
   yield takeLatest(commonAction.getMatrixDevices, getMatrixDevices);
