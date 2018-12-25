@@ -3,7 +3,20 @@ import { transferAction } from './transferAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  
+  loading: false,
+  stationCodes: [], // 选中的电站
+  belongMatrixs: [],//所属方阵
+  createTimeStart: '', // 查询时段起点
+  createTimeEnd: '',//询时段结点
+  pageNum: 1,
+  pageSize: 10,
+  totalNum: null,
+  sortField: 'station_code', // 排序字段
+  sortMethod: 'desc', //asc /desc
+  transferList: [], //  忽略列表
+  matrixList: [], // 电站下方阵列表
+  defectId:'',//缺陷ID
+  pageName:'list',// 默认是列表页
 });
 
 

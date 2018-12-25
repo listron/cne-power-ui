@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import cleanoutRecordReducer from './CleanoutModel/CleanoutRecord/cleanoutRecordReducer';
-import cleanoutWarningReducer from './CleanoutModel/CleanoutWarning/cleanoutWarningReducer';
+import cleanWarning from './CleanoutModel/CleanWarning/cleanWarningReducer';
 
 import unhandle from './EarlyWarning/Unhandle/unhandleReducer'
 import ignore from './EarlyWarning/Ignore/ignoreReducer'
@@ -10,7 +10,7 @@ import transFer from './EarlyWarning/Transfer/transferReducer'
 
 const highAnalysisReducer = combineReducers({ 
   cleanoutRecordReducer,
-  cleanoutWarningReducer,
+  cleanWarning,
  
   unhandle,
   ignore,

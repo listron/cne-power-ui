@@ -27,10 +27,11 @@ class OutputTenMin extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData,yXaisName,chartType } = nextProps;
+    const { capabilityData,yXaisName,chartType,yAxisUnit } = nextProps;
+    let yAxisType=`功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
-    const capabilityPower = capabilityData.map(e => e.stationPower);
+    const capabilityPower = capabilityData.map(e => yAxisUnit==='MW'?e.stationPower:e.stationPower*1000);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
@@ -118,7 +119,7 @@ class OutputTenMin extends Component {
         },
       yAxis: [
         {
-          name: '功率(MW)',
+          name: yAxisType,
           type: 'value',
           min: minPower < 0? minPower: 0,
           axisLabel: {

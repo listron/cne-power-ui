@@ -53,7 +53,9 @@
         color: $darkColor;
         margin-right: 8px;
         margin-bottom: 8px;
-        width: 135px;
+        // width: 135px;
+        min-width: 130px;
+        padding-right: 6px;
         height: 24px;
         border-radius: 4px;
         background-color: #f1f1f1;

@@ -405,7 +405,14 @@ class AllStationStatistic extends React.Component {
             <div className={styles.singleAlarmFilter} >{operations}</div>
             <div className={styles.componentContainer}>
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-              <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+              <PlanCompletionRate
+                dateType={dateType}
+                stationType={stationType}
+                allStationAvalibaData={allStationAvalibaData}
+                allStationStatisticData={allStationStatisticData}
+                getAllStationStatisticData={getAllStationStatisticData}
+                year={year}
+                selectYear={selectYear}
                 changeAllStationStore={changeAllStationStore} />
               <TargetTabs {...this.props} />
               <StationStatisticList {...this.props} />
@@ -427,7 +434,14 @@ class AllStationStatistic extends React.Component {
             <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
                 <TimeSelect showDayPick={false} onChange={this.onTimeChange} />
-                <PlanCompletionRate dateType={dateType} stationType={stationType} allStationAvalibaData={allStationAvalibaData} allStationStatisticData={allStationStatisticData} getAllStationStatisticData={getAllStationStatisticData} year={year} selectYear={selectYear}
+                <PlanCompletionRate
+                  dateType={dateType}
+                  stationType={stationType}
+                  allStationAvalibaData={allStationAvalibaData}
+                  allStationStatisticData={allStationStatisticData}
+                  getAllStationStatisticData={getAllStationStatisticData}
+                  year={year}
+                  selectYear={selectYear}
                   changeAllStationStore={changeAllStationStore} />
                 <TargetTabs {...this.props} />
                 <StationStatisticList {...this.props} />
@@ -439,7 +453,7 @@ class AllStationStatistic extends React.Component {
         {
           showStationSelect &&
           <StationSelectModal
-            stations={stations.filter(e=>e.get('stationType') === 1)}
+            stations={stations.filter(e => e.get('stationType') === 1)}
             onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />
         }

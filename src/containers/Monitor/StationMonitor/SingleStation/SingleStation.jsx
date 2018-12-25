@@ -39,7 +39,7 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
-    // this.getOutputDataTenMin(stationCode);
+    this.getOutputDataTenMin(stationCode,this.props.stationType);
     this.getPowerDataTenMin(stationCode);
     const { search } = this.props.location;
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
@@ -73,7 +73,6 @@ class SingleStation extends Component {
     }
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
-      // this.props.changeSingleStationStore({ deviceTypeFlow: {} });
       this.props.resetSingleStationStore();
       this.props.getStationList({})
       this.getTenSeconds(nextStationCode);
@@ -150,6 +149,12 @@ const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
     // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
+    realTimePowerUnit: state.common.get('realTimePowerUnit'),
+    realTimePowerPoint: state.common.get('realTimePowerPoint'),
+    realCapacityUnit: state.common.get('realCapacityUnit'),
+    realCapacityPoint: state.common.get('realCapacityPoint'),
+    powerUnit: state.common.get('powerUnit'),
+    powerPoint: state.common.get('powerPoint'),
   })
 };
 

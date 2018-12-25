@@ -8,6 +8,12 @@ var initState = Immutable.fromJS({
   loading: false,
   stations: [], // 所有电站
   deviceTypes: [], // 设备类型
+  realTimePowerUnit:'MW',//实时功率单位
+  realCapacityUnit:'MW',//装机容量单位
+  powerUnit:'万kMh',//各种发电量单位
+  realTimePowerPoint:'',//实时功率保留位数
+  realCapacityPoint:'',//装机容量保留位数
+  powerPoint:'',//各种发电量保留位数
   deviceModels: [], // 设备型号
   devicePoints: [], // 设备测点
   stationDeviceTypes: [],//电站下的设备

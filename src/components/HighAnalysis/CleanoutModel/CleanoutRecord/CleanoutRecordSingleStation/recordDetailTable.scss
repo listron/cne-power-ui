@@ -1,0 +1,21 @@
+.handle{
+  display: flex;
+  justify-content: center;
+  margin-left:44px ;
+  button{
+    margin-right: 16px;
+  }
+}
+.stationTable{//table字体图表样式
+  :global{
+    .iconfont{
+      font-size: 20px;
+      &:hover{
+        color:#199475
+      }
+    }
+    .icon-edit,.icon-del{
+      color:#199475;
+    }
+  }
+}

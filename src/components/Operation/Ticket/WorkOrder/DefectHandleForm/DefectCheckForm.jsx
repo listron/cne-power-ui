@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import { Form, Button, Radio } from 'antd';
-import InputLimit from '../../../../Common/InputLimit';
+import InputLimit from '../../../../Common/InputLimit/index';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -33,7 +33,7 @@ class DefectCheckForm extends Component {
     this.props.form.resetFields();
   }
 
-  render() {   
+  render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const dealResult = getFieldValue('checkResult');
     return (
@@ -51,9 +51,9 @@ class DefectCheckForm extends Component {
         </FormItem>
         <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('checkInfo', {
-            rules: [{ 
+            rules: [{
               required: dealResult === '1',
-              message: '请输入处理建议' 
+              message: '请输入处理建议'
             }]
           })(
             <InputLimit placeholder="请描述，不超过80个汉字" />
@@ -65,7 +65,7 @@ class DefectCheckForm extends Component {
         </div>
       </Form>
     );
-  }  
+  }
 }
 
 export default Form.create()(DefectCheckForm);

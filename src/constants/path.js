@@ -12,6 +12,7 @@ export default {
     imgUploads:'/v3/uploadfile', //上传文件
     getStations: '/v3/station/datalist',//按照用户权限获取电站
     getDevicetypes: '/v3/station/devicetype',
+    getMonitorDataUnit: '/v3/station/monitor/conf',//获取电站监控单位的单位以及精确值接口名
     getStationDevicetypes: '/v3/station/devicetypes',
     getDevices: '/v3/station/stationdevices',
     getPartitions: '/v3/station/partitions',
@@ -21,6 +22,7 @@ export default {
     getLostGenType: '/v3/faulttype/getlist', // 故障损失类型
     getStationBelongTypes: '/v3/management/total', // 获取电站可能的所属的各种分类信息
     getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
+    getWeather: '/v3/monitor/weather', // 单电站未来天气
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
     getDictionaryInfo:'/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
 
@@ -177,6 +179,12 @@ export default {
       addPlanList:'/v3/performance/stationplan', //  添加生产计划
       eddPlanList:'/v3/performance/stationplan', //  编辑生产计划
       getYearList:'/v3/station/yearlist',// 生产计划的年份
+
+      //预警配置
+      getSeriesData:'/v3/forewarning/conf',  //获取低效组串预警配置
+      addSeriesData:'/v3/forewarning/conf',  //设置低效组串预警配置
+      getCleaningData:'/v3/pvclean/conf', //获取清洗模型预警配置
+      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置     
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
@@ -285,6 +293,11 @@ export default {
       indicatorReport: 'v3/performance/generalreport/indicator',
     },
     highAnalysis:{
+      getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
+      getCleanWarningDetail: '/v3/pvclean/warning/details', // 指定清洗预警详情
+      getTotalDustEffect: '/v3/pvclean/station/dustinfluence', // 全局灰尘影响
+      getMatrixDustEffect: '/v3/pvclean/matrix/dustinfluence', // 方阵灰尘影响
+
       getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
       getIgnorelist:'/v3/forewarning/ignorelist', //已忽略历史预警
       getTransferlist:'/v3/forewarning/toorderlist',// 已转工单列表
@@ -293,28 +306,28 @@ export default {
       warnDetail:'/v3/forewarning',//预警信息
       getSequencechart:'/v3/pv/sequencechart',//电流时序图
       getMatrixList:'/v3/station/matrix', //获取电站下方阵
-      getStationDust:'/v3/pvclean/station/dustinfluence/',
-      getMatrixDust: '/v3/pvclean/matrix/dustinfluence/',
+      getStationDust:'/v3/pvclean/station/dustinfluence',
+      getMatrixDust: '/v3/pvclean/matrix/dustinfluence',
       unignore:'/v3/forewarning/unignore',//取消忽略列表
       //清洗模型的首页
       getMainList: '/v3/pvclean/plan/list',
       //清洗模型点击进入单电站清洗详情
       getDetailList: '/v3/pvclean/plan/details',
       //加，编辑，获取，删除，清洗计划
-      getAddCleanPlan: '/v3/pvclean/plan/artificial',
-      getEditCleanPlan: '/v3/pvclean/plan/artificial',
-      getCleanPlanDetail: '/v3/pvclean/plan/artificial/',
-      deleteCleanPlan: '/v3/pvclean/plan/artificial/',
+      getAddCleanPlan: '/v3/pvclean/plan/insertartificial',
+      getEditCleanPlan: '/v3/pvclean/plan/updateartificial',
+      getCleanPlanDetail: '/v3/pvclean/plan/getartificial',
+      deleteCleanPlan: '/v3/pvclean/plan/deleteartificial',
       //加，编辑，获取，下雨清洗计划
-      getAddRainPlan: '/v3/pvclean/plan/rainfall/',
+      getAddRainPlan: '/v3/pvclean/plan/rainfall',
       getEditRainPlan: '/v3/pvclean/plan/rainfall',
-      getRainPlanDetail: '/v3/pvclean/plan/rainfall/',
+      getRainPlanDetail: '/v3/pvclean/plan/rainfall',
       //清洗记录列表，增，编辑，获取，删记录
-      getPlanRecordList: '/v3 pvclean/record/list',
-      getAddCleanRecord: '/v3/pvclean/record/',
-      editCleanRecord:'/v3/pvclean/record/',
-      getCleanRecordDetail: '/v3/pvclean/record/',
-      deleteCleanRecord: '/v3/pvclean/record/',
+      getPlanRecordList: '/v3/pvclean/record/list',
+      getAddCleanRecord: '/v3/pvclean/record',
+      editCleanRecord:'/v3/pvclean/record',
+      getCleanRecordDetail: '/v3/pvclean/record',
+      deleteCleanRecord: '/v3/pvclean/record',
       //通用报表
       dailyreport:'v3/performance/dailyreport', // 日报
       faultReport: 'v3/performance/generalreport/fault', // 故障日报

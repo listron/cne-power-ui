@@ -5,9 +5,11 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Input, Button, Select, Switch, Radio, Cascader } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
-import DeviceName from '../../../../Common/DeviceName';
+import DeviceName from '../../../../Common/NewDeviceName';
 import InputLimit from '../../../../Common/InputLimit';
-import CommonInput from '../../../../Common/CommonInput';
+// import CommonInput from '../../../../Common/CommonInput';
+import CommonInput from '../../../../Common/CommonInput/index1';
+import Immutable from 'immutable';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
@@ -31,15 +33,15 @@ class TmpForm extends Component {
     onChangeShowContainer: PropTypes.func,
     changeCommonStore: PropTypes.func,
     defectDetail: PropTypes.object,
-    deviceTypeItems: PropTypes.object,
-    deviceAreaItems: PropTypes.object,
-    deviceItems: PropTypes.object,
-    commonList: PropTypes.object,
+    deviceTypes: PropTypes.array,
+    partitions: PropTypes.array,
+    devices: PropTypes.array,
+    commonList: PropTypes.array,
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
-    allSeries:PropTypes.object,
-    firstPartitionCode:PropTypes.string,
+    // allSeries: PropTypes.array,
+    firstPartitionCode: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -49,61 +51,61 @@ class TmpForm extends Component {
     }
   }
 
-  onChangeArea = (value) => {
+  onChangeArea = (value) => { // 改变
     this.setState({
       deviceAreaCode: value
     });
   }
 
-  onChangeReplace = (checked) => {
+  onChangeReplace = (checked) => { // 更换部件
     this.setState({
       checked: checked,
     });
   }
 
-  onStationSelected = (stations) => {
+  onStationSelected = (stations) => { // 电站的选择
     const selectedStation = stations && stations[0] || {};
     const stationCodes = selectedStation.stationCode || 0;
     const stationType = selectedStation.stationType;
     this.props.getStationDeviceTypes({ stationCodes });
     this.props.getLostGenType({
       stationType,
-      objectType:1
+      objectType: 1
     });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null});
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 设备
     const { stations, form } = this.props;
     const stationCode = form.getFieldValue('stations')[0].stationCode;
-    const selectedStationInfo = stations.find(e=>e.stationCode === stationCode) || {};
-    const stationType = selectedStationInfo.stationType; 
+    const selectedStationInfo = stations.find(e => e.stationCode === stationCode) || {};
+    const stationType = selectedStationInfo.stationType;
     let params = {
       stationCode,
       deviceTypeCode
     };
-    
-    if(deviceTypeCode === 509){ //组串时，请求调整
-        this.props.getSliceDevices(params);
-        this.props.getLostGenType({
-          stationType,
-          objectType:1,
-          deviceTypeCode
-        })
-      }else{
-        this.props.getDevices(params);
-        this.props.getStationAreas(params);
-        this.props.getLostGenType({
-          stationType,
-          objectType:1,
-          deviceTypeCode
-        })
-      }
- 
+
+    if (deviceTypeCode === 509) { //组串时，请求调整
+      this.props.getSliceDevices(params);
+      this.props.getLostGenType({
+        stationType,
+        objectType: 1,
+        deviceTypeCode
+      })
+    } else {
+      this.props.getDevices(params);
+      this.props.getStationAreas(params);
+      this.props.getLostGenType({
+        stationType,
+        objectType: 1,
+        deviceTypeCode
+      })
+    }
+
   }
 
-  onDefectCreate = (isContinueAdd) => {
+  onDefectCreate = (isContinueAdd) => { // 保存的状态
     const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail, changeCommonStore } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -119,7 +121,8 @@ class TmpForm extends Component {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
             return e.response;
           }).join(',');
-        } else if (showContainer === 'edit') {
+        }
+        if (showContainer === 'edit') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
             return e.thumbUrl;
@@ -152,7 +155,8 @@ class TmpForm extends Component {
             stationDeviceTypes: [],
             devices: [],
           })
-        } else if (showContainer === 'edit') {
+        }
+        if (showContainer === 'edit') {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
@@ -163,13 +167,14 @@ class TmpForm extends Component {
     });
   }
 
-  getDeviceType = (code) => {
+  getDeviceType = (code) => { //  获取设备类型
     let deviceType = ''
-    let index = this.props.deviceTypeItems.findIndex((item) => {
-      return item.get('deviceTypeCode') === code
+    const { deviceTypes } = this.props;
+    let index = deviceTypes.findIndex((item) => {
+      return item.deviceTypeCode === code
     });
     if (index !== -1) {
-      deviceType = this.props.deviceTypeItems.getIn([index, 'deviceTypeName']);
+      deviceType = deviceTypes[index].deviceTypeName;
     }
     return deviceType;
   }
@@ -182,20 +187,20 @@ class TmpForm extends Component {
       deviceTypeCode,
     };
     areaCode && (params.partitionCode = areaCode);
-    if(deviceTypeCode === 509 && !areaCode){ // 光伏组件卸载。
+    if (deviceTypeCode === 509 && !areaCode) { // 光伏组件卸载。
       getSliceDevices(params);
-    }else{
+    } else {
       getDevices(params);
     }
   }
 
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, deviceItems, defectDetail, showContainer,allSeries,firstPartitionCode } = this.props;
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode, commonList } = this.props;
+    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
-    const stationCode = this.props.form.getFieldValue('stations') ? this.props.form.getFieldValue('stations')[0] ? this.props.form.getFieldValue('stations')[0].stationCode : [] : [];
+    const stationCode = getFieldValue('stations') && getFieldValue('stations')[0] && getFieldValue('stations')[0].stationCode || [];
 
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
     const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
@@ -208,13 +213,13 @@ class TmpForm extends Component {
     }));
     let tmpGenTypes = [];
     let defaultDefectType = [];
-    defectTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
-      let innerArr = {children: []};
-      innerArr.label= ele.name;
-      innerArr.value= ele.id;
+    defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = tmpGenTypes.map(ele => {
+      let innerArr = { children: [] };
+      innerArr.label = ele.name;
+      innerArr.value = ele.id;
       ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        if(editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`){
+        if (editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`) {
           defaultDefectType = [ele.id, innerInfo.id];
         }
         innerArr.children.push({
@@ -225,6 +230,7 @@ class TmpForm extends Component {
       return innerArr;
     })
     const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
+
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -258,11 +264,12 @@ class TmpForm extends Component {
             })(
               <DeviceName
                 stationName={stationName}
+                // allSeries={Immutable.fromJS(allSeries)}
                 allSeries={allSeries}
-                disabled={deviceItems.size === 0}
+                disabled={devices.length === 0}
                 placeholder="输入关键字快速查询"
-                deviceAreaItems={this.props.deviceAreaItems}
-                deviceItems={deviceItems}
+                deviceAreaItems={this.props.partitions}
+                deviceItems={devices}
                 stationCode={stationCode}
                 deviceAreaCode={this.state.deviceAreaCode}
                 deviceTypeCode={getFieldValue('deviceTypeCode')}
@@ -306,7 +313,7 @@ class TmpForm extends Component {
               rules: [{ required: true, message: '请输入缺陷描述' }],
               initialValue: editDefect && defectDetail.defectDescribe || null,
             })(
-              <InputLimit placeholder="请描述，不超过80个汉字" />
+              <InputLimit placeholder="请描述，不超过80个汉字" width={400} />
             )}
           </FormItem>
           <FormItem label="添加图片" colon={false}>
@@ -345,52 +352,54 @@ class TmpForm extends Component {
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
           </FormItem>}
-          {defectFinished && <FormItem label="处理过程" colon={false}>
-            {getFieldDecorator('defectSolveInfo', {
-              rules: [{ required: true, message: '请输入处理过程' }],
-              initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
-            })(
-              <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
-            )}
-          </FormItem>}
-          {defectFinished && <FormItem label="添加照片" colon={false}>
-            <div className={styles.addImg}>
-              <div className={styles.maxTip}>最多4张</div>
-              {getFieldDecorator('imgHandle', {
-                rules: [{ required: false, message: '请上传图片' }],
-                initialValue: [],
-                valuePropName: 'data',
-              })(
-                <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-              )}
-            </div>
-          </FormItem>}
-          {defectFinished && <FormItem label="更换部件" colon={false}>
-            <div>
-              <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
-              {this.state.checked && getFieldDecorator('replaceParts', {
-                rules: [{
-                  required: true,
-                  message: '请输入更换备件'
-                }],
-              })(
-                <Input style={{ marginLeft: 20 }} placeholder="备件名称+型号" />
-              )}
-            </div>
-          </FormItem>}
+          {
+            defectFinished &&
+            <React.Fragment>
+              <FormItem label="处理过程" colon={false}>
+                {getFieldDecorator('defectSolveInfo', {
+                  rules: [{ required: true, message: '请输入处理过程' }],
+                  initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
+                })(
+                  <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
+                )}
+              </FormItem>
+              <FormItem label="添加照片" colon={false}>
+                <div className={styles.addImg}>
+                  <div className={styles.maxTip}>最多4张</div>
+                  {getFieldDecorator('imgHandle', {
+                    rules: [{ required: false, message: '请上传图片' }],
+                    initialValue: [],
+                    valuePropName: 'data',
+                  })(
+                    <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+                  )}
+                </div>
+              </FormItem>
+              <FormItem label="更换部件" colon={false}>
+                <div>
+                  <Switch checked={this.state.checked} onChange={this.onChangeReplace} />
+                  {this.state.checked && getFieldDecorator('replaceParts', {
+                    rules: [{
+                      required: true,
+                      message: '请输入更换备件'
+                    }],
+                  })(
+                    <Input style={{ marginLeft: 20 }} placeholder="备件名称+型号" />
+                  )}
+                </div>
+              </FormItem>
+            </React.Fragment>
+          }
           <div className={styles.actionBar}>
             <Button className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</Button>
             {!editDefect && <Button onClick={() => this.onDefectCreate(true)}>保存并继续添加</Button>}
           </div>
-          {!editDefect && <div className={styles.addTips}>
-          
-          </div>}
+          {!editDefect && <div className={styles.addTips}></div>}
         </div>
       </Form>
     );
   }
 }
 
-const DefectCreateForm = Form.create()(TmpForm);
 
-export default DefectCreateForm;
+export default Form.create()(TmpForm);

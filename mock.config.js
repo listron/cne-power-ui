@@ -17,6 +17,7 @@ const others = require('./mock/others/other');
 const MockStationContrast = require('./mock/statisticalAnalysis/MockStationContrast');
 const plan = require('./mock/system/plan');
 const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysis');
+const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 
 // as
 exports.mockConfig = [
@@ -41,4 +42,6 @@ exports.mockConfig = [
   ...others,
   ...MockStationContrast,//统计分析-电站对比
   ...allstationanalysis,//电站分析
+
+  ...cleanWarning, // 高级分析-清洗预警
 ]

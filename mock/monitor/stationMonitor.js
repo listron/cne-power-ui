@@ -93,5 +93,17 @@ module.exports = [
       "serviceCode": "3.0"
     },
 
-  },
+  },{
+    api: '/mock/v3/station/monitor/conf',
+    method: 'get',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        realTimePower:['kW','2'],
+        realCapacity:['kW','2'],
+        power:['kWh','4'],
+      }
+    }
+  }
 ]

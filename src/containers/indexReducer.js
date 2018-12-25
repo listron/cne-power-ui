@@ -11,6 +11,7 @@ import otherReducer from './alphaRedux/otherReducer';
 import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysisReducer';
 import highAanlysisReducer from './HighAnalysis/highAanlysisReducer';
 
+
 const appReducer = combineReducers({
   common, 
   homepage,

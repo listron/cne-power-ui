@@ -1,0 +1,155 @@
+@import '../../../../theme/theme.scss';
+.realTimeAlarm {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    background-color: #fff;
+    width: 100%;
+}
+
+.alarmTable {
+    display: flex;
+    flex-direction: column;
+    .noData {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        background-color: #fff;
+        margin-top: 48px;
+    }
+    .tableHeader {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        height: 55px;
+        padding: 0 28px;
+        background-color: #fff;
+    }
+    .alarmDesc {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: keep-all;
+        max-width: 175px;
+    }
+    .deviceName {
+        :global {
+            a {
+                border-bottom: 1px $darkColor solid;
+                color: $darkColor;
+                text-decoration: none;
+                &:hover {
+                    border-bottom: 1px $themeColor solid;
+                    color: $themeColor;
+                }
+            }
+        }
+    }
+    .tableFooter {
+        background-color: #fff;
+        height: 45px;
+        line-height: 45px;
+        .info {
+            color: $darkColor;
+            margin-right: 20px;
+            margin-left: 24px;
+            .totalNum {
+                color: rgb(250, 185, 7);
+                margin: auto 4px;
+            }
+        }
+        .cancel {
+            color: $themeColor;
+            cursor: pointer;
+        }
+    }
+    .selected {
+        :global {
+            .icon-action {
+                background-color: $themeColor;
+                color: #fff;
+            }
+        }
+    }
+    :global {
+        .icon-action {
+            background-color: #ceebe0;
+            color: $themeColor;
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .ant-table-placeholder {
+            border-bottom: none;
+        }
+    }
+}
+
+.detailInfo {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .titleText {
+          color: $darkColor;
+          font-size: 14px;
+          margin-left: 10px;
+        }
+      }
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      line-height: 24px;
+      .infoItem {
+        display: flex;
+        flex-direction: row;
+        .label {
+          color: $darkColor;
+          font-size: 14px;
+          min-width: 70px;
+        }
+        .value {
+          display: flex;
+          flex-wrap: wrap;
+          color: $darkColor;
+          font-size: 14px;
+        }
+      }
+    }
+    .ticketButton {
+      margin-top: 24px;
+      margin-left: 65px;
+      width: 120px;
+    }
+    :global {
+      .icon-action {
+        background-color:#ceebe0;
+        color: $themeColor;
+        width:30px;
+        height:30px;
+        border-radius:100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
