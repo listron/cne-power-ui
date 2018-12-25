@@ -70,6 +70,14 @@ class BarGraph extends React.Component {
     return result;
   };
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData= data.some(e => e || e === 0) ? data :replaceData;
+    return realData
+  }
+
 
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData } = param;
@@ -100,8 +108,8 @@ class BarGraph extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}
-            ${(params[index].seriesType === 'line' || xAxisName==='PR') && '%' || ''}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index+1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}
+            ${(params[index].seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
           </div>${paramsItem}`
@@ -199,7 +207,7 @@ class BarGraph extends React.Component {
         {
           name: xAxisName,
           type: 'bar',
-          data: barGraphThatYear,
+          data: this.getDefaultData(barGraphThatYear),
           itemStyle: {
             barBorderRadius: 10,
           },
@@ -209,16 +217,18 @@ class BarGraph extends React.Component {
           name: '环比',
           type: 'line',
           yAxisIndex: 1,
-          data: barGraphRingRatio,
-          //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
+          data: this.getDefaultData(barGraphRingRatio),
         }
       ]
     }
   }
 
+  getMaxNumber=(arr)=>{
+    console.log(Math.max.apply(null,arr))
+  }
+
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData } = param;
-
     let color = this.getColor(xAxisName);
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     return {
@@ -255,7 +265,7 @@ class BarGraph extends React.Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :
             ${params[index].value === 0 || params[index].value ? params[index].value : '--'} 
-            ${(params[index].seriesType === 'line' || xAxisName==='PR') && '%' || ''}</div>`
+            ${(params[index].seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
         </div>${paramsItem}`
@@ -331,6 +341,7 @@ class BarGraph extends React.Component {
             formatter: '{value} %',
             color: '#666',
           },
+          max:null,
           axisTick: {
             show: false,
           },
@@ -350,7 +361,7 @@ class BarGraph extends React.Component {
         {
           name: lastYear,
           type: 'bar',
-          data: barGraphLastYear,
+          data: this.getDefaultData(barGraphLastYear),
           itemStyle: {
             barBorderRadius: 3,
           },
@@ -359,7 +370,7 @@ class BarGraph extends React.Component {
         {
           name: currentYear,
           type: 'bar',
-          data: barGraphThatYear,
+          data: this.getDefaultData(barGraphThatYear),
           itemStyle: {
             barBorderRadius: 3,
           },
@@ -369,7 +380,7 @@ class BarGraph extends React.Component {
           name: '同比',
           type: 'line',
           yAxisIndex: 1,
-          data: barGraphYearOnYear,
+          data: this.getDefaultData(barGraphYearOnYear),
         }
       ]
     };

@@ -16,7 +16,7 @@ import RangeDateFilter from './RangeDateFilter';
 import styles from './filterCondition.scss';
 
 /** 
- * 1 type
+ * 1 option  选项  array  option=['time','stationType']
  *    time   发生时间
       stationType  电站类型
       stationName  电站名称
@@ -34,7 +34,8 @@ import styles from './filterCondition.scss';
  * 5 defectLevelName  type=defectType  选填 缺陷级别分类 如果没有填 默认为 A／B／C
  * 6 defectSourceName  type=defectSource  选填 缺陷来源分类 如果没有填 默认为 '上报','巡检','告警', '预警',
  * 7 warnLevelName type=warnLevel 选填  高级级别  默认为 ['一级','二级','三级','四级']
- * 8 onChange 回调函数 
+ * 8 matrixList  所属方阵的列表
+ * 9 onChange 回调函数 
 */
 class FilterCondition extends Component {
   static propTypes = {
