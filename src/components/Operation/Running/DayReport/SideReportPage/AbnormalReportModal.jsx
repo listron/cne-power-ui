@@ -128,12 +128,6 @@ class AbnormalReportModal extends Component {
   }
 
   messageWarning = (text) => { // 信息错误展示
-    message.destroy();
-    message.config({
-      top: 400,
-      duration: 2,
-      maxCount: 1,
-    });
     message.warning(text,2);
   }
 
@@ -186,7 +180,8 @@ class AbnormalReportModal extends Component {
           <Button onClick={this.toAddGenLost} disabled={addLostFormShow} icon="plus" className={styles.uploadGenLost} >添加</Button>
         </div>
         {(faultGenList && faultGenList.length > 0) ? <LostGenTable 
-          faultGenList={faultGenList} 
+          faultGenList={faultGenList}
+          stationDeviceTypes={stationDeviceTypes}
           abnormalInfo={abnormalInfo}
           reportDate={reportDate} 
           changeFaultList={this.changeFaultList} 
@@ -207,7 +202,8 @@ class AbnormalReportModal extends Component {
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
           <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
         </div>
-        {(limitGenList && limitGenList.length > 0)? <LimitGenTable 
+        {(limitGenList && limitGenList.length > 0)? <LimitGenTable
+          stationDeviceTypes={stationDeviceTypes}
           limitGenList={limitGenList} 
           abnormalInfo={abnormalInfo}
           reportDate={reportDate} 

@@ -165,6 +165,35 @@ function* getPartition(action) { //新-获取方阵列表
   }
 }
 
+function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面getSliceDevices共用方法。
+  const getMatrixUrl = `${APIBasePath}${commonPaths.getPartitions}`;
+  const getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
+  const { payload } = action;
+  try {
+    const { params, actionName } = payload;
+    const response = yield call(axios.get, getMatrixUrl, { params }); // 所有分区信息
+    if (response.data.code === '10000') {
+      const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
+      const [ matrixDevices, devices ] = yield all([
+        call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
+        call(axios.get, getDevicesUrl, { params })
+      ]);
+      if(matrixDevices.data.code==='10000' && devices.data.code==='10000'){
+        yield put({
+          type: actionName,
+          payload: {
+            devices: devices.data.data || [], // 所有设备
+            filterDevices: matrixDevices.data.data || [],
+            partitions: response.data.data.partitions || [],
+          }
+        })
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设备+所有光伏组件信息
   let getPartitionsUrl = `${APIBasePath}${commonPaths.getPartitions}`;
   let getDevicesUrl = `${APIBasePath}${commonPaths.getDevices}`;
@@ -189,14 +218,10 @@ function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设�
           }
         })
       }
-     
     }
   } catch (e) {
     console.log(e);
   }
-
-
-
 }
 
 function* getAllDepartment(action) {//获取所有部门基础信息
@@ -396,6 +421,7 @@ export function* watchCommon() {
   
   yield takeLatest(commonAction.getPartition, getPartition);
   yield takeLatest(commonAction.getSliceDevices, getSliceDevices);
+  yield takeLatest(commonAction.getMatrixDevices, getMatrixDevices);
   yield takeLatest(commonAction.findDeviceExist, findDeviceExist);
   yield takeLatest(commonAction.getLostGenType, getLostGenType);
 
