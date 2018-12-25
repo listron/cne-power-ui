@@ -140,7 +140,7 @@ class PowerDiagramTenMin extends Component {
             }
           }
         }, {
-          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
+          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计辐射(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -220,7 +220,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计辐射' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'line',
           data: instantaneous,
           yAxisIndex: 1,
@@ -262,7 +262,7 @@ class PowerDiagramTenMin extends Component {
         result = ['#a42b2c', '#c7ceb2', '#3e97d1','#199475'];
         break;
       default:
-        result = ['#a42b2c', '#c7ceb2', '#f7c028','#199475'];
+        result = ['#a42b2c', '#e08031', '#f7c028','#199475'];
         break;
     }
     return result;
@@ -271,8 +271,8 @@ class PowerDiagramTenMin extends Component {
    getDefault=(intervalTime)=>{
      let result=[];
      switch(intervalTime){
-       case 0: result='累计曝幅值';break;
-       case 1: result='累计曝幅值';break;
+       case 0: result='累计辐射';break;
+       case 1: result='累计辐射';break;
      }
      return result;
    }
