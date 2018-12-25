@@ -43,7 +43,9 @@ class EachStationReport extends Component {
       const keyIndex = currentArr.findIndex(e => e === keyWord);
       const currentValue = dailyReport[keyWord];
       const yesterValue = dailyReport[yesterArr[keyIndex]];
-      const dayValue = currentValue - yesterValue;
+      const unitConfig = dayReportConfig[0] || {};
+      const numDemical = unitConfig.power === 'kWh' ? 2 : 4;
+      const dayValue = (currentValue - yesterValue).toFixed(numDemical);
       if ((currentValue > 0 || currentValue === 0) && (startOfYear || dayValue > 0 || dayValue === 0)) {
         const uploadParams = dayReportTotalInfoArr.map(info=>{
           if(info.dailyReport.stationCode === stationInfo.stationCode){

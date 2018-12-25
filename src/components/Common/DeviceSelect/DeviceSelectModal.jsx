@@ -11,7 +11,6 @@ class DeviceSelectModal extends Component {
     deviceModalShow: PropTypes.bool,
     checkedDevice: PropTypes.array,
     filterDevices: PropTypes.array,
-    devices: PropTypes.array,
     partitions: PropTypes.array,
     filterKey: PropTypes.array,
     multiple: PropTypes.bool,
@@ -30,17 +29,8 @@ class DeviceSelectModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { devices, filterKey, filterDevices  } = nextProps;
-    const { deviceTypeCode } = devices[0] || {};
-    if (filterKey.includes(deviceTypeCode)) { // 当前modal弹框需要直接默认分区
-      this.setState({ modalDevices: filterDevices });
-    } else { // 不需要默认分区的设备类型，先默认直接将所有设备作为展示。
-      if (this.partitionId > 0 ) { // 此时得到新数据必然是分区请求触发
-        this.setState({ modalDevices: filterDevices });
-      } else { // 此时未进行分区请求。使用全部数据。
-        this.setState({ modalDevices: devices });
-      }
-    }
+    const {  filterDevices  } = nextProps;
+    this.setState({ modalDevices: filterDevices });
   }
   
   handleOK = () => {
@@ -74,6 +64,16 @@ class DeviceSelectModal extends Component {
     } else { // 单选
       this.setState({checkedDevice: [device] });
     }
+  }
+
+  clearDevice = () => { // 清除所有选中设备
+    this.setState({checkedDevice: []});
+  }
+
+  cancelChecked = (deviceCode) => { // 取消单个选中设备。
+    const { checkedDevice } = this.state;
+    const newDevices = checkedDevice.filter(e => e.deviceCode !== deviceCode);
+    this.setState({checkedDevice: newDevices});
   }
 
   render() {
@@ -123,6 +123,20 @@ class DeviceSelectModal extends Component {
                   }}
                 >{e.deviceName}</span>)
               })}
+            </div>
+            <div className={styles.checkedList}>
+              <div className={styles.top}>
+                <span>已选设备 {checkedDevice.length}个</span>
+                <span className={styles.clear} onClick={this.clearDevice}>清空</span>
+              </div>
+              <div className={styles.checkedInfo}>
+                {checkedDevice.map(e => (
+                  <span key={e.deviceCode} className={styles.eachDevice}>
+                    <span className={styles.name}>{e.deviceName}</span>
+                    <span className={styles.cancel} onClick={() => this.cancelChecked(e.deviceCode)}>X</span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </Modal>

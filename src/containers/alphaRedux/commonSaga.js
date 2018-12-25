@@ -454,7 +454,7 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getStationDeviceTypes, getStationDeviceTypes);
   yield takeLatest(commonAction.getDeviceModel, getDeviceModel);
   yield takeLatest(commonAction.getPoints, getPoints);
-  yield takeLatest(commonAction.getDevices, getDevices);
+  yield takeEvery(commonAction.getDevices, getDevices);
   yield takeLatest(commonAction.getStationBelongTypes, getStationBelongTypes);
   yield takeLatest(commonAction.getDictionaryInfo, getDictionaryInfo);
   yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);

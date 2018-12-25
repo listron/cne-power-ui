@@ -1,8 +1,15 @@
 @import '../../../theme/theme.scss';
 
+.deviceModal{
+  :global{
+    .ant-modal-body{
+      padding: 12px 20px 0;
+    }
+  }
+}
 .deviceSelect{
   position: relative;
-  width: 198px; 
+  width: 198px;
   :global {
     .ant-select:not(.ant-select-disabled) {
       &:active, &:focus, &:hover {
@@ -35,14 +42,13 @@
   display: flex;
   flex-direction: column;
   height: 470px;
-  overflow-y: auto;
   .header {
     display: flex;
-    flex: 0 0 46px;
+    flex: 0 0 44px;
     align-items: center;
     background-color: #f1f1f1;
     border-radius: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     padding-left: 24px;
     .deviceType {
       text-align: center;
@@ -58,9 +64,19 @@
       }
     }
   }
-  .deviceList{
+  .deviceList, .checkedList{
     display: flex;
     flex-wrap: wrap;
+    flex: 0 0 320px;
+    overflow-y: auto;
+    align-content: flex-start;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background:rgba(0,0,0,0.5);
+    }
     .eachDevice{
       cursor: pointer;
       background-color: #f1f1f1;
@@ -77,6 +93,55 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+  }
+  .checkedList{
+    flex: 1;
+    border-top: 1px solid $promptColor;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .top{
+      display: flex;
+      padding: 0 12px;
+      width: 100%;
+      justify-content: space-between;
+      height: 30px;
+      align-items: center;
+      .clear{
+        cursor: pointer;
+        padding: 4px 8px;
+        &:hover{
+          background-color: #f1f1f1;
+        }
+      }
+    }
+    .checkedInfo{
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+    .eachDevice{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      .cancel{
+        cursor: pointer;
+        padding-right: 4px;
+        padding-left: 4px;
+        border-radius: 4px;
+        &:hover{
+          color: #f9b600;
+        }
+      }
     }
   }
 }
