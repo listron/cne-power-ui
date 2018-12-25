@@ -129,7 +129,7 @@ class LostAddForm extends Component {
   }
 
   render(){
-    const { form, lostGenTypes, stationDeviceTypes } = this.props;
+    const { form, lostGenTypes, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
     let tmpGenTypes = [];
