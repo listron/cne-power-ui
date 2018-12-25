@@ -69,14 +69,14 @@ class ResourceElecInfo extends Component {
           </div>
 
           <div className={styles.totalInfo}>
-            <div className={styles.tooltip}>逆变器信息<Icon type="caret-right" theme="outlined" /></div>
+            <div className={styles.tooltip}>{stationType>0?'逆变器':'风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
             <div className={styles.editPart}>
               <Form.Item label={`日发电量`}>
                 {getFieldDecorator('genInverter', {
                   rules: [{
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('genInverter') && !value){
-                        callback(`请填写${stationType>0?'逆变器':'风机机组'}日发电量`);
+                        callback(`请填写${stationType>0?'逆变器':'风电机组'}日发电量`);
                       }else if(isNaN(value)){
                         callback('请填写数字');
                       }else{
@@ -98,7 +98,7 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('yearGenInverter') && !value){
-                        callback(`请填写${stationType>0?'逆变器':'风机机组'}年发电量`);
+                        callback(`请填写${stationType>0?'逆变器':'风电机组'}年发电量`);
                       }else if(isNaN(value)){
                         callback('请填写数字');
                       }else{
@@ -119,7 +119,7 @@ class ResourceElecInfo extends Component {
           </div>
 
           <div className={styles.totalInfo}>
-            <div className={styles.tooltip}>逆变器信息<Icon type="caret-right" theme="outlined" /></div>
+            <div className={styles.tooltip}>集电线路信息<Icon type="caret-right" theme="outlined" /></div>
             <div className={styles.editPart}>
               <Form.Item label="日发电量">
                 {getFieldDecorator('genIntegrated', {

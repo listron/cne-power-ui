@@ -218,11 +218,11 @@ class LostAddForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <Row className={styles.horizontal} >
-          <Col span={8}>
-            <Form.Item label="设备名称" {...formItemLayout1} >
+        <Row className={styles.deviceSelect} >
+          <Col span={24}>
+            <Form.Item label="设备名称" className={styles.deviceSelect} >
               {getFieldDecorator('deviceName', {
-                rules: [{ required: true, message: '设备名称' }],
+                rules: [{ required: true, message: '请选择设备' }],
                 initialValue: [],
               })(
                 <DeviceSelect
@@ -230,6 +230,7 @@ class LostAddForm extends Component {
                   stationCode={stationCode}
                   deviceTypeCode={deviceTypeCode}
                   multiple={true}
+                  style={{width: 'auto', minWidth: '198px'}}
                   // onChange={this.selectedDevice}
                 />
               )}

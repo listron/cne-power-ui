@@ -215,7 +215,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       </div>
     </div>
     <div className={styles.totalInfo}>
-      <div className={styles.tooltip}>逆变器信息<Icon type="caret-right" theme="outlined" /></div>
+      <div className={styles.tooltip}>{stationType>0? '逆变器': '风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
       <div className={styles.infoDetail}>
         {inverterInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>

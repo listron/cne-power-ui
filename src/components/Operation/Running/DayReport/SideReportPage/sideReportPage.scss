@@ -364,7 +364,7 @@
     }
     .ant-table tr {
       display: flex;
-      width: calc(100vw - 269px);
+      width: calc(100vw - 285px);
       .deviceTypeName, .deviceName, .faultName, .limitPower, .reason, .startTime, .endTime, .process, .lostPower, .handle{
         word-break: break-all;
         overflow: hidden;
@@ -454,6 +454,24 @@
     height: 49px;
     .lostTypeSelector{
       width: 300px;
+    }
+  }
+  .deviceSelect{ // 设备选择单独样式。
+    margin-bottom: 21px;
+    height: 40px;
+    :global{
+      .ant-form-item{
+        display: flex;
+      }
+      .ant-form-item-label{
+        width: 11.11%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 88.88%;
+        .has-error .ant-form-item-children{
+          height: 40px;
+        }
+      }
     }
   }
   .confirmAddFault{
