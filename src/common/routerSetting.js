@@ -49,7 +49,7 @@ import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/G
 //高级分析 清洗预警 清洗记录
 import CleanWarning from '../containers/HighAnalysis/CleanoutModel/CleanWarning/CleanWarning';
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
-import CleanoutRecordDetail from '../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSingleStation/CleanoutRecordDetail';
+// import CleanoutRecordDetail from '../components/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecordSingleStation/CleanoutRecordDetail';
 // 高级分析 低效组串预警
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
@@ -238,17 +238,19 @@ const routers = [
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
-    component: CleanWarning, // Building
+    // component: CleanWarning, // Building
+    component: Building
   }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,
     // component: CleanoutRecordMain,
      component: CleanoutRecord,
-    //component: Building
+    // component: Building
   },{//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
-    component: CleanoutRecord
+     component: CleanoutRecord
+    // component: Building
   },
   { // 组串异常分析
     path: '/analysis/formation/abnormal',

@@ -30,8 +30,19 @@ function *getSeriesData(action){ //获取低效组串预警配置数据
           sendNum : response.data.data.sendNum,
         },
       });
+    }else{
+      throw response.data.data
     }
   }catch(e){
+    yield put({
+      type:  warningAction.CHANGE_WARNING_STORE_SAGA,
+      payload:{
+        getConf : {},
+        lostGenPercent : '--',
+        isSend : null,
+        sendNum : 20,
+      },
+    });
     console.log(e);
   }
 }

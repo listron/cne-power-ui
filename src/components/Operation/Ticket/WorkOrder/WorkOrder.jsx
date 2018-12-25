@@ -23,10 +23,11 @@ class DefectDetailForm extends Component {
     isFromAlarm: PropTypes.bool,
     defectTypes: PropTypes.object,
     pageName: PropTypes.string,
-    onChange: PropTypes.func,
     defectIdList: PropTypes.array,
+    onChange: PropTypes.func,
     defectId: PropTypes.string,
     resetStore: PropTypes.func,
+    getDefectDetail: PropTypes.func,
   }
 
   constructor(props) {

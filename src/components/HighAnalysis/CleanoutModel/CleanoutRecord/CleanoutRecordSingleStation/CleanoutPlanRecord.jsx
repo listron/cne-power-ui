@@ -49,8 +49,8 @@ class CleanoutPlanRecord extends Component {
     })
   }
   preStation = () => { // 上一个电站详情
-    const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
-  
+    const { singleStationCode, cleanType, detailListData, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, getPlanRecordList, cleanRecordPageNum, cleanRecordPageSize } = this.props;
+
     if (selectedStationIndex === 0 && detailPageNum === 1) { // 第一页第一条
       this.setState({
         showWarningTip: true,
@@ -66,7 +66,7 @@ class CleanoutPlanRecord extends Component {
       })
     } else {
       getPlanRecordList({ // 正常请求上一条电站详情数据
-        planId: detailListData[selectedStationIndex-1].planId,
+        planId: detailListData[selectedStationIndex - 1].planId,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,
         selectedStationIndex: selectedStationIndex - 1,
@@ -75,11 +75,11 @@ class CleanoutPlanRecord extends Component {
   }
 
   nextStation = () => { // 下一个电站详情
-    const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList,cleanRecordPageNum,cleanRecordPageSize } = this.props;
+    const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList, cleanRecordPageNum, cleanRecordPageSize } = this.props;
     const maxPage = Math.ceil(5 / detailPageSize); // 最后一页页码
-  
+
     const lastPageMaxIndex = 5 - (maxPage - 1) * detailPageSize - 1;
-  
+
     if (selectedStationIndex === lastPageMaxIndex && detailPageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
@@ -95,7 +95,7 @@ class CleanoutPlanRecord extends Component {
       })
     } else {
       getPlanRecordList({ // 请求下一条电站详情数据
-        planId: detailListData[selectedStationIndex+1].planId,
+        planId: detailListData[selectedStationIndex + 1].planId,
         selectedStationIndex: selectedStationIndex + 1,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,
@@ -128,46 +128,52 @@ class CleanoutPlanRecord extends Component {
   render() {
     const { cleanRecordTotal, cleanRecordCost, cleanRecordProfit, cleanRecordTime, cleanRecordPageSize, cleanRecordPageNum, cleanRecordPlanTime, stationName, provinceName } = this.props;
     const { showWarningTip, warningTipText, showAddRecordModal } = this.state;
-    const record = { name: 'dali' }
+    // const record = { name: 'dali' }
     return (
-      <div className={styles.CleanoutPlanRecord}>
-        {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.detailTop}>
-          <span className={styles.topInfoShow}>
-            {cleanRecordPlanTime}
-            <span className={styles.departmentInfo} >
-              清洗计划-清洗记录
-            </span>
-            ({stationName}-{provinceName})
+      <div className={styles.sidePage}>
+        <div className={styles.CleanoutPlanRecord}>
+          <div className={styles.testBackground}>
+            {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
+            <div className={styles.detailTop}>
+              <span className={styles.topInfoShow}>
+                {cleanRecordPlanTime}
+                <span className={styles.departmentInfo} >
+                  清洗计划-清洗记录
           </span>
-          <span className={styles.handleArea} >
-            <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
-            <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
-            <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
-          </span>
-        </div>
-        <div className={styles.statisticData}>
-          <div className={styles.statisticTarget}>
-            <div className={styles.numberColor}>{cleanRecordProfit}(10%)</div>
-            <div>累计清洗收益(万kWh)</div>
+                ({stationName}-{provinceName})
+        </span>
+              <span className={styles.handleArea} >
+                <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
+                <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
+                <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+              </span>
+            </div>
+            <div className={styles.statisticData}>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanRecordProfit}(10%)</div>
+                <div>累计清洗收益(万kWh)</div>
+              </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanRecordCost}</div>
+                <div>清洗成本(万元)</div>
+              </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanRecordTime}</div>
+                <div>清洗用时(天)</div></div>
+
+            </div>
+            <div className={styles.filterData}>
+              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
+              {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
+              <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
+            </div>
+            <PlanRecordTable {...this.props} />
           </div>
-          <div className={styles.statisticTarget}>
-            <div className={styles.numberColor}>{cleanRecordCost}</div>
-            <div>清洗成本(万元)</div>
-          </div>
-          <div className={styles.statisticTarget}>
-            <div className={styles.numberColor}>{cleanRecordTime}</div>
-            <div>清洗用时(天)</div></div>
+
 
         </div>
-        <div className={styles.filterData}>
-          <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
-          { /*  {this.addCleanoutRecord(record)} */}
-          {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
-          <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
-        </div>
-        <PlanRecordTable {...this.props} />
       </div>
+
     )
   }
 }

@@ -35,6 +35,7 @@ class PvStationList extends React.Component {
     message.warning('电站未接入,无法查看详情',2);
   }
   initColumn = () => {
+    const { realTimePowerUnit,realCapacityUnit,powerUnit } = this.props;
     const columns = [
       {
         title: "电站名称",
@@ -73,7 +74,7 @@ class PvStationList extends React.Component {
         }
       },
       {
-        title: "实时功率(MW)",
+        title: `实时功率(${realTimePowerUnit})`,
         //title: <div style={{display:'flex',flexDirection:'column'}} ><span>实时功率</span><span>(MW)</span></div>,
 
         dataIndex: "stationPower",
@@ -102,7 +103,7 @@ class PvStationList extends React.Component {
         }
       },
       {
-        title: "装机容量(MW)",
+        title: `装机容量(${realCapacityUnit})`,
         dataIndex: "stationCapacity",
         // defaultSortOrder: "descend",
         sorter: true,
@@ -125,21 +126,21 @@ class PvStationList extends React.Component {
         //(a, b) => a.windSpeed - b.windSpeed
       },
       {
-        title: "日发电量(万kWh)",
+        title:  `日发电量(${powerUnit})`,
         dataIndex: "dayOutput",
         // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.dayOutput - b.dayOutput
       },
       {
-        title: "月累计发电量(万kWh)",
+        title: `月累计发电量(${powerUnit})`,
         dataIndex: "monthOutput",
         // defaultSortOrder: "descend",
         sorter: true,
         //(a, b) => a.monthOutput - b.monthOutput
       },
       {
-        title: "年累计发电量(万kWh)",
+        title: `年累计发电量(${powerUnit})`,
         dataIndex: "yearOutput",
         // defaultSortOrder: "descend",
         sorter: true,
@@ -166,7 +167,7 @@ class PvStationList extends React.Component {
         }
       },
       {
-        title: "计划发电量(万kWh)",
+        title: `计划发电量(${powerUnit})`,
         dataIndex: "planOutput",
         // defaultSortOrder: "descend",
         sorter: true,
@@ -245,7 +246,7 @@ class PvStationList extends React.Component {
     return tableSource
   }
   render() {
-    const { stationDataList, pageSize, currentPage, onPaginationChange } = this.props;
+    const { stationDataList, pageSize, currentPage, onPaginationChange,realTimePowerUnit,realCapacityUnit,powerUnit,powerPoint,realCapacityPoint,realTimePowerPoint } = this.props;
     const dataSort = this.createTableSource(stationDataList);
     const columns = this.initColumn()
     const totalNum = stationDataList.length;
@@ -261,13 +262,15 @@ class PvStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${item.stationPower || '--'}`,
-          stationCapacity: `${item.stationCapacity || '--'}`,
+          stationPower: `${(realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000).toFixed(realTimePowerPoint)) || '--'}`,
+          stationCapacity: `${(realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000).toFixed(realCapacityPoint)) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
-          dayOutput: `${item.dayPower || '--'}`,
-          monthOutput: `${item.monthPower || '--'}`,
-          yearOutput: `${item.yearPower || '--'}`,
-          planOutput: `${item.yearPlanPower || '--'}`,
+         
+          dayOutput: `${(powerUnit==='万kMh'?item.dayPower:(item.dayPower*10000).toFixed(powerPoint)) || '--'}`,
+          monthOutput: `${(powerUnit==='万kMh'?item.monthPower:(item.monthPower*10000).toFixed(powerPoint)) || '--'}`,
+          yearOutput: `${(powerUnit==='万kMh'?item.yearPower:(item.yearPower*10000).toFixed(powerPoint)) || '--'}`,
+          planOutput: `${(powerUnit==='万kMh'?item.yearPlanPower:(item.yearPlanPower*10000).toFixed(powerPoint)) || '--'}`,
+         
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${stationStatus.stationStatus || ''}`

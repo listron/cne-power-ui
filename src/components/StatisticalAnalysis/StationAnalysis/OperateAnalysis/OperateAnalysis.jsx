@@ -202,7 +202,6 @@ class OperateAnalysis extends React.Component {
       dateType: "year",
       year: year,
     }
-
     this.props.getOperatePlanComplete(yearPrams)
     this.props.getComponentPowerStatistic(yearPrams)
     this.props.changeOperateStationStore({ selectYear: year })
@@ -224,7 +223,7 @@ class OperateAnalysis extends React.Component {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
         barData: { hours },
-        lineData: { pr }
+        lineData: { pr,light}
       }
     }
     const PowerEffectiveHasData = hours.some(e => e || e === 0) || light.some(e => e || e === 0) || pr.some(e => e || e === 0)
@@ -546,7 +545,6 @@ class OperateAnalysis extends React.Component {
                 </div>
               </div>
             </div>
-
             <div className={styles.tabContainer}>
               <div className={styles.dataGraph}>
                 <LimitPowerRate
@@ -576,6 +574,7 @@ class OperateAnalysis extends React.Component {
                 }
               </div>
             </div>
+           
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>能耗分析</div>
             </div>

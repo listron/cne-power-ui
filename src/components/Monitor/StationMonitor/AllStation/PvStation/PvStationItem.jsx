@@ -26,7 +26,7 @@ class PvStationItem extends React.Component {
   }
  
   render() {
-    const { stationDataList } = this.props;
+    const { stationDataList,realTimePowerUnit,realCapacityUnit } = this.props;
    
     return (
       <div className={styles.stationCardContainer}>
@@ -35,8 +35,8 @@ class PvStationItem extends React.Component {
           stationDataList.map((item, index) => {
             const stationStatus = item.stationStatus || {};
             const stationName = item.stationName || '--';
-            const stationPower = item.stationPower || '--';
-            const stationCapacity = item.stationCapacity || '--';
+            const stationPower = (realTimePowerUnit==='MW'?item.stationPower:item.stationPower*1000 )|| '--';
+            const stationCapacity = (realCapacityUnit==='MW'?item.stationCapacity:item.stationCapacity*1000 )|| '--';
             const instantaneous = item.instantaneous || '--';
             const stationUnitCount = item.stationUnitCount || '--';
             return (
@@ -51,8 +51,8 @@ class PvStationItem extends React.Component {
                     <Progress strokeWidth={3} percent={stationPower / stationCapacity * 100} showInfo={false} />
                   </div>
                   <div className={styles.stationCardValue}>
-                    <div className={styles.stationMark}>{stationPower}MW</div>
-                    <div>{stationCapacity}MW</div>
+                    <div className={styles.stationMark}>{stationPower}{realTimePowerUnit}</div>
+                    <div>{stationCapacity}{realCapacityUnit}</div>
                   </div>
                   <div className={styles.stationCardWindSpeed}>{instantaneous}W/m²</div>
                 </Link>

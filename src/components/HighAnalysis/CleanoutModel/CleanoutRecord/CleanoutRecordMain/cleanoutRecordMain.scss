@@ -11,17 +11,14 @@
     display: flex;
     flex-direction: column;
     align-content: center;
-    span{
-     line-height: 30px;
-    }
-    .timeFilter{
-      margin: 0 20px 0 12px;
-    }
+   
+    
   }
   
   .paginationStyle{
     display: flex;
     justify-content: flex-end;
+    height: 60px;
   }
  
 }
