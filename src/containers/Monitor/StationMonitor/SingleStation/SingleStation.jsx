@@ -97,7 +97,7 @@ class SingleStation extends Component {
 
     this.timeOutId = setTimeout(() => {
       this.getTenSeconds(stationCode);
-    }, 100000000);
+    }, 10000);
   }
 
   getOutputDataTenMin = (stationCode,stationType) => { // 10min请求一次处理

@@ -50,13 +50,12 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
   }
 }
 function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内所有设备类型信息
-  const url = `/mock/v3/station/monitor/conf`;
-  // const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
+  // const url = `/mock/v3/station/monitor/conf`;
+   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      console.log(response.data.data, 'testtestetet');
       let monitorDataUnit = response.data.data || {};
       yield put({
         type: commonAction.GET_COMMON_FETCH_SUCCESS,

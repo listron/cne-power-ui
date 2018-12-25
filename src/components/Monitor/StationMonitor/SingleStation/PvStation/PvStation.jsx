@@ -79,7 +79,6 @@ class PvStation extends Component {
   render() {
     const clickable = [509, 201, 206, 304, 202, 302, 301];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode,realTimePowerUnit,powerUnit } = this.props;
-    console.log(realTimePowerUnit,'dandianzhan de danwei');
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];

@@ -46,13 +46,13 @@ class pvStationHeader extends React.Component {
             <div className={styles.dataValue}>
               <ValueFormat value={dataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
             </div>
-            <div className={styles.dataName}>日发电量 万kWh</div>
+            <div className={styles.dataName}>日发电量 {powerUnit}</div>
           </div>
           <div className={styles.monthStation}>
             <div className={styles.dataValue}>
               <ValueFormat value={dataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
             </div>
-            <div className={styles.dataName}>月累计发电量 万kWh</div>
+            <div className={styles.dataName}>月累计发电量 {powerUnit}</div>
           </div>
         </div>
         <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} valueunit={powerUnit} valueText={`年累计发电量 ${powerUnit}`} totalText={`计划 ${powerUnit}`} percent={yearPlanRate ? yearPlanRate : ''} />
