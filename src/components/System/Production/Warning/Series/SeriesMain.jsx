@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Switch, Button } from 'antd';
+import { Input, Switch, Button ,message} from 'antd';
 import styles from "./series.scss";
 
 class SeriesMain extends Component {
@@ -38,11 +38,17 @@ class SeriesMain extends Component {
   }
 
   handleSubmit = () => { //'保存'按钮
+ 
     const { lostGenPercent, isSend, sendNum } = this.props;
-    this.setState({
-      isShow: false,
-    })
-    this.props.addSeriesData({ lostGenPercent, isSend, sendNum });
+    if(sendNum&&sendNum<1){
+      message.warning('下发条数大于等于1');
+    }else{
+      this.setState({
+        isShow: false,
+      })
+      this.props.addSeriesData({ lostGenPercent, isSend, sendNum });
+    }
+   
   }
 
   handleCancel = (e) => { //'取消'按钮
@@ -103,7 +109,7 @@ class SeriesMain extends Component {
             </div>
             {isSend ? <div className={styles.maximum}>
               <span className={styles.maximumText}>最大下发条数</span>
-              <Input className={styles.maximumNum} value={sendNum} onChange={this.changeSendCount} />
+              <input  type="number" min="1" required className={styles.maximumNum} value={sendNum} onChange={this.changeSendCount} />
               <span>条</span>
             </div> : ''}
 
