@@ -93,6 +93,26 @@
   }
 }
 
+.confirmBox{
+  :global{
+    .ant-popover-inner-content{
+      width: 200px;
+    }
+    .ant-popover-message{
+      padding-bottom: 4px;
+    }
+    .ant-popover-buttons{
+      margin-bottom: 0;
+      .ant-btn-primary{
+        margin-left: 24px;
+      }
+      button{
+        border: none;
+      }
+    }
+  }
+}
+
 .uploadReportList{
   .uploadReportTip{
     height: 40px;
@@ -344,7 +364,7 @@
     }
     .ant-table tr {
       display: flex;
-      width: calc(100vw - 269px);
+      width: calc(100vw - 285px);
       .deviceTypeName, .deviceName, .faultName, .limitPower, .reason, .startTime, .endTime, .process, .lostPower, .handle{
         word-break: break-all;
         overflow: hidden;
@@ -353,7 +373,7 @@
       }
       .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower,{
         text-align: center;
-        flex:0 0 110px;
+        flex:1 0 110px;
       }
       .reason{
         flex: 1 0 110px;
@@ -365,10 +385,10 @@
         flex: 0 0 170px;
       }
       .process{
-        flex: 0 0 160px;
+        flex: 1 0 160px;
       }
       .lostPower{
-        flex: 0 0 115px;
+        flex: 1 0 115px;
       }
       .handle{
         text-align: center;
@@ -434,6 +454,24 @@
     height: 49px;
     .lostTypeSelector{
       width: 300px;
+    }
+  }
+  .deviceSelect{ // 设备选择单独样式。
+    margin-bottom: 21px;
+    height: 40px;
+    :global{
+      .ant-form-item{
+        display: flex;
+      }
+      .ant-form-item-label{
+        width: 11.11%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 88.88%;
+        .has-error .ant-form-item-children{
+          height: 40px;
+        }
+      }
     }
   }
   .confirmAddFault{

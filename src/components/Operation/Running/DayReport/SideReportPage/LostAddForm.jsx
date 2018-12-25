@@ -73,7 +73,7 @@ class LostAddForm extends Component {
 
   confirmAddFault = () => {
     const { form, findDeviceExist, stationCode, changeFaultList, faultGenList } = this.props;
-    const { deviceTypeCode, selectLostTypeName } = this.state;
+    const { deviceTypeCode, selectLostTypeName, deviceTypeName } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
         values.id = `lostAdd${faultGenList.length}`;
@@ -83,6 +83,7 @@ class LostAddForm extends Component {
         values.faultId = values.faultId[values.faultId.length - 1];
         values.deviceName = values.deviceName.map(e => e.deviceName).join(',');
         values.type = 1;  // 损失type 1 => 后台接收。
+        values.deviceTypeName = deviceTypeName;
         changeFaultList([...faultGenList,values], true);
         // const { deviceName } = values;
         // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
@@ -102,7 +103,7 @@ class LostAddForm extends Component {
       stationType,
       deviceTypeCode: value
     })
-    // const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    const { deviceTypeName } = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
     // const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
     // if (tmpName === '全场信息汇总') {
     //   form.setFieldsValue({ deviceName: tmpName });
@@ -111,6 +112,7 @@ class LostAddForm extends Component {
     form.setFieldsValue({ deviceName: [] });
     this.setState({
       deviceTypeCode: value,
+      deviceTypeName
     })
     return value
   }
@@ -216,11 +218,11 @@ class LostAddForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <Row className={styles.horizontal} >
-          <Col span={8}>
-            <Form.Item label="设备名称" {...formItemLayout1} >
+        <Row className={styles.deviceSelect} >
+          <Col span={24}>
+            <Form.Item label="设备名称" className={styles.deviceSelect} >
               {getFieldDecorator('deviceName', {
-                rules: [{ required: true, message: '设备名称' }],
+                rules: [{ required: true, message: '请选择设备' }],
                 initialValue: [],
               })(
                 <DeviceSelect
@@ -228,6 +230,7 @@ class LostAddForm extends Component {
                   stationCode={stationCode}
                   deviceTypeCode={deviceTypeCode}
                   multiple={true}
+                  style={{width: 'auto', minWidth: '198px'}}
                   // onChange={this.selectedDevice}
                 />
               )}
