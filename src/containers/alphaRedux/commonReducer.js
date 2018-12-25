@@ -10,7 +10,7 @@ var initState = Immutable.fromJS({
   deviceTypes: [], // 设备类型
   realTimePowerUnit:'MW',//实时功率单位
   realCapacityUnit:'MW',//装机容量单位
-  powerUnit:'kMh',//各种发电量单位
+  powerUnit:'万kMh',//各种发电量单位
   realTimePowerPoint:'',//实时功率保留位数
   realCapacityPoint:'',//装机容量保留位数
   powerPoint:'',//各种发电量保留位数
