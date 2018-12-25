@@ -18,6 +18,7 @@ export const commonAction = {
   getStationOfEnterprise: Symbol('getStationOfEnterprise'), // 获取企业下所有电站信息=>与用户权限无关
   GET_COMMON_FETCH_SUCCESS: Symbol('GET_COMMON_FETCH_SUCCESS'), // 普通api请求成功
   getSliceDevices: Symbol('getSliceDevices'),//获取光伏截取数据
+  getMatrixDevices: Symbol('getMatrixDevices'), // 获取同一设备类型同属第一方阵的所有设备。。
   findDeviceExist: Symbol('findDeviceExist'), // 验证设备是否存在
   getLostGenType: Symbol('getLostGenType'), // 查询所有故障类型
 

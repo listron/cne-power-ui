@@ -32,7 +32,7 @@ class DefectSourceFilter extends Component {
     const levels =defectSourceName ? defectSourceName: ['告警','上报','巡检', '预警',];
     const levelOptions = levels.map((e,i)=>({
       label: e,
-      value: `${i+1}`
+      value: `${i}`
     }));
     const levelArr = defectSource;
     return (

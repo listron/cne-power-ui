@@ -37,8 +37,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
   drawChart = (param) => {
     const { graphId, yAxisName, xAxisName, dateType, title, data, currentYear, lastYear,hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    targetChart.clear();
-    const color = ['#dfdfdf', '#f9b600', '##999999', '#3e97d1', '#f9b600'];
+    const color = ['#dfdfdf', '#f9b600', '#999999', '#3e97d1', '#e08031'];
     let seriesData = [];
     const lineData = data.yData.lineData;
     const barData = data.yData.barData;
@@ -82,7 +81,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           type: 'cross',
           crossStyle: {
             color: '#999'
-          }
+          },
         },
         backgroundColor: '#fff',
         padding: 10,
@@ -158,7 +157,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         },
         {
           type: 'value',
-          name: dateType==="year"?'环比':'同比',
+          name: dateType==="year"?'限电率／环比':'限电率／同比',
           nameTextStyle: {
             color: '#666',
           },
@@ -184,7 +183,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       series: seriesData
     };
     setTimeout(() => { targetChart.resize(); }, 1000)
-    targetChart.setOption(targetOption)
+    targetChart.setOption(targetOption,{notMerge:true})
 
   }
   render() {

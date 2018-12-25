@@ -1,6 +1,7 @@
 import React from "react";
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+import styles from './index.scss';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 /* 
@@ -82,11 +83,11 @@ class PowerEfficency extends React.Component {
   }
 
   drawChart = (params) => {
-    const { graphId, title,data,hasData} = params;
+    const { graphId, title, data, hasData } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
     let seriesData = [];
-    const lineData =data && data.yData.lineData;
+    const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
@@ -134,10 +135,11 @@ class PowerEfficency extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName ==='计划完成率'||params[index].seriesName ==='PR') && '%'||''}
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color[index]}"> </span> 
+            ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'PR') && '%' || ''}
             </div>`
           });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
+          return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>
            ${paramsItem}`
         }
       },
@@ -151,10 +153,10 @@ class PowerEfficency extends React.Component {
           fontWeight: 'normal',
         }
       },
-      color: this.getColor(title),
+      color: color,
       grid: {
         right: '20%',
-        left:'12%'
+        left: '12%'
       },
       legend: {
         icon: 'circle',
@@ -165,7 +167,6 @@ class PowerEfficency extends React.Component {
       xAxis: {
         type: 'category',
         data: data && data.xData,
-        // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
         },
@@ -196,6 +197,7 @@ class PowerEfficency extends React.Component {
           axisTick: {
             show: false,
           },
+          splitNumber: 5,
           splitLine: {
             // show:false,
             lineStyle: {
@@ -215,6 +217,7 @@ class PowerEfficency extends React.Component {
           axisLine: {
             show: false,
           },
+          splitNumber: 5,
           axisTick: {
             show: false,
           },
@@ -222,11 +225,14 @@ class PowerEfficency extends React.Component {
           axisLabel: {
             formatter: '{value}'
           },
+          // data:
         }, {
           type: 'value',
           name: this.getYaxisName(title)[2],
           position: 'right',
           splitLine: { show: false },
+          splitNumber: 5,
+
           axisLine: {
             lineStyle: {
               color: '#666',
@@ -235,12 +241,12 @@ class PowerEfficency extends React.Component {
           offset: 50,
           axisLabel: {
             formatter: '{value}%'
-          }
+          },
         }
       ],
-      series:seriesData || []
+      series: seriesData || []
     };
-    targetChart.setOption(targetMonthOption,{notMerge:true})
+    targetChart.setOption(targetMonthOption, { notMerge: true })
     targetChart.resize();
   }
 

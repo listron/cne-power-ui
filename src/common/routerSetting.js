@@ -269,8 +269,8 @@ const routers = [
   { // 高级分析-低效组串预警-已转工单
     path: '/analysis/earlyWarning/transfer',
     exact: true,
-    component: Building,
-    // component: Transfer
+    // component: Building,
+    component: Transfer
   }, {  // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     exact: true,

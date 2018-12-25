@@ -28,8 +28,9 @@
         flex-direction: column;
         flex: 1;
         .ant-tabs-tabpane-active {
-          // display: flex;
-          flex: 1
+          display: flex;
+          flex: 1;
+          flex-direction: column;
         }
         .ant-tabs-tabpane-inactive {
           max-height: 0;

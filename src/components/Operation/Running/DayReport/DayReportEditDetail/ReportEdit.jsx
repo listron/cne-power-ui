@@ -269,7 +269,15 @@ class ReportEdit extends Component {
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
-          <span className={styles.reportDetailTitleTip}>日报编辑</span>
+          <span className={styles.reportDetailTitleTip}>
+            <span className={styles.mainTitle}>日报详情</span>
+            <span className={styles.titleInfo}>{updateDayReportDetail.stationName || '--'}</span>
+            <span className={styles.titleInfo}>{updateDayReportDetail.reportDate || '--'}</span>
+            <span className={styles.titleInfo}>实际容量 {updateDayReportDetail.realCapacity || '--'}MW</span>
+            <span className={styles.titleInfo}>装机台数 {updateDayReportDetail.machineCount || '--'}MW</span>
+            <span className={styles.weather}>天气 {updateDayReportDetail.weather || '--'}</span>
+            <span className={styles.titleInfo}>温度 {updateDayReportDetail.temperature || '--'}</span>
+          </span>
           <div className={styles.reportDetailTitleRight}>
             <Button onClick={this.updateReport} className={styles.reportEdit}>保存</Button>
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showDetaiTip} />
@@ -292,6 +300,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeFaultList={this.faultListInfoChange} 
@@ -321,6 +330,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeLimitList={this.limitListInfoChange}
