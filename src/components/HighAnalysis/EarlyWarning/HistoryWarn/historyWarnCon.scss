@@ -1,0 +1,14 @@
+@import '../../../../theme/theme';
+
+.historyWarnMain{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #e1e2e2;
+  .selectCondition{
+    display: flex;
+    justify-content: flex-end;
+    border-top:1px solid #dfdfdf;
+    padding: 26px 0 20px 28px;
+  }
+}
