@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Input, Icon, message } from 'antd';
+import { Button, Checkbox, Input, Icon, message, Popconfirm } from 'antd';
 import ResourceElecInfo from './ResourceElecInfo';
 import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
@@ -279,7 +279,17 @@ class ReportEdit extends Component {
             <span className={styles.titleInfo}>温度 {updateDayReportDetail.temperature || '--'}</span>
           </span>
           <div className={styles.reportDetailTitleRight}>
-            <Button onClick={this.updateReport} className={styles.reportEdit}>保存</Button>
+            <Popconfirm
+              placement="leftTop"
+              overlayClassName={styles.confirmBox}
+              title="你确定要提交?"
+              onConfirm={this.updateReport}
+              okText="确定"
+              cancelText="取消">
+                <Button
+                  className={styles.reportEdit}
+                >提交</Button>
+            </Popconfirm>
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showDetaiTip} />
           </div>
         </div>

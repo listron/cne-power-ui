@@ -98,6 +98,7 @@ class DeviceSelect extends Component {
         getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
       } else { // 直接获取所有数据。
         getDevices({ stationCode, deviceTypeCode }, 'devices');
+        getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
         getPartition({ stationCode, deviceTypeCode });
       }
     }
