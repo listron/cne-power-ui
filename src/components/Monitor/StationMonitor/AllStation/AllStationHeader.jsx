@@ -28,7 +28,6 @@ class AllStationHeader extends React.Component {
     const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
     const windStation = stationTypeSummary.windStationNum || '--';
     const lightStation = stationTypeSummary.lightStationNum || '--';
-   console.log(realTimePowerUnit,realTimePowerPoint,realCapacityUnit,realCapacityPoint,powerUnit,powerPoint,'单位以及保留小数位数');
   
 
     return (
