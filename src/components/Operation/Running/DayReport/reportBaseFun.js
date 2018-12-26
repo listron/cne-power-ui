@@ -146,13 +146,13 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   if (isNaN(checkingValue)) { // 规则1 数值校验
     return {
       result: false,
-      message: `请填写数字，最多保留小数点后${pointLength}位`
+      message: `${configText}请填写数字，最多保留小数点后${pointLength}位`
     };
   }
   if (checkingValue < 0) { // 规则2非负校验
     return {
       result: false,
-      message: '数值不能为负数，请重新填写'
+      message: `${configText}数值不能为负数，请重新填写`
     };
   }
   if (`${checkingValue}`.includes('.')) { // 规则3小数点位校验。
@@ -160,7 +160,7 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
     if (demicalLength > pointLength) {
       return {
         result: false,
-        message: `请填写数字，最多保留小数点后${pointLength}位`
+        message: `${configText}请填写数字，最多保留小数点后${pointLength}位`
       };
     }
   }

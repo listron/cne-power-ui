@@ -195,6 +195,7 @@ class SideReportPage extends Component {
             faultId: eachLost.faultId,
             faultName: eachLost.faultName,
             deviceTypeCode: eachLost.deviceTypeCode,
+            deviceTypeName: eachLost.deviceTypeName,
             deviceId: eachLost.deviceId,
             type: eachLost.type,
           }

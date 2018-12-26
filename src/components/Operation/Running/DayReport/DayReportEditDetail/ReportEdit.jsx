@@ -274,7 +274,7 @@ class ReportEdit extends Component {
             <span className={styles.titleInfo}>{updateDayReportDetail.stationName || '--'}</span>
             <span className={styles.titleInfo}>{updateDayReportDetail.reportDate || '--'}</span>
             <span className={styles.titleInfo}>实际容量 {updateDayReportDetail.realCapacity || '--'}MW</span>
-            <span className={styles.titleInfo}>装机台数 {updateDayReportDetail.machineCount || '--'}MW</span>
+            <span className={styles.titleInfo}>装机台数 {updateDayReportDetail.machineCount || '--'}台</span>
             <span className={styles.weather}>天气 {updateDayReportDetail.weather || '--'}</span>
             <span className={styles.titleInfo}>温度 {updateDayReportDetail.temperature || '--'}</span>
           </span>
