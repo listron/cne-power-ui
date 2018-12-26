@@ -19,41 +19,47 @@ class CommonProgress extends Component {
     valueText: PropTypes.string,//实际值文字描述，左下角
     totalText: PropTypes.string,//计划值文字描述。右下角
     percent: PropTypes.string,//百分比，右边，选填，若无不显示
-    valueunit: PropTypes.string,//百分比，右边，选填，若无不显示
-    points: PropTypes.any,//百分比，右边，选填，若无不显示
+    valueunit: PropTypes.string,//装机容量百分比，，选填，若无不显示
+    points: PropTypes.string,//装机容量，，选填，若无不显示
+    realTimeUnit: PropTypes.string,//实时功率单位，选填，若无不显示
+    realTimePoint: PropTypes.string,//实时功率小数点几位，选填，若无不显示
   }
 
   static defaultProps = {
     percent: '',//默认不显示百分比
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
-  
 
-  render(){
-    const { value, total, valueText, totalText, percent,valueunit,points} = this.props;
+
+  render() {
+    const { value, total, valueText, totalText, percent, valueunit, points, realTimeUnit, realTimePoint } = this.props;
     return (
       <div className={styles.commonProgress}>
-          <div className={styles.progressInfo}>
-            <div className={styles.progressData}>
-              <div className={styles.stationValue}>
-               {/** <div>{value}</div> */}
-               <div> <ValueFormat value={dataFormat(value, '--', points)} points={points} valueunit={valueunit} /></div>
-                {/*<div className={styles.planOutput}>{total}</div> */}
-                <div className={styles.planOutput}><ValueFormat value={dataFormat(total, '--', points)} points={points} /></div>
+        <div className={styles.progressInfo}>
+          <div className={styles.progressData}>
+            <div className={styles.stationValue}>
+              {/** <div>{value}</div> */}
+              <div>
+                <ValueFormat value={dataFormat(value, '--', realTimePoint)} realTimePoint={realTimePoint} realTimeUnit={realTimeUnit} />
               </div>
-              <div className={styles.progressBar}>
-                <Progress strokeWidth={3}  percent={value / total * 100} showInfo={false} status="active" />
-              </div>
-              <div className={styles.stationType}>
-                <div>{valueText}</div>
-                <div>{totalText}</div>
+              {/*<div className={styles.planOutput}>{total}</div> */}
+              <div className={styles.planOutput}>
+                <ValueFormat value={dataFormat(total, '--', points)} points={points} valueunit={valueunit} />
               </div>
             </div>
-            {percent?<div className={styles.showInfo}>{percent}</div>:''}        
+            <div className={styles.progressBar}>
+              <Progress strokeWidth={3} percent={value / total * 100} showInfo={false} status="active" />
+            </div>
+            <div className={styles.stationType}>
+              <div>{valueText}</div>
+              <div>{totalText}</div>
+            </div>
           </div>
+          {percent ? <div className={styles.showInfo}>{percent}</div> : ''}
+        </div>
       </div>
     )
   }

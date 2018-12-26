@@ -31,7 +31,7 @@ class windStationHeader extends React.Component {
           <div className={styles.leftIcon}>
           </div>
         </div>
-        <CommonProgress value={stationPower} total={stationCapacity} points={realCapacityPoint} valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
+        <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit} points={realCapacityPoint} valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
         <div className={styles.stationCollect}>
           <div className={styles.equipmentNum}>
             <div className={styles.dataValue}>{stationUnitCount}</div>

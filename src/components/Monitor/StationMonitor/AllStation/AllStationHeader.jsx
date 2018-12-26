@@ -39,7 +39,7 @@ class AllStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <CommonProgress value={stationPower} total={stationCapacity} points={realCapacityPoint} valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
+          <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit}   points={realCapacityPoint}  valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
           <div className={styles.stationCollect}>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>
