@@ -28,7 +28,6 @@ class AllStationHeader extends React.Component {
     const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
     const windStation = stationTypeSummary.windStationNum || '--';
     const lightStation = stationTypeSummary.lightStationNum || '--';
-   console.log(realTimePowerUnit,realTimePowerPoint,realCapacityUnit,realCapacityPoint,powerUnit,powerPoint,'单位以及保留小数位数');
   
 
     return (
@@ -40,7 +39,7 @@ class AllStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <CommonProgress value={stationPower} total={stationCapacity} points={realCapacityPoint} valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
+          <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit}   points={realCapacityPoint}  valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
           <div className={styles.stationCollect}>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>

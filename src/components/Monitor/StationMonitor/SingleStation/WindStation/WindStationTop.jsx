@@ -188,7 +188,7 @@ class WindStationTop extends Component {
           <div>
             <div className={styles.trueTimeValue}>
               <div>
-                <ValueFormat value={dataFormat(singleStationData.monthPower,'--', 4)}  points={4} />
+                <ValueFormat value={dataFormat(singleStationData.monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
                 {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>

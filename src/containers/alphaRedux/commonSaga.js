@@ -64,7 +64,7 @@ function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内�
           realTimePowerPoint: monitorDataUnit.realTimePower && monitorDataUnit.realTimePower.length > 0 ? parseFloat(monitorDataUnit.realTimePower[1]) : 0,
           realCapacityUnit: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? monitorDataUnit.realCapacity[0] : 'MW',
           realCapacityPoint: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? parseFloat(monitorDataUnit.realCapacity[1]) : 0,
-          powerUnit: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? monitorDataUnit.power[0] : '万kMh',
+          powerUnit: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? monitorDataUnit.power[0] : '万kWh',
           powerPoint: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? parseFloat(monitorDataUnit.power[1]) : 0,
         }
       });
