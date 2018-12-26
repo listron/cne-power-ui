@@ -54,6 +54,7 @@ import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRec
 import Unhandle from '../containers/HighAnalysis/EarlyWarning/Unhandle/Unhandle';
 import Ignore from '../containers/HighAnalysis/EarlyWarning/Ignore/Ignore';
 import Transfer from '../containers/HighAnalysis/EarlyWarning/Transfer/Transfer';
+import HistoryWarn from '../containers/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarn';
 
 
 
@@ -274,7 +275,7 @@ const routers = [
   }, {  // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     exact: true,
-    component: Building
+    component: HistoryWarn
   },
   {//偏航对风分析
     path: '/analysis/yaw/wind',
