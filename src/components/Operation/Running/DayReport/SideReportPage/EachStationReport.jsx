@@ -43,22 +43,31 @@ class EachStationReport extends Component {
       const keyIndex = currentArr.findIndex(e => e === keyWord);
       const currentValue = dailyReport[keyWord];
       const yesterValue = dailyReport[yesterArr[keyIndex]];
-      const unitConfig = dayReportConfig[0] || {};
-      const numDemical = unitConfig.power === 'kWh' ? 2 : 4;
-      const dayValue = (currentValue - yesterValue).toFixed(numDemical);
-      if ((currentValue > 0 || currentValue === 0) && (startOfYear || dayValue > 0 || dayValue === 0)) {
-        const uploadParams = dayReportTotalInfoArr.map(info=>{
-          if(info.dailyReport.stationCode === stationInfo.stationCode){
-            const { dailyDetailList } = info;
-            dailyReport[dayValueKey[keyIndex]] = `${dayValue}`;
-            return {
-              dailyReport,
-              dailyDetailList,
+      if (!yesterValue && yesterValue !== 0) { //昨日数据不存在
+        return;
+      } else if (currentValue < yesterValue) { // 数据不合理
+        return;
+      } else { // 填写年数据符合。
+        const unitConfig = dayReportConfig[0] || {};
+        const numDemical = unitConfig.power === 'kWh' ? 2 : 4;
+        let dayValue;
+        if (startOfYear) { // 1月1日
+          dayValue = currentValue.toFixed(numDemical);
+        } else {
+          dayValue = (currentValue - yesterValue).toFixed(numDemical);
+          const uploadParams = dayReportTotalInfoArr.map(info=>{
+            if(info.dailyReport.stationCode === stationInfo.stationCode){
+              const { dailyDetailList } = info;
+              dailyReport[dayValueKey[keyIndex]] = `${dayValue}`;
+              return {
+                dailyReport,
+                dailyDetailList,
+              }
             }
-          }
-          return info;
-        })
-        totalInfoChange(uploadParams);
+            return info;
+          })
+          totalInfoChange(uploadParams);
+        }
       }
     }
   }

@@ -156,7 +156,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   // ]
   const totalInfo = [
     {
-      name: stationType>0? '日累计总量': '日均风速',
+      name: stationType>0? '日累计辐射': '日均风速',
       value: 'resourceValue', 
       unit: stationType>0? radiationUnit: speedUnit,
     }, 
@@ -193,7 +193,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         <span className={styles.titleInfo}>{selectedDayReportDetail.stationName || '--'}</span>
         <span className={styles.titleInfo}>{selectedDayReportDetail.reportDate || '--'}</span>
         <span className={styles.titleInfo}>实际容量 {selectedDayReportDetail.realCapacity || '--'}MW</span>
-        <span className={styles.titleInfo}>装机台数 {selectedDayReportDetail.machineCount || '--'}MW</span>
+        <span className={styles.titleInfo}>装机台数 {selectedDayReportDetail.machineCount || '--'}台</span>
         <span className={styles.weather}>天气 {selectedDayReportDetail.weather || '--'}</span>
         <span className={styles.titleInfo}>温度 {selectedDayReportDetail.temperature || '--'}</span>
       </div>
