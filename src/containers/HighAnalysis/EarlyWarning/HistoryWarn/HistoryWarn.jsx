@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./historyWarn.scss";
+import PropTypes from 'prop-types';
 import { historyWarnAction } from './historyWarnAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import HistoryWarnCon from '../../../../components/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarnCon';
 
 class HistoryWarn extends Component {
+  static propTypes = {
+    resetStore:PropTypes.func
+  }
 
   constructor(props, context) {
     super(props, context)
-    this.state= {
-      
-    }
+  }
+
+  componentWillUnmount(){
+    this.props.resetStore()
   }
 
   render() {
@@ -39,6 +44,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeCleanoutRecordStore: payload => dispatch({ type: historyWarnAction.changeHistoryWarnStoreSaga, payload }),
   getHistoryWarnList: payload => dispatch({ type: historyWarnAction.getHistoryWarnList, payload }),
   getHistoryWarnMatrixList: payload => dispatch({ type: historyWarnAction.getHistoryWarnMatrixList, payload }),
+  getSequencechart: payload => dispatch({ type: historyWarnAction.getSequencechart, payload }),
   resetStore: () => dispatch({ type: historyWarnAction.resetStore }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryWarn)

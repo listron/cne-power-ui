@@ -25,7 +25,7 @@ class UnhandleSide extends Component {
     sequenceChartList: PropTypes.array,
     getSequencechart: PropTypes.func,
     deviceCode: PropTypes.string,
-    dealSuccess:PropTypes.bool,
+    dealSuccess: PropTypes.bool,
 
   }
   constructor(props) {
@@ -40,7 +40,7 @@ class UnhandleSide extends Component {
 
 
   handleClose = () => { // 点击返回按钮
-    this.props.changeUnhandleStore({ pageName: '',dealSuccess:false })
+    this.props.changeUnhandleStore({ pageName: '', dealSuccess: false })
   }
 
 
@@ -67,9 +67,9 @@ class UnhandleSide extends Component {
   }
 
   confirmWarningTip = () => { // 点击确定
-    const { toorder,inefficiencyId } = this.props;
-    this.setState({ showWarningTip: false})
-    toorder({inefficiencyIds:Array.of(inefficiencyId)})
+    const { toorder, inefficiencyId } = this.props;
+    this.setState({ showWarningTip: false })
+    toorder({ inefficiencyIds: Array.of(inefficiencyId) })
   }
 
   disabledDate = (current) => {// 不可以选择的时间
@@ -88,7 +88,7 @@ class UnhandleSide extends Component {
   }
 
   render() {
-    const { warnDetail, ignoreReason, sequenceChartList ,dealSuccess} = this.props;
+    const { warnDetail, ignoreReason, sequenceChartList, dealSuccess } = this.props;
     const { showWarningTip, warningTipText, ingoreVisible } = this.state;
     const happenTime = warnDetail.happenTime;
     const deviceName = warnDetail.deviceName;
@@ -128,7 +128,7 @@ class UnhandleSide extends Component {
             />}
         </div>
         <div className={styles.chartCont} >
-          <SequenceChart sequenceChartList={sequenceChartList} currentDeviceName={deviceName} />
+          <SequenceChart idName={'sequenceChart'} sequenceChartList={sequenceChartList} currentDeviceName={deviceName} />
         </div>
         <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} />
       </div>
