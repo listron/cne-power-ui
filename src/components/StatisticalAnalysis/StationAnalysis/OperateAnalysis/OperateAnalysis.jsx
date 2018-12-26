@@ -85,7 +85,7 @@ class OperateAnalysis extends React.Component {
   getMonthData = (props) => { // 月的时间选择 初始加载
     const { dateType, year, stations, stationCode } = props;
     const choiceYear = year ? year : moment().year();
-    const initStations=stations.toJS().filter(e=>e.stationType===1);
+    const initStations = stations.toJS().filter(e => e.stationType === 1);
     let prams = {
       stationCode: stationCode ? stationCode : initStations[0].stationCode,
       dateType,
@@ -131,7 +131,7 @@ class OperateAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(`${i}`)
     }
-    const stationType=stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType} })
+    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
     let prams = {
       stationCode: stationCode,
       dateType,
@@ -143,7 +143,7 @@ class OperateAnalysis extends React.Component {
       year: endYear,
     }
 
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear ,stationType})
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
@@ -154,6 +154,13 @@ class OperateAnalysis extends React.Component {
     props.getYearLimitPowerRate(prams)
     props.getPlantPower(prams)
   }
+
+  getLostPercentage = (molecule, denominator) => {
+    // molecule 分子,denominator 分母
+    if(molecule && denominator && +denominator===0){ return 0}
+    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 1000 / 100).toFixed(2) || '--'
+  }
+
 
   stationSelected = (rest) => { // 电站条件查询
     const stationCode = rest[0].stationCode
@@ -208,9 +215,11 @@ class OperateAnalysis extends React.Component {
     this.props.changeOperateStationStore({ selectYear: year })
   }
 
+
+
   render() {
     const { stations, dateType, stationCode, year, month, operateAvalibaData, operatePlanCompleteData, powerData, lostPowerData, efficiencyData, usageData, lostPowerTypeDatas, limitPowerData,
-      yearLimitPowerData, plantPowerData, selectYear,startTime,endTime } = this.props;
+      yearLimitPowerData, plantPowerData, selectYear, startTime, endTime } = this.props;
 
 
     let station = ''
@@ -416,33 +425,50 @@ class OperateAnalysis extends React.Component {
           <div className={styles.cardContainer}>
             <div className={styles.cardList}>
               <div className={styles.cardItem + " " + styles.lightResourcesn}>
-                <div>光资源</div>
-                <div>辐射总量 {powerData && powerData.resourceValue || '--'}MJ/㎡</div>
-                <div>理论发电量 {powerData && powerData.theoryGen || '--'}万kWh</div>
+                <div className={styles.innerTop}>
+                  <div className={styles.cardTitle}>光资源</div>
+                  <div>辐射总量 {powerData.resourceValue || '--'}MJ/㎡</div>
+                  <div>理论发电量 {powerData.theoryGen || '--'}万kWh</div>
+                </div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + " " + styles.photovoltaicModule}>
-                <div>光伏组件</div>
-                <div>发电量 {powerData && powerData.componentGen || '--'}万kWh</div>
-                <div>光伏组件吸收损耗 {powerData && powerData.componentLost || '--'}万kWh</div>
+                <div className={styles.innerTop}>
+                  <div className={styles.cardTitle}>光伏组件</div>
+                  <div>发电量 {powerData.componentGen || '--'}万kWh</div>
+                  <div>损耗 {powerData.componentLost || '--'}万kWh</div>
+                </div>
+                <div className={this.getLostPercentage(powerData.componentGen, powerData.theoryGen)>12 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.componentGen, powerData.theoryGen)}%</div>
+
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + " " + styles.inverter}>
-                <div>逆变器</div>
-                <div>发电量 {powerData && powerData.inverterGen || '--'}万kWh</div>
-                <div>逆变器损耗 {powerData && powerData.inverterLost || '--'}万kWh</div>
+                <div className={styles.innerTop}>
+                  <div className={styles.cardTitle}>逆变器</div>
+                  <div>发电量 {powerData.inverterGen || '--'}万kWh</div>
+                  <div>损耗 {powerData.inverterLost || '--'}万kWh</div>
+                </div>
+                <div className={this.getLostPercentage(powerData.inverterGen, powerData.componentGen)>3 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.inverterGen, powerData.componentGen)}%</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + " " + styles.electricPowerLine}>
-                <div>集电线路</div>
-                <div>发电量 {powerData && powerData.integratedGen || '--'}万kWh</div>
-                <div>集电线路及箱变损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
+                <div className={styles.innerTop}>
+                  <div className={styles.cardTitle}>集电线路</div>
+                  <div>发电量 {powerData.integratedGen || '--'}万kWh</div>
+                  <div>损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
+                </div>
+                <div className={this.getLostPercentage(powerData.integratedGen, powerData.inverterGen)>2 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.integratedGen, powerData.inverterGen)}%</div>
+
+
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + " " + styles.boosterStation}>
-                <div>升压站/关口表</div>
-                <div>上网电量 {powerData && powerData.internetGen || '--'}万kWh</div>
-                <div>升压站损耗 {powerData && powerData.internetLost || '--'}万kWh</div>
+                <div className={styles.innerTop}>
+                  <div className={styles.cardTitle}>升压站/关口表</div>
+                  <div>上网电量 {powerData.internetGen || '--'}万kWh</div>
+                  <div>损耗 {powerData.internetLost || '--'}万kWh</div>
+                </div>
+                <div className={this.getLostPercentage(powerData.internetGen, powerData.integratedGen)>1 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.internetGen, powerData.integratedGen)}%</div>
               </div>
             </div>
           </div>
@@ -532,7 +558,7 @@ class OperateAnalysis extends React.Component {
                         {dateType === "year" && ' ( ' + startTime + '-' + endTime + ' )'}
                       {dateType === "month" && ' ( ' + year + ' 年 )'}
                       {dateType === 'day' && ' ( ' + year + '年' + month + '月 )'}
-                      
+
                     </div>
                     <div>损失电量:万kWh</div>
                   </div>
