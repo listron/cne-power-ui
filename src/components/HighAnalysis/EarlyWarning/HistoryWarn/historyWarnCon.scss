@@ -1,0 +1,59 @@
+@import '../../../../theme/theme';
+.historyWarnMain {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid #e1e2e2;
+    .selectCondition {
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid #dfdfdf;
+        padding: 26px 0 20px 28px;
+    }
+    .iconDetail:hover {
+        span {
+            display: block;
+            color: $themeColor;
+            cursor: pointer;
+        }
+    }
+    :global {
+        .ant-table-placeholder {
+            border-bottom: none
+        }
+    }
+}
+
+.charts {
+    .modalTitle {
+        line-height: 50px;
+    }
+    .chartCont {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0 20px;
+        border-top: 1px solid $promptColor;
+        >div {
+            display: flex;
+            flex: 7;
+            height: 320px;
+            margin-top: 5px;
+        }
+        .dataPciker {
+            display: flex;
+            flex: 1;
+            height: 31px;
+            margin-top: 20px;
+        }
+    }
+    :global {
+        .ant-modal-body {
+            padding: 14px 24px;
+        }
+        .ant-input {
+            width: 148px;
+        }
+    }
+}
