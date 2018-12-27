@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styles from "./historyWarn.scss";
+import styles from "./test.scss";
 import PropTypes from 'prop-types';
 import { historyWarnAction } from './historyWarnAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
