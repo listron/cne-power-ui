@@ -22,10 +22,20 @@ class BarGraph extends React.Component {
     this.drawChart(nextProps)
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = (param) => {
     const { graphId, yAxisName, xAxisName, dateType, title, data, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const lineColor = '#f1f1f1';
+    const fontColor='#333';
     const color = ['#199475', '#e08031','#fff'];
     const targetOption = {
       graphic: confluenceTenMinGraphic,
@@ -36,7 +46,7 @@ class BarGraph extends React.Component {
         left: '23',
         top: 'top',
         textStyle: {
-          color: '#666',
+          color: fontColor,
           fontSize: 14,
           fontWeight: 'normal',
         }
@@ -46,8 +56,9 @@ class BarGraph extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999'
-          }
+            color: fontColor,
+          },
+          label: { color: fontColor },
         },
         backgroundColor: '#fff',
         formatter: function (params) {
@@ -81,11 +92,11 @@ class BarGraph extends React.Component {
           },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: lineColor,
             },
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             interval: 0,
             rotate: -30
           },
@@ -96,21 +107,24 @@ class BarGraph extends React.Component {
           type: 'value',
           name: yAxisName,
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
 
           axisLabel: {
-            color: '#666',
+            color:fontColor,
           },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
           },
           splitLine: {
             lineStyle: {
-              color: '##f1f1f1',
+              color: lineColor,
               type: 'dashed'
             }
           },
@@ -119,15 +133,17 @@ class BarGraph extends React.Component {
           type: 'value',
           name: '占比',
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
-
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             formatter: '{value} %'
           },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
@@ -135,7 +151,7 @@ class BarGraph extends React.Component {
           splitLine: {
             show: false,
             lineStyle: {
-              color: '#666',
+              color: fontColor,
               type: 'dashed'
             }
           },
@@ -146,7 +162,7 @@ class BarGraph extends React.Component {
           name: '辐射总量',
           type: 'bar',
           stack: "总量",
-          data: data && data.yData.barData,
+          data: data && this.getDefaultData(data.yData.barData),
           itemStyle: {
             barBorderRadius: 10,
           },
@@ -156,7 +172,7 @@ class BarGraph extends React.Component {
           name: '占比',
           type: 'line',
           yAxisIndex: 1,
-          data: data && data.yData.lineData
+          data: data && this.getDefaultData(data.yData.lineData),
         },
         {
           name:'瞬时辐射区间（w/㎡）',
