@@ -32,17 +32,26 @@ class barStack extends React.Component {
     return name;
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = param => {
     const { graphId, yAxisName, xAxisName, data, title, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0']
-    // let color = ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#dfdfdf', "#f9b600"]
+    let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0'];
+    const lineColor = ' #f1f1f1';
+    const fontColor='#333';
     let seriesData = [];
     for (var type in data) {
       if (type !== 'date') {
         seriesData.push({
           name: this.getName(type),
-          data: data[type],
+          data: this.getDefaultData(data[type]),
           type: 'bar',
           stack: "总量",
           barWidth: 13,
@@ -79,7 +88,7 @@ class barStack extends React.Component {
         left: "23",
         top: "top",
         textStyle: {
-          color: "#666",
+          color: fontColor,
           fontSize: 14,
           fontWeight: "normal"
         }
@@ -87,22 +96,23 @@ class barStack extends React.Component {
       color: color,
       legend: {
         left: "center",
-        icon: "circle",
-        itemWidth: 5,
-        itemHeight: 5
+        itemWidth: 8,
+        itemHeight: 5,
       },
       yAxis: {
         type: "value",
         name: yAxisName,
         nameTextStyle: {
-          color: "#666"
+          color: fontColor
         },
-
         axisLabel: {
-          color: "#666"
+          color:fontColor
         },
         axisLine: {
-          show: false
+          show: false,
+          lineStyle: {
+            color: fontColor,
+          }
         },
         axisTick: {
           show: false
@@ -110,7 +120,7 @@ class barStack extends React.Component {
         splitLine: {
           // show:false,
           lineStyle: {
-            color: "##f1f1f1",
+            color:lineColor,
             type: "dashed"
           }
         }
@@ -120,11 +130,11 @@ class barStack extends React.Component {
         data: data.date,
         axisLine: {
           lineStyle: {
-            color: "#dfdfdf"
+            color: lineColor
           }
         },
         axisLabel: {
-          color: "#666"
+          color: fontColor
         }
       },
       series: seriesData
