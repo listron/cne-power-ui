@@ -70,6 +70,7 @@ class Main extends Component {
     if(nextProps.login.size > 0 && this.props.login.size === 0) {    
       this.props.getStations();
       this.props.getDeviceTypes();
+      this.props.getMonitorDataUnit();
     }
   }
 
