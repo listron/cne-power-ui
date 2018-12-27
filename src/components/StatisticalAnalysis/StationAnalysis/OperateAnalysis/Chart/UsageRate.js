@@ -67,6 +67,14 @@ class UsageRate extends React.Component {
     return result;
   };
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = param => {
     const {
       graphId,
@@ -79,12 +87,14 @@ class UsageRate extends React.Component {
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(xAxisName);
     let yData = (data && data.yData) || [];
+    const lineColor = ' #f1f1f1';
+    const fontColor = '#333';
     let series = yData.map((item, index) => {
       return {
         name: yAxisName[index],
         type: "line",
         yAxisIndex: index,
-        data: item
+        data: this.getDefaultData(item)
       };
     });
 
@@ -97,7 +107,7 @@ class UsageRate extends React.Component {
         left: "23",
         top: "top",
         textStyle: {
-          color: "#666",
+          color: fontColor,
           fontSize: 14,
           fontWeight: "normal"
         }
@@ -108,8 +118,9 @@ class UsageRate extends React.Component {
         axisPointer: {
           type: "cross",
           crossStyle: {
-            color: "#999"
-          }
+            color: fontColor,
+          },
+          label:{  color:fontColor},
         },
         backgroundColor: "#fff",
         formatter: function (params) {
@@ -140,40 +151,25 @@ class UsageRate extends React.Component {
       legend: {
         top: title ? 0 : 20,
         left: "center",
-        // icon: "circle",
-        itemWidth: 5,
-        itemHeight: 5
+        itemWidth: 8,
+        itemHeight: 5,
       },
       xAxis: {
         type: "category",
         boundaryGap: false,
-        // data: [
-        //   "1月",
-        //   "2月",
-        //   "3月",
-        //   "4月",
-        //   "5月",
-        //   "6月",
-        //   "7月",
-        //   "8月",
-        //   "9月",
-        //   "10月",
-        //   "11月",
-        //   "12月"
-        // ],
         data: data && data.xData,
         axisPointer: {
           type: "shadow"
         },
         axisLine: {
           show: true,
-          onZero:false,
-          // lineStyle: {
-          //   color: "#dfdfdf"
-          // }
+          onZero: false,
+          lineStyle: {
+            color: lineColor
+          }
         },
         axisLabel: {
-          color: "#666"
+          color: fontColor
         },
         axisTick: {
           show: false
@@ -184,18 +180,18 @@ class UsageRate extends React.Component {
           type: "value",
           name: yAxisName[0],
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             formatter: "{value} %"
           },
-          // axisLine: {
-          //   show: true,
-          //   lineStyle: {
-          //     color: "#dfdfdf"
-          //   }
-          // },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: lineColor
+            }
+          },
           axisTick: {
             show: false,
           },
@@ -206,25 +202,14 @@ class UsageRate extends React.Component {
         {
           type: "value",
           name: yAxisName[1],
-          nameTextStyle: {
-            color: '#666',
+          nameTextStyle: { color: fontColor },
+          axisLine: {
+            show: true,
+            lineStyle: { color: lineColor }
           },
-          // axisLine: {
-          //   show: true,
-          //   lineStyle: {
-          //     color: "#dfdfdf"
-          //   }
-          // },
-          axisLabel: {
-            color: '#666',
-            formatter: "{value} %"
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
-          },
+          axisLabel: { color: fontColor, formatter: "{value} %" },
+          axisTick: { show: false },
+          splitLine: { show: false },
         }
       ],
       series: series
