@@ -165,7 +165,8 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
     }
   }
   const dayValueKey = ['genInverter', 'genIntegrated', 'genInternet', 'dailyBuyPower'];
-  const maxElec = stationCapacity * 1000 * 10 / (genUnit === 'kWh' ? 1 : 10000); // 理论最大kWh
+  const maxHour = stationType > 0 ? 10 : 30; // 最大满发小时。
+  const maxElec = stationCapacity * 1000 * maxHour / (genUnit === 'kWh' ? 1 : 10000); // 理论最大kWh
   if (dayValueKey.includes(keyWord) && genData[keyWord] > maxElec) { // 规则6. 日发电量不超装机容量*10h, 
     return {
       result: false,
