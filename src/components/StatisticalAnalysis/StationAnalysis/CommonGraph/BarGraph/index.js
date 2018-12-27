@@ -82,7 +82,7 @@ class BarGraph extends React.Component {
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData } = param;
     let color = this.getColor(xAxisName);
-    const lineColor = ' #f1f1f1';
+    const lineColor = '#f1f1f1';
     const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     return {
@@ -103,9 +103,9 @@ class BarGraph extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: fontColor
+            color: fontColor,
           },
-          lable:{color:fontColor}
+          label: { color: fontColor },
         },
         backgroundColor: '#fff',
         formatter: function (params) {
@@ -153,7 +153,12 @@ class BarGraph extends React.Component {
           name: yAxisName,
           nameTextStyle: { color: fontColor, },
           axisLabel: { color: fontColor, },
-          axisLine: { show: false },
+          axisLine: {
+            show: false,
+            lineStyle: {
+              color: lineColor,
+            }
+          },
           axisTick: { show: false, },
           splitLine: { lineStyle: { color: lineColor, type: 'dashed' } },
           axisLabel: {
@@ -171,7 +176,12 @@ class BarGraph extends React.Component {
             color: fontColor,
             formatter: '{value} %'
           },
-          axisLine: { show: false ,lineColor:{color:lineColor}},
+          axisLine: {
+            show: false,
+            lineStyle: {
+              color: lineColor,
+            }
+          },
           axisTick: { show: false, },
           splitLine: { show: false },
         }

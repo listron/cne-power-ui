@@ -94,7 +94,7 @@ class PowerEfficency extends React.Component {
     const { graphId, title, data, hasData } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
-    const lineColor = ' #f1f1f1';
+    const lineColor = '#f1f1f1';
     const fontColor='#333';
     let seriesData = [];
     const lineData = data && data.yData.lineData;
@@ -185,11 +185,11 @@ class PowerEfficency extends React.Component {
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#dfdfdf',
+            color: lineColor,
           }
         },
         axisLabel: {
-          color: '#666',
+          color: fontColor,
         },
         axisTick: {
           show: false,

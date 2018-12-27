@@ -13,27 +13,32 @@ class UsageRate extends React.Component {
     this.drawChart(nextProps);
   }
 
-
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
 
   drawChart = param => {
-    const { graphId, yAxisName, xAxisName, xData, yData, title,hasData } = param;
+    const { graphId, yAxisName, xAxisName, xData, yData, title, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = ["#a42b2c", "#d48265", "#91c7af", "#749f83", "#ca8622", "#bda29a", "#546570", "#6e7074", "#9b9b9b", "#ceebe0", "#199475", '#fff'];
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     let seriesData = [];
     yData.forEach(item => {
       seriesData.push({
         name: item.name,
-        data: item.data,
+        data: this.getDefaultData(item.data),
         type: 'bar',
         stack: "总量",
-        // itemStyle: {
-        //   barBorderRadius: 10,
-        // },
         barWidth: 10,
       });
     })
-    seriesData.length>0 && seriesData.push({
-      name:'瞬时辐射区间（w/㎡）',
+    seriesData.length > 0 && seriesData.push({
+      name: '瞬时辐射区间（w/㎡）',
       type: 'bar',
       stack: "总量",
     })
@@ -67,7 +72,7 @@ class UsageRate extends React.Component {
         left: "23",
         top: "top",
         textStyle: {
-          color: "#666",
+          color: fontColor,
           fontSize: 14,
           fontWeight: "normal"
         }
@@ -75,7 +80,7 @@ class UsageRate extends React.Component {
       color: color,
       legend: {
         left: '20%',
-        right:'10%',
+        right: '10%',
         icon: "circle",
         itemWidth: 5,
         itemHeight: 5
@@ -84,22 +89,21 @@ class UsageRate extends React.Component {
         type: "value",
         name: yAxisName,
         nameTextStyle: {
-          color: "#666"
+          color: fontColor
         },
-
         axisLabel: {
-          color: "#666"
+          color: fontColor
         },
         axisLine: {
-          show: false
+          show: false,
+          lineStyle: { color: lineColor }
         },
         axisTick: {
           show: false
         },
         splitLine: {
-          // show:false,
           lineStyle: {
-            color: "##f1f1f1",
+            color: lineColor,
             type: "dashed"
           }
         }
@@ -109,11 +113,11 @@ class UsageRate extends React.Component {
         data: xData,
         axisLine: {
           lineStyle: {
-            color: "#dfdfdf"
+            color: lineColor
           }
         },
         axisLabel: {
-          color: "#666"
+          color: fontColor
         }
       },
       series: seriesData

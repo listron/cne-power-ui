@@ -44,7 +44,7 @@ class barStack extends React.Component {
     const { graphId, yAxisName, xAxisName, data, title, hasData } = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0'];
-    const lineColor = ' #f1f1f1';
+    const lineColor = '#f1f1f1';
     const fontColor='#333';
     let seriesData = [];
     for (var type in data) {
@@ -58,6 +58,7 @@ class barStack extends React.Component {
         });
       }
     }
+
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
