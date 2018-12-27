@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Input, Icon, message } from 'antd';
+import { Button, Checkbox, Input, Icon, message, Popconfirm } from 'antd';
 import ResourceElecInfo from './ResourceElecInfo';
 import LostAddForm from '../SideReportPage/LostAddForm';
 import LimitAddForm from '../SideReportPage/LimitAddForm';
@@ -269,9 +269,27 @@ class ReportEdit extends Component {
     return (
       <div className={styles.reportEdit} >
         <div className={styles.reportDetailTitle} >
-          <span className={styles.reportDetailTitleTip}>日报编辑</span>
+          <span className={styles.reportDetailTitleTip}>
+            <span className={styles.mainTitle}>日报详情</span>
+            <span className={styles.titleInfo}>{updateDayReportDetail.stationName || '--'}</span>
+            <span className={styles.titleInfo}>{updateDayReportDetail.reportDate || '--'}</span>
+            <span className={styles.titleInfo}>实际容量 {updateDayReportDetail.realCapacity || '--'}MW</span>
+            <span className={styles.titleInfo}>装机台数 {updateDayReportDetail.machineCount || '--'}台</span>
+            <span className={styles.weather}>天气 {updateDayReportDetail.weather || '--'}</span>
+            <span className={styles.titleInfo}>温度 {updateDayReportDetail.temperature || '--'}</span>
+          </span>
           <div className={styles.reportDetailTitleRight}>
-            <Button onClick={this.updateReport} className={styles.reportEdit}>保存</Button>
+            <Popconfirm
+              placement="leftTop"
+              overlayClassName={styles.confirmBox}
+              title="你确定要提交?"
+              onConfirm={this.updateReport}
+              okText="确定"
+              cancelText="取消">
+                <Button
+                  className={styles.reportEdit}
+                >提交</Button>
+            </Popconfirm>
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showDetaiTip} />
           </div>
         </div>
@@ -292,6 +310,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeFaultList={this.faultListInfoChange} 
@@ -321,6 +340,7 @@ class ReportEdit extends Component {
                 endTime: e.endTime?moment(e.endTime):null,
               })
             )}
+            stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
             rememberRemove={this.rememberRemove}
             changeLimitList={this.limitListInfoChange}

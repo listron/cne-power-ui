@@ -28,14 +28,15 @@ class PowerDiagramTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { powerData, chartType } = nextProps;
+    const { powerData, chartType,yAxisUnit } = nextProps;
     const { intervalTime } = this.state;
+    const yAxisType=`电量(${yAxisUnit})`
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#666';
-    const actualPower = powerData.map(e => e.actualPower);  // 实际发电量
+    const actualPower = powerData.map(e =>yAxisUnit==='万kWh'? e.actualPower:e.actualPower*10000);  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
-    const theoryPower = powerData.map(e => e.theoryPower); // 理论发电量
+    const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
@@ -48,7 +49,7 @@ class PowerDiagramTenMin extends Component {
       && filterCompleteRate.length ===0
     ) ? showNoData : hiddenNoData;
     let color=this.getColor(chartType);
-    const powerOption = {//实际发电量 理论发电量
+    const powerOption = {//实际发电量 计划发电量
       graphic: powerGraphic,
       color:color,
       title: {
@@ -83,9 +84,8 @@ class PowerDiagramTenMin extends Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ (params[index].value ||  params[index].value === '0'  &&  parseFloat(params[index].value).toFixed(this.getDefaultPoint(params[index].seriesName))) || '--'}</div>`
           });
-          let complate=intervalTime!==0?`<div style="margin-left:11px;">${'完成率'}:${(completeRate.length>0 && (completeRate[params[0].dataIndex].completeRate)*1000/10) || '--'}%</div>`:''
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
-            </div>${paramsItem}${complate}`
+            </div>${paramsItem}`
         },
 
       },
@@ -117,7 +117,7 @@ class PowerDiagramTenMin extends Component {
       ],
       yAxis: [
         {
-          name: '电量(万kWh)',
+          name: yAxisType,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -140,7 +140,7 @@ class PowerDiagramTenMin extends Component {
             }
           }
         }, {
-          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计曝幅值(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
+          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计辐射(MJ/m²)' : (intervalTime === 1 ? '月辐射总量(MJ/m)' : '年辐射总量(MJ/m)')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
@@ -205,7 +205,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: '理论发电量',
+          name: '计划发电量',
           type: 'bar',
           data: theoryPower,
           label: {
@@ -220,7 +220,7 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计曝幅值' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计辐射' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
           type: 'line',
           data: instantaneous,
           yAxisIndex: 1,
@@ -242,9 +242,9 @@ class PowerDiagramTenMin extends Component {
       powerOption.grid.right = '10%';
       powerOption.yAxis[1].nameTextStyle.padding = 0;
       powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
-      powerOption.series = powerOption.series.filter(e => e.name !== '理论发电量' && e.name !== '完成率');
+      powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');
     }
-    powerDiagram.setOption(powerOption);
+    powerDiagram.setOption(powerOption,'notMerge');
     powerDiagram.resize();
   }
 
@@ -259,10 +259,10 @@ class PowerDiagramTenMin extends Component {
     let result = [];
     switch (type) {
       case 'wind':
-        result = ['#a42b2c', '#c7ceb2', '#3e97d1'];
+        result = ['#a42b2c', '#c7ceb2', '#3e97d1','#199475'];
         break;
       default:
-        result = ['#a42b2c', '#c7ceb2', '#f7c028'];
+        result = ['#a42b2c', '#e08031', '#f7c028','#199475'];
         break;
     }
     return result;
@@ -271,8 +271,8 @@ class PowerDiagramTenMin extends Component {
    getDefault=(intervalTime)=>{
      let result=[];
      switch(intervalTime){
-       case 0: result='累计曝幅值';break;
-       case 1: result='累计曝幅值';break;
+       case 0: result='累计辐射';break;
+       case 1: result='累计辐射';break;
      }
      return result;
    }
@@ -282,7 +282,7 @@ class PowerDiagramTenMin extends Component {
     let result=[];
     switch(name){
       case '累计发电量': result=4;break;
-      case '理论发电量': result=4;break;
+      case '计划发电量': result=4;break;
       default:result=2;break
     }
     return result;
