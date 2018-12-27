@@ -19,10 +19,10 @@ class CommonProgress extends Component {
     valueText: PropTypes.string,//实际值文字描述，左下角
     totalText: PropTypes.string,//计划值文字描述。右下角
     percent: PropTypes.string,//百分比，右边，选填，若无不显示
-    valueunit: PropTypes.string,//装机容量百分比，，选填，若无不显示
-    points: PropTypes.string,//装机容量，，选填，若无不显示
-    realTimeUnit: PropTypes.string,//实时功率单位，选填，若无不显示
-    realTimePoint: PropTypes.string,//实时功率小数点几位，选填，若无不显示
+    valueunit: PropTypes.string,//右边值百分比，，选填，若无不显示
+    points: PropTypes.string,//右边值，，选填，若无不显示
+    realTimeUnit: PropTypes.string,//左边值得单位，选填，若无不显示
+    realTimePoint: PropTypes.string,//左边值小数点几位，选填，若无不显示
   }
 
   static defaultProps = {
@@ -36,6 +36,8 @@ class CommonProgress extends Component {
 
   render() {
     const { value, total, valueText, totalText, percent, valueunit, points, realTimeUnit, realTimePoint } = this.props;
+    
+    
     return (
       <div className={styles.commonProgress}>
         <div className={styles.progressInfo}>
@@ -43,7 +45,7 @@ class CommonProgress extends Component {
             <div className={styles.stationValue}>
               {/** <div>{value}</div> */}
               <div>
-                <ValueFormat value={dataFormat(value, '--', realTimePoint)} realTimePoint={realTimePoint} realTimeUnit={realTimeUnit} />
+                <ValueFormat value={dataFormat(value, '--', realTimePoint)} points={realTimePoint} valueunit={realTimeUnit} />
               </div>
               {/*<div className={styles.planOutput}>{total}</div> */}
               <div className={styles.planOutput}>
