@@ -43,7 +43,7 @@ class EachStationReport extends Component {
       const keyIndex = currentArr.findIndex(e => e === keyWord);
       const currentValue = dailyReport[keyWord];
       const yesterValue = dailyReport[yesterArr[keyIndex]];
-      if (!yesterValue && yesterValue !== 0) { //昨日数据不存在
+      if ((!yesterValue && yesterValue !== 0) || (!currentValue && currentValue !== 0) || isNaN(currentValue)) {
         return;
       } else if (currentValue < yesterValue) { // 数据不合理
         return;
