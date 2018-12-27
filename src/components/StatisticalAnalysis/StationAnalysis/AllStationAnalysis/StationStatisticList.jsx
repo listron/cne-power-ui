@@ -206,6 +206,7 @@ class StationStatisticList extends React.Component {
         title: "计划完成率",
         dataIndex: "planGenRate",
         sorter: true,
+        defaultSortOrder:'ascend'
       },
       {
         title: "发电量同比",
