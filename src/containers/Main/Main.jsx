@@ -28,6 +28,7 @@ class Main extends Component {
     enterpriseId: PropTypes.string,
     username: PropTypes.string,
     changeLoginStore: PropTypes.func,
+    getMonitorDataUnit: PropTypes.func,
   };
 
   constructor(props) {
