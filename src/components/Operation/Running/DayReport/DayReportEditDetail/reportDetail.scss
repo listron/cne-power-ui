@@ -224,9 +224,6 @@
             text-align: right;
             margin-right: 24px;
           }
-          .value{
-
-          }
         }
       }
     }
@@ -247,8 +244,10 @@
           }
         }
         .ant-form-item-control-wrapper{
+          width: 160px;
           .ant-input{
             width: 90px;
+            margin-right: 8px;
             padding: 0 4px;
           }
         }
