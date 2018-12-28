@@ -10,8 +10,8 @@ const { highAnalysis } = path.APISubPaths;
 function *getCleanWarningList(action) { // 获取清洗预警列表
   const { payload } = action;
   try {
-    // const url = `${APIBasePath}${highAnalysis.getCleanWarningList}`;
-    const url = '/mock/cleanWarning/list';
+    const url = `${APIBasePath}${highAnalysis.getCleanWarningList}`;
+    // const url = '/mock/cleanWarning/list';
     yield put({ type: cleanWarningAction.CLEAN_WARNING_FETCH });
     const response = yield call(axios.post,url,payload);
     if (response.data.code === '10000') {
@@ -44,8 +44,8 @@ function *getCleanWarningList(action) { // 获取清洗预警列表
 function *getCleanWarningDetail(action) { // 清洗预警详情
   const { payload } = action;
   try {
-    // const url = `${APIBasePath}${highAnalysis.getCleanWarningDetail}/${payload.stationCode}`;
-    const url = '/mock/cleanWarning/detail';
+    const url = `${APIBasePath}${highAnalysis.getCleanWarningDetail}/${payload.stationCode}`;
+    // const url = '/mock/cleanWarning/detail';
     const response = yield call(axios.get,url);
     if (response.data.code === '10000') {
       yield put({
@@ -65,8 +65,8 @@ function *getTotalDustEffect(action) { // 全局灰尘影响
   const { payload } = action;
   try {
     const { stationCode, startDay, endDay } = payload;
-    // const url = `${APIBasePath}${highAnalysis.getTotalDustEffect}/${stationCode}/${startDay}/${endDay}`;
-    const url = '/mock/cleanWarning/totalEffect';
+    const url = `${APIBasePath}${highAnalysis.getTotalDustEffect}/${stationCode}/${startDay}/${endDay}`;
+    // const url = '/mock/cleanWarning/totalEffect';
     const response = yield call(axios.get,url);
     if (response.data.code === '10000') {
       yield put({
@@ -85,8 +85,8 @@ function *getMatrixDustEffect(action) { // 方阵灰尘影响
   const { payload } = action;
   try {
     const { stationCode, startDay, endDay } = payload;
-    // const url = `${APIBasePath}${highAnalysis.getMatrixDustEffect}/${stationCode}/${startDay}/${endDay}`;
-    const url = '/mock/cleanWarning/matrixEffect';
+    const url = `${APIBasePath}${highAnalysis.getMatrixDustEffect}/${stationCode}/${startDay}/${endDay}`;
+    // const url = '/mock/cleanWarning/matrixEffect';
     const response = yield call(axios.get,url);
     if (response.data.code === '10000') {
       yield put({
