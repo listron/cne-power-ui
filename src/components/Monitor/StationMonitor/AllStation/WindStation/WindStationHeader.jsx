@@ -54,7 +54,7 @@ class windStationHeader extends React.Component {
             <div className={styles.dataName}>月累计发电量 {powerUnit}</div>
           </div>
         </div>
-        <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} valueunit={powerUnit} valueText={`年累计发电量 ${powerUnit}`} totalText={`计划 ${powerUnit}`} percent={yearPlanRate ? yearPlanRate : ''} />
+        <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint}  realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 ${powerUnit}`} totalText={`计划 ${powerUnit}`} percent={yearPlanRate ? yearPlanRate : ''} />
       </div>
     )
   }

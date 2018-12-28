@@ -49,7 +49,7 @@ class PowerDiagramTenMin extends Component {
       && filterInstantaneous.length === 0
       && filterCompleteRate.length === 0
     ) ? showNoData : hiddenNoData;
-    let color = this.getColor(chartType);
+    let color=this.getColor(chartType,intervalTime);
     const powerOption = {//实际发电量 计划发电量
       graphic: powerGraphic,
       color: color,
@@ -65,11 +65,12 @@ class PowerDiagramTenMin extends Component {
         right: 85,
       },
       legend: {
-        icon: 'circle',
+      
         textStyle: {
           color: lineColor,
         },
-        itemWidth: 5,
+        // icon: 'circle',
+        itemWidth: 10,
         itemHeight: 5,
       },
       tooltip: {
@@ -222,9 +223,10 @@ class PowerDiagramTenMin extends Component {
           barWidth: 14,
         },
         {
-          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计辐射' : (intervalTime === 1 ? '月辐射总量' : '年辐射总量')}`,
+          name: chartType === 'wind' ? '平均风速' : `${intervalTime === 0 ? '累计辐射' : (intervalTime === 1 ? '累计辐射' : '累计辐射')}`,
           type: 'line',
           data: instantaneous,
+          // color:'#f9b600',
           yAxisIndex: 1,
           lineStyle: {
             type: 'solid',
@@ -245,30 +247,31 @@ class PowerDiagramTenMin extends Component {
       powerOption.yAxis[1].nameTextStyle.padding = 0;
       powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
       powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');
+      powerOption.series.color = ['#a42b2c','#f9b600'];
     }
     powerDiagram.setOption(powerOption, 'notMerge');
     powerDiagram.resize();
   }
 
-  onChangeTimePower = (e) => {
+  onChangeTimePower = (e) => { // 改变 日／月／年
     const { stationCode } = this.props;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
     this.props.getPowerDataTenMin(stationCode, intervalTime);// 时间格式传出，清空定时器并重新请求数据。
   }
 
-  getColor = (type) => {
-    let result = [];
-    switch (type) {
-      case 'wind':
-        result = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
-        break;
-      default:
-        result = ['#a42b2c', '#e08031', '#f7c028', '#199475'];
-        break;
-    }
-    return result;
-  }
+  
+
+   getColor=(type,intervalTime)=>{  // 颜色的设置
+     let color=[];
+     if(type==='wind'){
+       if(intervalTime===0){ return color=['#a42b2c','#3e97d1'];}
+       return color=['#a42b2c', '#c7ceb2', '#3e97d1','#199475'];
+     }else{
+      if(intervalTime===0){ return color=['#a42b2c', '#f9b600',];}
+      return color=['#a42b2c', '#c7ceb2', '#f9b600','#199475'];
+     }
+   }
 
   getDefault = (intervalTime) => {
     let result = [];
@@ -290,7 +293,7 @@ class PowerDiagramTenMin extends Component {
     return result;
   }
 
-  dealValue = (seriesName, value, point) => {
+  dealValue = (seriesName, value, point) => { // 完成率的修改
     if (seriesName === '完成率') {
       return ((value || +value === 0) && value )+'%' ||'--' +'%'
     } else { 
