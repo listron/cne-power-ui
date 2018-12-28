@@ -30,9 +30,11 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
           color: '#666',
           fontSize: 14,
         },
-        icon: 'rect',
-        itemWidth: 5,
-        itemHeight: 5,
+        itemWidth: 6,
+        itemHeight: 6,
+      },
+      grid: {
+        containLabel: true,
       },
       tooltip:{
         trigger: 'axis',
@@ -84,7 +86,9 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
             show: false
           },
           axisLine: {
-            show: false,
+            lineStyle: {
+              color: '#dfdfdf',
+            },
           },
           axisTick: {
             show: false,
@@ -137,6 +141,23 @@ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全
         }
       ]
     }
+    if (keyWord === 'matrix') {
+      const maxLength = data.length || 1;
+      const defaultLength = 30;
+      const endZoom = (defaultLength / maxLength) * 100
+      option.dataZoom = [
+        {
+          show: true,
+          start: 0,
+          end: endZoom
+        }, {
+          type: 'inside',
+          start: 0,
+          end: endZoom
+        }
+      ]
+    }
+    
     chartInitBox.setOption(option);
   }
 
@@ -177,8 +198,8 @@ class DustEffectCharts extends Component {
     const { dustEffectInfo, getTotalDustEffect, getMatrixDustEffect } = this.props;
     const effectParam = {
       stationCode: dustEffectInfo.stationCode,
-      startDay: timeString[0],
-      endDay: timeString[1],
+      startDay: timeString[0].format('YYYY-MM-DD'),
+      endDay: timeString[1].format('YYYY-MM-DD'),
     }
     getTotalDustEffect(effectParam);
     getMatrixDustEffect(effectParam);
