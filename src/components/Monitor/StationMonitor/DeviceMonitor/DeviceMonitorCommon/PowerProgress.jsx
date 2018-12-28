@@ -2,7 +2,7 @@ import React from 'react';
 import { Progress } from 'antd';
 import styles from './deviceMonitor.scss';
 import { DeviceValueFormat } from '../../../../Common/UtilComponent/index'
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat } from '../../../../../utils/utilFunc';
 
 function PowerProgress({ devicePower, deviceCapacity }) {
   const tmpPercent = parseFloat(deviceCapacity) === 0 ? ' -- ' : devicePower / deviceCapacity;
@@ -13,10 +13,10 @@ function PowerProgress({ devicePower, deviceCapacity }) {
     <div className={styles.powerProgress} >
       <div className={styles.progressNum}>
         <span className={styles.leftText}>
-        <DeviceValueFormat value={dataFormat(showDevicePower, '--')} />
+        <DeviceValueFormat value={monitordataFormat(showDevicePower, '--')} />
         </span>
         <span className={styles.rightText}>
-        <DeviceValueFormat value={dataFormat(showCapacityPower, '--')} />
+        <DeviceValueFormat value={monitordataFormat(showCapacityPower, '--')} />
         </span>
        
       </div>

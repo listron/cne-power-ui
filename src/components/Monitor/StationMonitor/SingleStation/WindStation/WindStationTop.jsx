@@ -7,7 +7,7 @@ import { Icon, Progress, Modal, Input } from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat } from '../../../../../utils/utilFunc';
 import { ValueFormat,DeviceValueFormat } from '../../../../Common/UtilComponent';
 
 // const ValueFormat = ({ value,  points }) => { // value必为数值 或 '--'。
@@ -161,34 +161,34 @@ class WindStationTop extends Component {
         <div className={styles.trueTimeData} >
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
-              <ValueFormat value={dataFormat(singleStationData.stationPower,'--', realTimePowerPoint)}  points={realTimePowerPoint} valueunit={realTimePowerUnit} />
-              <ValueFormat value={dataFormat(singleStationData.stationCapacity,'--', realCapacityPoint)}  points={realCapacityPoint} valueunit={realCapacityUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationPower,'--', realTimePowerPoint)}  points={realTimePowerPoint} valueunit={realTimePowerUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationCapacity,'--', realCapacityPoint)}  points={realCapacityPoint} valueunit={realCapacityUnit} />
             </div>
             <Progress percent={powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
             <div className={styles.trueTimeDesc}><span>实时功率 ({realTimePowerUnit})</span><span>装机容量 ({realCapacityUnit})</span></div>
           </div>
           <div>
             <div className={styles.trueTimeValue}>
-              <DeviceValueFormat value={dataFormat(singleStationData.stationUnitCount,'--')} />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.stationUnitCount,'--')} />
             </div>
             <div className={styles.trueTimeUnit}>装机台数 (台)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#3e97d1" }}>
-              <DeviceValueFormat value={dataFormat(singleStationData.instantaneous,'--')}   />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.instantaneous,'--')}   />
             </div>
             <div className={styles.trueTimeUnit}>平均风速 (m/s)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue}>
-              <ValueFormat value={dataFormat(singleStationData.dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
             </div>
             <div className={styles.trueTimeUnit}>日发电量 ({powerUnit})</div>
           </div>
           <div>
             <div className={styles.trueTimeValue}>
               <div>
-                <ValueFormat value={dataFormat(singleStationData.monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                <ValueFormat value={monitordataFormat(singleStationData.monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
                 {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
             </div>
@@ -219,10 +219,10 @@ class WindStationTop extends Component {
             <div className={styles.annualEnergyScale} >
               <div className={styles.trueTimeValue}>
                 <div className={styles.editYearPower}>
-                  <ValueFormat value={dataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                  <ValueFormat value={monitordataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
                   {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
-                <ValueFormat value={dataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                <ValueFormat value={monitordataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
               </div>
               <Progress percent={+( yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
               <div className={styles.trueTimeDesc}><span>年累计发电量 ({powerUnit})</span><span>计划 ({powerUnit})</span></div>
