@@ -65,17 +65,26 @@ class LostGenTable extends Component {
         className: 'startTime',
         render : (text, record) => {
           const { reportDate, startTime, id } = record;
-          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
-          const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
-          return allowDelete?<Form.Item>
-            {getFieldDecorator(`${id}_startTime`, {
-              initialValue: startTime,
-            })(
-              <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
-            )}
-          </Form.Item>:<span>
-            {moment(startTime).format('YYYY-MM-DD HH:mm')}
-          </span>
+          // let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          // const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
+          // return allowDelete?<Form.Item>
+          //   {getFieldDecorator(`${id}_startTime`, {
+          //     initialValue: startTime,
+          //   })(
+          //     <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+          //   )}
+          // </Form.Item>:<span>
+          //   {moment(startTime).format('YYYY-MM-DD HH:mm')}
+          // </span>
+          return (
+            <Form.Item>
+              {getFieldDecorator(`${id}_startTime`, {
+                initialValue: startTime,
+              })(
+                <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+              )}
+            </Form.Item>
+          )
         }
       },{
         title: '结束时间',

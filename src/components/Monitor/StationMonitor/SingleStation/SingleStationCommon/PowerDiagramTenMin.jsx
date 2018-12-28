@@ -27,31 +27,32 @@ class PowerDiagramTenMin extends Component {
     }
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { powerData, chartType,yAxisUnit } = nextProps;
+    const { powerData, chartType, yAxisUnit } = nextProps;
     const { intervalTime } = this.state;
-    const yAxisType=`电量(${yAxisUnit})`
+    const yAxisType = `电量(${yAxisUnit})`
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#666';
-    const actualPower = powerData.map(e =>yAxisUnit==='万kWh'? e.actualPower:e.actualPower*10000);  // 实际发电量
+    const actualPower = powerData.map(e => yAxisUnit === '万kWh' ? e.actualPower : e.actualPower * 10000);  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
     const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e => e.completeRate);  // 完成率
+    const completeRate = powerData.map(e => e.completeRate*100);  // 完成率
     const filterCompleteRate = powerData.filter(e => e.completeRate);
     const powerGraphic = (
-      filterActualPower.length === 0 
-      && filterTheoryPower.length === 0 
-      && filterInstantaneous.length === 0 
-      && filterCompleteRate.length ===0
+      filterActualPower.length === 0
+      && filterTheoryPower.length === 0
+      && filterInstantaneous.length === 0
+      && filterCompleteRate.length === 0
     ) ? showNoData : hiddenNoData;
     let color=this.getColor(chartType,intervalTime);
     const powerOption = {//实际发电量 计划发电量
       graphic: powerGraphic,
-      color:color,
+      color: color,
       title: {
         text: '发电量',
         textStyle: {
@@ -83,19 +84,20 @@ class PowerDiagramTenMin extends Component {
         formatter: (params) => {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${ (params[index].value ||  params[index].value === '0'  &&  parseFloat(params[index].value).toFixed(this.getDefaultPoint(params[index].seriesName))) || '--'}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :
+            ${this.dealValue(params[index].seriesName,params[index].value,this.getDefaultPoint(params[index].seriesName))}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
         },
 
       },
-      axisPointer:{
-        type:'line',
-        snap:true,
-        lineStyle:{
-          width:38,
-          color:'rgba(150,150,150,0.3)'
+      axisPointer: {
+        type: 'line',
+        snap: true,
+        lineStyle: {
+          width: 38,
+          color: 'rgba(150,150,150,0.3)'
         }
       },
       calculable: false,
@@ -229,7 +231,7 @@ class PowerDiagramTenMin extends Component {
           lineStyle: {
             type: 'solid',
           },
-        },{
+        }, {
           name: '完成率',
           type: 'line',
           data: completeRate,
@@ -247,32 +249,20 @@ class PowerDiagramTenMin extends Component {
       powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');
       powerOption.series.color = ['#a42b2c','#f9b600'];
     }
-    powerDiagram.setOption(powerOption,'notMerge');
+    powerDiagram.setOption(powerOption, 'notMerge');
     powerDiagram.resize();
   }
 
-  onChangeTimePower = (e) => {
+  onChangeTimePower = (e) => { // 改变 日／月／年
     const { stationCode } = this.props;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
     this.props.getPowerDataTenMin(stationCode, intervalTime);// 时间格式传出，清空定时器并重新请求数据。
   }
 
-  // getColor = (type) => {
-  //   let result = [];
-  //   switch (type) {
-  //     case 'wind':
-  //       result = ['#a42b2c', '#c7ceb2', '#3e97d1','#199475'];
-  //       break;
-  //     default:
-  //       result = ['#a42b2c', '#c7ceb2', '#f7c028','#199475'];//f9b600,e08031,c7ceb2
-  //       break;
-  //   }
-  //   return result;
-  // }
+  
 
-
-   getColor=(type,intervalTime)=>{
+   getColor=(type,intervalTime)=>{  // 颜色的设置
      let color=[];
      if(type==='wind'){
        if(intervalTime===0){ return color=['#a42b2c','#3e97d1'];}
@@ -283,25 +273,34 @@ class PowerDiagramTenMin extends Component {
      }
    }
 
-   getDefault=(intervalTime)=>{
-     let result=[];
-     switch(intervalTime){
-       case 0: result='累计辐射';break;
-       case 1: result='累计辐射';break;
-     }
-     return result;
-   }
-
-
-   getDefaultPoint=(name)=>{
-    let result=[];
-    switch(name){
-      case '累计发电量': result=4;break;
-      case '计划发电量': result=4;break;
-      default:result=2;break
+  getDefault = (intervalTime) => {
+    let result = [];
+    switch (intervalTime) {
+      case 0: result = '累计辐射'; break;
+      case 1: result = '累计辐射'; break;
     }
     return result;
-   }
+  }
+
+
+  getDefaultPoint = (name) => {
+    let result = [];
+    switch (name) {
+      case '累计发电量': result = 4; break;
+      case '计划发电量': result = 4; break;
+      default: result = 2; break
+    }
+    return result;
+  }
+
+  dealValue = (seriesName, value, point) => { // 完成率的修改
+    if (seriesName === '完成率') {
+      return ((value || +value === 0) && value )+'%' ||'--' +'%'
+    } else { 
+      return (value || +value === 0 && parseFloat(value).toFixed(point)) || '--'
+    }
+  }
+
 
   render() {
     const { stationCode } = this.props;

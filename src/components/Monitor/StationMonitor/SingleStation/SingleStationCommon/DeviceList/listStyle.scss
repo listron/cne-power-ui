@@ -79,7 +79,7 @@
         font-size: 32px;
       }
       .icon-alarm{
-        color: $darkColor;
+        color: #a42b2c;
         position: relative;
         width: 14px;
         height: 14px;
@@ -105,6 +105,7 @@
     height: 38px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     &:hover{
       background-color: #f1f1f1;
     }
@@ -114,7 +115,7 @@
   }
   :global{
     .icon-alarm{
-      color: $darkColor;
+      color: #a42b2c;
       width: 14px;
       height: 14px;
       font-size: 14px;

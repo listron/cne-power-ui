@@ -50,7 +50,7 @@ class CenterMap extends Component{
         this.setWorldMap(countriesInfo, activeInfo);
       }).catch(error=>{
         console.log(error); 
-        message.error('加载世界地图失败，请重试');
+        // message.error('加载世界地图失败，请重试');
       });
       this.setState({ countriesInfo });
       this.setCountryMap(mapStation, 'China');
