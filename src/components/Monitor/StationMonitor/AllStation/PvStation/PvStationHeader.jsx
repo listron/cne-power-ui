@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonProgress from '../../../../Common/CommonProgress'
-import { ValueFormat } from '../../../../Common/UtilComponent'
+import { ValueFormat,DeviceValueFormat } from '../../../../Common/UtilComponent'
 import { dataFormat } from '../../../../../utils/utilFunc';
 
 class pvStationHeader extends React.Component {
@@ -39,7 +39,10 @@ class pvStationHeader extends React.Component {
             <div className={styles.dataName}>装机台数 (台)</div>
           </div>
           <div className={styles.pvInstantaneous}>
-            <div className={styles.dataPvValue}>{instantaneous}</div>
+            <div className={styles.dataPvValue}> 
+             <DeviceValueFormat value={dataFormat(instantaneous, '--')} />
+             </div>
+          
             <div className={styles.dataName}>平均辐射 (W/m²)</div>
           </div>
           <div className={styles.dayStation}>

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonProgress from '../../../../Common/CommonProgress'
-import { ValueFormat } from '../../../../Common/UtilComponent'
+import { ValueFormat,DeviceValueFormat } from '../../../../Common/UtilComponent'
 import { dataFormat } from '../../../../../utils/utilFunc';
 
 class windStationHeader extends React.Component {
@@ -38,7 +38,8 @@ class windStationHeader extends React.Component {
             <div className={styles.dataName}>装机台数 (台)</div>
           </div>
           <div className={styles.windSpeed}>
-            <div className={styles.dataWindValue}>{instantaneous}</div>
+            <div className={styles.dataWindValue}> 
+            <DeviceValueFormat value={dataFormat(instantaneous, '--')} /></div>
             <div className={styles.dataName}>平均风速 (m/s)</div>
           </div>
           <div className={styles.dayStation}>
