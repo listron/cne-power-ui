@@ -79,7 +79,7 @@ class BoosterStation extends Component {
     const { activeIndex } = this.state;
     let boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
-    const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
+    const { stationCode, deviceTypeCode } = this.props.match.params;
     const { stationName, stationType } = singleStationData;
     const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
@@ -118,8 +118,8 @@ class BoosterStation extends Component {
             loading={loading}
             deviceDetail={boosterDetail}
             stationCode={stationCode}
-            deviceTypeCode={deviceTypeCode}
-            deviceCode={deviceCode}
+            deviceTypeCode={boosterDetail.deviceTypeCode}
+            deviceCode={boosterDetail.deviceCode}
           />
         </div>
       </div>

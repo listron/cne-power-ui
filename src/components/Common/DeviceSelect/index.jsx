@@ -179,8 +179,8 @@ class DeviceSelect extends Component {
           value={checkedDeviceCodes}
           className={styles.stationSelectMainInput}
         >
-          {devices.slice(0, 20).map(e => (
-            <Option key={e.deviceCode}>{e.deviceName}</Option>
+          {devices.map((e, i) => (
+            <Option key={e.deviceCode} style={{display: (i > 19 ? 'none': 'block')}}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
         </Select>:<AutoComplete
@@ -191,7 +191,9 @@ class DeviceSelect extends Component {
           value={autoCompleteText}
           placeholder={holderText}
         >
-          {autoCompleteDevice.slice(0, 20).map(e => (<Option key={e.deviceCode}>{e.deviceName}</Option>))}
+          {autoCompleteDevice.map((e, i) => (
+            <Option key={e.deviceCode} style={{display: (i > 19 ? 'none': 'block')}}>{e.deviceName}</Option>
+          ))}
           {autoCompleteDevice.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
         </AutoComplete>}
         <DeviceSelectModal

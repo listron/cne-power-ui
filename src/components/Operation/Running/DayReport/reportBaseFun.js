@@ -82,13 +82,13 @@ const elecFlowCheck = (keyWord, genData, checkedArr, stationType) => { // 逆变
   const currentIndex = checkedArr.findIndex(e => e === keyWord);
   let checkedResult = true, message = ''; // 默认数据正确
   checkedArr.forEach( (e ,i) => {
-    if (i < currentIndex && genData[e] && genData[e] < genData[keyWord]) { // 序号小于校验项,值需大于校验项。若无值不需校验
+    if (i < currentIndex && genData[e] && (genData[e] - genData[keyWord]) < 0 ) { // 序号小于校验项,值需大于校验项。若无值不需校验
       const currentText = reportBasefun(stationType).find(info => info.configName === keyWord).configText;
       const errorText = reportBasefun(stationType).find(info => info.configName === e).configText;
       checkedResult = false;
       message = `${errorText}不得小于${currentText},请检查`;
     }
-    if (i > currentIndex && genData[e] && genData[e] > genData[keyWord]) { // 序号大于校验项，值需小于校验项。无值不校验
+    if (i > currentIndex && genData[e] && (genData[keyWord] - genData[e]) < 0 ) { // 序号大于校验项，值需小于校验项。无值不校验
       const currentText = reportBasefun(stationType).find(info => info.configName === keyWord).configText;
       const errorText = reportBasefun(stationType).find(info => info.configName === e).configText;
       checkedResult = false;

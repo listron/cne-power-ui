@@ -110,8 +110,12 @@ class WindStation extends Component {
                   }}
                   onClick={() => this.onSelectedDeviceType(0)}
                 >
-                  <div className={styles.deviceTypeIcon} >
-                    <i className="iconfont icon-elecnetting" ></i>
+                  <div 
+                    className={styles.deviceTypeIcon}
+                    style={{
+                      color: deviceTypeCode === 0 ? '#199475' : '#dfdfdf'
+                    }} >
+                    <i className="iconfont icon-elecnetting" />
                     <span className={styles.text}>电网</span>
                   </div>
                 </div>
