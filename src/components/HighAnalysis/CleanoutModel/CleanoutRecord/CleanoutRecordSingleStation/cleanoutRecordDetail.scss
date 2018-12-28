@@ -1,46 +1,134 @@
-
-
+@import '../../../../../theme/theme.scss';
 .container{
   display: flex;
   flex:1 ;
-  // width: 100%;
-  // flex-direction: column;
   background-color: #fff;
-  // padding: 24px 24px 0;
 }
-
 .CleanoutRecordDetail{
   display: flex;
   flex:1 0 auto;
   width: 100%;
   flex-direction: column;
   background-color: #fff;
-  padding: 24px 24px 0;
+  padding-left: 24px;
+  margin-right: 24px;
   .detailTop{
     display: flex;
     justify-content: space-between;
-
+    align-items:center; 
+    position: relative;
+    height: 60px;
+    border-bottom: 1px solid #ececec;
     .topInfoShow{
       display: flex;
+      align-items: center;
+      .icon{
+        margin: 0 15px 0 20px; 
+        font-size: 18px;
+        color:#199475;
+        
+      }
+      .status{
+       height: 38px;
+       line-height: 38px;
+        h3{
+          font-size: 18px;
+          color:#666;
+        }
+      }
+     
     }
-    .handleArea{
-      display: flex;
-      .dirtEff{
-        display: block;
-        width: 120px;
-        line-height: 24px;
-        text-align: center;
-        color:#666;
-        background: #199475;
-        border-radius: 10px;
-        margin-right: 40px;
-      }
-      i{
-        margin: 0 12px;
-      }
-      .backIcon{
-        line-height: 24px;
-      }
-    } 
+   
+
   }
+  .statisticData{
+    display: flex;
+    height: 116px;
+    padding: 20px;
+    border-bottom: 1px solid #ececec;
+    .statisticTarget{
+      display: flex;
+      border-right: 1px solid #ececec;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 20px 0 20px;
+      .numberColor{
+        color:#199475;
+        font-size: 24px;
+        line-height: 40px;
+      }
+    }
+  }
+  .filterData{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    line-height: 60px;
+    align-content: center;
+  }
+}
+
+.handleArea{ 
+  height: 100%;
+  display: flex;
+  align-items: center;
+  :global{
+    .iconfont{
+      font-size: 20px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+  }
+  .dirtEff{
+    display: block;
+    width: 120px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    color:#199475;
+    background:rgba($color: #199475, $alpha: .6);
+    border-radius: 24px;
+    margin-right: 40px;
+  }
+  .backIcon{
+    font-size: 20px;
+    cursor: pointer;
+    color: $darkColor;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    border-left: solid 1px $promptColor;
+    margin-left: 20px;
+  }
+  
+ 
+}
+.dirtEffBox{
+ height: 410px;
+ display:flex;
+ flex:1;
+}
+.dirtBox{
+  display: flex;
+  flex:1;
+  width: 100%;
+  position: relative;
+  .buttonStyle{
+  position: absolute;
+  top:50px;
+  right:20px;
+    // margin-top: 50px;
+    }
+ .boxSize{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+ }
+ .effectChart{
+  height: 400px;
+  flex: 1;
+ }
 }

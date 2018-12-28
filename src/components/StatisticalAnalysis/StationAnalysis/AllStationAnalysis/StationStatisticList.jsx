@@ -137,9 +137,9 @@ class StationStatisticList extends React.Component {
         <Radio.Group value={`${powerSelectYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             } else {
-              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             }
           }
           )}
@@ -206,6 +206,7 @@ class StationStatisticList extends React.Component {
         title: "计划完成率",
         dataIndex: "planGenRate",
         sorter: true,
+        defaultSortOrder:'ascend'
       },
       {
         title: "发电量同比",
@@ -292,6 +293,7 @@ class StationStatisticList extends React.Component {
         title: "计划完成率",
         dataIndex: "planGenRate",
         sorter: true,
+        defaultSortOrder:'ascend'
       },
       {
         title: "发电量环比",

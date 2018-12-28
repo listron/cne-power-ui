@@ -1,0 +1,90 @@
+@import "../../../../../theme/theme";
+
+.seriesBox{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  .thresholdt{
+    display: flex;
+    margin-bottom: 20px;
+    .thresholdtText{
+      width: 100px;
+      margin-right: 20px;
+      text-align: center;
+    }
+    .thresholdtNum{
+      width: 50px;
+      text-align: center;
+    }
+  }
+  .Send{
+    display: flex;
+    flex-direction: column;
+    .SendTop{
+      display: flex;
+      margin-bottom: 20px;
+      .SendNum{
+        width: 100px;
+        margin-right: 32px;
+        text-align: center;
+      }
+      .SendSwitch{
+        text-align: center;
+      }
+    }
+    .maximum{
+      display: flex;
+      .maximumText{
+        width: 100px;
+        margin-right: 32px;
+        text-align: center;
+      }
+      .maximumNum{
+        text-align: center;
+        margin-right: 4px;
+      }
+    }
+  }
+  .btn{
+    display: flex;
+    justify-content: flex-end;
+    margin-top:42px;
+  }
+}
+
+.seriesBoxCopy{
+  @extend .seriesBox;
+  .thresholdt{
+    .thresholdtNum{
+      width: 80px;
+      margin-right: 4px;
+      text-align: left;
+      line-height: 30px;
+    }
+  }
+  .Send{
+    .SendTop{
+      line-height: 30px;
+      .SendNum{
+        margin-right: 21px
+      }
+    }
+    .maximum{
+      line-height: 30px;
+      .maximumText{
+        margin-right: 20px;
+      }
+      .maximumNum{
+        width: 80px;
+        margin-right: 4px;
+        text-align: left;
+      }
+    }
+  }
+  .btn{
+    margin-left: 11px;
+    .btnBottom{
+      margin-right: 8px;
+    }
+  }
+}

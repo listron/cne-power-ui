@@ -10,7 +10,7 @@
   left: 0px;
   top: 0px;
   width: 300px;
-  max-height: calc(100vh - 83px);
+  height: calc(100vh - 123px);
   overflow: auto;
   .deviceTitle{
     color: $darkColor;
@@ -249,7 +249,7 @@
     margin-bottom: 20px;
   }
   .eachYx{
-    flex: 1 0 33.33%;
+    flex: 0 0 33.33%;
     display: flex;
     height: 40px;
     align-items: center;
@@ -262,6 +262,10 @@
     }
     .name{
       color: $darkColor;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      word-break: break-all;
     }
   }
 }

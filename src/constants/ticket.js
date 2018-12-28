@@ -1,6 +1,6 @@
 export function getStatus(value) {
   var result = '';
-  switch(value) {
+  switch (value) {
     case '0':
       result = '待提交';
       break;
@@ -20,9 +20,9 @@ export function getStatus(value) {
   return result;
 }
 
-export function getLevel(value) {
+export function getLevel(value) {// 缺陷级别
   var result = '';
-  switch(value) {
+  switch (value) {
     case '1':
       result = 'A级';
       break;
@@ -39,9 +39,9 @@ export function getLevel(value) {
   return result;
 }
 
-export function getHandleStatus(status) {
+export function getHandleStatus(status) { // 缺陷状态
   var result = '';
-  switch(status) {
+  switch (status) {
     case '0':
       result = '已解决';
       break;
@@ -67,37 +67,37 @@ export function getHandleStatus(status) {
   return result;
 }
 
-export function getDefectSortField(feild) {
+export function getDefectSortField(feild) { // 缺陷排序方式
   var result = '';
-  switch(feild) {
+  switch (feild) {
     case 'defectLevel':
-      result = '0';
+      result = 'defect_level';
       break;
     case 'stationName':
-      result = '1';
+      result = 'station_code';
       break;
     case 'deviceName':
-      result = '2';
+      result = 'device_code';
       break;
     case 'defectTypeName':
-      result = '3';
+      result = 'defect_type_code';
       break;
     case 'startTime':
-      result = '4';
+      result = 'create_time';
       break;
     case 'finishTime':
-      result = '6';
+      result = 'over_time';
       break;
     case 'defectStatus':
-      result = '7';
+      result = 'defect_status';
       break;
   }
   return result;
 }
 
-export function getInspectSortField(feild) {
+export function getInspectSortField(feild) { // 巡检排序方式
   var result = '';
-  switch (feild){
+  switch (feild) {
     case "inspectName":
       result = '0';
       break;
@@ -116,3 +116,24 @@ export function getInspectSortField(feild) {
   }
   return result;
 }
+
+
+export function getSource(value) {// 缺陷来源
+  var result = '';
+  switch (value) {
+    case '0':
+      result = '告警';
+      break;
+    case '1':
+      result = '手动';
+      break;
+    case '2':
+      result = '巡检';
+      break;
+    case '3':
+      result = '预警';
+      break;
+  }
+  return result;
+}
+

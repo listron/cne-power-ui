@@ -23,14 +23,21 @@ class LightResource extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
   }
-  
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
   drawChart = (params) => { 
     const {graphId, yAxisName, xAxisName,title,currentYear,lastYear,lightCompareDataThatYear,lightCompareDataLastYear,lightCompareDataLight,lightCompareDataPower,lightCompareDataDate,hasData} = params;
-    //console.log('title',title);
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetMonthOption={};
     targetChart.resize();
     const color=['#dfdfdf','#a42b2c','#a42b2c','#f9b600'];
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     targetMonthOption = {
       graphic: confluenceTenMinGraphic,
@@ -39,15 +46,15 @@ class LightResource extends React.Component {
         left: '23',
         top: 'top',
         textStyle: {
-          color: '#666',
+          color: fontColor,
           fontSize: 14,
           fontWeight: 'normal',
         }
       },
       legend: {
-        icon: 'circle',
+        // icon: 'circle',
         left: 'center',
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       tooltip: {
@@ -55,8 +62,9 @@ class LightResource extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999'
-          }
+            color: fontColor
+          },
+          label:{color:fontColor}
         },
         backgroundColor: '#fff',
         padding: 10,
@@ -77,18 +85,17 @@ class LightResource extends React.Component {
       xAxis: {
         type: 'category',
         data: lightCompareDataDate,
-        // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
         },
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#dfdfdf',
+            color: lineColor,
           }
         },
         axisLabel: {
-          color: '#666',
+          color: fontColor,
         },
         axisTick: {
           show: false,
@@ -103,23 +110,23 @@ class LightResource extends React.Component {
           splitNumber: 5,
           scale: true,
           axisLabel: {
-            color: '#666',
+            color:fontColor,
           },
           axisLine: {
             show: false,
+            lineStyle:{color:lineColor}
           },
           axisTick: {
             show: false,
           },
           splitLine: {
-            // show:false,
             lineStyle: {
-              color: '#666',
+              color: fontColor,
               type: 'dashed'
             }
           },
           nameTextStyle:{
-            color: '#999',
+            color: fontColor,
             textAlign:'right',
           },
         },
@@ -127,25 +134,23 @@ class LightResource extends React.Component {
           type: 'value',
           name: '同比',
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
-          // scale:true,
-          // splitNumber:4,
-          // interval:4,
           axisLabel: {
             formatter: '{value} %',
-            color: '#666',
+            color: fontColor,
           },
           axisTick: {
             show: false,
           },
           axisLine: {
             show: false,
+            lineStyle:{color:lineColor}
           },
           splitLine: {
             show: false,
             lineStyle: {
-              color: '#999',
+              color: fontColor,
               type: 'dashed'
             }
           },
@@ -154,32 +159,27 @@ class LightResource extends React.Component {
       series: [
         {
           name: lastYear,
-          // name: '2017年',
           type: 'bar',
           itemStyle: {
             barBorderRadius: 3,
           },
           barWidth: 5,
-          data:lightCompareDataLastYear
-          // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+          data:this.getDefaultData(lightCompareDataLastYear)
         },
         {
           name: currentYear,
-          // name: '2018年',
           type: 'bar',
           itemStyle: {
             barBorderRadius: 3,
           },
           barWidth: 5,
-          data: lightCompareDataThatYear
-          // data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+          data: this.getDefaultData(lightCompareDataThatYear)
         },
         {
           name: '辐射总量同比',
           type: 'line',
           yAxisIndex: 1,
-          data: lightCompareDataLight,
-          // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+          data: this.getDefaultData(lightCompareDataLight),
           lineStyle:{
             type:'dotted'
           }
@@ -187,8 +187,7 @@ class LightResource extends React.Component {
           name: '发电量同比',
           type: 'line',
           yAxisIndex: 1,
-          data: lightCompareDataPower
-          // data: [2.0, 2.2, 6.3, 4.5, 6.3, 4.2, 10.3, 23.4, 10.0, 16.5, 12.0, 6.2]
+          data: this.getDefaultData(lightCompareDataPower)
         }
       ]
     };

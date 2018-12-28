@@ -28,20 +28,30 @@ class WeatherDayChart extends React.Component {
     }
     return name;
   }
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
 
   drawChart = param => {
     const { graphId, yAxisName, xAxisName, yData, xData, title, hasData } = param;
 
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"]
+    let color = ['#ceebe0', '#c7ceb2', '#199475', '#a42b2c', '#dfdfdf', "#f9b600"];
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     let seriesData = [];
     yData.forEach(e => {
+      console.log('test',e)
       seriesData.push({
         name: this.getName(e.weather),
         barWidth: 13,
-        value: [e.temp],
-        itemStyle:{
-          color:color[+e.weather]
+        value: [e.temp ? e.temp : '--'],
+        itemStyle: {
+          color: color[+e.weather]
         }
       })
     })
@@ -65,7 +75,7 @@ class WeatherDayChart extends React.Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
           });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
+          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:160px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`
         }
       },
@@ -75,7 +85,7 @@ class WeatherDayChart extends React.Component {
         left: "23",
         top: "top",
         textStyle: {
-          color: "#666",
+          color: fontColor,
           fontSize: 14,
           fontWeight: "normal"
         }
@@ -84,21 +94,21 @@ class WeatherDayChart extends React.Component {
       legend: {
         left: "center",
         icon: "circle",
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       yAxis: {
         type: "value",
         name: yAxisName,
         nameTextStyle: {
-          color: "#666"
+          color: fontColor
         },
-
         axisLabel: {
-          color: "#666"
+          color: fontColor
         },
         axisLine: {
-          show: false
+          show: false,
+          lineStyle: { color: lineColor }
         },
         axisTick: {
           show: false
@@ -106,7 +116,7 @@ class WeatherDayChart extends React.Component {
         splitLine: {
           // show:false,
           lineStyle: {
-            color: "##f1f1f1",
+            color: lineColor,
             type: "dashed"
           }
         }
@@ -116,17 +126,17 @@ class WeatherDayChart extends React.Component {
         data: xData,
         axisLine: {
           lineStyle: {
-            color: "#dfdfdf"
+            color: lineColor
           }
         },
         axisLabel: {
-          color: "#666"
+          color: fontColor
         }
       },
       series: {
-        name:'天气',
-        type:"bar",
-        data:seriesData
+        name: '天气',
+        type: "bar",
+        data: seriesData
       }
     };
     setTimeout(() => {

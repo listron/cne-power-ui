@@ -95,7 +95,7 @@ class PvStation extends React.Component {
     return newStationDataList
   }
   mapData=()=>{
-    const { pvMonitorStation } = this.props;
+    const { pvMonitorStation, realTimePowerUnit, realCapacityUnit } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
     let iconArray = [
       {
@@ -122,11 +122,13 @@ class PvStation extends React.Component {
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         symbolSize: stationType > 0 ? [30, 20]: [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: item.stationPower,
-        stationCapacity: item.stationCapacity,
+        stationPower: realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000),
+        stationCapacity: realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
         stationStatus:stationStatus,
+        realTimePowerUnit,
+        realCapacityUnit
       })
     })
     return data

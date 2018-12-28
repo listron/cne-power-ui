@@ -93,77 +93,134 @@
   }
 }
 
+.confirmBox{
+  :global{
+    .ant-popover-inner-content{
+      width: 200px;
+    }
+    .ant-popover-message{
+      padding-bottom: 4px;
+    }
+    .ant-popover-buttons{
+      margin-bottom: 0;
+      .ant-btn-primary{
+        margin-left: 24px;
+      }
+      button{
+        border: none;
+      }
+    }
+  }
+}
+
 .uploadReportList{
   .uploadReportTip{
     height: 40px;
     margin-top: 10px;
     line-height: 40px;
     margin-left: 30px;
-    span{
-      i{
-        color: $themeColor;
-        font-style: normal;
-      }
+    .tip{
+      margin-left: 24px;
+    }
+    i{
+      color: $themeColor;
+      font-style: normal;
     }
   }
 }
 
-.stationReportColumn{
+.stationReportColumn{ // 上报选定电站日报列表页
   display: flex;
-  flex-direction: row;
   border-top: 1px solid $promptColor;
   border-bottom: 1px solid $promptColor;
-  justify-content: space-between;
   height: 60px;
-  line-height: 30px;
-  text-align: center;
   background: #f4f4f4;
-  .withRequired{
+  align-items: center;
+  .valueRequired{
     color: #d0021b;
+    padding-left: 4px;
   }
-  .withBorder{
-    border-left: 1px solid $promptColor;
+  .stationName{
+    flex: 0 0 9%;
+    line-height: 60px;
+    text-align: center;
+    color: $darkColor;
     border-right: 1px solid $promptColor;
-    
   }
-  .withBorder:last-child{
-    border-right: 0px;
+  .resource{
+    flex: 0 0 9%;
+    align-self: stretch;
+    text-align: center;
+    padding-top: 10px;
+    border-right: 1px solid $promptColor;
   }
-  .withBorderBottom{
-    border-bottom: 1px solid $promptColor;
+  .eachElecPart{
+    flex: 0 0 14%;
+    border-right: 1px solid $promptColor;
+    .elecTop, .elecBottom{
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .elecBottom{
+      border-top: 1px solid $promptColor;
+      justify-content: space-around;
+    }
+  }
+  .handle{
+    flex: 0 0 10%;
+    text-align: center;
   }
 }
 
-.eachStationReport{
+.eachStationReport{ // 各电站上报数据-各行样式。
   height: 40px;
   border-bottom: 1px solid #dfdfdf;
-  text-align: center;
-  line-height: 40px;
-  .deleteStationReport{
-    text-align: left;
-    color: $themeColor;
+  display: flex;
+  align-items: center;
+  .stationName{
+    flex: 0 0 9%;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: break-all;
+  }
+  .resource{
+    text-align: center;
+    flex: 0 0 9%;
+  }
+  .genParts, .modelParts{
+    flex: 0 0 14%;
     display: flex;
-    .removeStation{
-      width: 30px;
-      margin-top: 8px;
-      height: 24px;
-      line-height: 24px;
-      text-align: center;
+    justify-content: center;
+    padding: 0 8px;
+    input{
+      flex: 1 0 70px;
+      &:first-child{
+        margin-right: 3%;
+      }
+    }
+  }
+  .modelParts{
+    flex: 0 0 16%;
+  }
+  .handle{ // 操作
+    flex: 0 0 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .text{
       cursor: pointer;
+      border-radius: 4px;
       &:hover{
         background-color: #ececec;
       }
     }
-  }
-  .addAbnormal{
-    color: $themeColor;
-    display: flex;
-    .abnormalText{
-      width: 90px;
-      height: 24px;
-      line-height: 24px;
-      margin-top: 8px;
+    .removeStation{
       cursor: pointer;
+      border-radius: 5px;
       &:hover{
         background-color: #ececec;
       }
@@ -174,16 +231,15 @@
       background:#fcffe5;
       border:1px solid #f9b600;
       border-radius:4px;
+      padding: 0 4px;
+      text-align: center;
       width:76px;
       height:24px;
-      text-align: center;
-      margin: 7px auto;
-      line-height: 24px;
       &:hover{
-        border:1px solid #f9b600;
+        border-color: #f9b600;
       }
     }
-    .ant-input:not(.ant-input-disabled):hover {
+    .ant-input:not(.ant-input-disabled):hover{
       border-color: #f9b600;
     }
     .ant-input:focus {
@@ -273,13 +329,6 @@
             flex-direction: column;
             margin-top: 5px;
           }
-          .ant-form-item{
-            display: flex;
-            flex-direction: row;
-            .ant-form-item-control-wrapper{
-              margin: 0 auto;
-            }
-          }
         }
         .ant-modal-footer{
           background: #f1f1f1;
@@ -297,40 +346,56 @@
       background-color: #555;
       opacity: .5;
     }
-    
-    
-    
   }
 }
 
 .lostGenTable{
-  padding: 20px;
+  padding: 20px 0px;
   .removeFaultInfo{
     color: $themeColor;
     cursor: pointer;
   }
   :global{
-    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
-      padding: 0 0;
-      text-align: center;
-      max-width: 150px;
-      word-break: break-all;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .ant-form-item, .ant-form-horizontal {
-      margin-bottom: 0px;
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+      padding: 0 8px;
     }
     .ant-input{
-      width: 161px;
+      width: 100%;
+      padding: 4px;
     }
-    .ant-calendar-picker-clear, .ant-calendar-picker-icon{
-      right: 22px;
+    .ant-table tr {
+      display: flex;
+      width: calc(100vw - 285px);
+      .deviceTypeName, .deviceName, .faultName, .limitPower, .reason, .startTime, .endTime, .process, .lostPower, .handle{
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower,{
+        text-align: center;
+        flex:1 0 110px;
+      }
+      .reason{
+        flex: 1 0 110px;
+      }
+      .deviceName{
+        flex: 1 0 150px;
+      }
+      .startTime, .endTime{
+        flex: 0 0 170px;
+      }
+      .process{
+        flex: 1 0 160px;
+      }
+      .lostPower{
+        flex: 1 0 115px;
+      }
+      .handle{
+        text-align: center;
+        flex: 0 0 60px;
+      }
     }
-  }
-  .lostPower{
-    width: 100px;
   }
 }
 
@@ -390,6 +455,23 @@
     height: 49px;
     .lostTypeSelector{
       width: 300px;
+    }
+  }
+  .deviceSelect{ // 设备选择单独样式。
+    margin-bottom: 21px;
+    :global{
+      .ant-form-item{
+        display: flex;
+      }
+      .ant-form-item-label{
+        width: 11.11%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 88.88%;
+        .has-error .ant-form-item-children{
+          height: 40px;
+        }
+      }
     }
   }
   .confirmAddFault{

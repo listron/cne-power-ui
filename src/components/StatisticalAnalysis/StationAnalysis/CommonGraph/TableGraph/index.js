@@ -2,6 +2,7 @@ import React from "react";
 import styles from './styles.scss';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 /*
 *  type
@@ -51,7 +52,7 @@ class TableGraph extends React.Component {
   };
 
   //table排序
-  getSort(a, b, sortBy, variable) {//  因为antd 本身有排序方式，所以需要反着来
+  getSort=(a, b, sortBy, variable)=> {//  因为antd 本身有排序方式，所以需要反着来
     let result;
     sortBy === 'descend' ? result = -1 : result = 1;
     if (!a[variable]) {
@@ -64,7 +65,7 @@ class TableGraph extends React.Component {
   }
 
 
-  getRadiationSort(a, b, sortBy, variable) {// 区间的排序 100-200 200-300 
+  getRadiationSort=(a, b, sortBy, variable)=> {// 区间的排序 100-200 200-300 
     if (!a[variable].split('-')[1]) {
       return 1;
     }
@@ -75,8 +76,21 @@ class TableGraph extends React.Component {
   }
 
 
+  getMomentType=(type)=>{
+    let result='';
+    switch(type){
+      case 'month':result='month';break;
+      case 'day':result='days';break;
+      case 'year':result='year';break;
+      default:result=''
+    }
+    return result;
+  }
+
   getTimeSort(a, b, variable) {  // 日期的排序 年 月 日
-    return `${a[variable]}`.split('月')[0].split('日')[0] - `${b[variable]}`.split('月')[0].split('日')[0]
+    const {dateType}=this.props;
+    return moment(a[variable],this.getMomentType(dateType))-moment(b[variable],this.getMomentType(dateType))>0 ;
+    // return `${a[variable]}`.split('月')[0].split('日')[0] - `${b[variable]}`.split('月')[0].split('日')[0]
   }
 
 

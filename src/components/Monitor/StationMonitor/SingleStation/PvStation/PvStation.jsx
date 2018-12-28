@@ -78,7 +78,7 @@ class PvStation extends Component {
 
   render() {
     const clickable = [509, 201, 206, 304, 202, 302, 301];
-    const { deviceTypeFlow, stationDeviceList, deviceTypeCode, } = this.props;
+    const { deviceTypeFlow, stationDeviceList, deviceTypeCode,realTimePowerUnit,powerUnit } = this.props;
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
@@ -166,9 +166,9 @@ class PvStation extends Component {
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} />
-          <PowerDiagramTenMin {...this.props} stationCode={stationCode}  />
-        </div>
+          <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} />
+          <PowerDiagramTenMin {...this.props} stationCode={stationCode} yAxisUnit={powerUnit}  />
+        </div> 
         <CardSection {...this.props} stationCode={stationCode} />
         {/* 设备类型流程图切换 */}
         <div className={styles.threadAndDevice} id="deviceType" >

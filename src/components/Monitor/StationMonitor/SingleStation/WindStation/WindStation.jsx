@@ -63,15 +63,15 @@ class WindStation extends Component {
 
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, deviceTypeCode } = this.props;
+    const { deviceTypeFlow, deviceTypeCode ,realTimePowerUnit,powerUnit} = this.props;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => e.deviceTypes);
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} />
-          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} />
+          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} />
+          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} yAxisUnit={powerUnit} />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
         <div className={styles.threadAndDevice} id="deviceType" >
@@ -80,18 +80,23 @@ class WindStation extends Component {
               <div className={styles.deviceTypeFlow}>
                 {deviceTypeType.map((item, index) => {
                   const deviceInfo = item[0] || {};
-                  const activeClass = {
-                    backgroundColor: deviceTypeCode === deviceInfo.deviceTypeCode ? '#fff' : 'transparent'
-                  }
+                  const isActiveType = deviceTypeCode === deviceInfo.deviceTypeCode;
                   return (
                     <div
                       key={index}
                       className={styles.eachDeviceType}
-                      style={activeClass}
+                      style={{
+                        backgroundColor: isActiveType ? '#fff' : 'transparent'
+                      }}
                       onClick={() => this.onSelectedDeviceType(deviceInfo.deviceTypeCode)}
                     >
-                      <div className={styles.deviceTypeIcon} >
-                        <i className={this.getDeviceTypeIcon(deviceInfo.deviceTypeCode)} ></i>
+                      <div
+                        className={styles.deviceTypeIcon}
+                        style={{
+                          color: isActiveType ? '#199475' : '#dfdfdf'
+                        }}
+                      >
+                        <i className={this.getDeviceTypeIcon(deviceInfo.deviceTypeCode)} />
                         <span className={styles.text}>{deviceInfo.deviceTypeName}</span>
                       </div>
                       <img src="/img/arrowgo.png" className={styles.rightArrow} />
@@ -105,8 +110,12 @@ class WindStation extends Component {
                   }}
                   onClick={() => this.onSelectedDeviceType(0)}
                 >
-                  <div className={styles.deviceTypeIcon} >
-                    <i className="iconfont icon-elecnetting" ></i>
+                  <div 
+                    className={styles.deviceTypeIcon}
+                    style={{
+                      color: deviceTypeCode === 0 ? '#199475' : '#dfdfdf'
+                    }} >
+                    <i className="iconfont icon-elecnetting" />
                     <span className={styles.text}>电网</span>
                   </div>
                 </div>

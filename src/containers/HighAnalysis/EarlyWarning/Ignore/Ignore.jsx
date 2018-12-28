@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import styles from "./Ignore.scss";
+import styles from "./reIgnore.scss";
 import { ignoreAction } from './ignoreAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -21,16 +21,9 @@ class Ignore extends Component {
   }
 
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '待处理预警',
-        }
-      ],
-    };
     return (
       <div className={styles.ignoreBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb  breadData={[{ name: '已忽略',}]} style={{ marginLeft: '38px' }} />
         <div className={styles.ignoreContainer}>
           <Ingore {...this.props} />
         </div>

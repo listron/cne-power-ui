@@ -14,10 +14,10 @@ import WarningTip from '../../../../Common/WarningTip';
 
 class StationManageTable extends Component {
   static propTypes = {
+    stationListLoading: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    loading: PropTypes.bool,
     queryListParams: PropTypes.object,
     allDepartmentData: PropTypes.array,
     getStations: PropTypes.func,
@@ -97,7 +97,6 @@ class StationManageTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
-    console.log(sorter);
     const { getStationList, queryListParams } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
@@ -159,7 +158,7 @@ class StationManageTable extends Component {
   }
 
   render(){
-    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
+    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
@@ -226,7 +225,7 @@ class StationManageTable extends Component {
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={()=>this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <Table 
-          loading={loading}
+          loading={stationListLoading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
           columns={column} 
           className={styles.stationTable}

@@ -1,6 +1,7 @@
 import React from "react";
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
+import styles from './index.scss';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 /* 
@@ -81,17 +82,27 @@ class PowerEfficency extends React.Component {
     return name;
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = (params) => {
-    const { graphId, title,data,hasData} = params;
+    const { graphId, title, data, hasData } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
+    const lineColor = '#f1f1f1';
+    const fontColor='#333';
     let seriesData = [];
-    const lineData =data && data.yData.lineData;
+    const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
-        data: barData[bar],
+        data: this.getDefaultData(barData[bar]),
         type: 'bar',
         itemStyle: {
           barBorderRadius: 3,
@@ -104,14 +115,14 @@ class PowerEfficency extends React.Component {
       if (line === 'light' || line === "resourceValue") {
         var json = {
           name: this.getName(line),
-          data: lineData[line],
+          data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 1,
         };
       } else {
         var json = {
           name: this.getName(line),
-          data: lineData[line],
+          data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 2,
         }
@@ -123,7 +134,10 @@ class PowerEfficency extends React.Component {
       graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
-        axisPointer: { type: 'cross' },
+        axisPointer: {
+          type: 'cross',
+          label:{  color:fontColor},
+        },
         backgroundColor: '#fff',
         padding: 10,
         textStyle: {
@@ -134,10 +148,11 @@ class PowerEfficency extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName ==='计划完成率'||params[index].seriesName ==='PR') && '%'||''}
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color[index]}"> </span> 
+            ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'PR') && '%' || ''}
             </div>`
           });
-          return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
+          return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>
            ${paramsItem}`
         }
       },
@@ -151,32 +166,30 @@ class PowerEfficency extends React.Component {
           fontWeight: 'normal',
         }
       },
-      color: this.getColor(title),
+      color: color,
       grid: {
         right: '20%',
-        left:'12%'
+        left: '12%'
       },
       legend: {
-        icon: 'circle',
         left: 'center',
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: {
         type: 'category',
         data: data && data.xData,
-        // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         axisPointer: {
           type: 'shadow'
         },
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#dfdfdf',
+            color: lineColor,
           }
         },
         axisLabel: {
-          color: '#666',
+          color: fontColor,
         },
         axisTick: {
           show: false,
@@ -187,19 +200,21 @@ class PowerEfficency extends React.Component {
           type: 'value',
           name: this.getYaxisName(title)[0],
           position: 'left',
-          axisLabel: {
-            formatter: '{value} '
-          },
+          axisLabel: { formatter: '{value} ', color: fontColor },
+          nameTextStyle: { color: fontColor },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
           },
+          splitNumber: 5,
           splitLine: {
-            // show:false,
             lineStyle: {
-              color: '#666',
+              color: lineColor,
               type: 'dashed'
             }
           },
@@ -210,37 +225,36 @@ class PowerEfficency extends React.Component {
           position: 'right',
           nameTextStyle: {
             textAlign: 'left',
-            padding: [0, 40, 0, 0]
+            padding: [0, 40, 0, 0],
+            color: fontColor 
           },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
+          splitNumber: 5,
           axisTick: {
             show: false,
           },
           splitLine: { show: false },
-          axisLabel: {
-            formatter: '{value}'
-          },
+          axisLabel: { formatter: '{value}',color: fontColor },
         }, {
           type: 'value',
           name: this.getYaxisName(title)[2],
-          position: 'right',
+          nameTextStyle: { color: fontColor, padding: [0, 0, 0, 40], },
+          axisLine: { lineStyle: { color: lineColor } },
+          axisLabel: { formatter: '{value}%', color: fontColor },
           splitLine: { show: false },
-          axisLine: {
-            lineStyle: {
-              color: '#666',
-            }
-          },
+          position: 'right',
+          splitNumber: 5,
           offset: 50,
-          axisLabel: {
-            formatter: '{value}%'
-          }
         }
       ],
-      series:seriesData || []
+      series: seriesData || []
     };
-    targetChart.setOption(targetMonthOption,{notMerge:true})
+    targetChart.setOption(targetMonthOption, { notMerge: true })
     targetChart.resize();
   }
 

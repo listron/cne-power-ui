@@ -9,8 +9,7 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-
-const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
+ const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
   if (chartBox) {
     const chartInitBox = echarts.init(chartBox);

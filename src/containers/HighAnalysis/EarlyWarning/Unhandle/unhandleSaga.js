@@ -28,7 +28,7 @@ function* getUnhandleList(action) {
       ...payload,
     });
     if (response.data.code === '10000') {
-      const totalNum = response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0;
+      const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
       if (totalNum === 0) { // 总数为0时，展示0页
@@ -45,12 +45,12 @@ function* getUnhandleList(action) {
           pageNum,
         },
       });
-    }
+    }else{throw response.data}
   } catch (e) {
     console.log(e);
     yield put({
       type: unhandleAction.changeUnhandleStore,
-      payload: { ...payload, loading: false },
+      payload: { ...payload, loading: false ,unhandleList:[]},
     })
   }
 }
@@ -64,6 +64,7 @@ function* toorder(action) {
       ...payload,
     });
     if (response.data.code === '10000') {
+      message.success("转工单成功")
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
@@ -80,9 +81,16 @@ function* toorder(action) {
         type: unhandleAction.getUnhandleList,
         payload: params,
       });
-    }
+      yield put({
+        type: unhandleAction.changeUnhandleStore,
+        payload: {
+          dealSuccess:true,
+        },
+      });
+    }else{ throw response.data }
   } catch (e) {
     console.log(e);
+    message.error("转工单失败")
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
@@ -100,6 +108,7 @@ function *ignoreList(action){
       ...payload,
     });
     if (response.data.code === '10000') {
+      message.success("忽略成功")
       const params = yield select(state => ({
         stationCodes: state.highAanlysisReducer.unhandle.get('stationCodes'),
         belongMatrixs: state.highAanlysisReducer.unhandle.get('belongMatrixs'),
@@ -116,9 +125,16 @@ function *ignoreList(action){
         type: unhandleAction.getUnhandleList,
         payload: params,
       });
-    }
+      yield put({
+        type: unhandleAction.changeUnhandleStore,
+        payload: {
+          dealSuccess:true,
+        },
+      });
+    }else{ throw response.data }
   } catch (e) {
     console.log(e);
+    message.error("忽略失败")
     yield put({
       type: unhandleAction.changeUnhandleStore,
       payload: { loading: false },
@@ -143,12 +159,7 @@ function *getMatrixlist(action){
           matrixList: response.data.data || [],
         },
       });
-    }else{
-      yield put({
-        type: unhandleAction.changeUnhandleStore,
-        payload: { ...payload, loading: false ,matrixList:[]},
-      })
-    }
+    }else{ throw response.data}
   } catch (e) {
     console.log(e);
     yield put({
