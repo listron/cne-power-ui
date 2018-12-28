@@ -29,7 +29,7 @@ function* getPowerList(action) { // 请求功率曲线列表
       ...payload,
     });
     if (response.data.code === '10000') {
-      const totalNum = response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0;
+      const totalNum =  response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(totalNum / pageSize);
       if (totalNum === 0) { // 总数为0时，展示0页
