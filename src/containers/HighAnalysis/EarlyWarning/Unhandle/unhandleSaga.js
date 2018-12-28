@@ -21,14 +21,12 @@ function* resetStore() {
 
 function* getUnhandleList(action) {
   const { payload } = action;
-  console.log(payload)
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getUnhandleList}`
   try {
     yield put({ type: unhandleAction.unhadleFetch });
     const response = yield call(axios.post, url, {
       ...payload,
     });
-    console.log(response.data);
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;
       let { pageNum, pageSize } = payload;

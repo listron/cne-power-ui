@@ -144,6 +144,7 @@
   .weather{
     padding-left: 24px;
     display: flex;
+    align-items: center;
     width: 252px;
     .eachWeather{
       margin-top: 12px;
@@ -159,7 +160,6 @@
       margin: 4px 0;
     }
     .noWeather{
-      line-height: 96px;
       font-size: 12px;
     }
   }
@@ -170,6 +170,7 @@
   .eachChart{
     width: 100%;
     display: flex;
+    padding: 0 24px;
     justify-content: center;
   }
   .effectChart{
@@ -220,9 +221,12 @@
     }
     .ant-calendar-picker{
       position: absolute;
-      right: 80px;
-      top: 60px;
+      right: 24px;
+      top: 56px;
       z-index: 99;
+      .ant-calendar-picker-input .anticon{
+        right: 8px;
+      }
     }
   }
 }

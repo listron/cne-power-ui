@@ -50,39 +50,6 @@ export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站�
   ]
 }
 
-export const reportEditFun = (stationType = 0, powerUnit='kWh') => { // 电站编辑数据信息填写
-  // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
-  return [
-    {
-      configText: stationType>0?'日斜面辐射总量':'日平均风速',
-      configName: 'resourceValue',
-      pointLength: 2,
-    },{
-      configText: '日购网电量',
-      configName: 'dailyBuyPower',
-      pointLength: powerUnit==='kWh'?2:4
-    },{
-      configText: '样板逆变器容量',
-      configName: 'modelInverterCapacity'
-    },{
-      configText: '样板逆变器发电量',
-      configName: 'modelInverterPowerGen',
-      pointLength: powerUnit==='kWh'?2:4
-    },{
-      configText: '日发电量(逆变器)',
-      configName: 'genInverter',
-      pointLength: powerUnit==='kWh'?2:4
-    },{
-      configText: '日发电量(集电线路)',
-      configName: 'genIntegrated',
-      pointLength: powerUnit==='kWh'?2:4
-    },{
-      configText: '日发电量(上网)',
-      configName: 'genInternet',
-      pointLength: powerUnit==='kWh'?2:4
-    }
-  ]
-}
 /*
   校验规则：
   1. 所有填写的，必须为数值。“请填写数字，最多保留小数点后x位”
@@ -115,13 +82,13 @@ const elecFlowCheck = (keyWord, genData, checkedArr, stationType) => { // 逆变
   const currentIndex = checkedArr.findIndex(e => e === keyWord);
   let checkedResult = true, message = ''; // 默认数据正确
   checkedArr.forEach( (e ,i) => {
-    if (i < currentIndex && genData[e] && genData[e] < genData[keyWord]) { // 序号小于校验项,值需大于校验项。若无值不需校验
+    if (i < currentIndex && genData[e] && (genData[e] - genData[keyWord]) < 0 ) { // 序号小于校验项,值需大于校验项。若无值不需校验
       const currentText = reportBasefun(stationType).find(info => info.configName === keyWord).configText;
       const errorText = reportBasefun(stationType).find(info => info.configName === e).configText;
       checkedResult = false;
       message = `${errorText}不得小于${currentText},请检查`;
     }
-    if (i > currentIndex && genData[e] && genData[e] > genData[keyWord]) { // 序号大于校验项，值需小于校验项。无值不校验
+    if (i > currentIndex && genData[e] && (genData[keyWord] - genData[e]) < 0 ) { // 序号大于校验项，值需小于校验项。无值不校验
       const currentText = reportBasefun(stationType).find(info => info.configName === keyWord).configText;
       const errorText = reportBasefun(stationType).find(info => info.configName === e).configText;
       checkedResult = false;
@@ -146,13 +113,13 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   if (isNaN(checkingValue)) { // 规则1 数值校验
     return {
       result: false,
-      message: `请填写数字，最多保留小数点后${pointLength}位`
+      message: `${configText}请填写数字，最多保留小数点后${pointLength}位`
     };
   }
   if (checkingValue < 0) { // 规则2非负校验
     return {
       result: false,
-      message: '数值不能为负数，请重新填写'
+      message: `${configText}数值不能为负数，请重新填写`
     };
   }
   if (`${checkingValue}`.includes('.')) { // 规则3小数点位校验。
@@ -160,12 +127,13 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
     if (demicalLength > pointLength) {
       return {
         result: false,
-        message: `请填写数字，最多保留小数点后${pointLength}位`
+        message: `${configText}请填写数字，最多保留小数点后${pointLength}位`
       };
     }
   }
   const dayValueKey = ['genInverter', 'genIntegrated', 'genInternet', 'dailyBuyPower'];
-  const maxElec = stationCapacity * 1000 * 10 / (genUnit === 'kWh' ? 1 : 10000); // 理论最大kWh
+  const maxHour = stationType > 0 ? 10 : 30; // 最大满发小时。
+  const maxElec = stationCapacity * 1000 * maxHour / (genUnit === 'kWh' ? 1 : 10000); // 理论最大kWh
   if (dayValueKey.includes(keyWord) && genData[keyWord] > maxElec) { // 规则6. 日发电量不超装机容量*10h, 
     return {
       result: false,

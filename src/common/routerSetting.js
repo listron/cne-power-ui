@@ -238,8 +238,7 @@ const routers = [
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
-    // component: CleanWarning, // Building
-    component: Building
+    component: CleanWarning, // Building
   }, { // 高级分析>清洗模型>清洗计划与记录
     path: '/analysis/cleanout/record',
     exact: true,

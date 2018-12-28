@@ -7,7 +7,7 @@ import { Icon, Progress, Modal, Input} from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { dataFormat,DeviceValueFormat } from '../../../../../utils/utilFunc';
 import { ValueFormat } from '../../../../Common/UtilComponent';
 
 
@@ -177,19 +177,19 @@ class PvStationTop extends Component {
           </div>
           <div>
             <div className={styles.trueTimeValue}>
-              <ValueFormat value={dataFormat(singleStationData.stationUnitCount)} />
+              <DeviceValueFormat value={dataFormat(singleStationData.stationUnitCount, '--')} />
             </div>
             <div className={styles.trueTimeUnit}>装机台数 (台)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>
-              <ValueFormat value={dataFormat(singleStationData.instantaneous, '--', 2)}  points={2} />
+              <DeviceValueFormat value={dataFormat(singleStationData.instantaneous, '--')}  />
             </div>
             <div className={styles.trueTimeUnit}>瞬时辐照 (W/㎡)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>
-              <ValueFormat value={dataFormat(singleStationData.dayResources)} />
+              <DeviceValueFormat value={dataFormat(singleStationData.dayResources, '--')}  />
             </div>
             <div className={styles.trueTimeUnit}>日累计辐射 (MJ/㎡)</div>
           </div>

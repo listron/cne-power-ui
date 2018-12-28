@@ -17,6 +17,7 @@ class AllStationHeader extends React.Component {
   }
   render() {
     const { allMonitorStation, realTimePowerUnit,realCapacityUnit,powerUnit,realTimePowerPoint,realCapacityPoint,powerPoint, } = this.props;
+    
     const stationDataSummary = allMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
     const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
@@ -28,7 +29,6 @@ class AllStationHeader extends React.Component {
     const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
     const windStation = stationTypeSummary.windStationNum || '--';
     const lightStation = stationTypeSummary.lightStationNum || '--';
-   console.log(realTimePowerUnit,realTimePowerPoint,realCapacityUnit,realCapacityPoint,powerUnit,powerPoint,'单位以及保留小数位数');
   
 
     return (
@@ -40,22 +40,22 @@ class AllStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <CommonProgress value={stationPower} total={stationCapacity} points={realCapacityPoint} valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
+          <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit}   points={realCapacityPoint}  valueunit={realCapacityUnit}  valueText={`实时功率 (${realTimePowerUnit})`} totalText={`装机容量 (${realCapacityUnit})`} />
           <div className={styles.stationCollect}>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>
               <ValueFormat value={dataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
               </div>
-              <div className={styles.dataName}>日发电量 {powerUnit}</div>
+              <div className={styles.dataName}>日发电量 ({powerUnit})</div>
             </div>
             <div className={styles.monthStation}>
               <div className={styles.dataValue}>
                <ValueFormat value={dataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
               </div>
-              <div className={styles.dataName}>月累计发电量 {powerUnit}</div>
+              <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} valueunit={powerUnit} valueText={`年累计发电量 ${powerUnit}`} totalText={`计划 ${powerUnit}`} percent={yearPlanRate ? yearPlanRate : ''} />
+          <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 (${powerUnit})`} totalText={`计划 (${powerUnit})`} percent={yearPlanRate ? yearPlanRate : ''} />
         </div>
         <div className={styles.stationNav}>
           <div className={styles.showType}>

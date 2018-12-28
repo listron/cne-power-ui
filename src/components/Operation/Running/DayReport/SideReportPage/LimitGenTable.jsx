@@ -33,16 +33,14 @@ class LimitGenTable extends Component {
 
   _loseColumn = () => {
     const { getFieldDecorator } = this.props.form;
-    const { stationDeviceTypes } = this.props;
     const column = [
       {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         className: 'deviceTypeName',
-        render: text => {
-          const deviceTypeInfo = stationDeviceTypes.find(e => `${e.deviceTypeCode}` === `${text}`) || {};
-          return <span title={deviceTypeInfo.deviceTypeName} >{deviceTypeInfo.deviceTypeName}</span>
-        },
+        render: text => (
+          <span title={text}>{text}</span>
+        ),
       },{
         title: '设备名称',
         dataIndex: 'deviceName',
@@ -70,17 +68,26 @@ class LimitGenTable extends Component {
         className: 'startTime',
         render : (text, record) => {
           const { reportDate, startTime, id } = record;
-          let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
-          const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
-          return allowDelete?<Form.Item>
-            {getFieldDecorator(`${id}_startTime`, {
-              initialValue: startTime,
-            })(
-              <DatePicker placeholder="开始时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
-            )}
-          </Form.Item>:<span>
-            {moment(startTime).format('YYYY-MM-DD HH:mm')}
-          </span>
+          // let tableReportDate = this.props.reportDate; // 正在处理的日报日期.
+          // const allowDelete = moment(tableReportDate).isSame(moment(reportDate),'day'); // 日报日期当天添加的故障起始时间才可编辑。
+          // return allowDelete?<Form.Item>
+          //   {getFieldDecorator(`${id}_startTime`, {
+          //     initialValue: startTime,
+          //   })(
+          //     <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+          //   )}
+          // </Form.Item>:<span>
+          //   {moment(startTime).format('YYYY-MM-DD HH:mm')}
+          // </span>
+          return (
+            <Form.Item>
+              {getFieldDecorator(`${id}_startTime`, {
+                initialValue: startTime,
+              })(
+                <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+              )}
+            </Form.Item>
+          )
         }
       },{
         title: '结束时间',
@@ -91,7 +98,7 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" style={{width: '170px'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
+              <DatePicker placeholder="结束时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
             )}
           </Form.Item>)
         }

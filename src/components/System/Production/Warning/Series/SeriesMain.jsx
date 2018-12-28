@@ -67,7 +67,6 @@ class SeriesMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lostGenPercent, isSend, sendNum } = this.props;
-    console.log(lostGenPercent);
 
     return (
       !isShow ?

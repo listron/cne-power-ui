@@ -82,17 +82,27 @@ class PowerEfficency extends React.Component {
     return name;
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = (params) => {
     const { graphId, title, data, hasData } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let color = this.getColor(title);
+    const lineColor = '#f1f1f1';
+    const fontColor='#333';
     let seriesData = [];
     const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
-        data: barData[bar],
+        data: this.getDefaultData(barData[bar]),
         type: 'bar',
         itemStyle: {
           barBorderRadius: 3,
@@ -105,14 +115,14 @@ class PowerEfficency extends React.Component {
       if (line === 'light' || line === "resourceValue") {
         var json = {
           name: this.getName(line),
-          data: lineData[line],
+          data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 1,
         };
       } else {
         var json = {
           name: this.getName(line),
-          data: lineData[line],
+          data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 2,
         }
@@ -124,7 +134,10 @@ class PowerEfficency extends React.Component {
       graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
-        axisPointer: { type: 'cross' },
+        axisPointer: {
+          type: 'cross',
+          label:{  color:fontColor},
+        },
         backgroundColor: '#fff',
         padding: 10,
         textStyle: {
@@ -159,9 +172,8 @@ class PowerEfficency extends React.Component {
         left: '12%'
       },
       legend: {
-        icon: 'circle',
         left: 'center',
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: {
@@ -173,11 +185,11 @@ class PowerEfficency extends React.Component {
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#dfdfdf',
+            color: lineColor,
           }
         },
         axisLabel: {
-          color: '#666',
+          color: fontColor,
         },
         axisTick: {
           show: false,
@@ -188,20 +200,21 @@ class PowerEfficency extends React.Component {
           type: 'value',
           name: this.getYaxisName(title)[0],
           position: 'left',
-          axisLabel: {
-            formatter: '{value} '
-          },
+          axisLabel: { formatter: '{value} ', color: fontColor },
+          nameTextStyle: { color: fontColor },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
           },
           splitNumber: 5,
           splitLine: {
-            // show:false,
             lineStyle: {
-              color: '#666',
+              color: lineColor,
               type: 'dashed'
             }
           },
@@ -212,36 +225,31 @@ class PowerEfficency extends React.Component {
           position: 'right',
           nameTextStyle: {
             textAlign: 'left',
-            padding: [0, 40, 0, 0]
+            padding: [0, 40, 0, 0],
+            color: fontColor 
           },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           splitNumber: 5,
           axisTick: {
             show: false,
           },
           splitLine: { show: false },
-          axisLabel: {
-            formatter: '{value}'
-          },
-          // data:
+          axisLabel: { formatter: '{value}',color: fontColor },
         }, {
           type: 'value',
           name: this.getYaxisName(title)[2],
-          position: 'right',
+          nameTextStyle: { color: fontColor, padding: [0, 0, 0, 40], },
+          axisLine: { lineStyle: { color: lineColor } },
+          axisLabel: { formatter: '{value}%', color: fontColor },
           splitLine: { show: false },
+          position: 'right',
           splitNumber: 5,
-
-          axisLine: {
-            lineStyle: {
-              color: '#666',
-            }
-          },
           offset: 50,
-          axisLabel: {
-            formatter: '{value}%'
-          },
         }
       ],
       series: seriesData || []

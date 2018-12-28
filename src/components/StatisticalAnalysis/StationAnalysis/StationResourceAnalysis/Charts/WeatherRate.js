@@ -30,7 +30,7 @@ class WeatherRate extends React.Component {
   drawCharts = (params) => {
     const { graphId, data, yAxisName ,hasData} = params;
     const targetPieChart = echarts.init(document.getElementById(graphId));
-    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"]
+    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"];
     let seriesData= data.map((item)=>{
        return {
          name:this.getName(item.weather),

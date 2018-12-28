@@ -154,7 +154,7 @@ class GeneralReport extends Component{
                 <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}>下载</Button>
               </div>
             </div>
-            <div className={styles.dailyBox}>
+           {/** <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.defaultReport}>
                   <Icon type="download" style={{color:'#ffffff'}} />
@@ -225,7 +225,7 @@ class GeneralReport extends Component{
                 >下载</Button>
               </div>
             </div>
-          </div>
+          */} </div>
           <Footer />
         </div>
       </div>
