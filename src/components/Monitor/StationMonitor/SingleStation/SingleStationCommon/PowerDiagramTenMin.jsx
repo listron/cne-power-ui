@@ -143,7 +143,7 @@ class PowerDiagramTenMin extends Component {
             }
           }
         }, {
-          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计辐射(MJ/m²)' : (intervalTime === 1 ? '累计辐射(MJ/m)' : '累计辐射(MJ/m)')}`,
+          name: chartType === 'wind' ? '平均风速(m/s)' : `${intervalTime === 0 ? '累计辐射(MJ/m²)' : (intervalTime === 1 ? '累计辐射(MJ/m²)' : '累计辐射(MJ/m²)')}`,
           type: 'value',
           axisLabel: {
             formatter: '{value}',
