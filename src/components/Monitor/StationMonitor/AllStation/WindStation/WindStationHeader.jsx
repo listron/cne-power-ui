@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonProgress from '../../../../Common/CommonProgress'
 import { ValueFormat,DeviceValueFormat } from '../../../../Common/UtilComponent'
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat } from '../../../../../utils/utilFunc';
 
 class windStationHeader extends React.Component {
   static propTypes = {
@@ -39,18 +39,18 @@ class windStationHeader extends React.Component {
           </div>
           <div className={styles.windSpeed}>
             <div className={styles.dataWindValue}> 
-            <DeviceValueFormat value={dataFormat(instantaneous, '--')} /></div>
+            <DeviceValueFormat value={monitordataFormat(instantaneous, '--')} /></div>
             <div className={styles.dataName}>平均风速 (m/s)</div>
           </div>
           <div className={styles.dayStation}>
             <div className={styles.dataValue}>
-              <ValueFormat value={dataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+              <ValueFormat value={monitordataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
             </div>
             <div className={styles.dataName}>日发电量 ({powerUnit})</div>
           </div>
           <div className={styles.monthStation}>
             <div className={styles.dataValue}>
-              <ValueFormat value={dataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
+              <ValueFormat value={monitordataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
             </div>
             <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
           </div>
