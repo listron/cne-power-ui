@@ -48,7 +48,7 @@ class OutputPower extends Component{
     if(hasMultipleType){
       outputType === 'wind' && (isWind = true);
     }else{
-      isWind = mapStation.some(e=>e.stationType === 0);
+      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
     }
     let xAxisArr = [], yPowerData = [], yResourceData = [], hasData = false;
     outputPower.forEach(e=>{
@@ -200,7 +200,7 @@ class OutputPower extends Component{
     if(hasMultipleType){
       outputType === 'wind' && (isWind = true);
     }else{
-      isWind = mapStation.some(e=>e.stationType === 0);
+      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
     }
     return (
       <section className={styles.outputPower}>
