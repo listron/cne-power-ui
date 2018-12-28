@@ -33,7 +33,7 @@ class ReportEdit extends Component {
     this.state = {
       addLostFormShow: false,
       addLimitFormShow: false,
-      abnormalTextShow: props.selectedDayReportDetail.errorInfo?true:false,
+      abnormalTextShow: props.selectedDayReportDetail.errorInfo ? true : false,
       updateDayReportDetail: props.selectedDayReportDetail,
       showBackWarningTip: false,
       warningTipText: '',
