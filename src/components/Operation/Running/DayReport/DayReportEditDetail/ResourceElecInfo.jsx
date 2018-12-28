@@ -32,7 +32,7 @@ class ResourceElecInfo extends Component {
           <div className={styles.totalInfo}>
             <div className={styles.tooltip}>综合信息<Icon type="caret-right" theme="outlined" /></div>
             <div className={styles.editPart}>
-              <Form.Item label={stationType>0?'日累计总量':'平均风速'}>
+              <Form.Item label={stationType>0?'日累计辐射':'平均风速'}>
                 {getFieldDecorator('resourceValue', {
                   rules: [{ 
                     validator: (rule, value, callback) => {
