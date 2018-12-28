@@ -22,21 +22,21 @@ function InverterStatistics({ deviceDetail }) {
         </div>
 
         <div className={styles.empty}></div>
-        <div className={styles.genText}>日发电量 kWh</div>
+        <div className={styles.genText}>日发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>
           <DeviceValueFormat value={dataFormat(powerMonth, '--')} />
         </div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>月累计发电量 kWh</div>
+        <div className={styles.genText}>月累计发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>
           <DeviceValueFormat value={dataFormat(powerYear, '--')} />
         </div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>年累计发电量 kWh</div>
+        <div className={styles.genText}>年累计发电量 (kWh)</div>
       </div>
     </div>
   )
