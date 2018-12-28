@@ -7,8 +7,8 @@ import { Icon, Progress, Modal, Input} from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
-import { dataFormat,DeviceValueFormat } from '../../../../../utils/utilFunc';
-import { ValueFormat } from '../../../../Common/UtilComponent';
+import { dataFormat } from '../../../../../utils/utilFunc';
+import { ValueFormat ,DeviceValueFormat} from '../../../../Common/UtilComponent';
 
 
 // const ValueFormat = ({ value,  points }) => { // value必为数值 或 '--'。
@@ -183,7 +183,7 @@ class PvStationTop extends Component {
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>
-              <DeviceValueFormat value={dataFormat(singleStationData.instantaneous, '--')}  />
+              <DeviceValueFormat value={dataFormat(singleStationData.instantaneous,'--')}  />
             </div>
             <div className={styles.trueTimeUnit}>瞬时辐照 (W/㎡)</div>
           </div>
