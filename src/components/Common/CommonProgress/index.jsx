@@ -20,9 +20,9 @@ class CommonProgress extends Component {
     totalText: PropTypes.string,//计划值文字描述。右下角
     percent: PropTypes.string,//百分比，右边，选填，若无不显示
     valueunit: PropTypes.string,//右边值百分比，，选填，若无不显示
-    points: PropTypes.string,//右边值，，选填，若无不显示
-    realTimeUnit: PropTypes.string,//左边值得单位，选填，若无不显示
-    realTimePoint: PropTypes.string,//左边值小数点几位，选填，若无不显示
+    // points: PropTypes.string,//右边值，，选填，若无不显示
+    // realTimeUnit: PropTypes.string,//左边值得单位，选填，若无不显示
+    // realTimePoint: PropTypes.string,//左边值小数点几位，选填，若无不显示
   }
 
   static defaultProps = {
