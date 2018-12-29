@@ -46,6 +46,7 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+//高级分析 实时告警，已转工单，手动接触，历史告警
 //高级分析 清洗预警 清洗记录
 import CleanWarning from '../containers/HighAnalysis/CleanoutModel/CleanWarning/CleanWarning';
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
