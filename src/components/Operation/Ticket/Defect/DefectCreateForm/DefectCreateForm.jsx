@@ -197,6 +197,7 @@ class TmpForm extends Component {
 
   render() {
     let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode, commonList } = this.props;
+    console.log('deviceTypes',deviceTypes)
     const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';

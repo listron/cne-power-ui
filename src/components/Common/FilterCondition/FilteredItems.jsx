@@ -55,7 +55,7 @@ class FilteredItems extends Component {
   onCancelStationType = () => {//取消电站类型
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      stationType: '2',
+      stationType: '', // 不选为全部
     })
   }
   onCancelProvince = (cancelStations) => {//删除某省电站
@@ -68,7 +68,7 @@ class FilteredItems extends Component {
   onCancelDeviceType = (cancelCode) => {//删除某设备类型
     const { deviceTypeCode, onChangeFilter } = this.props;
     onChangeFilter({
-      deviceTypeCode: deviceTypeCode.filter(e => e !== cancelCode)
+      deviceTypeCode: deviceTypeCode.filter(e => e !== `${cancelCode}`)
     });
   }
 
@@ -175,13 +175,13 @@ class FilteredItems extends Component {
       label: levels[+e - 1],
       value: e,
     })) || [];
-    const defectSourceArray = defectSource.map(e => ({
-      label: defectSourceNames[+e - 1],
+    const defectSourceArray = defectSource.map(e => ({ // 缺陷来源
+      label: defectSourceNames[+e],
       value: e,
     })) || [];
 
     const warningLevelArray = warningLevel.map(e => ({
-      label: warningLeveNames[+e - 1],
+      label: warningLeveNames[+e-1],
       value: e,
     }))
 
@@ -191,7 +191,7 @@ class FilteredItems extends Component {
     if (
       !createTimeStart &&
       !createTimeEnd &&
-      !stationType &&
+      (!stationType || +stationType===2) &&
       stationCodes.length === 0 &&
       defectLevel.length === 0 &&
       defectSource.length === 0 &&

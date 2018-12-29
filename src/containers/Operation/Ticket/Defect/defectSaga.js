@@ -50,6 +50,7 @@ function* getDefectList(action) {
         defectList: [],
         selectedRowKeys: [],
         defectStatusStatistics: {},
+        loading:false,
       }
     });
   }

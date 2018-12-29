@@ -10,12 +10,13 @@ class DefectStatus extends Component {
   static propTypes = {
     onChange: PropTypes.func,
     defectStatusStatistics:PropTypes.object,
+    defaultValue:PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state={
-      status:''
+      status:props.defaultValue || ''
     }
   }
 
