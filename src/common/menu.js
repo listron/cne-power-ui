@@ -222,9 +222,9 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
-      { name: '清洗模型',
+      { name: '智能预警',
       iconStyle: 'icon-usermanage',
-      path: '',
+      path: 'intelligentWarning',
       rightKey: 'analysis_cleanModel',
       children: [
         {

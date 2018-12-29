@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./transferForm";
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../components/Common/Footer';
 class TransferForm extends Component{
  static propTypes = {
    }
@@ -8,6 +10,13 @@ class TransferForm extends Component{
     super(props,context)
   }
     render(){
+        const breadCrumbData = {
+            breadData: [
+              {
+                name: '已转工单',
+              }
+            ],
+          };
         return(
             <div>
                 已转工单

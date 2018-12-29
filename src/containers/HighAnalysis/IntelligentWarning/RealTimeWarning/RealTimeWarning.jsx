@@ -3,6 +3,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from './realTimeWarning'
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../components/Common/Footer';
 class RealTimeWarning extends Component{
  static propTypes = {
    }
@@ -10,6 +12,13 @@ class RealTimeWarning extends Component{
     super(props,context)
   }
     render(){
+        const breadCrumbData = {
+            breadData: [
+              {
+                name: '实时预警',
+              }
+            ],
+          };
         return(
             <div>
                 realTimeWarning
