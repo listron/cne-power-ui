@@ -23,6 +23,7 @@ class FilteredItems extends Component {
     warningConfigName: PropTypes.array,
     rangTime: PropTypes.array,
     onChangeFilter: PropTypes.func,
+    defectLevelName:PropTypes.array,
   }
 
   constructor(props) {
@@ -166,11 +167,10 @@ class FilteredItems extends Component {
   }
 
   render() {
-    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName, warningLevel, warningConfigName,rangTime } = this.props;
-    const levels = ['一级', '二级', '三级', '四级'];
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName, warningLevel, warningConfigName,rangTime,defectLevelName } = this.props;
+    const levels =defectLevelName?defectLevelName: ['A级', 'B级', 'C级'];
     let defectSourceNames = defectSourceName ? defectSourceName : ['告警', '上报', '巡检', '预警',];
     let warningLeveNames = warningLeveName ? warningLeveName : ['一级', '二级', '三级', '四级'];
-
     const defectLevelArray = defectLevel.map(e => ({
       label: levels[+e - 1],
       value: e,

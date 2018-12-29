@@ -157,11 +157,11 @@ class FilterCondition extends Component {
     const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName} = this.props;
     const defectTypesArr = defectTypes || [];
     const stationsArr = stations || [];
-    const deviceTypesArr = deviceTypes || []
-    const matrixListArr = matrixList || []
+    const deviceTypesArr = deviceTypes || [];
+    const matrixListArr = matrixList || [];
     const windStations = stations.map(e => e.stationType === 0);
     const pvStations = stations.map(e => e.stationType === 1)
-    const hasSelectStation = windStations.length > 0 && pvStations.length > 0
+    const hasSelectStation = windStations.length > 0 && pvStations.length > 0;
     return (
       <div className={styles.filterCondition}>
         <div className={styles.topSearch}>
@@ -263,6 +263,7 @@ class FilterCondition extends Component {
           defectTypes={defectTypesArr}
           onChangeFilter={this.onChangeFilter}
           defectSourceName={defectSourceName}
+          defectLevelName={defectLevelName}
         />
       </div>
     );

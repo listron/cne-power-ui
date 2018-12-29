@@ -102,7 +102,6 @@ class DefectCreate extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.defect.toJS(),
   stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('deviceTypes').toJS(),
   commonFetching: state.common.get('commonFetching'),
 });
 
@@ -114,14 +113,8 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({ type: ticketAction.DEFECT_CREATE_SAGA, payload }),
   submitDefect: payload => dispatch({ type: ticketAction.SUBMIT_DEFECT_SAGA, payload }),
-  getSliceDevices: params => dispatch({
-    type: commonAction.getSliceDevices,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-    }
-  }),
-  getStationDeviceTypes: params => dispatch({
+  
+  getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {
       params,

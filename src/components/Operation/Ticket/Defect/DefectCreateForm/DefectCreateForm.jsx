@@ -9,6 +9,7 @@ import DeviceName from '../../../../Common/NewDeviceName';
 import InputLimit from '../../../../Common/InputLimit';
 // import CommonInput from '../../../../Common/CommonInput';
 import CommonInput from '../../../../Common/CommonInput/index1';
+import DeviceSelect from '../../../../Common/DeviceSelect/index';
 import Immutable from 'immutable';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -41,7 +42,6 @@ class TmpForm extends Component {
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
     // allSeries: PropTypes.array,
-    firstPartitionCode: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -65,44 +65,27 @@ class TmpForm extends Component {
 
   onStationSelected = (stations) => { // 电站的选择
     const selectedStation = stations && stations[0] || {};
-    const stationCodes = selectedStation.stationCode || 0;
-    const stationType = selectedStation.stationType;
+    const stationCodes = selectedStation.stationCode || null;
     this.props.getStationDeviceTypes({ stationCodes });
-    this.props.getLostGenType({
-      stationType,
-      objectType: 1
-    });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null});
+    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
   }
 
-  onChangeDeviceType = (deviceTypeCode) => { // 设备
-    const { stations, form } = this.props;
-    const stationCode = form.getFieldValue('stations')[0].stationCode;
-    const selectedStationInfo = stations.find(e => e.stationCode === stationCode) || {};
-    const stationType = selectedStationInfo.stationType;
+  onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
+    const { form } = this.props;
+    const selectStation = form.getFieldValue('stations')[0];
+    const stationCode = selectStation.stationCode; // 电站编码
+    const stationType = selectStation.stationType;  // 电站类型
     let params = {
       stationCode,
       deviceTypeCode
     };
-
-    if (deviceTypeCode === 509) { //组串时，请求调整
-      this.props.getSliceDevices(params);
-      this.props.getLostGenType({
-        stationType,
-        objectType: 1,
-        deviceTypeCode
-      })
-    } else {
-      this.props.getDevices(params);
-      this.props.getStationAreas(params);
-      this.props.getLostGenType({
-        stationType,
-        objectType: 1,
-        deviceTypeCode
-      })
-    }
-
+    this.props.changeCommonStore(params)
+    this.props.getLostGenType({
+      stationType,
+      objectType: 1,
+      deviceTypeCode
+    })
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
@@ -196,9 +179,8 @@ class TmpForm extends Component {
 
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, firstPartitionCode, commonList } = this.props;
-    console.log('deviceTypes',deviceTypes)
-    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
+    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, commonList, deviceTypeCode} = this.props;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const stationCode = getFieldValue('stations') && getFieldValue('stations')[0] && getFieldValue('stations')[0].stationCode || [];
@@ -259,7 +241,7 @@ class TmpForm extends Component {
             )}
           </FormItem>
           <FormItem label="设备名称" colon={false}>
-            {getFieldDecorator('deviceCode', {
+            {/* {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
               initialValue: defaultDevice && defaultDevice.deviceCode || undefined
             })(
@@ -279,9 +261,24 @@ class TmpForm extends Component {
                 loadDeviceList={this.loadDeviceList}
                 firstPartitionCode={firstPartitionCode}
               />
+            )} */}
+
+            {getFieldDecorator('deviceCode', {
+              rules: [{ required: true, message: '请选择设备名称' }],
+              initialValue: [],
+            })(
+              <DeviceSelect
+                // disabled={disableDevice}
+                stationCode={stationCode}
+                deviceTypeCode={deviceTypeCode}
+                multiple={true}
+                style={{ width: 'auto', minWidth: '198px' }}
+              // onChange={this.selectedDevice}
+              />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
           </FormItem>
+
           <FormItem label="缺陷类型" colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择缺陷类型' }],
