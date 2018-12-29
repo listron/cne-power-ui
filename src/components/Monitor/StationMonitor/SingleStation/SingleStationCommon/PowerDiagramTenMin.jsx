@@ -41,7 +41,7 @@ class PowerDiagramTenMin extends Component {
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
     const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e => e.completeRate*100);  // 完成率
+    const completeRate = powerData.map(e => (e.completeRate*100).toFixed(2));  // 完成率
     const filterCompleteRate = powerData.filter(e => e.completeRate);
     const powerGraphic = (
       filterActualPower.length === 0
