@@ -222,6 +222,31 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
+      { name: '清洗模型',
+      iconStyle: 'icon-usermanage',
+      path: '',
+      rightKey: 'analysis_cleanModel',
+      children: [
+        {
+          name: '实时预警',
+          path: 'realtime',
+          defaultPath: true,
+          rightKey: 'monitor',
+        }, {
+          name: '已转工单',
+          path: 'transfer',
+          rightKey: 'monitor',
+        },{
+          name: '手动解除',
+          path: 'handleremove',
+          rightKey: 'monitor',
+        },{
+          name: '历史预警',
+          path: 'historywarning',
+          rightKey: 'monitor',
+        }
+        
+      ]},
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
@@ -231,7 +256,7 @@ const menuData = [
           {
             name: '清洗预警',
             path: 'warning',
-            defaultPath: true,
+            // defaultPath: true,
             rightKey: 'monitor',
           }, {
             name: '清洗计划与记录',
