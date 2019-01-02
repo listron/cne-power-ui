@@ -86,18 +86,18 @@ class CenterMap extends Component{
     worldChart.setOption({
       color: ['#48cf49', '#a6e8ff'],
       series:[{
-        name: 'active',
-        type: 'effectScatter',
+        // name: 'active',
+        type: 'scatter',
         coordinateSystem: 'geo',
         data: [activeData],
-        symbolSize: 10,
+        symbolSize: 15,
         animation: false,
       },{
-        name: 'inactive',
-        type: 'effectScatter',
+        // name: 'inactive',
+        type: 'scatter',
         coordinateSystem: 'geo',
         data: inactiveData,
-        symbolSize: 8,
+        symbolSize: 12,
         animation: false,
       }],
       geo: {
