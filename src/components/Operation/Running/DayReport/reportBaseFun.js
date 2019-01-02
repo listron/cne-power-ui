@@ -1,4 +1,6 @@
 
+import moment from 'moment'; 
+
 export const reportBasefun = (stationType = 0, powerUnit='kWh') => { // 电站日报基础配置信息填写
   // pointLength: 允许填写的小数点位数，根据电量单位判定，kWh为2位，万kWh为4位
   return [
@@ -102,7 +104,7 @@ const elecFlowCheck = (keyWord, genData, checkedArr, stationType) => { // 逆变
 }
 
 export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord) => { // 检测某value,onBlur调用不必检测必填
-  const { stationType, stationCapacity } = stationInfo;
+  const { stationType, stationCapacity, reportDate } = stationInfo;
   const checkingValue = genData[keyWord]; // 要校验的值。
   const genUnit = getConfigInfo(reportConfig).genUnit;
   const valueBaseInfo = reportBasefun(stationType, genUnit).find(e => e.configName === keyWord);// 获取校验项基础信息
@@ -153,7 +155,8 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   }
   const currentArr = ['yearGenInverter', 'yearGenIntegrated', 'yearGenInternet', 'buyPower'];
   const yesterArr = ['yesterdayyearGenInverter', 'yesterdayyearGenIntegrated', 'yesterdayyearGenInternet', 'yesterdayyearBuyPower'];
-  if (currentArr.includes(keyWord)) { // 规则8. 发电量不得小于昨日发电量
+  const isStartOfYear = moment(reportDate).format('MM-DD') === '01-01';
+  if (currentArr.includes(keyWord) && !isStartOfYear) { // 规则8. 发电量不得小于昨日发电量/ 1.1日不校验。
     const keyIndex = currentArr.findIndex(e => e === keyWord);
     const yesterValue = genData[yesterArr[keyIndex]];
     if (genData[keyWord] < yesterValue) {

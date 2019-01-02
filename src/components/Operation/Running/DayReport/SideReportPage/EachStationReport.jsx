@@ -45,29 +45,29 @@ class EachStationReport extends Component {
       const yesterValue = dailyReport[yesterArr[keyIndex]];
       if ((!yesterValue && yesterValue !== 0) || (!currentValue && currentValue !== 0) || isNaN(currentValue)) {
         return;
-      } else if (currentValue < yesterValue) { // 数据不合理
+      } else if (currentValue < yesterValue && !startOfYear) { // 数据不合理
         return;
       } else { // 填写年数据符合。
         const unitConfig = dayReportConfig[0] || {};
         const numDemical = unitConfig.power === 'kWh' ? 2 : 4;
         let dayValue;
         if (startOfYear) { // 1月1日
-          dayValue = currentValue.toFixed(numDemical);
+          dayValue = parseFloat(currentValue).toFixed(numDemical);
         } else {
           dayValue = (currentValue - yesterValue).toFixed(numDemical);
-          const uploadParams = dayReportTotalInfoArr.map(info=>{
-            if(info.dailyReport.stationCode === stationInfo.stationCode){
-              const { dailyDetailList } = info;
-              dailyReport[dayValueKey[keyIndex]] = `${dayValue}`;
-              return {
-                dailyReport,
-                dailyDetailList,
-              }
-            }
-            return info;
-          })
-          totalInfoChange(uploadParams);
         }
+        const uploadParams = dayReportTotalInfoArr.map(info=>{
+          if(info.dailyReport.stationCode === stationInfo.stationCode){
+            const { dailyDetailList } = info;
+            dailyReport[dayValueKey[keyIndex]] = `${dayValue}`;
+            return {
+              dailyReport,
+              dailyDetailList,
+            }
+          }
+          return info;
+        })
+        totalInfoChange(uploadParams);
       }
     }
   }
