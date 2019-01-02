@@ -185,7 +185,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   createTime = createTime? moment(createTime).format('YYYY-MM-DD HH:mm'): '--';
   updateTime = updateTime? moment(updateTime).format('YYYY-MM-DD HH:mm'): '--';
   const { errorInfo } = selectedDayReportDetail;
-  const errorArray = errorInfo && errorInfo.split(';').filter(e => !!e);
+  const errorArray = errorInfo && errorInfo.split(';').filter(e => !!e) || [];
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
@@ -282,7 +282,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     <div className={styles.powerGenInfo} >
       <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
       <div className={styles.powerGenInfoCon}>
-        {errorArray.length > 0? errorArray.map(e => <div>{e}</div>) : '正常'}
+        {errorArray.length > 0? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
       </div>
     </div>
     <div className={styles.operateInfo} >

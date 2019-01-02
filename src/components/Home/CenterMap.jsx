@@ -188,7 +188,7 @@ class CenterMap extends Component{
         geo: {
           silent:true,
           map: mapName,
-          roam: true,
+          roam: false,
           layoutCenter: ['50%', '55%'],
           layoutSize: 830,
           itemStyle: {
