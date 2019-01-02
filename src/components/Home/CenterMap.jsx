@@ -86,14 +86,14 @@ class CenterMap extends Component{
     worldChart.setOption({
       color: ['#48cf49', '#a6e8ff'],
       series:[{
-        // name: 'active',
+        name: 'active',
         type: 'scatter',
         coordinateSystem: 'geo',
         data: [activeData],
         symbolSize: 15,
         animation: false,
       },{
-        // name: 'inactive',
+        name: 'inactive',
         type: 'scatter',
         coordinateSystem: 'geo',
         data: inactiveData,
@@ -188,7 +188,7 @@ class CenterMap extends Component{
         geo: {
           silent:true,
           map: mapName,
-          roam: false,
+          roam: true,
           layoutCenter: ['50%', '55%'],
           layoutSize: 830,
           itemStyle: {
