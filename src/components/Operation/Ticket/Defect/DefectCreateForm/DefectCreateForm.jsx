@@ -48,6 +48,7 @@ class TmpForm extends Component {
     this.state = {
       checked: false,
       deviceAreaCode: '',
+      deviceTypeCode: '',
     }
   }
 
@@ -68,7 +69,7 @@ class TmpForm extends Component {
     const stationCodes = selectedStation.stationCode || null;
     this.props.getStationDeviceTypes({ stationCodes });
     this.props.changeCommonStore({ devices: [] });
-    this.props.form.setFieldsValue({ deviceTypeCode: null, defectTypeCode: null });
+    this.props.form.setFieldsValue({ stations: stations, deviceTypeCode: null, defectTypeCode: null, deviceCode: null });
   }
 
   onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
@@ -80,7 +81,9 @@ class TmpForm extends Component {
       stationCode,
       deviceTypeCode
     };
+    this.setState({ deviceTypeCode: deviceTypeCode })
     this.props.changeCommonStore(params)
+    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
     this.props.getLostGenType({
       stationType,
       objectType: 1,
@@ -177,16 +180,19 @@ class TmpForm extends Component {
     }
   }
 
+  selectedDevice = (value) => {
+    console.log('value', value)
+  }
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, commonList, deviceTypeCode} = this.props;
+    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, commonList } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const currentStations = getFieldValue('stations'); // 电站
+    const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || [];
+    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
-    const stationCode = getFieldValue('stations') && getFieldValue('stations')[0] && getFieldValue('stations')[0].stationCode || [];
-
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
-    const defaultDeviceType = editDefect ? deviceTypes.find(e => e.deviceTypeCode === defectDetail.deviceTypeCode) : null;
     const defaultDevice = editDefect ? devices.find(e => e.deviceCode === defectDetail.deviceCode) : null;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
       uid: i,
@@ -194,6 +200,8 @@ class TmpForm extends Component {
       status: 'done',
       thumbUrl: e,
     }));
+    console.log('哈哈哈', stationCode, deviceTypeCode)
+    // 缺陷类型
     let tmpGenTypes = [];
     let defaultDefectType = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
@@ -212,8 +220,7 @@ class TmpForm extends Component {
       })
       return innerArr;
     })
-    const canSelectDefectType = getFieldValue('stations') && getFieldValue('deviceTypeCode');
-
+    const canSelectDefectType = currentStations && deviceTypeCode;
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -233,7 +240,7 @@ class TmpForm extends Component {
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择设备类型' }],
-              initialValue: defaultDeviceType && defaultDeviceType.deviceTypeCode || undefined,
+              initialValue: defectDetail.deviceTypeName || ''
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
                 {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
@@ -241,44 +248,21 @@ class TmpForm extends Component {
             )}
           </FormItem>
           <FormItem label="设备名称" colon={false}>
-            {/* {getFieldDecorator('deviceCode', {
-              rules: [{ required: true, message: '请选择设备名称' }],
-              initialValue: defaultDevice && defaultDevice.deviceCode || undefined
-            })(
-              <DeviceName
-                stationName={stationName}
-                // allSeries={Immutable.fromJS(allSeries)}
-                allSeries={allSeries}
-                disabled={devices.length === 0}
-                placeholder="输入关键字快速查询"
-                deviceAreaItems={this.props.partitions}
-                deviceItems={devices}
-                stationCode={stationCode}
-                deviceAreaCode={this.state.deviceAreaCode}
-                deviceTypeCode={getFieldValue('deviceTypeCode')}
-                deviceType={this.getDeviceType(getFieldValue('deviceTypeCode'))}
-                onChangeArea={this.onChangeArea}
-                loadDeviceList={this.loadDeviceList}
-                firstPartitionCode={firstPartitionCode}
-              />
-            )} */}
-
             {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
               initialValue: [],
             })(
               <DeviceSelect
-                // disabled={disableDevice}
+                disabled={deviceTypeCode ? false : true}
                 stationCode={stationCode}
                 deviceTypeCode={deviceTypeCode}
-                multiple={true}
                 style={{ width: 'auto', minWidth: '198px' }}
-              // onChange={this.selectedDevice}
+                onChange={this.selectedDevice}
+                holderText={'请选择'}
               />
             )}
             <div className={styles.tipText}>(点击<i className="iconfont icon-filter" />图标可选择)</div>
           </FormItem>
-
           <FormItem label="缺陷类型" colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择缺陷类型' }],
@@ -314,7 +298,7 @@ class TmpForm extends Component {
               <InputLimit placeholder="请描述，不超过80个汉字" width={400} />
             )}
           </FormItem>
-          <FormItem label="添加图片" colon={false}>
+          {/* <FormItem label="添加图片" colon={false}>
             <div className={styles.addImg}>
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('imgDescribe', {
@@ -325,7 +309,7 @@ class TmpForm extends Component {
                 <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
               )}
             </div>
-          </FormItem>
+          </FormItem> */}
         </div>
         <div className={styles.dealInfo}>
           <div className={styles.title}>

@@ -50,7 +50,7 @@ function* getDefectList(action) {
         defectList: [],
         selectedRowKeys: [],
         defectStatusStatistics: {},
-        loading:false,
+        loading: false,
       }
     });
   }
@@ -94,7 +94,30 @@ function* getDefectDetail(action) {
     } else { throw response.data }
   } catch (e) {
     message.error('请求数据失败')
-    console.log(e);
+    // console.log(e);
+    yield put({
+      type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      payload: {
+        defectDetail: {
+          defectId: '',
+          stationName: '',
+          deviceName: '',
+          defectTypeName: '',
+          defectLevel: 1,
+          defectDescribe: '',
+          defectStatus: '1',
+          photoAddress: '',
+          handleData: {
+            defectProposal: '',
+            defectSolveInfo: '',
+            replaceParts: '',
+            defectSolveResult: 0,
+            status: '1'
+          },
+          processData: []
+        },
+      }
+    });
   }
 }
 

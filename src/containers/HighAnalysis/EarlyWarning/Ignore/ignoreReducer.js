@@ -5,8 +5,8 @@ var initState = Immutable.fromJS({
   loading: false,
   stationCodes: [], // 选中的电站
   belongMatrixs: [],//所属方阵
-  startTime: '', // 查询时段起点
-  endTime: '',//询时段结点
+  createTimeStart: '', // 查询时段起点
+  createTimeEnd: '',//询时段结点
   pageNum: 1,
   pageSize: 10,
   totalNum: null,
