@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import styles from './realTimeWarning';
+import styles from './realTimeWarning.scss';
+import RealTimeWarningTop from './RealTimeWarningTop';
+import RealTimeWarningFilter from './RealTimeWarningFilter';
+import RealTimeWarningTable from './RealTimeWarningTable';
 
 
 class RealTimeWarningContainer extends Component{
@@ -10,8 +13,10 @@ class RealTimeWarningContainer extends Component{
     }
     render(){
         return(
-            <div>
-                实时预警
+            <div className={styles.realTimeWarningContainer}>
+                <RealTimeWarningTop warningStatus={1} />
+                <RealTimeWarningFilter />
+                <RealTimeWarningTable />
             </div>
         )
     }

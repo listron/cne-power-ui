@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styles from './historyWarning';
+import styles from './historyWarning.scss';
 class HistoryWarningContainer extends Component{
   static propTypes = {
   }
@@ -8,8 +8,8 @@ class HistoryWarningContainer extends Component{
     }
     render(){
         return(
-            <div>
-                我是历史告警容器
+            <div className={styles.historyWarningContainer}>
+                历史告警
             </div>
         )
     }

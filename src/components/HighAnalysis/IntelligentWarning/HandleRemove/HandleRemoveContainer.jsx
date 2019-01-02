@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styles from './handleRemove'
+import styles from './handleRemove.scss'
 
 class HandleRemoveContainer extends Component{
   static propTypes = {
@@ -9,8 +9,8 @@ class HandleRemoveContainer extends Component{
     }
     render(){
         return(
-            <div>
-                手动解除容器
+            <div className={styles.handleRemoveContainer}>
+                手动解除
             </div>
         )
     }

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styles from "./handleRemove";
+import styles from "./handleRemove.scss";
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
+import HandleRemoveContainer from '../../../../components/HighAnalysis/IntelligentWarning/HandleRemove/HandleRemoveContainer';
+
 
 class HandleRemove extends Component {
     static propTypes = {
@@ -21,7 +23,9 @@ class HandleRemove extends Component {
         return (
             <div className={styles.handle}>
                 <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-                手动解除
+                <div className={styles.handleRemoveBox}>
+                <HandleRemoveContainer />
+                </div>        
                 <Footer />
             </div>
         )

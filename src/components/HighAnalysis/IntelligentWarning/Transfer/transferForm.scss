@@ -1,1 +1,8 @@
 @import '../../../../theme/theme.scss';
+
+.transferFormContaienr{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  background: #fff;
+}
