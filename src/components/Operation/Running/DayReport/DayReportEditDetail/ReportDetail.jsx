@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Table, Icon } from 'antd';
 import styles from './reportDetail.scss';
 import moment from 'moment';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 const loseColumn = [
   {
@@ -209,7 +210,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {totalInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span className={styles.value}>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span className={styles.value}>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -221,7 +222,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {inverterInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -233,7 +234,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {integrateInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -245,7 +246,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {netInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
