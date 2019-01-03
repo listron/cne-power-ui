@@ -147,7 +147,7 @@ class FaultList extends Component {
     this.setState({
       currentIndex: nextIndex,
     })
-    this.setFaultChart(nextIndex);
+    this.setFaultChart(nextIndex, faultNumber);
     this.clocker = setTimeout(() => {
       this.showNextFault(nextIndex, faultNumber);
     }, 10000);
