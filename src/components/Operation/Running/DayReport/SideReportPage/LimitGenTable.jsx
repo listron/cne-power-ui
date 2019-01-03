@@ -49,7 +49,7 @@ class LimitGenTable extends Component {
           <span title={text}>{text}</span>
         ),
       },{
-        title: '限功率',
+        title: '限功率(%)',
         dataIndex: 'limitPower',
         className: 'limitPower',
         render: text => (
