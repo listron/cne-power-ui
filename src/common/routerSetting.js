@@ -230,11 +230,11 @@ const routers = [
     exact: true,
     component: GeneralReport,
   },
-  // {
+  // { // 高级分析/ 光伏发电评估
   //   path: '/analysis/assess',
   //   exact: true,
   //   component: Building
-  // },
+  // }, 
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
