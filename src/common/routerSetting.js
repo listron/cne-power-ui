@@ -63,7 +63,7 @@ import HistoryWarn from '../containers/HighAnalysis/EarlyWarning/HistoryWarn/His
 */
 const routers = [
   {
-    path: '/',
+    path: '/homepage',
     exact: true,
     component: Homepage,
   },
