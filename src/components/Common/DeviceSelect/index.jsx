@@ -68,7 +68,6 @@ class DeviceSelect extends Component {
     multiple: false,
     holderText: '输入关键字快速查询',
     disabled: false,
-    value: [],
   }
 
   constructor(props) {
