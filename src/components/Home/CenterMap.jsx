@@ -203,6 +203,7 @@ class CenterMap extends Component{
       countryChart.on('mouseover',(param)=>{
         const checkedPosition = param.value;
         const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
+        if (!checkedStation) { return; }
         this.setState({ showStationInfo: true });
         this.props.getSingleStation(checkedStation);
       });
