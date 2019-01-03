@@ -615,6 +615,7 @@ function* getDefectTypes(action) {
     console.log(e);
   }
 }
+
 //生成缺陷
 function* createNewDefect(action) {
   const { payload } = action;
@@ -658,17 +659,10 @@ function* createNewDefect(action) {
         type: ticketAction.GET_DEFECT_ID_LIST_SAGA,
         payload: params
       });
-    } else {
-      yield put({
-        type: ticketAction.SET_DEFECT_FAIL,
-        error: {
-          code: response.data.code,
-          message: response.data.message
-        }
-      });
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 //提交缺陷
@@ -706,17 +700,10 @@ function* submitDefect(action) {
           container: 'list',
         },
       })
-    } else {
-      yield put({
-        type: ticketAction.SET_DEFECT_FAIL,
-        error: {
-          code: response.data.code,
-          message: response.data.message
-        }
-      });
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 function* clearDefect(action) {

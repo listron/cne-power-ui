@@ -42,11 +42,8 @@ class DefectCreate extends Component {
   componentWillReceiveProps(nextProps) {
     const { showContainer, defectDetail } = nextProps;
     if (showContainer === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
-      const stationCode = defectDetail.stationCode;
-      const deviceTypeCode = defectDetail.deviceTypeCode;
-      this.props.getStationDeviceTypes({ stationCodes: stationCode });
+      const stationCode=defectDetail.stationCode
       this.props.getLostGenType({ stationCode, objectType: 1 });
-      this.props.getDevices({ stationCode, deviceTypeCode })
     }
   }
 
@@ -114,29 +111,12 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({ type: ticketAction.DEFECT_CREATE_SAGA, payload }),
   submitDefect: payload => dispatch({ type: ticketAction.SUBMIT_DEFECT_SAGA, payload }),
-
   getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {
       params,
       deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'deviceTypes'
-    }
-  }),
-  getDevices: params => dispatch({ // 获取设备类型
-    type: commonAction.getDevices,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'devices'
-    }
-  }),
-  getStationAreas: params => dispatch({
-    type: commonAction.getPartition,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'partitions'
     }
   }),
   getLostGenType: params => dispatch({

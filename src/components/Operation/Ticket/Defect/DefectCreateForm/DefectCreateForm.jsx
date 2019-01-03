@@ -5,12 +5,9 @@ import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import { Form, Input, Button, Select, Switch, Radio, Cascader } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
-import DeviceName from '../../../../Common/NewDeviceName';
 import InputLimit from '../../../../Common/InputLimit';
-// import CommonInput from '../../../../Common/CommonInput';
 import CommonInput from '../../../../Common/CommonInput/index1';
 import DeviceSelect from '../../../../Common/DeviceSelect/index';
-import Immutable from 'immutable';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
@@ -35,14 +32,12 @@ class TmpForm extends Component {
     changeCommonStore: PropTypes.func,
     defectDetail: PropTypes.object,
     deviceTypes: PropTypes.array,
-    partitions: PropTypes.array,
-    devices: PropTypes.array,
     commonList: PropTypes.array,
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
-    // allSeries: PropTypes.array,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -50,12 +45,6 @@ class TmpForm extends Component {
       deviceAreaCode: '',
       deviceTypeCode: '',
     }
-  }
-
-  onChangeArea = (value) => { // 改变
-    this.setState({
-      deviceAreaCode: value
-    });
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -153,54 +142,26 @@ class TmpForm extends Component {
     });
   }
 
-  getDeviceType = (code) => { //  获取设备类型
-    let deviceType = ''
-    const { deviceTypes } = this.props;
-    let index = deviceTypes.findIndex((item) => {
-      return item.deviceTypeCode === code
-    });
-    if (index !== -1) {
-      deviceType = deviceTypes[index].deviceTypeName;
-    }
-    return deviceType;
+  selectedDevice = (value) => { // 选择设备
+    this.props.form.setFieldsValue({ deviceCode: value });
   }
 
-  loadDeviceList = (areaCode) => {
-    const { form, getDevices, getSliceDevices } = this.props;
-    const deviceTypeCode = form.getFieldValue('deviceTypeCode');
-    let params = {
-      stationCode: form.getFieldValue('stations')[0].stationCode,
-      deviceTypeCode,
-    };
-    areaCode && (params.partitionCode = areaCode);
-    if (deviceTypeCode === 509 && !areaCode) { // 光伏组件卸载。
-      getSliceDevices(params);
-    } else {
-      getDevices(params);
-    }
-  }
-
-  selectedDevice = (value) => {
-    console.log('value', value)
-  }
 
   render() {
-    let { stations, stationName, deviceTypes, devices, defectTypes, defectDetail, showContainer, allSeries, commonList } = this.props;
+    let { stations, deviceTypes, defectTypes, defectDetail, showContainer, commonList } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const currentStations = getFieldValue('stations'); // 电站
-    const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || [];
+    const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
     const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
     const defectFinished = getFieldValue('defectSolveResult') === '0';
     const editDefect = showContainer === 'edit';
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
-    const defaultDevice = editDefect ? devices.find(e => e.deviceCode === defectDetail.deviceCode) : null;
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
       uid: i,
       rotate: 0,
       status: 'done',
       thumbUrl: e,
     }));
-    console.log('哈哈哈', stationCode, deviceTypeCode)
     // 缺陷类型
     let tmpGenTypes = [];
     let defaultDefectType = [];
@@ -240,7 +201,7 @@ class TmpForm extends Component {
           <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择设备类型' }],
-              initialValue: defectDetail.deviceTypeName || ''
+              initialValue: defectDetail.deviceTypeCode || null
             })(
               <Select style={{ width: 198 }} placeholder="请选择" disabled={deviceTypes.length === 0} onChange={this.onChangeDeviceType}>
                 {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
@@ -250,7 +211,7 @@ class TmpForm extends Component {
           <FormItem label="设备名称" colon={false}>
             {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
-              initialValue: [],
+              initialValue: defectDetail && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || [],
             })(
               <DeviceSelect
                 disabled={deviceTypeCode ? false : true}
@@ -298,7 +259,7 @@ class TmpForm extends Component {
               <InputLimit placeholder="请描述，不超过80个汉字" width={400} />
             )}
           </FormItem>
-          {/* <FormItem label="添加图片" colon={false}>
+          <FormItem label="添加图片" colon={false}>
             <div className={styles.addImg}>
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('imgDescribe', {
@@ -309,7 +270,7 @@ class TmpForm extends Component {
                 <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
               )}
             </div>
-          </FormItem> */}
+          </FormItem>
         </div>
         <div className={styles.dealInfo}>
           <div className={styles.title}>
