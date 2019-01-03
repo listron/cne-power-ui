@@ -37,6 +37,7 @@ var initState = Immutable.fromJS({
   },
   total: 0,
   defectId: '',
+  
   defectDetail: {//缺陷详情
     defectId: '',
     stationName: '',

@@ -50,6 +50,7 @@ function* getDefectList(action) {
         defectList: [],
         selectedRowKeys: [],
         defectStatusStatistics: {},
+        loading: false,
       }
     });
   }
@@ -93,7 +94,30 @@ function* getDefectDetail(action) {
     } else { throw response.data }
   } catch (e) {
     message.error('请求数据失败')
-    console.log(e);
+    // console.log(e);
+    yield put({
+      type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      payload: {
+        defectDetail: {
+          defectId: '',
+          stationName: '',
+          deviceName: '',
+          defectTypeName: '',
+          defectLevel: 1,
+          defectDescribe: '',
+          defectStatus: '1',
+          photoAddress: '',
+          handleData: {
+            defectProposal: '',
+            defectSolveInfo: '',
+            replaceParts: '',
+            defectSolveResult: 0,
+            status: '1'
+          },
+          processData: []
+        },
+      }
+    });
   }
 }
 
@@ -591,6 +615,7 @@ function* getDefectTypes(action) {
     console.log(e);
   }
 }
+
 //生成缺陷
 function* createNewDefect(action) {
   const { payload } = action;
@@ -634,17 +659,10 @@ function* createNewDefect(action) {
         type: ticketAction.GET_DEFECT_ID_LIST_SAGA,
         payload: params
       });
-    } else {
-      yield put({
-        type: ticketAction.SET_DEFECT_FAIL,
-        error: {
-          code: response.data.code,
-          message: response.data.message
-        }
-      });
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 //提交缺陷
@@ -682,17 +700,10 @@ function* submitDefect(action) {
           container: 'list',
         },
       })
-    } else {
-      yield put({
-        type: ticketAction.SET_DEFECT_FAIL,
-        error: {
-          code: response.data.code,
-          message: response.data.message
-        }
-      });
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 function* clearDefect(action) {
