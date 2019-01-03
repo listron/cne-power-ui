@@ -105,7 +105,10 @@ class DeviceSelectModal extends Component {
     const { deviceModalShow, partitions } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
+<<<<<<< HEAD
     // console.log(modalDevices)
+=======
+>>>>>>> upstream/ui_dev
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -114,7 +117,7 @@ class DeviceSelectModal extends Component {
           onOk={this.handleOK}
           onCancel={this.hideModal}
           cancelText="取消"
-          okText="保存"
+          okText="确定"
           title="请选择"
           width={625}
           wrapClassName={styles.deviceModal}

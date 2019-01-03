@@ -4,7 +4,7 @@ import styles from './allStation.scss';
 //import { Icon } from 'antd';
 import CommonProgress from '../../../Common/CommonProgress'
 import { ValueFormat} from '../../../Common/UtilComponent'
-import { dataFormat } from '../../../../utils/utilFunc';
+import { monitordataFormat } from '../../../../utils/utilFunc';
 
 
 
@@ -40,22 +40,22 @@ class AllStationHeader extends React.Component {
             <div className={styles.rightIcon}>
             </div>
           </div>
-          <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit}   points={realCapacityPoint}  valueunit={realCapacityUnit}  valueText={`实时功率 ${realTimePowerUnit}`} totalText={`装机容量 ${realCapacityUnit}`} />
+          <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit}   points={realCapacityPoint}  valueunit={realCapacityUnit}  valueText={`实时功率 (${realTimePowerUnit})`} totalText={`装机容量 (${realCapacityUnit})`} />
           <div className={styles.stationCollect}>
             <div className={styles.dayStation}>
               <div className={styles.dataValue}>
-              <ValueFormat value={dataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+              <ValueFormat value={monitordataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
               </div>
-              <div className={styles.dataName}>日发电量 {powerUnit}</div>
+              <div className={styles.dataName}>日发电量 ({powerUnit})</div>
             </div>
             <div className={styles.monthStation}>
               <div className={styles.dataValue}>
-               <ValueFormat value={dataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
+               <ValueFormat value={monitordataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} /> 
               </div>
-              <div className={styles.dataName}>月累计发电量 {powerUnit}</div>
+              <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
             </div>
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 ${powerUnit}`} totalText={`计划 ${powerUnit}`} percent={yearPlanRate ? yearPlanRate : ''} />
+          <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 (${powerUnit})`} totalText={`计划 (${powerUnit})`} percent={yearPlanRate ? yearPlanRate : ''} />
         </div>
         <div className={styles.stationNav}>
           <div className={styles.showType}>
