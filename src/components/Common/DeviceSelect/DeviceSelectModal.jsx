@@ -105,10 +105,6 @@ class DeviceSelectModal extends Component {
     const { deviceModalShow, partitions } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
-<<<<<<< HEAD
-    // console.log(modalDevices)
-=======
->>>>>>> upstream/ui_dev
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
