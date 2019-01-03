@@ -33,10 +33,9 @@ class DeviceSelectModal extends Component {
   componentWillReceiveProps(nextProps) {
     const {  filterDevices, deviceTypeCode, filterKey, partitions } = nextProps;
     const prePartitions = this.props.partitions;
-    const preDeviceType = this.props.deviceTypeCode;
     let newState = { modalDevices: [...filterDevices] };
-    if (filterKey.includes(deviceTypeCode) && (partitions.length > 0 && prePartitions.length === 0 || preDeviceType !== deviceTypeCode)) {
-      newState.checkedMatrix = partitions[0].deviceTypeCode;
+    if (filterKey.includes(deviceTypeCode) && (partitions.length > 0 && prePartitions.length === 0)) {
+      newState.checkedMatrix = partitions[0].deviceCode;
     }
     this.setState({ ...newState });
   }
@@ -62,10 +61,10 @@ class DeviceSelectModal extends Component {
   hideModal = () => {
     const { devices, deviceTypeCode, filterKey, changeCommonStore } = this.props;
     if (!filterKey.includes(deviceTypeCode)) { // 非必须分区展示的设备类型,弹框内数据需重置。
-      this.props.hideModal(); // 
       changeCommonStore({ filterDevices: devices }); // 筛选后数据还原为原始所有设备
       this.setState({ checkedMatrix: null }); // 选中分区重置
     }
+    this.props.hideModal(); // 
   }
 
   matrixChange = partitionCode => { // 请求分区数据。
