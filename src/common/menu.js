@@ -325,24 +325,24 @@ const menuData = [
           {
             name: '电站',
             path: 'stationManage',
-            rightKey: 'system_station_stat',
+            rightKey: 'system_station',
           }, {
             name: '设备',
             path: 'deviceManage',
-            rightKey: 'system_station_device',
+            rightKey: 'system_station',
           }, {
             name: '测点',
             path: 'pointManage',
-            rightKey: 'system_station_point',
+            rightKey: 'system_station',
           }, {
             name: '告警事件',
             path: 'alarmManage',
-            rightKey: 'system_station_alert',
+            rightKey: 'system_station',
           },
           {
             name: '功率曲线',
             path: 'powerCurve',
-            rightKey: 'system_station_powercurve',
+            rightKey: 'system_station',
           }
         ]
       }, {
