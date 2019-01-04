@@ -1,14 +1,23 @@
 import React, { Component } from "react";
-import { Input, Switch, Button ,message} from 'antd';
+import { Input, Switch, Button, message, InputNumber } from 'antd';
+import PropTypes from 'prop-types';
 import styles from "./series.scss";
 
 class SeriesMain extends Component {
+  static propTypes = {
+    enterpriseId: PropTypes.string,
+    getSeriesData: PropTypes.func,
+    changeStore: PropTypes.func,
+    addSeriesData: PropTypes.func,
+    isSend: PropTypes.number,
+    sendNum: PropTypes.number,
+  };
   constructor(props) {
     super(props);
     this.state = {
       isShow: false,
-      defaultThresholdt: 70.00,//默认阈值
-      defaultSendNum: 20,//默认下发条数
+      defaultThresholdt: null,//默认阈值
+      defaultSendNum: null,//默认下发条数
     }
   }
 
@@ -21,34 +30,33 @@ class SeriesMain extends Component {
     this.props.changeStore({ isSend });
   }
 
-  changeCount = (e) => { //设置'阈值'
-    const val = e.target.value;
-    if (!isNaN(val)) {
-      this.props.changeStore({ lostGenPercent: val });
+  changeCount = (value) => { //设置'阈值'
+    value && !Number.isInteger(value) && message.info('请输入整数!')
+    if (value && Number.isInteger(value)) {
+      this.props.changeStore({ lostGenPercent: value });
     }
   }
 
-  changeSendCount = (e) => { //改变'最大下发条数'
-    this.props.changeStore({ sendNum: e.target.value });
-
+  changeSendCount = (value) => { //改变'最大下发条数'
+    this.props.changeStore({ sendNum: value });
   }
 
   handleClear = () => { //'恢复默认值'按钮
-    this.props.changeStore({ lostGenPercent: this.state.defaultThresholdt, sendNum: this.state.defaultSendNum, isSend: false });
+    this.props.getSeriesData()
   }
 
   handleSubmit = () => { //'保存'按钮
- 
     const { lostGenPercent, isSend, sendNum } = this.props;
-    if(sendNum&&sendNum<1){
+    !Number.isInteger(lostGenPercent) && message.info('电量损失比阈值请输入整数!')
+    !Number.isInteger(sendNum) && message.info('最大下发条数请输入整数!')
+    if (sendNum && sendNum < 1) {
       message.warning('下发条数大于等于1');
-    }else{
+    } else {
       this.setState({
         isShow: false,
       })
       this.props.addSeriesData({ lostGenPercent, isSend, sendNum });
     }
-   
   }
 
   handleCancel = (e) => { //'取消'按钮
@@ -67,59 +75,42 @@ class SeriesMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lostGenPercent, isSend, sendNum } = this.props;
-
+    console.log('test', lostGenPercent, isSend, sendNum)
     return (
-      !isShow ?
-        <div className={styles.seriesBox}>
-          <div className={styles.thresholdt}>
-            <span className={styles.thresholdtText}>电量损失比阈值</span>
-            <span className={styles.thresholdtNum}>{lostGenPercent}</span>
-            <span>%</span>
-          </div>
-
-          <div className={styles.Send}>
-            <div className={styles.SendTop}>
-              <span className={styles.SendNum}>预警自动下发</span>
-              <Switch className={styles.SendSwitch} checked={isSend ? true : false} />
-            </div>
-            {isSend ? <div className={styles.maximum}>
-              <span className={styles.maximumText}>最大下发条数</span>
-              <span className={styles.maximumNum}>{sendNum}</span>
-              <span>条</span>
-            </div> : ''}
-          </div>
-
-          <div className={styles.btn}>
-            <Button onClick={this.modify}>修改</Button>
-          </div>
-        </div> :
-
-        <div className={styles.seriesBoxCopy}>
-          <div className={styles.thresholdt}>
-            <span className={styles.thresholdtText}>电量损失比阈值</span>
-            <Input className={styles.thresholdtNum} value={lostGenPercent} onChange={this.changeCount} />
-            <span>%</span>
-          </div>
-
-          <div className={styles.Send}>
-            <div className={styles.SendTop}>
-              <span className={styles.SendNum}>预警自动下发</span>
-              <Switch className={styles.SendSwitch} checked={isSend ? true : false} onChange={this.onChangeHide} />
-            </div>
-            {isSend ? <div className={styles.maximum}>
-              <span className={styles.maximumText}>最大下发条数</span>
-              <input  type="number" min="1" required className={styles.maximumNum} value={sendNum} onChange={this.changeSendCount} />
-              <span>条</span>
-            </div> : ''}
-
-          </div>
-
-          <div className={styles.btn}>
-            <Button className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</Button>
-            <Button className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</Button>
-            <Button className={styles.btnBottom} onClick={this.handleCancel}>取消</Button>
-          </div>
+      <div className={styles.seriesBox}>
+        <div className={styles.thresholdt}>
+          <span className={styles.thresholdtText}>电量损失比阈值</span>
+          {!isShow ? <span className={styles.thresholdtNum}>{lostGenPercent}</span> :
+            <InputNumber min={1} defaultValue={lostGenPercent} onChange={this.changeCount} />}
+          <span className={styles.unit}>%</span>
         </div>
+
+        <div className={styles.Send}>
+          <div className={styles.SendTop}>
+            <span className={styles.SendNum}>预警自动下发</span>
+            {!isShow ? <Switch className={styles.SendSwitch} checked={isSend ? true : false} disabled={true} /> :
+              <Switch className={styles.SendSwitch} checked={isSend ? true : false} onChange={this.onChangeHide} />}
+          </div>
+          {isSend ?
+            <div className={styles.maximum}>
+              <span className={styles.maximumText}>最大下发条数</span>
+              {!isShow ? <span className={styles.maximumNum}>{sendNum}</span> :
+                <InputNumber min={1} defaultValue={sendNum} onChange={this.changeSendCount} />}
+              <span className={styles.unit}>条</span>
+            </div> : null}
+        </div>
+
+        {
+          !isShow ? <div className={styles.btn}>
+            <Button onClick={this.modify} default >修改</Button>
+          </div> :
+            <div className={styles.btn}>
+              <Button className={styles.btnBottom} onClick={this.handleClear} >恢复默认值</Button>
+              <Button className={styles.btnBottom} type="submit" onClick={this.handleSubmit} >保存</Button>
+              <Button className={styles.btnBottom} onClick={this.handleCancel}>取消</Button>
+            </div>
+        }
+      </div>
     )
   }
 }

@@ -42,8 +42,8 @@ class WorkOrder extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { callBack, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
-    defectId && defectId !== this.props.defectId && getDefectDetail({ defectId })
+    const { callBack, pageName, onChange, defectId, getDefectDetail, getDefectCommonList } = nextProps;
+    defectId && defectId !== this.props.defectId && getDefectDetail({ defectId }) && getDefectCommonList({ languageType: '1' })
     callBack && onChange({ pageName })
   }
 
