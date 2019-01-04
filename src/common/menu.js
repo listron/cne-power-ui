@@ -315,8 +315,7 @@ const menuData = [
             rightKey: 'system_account_role',
           }
         ]
-      },
-      {
+      }, {
         name: '电站管理',
         iconStyle: 'icon-elecmanage',
         path: 'station',
@@ -325,24 +324,24 @@ const menuData = [
           {
             name: '电站',
             path: 'stationManage',
-            rightKey: 'system_station',
+            rightKey: 'system_station_stat',
           }, {
             name: '设备',
             path: 'deviceManage',
-            rightKey: 'system_station',
+            rightKey: 'system_station_device',
           }, {
             name: '测点',
             path: 'pointManage',
-            rightKey: 'system_station',
+            rightKey: 'system_station_point',
           }, {
             name: '告警事件',
             path: 'alarmManage',
-            rightKey: 'system_station',
+            rightKey: 'system_station_alert',
           },
           {
             name: '功率曲线',
             path: 'powerCurve',
-            rightKey: 'system_station',
+            rightKey: 'system_station_powercurve',
           }
         ]
       }, {
