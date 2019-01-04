@@ -3,7 +3,7 @@ import { handleRemoveActive } from './handleRemoveActive.js';
 
 var initState = Immutable.fromJS({
   warningStatus:'3',//已转工单
-  warningType:'限制告警',//限制告警
+  warningType:'限值告警',//限值告警
   loading:'false',
   oneWarningNum:null,//一级告警
   twoWarningNum: null,//二级告警

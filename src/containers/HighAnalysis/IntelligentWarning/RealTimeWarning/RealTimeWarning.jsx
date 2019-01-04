@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from './realTimeWarning.scss'
 import { realtimeWarningActive } from './realtimeWarningActive';
+import { commonAction } from '../../../alphaRedux/commonAction';
+
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -16,8 +18,7 @@ class RealTimeWarning extends Component {
     super(props, context)
   }
   componentDidMount(){
-    const{warningStatus,warningType}=this.props;
-    this.props.getRealtimeWarningStatistic({warningStatus,warningType})
+  this.props.getLostGenType({objectType: 1})
   }
   render() {
     const breadCrumbData = {
@@ -41,11 +42,25 @@ class RealTimeWarning extends Component {
 const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.realtimeWarningReducer.toJS(),
+    stations: state.common.get('stations').toJS(),
+    deviceTypes: state.common.get('deviceTypes').toJS(),
+    
   }
 }
 const mapDispatchToProps = (dispatch) => ({
+  changeRealtimeWarningStore: payload => dispatch({ type: realtimeWarningActive.changeRealtimeWarningStore, payload }),
   resetStore: payload => dispatch({ type: realtimeWarningActive.resetStore, payload }),
   getRealtimeWarningStatistic: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarningStatistic, payload }),
+  getRealtimeWarning: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarning, payload }),
+  transferWarning: payload => dispatch({ type: realtimeWarningActive.transferWarning, payload }),
+  getLostGenType: params => dispatch({
+    type: commonAction.getLostGenType,
+    payload: {
+      params, 
+      actionName: realtimeWarningActive.changeRealtimeWarningStore, 
+      resultName: 'defectTypes'
+    }
+  }),
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(RealTimeWarning)

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import styles from './transferForm.scss';
+import WarningStatisticTop from '../commonArea/WarningStatisticTop';
+
 class TransferFormContaienr extends Component{
  static propTypes = {
    }
@@ -9,7 +11,7 @@ class TransferFormContaienr extends Component{
     render(){
         return(
             <div className={styles.transferFormContaienr}>
-                已转工单容器
+            <WarningStatisticTop warningStatus={2} />
             </div>
         )
     }

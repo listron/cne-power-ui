@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./handleRemove.scss";
+import { handleRemoveActive } from './handleRemoveActive';
+
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import HandleRemoveContainer from '../../../../components/HighAnalysis/IntelligentWarning/HandleRemove/HandleRemoveContainer';
@@ -24,7 +26,7 @@ class HandleRemove extends Component {
             <div className={styles.handle}>
                 <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
                 <div className={styles.handleRemoveBox}>
-                <HandleRemoveContainer />
+                <HandleRemoveContainer {...this.props} />
                 </div>        
                 <Footer />
             </div>
@@ -33,8 +35,12 @@ class HandleRemove extends Component {
 }
 const mapStateToProps = (state) => {
     return {
+    ...state.highAanlysisReducer.handleRemoveReducer.toJS(),
+
     }
 }
 const mapDispatchToProps = (dispatch) => ({
+    getHandleRemoveStatistic: payload => dispatch({ type: handleRemoveActive.getHandleRemoveStatistic, payload }),
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(HandleRemove)

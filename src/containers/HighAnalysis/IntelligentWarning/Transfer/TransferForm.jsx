@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./transferForm.scss";
+import { transferFormActive } from './transferFormActive';
+
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransferFormContainer from '../../../../components/HighAnalysis/IntelligentWarning/Transfer/TransferFormContainer';
@@ -23,7 +25,7 @@ class TransferForm extends Component {
       <div className={styles.transfer}>
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.transferFormBox}>
-          <TransferFormContainer />
+          <TransferFormContainer {...this.props} />
         </div>
         <Footer />
       </div>
@@ -32,9 +34,10 @@ class TransferForm extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    ...state.highAanlysisReducer.transferFormReducer.toJS(),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  
+  getTransferFormStatistic: payload => dispatch({ type: transferFormActive.getTransferFormStatistic, payload }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TransferForm)
