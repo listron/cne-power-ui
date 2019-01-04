@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Input, Icon,message } from 'antd';
-import { reportBasefun, valueCheck } from '../reportBaseFun';
+import { valueCheck } from '../reportBaseFun';
 import moment from 'moment';
 
 const InputContent = ({ keyWord, dataCheck, valueChange, genData = {} }) => {
@@ -11,7 +11,9 @@ const InputContent = ({ keyWord, dataCheck, valueChange, genData = {} }) => {
     <Input placeholder="--"
       value={genData[keyWord]}
       onBlur={e => dataCheck(keyWord)}
-      onChange={e => valueChange({ [keyWord]: e.target.value })}
+      onChange={e => valueChange({
+        [keyWord]: e.target.value && e.target.value.trim()
+      })}
     />
   )
 }
@@ -43,7 +45,7 @@ class EachStationReport extends Component {
       const keyIndex = currentArr.findIndex(e => e === keyWord);
       const currentValue = dailyReport[keyWord];
       const yesterValue = dailyReport[yesterArr[keyIndex]];
-      if ((!yesterValue && yesterValue !== 0) || (!currentValue && currentValue !== 0) || isNaN(currentValue)) {
+      if ((!yesterValue && yesterValue !== 0 && !startOfYear) || (!currentValue && currentValue !== 0) || isNaN(currentValue)) {
         return;
       } else if (currentValue < yesterValue && !startOfYear) { // 数据不合理
         return;
@@ -107,38 +109,27 @@ class EachStationReport extends Component {
       <div className={styles.eachStationReport}>
         <div className={styles.stationName} title={stationInfo.stationName}>{stationInfo.stationName}</div>
         <div className={styles.resource}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ resourceValue: e.target.value })} /> */}
           <InputContent genData={genData} keyWord="resourceValue" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInverter: e.target.value })} /> */}
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genInverter: e.target.value })} /> */}
-          <InputContent  genData={genData} keyWord="yearGenInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
-          <InputContent  genData={genData} keyWord="genInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="yearGenInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="genInverter" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenIntegrated: e.target.value })} /> */}
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genIntegrated: e.target.value })} /> */}
-          <InputContent  genData={genData} keyWord="yearGenIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
-          <InputContent  genData={genData} keyWord="genIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="yearGenIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="genIntegrated" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ yearGenInternet: e.target.value })} /> */}
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ genInternet: e.target.value })} /> */}
-          <InputContent  genData={genData} keyWord="yearGenInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
-          <InputContent  genData={genData} keyWord="genInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="yearGenInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="genInternet" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.genParts}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ buyPower: e.target.value })} /> */}
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ dailyBuyPower: e.target.value })} /> */}
-          <InputContent  genData={genData} keyWord="buyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
-          <InputContent  genData={genData} keyWord="dailyBuyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="buyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="dailyBuyPower" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.modelParts}>
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterCapacity: e.target.value })} /> */}
-          {/* <Input placeholder="--" onChange={(e)=>this.valueChange({ modelInverterPowerGen: e.target.value })} /> */}
-          <InputContent  genData={genData} keyWord="modelInverterCapacity" dataCheck={this.dataCheck} valueChange={this.valueChange} />
-          <InputContent  genData={genData} keyWord="modelInverterPowerGen" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="modelInverterCapacity" dataCheck={this.dataCheck} valueChange={this.valueChange} />
+          <InputContent genData={genData} keyWord="modelInverterPowerGen" dataCheck={this.dataCheck} valueChange={this.valueChange} />
         </div>
         <div className={styles.handle}>
           <span onClick={this.addAbnormal} className={styles.left}>
