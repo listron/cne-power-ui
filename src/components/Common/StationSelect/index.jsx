@@ -63,15 +63,15 @@ class StationSelect extends Component {
     holderText: '输入关键字快速查询',
     disabled: false,
     data: [],
-    value: [],
     disabledStation: [],
   }
   constructor(props) {
     super(props);
+    const checkedStations = props.value || [];
     this.state = {
       stationModalShow: false,
-      checkedStations: props.value,
-      checkedStationName: props.value.map(e=>e.stationName),
+      checkedStations,
+      checkedStationName: checkedStations.map(e=>e.stationName),
       filteredSelectedStation: [],
     }
   }
