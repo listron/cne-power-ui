@@ -56,7 +56,8 @@ class AddPlan extends Component {
   };
   selectStation = (stations) => {
     this.props.changePlanStore({
-      addStationCodes: stations
+      addStationCodes: stations,
+      stationType:stations.length>0 && stations[0].stationType
     })
   };
   toPlanStations = () => {
@@ -91,6 +92,7 @@ class AddPlan extends Component {
               multiple={true}
               onChange={this.selectStation}
               disabled={continueAdd ? false : true}
+              oneStyleOnly={true}
             />
             <Button onClick={this.toPlanStations} disabled={!canAdd}
                     className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
