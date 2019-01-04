@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
-import {Input, Button, DatePicker, Icon, Select, Form} from 'antd';
+import React, { Component } from 'react';
+import { Button, Icon, Select, Form } from 'antd';
 import moment from 'moment';
 import StationSelect from '../../../../Common/StationSelect';
 import PropTypes from 'prop-types';
 import styles from './planSide.scss';
-import WarningTip from '../../../../Common/WarningTip';
-// const { MonthPicker, RangePicker } = DatePicker;
 const Option = Select.Option;
-const FormItem = Form.Item;
 
 class AddPlan extends Component {
   static propTypes = {
@@ -27,21 +24,17 @@ class AddPlan extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-    }
+  }
 
-  }
-  componentWillReceiveProps(nextProps) {
-  }
 
   onWarningTipShow = () => {
     this.props.changePlanStore({
       showPage: 'list',
-      loading:false,
-      planStations:[],
-      addPlanYear:'',
-      continueAdd:false,
-      addStationCodes:[],
+      loading: false,
+      planStations: [],
+      addPlanYear: '',
+      continueAdd: false,
+      addStationCodes: [],
     });
   };
 
@@ -54,18 +47,21 @@ class AddPlan extends Component {
     })
     this.props.getStations() //  重新请求电站列表
   };
+
   selectStation = (stations) => {
     this.props.changePlanStore({
       addStationCodes: stations,
-      stationType:stations.length>0 && stations[0].stationType
+      stationType: stations.length > 0 && stations[0].stationType
     })
   };
+
+
   toPlanStations = () => {
-    this.props.onShowSideChange({showSidePage: 'edit'});
+    this.props.onShowSideChange({ showSidePage: 'edit' });
   };
 
   render() {
-    const { stations, continueAdd, addPlanYear, addStationCodes} = this.props;
+    const { continueAdd, addPlanYear, addStationCodes, planStations } = this.props;
     const canAdd = addPlanYear && addStationCodes && addStationCodes.length > 0;
     const currentYear = moment().year();
     let year = [currentYear + 1, currentYear];
@@ -78,7 +74,7 @@ class AddPlan extends Component {
         <div className={styles.mainPart}>
           <div className={styles.selectTime}>
             <span><i>*</i>年份填写</span>
-            <Select style={{width: 105}} onChange={this.selectTime} value={addPlanYear || '--'}>
+            <Select style={{ width: 105 }} onChange={this.selectTime} value={addPlanYear || '--'}>
               {year.map((year) => {
                 return <Option value={`${year}`} key={year}>{`${year}`}</Option>
               })}
@@ -88,14 +84,14 @@ class AddPlan extends Component {
             <span><i>*</i>电站选择</span>
             <StationSelect
               value={addStationCodes}
-              data={stations.toJS().filter(e=>e.isPlan===0)}
+              data={planStations}
               multiple={true}
               onChange={this.selectStation}
               disabled={continueAdd ? false : true}
               oneStyleOnly={true}
             />
             <Button onClick={this.toPlanStations} disabled={!canAdd}
-                    className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
+              className={canAdd ? styles.addPlanNext : styles.addPlanNextDisabled}>下一步</Button>
           </div>
         </div>
       </div>
