@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button } from 'antd';
+import { Input, Button, InputNumber, message } from 'antd';
 import styles from "./cleaning.scss";
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,6 @@ class CleaningMain extends Component {
     super(props);
     this.state = {
       isShow: false,
-      defaultThresholdt: 70.00,//默认阈值
     }
   }
 
@@ -25,30 +24,42 @@ class CleaningMain extends Component {
     this.props.getCleaningData({ enterpriseId });
   }
 
+  
+
   modify = () => { // '修改'按钮
     this.setState({
       isShow: true,
     })
   }
 
-  changeCount = (e) => { //设置'阈值'
-    const val = e.target.value;
-    if (!isNaN(val)) {
-      this.props.changeStore({ lossPowerPercent: val });
-    }
+  changeCount = (value) => { //设置'阈值'
+    value && !Number.isInteger(value) && message.info('请输入整数!')
+    this.props.changeStore({ lossPowerPercent: value });
   }
 
   handleClear = () => { //'恢复默认值'按钮
-    this.props.changeStore({ lossPowerPercent: this.state.defaultThresholdt });
+    const { enterpriseId } = this.props;
+    this.props.getCleaningData({ enterpriseId });
   }
 
   handleSubmit = () => { //'保存'按钮
-    this.setState({
-      isShow: false,
-    })
     const { lossPowerPercent, enterpriseId } = this.props;
-    console.log(lossPowerPercent);
-    this.props.addCleaningData({ lossPowerPercent, enterpriseId });
+    let electricity = this.messagetip('electricity', lossPowerPercent);
+    if (electricity) {
+      this.setState({
+        isShow: false,
+      })
+      this.props.addCleaningData({ lossPowerPercent, enterpriseId });
+    }
+  }
+
+
+  messagetip = (type, value) => { //提示判断
+    let name = type === 'sendName' ? '最大下发条数' : '电量损失比阈值'
+    !Number.isInteger(+value) && message.info(name + '请输入整数!')
+    if (Number.isInteger(+value)) {
+      return true
+    }
   }
 
   handleCancel = (e) => { //'取消'按钮
@@ -83,7 +94,7 @@ class CleaningMain extends Component {
         <div className={styles.cleaningBoxCopy}>
           <div className={styles.thresholdt}>
             <span className={styles.thresholdtText}>电量损失比阈值</span>
-            <Input className={styles.thresholdtNum} value={lossPowerPercent} onChange={this.changeCount} />
+            <InputNumber min={1} defaultValue={lossPowerPercent} onChange={this.changeCount} value={lossPowerPercent} />
             <span>%</span>
           </div>
 

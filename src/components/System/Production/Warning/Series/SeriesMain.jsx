@@ -10,7 +10,8 @@ class SeriesMain extends Component {
     changeStore: PropTypes.func,
     addSeriesData: PropTypes.func,
     isSend: PropTypes.number,
-    sendNum: PropTypes.number,
+    sendNum: PropTypes.any,
+    lostGenPercent: PropTypes.any,
   };
   constructor(props) {
     super(props);
@@ -32,12 +33,11 @@ class SeriesMain extends Component {
 
   changeCount = (value) => { //设置'阈值'
     value && !Number.isInteger(value) && message.info('请输入整数!')
-    if (value && Number.isInteger(value)) {
-      this.props.changeStore({ lostGenPercent: value });
-    }
+    this.props.changeStore({ lostGenPercent: value });
   }
 
   changeSendCount = (value) => { //改变'最大下发条数'
+   value && !Number.isInteger(value) && message.info('请输入整数!')
     this.props.changeStore({ sendNum: value });
   }
 
@@ -47,15 +47,21 @@ class SeriesMain extends Component {
 
   handleSubmit = () => { //'保存'按钮
     const { lostGenPercent, isSend, sendNum } = this.props;
-    !Number.isInteger(lostGenPercent) && message.info('电量损失比阈值请输入整数!')
-    !Number.isInteger(sendNum) && message.info('最大下发条数请输入整数!')
-    if (sendNum && sendNum < 1) {
-      message.warning('下发条数大于等于1');
-    } else {
+    let electricity = this.messagetip('electricity', lostGenPercent);
+    let sendName = this.messagetip('sendName', sendNum);
+    if (electricity && sendName) {
       this.setState({
         isShow: false,
       })
       this.props.addSeriesData({ lostGenPercent, isSend, sendNum });
+    }
+  }
+
+  messagetip = (type, value) => { //提示判断
+    let name = type === 'sendName' ? '最大下发条数' : '电量损失比阈值'
+    !Number.isInteger(+value) && message.info(name + '请输入整数!')
+    if (Number.isInteger(+value)) {
+      return true
     }
   }
 
@@ -75,13 +81,12 @@ class SeriesMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lostGenPercent, isSend, sendNum } = this.props;
-    console.log('test', lostGenPercent, isSend, sendNum)
     return (
       <div className={styles.seriesBox}>
         <div className={styles.thresholdt}>
           <span className={styles.thresholdtText}>电量损失比阈值</span>
           {!isShow ? <span className={styles.thresholdtNum}>{lostGenPercent}</span> :
-            <InputNumber min={1} defaultValue={lostGenPercent} onChange={this.changeCount} />}
+            <InputNumber min={1} defaultValue={lostGenPercent} onChange={this.changeCount} value={lostGenPercent} />}
           <span className={styles.unit}>%</span>
         </div>
 
@@ -95,7 +100,7 @@ class SeriesMain extends Component {
             <div className={styles.maximum}>
               <span className={styles.maximumText}>最大下发条数</span>
               {!isShow ? <span className={styles.maximumNum}>{sendNum}</span> :
-                <InputNumber min={1} defaultValue={sendNum} onChange={this.changeSendCount} />}
+                <InputNumber min={1} defaultValue={sendNum} onChange={this.changeSendCount} value={sendNum} />}
               <span className={styles.unit}>条</span>
             </div> : null}
         </div>

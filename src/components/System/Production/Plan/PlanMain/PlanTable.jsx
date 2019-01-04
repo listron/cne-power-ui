@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Input, Form, message } from 'antd';
+import { Table, Button,Icon, Input, Form, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
-import { getMonth, getDefectSortField, getDefaultMonth } from '../plan';
+import { getDefectSortField, getDefaultMonth } from '../plan';
 import WarningTip from '../../../../Common/WarningTip';
 import EditableCell from './EditableCell';
 import moment from 'moment';
@@ -81,14 +81,13 @@ class PlanTable extends Component {
     }
   };
 
-  isEditing = (record) => { // 是否可以编辑
+  isEditing = (record) => { // 是否可以编辑(一个电站)
     const currentYear = moment().year();
     if (currentYear - record.planYear <= 0) {
       return record.key === this.state.editingKey;
     }
   };
 
-  // 编辑
   edit(key) { // 如果存在编辑，则不允许其他操作
     const { editingKey } = this.state;
     this.setState({ currentClickKey: key });
@@ -135,7 +134,7 @@ class PlanTable extends Component {
           month: month,
           monthPower: planMonthGens,
           planPower: saveData.planPower,
-          yearPR: saveData.yearPR,
+          yearPR: saveData.yearPR || null,
         };
         this.props.editPlanInfo(params);
         this.setState({ editingKey: '' });
@@ -145,7 +144,6 @@ class PlanTable extends Component {
 
   _createTableColumn = () => {//生成表头
     const _this = this;
-
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -322,7 +320,7 @@ class PlanTable extends Component {
   };
 
   render() {
-    const { pageSize, pageNum, totalNum, loading, planData, } = this.props;
+    const { pageSize, pageNum, totalNum, loading, } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const components = {
       body: {
