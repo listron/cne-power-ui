@@ -4,12 +4,12 @@ import { Select } from 'antd';
 import styles from './stationResourceAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from '../CommonGraph/BarGraph';
+import BarGraph from '../CommonGraphs/BarGraph';
 import LightDistribution from './Charts/DistributionMonthBar';
 import LightYearDistrubution from './Charts/DistributionYearBar';
-import TableGraph from '../CommonGraph/TableGraph';
+import TableGraph from '../CommonGraphs/TableGraph';
 import YearLightDistributionTable from "./Table/yearDistribution"
-import WeatherStatus from '../CommonGraph/barStack';
+import WeatherStatus from '../CommonGraphs/barStack';
 import WeatherRate from './Charts/WeatherRate';
 import WeatherDayStatus from './Charts/WeatherDayChart'
 import moment from 'moment';
