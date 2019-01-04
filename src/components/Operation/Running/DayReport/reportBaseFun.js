@@ -169,7 +169,7 @@ export const valueCheck = (stationInfo, genData = {}, reportConfig = [], keyWord
   return { result: true };
 }
 
-export const allReportCheck = (stationInfo, reportConfig = []) => { // 检测必填项
+export const allReportCheck = (stationInfo, reportConfig = []) => { // 检测必填项+不规则数据。
   let { genUnit, requireArr } = getConfigInfo(reportConfig);
   const { stationType } = stationInfo;
   const totalInfo = reportBasefun(stationType, genUnit); // 需要依次校验的数据。
@@ -183,18 +183,40 @@ export const allReportCheck = (stationInfo, reportConfig = []) => { // 检测必
       message: `请填写${message}`,
     }
   }
-  // 2. 各值判断
-  const totalKeyWordArr = totalInfo.map(e => e.configName);
+  /* // 2. 原本2019-01-04以前需对各值合理性进行依次判断
+    const totalKeyWordArr = totalInfo.map(e => e.configName);
+    let wordError;
+    totalKeyWordArr.find(e => { // 依次校验所有数据。 有错误数据即停。
+      const eachCheckResult = valueCheck(stationInfo, stationInfo, reportConfig, e);
+      if (!eachCheckResult.result) {
+        wordError = eachCheckResult;
+        return true ;
+      }
+    })
+    if (wordError) {
+      return wordError; 
+    }
+  */
+  // 2019-01-04 后仅判定是否非负数值即可
   let wordError;
-  totalKeyWordArr.find(e => { // 依次校验所有数据。 有错误数据即停。
-    const eachCheckResult = valueCheck(stationInfo, stationInfo, reportConfig, e);
-    if (!eachCheckResult.result) {
-      wordError = eachCheckResult;
-      return true ;
+  totalInfo.find(e => {
+    const checkedValue = stationInfo[e.configName];
+    if (checkedValue && isNaN(checkedValue)) { // 非数字
+      wordError = {
+        result: false,
+        message: `${e.configText}请填写数字`
+      }
+      return true;
+    }else if (checkedValue < 0) {
+      wordError = {
+        result: false,
+        message: `${e.configText}数值不能为负数，请重新填写`
+      }
+      return true;
     }
   })
   if (wordError) {
-    return wordError; 
+    return wordError;
   }
   return { result: true };
 }
