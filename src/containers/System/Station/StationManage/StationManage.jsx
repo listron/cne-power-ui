@@ -96,6 +96,7 @@ class StationManage extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.stationManage.toJS(),
+  stations: state.common.get('stations').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 

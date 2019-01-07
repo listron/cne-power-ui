@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Table, Icon } from 'antd';
 import styles from './reportDetail.scss';
 import moment from 'moment';
+import { dataFormat } from '../../../../../utils/utilFunc';
 
 const loseColumn = [
   {
@@ -73,7 +74,7 @@ const limitColumn = [
       <span title={text} >{text}</span>
     ),
   },{
-    title: '限功率',
+    title: '限功率(%)',
     dataIndex: 'limitPower',
     className: 'limitPower',
     render: (text, record) => (
@@ -184,7 +185,8 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
   // reportDate = reportDate? moment(reportDate).format('YYYY-MM-DD'): '--';
   createTime = createTime? moment(createTime).format('YYYY-MM-DD HH:mm'): '--';
   updateTime = updateTime? moment(updateTime).format('YYYY-MM-DD HH:mm'): '--';
-  const { errorInfo } = selectedDayReportDetail
+  const { errorInfo } = selectedDayReportDetail;
+  const errorArray = errorInfo && errorInfo.split(';').filter(e => !!e) || [];
   return (
   <div className={styles.reportDetail} >
     <div className={styles.reportDetailTitle} >
@@ -208,7 +210,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {totalInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span className={styles.value}>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span className={styles.value}>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -220,7 +222,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {inverterInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -232,7 +234,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {integrateInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -244,7 +246,7 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
         {netInfo.map(e => (
           <span className={styles.eachInfo} key={e.name}>
             <span className={styles.name}>{e.name}</span>
-            <span>{selectedDayReportDetail[e.value] || '--'}</span>
+            <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
             <span>{e.unit}</span>
           </span>
         ))}
@@ -280,7 +282,9 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
     </div>
     <div className={styles.powerGenInfo} >
       <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
-      <span className={styles.powerGenInfoCon}>{errorInfo?errorInfo:'正常'}</span>
+      <div className={styles.powerGenInfoCon}>
+        {errorArray.length > 0? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
+      </div>
     </div>
     <div className={styles.operateInfo} >
       <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>

@@ -77,31 +77,6 @@ class DefectList extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    // const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum,showTab } = this.props;
-    // showTab!==this.props.showTab && this.props.getDefectList({ ...filter });
-  }
-
-
-  componentWillUnmount() {
-    this.props.changeDefectStore({
-      stationType: '',
-      stationCodes: [],
-      defectSource: [],
-      defectLevel: [],
-      status: '',
-      pageNum: 1,
-      pageSize: 10,
-      createTimeStart: '',
-      createTimeEnd: '',
-      deviceTypeCode: [],
-      defectTypeCode: [],
-      sortField: 'create_time',
-      sortMethod: 'desc ',
-      handleUser: '',      //处理人
-    });//清除缺陷状态
-  }
-
 
   filterCondition = (changeValue) => {
     const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
@@ -127,7 +102,8 @@ class DefectList extends Component {
   }
 
   render() {
-    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics } = this.props;
+    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics,
+      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
     return (
       <div className={styles.defectList}>
         <FilterCondition
@@ -138,8 +114,19 @@ class DefectList extends Component {
           defectTypes={defectTypes}
           username={username}
           onChange={this.filterCondition}
+          defaultValue={{
+            createTimeStart: createTimeStart,
+            createTimeEnd: createTimeEnd,
+            stationType: stationType,
+            stationCodes: stationCodes,
+            defectSource: defectSource,
+            defectLevel: defectLevel,
+            deviceTypeCode: deviceTypeCode,
+            defectTypeCode: defectTypeCode,
+            handleUser: handleUser
+          }}
         />
-        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} />
+        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
         <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
     );

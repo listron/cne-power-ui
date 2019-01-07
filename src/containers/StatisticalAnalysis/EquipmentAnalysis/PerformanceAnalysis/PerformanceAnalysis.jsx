@@ -7,7 +7,7 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PerformanceAnalysisFilter from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisFilter';
 import PerformanceAnalysisTabs from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisTabs';
 import Footer from '../../../../components/Common/Footer';
-// import PlanCompletionRate from '../../../../components/StatisticalAnalysis/StationAnalysis/CommonGraph/PlanCompletionRate'; 
+// import PlanCompletionRate from '../../../../components/StatisticalAnalysis/StationAnalysis/CommonGraphs/PlanCompletionRate';
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
 import { Tabs } from 'antd';
 import Cookie from 'js-cookie';

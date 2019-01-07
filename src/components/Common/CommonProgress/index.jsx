@@ -35,6 +35,8 @@ class CommonProgress extends Component {
  
   render() {
     const { value, total, valueText, totalText, percent, valueunit, points, realTimeUnit, realTimePoint } = this.props;
+
+
     return (
       <div className={styles.commonProgress}>
         <div className={styles.progressInfo}>
@@ -50,7 +52,7 @@ class CommonProgress extends Component {
               </div>
             </div>
             <div className={styles.progressBar}>
-              <Progress strokeWidth={3} percent={+total?(value / total * 100):0} showInfo={false} status="active" />
+              <Progress strokeWidth={3} percent={+total ? (value / total * 100) : 0} showInfo={false} status="active" />
             </div>
             <div className={styles.stationType}>
               <div>{valueText}</div>

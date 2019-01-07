@@ -63,7 +63,7 @@ import HistoryWarn from '../containers/HighAnalysis/EarlyWarning/HistoryWarn/His
 */
 const routers = [
   {
-    path: '/',
+    path: '/homepage',
     exact: true,
     component: Homepage,
   },{ // 运维管理-工单-员工定位
@@ -230,11 +230,11 @@ const routers = [
     exact: true,
     component: GeneralReport,
   },
-  // {
+  // { // 高级分析/ 光伏发电评估
   //   path: '/analysis/assess',
   //   exact: true,
   //   component: Building
-  // },
+  // }, 
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     exact: true,
