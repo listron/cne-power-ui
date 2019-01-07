@@ -32,8 +32,7 @@ class CommonProgress extends Component {
   constructor(props) {
     super(props);
   }
-
-
+ 
   render() {
     const { value, total, valueText, totalText, percent, valueunit, points, realTimeUnit, realTimePoint } = this.props;
 
