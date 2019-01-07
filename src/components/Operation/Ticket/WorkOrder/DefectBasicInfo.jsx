@@ -38,7 +38,7 @@ class DefectBasicInfo extends Component {
           </div>
           <div className={styles.basicItem}><div>设备类型</div><span>{info.deviceTypeName || '--'}</span></div>
           <div className={styles.basicItem}><div>设备名称</div><span>{info.deviceName || '--'}</span></div>
-          <div className={styles.basicItem}><div>缺陷类型</div><span>{info.defectTypeName || '--'}</span></div>
+          <div className={styles.basicItem}><div>缺陷类型</div><span>{`${info.defectParentTypeName}/${info.defectTypeName }`|| '--'}</span></div>
           <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(`${info.defectLevel}`)|| '--'}</span></div>
           <div className={styles.basicItem}><div>缺陷来源</div><span>{getSource(info.defectSource)|| '--'}</span></div>
           <div className={styles.basicItem}><div>缺陷描述</div><span>{info.defectDescribe|| '--'}</span></div>

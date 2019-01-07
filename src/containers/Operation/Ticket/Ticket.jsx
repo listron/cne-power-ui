@@ -120,7 +120,7 @@ class Ticket extends Component {
               showPage={true}
               defectIdList={defectIdList} />}
           {tab === 'defect' && showContainer === 'create' && <DefectCreate {...this.props} />}
-          {tab === 'defect' && showContainer === 'edit' && <DefectCreate {...this.props} />}
+          {tab === 'defect' && showContainer === 'edit' && <DefectCreate {...this.props} editDefect={true} />}
 
           {tab === 'inspect' && showContainer === 'detail' && <InspectDetail {...this.props} />}
           {tab === 'inspect' && showContainer === 'inspectOrbit' && <InspectOrbit {...this.props} />}

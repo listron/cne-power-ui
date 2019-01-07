@@ -83,7 +83,7 @@ function StationReportColumn({ dayReportConfig, stationType }){
     <ElecPart 
       title="样板机"
       eachText={['容量(MW)', `日发电量(${genUtil})`]}
-      required={requiredTargetObj.buyPower}
+      required={requiredTargetObj.modelInverterPowerGen || requiredTargetObj.modelInverterCapacity}
       extraStyle={{flexBasis: '16%'}}
     />
     <div className={styles.handle}>操作</div>

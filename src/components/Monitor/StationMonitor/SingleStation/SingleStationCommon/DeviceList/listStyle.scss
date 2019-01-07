@@ -129,6 +129,13 @@
     height: 40px;
     justify-content: space-between;
     margin:0 12px;
+    :global{
+      .icon-alarm{
+        color: #a42b2c;
+        width: 14px;
+        font-size: 14px;
+      }
+    }
   }
   .eachDevice{
     height:140px;

@@ -31,8 +31,8 @@ class Ignore extends Component {
     totalNum: PropTypes.number,
     stations: PropTypes.array,
     matrixList: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -59,9 +59,9 @@ class Ignore extends Component {
   }
 
   getIgnoreList = (param) => { // 请求数据
-    const { stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod } = this.props;
+    const { stationCodes, belongMatrixs, createTimeStart, createTimeEnd,pageNum, pageSize, sortField, sortMethod } = this.props;
     this.props.getIgnoreList({
-      stationCodes, belongMatrixs, startTime, endTime, pageNum, pageSize, sortField, sortMethod,...param
+      stationCodes, belongMatrixs, createTimeStart, createTimeEnd, pageNum, pageSize, sortField, sortMethod,...param
     })
   }
 

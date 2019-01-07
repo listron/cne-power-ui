@@ -23,8 +23,10 @@ class PlanAddTable extends React.Component {
     addStationCodes: PropTypes.array,
     addPlanYear: PropTypes.string,
     save: PropTypes.string,
+    prev: PropTypes.string,
     addValueChange: PropTypes.func,
     addplansave: PropTypes.func,
+    stationType: PropTypes.number,
   };
 
   constructor(props) {
@@ -50,7 +52,8 @@ class PlanAddTable extends React.Component {
   };
 
   _createTableColumn = () => {//生成表头
-    const _this = this;
+    const { stationType } = this.props;
+    console.log('stationType', stationType)
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -66,8 +69,16 @@ class PlanAddTable extends React.Component {
           }
         }
       })
-    };
+    }
     const MonthColumn = _MonthColumns();
+    const PRColumn = stationType !== 0 ? {
+      title: 'PR年计划',
+      dataIndex: 'yearPR',
+      key: 'yearPR',
+      className: 'yearPR',
+      editable: true,
+    } : {};
+
     const columns = [
       {
         title: '区域',
@@ -119,13 +130,7 @@ class PlanAddTable extends React.Component {
         }
       },
       ...MonthColumn,
-      {
-        title: 'PR年计划',
-        dataIndex: 'yearPR',
-        key: 'yearPR',
-        className: 'yearPR',
-        editable: true,
-      },
+      PRColumn,
       {
         title: '操作',
         dataIndex: 'operation',
@@ -167,7 +172,7 @@ class PlanAddTable extends React.Component {
           for (let i = 0; i < Number(onGridMonth); i++) {
             AddPlanstaion[TabelKey[i]] = null;
           }
-        }   
+        }
       }
       AddPlanstaion.planPower = list.planPower;
       AddPlanstaion.key = index;
@@ -182,7 +187,7 @@ class PlanAddTable extends React.Component {
 
     this.setState({ AddPlandata: addPlanStations })
   };
-  
+
 
   render() {
     const { AddPlandata } = this.state;

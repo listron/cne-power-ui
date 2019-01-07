@@ -6,7 +6,7 @@ import { watchHomepage } from './Home/homepageSaga';
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
-import { watchPersonnelGps } from './Operation/Ticket/PersonnelGps/personnelGpsSaga';
+import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
