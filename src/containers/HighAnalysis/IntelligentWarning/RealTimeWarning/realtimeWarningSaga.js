@@ -9,10 +9,11 @@ const monitor=Path.APISubPaths.monitor
 
 function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告警数统计
   const { payload } = action;
-   const url = `${APIBasePath}${monitor.getAlarmNum}`
+  console.log(payload);
+   const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${payload.warningType}`
   //const url = '/mock/cleanWarning/totalEffect';
   try {
-    const response = yield call(axios.get, url, {params:payload});
+    const response = yield call(axios.get, url);
     const lastUpdateTime=moment().format('YYYY-MM-DD HH:mm');
     console.log(lastUpdateTime);
     if (response.data.code === '10000') {

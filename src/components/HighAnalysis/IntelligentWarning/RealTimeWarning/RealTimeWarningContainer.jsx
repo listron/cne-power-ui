@@ -12,9 +12,9 @@ class RealTimeWarningContainer extends Component {
         super(props, context)
     }
     componentDidMount() {
-        const { warningTypeStatus, warningType, getRealtimeWarningStatistic,getRealtimeWarning,endTime,startTime,deviceTypeCode,warningLevel,stationCode } = this.props;
+        const { warningTypeStatus,warningStatus, warningType, getRealtimeWarningStatistic,getRealtimeWarning,endTime,startTime,deviceTypeCode,warningLevel,stationCode } = this.props;
         const params={endTime,startTime,deviceTypeCode,warningLevel,stationCode,warningTypeStatus}
-        getRealtimeWarningStatistic({ warningTypeStatus, warningType })
+        getRealtimeWarningStatistic({ warningStatus, warningType })
         getRealtimeWarning(params)
          this.realtimeSetInterval = setInterval(() =>  this.realtimeWarningSetInterval , 10000);
     }

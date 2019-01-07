@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 import { realtimeWarningActive } from './realtimeWarningActive.js';
 
 var initState = Immutable.fromJS({
+  warningStatus:'1',//告警状态
   warningTypeStatus:'1',//实时告警
   warningType:'限值告警',//限值告警
   loading:'false',

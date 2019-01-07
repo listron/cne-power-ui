@@ -54,7 +54,6 @@ class TransferWarningModal extends Component {
 
   render(){
     const { defectTypes } = this.props;
-    console.log('defectTypes: ', defectTypes);
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     let tmpGenTypes = [];
