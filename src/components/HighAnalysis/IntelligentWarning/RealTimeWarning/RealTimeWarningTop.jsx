@@ -30,7 +30,7 @@ class RealTimeWarningTop extends Component {
             </div>
             <div className={styles.alarmNumDetail}>
               <div className={styles.alarmInfoItem}>
-                <span className={styles.alarmNum}>{!isNaN(oneWarningNum) ? oneWarningNum : '- -'}</span>
+                <span className={styles.alarmNum}>{ oneWarningNum }</span>
                 <span className={styles.alarmText}>一级</span>
               </div>
               <div className={styles.alarmInfoItem}>

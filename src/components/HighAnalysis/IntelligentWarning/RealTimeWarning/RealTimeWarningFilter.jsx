@@ -17,9 +17,13 @@ class RealTimeWarningFilter extends Component {
     }
 
     onChangeFilter = (value) => {
-        const { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand,warningStatus } = this.props;
-        const params = { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand,warningStatus }
+        const { stationCode, warningLevel,  deviceTypeCode, startTime,endTime, deviceName,durationType,  orderField, orderCommand,warningTypeStatus,warningType } = this.props;
+        const params = { stationCode, warningLevel,warningTypeStatus,warningType, deviceTypeCode,startTime,endTime,orderField,orderCommand }
+        console.log(startTime,'startTime');
+        console.log(endTime,'endTime');
         this.props.getRealtimeWarning({ ...params, ...value })
+        this.props.onSearch({...params,...value})
+
       }
 
     onChange = (e) => {
@@ -32,7 +36,7 @@ class RealTimeWarningFilter extends Component {
         this.setState({
             value: ''
         });
-        if (this.props.deviceName !== '') {
+        if (this.props.deviceName) {
             this.props.onSearch({
                 deviceName: ''
             });

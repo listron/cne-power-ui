@@ -9,21 +9,20 @@ const monitor=Path.APISubPaths.monitor
 
 function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告警数统计
   const { payload } = action;
-  console.log(payload);
    const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${payload.warningType}`
   //const url = '/mock/cleanWarning/totalEffect';
   try {
     const response = yield call(axios.get, url);
     const lastUpdateTime=moment().format('YYYY-MM-DD HH:mm');
-    console.log(lastUpdateTime);
     if (response.data.code === '10000') {
+      const result=response.data&&response.data.data;
       yield put({
         type:realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
-          oneWarningNum: (response.data.oneWarningNum ||  response.data.oneWarningNum===0)?response.data.oneWarningNum:'--',
-          twoWarningNum: (response.data.twoWarningNum ||  response.data.twoWarningNum===0)?response.data.twoWarningNum:'--',
-          threeWarningNum: (response.data.threeWarningNum ||  response.data.threeWarningNum===0)?response.data.threeWarningNum:'--',
-          fourWarningNum: (response.data.fourWarningNum ||  response.data.fourWarningNum===0)?response.data.fourWarningNum:'--',
+          oneWarningNum: (result.oneWarningNum ||  result.oneWarningNum===0)?result.oneWarningNum:'--',
+          twoWarningNum: (result.twoWarningNum ||  result.twoWarningNum===0)?result.twoWarningNum:'--',
+          threeWarningNum: (result.threeWarningNum ||  result.threeWarningNum===0)?result.threeWarningNum:'--',
+          fourWarningNum: (result.fourWarningNum ||  result.fourWarningNum===0)?result.fourWarningNum:'--',
           lastUpdateTime
         },
       });
@@ -56,14 +55,25 @@ function *getRealtimeWarning(action) {  // 请求实时告警
     const response = yield call(axios.post,url,{
       ...payload,
       stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
-      startTime:payload.rangTime?payload.rangTime:payload.startTime,
+      startTime:payload.createTimeStart?payload.createTimeStart:payload.startTime,
+      endTime:payload.createTimeEnd?payload.createTimeEnd:payload.endTime,
     });
     if(response.data.code === '10000') {
+      const { payload } = action;
+      console.log(payload);
+      console.log(payload.stationCodes);
+      console.log(payload.createTimeStart);
+      const time=payload.createTimeStart?payload.createTimeStart:payload.startTime;
+      const endtime=payload.createTimeEnd?payload.createTimeEnd:payload.endTime;
+      console.log(time,endtime,'test');
       yield put({
         type:realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
+          ...payload,
+          stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
           realtimeWarning: response.data.data||[],
-          loading:false
+          loading:false,
+        
         },
       });     
     }  
