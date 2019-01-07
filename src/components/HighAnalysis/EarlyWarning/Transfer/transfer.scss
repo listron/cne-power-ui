@@ -9,7 +9,7 @@
     .selectCondition {
         display: flex;
         flex-direction: row;
-        justify-content:flex-end;
+        justify-content: flex-end;
         padding: 26px 0 20px 28px;
         border-top: 1px solid $promptColor;
     }
@@ -18,12 +18,36 @@
             border-bottom: none
         }
     }
-    .iconDetail{
-        span{
+    .iconDetail {
+        div {
             display: block;
             color: $themeColor;
             cursor: pointer;
+            span {
+                display: flex;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                width: 30px;
+                background: #d1d1d1;
+            }
+        }
+        div:hover {
+            span {
+                display: flex;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                width: 30px;
+                background: $themeColor;
+            }
+            :global {
+                .icon-action {
+                    color: #fff;
+                }
+            }
         }
     }
-   
 }

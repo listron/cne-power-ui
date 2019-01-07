@@ -25,6 +25,7 @@ class DefectCreate extends Component {
     changeCommonStore: PropTypes.func,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
+    editDefect:PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -36,16 +37,13 @@ class DefectCreate extends Component {
   componentDidMount() {
     this.props.getCommonList({ languageType: '1' });
   }
-  
 
-  componentWillReceiveProps(nextProps){
-    const { showContainer,defectDetail } = nextProps;
-    if (showContainer === 'edit' && defectDetail.defectId!==this.props.defectDetail.defectId) {
-      const stationCode = defectDetail.stationCode;
-      const deviceTypeCode = defectDetail.deviceTypeCode;
-      this.props.getStationDeviceTypes({ stationCodes: stationCode });
+
+  componentWillReceiveProps(nextProps) {
+    const { showContainer, defectDetail } = nextProps;
+    if (showContainer === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
+      const stationCode=defectDetail.stationCode
       this.props.getLostGenType({ stationCode, objectType: 1 });
-      this.props.getDevices({ stationCode, deviceTypeCode })
     }
   }
 
@@ -75,7 +73,7 @@ class DefectCreate extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { showContainer, defectDetail } = this.props;
+    const { showContainer, defectDetail, editDefect } = this.props;
     let rejectReason;
     if (showContainer === 'edit') {
       const processData = defectDetail.processData;
@@ -88,7 +86,7 @@ class DefectCreate extends Component {
       <div className={styles.defectCreate}>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
-          <span className={styles.text}>{showContainer === 'create' ? '新建缺陷' : rejectReason}</span>
+          <span className={styles.text}>{editDefect ? rejectReason:'新建缺陷'}</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
@@ -102,7 +100,6 @@ class DefectCreate extends Component {
 const mapStateToProps = (state) => ({
   ...state.operation.defect.toJS(),
   stations: state.common.get('stations').toJS(),
-  deviceTypes: state.common.get('deviceTypes').toJS(),
   commonFetching: state.common.get('commonFetching'),
 });
 
@@ -114,35 +111,12 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({ type: ticketAction.DEFECT_CREATE_SAGA, payload }),
   submitDefect: payload => dispatch({ type: ticketAction.SUBMIT_DEFECT_SAGA, payload }),
-  getSliceDevices: params => dispatch({
-    type: commonAction.getSliceDevices,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-    }
-  }),
-  getStationDeviceTypes: params => dispatch({
+  getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {
       params,
       deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'deviceTypes'
-    }
-  }),
-  getDevices: params => dispatch({ // 获取设备类型
-    type: commonAction.getDevices,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'devices'
-    }
-  }),
-  getStationAreas: params => dispatch({
-    type: commonAction.getPartition,
-    payload: {
-      params,
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'partitions'
     }
   }),
   getLostGenType: params => dispatch({

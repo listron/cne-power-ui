@@ -25,6 +25,8 @@ function* getIgnoreList(action) { // 忽略列表
     yield put({ type: ignoreAction.ignoreFetch });
     const response = yield call(axios.post, url, {
       ...payload,
+      startTime: payload.createTimeStart,
+      endTime: payload.createTimeEnd,
     });
     if (response.data.code === '10000') {
       const totalNum = response.data.data && response.data.data.total || 0;

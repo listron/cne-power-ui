@@ -69,17 +69,17 @@ class Ticket extends Component {
     if (tab === 'defect') {
       this.props.clearInspectState();//清除巡检状态
       var params = {
-        stationType: '',   
-        stationCodes: [],  
-        defectSource: [],  
-        defectLevel: [],	 
-        status: '',   
-        pageNum: 1,   
-        pageSize: 10,  
+        stationType: '',
+        stationCodes: [],
+        defectSource: [],
+        defectLevel: [],
+        status: '',
+        pageNum: 1,
+        pageSize: 10,
         createTimeStart: '',
         createTimeEnd: '',
-        deviceTypeCode: [],	 
-        defectTypeCode: [],	 
+        deviceTypeCode: [],
+        defectTypeCode: [],
         sortField: 'create_time',
         sortMethod: 'desc ',
         handleUser: '',      //处理人
@@ -94,7 +94,7 @@ class Ticket extends Component {
   }
 
   render() {
-    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum,defectIdList } = this.props;
+    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList } = this.props;
     const { tab } = this.state;
     return (
       <div className={styles.ticketBox}>
@@ -111,10 +111,16 @@ class Ticket extends Component {
             </Tabs>
           }
 
-          {tab === 'defect' && showContainer === 'detail' && defectId &&
-            <WorkOrder defectId={defectId} otherFrom={false} pageName={'list'} onChange={this.prevChange} pageNum={pageNum} pageSize={pageSize} showPage={true} />}
+          {tab === 'defect' && showContainer === 'detail' && defectId && defectIdList &&
+            <WorkOrder
+              defectId={defectId}
+              otherFrom={false}
+              pageName={'list'}
+              onChange={this.prevChange}
+              showPage={true}
+              defectIdList={defectIdList} />}
           {tab === 'defect' && showContainer === 'create' && <DefectCreate {...this.props} />}
-          {tab === 'defect' && showContainer === 'edit' && <DefectCreate {...this.props} />}
+          {tab === 'defect' && showContainer === 'edit' && <DefectCreate {...this.props} editDefect={true} />}
 
           {tab === 'inspect' && showContainer === 'detail' && <InspectDetail {...this.props} />}
           {tab === 'inspect' && showContainer === 'inspectOrbit' && <InspectOrbit {...this.props} />}
@@ -134,8 +140,8 @@ const mapStateToProps = (state) => {
     defectId: state.operation.defect.get('defectId'),
     pageNum: state.operation.defect.get('pageNum'),
     pageSize: state.operation.defect.get('pageSize'),
-    defectDetail:state.operation.defect.get('defectDetail').toJS(),
-    defectIdList:state.operation.defect.get('defectIdList').toJS()
+    defectDetail: state.operation.defect.get('defectDetail').toJS(),
+    defectIdList: state.operation.defect.get('defectIdList').toJS()
   }
 }
 

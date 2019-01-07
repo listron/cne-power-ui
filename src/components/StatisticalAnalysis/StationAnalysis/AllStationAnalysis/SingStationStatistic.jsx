@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styles from './allStationStatistic.scss';
-import BarGraph from '../CommonGraph/BarGraph/index.js';
+import BarGraph from '../CommonGraphs/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import moment from 'moment';
 // import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './Chart/PlanCompletionRate';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
-import TableGraph from '../CommonGraph/TableGraph';
-import ThreeYaxis from '../CommonGraph/ThreeYaxis';
+import TableGraph from '../CommonGraphs/TableGraph';
+import ThreeYaxis from '../CommonGraphs/ThreeYaxis';
 import PlanCompleteRateAnalysisBar from './Chart/PlanCompleteRateAnalysisBar';
 import LightResource from './Chart/LightResource';
 import CurrentMonthCompleteRate from './Chart/CurrentMonthCompleteRate/index';
@@ -57,13 +57,11 @@ class SingleStationStatistic extends React.Component {
   }
   componentDidMount() {
     const { year, dateType, singleStationCode, getSingleStationStatisticData, getSingleStationPvCompareData, getSingleStationPowerEffectiveData, getSingleStationTargetData, getSingleStationPlanRateData, getSingleStationMonthPieData } = this.props;
-    //console.log(singleStationCode);
     const currentYear = moment().format('YYYY');
     const curYear = Number(moment().format('YYYY'));
     const curYearArray = [moment().format('YYYY')]
     const currentMonth = Number(moment().format('MM'));
     //let time = year ? year : [`${currentYear}`];
-    //console.log(time);
 
     this.props.changeAllStationStore({ year: [`${currentYear}`], month: currentMonth })
 
@@ -112,7 +110,7 @@ class SingleStationStatistic extends React.Component {
 //控制单电站点击其他位置，消失浮框
     const main = document.getElementById('main');
     main && main.addEventListener('click', this.hiddenStationList, true);
-  
+
 
   }
   componentWillReceiveProps(nextProps) {
@@ -120,13 +118,11 @@ class SingleStationStatistic extends React.Component {
     const { stationCode } = this.props.match.params;
     let allStations=stations.toJS();
     let singleStationType=allStations.length>0&&allStations.filter(e=>e.stationCode===Number(stationCode))[0].stationType;
-      console.log(singleStationType);
     const currentYear = [moment().format('YYYY')];
     const currentTableYear = Number(moment().format('YYYY'));
     const currentMonth = Number(moment().format('MM'));
     const curYearNum = nextProps.year[0].split('-')[0];
     const curMonthNum = nextProps.year[0].split('-')[1];
-    // console.log(curYearNum,curMonthNum);
     const curMonth = moment().format('YYYY-MM');
     const curMonthArray = [moment().format('YYYY-MM')]
     const curYear = Number(nextProps.year)
@@ -383,8 +379,7 @@ class SingleStationStatistic extends React.Component {
 
   }
   onTimeChange=(timeObj)=>{
-    // console.log(timeObj);
-    timeObj.timeStyle === 'year' ? 
+    timeObj.timeStyle === 'year' ?
     this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime],selectYear:timeObj.endTime}) :this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
   }
   onClose = () => {
@@ -417,7 +412,7 @@ class SingleStationStatistic extends React.Component {
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     const currentYear = parseInt(year).toString();
     const lastYear = (parseInt(year) - 1).toString();
-  
+
     //发电量数据
     const barGraphThatYear = singleStationPowerData.map(e=>e.thatYearData) || [];
     const barGraphLastYear = singleStationPowerData.map(e=>e.lastYearData)||[];
@@ -434,11 +429,9 @@ class SingleStationStatistic extends React.Component {
     const dayCompleteRateHasData=dayCompleteRateThatYearData.some(e=>e||e===0)||dayCompleteRateLastYearData.some(e=>e||e===0)||dayCompleteRate.some(e=>e||e===0)
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: +e.monthPower===0 ?'':e.monthPower, name: `${e.month}月` }));
-    const pieCompleteValue = Number(singleStationPlanRate) 
+    const pieCompleteValue = Number(singleStationPlanRate)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
-    // console.log(pieData, pieComplete);
     //计划完成率
-    //console.log(singleStationPlanRateData);
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
     const planPowerData = singleStationPlanRateData.map(e =>e.planPower)||[];
     const actualPowerData = singleStationPlanRateData.map(e =>e.actualPower)||[];
@@ -475,9 +468,7 @@ class SingleStationStatistic extends React.Component {
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode.toString() === singleStationCode))[0];
     const stationGridTime = stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
-    //console.log(stationItem);
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
-    //console.log(stationItem);
     return (
       <div className={styles.singleStationType}>
         <div className={styles.componentContainer}>
@@ -505,14 +496,14 @@ class SingleStationStatistic extends React.Component {
             </Link>
           </div>
           <TimeSelect onChange={this.onTimeChange} />
-          <PlanCompletionRate 
-          dateType={dateType} 
-          allStationStatisticData={singleStationStatisticData} 
-          showPage={showPage} 
-          year={year} 
-          allStationAvalibaData={allStationAvalibaData} 
-          singleStationCode={singleStationCode} 
-          getSingleStationStatisticData={getSingleStationStatisticData} 
+          <PlanCompletionRate
+          dateType={dateType}
+          allStationStatisticData={singleStationStatisticData}
+          showPage={showPage}
+          year={year}
+          allStationAvalibaData={allStationAvalibaData}
+          singleStationCode={singleStationCode}
+          getSingleStationStatisticData={getSingleStationStatisticData}
           selectYear={selectYear}
           changeAllStationStore={changeAllStationStore}
           />
@@ -600,14 +591,14 @@ class SingleStationStatistic extends React.Component {
               </div>
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
-                  <PlanCompleteRateAnalysisBar 
-                  graphId={'planCompleteRate'} 
-                  yAxisName={'发电量 (万kWh)'} 
-                  dateType={dateType} 
-                  title={'计划完成率'} 
-                  xAxisData={xAxisData} 
-                  planPowerData={planPowerData} 
-                  actualPowerData={actualPowerData} 
+                  <PlanCompleteRateAnalysisBar
+                  graphId={'planCompleteRate'}
+                  yAxisName={'发电量 (万kWh)'}
+                  dateType={dateType}
+                  title={'计划完成率'}
+                  xAxisData={xAxisData}
+                  planPowerData={planPowerData}
+                  actualPowerData={actualPowerData}
                   planRateData={planRateData}
                   hasData={palnHasData} />
                   <TableGraph
@@ -756,7 +747,7 @@ class SingleStationStatistic extends React.Component {
                   <BarGraph
                     graphId={'dayLostPower'}
                     yAxisName={'发电量 (万kWh)'}
-                    xAxisName={'损失电量同比'}
+                    xAxisName={'损失电量'}
                     dateType={dateType}
                     title={'损失电量同比'}
                     dateType={dateType}

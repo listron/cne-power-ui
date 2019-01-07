@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './targetTabs.scss';
 import { Tabs } from 'antd';
-import BarGraph from '../CommonGraph/BarGraph/index.js';
+import BarGraph from '../CommonGraphs/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import AllStationMonthPie from './Chart/AllStationMonthPie/index';
 import Cookie from 'js-cookie';
@@ -53,7 +53,7 @@ class TargetTabs extends React.Component {
     const barGraphThatYear = allStationMonthBarData.map(e => e.thatYearData) || [];
     const barGraphLastYear = allStationMonthBarData.map(e => e.lastYearData) || [];
     const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`))
-    const barGraphYear = allStationMonthBarData.map((e, i) => (`${e.year}年`))
+    const barGraphYear = allStationMonthBarData.map((e, i) => (`${e.year}`))
     const barGraphYearOnYear = allStationMonthBarData.map(e => e.yearOnYear) || [];
     const barGraphRingRatio = allStationMonthBarData.map(e => e.ringRatio) || [];
     const hasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0)

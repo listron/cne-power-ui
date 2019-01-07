@@ -112,11 +112,11 @@ class PerformanceAnalysisTabs extends Component {
       yData: {
         barData: {
           conversionRate: conversionRate,
-          contrastConversionAvgRate: contrastConversionAvgRateData
+          contrastConversionRate: contrastConversionRate
         },
         lineData: {
           conversionAvgRate: contrastAvgRateData,
-          contrastConversionRate: contrastConversionRate
+          contrastConversionAvgRate: contrastConversionAvgRateData
         }
       }
     } : {

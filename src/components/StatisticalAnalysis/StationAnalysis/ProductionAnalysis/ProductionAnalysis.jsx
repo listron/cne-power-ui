@@ -4,10 +4,10 @@ import { Radio } from 'antd';
 import styles from './productionAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
-import BarGraph from '../CommonGraph/BarGraph';
-import TableGraph from '../CommonGraph/TableGraph';
+import BarGraph from '../CommonGraphs/BarGraph';
+import TableGraph from '../CommonGraphs/TableGraph';
 import WaterWave from '../AllStationAnalysis/Chart/PlanCompletionRate/WaterWave';
-import ThreeYaxis from '../CommonGraph/ThreeYaxis';
+import ThreeYaxis from '../CommonGraphs/ThreeYaxis';
 import moment from 'moment';
 
 
@@ -140,7 +140,7 @@ class ProductionAnalysis extends React.Component {
     props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
     props.changeProductionStationStore({ startTime: startYear, endTime: endYear })
     props.ProductionPlanComplete({...prams,year: endYear,})
-    props.getSingleStationProductionData(prams)
+    props.getSingleStationProductionData({...prams,"year": rangeYear})
     props.getSingleStationPlanRateData(prams)
   }
 
@@ -162,9 +162,9 @@ class ProductionAnalysis extends React.Component {
         <Radio.Group value={`${selectYear}`} buttonStyle="solid" onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             } else {
-              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             }
           }
           )}

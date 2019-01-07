@@ -8,6 +8,9 @@ import Footer from "../../../../components/Common/Footer";
 import moment from 'moment';
 import path from '../../../../constants/path';
 import axios from 'axios';
+import Cookie from 'js-cookie';
+import { enterpriseKey } from '../../../../constants/enterpriseKey';
+
 const { APIBasePath } = path.basePaths;
 const { 
   dailyreport, faultReport, genReport, indicatorReport
@@ -130,6 +133,8 @@ class GeneralReport extends Component{
       reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation
     } = this.state;
     const { stations } = this.props;
+    const enterpriseId = Cookie.get('enterpriseId');
+    const reportInfo = enterpriseKey.find(e => e.enterpriseId === enterpriseId);
     return(
       <div className={styles.generalReportBox}>
         <CommonBreadcrumb breadData={{name:'通用报表'}} style={{marginLeft:'38px'}}></CommonBreadcrumb>
@@ -154,7 +159,7 @@ class GeneralReport extends Component{
                 <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}>下载</Button>
               </div>
             </div>
-            <div className={styles.dailyBox}>
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.defaultReport}>
                   <Icon type="download" style={{color:'#ffffff'}} />
@@ -172,9 +177,8 @@ class GeneralReport extends Component{
               <div className={styles.downloadBtn}>
                 <Button disabled={!faultDate} onClick={this.downloadFault} className={styles.text}>下载</Button>
               </div>
-            </div>
-
-            <div className={styles.dailyBox}>
+            </div>}
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.eleInfo}>
                   <Icon type="download" style={{color:'#ffffff'}} />
@@ -192,9 +196,8 @@ class GeneralReport extends Component{
               <div className={styles.downloadBtn}>
                 <Button disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo}>下载</Button>
               </div>
-            </div>
-
-            <div className={styles.dailyBox}>
+            </div>}
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.proOperation}>
                     <Icon type="download" style={{color:'#ffffff'}} />
@@ -224,7 +227,7 @@ class GeneralReport extends Component{
                   onClick={this.downloadIndicator}
                 >下载</Button>
               </div>
-            </div>
+            </div>}
           </div>
           <Footer />
         </div>

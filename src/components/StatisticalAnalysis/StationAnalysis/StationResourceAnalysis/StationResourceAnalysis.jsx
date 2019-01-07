@@ -4,12 +4,12 @@ import { Select } from 'antd';
 import styles from './stationResourceAnalysis.scss';
 import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from '../CommonGraph/BarGraph';
+import BarGraph from '../CommonGraphs/BarGraph';
 import LightDistribution from './Charts/DistributionMonthBar';
 import LightYearDistrubution from './Charts/DistributionYearBar';
-import TableGraph from '../CommonGraph/TableGraph';
+import TableGraph from '../CommonGraphs/TableGraph';
 import YearLightDistributionTable from "./Table/yearDistribution"
-import WeatherStatus from '../CommonGraph/barStack';
+import WeatherStatus from '../CommonGraphs/barStack';
 import WeatherRate from './Charts/WeatherRate';
 import WeatherDayStatus from './Charts/WeatherDayChart'
 import moment from 'moment';
@@ -330,15 +330,15 @@ class ProductionAnalysis extends React.Component {
             </div>
             <div className={styles.graph}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{resourcePlanData && resourcePlanData.length > 0 && (resourcePlanData[0].resourceValue || resourcePlanData[0].resourceValue === 0) ? resourcePlanData[0].resourceValue : "--"}</div>
+                <div className={styles.stationTargetValue}>{resourcePlanData.length > 0 && (resourcePlanData[0].resourceValue || resourcePlanData[0].resourceValue === 0) ? resourcePlanData[0].resourceValue : "--"}</div>
                 <div className={styles.stationTargetName}>斜面辐射总量 MJ/㎡ </div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{resourcePlanData && resourcePlanData.length > 0 && (resourcePlanData[0].sunshineHours || resourcePlanData[0].sunshineHours === 0) ? resourcePlanData[0].sunshineHours : "--"}</div>
+                <div className={styles.stationTargetValue}>{resourcePlanData.length > 0 && (resourcePlanData[0].sunshineHours || resourcePlanData[0].sunshineHours === 0) ? resourcePlanData[0].sunshineHours : "--"}</div>
                 <div className={styles.stationTargetName}>日照时数 h </div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{resourcePlanData && resourcePlanData.length > 0 && (resourcePlanData[0].temperatureAvg || resourcePlanData[0].temperatureAvg === 0) ? resourcePlanData[0].temperatureAvg : "--"}</div>
+                <div className={styles.stationTargetValue}>{resourcePlanData.length > 0 && (resourcePlanData[0].temperatureAvg || resourcePlanData[0].temperatureAvg === 0) ? parseFloat(resourcePlanData[0].temperatureAvg ).toFixed(2): "--"}</div>
                 <div className={styles.stationTargetName}>平均气温 ℃</div>
               </div>
             </div>

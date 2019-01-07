@@ -50,7 +50,7 @@ class CenterMap extends Component{
         this.setWorldMap(countriesInfo, activeInfo);
       }).catch(error=>{
         console.log(error); 
-        message.error('加载世界地图失败，请重试');
+        // message.error('加载世界地图失败，请重试');
       });
       this.setState({ countriesInfo });
       this.setCountryMap(mapStation, 'China');
@@ -87,17 +87,17 @@ class CenterMap extends Component{
       color: ['#48cf49', '#a6e8ff'],
       series:[{
         name: 'active',
-        type: 'effectScatter',
+        type: 'scatter',
         coordinateSystem: 'geo',
         data: [activeData],
-        symbolSize: 10,
+        symbolSize: 15,
         animation: false,
       },{
         name: 'inactive',
-        type: 'effectScatter',
+        type: 'scatter',
         coordinateSystem: 'geo',
         data: inactiveData,
-        symbolSize: 8,
+        symbolSize: 12,
         animation: false,
       }],
       geo: {
@@ -203,6 +203,7 @@ class CenterMap extends Component{
       countryChart.on('mouseover',(param)=>{
         const checkedPosition = param.value;
         const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
+        if (!checkedStation) { return; }
         this.setState({ showStationInfo: true });
         this.props.getSingleStation(checkedStation);
       });

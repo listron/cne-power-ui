@@ -41,6 +41,7 @@ class YearSelect extends React.Component {
         value={yearValue?moment(yearValue):null}
         onOpenChange={this.onOpenChange}
         onPanelChange={this.onPanelChange}
+        allowClear={false}
       />
     )
   }

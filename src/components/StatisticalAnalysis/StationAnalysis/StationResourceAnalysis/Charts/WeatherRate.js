@@ -16,7 +16,7 @@ class WeatherRate extends React.Component {
   getName = (type) => {
     let name = '';
     switch (type) {
-      // "雪1", "雨2", "霾3", "阴4", "晴5","其他0"
+      // "雪1", "雨2", "霾3", "阴4", "晴5","其他0"  根据后台数据库设定的
       case '5': name = '晴'; break;
       case '4': name = '阴'; break;
       case '2': name = '雨'; break;
@@ -30,11 +30,14 @@ class WeatherRate extends React.Component {
   drawCharts = (params) => {
     const { graphId, data, yAxisName ,hasData} = params;
     const targetPieChart = echarts.init(document.getElementById(graphId));
-    let color=["#f9b600",'#999999','#199475','#c7ceb2','#a42b2c','#ceebe0']
+    let color=['#ceebe0','#c7ceb2','#199475','#a42b2c', '#dfdfdf',"#f9b600"];
     let seriesData= data.map((item)=>{
        return {
          name:this.getName(item.weather),
-         value:item.days===0 ? '':item.days
+         value:item.days===0 ? '':item.days,
+         itemStyle:{
+           color:color[item.weather]
+         }
        }
     })
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
@@ -43,18 +46,19 @@ class WeatherRate extends React.Component {
       tooltip: {
         trigger: 'item',
         backgroundColor: '#fff',
-        formatter: function (params) {
-          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;">' + params.name + '</div>'
-            + '天数' + '：' + params.value +'<br>'
-            + '所占比例' + '：' + params.percent + '%<br>';
-        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
           fontSize: 12,
         },
+        formatter: function (params) {
+          return '<div style="border-bottom: 1px solid #ccc; font-size: 12px;padding-bottom: 7px;margin-bottom: 7px;width:140px;overflow:hidden;">' + params.name + '</div>'
+            + '天数' + '：' + params.value +'<br>'
+            + '所占比例' + '：' + params.percent + '%<br>';
+        },
       },
-      color: color,
+      // color: color,
       series: [
         {
           name: '发电量',

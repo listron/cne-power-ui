@@ -25,7 +25,6 @@ var initState = Immutable.fromJS({
   callBack:false, // 是否返回上一页面
   stationType:'',//电站类型
   defectSource:'',//缺陷来源
-  defectIdList:[],//缺陷ID
 });
 
 

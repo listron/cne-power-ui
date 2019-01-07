@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { DatePicker, Button, Icon, message } from 'antd';
+import { DatePicker, Button, Icon, message, Popconfirm } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import UploadReportList from './UploadReportList';
 import moment from 'moment';
-import { reportBasefun } from '../reportBaseFun';
+import { reportBasefun, allReportCheck } from '../reportBaseFun';
 import WarningTip from '../../../../Common/WarningTip';
 
 class SideReportPage extends Component {
@@ -40,6 +40,12 @@ class SideReportPage extends Component {
   componentDidMount(){ // 默认日期禁选电站列表。
     const { stationReportBaseData, showReportInputList } = this.props;
     showReportInputList && this.setOriginState(stationReportBaseData);
+    message.destroy();
+    message.config({
+      top: 400,
+      duration: 2,
+      maxCount: 1,
+    });
   }
 
   componentWillReceiveProps(nextProps){
@@ -156,36 +162,16 @@ class SideReportPage extends Component {
   saveDayReport = () => { // 确认上报日报
     const { dayReportTotalInfoArr } = this.state;
     const { dayReportConfig } = this.props;
-    const unitConfig = dayReportConfig[0] || {}; // 电量单位
-    const requireTargetObj = dayReportConfig[1] || {}; 
-    const tmpRequireTargetArr = Object.keys(requireTargetObj); // 指标必填信息数组(有多余信息)
-    const genUnit = unitConfig.power || 'kWh'; // kWh两位小数，万kWh四位小数。
-    const currentStationType = dayReportTotalInfoArr[0].dailyReport.stationType;
-    const tmpReportBaseInfo = reportBasefun(currentStationType, genUnit); // 指标数组
-
-    let errorText = '';
-    const totalInfoError = dayReportTotalInfoArr.find(info=>{ // 寻找错误数据并提取错误信息
-      const eachStationInfo = info.dailyReport;
-      const eachInfoError = tmpReportBaseInfo.find(config => { 
-        const configRequired = tmpRequireTargetArr.includes(config.configName); // 必填数据项
-        const eachReportValue = eachStationInfo[config.configName]; // 每一项指标数据
-        const maxPointLength = config.pointLength; // 指定的最大小数点位数
-        const paramPointLength = (eachReportValue && eachReportValue.split('.')[1]) ? eachReportValue.split('.')[1].length : 0;
-        const dataFormatError = (eachReportValue && isNaN(eachReportValue)) || paramPointLength > maxPointLength; // 数据格式错误;
-        if(configRequired && !eachReportValue && eachReportValue !== 0){ // 必填项未填
-          errorText = `${eachStationInfo.stationName}${config.configText}未填写!`;
-          return true;
-        }else if(dataFormatError){ // 填写数据不规范
-          errorText = `${eachStationInfo.stationName}${config.configText}需填写数字,且不超${maxPointLength}位小数!`;
-          return true;
-        }
-        return false;
-      })
-      return eachInfoError;
+    const totalInfoError = dayReportTotalInfoArr.find(info => { // 依次检测每个电站数据是否有不合格数据。
+      const stationCheckResult = allReportCheck(info.dailyReport, dayReportConfig);
+      if (!stationCheckResult.result) { // 有不合格数据
+        message.warn(stationCheckResult.message);
+        return true
+      }
     })
-    if(totalInfoError){ // 数据错误存在，提示
-      this.messageWarning(errorText);
-    }else{ // 数据无误，调整数据结构并提交
+    if (totalInfoError) {
+      return;
+    } else {
       const uploadInfo = dayReportTotalInfoArr.map(e=>{
         let { dailyReport, dailyDetailList } = e;
         delete dailyReport.warning;
@@ -209,6 +195,7 @@ class SideReportPage extends Component {
             faultId: eachLost.faultId,
             faultName: eachLost.faultName,
             deviceTypeCode: eachLost.deviceTypeCode,
+            deviceTypeName: eachLost.deviceTypeName,
             deviceId: eachLost.deviceId,
             type: eachLost.type,
           }
@@ -228,16 +215,6 @@ class SideReportPage extends Component {
     return start && start > moment();
   }
 
-  messageWarning = (dataErrorText) => { // 信息错误展示
-    message.destroy();
-    message.config({
-      top: 400,
-      duration: 2,
-      maxCount: 1,
-    });
-    message.warning(dataErrorText,2);
-  }
-
   render(){
     const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
@@ -248,11 +225,18 @@ class SideReportPage extends Component {
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
             {showReportInputList && <Button onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</Button>}
-            {showReportInputList && <Button
-              onClick={this.saveDayReport}
-              className={styles.saveDayReport}
-              loading={loading}
-            >保存</Button>}
+            {showReportInputList && <Popconfirm
+              placement="leftTop"
+              overlayClassName={styles.confirmBox}
+              title="你确定要提交?"
+              onConfirm={this.saveDayReport}
+              okText="确定"
+              cancelText="取消">
+                <Button
+                  className={styles.saveDayReport}
+                  loading={loading}
+                >提交</Button>
+            </Popconfirm>}
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.backList} />
           </div>
         </div>
@@ -266,7 +250,6 @@ class SideReportPage extends Component {
             <StationSelect 
               value={reportStation}
               data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
-              multiple={true}
               onChange={this.stationSelected}
               oneStyleOnly={true}
             />

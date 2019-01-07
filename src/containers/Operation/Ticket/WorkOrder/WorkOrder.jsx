@@ -10,10 +10,8 @@ import WorkOrderContainer from '../../../../components/Operation/Ticket/WorkOrde
  *  2 otherFrom 是否是从其他页面跳过来的 默认为true  
  *  3 pageName  返回的列表叫什么 如'list'
  *  4 onChange 回掉函数 返回的是需要的返回的一个页面
- *  5 pageNum  页数  现在为止，只有缺陷列表页有 选填
-    6 pageSize  选填
-    7 showPage  必填  判断是否显示  其他页面转工单需要的判断是否是正确的
-    8 listParms 选填 如果是上下箭头 则是必填
+    5 showPage  必填  判断是否显示  其他页面转工单需要的判断是否是正确的
+    6 listParms 选填 如果是上下箭头 则是必填
  */
 class WorkOrder extends Component {
   static propTypes = {
@@ -23,8 +21,6 @@ class WorkOrder extends Component {
     getDefectIdList: PropTypes.func,
     getDefectCommonList: PropTypes.func,
     pageName: PropTypes.string,
-    pageNum: PropTypes.number,
-    pageSize: PropTypes.number,
     stationType: PropTypes.string,
     defectSource: PropTypes.string,
     callBack: PropTypes.bool,
@@ -46,10 +42,9 @@ class WorkOrder extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { callBack, pageName, onChange, getDefectIdList, stationType, defectSource, pageNum, pageSize, defectId, getDefectDetail } = nextProps;
-    defectId && defectId !== this.props.defectId && getDefectDetail({ defectId })
+    const { callBack, pageName, onChange, defectId, getDefectDetail, getDefectCommonList } = nextProps;
+    defectId && defectId !== this.props.defectId && getDefectDetail({ defectId }) && getDefectCommonList({ languageType: '1' })
     callBack && onChange({ pageName })
-    stationType && this.props.stationType !== stationType && getDefectIdList({ stationType, defectSource })
   }
 
 

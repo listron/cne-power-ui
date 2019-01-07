@@ -46,9 +46,9 @@ class PlancompletionRate extends React.Component{
           <Radio.Group value={`${selectYear}`}  buttonStyle="solid" onChange={this.handleTime}>
            {allStationAvalibaData.map((e,index)=>{
              if(e.isTrue===true){
-              return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+              return   <Radio.Button value={e.year} key={index}  style={{margin:'0 5px'}}>{e.year}</Radio.Button>
              }else{
-              return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}年</Radio.Button>
+              return   <Radio.Button value={e.year} key={index} disabled style={{margin:'0 5px'}}>{e.year}</Radio.Button>
              }
            }
            )}

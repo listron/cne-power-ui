@@ -68,8 +68,8 @@ class CleanWarningMain extends Component { // 电站管理列表页
   }
 
   toWarningDetail = record => { // 请求灰尘影响详情，默认30天的全局影响，方阵影响。
-    const endDay = moment();
-    const startDay = moment().subtract(30, 'day'); 
+    const endDay = moment().format('YYYY-MM-DD');
+    const startDay = moment().subtract(30, 'day').format('YYYY-MM-DD'); 
     const { stationCode } = record;
     const effectParam = {
       stationCode, endDay, startDay

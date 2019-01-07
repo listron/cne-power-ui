@@ -29,10 +29,10 @@ class AllStation extends Component {
     const { stationTypeTabs } = this.props;
     if (stationTypeTabs !== '2') {
       this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false });
-      this.stationInterval=setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false }), 10000)
+      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false }), 10000)
     } else {
       this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
-      this.stationInterval=setInterval(() =>  this.props.getMonitorStation({ stationType: '2'}), 10000)    
+      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: '2' }), 10000)
     }
   }
 
@@ -63,7 +63,7 @@ class AllStation extends Component {
     this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: stationType }), 10000);
   }
   queryTargetData = (activeKey) => {
-    this.props.changeMonitorStationStore({ stationTypeTabs: activeKey, stationShowType: 'stationBlock',stationType:activeKey });
+    this.props.changeMonitorStationStore({ stationTypeTabs: activeKey, stationShowType: 'stationBlock', stationType: activeKey });
     this.queryStationData(activeKey);
   }
   render() {
@@ -96,7 +96,14 @@ class AllStation extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  ...state.monitor.stationMonitor.toJS()
+  ...state.monitor.stationMonitor.toJS(),
+  realTimePowerUnit: state.common.get('realTimePowerUnit'),
+  realTimePowerPoint: state.common.get('realTimePowerPoint'),
+  realCapacityUnit: state.common.get('realCapacityUnit'),
+  realCapacityPoint: state.common.get('realCapacityPoint'),
+  powerUnit: state.common.get('powerUnit'),
+  powerPoint: state.common.get('powerPoint'),
+
 })
 const mapDispatchToProps = (dispatch) => ({
   getMonitorStation: payload => dispatch({ type: allStationAction.GET_MONITORSTATION_SAGA, payload }),

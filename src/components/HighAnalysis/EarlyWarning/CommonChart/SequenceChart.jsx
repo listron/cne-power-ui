@@ -8,7 +8,6 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 function SequenceChart({ idName, title, sequenceChartList, currentDeviceName, }) {
   const echartBox = document.getElementById(idName);
   const lineColor = '#666';
-
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
     const series = [];
@@ -18,6 +17,7 @@ function SequenceChart({ idName, title, sequenceChartList, currentDeviceName, })
       time.push(moment(e.time).format('MM-DD HH:mm'));
     })
     sequenceChartList.forEach((item, index) => {
+      // console.log('item',item.pointName,currentDeviceName)
       const data = [];
       item.pointData.forEach((e) => {
         data.push(e.value)

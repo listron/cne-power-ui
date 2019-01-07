@@ -70,10 +70,20 @@ class BarGraph extends React.Component {
     return result;
   };
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
 
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData } = param;
     let color = this.getColor(xAxisName);
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     return {
       graphic: confluenceTenMinGraphic,
@@ -83,7 +93,7 @@ class BarGraph extends React.Component {
         left: '23',
         top: 'top',
         textStyle: {
-          color: '#666',
+          color: fontColor,
           fontSize: 14,
           fontWeight: 'normal',
         }
@@ -93,15 +103,16 @@ class BarGraph extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999'
-          }
+            color: fontColor,
+          },
+          label: { color: fontColor },
         },
         backgroundColor: '#fff',
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}
-            ${(params[index].seriesType === 'line' || xAxisName==='PR') && '%' || ''}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index + 1]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}
+            ${(params[index].seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
           </div>${paramsItem}`
@@ -117,26 +128,21 @@ class BarGraph extends React.Component {
       legend: {
         top: 20,
         left: 'center',
-        icon: 'circle',
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: [
         {
           type: 'category',
-          // data: ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年',],
           data: barGraphmonth,
-
-          axisPointer: {
-            type: 'shadow'
-          },
+          axisPointer: { type: 'shadow' },
           axisLine: {
             lineStyle: {
-              color: '#dfdfdf',
+              color: lineColor,
             },
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
           },
         }
       ],
@@ -145,27 +151,18 @@ class BarGraph extends React.Component {
         {
           type: 'value',
           name: yAxisName,
-          nameTextStyle: {
-            color: '#666',
-          },
-
-          axisLabel: {
-            color: '#666',
-          },
+          nameTextStyle: { color: fontColor, },
+          axisLabel: { color: fontColor, },
           axisLine: {
             show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
             lineStyle: {
-              color: '##f1f1f1',
-              type: 'dashed'
+              color: lineColor,
             }
           },
+          axisTick: { show: false, },
+          splitLine: { lineStyle: { color: lineColor, type: 'dashed' } },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             formatter: xAxisName === 'PR' ? '{value} %' : '{value}'
           },
         },
@@ -173,33 +170,27 @@ class BarGraph extends React.Component {
           type: 'value',
           name: '环比',
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
-
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             formatter: '{value} %'
           },
           axisLine: {
             show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-          splitLine: {
-            show: false,
             lineStyle: {
-              color: '#666',
-              type: 'dashed'
+              color: lineColor,
             }
           },
+          axisTick: { show: false, },
+          splitLine: { show: false },
         }
       ],
       series: [
         {
           name: xAxisName,
           type: 'bar',
-          data: barGraphThatYear,
+          data: this.getDefaultData(barGraphThatYear),
           itemStyle: {
             barBorderRadius: 10,
           },
@@ -209,17 +200,21 @@ class BarGraph extends React.Component {
           name: '环比',
           type: 'line',
           yAxisIndex: 1,
-          data: barGraphRingRatio,
-          //  data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2,],
+          data: this.getDefaultData(barGraphRingRatio),
         }
       ]
     }
   }
 
+  getMaxNumber = (arr) => {
+    console.log(Math.max.apply(null, arr))
+  }
+
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData } = param;
-
     let color = this.getColor(xAxisName);
+    const lineColor = ' #f1f1f1';
+    const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     return {
       graphic: confluenceTenMinGraphic,
@@ -240,8 +235,9 @@ class BarGraph extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999'
-          }
+            color: fontColor,
+          },
+          label: { color: fontColor },
         },
         backgroundColor: '#fff',
         padding: 10,
@@ -255,7 +251,7 @@ class BarGraph extends React.Component {
           params.forEach((item, index) => {
             return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :
             ${params[index].value === 0 || params[index].value ? params[index].value : '--'} 
-            ${(params[index].seriesType === 'line' || xAxisName==='PR') && '%' || ''}</div>`
+            ${(params[index].seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span><span style="float: right">${xAxisName} </span>
         </div>${paramsItem}`
@@ -264,14 +260,12 @@ class BarGraph extends React.Component {
       legend: {
         top: title ? 0 : 20,
         left: 'center',
-        icon: 'circle',
-        itemWidth: 5,
+        itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: [
         {
           type: 'category',
-          // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
           data: barGraphmonth,
           axisPointer: {
             type: 'shadow'
@@ -279,11 +273,11 @@ class BarGraph extends React.Component {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#dfdfdf',
+              color: lineColor,
             }
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
           },
           axisTick: {
             show: false,
@@ -295,29 +289,27 @@ class BarGraph extends React.Component {
           type: 'value',
           name: yAxisName,
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
-          // min: 0,
           splitNumber: 5,
           scale: true,
           axisLabel: {
-            color: '#666',
+            color: fontColor,
           },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
           },
           splitLine: {
-            // show:false,
-            lineStyle: {
-              color: '#666',
-              type: 'dashed'
-            }
+            lineStyle: { color: lineColor, type: 'dashed' }
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
             formatter: xAxisName === 'PR' ? '{value} %' : '{value}'
           },
         },
@@ -325,51 +317,43 @@ class BarGraph extends React.Component {
           type: 'value',
           name: '同比',
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
           axisLabel: {
             formatter: '{value} %',
-            color: '#666',
+            color: fontColor,
           },
-          axisTick: {
-            show: false,
-          },
+          max: null,
+          axisTick: { show: false },
           axisLine: {
             show: false,
-          },
-          splitLine: {
-            show: false,
             lineStyle: {
-              color: '#f1f1f1',
-              type: 'dashed'
+              color: lineColor,
             }
           },
+          splitLine: { show: false },
         }
       ],
       series: [
         {
           name: lastYear,
           type: 'bar',
-          data: barGraphLastYear,
-          itemStyle: {
-            barBorderRadius: 3,
-          },
+          data: this.getDefaultData(barGraphLastYear),
+          itemStyle: { barBorderRadius: 3 },
           barWidth: 5,
         },
         {
           name: currentYear,
           type: 'bar',
-          data: barGraphThatYear,
-          itemStyle: {
-            barBorderRadius: 3,
-          },
+          data: this.getDefaultData(barGraphThatYear),
+          itemStyle: { barBorderRadius: 3 },
           barWidth: 5,
         },
         {
           name: '同比',
           type: 'line',
           yAxisIndex: 1,
-          data: barGraphYearOnYear,
+          data: this.getDefaultData(barGraphYearOnYear),
         }
       ]
     };
