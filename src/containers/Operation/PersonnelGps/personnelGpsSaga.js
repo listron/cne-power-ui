@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import Path from '../../../../constants/path';
+import Path from '../../../constants/path';
 import { personnelGpsAction } from './personnelGpsAction';
 
 

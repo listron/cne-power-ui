@@ -68,6 +68,12 @@ const menuData = [
     rightKey: 'operation',
     children: [
       {
+        name: '员工定位',
+        path: 'gps',
+        iconStyle: 'icon-mapman',
+        rightKey: 'operation_locate',
+        defaultPath: true,
+      }, {
         name: '工单',
         iconStyle: 'icon-gd2',
         path: 'ticket',
@@ -76,17 +82,13 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            defaultPath: true,
+            // defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
-          }, {
-            name: '员工定位',
-            path: 'gps',
-            rightKey: 'operation_locate',
-          }
+          },
         ]
       }, {
         name: '两票管理',
@@ -238,7 +240,7 @@ const menuData = [
             path: 'record',
             rightKey: 'monitor',
           },
-          
+
         ]
       },
       {
@@ -359,7 +361,7 @@ const menuData = [
           path: 'warning',
           rightKey: 'system_config',
         },
-      ]
+        ]
       }
     ],
   }

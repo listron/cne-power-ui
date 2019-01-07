@@ -153,7 +153,7 @@ class WindStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div className={styles.planOutput}>{record.planOutput}</div>
                     </div>
-                    <Progress strokeWidth={3} percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
+                    <Progress strokeWidth={3} percent={+(record.planOutput)?(record.yearOutput / record.planOutput * 100):0} showInfo={false} />
                   </div>
                 </div>
               </div>

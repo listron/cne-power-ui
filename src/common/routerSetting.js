@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import Homepage from '../containers/Home/Homepage';
 // 运维管理-工单
 import Ticket from '../containers/Operation/Ticket/Ticket';
-import PersonnelGps from '../containers/Operation/Ticket/PersonnelGps/PersonnelGps';
+import PersonnelGps from '../containers/Operation/PersonnelGps/PersonnelGps';
 
 import DayReport from '../containers/Operation/Running/DayReport/DayReport'; // 日报
 
@@ -66,6 +66,11 @@ const routers = [
     path: '/',
     exact: true,
     component: Homepage,
+  },{ // 运维管理-工单-员工定位
+    path: '/operation/gps',
+    exact: true,
+    //component: Building,
+    component: PersonnelGps,
   },
   { // 运维管理-工单-工单列表
     path: '/operation/ticket/list',
@@ -75,12 +80,7 @@ const routers = [
     path: '/operation/ticket/statistics',
     exact: true,
     component: Building,
-  }, { // 运维管理-工单-员工定位
-    path: '/operation/ticket/gps',
-    exact: true,
-    //component: Building,
-    component: PersonnelGps,
-  }, {//两票管理>第一种工作票
+  },  {//两票管理>第一种工作票
     path: '/operation/twoTickets/typeone',
     exact: true,
     component: Building,
