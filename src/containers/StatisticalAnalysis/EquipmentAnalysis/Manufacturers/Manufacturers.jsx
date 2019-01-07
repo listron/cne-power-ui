@@ -5,26 +5,27 @@ import PropTypes from 'prop-types';
 import { manufacturersAction } from './manufacturersAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
+import ManufacturersCont from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/Manufacturers/Manufacturers'
 
 class Manufacturers extends Component {
   static propTypes = {
-    resetStore:PropTypes.func
+    resetStore: PropTypes.func
   }
 
   constructor(props, context) {
     super(props, context)
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetStore()
   }
 
   render() {
     return (
       <div className={styles.manufacturersBox}>
-        <CommonBreadcrumb breadData={[{name:'设备对比'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{ name: '设备对比' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.manufacturersContainer}>
-          
+          <ManufacturersCont {...this.props} />
         </div>
         <Footer />
       </div>
