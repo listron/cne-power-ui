@@ -98,20 +98,23 @@ function* getOwnStations(action) {//获取所有电站信息
   try {
     const response = yield call(axios.get, antherUrl);
     if (response.data.code === '10000') {
-      let planStations = [];
-      response.data.data.map((item, key) => {
-        return item.isPlan === 1 ? planStations.push(item.stationCode) : null
-      });
       yield put({
         type: planAction.CHANGE_PLAN_STORE,
         payload: {
-          planStations: planStations,
+          planStations: response.data.data,
           continueAdd:true
         }
       });
-    }
+    }else{ throw response.data}
   } catch (e) {
     console.log(e);
+    yield put({
+      type: planAction.CHANGE_PLAN_STORE,
+      payload: {
+        planStations: [],
+        continueAdd:true
+      }
+    });
   }
 }
 
