@@ -16,6 +16,7 @@ class Manufacturers extends Component {
     super(props, context)
   }
 
+ 
   componentWillUnmount() {
     this.props.resetStore()
   }
@@ -41,5 +42,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   changeManufacturersStore: payload => dispatch({ type: manufacturersAction.changeManufacturersStoreSaga, payload }),
   resetStore: () => dispatch({ type: manufacturersAction.resetStore }),
+  getManufacturer: payload => dispatch({ type: manufacturersAction.getManufacturer, payload }),
+  getDevicemode: payload => dispatch({ type: manufacturersAction.getDevicemode, payload }),
+  getDevicecontrast: payload => dispatch({ type: manufacturersAction.getDevicecontrast, payload }),
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Manufacturers)

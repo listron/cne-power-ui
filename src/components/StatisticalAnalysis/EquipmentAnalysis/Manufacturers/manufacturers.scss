@@ -4,11 +4,23 @@
         background: $pageGround;
         display: flex;
         flex-direction: column;
-        height: 124px;
+        padding: 24px 28px;
         .condition{
             display: flex;
             flex-direction: row;
-            
+            align-items: center;
+            .select{
+                margin-left: 15px;
+            }
         }
+        .antherCondition{
+            margin-top: 12px;
+        }
+    }
+    .manuCont{
+        display: flex;
+        flex-direction: column;
+        background: $pageGround;
+        margin-top: 12px;
     }
 }

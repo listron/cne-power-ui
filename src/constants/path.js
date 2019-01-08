@@ -285,7 +285,9 @@ export default {
       getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
       getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
       getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
-
+      getManufacturer :'/v3/performance/deviceanalysis/manufacturer', // 获取所有的生产厂家
+      getDevicemode:'/v3/performance/deviceanalysis/devicemode',// 获取电站下的所有设备型号
+      getDevicecontrast:'/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       //通用报表
       dailyreport:'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',
