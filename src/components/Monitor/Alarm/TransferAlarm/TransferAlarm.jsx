@@ -15,14 +15,14 @@ class TransferAlarm extends Component {
     deviceTypes: PropTypes.array,
     warningLevel: PropTypes.array,
     stationType: PropTypes.string,
-    stationCode: PropTypes.array,
+    stationCodes: PropTypes.array,
     deviceTypeCode: PropTypes.array,
     warningConfigName: PropTypes.array,
-    startTime: PropTypes.array,
+    rangTime: PropTypes.array,
 
     deviceName: PropTypes.string,
     sortName: PropTypes.string,
-    getRealTimeAlarm: PropTypes.func,
+    getTransferAlarm: PropTypes.func,
     getDefectTypes: PropTypes.func,
     onTransferAlarm: PropTypes.func,
     onRelieveAlarm: PropTypes.func,
@@ -56,9 +56,9 @@ class TransferAlarm extends Component {
   }
 
   onChangeFilter = (value) => {
-    const { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, } = this.props;
-    const params = { stationCode, warningLevel, stationType, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, }
-    this.props.getRealTimeAlarm({ ...params, ...value })
+    const { stationCodes, warningLevel, stationType, deviceTypeCode, warningConfigName, rangTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, } = this.props;
+    const params = { stationCodes, warningLevel, stationType, deviceTypeCode, warningConfigName, rangTime, deviceName, isTransferWork, isRelieveAlarm, orderField, orderCommand, }
+    this.props.getTransferAlarm({ ...params, ...value })
   }
 
 
