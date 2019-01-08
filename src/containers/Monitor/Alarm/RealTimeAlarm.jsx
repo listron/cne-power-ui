@@ -58,6 +58,7 @@ class RealTimeAlarm extends Component {
     const searchInfo = this.props.history.location.search;
     const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     this.props.getRealTimeAlarm({
+      warningTypeStatus:'1',
       warningLevel: [],
       stationType: '2',
       stationCode: stationCode==='' ? [] : [stationCode],
@@ -89,8 +90,9 @@ class RealTimeAlarm extends Component {
     clearInterval(this.alarmInterval);
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
-    const { warningLevel, stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
+    const { warningLevel, warningTypeStatus,stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
     let filter = {
+      warningTypeStatus:'1',
       warningLevel,
       stationType,
       stationCode,
@@ -102,6 +104,7 @@ class RealTimeAlarm extends Component {
       isRelieveAlarm
     }
     const newFiter = { ...filter, ...obj };
+    console.log(newFiter);
     this.setState({
       currentPage: 1,
     })
@@ -119,6 +122,7 @@ class RealTimeAlarm extends Component {
       warningConfigName.length === 0 && startTime.length === 0 &&
       deviceName === '' && isTransferWork === 1 && isRelieveAlarm === 1) {
       this.props.getRealTimeAlarm({
+        warningTypeStatus: "1",
         warningLevel,
         stationType,
         stationCode,

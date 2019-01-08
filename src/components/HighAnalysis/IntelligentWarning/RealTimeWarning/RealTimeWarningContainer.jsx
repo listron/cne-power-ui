@@ -12,25 +12,20 @@ class RealTimeWarningContainer extends Component {
         super(props, context)
     }
     componentDidMount() {
-        const { getRealtimeWarningStatistic, getRealtimeWarning, warningStatus, warningType, warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType, } = this.props;
-        const params = { warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType }
+        const { getRealtimeWarningStatistic,  warningStatus, warningType,}=this.props
         getRealtimeWarningStatistic({ warningStatus, warningType })
-        getRealtimeWarning(params)
+        this.realtimeWarningSetInterval(),
         this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 10000);
     }
     onChangeFilter = (value) => {
-        console.log(value,'这是container的value');
         clearInterval(this.realtimeSetInterval)
-        const { getRealtimeWarning,  warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType, } = this.props;
-        const params = { warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType }
-        getRealtimeWarning({  ...value })
+        this.realtimeWarningSetInterval(value)
     }
 
-    realtimeWarningSetInterval = () => {
-        const { getRealtimeWarningStatistic, getRealtimeWarning, warningStatus, warningType, warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType, } = this.props;
-        const params = { warningTypeStatus, endTime, startTime, deviceTypeCode, warningLevel, stationCode, orderField, orderCommand, deviceName, durationType }
-        getRealtimeWarningStatistic({ warningStatus, warningType })
-        getRealtimeWarning(params)
+    realtimeWarningSetInterval = (value) => {
+        const {  getRealtimeWarning, warningTypeStatus,  rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
+        const params = { warningTypeStatus,  rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
+        getRealtimeWarning({...params,...value})
     }
 
 

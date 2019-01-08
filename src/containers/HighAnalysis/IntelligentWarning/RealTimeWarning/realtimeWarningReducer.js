@@ -11,13 +11,14 @@ var initState = Immutable.fromJS({
   durationType:null,
   warningLevel:[],//告警级别多个
   deviceTypeCode:[],//设备类型多个
-  startTime:'',//开始时间
-  endTime:'',//结束时间
+  rangTime:[],//时间
+  // startTime:'',//开始时间
+  // endTime:'',//结束时间
   deviceName:null,//设备名称
   pageSize:10,
   currentPage:1,
   lastUpdateTime:'',//上次更新时间
-  stationCode:[],//电站编码
+  stationCodes:[],//电站编码
   oneWarningNum:null,//一级告警
   twoWarningNum: null,//二级告警
   threeWarningNum: null,//三级告警

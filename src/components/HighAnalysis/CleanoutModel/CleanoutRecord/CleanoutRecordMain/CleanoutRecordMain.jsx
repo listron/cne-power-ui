@@ -26,7 +26,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
   componentDidMount() {
     const { stationCodes, getMainList, pageNum, pageSize, sortField, sortType } = this.props;
     getMainList({
-      stationCodes:[],
+      stationCodes: [],
       pageNum,
       pageSize,
       sortField,
@@ -39,9 +39,9 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
       getMainList({ stationCodes, pageNum, pageSize, sortField, sortType })
     }
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     const { changeCleanoutRecordStore, } = this.props;
-    changeCleanoutRecordStore({mainListData:[]})
+    changeCleanoutRecordStore({ mainListData: [] })
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => {

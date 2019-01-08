@@ -53,6 +53,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRealtimeWarningStatistic: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarningStatistic, payload }),
   getRealtimeWarning: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarning, payload }),
   transferWarning: payload => dispatch({ type: realtimeWarningActive.transferWarning, payload }),
+  HandleRemoveWarning: payload => dispatch({ type: realtimeWarningActive.HandleRemoveWarning, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {

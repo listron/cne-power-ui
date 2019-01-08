@@ -4,39 +4,39 @@ import moment from 'moment'
 import Path from '../../../constants/path';
 import { alarmAction } from './alarmAction';
 
-function *changeAlarmStore(action) {//存储payload指定参数，替换reducer-store属性。
+function* changeAlarmStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  alarmAction.CHANGE_ALARM_STORE,
+    type: alarmAction.CHANGE_ALARM_STORE,
     payload,
   });
 }
 
-function *changeAlarmStatisticStore(action) {//存储payload指定参数，替换reducer-store属性。
+function* changeAlarmStatisticStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  alarmAction.CHANGE_ALARM_STATISTIC_STORE,
+    type: alarmAction.CHANGE_ALARM_STATISTIC_STORE,
     payload,
   });
 }
 
-function *resetAlarm(action) {//恢复reducer为默认初始值。
+function* resetAlarm(action) {//恢复reducer为默认初始值。
   yield put({
-    type:  alarmAction.RESET_ALARM,
+    type: alarmAction.RESET_ALARM,
   });
 }
 
-function *getRealtimeAlarm(action) {  // 请求实时告警
+function* getRealtimeAlarm(action) {  // 请求实时告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,{
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, {
       ...payload,
-      stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
-      startTime:payload.rangTime?payload.rangTime:payload.startTime,
+      stationCode: payload.stationCodes ? payload.stationCodes : payload.stationCode,
+      startTime: payload.rangTime ? payload.rangTime : payload.startTime,
     });
-    if(response.data.code === '10000') {
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
@@ -44,66 +44,66 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
           lastUpdateTime: moment().format('YYYY-MM-DD HH:mm'),
           ...payload
         },
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getHistoryAlarm(action) {  // 请求历史告警
+function* getHistoryAlarm(action) {  // 请求历史告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getHistoryAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000') {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           historyAlarm: response.data.data,
           ...payload
         },
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getStationsAlarmStatistic(action) {  // 请求多电站告警统计
+function* getStationsAlarmStatistic(action) {  // 请求多电站告警统计
   const { payload } = action;
-  const startTime = payload.startTime?moment(payload.startTime).startOf('day').utc().format():null;
-  const endTime = payload.endTime?moment(payload.endTime).endOf('day').utc().format():null;
+  const startTime = payload.startTime ? moment(payload.startTime).startOf('day').utc().format() : null;
+  const endTime = payload.endTime ? moment(payload.endTime).endOf('day').utc().format() : null;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationsAlarmStatistic;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,{
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, {
       ...payload,
       startTime,
       endTime
     });
-    if(response.data.code === '10000') {
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
           alarmStatistic: response.data.data,
           ...payload,
-        }   
+        }
       });
-    }  
-  }catch(e){
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统计
+function* getSingleStationAlarmStatistic(action) {  // 请求单电站告警统计
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStationAlarmStatistic;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000') {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_STATISTIC_FETCH_SUCCESS,
         payload: {
@@ -114,80 +114,82 @@ function *getSingleStationAlarmStatistic(action) {  // 请求单电站告警统�
           singleStationCode: payload.stationCode,
           summaryType: payload.summaryType
         },
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getAlarmNum(action) {  // 请求告警个数
+function* getAlarmNum(action) {  // 请求告警个数
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmNum;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.get,url,{params:payload});
-    if(response.data.code === '10000') {
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmNum;
+  const APIBasePath = Path.basePaths.APIBasePath;
+  const monitor = Path.APISubPaths.monitor
+  const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${'事件告警'}`
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           alarmNum: response.data.data
         },
-      });      
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getTicketInfo(action) {  // 请求工单详情
+function* getTicketInfo(action) {  // 请求工单详情
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.get,url);
-    if(response.data.code === '10000') {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           ticketInfo: response.data.data
         },
-      });      
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getRelieveInfo(action) {  // 请求屏蔽详情
+function* getRelieveInfo(action) {  // 请求屏蔽详情
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getRelieveInfo}/${payload.operateId}`;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.get,url);
-    if(response.data.code === '10000') {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,
         payload: {
           relieveInfo: response.data.data
         },
-      });      
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *transferAlarm(action) {  // 转工单
+function* transferAlarm(action) {  // 转工单
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.transferAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000')
-    {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
+        type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
@@ -206,23 +208,22 @@ function *transferAlarm(action) {  // 转工单
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
         payload: params
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *relieveAlarm(action) {  // 屏蔽告警
+function* relieveAlarm(action) {  // 屏蔽告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.relieveAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000')
-    {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
+        type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
@@ -241,23 +242,22 @@ function *relieveAlarm(action) {  // 屏蔽告警
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
         payload: params
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *resetRelieveAlarm(action) {  // 取消屏蔽告警
+function* resetRelieveAlarm(action) {  // 取消屏蔽告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.resetRelieveAlarm;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000')
-    {
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
-        type:  alarmAction.CHANGE_ALARM_STORE_SAGA,
+        type: alarmAction.CHANGE_ALARM_STORE_SAGA,
         payload: {
           selectedRowKeys: []
         }
@@ -276,25 +276,25 @@ function *resetRelieveAlarm(action) {  // 取消屏蔽告警
       yield put({
         type: alarmAction.GET_REALTIME_ALARM_SAGA,
         payload: params
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *exportAlarmStatistic(action) {  // 导出告警统计
+function* exportAlarmStatistic(action) {  // 导出告警统计
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.exportAlarmStatistic;
-  try{
-    yield put({ type:alarmAction.ALARM_FETCH });
+  try {
+    yield put({ type: alarmAction.ALARM_FETCH });
     const response = yield call(axios, {
       method: 'post',
       url,
       data: payload,
-      responseType:'blob'
+      responseType: 'blob'
     });
-    if(response.data) {
+    if (response.data) {
       const content = response.data;
       const blob = new Blob([content]);
       const fileName = `告警统计_${moment().format('YYYY-MM-DD')}.xlsx`;
@@ -309,9 +309,9 @@ function *exportAlarmStatistic(action) {  // 导出告警统计
         document.body.removeChild(elink);
       } else { // IE10+下载
         navigator.msSaveBlob(blob, fileName);
-      }   
-    }  
-  }catch(e){
+      }
+    }
+  } catch (e) {
     console.log(e);
   }
 }

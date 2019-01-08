@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styles from './realTimeWarning.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 import TransferWarningModal from './TransferWarningModal';
+import HandleRemoveModal from './HandleRemoveModal';
 import WarningTip from '../../../Common/WarningTip';
 import { Link } from 'react-router-dom';
 import { Table, Select, Popover, Icon, Button } from 'antd';
@@ -15,7 +16,7 @@ class RealTimeWarningTable extends Component {
     super(props, context)
     this.state = {
       showTransferTicketModal: false,
-      showRelieveAlarmModal: false,
+      showHandleRemoveModal: false,
       sortName: '',
       descend: false,
     }
@@ -30,7 +31,7 @@ class RealTimeWarningTable extends Component {
       });
     } else if (value === 'relieve') {
       this.setState({
-        showRelieveAlarmModal: true
+        showHandleRemoveModal: true
       });
     }
   }
@@ -108,7 +109,7 @@ class RealTimeWarningTable extends Component {
     ]
     const { realtimeWarning, selectedRowKeys, pageSize, currentPage } = this.props;
     const { sortName, descend } = this.state;
-    const { showTransferTicketModal, showRelieveAlarmModal, showWarningTip, warningTipText } = this.state;
+    const { showTransferTicketModal, showHandleRemoveModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -163,6 +164,13 @@ class RealTimeWarningTable extends Component {
             onCancel={() => this.setState({ showTransferTicketModal: false })}
             onTransferAlarm={this.props.transferWarning}
             defectTypes={this.props.defectTypes}
+            selectedRowKeys={this.props.selectedRowKeys}
+          />
+        }
+        {showHandleRemoveModal &&
+          <HandleRemoveModal
+            onCancel={() => this.setState({ showHandleRemoveModal: false })}
+            HandleRemoveWarning={this.props.HandleRemoveWarning}
             selectedRowKeys={this.props.selectedRowKeys}
           />
         }

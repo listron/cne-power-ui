@@ -43,7 +43,8 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
   }
 }
 function *getRealtimeWarning(action) {  // 请求实时告警
-  const { payload } = action;
+  const { payload, } = action;
+  const{stationCodes,stationCode,rangTime,startTime,endTime}=payload;
   const url =`${APIBasePath}${monitor.getRealtimeAlarm}`
   try{
     yield put({
@@ -52,28 +53,25 @@ function *getRealtimeWarning(action) {  // 请求实时告警
         loading: true,
       },
     });  
+
     const response = yield call(axios.post,url,{
       ...payload,
-      stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
-      startTime:payload.createTimeStart?payload.createTimeStart:payload.startTime,
-      endTime:payload.createTimeEnd?payload.createTimeEnd:payload.endTime,
+      stationCode:stationCodes,
+      startTime:rangTime,
+      // endTime:rangTime?rangTime[1]:endTime,
     });
     if(response.data.code === '10000') {
       const { payload } = action;
-      console.log(payload);
-      console.log(payload.stationCodes);
-      console.log(payload.createTimeStart);
       const time=payload.createTimeStart?payload.createTimeStart:payload.startTime;
       const endtime=payload.createTimeEnd?payload.createTimeEnd:payload.endTime;
       console.log(time,endtime,'test');
       yield put({
         type:realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
-          ...payload,
-          stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
           realtimeWarning: response.data.data||[],
           loading:false,
-        
+          ...payload,
+         
         },
       });     
     }  
@@ -96,14 +94,9 @@ function *transferWarning(action) {  // 转工单
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
-        stationType: state.highAanlysisReducer.realtimeWarningReducer.get('stationType'),
         stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCode'),
         deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
-        warningConfigName: state.highAanlysisReducer.realtimeWarningReducer.get('warningConfigName'),
-        startTime: state.highAanlysisReducer.realtimeWarningReducer.get('startTime'),
-        deviceName: state.highAanlysisReducer.realtimeWarningReducer.get('deviceName'),
-        isTransferWork: state.highAanlysisReducer.realtimeWarningReducer.get('isTransferWork'),
-        isRelieveAlarm: state.highAanlysisReducer.realtimeWarningReducer.get('isRelieveAlarm'),
+        startTime: state.highAanlysisReducer.realtimeWarningReducer.get('rangTime'),
         warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),
       }));
       yield put({
@@ -115,10 +108,39 @@ function *transferWarning(action) {  // 转工单
     console.log(e);
   }
 }
+function* HandleRemoveWarning(action) {  // 手动解除告警
+  const { payload } = action;
+  const url = `${APIBasePath}${monitor.relieveAlarm}`
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type:realtimeWarningActive.changeRealtimeWarningStore,
+        payload: {
+          selectedRowKeys: []
+        }
+      });
+      const params = yield select(state => ({//继续请求实时告警
+        warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
+        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCode'),
+        deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
+        startTime: state.highAanlysisReducer.realtimeWarningReducer.get('startTime'),
+        warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),
+      }));
+      yield put({
+        type: realtimeWarningActive.getRealtimeWarning,
+        payload: params
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 
 export function* watchRealtimeWarning() {
   yield takeLatest(realtimeWarningActive.getRealtimeWarningStatistic, getRealtimeWarningStatistic);
   yield takeLatest(realtimeWarningActive.getRealtimeWarning, getRealtimeWarning);
   yield takeLatest(realtimeWarningActive.transferWarning, transferWarning);
+  yield takeLatest(realtimeWarningActive.HandleRemoveWarning, HandleRemoveWarning);
 }
