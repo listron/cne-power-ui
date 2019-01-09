@@ -23,7 +23,6 @@ class RealTimeWarningFilter extends Component {
     console.log(rangTime, 'rangTime');
     this.props.getRealtimeWarning({ ...params, ...value })
     this.props.onSearch({ ...params, ...value })
-
   }
 
   onChange = (e) => {

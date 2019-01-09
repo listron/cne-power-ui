@@ -41,6 +41,9 @@ class RealTimeWarningTable extends Component {
   cancelRowSelect = () => {//取消选中
     this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
   }
+  tableChange=()=>{
+    
+  }
 
 
 
@@ -69,13 +72,13 @@ class RealTimeWarningTable extends Component {
           if (record.deviceTypeCode === 206) {
             return (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} >{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
           } else if (record.deviceTypeCode === 304) {
             return (
               <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} >{text}</Link>
+                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
           } else {

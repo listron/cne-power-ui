@@ -12,7 +12,7 @@ class TransferWarningModal extends Component {
   static propTypes = {
     form: PropTypes.object,
     onTransferAlarm: PropTypes.func,
-    defectTypes: PropTypes.object,
+    defectTypes: PropTypes.array,
     selectedRowKeys: PropTypes.array,
     onCancel: PropTypes.func,
   }

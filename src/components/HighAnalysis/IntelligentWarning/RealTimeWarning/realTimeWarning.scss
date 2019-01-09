@@ -23,7 +23,7 @@
       background-color: #fff;
       border-bottom: 1px solid #dfdfdf;
       a {
-        text-decoration: none;
+        text-decoration: underline;
       }
       .alarmInfoLeft {
         display: flex;
@@ -148,7 +148,9 @@
       }
     }
   }
+  
   .deviceNameSearch {
+    
     display: flex;
     height: 50px;
     flex-shrink: 0;
@@ -170,16 +172,36 @@
       margin-left: 16px;
     }
   }
-  .tableHeader {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-    height: 55px;
-    padding: 0 28px;
-    background-color: #fff;
+  .realTimeWarningTable{
+    .underlin{
+      text-decoration: underline;
+    }
+    .tableHeader {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      height: 55px;
+      padding: 0 28px;
+      background-color: #fff;
+    }
+    .deviceName {
+      :global {
+        a {
+          border-bottom: 1px $darkColor solid;
+          color: $darkColor;
+          text-decoration: underline;
+          &:hover {
+            border-bottom: 1px $themeColor solid;
+            color: $themeColor;
+          }
+        }
+      }
+    }
   }
+ 
+  
   .tableFooter{
     background-color: #fff;
     height: 45px;

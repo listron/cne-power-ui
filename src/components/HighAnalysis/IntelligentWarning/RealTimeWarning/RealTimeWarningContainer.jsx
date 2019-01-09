@@ -15,7 +15,7 @@ class RealTimeWarningContainer extends Component {
         const { getRealtimeWarningStatistic,  warningStatus, warningType,}=this.props
         getRealtimeWarningStatistic({ warningStatus, warningType })
         this.realtimeWarningSetInterval(),
-        this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 10000);
+        this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 100000);
     }
     onChangeFilter = (value) => {
         clearInterval(this.realtimeSetInterval)
