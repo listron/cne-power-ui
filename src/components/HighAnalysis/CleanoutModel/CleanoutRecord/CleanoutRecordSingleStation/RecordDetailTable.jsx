@@ -232,18 +232,20 @@ class RecordDetailTable extends Component {
         title: '清洗公司',
         dataIndex: 'company',
         key: 'company',
+        render: text => (<span>{text? `${text}` : '- -'}</span>),
 
       }, {
         title: '清洗费用(元)',
         dataIndex: 'cleanCost',
         key: '',
+        render: text => (<span>{text? `${text}` : '- -'}</span>),
 
       }, {
         title: '清洗收益(万kWh)',
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
       }, {
-        title: '添加/查看清洗记录(元)',
+        title: '添加/查看清洗记录',
         key: 'addRecord',
         dataIndex: 'cleanType',
         render: (text, record, index) => {
