@@ -1,0 +1,10 @@
+@import '../../../../theme/theme.scss';
+.customizeBox {
+    min-height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .customizeContainer {
+        @include contentBoxStyle();
+    }
+}

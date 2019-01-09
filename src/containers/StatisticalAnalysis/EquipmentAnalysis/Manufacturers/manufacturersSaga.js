@@ -43,7 +43,7 @@ function* getManufacturer(action) { // 获取生产厂家
   }
 }
 
-function* getDevicemode(action) { // 获取所有的设备型号
+function* getDevicemode(action) { // 获取设备型号
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getDevicemode}`
   try {
@@ -93,10 +93,32 @@ function* getDevicecontrast(action) { // 获取设备对比列表的数据
 }
 
 
-// function* getChartsData(action){ // 获取图表数据
-//   const {payload}=action;
-//   const conversioneffUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getconversioneff}`
-// }
+function* getChartsData(action) { // 获取图表数据
+  const { payload } = action;
+  const url='/mock/performance/deviceanalysis/stationcontrastmore';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationcontrastmore}`
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: manufacturersAction.changeManufacturersStore,
+        payload: {
+          ...payload,
+          chartsData: response.data.data || [],
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: manufacturersAction.changeManufacturersStore,
+      payload: {
+        ...payload,
+        chartsData: []
+      },
+    });
+  }
+}
 
 
 
@@ -105,9 +127,9 @@ function* getDevicecontrast(action) { // 获取设备对比列表的数据
 export function* watchManufacturers() {
   yield takeLatest(manufacturersAction.changeManufacturersStoreSaga, changeManufacturersStore);
   yield takeLatest(manufacturersAction.resetStore, resetStore);
+  yield takeLatest(manufacturersAction.getDevicecontrast, getDevicecontrast);
   yield takeLatest(manufacturersAction.getManufacturer, getManufacturer);
   yield takeLatest(manufacturersAction.getDevicemode, getDevicemode);
-  yield takeLatest(manufacturersAction.getDevicecontrast, getDevicecontrast);
-
+  yield takeLatest(manufacturersAction.getChartsData, getChartsData);
 }
 

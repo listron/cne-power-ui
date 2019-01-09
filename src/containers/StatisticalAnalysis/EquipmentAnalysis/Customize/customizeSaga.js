@@ -19,9 +19,95 @@ function* resetStore() {
   })
 }
 
+function* getManufacturer(action) { // 获取生产厂家
+  const { payload } = action;
+  const { params, resultName } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getManufacturer}`
+  try {
+    const response = yield call(axios.post, url, params);
+    if (response.data.code === '10000') {
+      yield put({
+        type: customizeAction.changeCustomizeStore,
+        payload: {
+          ...params,
+          [resultName]: response.data.data || [],
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: customizeAction.changeCustomizeStore,
+      payload: {
+        ...params,
+        [resultName]: []
+      },
+    });
+  }
+}
+
+function* getDevicemode(action) { // 获取电站下 生产厂家 所有的设备型号
+  const { payload } = action;
+  const { params, resultName } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getDevicemode}`
+  try {
+    const response = yield call(axios.post, url, params);
+    if (response.data.code === '10000') {
+      yield put({
+        type: customizeAction.changeCustomizeStore,
+        payload: {
+          ...params,
+          [resultName]: response.data.data || [],
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: customizeAction.changeCustomizeStore,
+      payload: {
+        ...params,
+        [resultName]: []
+      },
+    });
+  }
+}
+
+function* getDetailData(action) { // 获取详细数据
+  const { payload } = action;
+  const { params, resultName } = payload;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationcontrast}`
+  try {
+    const response = yield call(axios.post, url, {
+      ...params,
+      manufacturers:[params.manufacturer],
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: customizeAction.changeCustomizeStore,
+        payload: {
+          [resultName]: response.data.data || [],
+        },
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: customizeAction.changeCustomizeStore,
+      payload: {
+        [resultName]: []
+      },
+    });
+  }
+}
+
+
 export function* watchCustomize() {
   yield takeLatest(customizeAction.changeCustomizeStoreSaga, changeCustomizeStore);
   yield takeLatest(customizeAction.resetStore, resetStore);
+  yield takeLatest(customizeAction.getManufacturer, getManufacturer);
+  yield takeLatest(customizeAction.getDevicemode, getDevicemode);
+  yield takeLatest(customizeAction.getDetailData, getDetailData);
 
 }
 

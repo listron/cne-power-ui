@@ -45,6 +45,7 @@ const mapDispatchToProps = (dispatch) => ({
   getManufacturer: payload => dispatch({ type: manufacturersAction.getManufacturer, payload }),
   getDevicemode: payload => dispatch({ type: manufacturersAction.getDevicemode, payload }),
   getDevicecontrast: payload => dispatch({ type: manufacturersAction.getDevicecontrast, payload }),
+  getChartsData: payload => dispatch({ type: manufacturersAction.getChartsData, payload }),
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Manufacturers)
