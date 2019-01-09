@@ -39,7 +39,7 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
-    this.getOutputDataTenMin(stationCode,this.props.stationType);
+    // this.getOutputDataTenMin(stationCode,this.props.stationType);
     this.getPowerDataTenMin(stationCode);
     const { search } = this.props.location;
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表

@@ -76,12 +76,19 @@ class LostAddForm extends Component {
     const { deviceTypeCode, selectLostTypeName, deviceTypeName } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
+        let tmpDeviceId = [], tmpDeviceName = [], tmpDeviceCode = [];
         values.id = `lostAdd${faultGenList.length}`;
         values.handle = true;
         values.faultName = selectLostTypeName;
-        values.deviceId = values.deviceName.map(e => e.deviceId).join(',');
+        values.deviceName.forEach(e => {
+          tmpDeviceId.push(e.deviceId);
+          tmpDeviceName.push(e.deviceName);
+          tmpDeviceCode.push(e.deviceCode);
+        })
+        values.deviceId = tmpDeviceId.join(',');
+        values.deviceName = tmpDeviceName.join(',');
+        values.deviceCode = tmpDeviceCode.join(',');
         values.faultId = values.faultId[values.faultId.length - 1];
-        values.deviceName = values.deviceName.map(e => e.deviceName).join(',');
         values.type = 1;  // 损失type 1 => 后台接收。
         values.deviceTypeName = deviceTypeName;
         changeFaultList([...faultGenList,values], true);

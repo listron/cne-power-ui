@@ -72,10 +72,17 @@ class LimitAddForm extends Component {
     // const { deviceTypeCode } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
+        let tmpDeviceId = [], tmpDeviceName = [], tmpDeviceCode = [];
+        values.deviceName.forEach(e => {
+          tmpDeviceId.push(e.deviceId);
+          tmpDeviceName.push(e.deviceName);
+          tmpDeviceCode.push(e.deviceCode);
+        })
         values.id = `limitAdd${limitGenList.length}`;
         values.handle = true;
-        values.deviceId = values.deviceName.map(e => e.deviceId).join(',');
-        values.deviceName = values.deviceName.map(e => e.deviceName).join(',');
+        values.deviceId = tmpDeviceId.join(',');
+        values.deviceName = tmpDeviceName.join(',');
+        values.deviceCode = tmpDeviceCode.join(',');
         values.type = 0;  // 限电type 0 => 后台接收。
         values.deviceTypeName = deviceTypeName;
         changeLimitList([...limitGenList,values], true);
