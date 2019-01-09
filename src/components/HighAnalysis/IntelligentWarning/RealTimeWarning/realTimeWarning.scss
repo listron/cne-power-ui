@@ -173,9 +173,7 @@
     }
   }
   .realTimeWarningTable{
-    .underlin{
-      text-decoration: underline;
-    }
+   
     .tableHeader {
       display: flex;
       flex-direction: row;
@@ -191,13 +189,16 @@
         a {
           border-bottom: 1px $darkColor solid;
           color: $darkColor;
-          text-decoration: underline;
+          text-decoration: none;
           &:hover {
             border-bottom: 1px $themeColor solid;
             color: $themeColor;
           }
         }
       }
+    }
+    .alarmDesc{
+      cursor: pointer;
     }
   }
  
@@ -220,43 +221,6 @@
       cursor: pointer;
     }
   }
-  .transferModal {
-    .formItem {
-      display: flex;
-      flex-direction: row;
-    }
-    .input {
-      margin-left: -60px;
-      margin-top: 15px
-    }
-    .instructionText{
-      display: flex;
-      flex: 1;
-      align-items: flex-end;
-      justify-content: flex-end;
-      margin-right: 8px;
-    }
-    :global {
-      .ant-modal-content {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        height: 100%;
-        margin-top: 180px;
-      }
-      .ant-btn-primary {
-        color: $themeColor;
-        border-color: $themeColor;
-        background-color: #fff;
-        &:hover{
-          background-color: $themeColor;
-          color: #fff;
-        }
-      }
-    }
-  }
- 
-  
 }
 .relieveModal {
   .formItem {
@@ -298,6 +262,41 @@
         }
        
       }
+    }
+    .ant-btn-primary {
+      color: $themeColor;
+      border-color: $themeColor;
+      background-color: #fff;
+      &:hover{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
+}
+.transferModal {
+  .formItem {
+    display: flex;
+    flex-direction: row;
+  }
+  .input {
+    margin-left: -60px;
+    margin-top: 15px
+  }
+  .instructionText{
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+  :global {
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      margin-top: 180px;
     }
     .ant-btn-primary {
       color: $themeColor;

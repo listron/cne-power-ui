@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import styles from './realTimeWarning.scss';
+import styles from './transferForm.scss';
 import { Input, Button } from 'antd';
 
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
 
 
-class RealTimeWarningFilter extends Component {
+class TransferFormFilter extends Component {
   static propTypes = {
   }
   constructor(props, context) {
@@ -66,4 +66,4 @@ class RealTimeWarningFilter extends Component {
     )
   }
 }
-export default (RealTimeWarningFilter)
+export default (TransferFormFilter)

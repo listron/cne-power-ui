@@ -1,57 +1,86 @@
 import React, { Component } from "react";
-import styles from './realTimeWarning.scss';
+import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
-import TransferWarningModal from './TransferWarningModal';
-import HandleRemoveModal from './HandleRemoveModal';
+
 import { Link } from 'react-router-dom';
 import { Table, Select, Popover, Icon, Button } from 'antd';
 import moment from 'moment';
-const Option = Select.Option;
 
-class RealTimeWarningTable extends Component {
+class TransferFormTable extends Component {
   static propTypes = {
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
-      showTransferTicketModal: false,
-      showHandleRemoveModal: false,
-      sortName: '',
-      descend: false,
+      
+      showTransferPopover: [],
     }
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    this.props.changeRealtimeWarningStore({ currentPage, pageSize })
+    // this.props.changeRealtimeWarningStore({ currentPage, pageSize })
   }
-  onHandle = (value) => {//转工单或手动解除的modal
-    if (value === 'ticket') {
-      this.setState({
-        showTransferTicketModal: true
-      });
-    } else if (value === 'relieve') {
-      this.setState({
-        showHandleRemoveModal: true
-      });
-    }
+  onTransferChange(visible,workOrderId,index) { // 切换需求
+    this.setState((state) => {
+      return state.showTransferPopover[index] = visible
+    })
+    this.props.getTransferInfo({workOrderId})
   }
   onSelectChange = (selectedRowKeys) => {//选择checkbox
-    this.props.changeRealtimeWarningStore({ selectedRowKeys });
+    // this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
   cancelRowSelect = () => {//取消选中
-    this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
+    // this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
   }
  
   tableChange = (pagination, filters, sorter) => {
-    this.setState({
-      sortName: sorter.field,
-      descend: sorter.order === 'descend'
-    });
+    // this.setState({
+    //   sortName: sorter.field,
+    //   descend: sorter.order === 'descend'
+    // });
     // this.props.changeRealtimeWarningStore({
     //   sortName: sorter.field,
     // });
   }
-
-
+ 
+  renderTransferPopover(index,record) { // 转到工单页面的气泡
+    const {ticketInfo}=this.props;
+    return (
+      <div className={styles.detailInfo}>
+        <div className={styles.header}>
+          <div className={styles.title}>
+            <i className="iconfont icon-tranlist icon-action"></i>
+            <span className={styles.titleText}>已转工单</span>
+          </div>
+          <Icon type="close" onClick={() => {
+            let showTransferPopover = this.state.showTransferPopover;
+            showTransferPopover[index] = false;
+            this.setState({ showTransferPopover });
+          }} />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>转工单人：</span>
+            <span className={styles.value}>{ticketInfo.userFullName ? ticketInfo.userFullName : ticketInfo.username}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>操作时间：</span>
+            <span className={styles.value}>{moment.utc(ticketInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>缺陷类型：</span>
+            <span className={styles.value}>{ticketInfo.defectTypeName}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>缺陷描述：</span>
+            <span className={styles.value}>{ticketInfo.defectDescribe}</span>
+          </div>
+        </div>
+        <Button className={styles.ticketButton} onClick={()=>{this.getDetail(record.workOrderId,index)}}>
+          查看工单详情
+        </Button>
+      </div>
+    );
+  }
 
   render() {
     const level = ['一级', '二级', '三级', '四级'];
@@ -114,9 +143,27 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },
+      },{
+        title: '预警处理',
+        key: 'warningRemove',
+        render: (text, record, index) => {
+          if (record.isTransferWork === 0) {
+            return (
+              <Popover
+                content={this.renderTransferPopover(index, record)}
+                trigger="click"
+                visible={this.state.showTransferPopover[index]}
+                onVisibleChange={(visible) => this.onTransferChange(visible,record.workOrderId, index)}
+                arrowPointAtCenter
+              >
+                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+              </Popover>
+            );
+          }
+        }
+      }
     ]
-    const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading } = this.props;
+    const { transferFormList, selectedRowKeys, pageSize, currentPage, loading } = this.props;
     const { sortName, descend } = this.state;
     const { showTransferTicketModal, showHandleRemoveModal,  } = this.state;
     const rowSelection = {
@@ -124,7 +171,7 @@ class RealTimeWarningTable extends Component {
       onChange: this.onSelectChange,
     };
     const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
-    const tableSource = realtimeWarning.map((e, i) => ({
+    const tableSource = transferFormList.map((e, i) => ({
       ...e,
       key: i,
     })).sort((a, b) => { // 手动排序
@@ -148,11 +195,8 @@ class RealTimeWarningTable extends Component {
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-            <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
-            <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
-          </Select>
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} />
+         
+          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
         </div>
         <Table
           dataSource={tableSource}
@@ -163,30 +207,16 @@ class RealTimeWarningTable extends Component {
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        {realtimeWarning.length > 0 && <div className={styles.tableFooter}>
+        {transferFormList.length > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
           {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
         </div>}
 
-        {showTransferTicketModal &&
-          <TransferWarningModal
-            onCancel={() => this.setState({ showTransferTicketModal: false })}
-            onTransferAlarm={this.props.transferWarning}
-            defectTypes={this.props.defectTypes}
-            selectedRowKeys={this.props.selectedRowKeys}
-          />
-        }
-        {showHandleRemoveModal &&
-          <HandleRemoveModal
-            onCancel={() => this.setState({ showHandleRemoveModal: false })}
-            HandleRemoveWarning={this.props.HandleRemoveWarning}
-            selectedRowKeys={this.props.selectedRowKeys}
-          />
-        }
+       
       </div>
     )
   }
 }
-export default (RealTimeWarningTable)
+export default (TransferFormTable)
 
 

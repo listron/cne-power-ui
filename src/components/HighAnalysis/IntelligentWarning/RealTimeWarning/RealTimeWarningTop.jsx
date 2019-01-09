@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import styles from './realTimeWarning.scss';
 import { Tooltip } from 'antd';
-
-
+import PropTypes from 'prop-types';
 
 class RealTimeWarningTop extends Component {
   static propTypes = {
+    oneWarningNum:PropTypes.any, 
+    twoWarningNum:PropTypes.any,
+    threeWarningNum:PropTypes.any,
+    fourWarningNum:PropTypes.any,
+    warningStatus:PropTypes.string,
+    lastUpdateTime:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -15,18 +20,18 @@ class RealTimeWarningTop extends Component {
   }
 
   render() {
-    const { oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, warningTypeStatus, lastUpdateTime } = this.props;
+    const { oneWarningNum, twoWarningNum, threeWarningNum, fourWarningNum, warningStatus, lastUpdateTime } = this.props;
     let total = oneWarningNum + twoWarningNum + threeWarningNum + fourWarningNum;
     return (
       <div className={styles.realTimeWarningTop}>
         <div className={styles.alarmInfo}>
           <div className={styles.alarmInfoLeft}>
-            {warningTypeStatus === 1 && <i className="iconfont icon-alarm"></i>}
-            {warningTypeStatus === 2 && <i className="iconfont icon-manual icon-title"></i>}
-            {warningTypeStatus === 3 && <i className="iconfont icon-tranlist icon-title"></i>}
+            {warningStatus === '1' && <i className="iconfont icon-alarm"></i>}
+            {warningStatus === '2' && <i className="iconfont icon-manual icon-title"></i>}
+            {warningStatus === '3' && <i className="iconfont icon-tranlist icon-title"></i>}
             <div className={styles.alarmInfoItem}>
               <span className={styles.alarmNum}>{isNaN(total) ? '- -' : total}</span>
-              <span className={styles.alarmText}>{warningTypeStatus === 1 ? "告警数" : warningTypeStatus === 2 ? "手动解除数" : "转工单数"}</span>
+              <span className={styles.alarmText}>{warningStatus === 1 ? "告警数" : warningStatus === 2 ? "手动解除数" : "转工单数"}</span>
             </div>
             <div className={styles.alarmNumDetail}>
               <div className={styles.alarmInfoItem}>
@@ -48,7 +53,7 @@ class RealTimeWarningTop extends Component {
             </div>
 
           </div>
-          {warningTypeStatus === 1 && <div className={styles.alarmInfoRight}>
+          {warningStatus === '1' && <div className={styles.alarmInfoRight}>
             <div className={styles.updateTimeContainer}>
               <span className={styles.updateTime}>{lastUpdateTime + '-北京时间'}</span>
               <span className={styles.updateTimeText}>本次数据更新时间</span>

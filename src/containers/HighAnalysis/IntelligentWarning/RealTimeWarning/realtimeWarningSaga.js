@@ -13,7 +13,7 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
   //const url = '/mock/cleanWarning/totalEffect';
   try {
     const response = yield call(axios.get, url);
-    const lastUpdateTime=moment().format('YYYY-MM-DD HH:mm');
+  
     if (response.data.code === '10000') {
       const result=response.data&&response.data.data;
       yield put({
@@ -23,7 +23,7 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
           twoWarningNum: (result.twoWarningNum ||  result.twoWarningNum===0)?result.twoWarningNum:'--',
           threeWarningNum: (result.threeWarningNum ||  result.threeWarningNum===0)?result.threeWarningNum:'--',
           fourWarningNum: (result.fourWarningNum ||  result.fourWarningNum===0)?result.fourWarningNum:'--',
-          lastUpdateTime
+          
         },
       });
     }else{
@@ -34,7 +34,6 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
           twoWarningNum: '--',
           threeWarningNum: '--',
           fourWarningNum: '--',
-          lastUpdateTime
         },
       });
     }
@@ -44,7 +43,7 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
 }
 function *getRealtimeWarning(action) {  // 请求实时告警
   const { payload, } = action;
-  const{stationCodes,stationCode,rangTime,startTime,endTime}=payload;
+  const{stationCodes,rangTime,}=payload;
   const url =`${APIBasePath}${monitor.getRealtimeAlarm}`
   try{
     yield put({
@@ -53,30 +52,32 @@ function *getRealtimeWarning(action) {  // 请求实时告警
         loading: true,
       },
     });  
-
     const response = yield call(axios.post,url,{
       ...payload,
       stationCode:stationCodes,
       startTime:rangTime,
-      // endTime:rangTime?rangTime[1]:endTime,
     });
+    const lastUpdateTime=moment().format('YYYY-MM-DD HH:mm');
     if(response.data.code === '10000') {
       const { payload } = action;
-      const time=payload.createTimeStart?payload.createTimeStart:payload.startTime;
-      const endtime=payload.createTimeEnd?payload.createTimeEnd:payload.endTime;
-      console.log(time,endtime,'test');
       yield put({
         type:realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
           realtimeWarning: response.data.data||[],
           loading:false,
           ...payload,
-         
+          lastUpdateTime,
         },
       });     
+    }else{
+      throw response.data
     }  
   }catch(e){
     console.log(e);
+    yield put({
+      type:realtimeWarningActive.changeRealtimeWarningStore,
+      payload: { ...payload, loading: false ,realtimeWarning:[]},
+    })
   }
 }
 function *transferWarning(action) {  // 转工单

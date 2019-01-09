@@ -12,7 +12,7 @@ class HandleRemoveContainer extends Component {
     render() {
         return (
             <div className={styles.handleRemoveContainer}>
-                <WarningStatisticTop warningStatus={3} />
+                <WarningStatisticTop warningStatus={'3'} />
             </div>
         )
     }

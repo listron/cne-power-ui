@@ -44,7 +44,6 @@ const mapStateToProps = (state) => {
     ...state.highAanlysisReducer.realtimeWarningReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
-    
   }
 }
 const mapDispatchToProps = (dispatch) => ({
