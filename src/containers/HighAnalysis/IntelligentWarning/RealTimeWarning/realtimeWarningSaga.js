@@ -4,91 +4,91 @@ import { message } from 'antd';
 import moment from 'moment'
 import Path from '../../../../constants/path';
 import { realtimeWarningActive } from './realtimeWarningActive.js';
-const APIBasePath=Path.basePaths.APIBasePath;
-const monitor=Path.APISubPaths.monitor
+const APIBasePath = Path.basePaths.APIBasePath;
+const monitor = Path.APISubPaths.monitor
 
 function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告警数统计
   const { payload } = action;
-   const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${payload.warningType}`
+  const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${payload.warningType}`
   //const url = '/mock/cleanWarning/totalEffect';
   try {
     const response = yield call(axios.get, url);
-  
+
     if (response.data.code === '10000') {
-      const result=response.data&&response.data.data;
+      const result = response.data && response.data.data;
       yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
+        type: realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
-          oneWarningNum: (result.oneWarningNum ||  result.oneWarningNum===0)?result.oneWarningNum:'--',
-          twoWarningNum: (result.twoWarningNum ||  result.twoWarningNum===0)?result.twoWarningNum:'--',
-          threeWarningNum: (result.threeWarningNum ||  result.threeWarningNum===0)?result.threeWarningNum:'--',
-          fourWarningNum: (result.fourWarningNum ||  result.fourWarningNum===0)?result.fourWarningNum:'--',
-          
+          oneWarningNum: (result.oneWarningNum || result.oneWarningNum === 0) ? result.oneWarningNum : '--',
+          twoWarningNum: (result.twoWarningNum || result.twoWarningNum === 0) ? result.twoWarningNum : '--',
+          threeWarningNum: (result.threeWarningNum || result.threeWarningNum === 0) ? result.threeWarningNum : '--',
+          fourWarningNum: (result.fourWarningNum || result.fourWarningNum === 0) ? result.fourWarningNum : '--',
+
         },
       });
-    }else{
-      yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
-        payload: {
-          oneWarningNum:'--',
-          twoWarningNum: '--',
-          threeWarningNum: '--',
-          fourWarningNum: '--',
-        },
-      });
+    } else {
+      throw response.data
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: realtimeWarningActive.changeRealtimeWarningStore,
+      payload: {
+        oneWarningNum: '--',
+        twoWarningNum: '--',
+        threeWarningNum: '--',
+        fourWarningNum: '--',
+      },
+    });
   }
 }
-function *getRealtimeWarning(action) {  // 请求实时告警
+function* getRealtimeWarning(action) {  // 请求实时告警
   const { payload, } = action;
-  const{stationCodes,rangTime,}=payload;
-  const url =`${APIBasePath}${monitor.getRealtimeAlarm}`
-  try{
+  const { stationCodes, rangTime, } = payload;
+  const url = `${APIBasePath}${monitor.getRealtimeAlarm}`
+  try {
     yield put({
-      type:realtimeWarningActive.changeRealtimeWarningStore,
+      type: realtimeWarningActive.changeRealtimeWarningStore,
       payload: {
         loading: true,
       },
-    });  
-    const response = yield call(axios.post,url,{
-      ...payload,
-      stationCode:stationCodes,
-      startTime:rangTime,
     });
-    const lastUpdateTime=moment().format('YYYY-MM-DD HH:mm');
-    if(response.data.code === '10000') {
+    const response = yield call(axios.post, url, {
+      ...payload,
+      stationCode: stationCodes,
+      startTime: rangTime,
+    });
+    const lastUpdateTime = moment().format('YYYY-MM-DD HH:mm');
+    if (response.data.code === '10000') {
       const { payload } = action;
       yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
+        type: realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
-          realtimeWarning: response.data.data||[],
-          loading:false,
+          realtimeWarning: response.data.data || [],
+          loading: false,
           ...payload,
           lastUpdateTime,
         },
-      });     
-    }else{
+      });
+    } else {
       throw response.data
-    }  
-  }catch(e){
+    }
+  } catch (e) {
     console.log(e);
     yield put({
-      type:realtimeWarningActive.changeRealtimeWarningStore,
-      payload: { ...payload, loading: false ,realtimeWarning:[]},
+      type: realtimeWarningActive.changeRealtimeWarningStore,
+      payload: { ...payload, loading: false, realtimeWarning: [] },
     })
   }
 }
-function *transferWarning(action) {  // 转工单
+function* transferWarning(action) {  // 转工单
   const { payload } = action;
   const url = `${APIBasePath}${monitor.transferAlarm}`
-  try{
-    const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000')
-    {
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
       yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
+        type: realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
           selectedRowKeys: []
         }
@@ -103,9 +103,9 @@ function *transferWarning(action) {  // 转工单
       yield put({
         type: realtimeWarningActive.getRealtimeWarning,
         payload: params
-      });     
-    }  
-  }catch(e){
+      });
+    }
+  } catch (e) {
     console.log(e);
   }
 }
@@ -116,7 +116,7 @@ function* HandleRemoveWarning(action) {  // 手动解除告警
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
+        type: realtimeWarningActive.changeRealtimeWarningStore,
         payload: {
           selectedRowKeys: []
         }
