@@ -157,7 +157,7 @@ function* getAddCleanPlan(action) {//1.1.7.添加人工清洗计划
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCodes: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCodes'),
         pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
         pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
         sortField: state.highAanlysisReducer.cleanoutRecordReducer.get('sortField'),
@@ -254,7 +254,7 @@ function* getAddRainPlan(action) {//1.1.11.添加下雨清洗计划
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const params = yield select(state => ({
-        stationCode: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCode'),
+        stationCodes: state.highAanlysisReducer.cleanoutRecordReducer.get('stationCodes'),
         pageNum: state.highAanlysisReducer.cleanoutRecordReducer.get('pageNum'),
         pageSize: state.highAanlysisReducer.cleanoutRecordReducer.get('pageSize'),
         sortField: state.highAanlysisReducer.cleanoutRecordReducer.get('sortField'),

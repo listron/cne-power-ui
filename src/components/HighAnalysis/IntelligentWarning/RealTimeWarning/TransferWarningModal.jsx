@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Select, Form, Modal, Cascader } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './realTimeAlarm.scss';
+import styles from './realTimeWarning.scss';
 import InputLimit from '../../../Common/InputLimit';
 import WarningTip from '../../../Common/WarningTip';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 
-class TransferAlarmModal extends Component {
+class TransferWarningModal extends Component {
   static propTypes = {
     form: PropTypes.object,
     onTransferAlarm: PropTypes.func,
@@ -57,7 +57,7 @@ class TransferAlarmModal extends Component {
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     let tmpGenTypes = [];
-    defectTypes.toJS().forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    defectTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = tmpGenTypes.map(ele=>{
       let innerArr = {children: []};
       innerArr.label= ele.name;
@@ -118,4 +118,4 @@ class TransferAlarmModal extends Component {
   }
 }
 
-export default Form.create()(TransferAlarmModal);
+export default Form.create()(TransferWarningModal);

@@ -46,6 +46,12 @@ import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnal
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
+//高级分析 实时告警，已转工单，手动接触，历史告警
+import RealTimeWarning from '../containers/HighAnalysis/IntelligentWarning/RealTimeWarning/RealTimeWarning';
+import TransferForm from '../containers/HighAnalysis/IntelligentWarning/Transfer/TransferForm';
+import HandleRemove from '../containers/HighAnalysis/IntelligentWarning/HandleRemove/HandleRemove';
+import HistoryWarning from '../containers/HighAnalysis/IntelligentWarning/HistoryWarning/HistoryWarning';
+
 //高级分析 清洗预警 清洗记录
 import CleanWarning from '../containers/HighAnalysis/CleanoutModel/CleanWarning/CleanWarning';
 import CleanoutRecord from '../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord';
@@ -100,7 +106,7 @@ const routers = [
     path: '/operation/running/dayReport',
     exact: true,
     component: DayReport,
-  },{ // 运维管理-电站运行-月报
+  }, { // 运维管理-电站运行-月报
     path: '/operation/running/monthReport',
     exact: true,
     component: Building,
@@ -191,8 +197,8 @@ const routers = [
   }, { // 系统管理-预警配置
     path: '/system/config/warning',
     exact: true,
-    component:Warning
-  },{ // 统计分析-电站分析-全部电站
+    component: Warning
+  }, { // 统计分析-电站分析-全部电站
     path: '/statistical/stationaccount/allstation',
     exact: true,
     component: AllStationAnalysis
@@ -234,6 +240,31 @@ const routers = [
   //   path: '/analysis/assess',
   //   exact: true,
   //   component: Building
+  // },
+  {
+    path: '/analysis/intelligentWarning/realtime',
+    exact: true,
+      //  component: Building
+    component: RealTimeWarning
+  },
+  {
+    path: '/analysis/intelligentWarning/transfer',
+    exact: true,
+    // component: TransferForm
+     component: Building
+  },
+  {
+    path: '/analysis/intelligentWarning/handleremove',
+    exact: true,
+    // component: HandleRemove
+     component: Building
+  },
+  {
+    path: '/analysis/intelligentWarning/historywarning',
+    exact: true,
+    // component: HistoryWarning
+     component: Building
+  },
   // }, 
   { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
@@ -243,12 +274,12 @@ const routers = [
     path: '/analysis/cleanout/record',
     exact: true,
     // component: CleanoutRecordMain,
-     component: CleanoutRecord,
+    component: CleanoutRecord,
     // component: Building
-  },{//单电站清洗计划与记录详情
+  }, {//单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
     exact: true,
-     component: CleanoutRecord
+    component: CleanoutRecord
     // component: Building
   },
   { // 组串异常分析

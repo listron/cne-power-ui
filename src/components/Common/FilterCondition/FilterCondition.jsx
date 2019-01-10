@@ -142,6 +142,7 @@ class FilterCondition extends Component {
       case 'defectSource': result = '缺陷来源'; break;
       case 'belongMatrixs': result = '所属方阵'; break;
       case 'alarmLevel': result = '告警级别'; break;
+      case 'warningLevel': result = '预警级别'; break;
       case 'alarmType': result = '告警类型'; break;
       case 'myJoin': result = '参与的'; break;
       case 'rangeTime': result = '发生时间'; break;
@@ -241,7 +242,7 @@ class FilterCondition extends Component {
               belongMatrixs={belongMatrixs}
               onChangeFilter={this.onChangeFilter}
             />}
-          {showFilter === 'alarmLevel' &&
+          {(showFilter === 'alarmLevel'||showFilter==='warningLevel') &&
             <AlarmLevelFilter
               warningLevel={warningLevel}
               onChangeFilter={this.onChangeFilter}

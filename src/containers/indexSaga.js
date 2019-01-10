@@ -37,6 +37,11 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 
 
 
+import { watchRealtimeWarning} from "./HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga";
+import { watchTransferForm} from "./HighAnalysis/IntelligentWarning/Transfer/transferFormSaga";
+import { watchHandleWarning} from "./HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga";
+import { watchHistoryWarning} from "./HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga";
+
 import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
 import { watchCleanWarning } from "./HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga";
 import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
@@ -91,6 +96,10 @@ export default function* rootSaga() {
     //设备分析
     watchPerformanceAnalysisSaga(),
     //高级分析>清洗模型>清洗记录+清洗预警
+    watchRealtimeWarning(),
+    watchTransferForm(),
+    watchHandleWarning(),
+    watchHistoryWarning(),
     watchCleanoutRecord(),
     watchCleanWarning(),
     // 高级分析-低效组串
