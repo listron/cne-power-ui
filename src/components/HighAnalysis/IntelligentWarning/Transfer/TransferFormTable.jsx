@@ -16,22 +16,30 @@ class TransferFormTable extends Component {
       showTransferPopover: [],
     }
   }
+ 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     // this.props.changeRealtimeWarningStore({ currentPage, pageSize })
   }
+  
   onTransferChange(visible,workOrderId,index) { // 切换需求
     this.setState((state) => {
       return state.showTransferPopover[index] = visible
     })
     this.props.getTransferInfo({workOrderId})
   }
+ 
   onSelectChange = (selectedRowKeys) => {//选择checkbox
     // this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
-  cancelRowSelect = () => {//取消选中
-    // this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
-  }
  
+ 
+  getDetail = (defectId,index) => { // 查看工单详情
+    this.props.changeTransferFormStore({pageName:'detail',defectId})
+    this.setState((state) => {
+      return state.showTransferPopover[index] = false
+    })
+  }
+  
   tableChange = (pagination, filters, sorter) => {
     // this.setState({
     //   sortName: sorter.field,
@@ -147,7 +155,7 @@ class TransferFormTable extends Component {
         title: '预警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
-          if (record.isTransferWork === 0) {
+          // if (record.isTransferWork === 0) {
             return (
               <Popover
                 content={this.renderTransferPopover(index, record)}
@@ -160,7 +168,7 @@ class TransferFormTable extends Component {
               </Popover>
             );
           }
-        }
+        // }
       }
     ]
     const { transferFormList, selectedRowKeys, pageSize, currentPage, loading } = this.props;
@@ -201,16 +209,13 @@ class TransferFormTable extends Component {
         <Table
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
-          rowSelection={rowSelection}
+        
           columns={columns}
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        {transferFormList.length > 0 && <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
-          {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>}
+        
 
        
       </div>

@@ -22,7 +22,7 @@ class TransferFormContaienr extends Component {
 
   queryTransferFrom = (value) => {
     const { getTransferForm, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
-    const params = { warningTypeStatus,  warningType,rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
+    const params = { warningTypeStatus,  rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
     getTransferForm({ ...params, ...value })
   }
   render() {
