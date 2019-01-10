@@ -27,18 +27,19 @@ function* getRealtimeWarningStatistic(action) {//1.3.2.	获取多电站活动告
         },
       });
     }else{
-      yield put({
-        type:realtimeWarningActive.changeRealtimeWarningStore,
-        payload: {
-          oneWarningNum:'--',
-          twoWarningNum: '--',
-          threeWarningNum: '--',
-          fourWarningNum: '--',
-        },
-      });
+      throw response.data
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type:realtimeWarningActive.changeRealtimeWarningStore,
+      payload: {
+        oneWarningNum:'--',
+        twoWarningNum: '--',
+        threeWarningNum: '--',
+        fourWarningNum: '--',
+      },
+    });
   }
 }
 function *getRealtimeWarning(action) {  // 请求实时告警
