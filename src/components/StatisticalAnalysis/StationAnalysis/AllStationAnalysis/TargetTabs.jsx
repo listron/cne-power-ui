@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './targetTabs.scss';
 import { Tabs } from 'antd';
-import BarGraph from '../CommonGraph/BarGraph/index.js';
+import BarGraph from '../CommonGraphs/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import AllStationMonthPie from './Chart/AllStationMonthPie/index';
 import Cookie from 'js-cookie';

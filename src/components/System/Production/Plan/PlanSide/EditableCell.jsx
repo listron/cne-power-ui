@@ -3,8 +3,6 @@ import { Input, Form, message } from 'antd';
 import PropTypes from 'prop-types';
 import { getMonth, } from '../plan';
 import styles from './planSide.scss'
-import { timingSafeEqual } from 'crypto';
-
 const FormItem = Form.Item;
 
 class EditableCell extends React.Component {
@@ -20,7 +18,7 @@ class EditableCell extends React.Component {
 
  
 
-  getInput = (form) => {
+  getInput = (form) => { // 根据不同的设置不同的数据
     const { dataIndex, record } = this.props;
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span>
@@ -56,8 +54,9 @@ class EditableCell extends React.Component {
       }
       let planMonthValue = record.monthPower.filter(e => e !== "null");
       const planPower = planMonthValue.reduce((prev, next) => (+prev) + (+next), 0)
-      record.planPower=planPower;
-      this.props.form.setFieldsValue({ planPower });
+      console.log('planPower',planPower)
+      record.planPower=+planPower.toFixed(4);
+      this.props.form.setFieldsValue({ planPower :+planPower.toFixed(4)});
       type === 'pr' ? record.yearPR = number : '';
       record.eddit="true"
     }

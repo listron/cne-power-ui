@@ -33,7 +33,7 @@ class UploadReportList extends Component {
 
   componentDidMount(){
     const { reportStation, getLostGenType } = this.props;
-    const stationType = reportStation[0] && reportStation[0].stationType || 1; 
+    const stationType = reportStation[0] && reportStation[0].stationType; 
     getLostGenType({ // 选中电站的所有故障类型
       stationType, 
     })

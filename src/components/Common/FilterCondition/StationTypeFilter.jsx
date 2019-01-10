@@ -21,12 +21,12 @@ class StationTypeFilter extends Component {
   }
 
   render() {
-    //	电站类型(0:风电，1光伏，2：全部)
+    //	电站类型(0:风电，1光伏，''：全部)
     const { stationType } = this.props;
     return (
       <div className={styles.filterItem}>
         <Tabs activeKey={stationType} onChange={this.onChange}>
-          <TabPane tab="不限" key=""></TabPane>
+          <TabPane tab="不限" key={""}></TabPane>
           <TabPane tab="风电" key="0"></TabPane>
           <TabPane tab="光伏" key="1"></TabPane>
         </Tabs>

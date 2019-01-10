@@ -5,7 +5,7 @@ import { Progress } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './style.scss';
 import { ValueFormat } from '../UtilComponent/index'
-import { dataFormat } from '../../../utils/utilFunc';
+import { monitordataFormat } from '../../../utils/utilFunc';
 
 /*
   带文字输入的进度条组件：
@@ -32,12 +32,11 @@ class CommonProgress extends Component {
   constructor(props) {
     super(props);
   }
-
-
+ 
   render() {
     const { value, total, valueText, totalText, percent, valueunit, points, realTimeUnit, realTimePoint } = this.props;
-    
-    
+
+
     return (
       <div className={styles.commonProgress}>
         <div className={styles.progressInfo}>
@@ -45,15 +44,15 @@ class CommonProgress extends Component {
             <div className={styles.stationValue}>
               {/** <div>{value}</div> */}
               <div>
-                <ValueFormat value={dataFormat(value, '--', realTimePoint)} points={realTimePoint} valueunit={realTimeUnit} />
+                <ValueFormat value={monitordataFormat(value, '--', realTimePoint)} points={realTimePoint} valueunit={realTimeUnit} />
               </div>
               {/*<div className={styles.planOutput}>{total}</div> */}
               <div className={styles.planOutput}>
-                <ValueFormat value={dataFormat(total, '--', points)} points={points} valueunit={valueunit} />
+                <ValueFormat value={monitordataFormat(total, '--', points)} points={points} valueunit={valueunit} />
               </div>
             </div>
             <div className={styles.progressBar}>
-              <Progress strokeWidth={3} percent={value / total * 100} showInfo={false} status="active" />
+              <Progress strokeWidth={3} percent={+total ? (value / total * 100) : 0} showInfo={false} status="active" />
             </div>
             <div className={styles.stationType}>
               <div>{valueText}</div>

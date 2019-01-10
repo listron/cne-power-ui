@@ -4,11 +4,11 @@ import { Icon } from "antd";
 import styles from "./operateAnalysis.scss";
 import StationSelect from "../../../Common/StationSelect";
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-import BarGraph from "../CommonGraph/BarGraph";
-import TableGraph from "../CommonGraph/TableGraph";
-import PowerEfficency from "../CommonGraph/ThreeYaxis";
+import BarGraph from "../CommonGraphs/BarGraph";
+import TableGraph from "../CommonGraphs/TableGraph";
+import PowerEfficency from "../CommonGraphs/ThreeYaxis";
 import UsageRate from "./Chart/UsageRate";
-import LostPowerType from "../CommonGraph/barStack";
+import LostPowerType from "../CommonGraphs/barStack";
 import LostPowerTypeRate from "./Chart/LostPowerTypeRate";
 import LimitPowerRate from "./Chart/LimitPowerRate";
 import LimitPowerRateTable from "./Table/LimitPowerRateTable";
@@ -600,7 +600,7 @@ class OperateAnalysis extends React.Component {
                 }
               </div>
             </div>
-           
+
             <div className={styles.bgStyle}>
               <div className={styles.fontStyle}>能耗分析</div>
             </div>

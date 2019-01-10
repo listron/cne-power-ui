@@ -48,14 +48,18 @@ class EditForm extends Component {
         let { stationDetail } = this.props;
         // let { stationDetail, cityData, countyData, stationBelongInfo } = this.props;
         // const { provinces } = stationBelongInfo;
-        let { stationMapPosition, stationArea } = values;
+        let { stationMapPosition, stationArea, ongridTime, fullOngridTime } = values;
         const [ longitude, latitude ] = stationMapPosition, [provinceCode, cityCode, countyCode] = stationArea;
         delete values.stationMapPosition;
         delete values.stationArea;
         // let provinceName,cityName,countyName
+        const tmpOngridTime = ongridTime ? ongridTime.startOf('day').utc().format() : null;
+        const tmpFullOngridTime = fullOngridTime ? fullOngridTime.startOf('day').utc().format() : null;
         this.props.saveStationDetail({
           stationCode: stationDetail.stationCode,
           ...values,
+          ongridTime: tmpOngridTime,
+          fullOngridTime: tmpFullOngridTime,
           longitude, 
           latitude,
           provinceCode, 

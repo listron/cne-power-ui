@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Select ,AutoComplete, message  } from 'antd';
+import { Select, AutoComplete, message } from 'antd';
 import { commonAction } from '../../../containers/alphaRedux/commonAction';
 import DeviceSelectModal from './DeviceSelectModal'
 import styles from './style.scss';
@@ -68,14 +68,13 @@ class DeviceSelect extends Component {
     multiple: false,
     holderText: '输入关键字快速查询',
     disabled: false,
-    value: [],
   }
 
   constructor(props) {
     super(props);
     this.state = {
       deviceModalShow: false,
-      checkedDevice: props.value, // 存储当前选中设备。
+      checkedDevice: props.value || [], // 存储当前选中设备。
       autoCompleteDevice: [], // 自动搜索框的提示内容
       autoCompleteText: '', // 自动补全框展示内容
     }
@@ -83,18 +82,18 @@ class DeviceSelect extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { stationCode, deviceTypeCode, filterKey } = nextProps;
-    const checkedDevice = nextProps.value;
+    const checkedDevice = nextProps.value || [];
     const { getDevices, getPartition, getMatrixDevices, value } = this.props;
     const preStation = this.props.stationCode;
     const preDeviceType = this.props.deviceTypeCode;
     if (this.compareValue(checkedDevice, value)) { // value发生变化。
-      this.setState({ 
+      this.setState({
         checkedDevice,
         autoCompleteText: checkedDevice[0] && checkedDevice[0].deviceName || ''
       });
     }
     if (stationCode && deviceTypeCode && (stationCode !== preStation || deviceTypeCode !== preDeviceType)) { // 请求设备。
-      if ( filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
+      if (filterKey.includes(deviceTypeCode)) { // 需要直接根据分区直接请求处理数据
         getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
       } else { // 直接获取所有数据。
         getDevices({ stationCode, deviceTypeCode }, 'devices');
@@ -104,7 +103,7 @@ class DeviceSelect extends Component {
     }
   }
 
-  componentWillUnmount(){ // 卸载公用数据中的设备数据。
+  componentWillUnmount() { // 卸载公用数据中的设备数据。
     const { changeCommonStore } = this.props;
     changeCommonStore({
       devices: [],
@@ -114,7 +113,7 @@ class DeviceSelect extends Component {
   }
 
   onOK = devices => { // 输出选中的设备数组。
-    const { onChange,onOK } = this.props
+    const { onChange, onOK } = this.props
     onOK && onOK(devices);
     onChange && onChange(devices);
   }
@@ -157,7 +156,10 @@ class DeviceSelect extends Component {
   }
 
   compareValue = (value, preValue) => { // 比较value数组。返回值true/得到新value需重置, false/不需重置时表示
-    if (value.length !== preValue.length) {
+    if (!value || !preValue) { //其中有一个不存在数据,或者两个都不存在的时候
+      return true
+    }
+    if (value.length !== preValue.length) { // 当两个都有数据
       return true
     } else if (value.length === preValue.length) {
       return preValue.find(e => value.every(curDevice => curDevice.deviceCode !== e.deviceCode)) // 找到一个不同设备。
@@ -180,10 +182,10 @@ class DeviceSelect extends Component {
           className={styles.stationSelectMainInput}
         >
           {devices.map((e, i) => (
-            <Option key={e.deviceCode} style={{display: (i > 19 ? 'none': 'block')}}>{e.deviceName}</Option>
+            <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
-        </Select>:<AutoComplete
+        </Select> : <AutoComplete
           disabled={disabled}
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
@@ -191,11 +193,11 @@ class DeviceSelect extends Component {
           value={autoCompleteText}
           placeholder={holderText}
         >
-          {autoCompleteDevice.map((e, i) => (
-            <Option key={e.deviceCode} style={{display: (i > 19 ? 'none': 'block')}}>{e.deviceName}</Option>
-          ))}
-          {autoCompleteDevice.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
-        </AutoComplete>}
+            {autoCompleteDevice.map((e, i) => (
+              <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
+            ))}
+            {autoCompleteDevice.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
+          </AutoComplete>}
         <DeviceSelectModal
           {...this.props}
           checkedDevice={checkedDevice}
@@ -217,9 +219,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeCommonStore: payload => dispatch({type: commonAction.CHANGE_COMMON_STORE, payload }),
+  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload }),
   getDevices: (params, resultName) => dispatch({ // 获取设备列表
-    type: commonAction.getDevices, 
+    type: commonAction.getDevices,
     payload: {
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
@@ -227,7 +229,7 @@ const mapDispatchToProps = (dispatch) => ({
     }
   }),
   getPartition: params => dispatch({ // 获取分区信息
-    type: commonAction.getPartition, 
+    type: commonAction.getPartition,
     payload: {
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
@@ -235,7 +237,7 @@ const mapDispatchToProps = (dispatch) => ({
     }
   }),
   getMatrixDevices: params => dispatch({ // 获取筛选后的设备
-    type: commonAction.getMatrixDevices, 
+    type: commonAction.getMatrixDevices,
     payload: {
       params,
       actionName: commonAction.GET_COMMON_FETCH_SUCCESS,

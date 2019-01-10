@@ -2,7 +2,7 @@ import React from 'react';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import styles from '../eachDeviceMonitor.scss';
 import { DeviceValueFormat } from '../../../../Common/UtilComponent';
-import { dataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat } from '../../../../../utils/utilFunc';
 
 function InverterStatistics({ deviceDetail }) {
   let { devicePower, deviceCapacity, powerDay, powerMonth, powerYear,windSpeed,angleOfYaw } = deviceDetail;
@@ -16,7 +16,7 @@ function InverterStatistics({ deviceDetail }) {
       <div className={styles.timerDayGen}>
         <div className={styles.genNum}>
       
-        <DeviceValueFormat value={dataFormat(windSpeed, '--')} />
+        <DeviceValueFormat value={monitordataFormat(windSpeed, '--')} />
         </div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>风速</div>
@@ -28,20 +28,20 @@ function InverterStatistics({ deviceDetail }) {
       </div>
       <div className={styles.timerDayGen}>
         <div className={styles.genNum}>
-        <DeviceValueFormat value={dataFormat(powerDay, '--')} />
+        <DeviceValueFormat value={monitordataFormat(powerDay, '--')} />
         </div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>日发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>
-        <DeviceValueFormat value={dataFormat(powerMonth, '--')} /></div>
+        <DeviceValueFormat value={monitordataFormat(powerMonth, '--')} /></div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>月累计发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
         <div className={styles.genNum}>
-        <DeviceValueFormat value={dataFormat(powerYear, '--')} /></div>
+        <DeviceValueFormat value={monitordataFormat(powerYear, '--')} /></div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>年累计发电量 (kWh)</div>
       </div>

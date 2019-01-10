@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import styles from './personnel.scss';
 import GpsMap from './GpsMap.jsx';
 import {personnelGpsAction} from './personnelGpsAction.js';
-import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import Footer from '../../../../components/Common/Footer';
+import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../components/Common/Footer';
 class PersonnelGps extends Component {
   static propTypes = { 
     getPersonnelGpsData: PropTypes.func,

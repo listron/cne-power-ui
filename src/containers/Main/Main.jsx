@@ -106,7 +106,7 @@ class Main extends Component {
     }
     if(isTokenValid && authData && (isNotLogin === '0')){
     // if(true){
-      const homePageArr = ['/'];
+      const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
         <div className={styles.app}>
