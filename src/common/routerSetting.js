@@ -244,22 +244,26 @@ const routers = [
   {
     path: '/analysis/intelligentWarning/realtime',
     exact: true,
+      //  component: Building
     component: RealTimeWarning
   },
   {
     path: '/analysis/intelligentWarning/transfer',
     exact: true,
-    component: TransferForm
+    // component: TransferForm
+     component: Building
   },
   {
     path: '/analysis/intelligentWarning/handleremove',
     exact: true,
-    component: HandleRemove
+    // component: HandleRemove
+     component: Building
   },
   {
     path: '/analysis/intelligentWarning/historywarning',
     exact: true,
-    component: HistoryWarning
+    // component: HistoryWarning
+     component: Building
   },
   // }, 
   { // 高级分析>清洗模型>清洗预警

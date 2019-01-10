@@ -45,7 +45,7 @@ class RealTimeWarningContainer extends Component {
 
   realtimeWarningSetInterval = (value) => {
     const { getRealtimeWarning, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
-    const params = { warningTypeStatus, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
+    const params = { warningTypeStatus, rangTime,warningType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
     getRealtimeWarning({ ...params, ...value })
   }
 
