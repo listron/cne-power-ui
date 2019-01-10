@@ -186,6 +186,7 @@ class SideReportPage extends Component {
           const lostInfo = {
             defectId: eachLost.defectId,
             deviceName: eachLost.deviceName,
+            deviceCode: eachLost.deviceCode,
             startTime: eachLost.startTime.format('YYYY-MM-DD HH:mm'),
             endTime: eachLost.endTime && eachLost.endTime.format('YYYY-MM-DD HH:mm'),
             reason: eachLost.reason,
