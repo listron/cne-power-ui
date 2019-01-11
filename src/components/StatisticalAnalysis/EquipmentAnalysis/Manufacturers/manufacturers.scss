@@ -19,6 +19,11 @@
         .antherCondition{
             margin-top: 12px;
         }
+        :global{
+            .ant-input{
+                width: 225px;
+            }
+        }
     }
     .manuCont{
         display: flex;

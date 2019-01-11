@@ -24,12 +24,14 @@ function* getManufacturer(action) { // 获取生产厂家
   const { params, resultName } = payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getManufacturer}`
   try {
-    const response = yield call(axios.post, url, params);
+    const response = yield call(axios.post, url, {
+      ...params,
+      stationCode: [params.stationCode]
+    });
     if (response.data.code === '10000') {
       yield put({
         type: customizeAction.changeCustomizeStore,
         payload: {
-          ...params,
           [resultName]: response.data.data || [],
         },
       });
@@ -39,7 +41,6 @@ function* getManufacturer(action) { // 获取生产厂家
     yield put({
       type: customizeAction.changeCustomizeStore,
       payload: {
-        ...params,
         [resultName]: []
       },
     });
@@ -51,12 +52,14 @@ function* getDevicemode(action) { // 获取电站下 生产厂家 所有的设�
   const { params, resultName } = payload;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getDevicemode}`
   try {
-    const response = yield call(axios.post, url, params);
+    const response = yield call(axios.post, url, {
+      ...params,
+      stationCode: [params.stationCode]
+    });
     if (response.data.code === '10000') {
       yield put({
         type: customizeAction.changeCustomizeStore,
         payload: {
-          ...params,
           [resultName]: response.data.data || [],
         },
       });
@@ -66,7 +69,6 @@ function* getDevicemode(action) { // 获取电站下 生产厂家 所有的设�
     yield put({
       type: customizeAction.changeCustomizeStore,
       payload: {
-        ...params,
         [resultName]: []
       },
     });
@@ -80,13 +82,12 @@ function* getDetailData(action) { // 获取详细数据
   try {
     const response = yield call(axios.post, url, {
       ...params,
-      manufacturers:[params.manufacturer],
     });
     if (response.data.code === '10000') {
       yield put({
         type: customizeAction.changeCustomizeStore,
         payload: {
-          [resultName]: response.data.data || [],
+          [resultName]: response.data.data.length>0 &&response.data.data[0]  || {},
         },
       });
     } else { throw response.data }
@@ -95,7 +96,7 @@ function* getDetailData(action) { // 获取详细数据
     yield put({
       type: customizeAction.changeCustomizeStore,
       payload: {
-        [resultName]: []
+        [resultName]: {}
       },
     });
   }

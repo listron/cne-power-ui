@@ -70,6 +70,7 @@ class Search extends Component {
     this.setState({ selectOption: value }, () => {
       value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
     })
+    this.props.changeManufacturersStore({selectOption:value})
   }
 
 
@@ -81,9 +82,9 @@ class Search extends Component {
   }
 
 
-  render() {
-    const { stations, manufacturerList, devicemodeList, deviceTypeNameLike } = this.props;
-    const { selectOption, optionValue } = this.state;
+  getTreeProps = () => { // 获取厂家型号的详细数据
+    const { devicemodeList, manufacturerList } = this.props;
+    const { selectOption } = this.state;
     const devicemodeData = devicemodeList.length > 0 && devicemodeList.map(e => {
       return {
         title: e.deviceModeName,
@@ -91,21 +92,29 @@ class Search extends Component {
         key: e.deviceModeId,
       }
     }) || [];
-    // const manufacturerData = manufacturerList.length > 0 && manufacturerList.map(e => {
-    //   return {
-    //     title: e.manufacturer,
-    //     value: e.manufacturer,
-    //     key: e.manufacturer,
-    //   }
-    // }) || []
+    const manufacturerData = manufacturerList.length > 0 && manufacturerList.map(e => {
+      return {
+        title: e.manufacturer,
+        value: e.manufacturer,
+        key: e.manufacturer,
+      }
+    }) || [];
+    const treeData = selectOption === 'manufacturer' ? manufacturerData : devicemodeData;
     const treeProps = {
-      treeData: selectOption === 'manufacturer' ? devicemodeData : [],
+      treeData: treeData,
       treeCheckable: true,
       filterTreeNode: false,
       searchPlaceholder: null,
       isLeaf: true,
     }
+    return treeProps;
+  }
+
+  render() {
+    const { stations, deviceTypeNameLike } = this.props;
+    const { selectOption, optionValue } = this.state;
     const currentYearDay = moment().year() + '/01/01';
+    const treeProps = this.getTreeProps();
     return (
       <div className={styles.search}>
         <div className={styles.condition}>
@@ -116,7 +125,7 @@ class Search extends Component {
           <RangePicker
             defaultValue={[moment(currentYearDay, 'YYYY-MM-DD'), moment(moment(), 'YYYY-MM-DD')]}
             format={'YYYY-MM-DD'}
-            style={{ width: 200, marginLeft: 15, marginRight: 15 }}
+            style={{ marginLeft: 15, marginRight: 15 }}
             onChange={this.timeSelect}
             disabledDate={this.disabledDate}
           />
@@ -134,16 +143,17 @@ class Search extends Component {
             <Option value="manufacturer">按厂家</Option>
             <Option value="deviceMode">按型号</Option>
           </Select>
-          <TreeSelect {...treeProps}
+          <TreeSelect
+            {...treeProps}
             dropdownClassName={styles.treeDeviceTypes}
             placeholder={selectOption === 'manufacturer' ? '全部厂家' : '全部型号'}
-            style={{ width: 200, marginLeft: 15 }}
+            style={{ width: 225, marginLeft: 15 }}
             onChange={this.TreeSelect}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeCheckStrictly={true}
             value={optionValue}
+            // disabled={treeData.length > 0 ? false : true}
           />
-
         </div>
 
       </div>

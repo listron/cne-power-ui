@@ -40,16 +40,16 @@ class Charts extends React.Component {
     getYaxisName = (type) => {
         let result = " ";
         switch (type) {
-            case "efficiency":
+            case "conversioneff":
                 result = '转换效率(%)';
                 break;
-            case "duration":
+            case "faultHours":
                 result = '故障时长(h)';
                 break;
-            case "frequency":
+            case "faultNum":
                 result = '故障次数(次)';
                 break;
-            case "capacity":
+            case "deviceCapacity":
                 result = '装机容量(MW)';
                 break;
             default:
@@ -61,16 +61,16 @@ class Charts extends React.Component {
     getColor = (type) => {
         let result = " ";
         switch (type) {
-            case "efficiency":
+            case "conversioneff":
                 result = '#c7ceb2';
                 break;
-            case "duration":
+            case "faultHours":
                 result = '#f9b600';
                 break;
-            case "frequency":
+            case "faultNum":
                 result = '#3e97d1';
                 break;
-            case "capacity":
+            case "deviceCapacity":
                 result = '#199475';
                 break;
             default:
@@ -82,16 +82,16 @@ class Charts extends React.Component {
     getTitle = (type) => {
         let result = " ";
         switch (type) {
-            case "efficiency":
+            case "conversioneff":
                 result = '各厂家设备转换效率对比图';
                 break;
-            case "duration":
+            case "faultHours":
                 result = '各厂家设备故障时长对比图';
                 break;
-            case "frequency":
+            case "faultNum":
                 result = '各厂家设备故障次数对比图';
                 break;
-            case "capacity":
+            case "deviceCapacity":
                 result = '各厂家装机容量对比图';
                 break;
             default:
@@ -103,16 +103,16 @@ class Charts extends React.Component {
     getLengend = (type) => {
         let result = " ";
         switch (type) {
-            case "efficiency":
+            case "conversioneff":
                 result = '设备转换效率';
                 break;
-            case "duration":
+            case "faultHours":
                 result = '设备故障时长';
                 break;
-            case "frequency":
+            case "faultNum":
                 result = '设备故障次数';
                 break;
-            case "capacity":
+            case "deviceCapacity":
                 result = '装机容量';
                 break;
             default:
@@ -131,12 +131,17 @@ class Charts extends React.Component {
     }
 
     drawChart = (params) => {
-        const { graphId, xData, yData, hasData, type } = params;
+        const { graphId, data, type, selectOption } = params;
+        const manufacturerData = data.map(e => e.manufacturer);
+        const deviceModeIdsData = data.map(e => e.deviceModeName);
+        const xData = selectOption === 'manufacturer' ? manufacturerData : deviceModeIdsData;
+        const yData = data.map(e => e[type]);
         const targetChart = echarts.init(document.getElementById(graphId));
-        let color = this.getColor(type);
+        const color = this.getColor(type);
         const lineColor = '#f1f1f1';
         const fontColor = '#999';
-        const hasSlider=yData.length>18;
+        const hasSlider = yData.length > 18;
+        const hasData = yData.some(e => e || e === 0);
         const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
         const targetMonthOption = {
             graphic: confluenceTenMinGraphic,
@@ -146,6 +151,7 @@ class Charts extends React.Component {
                     type: 'cross',
                     label: { color: fontColor },
                 },
+                show: hasData,
                 backgroundColor: '#fff',
                 padding: 10,
                 textStyle: {
@@ -155,13 +161,11 @@ class Charts extends React.Component {
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 formatter: function (params) {
                     let paramsItem = '';
-                    params.map((item, index) => {
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color[index]}"> </span> 
-            ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'PR') && '%' || ''}
-            </div>`
+                    params.map((item) => {
+                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span>  
+                        ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'} </div>`
                     });
-                    return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>
-           ${paramsItem}`
+                    return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>${paramsItem}`
                 }
             },
             title: {
@@ -176,42 +180,39 @@ class Charts extends React.Component {
             },
             color: this.getColor(type),
             grid: {
-                // right:48,
-                // left: 28,
-                bottom:140,
-                // containLabel:true,
+                bottom: 140,
             },
             legend: {
                 left: 'center',
                 itemWidth: 5,
                 itemHeight: 5,
                 icon: 'circle',
-                textStyle:{
-                    color:fontColor
+                textStyle: {
+                    color: fontColor
                 }
             },
             dataZoom: [{
-              show: hasSlider,
-              type: 'slider',
-              realtime: true,
-              filterMode:'filter',
-              startValue: 0,
-              endValue: hasSlider?19:100,
-              bottom: 40,
-              handleSize: '80%',
-              handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-              backgroundColor: 'rgba(213,219,228,.8)',
-              height: '20px',
-              handleStyle: {
-                width: '16px',
-                height: '16px',
-                borderRadius: '100%',
-                color: '#fff',
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.6)',
-                shadowOffsetX: 2,
-                shadowOffsetY: 2
-              }
+                show: hasSlider,
+                type: 'slider',
+                realtime: true,
+                filterMode: 'filter',
+                startValue: 0,
+                endValue: hasSlider ? 19 : 100,
+                bottom: 40,
+                handleSize: '80%',
+                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                backgroundColor: 'rgba(213,219,228,.8)',
+                height: '20px',
+                handleStyle: {
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '100%',
+                    color: '#fff',
+                    shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2
+                }
             }],
             xAxis: {
                 type: 'category',
@@ -232,10 +233,12 @@ class Charts extends React.Component {
                 },
                 axisLabel: {
                     color: fontColor,
-                    rotate:-45,
-                    height:10,
-                    width:10,
-                    backgroundColor:'pink'
+                    rotate: -45,
+                    height: 10,
+                    width: 10,
+                    formatter: (value) => {
+                        return value && value.length > 0 && value.substring(0, 6) + '...' || null
+                    }
                 },
                 axisTick: {
                     show: false,

@@ -95,8 +95,8 @@ function* getDevicecontrast(action) { // 获取设备对比列表的数据
 
 function* getChartsData(action) { // 获取图表数据
   const { payload } = action;
-  const url='/mock/performance/deviceanalysis/stationcontrastmore';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationcontrastmore}`
+  // const url='/mock/performance/deviceanalysis/stationcontrastmore';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationcontrastmore}`
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -104,7 +104,10 @@ function* getChartsData(action) { // 获取图表数据
         type: manufacturersAction.changeManufacturersStore,
         payload: {
           ...payload,
-          chartsData: response.data.data || [],
+          conversioneffList: response.data.data.conversioneffList || [],
+          faultNumList: response.data.data.faultNumList || [],
+          faultHoursList: response.data.data.faultHoursList || [],
+          deviceCapacityList: response.data.data.deviceCapacityList || [],         
         },
       });
     } else { throw response.data }

@@ -9,7 +9,7 @@ const Option = Select.Option;
 class CustomizeTable extends Component {
     static propTypes = {
         stations: PropTypes.array,
-        stationCode: PropTypes.array,
+        stationCode: PropTypes.number,
         manufacturer: PropTypes.string,
         getManufacturer: PropTypes.func,
         getDevicemode: PropTypes.func,
@@ -26,6 +26,11 @@ class CustomizeTable extends Component {
 
     constructor(props, context) {
         super(props, context)
+        this.state = {
+            stationCode: null, // 电站编码
+            manufacturer: null, //生产厂商
+            deviceModeId: null, //设备型号ID
+        }
     }
 
 
@@ -40,28 +45,34 @@ class CustomizeTable extends Component {
     }
 
     stationSelected = (value) => { // 电站选择
-        const stationCode = [];
         const { type } = this.props;
-        value.forEach(e => stationCode.push(e.stationCode))
+        const stationCode = value.length > 0 ? value[0].stationCode : '';
+        this.setState({ stationCode, manufacturer: null, deviceModeId: null })
         this.props.getManufacturer({ params: { stationCode: stationCode }, resultName: this.getName(type)[0] })
     }
 
     manufacturerSelect = (value) => { // 厂家选择
-        const { stationCode, type } = this.props;
+        const { stationCode } = this.state;
+        const { type } = this.props;
         this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value }, resultName: this.getName(type)[1] })
+        this.setState({ manufacturer: value })
     }
 
     devicemodeListSelect = (value) => { // 设备选择
-        const { stationCode, deviceTypeCode, startDate, endDate, manufacturer, type } = this.props;
-        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeIds: [value], manufacturer }
+        const { startDate, endDate, deviceTypeCode, type } = this.props;
+        const { stationCode, manufacturer, } = this.state;
+        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeId: value, manufacturer }
+        this.setState({ deviceModeId: value })
+        this.props.onChange({ stationCode, deviceModeId: value, manufacturer })
         this.props.getDetailData({ params, resultName: this.getName(type)[2] })
     }
 
 
     render() {
-        const { stations, manufacturerList,anotherManufacturerList, anotherDevicemodeList, devicemodeList, type, } = this.props;
-        const manufacturer=type==='base'?manufacturerList:anotherManufacturerList;
-        const device=type==='base'?devicemodeList:anotherDevicemodeList;
+        const { stations, manufacturerList, anotherManufacturerList, anotherDevicemodeList, devicemodeList, type, } = this.props;
+        const { stationCode, manufacturer, deviceModeId } = this.state;
+        const manufacturers = type === 'base' ? manufacturerList : anotherManufacturerList;
+        const device = type === 'base' ? devicemodeList : anotherDevicemodeList;
         return (
             <div className={styles.selectCondition}>
                 <StationSelect
@@ -70,12 +81,24 @@ class CustomizeTable extends Component {
                     onChange={this.stationSelected}
                     style={{ width: 120 }}
                 />
-                <Select style={{ width: 120, marginLeft: 4 }} placeholder={'厂家选择'} onChange={this.manufacturerSelect}>
-                    {manufacturer.map(e => {
+                <Select
+                    style={{ width: 120, marginLeft: 4 }}
+                    placeholder={'厂家选择'}
+                    onChange={this.manufacturerSelect}
+                    disabled={stationCode ? false : true}
+                    value={manufacturer}
+                >
+                    {manufacturers.map(e => {
                         return <Option value={e.manufacturer} key={e.manufacturer}>{e.manufacturer}</Option>
                     })}
                 </Select>
-                <Select style={{ width: 120, marginLeft: 4 }} placeholder={'设备选择'} onChange={this.devicemodeListSelect}>
+                <Select
+                    style={{ width: 120, marginLeft: 4 }}
+                    placeholder={'设备选择'}
+                    onChange={this.devicemodeListSelect}
+                    disabled={manufacturer ? false : true}
+                    value={deviceModeId}
+                >
                     {device.map(e => {
                         return <Option value={e.deviceModeId} key={e.deviceModeId}>{e.deviceModeName}</Option>
                     })}

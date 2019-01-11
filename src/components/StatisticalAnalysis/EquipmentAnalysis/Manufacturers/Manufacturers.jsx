@@ -13,7 +13,10 @@ class Manufacturers extends Component {
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     manufacturers: PropTypes.array,
-    chartsData: PropTypes.array,
+    conversioneffList: PropTypes.array,
+    faultNumList: PropTypes.array,
+    faultHoursList: PropTypes.array,
+    deviceCapacityList: PropTypes.array,
   }
 
   constructor(props, context) {
@@ -27,27 +30,15 @@ class Manufacturers extends Component {
   }
 
   render() {
-    const { chartsData } = this.props;
-    const manufacturer = chartsData.map(e=>e.manufacturer);
-    const deviceModeName = chartsData.map(e=>e.deviceModeName);
-    const xData = manufacturer;
-    const conversioneff =  chartsData.map(e=>e.conversioneff);
-    const faultNum = chartsData.map(e=>e.faultNum);
-    const faultHours = chartsData.map(e=>e.faultHours);
-    const deviceCapacity = chartsData.map(e=>e.deviceCapacity);
-    console.log(xData,conversioneff,faultNum,faultHours,deviceCapacity)
-    const conversioneffHasData=conversioneff.length>0?true:false
-    const durationHasData=conversioneff.length>0?true:false
-    const faultNumHasData=conversioneff.length>0?true:false
-    const capacityHasdata=conversioneff.length>0?true:false
+    const { conversioneffList, faultNumList, faultHoursList, deviceCapacityList } = this.props;
     return (
       <div className={styles.manufacturers}>
         <Search {...this.props} />
         <div className={styles.manuCont}>
-          <Charts graphId={"efficiency"} type={"efficiency"} hasData={conversioneffHasData} xData={xData} yData={conversioneff} />
-          <Charts graphId={"duration"} type={"duration"} hasData={durationHasData} xData={xData} yData={faultHours} />
-          <Charts graphId={"frequency"} type={"frequency"} hasData={faultNumHasData} xData={xData} yData={faultNum} />
-          <Charts graphId={"capacity"} type={"capacity"} hasData={capacityHasdata} xData={xData} yData={deviceCapacity} />
+          <Charts graphId={"conversioneff"} type={"conversioneff"} data={conversioneffList} />
+          <Charts graphId={"faultHours"} type={"faultHours"} data={faultHoursList} />
+          <Charts graphId={"faultNum"} type={"faultNum"} data={faultNumList} />
+          <Charts graphId={"deviceCapacity"} type={"deviceCapacity"} data={deviceCapacityList} />
         </div>
       </div>
     )

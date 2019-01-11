@@ -10,7 +10,14 @@ const { RangePicker } = DatePicker;
 
 class Customize extends Component {
   static propTypes = {
-    changeCustomizeStore: PropTypes.func
+    changeCustomizeStore: PropTypes.func,
+    getDetailData: PropTypes.func,
+    stationCode: PropTypes.number,
+    anotherStationCode: PropTypes.number,
+    manufacturer: PropTypes.string,
+    anotherManufacturer: PropTypes.string,
+    deviceModeId: PropTypes.string,
+    anotherDeviceModeId: PropTypes.string,
   }
 
   constructor(props, context) {
@@ -18,13 +25,21 @@ class Customize extends Component {
   }
 
   timeSelect = (date, dateString) => {
-    console.log(date, dateString)
-    this.props.changeCustomizeStore({ startDate: dateString[0], endDate: dateString[1] })
+    const { stationCode, anotherStationCode, manufacturer, anotherManufacturer, deviceModeId,
+      anotherDeviceModeId } = this.props;
+    this.props.getDetailData({ 
+      params: { stationCode, manufacturer, deviceModeId, startDate: dateString[0], endDate: dateString[1] },
+      resultName:'detailData',
+     })
+    this.props.getDetailData({ 
+      params: { stationCode:anotherStationCode, manufacturer:anotherManufacturer, deviceModeId:anotherDeviceModeId, startDate: dateString[0], endDate: dateString[1] },
+      resultName:'anotherDetailData',
+     })
+     this.props.changeCustomizeStore({ startDate: dateString[0], endDate: dateString[1] })
   }
 
   render() {
     const currentYearDay = moment().year() + '/01/01';
-    const { } = this.props;
     return (
       <div className={styles.customizeBox}>
         <div className={styles.search}>
@@ -35,8 +50,9 @@ class Customize extends Component {
           <RangePicker
             defaultValue={[moment(currentYearDay, 'YYYY-MM-DD'), moment(moment(), 'YYYY-MM-DD')]}
             format={'YYYY-MM-DD'}
-            style={{ width: 200, marginLeft: 15, marginRight: 15 }}
+            style={{ width: 230, marginLeft: 15, marginRight: 15 }}
             onChange={this.timeSelect}
+            allowClear={false}
           />
         </div>
         <CustomizeTable {...this.props} />
