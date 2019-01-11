@@ -187,12 +187,17 @@ const menuData = [
         rightKey: 'statistics_device',
         children: [
           {
-            name: '设备性能分析',
+            name: '性能分析',
             path: 'performance',
             rightKey: 'statistics_device_performance',
           }, {
-            name: '设备厂家对比',
+            name: '设备对比',
             path: 'manufacturers',
+            rightKey: 'statistics_device',
+          },
+          {
+            name: '自定义对比',
+            path: 'customize',
             rightKey: 'statistics_device',
           }
         ]
