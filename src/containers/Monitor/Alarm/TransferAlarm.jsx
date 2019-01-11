@@ -26,7 +26,7 @@ class TransferAlarm extends Component {
     resetAlarm: PropTypes.func,
     getAlarmNum: PropTypes.func,
     changeAlarmStore: PropTypes.func,
-    getRealTimeAlarm: PropTypes.func,
+    getTransferAlarm: PropTypes.func,
     getTicketInfo: PropTypes.func,
     ticketInfo: PropTypes.object,
     isTransferWork: PropTypes.number,
@@ -44,7 +44,7 @@ class TransferAlarm extends Component {
 
   componentDidMount() {
     const warningStatus = 3;
-    this.props.getRealTimeAlarm({ // 初始请求数据
+    this.props.getTransferAlarm({ // 初始请求数据
       warningLevel: [],
       stationType: '2',
       stationCode: [],
@@ -109,7 +109,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   changeAlarmStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload }),
-  getRealTimeAlarm: payload => dispatch({ type: alarmAction.GET_REALTIME_ALARM_SAGA, payload }),
+  getTransferAlarm: payload => dispatch({ type: alarmAction.getTransferAlarm, payload }),
   getAlarmNum: payload => dispatch({ type: alarmAction.GET_ALARM_NUM_SAGA, payload }),
   resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
   getTicketInfo: payload => dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),

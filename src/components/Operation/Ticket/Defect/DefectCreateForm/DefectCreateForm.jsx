@@ -86,11 +86,12 @@ class TmpForm extends Component {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
         let { stationCode, stationType } = values.stations[0];
-        let deviceCode = values.deviceCode;
+        let deviceCode = values.deviceCode[0].deviceCode;
         let partitionCode = values.stations[0].zoneCode;
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
         let photoAddress = [];
+        let reasonDesc=values.reasonDesc || '';
         if (showContainer === 'create') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
@@ -123,6 +124,7 @@ class TmpForm extends Component {
           photoAddress,
           photoSolveAddress,
           rotatePhoto,
+          reasonDesc,
         };
         if (showContainer === 'create') {
           onDefectCreateNew(params);
@@ -306,6 +308,14 @@ class TmpForm extends Component {
                   <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
                 )}
               </FormItem>
+              <FormItem label="产生原因" colon={false}>
+              {getFieldDecorator('reasonDesc', {
+                rules: [{ required: true, message: '请输入产生原因' }],
+                initialValue: ''
+              })(
+                <InputLimit placeholder="请描述，不超过80个汉字" />
+              )}
+            </FormItem>
               <FormItem label="添加照片" colon={false}>
                 <div className={styles.addImg}>
                   <div className={styles.maxTip}>最多4张</div>
