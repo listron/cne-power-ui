@@ -6,7 +6,7 @@ import { watchHomepage } from './Home/homepageSaga';
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
 import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
-import { watchPersonnelGps } from './Operation/Ticket/PersonnelGps/personnelGpsSaga';
+import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
@@ -38,6 +38,11 @@ import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manu
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
 
 
+
+import { watchRealtimeWarning} from "./HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga";
+import { watchTransferForm} from "./HighAnalysis/IntelligentWarning/Transfer/transferFormSaga";
+import { watchHandleWarning} from "./HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga";
+import { watchHistoryWarning} from "./HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga";
 
 import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
 import { watchCleanWarning } from "./HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga";
@@ -95,6 +100,10 @@ export default function* rootSaga() {
     watchManufacturers(),
     watchCustomize(),
     //高级分析>清洗模型>清洗记录+清洗预警
+    watchRealtimeWarning(),
+    watchTransferForm(),
+    watchHandleWarning(),
+    watchHistoryWarning(),
     watchCleanoutRecord(),
     watchCleanWarning(),
     // 高级分析-低效组串

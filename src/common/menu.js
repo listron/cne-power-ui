@@ -68,6 +68,12 @@ const menuData = [
     rightKey: 'operation',
     children: [
       {
+        name: '员工定位',
+        path: 'gps',
+        iconStyle: 'icon-mapman',
+        rightKey: 'operation_locate',
+        defaultPath: true,
+      }, {
         name: '工单',
         iconStyle: 'icon-gd2',
         path: 'ticket',
@@ -76,17 +82,13 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            defaultPath: true,
+            // defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
-          }, {
-            name: '员工定位',
-            path: 'gps',
-            rightKey: 'operation_locate',
-          }
+          },
         ]
       }, {
         name: '两票管理',
@@ -227,6 +229,31 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
+      { name: '智能预警',
+      iconStyle: 'icon-usermanage',
+      path: 'intelligentWarning',
+      rightKey: 'analysis_cleanModel',
+      children: [
+        {
+          name: '实时预警',
+          path: 'realtime',
+          defaultPath: true,
+          rightKey: 'monitor',
+        }, {
+          name: '已转工单',
+          path: 'transfer',
+          rightKey: 'monitor',
+        },{
+          name: '手动解除',
+          path: 'handleremove',
+          rightKey: 'monitor',
+        },{
+          name: '历史预警',
+          path: 'historywarning',
+          rightKey: 'monitor',
+        }
+        
+      ]},
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
@@ -236,14 +263,16 @@ const menuData = [
           {
             name: '清洗预警',
             path: 'warning',
+            // defaultPath: true,
+            rightKey: 'monitor',
             defaultPath: true,
-            rightKey: 'analysis_cleanModel',
+            // rightKey: 'analysis_cleanModel',
           }, {
             name: '清洗计划与记录',
             path: 'record',
             rightKey: 'analysis_cleanModel',
           },
-          
+
         ]
       },
       {
@@ -363,7 +392,7 @@ const menuData = [
           path: 'warning',
           rightKey: 'system_config',
         },
-      ]
+        ]
       }
     ],
   }
