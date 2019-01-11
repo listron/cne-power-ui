@@ -23,7 +23,7 @@ class CustomizeTable extends Component {
     }
 
     getDefaultData = (vlaue, option) => { // 判断如何显示
-        if (option === 'stationCode') { // 根据电站来判断
+        if (option === 'stationName') { // 根据电站来判断
             return vlaue.stionCode ? (vlaue[option] || '--') : '没有电站进行对比'
         }
         return vlaue.stionCode ? (vlaue[option] || '--') : null
@@ -54,8 +54,8 @@ class CustomizeTable extends Component {
                 <div className={styles.tBody}>
                     <div>
                         <span className={styles.option}>电站</span>
-                        <span className={styles.base}>{this.getDefaultData(detailData, 'stationCode')}</span>
-                        <span className={styles.compare}>{this.getDefaultData(anotherDetailData, 'stationCode')}</span>
+                        <span className={styles.base}>{this.getDefaultData(detailData, 'stationName')}</span>
+                        <span className={styles.compare}>{this.getDefaultData(anotherDetailData, 'stationName')}</span>
                     </div>
                     <div>
                         <span className={styles.option}>厂家</span>
