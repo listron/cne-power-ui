@@ -150,12 +150,12 @@ class CleanoutPlanRecord extends Component {
             </div>
             <div className={styles.statisticData}>
               <div className={styles.statisticTarget}>
-                <div className={styles.numberColor}>{cleanRecordProfit}(10%)</div>
+                <div className={styles.numberColor}>{cleanRecordProfit}</div>
                 <div>累计清洗收益(万kWh)</div>
               </div>
               <div className={styles.statisticTarget}>
                 <div className={styles.numberColor}>{cleanRecordCost}</div>
-                <div>清洗成本(万元)</div>
+                <div>清洗成本(元)</div>
               </div>
               <div className={styles.statisticTarget}>
                 <div className={styles.numberColor}>{cleanRecordTime}</div>
@@ -163,7 +163,7 @@ class CleanoutPlanRecord extends Component {
 
             </div>
             <div className={styles.filterData}>
-              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
+              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >添加</Button>
               {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
               <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
             </div>

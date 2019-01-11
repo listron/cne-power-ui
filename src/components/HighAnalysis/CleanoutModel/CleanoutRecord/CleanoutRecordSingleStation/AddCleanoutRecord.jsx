@@ -71,7 +71,7 @@ class AddCleanoutRecord extends Component {
     const { stations, showAddRecordModal } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
     const rangeConfig = {
       initialValue: cleanRecorddetail.startTime ? [moment(cleanRecorddetail.startTime), moment(cleanRecorddetail.endTime)] : [],
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+      rules: [{ type: 'array', required: true, message: '请选择清洗记录时间' }],
     };
     const tmpDeviceTypes = getMatrixData.map((e, i) => {
       return {
@@ -131,7 +131,7 @@ class AddCleanoutRecord extends Component {
             >
               {getFieldDecorator('remark', {
                 initialValue: cleanRecorddetail.remark ? cleanRecorddetail.remark : '',
-                rules: [{ required: true, message: '请描述，不超过80个汉字', whitespace: true },],
+                rules: [{  message: '请描述，不超过80个汉字', whitespace: true },],
               })(
                 <InputLimit width={316} placeholder="请描述，不超过80个汉字" />
               )}
