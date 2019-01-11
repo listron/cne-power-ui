@@ -285,19 +285,19 @@
   }
   .ticketDone .circle{
     background: url('/img/turn1.png') no-repeat center center;
-    animation: circlFrame 1s linear infinite;
-    -webkit-animation: circlFrame 1s linear infinite;
+    // animation: circlFrame 1s linear infinite;
+    // -webkit-animation: circlFrame 1s linear infinite;
   }
   .ticketDoing .circle{
     background: url('/img/turn2.png') no-repeat center center;
-    animation: circlFrame 1s linear infinite;
-    -webkit-animation: circlFrame 1s linear infinite;
+    // animation: circlFrame 1s linear infinite;
+    // -webkit-animation: circlFrame 1s linear infinite;
   }
-  @keyframes circlFrame {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(180deg);}
-    100% { transform: rotate(360deg);}
-  }
+  // @keyframes circlFrame {
+  //   0% { transform: rotate(0deg); }
+  //   50% { transform: rotate(180deg);}
+  //   100% { transform: rotate(360deg);}
+  // }
   // .doneData, .doingData{
   //   width: 82px;
   //   height: 82px;

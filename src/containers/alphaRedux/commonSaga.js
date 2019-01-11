@@ -393,7 +393,7 @@ function* getWeather(action) { // 获取电站天气
   try {
     const { params, actionName, resultName } = payload;
     const url = `${APIBasePath}${commonPaths.getWeather}`;
-    const response = yield call(axios.get, url, params);
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
         type: actionName,

@@ -74,8 +74,8 @@ DustEffectStation.propTypes = {
 
 export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 清洗预警 => 详情 影响数据及天气
   const dateArr = ['今天', '明天', '后天'];
-  // const value = dataFormat(dustEffectInfo.influencePower, '--', 2);
-  const value = dataFormat(219.1844, '--', 2);
+  const { influencePower, cleanDays } = dustEffectInfo;
+  const value = dataFormat(influencePower, '--', 2);
   let showValue = [];
   if (value >= 0 || `${value}`.includes('.')) {
     showValue = `${value}`.split('.');
@@ -91,7 +91,7 @@ export const DustBaseInfo = ({ weatherList = [], dustEffectInfo = {} }) => { // 
         <span className={styles.text}>昨日灰尘影响电量(万kWh)</span>
       </div>
       <div className={styles.effectDay}>
-        <span className={styles.lastCleanValue}>9</span>
+        <span className={styles.lastCleanValue}>{cleanDays}</span>
         <span className={styles.text}>距最近清洗(天)</span>
       </div>
       <div className={styles.weather}>
