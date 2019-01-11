@@ -190,6 +190,9 @@ class CenterMap extends Component{
           map: mapName,
           roam: true,
           layoutCenter: ['50%', '55%'],
+          scaleLimit: {
+            min: 0.75
+          },
           layoutSize: 830,
           itemStyle: {
             normal: {
