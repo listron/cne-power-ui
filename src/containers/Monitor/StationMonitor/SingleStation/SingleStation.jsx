@@ -39,7 +39,7 @@ class SingleStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getTenSeconds(stationCode);
-    // this.getOutputDataTenMin(stationCode,this.props.stationType);
+    this.getOutputDataTenMin(stationCode,this.props.stationType); // 解决出力图不显示的问题
     this.getPowerDataTenMin(stationCode);
     const { search } = this.props.location;
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
@@ -114,11 +114,11 @@ class SingleStation extends Component {
 
   getPowerDataTenMin = (stationCode, intervalTime = 0) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
     clearTimeout(this.timeOutPowerData);
-    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是7天前;
+    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
-      startTime = moment().subtract(6, 'month').startOf('month').format('YYYY-MM-DD')
+      startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
-      startTime = moment().subtract(6, 'year').startOf('year').format('YYYY-MM-DD')
+      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.getMonitorPower({
       stationCode,

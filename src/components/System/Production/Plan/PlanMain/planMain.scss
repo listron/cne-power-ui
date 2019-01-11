@@ -96,6 +96,10 @@
     .edit {
       color: $themeColor;
     }
+    .noEdit{
+      color: $promptColor;
+      pointer-events: none;
+    }
     .save {
       color: #f9b600;
       margin-right: 0 !important;
