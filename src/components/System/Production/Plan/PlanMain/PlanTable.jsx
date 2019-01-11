@@ -258,9 +258,7 @@ class PlanTable extends Component {
                     )}
                   </EditableContext.Consumer>
                 </span>
-              ) : (
-                  <a onClick={() => this.edit(record.key)} className={canEdit?styles.noEdit:styles.edit}>编辑</a>
-                )}
+              ) : (<a onClick={() => this.edit(record.key)} className={canEdit?styles.noEdit:styles.edit}>编辑</a>)}
             </div>
           );
         },
