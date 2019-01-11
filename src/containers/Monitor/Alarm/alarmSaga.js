@@ -33,8 +33,6 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
     yield put({ type:alarmAction.ALARM_FETCH });
     const response = yield call(axios.post,url,{
       ...payload,
-      stationCode:payload.stationCodes?payload.stationCodes:payload.stationCode,
-      startTime:payload.rangTime?payload.rangTime:payload.startTime,
     });
     if(response.data.code === '10000') {
       yield put({
@@ -48,6 +46,38 @@ function *getRealtimeAlarm(action) {  // 请求实时告警
     }  
   }catch(e){
     console.log(e);
+  }
+}
+
+
+function *getTransferAlarm(action) {  // 请求已转工单告警
+  const { payload } = action;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getRealtimeAlarm;
+  try{
+    yield put({ type:alarmAction.ALARM_FETCH });
+    const response = yield call(axios.post,url,{
+      ...payload,
+      stationCode:payload.stationCodes,
+      startTime:payload.rangTime,
+    });
+    if(response.data.code === '10000') {
+      yield put({
+        type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+        payload: {
+          realtimeAlarm: response.data.data,
+          ...payload
+        },
+      });     
+    } else{throw response.data} 
+  }catch(e){
+    console.log(e);
+    yield put({
+      type: alarmAction.GET_ALARM_FETCH_SUCCESS,
+      payload: {
+        realtimeAlarm: [],
+        ...payload
+      },
+    });    
   }
 }
 
@@ -321,6 +351,7 @@ export function* watchAlarmMonitor() {
   yield takeLatest(alarmAction.CHANGE_ALARM_STORE_SAGA, changeAlarmStore);
   yield takeLatest(alarmAction.CHANGE_ALARM_STATISTIC_STORE_SAGA, changeAlarmStatisticStore);
   yield takeLatest(alarmAction.GET_REALTIME_ALARM_SAGA, getRealtimeAlarm);
+  yield takeLatest(alarmAction.getTransferAlarm, getTransferAlarm);
   yield takeLatest(alarmAction.GET_HISTORY_ALARM_SAGA, getHistoryAlarm);
   yield takeLatest(alarmAction.GET_STATIONS_ALARM_STATISTIC_SAGA, getStationsAlarmStatistic);
   yield takeLatest(alarmAction.GET_SINGLESTATION_ALARM_STATISTIC_SAGA, getSingleStationAlarmStatistic);
