@@ -144,6 +144,7 @@ class PlanTable extends Component {
 
   _createTableColumn = () => {//生成表头
     const _this = this;
+    const canEdit=moment().year()-this.props.planYear;
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -257,9 +258,7 @@ class PlanTable extends Component {
                     )}
                   </EditableContext.Consumer>
                 </span>
-              ) : (
-                  <a onClick={() => this.edit(record.key)} className={styles.edit}>编辑</a>
-                )}
+              ) : (<a onClick={() => this.edit(record.key)} className={canEdit?styles.noEdit:styles.edit}>编辑</a>)}
             </div>
           );
         },
