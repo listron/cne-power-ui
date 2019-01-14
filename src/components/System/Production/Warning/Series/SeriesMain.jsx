@@ -7,7 +7,7 @@ class SeriesMain extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
     getSeriesData: PropTypes.func,
-    changeStore: PropTypes.func,
+    changeWarnStore: PropTypes.func,
     addSeriesData: PropTypes.func,
     isSend: PropTypes.number,
     sendNum: PropTypes.any,
@@ -28,17 +28,17 @@ class SeriesMain extends Component {
 
   onChangeHide = (checked) => { //'开关'按钮
     let isSend = checked ? 1 : 0;
-    this.props.changeStore({ isSend });
+    this.props.changeWarnStore({ isSend });
   }
 
   changeCount = (value) => { //设置'阈值'
     value && !Number.isInteger(value) && message.info('请输入整数!')
-    this.props.changeStore({ lostGenPercent: value });
+    this.props.changeWarnStore({ lostGenPercent: value });
   }
 
   changeSendCount = (value) => { //改变'最大下发条数'
    value && !Number.isInteger(value) && message.info('请输入整数!')
-    this.props.changeStore({ sendNum: value });
+    this.props.changeWarnStore({ sendNum: value });
   }
 
   handleClear = () => { //'恢复默认值'按钮
