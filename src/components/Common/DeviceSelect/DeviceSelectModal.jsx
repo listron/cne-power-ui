@@ -153,8 +153,8 @@ class DeviceSelectModal extends Component {
                 <span className={styles.clear} onClick={this.clearDevice}>清空</span>
               </div>
               <div className={styles.checkedInfo}>
-                {checkedDevice.map(e => (
-                  <span key={e.deviceCode} className={styles.eachDevice}>
+                {checkedDevice.map((e,index)=> (
+                  <span key={e.deviceCode+index} className={styles.eachDevice}>
                     <span className={styles.name}>{e.deviceName}</span>
                     <span className={styles.cancel} onClick={() => this.cancelChecked(e.deviceCode)}>X</span>
                   </span>
