@@ -24,8 +24,6 @@ class CleaningMain extends Component {
     this.props.getCleaningData({ enterpriseId });
   }
 
-  
-
   modify = () => { // '修改'按钮
     this.setState({
       isShow: true,
@@ -38,8 +36,7 @@ class CleaningMain extends Component {
   }
 
   handleClear = () => { //'恢复默认值'按钮
-    const { enterpriseId } = this.props;
-    this.props.getCleaningData({ enterpriseId });
+    this.props.changeStore({ lossPowerPercent: 10 })
   }
 
   handleSubmit = () => { //'保存'按钮
