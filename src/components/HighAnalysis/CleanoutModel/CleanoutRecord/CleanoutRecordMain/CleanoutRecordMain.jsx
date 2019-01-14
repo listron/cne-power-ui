@@ -66,7 +66,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
         <div className={styles.topFilter}>
           <FilterCondition
             option={['stationName',]}
-            stations={stations}
+            stations={stations.filter(e => e.stationType === 1)}
             onChange={this.filterCondition}
           />
         </div>

@@ -33,6 +33,8 @@ var initState = Immutable.fromJS({
 
   pageName: 'list',//用于已转工单，list和 detail
   defectId: '', // 用于已转工单 缺陷ID 即转工单id
+  stationCodes:[],// 只用于已转工单
+  rangTime:[],// 发生时间 只用于已转工单
 
 });
 

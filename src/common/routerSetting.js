@@ -43,6 +43,8 @@ import StationResourceAnalysis from '../containers/StatisticalAnalysis/StationAn
 import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
 import StationContrast from '../containers/StatisticalAnalysis/StationAnalysis/StationContrast/StationContrast';
 import PerformanceAnalysis from "../containers/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysis";
+import Manufacturers from "../containers/StatisticalAnalysis/EquipmentAnalysis/Manufacturers/Manufacturers";
+import Customize from "../containers/StatisticalAnalysis/EquipmentAnalysis/Customize/Customize";
 
 //统计报表
 import GeneralReport from '../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport';
@@ -222,15 +224,20 @@ const routers = [
     path: '/statistical/stationaccount/contrast',
     exact: true,
     component: StationContrast
-  }, { //  统计分析-设备分析-设备性能分析
+  }, { //  统计分析-设备分析-性能分析
     path: '/statistical/equipment/performance',
     exact: true,
     component: PerformanceAnalysis
     // component: Building,
-  }, {//厂家对比
+  }, { // 统计分析-设备分析-设备对比
     path: '/statistical/equipment/manufacturers',
     exact: true,
-    component: Building
+    component: Manufacturers
+  },
+  { // 统计分析-设备分析-自定义对比
+    path: '/statistical/equipment/customize',
+    exact: true,
+    component: Customize
   }, {//统计报表
     path: '/statistical/statement/currency',
     exact: true,
