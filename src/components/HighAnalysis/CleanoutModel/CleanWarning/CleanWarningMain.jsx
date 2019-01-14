@@ -21,10 +21,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
     getTotalDustEffect: PropTypes.func,
     getMatrixDustEffect: PropTypes.func,
     changeCleanWarningStore: PropTypes.func,
-  }
-
-  constructor(props) {
-    super(props);
+    getWeather: PropTypes.func,
   }
 
   componentDidMount() {
@@ -74,6 +71,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
     const effectParam = {
       stationCode, endDay, startDay
     }
+    this.props.getWeather({ stationCode });
     this.props.getCleanWarningDetail({ stationCode });
     this.props.getTotalDustEffect(effectParam);
     this.props.getMatrixDustEffect(effectParam);
@@ -105,12 +103,8 @@ class CleanWarningMain extends Component { // 电站管理列表页
                 dataIndex: 'stationName',
                 sorter: true,
               }, {
-                title: '灰尘影响占比',
+                title: '灰尘影响占比(%)',
                 dataIndex: 'influencePercent',
-                sorter: true,
-              }, {
-                title: '未来十天电量收益(万kWh)',
-                dataIndex: 'futurePower',
                 sorter: true,
               }, {
                 title: '距离上次清洗(天)',

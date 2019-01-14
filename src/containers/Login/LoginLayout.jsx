@@ -70,6 +70,9 @@ class LoginLayout extends Component {
               <div className={styles.footerTitle}>
               京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
               </div>
+              <div className={styles.versionTitle}>
+              V3.4.0.20190111        
+              </div>
             </div>
 
           </div>
