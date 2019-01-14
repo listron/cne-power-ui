@@ -108,11 +108,11 @@ class RecordDetailTable extends Component {
     const { getFieldDecorator } = this.props.form;
     const rangeConfig = {
       initialValue: [moment(estimateStartTime), moment(estimateEndTime)],
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+      rules: [{ type: 'array', required: true, message: '请选择计划清洗时间' }],
     };
     const rainConfig = {
       initialValue: [moment(rainStartTime), moment(rainEndTime)],
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+      rules: [{ type: 'array', required: true, message: '请选择降雨时间' }],
     };
     return (
       <Modal
@@ -153,7 +153,7 @@ class RecordDetailTable extends Component {
             >
               {getFieldDecorator('cleanCost', {
                 initialValue: cleanCost,
-                rules: [{ required: true, message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}\.{0,1}\d$)/, message: '仅支持数字，小数点' }],
+                rules: [{  message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}$)/, message: '仅支持数字，小数点' }],
               })(
                 <Input />
               )}

@@ -157,8 +157,11 @@ class CleanoutRecordTable extends Component {
     const { getFieldDecorator } = this.props.form;
     const { planType } = this.state;
     const rangeConfig = {
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+      rules: [{ type: 'array', required: true, message: '请选择计划清洗时间' }],
       initialValue: '',
+    };
+    const rainConfig = {
+      rules: [{ type: 'array', required: true, message: '请选择降雨时间' }],
     };
     return (
       <div>
@@ -216,7 +219,9 @@ class CleanoutRecordTable extends Component {
                 >
                   {getFieldDecorator('cleanCost', {
                     initialValue: '',
-                    rules: [{ required: true, message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}\.{0,1}\d$)/, message: '仅支持数字，小数点' }],
+                    rules: [{ 
+                    
+                       message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}$)/, message: '仅支持整数' }],
                   })(
                     <Input />
                   )}
@@ -226,7 +231,7 @@ class CleanoutRecordTable extends Component {
                   {...formItemLayout}
                   label="降雨时间"
                 >
-                  {getFieldDecorator('rainPlanDate', rangeConfig)(
+                  {getFieldDecorator('rainPlanDate', rainConfig)(
                     <RangePicker />
                   )}
                 </FormItem>

@@ -19,12 +19,17 @@ class SeriesMain extends Component {
       isShow: false,
       defaultThresholdt: null,//默认阈值
       defaultSendNum: null,//默认下发条数
+      defalutStatus: {
+
+      }
     }
   }
 
   componentDidMount() {
     this.props.getSeriesData();
   }
+
+  
 
   onChangeHide = (checked) => { //'开关'按钮
     let isSend = checked ? 1 : 0;
@@ -41,8 +46,8 @@ class SeriesMain extends Component {
     this.props.changeWarnStore({ sendNum: value });
   }
 
-  handleClear = () => { //'恢复默认值'按钮
-    this.props.getSeriesData()
+  handleClear = () => { //'恢复默认值'按钮  默认是70 关 下发条数是20 
+    this.props.changeStore({ lostGenPercent: 70, isSend: 0, sendNum: 20, })
   }
 
   handleSubmit = () => { //'保存'按钮

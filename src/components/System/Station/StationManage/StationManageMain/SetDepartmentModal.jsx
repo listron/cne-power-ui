@@ -19,6 +19,7 @@ class SetDepartmentModal extends Component { // 电站管理列表页
     const checkedKeys = departmentSetInfo.stationDepartments || [];
     this.state = {
       checkedKeys,
+      halfCheckedKeys: [],
     }
   }
 
@@ -29,8 +30,20 @@ class SetDepartmentModal extends Component { // 电站管理列表页
     }
   }
   
-  onCheckDepartment = (checkedKeys) => {
-    this.setState({ checkedKeys });
+  onCheckDepartment = (checkedKeys, {halfCheckedKeys} ) => {
+    this.setState({ checkedKeys, halfCheckedKeys });
+  }
+
+  getRootDepartment = allDepartmentData => { // 获取所有部门的根节点集合。
+    let allRoots = [];
+    allDepartmentData.forEach(e => {
+      if (e.list && e.list.length > 0) {
+        allRoots.push(...this.getRootDepartment(e.list));
+      } else {
+        allRoots.push(e.departmentId);
+      }
+    });
+    return allRoots;
   }
 
   checkAllDepartment =(e) => {
@@ -56,12 +69,12 @@ class SetDepartmentModal extends Component { // 电站管理列表页
   }
 
   confirmSetting= () => {
-    const { checkedKeys } = this.state;
+    const { checkedKeys, halfCheckedKeys } = this.state;
     const { departmentSetInfo } = this.props;
     this.props.closeDepartmentModal({
       stationCode: departmentSetInfo.stationCode,
       stationName: departmentSetInfo.stationName,
-      departmentIds: checkedKeys,
+      departmentIds: [...checkedKeys, ...halfCheckedKeys],
     });
   }
 
@@ -82,10 +95,13 @@ class SetDepartmentModal extends Component { // 电站管理列表页
     });
   }
 
+  
+
 
   render(){
     const { departmentSetInfo, allDepartmentData } = this.props;
     const { checkedKeys } = this.state;
+    const allRootsKey = this.getRootDepartment(allDepartmentData);
     return (
       <Modal
         title={<span>部门设置({departmentSetInfo.stationName})</span>}
@@ -105,7 +121,7 @@ class SetDepartmentModal extends Component { // 电站管理列表页
           checkable
           autoExpandParent
           onCheck={this.onCheckDepartment}
-          checkedKeys={checkedKeys}
+          checkedKeys={checkedKeys.filter(e => allRootsKey.includes(e))}
         >
           {this.renderTreeNodes(allDepartmentData)}
         </Tree>

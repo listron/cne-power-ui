@@ -20,6 +20,9 @@ class RealTimeWarning extends Component {
   componentDidMount(){
   this.props.getLostGenType({objectType: 1})
   }
+  componentWillUnmount(){
+    this.props.resetRealtimeWarninStore()
+  }
   render() {
     const breadCrumbData = {
       breadData: [
@@ -48,7 +51,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   changeRealtimeWarningStore: payload => dispatch({ type: realtimeWarningActive.changeRealtimeWarningStore, payload }),
-  resetStore: payload => dispatch({ type: realtimeWarningActive.resetStore, payload }),
+  resetRealtimeWarninStore: payload => dispatch({ type: realtimeWarningActive.resetRealtimeWarninStore, payload }),
   getRealtimeWarningStatistic: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarningStatistic, payload }),
   getRealtimeWarning: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarning, payload }),
   transferWarning: payload => dispatch({ type: realtimeWarningActive.transferWarning, payload }),

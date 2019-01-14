@@ -28,6 +28,9 @@
     .middleBox{
       height: 750px;
       display: flex;
+      .leftInfo{
+        z-index: 99;
+      }
       .mapInfo{
         margin: 12px 12px 0 12px;
       }
