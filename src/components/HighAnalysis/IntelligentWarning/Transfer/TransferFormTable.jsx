@@ -25,14 +25,10 @@ class TransferFormTable extends Component {
     this.setState((state) => {
       return state.showTransferPopover[index] = visible
     })
-    this.props.getTransferInfo({workOrderId})
+    this.props.getTransferInfo({workOrderId})//请求工单的详细信息
   }
  
-  onSelectChange = (selectedRowKeys) => {//选择checkbox
-    // this.props.changeRealtimeWarningStore({ selectedRowKeys });
-  }
- 
- 
+
   getDetail = (defectId,index) => { // 查看工单详情
     this.props.changeTransferFormStore({pageName:'detail',defectId})
     this.setState((state) => {
@@ -173,11 +169,7 @@ class TransferFormTable extends Component {
     ]
     const { transferFormList, selectedRowKeys, pageSize, currentPage, loading } = this.props;
     const { sortName, descend } = this.state;
-    const { showTransferTicketModal, showHandleRemoveModal,  } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
+    
     const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
     const tableSource = transferFormList.map((e, i) => ({
       ...e,
@@ -203,13 +195,11 @@ class TransferFormTable extends Component {
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-         
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
         </div>
         <Table
           dataSource={tableSource}
           rowKey={record => record.warningLogId}
-        
           columns={columns}
           pagination={false}
           onChange={this.tableChange}

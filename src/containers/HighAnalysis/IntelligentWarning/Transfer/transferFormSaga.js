@@ -39,7 +39,7 @@ function* getTransferFormStatistic(action) {//1.3.2.	获取多电站活动告警
     console.log(e);
   }
 }
-function *getTransferForm(action) {  // 请求实时告警
+function *getTransferForm(action) {  // 请求告警列表
   const { payload, } = action;
   const{stationCodes,rangTime,}=payload;
   const url =`${APIBasePath}${monitor.getRealtimeAlarm}`

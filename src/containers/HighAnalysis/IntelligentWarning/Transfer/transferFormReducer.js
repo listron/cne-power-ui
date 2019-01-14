@@ -3,7 +3,7 @@ import { transferFormActive } from './transferFormActive.js';
 
 var initState = Immutable.fromJS({
   warningStatus:'1',//已转工单
-  warningType:'限值告警',//限值告警
+  warningType:'事件告警',//限值告警
   pageName:'list',
   loading:false,
   warningTypeStatus:'1',//已转工单
