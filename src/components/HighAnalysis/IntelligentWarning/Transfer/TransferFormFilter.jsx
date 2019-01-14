@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import styles from './transferForm.scss';
 import { Input, Button } from 'antd';
-
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
-
-
 
 class TransferFormFilter extends Component {
   static propTypes = {

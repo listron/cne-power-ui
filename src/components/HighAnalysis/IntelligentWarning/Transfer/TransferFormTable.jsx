@@ -12,13 +12,14 @@ class TransferFormTable extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      
       showTransferPopover: [],
     }
   }
  
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    // this.props.changeRealtimeWarningStore({ currentPage, pageSize })
+    const { changeTransferFormStore,onChangeFilter,   } = this.props;
+    changeTransferFormStore({ pageNum:currentPage, pageSize })
+    onChangeFilter({pageNum:currentPage, pageSize})
   }
   
   onTransferChange(visible,workOrderId,index) { // 切换需求
@@ -37,13 +38,21 @@ class TransferFormTable extends Component {
   }
   
   tableChange = (pagination, filters, sorter) => {
-    // this.setState({
-    //   sortName: sorter.field,
-    //   descend: sorter.order === 'descend'
-    // });
-    // this.props.changeRealtimeWarningStore({
-    //   sortName: sorter.field,
-    // });
+    const { changeTransferFormStore,onChangeFilter, } = this.props;
+    const { field, order } = sorter;
+    const sortInfo = {
+      warningLevel: '1',
+      stationName: '2',
+      deviceName: '3',
+      timeOn: '5',
+      durationTime: '6',
+    };
+     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
+    changeTransferFormStore({ orderField, orderCommand })
+    onChangeFilter({
+        orderField, orderCommand
+    })
   }
  
   renderTransferPopover(index,record) { // 转到工单页面的气泡
@@ -167,7 +176,7 @@ class TransferFormTable extends Component {
         // }
       }
     ]
-    const { transferFormList, selectedRowKeys, pageSize, currentPage, loading } = this.props;
+    const { transferFormList,  pageSize, pageNum, } = this.props;
     const { sortName, descend } = this.state;
     
     const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
@@ -188,14 +197,14 @@ class TransferFormTable extends Component {
         return a.key - b.key;
       }
     }).filter((e, i) => { // 筛选页面
-      const startIndex = (currentPage - 1) * pageSize;
+      const startIndex = (pageNum - 1) * pageSize;
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
         </div>
         <Table
           dataSource={tableSource}
@@ -205,9 +214,6 @@ class TransferFormTable extends Component {
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        
-
-       
       </div>
     )
   }

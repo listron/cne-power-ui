@@ -21,8 +21,8 @@ class TransferFormContaienr extends Component {
   }
 
   queryTransferFrom = (value) => {
-    const { getTransferForm, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
-    const params = { warningTypeStatus,  rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
+    const { getTransferForm, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType,pageSize, pageNum, } = this.props;
+    const params = { warningTypeStatus,  rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType,pageSize, pageNum, }
     getTransferForm({ ...params, ...value })
   }
   render() {
@@ -31,7 +31,7 @@ class TransferFormContaienr extends Component {
       <div className={styles.transferFormContaienr}>
         <WarningStatisticTop {...this.props} warningStatus={'2'} />
         <TransferFormFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
-        <TransferFormTable {...this.props} />
+        <TransferFormTable {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
     )
   }
