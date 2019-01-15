@@ -2,11 +2,11 @@ import Immutable from 'immutable';
 import { transferFormActive } from './transferFormActive.js';
 
 var initState = Immutable.fromJS({
-  warningStatus:'1',//已转工单
-  warningType:'事件告警',//限值告警
+  warningStatus:'3',//已转工单
+  warningType:'限值告警',//限值告警
   pageName:'list',
   loading:false,
-  warningTypeStatus:'1',//已转工单
+  warningTypeStatus:'3',//已转工单
   orderField:'',
   orderCommand:'',
   durationType:null,

@@ -45,7 +45,7 @@ class TransferFormTable extends Component {
       stationName: '2',
       deviceName: '3',
       timeOn: '5',
-      durationTime: '6',
+      durationTime: '9',
     };
      const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
@@ -177,37 +177,14 @@ class TransferFormTable extends Component {
       }
     ]
     const { transferFormList,  pageSize, pageNum, } = this.props;
-    const { sortName, descend } = this.state;
-    
-    const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
-    const tableSource = transferFormList.map((e, i) => ({
-      ...e,
-      key: i,
-    })).sort((a, b) => { // 手动排序
-      const sortType = descend ? -1 : 1;
-      if (sortName === 'warningLevel') {
-        return sortType * (a.warningLevel - b.warningLevel);
-      } else if (nameSortArr.includes(sortName)) {
-        return sortType * a[sortName].localeCompare(b[sortName], 'zh');
-      } else if (sortName === 'timeOn') {
-        return sortType * (moment(a.timeOn) - moment(b.timeOn));
-      } else if (sortName === 'durationTime') {
-        return sortType * (moment(b.timeOn) - moment(a.timeOn));
-      } else {
-        return a.key - b.key;
-      }
-    }).filter((e, i) => { // 筛选页面
-      const startIndex = (pageNum - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+   
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
         </div>
         <Table
-          dataSource={tableSource}
+          dataSource={transferFormList}
           rowKey={record => record.warningLogId}
           columns={columns}
           pagination={false}

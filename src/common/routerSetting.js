@@ -263,8 +263,8 @@ const routers = [
   {
     path: '/analysis/intelligentWarning/handleremove',
     exact: true,
-    // component: HandleRemove
-     component: Building
+    component: HandleRemove
+    //  component: Building
   },
   {
     path: '/analysis/intelligentWarning/historywarning',

@@ -21,6 +21,9 @@ class TransferForm extends Component {
       showPage: false
     }
   }
+  componentWillUnmount(){
+    this.props.resetTransferFormStore()
+  }
   onEnterToggleSide = () => {//动态切换页面,开
     this.setState({ showPage: true })
   }
