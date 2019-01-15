@@ -10,22 +10,29 @@
     }
     .warningContent {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex: 1;
         background: $pageGround;
+        min-height: 100%;
+        overflow: hidden;
+        .WarnCont {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1 0 auto;
+            width: 100%;
+        }
         :global {
             .ant-tabs-tabpane {
                 display: flex;
                 justify-content: center;
             }
-        }
-        :global {
             .ant-tabs-nav-scroll {
                 background-color: #f8f8f8;
                 .ant-tabs-tab {
                     margin-right: 0;
                     min-width: 120px;
-                    min-height: 41px;
+                    min-height: 42px;
                     text-align: center;
                     border: none;
                     border-radius: 0;

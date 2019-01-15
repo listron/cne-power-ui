@@ -1,0 +1,101 @@
+@import '../../../../../theme/theme.scss';
+.warnConfig {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 0 auto;
+    width: 100%;
+    .warnListTop {
+        display: flex;
+        justify-content: space-between;
+        height: 72px;
+        align-items: center;
+        .warnListLeft {
+            display: flex;
+        }
+        .rule {
+            padding: 0;
+            margin-left: 24px;
+            margin-right: 12px;
+            font-size: 0;
+            border: 1px solid $themeColor;
+            i {
+                background-color: $themeColor;
+                color: #fff;
+                font-size: 14px;
+                vertical-align: top;
+                width: 28px;
+                line-height: 30px;
+                border-radius: 2px 0 0 2px;
+            }
+            .text {
+                border-radius: 0 2px 2px 0;
+                font-size: 14px;
+                color: $themeColor;
+                display: inline-block;
+                line-height: 30px;
+                margin: 0px;
+                text-align: center;
+            }
+            @include highLight($themeColor);
+            &:hover {
+                .text {
+                    background: $themeColor;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    :global {
+        .ant-table-placeholder {
+            border: none
+        }
+    }
+}
+
+.warnCofigSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 0 auto;
+    width: 100%;
+    background: $pageGround;
+    z-index: 10;
+    .addRule{
+        display: flex;
+        flex: 1;
+    }
+
+    .detailRule{
+        display: flex;
+        flex: 1;
+    }
+
+    .editRule{
+        display: flex;
+        flex: 1;
+    }
+}
+
+.warnConfigSearch {
+    // 条件查询
+    display: flex;
+    align-items: center;
+    height: 71px;
+    border-bottom: solid 1px $promptColor;
+    line-height: 40px;
+    .titleText {
+        color: $darkColor;
+        margin-left: 28px;
+        margin-right: 12px;
+    }
+    .typeSelect,
+    .modelSelect,
+    .pointSelect {
+        width: 198px;
+        margin-right: 12px;
+    }
+    .typeSelect {
+        margin-left: 12px;
+    }
+}

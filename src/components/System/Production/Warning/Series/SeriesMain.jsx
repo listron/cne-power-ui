@@ -47,7 +47,7 @@ class SeriesMain extends Component {
   }
 
   handleClear = () => { //'恢复默认值'按钮  默认是70 关 下发条数是20 
-    this.props.changeStore({ lostGenPercent: 70, isSend: 0, sendNum: 20, })
+    this.props.changeWarnStore({ lostGenPercent: 70, isSend: 0, sendNum: 20, })
   }
 
   handleSubmit = () => { //'保存'按钮
@@ -90,7 +90,7 @@ class SeriesMain extends Component {
       <div className={styles.seriesBox}>
         <div className={styles.thresholdt}>
           <span className={styles.thresholdtText}>电量损失比阈值</span>
-          {!isShow ? <span className={styles.thresholdtNum}>{lostGenPercent}</span> :
+          {!isShow ? <span className={styles.thresholdtNum}>{lostGenPercent || '--'}</span> :
             <InputNumber min={1} defaultValue={lostGenPercent} onChange={this.changeCount} value={lostGenPercent} />}
           <span className={styles.unit}>%</span>
         </div>
