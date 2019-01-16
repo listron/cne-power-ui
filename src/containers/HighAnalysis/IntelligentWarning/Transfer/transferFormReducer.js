@@ -20,7 +20,6 @@ var initState = Immutable.fromJS({
   pageNum:1, 
   ticketInfo:[],
   currentPage:1,
-  lastUpdateTime:'',//上次更新时间
   stationCodes:[],//电站编码
   oneWarningNum:null,//一级告警
   twoWarningNum: null,//二级告警
