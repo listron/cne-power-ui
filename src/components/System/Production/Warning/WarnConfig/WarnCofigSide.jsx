@@ -23,9 +23,9 @@ class WarnCofigSide extends Component {
         const { showPage } = this.props;
         return (
             <div className={styles.warnCofigSide}>
-                {showPage === 'add' && <AddRule />}
-                {showPage === 'edit' && <EditRule />}
-                {showPage === 'detail' && <DetailRule />}
+                {showPage === 'add' && <AddRule {...this.props} />}
+                {showPage === 'edit' && <EditRule  {...this.props} />}
+                {showPage === 'detail' && <DetailRule {...this.props} />}
             </div>
         )
     }

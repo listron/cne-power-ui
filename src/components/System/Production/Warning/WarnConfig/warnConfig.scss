@@ -1,4 +1,13 @@
 @import '../../../../../theme/theme.scss';
+@mixin top() {
+    //详情，编辑通用顶部基础样式
+    @include lineheight(64px);
+    display: flex;
+    padding-left: 32px;
+    align-items: center;
+    border-bottom: solid 1px $promptColor;
+}
+
 .warnConfig {
     display: flex;
     flex-direction: column;
@@ -46,6 +55,9 @@
             }
         }
     }
+    .describe {
+        text-decoration: underline;
+    }
     :global {
         .ant-table-placeholder {
             border: none
@@ -61,17 +73,98 @@
     width: 100%;
     background: $pageGround;
     z-index: 10;
-    .addRule{
+    .addRule {
         display: flex;
         flex: 1;
+        .stationsRule {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 71px;
+            line-height: 40px;
+            .titleText {
+                color: $darkColor;
+                margin-left: 28px;
+                margin-right: 12px;
+            }
+            .typeSelect,
+            .modelSelect,
+            .pointSelect {
+                width: 198px;
+                margin-right: 12px;
+            }
+            .typeSelect {
+                margin-left: 12px;
+            }
+        }
     }
-
-    .detailRule{
+    .detailRule {
         display: flex;
         flex: 1;
+        flex-direction: column;
+        .detailTop {
+            @include top;
+            justify-content: space-between;
+            .text {
+                font-size: 18px;
+                color: $darkColor;
+                letter-spacing: 4px;
+            }
+            .backIcon {
+                color: $darkColor;
+                font-size: 20px;
+                border-left: 1px solid $promptColor;
+                margin-left: 10px;
+                height: 100%;
+                line-height: 64px;
+                width: 64px;
+                cursor: pointer;
+            }
+            :global {
+                .icon-last,
+                .icon-next {
+                    font-size: 20px;
+                    margin-right: 20px; // color: $darkColor;
+                }
+            }
+        }
+        .detailCont {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            .detailBox {
+                .detail {
+                    margin-top: 51px;
+                    display: flex;
+                    flex-direction: column;
+                    color: #000;
+                    span {
+                        color: $darkColor;
+                        margin-left: 15px;
+                    }
+                }
+                .detailRule {
+                    margin-top: 28px;
+                    display: flex;
+                    flex-direction: column;
+                    color: #000;
+                    span {
+                        color: $darkColor;
+                        margin-left: 15px;
+                    }
+                    .tooltip {
+                        color: #f9b600;
+                        margin-left: -3px;
+                    }
+                    .warningRuler {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
     }
-
-    .editRule{
+    .editRule {
         display: flex;
         flex: 1;
     }

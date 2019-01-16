@@ -224,8 +224,7 @@ function* modify(action){ // 修改预警配置
 
 function* getDetail(action){ // 查询预警配置
   const { payload } = action;
-  const{warningCheckId}=payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}/${warningCheckId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}/${payload}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -250,10 +249,9 @@ function* getDetail(action){ // 查询预警配置
 
 function* warnDelete(action){ // 删除预警配置
   const { payload } = action;
-  const{warningCheckId}=payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}/${warningCheckId}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}`;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.delete, url,{data:payload});
     if (response.data.code === '10000') {
       message.success('删除成功！！！')
       const params = yield select(state => ({//继续请求生产计划列表

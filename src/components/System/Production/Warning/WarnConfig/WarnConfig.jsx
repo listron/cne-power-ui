@@ -14,6 +14,9 @@ class WarnConfig extends Component {
         changeWarnStore: PropTypes.func,
         warnList: PropTypes.array,
         totalNum: PropTypes.number,
+        warnDelete: PropTypes.func,
+        getDetail: PropTypes.func,
+
     };
 
     constructor(props) {
@@ -30,13 +33,18 @@ class WarnConfig extends Component {
     }
 
 
-    onSelectChange = (keys, record) => {  // 选择进行操作
+    onSelectChange = (keys, record, c, d) => {  // 选择进行操作 删除
         this.setState({ selectedRowKeys: keys });
     }
 
     onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
         const { getWarnList, listQueryParams } = this.props;
         getWarnList({ ...listQueryParams, pageNum: currentPage, pageSize, });
+    }
+
+    onShowDetail=(record)=>{ // 查看详情
+        this.props.changeWarnStore({ showPage: 'detail' })
+        this.props.getDetail(record.warningCheckId)
     }
 
     tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -49,23 +57,25 @@ class WarnConfig extends Component {
         })
     }
 
-
     selectChange = () => {
-
+        const { selectedRowKeys } = this.state;
+        this.props.warnDelete(selectedRowKeys)
     }
 
-    addRule=()=>{
-        this.props.changeWarnStore({showPage:'add'})
+    addRule = () => { // 添加
+        this.props.changeWarnStore({ showPage: 'add' })
     }
 
-
-
+   
 
     render() {
         const warnListColumn = [{
             title: '测点描述',
             dataIndex: 'devicePointDesc',
             key: 'devicePointDesc',
+            render: (text, record) => (
+                <span onClick={() => { this.onShowDetail(record) }} className={styles.describe}>{text || '--'}</span>
+            )
         }, {
             title: '测点编号',
             dataIndex: 'pointCode',
@@ -94,6 +104,11 @@ class WarnConfig extends Component {
             title: '编辑',
             dataIndex: 'edit',
             key: 'edit',
+            render: (text, record) => (
+                <span>
+                    <i className="iconfont icon-edit" onClick={() => { this.onShowDetail(record) }} />
+                </span>
+            )
         }];
         const { loading, warnList, listQueryParams, totalNum } = this.props;
         const { pageSize, pageNum } = listQueryParams;
@@ -112,7 +127,7 @@ class WarnConfig extends Component {
                             <span className={styles.text}>预警规则</span>
                         </Button>
                         <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
-                            <Option value="deleate" >删除</Option>
+                            <Option value="deleate" disabled={!selectedRowKeys.length > 0}>删除</Option>
                         </Select>
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
@@ -121,7 +136,7 @@ class WarnConfig extends Component {
                     loading={loading}
                     onChange={this.tableChange}
                     columns={warnListColumn}
-                    dataSource={warnList.map((e, i) => ({ key: i, ...e }))}
+                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e }))}
                     pagination={false}
                     rowSelection={rowSelection}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}

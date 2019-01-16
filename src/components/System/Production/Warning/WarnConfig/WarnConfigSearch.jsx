@@ -36,9 +36,10 @@ class WarnConfigSearch extends Component {
 
   selectStation = (stations) => { // 选中电站
     const { getStationDeviceTypes, getWarnList, listQueryParams, changeWarnStore } = this.props;
-    console.log((stations.length > 0 && stations[0].stationCode) || "",)
+    console.log((stations.length > 0 && stations[0].stationCode) || "")
     getStationDeviceTypes({
-      stationCodes: stations.length > 0 && stations[0].stationCode || "",
+      payload: { stationCodes: stations.length > 0 && stations[0].stationCode || "", },
+      resultName: 'stationDeviceTypes'
     });
     getWarnList({
       ...listQueryParams,
@@ -58,8 +59,8 @@ class WarnConfigSearch extends Component {
     const { getWarnList, listQueryParams, changeWarnStore, getDeviceModel } = this.props;
     const { stationCode } = listQueryParams;
     getDeviceModel({
-      stationCode,
-      deviceTypeCode: value,
+      payload: { stationCode,deviceTypeCode: value, },
+      resultName: 'deviceModels'
     });
     getWarnList({
       ...listQueryParams,
@@ -77,10 +78,9 @@ class WarnConfigSearch extends Component {
     const { getWarnList, listQueryParams, getPoints } = this.props;
     const { stationCode, deviceTypeCode } = listQueryParams;
     getPoints({
-      stationCode,
-      deviceTypeCode,
-      deviceModeCode: value
-    })
+      payload: { stationCode,deviceTypeCode, deviceModeCode: value },
+      resultName: 'devicePoints'
+    });
     getWarnList({
       ...listQueryParams,
       deviceModeCode: value,
