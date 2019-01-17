@@ -90,26 +90,28 @@ class DayReportMainList extends Component {
           title: moment(e.reportDate).format('DD'),
           dataIndex: e.reportDate,
           render: (text, record) => { // available是否展示图表, isUpload是否已上报日报, status是否有异常信息未填。
-            const stationDayInfo = record.dataList.find(info=>info.reportDate === e.reportDate);
+            const stationDayInfo = record.dataList.find(info => info.reportDate === e.reportDate);
             const { available, isUpload, status} = stationDayInfo;
             const afterToday = moment(e.reportDate) > moment();
             /*
               available: true可以进行日报上报/查看, false不可进行任何操作-->直到选中日前一天日报数据上报
               status: false未上报日报，true已上传。
               isUpload: false正常,true有未上报损失异常, 
-            */  
-            const showWarningIcon = status && isUpload; // 展示黄色图标提示未完成损失电量的填写。true展示，false不展示。
-            if(!available || afterToday){ // 不可上传
-              return <span></span>
-            }else if(available && status){ // 已上报日报=>查看详情
-            // if(status){ // 已上报日报=>查看详情
+              // 2018-12-20决定，以上规则废弃，
+              available无用，已发生的日期内，只有已上报/待上报(status区分)两种状态,未发生日期不可上报。
+            */
+            if (afterToday) { // 未发生日期 不可上传日报
+              return <span />
+            } else if (status) { // 已上报
               return (<span onClick={()=>this.toReportDetail(record, e.reportDate)}>
                 <i className="iconfont icon-look">
-                  {showWarningIcon && <i className="iconfont icon-alert_01" ></i>}
+                  {isUpload && <i className="iconfont icon-alert_01" />}
                 </i>
               </span>)
-            }else if(available && !status){ // 未上报日报 => 点击上报
-              return <span onClick={()=>this.toUploadReport(record, e.reportDate)}><Icon type="plus-circle" theme="outlined" /></span>
+            } else { // 未上报
+              return (<span onClick={()=>this.toUploadReport(record, e.reportDate)}>
+                <Icon type="plus-circle" theme="outlined" />
+              </span>)
             }
           }
         });
@@ -119,19 +121,19 @@ class DayReportMainList extends Component {
       let daysArr = []; 
       daysArr.length = dayLength;
       daysArr.fill(0);
-      const emptyDateArr = daysArr.map((e,i)=>({
-        title: i>8?`${i+1}`:`0${i+1}`,
+      const emptyDateArr = daysArr.map((e,i) => ({
+        title: i > 8 ? `${i+1}` : `0${i+1}`,
         dataIndex: `${i+1}`,
       }))
       columns.push(...emptyDateArr);
     }
-    const content = (<ul>
-      <li>1. 支持单日批量和单个电站上报日报;</li>
-      <li>2. 单个电站的日报必须按照时间顺序逐一上报;</li>
-      <li>3. 单个电站当日日报只能上报一次;</li>
-      <li>4. 没发生的日期不支持上报日报;</li>
-      <li>5. 在日报详情页面中支持编辑修改。</li>
-    </ul>)
+    // const content = (<ul>
+    //   <li>1. 支持单日批量和单个电站上报日报;</li>
+    //   <li>2. 单个电站的日报必须按照时间顺序逐一上报;</li>
+    //   <li>3. 单个电站当日日报只能上报一次;</li>
+    //   <li>4. 没发生的日期不支持上报日报;</li>
+    //   <li>5. 在日报详情页面中支持编辑修改。</li>
+    // </ul>)
     return (
         <div className={styles.dayReportMain}>
           <div className={styles.contentMain}>
@@ -141,9 +143,9 @@ class DayReportMainList extends Component {
                 <Button onClick={this.toUploadPage} icon="plus" className={styles.uploadReport} >
                   <span>上报日报</span>
                 </Button>
-                <Tooltip placement="topLeft" title={content} overlayClassName={styles.toolInfo}>
+                {/* <Tooltip placement="topLeft" title={content} overlayClassName={styles.toolInfo}>
                   <Icon type="info-circle" theme="outlined" className={styles.infoTooltip} />
-                </Tooltip>
+                </Tooltip> */}
               </span>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
             </div>

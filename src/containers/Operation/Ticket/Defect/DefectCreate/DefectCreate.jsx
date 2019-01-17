@@ -25,6 +25,7 @@ class DefectCreate extends Component {
     changeCommonStore: PropTypes.func,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
+    editDefect:PropTypes.bool,
   };
   constructor(props) {
     super(props);
@@ -32,43 +33,38 @@ class DefectCreate extends Component {
       showWarningTip: false,
       warningTipText: '',
     }
-  } 
-  componentDidMount(){
-    const { showContainer } = this.props;
-    // this.props.getStations({
-    //   enterpriseId: '1010694160817111040'//to do
-    // });
-    if(showContainer === 'edit'){
-      const { defectDetail } = this.props;
-      const stationCode = defectDetail.stationCode;
-      const deviceTypeCode = defectDetail.deviceTypeCode;
-      this.props.getStationDeviceTypes({stationCodes:stationCode});
-      this.props.getLostGenType({stationCode, objectType: 1});
-      this.props.getDevices({stationCode,deviceTypeCode})
-    }
-    this.props.getCommonList({
-      languageType: '1'
-    });
-  } 
+  }
+  componentDidMount() {
+    this.props.getCommonList({ languageType: '1' });
+  }
 
-  onCancelEdit = () => {
+
+  componentWillReceiveProps(nextProps) {
+    const { showContainer, defectDetail } = nextProps;
+    if (showContainer === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
+      const stationCode=defectDetail.stationCode
+      this.props.getLostGenType({ stationCode, objectType: 1 });
+    }
+  }
+
+  onCancelEdit = () => { //取消编辑
     this.setState({
       showWarningTip: true,
       warningTipText: '退出后信息无法保存!'
     });
   }
 
-  onCancelWarningTip = () => {
+  onCancelWarningTip = () => {  //取消的事件
     this.setState({
       showWarningTip: false,
     });
   }
 
-  onConfirmWarningTip = () => {
+  onConfirmWarningTip = () => { // 确定的事件
     this.setState({
       showWarningTip: false,
     });
-    this.props.onChangeShowContainer({ container: 'list' }); 
+    this.props.onChangeShowContainer({ container: 'list' });
     this.props.changeCommonStore({
       stationDeviceTypes: [],
       devices: [],
@@ -77,20 +73,20 @@ class DefectCreate extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { showContainer, defectDetail } = this.props;
+    const { showContainer, defectDetail, editDefect } = this.props;
     let rejectReason;
-    if(showContainer==='edit') {
+    if (showContainer === 'edit') {
       const processData = defectDetail.processData;
-      const processLength = processData.length;
-      if(processLength > 0) {
+      const processLength = processData.length || [];
+      if (processLength > 0) {
         rejectReason = processData[processLength - 1].defectProposal;
       }
     }
     return (
       <div className={styles.defectCreate}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <div className={styles.createTop}>
-          <span className={styles.text}>{showContainer==='create'?'新建缺陷':rejectReason}</span>
+          <span className={styles.text}>{editDefect ? rejectReason:'新建缺陷'}</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
         </div>
         <div className={styles.createContent}>
@@ -102,67 +98,32 @@ class DefectCreate extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    showContainer: state.operation.ticket.get('showContainer'),
-    loading: state.operation.defect.get('loading'),
-    commonFetching: state.common.get('commonFetching'),
-    stations: state.common.get('stations').toJS(),
-    deviceTypes: state.operation.defect.get('deviceTypes').toJS(),
-    devices: state.operation.defect.get('devices').toJS(),
-    error: state.operation.defect.get('error'),
-    defectTypes: state.operation.defect.get('defectTypes').toJS(),
-    defectDetail: state.operation.defect.get('defectDetail').toJS(),
-    deviceTypeItems: state.common.get('deviceTypes'),
-    deviceAreaItems: state.operation.defect.get('partitions'),
-    deviceItems: state.operation.defect.get('devices'),
-    commonList: state.operation.defect.get('commonList'),
-    allSeries: state.operation.defect.get('allSeries'), // 所有光伏组件
-    firstPartitionCode: state.operation.defect.get('firstPartitionCode'), // 第一方阵code
+  ...state.operation.defect.toJS(),
+  stations: state.common.get('stations').toJS(),
+  commonFetching: state.common.get('commonFetching'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeCommonStore: payload => dispatch({type:commonAction.changeCommonStore, payload}),
+  changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getDefectDetail: payload => dispatch({ type: ticketAction.GET_DEFECT_DETAIL_SAGA, payload }),
   getCommonList: payload => dispatch({ type: ticketAction.GET_DEFECT_LANGUAGE_SAGA, payload }),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
-  onDefectCreateNew: payload => dispatch({type: ticketAction.DEFECT_CREATE_SAGA, payload}),
-  submitDefect: payload => dispatch({type: ticketAction.SUBMIT_DEFECT_SAGA, payload}),
-  getSliceDevices: params => dispatch({
-    type: commonAction.getSliceDevices,
-    payload: {
-      params, 
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-    }
-  }),
-  getStationDeviceTypes: params => dispatch({
+  onDefectCreateNew: payload => dispatch({ type: ticketAction.DEFECT_CREATE_SAGA, payload }),
+  submitDefect: payload => dispatch({ type: ticketAction.SUBMIT_DEFECT_SAGA, payload }),
+  getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {
-      params, 
+      params,
       deviceTypeAction: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'deviceTypes'
-    }
-  }),
-  getDevices: params => dispatch({
-    type: commonAction.getDevices,
-    payload: {
-      params, 
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'devices'
-    }
-  }),
-  getStationAreas: params => dispatch({
-    type: commonAction.getPartition,
-    payload: {
-      params, 
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
-      resultName: 'partitions'
     }
   }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
-      params, 
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+      params,
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'defectTypes'
     }
   }),

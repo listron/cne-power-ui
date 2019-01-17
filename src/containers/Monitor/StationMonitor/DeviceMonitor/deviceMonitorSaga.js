@@ -2,30 +2,32 @@ import { call, put, takeLatest, all } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceAction';
+const { APIBasePath } = path.basePaths;
+const { monitor } = path.APISubPaths;
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206
-    detail: path.APISubPaths.monitor.seriesinverterDetail,// '/mock/monitor/seriesinverter',  // path.APISubPaths.monitor.seriesinverterDetail,
-    tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
+    detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
+    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin' 
   },
   '201': {  // 集中式逆变器：201
-    detail: path.APISubPaths.monitor.seriesinverterDetail,// '/mock/monitor/seriesinverter',  // path.APISubPaths.monitor.seriesinverterDetail,
-    tenMin: path.APISubPaths.monitor.seriesinverterTenMin,// '/mock/monitor/seriesinverterTenMin',   // path.APISubPaths.monitor.seriesinverterTenMin
+    detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
+    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin' 
   },
   '202': {  // 汇流箱： 202
-    detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
-    tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
+    detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
+    tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'  
   },
   '207': {  // 交流汇流箱
-    detail: path.APISubPaths.monitor.confluenceboxDetail,//'/mock/monitor/confluenceboxDetail',  // path.APISubPaths.monitor.confluenceboxDetail,
-    tenMin: path.APISubPaths.monitor.confluenceboxTenMin//'/mock/monitor/confluenceboxTenMin'  // path.APISubPaths.monitor.confluenceboxTenMin
+    detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
+    tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'  
   },
   '304': {  // 箱变： 304
-    detail: path.APISubPaths.monitor.boxtransformerDetail,//'/mock/monitor/boxtransformerDetail',  // path.APISubPaths.monitor.boxtransformerDetail,
-    tenMin: path.APISubPaths.monitor.boxtransformerTenMin//'/mock/monitor/boxtransformerTenMin',  // path.APISubPaths.monitor.boxtransformerTenMin
+    detail: monitor.boxtransformerDetail, // '/mock/monitor/boxtransformerDetail'
+    tenMin: monitor.boxtransformerTenMin, // '/mock/monitor/boxtransformerTenMin'
   },
   '203': {  // 气象站： 203
-    detail: path.APISubPaths.monitor.weatherstationDetail,//'/mock/monitor/weatherstationDetail',  // path.APISubPaths.monitor.weatherstationDetail,
+    detail: monitor.weatherstationDetail, // '/mock/monitor/weatherstationDetail'
   },
 }
 
@@ -61,7 +63,7 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据(统计信息�
   }
 }
 
-function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信息
+function *getNormalDeviceData(action){ // 请求单设备汇流箱，逆变器，箱变-除气象站数据信息
   const { payload } = action;
   const {stationCode, deviceTypeCode, deviceCode } = payload;
   // const hours = 72;
@@ -83,7 +85,7 @@ function *getNormalDeviceData(action){ // 请求单设备-除气象站数据信�
       call(axios.get, detailUrl),
       call(axios.get, pointUrl),
       call(axios.get, alarmUrl),
-    ])
+    ]);
     if(tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpPoint.data.code === "10000" && tmpAlarm.data.code === "10000" ){
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
@@ -260,7 +262,61 @@ function *getSequencechartData(action){ // 获取风机图表数据
   }
 }
 
+function *getIntegrateData(action) { // 集电线路信息
+  const { payload } = action;
+  try {
+    const { stationCode, deviceTypeCode, deviceCode } = payload;
+    const devicesUrl = `${APIBasePath}${monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
+    const detailUrl = `${APIBasePath}${monitor.integrateDetail}/${deviceCode}`;
+    const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}`;
+    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    const [ tmpDevices, tmpDetail, tmpAlarm ] = yield all([
+      call(axios.get, devicesUrl),
+      call(axios.get, detailUrl),
+      call(axios.get, alarmUrl),
+    ])
+    if (tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpAlarm.data.code === "10000") {
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devices: tmpDevices.data.data || [],
+          deviceDetail: tmpDetail.data.data || {},
+          deviceAlarmList: tmpAlarm.data.data || [],
+        },
+      })
+    }
+  } catch(error) {
+    console.log(error);
+  }
+}
 
+function *getBoosterData(action) { // 升压站信息
+  const { payload } = action;
+  try {
+    const { stationCode, deviceCode } = payload;
+    const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
+    const detailUrl = `${APIBasePath}${monitor.boosterDetail}/${deviceCode}`;
+    const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}`
+    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
+    const [ tmpDevices, tmpDetail, tmpAlarm ] = yield all([
+      call(axios.get, devicesUrl),
+      call(axios.get, detailUrl),
+      call(axios.get, alarmUrl),
+    ])
+    if (tmpDevices.data.code === '10000' && tmpDetail.data.code === "10000" && tmpAlarm.data.code === "10000") {
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devices: tmpDevices.data.data || [],
+          deviceDetail: tmpDetail.data.data || {},
+          deviceAlarmList: tmpAlarm.data.data || [],
+        },
+      })
+    }
+  } catch(error) {
+    console.log(error);
+  }
+}
 
 
 
@@ -272,6 +328,8 @@ export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.getwindturbineData, getwindturbineData);
   yield takeLatest(deviceAction.getSequencechartData, getSequencechartData);
   yield takeLatest(deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, getTenMinDeviceData);
+  yield takeLatest(deviceAction.getIntegrateData, getIntegrateData);
+  yield takeLatest(deviceAction.getBoosterData, getBoosterData);
   yield takeLatest(deviceAction.RESET_DEVICE_MONITOR_STORE,resetDeviceStore);
 }
 

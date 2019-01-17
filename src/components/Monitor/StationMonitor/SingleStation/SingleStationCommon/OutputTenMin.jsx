@@ -16,6 +16,7 @@ class OutputTenMin extends Component {
     getMonitorPower: PropTypes.func,
     yXaisName:PropTypes.string,
     chartType:PropTypes.string,
+    stationCode:PropTypes.string,
   }
 
   constructor(props) {
@@ -23,11 +24,11 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData,yXaisName,chartType } = nextProps;
+    const { capabilityData,yXaisName,chartType,yAxisUnit } = nextProps;
+    let yAxisType=`功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
-    // console.log('capabilityPower',capabilityPower)
-    const capabilityPower = capabilityData.map(e => e.stationPower);
+    const capabilityPower = capabilityData.map(e => yAxisUnit==='MW'?e.stationPower:e.stationPower*1000);
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
@@ -40,6 +41,7 @@ class OutputTenMin extends Component {
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
+    const color=this.getColor(chartType);
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       title: {
@@ -76,15 +78,15 @@ class OutputTenMin extends Component {
             backgroundColor: lineColor,
           }
         },
-        formatter: (param) => {
+        formatter: param => {
           return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
             <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${param[1].seriesName}: ${param[1] && param[1].value || '--'}</div>
-            <div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> ${param[0].seriesName}: ${param[0] && param[0].value || '--'}</div>
+            ${param.map(e => `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${e.seriesName}: ${e.value || '--'}</div>`).join('')}
           </div>`;
         },
         extraCssText:'background: rgba(0,0,0,0);',
       },
+      color:color,
       calculable: true,
       xAxis: {
           type: 'category',
@@ -113,7 +115,7 @@ class OutputTenMin extends Component {
         },
       yAxis: [
         {
-          name: '功率(MW)',
+          name: yAxisType,
           type: 'value',
           min: minPower < 0? minPower: 0,
           axisLabel: {
@@ -157,23 +159,15 @@ class OutputTenMin extends Component {
       series: [
         {
           name: '功率',
-          type: 'line',
+          type: 'line',  
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
           areaStyle: {
             color: '#fff2f2',
           },
-          itemStyle: {
-            opacity: 0,
-          },
           axisTick: {
             show: false,
-          },
-          lineStyle: {
-            type: 'solid',
-            color: '#c57576',
-            width: 1,
           },
         },
         {
@@ -181,17 +175,11 @@ class OutputTenMin extends Component {
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
-          itemStyle: {
-            color: "#199475",
-            opacity: 0,
-          },
           axisTick: {
             show: false,
           },
           lineStyle: {
             type: 'dotted',
-            color: '#199475',
-            width: 1,
           },
         }
       ]
@@ -200,8 +188,23 @@ class OutputTenMin extends Component {
     capabilityDiagram.resize();
   }
 
+
+  getColor=(type)=>{
+    let result=[];
+    switch(type){
+      case 'wind':
+      result=['#c57576','#3e97d1'];
+      break;
+      default:
+      result=['#c57576','#199475'];
+      break;
+    }
+    return result;
+  }
+
   render() {
-    const resourceAnalysis = "/statistical/stationaccount/resource/392";
+    const {stationCode}=this.props;
+    const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>

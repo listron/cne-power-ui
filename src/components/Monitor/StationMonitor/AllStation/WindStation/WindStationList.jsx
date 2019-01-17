@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table,message } from "antd";
+import { Progress, Table, message } from "antd";
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -33,9 +33,10 @@ class WindStationList extends React.Component {
       duration: 2,
       maxCount: 1,
     });
-    message.warning('电站未接入,无法查看详情',2);
+    message.warning('电站未接入,无法查看详情', 2);
   }
   initColumn = () => {
+    const { realTimePowerUnit, realCapacityUnit, powerUnit } = this.props;
     const columns = [
       {
         title: "电站名称",
@@ -52,8 +53,8 @@ class WindStationList extends React.Component {
                 </a>
               )
             }
-          }else{
-            return  <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ?this.showTip:null}>{record.stationName}</div>
+          } else {
+            return <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ? this.showTip : null}>{record.stationName}</div>
           }
         }
       },
@@ -72,7 +73,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: "实时功率(MW)",
+        title: `实时功率(${realTimePowerUnit})`,
 
         dataIndex: "stationPower",
         defaultSortOrder: "descend",
@@ -88,7 +89,7 @@ class WindStationList extends React.Component {
                       <div>{record.stationPower}</div>
                       <div className={styles.planOutput}>{record.stationCapacity}</div>
                     </div>
-                    <Progress strokeWidth={3} percent={record.stationPower / record.stationCapacity * 100} showInfo={false} />
+                    <Progress strokeWidth={3} percent={+(record.stationCapacity)?(record.stationPower / record.stationCapacity * 100):0} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -100,7 +101,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: "装机容量(MW)",
+        title: `装机容量(${realCapacityUnit})`,
         dataIndex: "stationCapacity",
         defaultSortOrder: "descend",
         sorter: true,
@@ -123,21 +124,21 @@ class WindStationList extends React.Component {
         // (a, b) => a.windSpeed - b.windSpeed
       },
       {
-        title: "日发电量(万kWh)",
+        title: `日发电量(${powerUnit})`,
         dataIndex: "dayOutput",
         defaultSortOrder: "descend",
         sorter: true,
         // (a, b) => a.dayOutput - b.dayOutput
       },
       {
-        title: "月累计发电量(万kWh)",
+        title: `月累计发电量(${powerUnit})`,
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
         sorter: true,
         // (a, b) => a.monthOutput - b.monthOutput
       },
       {
-        title: "年累计发电量(万kWh)",
+        title: `年累计发电量(${powerUnit})`,
         dataIndex: "yearOutput",
         defaultSortOrder: "descend",
         sorter: true,
@@ -152,7 +153,7 @@ class WindStationList extends React.Component {
                       <div>{record.yearOutput}</div>
                       <div className={styles.planOutput}>{record.planOutput}</div>
                     </div>
-                    <Progress strokeWidth={3} percent={record.yearOutput / record.planOutput * 100} showInfo={false} />
+                    <Progress strokeWidth={3} percent={+(record.planOutput)?(record.yearOutput / record.planOutput * 100):0} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -164,7 +165,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: "计划发电量(万kWh)",
+        title: `计划发电量(${powerUnit})`,
         dataIndex: "planOutput",
         defaultSortOrder: "descend",
         sorter: true,
@@ -243,7 +244,7 @@ class WindStationList extends React.Component {
     return tableSource
   }
   render() {
-    const { stationDataList, pageSize, currentPage, onPaginationChange } = this.props;
+    const { stationDataList, pageSize, currentPage, onPaginationChange, realTimePowerUnit, realCapacityUnit, powerUnit, powerPoint, realCapacityPoint, realTimePowerPoint } = this.props;
     const columns = this.initColumn()
     const dataSort = this.createTableSource(stationDataList);
     let startRow = (currentPage - 1) * pageSize;
@@ -258,13 +259,13 @@ class WindStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${item.stationPower || '--'}`,
-          stationCapacity: `${item.stationCapacity || '--'}`,
+          stationPower: `${(realTimePowerUnit === 'MW' ? item.stationPower : (item.stationPower * 1000).toFixed(realTimePowerPoint)) || '--'}`,
+          stationCapacity: `${(realCapacityUnit === 'MW' ? item.stationCapacity : (item.stationCapacity * 1000).toFixed(realCapacityPoint)) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
-          dayOutput: `${item.dayPower || '--'}`,
-          monthOutput: `${item.monthPower || '--'}`,
-          yearOutput: `${item.yearPower || '--'}`,
-          planOutput: `${item.yearPlanPower || '--'}`,
+          dayOutput: `${(powerUnit === '万kWh' ? item.dayPower : (item.dayPower * 10000).toFixed(powerPoint)) || '--'}`,
+          monthOutput: `${(powerUnit === '万kWh' ? item.monthPower : (item.monthPower * 10000).toFixed(powerPoint)) || '--'}`,
+          yearOutput: `${(powerUnit === '万kWh' ? item.yearPower : (item.yearPower * 10000).toFixed(powerPoint)) || '--'}`,
+          planOutput: `${(powerUnit === '万kWh' ? item.yearPlanPower : (item.yearPlanPower * 10000).toFixed(powerPoint)) || '--'}`,
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${stationStatus.stationStatus || ''}`

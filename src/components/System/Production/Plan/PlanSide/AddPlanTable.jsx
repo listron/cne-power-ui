@@ -23,8 +23,10 @@ class PlanAddTable extends React.Component {
     addStationCodes: PropTypes.array,
     addPlanYear: PropTypes.string,
     save: PropTypes.string,
+    prev: PropTypes.string,
     addValueChange: PropTypes.func,
     addplansave: PropTypes.func,
+    stationType: PropTypes.number,
   };
 
   constructor(props) {
@@ -50,7 +52,8 @@ class PlanAddTable extends React.Component {
   };
 
   _createTableColumn = () => {//生成表头
-    const _this = this;
+    const { stationType } = this.props;
+    console.log('stationType', stationType)
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -66,8 +69,16 @@ class PlanAddTable extends React.Component {
           }
         }
       })
-    };
+    }
     const MonthColumn = _MonthColumns();
+    const PRColumn = stationType !== 0 ? {
+      title: 'PR年计划',
+      dataIndex: 'yearPR',
+      key: 'yearPR',
+      className: 'yearPR',
+      editable: true,
+    } : {};
+
     const columns = [
       {
         title: '区域',
@@ -118,13 +129,8 @@ class PlanAddTable extends React.Component {
           return <span className={text ? styles.save : ''}>{textValue}</span>
         }
       },
-      {
-        title: 'PR年计划',
-        dataIndex: 'yearPR',
-        key: 'yearPR',
-        className: 'yearPR',
-        editable: true,
-      },
+      ...MonthColumn,
+      PRColumn,
       {
         title: '操作',
         dataIndex: 'operation',
@@ -137,8 +143,6 @@ class PlanAddTable extends React.Component {
           );
         },
       }];
-    MonthColumn.unshift(5, 0);
-    Array.prototype.splice.apply(columns, MonthColumn);
     const columnList = columns.map((col) => {
       if (!col.editable) {
         return col;
@@ -148,7 +152,6 @@ class PlanAddTable extends React.Component {
         onCell: record => ({
           record,
           dataIndex: col.dataIndex,
-          // title: col.title,
           editing: col.editable
         }),
       };
@@ -169,7 +172,7 @@ class PlanAddTable extends React.Component {
           for (let i = 0; i < Number(onGridMonth); i++) {
             AddPlanstaion[TabelKey[i]] = null;
           }
-        }   
+        }
       }
       AddPlanstaion.planPower = list.planPower;
       AddPlanstaion.key = index;
@@ -184,7 +187,7 @@ class PlanAddTable extends React.Component {
 
     this.setState({ AddPlandata: addPlanStations })
   };
-  
+
 
   render() {
     const { AddPlandata } = this.state;

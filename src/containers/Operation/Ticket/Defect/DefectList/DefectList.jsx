@@ -6,29 +6,31 @@ import styles from './defectList.scss';
 import { ticketAction } from '../../ticketAction';
 import DefectTable from '../../../../../components/Operation/Ticket/Defect/DefectTable/DefectTable';
 import DefectFilter from '../../../../../components/Operation/Ticket/Defect/DefectFilter/DefectFilter';
+import DefectStatus from '../../../../../components/Operation/Ticket/Defect/DefectStatus/DefectStatus';
 import { commonAction } from '../../../../alphaRedux/commonAction';
+import FilterCondition from '../../../../../components/Common/FilterCondition/FilterCondition';
 
 class DefectList extends Component {
   static propTypes = {
     stationType: PropTypes.string,
-    stationCodes: PropTypes.string,
-    defectSource: PropTypes.string,
-    defectLevel: PropTypes.string,
-    timeInterval: PropTypes.string,
+    stationCodes: PropTypes.array,
+    defectSource: PropTypes.array,
+    defectLevel: PropTypes.array,
     createTimeStart: PropTypes.string,
     createTimeEnd: PropTypes.string,
-    deviceTypeCode: PropTypes.string,
-    defectTypeCode: PropTypes.string,
+    deviceTypeCode: PropTypes.array,
+    defectTypeCode: PropTypes.array,
     handleUser: PropTypes.string,
     status: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    sort: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
 
     selectedRowKeys: PropTypes.array,
     showTab: PropTypes.string,
     total: PropTypes.number,
-    defectList: PropTypes.object,
+    defectList: PropTypes.array,
     defectStatusStatistics: PropTypes.object,
     error: PropTypes.object,
     loading: PropTypes.bool,
@@ -45,39 +47,39 @@ class DefectList extends Component {
     changeDefectStore: PropTypes.func,
     getLostGenType: PropTypes.func,
   };
-  constructor(props,context) {
+  constructor(props, context) {
     super(props);
     this.state = {};
   }
 
   componentDidMount() {
-    // const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageNum, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
-    // if(this.props.showTab === 'defect') {
-    //   var params = {
-    //     stationType,
-    //     stationCodes,
-    //     defectSource,
-    //     defectLevel,
-    //     timeInterval,
-    //     status,
-    //     pageNum,
-    //     pageSize,
-    //     createTimeStart,
-    //     createTimeEnd,
-    //     deviceTypeCode,
-    //     defectTypeCode,
-    //     sort,
-    //     handleUser
-    //   }
-    //   this.props.getDefectList(params);
-    // }
+    const { stationType, stationCodes, defectSource, defectLevel, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
+    let filter = {
+      stationType,
+      stationCodes,
+      defectSource,
+      defectLevel,
+      status,
+      pageNum,
+      pageSize,
+      createTimeStart,
+      createTimeEnd,
+      deviceTypeCode,
+      defectTypeCode,
+      sortField,
+      sortMethod,
+      handleUser
+    }
+    this.props.getDefectList({ ...filter });
+    this.props.getDefectIdList({ ...filter }); // 获取道缺陷ID列表
     this.props.getLostGenType({ //获取所有损失缺陷类型
       objectType: 1
-    }) 
+    })
   }
 
-  onChangeFilter = (obj) => {
-    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sort, handleUser} = this.props;
+
+  filterCondition = (changeValue) => {
+    const { stationType, stationCodes, defectSource, defectLevel, timeInterval, status, pageSize, createTimeStart, createTimeEnd, deviceTypeCode, defectTypeCode, sortField, sortMethod, handleUser, pageNum } = this.props;
     let filter = {
       stationType,
       stationCodes,
@@ -85,62 +87,61 @@ class DefectList extends Component {
       defectLevel,
       timeInterval,
       status,
-      pageNum: 1,
+      pageNum,
       pageSize,
       createTimeStart,
       createTimeEnd,
       deviceTypeCode,
       defectTypeCode,
-      sort,
+      sortField,
+      sortMethod,
       handleUser
     }
-    let newFiter = Object.assign({}, filter, obj);
-    this.props.getDefectList(newFiter);
-    if(!obj.pageSize) {
-      this.props.getDefectIdList(newFiter);
-    }
+    this.props.getDefectList({ ...filter, ...changeValue });
+    this.props.getDefectIdList({ ...filter, ...changeValue }); // 获取道缺陷ID列表
   }
 
   render() {
+    const { stations, defectTypes, defectList, username, deviceTypes, defectStatusStatistics,
+      createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, deviceTypeCode, defectTypeCode, defectSource, handleUser, status } = this.props;
     return (
       <div className={styles.defectList}>
-        <DefectFilter {...this.props} onChangeFilter={this.onChangeFilter} />
-        <DefectTable {...this.props} onChangeFilter={this.onChangeFilter} />
+        <FilterCondition
+          option={["time", "stationType", "stationName", "deviceType", "defectLevel", "defectType", "defectSource", "myJoin"]}
+          stations={stations}
+          deviceTypes={deviceTypes}
+          defectList={defectList}
+          defectTypes={defectTypes}
+          username={username}
+          onChange={this.filterCondition}
+          defaultValue={{
+            createTimeStart: createTimeStart,
+            createTimeEnd: createTimeEnd,
+            stationType: stationType,
+            stationCodes: stationCodes,
+            defectSource: defectSource,
+            defectLevel: defectLevel,
+            deviceTypeCode: deviceTypeCode,
+            defectTypeCode: defectTypeCode,
+            handleUser: handleUser
+          }}
+        />
+        <DefectStatus defectStatusStatistics={defectStatusStatistics} onChange={this.filterCondition} defaultValue={status} />
+        <DefectTable {...this.props} onChangeFilter={this.filterCondition} />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  defectList: state.operation.defect.get('defectList'),
-  defectStatusStatistics: state.operation.defect.get('defectStatusStatistics'),
-  loading: state.operation.defect.get('loading'),
-  error: state.operation.defect.get('error'),
-  total: state.operation.defect.get('total'),
-  selectedRowKeys: state.operation.defect.get('selectedRowKeys').toJS(),
-
-  stationType: state.operation.defect.get('stationType'),
-  stationCodes: state.operation.defect.get('stationCodes'),    
-  defectSource: state.operation.defect.get('defectSource'),   
-  defectLevel: state.operation.defect.get('defectLevel'),	  
-  timeInterval: state.operation.defect.get('timeInterval'),   
-  status: state.operation.defect.get('status'),          
-  pageNum: state.operation.defect.get('pageNum'),       
-  pageSize: state.operation.defect.get('pageSize'),
-  sort: state.operation.defect.get('sort'),       
-  createTimeStart: state.operation.defect.get('createTimeStart'), 
-  createTimeEnd: state.operation.defect.get('createTimeEnd'),	 
-  deviceTypeCode: state.operation.defect.get('deviceTypeCode'),	 
-  defectTypeCode: state.operation.defect.get('defectTypeCode'),
-  defectTypes: state.operation.defect.get('defectTypes'),
-  handleUser: state.operation.defect.get('handleUser'),
+  ...state.operation.defect.toJS(),
+  stations: state.common.get('stations').toJS(),
+  deviceTypes: state.common.get('deviceTypes').toJS(),
   username: Cookie.get('username'),
-  stations: state.common.get('stations'),
-  deviceTypes: state.common.get('deviceTypes'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeDefectStore: payload => dispatch({type:ticketAction.CHANGE_DEFECT_STORE_SAGA, payload}),
+  changeDefectStore: payload => dispatch({ type: ticketAction.CHANGE_DEFECT_STORE_SAGA, payload }),
   getDefectList: payload => dispatch({ type: ticketAction.GET_DEFECT_LIST_SAGA, payload }),
   getDefectIdList: payload => dispatch({ type: ticketAction.GET_DEFECT_ID_LIST_SAGA, payload }),
   getDefectType: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
@@ -154,8 +155,8 @@ const mapDispatchToProps = (dispatch) => ({
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
-      params, 
-      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+      params,
+      actionName: ticketAction.GET_DEFECT_FETCH_SUCCESS,
       resultName: 'defectTypes'
     }
   }),

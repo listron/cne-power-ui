@@ -1,6 +1,8 @@
 import React from 'react';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import styles from '../eachDeviceMonitor.scss';
+import { DeviceValueFormat } from '../../../../Common/UtilComponent';
+import { monitordataFormat } from '../../../../../utils/utilFunc';
 
 function InverterStatistics({ deviceDetail }) {
   let { devicePower, deviceCapacity, powerDay, powerMonth, powerYear,windSpeed,angleOfYaw } = deviceDetail;
@@ -8,11 +10,14 @@ function InverterStatistics({ deviceDetail }) {
     <div className={styles.statisticsBox} >
       <div className={styles.deviceIcon}>
         <span className="iconfont icon-windlogo"></span>
-        {/* <span>{deviceDetail.deviceName}</span> */}
+        <p className={styles.deviceCode} title={deviceDetail.deviceModeName|| "--" }>{deviceDetail.deviceModeName || "--"}</p>
       </div>
       <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{(windSpeed || windSpeed===0 )? +windSpeed:'--' }</div>
+        <div className={styles.genNum}>
+      
+        <DeviceValueFormat value={monitordataFormat(windSpeed, '--')} />
+        </div>
         <div className={styles.empty}></div>
         <div className={styles.genText}>风速</div>
       </div>
@@ -22,19 +27,23 @@ function InverterStatistics({ deviceDetail }) {
         <div className={styles.genText}>风向</div>
       </div>
       <div className={styles.timerDayGen}>
-        <div className={styles.genNum}>{(powerDay || powerDay===0 )? parseFloat(powerDay).toFixed(4):'--'}</div>
+        <div className={styles.genNum}>
+        <DeviceValueFormat value={monitordataFormat(powerDay, '--')} />
+        </div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>日发电量 万kWh</div>
+        <div className={styles.genText}>日发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
-        <div className={styles.genNum}>{(powerMonth || powerMonth===0 )? parseFloat(powerMonth).toFixed(4):'--'}</div>
+        <div className={styles.genNum}>
+        <DeviceValueFormat value={monitordataFormat(powerMonth, '--')} /></div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>月累计发电量 万kWh</div>
+        <div className={styles.genText}>月累计发电量 (kWh)</div>
       </div>
       <div className={styles.timerGen}>
-        <div className={styles.genNum}>{(powerYear || powerYear===0 )? parseFloat(powerYear).toFixed(4):'--'}</div>
+        <div className={styles.genNum}>
+        <DeviceValueFormat value={monitordataFormat(powerYear, '--')} /></div>
         <div className={styles.empty}></div>
-        <div className={styles.genText}>年累计发电量 万kWh</div>
+        <div className={styles.genText}>年累计发电量 (kWh)</div>
       </div>
     </div>
   )

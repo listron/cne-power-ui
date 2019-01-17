@@ -4,10 +4,10 @@ import Path from '../../../../constants/path';
 import { ticketAction } from '../ticketAction';
 import { message } from 'antd';
 
-function *changeDefectStore(action){//存储payload指定参数，替换reducer-store属性。
+function* changeDefectStore(action) {//存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
   yield put({
-    type:  ticketAction.CHANGE_DEFECT_STORE,
+    type: ticketAction.CHANGE_DEFECT_STORE,
     payload,
   })
 }
@@ -19,17 +19,17 @@ function* getDefectList(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
-      if(total === 0){ // 总数为0时，展示0页
-        pageNum = 0;
-      }else if(maxPage < pageNum){ // 当前页已超出
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
         pageNum = maxPage;
       }
-      yield put({ 
-        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           ...payload,
           total,
@@ -38,12 +38,24 @@ function* getDefectList(action) {
           selectedRowKeys: [],
           defectStatusStatistics: response.data.data.defectStatusStatistics,
         }
-      });      
+      });
+    } else {
+      throw response.data
     }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: ticketAction.SET_DEFECT_FAIL,
+      payload: {
+        defectList: [],
+        selectedRowKeys: [],
+        defectStatusStatistics: {},
+        loading: false,
+      }
+    });
   }
 }
+
 //获取缺陷工单Id列表(用于上一个，下一个)
 function* getDefectIdList(action) {
   const { payload } = action;
@@ -51,13 +63,13 @@ function* getDefectIdList(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
-      yield put({ 
-        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           defectIdList: response.data.data
         }
-      });      
+      });
     }
   } catch (e) {
     console.log(e);
@@ -70,24 +82,42 @@ function* getDefectDetail(action) {
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: {defectId:payload.defectId}});
-    if(response.data.code === '10000'){
-      yield put({ 
-        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+    const response = yield call(axios.get, url, { params: { defectId: payload.defectId } });
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           defectDetail: response.data.data,
           defectId: payload.defectId,
         }
       });
-      if(payload.isEdit === true) {
-        yield put({
-          type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-          payload: {container: 'edit'},
-        });
-      }  
-    }
+    } else { throw response.data }
   } catch (e) {
-    console.log(e);
+    message.error('请求数据失败')
+    // console.log(e);
+    yield put({
+      type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+      payload: {
+        defectDetail: {
+          defectId: '',
+          stationName: '',
+          deviceName: '',
+          defectTypeName: '',
+          defectLevel: 1,
+          defectDescribe: '',
+          defectStatus: '1',
+          photoAddress: '',
+          handleData: {
+            defectProposal: '',
+            defectSolveInfo: '',
+            replaceParts: '',
+            defectSolveResult: 0,
+            status: '1'
+          },
+          processData: []
+        },
+      }
+    });
   }
 }
 
@@ -97,14 +127,14 @@ function* getDefectCommonList(action) {
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getCommonList;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: payload});
-    if(response.data.code === '10000'){
-      yield put({ 
-        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           commonList: response.data.data.data
         }
-      });      
+      });
     }
   } catch (e) {
     console.log(e);
@@ -117,8 +147,8 @@ function* batchDeleteDefect(action) {
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.batchDeleteDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: payload});
-    if(response.data.code === '10000'){
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
       message.success('批量删除成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -136,22 +166,22 @@ function* batchDeleteDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
-      yield put({ 
-        type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_ID_LIST_SAGA,
         payload: params
-      });      
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -165,7 +195,7 @@ function* batchCloseDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('批量关闭成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -183,18 +213,18 @@ function* batchCloseDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
-      });       
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -208,7 +238,7 @@ function* batchSendDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('批量下发成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -226,18 +256,18 @@ function* batchSendDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
-      });       
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -251,7 +281,7 @@ function* batchRejectDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('批量驳回成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -269,18 +299,18 @@ function* batchRejectDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
-      });       
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -294,7 +324,7 @@ function* batchChecktDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('批量验收成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -312,18 +342,18 @@ function* batchChecktDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
-      });       
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -337,7 +367,7 @@ function* sendDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('下发成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -355,22 +385,22 @@ function* sendDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });      
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+        payload: { container: 'list' },
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -384,7 +414,7 @@ function* rejectDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('驳回成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -402,22 +432,22 @@ function* rejectDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });     
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+        payload: { container: 'list' },
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -431,7 +461,7 @@ function* closeDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('关闭成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -449,22 +479,22 @@ function* closeDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });       
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+        payload: { container: 'list' },
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -478,7 +508,7 @@ function* handleDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('处理缺陷成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -496,22 +526,22 @@ function* handleDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });   
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+        payload: { container: 'list' },
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -526,7 +556,7 @@ function* checkDefect(action) {
   try {
     const response = yield call(axios.post, url, payload);
     console.log(response)
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('验收成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -544,22 +574,22 @@ function* checkDefect(action) {
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
-        payload: {container: 'list'},
-      });     
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
+        payload: { container: 'list' },
+      });
+    } else {
+      yield put({
+        type: ticketAction.SET_DEFECT_FAIL,
+        error: {
           code: response.data.code,
           message: response.data.message
         }
-      });        
+      });
     }
   } catch (e) {
     console.log(e);
@@ -567,26 +597,27 @@ function* checkDefect(action) {
 }
 
 //获取缺陷类型信息
-function *getDefectTypes(action){
+function* getDefectTypes(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
-    const response = yield call(axios.get, url, {params: payload});
-    if(response.data.code === '10000'){
-      yield put({ 
-        type: ticketAction.GET_DEFECT_FETCH_SUCCESS, 
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           defectTypes: response.data.data.data,
         }
-      });       
+      });
     }
   } catch (e) {
     console.log(e);
   }
 }
+
 //生成缺陷
-function *createNewDefect(action){
+function* createNewDefect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createNewDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
@@ -594,9 +625,9 @@ function *createNewDefect(action){
   delete payload.isContinueAdd;
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('创建成功！');
-      if(!isContinueAdd) {
+      if (!isContinueAdd) {
         yield put({
           type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
           payload: {
@@ -620,35 +651,28 @@ function *createNewDefect(action){
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
       });
-      yield put({ 
-        type: ticketAction.GET_DEFECT_ID_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_ID_LIST_SAGA,
         payload: params
-      });        
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
-    }
+      });
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 //提交缺陷
-function *submitDefect(action){
+function* submitDefect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.submitDefect;
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       message.success('提交成功！');
       const params = yield select(state => ({
         stationType: state.operation.defect.get('stationType'),
@@ -666,39 +690,32 @@ function *submitDefect(action){
         sort: state.operation.defect.get('sort'),
         handleUser: state.operation.defect.get('handleUser'),
       }));
-      yield put({ 
-        type: ticketAction.GET_DEFECT_LIST_SAGA, 
+      yield put({
+        type: ticketAction.GET_DEFECT_LIST_SAGA,
         payload: params
-      }); 
+      });
       yield put({
         type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
         payload: {
           container: 'list',
         },
-      })      
-    } else{
-      yield put({ 
-        type: ticketAction.SET_DEFECT_FAIL, 
-        error:{
-          code: response.data.code,
-          message: response.data.message
-        }
-      });        
-    }
+      })
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
+    message.error('创建缺陷失败！')
   }
 }
 function* clearDefect(action) {
-  yield put({ 
-    type: ticketAction.CLEAR_DEFECT_STATE, 
-  }); 
+  yield put({
+    type: ticketAction.CLEAR_DEFECT_STATE,
+  });
 }
 
 export function* watchDefect() {
   yield takeLatest(ticketAction.GET_DEFECT_LIST_SAGA, getDefectList);
   yield takeLatest(ticketAction.GET_DEFECT_ID_LIST_SAGA, getDefectIdList);
-  yield takeLatest(ticketAction.CHANGE_DEFECT_STORE_SAGA ,changeDefectStore);
+  yield takeLatest(ticketAction.CHANGE_DEFECT_STORE_SAGA, changeDefectStore);
   yield takeLatest(ticketAction.DELETE_BATCH_DEFECT_SAGA, batchDeleteDefect);
   yield takeLatest(ticketAction.SEND_BATCH_DEFECT_SAGA, batchSendDefect);
   yield takeLatest(ticketAction.CLOSE_BATCH_DEFECT_SAGA, batchCloseDefect);

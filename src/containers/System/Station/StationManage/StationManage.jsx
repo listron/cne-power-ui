@@ -96,6 +96,7 @@ class StationManage extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.system.stationManage.toJS(),
+  stations: state.common.get('stations').toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 
@@ -132,6 +133,7 @@ const mapDispatchToProps = (dispatch) => ({
       resultName,
     }
   }),
+  getStations: payload => dispatch({ type: commonAction.getStations, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationManage);

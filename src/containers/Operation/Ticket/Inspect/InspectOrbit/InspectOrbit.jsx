@@ -27,10 +27,11 @@ class InspectOrbit extends Component {
   componentDidMount() {
   }
   onCloseInspectCreate = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '退出后信息无法保存!'
-    });
+    // this.setState({
+    //   showWarningTip: true,
+    //   warningTipText: '退出后信息无法保存!'
+    // });
+    this.props.onChangeShowContainer({ container: 'detail' });
   }
 
   onCancelWarningTip = () => {
@@ -72,7 +73,7 @@ class InspectOrbit extends Component {
   render() {
     const { showWarningTip, warningTipText, users } = this.state;
     const { inspectTrackData, inspectUserData } = this.props;
-
+    let color=['#CB0909','#17C5DA', '#E373FA', '#75FAC7', '#4500B2','#CA6550', '#FFF285', '#FF0026', '#80F50A', '#DD8803', '#6F86F2', '#FFC500','#4DB98B', '#3B9BFF', '#FD00DC', '#F57F0A',' #E0BB3B', '#048B52', '#FF340A', '#8303B4'];
     let data = [];
     let datas = [];
     let timeArray = [];
@@ -85,18 +86,25 @@ class InspectOrbit extends Component {
         return e.username === users
       }
     })
+   
     userOrbit.map((item, index) => {
+      let startDate=item.pointData[0].trackDate
+      let endDate=item.pointData[item.pointData.length-1].trackDate
+    
       for (var i = 0; i < item.pointData.length - 1; i++) {
         let value = item.pointData[i]
         let value1 = item.pointData[i + 1]
+      
         data.push({
-          date: [value.trackDate, value1.trackDate],
+          // date: [value.trackDate, value1.trackDate],
+           date: [`${startDate}-${endDate}`],
           coords: [[value.longitude,value.latitude], [ value1.longitude,value1.latitude]],
-          name: item.username
+          name: item.username,
+          lineStyle:{color:color[index]}
         })
       }
     })
-    // console.log(data);
+  
 
 
 
@@ -105,20 +113,20 @@ class InspectOrbit extends Component {
       let startAndEndTime = e.pointData && e.pointData.map((e, i) => {
         return e.trackDate
       });
-      console.log(startAndEndTime);
+      
       for (let i = 0; i < startAndEndTime.length - 1; i++) {
         let start = startAndEndTime[i];
         let end = startAndEndTime[i + 1];
         timeArray.push([start, end])
       }
-      console.log(timeArray);
+     
 
       //此处是
       let test=(e.pointData).map((e, i) => {
         return  { coord: [e.longitude, e.latitude] }
       })
       pointArray2.push(test)
-      console.log(pointArray2,'1111');    
+      // console.log(pointArray2,'1111');  
       datas.push({
         ...e,
         name: e.username,
@@ -148,13 +156,18 @@ class InspectOrbit extends Component {
           itemLine
         )
       }
-      console.log(itemLines);
+      // console.log(itemLines);
       return itemLines
     })
     let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
       return prev.concat(next);
     }) : [];
     // console.log(itemOrbit, '线坐标');
+
+   
+     
+
+     
 
     //拿取每条线的起始坐标点，以及终点坐标点；
     let startAndEndCoord = [];
@@ -164,7 +177,7 @@ class InspectOrbit extends Component {
         tooltip: {
           formatter: '起点'
         },
-        symbol: 'image:///img/position.png',
+        symbol: 'image:///img/begin.png',
       })
       startAndEndCoord.push({
         coord: e[e.length - 1].coord,
@@ -181,14 +194,15 @@ class InspectOrbit extends Component {
 
     return (
       <div className={styles.inspectOrbit}>
-        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
-        <div className={styles.createTop}>
+      {/*  {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+         */}
+         <div className={styles.createTop}>
           <span className={styles.text}>巡检轨迹</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCloseInspectCreate} />
         </div>
         {this.selectUser()}
         <div className={styles.createContent}>
-          <InspectOrbitMap testId={'inspectOrbit'} data={data}  orbitList={datas} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
+          <InspectOrbitMap testId={'inspectOrbit'} data={data}  orbitList={datas} users={users} itemOrbit={itemOrbit} startAndEndCoord={startAndEndCoord} />
         </div>
       </div>
     );

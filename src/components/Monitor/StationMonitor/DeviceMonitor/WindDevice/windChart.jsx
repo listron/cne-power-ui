@@ -8,9 +8,9 @@ function InverterTenMin({ sequenceChart }) {
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let powerLineData = [], radiationLineData = [], radiationLineData1=[],xTime = [];
+    let powerLineData = [], radiationLineData = [], radiationLineData1 = [], xTime = [];
     sequenceChart.length > 0 && sequenceChart.forEach(e => {
-      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
+      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('MM-DD HH:mm'));
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.windSpeed);
       radiationLineData1.push('--');
@@ -20,6 +20,12 @@ function InverterTenMin({ sequenceChart }) {
     const filterWindSpeed = sequenceChart.filter(e => e.windSpeed);
     const inverterTenMinGraphic = (filterStationPower.length === 0 && filterWindSpeed.length === 0) ? showNoData : hiddenNoData;
     let color = ['#c57576', '#199475'];
+    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    const totalLength = sequenceChart.length;
+    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
+      labelInterval = parseInt(totalLength / 3) - 1;
+    }
+    // console.log('labelInterval',labelInterval)
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -41,10 +47,13 @@ function InverterTenMin({ sequenceChart }) {
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        bottom: 20,
+        bottom: 40,
+        left: '13%',
+        right: '13%',
       },
+      calculable: true,
       tooltip: {
         trigger: 'axis',
         show: true,
@@ -73,18 +82,21 @@ function InverterTenMin({ sequenceChart }) {
       },
       xAxis: {
         type: 'category',
+        splitNumber: 4,
+        boundaryGap: false,
+        minInterval: labelInterval,
         data: xTime,
-        axisTick: {
-          show: false,
-        },
         axisLine: {
-          // onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
         },
         axisLabel: {
           color: lineColor,
+          interval: labelInterval,
+        },
+        axisTick: {
+          show: false,
         },
         axisPointer: {
           label: {
@@ -157,7 +169,7 @@ function InverterTenMin({ sequenceChart }) {
             }
           },
           yAxisIndex: 0,
-          data: filterStationPower.length>0 ?powerLineData:radiationLineData1,
+          data: filterStationPower.length > 0 ? powerLineData : radiationLineData1,
         },
         {
           name: '风速',
@@ -177,7 +189,7 @@ function InverterTenMin({ sequenceChart }) {
             }
           },
           yAxisIndex: 1,
-          data: filterWindSpeed.length>0 ?radiationLineData:radiationLineData1,
+          data: filterWindSpeed.length > 0 ? radiationLineData : radiationLineData1,
         },
       ]
     };
@@ -189,27 +201,19 @@ function InverterTenMin({ sequenceChart }) {
   );
 }
 
-function SactterChart({ theory,actual}) {
+function SactterChart({ theory, actual }) {
   const echartBox = document.getElementById('wind_monitor');
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let actualData = [], theoryData = [], xData = [],actualData1=[],theoryData1=[];
+    let actualData = [], theoryData = [], xData = [], actualData1 = [], theoryData1 = [];
     theory.length > 0 && theory.forEach(e => {
-      theoryData.push({
-        name:e.windSpeed,
-        value:e.stationPower
-      })
-      xData.push(e.windSpeed)
+      theoryData.push([e.windSpeed, e.stationPower])
       theoryData1.push('--')
     });
-    actual.sort((a,b)=>{return a.windSpeed-b.windSpeed})
+    actual.sort((a, b) => { return a.windSpeed - b.windSpeed })
     actual.length > 0 && actual.forEach(e => {
-      actualData.push([e.windSpeed,e.stationPower])
-      // actualData.push({
-      //   name:e.windSpeed,
-      //   value:e.stationPower
-      // })
+      actualData.push([e.windSpeed, e.stationPower])
       actualData1.push('--')
     });
     const inverterTenMinGraphic = (actualData.length === 0 && theoryData.length === 0) ? showNoData : hiddenNoData;
@@ -225,7 +229,7 @@ function SactterChart({ theory,actual}) {
         left: 30,
         top: 23,
       },
-      color:color,
+      color: color,
       legend: {
         top: 24,
         itemWidth: 24,
@@ -239,8 +243,8 @@ function SactterChart({ theory,actual}) {
         // containLabel: true,
         top: 90,
         bottom: 40,
-        right:'20%',
-        left:'10%',
+        right: '20%',
+        left: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -262,24 +266,31 @@ function SactterChart({ theory,actual}) {
         formatter: function (params) {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName==='历史平均功率'?'#199475':'#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value || '--'}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${params[index].seriesName === '历史平均功率' ? '#199475' : '#c57576'};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === '0' || params[index].value[1] || '--'}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">风速：${params[0].axisValue} </span>
             </div>${paramsItem}`
         },
       },
+      axisPointer: {
+        type: 'line',
+        snap: true,
+      },
       xAxis: {
-        type: 'category',
+        type: 'value',
         // data: xData,
-        name:'风速(m/s)',
+        name: '风速(m/s)',
         nameTextStyle: {
           color: lineColor,
         },
         axisTick: {
           show: false,
         },
+        splitLine: {
+          show: false,
+        },
         axisLine: {
-          onZero: false,
+          // onZero: false,
           lineStyle: {
             color: '#dfdfdf',
           },
@@ -295,6 +306,7 @@ function SactterChart({ theory,actual}) {
       },
       yAxis: [
         {
+          type: 'value',
           name: '功率(kW)',
           nameTextStyle: {
             color: lineColor,
@@ -316,7 +328,6 @@ function SactterChart({ theory,actual}) {
         }
       ],
       series: [
-        
         {
           name: '有功功率',
           type: 'scatter',
@@ -325,9 +336,9 @@ function SactterChart({ theory,actual}) {
               show: false
             }
           },
-          symbolSize:5,
+          symbolSize: 5,
           data: actualData,
-        },  
+        },
         {
           name: '历史平均功率',
           type: 'line',
@@ -335,6 +346,7 @@ function SactterChart({ theory,actual}) {
             color: '#199475',
             width: 1,
           },
+          smooth: true,
           itemStyle: {
             color: "#199475",
             opacity: 0,
@@ -345,7 +357,7 @@ function SactterChart({ theory,actual}) {
             }
           },
           data: theoryData,
-        }, 
+        },
       ]
     };
     inverterChart.setOption(option);
@@ -357,12 +369,12 @@ function SactterChart({ theory,actual}) {
 }
 
 
-function SequenceChart({sequenceChartList}){
+function SequenceChart({ sequenceChartList }) {
   const echartBox = document.getElementById('sequenceChart');
   const lineColor = '#666';
   if (echartBox) {
     const inverterChart = echarts.init(echartBox);
-    let pitchAngle1Data = [], pitchAngle2Data = [],pitchAngle3Data = [],speedData=[], xTime = [],replaceData=[];
+    let pitchAngle1Data = [], pitchAngle2Data = [], pitchAngle3Data = [], speedData = [], xTime = [], replaceData = [];
     sequenceChartList.length > 0 && sequenceChartList.forEach(e => {
       xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
       pitchAngle1Data.push(e.pitchAngle1 && parseInt(e.pitchAngle1).toFixed(2) || '--');
@@ -371,14 +383,18 @@ function SequenceChart({sequenceChartList}){
       speedData.push(e.speed);
       replaceData.push('--')
     });
-
-    const filterpitchAngle1= sequenceChartList.filter(e => e.pitchAngle1);
-    const filterpitchAngle2= sequenceChartList.filter(e => e.pitchAngle2);
-    const filterpitchAngle3= sequenceChartList.filter(e => e.pitchAngle3);
+    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    const totalLength = SequenceChart.length;
+    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
+      labelInterval = parseInt(totalLength / 3) - 1;
+    }
+    const filterpitchAngle1 = sequenceChartList.filter(e => e.pitchAngle1);
+    const filterpitchAngle2 = sequenceChartList.filter(e => e.pitchAngle2);
+    const filterpitchAngle3 = sequenceChartList.filter(e => e.pitchAngle3);
     const filterWindSpeed = sequenceChartList.filter(e => e.speed);
     const inverterTenMinGraphic = (filterpitchAngle1.length === 0 && filterWindSpeed.length === 0
       && filterpitchAngle2.length === 0 && filterpitchAngle3.length === 0) ? showNoData : hiddenNoData;
-    let color = ['#a42b2c', '#e08031','#3e97d1','#199475'];
+    let color = ['#a42b2c', '#e08031', '#3e97d1', '#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -390,6 +406,8 @@ function SequenceChart({sequenceChartList}){
         left: 30,
         top: 23,
       },
+      color: color,
+
       legend: {
         top: 24,
         itemWidth: 24,
@@ -400,9 +418,11 @@ function SequenceChart({sequenceChartList}){
         }
       },
       grid: {
-        containLabel: true,
+        // containLabel: true,
         top: 90,
-        bottom: 20,
+        bottom: 40,
+        left: '13%',
+        right: '13%',
       },
       tooltip: {
         trigger: 'axis',
@@ -444,6 +464,10 @@ function SequenceChart({sequenceChartList}){
         },
         axisLabel: {
           color: lineColor,
+          formatter: function (params) {
+            return params.slice(5, params.length)
+          },
+          // interval: labelInterval,
         },
         axisPointer: {
           label: {
@@ -453,10 +477,12 @@ function SequenceChart({sequenceChartList}){
       },
       yAxis: [
         {
-          name: '桨距角()',
+          name: '桨距角(°)',
           nameTextStyle: {
             color: lineColor,
           },
+          splitNumber: 4,
+          boundaryGap: false,
           splitLine: {
             show: false
           },
@@ -497,51 +523,42 @@ function SequenceChart({sequenceChartList}){
         {
           name: '桨距角1',
           type: 'line',
-          itemStyle: {
-            opacity: 0,
-          },
           label: {
             normal: {
               show: false
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle1.length>0 ?pitchAngle1Data:replaceData,
+          data: filterpitchAngle1.length > 0 ? pitchAngle1Data : replaceData,
         },
         {
           name: '桨距角2',
           type: 'line',
-          itemStyle: {
-            opacity: 0,
-          },
           label: {
             normal: {
               show: false
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle2.length>0 ?pitchAngle2Data:replaceData,
+          data: filterpitchAngle2.length > 0 ? pitchAngle2Data : replaceData,
         },
         {
           name: '桨距角3',
           type: 'line',
-          itemStyle: {
-            opacity: 0,
-          },
           label: {
             normal: {
               show: false
             }
           },
           yAxisIndex: 0,
-          data: filterpitchAngle3.length>0 ?pitchAngle3Data:replaceData,
+          data: filterpitchAngle3.length > 0 ? pitchAngle3Data : replaceData,
         },
         {
           name: '转速',
           type: 'line',
           lineStyle: {
             type: 'dotted',
-            color: '#199475',
+            // color: '#199475',
             width: 1,
           },
           label: {
@@ -550,7 +567,7 @@ function SequenceChart({sequenceChartList}){
             }
           },
           yAxisIndex: 1,
-          data: filterWindSpeed.length>0 ?speedData:replaceData,
+          data: filterWindSpeed.length > 0 ? speedData : replaceData,
         },
       ]
     };
@@ -561,5 +578,5 @@ function SequenceChart({sequenceChartList}){
     <div id="sequenceChart" ></div>
   );
 }
-export { InverterTenMin,SactterChart,SequenceChart}
+export { InverterTenMin, SactterChart, SequenceChart }
 

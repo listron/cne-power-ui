@@ -1,3 +1,4 @@
+const homePage = require('./mock/home/homepage');
 const inspectionList = require('./mock/operation/MockinspectionList');
 const defectList = require('./mock/operation/MockDefectList');
 const enterprise = require('./mock/system/enterprise');
@@ -16,9 +17,14 @@ const others = require('./mock/others/other');
 const MockStationContrast = require('./mock/statisticalAnalysis/MockStationContrast');
 const plan = require('./mock/system/plan');
 const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysis');
+const stationContrast = require('./mock/statisticalAnalysis/stationContrast');
+const cleanWarning = require('./mock/highAnalysis/cleanWarning');
+
 
 // as
 exports.mockConfig = [
+  ...homePage, // 首页mock
+
   ...inspectionList,
   ...defectList,
   ...dayReport, // 日报
@@ -38,4 +44,6 @@ exports.mockConfig = [
   ...others,
   ...MockStationContrast,//统计分析-电站对比
   ...allstationanalysis,//电站分析
+  ...stationContrast,
+  ...cleanWarning, // 高级分析-清洗预警
 ]

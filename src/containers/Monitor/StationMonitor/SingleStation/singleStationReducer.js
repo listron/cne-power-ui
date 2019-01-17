@@ -5,7 +5,7 @@ var initState = Immutable.fromJS({
   loading: false,//加载状态
   stationList: [],//所有电站列表
   singleStationData: {},//单电站数据
-  // stationType: '1',//电站类型  0：风 1：光
+  stationType: null,//电站类型  0：风 1：光
   capabilityData: [],//出力图数据
   powerData: [],//理论发电量 实际发电量数据
   operatorList: [],//企业运维人员列表
@@ -18,6 +18,9 @@ var initState = Immutable.fromJS({
   inverterList: {},//逆变器列表
   confluenceBoxList: {}, // 汇流箱列表详细信息。
   boxTransformerList: {},//箱变列表
+  collectorList: [], // 集电线路信息列表
+  boosterList: [], // 升压站列表数据
+  powerNetList: [], // 电网信息列表
   error: {},//请求错误返回信息
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表

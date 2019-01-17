@@ -1,0 +1,53 @@
+@import '../../../../theme/theme';
+.transferMain {
+    border: 1px solid #e1e2e2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    background: #fff;
+    .selectCondition {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding: 26px 0 20px 28px;
+        border-top: 1px solid $promptColor;
+    }
+    :global {
+        .ant-table-placeholder {
+            border-bottom: none
+        }
+    }
+    .iconDetail {
+        div {
+            display: block;
+            color: $themeColor;
+            cursor: pointer;
+            span {
+                display: flex;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                width: 30px;
+                background: #d1d1d1;
+            }
+        }
+        div:hover {
+            span {
+                display: flex;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                width: 30px;
+                background: $themeColor;
+            }
+            :global {
+                .icon-action {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

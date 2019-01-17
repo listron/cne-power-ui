@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Input, Form, message } from 'antd';
+import { Input, Form, message } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
 import { getMonth, } from '../plan';
@@ -17,10 +17,11 @@ class EditableCell extends React.Component {
 
   getInput = (form) => {
     const { dataIndex, record } = this.props;
+    const stationType = record.stationType;
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span>
         <Input onChange={(e) => this.valueChange(e, dataIndex, record, 'pr')}
-          defaultValue={record[dataIndex]} />%</span>);
+          defaultValue={record[dataIndex]} disabled={stationType === 0} placeholder={'--'} />%</span>);
     }
     if (record.setGridTime) {// 并网数据
       if (getMonth(dataIndex) < +(record.setGridTime)) {
@@ -46,12 +47,12 @@ class EditableCell extends React.Component {
       message.warning(`只可以填写数字,可精确到小数点后${limitPointLength}位`);
     } else {
       const index = getMonth(dataIndex) - 1;
-      if(index>=0){
+      if (index >= 0) {
         record.planMonthGens[index] = number;
       }
       let planMonthValue = record.planMonthGens.filter(e => e !== "null");
       const planPower = planMonthValue.reduce((prev, next) => (+prev) + (+next), 0)
-      this.props.form.setFieldsValue({ planPower });
+      this.props.form.setFieldsValue({ planPower: +planPower.toFixed(4) });
       type === 'pr' ? record.yearPR = number : '';
     }
   };

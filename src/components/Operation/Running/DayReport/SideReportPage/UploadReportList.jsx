@@ -33,7 +33,7 @@ class UploadReportList extends Component {
 
   componentDidMount(){
     const { reportStation, getLostGenType } = this.props;
-    const stationType = reportStation[0] && reportStation[0].stationType || 1; 
+    const stationType = reportStation[0] && reportStation[0].stationType; 
     getLostGenType({ // 选中电站的所有故障类型
       stationType, 
     })
@@ -67,9 +67,16 @@ class UploadReportList extends Component {
     const { reportDay,stationDeviceTypes, getStationDeviceTypes, dayReportConfig, reportStation, findDeviceExist, deviceExistInfo, dayReportTotalInfoArr, lostGenTypes, getLostGenType } = this.props;
     const { abnormalModalshow, abnormalInfo, abnormalList } = this.state;
     const stationType = reportStation[0] && reportStation[0].stationType; 
+    const unitConfig = dayReportConfig[0] || {};
     return (
       <div className={styles.uploadReportList}>
-        <div className={styles.uploadReportTip} >{reportDay} <span>新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条</span></div>
+        <div className={styles.uploadReportTip} >
+          <span >{reportDay} </span>
+          <span>
+            新添加<i>{dayReportTotalInfoArr && dayReportTotalInfoArr.length || '--'}</i>条
+          </span>
+          {unitConfig.power === '万kWh' ? <span className={styles.tip}>发电量建议保留4位小数</span> : null}
+        </div>
         <div>
           <StationReportColumn dayReportConfig={dayReportConfig} stationType={stationType} />
           {dayReportTotalInfoArr.map(e=> {// 判定是否有图表提示添加异常损失

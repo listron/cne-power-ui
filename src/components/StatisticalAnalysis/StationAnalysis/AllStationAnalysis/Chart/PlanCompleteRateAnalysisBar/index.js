@@ -21,6 +21,14 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     this.drawCharts(nextProps);
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawCharts = (param) => {
     const {graphId, yAxisName, title,xAxisData ,planPowerData, actualPowerData ,planRateData,hasData} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
@@ -28,6 +36,8 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     targetChart.clear();
     targetChart.resize();
     let color =['#dfdfdf','#f9b600','#3e97d1'];
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     targetOption = {
       graphic: confluenceTenMinGraphic,
@@ -37,7 +47,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         left: '23',
         top: 'top',
         textStyle: {
-          color: '#666',
+          color: fontColor,
           fontSize: 14,
           fontWeight: 'normal',
         }
@@ -47,8 +57,9 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         axisPointer: {
           type: 'cross',
           crossStyle: {
-            color: '#999'
-          }
+            color: fontColor
+          },
+          label:{color:fontColor}
         },
         backgroundColor: '#fff',
         padding: 10,
@@ -68,8 +79,8 @@ class PlanCompleteRateAnalysisBar extends React.Component {
       legend: {
         top: 20,
         left: 'center',
-        icon: 'circle',
-        itemWidth: 5,
+        // icon: 'circle',
+        itemWidth: 8,
         itemHeight: 5,
       },
       xAxis: [
@@ -83,11 +94,11 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#dfdfdf',
+              color: lineColor,
             }
           },
           axisLabel: {
-            color: '#666',
+            color: fontColor,
           },
           axisTick: {
             show: false,
@@ -99,16 +110,17 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           type: 'value',
           name: yAxisName,
           nameTextStyle: {
-            color: '#666',
+            color: fontColor,
           },
           // min: 0,
           splitNumber: 5,
           scale: true,
           axisLabel: {
-            color: '#666',
+            color: fontColor,
           },
           axisLine: {
             show: false,
+            lineStyle:{color:lineColor}
           },
           axisTick: {
             show: false,
@@ -116,7 +128,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           splitLine: {
             // show:false,
             lineStyle: {
-              color: '#666',
+              color: fontColor,
               type: 'dashed'
             }
           },
@@ -125,22 +137,23 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           type: 'value',
           name: '完成率',
           nameTextStyle: {
-            color: '#666',
+            color: fontColor
           },
           axisLabel: {
             formatter: '{value} %',
-            color: '#666',
+            color: fontColor,
           },
           axisTick: {
             show: false,
           },
           axisLine: {
             show: false,
+            lineStyle:{color:lineColor}
           },
           splitLine: {
             show: false,
             lineStyle: {
-              color: '#999',
+              color:fontColor,
               type: 'dashed'
             }
           },
@@ -150,8 +163,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         {
           name: '计划完成发电量',
           type: 'bar',
-          // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-          data: planPowerData,
+          data: this.getDefaultData(planPowerData),
           itemStyle: {
             barBorderRadius: 3,
           },
@@ -160,8 +172,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         {
           name: '实际发电量',
           type: 'bar',
-          data: actualPowerData,
-          // data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+          data: this.getDefaultData(actualPowerData),
           itemStyle: {
             barBorderRadius: 3,
           },
@@ -171,8 +182,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
           name: '计划完成率',
           type: 'line',
           yAxisIndex: 1,
-          data: planRateData,
-          // data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+          data: this.getDefaultData(planRateData),
         }
       ]
     };

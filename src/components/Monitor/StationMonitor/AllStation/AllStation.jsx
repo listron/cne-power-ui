@@ -14,21 +14,21 @@ class Allstation extends React.Component {
   }
 
   render() {
-    const { allMonitorStation } = this.props;
+    const { allMonitorStation,realTimePowerUnit,realCapacityUnit,realTimePowerPoint,realCapacityPoint } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
+  
 
     let iconArray = [
       {
-        "400": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],
-        "500": 'image:///img/wind-cutdown.png',
-        "900": 'image:///img/wind-unconnected.png'
+        "400": ['image:///img/wind01.png', 'image:///img/wind02.png'],
+        "500": 'image:///img/cutdown.png',
+        "900": 'image:///img/wind04.png'
       },
       {
-        "400": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
-        "500": 'image:///img/pv-cutdown.png',
-        "900": 'image:///img/pv-unconnected.png'
+        "400": ['image:///img/pv01.png', 'image:///img/pv02.png'],
+        "500": 'image:///img/pv03.png',
+        "900": 'image:///img/pv04.png'
       },
-
     ]
     let data = [];
     stationDataList.forEach((item, index) => {
@@ -41,11 +41,14 @@ class Allstation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
+        symbolSize: stationType > 0 ? [30, 20]: [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: item.stationPower,
-        stationCapacity: item.stationCapacity,
+        stationPower: realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000),
+        stationCapacity: realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
+        realTimePowerUnit,
+        realCapacityUnit
       })
     })
     return (

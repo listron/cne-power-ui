@@ -34,9 +34,7 @@ class StationStatisticList extends React.Component {
     const { getAllStationStatisticTableData, queryListParams,stationType, year, month,powerSelectYear, dateType, pageSize, pageNum } = this.props;
     let curYear = Number(year);
     year.length>1?curYear=year[year.length-1]:curYear=Number(year);
-    console.log(curYear);
-
-    console.log(year);
+   
     const { field, order } = sorter;
     const sortInfo = {
       stationName: 'stationName',
@@ -98,7 +96,7 @@ class StationStatisticList extends React.Component {
     const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort } = this.props;
     const curYear = Number(year);
     const userId = Cookie.get('userId')
-    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth })
+    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth, sort:'planGenRate' })
     getAllStationStatisticTableData(
       {
         year: curYear,
@@ -139,9 +137,9 @@ class StationStatisticList extends React.Component {
         <Radio.Group value={`${powerSelectYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             } else {
-              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}年</Radio.Button>
+              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
             }
           }
           )}
@@ -208,6 +206,7 @@ class StationStatisticList extends React.Component {
         title: "计划完成率",
         dataIndex: "planGenRate",
         sorter: true,
+        defaultSortOrder:'ascend'
       },
       {
         title: "发电量同比",
@@ -294,6 +293,7 @@ class StationStatisticList extends React.Component {
         title: "计划完成率",
         dataIndex: "planGenRate",
         sorter: true,
+        defaultSortOrder:'ascend'
       },
       {
         title: "发电量环比",

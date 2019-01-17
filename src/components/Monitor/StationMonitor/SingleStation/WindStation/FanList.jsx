@@ -286,14 +286,15 @@ class FanList extends React.Component {
   mapData = (deviceList,deviceTypeCode) => { // 地图
     let iconArray = [
       {
-        "100": 'image:///img/wind-normal.png', 
-        "200": 'image:///img/wind-cutdown.png',
-        "300": 'image:///img/wind-alert.png',
-        "900": 'image:///img/wind-unconnected.png'
+        "100": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],  // 正常
+        "200": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],  // 停机
+        "300": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],  // 故障
+        "900": 'image:///img/wind-unconnected.png'  // 未接入
       },
       {
-        "400": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
-        "500": 'image:///img/pv-cutdown.png',
+        "100": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
+        "200":  ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
+        "300": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
         "900": 'image:///img/pv-unconnected.png'
       },
     ];
@@ -307,8 +308,9 @@ class FanList extends React.Component {
       data.push({
         name: item.deviceName,
         value: [item.longitude, item.latitude, stationType, deviceStatus],
-        symbol: currentStationStatus,
+        symbol: stationType !== "900" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         alarmNum: item.alarmNum,
+        center:[item.longitude,item.latitude],
         stationPower: item.devicePower,
         stationCapacity: item.deviceCapacity,
         instantaneous: item.windSpeed,
@@ -323,6 +325,7 @@ class FanList extends React.Component {
 
   render() {
     const { fanList, loading, deviceTypeCode } = this.props;
+    
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
     // 初始化数据
     const initDeviceList = fanList.deviceList && fanList.deviceList.map((e, i) => ({ ...e, key: i })) || [];

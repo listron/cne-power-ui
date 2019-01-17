@@ -14,12 +14,13 @@ import WarningTip from '../../../../Common/WarningTip';
 
 class StationManageTable extends Component {
   static propTypes = {
+    stationListLoading: PropTypes.bool,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
-    loading: PropTypes.bool,
     queryListParams: PropTypes.object,
     allDepartmentData: PropTypes.array,
+    getStations: PropTypes.func,
     getStationList: PropTypes.func,
     getStationDetail: PropTypes.func,
     changeStationManageStore: PropTypes.func,
@@ -56,8 +57,9 @@ class StationManageTable extends Component {
     if (file.status === 'done' && file.response && file.response.code === '10000') {
       message.success(`${file.name} 文件上传成功`);
       this.setState({fileList: []});
-      const { getStationList, queryListParams } = this.props;
+      const { getStationList, queryListParams, getStations } = this.props;
       getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
+      getStations && getStations(); // 重新请求数据流程中的电站列表。
     }else if(file.status === 'done' && (!file.response || file.response.code !== '10000')){
       message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     }else if (file.status === 'error') {
@@ -95,7 +97,6 @@ class StationManageTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
-    console.log(sorter);
     const { getStationList, queryListParams } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
@@ -157,7 +158,7 @@ class StationManageTable extends Component {
   }
 
   render(){
-    const { loading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
+    const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
     const authData = Cookie.get('authData') || null;
     const column = [
@@ -224,7 +225,7 @@ class StationManageTable extends Component {
         </div>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={()=>this.confirmWarningTip(deleteInfo)} value={warningTipText} />}
         <Table 
-          loading={loading}
+          loading={stationListLoading}
           dataSource={ stationList.map((e, i) => ({...e, key: i})) } 
           columns={column} 
           className={styles.stationTable}

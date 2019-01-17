@@ -6,7 +6,6 @@ import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
-
 class Map extends Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
@@ -162,6 +161,8 @@ class Map extends Component {
             const stationCapacity = params.data.stationCapacity || '--';
             const instantaneous = params.data.instantaneous || '--';
             const angleOfYaw = params.data.angleOfYaw;
+            const realTimePowerUnit = params.data.realTimePowerUnit;
+            const realCapacityUnit = params.data.realCapacityUnit;
             return `<div class='stationCard' style='height:70px;overflow:hidden'>
             <div class='stationCardTitle' style='display:flex;flex-direction: row;justify-content: space-between;'>
             <span>${params.data.name}</span>
@@ -172,9 +173,9 @@ class Map extends Component {
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
             <div class='stationCardValue'}>
-              <span class='stationMark'>${stationPower}MW</span>
+              <span class='stationMark'>${stationPower}${realTimePowerUnit}</span>
               &nbsp;&nbsp;
-              <span>${stationCapacity}MW</span>
+              <span>${stationCapacity}${realCapacityUnit}</span>
             </div>            
             <div class='stationCardWindSpeed'>
             <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
@@ -195,7 +196,6 @@ class Map extends Component {
         // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
-        symbolSize: [24, 17],
         label: {
           normal: {
             show: false
@@ -212,7 +212,12 @@ class Map extends Component {
         }
       }]
     };
-    testChart.setOption(option)
+    try{
+      testChart.setOption(option);
+    }catch(error){
+      message.error('中国地图获取失败,请稍后刷新重试');
+      console.log(error);
+    }
     testChart.on('click', (params) => {
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)

@@ -13,9 +13,9 @@ var initState = Immutable.fromJS({
   endTime: [],//结束时间
   deviceName: '',//设备名称，模糊查询
   warningStatus: [],//处理结果
-  sortName: '',
   isTransferWork: 1,
   isRelieveAlarm: 1,
+  warningTypeStatus:'1',//实时告警
 
   alarmNum: {},
   realtimeAlarm: [],  // 实时告警
@@ -24,15 +24,26 @@ var initState = Immutable.fromJS({
   defectTypes: [],
   lastUpdateTime: '',
   ticketInfo: {},
-  relieveInfo: {}
+  relieveInfo: {},
+
+  sortMethod: '', //排序方式 
+  sortName: '', // 排序名字
+  pageSize: 10, 
+  currentPage: 1, // 页数
+
+  pageName: 'list',//用于已转工单，list和 detail
+  defectId: '', // 用于已转工单 缺陷ID 即转工单id
+  stationCodes:[],// 只用于已转工单
+  rangTime:[],// 发生时间 只用于已转工单
+
 });
 
 const alarmReducer = (state = initState, action) => {
   switch (action.type) {
     case alarmAction.ALARM_FETCH:
-      return state.set('loading',true);
-    case alarmAction.GET_ALARM_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
+      return state.set('loading', true);
+    case alarmAction.GET_ALARM_FETCH_SUCCESS:
+      return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case alarmAction.CHANGE_ALARM_STORE_SAGA:
       return state.merge(Immutable.fromJS(action.payload));
     case alarmAction.RESET_ALARM:

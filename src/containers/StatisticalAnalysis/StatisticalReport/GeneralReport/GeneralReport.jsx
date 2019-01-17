@@ -8,12 +8,16 @@ import Footer from "../../../../components/Common/Footer";
 import moment from 'moment';
 import path from '../../../../constants/path';
 import axios from 'axios';
+import Cookie from 'js-cookie';
+import { enterpriseKey } from '../../../../constants/enterpriseKey';
+
 const { APIBasePath } = path.basePaths;
-const { dailyreport } = path.APISubPaths.statisticalAnalysis;
+const { 
+  dailyreport, faultReport, genReport, indicatorReport
+} = path.APISubPaths.statisticalAnalysis;
 const { MonthPicker } = DatePicker;
 
 class GeneralReport extends Component{
-
   constructor(props){
     super(props);
     this.state = {
@@ -21,6 +25,7 @@ class GeneralReport extends Component{
       faultDate : moment().subtract(1,'day'),
       eleInfoDate : moment().subtract(1,'day'),
       proOperationDate : moment().subtract(1,'month'),
+      selectedStation: []
     }
   }
 
@@ -53,22 +58,42 @@ class GeneralReport extends Component{
     return current && current > moment().startOf('day');
   }
 
-  stationSelected = (rest) => {
-    const stationCodes = rest.map((item, index) => {
-      return item.stationCode
-    });
-    this.setState({
-      selectStation:rest,
-      stationCodes: stationCodes
-    });
+  selectStation = selectedStation => {
+    this.setState({ selectedStation });
   };
 
   downloadReport = () => { // 日报下载
     let { reportDate } = this.state;
-    reportDate = reportDate?reportDate.format('YYYY-MM-DD'):'';
+    reportDate = reportDate.format('YYYY-MM-DD');
     const downloadHref = `${APIBasePath}/${dailyreport}/${reportDate}`;
     const fileName = `${reportDate}日报.xlsx`;
     this.downLoadFun(downloadHref, fileName, reportDate);
+  }
+
+  downloadFault = () => { // 故障日报
+    let { faultDate } = this.state;
+    faultDate = faultDate.format('YYYY-MM-DD');
+    const downloadHref = `${APIBasePath}/${faultReport}/${faultDate}`;
+    const fileName = `${faultDate}故障日报.xlsx`;
+    this.downLoadFun(downloadHref, fileName, faultDate);
+  }
+
+  downloadGenInfo = () => { // 发电量信息下载
+    let { eleInfoDate } = this.state;
+    eleInfoDate = eleInfoDate.format('YYYY-MM-DD');
+    const downloadHref = `${APIBasePath}/${genReport}/${eleInfoDate}`;
+    const fileName = `${eleInfoDate}发电量信息汇总.xlsx`;
+    this.downLoadFun(downloadHref, fileName, eleInfoDate);
+  }
+
+  downloadIndicator = () => { // 生产运营指标下载
+    let { proOperationDate, selectedStation } = this.state;
+    const { stationCode } = selectedStation[0];
+    const indicatorYear = proOperationDate.format('YYYY');
+    const indicatorMonth = proOperationDate.format('MM');
+    const downloadHref = `${APIBasePath}/${indicatorReport}/${stationCode}/${indicatorYear}/${indicatorMonth}`;
+    const fileName = `${proOperationDate}生产指标运行.xlsx`;
+    this.downLoadFun(downloadHref, fileName, proOperationDate);
   }
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
@@ -104,7 +129,12 @@ class GeneralReport extends Component{
   }
   
   render(){
-    const { reportDate,faultDate,eleInfoDate,proOperationDate } = this.state;
+    const {
+      reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation
+    } = this.state;
+    const { stations } = this.props;
+    const enterpriseId = Cookie.get('enterpriseId');
+    const reportInfo = enterpriseKey.find(e => e.enterpriseId === enterpriseId);
     return(
       <div className={styles.generalReportBox}>
         <CommonBreadcrumb breadData={{name:'通用报表'}} style={{marginLeft:'38px'}}></CommonBreadcrumb>
@@ -129,7 +159,7 @@ class GeneralReport extends Component{
                 <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}>下载</Button>
               </div>
             </div>
-            <div className={styles.dailyBox}>
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.defaultReport}>
                   <Icon type="download" style={{color:'#ffffff'}} />
@@ -145,11 +175,10 @@ class GeneralReport extends Component{
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button disabled className={styles.text}>下载</Button>
+                <Button disabled={!faultDate} onClick={this.downloadFault} className={styles.text}>下载</Button>
               </div>
-            </div>
-
-            <div className={styles.dailyBox}>
+            </div>}
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.eleInfo}>
                   <Icon type="download" style={{color:'#ffffff'}} />
@@ -158,18 +187,17 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker 
-                disabledDate={this.disabledDate}
-                placeholder={'选择时间'}
-                onChange={this.ChangeEleInfoDate}
-                value={eleInfoDate} 
+                  disabledDate={this.disabledDate}
+                  placeholder={'选择时间'}
+                  onChange={this.ChangeEleInfoDate}
+                  value={eleInfoDate} 
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button disabled className={styles.text}>下载</Button>
+                <Button disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo}>下载</Button>
               </div>
-            </div>
-
-            <div className={styles.dailyBox}>
+            </div>}
+            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.proOperation}>
                     <Icon type="download" style={{color:'#ffffff'}} />
@@ -178,24 +206,28 @@ class GeneralReport extends Component{
               </div>
               <div className={styles.dateSearch}>
                 <MonthPicker 
-                disabledDate={this.disabledDate}
-                placeholder={'选择月份'} 
-                onChange={this.ChangeProOperationDate}
-                value={proOperationDate} 
+                  disabledDate={this.disabledDate}
+                  placeholder={'选择月份'} 
+                  onChange={this.ChangeProOperationDate}
+                  value={proOperationDate}
                 />
               </div>
               <div className={styles.stationSearchs}>
                 <StationSelect 
-                  data={[]}
-                  onOK={this.selectStation} 
-                  holderText="请选择电站" 
-                  disabled
+                  data={stations}
+                  onOK={this.selectStation}
+                  value={selectedStation}
+                  holderText="请选择电站"
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button disabled className={styles.text}>下载</Button>
+                <Button
+                  disabled={ selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.downloadIndicator}
+                >下载</Button>
               </div>
-            </div>
+            </div>}
           </div>
           <Footer />
         </div>
@@ -204,4 +236,8 @@ class GeneralReport extends Component{
   }
 }
 
-export default connect()(GeneralReport)
+const mapStateToProps = state => ({
+  stations: state.common.get('stations').toJS(),
+});
+
+export default connect(mapStateToProps)(GeneralReport)

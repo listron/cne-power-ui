@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Select, Icon, Popover, Input, Form, message } from 'antd';
+import { Table, Button,Icon, Input, Form, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
-import { getMonth, getDefectSortField, getDefaultMonth } from '../plan';
+import { getDefectSortField, getDefaultMonth } from '../plan';
 import WarningTip from '../../../../Common/WarningTip';
 import EditableCell from './EditableCell';
 import moment from 'moment';
@@ -27,7 +27,7 @@ class PlanTable extends Component {
     changePlanStore: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    stationCodes: PropTypes.number,
+    stationCodes: PropTypes.array,
     sortField: PropTypes.string,
     sort: PropTypes.string,
   };
@@ -81,14 +81,13 @@ class PlanTable extends Component {
     }
   };
 
-  isEditing = (record) => { // 是否可以编辑
+  isEditing = (record) => { // 是否可以编辑(一个电站)
     const currentYear = moment().year();
     if (currentYear - record.planYear <= 0) {
       return record.key === this.state.editingKey;
     }
   };
 
-  // 编辑
   edit(key) { // 如果存在编辑，则不允许其他操作
     const { editingKey } = this.state;
     this.setState({ currentClickKey: key });
@@ -111,14 +110,14 @@ class PlanTable extends Component {
       if (error) {
         return;
       }
-      const {data} =this.state;
+      const { data } = this.state;
       let saveData = data.find(station => station.key === key)
       saveData = { ...saveData, ...row };
-      let month=[];
-      let planMonthGens=saveData.planMonthGens.filter((e,index)=>{ 
-        if( e !== "null"){
-          month.push(index+1)
-        } 
+      let month = [];
+      let planMonthGens = saveData.planMonthGens.filter((e, index) => {
+        if (e !== "null") {
+          month.push(index + 1)
+        }
         return e !== "null"
       })
       message.config({
@@ -126,248 +125,238 @@ class PlanTable extends Component {
         duration: 2,
         maxCount: 1,
       })
-     let  saveOK=planMonthGens.some(e=> e==="")
-     saveOK &&  message.warning(`请填写完整之后再保存`);
-     if(!saveOK){
-      const params = {
-        year: saveData.planYear,
-        stationCode: saveData.stationCode,
-        month: month,
-        monthPower: planMonthGens,
-        planPower: saveData.planPower,
-        yearPR: saveData.yearPR,
-      };
-      this.props.editPlanInfo(params);
-      this.setState({editingKey: ''});
-     }
+      let saveOK = planMonthGens.some(e => e === "")
+      saveOK && message.warning(`请填写完整之后再保存`);
+      if (!saveOK) {
+        const params = {
+          year: saveData.planYear,
+          stationCode: saveData.stationCode,
+          month: month,
+          monthPower: planMonthGens,
+          planPower: saveData.planPower,
+          yearPR: saveData.yearPR || null,
+        };
+        this.props.editPlanInfo(params);
+        this.setState({ editingKey: '' });
+      }
     })
-}
+  }
 
-_createTableColumn = () => {//生成表头
-  const _this = this;
-
-  function _MonthColumns() {
-    let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return tabelKey.map((item, index) => {
-      return {
-        title: index + 1 + '月',
-        dataIndex: item,
-        width: '40px',
-        key: item,
-        editable: true,
-        className: "month",
-        render: (text, record, index) => {
+  _createTableColumn = () => {//生成表头
+    const _this = this;
+    const canEdit=moment().year()-this.props.planYear;
+    function _MonthColumns() {
+      let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      return tabelKey.map((item, index) => {
+        return {
+          title: index + 1 + '月',
+          dataIndex: item,
+          width: '40px',
+          key: item,
+          editable: true,
+          className: "month",
+          render: (text, record, index) => {
+            const textValue = text ? text : '--';
+            const editable = _this.isEditing(record);
+            return (
+              <div>
+                <Input defaultValue={textValue} disabled={editable ? false : true} placeholder="--" />
+              </div>
+            )
+          }
+        }
+      })
+    }
+    const MonthColumn = _MonthColumns();
+    const columns = [
+      {
+        title: '区域',
+        dataIndex: 'regionName',
+        key: 'regionName',
+        width: '50px',
+        className: styles.regionName,
+        sorter: true,
+        render: text => {
+          return text ? text : '--'
+        }
+      },
+      {
+        title: '电站名称',
+        dataIndex: 'stationName',
+        key: 'stationName',
+        className: styles.stationNameBox,
+        defaultSortOrder: 'descend',
+        sorter: true,
+        render: (text, record) => {
           const textValue = text ? text : '--';
-          const editable = _this.isEditing(record);
+          return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
+        }
+      },
+      {
+        title: '装机容量(MW)',
+        dataIndex: 'stationCapacity',
+        key: 'stationCapacity',
+        sorter: true,
+        className: styles.stationCapacity,
+      },
+      {
+        title: '年份',
+        dataIndex: 'planYear',
+        key: 'planYear',
+        sorter: false, // 暂时不排序了
+        className: styles.planYear
+      },
+      {
+        title: '年计划发电量(万kWh)',
+        dataIndex: 'planPower',
+        key: 'planPower',
+        className: styles.planPower,
+        sorter: true,
+        onCell: record => {
+          return ({
+            record,
+            dataIndex: 'planPower',
+            editing: this.isEditing(record),
+          })
+        },
+        render: (text, record) => {
+          const textValue = text ? text : '--';
+          return <div className={this.isEditing(record) ? styles.save : ""}>{textValue}</div>
+        }
+      },
+      ...MonthColumn,
+      {
+        title: 'PR年计划',
+        dataIndex: 'yearPR',
+        key: 'yearPR',
+        editable: true,
+        className: "yearPR",
+        render: text => {
+          const textValue = text ? text : '--';
+          return (<span><Input defaultValue={textValue} disabled={true} />%</span>)
+        }
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation',
+        key: 'operation',
+        className: styles.operation,
+        render: (text, record) => {
+          const editable = this.isEditing(record);
           return (
             <div>
-              {
-                editable ? (
-                  <Input defaultValue={textValue} disabled={false} placeholder="--" />) :
-                  (<Input defaultValue={textValue} disabled={true} placeholder="--" />)
-              }
+              {editable ? (
+                <span>
+                  <EditableContext.Consumer>
+                    {form => (
+                      <a  href="javascript:;" className={styles.save}
+                        onClick={() => this.save(form, record.key)}
+                        style={{ marginRight: 8 }}
+                      >
+                        保存
+                      </a>
+                    )}
+                  </EditableContext.Consumer>
+                </span>
+              ) : (<a onClick={() => this.edit(record.key)} className={canEdit?styles.noEdit:styles.edit}>编辑</a>)}
             </div>
-          )
+          );
+        },
+      }];
+    let columnList = columns.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => {
+          return ({
+            record,
+            dataIndex: col.dataIndex,
+            title: record[col.dataIndex],
+            editing: this.isEditing(record),
+          })
+        }
+      };
+    });
+    return columnList;
+  };
+
+  _dealTableData = (planData) => { //将12个月的数据分开
+    if (planData.length < 0) {
+      return false
+    }
+    let initPlanData = planData.map((list, index) => {
+      for (let i = 0; i < 12; i++) {
+        list[getDefaultMonth(i + 1)] = (list.planMonthGens && list.planMonthGens[i] === "null" ? "--" : list.planMonthGens[i]) || " "
+      }
+      if (list.onGridTime) {
+        const planYear = list.planYear;  // 生产计划的年份
+        const onGridYear = list.onGridTime.split('-')[0];
+        if (planYear - onGridYear === 0) {
+          list.setGridTime = list.onGridTime.split('-')[1];
         }
       }
-    })
-  }
-  const MonthColumn = _MonthColumns();
-  const columns = [
-    {
-      title: '区域',
-      dataIndex: 'regionName',
-      key: 'regionName',
-      width: '50px',
-      className: styles.regionName,
-      sorter: true,
-      render: text => {
-        return text ? text : '--'
-      }
-    },
-    {
-      title: '电站名称',
-      dataIndex: 'stationName',
-      key: 'stationName',
-      className: styles.stationNameBox,
-      defaultSortOrder: 'descend',
-      sorter: true,
-      render: (text, record) => {
-        const textValue = text ? text : '--';
-        return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
-      }
-    },
-    {
-      title: '装机容量(MW)',
-      dataIndex: 'stationCapacity',
-      key: 'stationCapacity',
-      sorter: true,
-      className: styles.stationCapacity,
-    },
-    {
-      title: '年份',
-      dataIndex: 'planYear',
-      key: 'planYear',
-      sorter: false, // 暂时不排序了
-      className: styles.planYear
-    },
-    {
-      title: '年计划发电量(万kWh)',
-      dataIndex: 'planPower',
-      key: 'planPower',
-      className: styles.planPower,
-      sorter: true,
-      onCell: record => {
-        return ({
-          record,
-          dataIndex: 'planPower',
-          editing: this.isEditing(record),
-        })
-      },
-      render: (text, record) => {
-        const textValue = text ? text : '--';
-        return <div className={this.isEditing(record) ? styles.save : ""}>{textValue}</div>
-      }
-    },
-    {
-      title: 'PR年计划',
-      dataIndex: 'yearPR',
-      key: 'yearPR',
-      editable: true,
-      className: "yearPR",
-      render: text => {
-        const textValue = text ? text : '--';
-        return (<span><Input defaultValue={textValue} disabled={true} />%</span>)
-      }
-    },
-    {
-      title: '操作',
-      dataIndex: 'operation',
-      key: 'operation',
-      className: styles.operation,
-      render: (text, record) => {
-        const editable = this.isEditing(record);
-        return (
-          <div>
-            {editable ? (
-              <span>
-                <EditableContext.Consumer>
-                  {form => (
-                    <a
-                      href="javascript:;"
-                      className={styles.save}
-                      onClick={() => this.save(form, record.key)}
-                      style={{ marginRight: 8 }}
-                    >
-                      保存
-                      </a>
-                  )}
-                </EditableContext.Consumer>
-              </span>
-            ) : (
-                <a onClick={() => this.edit(record.key)} className={styles.edit}>编辑</a>
-              )}
-          </div>
-        );
-      },
-    }];
-  MonthColumn.unshift(5, 0);
-  Array.prototype.splice.apply(columns, MonthColumn);
-  let columnList = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: record => {
-        return ({
-          record,
-          dataIndex: col.dataIndex,
-          title: record[col.dataIndex],
-          editing: this.isEditing(record),
-        })
-      }
-    };
-  });
-  return columnList;
-};
-
-_dealTableData = (planData) => { //将12个月的数据分开
-  if (planData.length < 0) {
-    return false
-  }
-  let initPlanData = planData.map((list, index) => {
-    for (let i = 0; i < 12; i++) {
-      list[getDefaultMonth(i + 1)] = (list.planMonthGens && list.planMonthGens[i] === "null" ? "--" : list.planMonthGens[i]) || " "
-    }
-    if (list.onGridTime) {
-      const planYear = list.planYear;  // 生产计划的年份
-      const onGridYear = list.onGridTime.split('-')[0];
-      if (planYear - onGridYear === 0) {
-        list.setGridTime = list.onGridTime.split('-')[1];
-      }
-    }
-    list.key = index;
-    return list;
-  });
-  this.setState({ data: initPlanData })
-};
-
-
-cancelWarningTip = () => {
-  this.setState({
-    showWarningTip: false,
-  })
-};
-
-confirmWarningTip = () => {
-  this.setState({ showWarningTip: false });
-  const { currentClickKey } = this.state;
-  this.setState({ editingKey: currentClickKey }, () => {
-    this.edit(currentClickKey);
-  });
-};
-
-render() {
-  const { pageSize, pageNum, totalNum, loading, planData, } = this.props;
-  const { showWarningTip, warningTipText } = this.state;
-  const components = {
-    body: {
-      row: EditableFormRow,
-      cell: (...rest) => {
-        return (<EditableContext.Consumer>
-          {form => {
-            return <EditableCell form={form} {...rest[0]}/>
-          }}
-        </EditableContext.Consumer>)
-      },
-    },
+      list.key = index;
+      return list;
+    });
+    this.setState({ data: initPlanData })
   };
-  return (
-    <div className={styles.planList}>
-      {showWarningTip &&
-        <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-      <div className={styles.planListTop}>
-        <Button className={styles.addplan} onClick={this.onPlanAdd}>
-          <Icon type="plus" />
-          <span className={styles.text}>添加</span>
-        </Button>
-        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-          onPaginationChange={this.onPaginationChange} />
+
+
+  cancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+    })
+  };
+
+  confirmWarningTip = () => {
+    this.setState({ showWarningTip: false });
+    const { currentClickKey } = this.state;
+    this.setState({ editingKey: currentClickKey }, () => {
+      this.edit(currentClickKey);
+    });
+  };
+
+  render() {
+    const { pageSize, pageNum, totalNum, loading, } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
+    const components = {
+      body: {
+        row: EditableFormRow,
+        cell: (...rest) => {
+          return (<EditableContext.Consumer>
+            {form => {
+              return <EditableCell form={form} {...rest[0]} />
+            }}
+          </EditableContext.Consumer>)
+        },
+      },
+    };
+    return (
+      <div className={styles.planList}>
+        {showWarningTip &&
+          <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        <div className={styles.planListTop}>
+          <Button className={styles.addplan} onClick={this.onPlanAdd}>
+            <Icon type="plus" />
+            <span className={styles.text}>添加</span>
+          </Button>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
+        </div>
+        <Table
+          className={styles.tableList}
+          loading={loading}
+          pagination={false}
+          components={components}
+          dataSource={this.state.data}
+          onChange={this.tableChange}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          columns={this._createTableColumn()}
+        />
       </div>
-      <Table
-        className={styles.tableList}
-        loading={loading}
-        pagination={false}
-        components={components}
-        dataSource={this.state.data}
-        onChange={this.tableChange}
-        locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        columns={this._createTableColumn()}
-      />
-    </div>
-  )
-}
+    )
+  }
 }
 
 export default PlanTable;

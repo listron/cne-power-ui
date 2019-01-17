@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col, Select } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
+import DeviceSelect from '../../../../Common/DeviceSelect';
 import moment from 'moment';
 const { Option } = Select;
 
@@ -34,56 +35,80 @@ class LimitAddForm extends Component {
     getStationDeviceTypes({ stationCodes: stationCode });
   }
 
-  componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
-    const { deviceExistInfo } = this.props;
-    const newDeviceExistInfo = nextProp.deviceExistInfo;
-    if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
-      // if(false){
-      if(newDeviceExistInfo.existError){// 设备验证未通过，有未存在设备
-        const existErrorData = newDeviceExistInfo.existErrorData || [];
-        this.setState({
-          deviceNameErroShow: true,
-          deviceNameErroInfo : `设备${existErrorData}不存在!`
-        });
-        setTimeout(()=>{
-          this.setState({
-            deviceNameErroShow: false,
-          });
-        },2000);
-      }else{ // 设备验证通过
-        const { form, changeLimitList, limitGenList } = this.props;
-        const { getFieldsValue } = form;
-        const limitInfo = getFieldsValue();
-        limitInfo.id = `limitAdd${limitGenList.length}`;
-        limitInfo.handle = true;
-        limitInfo.deviceId = newDeviceExistInfo.existErrorData;
-        limitInfo.deviceName = [...new Set(limitInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
-        limitInfo.type = 0;  // 限电type 0 => 后台接收。
-        changeLimitList([...limitGenList,limitInfo], true);
-      }
-    }
-  }
+  // componentWillReceiveProps(nextProp){ // 验证设备是否存在功能。
+    // const { deviceExistInfo } = this.props;
+    // const newDeviceExistInfo = nextProp.deviceExistInfo;
+    // if(deviceExistInfo.existLoading && !newDeviceExistInfo.existLoading){ // 设备名称验证后
+    //   // if(false){
+    //   if(newDeviceExistInfo.existError){// 设备验证未通过，有未存在设备
+    //     const existErrorData = newDeviceExistInfo.existErrorData || [];
+    //     this.setState({
+    //       deviceNameErroShow: true,
+    //       deviceNameErroInfo : `设备${existErrorData}不存在!`
+    //     });
+    //     setTimeout(()=>{
+    //       this.setState({
+    //         deviceNameErroShow: false,
+    //       });
+    //     },2000);
+    //   }else{ // 设备验证通过
+    //     const { form, changeLimitList, limitGenList } = this.props;
+    //     const { getFieldsValue } = form;
+    //     const limitInfo = getFieldsValue();
+    //     limitInfo.id = `limitAdd${limitGenList.length}`;
+    //     limitInfo.handle = true;
+    //     limitInfo.deviceId = newDeviceExistInfo.existErrorData;
+    //     limitInfo.deviceName = [...new Set(limitInfo.deviceName.split(' ').filter(e=>!!e))].join(',');
+    //     limitInfo.type = 0;  // 限电type 0 => 后台接收。
+    //     changeLimitList([...limitGenList,limitInfo], true);
+    //   // }
+    // }
+  // }
 
   confirmAddLimit = () => {
-    const { form, findDeviceExist, stationCode } = this.props;
-    const { deviceTypeCode } = this.state;
+    const { form, changeLimitList, limitGenList } = this.props;
+    const { deviceTypeName } = this.state;
+    // const { form, findDeviceExist, stationCode, changeLimitList, limitGenList } = this.props;
+    // const { deviceTypeCode } = this.state;
     form.validateFields((err, values) => {
       if (!err) {
-        const { deviceName } = values;
-        const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
-        const newDeviceName = [...new Set(tmpDeviceName)].join(',');
-        findDeviceExist({
-          deviceName: newDeviceName,
-          stationCode,
-          deviceTypeCode
+        let tmpDeviceId = [], tmpDeviceName = [], tmpDeviceCode = [];
+        values.deviceName.forEach(e => {
+          tmpDeviceId.push(e.deviceId);
+          tmpDeviceName.push(e.deviceName);
+          tmpDeviceCode.push(e.deviceCode);
         })
+        values.id = `limitAdd${limitGenList.length}`;
+        values.handle = true;
+        values.deviceId = tmpDeviceId.join(',');
+        values.deviceName = tmpDeviceName.join(',');
+        values.deviceCode = tmpDeviceCode.join(',');
+        values.type = 0;  // 限电type 0 => 后台接收。
+        values.deviceTypeName = deviceTypeName;
+        changeLimitList([...limitGenList,values], true);
+        // const { deviceName } = values;
+        // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
+        // const newDeviceName = [...new Set(tmpDeviceName)].join(',');
+        // findDeviceExist({
+        //   deviceName: newDeviceName,
+        //   stationCode,
+        //   deviceTypeCode
+        // })
       }
     });
   }
 
   selectDeviceType = (value) => {
+    const { stationDeviceTypes, form } = this.props;
+    // const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    // const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
+    // if (tmpName === '全场信息汇总') {
+    form.setFieldsValue({ deviceName: [] });
+    const { deviceTypeName } = stationDeviceTypes.find(e => e.deviceTypeCode === value);
+    // }
     this.setState({
       deviceTypeCode: value,
+      deviceTypeName,
     })
     return value
   }
@@ -94,9 +119,9 @@ class LimitAddForm extends Component {
   }
 
   render(){
-    const { form, defaultLimitLost, stationDeviceTypes } = this.props;
+    const { form, defaultLimitLost, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
-    const { deviceNameErroShow, deviceNameErroInfo } = this.state;
+    const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -129,9 +154,14 @@ class LimitAddForm extends Component {
         },
       },
     };
-    // const defaultLostPower = 0 ;
+    // const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === deviceTypeCode);
+    // const disableDevice = tmpDeviceType && tmpDeviceType.deviceTypeName === '全场信息汇总';
     return (
       <Form className={styles.lostAddForm} >
+        <div className={styles.infoTip}>
+          <span className={styles.round}>!</span>
+          <span>全场损失时,设备类型选择"全场信息汇总",设备总称填写"全场信息汇总"</span>
+        </div>
         <Row className={styles.horizontal} >
           <Col span={8}>
             <Form.Item label="设备类型" {...formItemLayout1} >
@@ -150,7 +180,6 @@ class LimitAddForm extends Component {
             <Form.Item label="限功率" {...formItemLayout1} >
               {getFieldDecorator('limitPower', {
                 rules: [{ 
-                  required: true, 
                   validator: (rule, value, callback)=>{
                     if(value && isNaN(value)){
                       callback('请填写数字');
@@ -167,18 +196,25 @@ class LimitAddForm extends Component {
               <span className={styles.lostInputTip}>%</span>
             </Form.Item> 
           </Col>
-          
         </Row>
-        <Row className={styles.horizontal} >
-          <Col span={8}>
-            <Form.Item label="设备名称" {...formItemLayout1} >
+        <Row className={styles.deviceSelect} >
+          <Col span={24}>
+            <Form.Item label="设备名称" className={styles.deviceSelect} >
               {getFieldDecorator('deviceName', {
-                rules: [{ required: true, message: '设备名称' }],
+                rules: [{ required: true, message: '请选择设备名称' }],
+                initialValue: [],
               })(
-                <Input />
+                <DeviceSelect
+                  // disabled={disableDevice}
+                  stationCode={stationCode}
+                  deviceTypeCode={deviceTypeCode}
+                  multiple={true}
+                  style={{width: 'auto', minWidth: '198px'}}
+                  // onChange={this.selectedDevice}
+                />
               )}
-              <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span>
-              {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>}
+              {/* <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span> */}
+              {/* {deviceNameErroShow && <div className={styles.dataErrorText}><i className="iconfont icon-alert_01" ></i><span>{deviceNameErroInfo}</span></div>} */}
             </Form.Item>
           </Col>
         </Row>
@@ -195,7 +231,6 @@ class LimitAddForm extends Component {
           <Col span={16}>
             <Form.Item label="结束时间" {...formItemLayout2} >
               {getFieldDecorator('endTime', {
-                // rules: [{ required: true, message: '结束时间' }],
               })(
                 <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
@@ -232,24 +267,19 @@ class LimitAddForm extends Component {
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit
+                  placeholder="填写样例: 8:00至10:00调度下令负荷控制在10MW以内"
+                  size={80}
+                  className={styles.reasonArea}
+                  numberIsShow={false}
+                  width={520}
+                  height={60}
+                />
               )}
               <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
             </Form.Item>
           </Col>
         </Row>
-        {/* <Row className={styles.reasonBox}>
-          <Col span={8}>
-            <Form.Item label="处理进展及说明" {...formItemLayout1} >
-              {getFieldDecorator('process', {
-                rules: [{ required: true, message: '请填写处理进展及说明' }],
-              })(
-                <Input.TextArea className={styles.reasonArea}  />
-              )}
-              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/30)</span>
-            </Form.Item>
-          </Col>
-        </Row> */}
         <Row style={{marginTop: '0px'}}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
