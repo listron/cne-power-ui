@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Form, Input, DatePicker, Button,Row,Col } from 'antd';
+import { Form, Input, DatePicker, Button, Row, Col } from 'antd';
 import { Select, Cascader } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
@@ -23,7 +23,7 @@ class LostAddForm extends Component {
     getLostGenType: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       selectLostTypeName: '', // 暂存的
@@ -33,7 +33,7 @@ class LostAddForm extends Component {
     }
   }
 
-  componentDidMount(){ // 电站下设备类型获取。
+  componentDidMount() { // 电站下设备类型获取。
     const { stationCode, getStationDeviceTypes } = this.props;
     getStationDeviceTypes({ stationCodes: stationCode });
   }
@@ -91,7 +91,7 @@ class LostAddForm extends Component {
         values.faultId = values.faultId[values.faultId.length - 1];
         values.type = 1;  // 损失type 1 => 后台接收。
         values.deviceTypeName = deviceTypeName;
-        changeFaultList([...faultGenList,values], true);
+        changeFaultList([...faultGenList, values], true);
         // const { deviceName } = values;
         // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
         // const newDeviceName = [...new Set(tmpDeviceName)].join(',');
@@ -110,7 +110,7 @@ class LostAddForm extends Component {
       stationType,
       deviceTypeCode: value
     })
-    const { deviceTypeName } = stationDeviceTypes.find(e=>e.deviceTypeCode === value);
+    const { deviceTypeName } = stationDeviceTypes.find(e => e.deviceTypeCode === value);
     // const tmpName = tmpDeviceType && tmpDeviceType.deviceTypeName;
     // if (tmpName === '全场信息汇总') {
     //   form.setFieldsValue({ deviceName: tmpName });
@@ -124,7 +124,7 @@ class LostAddForm extends Component {
     return value
   }
 
-  selectLostType=(value,selectOption)=>{
+  selectLostType = (value, selectOption) => {
     this.setState({
       selectLostTypeName: selectOption[selectOption.length - 1].label,
     })
@@ -137,23 +137,26 @@ class LostAddForm extends Component {
     changeFaultList(faultGenList, true);
   }
 
-  render(){
+  render() {
     const { form, lostGenTypes, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
     let tmpGenTypes = [];
-    lostGenTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
-      let innerArr = {children: []};
-      innerArr.label= ele.name;
-      innerArr.value= ele.id;
-      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        innerArr.children.push({
-          label: innerInfo.name,
-          value: innerInfo.id,
-        });
-      })
-      return innerArr;
+    lostGenTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = [];
+    tmpGenTypes.map(ele => {
+      if (ele && ele.list && ele.list.length > 0) {
+        let innerArr = { children: [] };
+        innerArr.label = ele.name;
+        innerArr.value = ele.id;
+        ele.list.forEach(innerInfo => {
+          innerArr.children.push({
+            label: innerInfo.name,
+            value: innerInfo.id,
+          });
+        })
+        groupedLostGenTypes.push(innerArr);
+      }
     })
     const formItemLayout1 = {
       labelCol: {
@@ -187,7 +190,7 @@ class LostAddForm extends Component {
         },
       },
     };
-    const tmpDeviceType = stationDeviceTypes.find(e=>e.deviceTypeCode === deviceTypeCode);
+    const tmpDeviceType = stationDeviceTypes.find(e => e.deviceTypeCode === deviceTypeCode);
     const disableDevice = tmpDeviceType && tmpDeviceType.deviceTypeName === '全场信息汇总';
     return (
       <Form className={styles.lostAddForm} >
@@ -202,7 +205,7 @@ class LostAddForm extends Component {
                 rules: [{ required: true, message: '请选择设备类型' }],
               })(
                 <Select placeholder="请选择" onChange={this.selectDeviceType}>
-                  {stationDeviceTypes && stationDeviceTypes.length>0 && stationDeviceTypes.map(e=>(
+                  {stationDeviceTypes && stationDeviceTypes.length > 0 && stationDeviceTypes.map(e => (
                     <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   ))}
                 </Select>
@@ -237,8 +240,8 @@ class LostAddForm extends Component {
                   stationCode={stationCode}
                   deviceTypeCode={deviceTypeCode}
                   multiple={true}
-                  style={{width: 'auto', minWidth: '198px'}}
-                  // onChange={this.selectedDevice}
+                  style={{ width: 'auto', minWidth: '198px' }}
+                // onChange={this.selectedDevice}
                 />
               )}
               {/* <span className={styles.lostInputTip}>多个设备请以空格隔开，设备较多时，可填写上级设备</span> */}
@@ -252,7 +255,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('startTime', {
                 rules: [{ required: true, message: '请选择发生时间' }],
               })(
-                <DatePicker placeholder="请选择" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker placeholder="请选择" showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
               )}
             </Form.Item>
           </Col>
@@ -261,7 +264,7 @@ class LostAddForm extends Component {
               {getFieldDecorator('endTime', {
                 // rules: [{ required: true, message: '结束时间' }],
               })(
-                <DatePicker placeholder="结束时间" showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker placeholder="结束时间" showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
@@ -272,10 +275,10 @@ class LostAddForm extends Component {
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
                 rules: [{
-                  validator: (rule, value, callback)=>{
-                    if(value && isNaN(value)){
+                  validator: (rule, value, callback) => {
+                    if (value && isNaN(value)) {
                       callback('损失电量请填写数字');
-                    }else if(value){
+                    } else if (value) {
                       const demical = `${value}`.split('.')[1];
                       demical && demical.length > 2 && callback('损失电量不超过2位小数');
                     }
@@ -297,7 +300,7 @@ class LostAddForm extends Component {
               })(
                 <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
+              <span className={styles.lostInputTip}>({getFieldValue('reason') ? getFieldValue('reason').length : 0}/80)</span>
             </Form.Item>
           </Col>
         </Row>
@@ -309,11 +312,11 @@ class LostAddForm extends Component {
               })(
                 <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('process')?getFieldValue('process').length:0}/80)</span>
+              <span className={styles.lostInputTip}>({getFieldValue('process') ? getFieldValue('process').length : 0}/80)</span>
             </Form.Item>
           </Col>
         </Row>
-        <Row style={{marginTop: '0px'}}>
+        <Row style={{ marginTop: '0px' }}>
           <Col span={8}>
             <Form.Item {...tailFormItemLayout}>
               <Button onClick={this.confirmAddFault} className={styles.confirmAddFault} >确定</Button>
