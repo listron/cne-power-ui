@@ -77,7 +77,7 @@ function *getNormalDeviceData(action){ // 请求单设备汇流箱，逆变器�
     // const pointUrl = '/mock/monitor/monitorPointData';
     const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
     // const alarmUrl = '/mock/monitor/deviceAlarm';
-    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}`
+    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
     const [tmpDevices, tmpDetail, tmpPoint, tmpAlarm] = yield all([
