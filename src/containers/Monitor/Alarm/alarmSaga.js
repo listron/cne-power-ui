@@ -33,6 +33,8 @@ function* getRealtimeAlarm(action) {  // 请求实时告警
     yield put({ type: alarmAction.ALARM_FETCH });
     const response = yield call(axios.post, url, {
       ...payload,
+      stationCode: payload.stationCodes ? payload.stationCodes : payload.stationCode,
+      startTime: payload.rangTime ? payload.rangTime : payload.startTime,
     });
     if (response.data.code === '10000') {
       yield put({
@@ -81,7 +83,8 @@ function *getTransferAlarm(action) {  // 请求已转工单告警
   }
 }
 
-function *getHistoryAlarm(action) {  // 请求历史告警
+
+function* getHistoryAlarm(action) {  // 请求历史告警
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getHistoryAlarm;
   try {
