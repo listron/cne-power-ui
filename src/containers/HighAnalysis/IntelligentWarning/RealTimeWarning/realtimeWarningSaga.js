@@ -95,7 +95,7 @@ function* transferWarning(action) {  // 转工单
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
-        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCodes'),
         deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
         startTime: state.highAanlysisReducer.realtimeWarningReducer.get('rangTime'),
         warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),
@@ -123,7 +123,7 @@ function* HandleRemoveWarning(action) {  // 手动解除告警
       });
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
-        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCode'),
+        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCodes'),
         deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
         startTime: state.highAanlysisReducer.realtimeWarningReducer.get('startTime'),
         warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),

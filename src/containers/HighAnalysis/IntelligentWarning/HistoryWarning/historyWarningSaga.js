@@ -5,27 +5,81 @@ import Path from '../../../../constants/path';
 import { historyWarningActive } from './historyWarningActive';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
-// function* getStationWarningStatistic(action) {//1.3.2.	获取多电站活动告警数统计
-//   const { payload } = action;
-//    const url = `${APIBasePath}${monitor.getAlarmNum}`
-//   //const url = '/mock/cleanWarning/totalEffect';
-//   try {
+function *getHistoryarningList(action) {  // 请求告警列表
+  const { payload, } = action;
+  const{stationCodes,rangTime,}=payload;
+  const url =`${APIBasePath}${monitor.getHistoryAlarm}`
+  try{
+    yield put({
+      type:historyWarningActive.changeHistoryWarningStore,
+      payload: {
+        loading: true,
+      },
+    });  
+    const response = yield call(axios.post,url,{
+      ...payload,
+      stationCode:stationCodes,
+      startTime:rangTime,
+    });
+    if(response.data.code === '10000') {
+      const { payload } = action;
+      yield put({
+        type:historyWarningActive.changeHistoryWarningStore,
+        payload: {
+          historyWarningList: response.data.data||[],
+          loading:false,
+          ...payload,
+        },
+      });     
+    }else{
+      throw response.data
+    }  
+  }catch(e){
+    console.log(e);
+    yield put({
+      type:historyWarningActive.changeHistoryWarningStore,
+      payload: { ...payload, loading: false ,historyWarningList:[]},
+    })
+  }
+}
+function* getHistoryTicketInfo(action) {  // 请求工单详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
+  try {
    
-//     const response = yield call(axios.get, url, payload);
-//     if (response.data.code === '10000') {
-//       yield put({
-//         payload: {
-//           oneWarningNum: (response.data.oneWarningNum ||  response.data.oneWarningNum===0)?response.data.oneWarningNum:'--',
-//           twoWarningNum: (response.data.twoWarningNum ||  response.data.twoWarningNum===0)?response.data.twoWarningNum:'--',
-//           threeWarningNum: (response.data.threeWarningNum ||  response.data.threeWarningNum===0)?response.data.threeWarningNum:'--',
-//           fourWarningNum: (response.data.fourWarningNum ||  response.data.fourWarningNum===0)?response.data.fourWarningNum:'--',
-//         },
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type:historyWarningActive.changeHistoryWarningStore,
+        payload: {
+          ticketInfo: response.data.data||{}
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getHistoryRelieveInfo(action) {  // 请求屏蔽详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getRelieveInfo}/${payload.operateId}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: historyWarningActive.changeHistoryWarningStore,
+        payload: {
+          relieveInfo: response.data.data||{}
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchHistoryWarning() {
-  // yield takeLatest(historyWarningActive.getStationWarningStatistic, getStationWarningStatistic);
+  yield takeLatest(historyWarningActive.getHistoryarningList, getHistoryarningList);
+  yield takeLatest(historyWarningActive.getHistoryTicketInfo, getHistoryTicketInfo);
+  yield takeLatest(historyWarningActive.getHistoryRelieveInfo, getHistoryRelieveInfo);
 }
