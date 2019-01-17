@@ -9,7 +9,6 @@ const monitor=Path.APISubPaths.monitor
 function* getTransferFormStatistic(action) {//1.3.2.	获取多电站活动告警数统计
   const { payload } = action;
    const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${payload.warningType}`
-  //const url = '/mock/cleanWarning/totalEffect';
   try {
     const response = yield call(axios.get, url);
   
@@ -39,10 +38,10 @@ function* getTransferFormStatistic(action) {//1.3.2.	获取多电站活动告警
     console.log(e);
   }
 }
-function *getTransferForm(action) {  // 请求实时告警
+function *getTransferForm(action) {  // 请求告警列表
   const { payload, } = action;
   const{stationCodes,rangTime,}=payload;
-  const url =`${APIBasePath}${monitor.getRealtimeAlarm}`
+  const url =`${APIBasePath}${monitor.getHistoryAlarm}`
   try{
     yield put({
       type:transferFormActive.changeTransferFormStore,
@@ -86,7 +85,7 @@ function* getTransferInfo(action) {  // 请求工单详情
       yield put({
         type:transferFormActive.changeTransferFormStore,
         payload: {
-          ticketInfo: response.data.data||[]
+          ticketInfo: response.data.data||{}
         },
       });
     }

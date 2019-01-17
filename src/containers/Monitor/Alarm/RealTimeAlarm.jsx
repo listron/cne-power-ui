@@ -59,6 +59,7 @@ class RealTimeAlarm extends Component {
     const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     this.props.getRealTimeAlarm({
       warningTypeStatus:'1',
+      warningType:'事件告警',
       warningLevel: [],
       stationType: '2',
       stationCode: stationCode==='' ? [] : [stationCode],
@@ -93,6 +94,7 @@ class RealTimeAlarm extends Component {
     const { warningLevel, warningTypeStatus,stationType, stationCode, deviceTypeCode, warningConfigName, startTime, deviceName, isTransferWork, isRelieveAlarm } = this.props;
     let filter = {
       warningTypeStatus:'1',
+      warningType:'事件告警',
       warningLevel,
       stationType,
       stationCode,
@@ -123,6 +125,7 @@ class RealTimeAlarm extends Component {
       deviceName === '' && isTransferWork === 1 && isRelieveAlarm === 1) {
       this.props.getRealTimeAlarm({
         warningTypeStatus: "1",
+        warningType:'事件告警',
         warningLevel,
         stationType,
         stationCode,

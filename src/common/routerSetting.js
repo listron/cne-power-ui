@@ -257,8 +257,8 @@ const routers = [
   {
     path: '/analysis/intelligentWarning/transfer',
     exact: true,
-    // component: TransferForm
-     component: Building
+    component: TransferForm
+    //  component: Building
   },
   {
     path: '/analysis/intelligentWarning/handleremove',

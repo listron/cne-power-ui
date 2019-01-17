@@ -11,8 +11,10 @@ import DefectSourceFilter from './DefectSourceFilter';
 import DefectTypeFilter from './DefectTypeFilter';
 import FilteredItems from './FilteredItems';
 import AlarmLevelFilter from './AlarmLevelFilter';
+import WarningStatusFilter from './WarningStatusFilter';
 import AlarmTypeFilter from './AlarmTypeFilter';
 import RangeDateFilter from './RangeDateFilter';
+import RangeEndTimeFilter from './RangeEndTimeFilter';
 import styles from './filterCondition.scss';
 
 /** 
@@ -26,9 +28,11 @@ import styles from './filterCondition.scss';
       defectSource  缺陷来源  返回的结果是 defectSource=['0','1','2','3'] 0 告警 1 手动／上报 2 巡检 3 预警
       belongMatrixs  所属方阵 返回的结果是 belongMatrixs=['233','234'] 根据所选，用的是后台返回的所属方阵的编码
       warnLevel  告警级别     返回的结果是 warningLevel=['1','2','3','4']   一级／二级／三级/四级
+      warnStatus  处理结果     返回的结果是 warningStatus=['1','2','3']   自动解除／手动接触／转工单
       warnType 告警类型       返回的结果是 warningConfigName=["事件告警"]  目前为止只有事件告警
       myJoin  我参与的        返回的结果是 handleUser='cneadmin'  当前用户
       rangeTime 发生时间      返回的结果是  rangTime=["2018-12-05T16:00:00.367Z","2019-01-15T15:59:59.367Z"]  utc时间
+      endTime 结束时间      返回的结果是  endTime=["2018-12-05T16:00:00.367Z","2019-01-15T15:59:59.367Z"]  utc时间
  * 2 stations type=stationType || type=stationName 必填 其他为选填
  * 3 deviceTypes type=deviceType  必填 其他为选填
  * 4 defectTypes type=defectType   必填 其他为选填 
@@ -49,8 +53,10 @@ import styles from './filterCondition.scss';
       defectSource:[],     缺陷来源
       belongMatrixs:[],    所属方阵
       warningLevel:[],     高级级别
+      warningStatus:[],     处理结果
       warningConfigName:[],告警类型
       rangTime:[],         发生时间
+      endTime:[],         结束时间
       handleUser:''        处理人
  * }
 */
@@ -73,9 +79,10 @@ class FilterCondition extends Component {
     onChange: PropTypes.func,
     option: PropTypes.array,// 需要的方式
     matrixList: PropTypes.array, // 方阵列表
-    warningLevelName: PropTypes.array, // 告警级别
+    warningLevelName: PropTypes.array, // 告警级别名字
+    warningStatusName: PropTypes.array, // 处理结果的名字
     warningLevel: PropTypes.array, // 告警级别
-
+    warningStatus: PropTypes.array, // 处理结果
     defaultValue: PropTypes.object, // 默认数据
   }
 
@@ -94,8 +101,10 @@ class FilterCondition extends Component {
       belongMatrixs: props.defaultValue && props.defaultValue.belongMatrixs || [],//所属方阵
       handleUser: props.defaultValue && props.defaultValue.handleUser || [], // 操作人
       warningLevel: props.defaultValue && props.defaultValue.warningLevel || [],//告警级别
+      warningStatus: props.defaultValue && props.defaultValue.warningStatus || [],//
       warningConfigName: props.defaultValue && props.defaultValue.warningConfigName || [],//告警类型
       rangTime: props.defaultValue && props.defaultValue.rangTime || [],// 时间段
+      endTime: props.defaultValue && props.defaultValue.endTime || [],// 结束时间段
       handleUser: props.defaultValue && props.defaultValue.handleUser || ''
     };
   }
@@ -143,9 +152,11 @@ class FilterCondition extends Component {
       case 'belongMatrixs': result = '所属方阵'; break;
       case 'alarmLevel': result = '告警级别'; break;
       case 'warningLevel': result = '预警级别'; break;
+      case 'warningStatus': result = '处理结果'; break;
       case 'alarmType': result = '告警类型'; break;
       case 'myJoin': result = '参与的'; break;
       case 'rangeTime': result = '发生时间'; break;
+      case 'endTime': result = '结束时间'; break;
       default: result = ""; break;
     }
     return result
@@ -154,8 +165,8 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningConfigName, rangTime,handleUser } = this.state;
-    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName} = this.props;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime } = this.state;
+    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName, warningStatusName } = this.props;
     const defectTypesArr = defectTypes || [];
     const stationsArr = stations || [];
     const deviceTypesArr = deviceTypes || [];
@@ -197,6 +208,11 @@ class FilterCondition extends Component {
             <RangeDateFilter
               onChangeFilter={this.onChangeFilter}
               rangTime={rangTime}
+            />}
+          {showFilter === 'endTime' &&
+            <RangeEndTimeFilter
+              onChangeFilter={this.onChangeFilter}
+              endTime={endTime}
             />}
           {showFilter === 'stationType' &&
             <StationTypeFilter
@@ -242,11 +258,17 @@ class FilterCondition extends Component {
               belongMatrixs={belongMatrixs}
               onChangeFilter={this.onChangeFilter}
             />}
-          {(showFilter === 'alarmLevel'||showFilter==='warningLevel') &&
+          {(showFilter === 'alarmLevel' || showFilter === 'warningLevel') &&
             <AlarmLevelFilter
               warningLevel={warningLevel}
               onChangeFilter={this.onChangeFilter}
               warningLevelName={warningLevelName}
+            />}
+          {showFilter === 'warningStatus' &&
+            <WarningStatusFilter
+              warningStatus={warningStatus}
+              onChangeFilter={this.onChangeFilter}
+              warningStatusName={warningStatusName}
             />}
           {showFilter === 'alarmType' &&
             <AlarmTypeFilter

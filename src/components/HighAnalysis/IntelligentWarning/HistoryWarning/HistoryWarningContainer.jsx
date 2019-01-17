@@ -1,17 +1,32 @@
 import React, { Component } from "react";
 import styles from './historyWarning.scss';
-class HistoryWarningContainer extends Component{
+import HistoryWarningFilter from './HistoryWarningFilter';
+import HistoryWarningTable from './HistoryWarningTable';
+class HistoryWarningContainer extends Component {
   static propTypes = {
   }
-    constructor(props,context){
-        super(props,context)
-    }
-    render(){
-        return(
-            <div className={styles.historyWarningContainer}>
-                历史告警
-            </div>
-        )
-    }
+  constructor(props, context) {
+    super(props, context)
+  }
+  componentDidMount(){
+    this.queryHistoryWarning()
+  }
+  onChangeFilter = (value) => {
+    this.queryHistoryWarning(value)
+  }
+  queryHistoryWarning = (value) => {
+    const { getHistoryarningList, warningTypeStatus, warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime } = this.props;
+    const params = { warningTypeStatus, warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime }
+    getHistoryarningList({ ...params, ...value })
+  }
+  render() {
+    const { stations, deviceTypes } = this.props;
+    return (
+      <div className={styles.historyWarningContainer}>
+        <HistoryWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
+        <HistoryWarningTable {...this.props} onChangeFilter={this.onChangeFilter} />
+      </div>
+    )
+  }
 }
 export default (HistoryWarningContainer)
