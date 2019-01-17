@@ -14,7 +14,7 @@ class TransferFormFilter extends Component {
     warningStatus: PropTypes.string,
     warningType: PropTypes.string,
     deviceTypeCode: PropTypes.array,
-    warningTypeStatus: PropTypes.array,
+    warningTypeStatus: PropTypes.string,
     deviceTypes: PropTypes.array,
     warningLevel: PropTypes.array,
     rangTime: PropTypes.array,
