@@ -113,7 +113,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
               }, {
                 title: '本次预警时间',
                 dataIndex: 'warningTime',
-                sorter: true,
+                // sorter: true,
               }, {
                 title: '查看',
                 dataIndex: 'handle',
