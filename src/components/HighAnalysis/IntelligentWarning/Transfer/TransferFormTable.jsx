@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 
@@ -8,6 +9,17 @@ import moment from 'moment';
 
 class TransferFormTable extends Component {
   static propTypes = {
+    changeTransferFormStore: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    pageSize: PropTypes.number,
+    getTransferInfo: PropTypes.func,
+    pageNum: PropTypes.number,
+    ticketInfo: PropTypes.object,
+    transferFormList: PropTypes.array,
+    rangTime: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)

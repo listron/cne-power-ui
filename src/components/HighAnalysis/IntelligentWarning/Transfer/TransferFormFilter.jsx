@@ -1,10 +1,29 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import { Input, Button } from 'antd';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
 class TransferFormFilter extends Component {
   static propTypes = {
+    getTransferFormStatistic: PropTypes.func,
+    getTransferForm: PropTypes.func,
+    onSearch: PropTypes.func,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    warningStatus: PropTypes.string,
+    warningType: PropTypes.string,
+    deviceTypeCode: PropTypes.array,
+    warningTypeStatus: PropTypes.array,
+    deviceTypes: PropTypes.array,
+    warningLevel: PropTypes.array,
+    rangTime: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
+    deviceName: PropTypes.string,
+    durationType: PropTypes.string,
+    stations: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -14,9 +33,8 @@ class TransferFormFilter extends Component {
   }
 
   onChangeFilter = (value) => {
-    const { stationCodes, warningLevel, deviceTypeCode, rangTime, deviceName, durationType, orderField, orderCommand, warningTypeStatus, warningType } = this.props;
-    const params = { stationCodes, warningLevel, warningTypeStatus, warningType, deviceTypeCode, rangTime, orderField, orderCommand }
-    // this.props.getRealtimeWarning({ ...params, ...value })
+    const { stationCodes, warningLevel, deviceTypeCode, rangTime, deviceName, durationType, warningTypeStatus, warningType } = this.props;
+    const params = { stationCodes, warningLevel, warningTypeStatus, warningType, deviceTypeCode, rangTime,deviceName  }
     this.props.onSearch({ ...params, ...value })
   }
 

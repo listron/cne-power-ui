@@ -85,7 +85,7 @@ function* getTransferInfo(action) {  // 请求工单详情
       yield put({
         type:transferFormActive.changeTransferFormStore,
         payload: {
-          ticketInfo: response.data.data||[]
+          ticketInfo: response.data.data||{}
         },
       });
     }

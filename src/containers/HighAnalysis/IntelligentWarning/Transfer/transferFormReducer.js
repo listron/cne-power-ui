@@ -18,7 +18,7 @@ var initState = Immutable.fromJS({
   deviceName:null,//设备名称
   pageSize:10,
   pageNum:1, 
-  ticketInfo:[],
+  ticketInfo:{},
   currentPage:1,
   stationCodes:[],//电站编码
   oneWarningNum:null,//一级告警

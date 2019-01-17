@@ -1,17 +1,36 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
 import TransferFormFilter from './TransferFormFilter';
 import TransferFormTable from './TransferFormTable';
 
+
 class TransferFormContaienr extends Component {
   static propTypes = {
+    getTransferFormStatistic: PropTypes.func,
+    getTransferForm: PropTypes.func,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    warningStatus: PropTypes.string,
+    warningType: PropTypes.string,
+    deviceTypeCode: PropTypes.array,
+    warningTypeStatus: PropTypes.array,
+    deviceTypes: PropTypes.array,
+    warningLevel: PropTypes.array,
+    rangTime: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
+    deviceName: PropTypes.string,
+    durationType: PropTypes.string,
+    stations: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
   }
   componentDidMount(){
-    const { getTransferFormStatistic, warningStatus, warningType,getTransferForm } = this.props
+    const { getTransferFormStatistic, warningStatus, warningType } = this.props
     getTransferFormStatistic({ warningStatus, warningType })
     this.queryTransferFrom()
   }
