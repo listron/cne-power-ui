@@ -257,20 +257,20 @@ class RegisterForm extends Component {
             {getFieldDecorator('username', {
               rules: [
                 {required: true, message: '请输入用户名'},
-                {pattern: /^[a-zA-Z0-9\u4E00-\u9FA5]{3,8}$/gi, message: '请输入3-8位中文、英文、数字'}
+                {pattern: /^[a-zA-Z0-9~!@#$%^&*()_+.\u4E00-\u9FA5]{3,25}$/gi, message: '请输入3-25位中文、英文、数字、特殊字符'}
               ]
             })(
-              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-8位中文、英文、数字都可" />
+              <Input addonBefore={<i className="iconfont icon-user"></i>} placeholder="3-25位中文、英文、数字、特殊字符都可" />
             )}
           </FormItem>
           <FormItem label="创建密码" {...formItemLayout}>
             {getFieldDecorator('password',{
               rules: [
                 {required: true, message: '请输入密码'},
-                {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
+                {pattern: /^[a-zA-Z\d]{6,25}$/, message: '请输入6-25位数字或英文' }
               ]
             })(
-              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-25位数字或英文" />
             )}
           </FormItem>
           <FormItem label="确认密码" {...formItemLayout}>
