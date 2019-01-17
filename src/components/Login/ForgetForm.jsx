@@ -150,7 +150,7 @@ class ForgetForm extends Component{
                 {pattern: /^[a-zA-Z~!@#$%^&*()_+.]\d{6,25}$/,message: '请输入字符长度为6-25的密码' }
             ]
             })(
-              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-25位数字或英文" />
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请输入字符长度为6-25的密码" />
             )}
           </FormItem>
           <FormItem label="确认密码" {...formItemLayout}>
