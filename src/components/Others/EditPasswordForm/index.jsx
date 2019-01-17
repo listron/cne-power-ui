@@ -91,7 +91,8 @@ class EditPasswordForm extends Component {
             rules: [{
               required: true, message: '请输入新密码',
             },{
-              pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文的密码' 
+              pattern: /^[A-Za-z0-9~!@#$%^&*()_+.]{6,25}$/,
+              message: '请输入字符长度为6-25的密码'
             }, {
               validator: this.validateToNextPassword,
             }],

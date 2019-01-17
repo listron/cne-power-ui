@@ -284,7 +284,7 @@ class JoinInForm extends Component{
               {getFieldDecorator('username', {
                 rules: [
                   {required: true, message: '请输入用户名'},
-                  {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi, message: '请输入3到25位中文、英文、数字、特殊字符'},
+                  {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi,message: '请输入字符长度为3-25的用户名'},
                 ],
                 initialValue: importUser ? username : '',
               })(
@@ -295,7 +295,7 @@ class JoinInForm extends Component{
               {getFieldDecorator('password',{
                 rules: [
                   {required: true, message: '请输入密码'},
-                  {pattern: /^[a-zA-Z\d]{6,25}$/, message: '请输入6-25位数字或英文' }
+                  {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.]{6,25}$/, message: '请输入字符长度为6-25的密码' }
                 ]
               })(
                 <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-25位数字或英文" />
