@@ -147,10 +147,10 @@ class ForgetForm extends Component{
             {getFieldDecorator('password',{
               rules: [
                 {required: true, message: '请输入密码'},
-                {pattern: /^[a-zA-Z\d]{6,8}$/, message: '请输入6-8位数字或英文' }
+                {pattern: /^[a-zA-Z\d]{6,25}$/, message: '请输入6-25位数字或英文' }
             ]
             })(
-              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-8位数字或英文" />
+              <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="6-25位数字或英文" />
             )}
           </FormItem>
           <FormItem label="确认密码" {...formItemLayout}>
