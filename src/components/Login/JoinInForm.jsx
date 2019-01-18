@@ -298,7 +298,7 @@ class JoinInForm extends Component{
                   {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.]{6,25}$/, message: '请输入字符长度为6-25的密码' }
                 ]
               })(
-                <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请输入字符长度为6-25的密码" />
+                <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="输入字符长度为6-25的密码" />
               )}
             </FormItem>
             <FormItem label="确认密码" {...formItemLayout}>
