@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { alarmAction } from './alarmAction';
-import { ticketAction } from '../../Operation/Ticket/ticketAction';
-import { commonAction } from '../../alphaRedux/commonAction';
-import RealTimeAlarmTable from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmTable';
-import RealTimeAlarmFilter from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmFilter';
-import RealTimeAlarmInfo from '../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmInfo';
-import DeviceNameSearch from '../../../components/Monitor/Alarm/AlarmFilter/DeviceNameSearch';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
-import Footer from '../../../components/Common/Footer';
-import styles from './alarm.scss';
+import { realTimeAlarmAction } from './realTimeAlarmAction';
+import { ticketAction } from '../../../Operation/Ticket/ticketAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
+
+import RealTimeAlarmContainer from '../../../../components/Monitor/Alarm/RealTimeAlarm/RealTimeAlarmContainer';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Footer from '../../../../components/Common/Footer';
+import styles from './realTimeAlarm.scss';
 import PropTypes from 'prop-types';
 
 class RealTimeAlarm extends Component {
@@ -52,9 +50,7 @@ class RealTimeAlarm extends Component {
   }
 
   componentDidMount() {
-    const status = this.getStatus();
-    const warningStatus = this.getAlarmStatus(status);
-    const searchInfo = this.props.history.location.search;
+    const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     this.props.getRealTimeAlarm({
       warningTypeStatus:'1',
@@ -66,12 +62,9 @@ class RealTimeAlarm extends Component {
       warningConfigName: [],
       startTime: [],
       deviceName: '',
-      isTransferWork: status === 'transfer' ? 0 : 1,
-      isRelieveAlarm: status === 'relieve' ? 0 : 1
+   
     });
     this.props.getLostGenType({ objectType: 1 });
-    this.props.getAlarmNum({ warningStatus });
-    this.alarmInterval = setInterval(() => { this.getAlarmInfo() }, 10000);
   }
 
   componentWillUnmount() {
@@ -140,11 +133,10 @@ class RealTimeAlarm extends Component {
       clearInterval(this.alarmInterval);
     }
   }
+
   getStatus() {
     const pathname = this.props.location.pathname;
-    console.log(pathname,'pathname');
     const status = pathname.split('/')[3];
-    console.log(status);
     return status;
   }
 
@@ -170,65 +162,38 @@ class RealTimeAlarm extends Component {
       ],
     };
     return (
-      <div className={styles.realTimeAlarmBox}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-        <div className={styles.realTimeAlarmContainer}>
-          <div className={styles.realTimeAlarm}>
-            <RealTimeAlarmInfo {...this.props} alarmStatus={alarmStatus} />
-            <RealTimeAlarmFilter {...this.props} onChangeFilter={this.onChangeFilter} />
-            <DeviceNameSearch onSearch={this.onChangeFilter} deviceName={this.props.deviceName} />
-            <RealTimeAlarmTable 
-              {...this.props} 
-              alarmStatus={alarmStatus} 
-              currentPage={currentPage} 
-              pageSize={pageSize} 
-              onPaginationChange={this.onPaginationChange}
-            />
-          </div>
-          <Footer />
-        </div>
+      <div className={styles.realtime}>
+      <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={styles.realtimeWarningBox}>
+        <RealTimeAlarmContainer {...this.props}  />
       </div>
-    );
+      <Footer />
+    </div>
+     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  realtimeAlarm: state.monitor.alarm.get('realtimeAlarm').toJS(),
+  ...state.monitor.realTimeAlarm.toJs(),
   stations: state.common.get('stations'),
   deviceTypes: state.common.get('deviceTypes'),
-  warningLevel: state.monitor.alarm.get('warningLevel').toJS(),
-  stationType: state.monitor.alarm.get('stationType'),
-  stationCode: state.monitor.alarm.get('stationCode').toJS(),
-  deviceTypeCode: state.monitor.alarm.get('deviceTypeCode').toJS(),
-  warningConfigName: state.monitor.alarm.get('warningConfigName').toJS(),
-  startTime: state.monitor.alarm.get('startTime').toJS(),
-  deviceName: state.monitor.alarm.get('deviceName'),
-  sortName: state.monitor.alarm.get('sortName'),
-  alarmNum: state.monitor.alarm.get('alarmNum').toJS(),
-  isTransferWork: state.monitor.alarm.get('isTransferWork'),
-  isRelieveAlarm: state.monitor.alarm.get('isRelieveAlarm'),
-  defectTypes: state.monitor.alarm.get('defectTypes'),
-  lastUpdateTime: state.monitor.alarm.get('lastUpdateTime'),
-  ticketInfo: state.monitor.alarm.get('ticketInfo').toJS(),
-  relieveInfo: state.monitor.alarm.get('relieveInfo').toJS(),
-  selectedRowKeys: state.monitor.alarm.get('selectedRowKeys').toJS(),
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeAlarmStore: payload => dispatch({ type: alarmAction.CHANGE_ALARM_STORE_SAGA, payload }),
-  getRealTimeAlarm: payload => dispatch({ type: alarmAction.GET_REALTIME_ALARM_SAGA, payload }),
-  getAlarmNum: payload => dispatch({ type: alarmAction.GET_ALARM_NUM_SAGA, payload }),
+  changeAlarmStore: payload => dispatch({ type: realTimeAlarmAction.CHANGE_ALARM_STORE_SAGA, payload }),
+  getRealTimeAlarm: payload => dispatch({ type: realTimeAlarmAction.GET_REALTIME_ALARM_SAGA, payload }),
+  getAlarmNum: payload => dispatch({ type: realTimeAlarmAction.GET_ALARM_NUM_SAGA, payload }),
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
-  onTransferAlarm: payload => dispatch({ type: alarmAction.TRANSFER_ALARM_SAGA, payload }),
-  onRelieveAlarm: payload => dispatch({ type: alarmAction.RELIEVE_ALARM_SAGA, payload }),
-  onResetRelieveAlarm: payload => dispatch({ type: alarmAction.RESET_RELIEVE_ALARM_SAGA, payload }),
-  getTicketInfo: payload => dispatch({ type: alarmAction.GET_TICKET_INFO_SAGA, payload }),
-  getRelieveInfo: payload => dispatch({ type: alarmAction.GET_RELIEVE_INFO_SAGA, payload }),
-  resetAlarm: payload => dispatch({ type: alarmAction.RESET_ALARM_SAGA, payload }),
+  onTransferAlarm: payload => dispatch({ type: realTimeAlarmAction.TRANSFER_ALARM_SAGA, payload }),
+  onRelieveAlarm: payload => dispatch({ type: realTimeAlarmAction.RELIEVE_ALARM_SAGA, payload }),
+  onResetRelieveAlarm: payload => dispatch({ type: realTimeAlarmAction.RESET_RELIEVE_ALARM_SAGA, payload }),
+  getTicketInfo: payload => dispatch({ type: realTimeAlarmAction.GET_TICKET_INFO_SAGA, payload }),
+  getRelieveInfo: payload => dispatch({ type: realTimeAlarmAction.GET_RELIEVE_INFO_SAGA, payload }),
+  resetAlarm: payload => dispatch({ type: realTimeAlarmAction.RESET_ALARM_SAGA, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params, 
-      actionName: alarmAction.GET_ALARM_FETCH_SUCCESS, 
+      actionName: realTimeAlarmAction.GET_ALARM_FETCH_SUCCESS, 
       resultName: 'defectTypes'
     }
   }),

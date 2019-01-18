@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import styles from "./handleRemove.scss";
 import { handleRemoveActive } from './handleRemoveActive';
@@ -10,6 +11,8 @@ import HandleRemoveContainer from '../../../../components/HighAnalysis/Intellige
 
 class HandleRemove extends Component {
   static propTypes = {
+    getLostGenType:PropTypes.func,
+    resetHandleRemoveStore:PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)

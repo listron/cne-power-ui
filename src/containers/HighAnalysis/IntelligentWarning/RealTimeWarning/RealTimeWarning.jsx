@@ -1,18 +1,19 @@
 
 
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import styles from './realTimeWarning.scss'
 import { realtimeWarningActive } from './realtimeWarningActive';
 import { commonAction } from '../../../alphaRedux/commonAction';
-
-
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import RealTimeWarningContainer from '../../../../components/HighAnalysis/IntelligentWarning/RealTimeWarning/RealTimeWarningContainer';
 
 class RealTimeWarning extends Component {
   static propTypes = {
+    getLostGenType: PropTypes.func,
+    resetRealtimeWarninStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
