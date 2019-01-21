@@ -114,6 +114,7 @@ const mapDispatchToProps = (dispatch) => ({
   modify: payload => dispatch({ type: warningAction.modify, payload }),
   getDetail: payload => dispatch({ type: warningAction.getDetail, payload }),
   warnDelete: payload => dispatch({ type: warningAction.warnDelete, payload }),
+  getOtherPageDetail: payload => dispatch({ type: warningAction.getOtherPageDetail, payload }),
 
   getStationOfEnterprise: params => dispatch({ // 企业电站下的所有电站
     type: commonAction.getStationOfEnterprise,

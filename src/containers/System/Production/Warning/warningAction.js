@@ -10,6 +10,7 @@ export const warningAction = {
   modify: Symbol('modify'),// 预警配置 修改
   getDetail: Symbol('getDetail'),// 预警配置 详情
   warnDelete: Symbol('warnDelete'),// 预警配置 删除
+  getOtherPageDetail: Symbol('getOtherPageDetail'),//  查看上下详情
 
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据

@@ -36,7 +36,6 @@ class WarnConfigSearch extends Component {
 
   selectStation = (stations) => { // 选中电站
     const { getStationDeviceTypes, getWarnList, listQueryParams, changeWarnStore } = this.props;
-    console.log((stations.length > 0 && stations[0].stationCode) || "")
     getStationDeviceTypes({
       payload: { stationCodes: stations.length > 0 && stations[0].stationCode || "", },
       resultName: 'stationDeviceTypes'

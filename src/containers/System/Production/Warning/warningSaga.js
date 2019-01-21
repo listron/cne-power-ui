@@ -144,7 +144,6 @@ function* getWarnList(action) { // 请求预警事件列表
           warnList: response.data.data || [],
           totalNum: response.data.data && response.data.data[0] && response.data.data[0].totalCount || 0,
           loading: false,
-          showPage:'home'
         },
       });
     } else { throw response.data }
@@ -157,7 +156,6 @@ function* getWarnList(action) { // 请求预警事件列表
           ...payload,
         },
         loading: false,
-        showPage:'home'
       },
     })
   }
@@ -168,20 +166,18 @@ function* addWran(action) { // 新增预警配置
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, payload.params);
     if (response.data.code === '10000') {
       message.success('新增成功！！！');
-      const params = yield select(state => ({//继续请求生产计划列表
-        stationCode: state.system.warning.get('listQueryParams').stationCode, // 电站编码
-        deviceTypeCode: state.system.warning.get('listQueryParams').deviceTypeCode, // 设备类型编码
-        deviceModeCode: state.system.warning.get('listQueryParams').deviceModeCode,// 设备型号编码
-        pointCode: state.system.warning.get('listQueryParams').pointCode, // 测点编码
-        pageNum: state.system.warning.get('listQueryParams').pageNum,
-        pageSize: state.system.warning.get('listQueryParams').pageSize,
-        sortField: state.system.warning.get('listQueryParams').sortField, // 1 是告警级别
-        sortOrder: state.system.warning.get('listQueryParams').sortOrder, // 
-        warningTypeCode: state.system.warning.get('listQueryParams').warningTypeCode,  // 0/null告警，1预警
-      }));
+      const params = yield select(state => {
+        return state.system.warning.get('listQueryParams').toJS();
+      });
+      yield put({
+        type: warningAction.changeWarnStore,
+        payload: {
+          showPage: payload.continueAdd ? 'add' : 'home',
+        },
+      });
       yield put({
         type: warningAction.getWarnList,
         payload: params,
@@ -193,28 +189,27 @@ function* addWran(action) { // 新增预警配置
   }
 }
 
-function* modify(action){ // 修改预警配置
+function* modify(action) { // 修改预警配置
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
       message.success('修改成功!!!');
-      const params = yield select(state => ({//继续请求生产计划列表
-        stationCode: state.system.warning.get('listQueryParams').stationCode, // 电站编码
-        deviceTypeCode: state.system.warning.get('listQueryParams').deviceTypeCode, // 设备类型编码
-        deviceModeCode: state.system.warning.get('listQueryParams').deviceModeCode,// 设备型号编码
-        pointCode: state.system.warning.get('listQueryParams').pointCode, // 测点编码
-        pageNum: state.system.warning.get('listQueryParams').pageNum,
-        pageSize: state.system.warning.get('listQueryParams').pageSize,
-        sortField: state.system.warning.get('listQueryParams').sortField, // 1 是告警级别
-        sortOrder: state.system.warning.get('listQueryParams').sortOrder, // 
-        warningTypeCode: state.system.warning.get('listQueryParams').warningTypeCode,  // 0/null告警，1预警
-      }));
+      const params = yield select(state => {
+        return state.system.warning.get('listQueryParams').toJS();
+      });
+      yield put({
+        type: warningAction.changeWarnStore,
+        payload: {
+          showPage: 'home',
+        },
+      });
       yield put({
         type: warningAction.getWarnList,
         payload: params,
       });
+
     } else { throw response.data }
   } catch (e) {
     console.log(e);
@@ -222,7 +217,7 @@ function* modify(action){ // 修改预警配置
   }
 }
 
-function* getDetail(action){ // 查询预警配置
+function* getDetail(action) { // 查询预警配置
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}/${payload}`;
   try {
@@ -231,7 +226,7 @@ function* getDetail(action){ // 查询预警配置
       yield put({
         type: warningAction.changeWarnStore,
         payload: {
-           warnDetail:response.data.data || {}
+          warnDetail: response.data.data || {}
         },
       });
     } else { throw response.data }
@@ -241,30 +236,22 @@ function* getDetail(action){ // 查询预警配置
     yield put({
       type: warningAction.changeWarnStore,
       payload: {
-         warnDetail:{}
+        warnDetail: {}
       },
     });
   }
 }
 
-function* warnDelete(action){ // 删除预警配置
+function* warnDelete(action) { // 删除预警配置
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}`;
   try {
-    const response = yield call(axios.delete, url,{data:payload});
+    const response = yield call(axios.delete, url, { data: payload });
     if (response.data.code === '10000') {
       message.success('删除成功！！！')
-      const params = yield select(state => ({//继续请求生产计划列表
-        stationCode: state.system.warning.get('listQueryParams').stationCode, // 电站编码
-        deviceTypeCode: state.system.warning.get('listQueryParams').deviceTypeCode, // 设备类型编码
-        deviceModeCode: state.system.warning.get('listQueryParams').deviceModeCode,// 设备型号编码
-        pointCode: state.system.warning.get('listQueryParams').pointCode, // 测点编码
-        pageNum: state.system.warning.get('listQueryParams').pageNum,
-        pageSize: state.system.warning.get('listQueryParams').pageSize,
-        sortField: state.system.warning.get('listQueryParams').sortField, // 1 是告警级别
-        sortOrder: state.system.warning.get('listQueryParams').sortOrder, // 
-        warningTypeCode: state.system.warning.get('listQueryParams').warningTypeCode,  // 0/null告警，1预警
-      }));
+      const params = yield select(state => {
+        return state.system.warning.get('listQueryParams').toJS();
+      });
       yield put({
         type: warningAction.getWarnList,
         payload: params,
@@ -276,9 +263,38 @@ function* warnDelete(action){ // 删除预警配置
     yield put({
       type: warningAction.changeWarnStore,
       payload: {
-         warnDetail:{}
+        warnDetail: {}
       },
     });
+  }
+}
+
+function* getOtherPageDetail(action) {//预警规则 第一条查看前一条详情/最后一条看下一条详情=>翻页+请求详情
+  const { payload } = action;
+  const listUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getAlarmList}`
+  try {
+    const listResponse = yield call(axios.post, listUrl, payload.parms);
+    const warnList = listResponse.data.data || [];
+    const totalNum = listResponse.data.data && listResponse.data.data[0] && listResponse.data.data[0].totalCount || 0;
+    if (listResponse.data.code) {
+      const { warningCheckId } = payload.previous ? warnList[warnList.length - 1] : warnList[0];
+      const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.warnConf}/${warningCheckId}`;
+      const detailResponse = yield call(axios.get, detailUrl);
+      yield put({
+        type: warningAction.changeWarnStore,
+        payload: {
+          listQueryParams: {
+            ...payload.parms,
+          },
+          warnList,
+          warnDetail: detailResponse.data.data || {},
+          totalNum,
+        },
+      });
+    }
+
+  } catch (e) {
+    console.log(e);
   }
 }
 
@@ -295,5 +311,6 @@ export function* watchWarning() {
   yield takeLatest(warningAction.modify, modify);
   yield takeLatest(warningAction.getDetail, getDetail);
   yield takeLatest(warningAction.warnDelete, warnDelete);
+  yield takeLatest(warningAction.getOtherPageDetail, getOtherPageDetail);
 
 }

@@ -28,8 +28,8 @@ class WarnConfig extends Component {
     }
 
     componentDidMount() {
-        const { getWarnList, listQueryParams } = this.props;
-        getWarnList(listQueryParams)
+        // const { getWarnList, listQueryParams } = this.props;
+        // getWarnList(listQueryParams)
     }
 
 
@@ -47,6 +47,11 @@ class WarnConfig extends Component {
         this.props.getDetail(record.warningCheckId)
     }
 
+    wranEdit=(record)=>{
+        this.props.changeWarnStore({ showPage: 'edit' })
+        this.props.getDetail(record.warningCheckId)
+    }
+
     tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
         const { getWarnList, listQueryParams } = this.props;
         const { field, order } = sorter;
@@ -59,7 +64,8 @@ class WarnConfig extends Component {
 
     selectChange = () => {
         const { selectedRowKeys } = this.state;
-        this.props.warnDelete(selectedRowKeys)
+        this.props.warnDelete(selectedRowKeys);
+        this.setState({ selectedRowKeys: [] });
     }
 
     addRule = () => { // 添加
@@ -105,8 +111,8 @@ class WarnConfig extends Component {
             dataIndex: 'edit',
             key: 'edit',
             render: (text, record) => (
-                <span>
-                    <i className="iconfont icon-edit" onClick={() => { this.onShowDetail(record) }} />
+                <span className={styles.edit}>
+                    <i className="iconfont icon-edit" onClick={() => { this.wranEdit(record) }} />
                 </span>
             )
         }];
