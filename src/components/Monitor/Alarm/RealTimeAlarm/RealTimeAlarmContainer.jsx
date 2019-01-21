@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import styles from './realTimeAlarm.scss';
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
-import RealTimeWarningFilter from './RealTimeWarningFilter';
-import RealTimeWarningTable from './RealTimeWarningTable';
+import RealTimeFilter from './RealTimeFilter';
+import RealTimeTable from './RealTimeTable';
 import PropTypes from 'prop-types';
 
 
 
 class RealTimeAlarmContainer extends Component {
   static propTypes = {
-    getRealtimeWarningStatistic: PropTypes.func,
-    getRealtimeWarning: PropTypes.func,
+    getAlarmNum: PropTypes.func,
+    getRealTimeAlarmList: PropTypes.func,
     warningStatus: PropTypes.string,
     warningType: PropTypes.string,
     warningTypeStatus: PropTypes.string,
@@ -30,26 +30,26 @@ class RealTimeAlarmContainer extends Component {
     super(props, context)
   }
   componentDidMount() {
-    const { getRealtimeWarningStatistic, warningStatus, warningType, } = this.props
-    getRealtimeWarningStatistic({ warningStatus, warningType })
-    this.WarningStatistic = setInterval(() => getRealtimeWarningStatistic({ warningStatus, warningType }), 10000);
+    const { getAlarmNum, warningStatus, warningType, } = this.props
+    getAlarmNum({ warningStatus, warningType })
+    this.alarmStatistic = setInterval(() => getAlarmNum({ warningStatus, warningType }), 10000);
     this.realtimeWarningSetInterval(),
-      this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 10000);
+    this.realtimeSetInterval = setInterval(() => this.realtimeWarningSetInterval(), 10000);
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.realtimeSetInterval)
-    clearInterval(this.WarningStatistic)
+    clearInterval(this.alarmStatistic)
   }
   onChangeFilter = (value) => {
     clearInterval(this.realtimeSetInterval)
-    clearInterval(this.WarningStatistic)
+    clearInterval(this.alarmStatistic)
     this.realtimeWarningSetInterval(value)
   }
 
   realtimeWarningSetInterval = (value) => {
-    const { getRealtimeWarning, warningTypeStatus,warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
-    const params = { warningTypeStatus, rangTime,warningType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
-    getRealtimeWarning({ ...params, ...value })
+    const { getRealTimeAlarmList, warningTypeStatus, warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, } = this.props;
+    const params = { warningTypeStatus, rangTime, warningType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType }
+    getRealTimeAlarmList({ ...params, ...value })
   }
 
 
@@ -59,8 +59,8 @@ class RealTimeAlarmContainer extends Component {
     return (
       <div className={styles.realTimeWarningContainer}>
         <WarningStatisticTop {...this.props} warningStatus={'1'} />
-        <RealTimeWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
-        <RealTimeWarningTable {...this.props} />
+        <RealTimeFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
+        <RealTimeTable {...this.props} />
       </div>
     )
   }

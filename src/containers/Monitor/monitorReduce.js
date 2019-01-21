@@ -3,13 +3,13 @@ import { combineReducers } from 'redux';
 import stationMonitor from './StationMonitor/AllStation/stationMonitorReducer';
 import deviceMonitor from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
 import singleStation from './StationMonitor/SingleStation/singleStationReducer';
-import realTimeAlarmReducer from './Alarm/RealTimeAlarm/realTimeAlarmReducer';
-import transferAlarmReducer from './Alarm/TransferAlarm/transferAlarmReducer';
-import handleRemoveAlarmReducer from './Alarm/HandleRemoveAlarm/handleRemoveAlarmReducer';
-import historyAlarmReducer from './Alarm/HistoryAlarm/historyAlarmReducer';
+import realtimeWarningReducer from './Alarm/RealTimeWarning/realtimeWarningReducer';
+import transferFormReducer from './Alarm/Transfer/transferFormReducer';
+import handleRemoveReducer from './Alarm/HandleRemove/handleRemoveReducer';
+import historyWarningReducer from './Alarm/HistoryWarning/historyWarningReducer';
 import alarm from './Alarm/alarmReducer';
 import alarmStatistic from './Alarm/alarmStatisticReducer';
 
-const monitorReducer = combineReducers({ stationMonitor,deviceMonitor, singleStation,alarm, alarmStatistic,realTimeAlarmReducer,transferAlarmReducer,handleRemoveAlarmReducer,historyAlarmReducer });
+const monitorReducer = combineReducers({ stationMonitor,deviceMonitor, singleStation,alarm,realtimeWarningReducer,transferFormReducer, alarmStatistic,handleRemoveReducer,historyWarningReducer });
 
 export default monitorReducer;
