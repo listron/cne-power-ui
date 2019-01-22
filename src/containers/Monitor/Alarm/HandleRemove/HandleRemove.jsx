@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import styles from "./handleRemove.scss";
-import { handleRemoveActive } from './handleRemoveActive';
+import { handleRemoveAction } from './handleRemoveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -51,18 +51,18 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  getHandleRemoveStatistic: payload => dispatch({ type: handleRemoveActive.getHandleRemoveStatistic, payload }),
-  changeHandleRemoveStore: payload => dispatch({ type: handleRemoveActive.changeHandleRemoveStore, payload }),
-  resetHandleRemoveStore: payload => dispatch({ type: handleRemoveActive.resetHandleRemoveStore, payload }),
-  getHandleRemoveList: payload => dispatch({ type: handleRemoveActive.getHandleRemoveList, payload }),
-  getHandleRemoveTransfer: payload => dispatch({ type: handleRemoveActive.getHandleRemoveTransfer, payload }),
-  getHandleRemoveInfo: payload => dispatch({ type: handleRemoveActive.getHandleRemoveInfo, payload }),
-  cancleHandleRemove: payload => dispatch({ type: handleRemoveActive.cancleHandleRemove, payload }),
+  getHandleRemoveStatistic: payload => dispatch({ type: handleRemoveAction.getHandleRemoveStatistic, payload }),
+  changeHandleRemoveStore: payload => dispatch({ type: handleRemoveAction.changeHandleRemoveStore, payload }),
+  resetHandleRemoveStore: payload => dispatch({ type: handleRemoveAction.resetHandleRemoveStore, payload }),
+  getHandleRemoveList: payload => dispatch({ type: handleRemoveAction.getHandleRemoveList, payload }),
+  getHandleRemoveTransfer: payload => dispatch({ type: handleRemoveAction.getHandleRemoveTransfer, payload }),
+  getHandleRemoveInfo: payload => dispatch({ type: handleRemoveAction.getHandleRemoveInfo, payload }),
+  cancleHandleRemove: payload => dispatch({ type: handleRemoveAction.cancleHandleRemove, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      actionName: handleRemoveActive.changeHandleRemoveStore,
+      actionName: handleRemoveAction.changeHandleRemoveStore,
       resultName: 'defectTypes'
     }
   }),

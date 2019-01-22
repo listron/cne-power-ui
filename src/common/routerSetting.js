@@ -138,39 +138,48 @@ const routers = [
     path: '/system/account/role',
     exact: true,
     component: Role,
-  }, { //实时监控-告警-实施告警
+  },
+  // { //实时监控-告警-实施告警
+  //   path: '/monitor/alarm/realtime',
+  //   exact: true,
+  //   component: RealTimeAlarm,
+  // },
+   {
     path: '/monitor/alarm/realtime',
     exact: true,
-    component: RealTimeAlarm,
-  }, {
-    path: '/monitor/alarm/realtime222',
-    exact: true,
     component: MonitorRealTimeWarning,
-  },{ //实时监控-告警-已转工单
+  },
+  // { //实时监控-告警-已转工单
+  //   path: '/monitor/alarm/transfer',
+  //   exact: true,
+  //   component: TransferAlarm,
+  // },
+  { //实时监控-告警-已转工单222
     path: '/monitor/alarm/transfer',
     exact: true,
-    component: TransferAlarm,
-  },{ //实时监控-告警-已转工单222
-    path: '/monitor/alarm/transfer222',
-    exact: true,
     component: MonitorTransferForm,
-  }, { //实时监控-告警-手动解除
+  }, 
+  // { //实时监控-告警-手动解除
+  //   path: '/monitor/alarm/relieve',
+  //   exact: true,
+  //   component: RealTimeAlarm,
+  // }, 
+  { //实时监控-告警-手动解除222
     path: '/monitor/alarm/relieve',
     exact: true,
-    component: RealTimeAlarm,
-  }, { //实时监控-告警-手动解除222
-    path: '/monitor/alarm/relieve222',
-    exact: true,
     component: MonitorHandleRemove,
-  },{ //实时监控-告警-历史告警
+  },
+  // { //实时监控-告警-历史告警
+  //   path: '/monitor/alarm/history',
+  //   exact: true,
+  //   component: HistoryAlarm,
+  // },
+  { //实时监控-告警-历史告警
     path: '/monitor/alarm/history',
     exact: true,
-    component: HistoryAlarm,
-  },{ //实时监控-告警-历史告警
-    path: '/monitor/alarm/history222',
-    exact: true,
     component: MonitorHistoryWarning,
-  }, { //实时监控-告警-告警统计
+  }, 
+  { //实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,

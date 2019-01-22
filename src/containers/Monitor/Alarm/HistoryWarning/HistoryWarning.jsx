@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./historyWarning.scss";
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import { historyWarningActive } from './historyWarningActive';
+import { historyWarningAction } from './historyWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import WorkOrder from '../../../Operation/Ticket/WorkOrder/WorkOrder';
+
+
+
 import Footer from '../../../../components/Common/Footer';
 import HistoryWarningContainer from '../../../../components/Monitor/Alarm/HistoryWarning/HistoryWarningContainer';
 
@@ -12,8 +17,26 @@ class HistoryWarning extends Component {
   }
   constructor(props, context) {
     super(props, context)
+    this.state = {
+      showPage: false
+    }
+  }
+  componentWillUnmount(){
+    this.props.resetHistoryWarningStore()
+  }
+  onEnterToggleSide = () => {//动态切换页面,开
+    this.setState({ showPage: true })
+  }
+
+  onEndToggleSide = () => {//动态切换页面,关
+    this.setState({ showPage: false })
+  }
+  prevChange = (value) => { // 切换到当前页
+    this.props.changeHistoryWarningStore({ ...value })
   }
   render() {
+    const { pageName, defectId } = this.props;
+    const { showPage } = this.state;
     const breadCrumbData = {
       breadData: [
         {
@@ -24,8 +47,21 @@ class HistoryWarning extends Component {
     return (
       <div className={styles.history}>
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
-        <div className={styles.historyWarningBox}>
+        <div className={styles.transferColor}>
+        <div className={styles.transferAlarmContainer}>
           <HistoryWarningContainer {...this.props} />
+          <TransitionContainer
+            show={pageName === 'detail'}
+            timeout={500}
+            effect="side"
+            onEnter={this.onEnterToggleSide}
+            onExited={this.onEndToggleSide}
+          >
+            <WorkOrder defectId={defectId} otherFrom={true} pageName={'list'} onChange={this.prevChange}
+              showPage={showPage}
+            />
+          </TransitionContainer>
+        </div>
         </div>
         <Footer />
       </div>
@@ -40,10 +76,11 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeHistoryWarningStore: payload => dispatch({ type: historyWarningActive.changeHistoryWarningStore, payload }),
-  getHistoryarningList: payload => dispatch({ type: historyWarningActive.getHistoryarningList, payload }),
-  getHistoryTicketInfo: payload => dispatch({ type: historyWarningActive.getHistoryTicketInfo, payload }),
-  getHistoryRelieveInfo: payload => dispatch({ type: historyWarningActive.getHistoryRelieveInfo, payload }),
+  changeHistoryWarningStore: payload => dispatch({ type: historyWarningAction.changeHistoryWarningStore, payload }),
+  resetHistoryWarningStore: payload => dispatch({ type: historyWarningAction.resetHistoryWarningStore, payload }),
+  getHistoryarningList: payload => dispatch({ type: historyWarningAction.getHistoryarningList, payload }),
+  getHistoryTicketInfo: payload => dispatch({ type: historyWarningAction.getHistoryTicketInfo, payload }),
+  getHistoryRelieveInfo: payload => dispatch({ type: historyWarningAction.getHistoryRelieveInfo, payload }),
 
 
   

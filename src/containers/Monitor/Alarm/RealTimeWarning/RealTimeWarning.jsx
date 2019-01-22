@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import styles from './realTimeWarning.scss'
-import { realtimeWarningActive } from './realtimeWarningActive';
+import { realtimeWarningAction } from './realtimeWarningAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -60,17 +60,17 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeRealtimeWarningStore: payload => dispatch({ type: realtimeWarningActive.changeRealtimeWarningStore, payload }),
-  resetRealtimeWarninStore: payload => dispatch({ type: realtimeWarningActive.resetRealtimeWarninStore, payload }),
-  getRealtimeWarningStatistic: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarningStatistic, payload }),
-  getRealtimeWarning: payload => dispatch({ type: realtimeWarningActive.getRealtimeWarning, payload }),
-  transferWarning: payload => dispatch({ type: realtimeWarningActive.transferWarning, payload }),
-  HandleRemoveWarning: payload => dispatch({ type: realtimeWarningActive.HandleRemoveWarning, payload }),
+  changeRealtimeWarningStore: payload => dispatch({ type: realtimeWarningAction.changeRealtimeWarningStore, payload }),
+  resetRealtimeWarninStore: payload => dispatch({ type: realtimeWarningAction.resetRealtimeWarninStore, payload }),
+  getRealtimeWarningStatistic: payload => dispatch({ type: realtimeWarningAction.getRealtimeWarningStatistic, payload }),
+  getRealtimeWarning: payload => dispatch({ type: realtimeWarningAction.getRealtimeWarning, payload }),
+  transferWarning: payload => dispatch({ type: realtimeWarningAction.transferWarning, payload }),
+  HandleRemoveWarning: payload => dispatch({ type: realtimeWarningAction.HandleRemoveWarning, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      actionName: realtimeWarningActive.changeRealtimeWarningStore,
+      actionName: realtimeWarningAction.changeRealtimeWarningStore,
       resultName: 'defectTypes'
     }
   }),

@@ -2,16 +2,17 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { historyWarningActive } from './historyWarningActive';
+import { historyWarningAction } from './historyWarningAction';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
+
 function *getHistoryarningList(action) {  // 请求告警列表
   const { payload, } = action;
   const{stationCodes,rangTime,}=payload;
   const url =`${APIBasePath}${monitor.getHistoryAlarm}`
   try{
     yield put({
-      type:historyWarningActive.changeHistoryWarningStore,
+      type:historyWarningAction.changeHistoryWarningStore,
       payload: {
         loading: true,
       },
@@ -22,10 +23,18 @@ function *getHistoryarningList(action) {  // 请求告警列表
       startTime:rangTime,
     });
     if(response.data.code === '10000') {
-      const { payload } = action;
+      const total = response.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
-        type:historyWarningActive.changeHistoryWarningStore,
+        type:historyWarningAction.changeHistoryWarningStore,
         payload: {
+          total:response.data.total||0,
           historyWarningList: response.data.data||[],
           loading:false,
           ...payload,
@@ -37,7 +46,7 @@ function *getHistoryarningList(action) {  // 请求告警列表
   }catch(e){
     console.log(e);
     yield put({
-      type:historyWarningActive.changeHistoryWarningStore,
+      type:historyWarningAction.changeHistoryWarningStore,
       payload: { ...payload, loading: false ,historyWarningList:[]},
     })
   }
@@ -50,7 +59,7 @@ function* getHistoryTicketInfo(action) {  // 请求工单详情
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type:historyWarningActive.changeHistoryWarningStore,
+        type:historyWarningAction.changeHistoryWarningStore,
         payload: {
           ticketInfo: response.data.data||{}
         },
@@ -67,7 +76,7 @@ function* getHistoryRelieveInfo(action) {  // 请求屏蔽详情
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: historyWarningActive.changeHistoryWarningStore,
+        type: historyWarningAction.changeHistoryWarningStore,
         payload: {
           relieveInfo: response.data.data||{}
         },
@@ -79,7 +88,7 @@ function* getHistoryRelieveInfo(action) {  // 请求屏蔽详情
 }
 
 export function* watchMonitorHistoryWarning() {
-  yield takeLatest(historyWarningActive.getHistoryarningList, getHistoryarningList);
-  yield takeLatest(historyWarningActive.getHistoryTicketInfo, getHistoryTicketInfo);
-  yield takeLatest(historyWarningActive.getHistoryRelieveInfo, getHistoryRelieveInfo);
+  yield takeLatest(historyWarningAction.getHistoryarningList, getHistoryarningList);
+  yield takeLatest(historyWarningAction.getHistoryTicketInfo, getHistoryTicketInfo);
+  yield takeLatest(historyWarningAction.getHistoryRelieveInfo, getHistoryRelieveInfo);
 }

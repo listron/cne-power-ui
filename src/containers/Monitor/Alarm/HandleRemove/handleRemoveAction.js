@@ -1,4 +1,4 @@
-export const handleRemoveActive={
+export const handleRemoveAction={
   changeHandleRemoveStore: Symbol('MonitorchangeHandleRemoveStore'), // 改变reducer参数
   resetHandleRemoveStore: Symbol('MonitorresetHandleRemoveStore'), // 发起重置数据请求
   getHandleRemoveStatistic:Symbol('MonitorgetHandleRemoveStatistic'),//获取预警的告警统计

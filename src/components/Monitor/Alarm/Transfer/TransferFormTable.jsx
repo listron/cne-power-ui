@@ -111,7 +111,7 @@ class TransferFormTable extends Component {
     const level = ['一级', '二级', '三级', '四级'];
     const columns = [
       {
-        title: '预警级别',
+        title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index) => {
@@ -151,7 +151,7 @@ class TransferFormTable extends Component {
         key: 'deviceTypeName',
         sorter: true,
       }, {
-        title: '预警描述',
+        title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {
@@ -169,7 +169,7 @@ class TransferFormTable extends Component {
         key: 'durationTime',
         sorter: true,
       },{
-        title: '预警处理',
+        title: '告警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
           // if (record.isTransferWork === 0) {
@@ -188,12 +188,12 @@ class TransferFormTable extends Component {
         // }
       }
     ]
-    const { transferFormList,  pageSize, pageNum, } = this.props;
+    const { transferFormList,  pageSize, pageNum,total } = this.props;
    
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
           dataSource={transferFormList}

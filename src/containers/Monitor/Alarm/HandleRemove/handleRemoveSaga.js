@@ -2,7 +2,7 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { handleRemoveActive } from './handleRemoveActive.js';
+import { handleRemoveAction } from './handleRemoveAction.js';
 const APIBasePath = Path.basePaths.APIBasePath;
 const monitor = Path.APISubPaths.monitor
 function* getHandleRemoveStatistic(action) {//1.3.2.	获取多电站活动告警数统计
@@ -13,7 +13,7 @@ function* getHandleRemoveStatistic(action) {//1.3.2.	获取多电站活动告警
     if (response.data.code === '10000') {
       const result = response.data && response.data.data;
       yield put({
-        type: handleRemoveActive.changeHandleRemoveStore,
+        type: handleRemoveAction.changeHandleRemoveStore,
         payload: {
           oneWarningNum: (result.oneWarningNum || result.oneWarningNum === 0) ? result.oneWarningNum : '--',
           twoWarningNum: (result.twoWarningNum || result.twoWarningNum === 0) ? result.twoWarningNum : '--',
@@ -28,7 +28,7 @@ function* getHandleRemoveStatistic(action) {//1.3.2.	获取多电站活动告警
   } catch (e) {
     console.log(e);
     yield put({
-      type: handleRemoveActive.changeHandleRemoveStore,
+      type: handleRemoveAction.changeHandleRemoveStore,
       payload: {
         oneWarningNum: '--',
         twoWarningNum: '--',
@@ -44,7 +44,7 @@ function* getHandleRemoveList(action) {  // 请求手动解除告警列表
   const url = `${APIBasePath}${monitor.getHistoryAlarm}`
   try {
     yield put({
-      type: handleRemoveActive.changeHandleRemoveStore,
+      type: handleRemoveAction.changeHandleRemoveStore,
       payload: {
         loading: true,
       },
@@ -55,10 +55,18 @@ function* getHandleRemoveList(action) {  // 请求手动解除告警列表
       startTime: rangTime,
     });
     if (response.data.code === '10000') {
-      const { payload } = action;
+      const total = response.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
-        type: handleRemoveActive.changeHandleRemoveStore,
+        type: handleRemoveAction.changeHandleRemoveStore,
         payload: {
+          total:response.data.total||0,
           handleRemoveList: response.data.data || [],
           loading: false,
           ...payload,
@@ -70,7 +78,7 @@ function* getHandleRemoveList(action) {  // 请求手动解除告警列表
   } catch (e) {
     console.log(e);
     yield put({
-      type: handleRemoveActive.changeHandleRemoveStore,
+      type: handleRemoveAction.changeHandleRemoveStore,
       payload: { ...payload, loading: false, realtimeWarning: [] },
     })
   }
@@ -82,20 +90,23 @@ function* getHandleRemoveTransfer(action) {  // 转工单
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: handleRemoveActive.changeHandleRemoveStore,
+        type: handleRemoveAction.changeHandleRemoveStore,
         payload: {
           selectedRowKeys: []
         }
       });
-      const params = yield select(state => ({//继续请求实时告警
-        warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
-        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCodes'),
-        deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
-        startTime: state.highAanlysisReducer.realtimeWarningReducer.get('rangTime'),
-        warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),
+      const params = yield select(state => ({//继续请求手动告警
+        warningLevel: state.monitor.handleRemoveReducer.get('warningLevel'),
+        stationCodes: state.monitor.handleRemoveReducer.get('stationCodes'),
+        deviceTypeCode: state.monitor.handleRemoveReducer.get('deviceTypeCode'),
+        rangTime: state.monitor.handleRemoveReducer.get('rangTime'),
+        warningTypeStatus: state.monitor.handleRemoveReducer.get('warningTypeStatus'),
+        pageNum:state.monitor.handleRemoveReducer.get('pageNum'),
+        pageSize:state.monitor.handleRemoveReducer.get('pageSize'),
+        warningType:state.monitor.handleRemoveReducer.get('warningType'),
       }));
       yield put({
-        type: handleRemoveActive.getRealtimeWarning,
+        type: handleRemoveAction.getHandleRemoveList,
         payload: params
       });
     }
@@ -110,20 +121,23 @@ function* cancleHandleRemove(action) {  // 取消手动解除告警
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: handleRemoveActive.changeHandleRemoveStore,
+        type: handleRemoveAction.changeHandleRemoveStore,
         payload: {
           selectedRowKeys: []
         }
       });
       const params = yield select(state => ({//继续请求实时告警
-        warningLevel: state.highAanlysisReducer.realtimeWarningReducer.get('warningLevel'),
-        stationCode: state.highAanlysisReducer.realtimeWarningReducer.get('stationCodes'),
-        deviceTypeCode: state.highAanlysisReducer.realtimeWarningReducer.get('deviceTypeCode'),
-        startTime: state.highAanlysisReducer.realtimeWarningReducer.get('startTime'),
-        warningTypeStatus: state.highAanlysisReducer.realtimeWarningReducer.get('warningTypeStatus'),
+        warningLevel: state.monitor.handleRemoveReducer.get('warningLevel'),
+        stationCodes: state.monitor.handleRemoveReducer.get('stationCodes'),
+        deviceTypeCode: state.monitor.handleRemoveReducer.get('deviceTypeCode'),
+        rangTime: state.monitor.handleRemoveReducer.get('rangTime'),
+        warningTypeStatus: state.monitor.handleRemoveReducer.get('warningTypeStatus'),
+        pageNum:state.monitor.handleRemoveReducer.get('pageNum'),
+        pageSize:state.monitor.handleRemoveReducer.get('pageSize'),
+        warningType:state.monitor.handleRemoveReducer.get('warningType'),
       }));
       yield put({
-        type: handleRemoveActive.getRealtimeWarning,
+        type: handleRemoveAction.getHandleRemoveList,
         payload: params
       });
     }
@@ -138,7 +152,7 @@ function* getHandleRemoveInfo(action) {  // 请求屏蔽详情
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: handleRemoveActive.changeHandleRemoveStore,
+        type: handleRemoveAction.changeHandleRemoveStore,
         payload: {
           relieveInfo: response.data.data||{}
         },
@@ -149,9 +163,9 @@ function* getHandleRemoveInfo(action) {  // 请求屏蔽详情
   }
 }
 export function* watchMonitorHandleWarning() {
-  yield takeLatest(handleRemoveActive.getHandleRemoveStatistic, getHandleRemoveStatistic);
-  yield takeLatest(handleRemoveActive.getHandleRemoveList, getHandleRemoveList);
-  yield takeLatest(handleRemoveActive.getHandleRemoveTransfer, getHandleRemoveTransfer);
-  yield takeLatest(handleRemoveActive.cancleHandleRemove, cancleHandleRemove);
-  yield takeLatest(handleRemoveActive.getHandleRemoveInfo, getHandleRemoveInfo);
+  yield takeLatest(handleRemoveAction.getHandleRemoveStatistic, getHandleRemoveStatistic);
+  yield takeLatest(handleRemoveAction.getHandleRemoveList, getHandleRemoveList);
+  yield takeLatest(handleRemoveAction.getHandleRemoveTransfer, getHandleRemoveTransfer);
+  yield takeLatest(handleRemoveAction.cancleHandleRemove, cancleHandleRemove);
+  yield takeLatest(handleRemoveAction.getHandleRemoveInfo, getHandleRemoveInfo);
 }

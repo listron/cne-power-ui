@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./transferForm.scss";
-import { transferFormActive } from './transferFormActive';
+import { transferFormAction } from './transferFormAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -80,16 +80,16 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  getTransferFormStatistic: payload => dispatch({ type: transferFormActive.getTransferFormStatistic, payload }),
-  changeTransferFormStore: payload => dispatch({ type: transferFormActive.changeTransferFormStore, payload }),
-  resetTransferFormStore: payload => dispatch({ type: transferFormActive.resetTransferFormStore, payload }),
-  getTransferForm: payload => dispatch({ type: transferFormActive.getTransferForm, payload }),
-  getTransferInfo: payload => dispatch({ type: transferFormActive.getTransferInfo, payload }),
+  getTransferFormStatistic: payload => dispatch({ type: transferFormAction.getTransferFormStatistic, payload }),
+  changeTransferFormStore: payload => dispatch({ type: transferFormAction.changeTransferFormStore, payload }),
+  resetTransferFormStore: payload => dispatch({ type: transferFormAction.resetTransferFormStore, payload }),
+  getTransferForm: payload => dispatch({ type: transferFormAction.getTransferForm, payload }),
+  getTransferInfo: payload => dispatch({ type: transferFormAction.getTransferInfo, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      actionName: transferFormActive.changeRealtimeWarningStore,
+      actionName: transferFormAction.changeRealtimeWarningStore,
       resultName: 'defectTypes'
     }
   }),

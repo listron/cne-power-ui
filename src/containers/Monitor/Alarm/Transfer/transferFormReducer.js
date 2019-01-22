@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { transferFormActive } from './transferFormActive.js';
+import { transferFormAction } from './transferFormAction.js';
 
 var initState = Immutable.fromJS({
   warningStatus:'3',//已转工单
@@ -19,6 +19,7 @@ var initState = Immutable.fromJS({
   deviceName:null,//设备名称
   pageSize:10,
   pageNum:1, 
+  total:0,
   ticketInfo:{},
   currentPage:1,
   stationCodes:[],//电站编码
@@ -35,9 +36,9 @@ const transferFormReducer = (state = initState, action) => {
   switch (action.type) {
     // case realtimeWarningActive.huoquchenggong:
     //   return state.set('loading', true)
-    case transferFormActive.changeTransferFormStore:
+    case transferFormAction.changeTransferFormStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case transferFormActive.resetTransferFormStore:
+    case transferFormAction.resetTransferFormStore:
       return initState
   }
   return state;

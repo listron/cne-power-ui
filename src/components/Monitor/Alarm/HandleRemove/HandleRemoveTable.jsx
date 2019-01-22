@@ -11,13 +11,13 @@ const Option = Select.Option;
 
 class HandleRemoveTable extends Component {
   static propTypes = {
-    cancleHandleRemove:PropTypes.func,
-    changeHandleRemoveStore:PropTypes.func,
-    getHandleRemoveInfo:PropTypes.func,
-    getHandleRemoveTransfer:PropTypes.func,
-    onChangeFilter:PropTypes.func,
-    relieveInfo:PropTypes.object,
-    handleRemoveList:PropTypes.array,
+    cancleHandleRemove: PropTypes.func,
+    changeHandleRemoveStore: PropTypes.func,
+    getHandleRemoveInfo: PropTypes.func,
+    getHandleRemoveTransfer: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    relieveInfo: PropTypes.object,
+    handleRemoveList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -25,6 +25,7 @@ class HandleRemoveTable extends Component {
       showTransferTicketModal: false,
       showWarningTip: false,
       warningTipText: '',
+      showRelievePopover: [],
     }
   }
   onConfirmWarningTip = () => {
@@ -143,7 +144,7 @@ class HandleRemoveTable extends Component {
     const level = ['一级', '二级', '三级', '四级'];
     const columns = [
       {
-        title: '预警级别',
+        title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index) => {
@@ -183,7 +184,7 @@ class HandleRemoveTable extends Component {
         key: 'deviceTypeName',
         sorter: true,
       }, {
-        title: '预警描述',
+        title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {
@@ -218,8 +219,8 @@ class HandleRemoveTable extends Component {
         }
       }
     ]
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, loading } = this.props;
-    const { showTransferTicketModal, showWarningTip,warningTipText } = this.state;
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum,total, loading } = this.props;
+    const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -238,7 +239,7 @@ class HandleRemoveTable extends Component {
             <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
             <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
           </Select>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={handleRemoveList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
           dataSource={handleRemoveList}

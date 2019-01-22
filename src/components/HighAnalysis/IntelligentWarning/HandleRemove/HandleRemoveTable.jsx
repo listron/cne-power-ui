@@ -25,6 +25,7 @@ class HandleRemoveTable extends Component {
       showTransferTicketModal: false,
       showWarningTip: false,
       warningTipText: '',
+      showRelievePopover: [],
     }
   }
   onConfirmWarningTip = () => {
@@ -218,7 +219,7 @@ class HandleRemoveTable extends Component {
         }
       }
     ]
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, loading } = this.props;
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum,total, loading } = this.props;
     const { showTransferTicketModal, showWarningTip,warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -238,7 +239,7 @@ class HandleRemoveTable extends Component {
             <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
             <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
           </Select>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={handleRemoveList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
           dataSource={handleRemoveList}

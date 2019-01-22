@@ -42,35 +42,19 @@ const menuData = [
             name: '实时告警',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
-          }, {
-            name: '实时告警222',
-            path: 'realtime222',
-            rightKey: 'monitor_alarm_realTime',
           },{
             name: '已转工单',
             path: 'transfer',
             rightKey: 'monitor_alarm_realTime',
-          },{
-            name: '已转工单222',
-            path: 'transfer222',
-            rightKey: 'monitor_alarm_realTime',
           }, {
             name: '手动解除',
             path: 'relieve',
-            rightKey: 'monitor_alarm_realTime',
-          },  {
-            name: '手动解除222',
-            path: 'relieve222',
             rightKey: 'monitor_alarm_realTime',
           },{
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',
           },{
-            name: '历史告警222',
-            path: 'history222',
-            rightKey: 'monitor_alarm_history',
-          }, {
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',

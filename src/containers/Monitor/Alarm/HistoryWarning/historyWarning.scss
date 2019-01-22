@@ -3,10 +3,22 @@
   display: flex;
   flex:1;
   flex-direction: column;
-  .historyWarningBox{
+ 
+  .transferColor{
     display: flex;
     flex: 1;
-    padding: 24px 24px 0;
-    background-color: #ececec;          
-  }
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 24px 24px 0 24px;
+    background-color: #ececec;
+    overflow: hidden;
+}
+.transferAlarmContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #fff;
+    overflow: hidden;
+}
 }
