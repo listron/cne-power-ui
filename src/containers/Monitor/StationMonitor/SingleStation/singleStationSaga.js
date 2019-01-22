@@ -5,6 +5,7 @@ import { singleStationAction } from './singleStationAction';
 import { message } from 'antd';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
+import moment from 'moment';
 
 //改变单电站实时数据store
 function *changeSingleStationStore(action){
@@ -23,7 +24,8 @@ function* resetSingleStationStore(action) {
 //获取单电站实时数据
 function *getSingleStation(action){
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode;
+  const utcTime=moment.utc().format();
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode+'/'+utcTime;
   try{
     const response = yield call(axios.get, url);
     if(response.data.code === '10000'){
@@ -183,7 +185,7 @@ function *getWeatherList(action){
 // 获取单电站活动告警数统计
 function *getAlarmList(action){
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode;
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode+'/事件告警';
   try{
     const response = yield call(axios.get, url, payload);
     if(response.data.code === '10000'){

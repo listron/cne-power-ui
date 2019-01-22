@@ -131,7 +131,7 @@ class OperateAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(`${i}`)
     }
-    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
+    const station = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType }})
     let prams = {
       stationCode: stationCode,
       dateType,
@@ -143,7 +143,7 @@ class OperateAnalysis extends React.Component {
       year: endYear,
     }
 
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType:station[0].stationType || 1 })
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
