@@ -53,8 +53,8 @@ class EditForm extends Component {
         delete values.stationMapPosition;
         delete values.stationArea;
         // let provinceName,cityName,countyName
-        const tmpOngridTime = ongridTime ? ongridTime.startOf('day').utc().format() : null;
-        const tmpFullOngridTime = fullOngridTime ? fullOngridTime.startOf('day').utc().format() : null;
+        const tmpOngridTime = ongridTime ? ongridTime.format('YYYY-MM-DD') : null;
+        const tmpFullOngridTime = fullOngridTime ? fullOngridTime.format('YYYY-MM-DD') : null;
         this.props.saveStationDetail({
           stationCode: stationDetail.stationCode,
           ...values,
