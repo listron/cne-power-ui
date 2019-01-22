@@ -83,12 +83,8 @@ function *getTransferAlarm(action) {  // 请求已转工单告警
   }
 }
 
-<<<<<<< HEAD
-function *getHistoryAlarm(action) {  // 请求历史告警
-=======
 
 function* getHistoryAlarm(action) {  // 请求历史告警
->>>>>>> dba6f2d262f577cdc2615c5f170ac1676ef09c65
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getHistoryAlarm;
   try {
