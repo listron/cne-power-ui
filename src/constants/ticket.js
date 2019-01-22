@@ -125,7 +125,7 @@ export function getSource(value) {// 缺陷来源
       result = '告警';
       break;
     case '1':
-      result = '手动';
+      result = '上报';
       break;
     case '2':
       result = '巡检';

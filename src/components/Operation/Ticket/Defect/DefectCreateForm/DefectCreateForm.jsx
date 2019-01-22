@@ -187,6 +187,8 @@ class TmpForm extends Component {
       }
     })
     const canSelectDefectType = currentStations && deviceTypeCode;
+
+    console.log('defectDetail',defectDetail)
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>

@@ -7,7 +7,6 @@ import styles from './allStationStatistic.scss';
 import BarGraph from '../CommonGraphs/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import moment from 'moment';
-// import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './Chart/PlanCompletionRate';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';

@@ -124,19 +124,16 @@ class DefectTimeLine extends Component {
           <div className={styles.operateUser}>{item.operateUser}</div>
         </div>
         <div className={styles.advise}>
-          {/* <div className={styles.text}>{proccessTitle}</div> */}
           <div className={styles.status}>{getHandleStatus(handleStatus)}</div>
           <div className={styles.defectProposal}>
-            {/* <span>{proccessText}</span>
-            <span>{item.replaceParts ? item.replaceParts : null}</span> */}
-            {item.reasonDesc && <div><span>产生原因</span>{item.reasonDesc}</div>}
-            {/* {item.defectProposal && <div><span> {proccessTitle}</span>{item.defectProposal}</div>} */}
+            {item.reasonDesc && <div><span>产生原因:</span>{item.reasonDesc}</div>}
             {item.defectProposal && <div>{item.defectProposal}</div>}
             {item.photoAddress && <div className={styles.imgBox}>
-              <span>处理照片</span>
+              <span>处理照片:</span>
               {photoAddressArr.length > 0 && <div className={styles.imgList} onClick={() => this.showImgs(photoAddressArr)}>{`有图${photoAddressArr.length}`}</div> || '无'}
             </div>}
-            {handleData.replaceParts && <div><span>更换备件</span>{handleData.replaceParts}</div>}
+            {item.replaceParts && <div>{item.replaceParts}</div>}
+            {/* {handleData.replaceParts && <div><span>更换备件</span>{handleData.replaceParts}</div>} */}
           </div>
         </div>
       </div>
