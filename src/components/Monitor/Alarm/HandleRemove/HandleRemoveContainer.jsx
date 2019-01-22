@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './handleRemove.scss'
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
 import HandleRemoveFilter from './HandleRemoveFilter';
@@ -9,6 +10,17 @@ import HandleRemoveTable from './HandleRemoveTable';
 
 class HandleRemoveContainer extends Component {
     static propTypes = {
+        getHandleRemoveStatistic: PropTypes.func,
+        warningTypeStatus: PropTypes.string,
+        warningStatus: PropTypes.string,
+        warningType: PropTypes.string,
+        getHandleRemoveList: PropTypes.func,
+        changeHandleRemoveStore: PropTypes.func,
+        getHandleRemoveInfo: PropTypes.func,
+        getHandleRemoveTransfer: PropTypes.func,
+        onChangeFilter: PropTypes.func,
+        relieveInfo: PropTypes.object,
+        handleRemoveList: PropTypes.array,
     }
     constructor(props, context) {
         super(props, context)
@@ -24,8 +36,8 @@ class HandleRemoveContainer extends Component {
     }
 
     queryTransferFrom = (value) => {
-        const { getHandleRemoveList, warningTypeStatus, warningType,stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum, } = this.props;
-        const params = { warningTypeStatus, warningType,stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum, }
+        const { getHandleRemoveList, warningTypeStatus, warningType, stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum, } = this.props;
+        const params = { warningTypeStatus, warningType, stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum, }
         getHandleRemoveList({ ...params, ...value })
     }
     render() {

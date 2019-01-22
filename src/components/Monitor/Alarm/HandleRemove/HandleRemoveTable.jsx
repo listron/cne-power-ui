@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './handleRemove.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
@@ -10,13 +11,20 @@ const Option = Select.Option;
 
 class HandleRemoveTable extends Component {
   static propTypes = {
+    cancleHandleRemove:PropTypes.func,
+    changeHandleRemoveStore:PropTypes.func,
+    getHandleRemoveInfo:PropTypes.func,
+    getHandleRemoveTransfer:PropTypes.func,
+    onChangeFilter:PropTypes.func,
+    relieveInfo:PropTypes.object,
+    handleRemoveList:PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
       showTransferTicketModal: false,
       showWarningTip: false,
-      warningTipText:'',
+      warningTipText: '',
     }
   }
   onConfirmWarningTip = () => {
@@ -36,9 +44,9 @@ class HandleRemoveTable extends Component {
     });
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeHandleRemoveStore,onChangeFilter,   } = this.props;
-    changeHandleRemoveStore({ pageNum:currentPage, pageSize })
-    onChangeFilter({pageNum:currentPage, pageSize})
+    const { changeHandleRemoveStore, onChangeFilter, } = this.props;
+    changeHandleRemoveStore({ pageNum: currentPage, pageSize })
+    onChangeFilter({ pageNum: currentPage, pageSize })
   }
   onHandle = (value) => {//转工单或手动解除的modal
     if (value === 'ticket') {
@@ -55,13 +63,28 @@ class HandleRemoveTable extends Component {
   onSelectChange = (selectedRowKeys) => {//选择checkbox
     this.props.changeHandleRemoveStore({ selectedRowKeys });
   }
+  onRelieveChange(visible, operateId, i) {
+    if (visible) {
+      this.props.getHandleRemoveInfo({
+        operateId
+      });
+    } else {
+      this.props.changeHandleRemoveStore({
+        relieveInfo: {}
+      });
+    }
+    let showRelievePopover = this.state.showRelievePopover;
+    showRelievePopover[i] = visible;
+    this.setState({
+      showRelievePopover
+    });
+  }
   cancelRowSelect = () => {//取消选中
     this.props.changeHandleRemoveStore({ selectedRowKeys: [] });
   }
- 
 
   tableChange = (pagination, filters, sorter) => {
-    const { changeHandleRemoveStore,onChangeFilter, } = this.props;
+    const { changeHandleRemoveStore, onChangeFilter, } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
@@ -70,14 +93,50 @@ class HandleRemoveTable extends Component {
       timeOn: '5',
       durationTime: '9',
     };
-     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     changeHandleRemoveStore({ orderField, orderCommand })
     onChangeFilter({
-        orderField, orderCommand
+      orderField, orderCommand
     })
   }
 
+  renderRelievePopover(i) {
+    const relieveInfo = this.props.relieveInfo;
+    return (
+      <div className={styles.detailInfo}>
+        <div className={styles.header}>
+          <div className={styles.title}>
+            <i className="iconfont icon-manual icon-action"></i>
+            <span className={styles.titleText}>手动解除</span>
+          </div>
+          <Icon type="close" onClick={() => {
+            let showRelievePopover = this.state.showRelievePopover;
+            showRelievePopover[i] = false;
+            this.setState({ showRelievePopover });
+          }} />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>解除人：</span>
+            <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>操作时间：</span>
+            <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>出现次数：</span>
+            <span className={styles.value}>{relieveInfo.warningCount}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>解除原因：</span>
+            <span className={styles.value}>{relieveInfo.operateReason}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
 
   render() {
@@ -141,23 +200,39 @@ class HandleRemoveTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },
+      }, {
+        title: '告警处理',
+        dataIndex: 'operation',
+        key: 'operation',
+        render: (text, record, index) => {
+          return (
+            <Popover content={this.renderRelievePopover(index)}
+              trigger="click"
+              className={this.state.showRelievePopover[index] ? styles.selected : null}
+              visible={this.state.showRelievePopover[index]}
+              onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
+            >
+              <div className={this.state.showRelievePopover[index] ? styles.selected : null}><i className="iconfont icon-manual icon-action"></i></div>
+            </Popover>
+          );
+        }
+      }
     ]
     const { handleRemoveList, selectedRowKeys, pageSize, pageNum, loading } = this.props;
-    const { showTransferTicketModal,showWarningTip  } = this.state;
+    const { showTransferTicketModal, showWarningTip,warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-   
+
     return (
       <div className={styles.realTimeWarningTable}>
-      {showWarningTip && <WarningTip
-        style={{ marginTop: '350px', width: '210px', height: '88px' }}
-        onCancel={this.onCancelWarningTip}
-        hiddenCancel={false}
-        onOK={this.onConfirmWarningTip}
-        value={warningTipText} />}
+        {showWarningTip && <WarningTip
+          style={{ marginTop: '350px', width: '210px', height: '88px' }}
+          onCancel={this.onCancelWarningTip}
+          hiddenCancel={false}
+          onOK={this.onConfirmWarningTip}
+          value={warningTipText} />}
         <div className={styles.tableHeader}>
           <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
             <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
@@ -187,7 +262,7 @@ class HandleRemoveTable extends Component {
             selectedRowKeys={this.props.selectedRowKeys}
           />
         }
-        
+
       </div>
     )
   }

@@ -131,9 +131,27 @@ function* cancleHandleRemove(action) {  // 取消手动解除告警
     console.log(e);
   }
 }
+function* getHandleRemoveInfo(action) {  // 请求屏蔽详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getRelieveInfo}/${payload.operateId}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: handleRemoveActive.changeHandleRemoveStore,
+        payload: {
+          relieveInfo: response.data.data||{}
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 export function* watchMonitorHandleWarning() {
   yield takeLatest(handleRemoveActive.getHandleRemoveStatistic, getHandleRemoveStatistic);
   yield takeLatest(handleRemoveActive.getHandleRemoveList, getHandleRemoveList);
   yield takeLatest(handleRemoveActive.getHandleRemoveTransfer, getHandleRemoveTransfer);
   yield takeLatest(handleRemoveActive.cancleHandleRemove, cancleHandleRemove);
+  yield takeLatest(handleRemoveActive.getHandleRemoveInfo, getHandleRemoveInfo);
 }

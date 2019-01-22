@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetHandleRemoveStore: payload => dispatch({ type: handleRemoveActive.resetHandleRemoveStore, payload }),
   getHandleRemoveList: payload => dispatch({ type: handleRemoveActive.getHandleRemoveList, payload }),
   getHandleRemoveTransfer: payload => dispatch({ type: handleRemoveActive.getHandleRemoveTransfer, payload }),
+  getHandleRemoveInfo: payload => dispatch({ type: handleRemoveActive.getHandleRemoveInfo, payload }),
   cancleHandleRemove: payload => dispatch({ type: handleRemoveActive.cancleHandleRemove, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
