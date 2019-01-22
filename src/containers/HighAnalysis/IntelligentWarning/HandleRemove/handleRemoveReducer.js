@@ -23,6 +23,7 @@ var initState = Immutable.fromJS({
   selectedRowKeys: [], //表格选中的行key
   defectTypes:[],
   defectId: '',
+  relieveInfo:{},//手动解除的处理详情
 });
 const handleRemoveReducer = (state = initState, action) => {
   switch (action.type) {

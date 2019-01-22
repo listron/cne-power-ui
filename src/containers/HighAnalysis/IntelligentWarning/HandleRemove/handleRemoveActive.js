@@ -5,4 +5,5 @@ export const handleRemoveActive={
   getHandleRemoveList:Symbol('getHandleRemoveList'),//获取手动解除的列表
   getHandleRemoveTransfer:Symbol('getHandleRemoveTransfer'),//转工单
   cancleHandleRemove:Symbol('cancleHandleRemove'),//取消手动解除
+  getHandleRemoveInfo:Symbol('getHandleRemoveInfo'),//手动解除详处理情
 }

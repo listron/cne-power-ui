@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import styles from "./handleRemove.scss";
 import { handleRemoveActive } from './handleRemoveActive';
@@ -10,6 +11,8 @@ import HandleRemoveContainer from '../../../../components/HighAnalysis/Intellige
 
 class HandleRemove extends Component {
   static propTypes = {
+    getLostGenType:PropTypes.func,
+    resetHandleRemoveStore:PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -53,6 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetHandleRemoveStore: payload => dispatch({ type: handleRemoveActive.resetHandleRemoveStore, payload }),
   getHandleRemoveList: payload => dispatch({ type: handleRemoveActive.getHandleRemoveList, payload }),
   getHandleRemoveTransfer: payload => dispatch({ type: handleRemoveActive.getHandleRemoveTransfer, payload }),
+  getHandleRemoveInfo: payload => dispatch({ type: handleRemoveActive.getHandleRemoveInfo, payload }),
   cancleHandleRemove: payload => dispatch({ type: handleRemoveActive.cancleHandleRemove, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
