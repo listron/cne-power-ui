@@ -29,13 +29,13 @@ class PowerDiagramTenMin extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { powerData, chartType, yAxisUnit } = nextProps;
+    const { powerData, chartType, yAxisUnit,yAxisValuePoint } = nextProps;
     const { intervalTime } = this.state;
     const yAxisType = `电量(${yAxisUnit})`
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#666';
-    const actualPower = powerData.map(e => yAxisUnit === '万kWh' ? e.actualPower : e.actualPower * 10000);  // 实际发电量
+    const actualPower = powerData.map(e => (yAxisUnit === '万kWh' ? (+e.actualPower) : (+e.actualPower * 10000)).toFixed(yAxisValuePoint));  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
     const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
