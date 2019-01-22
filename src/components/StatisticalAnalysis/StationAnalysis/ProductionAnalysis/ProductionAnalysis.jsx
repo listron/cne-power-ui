@@ -131,13 +131,13 @@ class ProductionAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(i.toString())
     }
-    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
+    const station = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType }})
     let prams = {
       stationCode: stationCode,
       dateType,
       year: [+startYear, +endYear],
     }
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType:station[0].stationType || 1 })
     props.changeProductionStationStore({ startTime: startYear, endTime: endYear })
     props.ProductionPlanComplete({...prams,year: endYear,})
     props.getSingleStationProductionData({...prams,"year": rangeYear})
