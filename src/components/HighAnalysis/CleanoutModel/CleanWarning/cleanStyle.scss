@@ -23,6 +23,7 @@
 
 .clearWarningSide{
   @include contentBoxStyle();
+  z-index: 99;
   .sideContent{
     flex: 1;
     background-color: #fff;

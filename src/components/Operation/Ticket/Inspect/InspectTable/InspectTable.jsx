@@ -228,7 +228,7 @@ class InspectTable extends Component {
           columns= {columns}
           rowSelection={rowSelection}
           onChange={this.onChangeTable}
-          loading={loading}
+          // loading={loading}
           pagination= {false}
           locale={{emptyText:<div className={styles.noData}><img src="/img/nodata.png" style={{width: 223,height:164}} /></div>}}
         />

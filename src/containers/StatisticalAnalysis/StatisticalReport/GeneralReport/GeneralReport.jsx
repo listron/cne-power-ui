@@ -133,8 +133,8 @@ class GeneralReport extends Component{
       reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation
     } = this.state;
     const { stations } = this.props;
-    const enterpriseId = Cookie.get('enterpriseId');
-    const reportInfo = enterpriseKey.find(e => e.enterpriseId === enterpriseId);
+    const enterpriseName = Cookie.get('enterpriseName');
+    const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
     return(
       <div className={styles.generalReportBox}>
         <CommonBreadcrumb breadData={{name:'通用报表'}} style={{marginLeft:'38px'}}></CommonBreadcrumb>

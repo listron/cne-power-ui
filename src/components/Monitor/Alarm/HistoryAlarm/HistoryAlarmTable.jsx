@@ -94,6 +94,7 @@ class HostoryAlarmTable extends Component {
   }
 
   createTableSource(data) {
+    console.log(data);
     const { sortName, descend } = this.state;
     const { pageSize, currentPage } = this.props;
     const nameSortArr = ['stationName', 'deviceTypeName','deviceName', 'warningConfigName']
