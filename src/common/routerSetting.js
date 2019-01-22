@@ -263,14 +263,14 @@ const routers = [
   {
     path: '/analysis/intelligentWarning/handleremove',
     exact: true,
-    // component: HandleRemove
-     component: Building
+    component: HandleRemove
+    //  component: Building
   },
   {
     path: '/analysis/intelligentWarning/historywarning',
     exact: true,
-    // component: HistoryWarning
-     component: Building
+    component: HistoryWarning
+    //  component: Building
   },
   // }, 
   { // 高级分析>清洗模型>清洗预警
