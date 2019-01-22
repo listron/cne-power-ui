@@ -1,6 +1,5 @@
 export const customizeAction = {
     customizeFetch: Symbol('manufacturersFetch'), 
-    getCustomizeFetchSuccess: Symbol('getCustomizeFetchSuccess'),
     changeCustomizeStoreSaga: Symbol('changeCustomizeStoreSaga'), // 改变reducer参数
     changeCustomizeStore: Symbol('changeCustomizeStore'), // 替换reducer参数
     getManufacturer: Symbol('getManufacturer'), // 获取电站下的生产厂家
