@@ -27,7 +27,6 @@ class PvStationItem extends React.Component {
  
   render() {
     const { stationDataList,realTimePowerUnit,realCapacityUnit } = this.props;
-   
     return (
       <div className={styles.stationCardContainer}>
        
