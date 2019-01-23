@@ -34,11 +34,18 @@
   border-radius: 2px;
 }
 
-@media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1350px进行适配。
   .topBox{
-    width: 1680px;
-    .infoShow, .enterpriseTitle{
-      width: 1680px;
+    height: 130px;
+    background: url('/img/tiltebg.png') no-repeat center 15px;
+    .infoShow{
+      .timeShow{
+        font-size: 14px;
+      }
+    }
+    .enterpriseTitle{
+      height: 75px;
+      width: 1350px;
     }
   }
   .centerMap{
@@ -48,10 +55,38 @@
   }
 }
 
-@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
   .topBox{
-    width: 1920px;
-    .infoShow, .enterpriseTitle{
+    height: 130px;
+    background: url('/img/tiltebg.png') no-repeat center 15px;
+    .infoShow{
+      .timeShow{
+        font-size: 14px;
+      }
+    }
+    .enterpriseTitle{
+      height: 75px;
+      width: 1420px;
+    }
+  }
+  .centerMap{
+    .singleStation{
+      left: 171px;
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .topBox{
+    height: 160px;
+    background: url('/img/tiltebg.png') no-repeat center 20px;
+    .infoShow{
+      .timeShow{
+        font-size: 20px;
+      }
+    }
+    .enterpriseTitle{
+      height: 105px;
       width: 1920px;
     }
   }
@@ -64,23 +99,23 @@
 
 .topBox{ // 顶部盒子
   width: 100%;
-  height: 189px;
   z-index: 99;
+  background-attachment: local;
   .infoShow{ // 顶部信息展示。
     display: flex;
-    height: 98px;
+    width: 100%;
+    height: 40px;
     align-items: center;
     .timeShow,.upperArrow,.userShow{
       width: 33.33%;
     }
     .timeShow{
       color:#88a6bf;
-      font-size:20px;
       text-align: left;
     }
     .upperArrow{
       text-align: center;
-      margin-top: -30px;
+      // margin-top: -30px;
     }
     .userShow{
       display: flex;
@@ -92,18 +127,51 @@
     }
   }
   .enterpriseTitle{ // 企业标题
-    font-family:PingFangSC-Regular;
-    font-size:40px;
-    color:#a6e8ff;
-    letter-spacing:1.74px;
-    text-align: center;
-    margin-top: 10px;
-    position: relative;
-    img{
-      position: absolute;
-      cursor: pointer;
-      right: 16px;
-      bottom: 0px;
+    display: flex;
+    margin-top: 15px;
+    align-items: center;  
+    .saving{
+      flex:0 0 30%;
+      align-self: flex-end;
+      .savingText{
+        color:#88a6bf;
+      }
+      .saveInfo{
+        display: flex;
+        height: 34px;
+        margin-left: 12px;
+        align-items: center;
+      }
+      .eachSaving{
+        margin-right: 30px;
+        display: flex;
+        align-items: center;
+        .value{
+          font-size:18px;
+          color:#4dde49;
+          margin: 0 4px;
+        }
+        .unit{
+          color:#06bdf4;
+        }
+      }
+    }
+    .title{
+      flex:0 0 40%;
+      font-family:PingFangSC-Regular;
+      font-size: 34px;
+      color:#a6e8ff;
+      letter-spacing:1.74px;
+      text-align: center;
+    }
+    .sizeImg{
+      flex:0 0 30%;
+      align-self: flex-end;
+      text-align: right;
+      img{
+        cursor: pointer;
+        margin-right: 12px;
+      }
     }
   }
 }
