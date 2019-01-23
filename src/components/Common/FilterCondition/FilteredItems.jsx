@@ -102,8 +102,8 @@ class FilteredItems extends Component {
   }
 
   onCancelBelongMatrixs = (matrixs) => { // 删除所属方阵
-    const { defectTypeCode, onChangeFilter } = this.props;
-    onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== matrixs), });
+    const { belongMatrixs, onChangeFilter } = this.props;
+    onChangeFilter({ belongMatrixs: belongMatrixs.filter(e => e !== matrixs), });
   }
 
   onCancelWarnLevel = (level) => {//删除某告警级别

@@ -10,11 +10,95 @@ class DefectHandleForm extends Component {
     onSubmit: PropTypes.func,
     status: PropTypes.string,
     commonList: PropTypes.array,
+    sendDefect: PropTypes.func,
+    rejectDefect: PropTypes.func,
+    handleDefect: PropTypes.func,
+    checkDefect: PropTypes.func,
+    onCloseDefectDetail: PropTypes.func,
+    defectDetail: PropTypes.object,
+    closeDefect: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
   }
+
+
+  onSubmit = (data) => { // 点击提交的时候
+    console.log(data)
+    let params = {};
+    const { defectDetail, sendDefect, rejectDefect, closeDefect, handleDefect, checkDefect } = this.props;
+    console.log(defectDetail)
+    const defectId = defectDetail.defectId; //缺陷ID
+    const status = defectDetail.defectStatus; // 缺陷状态
+    console.log('status',status)
+    if (status === '1') { // 审核缺陷
+      switch (data.dealResult) {
+        case 'send':
+          params = {
+            defectId,
+            defectProposal: data.defectProposal ? data.defectProposal : null,
+            deadLine: data.deadLine ? data.deadLine.format('YYYY-MM-DD') + ' 23:59:59' : null
+          };
+          sendDefect(params);
+          break;
+        case 'reject':
+          params = {
+            defectId,
+            rejectReason: !data.rejectReason ? null : data.rejectReason
+          };
+          rejectDefect(params);
+          break;
+        case 'close':
+          params = {
+            defectId,
+            defectProposal: !data.defectProposal ? null : data.defectProposal
+          };
+          closeDefect(params);
+          break;
+      }
+    }
+    if (status === '2') { // 处理结果  执行中
+      let submitImages = this.getSubmitIamges(data.photoData);
+      params = {
+        defectId,
+        defectSolveResult: data.defectSolveResult,
+        defectSolveInfo: !data.defectSolveInfo ? null : data.defectSolveInfo,
+        replaceParts: !data.replaceParts ? null : data.replaceParts,
+        reasonDesc: !data.reasonDesc ? null : data.reasonDesc,
+        ...submitImages
+      };
+      handleDefect(params);
+    }
+    if (status === '3') { // 验收缺陷 待提交
+      params = {
+        defectId,
+        checkResult: data.checkResult,
+        checkInfo: !data.checkInfo ? null : data.checkInfo,
+      };
+      checkDefect(params);
+    }
+  }
+
+  getSubmitIamges(images) { // 照片提交
+    if (!images) {
+      return {
+        photoSolveAddress: null,
+        rotatePhoto: null
+      };
+    }
+    let solveAddress = [];
+    let rotate = [];
+    for (var i = 0; i < images.length; i++) {
+      solveAddress.push(images[i].thumbUrl);
+      rotate.push(images[i].rotate);
+    }
+    return {
+      photoSolveAddress: solveAddress.join(','),
+      rotatePhoto: rotate.join(',')
+    };
+  }
+
 
   getDefaultTitle=(status)=>{ // 标题
     let result='';
@@ -26,6 +110,9 @@ class DefectHandleForm extends Component {
     }
     return result;
   }
+
+
+ 
   
   render() {
     const rightHandler = localStorage.getItem('rightHandler');
@@ -39,9 +126,9 @@ class DefectHandleForm extends Component {
           <div className={styles.text}>{this.getDefaultTitle(status)}</div>
           <div className={styles.border}></div>
         </div>
-        {status === '1' && reviewDefectRight && <DefectReviewForm  onSubmit={this.props.onSubmit} /> }
-        {status === '2' &&  <DefectProcessForm commonList={this.props.commonList} onSubmit={this.props.onSubmit} />}
-        {status === '3' && checkDefectRight &&  <DefectCheckForm  onSubmit={this.props.onSubmit} />}
+        {status === '1' && reviewDefectRight && <DefectReviewForm  onSubmit={this.onSubmit} /> }
+        {status === '2' &&  <DefectProcessForm commonList={this.props.commonList} onSubmit={this.onSubmit} />}
+        {status === '3' && checkDefectRight &&  <DefectCheckForm  onSubmit={this.onSubmit} />}
       </div>
     );
   }  

@@ -192,15 +192,18 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-      }, {
-        title: "月计划发电量(万kWh)",
-        dataIndex: "planGen",
-        sorter: true,
-      },
+      }, 
       {
         title: "月实际发电量(万kWh)",
         dataIndex: "genValid",
         sorter: true,
+        render: text => (text || text === 0) ? text : '--'
+      },
+      {
+        title: "月计划发电量(万kWh)",
+        dataIndex: "planGen",
+        sorter: true,
+        render: text => (text || text === 0) ? text : '--'
       },
       {
         title: "计划完成率",
@@ -279,15 +282,18 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-      }, {
-        title: "年计划发电量(万kWh)",
-        dataIndex: "planGen",
-        sorter: true,
       },
       {
         title: "年实际发电量(万kWh)",
         dataIndex: "genValid",
         sorter: true,
+        render: text => (text || text === 0) ? text : '--'
+      },
+      {
+        title: "年计划发电量(万kWh)",
+        dataIndex: "planGen",
+        sorter: true,
+        render: text => (text || text === 0) ? text : '--'
       },
       {
         title: "计划完成率",

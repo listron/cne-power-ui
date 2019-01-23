@@ -17,6 +17,9 @@ class OutputTenMin extends Component {
     yXaisName:PropTypes.string,
     chartType:PropTypes.string,
     stationCode:PropTypes.string,
+    yAxisUnit:PropTypes.string,
+    yAxisValuePoint:PropTypes.any,
+
   }
 
   constructor(props) {
@@ -24,11 +27,11 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData,yXaisName,chartType,yAxisUnit } = nextProps;
+    const { capabilityData,yXaisName,chartType,yAxisUnit,yAxisValuePoint } = nextProps;
     let yAxisType=`功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
-    const capabilityPower = capabilityData.map(e => yAxisUnit==='MW'?e.stationPower:e.stationPower*1000);
+    const capabilityPower = capabilityData.map(e => (yAxisUnit==='MW'?(+e.stationPower):(+e.stationPower*1000)).toFixed(yAxisValuePoint));
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
