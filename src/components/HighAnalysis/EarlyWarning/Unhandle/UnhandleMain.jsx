@@ -175,7 +175,7 @@ class Unhandle extends Component {
         // render: text => (text || text === 0) ? text : '--'
       },
       {
-        title: '电量损失比',
+        title: '电量损失比(%)',
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         defaultSortOrder: 'descend',
