@@ -15,9 +15,9 @@ class PvStation extends React.Component {
     realTimePowerUnit: PropTypes.string,
     realCapacityUnit: PropTypes.string,
     powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.number,
-    realCapacityPoint: PropTypes.number,
-    powerPoint: PropTypes.number,
+    realTimePowerPoint: PropTypes.string,
+    realCapacityPoint: PropTypes.string,
+    powerPoint: PropTypes.string,
   }
   constructor(props, context) {
 
