@@ -47,7 +47,8 @@ class RealTimeWarningFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes } = this.props;
+    const { stations, deviceTypes,stationCodes } = this.props;
+    console.log(stationCodes);
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
@@ -55,6 +56,9 @@ class RealTimeWarningFilter extends Component {
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
+          defaultValue={{
+            stationCodes:stationCodes,
+          }}
         />
         <div className={styles.deviceNameSearch}>
           <span>设备名称</span>
