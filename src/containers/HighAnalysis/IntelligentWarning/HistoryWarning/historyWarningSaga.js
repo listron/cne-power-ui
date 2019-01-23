@@ -22,7 +22,7 @@ function *getHistoryarningList(action) {  // 请求告警列表
       startTime:rangTime,
     });
     if(response.data.code === '10000') {
-      const total = response.data.total || 0;
+      const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
@@ -33,8 +33,8 @@ function *getHistoryarningList(action) {  // 请求告警列表
       yield put({
         type:historyWarningAction.changeHistoryWarningStore,
         payload: {
-          total : response.data.total,
-          historyWarningList: response.data.data||[],
+          total : response.data.data.total||0,
+          historyWarningList: response.data.data.list||[],
           loading:false,
           ...payload,
         },

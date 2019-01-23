@@ -7,7 +7,7 @@ import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
 class RealTimeWarningFilter extends Component {
   static propTypes = {
-    history: PropTypes.object,
+     history: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -45,8 +45,9 @@ class RealTimeWarningFilter extends Component {
   }
 
   render() {
-    const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
+     const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
+    const stationCodes=stationCode?[+stationCode]:null
     const { stations, deviceTypes, } = this.props;
     return (
       <div className={styles.realTimeWarningFilter}>
@@ -56,7 +57,7 @@ class RealTimeWarningFilter extends Component {
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
           defaultValue={{
-            stationCodes:[+stationCode],
+            stationCodes,
           }}
         />
         <div className={styles.deviceNameSearch}>
