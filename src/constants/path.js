@@ -184,7 +184,9 @@ export default {
       getSeriesData:'/v3/forewarning/conf',  //获取低效组串预警配置
       addSeriesData:'/v3/forewarning/conf',  //设置低效组串预警配置
       getCleaningData:'/v3/pvclean/conf', //获取清洗模型预警配置
-      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置     
+      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置    
+      
+      warnConf:'/v3/smartalarm/conf',// 预警配置 增删改查
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',

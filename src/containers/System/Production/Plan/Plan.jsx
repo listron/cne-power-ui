@@ -1,12 +1,10 @@
 import React, {Component} from "react";
 import styles from "./plan.scss";
 import {connect} from 'react-redux';
-import {Button, Table, Icon} from 'antd';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import PlanMain from '../../../../components/System/Production/Plan/PlanMain/PlanMain';
 import PlanSide from '../../../../components/System/Production/Plan/PlanSide/PlanSide';
-
 import PropTypes from 'prop-types';
 import {planAction} from './planAction';
 import {commonAction} from "../../../alphaRedux/commonAction";

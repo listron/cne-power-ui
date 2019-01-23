@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './allStation.scss';
-//import { Icon } from 'antd';
-import CommonProgress from '../../../Common/CommonProgress'
-import { ValueFormat} from '../../../Common/UtilComponent'
+import { Tooltip } from 'antd';
+import CommonProgress from '../../../Common/CommonProgress';
+import { ValueFormat, DeviceValueFormat } from '../../../Common/UtilComponent';
 import { monitordataFormat } from '../../../../utils/utilFunc';
 
 
@@ -29,7 +29,7 @@ class AllStationHeader extends React.Component {
     const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
     const windStation = stationTypeSummary.windStationNum || '--';
     const lightStation = stationTypeSummary.lightStationNum || '--';
-  
+    const planStatus = stationDataSummary.planStatus || 0;
 
     return (
       <div className={styles.headContainer}>
@@ -54,8 +54,38 @@ class AllStationHeader extends React.Component {
               </div>
               <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
             </div>
+            {
+            planStatus === 2 &&  <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 (${powerUnit})`} totalText={`计划 (${powerUnit})`} percent={yearPlanRate ? yearPlanRate : ''} />
+          }
+          {
+            planStatus === 1 &&
+            <React.Fragment>
+              <div className={styles.yearStation}>
+                <div className={styles.dataValue}>
+                  <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                </div>
+                <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
+              </div>
+              <div className={styles.yearStationRate}>
+                <div className={styles.dataValue}>
+                  <DeviceValueFormat value={monitordataFormat(yearPlanRate.split('%')[0], '--')} />{'%'}
+                </div>
+                <div className={styles.dataName}>计划完成率</div>
+                <Tooltip placement="bottom" className={styles.tooltipName} overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+                </Tooltip>
+              </div>
+            </React.Fragment>
+          }
+          {
+            planStatus === 0 &&
+            <div className={styles.yearStation}>
+              <div className={styles.dataValue}>
+                <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+              </div>
+              <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
+            </div>
+          }
           </div>
-          <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit}  valueunit={powerUnit} valueText={`年累计发电量 (${powerUnit})`} totalText={`计划 (${powerUnit})`} percent={yearPlanRate ? yearPlanRate : ''} />
         </div>
         <div className={styles.stationNav}>
           <div className={styles.showType}>

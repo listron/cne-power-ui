@@ -82,13 +82,13 @@ class AddForm extends Component {
           {getFieldDecorator('username',{
             initialValue: userDetail && userDetail.username,
             rules: [
-              {pattern: /^[A-Za-z0-9\u4e00-\u9fa5]{3,8}$/gi, message: '请输入3到8位中文、英文、数字',required: true,},
+              {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi, message: '请输入字符长度为3-25的用户名',required: true,},
               
             ]
           })(
-            <Input placeholder="3-8位中文,英文,数字都可" />
+            <Input placeholder="请输入用户名" />
           )}
-          <span className={styles.instructionText}>(3-8位中文,英文,数字都可)</span>
+          <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
         </FormItem>
         <FormItem label="真实姓名" >
           {getFieldDecorator('userFullName',{

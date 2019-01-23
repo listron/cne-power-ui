@@ -2,9 +2,11 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { allStationAction } from './allStationAction.js';
+import moment from 'moment';
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationType + payload.stationType;
+  const utcTime=moment.utc().format();
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationType + payload.stationType+'/'+utcTime;
   //const url = '/mock/v3/monitor/stations/stationType';
   try {
     yield put({ type: allStationAction.MONITORSTATION_FETCH });
