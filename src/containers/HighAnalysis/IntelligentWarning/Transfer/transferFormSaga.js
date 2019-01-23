@@ -55,7 +55,7 @@ function *getTransferForm(action) {  // 请求告警列表
       startTime:rangTime,
     });
     if(response.data.code === '10000') {
-      const total = response.data.total || 0;
+      const total = response.data.data.total || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
@@ -66,8 +66,8 @@ function *getTransferForm(action) {  // 请求告警列表
       yield put({
         type:transferFormAction.changeTransferFormStore,
         payload: {
-          total : response.data.total,
-          transferFormList: response.data.data||[],
+          total : response.data.data.total,
+          transferFormList: response.data.data.list||[],
           loading:false,
           ...payload,
         },

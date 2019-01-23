@@ -99,7 +99,7 @@ class HistoryWarningTable extends Component {
           </div>
           <Icon type="close" onClick={()=>{
             let showTransferPopover = this.state.showTransferPopover;
-            showTransferPopover[i] = false;
+            showTransferPopover[index] = false;
             this.setState({showTransferPopover});
           }} />
         </div>

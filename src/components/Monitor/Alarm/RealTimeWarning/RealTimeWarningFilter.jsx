@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './realTimeWarning.scss';
 import { Input, Button } from 'antd';
 
@@ -8,6 +9,7 @@ import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
 class RealTimeWarningFilter extends Component {
   static propTypes = {
+     history: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -47,8 +49,10 @@ class RealTimeWarningFilter extends Component {
   }
 
   render() {
-    const { stations, deviceTypes,stationCodes } = this.props;
-    console.log(stationCodes);
+     const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
+    const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
+    const stationCodes=stationCode?[+stationCode]:null
+    const { stations, deviceTypes, } = this.props;
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
@@ -57,7 +61,7 @@ class RealTimeWarningFilter extends Component {
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
           defaultValue={{
-            stationCodes:stationCodes,
+            stationCodes,
           }}
         />
         <div className={styles.deviceNameSearch}>
