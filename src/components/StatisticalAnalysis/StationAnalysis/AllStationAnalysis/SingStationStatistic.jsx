@@ -7,7 +7,6 @@ import styles from './allStationStatistic.scss';
 import BarGraph from '../CommonGraphs/BarGraph/index.js';
 import TargetStatisticPieGraph from './Chart/TargetStatisticPieGraph.jsx';
 import moment from 'moment';
-// import TimeSelect from '../../../Common/TimeSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import PlanCompletionRate from './Chart/PlanCompletionRate';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
@@ -515,6 +514,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'power'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
+                    title={'发电量环比'}
                     dateType={dateType}
                     barGraphmonth={barGraphmonth}
                     barGraphThatYear={barGraphThatYear}
@@ -548,7 +548,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'yearLostPower'}
                     yAxisName={'损失电量 (万kWh)'}
                     xAxisName={'损失电量'}
-                    title={'损失电量同比'}
+                    title={'损失电量环比'}
                     dateType={dateType}
                     barGraphRingRatio={lostPowerRingRatio}
                     barGraphThatYear={lostPowerThatYear}
@@ -572,6 +572,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'power'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
+                    title={'发电量同比'}
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}
@@ -689,6 +690,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'dayPower'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
+                    title={'发电量同比'}
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}

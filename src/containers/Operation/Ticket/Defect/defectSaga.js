@@ -620,7 +620,7 @@ function* getDefectTypes(action) {
 function* createNewDefect(action) {
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.createNewDefect;
-  yield put({ type: ticketAction.TICKET_FETCH });
+  // yield put({ type: ticketAction.TICKET_FETCH });
   const isContinueAdd = payload.isContinueAdd;
   delete payload.isContinueAdd;
   try {

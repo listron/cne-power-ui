@@ -7,6 +7,12 @@ import { Link } from 'react-router-dom';
 class WindStationItem extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
+    realTimePowerUnit: PropTypes.string,
+    realCapacityUnit: PropTypes.string,
+    powerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.number,
+    realCapacityPoint: PropTypes.number,
+    powerPoint: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context) 
@@ -24,8 +30,7 @@ class WindStationItem extends React.Component {
   }
 
   render() {
-    const { stationDataList,realTimePowerUnit,realCapacityUnit } = this.props;
-   
+    const { stationDataList,realTimePowerUnit,realTimePowerPoint,realCapacityUnit,realCapacityPoint } = this.props;
     return (
         <div className={styles.stationCardContainer}>
         {
@@ -34,8 +39,8 @@ class WindStationItem extends React.Component {
               const stationName = item.stationName || '--';
               const progressStationPower=item.stationPower|| '--';
               const progressStationCapacity=item.stationCapacity|| '--';
-              const stationPower = (realTimePowerUnit==='MW'?item.stationPower:item.stationPower*1000 )|| '--';
-              const stationCapacity = (realCapacityUnit==='MW'?item.stationCapacity:item.stationCapacity*1000 )|| '--';
+              const stationPower = (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint)|| '--';
+              const stationCapacity = (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint)|| '--';  
               const instantaneous = item.instantaneous || '--';
               const stationUnitCount = item.stationUnitCount || '--';
              
