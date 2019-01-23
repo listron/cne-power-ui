@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { historyWarningActive } from './historyWarningActive';
+import { historyWarningAction } from './historyWarningAction';
 
 var initState = Immutable.fromJS({
   warningStatus:'',//历史预警
@@ -7,6 +7,7 @@ var initState = Immutable.fromJS({
   loading:false,
   warningTypeStatus:'0',//历史预警
   orderField:'',
+  pageName:'list',
   orderCommand:'',
   durationType:null,
   warningLevel:[],//告警级别多个
@@ -18,6 +19,7 @@ var initState = Immutable.fromJS({
   deviceName:null,//设备名称
   pageSize:10,
   pageNum:1, 
+  total:0,
   stationCodes:[],//电站编码
   oneWarningNum:null,//一级告警
   twoWarningNum: null,//二级告警
@@ -33,9 +35,9 @@ const historyWarningReducer = (state = initState, action) => {
   switch (action.type) {
     // case realtimeWarningActive.huoquchenggong:
     //   return state.set('loading', true)
-    case historyWarningActive.changeHandleRemoveStore:
+    case historyWarningAction.changeHistoryWarningStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case historyWarningActive.resetHistoryWarningStore:
+    case historyWarningAction.resetHistoryWarningStore:
       return initState
   }
   return state;

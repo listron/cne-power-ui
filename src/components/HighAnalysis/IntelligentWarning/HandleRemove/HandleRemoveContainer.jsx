@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import styles from './handleRemove.scss'
+import PropTypes from 'prop-types';
+import styles from './handleRemove.scss';
 import WarningStatisticTop from '../commonArea/WarningStatisticTop';
 import HandleRemoveFilter from './HandleRemoveFilter';
 import HandleRemoveTable from './HandleRemoveTable';
@@ -9,6 +10,17 @@ import HandleRemoveTable from './HandleRemoveTable';
 
 class HandleRemoveContainer extends Component {
     static propTypes = {
+        getHandleRemoveStatistic:PropTypes.func,
+        warningTypeStatus:PropTypes.string,
+        warningStatus:PropTypes.string,
+        warningType:PropTypes.string,
+        getHandleRemoveList:PropTypes.func,
+        changeHandleRemoveStore:PropTypes.func,
+        getHandleRemoveInfo:PropTypes.func,
+        getHandleRemoveTransfer:PropTypes.func,
+        onChangeFilter:PropTypes.func,
+        relieveInfo:PropTypes.object,
+        handleRemoveList:PropTypes.array,
     }
     constructor(props, context) {
         super(props, context)
@@ -19,7 +31,6 @@ class HandleRemoveContainer extends Component {
         this.queryTransferFrom()
     }
     onChangeFilter = (value) => {
-
         this.queryTransferFrom(value)
     }
 
