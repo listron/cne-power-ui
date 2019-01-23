@@ -12,15 +12,16 @@ class windStationHeader extends React.Component {
     realTimePowerUnit: PropTypes.string,
     realCapacityUnit: PropTypes.string,
     powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.string,
-    realCapacityPoint: PropTypes.string,
-    powerPoint: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context)
   }
   render() {
     const { windMonitorStation, realTimePowerUnit, realCapacityUnit, powerUnit, realTimePowerPoint, realCapacityPoint, powerPoint } = this.props;
+  
 
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower || ' -- ';
