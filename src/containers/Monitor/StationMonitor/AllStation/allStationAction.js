@@ -6,5 +6,7 @@ export const allStationAction = {
   
   CHANGE_MONITORSTATION_STORE_SAGA: Symbol('CHANGE_MONITORSTATION_STORE_SAGA'),
   CHANGE_MONITORSTATION_STORE: Symbol('CHANGE_MONITORSTATION_STORE'),
+  resetMonitorData: Symbol('resetMonitorData'),
+
 }
 

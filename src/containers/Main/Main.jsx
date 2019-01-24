@@ -13,6 +13,7 @@ import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
 import { commonAction } from '../alphaRedux/commonAction';
 import { loginAction } from '../Login/loginAction';
+import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
@@ -74,6 +75,9 @@ class Main extends Component {
       this.props.getMonitorDataUnit();
     }
   }
+  componentWillUnmount(){
+    this.props.resetMonitorData()
+  }
 
   logout = () => { // 删除登录凭证并退出。
     Cookie.remove('authData');
@@ -90,12 +94,13 @@ class Main extends Component {
     Cookie.remove('auto');
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
+    this.props.resetMonitorData();
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.history.push('/login');
   }
 
   render() {
-    const { changeLoginStore, history } = this.props;
+    const { changeLoginStore, history,resetMonitorData } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -118,7 +123,7 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              <UserInfo changeLoginStore={changeLoginStore} />
+              <UserInfo changeLoginStore={changeLoginStore} resetMonitorData={resetMonitorData} />
             </div>
           </div>}
           <div className={styles.appMain}>
@@ -156,17 +161,20 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  login: state.login.get('loginData'),
-  enterpriseId: state.login.get('enterpriseId'),
-  username: state.login.get('username'),
-});
+const mapStateToProps = (state) =>{
+  return ({
+    login: state.login.get('loginData'),
+    enterpriseId: state.login.get('enterpriseId'),
+    username: state.login.get('username'),
+  });
+} 
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
   getDeviceTypes: payload => dispatch({ type: commonAction.getDeviceTypes, payload }),
   getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
+  resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 
