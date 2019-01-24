@@ -47,6 +47,15 @@ class TmpForm extends Component {
     }
   }
 
+  
+  componentWillReceiveProps(nextProps){
+    const {defectId,stationCode}=nextProps.defectDetail;
+    const oldDefectId=this.props.defectDetail.defectId;
+    if(defectId!==oldDefectId){
+      this.props.getStationDeviceTypes({ stationCodes:stationCode });
+    }
+  }
+
   onChangeReplace = (checked) => { // 更换部件
     this.setState({
       checked: checked,
@@ -147,6 +156,7 @@ class TmpForm extends Component {
 
   selectedDevice = (value) => { // 选择设备
     this.props.form.setFieldsValue({ deviceCode: value });
+    
   }
 
 
@@ -188,9 +198,6 @@ class TmpForm extends Component {
       }
     })
     const canSelectDefectType = currentStations && deviceTypeCode;
-
-    console.log('defectDetail',defectDetail)
-    console.log('test',defectDetail && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || [],)
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
