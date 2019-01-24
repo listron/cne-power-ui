@@ -76,9 +76,9 @@ class CleanoutPlanRecord extends Component {
 
   nextStation = () => { // 下一个电站详情
     const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList, cleanRecordPageNum, cleanRecordPageSize } = this.props;
-    const maxPage = Math.ceil(5 / detailPageSize); // 最后一页页码
+    const maxPage = Math.ceil(detailtotal / detailPageSize); // 最后一页页码
 
-    const lastPageMaxIndex = 5 - (maxPage - 1) * detailPageSize - 1;
+    const lastPageMaxIndex = detailtotal - (maxPage - 1) * detailPageSize - 1;
 
     if (selectedStationIndex === lastPageMaxIndex && detailPageNum === maxPage) { // 最后一页最后一条
       this.setState({
@@ -95,7 +95,7 @@ class CleanoutPlanRecord extends Component {
       })
     } else {
       getPlanRecordList({ // 请求下一条电站详情数据
-        planId: detailListData[selectedStationIndex + 1].planId,
+        planId: detailListData[selectedStationIndex].planId,
         selectedStationIndex: selectedStationIndex + 1,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,

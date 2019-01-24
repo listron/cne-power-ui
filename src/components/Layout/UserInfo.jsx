@@ -36,6 +36,7 @@ class UserInfo extends Component{
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.changeLoginStore({pageTab: 'login'});
+    this.props.resetMonitorData();
     this.props.history.push('/login');
   }
 
