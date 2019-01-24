@@ -15,8 +15,8 @@ class HistoryWarningContainer extends Component {
     this.queryHistoryWarning(value)
   }
   queryHistoryWarning = (value) => {
-    const { getHistoryarningList, warningTypeStatus, warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime } = this.props;
-    const params = { warningTypeStatus, warningType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime }
+    const { getHistoryarningList, warningTypeStatus, warningType, rangTime,stationType, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime } = this.props;
+    const params = { warningTypeStatus, warningType,stationType, rangTime, deviceTypeCode, warningLevel, stationCodes, orderField, orderCommand, deviceName, durationType, pageSize, pageNum,endTime }
     getHistoryarningList({ ...params, ...value })
   }
   render() {

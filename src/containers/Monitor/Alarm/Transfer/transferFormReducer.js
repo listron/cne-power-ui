@@ -5,7 +5,7 @@ var initState = Immutable.fromJS({
   warningStatus:'3',//已转工单
   warningType:'事件告警',//事件告警
   pageName:'list',
-  stationType:'',
+  stationType:'2',
   loading:false,
   warningTypeStatus:'3',//已转工单
   orderField:'',
