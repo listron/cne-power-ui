@@ -84,8 +84,8 @@ class PowerDiagramTenMin extends Component {
         formatter: (params) => {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :
-            ${this.dealValue(params[index].seriesName,params[index].value,this.getDefaultPoint(params[index].seriesName))}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :
+            ${this.dealValue(item.seriesName,item.value,this.getDefaultPoint(item.seriesName))}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`

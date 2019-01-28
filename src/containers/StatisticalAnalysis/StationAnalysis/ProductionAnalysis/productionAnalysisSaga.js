@@ -13,6 +13,12 @@ function* changeProductionStationStore(action) {//存储payload指定参数，�
   })
 }
 
+function *resetStore(){
+  yield put({
+    type:  productionAnalysisAction.RESET_STORE
+  })
+}
+
 function* getAllStationAvalibaData(action) {//综合指标年月判断
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/dataavaliba';
@@ -101,6 +107,6 @@ export function* watchProductionStationSaga() {
   yield takeLatest(productionAnalysisAction.getAllStationAvalibaData, getAllStationAvalibaData);
   yield takeLatest(productionAnalysisAction.getSingleStationPlanRateData, getSingleStationPlanRateData);
   yield takeLatest(productionAnalysisAction.getSingleStationProductionData, getSingleStationProductionData);
-  
+  yield takeLatest(productionAnalysisAction.resetStore, resetStore);
 
 }

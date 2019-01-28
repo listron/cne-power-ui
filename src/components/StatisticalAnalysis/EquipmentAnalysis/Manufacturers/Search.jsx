@@ -48,6 +48,37 @@ class Search extends Component {
     selectOption === 'manufacturer' ? this.props.getChartsData({ ...manufactureParams, ...value }) : this.props.getChartsData({ ...devicemodeParams, ...value });
   }
 
+
+  getTreeProps = () => { // 获取厂家型号的详细数据
+    const { devicemodeList, manufacturerList } = this.props;
+    const { selectOption } = this.state;
+    const devicemodeData = devicemodeList.length > 0 && devicemodeList.map(e => {
+      if (e) {
+        return {
+          title: e.deviceModeName,
+          value: e.deviceModeId,
+          key: e.deviceModeId,
+        }
+      }
+    }) || [];
+    const manufacturerData = manufacturerList.length > 0 && manufacturerList.map(e => {
+      return {
+        title: e.manufacturer,
+        value: e.manufacturer,
+        key: e.manufacturer,
+      }
+    }) || [];
+    const treeData = selectOption === 'manufacturer' ? manufacturerData : devicemodeData;
+    const treeProps = {
+      treeData: treeData,
+      treeCheckable: true,
+      filterTreeNode: false,
+      searchPlaceholder: null,
+      isLeaf: true,
+    }
+    return treeProps;
+  }
+
   timeSelect = (date, dateString) => { // 切换时间
     this.getDevice({ startDate: dateString[0], endDate: dateString[1] })
   }
@@ -70,7 +101,7 @@ class Search extends Component {
     this.setState({ selectOption: value }, () => {
       value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
     })
-    this.props.changeManufacturersStore({selectOption:value})
+    this.props.changeManufacturersStore({ selectOption: value })
   }
 
 
@@ -81,34 +112,6 @@ class Search extends Component {
     selectOption === 'manufacturer' ? this.getDevice({ manufacturers: optionValue }) : this.getDevice({ deviceModeIds: optionValue })
   }
 
-
-  getTreeProps = () => { // 获取厂家型号的详细数据
-    const { devicemodeList, manufacturerList } = this.props;
-    const { selectOption } = this.state;
-    const devicemodeData = devicemodeList.length > 0 && devicemodeList.map(e => {
-      return {
-        title: e.deviceModeName,
-        value: e.deviceModeId,
-        key: e.deviceModeId,
-      }
-    }) || [];
-    const manufacturerData = manufacturerList.length > 0 && manufacturerList.map(e => {
-      return {
-        title: e.manufacturer,
-        value: e.manufacturer,
-        key: e.manufacturer,
-      }
-    }) || [];
-    const treeData = selectOption === 'manufacturer' ? manufacturerData : devicemodeData;
-    const treeProps = {
-      treeData: treeData,
-      treeCheckable: true,
-      filterTreeNode: false,
-      searchPlaceholder: null,
-      isLeaf: true,
-    }
-    return treeProps;
-  }
 
   render() {
     const { stations, deviceTypeNameLike } = this.props;
@@ -152,7 +155,7 @@ class Search extends Component {
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeCheckStrictly={true}
             value={optionValue}
-            // disabled={treeData.length > 0 ? false : true}
+          // disabled={treeData.length > 0 ? false : true}
           />
         </div>
 
