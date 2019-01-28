@@ -36,6 +36,7 @@ class TmpForm extends Component {
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
+    changeDefectStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -54,6 +55,11 @@ class TmpForm extends Component {
     if(defectId!==oldDefectId){
       this.props.getStationDeviceTypes({ stationCodes:stationCode });
     }
+  }
+
+
+  componentWillUnmount(){
+    this.props.changeDefectStore({defectDetail:{}})
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -93,7 +99,6 @@ class TmpForm extends Component {
     const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail, changeCommonStore } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        debugger;
         // 电站类型(0:风电，1光伏，2：全部)
         let { stationCode, stationType } = values.stations[0];
         let deviceCode = values.deviceCode[0].deviceCode;
