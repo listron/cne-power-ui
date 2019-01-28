@@ -13,6 +13,7 @@ import CenterMap from '../../components/Home/CenterMap';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
 import { homepageAction } from './homepageAction';
+import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 
@@ -40,6 +41,7 @@ class Homepage extends Component {
     getAlarmList: PropTypes.func,
     getOutputDiagram: PropTypes.func,
     getOperationInfo: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   }
 
   constructor(props){
@@ -96,11 +98,17 @@ class Homepage extends Component {
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
       getMonthPower, monthPower, // 各月发电
+      resetMonitorData
     } = this.props;
     const { hasMultipleType } = this.state;
     return (
       <div id="homepage" className={styles.homepage}>
-        <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} energySaving={energySaving} />
+        <HomepageTop
+          changeLoginStore={changeLoginStore}
+          realTimeInfo={realTimeInfo}
+          energySaving={energySaving}
+          resetMonitorData={resetMonitorData}
+        />
         <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
@@ -154,6 +162,8 @@ const mapDispatchToProps = (dispatch) => ({
   getAlarmList: payload => dispatch({type: homepageAction.getAlarmList, payload}),
   getOutputDiagram: payload => dispatch({type: homepageAction.getOutputDiagram, payload}),
   getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
+
+  resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
 });
 
 

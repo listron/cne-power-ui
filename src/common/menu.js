@@ -229,31 +229,32 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
-      { name: '智能预警',
-      iconStyle: 'icon-usermanage',
-      path: 'intelligentWarning',
-      rightKey: 'analysis_intelligentWarning',
-      children: [
-        {
-          name: '实时预警',
-          path: 'realtime',
-          defaultPath: true,
-          rightKey: 'analysis_intelligentWarning_pending',
-        }, {
-          name: '已转工单',
-          path: 'transfer',
-          rightKey: 'analysis_intelligentWarning_worklist',
-        },{
-          name: '手动解除',
-          path: 'handleremove',
-          rightKey: 'analysis_intelligentWarning_remove',
-        },{
-          name: '历史预警',
-          path: 'historywarning',
-          rightKey: '	analysis_intelligentWarning_history',
-        }
-        
-      ]},
+      {
+        name: '智能预警',
+        iconStyle: 'icon-usermanage',
+        path: 'intelligentWarning',
+        rightKey: 'analysis_intelligentWarning',
+        children: [
+          {
+            name: '实时预警',
+            path: 'realtime',
+            defaultPath: true,
+            rightKey: 'analysis_intelligentWarning_pending',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'analysis_intelligentWarning_worklist',
+          },{
+            name: '手动解除',
+            path: 'handleremove',
+            rightKey: 'analysis_intelligentWarning_remove',
+          },{
+            name: '历史预警',
+            path: 'historywarning',
+            rightKey: '	analysis_intelligentWarning_history',
+          }
+        ]
+      },
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
