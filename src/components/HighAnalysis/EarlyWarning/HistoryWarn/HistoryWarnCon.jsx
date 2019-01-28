@@ -150,7 +150,7 @@ class HistoryWarnCon extends Component {
         defaultSortOrder: 'descend',
       },
       {
-        title: '电量损失比(%)',
+        title: '电量损失比',
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         sorter: true,
@@ -168,7 +168,7 @@ class HistoryWarnCon extends Component {
         )
       }
     ]
-    const dataSource = historyWarnList.map((item, index) => ({ ...item, key: index, happenTime: moment(item.happenTime).format('YYYY-MM-DD') }));
+    const dataSource = historyWarnList.map((item, index) => ({ ...item, key: index, happenTime: moment(item.happenTime).format('YYYY-MM-DD'),lostGenPercent:item.lostGenPercent +'%' }));
 
     return (
       <div className={styles.historyWarnMain}>

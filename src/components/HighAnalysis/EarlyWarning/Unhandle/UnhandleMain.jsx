@@ -172,15 +172,13 @@ class Unhandle extends Component {
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
-        // render: text => (text || text === 0) ? text : '--'
       },
       {
-        title: '电量损失比(%)',
+        title: '电量损失比',
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         defaultSortOrder: 'descend',
         sorter: true,
-        // render: text => (text || text === 0) ? text : '--'
       },
       {
         title: '详情及处理',
@@ -196,7 +194,7 @@ class Unhandle extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId }));
+    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId,lostGenPercent: item.lostGenPercent + '%'}));
     return (
       <div className={styles.unhandleMain}>
       {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}

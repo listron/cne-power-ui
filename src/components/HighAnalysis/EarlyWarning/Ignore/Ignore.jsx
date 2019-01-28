@@ -120,7 +120,6 @@ class Ignore extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        defaultSortOrder: 'descend',
         // render: text => (text || text === 0) ? text : '--'
       },
       {
@@ -146,6 +145,7 @@ class Ignore extends Component {
         dataIndex: 'ignoreTime',
         key: 'ignoreTime',
         sorter: true,
+        defaultSortOrder: 'descend',
         // render: text => (text || text === 0) ? text : '--'
       },
       {
