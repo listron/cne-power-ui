@@ -66,30 +66,3 @@ export const OperationInfo = ({ operationInfo }) => { // 运维情况
     </section>
   )
 }
-
-export const EnergySaving = ({ energySaving }) => { // 年累计节能减排
-  const dioxide = dataFormat(energySaving.dioxide);
-  const coal = dataFormat(energySaving.coal);
-  return (
-    <section className={styles.energySaving}>
-      <h3>年累计节能减排</h3>
-      <div className={styles.saveContent}>
-        <div className={styles.eachSaving}>
-          <img src="/img/co2.png" height="45px" />
-          <span className={styles.savedData}>
-            <span className={styles.value}>{dioxide}</span>
-            <span className={styles.unit}>kt</span>
-          </span>
-        </div>
-        <div className={styles.eachSaving}>
-          <img src="/img/hot.png" height="45px" />
-          <span className={styles.savedData}>
-            <span className={styles.value}>{coal}</span>
-            <span className={styles.unit}>kt</span>
-          </span>
-        </div>
-      </div>
-      
-    </section>
-  )
-}

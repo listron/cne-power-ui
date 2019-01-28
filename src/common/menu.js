@@ -232,25 +232,25 @@ const menuData = [
       { name: '智能预警',
       iconStyle: 'icon-usermanage',
       path: 'intelligentWarning',
-      rightKey: 'analysis_cleanModel',
+      rightKey: 'analysis_intelligentWarning',
       children: [
         {
           name: '实时预警',
           path: 'realtime',
           defaultPath: true,
-          rightKey: 'monitor',
+          rightKey: 'analysis_intelligentWarning_pending',
         }, {
           name: '已转工单',
           path: 'transfer',
-          rightKey: 'monitor',
+          rightKey: 'analysis_intelligentWarning_worklist',
         },{
           name: '手动解除',
           path: 'handleremove',
-          rightKey: 'monitor',
+          rightKey: 'analysis_intelligentWarning_remove',
         },{
           name: '历史预警',
           path: 'historywarning',
-          rightKey: 'monitor',
+          rightKey: '	analysis_intelligentWarning_history',
         }
         
       ]},
@@ -390,7 +390,7 @@ const menuData = [
         }, {
           name: '预警配置',
           path: 'warning',
-          rightKey: 'system_config',
+          rightKey: 'system_config_warning',
         },
         ]
       }

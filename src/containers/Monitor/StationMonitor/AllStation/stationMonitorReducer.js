@@ -19,6 +19,8 @@ const stationMonitorReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
     case allStationAction.CHANGE_MONITORSTATION_STORE:
       return state.merge(Immutable.fromJS(action.payload))
+    case allStationAction.resetMonitorData:
+      return initState;
    
   }
   return state;

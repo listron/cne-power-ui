@@ -77,7 +77,7 @@ class PlanRecordTable extends Component {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        render: text => (<span>{parseInt(text) >= 0 ? `${text}` : '--'}</span>),
+        render: text => (<span>{ `${text}`? `${text}` : '--'}</span>),
 
       }, {
         title: 'pr',
