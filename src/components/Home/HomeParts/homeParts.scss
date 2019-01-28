@@ -1,21 +1,75 @@
 
 @import '../homepageParts.scss';
 
-@media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
-  .stationGeneral, .completeRate, .monthGen, .operationInfo, .energySaving, .outputPower, .operationInfo, .deviceStatus, .alarmList {
-    width: 400px;
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1345px进行适配。
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
+    width: 340px;
+    height: 275px;
   }
-  .eqpHours, .faultList{
-    width: 410px;
+  .stationGeneral{
+    .value{
+      font-size:20px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 440px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
+  }
+  .deviceStatus .statusChart{
+    width: 55%;
+  }
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
+    width: 340px;
+    height: 275px;
+  }
+  .stationGeneral{
+    .value{
+      font-size:20px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 465px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
   }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
-  .stationGeneral, .completeRate, .monthGen, .operationInfo, .energySaving, .outputPower, .operationInfo, .deviceStatus, .alarmList{
+  .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus{
     width: 435px;
+    height: 322px;
   }
-  .eqpHours, .faultList{
-    width: 492px;
+  .stationGeneral{
+    .value{
+      font-size:28px;
+    }
+    .unit{
+      font-size:18px;
+    }
+    .name{
+      font-size:22px;
+    }
+  }
+  .eqpHours, .faultList, .alarmList{
+    width: 625px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 60px;
+  }
+  .faultList .list{
+    padding-right: 60px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
   }
 }
 
@@ -56,7 +110,6 @@
 
 .stationGeneral{ // 电站概况
   @include boxStyle();
-  height: 320px;
   margin-top: 12px;
   position: relative;
   align-content: flex-start;
@@ -79,22 +132,20 @@
       margin-left: 36px;
     }
     .value{
-      font-size:28px;
       color:#4dde49;
     }
     .unit{
-      font-size:18px;
       margin-left: 0;
     }
     .name{
-      font-size:22px;
       line-height:24px;
     }
   }
 }
-
-.monthGen, .deviceStatus, .energySaving, .outputPower, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子总样式。
+.monthGen, .deviceStatus, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子高度。
   height: 205px;
+}
+.monthGen, .deviceStatus, .outputPower, .eqpHours, .faultList, .alarmList, .completeRate, .operationInfo{ // 大致所有盒子总样式。
   margin-top: 12px;
   @include boxStyle();
   position: relative;
@@ -105,7 +156,7 @@
     @include typeTags();
   }  
 }
-.energySaving, .eqpHours, .faultList{
+.eqpHours, .faultList{
   margin-right: 12px;
 }
 
@@ -196,17 +247,9 @@
 }
 
 .outputPower{ // 电站出力
-  height: 320px;
-  position: relative;
   align-items: center;
-  h3{
-    @include titles();
-  }
-  .checkTags{
-    @include typeTags();
-  }
   .outputChart{
-    height: 200px;
+    flex: 1;
     width: 340px;
   }
   .outputTool{
@@ -318,9 +361,6 @@
   .statusBox{
     flex: 1;
     display: flex;
-    .statusChart{
-      width: 60%;
-    }
     .statusTool{
       @include chartTool();
       width: 105px;
@@ -356,35 +396,11 @@
       .text{
         flex: 0 0 60px;
         color:#06bdf4;
-        margin: 0 16px 0 8px;
+        margin: 0 8px 0 8px;
       }
       .value{
         color:#4dde49;
         font-size: 20px;
-      }
-    }
-  }
-}
-
-.energySaving{ // 节能减排
-  .saveContent{
-    display: flex;
-    .eachSaving{
-      width: 50%;
-      display: flex;
-      margin-top: 20px;
-      flex-direction: column;
-      align-items: center;
-    }
-    .savedData{
-      margin-top: 8px;
-      .value{
-        font-size:24px;
-        color:#4dde49;
-        margin-right: 4px;
-      }
-      .unit{
-        color:#06bdf4;
       }
     }
   }
@@ -411,7 +427,6 @@
       .hourRectGroup{
         display: flex;
         align-items: center;
-        margin: 0 12px;
         .eachRect{
           background:rgba(72,207,73,0.40);
           margin-right: 2px;
@@ -540,6 +555,7 @@
     }
     .info{
       flex: 1;
+      text-align: center;
     }
     .time{
       width: 95px;

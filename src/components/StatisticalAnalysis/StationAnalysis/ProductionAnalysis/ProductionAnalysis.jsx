@@ -71,6 +71,7 @@ class ProductionAnalysis extends React.Component {
     }
   }
 
+  
   onTimeChange = (timeObj) => {
     let year = " ";
     let month = "";

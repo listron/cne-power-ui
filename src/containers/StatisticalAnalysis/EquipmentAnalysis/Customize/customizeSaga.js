@@ -50,7 +50,7 @@ function* getManufacturer(action) { // 获取生产厂家
 function* getDevicemode(action) { // 获取电站下 生产厂家 所有的设备型号
   const { payload } = action;
   const { params, resultName } = payload;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getDevicemode}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getDevicemodes}`
   try {
     const response = yield call(axios.post, url, {
       ...params,

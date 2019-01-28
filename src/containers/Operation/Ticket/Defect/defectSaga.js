@@ -555,7 +555,7 @@ function* checkDefect(action) {
   yield put({ type: ticketAction.TICKET_FETCH });
   try {
     const response = yield call(axios.post, url, payload);
-    console.log(response)
+    // console.log(response)
     if (response.data.code === '10000') {
       message.success('验收成功！');
       const params = yield select(state => ({

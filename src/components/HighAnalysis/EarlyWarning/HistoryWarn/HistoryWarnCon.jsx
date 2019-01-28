@@ -58,7 +58,7 @@ class HistoryWarnCon extends Component {
     const nowStartTime = moment.utc(lastDay + ' 00:00:00').format();
     const nowEndTimd = moment.utc(lastDay + ' 23:59:59').format();
     this.props.getSequencechart({ params: { deviceCode, startTime, endTime }, resultName: 'sequenceChartList' })
-    this.props.getSequencechart({ params: { deviceCode, nowStartTime, nowEndTimd }, resultName: 'nowSequenceChartList' })
+    this.props.getSequencechart({ params: { deviceCode, startTime:nowStartTime,endTime:nowEndTimd }, resultName: 'nowSequenceChartList' })
   }
 
   getHistoryWarnList = (param) => { //请求数据
@@ -106,7 +106,7 @@ class HistoryWarnCon extends Component {
     const selectTime=moment(value).format('YYYY-MM-DD')
     const nowStartTime = moment.utc(selectTime + ' 00:00:00').format();
     const nowEndTimd = moment.utc(selectTime + ' 23:59:59').format();
-    this.props.getSequencechart({ params: { deviceCode, nowStartTime, nowEndTimd }, resultName: 'nowSequenceChartList' })
+    this.props.getSequencechart({ params: { deviceCode,startTime:nowStartTime, endTime:nowEndTimd }, resultName: 'nowSequenceChartList' })
   }
 
   disabledDate=(current)=>{ // 只能选截止今天的日期

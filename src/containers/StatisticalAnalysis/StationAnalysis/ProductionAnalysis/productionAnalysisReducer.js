@@ -10,7 +10,7 @@ var initState = Immutable.fromJS({
   month: '',
   startTime: '',
   endTime: '',
-  selectYear: '',  
+  selectYear: '',
   allStationAvalibaData: [],  // 计划完成情况(判断数据)
   productionPlanCompleteData: [],  // 计划完成情况
   singleStationPowerData: [], //发电量
@@ -27,7 +27,8 @@ const productionStationAnalysisReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload)).set('loading', false);
     case productionAnalysisAction.CHANGE_PRODUCTIONSTATIONDATA_STORE:
       return state.merge(Immutable.fromJS(action.payload))
-
+    case productionAnalysisAction.RESET_STORE:
+      return initState
   }
   return state;
 }
