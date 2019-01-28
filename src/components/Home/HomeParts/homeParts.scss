@@ -14,6 +14,9 @@
   .eqpHours, .faultList, .alarmList{
     width: 440px;
   }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
+  }
   .deviceStatus .statusChart{
     width: 55%;
   }
@@ -31,6 +34,9 @@
   }
   .eqpHours, .faultList, .alarmList{
     width: 465px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 12px;
   }
   .deviceStatus .statusChart{
     width: 60%;
@@ -55,6 +61,12 @@
   }
   .eqpHours, .faultList, .alarmList{
     width: 625px;
+  }
+  .eqpHours .hourRectGroup{
+    margin: 0 60px;
+  }
+  .faultList .list{
+    padding-right: 60px;
   }
   .deviceStatus .statusChart{
     width: 60%;
@@ -415,7 +427,6 @@
       .hourRectGroup{
         display: flex;
         align-items: center;
-        margin: 0 12px;
         .eachRect{
           background:rgba(72,207,73,0.40);
           margin-right: 2px;
@@ -544,6 +555,7 @@
     }
     .info{
       flex: 1;
+      text-align: center;
     }
     .time{
       width: 95px;
