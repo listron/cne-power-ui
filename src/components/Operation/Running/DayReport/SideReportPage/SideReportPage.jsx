@@ -161,7 +161,8 @@ class SideReportPage extends Component {
 
   saveDayReport = () => { // 确认上报日报
     const { dayReportTotalInfoArr } = this.state;
-    const { dayReportConfig } = this.props;
+    const { dayReportConfig, loading } = this.props;
+    if(loading){ return; }
     const totalInfoError = dayReportTotalInfoArr.find(info => { // 依次检测每个电站数据是否有不合格数据。
       const stationCheckResult = allReportCheck(info.dailyReport, dayReportConfig);
       if (!stationCheckResult.result) { // 有不合格数据
