@@ -40,7 +40,7 @@ class HistoryWarning extends Component {
     const breadCrumbData = {
       breadData: [
         {
-          name: '历史预警',
+          name: '历史告警',
         }
       ],
     };
