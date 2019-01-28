@@ -120,17 +120,14 @@ class UsageRate extends React.Component {
           crossStyle: {
             color: fontColor,
           },
-          label:{  color:fontColor},
+          label: { color: fontColor },
         },
         backgroundColor: "#fff",
         formatter: function (params) {
           let paramsItem = "";
           params.forEach((item, index) => {
-            return (paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${
-              color[index]
-              };vertical-align: 3px;margin-right: 3px;"> </span> ${
-              params[index].seriesName
-              } :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${'%'}</div>`);
+            return (paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName
+              } :${item.value === 0 || item.value ? item.value : '--'}${'%'}</div>`);
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${
             params[0].name
