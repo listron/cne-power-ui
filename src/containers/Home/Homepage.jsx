@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import HomepageTop from '../../components/Home/HomepageTop';
 import StationGeneral from '../../components/Home/HomeParts/StationGeneral';
 import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
-import { CompleteRate, OperationInfo, EnergySaving } from '../../components/Home/HomeParts/HomeFuncParts';
+import { CompleteRate, OperationInfo } from '../../components/Home/HomeParts/HomeFuncParts';
 import OutputPower from '../../components/Home/HomeParts/OutputPower';
 import DeviceStatus from '../../components/Home/HomeParts/DeviceStatus';
 import EqpHours from '../../components/Home/HomeParts/EqpHours';
@@ -100,7 +100,7 @@ class Homepage extends Component {
     const { hasMultipleType } = this.state;
     return (
       <div id="homepage" className={styles.homepage}>
-        <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} />
+        <HomepageTop changeLoginStore={changeLoginStore} realTimeInfo={realTimeInfo} energySaving={energySaving} />
         <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
@@ -123,7 +123,6 @@ class Homepage extends Component {
             </div>
           </div>
           <div className={styles.bottomBox}>
-            <EnergySaving energySaving={energySaving} />
             <EqpHours hasMultipleType={hasMultipleType} {...this.props} />
             <FaultList hasMultipleType={hasMultipleType} {...this.props} />
             <AlarmList {...this.props} />
