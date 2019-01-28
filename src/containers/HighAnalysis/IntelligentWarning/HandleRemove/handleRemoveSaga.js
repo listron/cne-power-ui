@@ -95,6 +95,14 @@ function* getHandleRemoveTransfer(action) {  // 转工单
           selectedRowKeys: []
         }
       });
+      const alarmNum= yield select(state =>({
+        warningType: state.highAanlysisReducer.handleRemoveReducer.get('warningType'),
+        warningStatus: state.highAanlysisReducer.handleRemoveReducer.get('warningStatus'),
+      }));
+      yield put({
+        type: handleRemoveAction.getHandleRemoveStatistic,
+        payload: alarmNum
+      })
       const params = yield select(state => ({//继续请求手动解除
         warningLevel: state.highAanlysisReducer.handleRemoveReducer.get('warningLevel'),
         stationCodes: state.highAanlysisReducer.handleRemoveReducer.get('stationCodes'),
@@ -126,6 +134,14 @@ function* cancleHandleRemove(action) {  // 取消手动解除告警
           selectedRowKeys: []
         }
       });
+      const alarmNum= yield select(state =>({
+        warningType: state.highAanlysisReducer.handleRemoveReducer.get('warningType'),
+        warningStatus: state.highAanlysisReducer.handleRemoveReducer.get('warningStatus'),
+      }));
+      yield put({
+        type: handleRemoveAction.getHandleRemoveStatistic,
+        payload: alarmNum
+      })
       const params = yield select(state => ({//继续请求实时告警
         warningLevel: state.highAanlysisReducer.handleRemoveReducer.get('warningLevel'),
         stationCodes: state.highAanlysisReducer.handleRemoveReducer.get('stationCodes'),
