@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './stationStatisticList.scss';
-import Pagination from '../../../../components/Common/CommonPagination/index';
+import CommonPagination from '../../../../components/Common/CommonPagination';
 import { Table, Radio } from "antd";
-import moment from 'moment';
-// import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
 
 class StationStatisticList extends React.Component {
@@ -21,19 +19,15 @@ class StationStatisticList extends React.Component {
     pageSize: PropTypes.number,
     totalNum: PropTypes.number,
     allStationAvalibaData: PropTypes.array,
+    history: PropTypes.object,
 
   }
   constructor(props, context) {
-    super(props, context),
-      this.state = {
-        // month:0,
-        // year:0
-      }
+    super(props, context)
   }
+
   ontableSort = (pagination, filter, sorter) => {
-    const { getAllStationStatisticTableData, queryListParams, stationType, year, month, powerSelectYear, dateType, pageSize, pageNum } = this.props;
-    let curYear = Number(year);
-    year.length > 1 ? curYear = year[year.length - 1] : curYear = Number(year);
+    const { getAllStationStatisticTableData, stationType, year, month, powerSelectYear, dateType, pageSize, pageNum } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       stationName: 'stationName',
@@ -51,56 +45,47 @@ class StationStatisticList extends React.Component {
     };
     const sort = sortInfo[field] ? sortInfo[field] : '';
     const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    dateType === 'month' ?
-      getAllStationStatisticTableData({
-        pageNum,
-        pageSize,
-        year: curYear,
-        stationType,
-        month,
-        dateType,
-        sort,
-        sortType,
-        stationType
-      }) : getAllStationStatisticTableData({
-        pageNum,
-        pageSize,
-        // year: curYear,  
-        year: powerSelectYear,
-        dateType,
-        sort,
-        sortType,
-        stationType
-      })
-
+    let prams = {
+      pageNum,
+      pageSize,
+      year: dateType === 'month' ? year[0] : powerSelectYear,
+      stationType,
+      month,
+      dateType,
+      sort,
+      sortType,
+      stationType
+    }
+    getAllStationStatisticTableData(prams)
+    this.props.changeAllStationStore({ sort, sortType })
   }
-  
+
+
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    const { getAllStationStatisticTableData, dateType, sortType, stationType, month, year, sort,powerSelectYear } = this.props;
-    this.props.changeAllStationStore({ pageNum: currentPage })
+    const { getAllStationStatisticTableData, dateType, sortType, stationType, month, year, sort, powerSelectYear } = this.props;
     getAllStationStatisticTableData({
-      year: powerSelectYear,
+      year: dateType === 'month' ? year[0] : powerSelectYear,
       dateType,
       pageSize,
       sortType,
       sort,
-      month: month,
+      month,
       pageNum: currentPage,
       stationType
     })
+    this.props.changeAllStationStore({ pageNum: currentPage, pageSize, })
   }
 
-  handleTime = (e) => {
+
+  handleTime = (e) => {  // 选择月
     const changeMonth = Number(e.target.value);
-    const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort } = this.props;
-    const curYear = Number(year);
-    const userId = Cookie.get('userId')
-    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth, sort: 'planGenRate' })
+    const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort, powerSelectYear } = this.props;
+    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth, })
     getAllStationStatisticTableData(
       {
-        year: curYear,
+        year: year[0],
         dateType,
-        month: changeMonth,//
+        month: changeMonth,
         pageNum, // 当前页
         pageSize, // 每页条数
         sortType,
@@ -110,7 +95,7 @@ class StationStatisticList extends React.Component {
     )
   }
 
-  handleYearTime = (e) => {
+  handleYearTime = (e) => { // 选择年
     const changeYear = Number(e.target.value);
     const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort, stationType, changeAllStationStore } = this.props;
     getAllStationStatisticTableData(
@@ -129,9 +114,6 @@ class StationStatisticList extends React.Component {
 
   selectYear() { // 计划完成选择年份
     const { allStationAvalibaData, dateType, powerSelectMonth, powerSelectYear } = this.props;
-    let yearArray = allStationAvalibaData.length > 0 && allStationAvalibaData.map((e, i) => (Number(e.year)));
-    let currentYear = yearArray && Math.max(...yearArray);
-    const currentMonth = moment().format('MM');
     if (dateType === 'year' && allStationAvalibaData.length > 0) {
       return (
         <Radio.Group value={`${powerSelectYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
@@ -161,6 +143,16 @@ class StationStatisticList extends React.Component {
     }
   }
 
+
+  selectStation = (record) => {
+    const stationCode = record.stationCode
+    this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
+    this.props.changeAllStationStore({
+      showPage: 'single',
+      singleStationCode: `${stationCode}`
+    });
+  }
+
   //月table表
   initMonthColumn = () => {
     const columns = [
@@ -173,7 +165,7 @@ class StationStatisticList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <a href={`#/statistical/stationaccount/allstation/${record.key}`}>
+              <a onClick={() => this.selectStation(record)}>
                 <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
               </a>
             )
@@ -263,13 +255,12 @@ class StationStatisticList extends React.Component {
         render: (value, record, index) => {
           return {
             children: (
-              <a href={`#/statistical/stationaccount/allstation/${record.key}`}>
+              <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
                 <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a>
+              </a >
             )
           }
         }
-
       },
       {
         title: "区域",
@@ -359,7 +350,7 @@ class StationStatisticList extends React.Component {
             <div>综合指标统计表</div>
             {this.selectYear()}
           </div>
-          <Pagination total={totalNum} currentPage={pageNum} pageSize={pageSize} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
         <div>
           <Table columns={columns}

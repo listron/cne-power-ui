@@ -31,6 +31,7 @@ class AllStationStatistic extends React.Component {
     getAllStationStatisticTableData: PropTypes.func,
     getAllStationMonthBarData: PropTypes.func,
     getAllStationMonthPieData: PropTypes.func,
+    year: PropTypes.array,
   }
   constructor(props) {
     super(props);
@@ -38,270 +39,29 @@ class AllStationStatistic extends React.Component {
       showStationSelect: false,
     };
   }
+
   componentDidMount() {
-    const { getAllStationAvalibaData, stations, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
-    const currentYear = moment().format('YYYY');
-    const curYear = Number(moment().format('YYYY'));
-    const currentMonth = Number(moment().format('MM'));
-    let time = year ? year : [`${currentYear}`];
-    const userId = Cookie.get('userId')
-    const stationTypeOne = this.stationIsOneType();
-    let stationTypes;
-    if (stationTypeOne) {
-      stationTypes = stations.getIn([0, 'stationType']);
-      changeAllStationStore({ stationType: stationTypes })
-    }
-    // console.log(typeof(stationTypes));
-    changeAllStationStore({ year: [`${currentYear}`], month: currentMonth, powerSelectMonth: currentMonth, })
-    getAllStationAvalibaData(
-      {
-        userId: userId,
-        year: time,
-        dateType,
-        stationType
-      }
-    )
-    getAllStationStatisticData(
-      {
-        userId: userId,
-        year: curYear,
-        dateType,
-        stationType
-      }
-    )
-    getAllStationStatisticTableData(
-      {
-
-        year: curYear,
-        dateType,
-        month: currentMonth,//默认当前月
-        pageNum, // 当前页
-        pageSize, // 每页条数
-        sortType,
-        sort,
-        stationType
-
-      }
-    )
-    getAllStationMonthBarData({
-      userId: userId,
-      year: time,
-      dateType,
-      dataType: 'EqpGen',
-      stationType
-
-    })
-    getAllStationMonthPieData({
-      userId: userId,
-      year: curYear,
-      dataType: 'EqpGen',
-      stationType
-    })
-
+    this.getMonthData(this.props)
   }
+
   componentWillReceiveProps(nextProps) {
-    const { getAllStationAvalibaData, getAllStationMonthBarData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthPieData, dateType, userId, pageNum, stationType, sortType, sort, pageSize } = this.props;
-
-    const currentYear = [moment().format('YYYY')];
-    const currentTableYear = Number(moment().format('YYYY'));
-    const currentMonth = Number(moment().format('MM'));
-    const curYear = Number(nextProps.year)
-    const curYearPlan = Number(nextProps.year[nextProps.year.length - 1]);
-    const selectYear = [Number(moment().subtract(5, 'year').format('YYYY')), Number(moment().format('YYYY'))];
-    let rangeYear = [];
-    for (let i = selectYear[0]; i < selectYear[1] + 1; i++) {
-      rangeYear.push(i.toString())
+    const { dateType, year } = nextProps;
+    if (dateType === "month" && (this.props.dateType !== 'month' || (this.props.year[0] !== year[0]))) {
+      this.getMonthData(nextProps)
     }
-    let changeRangYear = [];
-    for (let i = Number(nextProps.year[0]); i < Number(nextProps.year[1]) + 1; i++) {
-      changeRangYear.push(i.toString())
-    }
-    //tab切换
-    if (this.props.stationType !== nextProps.stationType) {
 
-      //  this.renderWeb()
+    if (dateType === 'year' && (this.props.dateType !== 'year' ||
+      (this.props.year[0] !== year[0] || this.props.year[1] !== year[1]))) {
+      this.getYearData(nextProps)
     }
-    //月->月
-    if (dateType === 'month' && nextProps.dateType === 'month') {
-      if (nextProps.year[0] !== this.props.year[0]) {
-        changeAllStationStore({ targetShowType: 'EqpGen', powerSelectMonth: currentMonth, pageNum: 1, })
-        getAllStationAvalibaData(
-          {
-            userId: userId,
-            year: nextProps.year,
-            dateType,
-            stationType
-          })
-        getAllStationStatisticData(
-          {
-            userId,
-            year: curYear,
-            dateType,
-            stationType
-          })
-        getAllStationMonthBarData({
-          userId: userId,
-          year: nextProps.year,
-          dateType,
-          dataType: 'EqpGen',
-          stationType
 
-        })
-        getAllStationMonthPieData({
-          userId: userId,
-          year: nextProps.year,
-          dataType: 'EqpGen',
-          stationType
-        })
-        getAllStationStatisticTableData(
-          {
-            year: curYear,
-            dateType,
-            month: currentMonth,//默认当前月
-            pageNum: nextProps.pageNum, // 当前页
-            //pageNum: 1, // 当前页
-            pageSize: nextProps.pageSize, // 每页条数
-            sortType: nextProps.sortType,
-            sort: nextProps.sort,
-            stationType
-          })
-      }
-    }
-    //月->年
-    if (dateType !== nextProps.dateType && nextProps.dateType === 'year') {
-      changeAllStationStore({ allStationAvalibaData: [], targetShowType: 'EqpGen', pageNum: 1, })
-
-      getAllStationAvalibaData(
-        {
-          userId: userId,
-          year: rangeYear,
-          dateType: nextProps.dateType,
-          stationType
-        })
-      getAllStationStatisticData(
-        {
-          userId: userId,
-          year: curYearPlan,
-          dateType: nextProps.dateType,
-          stationType
-        }
-      )
-      getAllStationMonthBarData({
-        userId,
-        year: rangeYear,
-        dateType: nextProps.dateType,
-        dataType: 'EqpGen',
-        stationType
-
-      })
-      getAllStationStatisticTableData(
-        {
-          year: currentTableYear,
-          dateType: nextProps.dateType,
-          pageNum: nextProps.pageNum, // 当前页
-          pageSize, // 每页条数
-          sortType,
-          sort,
-          stationType
-        }
-      )
-      changeAllStationStore({
-        selectYear: currentTableYear
-      })
-    }
-    //年->月
-    if (dateType !== nextProps.dateType && nextProps.dateType === 'month') {
-      changeAllStationStore({ year: currentYear, month: currentMonth, allStationAvalibaData: [], targetShowType: 'EqpGen', powerSelectMonth: currentMonth, pageNum: 1, })
-      getAllStationAvalibaData(
-        {
-          userId: userId,
-          year: currentYear,
-          dateType: nextProps.dateType,
-          stationType
-        })
-
-      getAllStationStatisticData(
-        {
-          userId: userId,
-          year: currentTableYear,
-          dateType: nextProps.dateType,
-          stationType
-        }
-      )
-      getAllStationStatisticTableData(
-        {
-
-          year: currentTableYear,
-          dateType: nextProps.dateType,
-          month: currentMonth,//默认当前月
-          pageNum: nextProps.pageNum, // 当前页
-          pageSize, // 每页条数
-          sortType,
-          sort,
-          stationType
-        }
-      )
-      getAllStationMonthBarData({
-        userId: userId,
-        year: currentYear,
-        dateType: nextProps.dateType,
-        dataType: 'EqpGen',
-        stationType
-      })
-      getAllStationMonthPieData({
-        userId: userId,
-        year: currentTableYear,
-        dataType: 'EqpGen',
-        stationType
-      })
-    }
-    //年->年
-    if (dateType === 'year' && nextProps.dateType === 'year') {
-      if (nextProps.year[0] !== this.props.year[0] || nextProps.year[1] !== this.props.year[1]) {
-        changeAllStationStore({ targetShowType: 'EqpGen', pageNum: 1, })
-        getAllStationAvalibaData(
-          {
-            userId: userId,
-            year: changeRangYear,
-            dateType,
-            stationType
-          }
-        )
-        getAllStationStatisticData(
-          {
-            userId: userId,
-            year: curYearPlan,
-            dateType,
-            stationType
-          }
-        )
-        getAllStationMonthBarData({
-          userId: userId,
-          year: changeRangYear,
-          dateType,
-          dataType: 'EqpGen',
-          stationType
-        })
-        getAllStationStatisticTableData(
-          {
-            year: curYearPlan,
-            dateType,
-            //pageNum: 1, // 当前页
-            pageNum: nextProps.pageNum, // 当前页
-            pageSize: nextProps.pageSize, // 每页条数
-            sortType: nextProps.sortType,
-            sort: nextProps.sort,
-            stationType
-          }
-        )
-      }
-    }
   }
+
   componentWillUnmount() {
     this.props.changeAllStationStore({
       //stationTypes: null,   
       dateType: 'month',
-      year: '',
+      year: [],
       month: '',
       pageNum: 1, // 当前页
       pageSize: 10, // 每页条数
@@ -310,21 +70,93 @@ class AllStationStatistic extends React.Component {
       selectYear: ''
     });
   }
-  onTimeChange = (timeObj) => {
-    timeObj.timeStyle === 'year' ? this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType: timeObj.timeStyle, year: [timeObj.startTime] })
+
+
+  onTimeChange = (timeObj) => { // 时间选择
+    const dateType = timeObj.timeStyle;
+    timeObj.timeStyle === 'year' ?
+      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType, year: [timeObj.startTime] })
   }
+
   onChangeStation = (stationCode) => {
     this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
     this.props.changeAllStationStore({
       showPage: 'single',
-      singleStationCode: stationCode.toString()
+      singleStationCode: `${stationCode}`
     });
   }
+
+
+  getMonthData = (props) => { // 年的时间选择 初始加载
+    const { userId, year, dateType, month, pageNum, pageSize, sortType, sort } = props;
+    const stationType = 1;
+    const choiceYear = year[0] ? year : [moment().year()];
+    const currentMonth = month ? month : moment().month() + 1;
+    let prams = {
+      userId: userId,
+      year: choiceYear,
+      dateType,
+      stationType
+    }
+    const isFirst = dateType === 'month' && this.props.dateType === 'year';
+    props.changeAllStationStore({ year: [`${choiceYear}`], month: currentMonth, powerSelectMonth: currentMonth, })
+    props.getAllStationAvalibaData(prams)
+    props.getAllStationStatisticData({ ...prams, year: choiceYear[0] })
+    props.getAllStationStatisticTableData({
+      year: choiceYear[0],
+      dateType,
+      month: currentMonth,//默认当前月
+      pageNum:isFirst && 1 || pageNum, // 当前页
+      pageSize, // 每页条数
+      sortType,
+      sort,
+      stationType
+    })
+    props.getAllStationMonthBarData({ ...prams, dataType: 'EqpGen', })
+    props.getAllStationMonthPieData({ ...prams, dataType: 'EqpGen', year: choiceYear[0] })
+  }
+
+  getYearData = (props) => { //多年的时间选择
+    const { dateType, userId, year, pageNum, pageSize, sortType, sort } = props;
+    const endYear = year[1] ? year[1] : +moment().year()
+    const startYear = year[0] ? year[0] : moment().subtract(5, 'year').year();
+    const rangeYear = [];
+    const stationType = 1;
+    for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
+      rangeYear.push(`${i}`)
+    }
+    let prams = {
+      userId,
+      year: rangeYear,
+      dateType,
+      stationType
+    }
+    const isFirst = dateType === 'year' && this.props.dateType === 'month';
+    props.getAllStationAvalibaData(prams)
+    props.getAllStationStatisticData({ ...prams, year: endYear })
+    props.getAllStationMonthBarData({ ...prams, dataType: 'EqpGen', })
+    props.getAllStationStatisticTableData({
+      year: endYear,
+      dateType,
+      pageNum: isFirst && 1 || pageNum, // 当前页
+      pageSize, // 每页条数
+      sortType,
+      sort,
+      stationType
+    })
+    props.changeAllStationStore({
+      targetShowType: 'EqpGen',
+      pageNum: isFirst && 1 || pageNum,
+    })
+  }
+
+
   showStationSelect = () => {
     this.setState({
       showStationSelect: true,
     });
   }
+
   queryTargetData = (activeKey) => {
     const { getAllStationAvalibaData, changeAllStationStore, getAllStationStatisticData, getAllStationStatisticTableData, getAllStationMonthBarData, getAllStationMonthPieData, year, stationType, sortType, dateType, pageNum, pageSize, sort } = this.props;
     const currentYear = moment().format('YYYY');
@@ -380,11 +212,13 @@ class AllStationStatistic extends React.Component {
       stationType: activeKey,
     })
   }
+
   stationIsOneType() {
     const { stations } = this.props;
     const length = stations.map(e => e.get('stationType')).toSet().size;
     return length === 1;//需求：只有一种类型,不显示tab;两种类型(风电/光伏)才显示tab
   }
+
   render() {
     const TabPane = Tabs.TabPane;
     const operations = (
@@ -394,9 +228,7 @@ class AllStationStatistic extends React.Component {
       </div>
     );
     const stationTypeOne = this.stationIsOneType();
-
     const { stationType, stations, dateType, year, allStationAvalibaData, allStationStatisticData, getAllStationStatisticData, selectYear, changeAllStationStore } = this.props;
-    // console.log(stations)
     const { showStationSelect } = this.state;
     return (
       <div className={styles.allStationTypeTabs}>
