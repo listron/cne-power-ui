@@ -1,13 +1,13 @@
 
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1350px进行适配。
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按1345px进行适配。
   .innerContent{
-    width: 1350px;
+    width: 1345px;
   }
   .middleBox{
     height: 705px;
   }
   .mapInfo{
-    width: 670px;
+    width: 641px;
   }
 }
 
@@ -19,19 +19,19 @@
     height: 705px;
   }
   .mapInfo{
-    width: 760px;
+    width: 716px;
   }
 }
 
 @media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
   .innerContent{
-    width: 1920px;
+    width: 1900px;
   }
   .middleBox{
     height: 750px;
   }
   .mapInfo{
-    width: 1046px;
+    width: 1006px;
   }
 }
 
@@ -62,6 +62,7 @@
     .bottomBox{
       height: 207px;
       display: flex;
+      margin-bottom: 24px;
     }
   }
 }

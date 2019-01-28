@@ -161,7 +161,11 @@ function *uploadDayReport(action){ // 日报上报
   try{
     yield put({ type:dayReportAction.dayReportLoading });
     const response = yield call(axios.post,url,payload);
-    if(response.data.code === '10000'){ // 日报上报成功
+    const { code } = response.data;
+    if(code === '10000' || code === '10001'){ // 日报上报成功
+      if(code === '10001'){ // 10001 多电站上报中，有某几个电站已上传过该日日报，提示。
+        message.config(response.data.message);
+      }
       const params = yield select(state => ({ // 重新请求日报列表
         startTime: state.operation.dayReport.get('startTime'),
         pageSize: state.operation.dayReport.get('pageSize'),

@@ -1,7 +1,7 @@
 
 @import '../homepageParts.scss';
 
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1350px进行适配。
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1345px进行适配。
   .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
     width: 340px;
     height: 275px;
@@ -12,7 +12,10 @@
     }
   }
   .eqpHours, .faultList, .alarmList{
-    width: 447px;
+    width: 440px;
+  }
+  .deviceStatus .statusChart{
+    width: 55%;
   }
 }
 
@@ -27,7 +30,10 @@
     }
   }
   .eqpHours, .faultList, .alarmList{
-    width: 472px;
+    width: 465px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
   }
 }
 
@@ -48,7 +54,10 @@
     }
   }
   .eqpHours, .faultList, .alarmList{
-    width: 633px;
+    width: 625px;
+  }
+  .deviceStatus .statusChart{
+    width: 60%;
   }
 }
 
@@ -340,9 +349,6 @@
   .statusBox{
     flex: 1;
     display: flex;
-    .statusChart{
-      width: 60%;
-    }
     .statusTool{
       @include chartTool();
       width: 105px;
@@ -378,7 +384,7 @@
       .text{
         flex: 0 0 60px;
         color:#06bdf4;
-        margin: 0 16px 0 8px;
+        margin: 0 8px 0 8px;
       }
       .value{
         color:#4dde49;

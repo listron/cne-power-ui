@@ -34,7 +34,7 @@
   border-radius: 2px;
 }
 
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1350px进行适配。
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按照1345px进行适配。
   .topBox{
     height: 130px;
     background: url('/img/tiltebg.png') no-repeat center 15px;
@@ -44,8 +44,8 @@
       }
     }
     .enterpriseTitle{
+      width: 1345px;
       height: 75px;
-      width: 1350px;
     }
   }
   .centerMap{
@@ -65,8 +65,8 @@
       }
     }
     .enterpriseTitle{
-      height: 75px;
       width: 1420px;
+      height: 75px;
     }
   }
   .centerMap{
@@ -86,8 +86,8 @@
       }
     }
     .enterpriseTitle{
+      width: 1900px;
       height: 105px;
-      width: 1920px;
     }
   }
   .centerMap{
@@ -128,6 +128,7 @@
   }
   .enterpriseTitle{ // 企业标题
     display: flex;
+    margin: 15px auto;
     margin-top: 15px;
     align-items: center;  
     .saving{
