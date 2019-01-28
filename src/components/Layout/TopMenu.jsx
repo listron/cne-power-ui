@@ -59,11 +59,13 @@ class TopMenu extends Component {
   }
 
   findDefaultPath = (menuArray) => { // 递归查找默认页面。
-    const getDefaultPath = menuArray.find(e=>e.defaultPath);
-    if(getDefaultPath){
+    const rightMenu = localStorage.getItem('rightMenu') || '';
+    const rightArr = rightMenu.split(',');
+    const getDefaultPath = menuArray.find(e=> e.defaultPath && rightArr.includes(e.rightKey));
+    if (getDefaultPath) {
       return getDefaultPath.path;
-    }else{
-      for(let i = 0;i < menuArray.length; i += 1){
+    } else {
+      for (let i = 0;i < menuArray.length; i += 1) {
         const subMenuArray = menuArray[i].children;
         if(subMenuArray && subMenuArray.length > 0){
           const getSubDefaultPath = this.findDefaultPath(subMenuArray);
