@@ -124,7 +124,7 @@ class DefectTimeLine extends Component {
         <div className={styles.advise}>
           <div className={styles.status}>{getHandleStatus(handleStatus)}</div>
           <div className={styles.defectProposal}>
-            {item.reasonDesc && <div><span>产生原因:</span>{item.reasonDesc}</div>}
+            {item.reasonDesc && <div>产生原因: <span className={styles.reason}>{item.reasonDesc}</span></div>}
             {item.defectProposal && <div>{item.defectProposal}</div>}
             {item.photoAddress && <div className={styles.imgBox}>
               <span>处理照片:</span>
