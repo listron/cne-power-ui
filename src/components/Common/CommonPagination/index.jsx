@@ -31,10 +31,10 @@ class CommonPagination extends Component {
     currentPage: 1,
     pageSize: 10,
     total: 0,
-    pageSizeArray: [10,20,30,40],
+    pageSizeArray: [10, 20, 30, 40],
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       pageSize: props.pageSize,
@@ -42,27 +42,28 @@ class CommonPagination extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    const { pageSize, currentPage, total } =nextProps;
+  componentWillReceiveProps(nextProps) {
+    const { pageSize, currentPage, total } = nextProps;
     const lastSize = this.props.pageSize;
     const lastPage = this.props.currentPage;
     const lastTotal = this.props.total;
-    if(total === 0){ // 初始无数据
+    if (total === 0) { // 初始无数据
       this.setState({ currentPage: 0 });
-    }else if(total > 0 && lastTotal === 0){ // 第一次得到数据
+    } else if (total > 0 && lastTotal === 0) { // 第一次得到数据
       this.setState({ pageSize, currentPage });
-    }else if(lastSize !== pageSize || lastPage !== currentPage){ // 强制页码改变
+    } else if (lastSize !== pageSize || lastPage !== currentPage) { // 强制页码改变
+
       this.setState({ pageSize, currentPage });
     }
   }
-  
+
   onPageSizeChange = (pageSize) => { // 每页条数变化
     let { currentPage } = this.state;
     const { total } = this.props;
     this.setState({ pageSize });
     this.props.onPaginationChange({
       pageSize,
-      currentPage: total / pageSize>currentPage ? currentPage: Math.ceil(total/pageSize),
+      currentPage: total / pageSize > currentPage ? currentPage : Math.ceil(total / pageSize),
     })
   }
 
@@ -75,7 +76,7 @@ class CommonPagination extends Component {
     })
   }
 
-  render(){
+  render() {
     const { total, pageSizeArray } = this.props;
     const { pageSize, currentPage } = this.state;
     return (
@@ -83,13 +84,13 @@ class CommonPagination extends Component {
         <span>合计：{total}</span>
         <div className={styles.sizeSelector}>
           <span>每页：</span>
-          <Select onChange={this.onPageSizeChange} defaultValue={pageSize} >
-            {pageSizeArray.map(e=>(<Option value={e} key={e}>{e}</Option>))}
+          <Select onChange={this.onPageSizeChange} defaultValue={pageSize}>
+            {pageSizeArray.map(e => (<Option value={e} key={e}>{e}</Option>))}
           </Select>
         </div>
         <div className={styles.pageSelector} >
           <span>页数：</span>
-          <Pagination simple current={total===0?0:currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
+          <Pagination simple current={total === 0 ? 0 : currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
         </div>
       </div>
     )
