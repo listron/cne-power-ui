@@ -71,7 +71,7 @@ class AllStationMonthPie extends React.Component {
         }
       ]
     };
-    targetPieChart.setOption(targetPieOption,'notMerge');
+    targetPieChart.setOption(targetPieOption,{ notMerge: true });
   };
 
   render() {

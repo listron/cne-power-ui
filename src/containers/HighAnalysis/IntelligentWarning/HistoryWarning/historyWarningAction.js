@@ -1,4 +1,4 @@
-export const historyWarningActive={
+export const historyWarningAction={
   changeHistoryWarningStore: Symbol('changeHistoryWarningStore'), // 改变reducer参数
   resetHistoryWarningStore: Symbol('resetHistoryWarningStore'), // 发起重置数据请求
   getHistoryarningList: Symbol('getHistoryarningList'), // 历史告警列表

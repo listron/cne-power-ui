@@ -33,7 +33,6 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     const {graphId, yAxisName, title,xAxisData ,planPowerData, actualPowerData ,planRateData,hasData} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
-    targetChart.clear();
     targetChart.resize();
     let color =['#dfdfdf','#f9b600','#3e97d1'];
     const lineColor = '#f1f1f1';
@@ -186,7 +185,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         }
       ]
     };
-    targetChart.setOption(targetOption)
+    targetChart.setOption(targetOption,{ notMerge: true })
   };
   render() {
     const { graphId,dateType } = this.props;

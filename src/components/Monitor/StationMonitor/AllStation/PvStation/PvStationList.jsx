@@ -9,6 +9,13 @@ class PvStationList extends React.Component {
     pageSize: PropTypes.number,
     currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func,
+    windMonitorStation: PropTypes.object,
+    realTimePowerUnit: PropTypes.string,
+    realCapacityUnit: PropTypes.string,
+    powerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context)
@@ -35,15 +42,61 @@ class PvStationList extends React.Component {
     message.warning('电站未接入,无法查看详情',2);
   }
   initColumn = () => {
-    const { realTimePowerUnit,realCapacityUnit,powerUnit } = this.props;
+    const { realTimePowerUnit,realCapacityUnit,powerUnit,windMonitorStation } = this.props;
+    const  planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
+    const planPower = planStatus === 0 ? [{
+      title: `年累计发电量(${powerUnit})`,
+      dataIndex: "yearOutput",
+      defaultSortOrder: "descend",
+      sorter: true,
+    }] : [{
+      title: `年累计发电量(${powerUnit})`,
+      dataIndex: "yearOutput",
+      defaultSortOrder: "descend",
+      sorter: true,
+      render: (value, record, index) => {
+        return {
+          children: (
+            <div >
+              <div className={styles.progressInfo}>
+                <div className={styles.progressData}>
+                  <div className={styles.stationValue}>
+                    <div>{record.yearOutput}</div>
+                    <div className={styles.planOutput}>{record.planOutput}</div>
+                  </div>
+                  <Progress strokeWidth={3} percent={+(record.planOutput) ? (record.yearOutput / record.planOutput * 100) : 0} showInfo={false} />
+                </div>
+              </div>
+            </div>
+          ),
+          props: {
+            colSpan: 2
+          }
+        };
+      }
+    },
+    {
+      title: `计划发电量(${powerUnit})`,
+      dataIndex: "planOutput",
+      defaultSortOrder: "descend",
+      sorter: true,
+      render: (value, columns, index) => {
+        const obj = {
+          children: null,
+          props: {
+            colSpan: 0
+          }
+        };
+        return obj;
+      }
+    }];
+
     const columns = [
       {
         title: "电站名称",
         dataIndex: "stationName",
-        //defaultSortOrder: "descend",
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
-        //(a, b) => a.stationName.length - b.stationName.length,
         render: (value, record, index) => {
           if (record.currentStation !== '900') {
             return {
@@ -62,9 +115,7 @@ class PvStationList extends React.Component {
       {
         title: "所在省",
         dataIndex: "stationrovince",
-        //defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.stationrovince.localeCompare(b.stationrovince),
         render: (value, record, index) => {
           return {
             children: (
@@ -75,12 +126,8 @@ class PvStationList extends React.Component {
       },
       {
         title: `实时功率(${realTimePowerUnit})`,
-        //title: <div style={{display:'flex',flexDirection:'column'}} ><span>实时功率</span><span>(MW)</span></div>,
-
         dataIndex: "stationPower",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.stationPower - b.stationPower,
         render: (value, record, index) => {
           return {
             children: (
@@ -105,9 +152,7 @@ class PvStationList extends React.Component {
       {
         title: `装机容量(${realCapacityUnit})`,
         dataIndex: "stationCapacity",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.stationCapacity - b.stationCapacity,
         render: (value, columns, index) => {
           const obj = {
             children: null,
@@ -121,87 +166,33 @@ class PvStationList extends React.Component {
       {
         title: "瞬时辐照(W/m²)",
         dataIndex: "windSpeed",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.windSpeed - b.windSpeed
       },
       {
         title:  `日发电量(${powerUnit})`,
         dataIndex: "dayOutput",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.dayOutput - b.dayOutput
       },
       {
         title: `月累计发电量(${powerUnit})`,
         dataIndex: "monthOutput",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.monthOutput - b.monthOutput
       },
-      {
-        title: `年累计发电量(${powerUnit})`,
-        dataIndex: "yearOutput",
-        // defaultSortOrder: "descend",
-        sorter: true,
-        //(a, b) => a.yearOutput - b.yearOutput,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div >
-                <div className={styles.progressInfo}>
-                  <div className={styles.progressData}>
-                    <div className={styles.stationValue}>
-                      <div>{record.yearOutput}</div>
-                      <div className={styles.planOutput}>{record.planOutput}</div>
-                    </div>
-                    <Progress strokeWidth={3} percent={+(record.planOutput)?record.yearOutput / record.planOutput * 100:0} showInfo={false} />
-                  </div>
-                </div>
-              </div>
-            ),
-            props: {
-              colSpan: 2
-            }
-          };
-        }
-      },
-      {
-        title: `计划发电量(${powerUnit})`,
-        dataIndex: "planOutput",
-        // defaultSortOrder: "descend",
-        sorter: true,
-        //(a, b) => a.planOutput - b.planOutput,
-        render: (value, columns, index) => {
-          const obj = {
-            children: null,
-            props: {
-              colSpan: 0
-            }
-          };
-          return obj;
-        }
-      },
+      ...planPower,
       {
         title: "装机(台)",
         dataIndex: "equipmentNum",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.equipmentNum - b.equipmentNum
       },
       {
         title: "告警(个)",
         dataIndex: "alarmNum",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.alarmNum - b.alarmNum
       },
       {
         title: "状态",
         dataIndex: "currentStation",
-        // defaultSortOrder: "descend",
         sorter: true,
-        //(a, b) => a.currentStation - b.currentStation,
         render: (value, record, index) => {
           return {
             children: (
@@ -262,14 +253,15 @@ class PvStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${(realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000).toFixed(realTimePowerPoint)) || '--'}`,
-          stationCapacity: `${(realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000).toFixed(realCapacityPoint)) || '--'}`,
+          stationPower: `${(realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint) || '--'}`,
+          stationCapacity: `${(realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
          
-          dayOutput: `${(powerUnit==='万kWh'?item.dayPower:(item.dayPower*10000).toFixed(powerPoint)) || '--'}`,
-          monthOutput: `${(powerUnit==='万kWh'?item.monthPower:(item.monthPower*10000).toFixed(powerPoint)) || '--'}`,
-          yearOutput: `${(powerUnit==='万kWh'?item.yearPower:(item.yearPower*10000).toFixed(powerPoint)) || '--'}`,
-          planOutput: `${(powerUnit==='万kWh'?item.yearPlanPower:(item.yearPlanPower*10000).toFixed(powerPoint)) || '--'}`,
+          dayOutput: `${(powerUnit==='万kWh'?(+item.dayPower):(+item.dayPower*10000)).toFixed(powerPoint) || '--'}`,
+          monthOutput: `${(powerUnit==='万kWh'?(+item.monthPower):(+item.monthPower*10000)).toFixed(powerPoint) || '--'}`,
+          yearOutput: `${(powerUnit==='万kWh'?(+item.yearPower):(+item.yearPower*10000)).toFixed(powerPoint) || '--'}`,
+          planOutput: `${(powerUnit==='万kWh'?(+item.yearPlanPower):(+item.yearPlanPower*10000)).toFixed(powerPoint) || '--'}`,
+
          
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,

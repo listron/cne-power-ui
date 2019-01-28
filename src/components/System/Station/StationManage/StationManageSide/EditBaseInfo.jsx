@@ -165,7 +165,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
     <FormItem label="装机容量" >
       {getFieldDecorator('stationCapacity',{
         initialValue: stationDetail.stationCapacity,
-        rules: [{ validator:dataRuleFunc(2,'请填写装机容量') }]
+        rules: [{ validator:dataRuleFunc(6,'请填写装机容量') }]
       })(
         <Input />
       )}
@@ -174,7 +174,7 @@ const EditBaseInfo = ({stationDetail, form, stationBelongInfo, ...restProps }) =
     <FormItem label="设计容量" >
       {getFieldDecorator('designCapacity',{
         initialValue: stationDetail.designCapacity,
-        rules: [{ validator:dataRuleFunc(2) }]
+        rules: [{ validator:dataRuleFunc(6) }]
       })(
         <Input />
       )}

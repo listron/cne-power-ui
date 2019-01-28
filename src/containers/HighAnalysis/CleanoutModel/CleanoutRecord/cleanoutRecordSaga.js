@@ -335,7 +335,6 @@ function* getPlanRecordList(action) {//1.1.14.获取清洗记录列表
   const { planId } = payload
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.highAnalysis.getPlanRecordList}`
   try {
-    yield put({ type: cleanoutRecordAction.CLEANOUT_RECORD_FETCH });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       const cleanRecordTotal = response.data.data.total || 0;

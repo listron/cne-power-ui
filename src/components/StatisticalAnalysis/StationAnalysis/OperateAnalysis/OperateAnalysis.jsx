@@ -131,7 +131,7 @@ class OperateAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(`${i}`)
     }
-    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
+    const station = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType }})
     let prams = {
       stationCode: stationCode,
       dateType,
@@ -143,7 +143,7 @@ class OperateAnalysis extends React.Component {
       year: endYear,
     }
 
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType:station[0].stationType || 1 })
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
@@ -158,7 +158,7 @@ class OperateAnalysis extends React.Component {
   getLostPercentage = (molecule, denominator) => {
     // molecule 分子,denominator 分母
     if(molecule && denominator && +denominator===0){ return 0}
-    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 1000 / 100).toFixed(2) || '--'
+    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 100).toFixed(2) || '--'
   }
 
 

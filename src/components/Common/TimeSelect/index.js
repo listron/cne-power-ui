@@ -69,7 +69,7 @@ class TimeSelect extends React.Component {
         'year', 'year'
       ],
     });
-    this.props.changeAllStationStore({ year: rangeYear })
+    this.props.changeAllStationStore({ year: [rangeYear] })
 
   }
 

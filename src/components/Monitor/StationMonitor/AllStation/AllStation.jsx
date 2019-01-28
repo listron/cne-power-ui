@@ -6,6 +6,12 @@ import Map from './Map.jsx'
 class Allstation extends React.Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
+    realTimePowerUnit: PropTypes.string,
+    realCapacityUnit: PropTypes.string,
+    powerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context)
@@ -43,8 +49,8 @@ class Allstation extends React.Component {
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         symbolSize: stationType > 0 ? [30, 20]: [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000),
-        stationCapacity: realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000),
+        stationPower: (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint),
+        stationCapacity: (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
         realTimePowerUnit,

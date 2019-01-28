@@ -54,7 +54,6 @@ class RealTimeAlarm extends Component {
   componentDidMount() {
     const status = this.getStatus();
     const warningStatus = this.getAlarmStatus(status);
-
     const searchInfo = this.props.history.location.search;
     const stationCode = searchInfo.substring(searchInfo.indexOf('=')+1);
     this.props.getRealTimeAlarm({
@@ -141,10 +140,11 @@ class RealTimeAlarm extends Component {
       clearInterval(this.alarmInterval);
     }
   }
-
   getStatus() {
     const pathname = this.props.location.pathname;
+    console.log(pathname,'pathname');
     const status = pathname.split('/')[3];
+    console.log(status);
     return status;
   }
 

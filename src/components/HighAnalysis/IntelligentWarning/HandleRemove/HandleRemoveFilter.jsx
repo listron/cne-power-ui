@@ -48,7 +48,7 @@ class HandleRemoveFilter extends Component{
         return(
           <div className={styles.realTimeWarningFilter}>
           <FilterCondition
-            option={['alarmLevel', 'stationName', 'deviceType', 'rangeTime']}
+            option={['warningLevel', 'stationName', 'deviceType', 'rangeTime']}
             stations={stations || []}
             deviceTypes={deviceTypes || []}
             onChange={this.onChangeFilter}
