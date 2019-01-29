@@ -94,6 +94,7 @@ class HandleRemoveModal extends Component {
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
           onOk={this.onSubmit}
+          okText='保存'
           visible={true}
           onCancel={this.props.onCancel}>
           <FormItem className={styles.formItem} label="截止时间">

@@ -201,14 +201,18 @@ class RecordDetailTable extends Component {
 
         render: (text, record, index) => {
           return (
-            <span className={styles.estimateStartTime} title={record.estimateStartTime}>{record.estimateStartTime}</span>
+            <span className={styles.estimateStartTime} title={record.estimateStartTime+'-'+record.estimateEndTime}>{record.estimateStartTime?record.estimateStartTime:'-'}-{record.estimateEndTime}</span>
           )
         }
       }, {
         title: '实际清洗时间',
         dataIndex: 'estimateEndTime',
         key: 'estimateEndTime',
-
+        render: (text, record, index) => {
+          return (
+            <span className={styles.estimateStartTime} title={record.actualStartTime+'-'+record.actualEndTime}>{record.actualStartTime?record.actualStartTime:'-'}-{record.actualEndTime}</span>
+          )
+        }
       }, {
         title: '实际清洗用时(天)',
         dataIndex: 'actualCleanTime',
@@ -221,7 +225,7 @@ class RecordDetailTable extends Component {
         key: 'cleanType',
         render: (text, record, index) => {
           return (
-            <div>
+            <div className={styles.iconStyles}>
               {text === 1 ? <img src="/img/manpower.png" /> :
                 <img src="/img/rainfall.png" />}
             </div>
@@ -250,7 +254,7 @@ class RecordDetailTable extends Component {
         dataIndex: 'cleanType',
         render: (text, record, index) => {
           return (
-            text === 1 ? <div>
+            text === 1 ? <div className={styles.iconStyles}>
               <span style={{ marginRight: '8px' }} title="添加" className="iconfont icon-addto" onClick={() => this.addCleanRecord(record)}></span>
               {/*   {this.addCleanoutRecord(record)} */}
              
