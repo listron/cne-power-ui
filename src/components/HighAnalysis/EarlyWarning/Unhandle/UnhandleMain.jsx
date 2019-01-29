@@ -48,22 +48,22 @@ class Unhandle extends Component {
   }
 
   componentDidMount() { // 初始请求数据
-  
+
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
-    this.getUnhandleList({pageNum:currentPage,pageSize});
+    this.getUnhandleList({ pageNum: currentPage, pageSize });
   }
 
   onShowDetail = (record) => {  // 查看详情
     const inefficiencyId = record.inefficiencyId;
-    const deviceCode=record.deviceCode;
-    const happenTime=record.happenTime;
-    const startTime=moment.utc(moment(happenTime).subtract(1, 'days')).format();
-    const endTime=moment.utc(happenTime).format();
-    this.props.changeUnhandleStore({pageName:'detail',inefficiencyId,deviceCode})
+    const deviceCode = record.deviceCode;
+    const happenTime = record.happenTime;
+    const startTime = moment.utc(moment(happenTime).subtract(1, 'days')).format();
+    const endTime = moment.utc(happenTime).format();
+    this.props.changeUnhandleStore({ pageName: 'detail', inefficiencyId, deviceCode })
     this.props.getForewarningDetail({ inefficiencyId })
-    this.props.getSequencechart({deviceCode,startTime,endTime})
+    this.props.getSequencechart({ deviceCode, startTime, endTime })
   }
 
   onSelectChange = (keys, record) => {  // 选择进行操作
@@ -75,7 +75,7 @@ class Unhandle extends Component {
   getUnhandleList = (param) => { // 请求数据
     const { stationCodes, belongMatrixs, inefficiencyStatus, pageNum, pageSize, sortField, sortMethod } = this.props;
     this.props.getUnhandleList({
-      stationCodes, belongMatrixs, inefficiencyStatus, pageNum, pageSize, sortField, sortMethod,...param,
+      stationCodes, belongMatrixs, inefficiencyStatus, pageNum, pageSize, sortField, sortMethod, ...param,
     })
   }
 
@@ -84,11 +84,11 @@ class Unhandle extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField='lost_gen_percent'
+    const initSorterField = 'lost_gen_percent'
     const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
     let ascend = "";
-    ascend = sorter.order === 'ascend' ? 'asc' : 'desc';   
-    this.getUnhandleList({sortField, sortMethod: ascend });
+    ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
+    this.getUnhandleList({ sortField, sortMethod: ascend });
   };
 
   sortField(sortField) { // 排序转换
@@ -103,8 +103,8 @@ class Unhandle extends Component {
   }
 
   filterCondition = (change) => { // 筛选条件
-    this.getUnhandleList({...change});
-    change.stationCodes  && this.props.getMatrixlist({ stationCodes: change.stationCodes })
+    this.getUnhandleList({ ...change });
+    change.stationCodes && this.props.getMatrixlist({ stationCodes: change.stationCodes })
   }
 
   selectChange = (wayChange) => { // 进行操作 转工单 忽略
@@ -126,14 +126,14 @@ class Unhandle extends Component {
     const { toorder } = this.props;
     const { selectedRowKeys } = this.state;
     this.setState({ showWarningTip: false, selectedRowKeys: [] })
-    toorder({inefficiencyIds:selectedRowKeys})
+    toorder({ inefficiencyIds: selectedRowKeys })
   }
 
   addReason = (rest) => {  // 忽略原因
     const { ignoreList } = this.props;
-    const { buttonStatus, ignoreReason, ignoreReasonCode } = rest;
+    const { buttonStatus, ignoreReason, ignoreReasonCode, deadline, ignoreTime } = rest;
     if (buttonStatus === 'sure') {
-      ignoreList({ inefficiencyIds: this.state.selectedRowKeys, ignoreReason, ignoreReasonCode })
+      ignoreList({ inefficiencyIds: this.state.selectedRowKeys, ignoreReason, ignoreReasonCode, deadline, ignoreTime })
     }
     this.setState({ ingoreVisible: false })
   }
@@ -194,36 +194,36 @@ class Unhandle extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId,lostGenPercent: item.lostGenPercent + '%'}));
+    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId, lostGenPercent: item.lostGenPercent + '%' }));
     return (
       <div className={styles.unhandleMain}>
-      {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-      <FilterCondition
-        option={['stationName', 'belongMatrixs']}
-        stations={stations.filter(e => e.stationType === 1)}
-        matrixList={matrixList}
-        onChange={this.filterCondition}
-      />
-      <div className={styles.selectCondition}>
-        <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
-          <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}><i className="iconfont icon-tranlist" />  转工单</Option>
-          <Option value="ignore" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}><i className="iconfont icon-neglect" />  忽略</Option>
-        </Select>
-        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-          onPaginationChange={this.onPaginationChange} />
+        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        <FilterCondition
+          option={['stationName', 'belongMatrixs']}
+          stations={stations.filter(e => e.stationType === 1)}
+          matrixList={matrixList}
+          onChange={this.filterCondition}
+        />
+        <div className={styles.selectCondition}>
+          <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false} >
+            <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}><i className="iconfont icon-tranlist" />  转工单</Option>
+            <Option value="ignore" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}><i className="iconfont icon-neglect" />  忽略</Option>
+          </Select>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+            onPaginationChange={this.onPaginationChange} />
+        </div>
+        <Table
+          loading={loading}
+          dataSource={dataSource}
+          columns={columns}
+          pagination={false}
+          rowSelection={rowSelection}
+          onChange={this.tableChange}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+        />
+        <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} />
       </div>
-      <Table
-        loading={loading}
-        dataSource={dataSource}
-        columns={columns}
-        pagination={false}
-        rowSelection={rowSelection}
-        onChange={this.tableChange}
-        locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-      />
-      <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} />
-    </div>
- 
+
     )
   }
 }
