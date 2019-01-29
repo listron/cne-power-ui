@@ -174,7 +174,7 @@ class HistoryWarnCon extends Component {
       <div className={styles.historyWarnMain}>
         <FilterCondition
           option={['time', 'stationName', 'belongMatrixs']}
-          stations={stations}
+          stations={stations.filter(e => e.stationType === 1)}
           matrixList={matrixList}
           onChange={this.filterCondition}
         />
