@@ -211,6 +211,7 @@ const menuData = [
           {
             name: '通用报表',
             path: 'currency',
+            defaultPath: true,
             rightKey: 'statistics_report_general',
           }
         ]

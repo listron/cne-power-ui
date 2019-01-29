@@ -45,7 +45,6 @@ class WeatherDayChart extends React.Component {
     const fontColor = '#333';
     let seriesData = [];
     yData.forEach(e => {
-      console.log('test',e)
       seriesData.push({
         name: this.getName(e.weather),
         barWidth: 13,
