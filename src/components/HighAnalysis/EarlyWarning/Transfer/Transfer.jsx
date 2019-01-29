@@ -148,7 +148,7 @@ class Transfer extends Component {
       <div className={styles.transferMain}>
         <FilterCondition
           option={['time', 'stationName', 'belongMatrixs']}
-          stations={stations}
+          stations={stations.filter(e => e.stationType === 1)}
           matrixList={matrixList}
           onChange={this.filterCondition}
         />

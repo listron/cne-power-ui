@@ -172,7 +172,7 @@ class Ignore extends Component {
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
           <FilterCondition
             option={['time', 'stationName', 'belongMatrixs']}
-            stations={stations}
+            stations={stations.filter(e => e.stationType === 1)}
             matrixList={matrixList}
             onChange={this.filterCondition}
           />
