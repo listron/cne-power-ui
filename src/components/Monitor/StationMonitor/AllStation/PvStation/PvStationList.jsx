@@ -16,6 +16,7 @@ class PvStationList extends React.Component {
     realTimePowerPoint: PropTypes.any,
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
+    pvMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -42,8 +43,8 @@ class PvStationList extends React.Component {
     message.warning('电站未接入,无法查看详情',2);
   }
   initColumn = () => {
-    const { realTimePowerUnit,realCapacityUnit,powerUnit,windMonitorStation } = this.props;
-    const  planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
+    const { realTimePowerUnit,realCapacityUnit,powerUnit,pvMonitorStation } = this.props;
+    const  planStatus = pvMonitorStation && pvMonitorStation.stationDataSummary && pvMonitorStation.stationDataSummary.planStatus;
     const planPower = planStatus === 0 ? [{
       title: `年累计发电量(${powerUnit})`,
       dataIndex: "yearOutput",

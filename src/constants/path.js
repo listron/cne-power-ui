@@ -291,7 +291,7 @@ export default {
       getDevicemode:'/v3/performance/deviceanalysis/devicemode',// 获取电站下的所有设备型号
       getDevicemodes:'/v3/performance/deviceanalysis/manufacturer/devicemode',// 获取电站下的所有设备型号
       getDevicecontrast:'/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
-      getStationcontrast:'/v3/performance/deviceanalysis/stationcontrastgetDevicemode',// 设备电站对比数据
+      getStationcontrast:'/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore:'/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
       //通用报表
       dailyreport:'v3/performance/dailyreport',
