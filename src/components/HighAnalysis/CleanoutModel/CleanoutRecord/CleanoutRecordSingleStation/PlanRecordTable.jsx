@@ -62,22 +62,30 @@ class PlanRecordTable extends Component {
         title: '清洗时间',
         dataIndex: 'cleanTime',
         key: 'cleanTime',
-
         render: (text, record, index) => {
           return (
-            <span className={styles.cleanTime} title={record.cleanTime}>{record.cleanTime}</span>
+            <span className={styles.cleanTime} title={record.cleanTime}>{record.cleanTime?record.cleanTime:'--'}</span>
           )
         }
       }, {
         title: '方阵',
         dataIndex: 'matrix',
         key: 'matrix',
+        render: (text, record, index) => {
+          return (
+            <span  title={record.matrix}>{(record.matrix&&+record.matrix!==0)?record.matrix:'--'}</span>
+          )
+        }
 
       }, {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        render: text => (<span>{ `${text}`? `${text}` : '--'}</span>),
+        render: (text, record, index) => {
+          return (
+            <span  title={record.remark}>{(record.remark&&+record.remark!==0)?record.remark:'--'}</span>
+          )
+        }
 
       }, {
         title: 'PR(三天前/三天后)',
@@ -97,9 +105,7 @@ class PlanRecordTable extends Component {
         }
       }
     ];
-    // const data = [
-    //   { cleanTime: 'dalidadali', matrix: '1', remark: '2', pr: '3', },
-    //   { cleanTime: 'wulala', matrix: '6', remark: '7', pr: '8', }]
+ 
     return (
      
       <div>
