@@ -214,6 +214,7 @@
     .text{
       cursor: pointer;
       border-radius: 4px;
+      color: $themeColor;
       &:hover{
         background-color: #ececec;
       }
