@@ -1,0 +1,186 @@
+@import '../../../../../theme/theme.scss';
+.assignUserModal{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    border-bottom: 1px solid $promptColor;
+    padding-left: 20px;
+    padding-right: 45px;
+    :global{
+      .ant-input{
+        height: 32px;
+      }
+      .ant-input:focus{
+        border-color: $themeColor;
+        box-shadow: 0 0 0 0px $themeColor;
+      }
+      .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled){
+        border-color: $themeColor;
+      }
+    }
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    height: 400px;
+    flex: 1;
+    padding-left: 20px;
+    .departmentList {
+      overflow-y: auto;
+      width: 220px;
+      border-right: 1px solid $promptColor;
+      display: flex;
+      padding-left: 20px;
+    }
+    .userList {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: hidden;
+      .userListContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
+        :global{
+          .ant-avatar.ant-avatar-sm.ant-avatar-circle{
+            background: #c7ceb2;
+
+          }
+        }
+        .userListTip {
+          margin: 9px 6px 9px 25px;
+          color: $darkColor;
+          height: 32px;
+          line-height: 32px;
+          font-size: 14px;
+        }
+        .noUser {
+          margin: 9px 6px 9px 25px;
+          color: $themeColor;
+          height: 32px;
+          line-height: 32px;
+          font-size: 14px;
+        }
+      }
+      .userItem {
+        display: flex;
+        flex-direction: row;
+        height: 32px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 6px 0 25px;
+        flex-shrink: 0;
+        .userCheck {
+          display: flex;
+          flex-direction: row;
+          :global{
+            .ant-avatar-sm{
+              background: #c7ceb2;
+            }
+          }
+          .userName {
+            font-size: 14px;
+            color: $darkColor;
+            margin-left: 6px;
+          }
+        }
+        .departmentName {
+          font-size: 12px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .name {
+            color: $darkColor;
+            max-width: 200px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display: inline-block;
+            word-break:keep-all;
+          }
+          .me {
+            margin-left: 10px;
+            color: $themeColor
+          }
+        }
+        &:hover {
+          background-color: #ceebe0;
+        }
+      }  
+    }
+  }
+  .selectedUser {
+    height: 130px;
+    overflow-y: auto;
+    padding: 20px;
+    border-top: 1px solid $promptColor;
+    :global {
+      .ant-tag {
+        margin-bottom: 10px;
+        margin-right: 20px;
+        border:1px solid #d9d9d9;
+        border-radius:4px;
+        padding: 0 12px;
+        height:30px;
+        line-height: 30px;
+        &:hover {
+          box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+        }
+      }
+    }
+  }
+  .footer {
+    background:#ececec;
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}
+.assignUser {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+    .ant-modal-close-x {
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+    }
+    .ant-tree li span.ant-tree-switcher{
+      color: $darkColor;
+    }
+    .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected{
+      background-color: #fff;
+      color: $themeColor;
+    }
+    .ant-tree li .ant-tree-node-content-wrapper:hover{
+      background-color: #fff;
+      color: $themeColor;
+    }
+  }
+  .cancel {
+    margin-right: 20px;
+    width: 80px;
+  }
+  .select {
+    border-color: $themeColor;
+    color: $themeColor;
+    margin-right: 20px;
+    width: 80px;
+    &:hover {
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+}

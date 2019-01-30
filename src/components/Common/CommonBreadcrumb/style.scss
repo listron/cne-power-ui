@@ -1,0 +1,39 @@
+
+@import '../../../theme/theme.scss';
+
+.breadcrumb{
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  justify-content: space-between;
+  
+  
+  .leftText{
+  .breadIcon{
+    margin-left: 12px;
+    margin-right: 8px;
+    :global{
+      .iconfont{
+        font-size: 20px;
+        vertical-align: middle;
+        color: $themeColor
+      }
+    }
+  }
+  .eachPath{
+    color: $darkColor;
+    margin-right: 4px;
+    a{
+      color: $darkColor;
+    }
+  }
+  }
+  .rightText{
+    margin-right: 38px;
+
+    a{
+      color: #199475;
+    }
+  }
+
+}

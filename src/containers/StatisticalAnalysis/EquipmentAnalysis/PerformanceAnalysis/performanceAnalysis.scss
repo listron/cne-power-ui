@@ -1,0 +1,26 @@
+@import '../../../../theme/theme.scss';
+
+.PerformanceAnalysisContainerBox{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
+  .PerformanceAnalysisContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    // width: 100%;
+    background-color:#ececec;
+    padding:24px 24px 0;
+    .PerformanceAnalysisMain{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      background: #fff;
+      
+      
+
+    }
+  }
+}

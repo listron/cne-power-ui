@@ -1,0 +1,54 @@
+
+
+
+@import '../../../../theme/theme.scss';
+
+.alarmManageSearch{ // 条件查询
+  display: flex;
+  align-items: center;
+  height: 71px;
+  border-bottom: solid 1px $promptColor;
+  line-height: 40px;
+  .titleText{
+    color: $darkColor;
+    margin-left: 28px;
+    margin-right: 12px;
+  }
+  .typeSelect,.modelSelect,.pointSelect{
+    width: 198px;
+    margin-right: 12px;
+  }
+  .typeSelect {
+    margin-left: 12px;
+  }
+}
+
+.alarmManageHandle{ // 导出设备， 翻页器
+  display:flex;
+  justify-content: space-between;
+  height: 72px;
+  align-items: center;
+  .leftHandler{
+    display: flex;
+    .importInfo{
+      margin-left: 36px;
+    }
+    .exportInfo{
+      margin: 0 12px;
+    }
+    .clearAlarm{
+
+    }
+  }
+}
+
+.alarmManageList{ // 测点表格区
+  border-top: 1px solid $promptColor;
+  :global{
+    .ant-table{
+      .ant-table-placeholder{
+        border-bottom: none;
+      }
+    }
+  }
+}

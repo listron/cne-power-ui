@@ -1,0 +1,25 @@
+
+.roleContainerBox{
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+.roleContainer {
+ // min-height: 100%;
+  display: flex;
+  flex: 1;
+  .roleSide {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    z-index: 10;
+  }
+  .roleMain {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+}
+}

@@ -1,0 +1,114 @@
+{
+  "plugins": [
+    "react",
+    "redux-saga"
+  ],
+  "parser": "babel-eslint",
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true,
+    "forOf": false
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "amd": true,
+    "es6": true,
+    "mocha":true,
+    "jasmine":true
+  },
+  "globals": {
+    "I18N": true,
+    "AMap":true,
+    "_czc": true
+   },
+  "rules": {
+    "quotes": 0,
+    "no-undef": 1,
+    "global-strict": 0,
+    "no-extra-semi": 1,
+    "no-underscore-dangle": 0,
+    "key-spacing":0,
+    "no-multi-spaces":0,
+    "comma-spacing":0,
+    "no-mixed-spaces-and-tabs":0,
+    "no-unused-vars":[1, {"vars": "all", "args": "none"}],
+    "eqeqeq":1,
+    "space-infix-ops":0,
+    "semi-spacing":0,
+    "no-trailing-spaces":0,
+    "dot-notation":0,
+    "camelcase":1,
+    "no-empty":1,
+    "no-alert":0,
+    "new-cap":0,
+    "no-loop-func":1,
+    "handle-callback-err":0,
+    "react/display-name": 0,
+    "react/jsx-boolean-value": 0,
+    "react/jsx-curly-spacing": 0,
+    "react/jsx-no-undef": 1,
+    "jsx-quotes": [1, "prefer-double"],
+    "react/jsx-sort-prop-types": 0,
+    "react/jsx-sort-props": 0,
+    "react/jsx-tag-spacing": 1,
+    "react/jsx-uses-react": 1,
+    "react/jsx-uses-vars": 1,
+    "react/jsx-wrap-multilines": 1,
+    "react/jsx-no-bind": [1, {
+      "ignoreRefs": true,
+      "allowArrowFunctions": true,
+      "allowBind": false
+    }],
+    "react/no-danger": 1,
+    "react/no-did-mount-set-state": 1,
+    "react/no-did-update-set-state": 1,
+    "react/no-multi-comp": [1, { "ignoreStateless": true }],
+    "react/no-unknown-property": 1,
+    "react/prop-types": 1,
+    "react/prefer-es6-class": [1, "always"],
+    "react/react-in-jsx-scope": 1,
+    "react/require-render-return": 1,
+    "react/self-closing-comp": 0,
+    "react/sort-comp": [1, {
+      "order": [
+        "static-methods",
+        "instance-variables",
+        "lifecycle",
+        "/^on.+$/",
+        "getters",
+        "setters",
+        "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
+        "instance-methods",
+        "everything-else",
+        "rendering"
+      ],
+      "groups": {
+        "lifecycle":[
+          "displayName",
+          "propTypes",
+          "contextTypes",
+          "childContextTypes",
+          "mixins",
+          "statics",
+          "defaultProps",
+          "constructor",
+          "getDefaultProps",
+          "getInitialState",
+          "state",
+          "getChildContext",
+          "componentWillMount",
+          "componentDidMount",
+          "componentWillReceiveProps",
+          "shouldComponentUpdate",
+          "componentWillUpdate",
+          "componentDidUpdate",
+          "componentWillUnmount"
+        ],
+        "rendering": [
+          "/^render.+$/",
+          "render"
+      ]}
+    }]
+  }
+}

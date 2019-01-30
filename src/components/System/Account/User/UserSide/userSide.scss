@@ -1,0 +1,269 @@
+
+@import '../../../../../theme/theme.scss';
+
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.userSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background:#ececec;
+  padding: 24px 24px 0;
+  :global{
+    .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
+      color: $themeColor;
+    }
+    .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+    .ant-input:focus {
+      border-color: $themeColor;
+      box-shadow: 0 0 2px $themeColor;
+    }
+    .ant-input {
+      border-color: #d9d9d9;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+  }
+  .addUser,.editUser,.inviteUser{//新建/编辑页
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #e1e2e2;
+    .editTop{
+      @include top;
+      justify-content: space-between;
+      .text{
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+      .backIcon{
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+      
+    }
+    .mainPart{
+      margin: 24px 32px 0;
+      display: flex;
+      .logoPart{
+        margin-right: 48px;
+        .instruction{
+          margin-top: 12px;
+          color: $promptColor;
+          span{
+            display: block;
+          }
+        }
+      }
+      .editPart{
+        flex: 1;
+        .instructionText{
+          color: $promptColor;
+          margin-left: 12px;
+        }
+        .saveUser{
+          margin: 0 20px 0 94px;
+        }
+        :global{
+          .ant-form-item{
+            display: flex;
+            line-height: 40px;
+            .ant-form-item-label{
+              width: 70px;
+              margin-right: 24px;
+              color: $darkColor;
+              text-align: right;
+              label::after{
+                display: none;
+              }
+            }
+            .has-error .ant-select-selection,.ant-form-item-control-wrapper input,.ant-select,.ant-cascader-picker{
+              width: 200px;
+            }
+            
+          }
+        }
+      }
+      .inviteMainPart{
+        flex-direction: column;
+        .inviteOperate{
+          margin-top: 20px;
+          .inviteInput{
+            width:466px;
+          }
+          .copyBtn{
+            margin: 0 20px 0 10px;
+          }
+          .copyBtn:hover, .copyBtn:focus{
+            color: #fff;
+            background: #199475;
+          }
+        }
+        .qrCode{
+          margin-top: 20px;
+          img{
+            display: inline-block;
+            width: 185px;
+            height: 185px;
+          }
+          Button{
+            vertical-align: bottom;
+            margin-left: 20px;
+          }
+          :global{
+            a.ant-btn {
+              line-height: 30px;
+              display: inline-block;
+              vertical-align: bottom;
+              margin-left: 20px;
+            }
+            .ant-btn:hover, .ant-btn:focus{
+              color: #199475;
+            }
+          }
+        }
+        .qrTip{
+          span{
+            color: #e08031;
+          }
+        }
+      }
+    }
+  }
+  .userDetail {
+    line-height: 30px;
+    flex: 1;
+    background-color: #fff;
+    .detailTop {
+      @include top;
+      display: block;
+      .editButton {
+        border: 1px solid $themeColor;
+        box-shadow: 0 0 2px $themeColor;
+        color: $themeColor;
+        float: left;
+        margin-top: 15px;
+        &:hover,&:focus {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+      .handleArea {
+        height: 64px;
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 20px;
+        :global{
+          .iconfont{
+            margin-right: 20px;
+            cursor: pointer;
+            color: $darkColor;
+          }
+        }
+        .backIcon {
+          height: 100%;
+          line-height: 64px;
+          color: $darkColor;
+          border-left: 1px solid #dfdfdf;
+          width: 64px;
+          cursor: pointer;
+        }
+      }
+    }
+    .userInfor {
+      margin: 24px 0 0;
+      display: flex;
+      flex-direction: row;
+      .logoPart {
+        width: 240px;
+        margin-left: 40px;
+        margin-top: 30px;
+        .userImg {
+          width: 240px;
+          height: 240px;
+          background: #199475;
+          img{
+            width: 240px;
+            height: 240px;
+          }
+        }
+       .user,.time{
+          height: 30px;
+          span{
+            display: inline-block;
+            width: 56px;
+            text-align: right;
+            color: $darkColor;
+            margin-right: 24px;
+          }
+        }
+      }
+
+      //color:#666666;
+      .userDetailContainer {
+        margin: 40px 70px;
+        width: 100%;
+        .doshLine {
+          width: 100%;
+          height: 1px;
+          border-top: 1px dashed #dfdfdf;
+        }
+        .title {
+          display: inline-block;
+          width: 56px;
+          text-align: right;
+          margin-right: 24px;
+          // color: #dfdfdf;
+        }
+        .value {
+          display: inline-block;
+          color: $darkColor;
+          margin-right: 16px;
+        }
+        .enterpriseDepartment{
+          width: 147px;
+        }
+        .enterpriseDepartmentValue{
+          display: block;
+          color: $darkColor;
+          .departmentDetail{
+            display: flex;
+            flex-direction: row;
+            .enterpriseName{
+              width: 150px;
+              text-align: right;
+            }
+            .enterpriseDetail{
+              p{
+                margin: 0;
+              }
+            }
+          }
+        }
+        .detailRole, .detailSpecialRole{
+          display: flex;
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+
+}

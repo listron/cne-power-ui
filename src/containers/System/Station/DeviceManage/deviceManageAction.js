@@ -1,0 +1,18 @@
+
+
+export const deviceManageAction = {
+  DEVICE_MANAGE_FETCH: Symbol('DEVICE_MANAGE_FETCH'), // loading
+  CHANGE_DEVICE_MANAGE_STORE_SAGA: Symbol('CHANGE_DEVICE_MANAGE_STORE_SAGA'), // 改变reducer参数
+  CHANGE_DEVICE_MANAGE_STORE: Symbol('CHANGE_DEVICE_MANAGE_STORE'), // 替换reducer参数
+
+  GET_DEVICE_MANAGE_FETCH_SUCCESS: Symbol('GET_DEVICE_MANAGE_FETCH_SUCCESS'), // 设备管理普通api请求成功
+
+  GET_DEVICE_MANAGE_LIST: Symbol('GET_DEVICE_MANAGE_LIST'), // 获取设备列表
+  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  RESET_STORE: Symbol('RESET_STORE'), // 重置数据
+}
+
+
+
+
+

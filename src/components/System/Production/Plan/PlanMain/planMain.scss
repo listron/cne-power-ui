@@ -1,0 +1,179 @@
+@import '../../../../../theme/theme.scss';
+
+.planMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 24px 24px 0;
+  background: #ececec;
+  .contentMain {
+    background-color: #fff;
+    flex: 1;
+    border: 1px solid #e1e2e2;
+  }
+}
+
+.planSearch {
+  display: flex;
+  padding: 26px 0px 20px 22px;
+  align-items: center;
+  .year {
+    margin-right: 8px;
+  }
+  :global {
+    .ant-calendar-picker {
+      input {
+        width: 105px;
+      }
+    }
+  }
+  .topLeft {
+    display: flex;
+    margin: 0 10px 0 10px;
+    line-height: 40px;
+    .station {
+      margin-right: 10px;
+    }
+  }
+
+  .searchButton {
+    margin-right: 12px;
+    color: $themeColor;
+    border: 1px solid $themeColor;
+    @include highLight($themeColor);
+    &:hover {
+      background-color: $themeColor;
+      border-color: $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.planList {
+  .planListTop {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .addplan {
+      padding: 0;
+      margin-left: 24px;
+      margin-right: 12px;
+      font-size: 0;
+      border: 1px solid $themeColor;
+      i {
+        background-color: $themeColor;
+        color: #fff;
+        font-size: 14px;
+        vertical-align: top;
+        width: 28px;
+        line-height: 30px;
+        border-radius: 2px 0 0 2px;
+      }
+      .text {
+        border-radius: 0 2px 2px 0;
+        font-size: 14px;
+        // background:#fff;
+        color: $themeColor;
+        display: inline-block;
+        width: 40px;
+        line-height: 30px;
+        margin: 0px;
+        text-align: center;
+      }
+      @include highLight($themeColor);
+      &:hover {
+        .text {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+  }
+  .tableList {
+    .edit {
+      color: $themeColor;
+    }
+    .noEdit{
+      color: $promptColor;
+      pointer-events: none;
+    }
+    .save {
+      color: #f9b600;
+      margin-right: 0 !important;
+    }
+    :global {
+      .month .ant-input, .yearPR .ant-input {
+        width: 48px;
+        background: #fcffe5;
+        padding: 0 3px;
+        border: 1px solid #f9b600;
+      }
+      .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
+        padding: 0 3px;
+        line-height: 1;
+        min-width: 48px;
+      }
+      .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {
+        min-width: 48px;
+      }
+      .ant-table .ant-table-thead > tr > th.yearPR, .ant-table .ant-table-tbody > tr > td.yearPR {
+        min-width: 72px;
+        width:72px;
+      }
+      .ant-input.ant-input-disabled {
+        background: #f8f8f8;
+        border: 1px solid #dfdfdf;
+      }
+      .ant-input:focus {
+        background: #ffffff;
+        border: 1px solid #dfdfdf;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+      .ant-table-placeholder{
+        border: none;
+      }
+    }
+    .regionName {
+      min-width: 50px;
+      width: 6%;
+      padding-left: 10px!important;
+    }
+    .stationName {
+      width: 90px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .operation {
+      width: 2.7%;
+      min-width: 38px;
+    }
+    .planYear {
+      width: 6.2%;
+      min-width: 40px;
+    }
+    .planPower {
+      width: 9%;
+      min-width: 105px;
+    }
+    .stationCapacity{
+      width: 7.5%;
+      min-width: 70px;
+    }
+  }
+  table {
+    a {
+      text-decoration: none;
+      color: $darkColor;
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+}
+
+
+

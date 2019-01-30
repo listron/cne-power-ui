@@ -1,0 +1,64 @@
+.cleanoutRecordMain{
+  display: flex;
+  flex:1 0 auto;
+  width: 100%;
+  flex-direction: column;
+  // background-color: #fff;
+  padding: 24px 24px 0;
+  background:#ececec;
+
+ .cleanoutcontainer{
+   display: flex;
+   flex:1;
+   flex-direction: column;
+   background-color: #fff;
+ }
+ 
+  .topFilter{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+   
+    
+  }
+  
+  .paginationStyle{
+    display: flex;
+    justify-content: flex-end;
+    height: 48px;
+  }
+  .iconStyles{
+    display: flex;
+    justify-content: center;
+  }
+ 
+}
+.handle{//modal的取消确认按钮样式
+  display: flex;
+  justify-content: center;
+  margin-left:44px ;
+  button{
+    margin-right: 16px;
+  }
+}
+.radioStyle{
+  justify-content: center;
+  display: flex;
+  margin-bottom: 8px;
+}
+.stationTable{//table字体图表样式
+  :global{
+    .ant-table .ant-table-thead > tr > th{
+      padding: 0 24px;
+    }
+    .ant-table .ant-table-tbody > tr > td{
+      padding: 0 24px;
+    }
+    .iconfont{
+      font-size: 20px;
+      &:hover{
+        color:#199475
+      }
+    }
+  }
+}

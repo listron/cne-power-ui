@@ -1,0 +1,232 @@
+@import '../../theme/theme.scss';
+
+.comName{
+  width: 330px;
+  margin: 0 auto;
+
+  .userInfo{
+    margin-left: -45px;
+    :global{
+      .ant-form-item, .ant-form-horizontal {
+        width: 330px;
+        margin-bottom: 12px;
+      }
+      .ant-form{
+        width: 330px;
+        .ant-form-item{
+          width: 330px;
+          .ant-btn{
+            width: 220px;
+          }
+        }
+      } 
+    }
+    .userArgee{
+      .userAgreeTip{
+        color: #449ad3;
+      }
+    }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 10px;
+      padding-left: 70px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
+  }
+  .inviteUser{
+    text-align: center;
+    .enterpriseLogo{
+      margin-bottom: 10px;
+      img{
+        border-radius:4px;
+      }
+    }
+    .inviteTip{
+      margin: 20px 0;
+      span{
+        color: #e08031;
+      }
+    }
+  }
+  .joinCheckCode{
+    width: 220px;
+    margin: 0 auto;
+    :global{
+      .ant-checkbox-input:focus + .ant-checkbox-inner {
+        border-color: $themeColor;
+      }
+    }
+    .enterpriseBrief{
+      text-align: center;
+      margin: 0 0 30px;
+      .enterpriseLogo{
+        margin-bottom: 10px;
+        img{
+          border-radius:4px;
+        }
+      }
+      .inviteTip{
+        margin: 20px 0;
+        span{
+          color: #e08031;
+        }
+      }
+    }
+    .inviteInvalid{
+      color: $darkColor;
+      margin: 20px 0;
+      text-align: center;
+      span{
+        color: #e08132;
+      }
+    }
+  }
+  .joinStepOne{
+    position: relative;
+    margin-left: -50px;
+    margin-top: 40px;
+    :global{
+      .ant-input{
+        width: 220px;
+      }
+    }
+    .enterpriseInfo{
+      position: absolute;
+      top: 0;
+      // left: 20px;
+      left: 8px;
+      width: 416px;
+      // margin-left: -40px; 
+      // left: 0;
+     
+      text-align: center;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.20);
+      .enterpriseBack{
+        margin-top: 50px;
+      }
+      .enterpriseBack:hover{
+        cursor: pointer;
+        color: $themeColor;
+      }
+      .enterpriseBtn{
+        margin-top: 40px;
+        width: 139px;
+        height: 36px;
+        border:1px solid #199475;
+        color: #199475;
+        border-radius: 0;
+      }
+    }
+  }
+  
+  .checkCodeBox{
+    display: flex;
+    justify-content: space-between;
+    width: 220px;
+    :global{
+      .ant-input{
+        padding: 4px 7px;
+      }
+    }
+    .testCode{
+      width: 64px;
+      :global{
+        .ant-input{
+          width: 90px;
+        }
+      }
+    }
+    .queryCode{
+      width: 114px;
+      margin-top: 6px;
+      margin-right: 0;
+      padding: 0 5px;
+      height: 30px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background: #fff;
+      border-color: #199475;
+      color: #199475;
+    }
+    .queryCodeClick{
+      width: 114px;
+      margin-top: 6px;
+      margin-right: 0;
+      padding: 0 5px;
+      height: 30px;
+      :global{
+        button{
+          width: 80px;
+        }
+      }
+      background:#f7f7f7;
+      border:1px solid #dfdfdf;
+      color: #dfdfdf;
+    }
+  }
+
+  .loginAbnormal{
+    width: 220px;
+    text-align: center;
+    margin-top: 60px;
+    color:$darkColor;
+    .abnormalIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: $darkColor;
+        }
+      }
+    }
+  }
+  .waitExamine{
+    width: 220px;
+    text-align: center;
+    color: #e08031;
+    margin: 160px auto;
+    .waitExamineIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: #e08031;
+        }
+      }
+    }
+  }
+  :global{
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+    .ant-input-group-addon{
+      background-color: #f1f1f1;
+      padding: 0 7px;
+    }
+    .ant-btn-primary {
+      width: 220px;
+    }
+    .ant-form-item .ant-btn-primary:focus {
+      background-color: $themeColor;
+    }
+    
+  }
+}

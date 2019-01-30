@@ -1,0 +1,75 @@
+@import '../../../../theme/theme.scss';
+.customizeBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: $pageGround;
+    .search {
+        display: flex;
+        align-items: center;
+        height: 78px;
+        padding: 0 28px;
+        :global {
+            .ant-input {
+                width: 225px;
+            }
+        }
+    }
+    .table {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid $promptColor;
+        border-radius: 4px;
+        margin: 0 102px;
+        .tHead {
+            display: flex;
+            flex-direction: row;
+            background: #f1f1f1;
+            .selectCondition:nth-child(3) {
+                border-right: none;
+            }
+        }
+        .tBody {
+            display: flex;
+            flex-direction: column;
+            >div {
+                display: flex;
+                flex-direction: row;
+                &:hover {
+                    background: #f8f8f8;
+                }
+            }
+        }
+        .option {
+            display: flex;
+            flex: 0 0 12%;
+            height: 40px;
+            border-right: 1px solid $promptColor;
+            align-items: center;
+            padding-left: 28px;
+        }
+        .selectCondition {
+            display: flex;
+            flex-direction: row;
+            flex: 4 0 auto;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid $promptColor;
+        }
+        .base {
+            display: flex;
+            flex-direction: row;
+            flex: 4 0 0;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid $promptColor;
+        }
+        .compare {
+            display: flex;
+            flex-direction: row;
+            flex: 4 0 0;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

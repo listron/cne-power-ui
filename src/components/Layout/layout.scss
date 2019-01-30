@@ -1,0 +1,156 @@
+@import '../../theme/theme.scss';
+
+.layoutEnterprise{
+  display: flex;
+  align-items: center;
+  .logoImg{
+    display: flex;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #c7ceb2;
+    overflow: hidden;
+    justify-content: center;
+    margin: 0 4px 0 12px;
+    img{
+      height: 32px;
+    }
+  }
+  .enterpriseName{
+    color: #ceebe0;
+  }
+}
+
+.layoutUserDropdown{
+  background:#3e97d1;
+  padding: 0;
+  margin-top: -4px;
+  .innerItem{
+    height: 50px;
+    line-height: 50px;
+    color:#fff;
+    text-align: center;
+    padding: 0;
+  }
+  .innerItem:hover{
+    background-color: rgba(0,13,52,0.20);
+  }
+}
+
+.topMenu{
+  height: 59px;
+  line-height: 58px;
+  width: 700px;
+  background-color: transparent;
+  border-bottom: none;
+  
+  :global{
+    .ant-menu-item{
+      color: #fff;
+      opacity: 0.7;
+      height: 100%;
+      border-bottom: none;
+      :local{
+        .eachMenu{
+          display: inline-block;
+          height: 100%;
+        }
+      }
+    }
+    .ant-menu-item:hover, .ant-menu-item-active, .ant-menu-item-open, .ant-menu-item-selected {
+      border-bottom: none;
+      color: #fff;
+      opacity: 1;
+      :local{
+        .eachMenu{
+          border-bottom: 2px solid #fff;
+        }
+      }
+    }
+  }
+}
+
+.sideMenu{
+  display: flex;
+  .sideLayout{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .logo{
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      background:#f2f3f4;
+      border-right: solid 1px $promptColor;
+      border-bottom: solid 1px $promptColor;
+      .action {
+        height: 23px;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+    .menuList{
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background:#fbfbfb;
+      border-right: solid 1px $promptColor;
+      :global{
+        .iconfont {
+          margin-right:5px;
+        }
+        .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
+          background-color: #fbfbfb;
+        }
+        .ant-menu-item:hover{
+          background-color: #f4f4f4;
+        }
+        .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
+          &:hover {
+            color: $themeColor;
+          }
+          color: $darkColor;
+          a{
+            color: $darkColor;
+          }
+          a:hover {
+            color: $themeColor;
+          }
+          .ant-menu-item {
+            color: $darkColor;
+            a{
+              color: $darkColor;
+            }
+          }
+        }
+        .ant-menu-item::after{
+          border-color: $themeColor;
+        }
+        .ant-menu-item-selected {
+          background-color: transparent;
+          color: $themeColor;
+          a{
+            color: $themeColor;
+          }
+        }
+        .ant-menu-submenu-active, .ant-menu-submenu-selected {
+          .ant-menu-item-selected, .ant-menu-item-active, .ant-menu-submenu-title {
+            color: $themeColor;
+            a{
+              color: $themeColor;
+            }
+          }
+        }
+        .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before{
+          background: linear-gradient(to right, $themeColor, $themeColor);
+        }
+      }
+    }
+  }
+}
