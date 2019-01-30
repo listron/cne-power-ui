@@ -34,6 +34,7 @@ class ResourceElecInfo extends Component {
             <div className={styles.editPart}>
               <Form.Item label={stationType>0?'日累计辐射':'平均风速'}>
                 {getFieldDecorator('resourceValue', {
+                  required: requireTargetArr.includes('resourceValue'),
                   rules: [{ 
                     validator: (rule, value, callback) => {
                       if(requireTargetArr.includes('resourceValue') && !value){
@@ -74,6 +75,7 @@ class ResourceElecInfo extends Component {
               <Form.Item label={`日发电量`}>
                 {getFieldDecorator('genInverter', {
                   rules: [{
+                    required: requireTargetArr.includes('genInverter'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('genInverter') && !value){
                         callback(`请填写${stationType>0?'逆变器':'风电机组'}日发电量`);
@@ -96,6 +98,7 @@ class ResourceElecInfo extends Component {
               <Form.Item label={`年发电量`}>
                 {getFieldDecorator('yearGenInverter', {
                   rules: [{
+                    required: requireTargetArr.includes('yearGenInverter'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('yearGenInverter') && !value){
                         callback(`请填写${stationType>0?'逆变器':'风电机组'}年发电量`);
@@ -123,6 +126,7 @@ class ResourceElecInfo extends Component {
             <div className={styles.editPart}>
               <Form.Item label="日发电量">
                 {getFieldDecorator('genIntegrated', {
+                  required: requireTargetArr.includes('genIntegrated'),
                   rules: [{ 
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('genIntegrated') && !value){
@@ -145,7 +149,8 @@ class ResourceElecInfo extends Component {
               </Form.Item>
               <Form.Item label="年发电量">
                 {getFieldDecorator('yearGenIntegrated', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('yearGenIntegrated'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('yearGenIntegrated') && !value){
                         callback('请填写集电线路年发电量' );
@@ -173,7 +178,8 @@ class ResourceElecInfo extends Component {
             <div className={styles.editPart}>
               <Form.Item label="日发电量">
                 {getFieldDecorator('genInternet', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('genInternet'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('genInternet') && !value){
                         callback('请填写上网电量日发电量' );
@@ -195,7 +201,8 @@ class ResourceElecInfo extends Component {
               </Form.Item>
               <Form.Item label="年发电量">
                 {getFieldDecorator('yearGenInternet', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('yearGenInternet'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('yearGenInternet') && !value){
                         callback('请填写上网电量年发电量' );
@@ -217,7 +224,8 @@ class ResourceElecInfo extends Component {
               </Form.Item>
               <Form.Item label="日购网电量">
                 {getFieldDecorator('dailyBuyPower', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('dailyBuyPower'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('dailyBuyPower') && !value){
                         callback('请填写日购网电量' );
@@ -239,7 +247,8 @@ class ResourceElecInfo extends Component {
               </Form.Item>
               <Form.Item label="年购网电量">
                 {getFieldDecorator('buyPower', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('buyPower'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('buyPower') && !value){
                         callback('请填写年购网电量' );
@@ -267,7 +276,8 @@ class ResourceElecInfo extends Component {
             <div className={styles.editPart}>
               <Form.Item label={`容量`}>
                 {getFieldDecorator('modelInverterCapacity', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('modelInverterCapacity'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('modelInverterCapacity') && !value){
                         callback(`请填写样板${stationType>0?'逆变器':'风机'}容量`);
@@ -288,7 +298,8 @@ class ResourceElecInfo extends Component {
               </Form.Item>
               <Form.Item label={`日发电量`}>
                 {getFieldDecorator('modelInverterPowerGen', {
-                  rules: [{ 
+                  rules: [{
+                    required: requireTargetArr.includes('modelInverterPowerGen'),
                     validator: (rule, value, callback)=>{
                       if(requireTargetArr.includes('modelInverterPowerGen') && !value){
                         callback(`请填写样板${stationType>0?'逆变器':'风机'}发电量`);

@@ -2,6 +2,7 @@ import {call, put, takeLatest, select} from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import {planAction} from './planAction';
+import { message } from 'antd';
 import moment from 'moment';
 
 
@@ -25,27 +26,29 @@ function* getPlanList(action) {//请求生产计划列表数据
   try {
     yield put({type: planAction.PLAN_FETCH});
     const response = yield call(axios.post, url, payload);
-    const totalNum = response.data.data.totalNum || 0;
-    let {pageNum, pageSize} = payload;
-    const maxPage = Math.ceil(totalNum / pageSize);
-    if (totalNum === 0) { // 总数为0时，展示0页
-      pageNum = 0;
-    } else if (maxPage < pageNum) { // 当前页已超出
-      pageNum = maxPage;
-    }
-
-    yield put({
-      type: planAction.GET_PLAN_FETCH_SUCCESS,
-      payload: {
-        ...payload,
-        planData: response.data.data.planData || [],
-        totalNum,
-        pageNum,
-        showPage:'list',
-        loading: false
-      },
-    });
+    if (response.data.code === '10000') {
+      const totalNum = response.data.data.totalNum || 0;
+      let {pageNum, pageSize} = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if (totalNum === 0) { // 总数为0时，展示0页
+        pageNum = 0;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
+      yield put({
+        type: planAction.GET_PLAN_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          planData: response.data.data.planData || [],
+          totalNum,
+          pageNum,
+          showPage:'list',
+          loading: false
+        },
+      });
+    }else{throw response.data}
   } catch (e) {
+    message.error('获取列表失败！')
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
@@ -79,8 +82,9 @@ function* editPlanInfo(action) {// 编辑计划列表
         type: planAction.getPlanList,
         payload: params,
       });
-    }
+    }else{throw response.data}
   } catch (e) {
+    message.error('编辑失败！')
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {
@@ -128,8 +132,9 @@ function* addPlanInfo(action) {// 添加生产计划列表
       yield put({
         type: planAction.getYearList,
       });
-    }
+    }else{ throw response.data}
   } catch (e) {
+    message.error('添加失败！')
     yield put({
       type: planAction.CHANGE_PLAN_STORE,
       payload: {

@@ -17,7 +17,7 @@ class TransferWarningModal extends Component {
     onCancel: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
@@ -34,7 +34,7 @@ class TransferWarningModal extends Component {
 
   onTransferAlarm = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
+      if (!err) {
         this.props.onTransferAlarm({
           ...values,
           defectTypeCode: values.defectTypeCode[1],
@@ -43,44 +43,47 @@ class TransferWarningModal extends Component {
         this.props.onCancel();
       }
     });
-    this.setState({showWarningTip: false});
+    this.setState({ showWarningTip: false });
   }
 
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip:false
+      showWarningTip: false
     })
   }
 
-  render(){
+  render() {
     const { defectTypes } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText } = this.state;
     let tmpGenTypes = [];
-    defectTypes.forEach(e=>e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele=>{
-      let innerArr = {children: []};
-      innerArr.label= ele.name;
-      innerArr.value= ele.id;
-      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        innerArr.children.push({
-          label: innerInfo.name,
-          value: innerInfo.id,
-        });
-      })
-      return innerArr;
+    defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
+    const groupedLostGenTypes = [];
+    tmpGenTypes.map(ele => {
+      if (ele && ele.list && ele.list.length > 0) {
+        let innerArr = { children: [] };
+        innerArr.label = ele.name;
+        innerArr.value = ele.id;
+        ele.list.forEach(innerInfo => {
+          innerArr.children.push({
+            label: innerInfo.name,
+            value: innerInfo.id,
+          });
+        })
+        groupedLostGenTypes.push(innerArr);
+      }
     })
-    return (     
+    return (
       <Form>
         {showWarningTip && <WarningTip
           hiddenCancel={false}
           onCancel={this.onCancelWarningTip}
-          style={{marginTop:'300px',width: '210px',height:'88px'}} 
+          style={{ marginTop: '300px', width: '210px', height: '88px' }}
           onOK={this.onTransferAlarm} value={warningTipText} />}
         <Modal title="转缺陷工单"
           className={styles.transferModal}
-          style={{minHeight:450}}
-          bodyStyle={{display:'flex',flex:1,flexDirection:'column',padding:24}}
+          style={{ minHeight: 450 }}
+          bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
           visible={true}
           onOk={this.onSubmit}
@@ -88,7 +91,7 @@ class TransferWarningModal extends Component {
           onCancel={this.props.onCancel}>
           <FormItem className={styles.formItem} label="缺陷类型">
             {getFieldDecorator('defectTypeCode', {
-              rules: [{ 
+              rules: [{
                 required: true,
                 message: '请选择缺陷类型'
               }],
@@ -104,12 +107,12 @@ class TransferWarningModal extends Component {
           </FormItem>
           <FormItem className={styles.formItem} label="缺陷描述">
             {getFieldDecorator('defectDescribe', {
-              rules: [{ 
+              rules: [{
                 required: true,
                 message: '请输入缺陷描述'
               }],
             })(
-              <InputLimit style={{marginLeft:-80,marginTop:15}} placeholder="请输入不超过80字的缺陷描述..." />
+              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} placeholder="请输入不超过80字的缺陷描述..." />
             )}
           </FormItem>
           <div className={styles.instructionText}>注意：保存后，多条告警将转为多个消缺工单。</div>
