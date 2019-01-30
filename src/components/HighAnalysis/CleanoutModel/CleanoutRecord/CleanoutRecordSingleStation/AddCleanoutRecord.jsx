@@ -68,7 +68,9 @@ class AddCleanoutRecord extends Component {
       },
     };
     const { getFieldDecorator } = this.props.form;
-    const { stations, showAddRecordModal } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
+    const { stations, showAddRecordModal,singleStationCode } = this.props;//此处应该是方阵的数据，下面的不可选是由方阵的数据决定的
+    const stationItem = stations && stations.filter(e => (e.stationCode.toString() === singleStationCode))[0];
+    const cleanStationName = stationItem && stationItem.stationName;
     const rangeConfig = {
       initialValue: cleanRecorddetail.startTime ? [moment(cleanRecorddetail.startTime), moment(cleanRecorddetail.endTime)] : [],
       rules: [{ type: 'array', required: true, message: '请选择清洗记录时间' }],
@@ -93,7 +95,7 @@ class AddCleanoutRecord extends Component {
     };
     return (
       <Modal
-        title={'电站3-清洗记录'}
+        title={`${cleanStationName}-清洗记录`}
         visible={showAddRecordModal}
         onOk={this.confirmAddRecord}
         footer={null}

@@ -8,6 +8,12 @@
 }
 .stationTable{//table字体图表样式
   :global{
+    .ant-table .ant-table-thead > tr > th{
+      padding: 0 24px;
+    }
+    .ant-table .ant-table-tbody > tr > td{
+      padding: 0 24px;
+    }
     .iconfont{
       font-size: 20px;
       &:hover{
@@ -18,4 +24,8 @@
       color:#199475;
     }
   }
+}
+.iconStyles{
+  display: flex;
+  justify-content: center;
 }
