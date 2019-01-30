@@ -25,8 +25,8 @@
                 border-bottom: none
             }
         }
-        .iconDetail{
-            span{
+        .iconDetail {
+            span {
                 display: block;
                 color: $themeColor;
                 cursor: pointer;
@@ -96,12 +96,12 @@
                 }
             }
         }
-        .chartCont{
+        .chartCont {
             display: flex;
             flex: 1;
             height: 500px;
             padding: 0 20px;
-            >div{
+            >div {
                 display: flex;
                 flex: 1;
             }
@@ -128,13 +128,39 @@
         }
         .label {
             display: flex;
-            margin-top: 20px;
+            flex: 1;
+            flex-direction: column;
             margin-left: 31px;
-            p {
+            .timeline {
                 display: flex;
-                flex: 1 0 auto;
-                span {
-                    color: red;
+                flex: 1;
+                flex-direction: row;
+                .labels {
+                    margin-right: 4px;
+                    line-height: 30px;
+                    margin-bottom: 0;
+                    span {
+                        color: red;
+                    }
+                }
+            }
+            .ignoreReason {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                margin-top: 20px;
+                .ignoreReasonTop {
+                    display: flex;
+                    flex: 1;
+                    .labels {
+                        display: flex;
+                        margin-right: 4px;
+                        line-height: 30px;
+                        margin-bottom: 0;
+                        span {
+                            color: red;
+                        }
+                    }
                 }
             }
         }
@@ -149,8 +175,8 @@
                     color: $themeColor;
                     padding: 0 4px;
                 }
-                .ant-radio-button-wrapper:not(:first-child)::before{
-                    background-color:$themeColor;
+                .ant-radio-button-wrapper:not(:first-child)::before {
+                    background-color: $themeColor;
                 }
                 .ant-radio-button-wrapper:hover,
                 .ant-radio-button-wrapper-focused {
@@ -169,8 +195,8 @@
             }
         }
         .descripe {
-            margin-left: 100px;
-            margin-top: 5px;
+            margin-left: 68px;
+            margin-top: 16px;
             margin-bottom: 20px;
         }
     }

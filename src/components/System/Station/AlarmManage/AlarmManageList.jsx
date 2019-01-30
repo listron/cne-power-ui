@@ -37,6 +37,11 @@ class AlarmManageList extends Component {
   render() {
     const alarmListColumn = [
       {
+        title: '测点描述',
+        dataIndex: 'devicePointDesc',
+        key: 'devicePointDesc',
+      },
+      {
         title: '测点编号',
         dataIndex: 'pointCode',
         key: 'pointCode',

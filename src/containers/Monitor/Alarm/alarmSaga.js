@@ -162,7 +162,7 @@ function* getAlarmNum(action) {  // 请求告警个数
   const url = `${APIBasePath}${monitor.getAlarmNum}/${payload.warningStatus}/${'事件告警'}`
   try {
     yield put({ type: alarmAction.ALARM_FETCH });
-    const response = yield call(axios.get, url, { params: payload });
+    const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: alarmAction.GET_ALARM_FETCH_SUCCESS,

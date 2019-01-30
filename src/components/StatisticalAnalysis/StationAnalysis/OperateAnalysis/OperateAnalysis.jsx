@@ -131,7 +131,7 @@ class OperateAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(`${i}`)
     }
-    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
+    const station = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
     let prams = {
       stationCode: stationCode,
       dateType,
@@ -143,7 +143,7 @@ class OperateAnalysis extends React.Component {
       year: endYear,
     }
 
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType: station[0].stationType || 1 })
     props.changeOperateStationStore({ startTime: startYear, endTime: endYear })
     props.getOperatePlanComplete(specilPrams)
     props.getComponentPowerStatistic(specilPrams)
@@ -157,8 +157,8 @@ class OperateAnalysis extends React.Component {
 
   getLostPercentage = (molecule, denominator) => {
     // molecule 分子,denominator 分母
-    if(molecule && denominator && +denominator===0){ return 0}
-    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 1000 / 100).toFixed(2) || '--'
+    if (molecule && denominator && +denominator === 0) { return 0 }
+    return molecule && denominator && +denominator !== 0 && parseFloat((denominator - molecule) / denominator * 100).toFixed(2) || '--'
   }
 
 
@@ -232,7 +232,7 @@ class OperateAnalysis extends React.Component {
       xData: efficiencyData && efficiencyData.map((e, i) => { return this.addXaixsName(e.date, dateType) }),
       yData: {
         barData: { hours },
-        lineData: { pr,light}
+        lineData: { pr, light }
       }
     }
     const PowerEffectiveHasData = hours.some(e => e || e === 0) || light.some(e => e || e === 0) || pr.some(e => e || e === 0)
@@ -376,11 +376,11 @@ class OperateAnalysis extends React.Component {
                 </span>
                 {`${station.length > 0 && station[0].stationName}-${station.length > 0 && station[0].regionName || "--"}`}
                 <span className={styles.plan}>计划完成情况
-                {dateType === "day" && (year + '年' + month + '月')}
-                  {dateType === "month" && (year + '年')}
+                {dateType === 'month' && `(  ${year}年  ) `}
+                  {dateType === 'day' && `( ${+(year)}年${month}月)`}
                 </span>
-                <div className={styles.choiceYear}>{
-                  dateType === "year" && operateAvalibaData && operateAvalibaData.map((item, index) => {
+                <div className={styles.choiceYear}>
+                  {dateType === "year" && operateAvalibaData && operateAvalibaData.map((item, index) => {
                     if (item.isTrue === false) {
                       return (<span key={index}
                         className={styles.noSelect}
@@ -392,7 +392,7 @@ class OperateAnalysis extends React.Component {
                       >{item.year}</span>)
                     }
                   })
-                }
+                  }
                 </div>
               </div>
 
@@ -437,7 +437,7 @@ class OperateAnalysis extends React.Component {
                   <div>发电量 {powerData.componentGen || '--'}万kWh</div>
                   <div>损耗 {powerData.componentLost || '--'}万kWh</div>
                 </div>
-                <div className={this.getLostPercentage(powerData.componentGen, powerData.theoryGen)>12 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.componentGen, powerData.theoryGen)}%</div>
+                <div className={this.getLostPercentage(powerData.componentGen, powerData.theoryGen) > 12 ? styles.activeInnerBottom : styles.innerBottom}>损耗 {this.getLostPercentage(powerData.componentGen, powerData.theoryGen)}%</div>
 
               </div>
               <Icon type="double-right" theme="outlined" />
@@ -447,7 +447,7 @@ class OperateAnalysis extends React.Component {
                   <div>发电量 {powerData.inverterGen || '--'}万kWh</div>
                   <div>损耗 {powerData.inverterLost || '--'}万kWh</div>
                 </div>
-                <div className={this.getLostPercentage(powerData.inverterGen, powerData.componentGen)>3 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.inverterGen, powerData.componentGen)}%</div>
+                <div className={this.getLostPercentage(powerData.inverterGen, powerData.componentGen) > 3 ? styles.activeInnerBottom : styles.innerBottom}>损耗 {this.getLostPercentage(powerData.inverterGen, powerData.componentGen)}%</div>
               </div>
               <Icon type="double-right" theme="outlined" />
               <div className={styles.cardItem + " " + styles.electricPowerLine}>
@@ -456,7 +456,7 @@ class OperateAnalysis extends React.Component {
                   <div>发电量 {powerData.integratedGen || '--'}万kWh</div>
                   <div>损耗 {powerData && powerData.integratedLost || '--'}万kWh</div>
                 </div>
-                <div className={this.getLostPercentage(powerData.integratedGen, powerData.inverterGen)>2 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.integratedGen, powerData.inverterGen)}%</div>
+                <div className={this.getLostPercentage(powerData.integratedGen, powerData.inverterGen) > 2 ? styles.activeInnerBottom : styles.innerBottom}>损耗 {this.getLostPercentage(powerData.integratedGen, powerData.inverterGen)}%</div>
 
 
               </div>
@@ -467,7 +467,7 @@ class OperateAnalysis extends React.Component {
                   <div>上网电量 {powerData.internetGen || '--'}万kWh</div>
                   <div>损耗 {powerData.internetLost || '--'}万kWh</div>
                 </div>
-                <div className={this.getLostPercentage(powerData.internetGen, powerData.integratedGen)>1 ?styles.activeInnerBottom:styles.innerBottom}>损耗 {this.getLostPercentage(powerData.internetGen, powerData.integratedGen)}%</div>
+                <div className={this.getLostPercentage(powerData.internetGen, powerData.integratedGen) > 1 ? styles.activeInnerBottom : styles.innerBottom}>损耗 {this.getLostPercentage(powerData.internetGen, powerData.integratedGen)}%</div>
               </div>
             </div>
           </div>

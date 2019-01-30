@@ -55,9 +55,9 @@ class UnhandleSide extends Component {
 
   addReason = (rest) => { // 忽略原因
     const { ignoreList, inefficiencyId } = this.props;
-    const { buttonStatus, ignoreReason, ignoreReasonCode } = rest;
+    const { buttonStatus, ignoreReason, ignoreReasonCode , deadline, ignoreTime} = rest;
     if (buttonStatus === 'sure') {
-      ignoreList({ inefficiencyIds: Array.of(inefficiencyId), ignoreReason, ignoreReasonCode })
+      ignoreList({ inefficiencyIds: Array.of(inefficiencyId), ignoreReason, ignoreReasonCode, deadline, ignoreTime })
     }
     this.setState({ ingoreVisible: false })
   }

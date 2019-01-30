@@ -31,7 +31,7 @@ class RealTimeWarningTop extends Component {
             {warningStatus === '3' && <i className="iconfont icon-tranlist icon-title"></i>}
             <div className={styles.alarmInfoItem}>
               <span className={styles.alarmNum}>{isNaN(total) ? '- -' : total}</span>
-              <span className={styles.alarmText}>{warningStatus === 1 ? "告警数" : warningStatus === 2 ? "手动解除数" : "转工单数"}</span>
+              <span className={styles.alarmText}>{warningStatus === '1' ? "告警数" : warningStatus === '2' ? "手动解除数" : "转工单数"}</span>
             </div>
             <div className={styles.alarmNumDetail}>
               <div className={styles.alarmInfoItem}>

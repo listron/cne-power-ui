@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { realtimeWarningActive } from './realtimeWarningActive.js';
+import { realtimeWarningAction } from './realtimeWarningAction.js';
 
 var initState = Immutable.fromJS({
   warningStatus:'1',//告警状态
@@ -30,11 +30,11 @@ var initState = Immutable.fromJS({
 });
 const realtimeWarningReducer = (state = initState, action) => {
   switch (action.type) {
-    // case realtimeWarningActive.huoquchenggong:
+    // case realtimeWarningAction.huoquchenggong:
     //   return state.set('loading', true)
-    case realtimeWarningActive.changeRealtimeWarningStore:
+    case realtimeWarningAction.changeRealtimeWarningStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case realtimeWarningActive.resetRealtimeWarninStore:
+    case realtimeWarningAction.resetRealtimeWarninStore:
       return initState
   }
   return state;

@@ -11,7 +11,13 @@ class WindStation extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
     stationShowType: PropTypes.string,
-    changeMonitorStationStore: PropTypes.func
+    changeMonitorStationStore: PropTypes.func,
+    realTimePowerUnit: PropTypes.string,
+    realCapacityUnit: PropTypes.string,
+    powerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context);
@@ -96,7 +102,7 @@ class WindStation extends React.Component {
     return newStationDataList
   }
   mapData=()=>{
-    const { windMonitorStation ,realTimePowerUnit,realCapacityUnit } = this.props;
+    const { windMonitorStation ,realTimePowerUnit,realCapacityUnit,realTimePowerPoint,realCapacityPoint } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     let iconArray = [
       {
@@ -123,8 +129,8 @@ class WindStation extends React.Component {
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         symbolSize: stationType > 0 ? [30, 20]: [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000),
-        stationCapacity: realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000),
+        stationPower: (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint),
+        stationCapacity: (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
         stationStatus:stationStatus,

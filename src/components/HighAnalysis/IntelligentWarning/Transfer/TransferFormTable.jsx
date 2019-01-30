@@ -188,12 +188,12 @@ class TransferFormTable extends Component {
         // }
       }
     ]
-    const { transferFormList,  pageSize, pageNum, } = this.props;
+    const { transferFormList,  pageSize, pageNum,total } = this.props;
    
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
           dataSource={transferFormList}

@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { handleRemoveActive } from './handleRemoveActive.js';
+import { handleRemoveAction } from './handleRemoveAction.js';
 
 var initState = Immutable.fromJS({
   warningStatus:'2',//手动解除
@@ -9,6 +9,7 @@ var initState = Immutable.fromJS({
   deviceName:null,//设备名称
   pageSize:10,
   pageNum:1,
+  total:0,
   rangTime:[],//时间
   startTime:[],//开始时间
   endTime:[],//结束时间
@@ -23,14 +24,15 @@ var initState = Immutable.fromJS({
   selectedRowKeys: [], //表格选中的行key
   defectTypes:[],
   defectId: '',
+  relieveInfo:{},//手动解除的处理详情
 });
 const handleRemoveReducer = (state = initState, action) => {
   switch (action.type) {
     // case realtimeWarningActive.huoquchenggong:
     //   return state.set('loading', true)
-    case handleRemoveActive.changeHandleRemoveStore:
+    case handleRemoveAction.changeHandleRemoveStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case handleRemoveActive.resetHandleRemoveStore:
+    case handleRemoveAction.resetHandleRemoveStore:
       return initState
   }
   return state;

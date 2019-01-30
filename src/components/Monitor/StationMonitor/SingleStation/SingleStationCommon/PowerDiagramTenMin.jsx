@@ -29,13 +29,13 @@ class PowerDiagramTenMin extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { powerData, chartType, yAxisUnit } = nextProps;
+    const { powerData, chartType, yAxisUnit,yAxisValuePoint } = nextProps;
     const { intervalTime } = this.state;
     const yAxisType = `电量(${yAxisUnit})`
     const powerDiagram = echarts.init(document.getElementById('powerDiagram'));
 
     const lineColor = '#666';
-    const actualPower = powerData.map(e => yAxisUnit === '万kWh' ? e.actualPower : e.actualPower * 10000);  // 实际发电量
+    const actualPower = powerData.map(e => (yAxisUnit === '万kWh' ? (+e.actualPower) : (+e.actualPower * 10000)).toFixed(yAxisValuePoint));  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
     const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
@@ -84,8 +84,8 @@ class PowerDiagramTenMin extends Component {
         formatter: (params) => {
           let paramsItem = '';
           params.forEach((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :
-            ${this.dealValue(params[index].seriesName,params[index].value,this.getDefaultPoint(params[index].seriesName))}</div>`
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :
+            ${this.dealValue(item.seriesName,item.value,this.getDefaultPoint(item.seriesName))}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
             </div>${paramsItem}`

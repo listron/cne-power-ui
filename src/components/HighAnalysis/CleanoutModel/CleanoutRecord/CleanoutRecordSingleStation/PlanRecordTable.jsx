@@ -77,10 +77,10 @@ class PlanRecordTable extends Component {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        render: text => (<span>{parseInt(text) >= 0 ? `${text}` : '--'}</span>),
+        render: text => (<span>{ `${text}`? `${text}` : '--'}</span>),
 
       }, {
-        title: 'pr',
+        title: 'PR(三天前/三天后)',
         dataIndex: 'pr',
         key: 'pr',
 
@@ -106,7 +106,10 @@ class PlanRecordTable extends Component {
         {showWarningTip && <WarningTip style={{ width: '240px', marginTop: '312px' }} onOK={this.confirmWarningTip} onCancel={this.cancelWarningTip} value={warningTipText} />}
         <Table
           loading={loading}
-          dataSource={cleanRecordListData.map((e, i) => ({ ...e, key: i }))}
+          dataSource={cleanRecordListData.map((e, i) =>{
+            const prArr=e.pr.split(',');
+            const pr=`${+prArr[0]&&+prArr[0]!==0?prArr[0]:'--'},${+prArr[1]&&+prArr[1]!==0?prArr[1]:'--'}`
+            return  ({ ...e, key: i,pr:pr })})}
           columns={column}
           className={styles.stationTable}
           onChange={this.tableChange}

@@ -92,7 +92,7 @@ class Transfer extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        defaultSortOrder: 'descend',
+        
         // render: text => (text || text === 0) ? text : '--'
       },
       {
@@ -125,6 +125,7 @@ class Transfer extends Component {
         dataIndex: 'createTime',
         key: 'createTime',
         sorter: true,
+        defaultSortOrder: 'descend',
         // render: text => (text || text === 0) ? text : '--'
       },
       {
@@ -147,7 +148,7 @@ class Transfer extends Component {
       <div className={styles.transferMain}>
         <FilterCondition
           option={['time', 'stationName', 'belongMatrixs']}
-          stations={stations}
+          stations={stations.filter(e => e.stationType === 1)}
           matrixList={matrixList}
           onChange={this.filterCondition}
         />

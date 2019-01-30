@@ -106,7 +106,7 @@ function SequenceChart({ idName, title, sequenceChartList, currentDeviceName, })
         axisLabel: {
           color: lineColor,
           formatter: (value) => {
-            return value.split(' ')[0] + "\n" + value.split(' ')[1]
+            return value && value.split(' ')[0] + "\n" + value.split(' ')[1]
           }
         },
         axisPointer: {

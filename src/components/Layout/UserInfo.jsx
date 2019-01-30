@@ -9,7 +9,8 @@ class UserInfo extends Component{
   static propTypes = {
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
-    changeLoginStore: PropTypes.func
+    changeLoginStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   }
 
   constructor(props){
@@ -36,6 +37,7 @@ class UserInfo extends Component{
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.changeLoginStore({pageTab: 'login'});
+    this.props.resetMonitorData();
     this.props.history.push('/login');
   }
 

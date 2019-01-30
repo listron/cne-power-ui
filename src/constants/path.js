@@ -184,7 +184,9 @@ export default {
       getSeriesData:'/v3/forewarning/conf',  //获取低效组串预警配置
       addSeriesData:'/v3/forewarning/conf',  //设置低效组串预警配置
       getCleaningData:'/v3/pvclean/conf', //获取清洗模型预警配置
-      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置     
+      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置    
+      
+      warnConf:'/v3/smartalarm/conf',// 预警配置 增删改查
     },
     monitor: {//实时监控
       getStationType:'/v3/monitor/stations/',
@@ -286,7 +288,8 @@ export default {
       getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
       getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
       getManufacturer :'/v3/performance/deviceanalysis/manufacturer', // 获取所有的生产厂家
-      getDevicemode:'/v3/performance/deviceanalysis/manufacturer/devicemode',// 获取电站下的所有设备型号
+      getDevicemode:'/v3/performance/deviceanalysis/devicemode',// 获取电站下的所有设备型号
+      getDevicemodes:'/v3/performance/deviceanalysis/manufacturer/devicemode',// 获取电站下的所有设备型号
       getDevicecontrast:'/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       getStationcontrast:'/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore:'/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
