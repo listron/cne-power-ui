@@ -5,7 +5,7 @@ import styles from './cleanoutPlanRecord.scss';
 import moment from 'moment';
 import { Modal, Form, DatePicker, Button, TreeSelect } from 'antd';
 const FormItem = Form.Item;
-const showMatrix = TreeSelect.showMatrix;
+const showMatrix = TreeSelect.SHOW_ALL;
 const { RangePicker } = DatePicker;
 
 class AddCleanoutRecord extends Component {
@@ -120,7 +120,7 @@ class AddCleanoutRecord extends Component {
               label="清洗方阵"
             >
               {getFieldDecorator('matrix', {
-                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix : '',
+                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix.split(',') : '',
                 rules: [{ required: true, message: '请选择方阵' }],
               })(
                 <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />

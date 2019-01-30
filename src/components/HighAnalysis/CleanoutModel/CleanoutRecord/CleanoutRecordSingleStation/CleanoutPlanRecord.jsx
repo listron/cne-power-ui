@@ -10,10 +10,10 @@ import AddCleanoutRecord from './AddCleanoutRecord';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button,  } from 'antd';
 const FormItem = Form.Item;
 
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+
 const { RangePicker } = DatePicker;
 class CleanoutPlanRecord extends Component {
   static propTypes = {
