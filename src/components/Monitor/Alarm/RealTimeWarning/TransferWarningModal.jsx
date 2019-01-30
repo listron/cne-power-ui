@@ -86,8 +86,10 @@ class TransferWarningModal extends Component {
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
           visible={true}
+          okText='保存'
           onOk={this.onSubmit}
           onCancel={this.props.onCancel}>
+         
           <FormItem className={styles.formItem} label="缺陷类型">
             {getFieldDecorator('defectTypeCode', {
               rules: [{

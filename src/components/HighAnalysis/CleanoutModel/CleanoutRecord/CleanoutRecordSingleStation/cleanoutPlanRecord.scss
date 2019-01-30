@@ -1,14 +1,8 @@
 @import '../../../../../theme/theme.scss';
     
-    
     .sidePage{
-      display: flex;
-      flex: 1 0 auto;
-      width: 100%;
-      flex-direction: column;
-      background-color: #ececec;
       z-index: 2;
-      padding-right: 24px;
+      @include contentBoxStyle();
     }
     .CleanoutPlanRecord{
       display: flex;
@@ -16,16 +10,12 @@
       width: 100%;
       flex-direction: column;
       background-color: #ececec;
-      // padding: 24px 24px 0;
-     
       .testBackground{
         background-color: #fff;
         display: flex;
         flex: 1 0 auto;
         width: 100%;
         flex-direction: column;
-        
-      
       }
      
       .detailTop{
@@ -34,9 +24,9 @@
         height: 60px;
         border-bottom: 1px solid #ececec;
         align-items: center;
-
         .topInfoShow{
           font-size: 20px;
+          padding-left: 16px;
         }
         .handleArea{ 
           height: 100%;
@@ -71,7 +61,6 @@
          width: 60px;
          border-left: 1px soild #ececec ;
          font-size: 20px;
-        //  margin-left: 20px;
        }
 
       }
@@ -96,6 +85,7 @@
       .filterData{
         display: flex;
         justify-content: space-between;
+        padding-left: 28px;
         height: 60px;
         line-height: 60px;
         align-content: center;

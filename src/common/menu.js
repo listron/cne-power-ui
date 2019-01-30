@@ -239,7 +239,7 @@ const menuData = [
           {
             name: '实时预警',
             path: 'realtime',
-            defaultPath: true,
+            // defaultPath: true,
             rightKey: 'analysis_intelligentWarning_pending',
           }, {
             name: '已转工单',
@@ -258,7 +258,7 @@ const menuData = [
       },
       {
         name: '清洗模型',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-cleaning-model',
         path: 'cleanout',
         rightKey: 'analysis_cleanModel',
         children: [
