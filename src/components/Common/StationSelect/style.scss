@@ -11,6 +11,15 @@
         box-shadow: none;
       }
     }
+    .ant-select-auto-complete.ant-select .ant-select-selection--single{ // 单选电站框样式。
+      border: 1px solid $promptColor;
+      .ant-input{
+        border: none;
+        &:focus, &:hover{
+          border: none;
+        }
+      }
+    }
   }
   .stationSelectModal{
     position: absolute;
