@@ -35,7 +35,7 @@ function *userNameLogin(action){
       auth: {},
       data: stringify({
         'grant_type': "password",
-        'deviceType': 0,
+        'deviceType': '0',
         username: params.username,
         password: Base64.encode(params.password),
       }),
