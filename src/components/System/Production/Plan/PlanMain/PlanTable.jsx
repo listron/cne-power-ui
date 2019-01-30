@@ -203,7 +203,7 @@ class PlanTable extends Component {
         sorter: true,
         className: styles.stationCapacity,
         render: text => {
-          return text ? text : '--'
+          return text ? Number(text).toFixed(4) : '--'
         }
       },
       {
