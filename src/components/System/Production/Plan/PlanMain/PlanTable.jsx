@@ -131,7 +131,7 @@ class PlanTable extends Component {
       let saveOK = planMonthGens.some(e => e === "")
       saveOK && message.warning(`请填写完整之后再保存`);
       if (!saveOK) {
-        this.setState({ editingKey: ''});
+        this.setState({ editingKey: '' });
         const params = {
           year: saveData.planYear,
           stationCode: saveData.stationCode,
@@ -140,7 +140,7 @@ class PlanTable extends Component {
           planPower: saveData.planPower,
           yearPR: saveData.yearPR || null,
         };
-        this.props.changePlanStore({planData:newData})
+        this.props.changePlanStore({ planData: newData })
         this.props.editPlanInfo(params);
       }
     })
@@ -148,7 +148,6 @@ class PlanTable extends Component {
 
   _createTableColumn = () => {//生成表头
     const _this = this;
-    const canEdit = moment().year() - this.props.planYear;
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -250,6 +249,7 @@ class PlanTable extends Component {
         className: styles.operation,
         render: (text, record) => {
           const editable = this.isEditing(record);
+          const canEdit = moment().year() - record.planYear > 0;
           return (
             <div>
               {editable ? (

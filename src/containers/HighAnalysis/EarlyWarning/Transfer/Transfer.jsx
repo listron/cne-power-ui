@@ -32,6 +32,7 @@ class Transfer extends Component {
 
   onEndToggleSide = () => {
     this.setState({ showPage: false })
+    this.props.changeTransferStore({defectId:''})
   }
 
   prevChange = (value) => {
