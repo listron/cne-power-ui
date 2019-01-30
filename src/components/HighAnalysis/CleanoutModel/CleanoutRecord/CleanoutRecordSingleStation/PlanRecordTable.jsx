@@ -108,8 +108,7 @@ class PlanRecordTable extends Component {
           loading={loading}
           dataSource={cleanRecordListData.map((e, i) =>{
             const prArr=e.pr.split(',');
-            console.log(prArr);
-            const pr=`${prArr[0]&&prArr[0]!=='0'?prArr[0]:'--'},${+prArr[1]&&+prArr[1]!=='0'?prArr[1]:'--'}`
+            const pr=`${+prArr[0]&&+prArr[0]!==0?prArr[0]:'--'},${+prArr[1]&&+prArr[1]!==0?prArr[1]:'--'}`
             return  ({ ...e, key: i,pr:pr })})}
           columns={column}
           className={styles.stationTable}

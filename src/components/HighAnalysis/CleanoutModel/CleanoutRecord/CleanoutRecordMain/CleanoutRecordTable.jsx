@@ -111,14 +111,14 @@ class CleanoutRecordTable extends Component {
         title: '平均清洗周期(天)',
         dataIndex: 'cleanCycle',
         key: 'cleanCycle',
-        render: text => (<span>{(text && text !== '0') ? `${text}` : '--'}</span>),
+        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
         sorter: true,
       }, {
         title: '累计清洗收益(万kWh)',
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         sorter: true,
-        render: text => (<span>{(text && text !== '0') ? `${text}` : '--'}</span>),
+        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
       }, {
         title: '上次清洗时间',
         dataIndex: 'cleanTime',
