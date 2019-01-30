@@ -81,6 +81,7 @@ class DayReportMainList extends Component {
     let columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
+      className: styles.stationName,
       sorter: true,
     }];
     if(dayReportList.length > 0 && dayReportList[0].dataList){ // 有数据
