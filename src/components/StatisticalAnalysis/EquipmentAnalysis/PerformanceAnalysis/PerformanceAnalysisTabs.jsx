@@ -35,78 +35,89 @@ class PerformanceAnalysisTabs extends Component {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames } = this.props;
+
+
     //转化效率
-    let xData = conversioneffData && conversioneffData.map((e, i) => { return e.deviceName }) || [];
+    let xData = conversioneffData.map(e => e.deviceName) || [];
     let haveSliderConver = xData.length > 20;
-    let barData = conversioneffData && conversioneffData.map((e, i) => { return e.conversionRate }) || [];
-    let lineData = conversioneffData && conversioneffData.map((e, i) => { return conversionAvgRate }) || [];
+    let barData = conversioneffData.map(e => e.conversionRate) || [];
+    let lineData = Array(xData.length).fill(conversionAvgRate) || [];
     let conversionHasData = xData.some(e => e || e === 0) || barData.some(e => e || e === 0) || lineData.some(e => e || e === 0)
+
     //对比转化效率
-    let contrastDeviceName = conversioneffContrastData && conversioneffContrastData.map((e, i) => { return e.deviceName }) || [];
+    let contrastDeviceName = conversioneffContrastData.map(e => e.deviceName) || [];
     let haveSliderContrastCon = contrastDeviceName.length > 20;
-    let conversionRate = conversioneffContrastData && conversioneffContrastData.map((e, i) => { return e.conversionRate }) || [];
-    let contrastConversionRate = conversioneffContrastData && conversioneffContrastData.map((e, i) => { return e.contrastConversionRate }) || [];
-    let contrastAvgRateData = conversioneffContrastData && conversioneffContrastData.map((e, i) => { return contrastAvgRate }) || [];
-    let contrastConversionAvgRateData = conversioneffContrastData && conversioneffContrastData.map((e, i) => { return contrastConversionAvgRate }) || [];
-    // console.log(contrastDeviceName,conversionRate,contrastConversionRate,contrastAvgRateData,contrastConversionAvgRateData);
+    let conversionRate = conversioneffContrastData.map(e => e.conversionRate) || [];
+    let contrastConversionRate = conversioneffContrastData.map(e => e.contrastConversionRate) || [];
+    let contrastAvgRateData = Array(xData.length).fill(contrastAvgRate) || [];
+    let contrastConversionAvgRateData = Array(xData.length).fill(contrastConversionAvgRate) || [];
     let contrastConversionHasData = contrastDeviceName.some(e => e || e === 0) || conversionRate.some(e => e || e === 0) || contrastConversionRate.some(e => e || e === 0) || contrastAvgRateData.some(e => e || e === 0) || contrastConversionAvgRateData.some(e => e || e === 0);
+
     //等效小时数、故障次数、故障时长
-    let hoursDeviceNameData = hourData && hourData.map((e, i) => { return e.deviceName });
+    let hoursDeviceNameData = hourData.map(e => e.deviceName);
     let haveSliderHour = hoursDeviceNameData.length > 20;
-    let hoursDataResults = hourData && hourData.map((e, i) => { return e.dataResults });
-    let faultNumDeviceNameData = faultNumData && faultNumData.map((e, i) => { return e.deviceName });
+    let hoursDataResults = hourData.map(e => e.dataResults);
+    let faultNumDeviceNameData = faultNumData.map(e => e.deviceName);
     let haveSliderNum = faultNumDeviceNameData.length > 20;
-    let faultNumDataResults = faultNumData && faultNumData.map((e, i) => { return e.dataResults });
-    let faultTimeDeviceNameData = faultTimeData && faultTimeData.map((e, i) => { return e.deviceName });
+    let faultNumDataResults = faultNumData.map(e => e.dataResults);
+    let faultTimeDeviceNameData = faultTimeData.map(e => e.deviceName);
     let haveSliderTime = faultTimeDeviceNameData.length > 20;
-    let faultTimeDataResults = faultTimeData && faultTimeData.map((e, i) => { return e.dataResults });
-    let hoursHasData = hoursDeviceNameData.some(e => e || e === 0) || hoursDataResults.some(e => e || e === 0);
-    let faultNumHasData = faultNumDeviceNameData.some(e => e || e === 0) || faultNumDataResults.some(e => e || e === 0);
-    let faultTimeHasData = faultTimeDeviceNameData.some(e => e || e === 0) || faultTimeDataResults.some(e => e || e === 0);
+    let faultTimeDataResults = faultTimeData.map(e => e.dataResults);
+    let hoursHasData = hoursDataResults.some(e => e || e === 0);
+    let faultNumHasData = faultNumDataResults.some(e => e || e === 0);
+    let faultTimeHasData = faultTimeDataResults.some(e => e || e === 0);
+
     //对比等效小时数、
-    let contrastHoursDeviceNameData = hourContrastData && hourContrastData.map((e, i) => { return e.deviceName });
+    let contrastHoursDeviceNameData = hourContrastData.map(e => e.deviceName);
     let haveSliderConTrastHour = contrastHoursDeviceNameData.length > 20;
-    let contrastHoursResults = hourContrastData && hourContrastData.map((e, i) => { return e.dataResults });
-    let contrastHoursDataResults = hourContrastData && hourContrastData.map((e, i) => { return e.contrastDataResults });
-    let contrastHoursHasData = contrastHoursDeviceNameData.some(e => e || e === 0) || contrastHoursResults.some(e => e || e === 0) || contrastHoursDataResults.some(e => e || e === 0)
+    let contrastHoursResults = hourContrastData.map(e => e.dataResults);
+    let contrastHoursDataResults = hourContrastData.map(e => e.contrastDataResults);
+    let contrastHoursHasData = contrastHoursResults.some(e => e || e === 0) || contrastHoursDataResults.some(e => e || e === 0)
+
     //对比故障次数
-    let contrastFaultNumDeviceNameData = faultNumContrastData && faultNumContrastData.map((e, i) => { return e.deviceName });
+    let contrastFaultNumDeviceNameData = faultNumContrastData.map(e => e.deviceName);
     let haveSliderConTrastNum = contrastFaultNumDeviceNameData.length > 20;
-    let contrastFaultNumResults = faultNumContrastData && faultNumContrastData.map((e, i) => { return e.dataResults });
-    let contrastFaultNumDataResults = faultNumContrastData && faultNumContrastData.map((e, i) => { return e.contrastDataResults });
-    let contrastFaultNumHasData = contrastFaultNumDeviceNameData.some(e => e || e === 0) || contrastFaultNumResults.some(e => e || e === 0) || contrastFaultNumDataResults.some(e => e || e === 0)
+    let contrastFaultNumResults = faultNumContrastData.map(e => e.dataResults);
+    let contrastFaultNumDataResults = faultNumContrastData.map(e => e.contrastDataResults);
+    let contrastFaultNumHasData = contrastFaultNumResults.some(e => e || e === 0) || contrastFaultNumDataResults.some(e => e || e === 0)
+
     //对比故障时长
-    let contrastFaultTimeDeviceNameData = faultTimeContrastData && faultTimeContrastData.map((e, i) => { return e.deviceName });
+    let contrastFaultTimeDeviceNameData = faultTimeContrastData.map(e => e.deviceName);
     let haveSliderConTrastTime = contrastFaultTimeDeviceNameData.length > 20;
-    let contrastFaultTimeResults = faultTimeContrastData && faultTimeContrastData.map((e, i) => { return e.dataResults });
-    let contrastFaultTimeDataResults = faultTimeContrastData && faultTimeContrastData.map((e, i) => { return e.contrastDataResults });
-    let contrastFaultTimeHasData = contrastFaultTimeDeviceNameData.some(e => e || e === 0) || contrastFaultTimeResults.some(e => e || e === 0) || contrastFaultTimeDataResults.some(e => e || e === 0)
+    let contrastFaultTimeResults = faultTimeContrastData.map(e => e.dataResults);
+    let contrastFaultTimeDataResults = faultTimeContrastData.map(e => e.contrastDataResults);
+    let contrastFaultTimeHasData = contrastFaultTimeResults.some(e => e || e === 0) || contrastFaultTimeDataResults.some(e => e || e === 0)
+
     //利用率
-    let availabilityDeviceName = availabilityData && availabilityData.map((e, i) => { return e.deviceName });
-    let haveSliderAvailability=availabilityDeviceName.length>20;
-    let availabilityDataResults = availabilityData && availabilityData.map((e, i) => { return e.availability });
-    let availabilityHasData = availabilityDeviceName.some(e => e || e === 0) || availabilityDataResults.some(e => e || e === 0);
+    let availabilityDeviceName = availabilityData.map(e => e.deviceName);
+    let haveSliderAvailability = availabilityDeviceName.length > 20;
+    let availabilityDataResults = availabilityData.map(e => e.availability);
+    let availabilityHasData = availabilityDataResults.some(e => e || e === 0);
+
+
     //损失电量
-    let lostPowerDeviceName = lostPowerData && lostPowerData.map((e, i) => { return e.deviceName });
-    let haveSliderLostPower=lostPowerDeviceName.length>20;
-    let lostPowerDataResults = lostPowerData && lostPowerData.map((e, i) => { return e.lostPower });
-    let lostPowerHasData = lostPowerDeviceName.some(e => e || e === 0) || lostPowerDataResults.some(e => e || e === 0);
+    let lostPowerDeviceName = lostPowerData.map(e => e.deviceName);
+    let haveSliderLostPower = lostPowerDeviceName.length > 20;
+    let lostPowerDataResults = lostPowerData.map(e => e.lostPower);
+    let lostPowerHasData = lostPowerDataResults.some(e => e || e === 0);
+
     //对比利用率及
-    let contrastAvailabilityDeviceName = availabilityContrastData && availabilityContrastData.map((e, i) => { return e.deviceName });
-    let haveSliderConAvailability=contrastAvailabilityDeviceName.length>20;
-    let availabilityConData = availabilityContrastData && availabilityContrastData.map((e, i) => { return e.availability });
-    let contrastAvailabilityData = availabilityContrastData && availabilityContrastData.map((e, i) => { return e.contrastAvailability });
-    let contrastAvailabilityHasData = contrastAvailabilityDeviceName.some(e => e || e === 0) || availabilityConData.some(e => e || e === 0) || contrastAvailabilityData.some(e => e || e === 0)
+    let contrastAvailabilityDeviceName = availabilityContrastData.map(e => e.deviceName);
+    let haveSliderConAvailability = contrastAvailabilityDeviceName.length > 20;
+    let availabilityConData = availabilityContrastData.map(e => e.availability);
+    let contrastAvailabilityData = availabilityContrastData.map(e => e.contrastAvailability);
+    let contrastAvailabilityHasData = availabilityConData.some(e => e || e === 0) || contrastAvailabilityData.some(e => e || e === 0)
+
     //对比损失电量
-    let contrastLossPowerDeviceName = lostPowerContrastData && lostPowerContrastData.map((e, i) => { return e.deviceName });
-    let haveSliderConLostPower=contrastLossPowerDeviceName.length>20;
-    let lostPowerDataCon = lostPowerContrastData && lostPowerContrastData.map((e, i) => { return e.lostPower });
-    let contrastLossPowerData = lostPowerContrastData && lostPowerContrastData.map((e, i) => { return e.contrastLossPower });
-    let contrastLostPowerHasData = contrastLossPowerDeviceName.some(e => e || e === 0) || lostPowerDataCon.some(e => e || e === 0) || contrastLossPowerData.some(e => e || e === 0)
+    let contrastLossPowerDeviceName = lostPowerContrastData.map((e, i) => { return e.deviceName });
+    let haveSliderConLostPower = contrastLossPowerDeviceName.length > 20;
+    let lostPowerDataCon = lostPowerContrastData.map((e, i) => { return e.lostPower });
+    let contrastLossPowerData = lostPowerContrastData.map((e, i) => { return e.contrastLossPower });
+    let contrastLostPowerHasData = lostPowerDataCon.some(e => e || e === 0) || contrastLossPowerData.some(e => e || e === 0)
 
     //前五名设备
     // conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames
-   
+
     const conversionData = contrastEndDate ? {
       xData: contrastDeviceName,
       yData: {
@@ -227,32 +238,32 @@ class PerformanceAnalysisTabs extends Component {
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'conversioneff'} title={'转换效率'} data={conversionData}
-                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderContrastCon : haveSliderConver}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastConversionHasData : conversionHasData}
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderContrastCon : haveSliderConver}
+                  hasData={contrastSwitch && contrastEndDate ? contrastConversionHasData : conversionHasData}
                   deviceNames={conversDeviceNames}
                 />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
-                {conversDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {conversDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'hours'} title={'等效小时数'} data={hoursData}
-                  hasSlider={contrastSwitch&&contrastEndDate? haveSliderConTrastHour : haveSliderHour}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastHoursHasData : hoursHasData} />
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastHour : haveSliderHour}
+                  hasData={contrastSwitch && contrastEndDate ? contrastHoursHasData : hoursHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
-                {hourDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {hourDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'availability'} title={'可利用率'} data={availabilityAnalysis}
-                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
+                  hasData={contrastSwitch && contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
-                {availabilityDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {availabilityDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
             </div>
           </TabPane>
@@ -260,30 +271,30 @@ class PerformanceAnalysisTabs extends Component {
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'lostPower'} title={'损失电量'} data={lossPowerAnalysis}
-                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
+                  hasData={contrastSwitch && contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查损失电量较多的设备是否故障</div>
-                {lostPowerDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {lostPowerDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'faultNum'} title={'设备故障次数'} data={faultNumAnalysis}
-                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
+                  hasData={contrastSwitch && contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultNumDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {faultNumDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts graphId={'faultTime'} title={'设备故障时长'} data={faultTimeAnalysis}
-                  hasSlider={contrastSwitch&&contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
-                  hasData={contrastSwitch&&contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
+                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
+                  hasData={contrastSwitch && contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultTimeDeviceNames.length>0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultTimeDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {faultTimeDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultTimeDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
             </div>
           </TabPane>
