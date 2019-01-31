@@ -70,8 +70,6 @@ class AllStation extends Component {
   }
   render() {
     const { stationTypes,stationTypeCount } = this.props;
-    console.log('stationTypeCount: ', stationTypeCount);
-
     const breadCrumbData = {
       breadData: [
 
@@ -85,14 +83,16 @@ class AllStation extends Component {
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
-          {stationTypes === '2' ?
+          {stationTypeCount === 'multiple' &&
             <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
               <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
               <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
               <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
-            </Tabs> :
-            (stationTypes === '0' ? <WindStation {...this.props} /> : <PvStation {...this.props} />)
+            </Tabs> 
           }
+          {stationTypeCount === 'wind' && <WindStation {...this.props} /> }
+          {stationTypeCount === 'pv'&& <PvStation {...this.props} />}
+          {stationTypeCount === 'none'&&""}
         </div>
         <Footer />
       </div>
@@ -107,7 +107,7 @@ const mapStateToProps = (state) => ({
   realCapacityPoint: state.common.get('realCapacityPoint'),
   powerUnit: state.common.get('powerUnit'),
   powerPoint: state.common.get('powerPoint'),
-  stationTypeCount: state.common.get('stationTypeCount').toJS(),
+  stationTypeCount: state.common.get('stationTypeCount'),
 
 })
 const mapDispatchToProps = (dispatch) => ({
