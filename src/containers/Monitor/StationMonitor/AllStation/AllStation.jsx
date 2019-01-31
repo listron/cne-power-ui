@@ -69,7 +69,9 @@ class AllStation extends Component {
     this.queryStationData(activeKey);
   }
   render() {
-    const { stationTypes } = this.props;
+    const { stationTypes,stationTypeCount } = this.props;
+    console.log('stationTypeCount: ', stationTypeCount);
+
     const breadCrumbData = {
       breadData: [
 
@@ -105,6 +107,7 @@ const mapStateToProps = (state) => ({
   realCapacityPoint: state.common.get('realCapacityPoint'),
   powerUnit: state.common.get('powerUnit'),
   powerPoint: state.common.get('powerPoint'),
+  stationTypeCount: state.common.get('stationTypeCount').toJS(),
 
 })
 const mapDispatchToProps = (dispatch) => ({

@@ -20,10 +20,21 @@ function* getStations(action) { // 通用：获取所有电站信息
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const stations = response.data.data || [];
+      const stationTypes = new Set(stations.map(e => e.stationType));
+      let stationTypeCount = 'none';
+      if (stationTypes.size === 2) { // 两种类型电站都有
+        stationTypeCount = 'multiple';
+      } else if (stationTypes.has(1)) { // 只有光伏电站
+        stationTypeCount = 'pv';
+      } else if ( stationTypes.has(0)) { // 只有风电站
+        stationTypeCount = 'wind';
+      }
       yield put({
         type: commonAction.GET_COMMON_FETCH_SUCCESS,
         payload: {
-          stations: response.data.data
+          stations: response.data.data,
+          stationTypeCount,
         }
       });
     }
