@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table,message } from "antd";
+import { unitDataFormat } from '../../../../../utils/utilFunc'
 class PvStationList extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
@@ -257,13 +258,10 @@ class PvStationList extends React.Component {
           stationPower: `${(realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint) || '--'}`,
           stationCapacity: `${(realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
-         
-          dayOutput: `${(powerUnit==='万kWh'?(+item.dayPower):(+item.dayPower*10000)).toFixed(powerPoint) || '--'}`,
-          monthOutput: `${(powerUnit==='万kWh'?(+item.monthPower):(+item.monthPower*10000)).toFixed(powerPoint) || '--'}`,
-          yearOutput: `${(powerUnit==='万kWh'?(+item.yearPower):(+item.yearPower*10000)).toFixed(powerPoint) || '--'}`,
-          planOutput: `${(powerUnit==='万kWh'?(+item.yearPlanPower):(+item.yearPlanPower*10000)).toFixed(powerPoint) || '--'}`,
-
-         
+          dayOutput: unitDataFormat(item.dayPower, '--', powerPoint, powerUnit),
+          monthOutput: unitDataFormat(item.monthPower, '--', powerPoint, powerUnit),
+          yearOutput: unitDataFormat(item.yearPower, '--', powerPoint, powerUnit),
+          planOutput: unitDataFormat(item.yearPlanPower, '--', powerPoint, powerUnit),
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${stationStatus.stationStatus || ''}`
