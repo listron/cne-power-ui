@@ -26,6 +26,9 @@ class DeviceManageList extends Component {
       sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
+  showEditModal=()=>{
+    this.props.changeDeviceManageStore({showPage:'edit'})
+  }
 
   render() {
     const deviceListColumn = [
@@ -65,7 +68,12 @@ class DeviceManageList extends Component {
         key: 'enableDisplay',
         sorter: true,
         render: (text, record) => record.enableDisplay?'是':'否'
-      },
+      },{
+        title: '编辑',
+        dataIndex: 'edit',
+        key: 'edit',
+        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={this.showEditModal}></span>)
+      }
     ];
     const { loading, deviceList } = this.props;
     
