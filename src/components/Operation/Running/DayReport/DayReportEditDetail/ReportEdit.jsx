@@ -282,13 +282,13 @@ class ReportEdit extends Component {
             <Popconfirm
               placement="leftTop"
               overlayClassName={styles.confirmBox}
-              title="你确定要提交?"
+              title="你确定要保存?"
               onConfirm={this.updateReport}
               okText="确定"
               cancelText="取消">
                 <Button
                   className={styles.reportEdit}
-                >提交</Button>
+                >保存</Button>
             </Popconfirm>
             <Icon type="arrow-left" className={styles.backIcon}  onClick={this.showDetaiTip} />
           </div>

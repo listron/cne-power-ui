@@ -34,6 +34,7 @@ class TransferForm extends Component {
 
   onEndToggleSide = () => {//动态切换页面,关
     this.setState({ showPage: false })
+    this.props.changeTransferFormStore({defectId:''})
   }
   prevChange = (value) => { // 切换到当前页
     this.props.changeTransferFormStore({ ...value })

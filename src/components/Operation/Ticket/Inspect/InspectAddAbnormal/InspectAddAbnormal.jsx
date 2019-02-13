@@ -204,7 +204,7 @@ class inspectAddAbnormal extends Component {
   }
 
   render() {
-    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode ,onTransformDefect,abnormalIds} = this.props;
+    const { deviceTypeItems, defectTypes, deviceItems, deviceAreaItems, inspectDetail, allSeries, firstPartitionCode, onTransformDefect, abnormalIds } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stationName, stationCode } = inspectDetail;
     const rightHandler = localStorage.getItem('rightHandler');
@@ -212,17 +212,20 @@ class inspectAddAbnormal extends Component {
     // const abnormalIds = this.state.abnormalIds;
     let tmpGenTypes = [];
     defectTypes.toJS().forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele => {
-      let innerArr = { children: [] };
-      innerArr.label = ele.name;
-      innerArr.value = ele.id;
-      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        innerArr.children.push({
-          label: innerInfo.name,
-          value: innerInfo.id,
-        });
-      })
-      return innerArr;
+    const groupedLostGenTypes = []
+    tmpGenTypes.map(ele => {
+      if (ele && ele.list && ele.list.length > 0) {
+        let innerArr = { children: [] };
+        innerArr.label = ele.name;
+        innerArr.value = ele.id;
+        ele.list.forEach(innerInfo => {
+          innerArr.children.push({
+            label: innerInfo.name,
+            value: innerInfo.id,
+          });
+        })
+        groupedLostGenTypes.push(innerArr);
+      }
     })
 
     return (
