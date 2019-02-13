@@ -66,7 +66,7 @@ function* addSeriesData(action) { //修改低效组串预警配置数据
     console.log(e);
   }
 }
-
+ 
 function* getCleaningData(action) { //获取清洗模型预警配置数据
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getCleaningData}/${payload.enterpriseId}`
