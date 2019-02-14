@@ -13,8 +13,17 @@ class DeviceManageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      selectStation: [],// 选择的电站
+      selectedRowKeys: [], // 导出选择的列数
+      downloadData: [], // 导出的信息
+  
     }
+  }
+  onSelectChange = (keys, record) => {
+    this.setState({
+      selectedRowKeys: keys,
+      downloadData: record,
+    });
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -29,8 +38,14 @@ class DeviceManageList extends Component {
   showEditModal=()=>{
     this.props.changeDeviceManageStore({showPage:'edit'})
   }
+ 
 
   render() {
+    const {selectedRowKeys} = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const deviceListColumn = [
       {
         title: '设备名称',
@@ -82,6 +97,7 @@ class DeviceManageList extends Component {
         <Table
           loading={loading}
           onChange={this.tableChange}
+          rowSelection={rowSelection}
           columns={deviceListColumn}
           dataSource={deviceList.map((e,i)=>({key: i,...e}))}
           pagination={false}

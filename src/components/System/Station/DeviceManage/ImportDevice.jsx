@@ -79,9 +79,10 @@ class ImportDevice extends Component {
           footer={null}
           onCancel={this.cancelModal}
           mask={false}
+          maskClosable={true}
+          closable={true}
           centered={true}
-          closable={false}
-          maskClosable={false} >
+          >
           <Form onSubmit={this.handleSubmit}>
             <Form.Item
               {...formItemLayout}
@@ -109,14 +110,14 @@ class ImportDevice extends Component {
                 ],
               })(
                 <Upload {...props} >
-                  <Button type="primary" >选择文件</Button>
+                  <Button  >选择文件</Button>
                   <span>支持xls、xlsx文件</span>
                 </Upload >
               )}
 
             </Form.Item>
             <Form.Item
-              wrapperCol={{ span: 12, offset: 6 }}
+              wrapperCol={{ span: 12, offset: 12 }}
             >
               <Button type="primary" htmlType="submit">导入</Button>
             </Form.Item>

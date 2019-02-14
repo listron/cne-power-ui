@@ -246,12 +246,14 @@ class HistoryWarningTable extends Component {
         key: 'timeOn',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
-      }, {
-        title: '持续时间',
-        dataIndex: 'durationTime',
-        key: 'durationTime',
-        sorter: true,
       },{
+        title: '结束时间',
+        dataIndex: 'timeOff',
+        key: 'timeOff',
+        sorter: true,
+        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+      },
+      {
         title: '告警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
