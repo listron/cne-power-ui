@@ -31,10 +31,15 @@
           }
         }
       }
+      
       .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
         padding: 0;
         text-align: center;
         border: 1px solid #dfdfdf;
+        &:nth-child(1){
+          padding-left: 16px;
+          text-align: left;
+        }
       }
       .ant-table .ant-table-tbody > tr > td:hover{
         background: #ceebe0;

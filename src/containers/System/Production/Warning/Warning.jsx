@@ -28,7 +28,7 @@ class Warning extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: 'warn',//默认显示低效组串
+      activeKey: 'series',//默认显示低效组串
     }
   }
 
@@ -50,7 +50,7 @@ class Warning extends Component {
   }
 
   onShowSideChange = () => {
-    console.log('test')
+    // console.log('test')
   }
 
   render() {

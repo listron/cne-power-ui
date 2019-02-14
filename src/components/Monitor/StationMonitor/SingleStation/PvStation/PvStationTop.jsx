@@ -73,9 +73,7 @@ class PvStationTop extends Component {
     if (!editValue || isNaN(editValue)) {
       return;
     }
-    //const editTime = moment().format('YYYY-MM-DD');
     const editTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
-    // console.log(editTime);
     this.state.modalMonth ? editData({
       monthGen: editValue,
       date: editTime,

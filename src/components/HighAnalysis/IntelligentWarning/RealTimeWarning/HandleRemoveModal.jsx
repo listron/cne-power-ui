@@ -74,7 +74,9 @@ class HandleRemoveModal extends Component {
       this.setState({ showWarningTip: false });
     });
   }
-
+  disabledDate=(current)=>{
+    return current && current < moment().endOf('day');
+  }
 
 
   render() {
@@ -92,6 +94,7 @@ class HandleRemoveModal extends Component {
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
           onOk={this.onSubmit}
+          okText='保存'
           visible={true}
           onCancel={this.props.onCancel}>
           <FormItem className={styles.formItem} label="截止时间">
@@ -108,7 +111,7 @@ class HandleRemoveModal extends Component {
                   message: '请输入解除时间'
                 }],
               })(
-                <DatePicker placeholder="请输入" />
+                <DatePicker placeholder="请输入" disabledDate={this.disabledDate} />
               )}
             </div> : ''}
           </FormItem>

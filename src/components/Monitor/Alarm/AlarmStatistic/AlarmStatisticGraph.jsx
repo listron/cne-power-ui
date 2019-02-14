@@ -54,14 +54,17 @@ class AlarmStatisticGraph extends React.Component {
         trigger: 'axis',
         padding: [4, 20],
         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
-          width: '20px',
+          type : 'line',
+          lineStyle:{
+              width:30,
+              color:'rgb(0, 0, 0,0.2)'
+          },
         },
         textStyle: {
           color: '#666',
           fontSize: 12,
         },
-        extraCssText:'width:128px;height:165px;background: rgba(0,0,0,0);',
+        // extraCssText:'width:128px;height:165px;background: rgba(0,0,0,0);',
         formatter: (params) => {
           if(!params && params.length===0){
             return `<div></div>`;

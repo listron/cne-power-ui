@@ -163,7 +163,6 @@ function* getPerformanceContrast(action) {
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
       const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload})]);
       if(conversioneff.data.code === '10000') {
-        console.log(conversioneff.data.data,'111111111');
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {

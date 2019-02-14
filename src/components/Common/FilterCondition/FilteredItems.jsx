@@ -203,7 +203,7 @@ class FilteredItems extends Component {
       value: e,
     }))
     const warningStatusArray = warningStatus.map(e => ({
-      label: warningStatusNames[+e-1],
+      label: warningStatusNames[+e>0?+e-1:+e],
       value: e,
     }))
 

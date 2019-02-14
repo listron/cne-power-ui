@@ -30,6 +30,7 @@ class HistoryWarning extends Component {
 
   onEndToggleSide = () => {//动态切换页面,关
     this.setState({ showPage: false })
+    this.props.changeHistoryWarningStore({defectId:''})
   }
   prevChange = (value) => { // 切换到当前页
     this.props.changeHistoryWarningStore({ ...value })
@@ -40,7 +41,7 @@ class HistoryWarning extends Component {
     const breadCrumbData = {
       breadData: [
         {
-          name: '历史预警',
+          name: '历史告警',
         }
       ],
     };

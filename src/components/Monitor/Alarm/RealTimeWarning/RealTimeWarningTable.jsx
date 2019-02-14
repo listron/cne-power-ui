@@ -57,7 +57,7 @@ class RealTimeWarningTable extends Component {
     const level = ['一级', '二级', '三级', '四级'];
     const columns = [
       {
-        title: '预警级别',
+        title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         render: (text, record, index) => {
@@ -97,7 +97,7 @@ class RealTimeWarningTable extends Component {
         key: 'deviceTypeName',
         sorter: true,
       }, {
-        title: '预警描述',
+        title: '告警描述',
         dataIndex: 'warningCheckDesc',
         key: 'warningCheckDesc',
         render: (text, record) => {

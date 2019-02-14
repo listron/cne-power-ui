@@ -88,7 +88,11 @@ class SingleStationStatistic extends React.Component {
       showPage: 'multiple',
       singleStationCode: '',
       dateType: 'month',
-      selectYear: ''
+      selectYear: '',
+      singleStationCode: null,
+      singleYear: null,// 年
+      singleleMonth: null, // 多年
+      singleRangYear: [null, null], // 多年
     });
     const main = document.getElementById('main');
     main && main.removeEventListener('click', this.hiddenStationList, true);
@@ -102,13 +106,15 @@ class SingleStationStatistic extends React.Component {
     if (timeObj.timeStyle === 'day') {
       singleYear = timeObj.startTime.split('-')[0]
       singeleMonth = timeObj.startTime.split('-')[1]
-      changeAllStationStore({ singleYear,singeleMonth,  dateType: timeObj.timeStyle })
+      changeAllStationStore({ singleYear, singeleMonth, dateType: timeObj.timeStyle })
     } else if (timeObj.timeStyle === 'month') {
       changeAllStationStore({ singleYear: timeObj.startTime, dateType: timeObj.timeStyle })
     } else {
       changeAllStationStore({ singleRangYear: [timeObj.startTime, timeObj.endTime], dateType: timeObj.timeStyle })
     }
   }
+
+
 
 
   onClose = () => {
@@ -209,13 +215,13 @@ class SingleStationStatistic extends React.Component {
 
 
   render() {
-    const {  stations, dateType, singleStationCode, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData, getSingleStationStatisticData, selectYear, changeAllStationStore ,singleYear,singeleMonth} = this.props;
+    const { stations, dateType, singleStationCode, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData, getSingleStationStatisticData, selectYear, changeAllStationStore, singleYear, singeleMonth } = this.props;
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
       changeAllStationStore({ singleStationCode: stationCode });
     }
-    const currentYear =`${singleYear}`;
-    const lastYear = `${singleYear-1}`;
+    const currentYear = `${singleYear}`;
+    const lastYear = `${singleYear - 1}`;
 
     //发电量数据
     const barGraphThatYear = singleStationPowerData.map(e => e.thatYearData) || [];
@@ -231,12 +237,12 @@ class SingleStationStatistic extends React.Component {
     const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}`))
     const dayCompleteRate = singleStationDayCompleteRateData.map(e => e.yearOnYear) || [];
     const dayCompleteRateHasData = dayCompleteRateThatYearData.some(e => e || e === 0) || dayCompleteRateLastYearData.some(e => e || e === 0) || dayCompleteRate.some(e => e || e === 0)
-    
+
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: +e.monthPower === 0 ? '' : e.monthPower, name: `${e.month}月` }));
     const pieCompleteValue = Number(singleStationPlanRate)
     const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
-    
+
     //计划完成率
     const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`))
     const planPowerData = singleStationPlanRateData.map(e => e.planPower) || [];

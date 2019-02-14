@@ -30,7 +30,7 @@ class WarningStatusFilter extends Component {
     const warningStatusType =warningStatusName ? warningStatusName: ['自动解除','手动解除','转工单'];
     const warningStatusOptions = warningStatusType.map((e,i)=>({
       label: e,
-      value: `${i+1}`
+      value: `${i>0?i+1:i}`
     }));
     const warningStatusArr = warningStatus;
     return (

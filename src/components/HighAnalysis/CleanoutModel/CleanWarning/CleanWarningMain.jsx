@@ -103,7 +103,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
                 dataIndex: 'stationName',
                 sorter: true,
               }, {
-                title: '灰尘影响占比(%)',
+                title: '灰尘影响占比',
                 dataIndex: 'influencePercent',
                 sorter: true,
               }, {
@@ -122,7 +122,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
             ]}
             loading={loading}
             pagination={false}
-            dataSource={cleanWarningList.map(e => ({ ...e, key: e.stationCode }))}
+            dataSource={cleanWarningList.map(e => ({ ...e, key: e.stationCode,influencePercent:`${e.influencePercent}%` }))}
             onChange={this.tableSort}
             locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
           />

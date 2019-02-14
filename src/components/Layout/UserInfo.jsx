@@ -9,7 +9,8 @@ class UserInfo extends Component{
   static propTypes = {
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
-    changeLoginStore: PropTypes.func
+    changeLoginStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   }
 
   constructor(props){

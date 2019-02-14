@@ -74,8 +74,9 @@ class AllStationStatistic extends React.Component {
 
   onTimeChange = (timeObj) => { // 时间选择
     const dateType = timeObj.timeStyle;
+    const currentMonth = moment().month();
     timeObj.timeStyle === 'year' ?
-      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType, year: [timeObj.startTime] })
+      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType, year: [timeObj.startTime], powerSelectMonth: currentMonth })
   }
 
   onChangeStation = (stationCode) => {
@@ -91,22 +92,21 @@ class AllStationStatistic extends React.Component {
     const { userId, year, dateType, month, pageNum, pageSize, sortType, sort } = props;
     const stationType = 1;
     const choiceYear = year[0] ? year : [moment().year()];
-    const currentMonth = month ? month : moment().month() + 1;
+    const currentMonth =  moment().month() + 1;
     let prams = {
       userId: userId,
       year: choiceYear,
       dateType,
       stationType
     }
-    const isFirst = dateType === 'month' && this.props.dateType === 'year';
-    props.changeAllStationStore({ year: [`${choiceYear}`], month: currentMonth, powerSelectMonth: currentMonth, })
+    props.changeAllStationStore({ year: [`${choiceYear}`], month: currentMonth, powerSelectMonth:currentMonth, })
     props.getAllStationAvalibaData(prams)
     props.getAllStationStatisticData({ ...prams, year: choiceYear[0] })
     props.getAllStationStatisticTableData({
       year: choiceYear[0],
       dateType,
-      month: currentMonth,//默认当前月
-      pageNum:isFirst && 1 || pageNum, // 当前页
+      month: currentMonth, //默认当前月
+      pageNum: 1, // 当前页
       pageSize, // 每页条数
       sortType,
       sort,

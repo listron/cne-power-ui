@@ -5,7 +5,7 @@ import WaterWave from './WaterWave';
 import { Radio } from "antd";
 import moment from 'moment';
 import Cookie from 'js-cookie';
-
+import { monitordataFormat, dataFormat } from '../../../../../../utils/utilFunc'
 
 class PlancompletionRate extends React.Component {
   static propTypes = {
@@ -46,22 +46,12 @@ class PlancompletionRate extends React.Component {
       )
     }
 
-
   }
+
   render() {
     const { dateType, allStationStatisticData, showPage, year, singeleMonth } = this.props;
     let planSummary = showPage === 'single' ? allStationStatisticData : (allStationStatisticData && allStationStatisticData.planSummary && allStationStatisticData.planSummary[0])
-    const actualPower = planSummary && planSummary.actualPower ? planSummary.actualPower : '--';
-    const planPower = planSummary && planSummary.planPower ? planSummary.planPower : '--';
-    const rayRadiation = planSummary && planSummary.rayRadiation ? planSummary.rayRadiation : '--';
-    const stationAvailability = planSummary && planSummary.stationAvailability ? planSummary.stationAvailability : '--';
-    const equivalentHours = planSummary && planSummary.equivalentHours ? planSummary.equivalentHours : '--';
-    const lostPower = planSummary && planSummary.lostPower ? planSummary.lostPower : '--';
-    const realCapacity = planSummary && planSummary.realCapacity ? planSummary.realCapacity : '--';
-    const faultDeviceNum = planSummary && planSummary.faultDeviceNum ? planSummary.faultDeviceNum : '--';
-    const pr = planSummary && planSummary.pr ? planSummary.pr : '--';
-    const lostPowerRate = planSummary && planSummary.lostPowerRate ? planSummary.lostPowerRate : '--';
-    const completeRate = planSummary && planSummary.completeRate ? planSummary.completeRate : '--';
+    const completeRate = planSummary && monitordataFormat(planSummary.completeRate);
     return (
       <div className={styles.allStationData}>
         <div className={styles.textStyle}>计划完成情况
@@ -75,52 +65,52 @@ class PlancompletionRate extends React.Component {
           </div>
           <div className={styles.powerGeneration}>
             <div className={styles.stationTargetData}>
-              <div className={styles.stationTargetValue}>{actualPower}</div>
+              <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.actualPower)}</div>
               <div className={styles.stationTargetName}>实际发电量 万kWh</div>
             </div>
             <div className={styles.stationTargetData}>
-              <div className={styles.stationTargetValue}>{planPower}</div>
+              <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.planPower)}</div>
               <div className={styles.stationTargetName}>计划发电量 万kWh</div>
             </div>
           </div>
           <div className={styles.dataSummary}>
             <div className={styles.rightDataSummary}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{rayRadiation}</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.rayRadiation)}</div>
                 <div className={styles.stationTargetName}>累计光辐射总量 MJ/㎡</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{stationAvailability}%</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.stationAvailability)}%</div>
                 <div className={styles.stationTargetName}>电站可利用率</div>
               </div>
             </div>
             <div className={styles.rightDataSummary}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{equivalentHours}</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.equivalentHours)}</div>
                 <div className={styles.stationTargetName}>等效利用小时数  h</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{lostPower}</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.lostPower)}</div>
                 <div className={styles.stationTargetName}>损失电量  万kWh</div>
               </div>
             </div>
             <div className={styles.rightDataSummary}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{realCapacity}</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.realCapacity)}</div>
                 <div className={styles.stationTargetName}>装机容量 MW</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{faultDeviceNum}</div>
+                <div className={styles.stationTargetValue}>{planSummary && dataFormat(planSummary.faultDeviceNum,'--', 2)}</div>
                 <div className={styles.stationTargetName}>故障台次数</div>
               </div>
             </div>
             <div className={styles.rightDataSummary}>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{pr}%</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.pr)}%</div>
                 <div className={styles.stationTargetName}>PR</div>
               </div>
               <div className={styles.stationTargetData}>
-                <div className={styles.stationTargetValue}>{lostPowerRate}%</div>
+                <div className={styles.stationTargetValue}>{planSummary && monitordataFormat(planSummary.lostPowerRate)}%</div>
                 <div className={styles.stationTargetName}>限电率</div>
               </div>
             </div>

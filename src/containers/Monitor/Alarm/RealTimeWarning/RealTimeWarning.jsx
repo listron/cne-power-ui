@@ -25,9 +25,11 @@ class RealTimeWarning extends Component {
   componentDidMount() {
     const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
-   const {warningTypeStatus,warningType}=this.props;
-    this.props.getRealtimeWarning({stationCodes:[stationCode],warningTypeStatus,warningType})
-
+    const { warningTypeStatus, warningType } = this.props;
+    this.props.getRealtimeWarning({ 
+      stationCodes: stationCode ? [stationCode] : [],
+      warningTypeStatus, warningType 
+    })
     this.props.getLostGenType({ objectType: 1 })
   }
   componentWillUnmount() {
@@ -37,7 +39,7 @@ class RealTimeWarning extends Component {
     const breadCrumbData = {
       breadData: [
         {
-          name: '实时预警',
+          name: '实时告警',
         }
       ],
     };
