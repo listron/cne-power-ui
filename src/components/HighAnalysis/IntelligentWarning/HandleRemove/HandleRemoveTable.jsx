@@ -202,7 +202,7 @@ class HandleRemoveTable extends Component {
         key: 'durationTime',
         sorter: true,
       }, {
-        title: '告警处理',
+        title: '预警处理',
         dataIndex: 'operation',
         key: 'operation',
         render: (text, record, index) => {
