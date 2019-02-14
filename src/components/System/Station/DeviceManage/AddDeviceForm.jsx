@@ -159,7 +159,7 @@ class AddDeviceForm extends Component {
               )}
             </FormItem>
           </div>
-          <div>
+          <div className={styles.systermStyle}>
             <Form.Item
               {...formItemLayout}
               label="是否显示"
