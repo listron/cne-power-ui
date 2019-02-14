@@ -41,9 +41,9 @@
     
   }
   .colStyles{
-    max-height:100px;
+  
     .editPart{
-      max-height:80px;
+    
       :global{
         .ant-form-item, .ant-form-horizontal{
           margin-bottom:12px;
@@ -52,6 +52,10 @@
           width:198px;
         }
       }
+      .defaultConfigStyles{
+        margin: 20px 0;
+      }
+
     }
   }
 }
