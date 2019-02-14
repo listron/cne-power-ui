@@ -27,12 +27,11 @@ class Score extends Component {
   }
 
   componentDidMount() {
-    const { enterpriseId, getStationOfEnterprise } = this.props;
-    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
+
   }
 
   componentWillUnmount() {
-    this.props.resetStore(); // 重置数据
+    // this.props.resetStore(); // 重置数据
   }
 
 
@@ -40,10 +39,10 @@ class Score extends Component {
     const { enterpriseId, showPage } = this.props;
     const { activeKey } = this.state;
     return (
-      <div className={styles.warningBox}>
-        <CommonBreadcrumb breadData={[{ name: '预警配置' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
-        <div className={styles.warningContainer}>
-          <div className={styles.warningContent}>
+      <div className={styles.scoreBox}>
+        <CommonBreadcrumb breadData={[{ name: '绩效评分' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
+        <div className={styles.scoreContainer}>
+          <div className={styles.scoreContent}>
           </div>
           <Footer />
         </div>
@@ -53,6 +52,7 @@ class Score extends Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log('state',state.common.toJS())
   return ({
     ...state.system.warning.toJS(),
     stations: state.common.get('stations').toJS(),
@@ -61,7 +61,8 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = (dispatch) => ({
-  
+  resetStore: () => dispatch({ type: scoreAction.resetStore }),
+  changeScoreStore: payload => dispatch({ type: scoreAction.changeScoreStore, payload }),
   
 });
 

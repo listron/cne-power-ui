@@ -42,7 +42,7 @@ const menuData = [
             name: '实时告警',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '已转工单',
             path: 'transfer',
             rightKey: 'monitor_alarm_realTime',
@@ -50,11 +50,11 @@ const menuData = [
             name: '手动解除',
             path: 'relieve',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',
-          },{
+          }, {
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
@@ -229,31 +229,33 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
-      { name: '智能预警',
-      iconStyle: 'icon-usermanage',
-      path: 'intelligentWarning',
-      rightKey: 'analysis_intelligentWarning',
-      children: [
-        {
-          name: '实时预警',
-          path: 'realtime',
-          defaultPath: true,
-          rightKey: 'analysis_intelligentWarning_pending',
-        }, {
-          name: '已转工单',
-          path: 'transfer',
-          rightKey: 'analysis_intelligentWarning_worklist',
-        },{
-          name: '手动解除',
-          path: 'handleremove',
-          rightKey: 'analysis_intelligentWarning_remove',
-        },{
-          name: '历史预警',
-          path: 'historywarning',
-          rightKey: '	analysis_intelligentWarning_history',
-        }
-        
-      ]},
+      {
+        name: '智能预警',
+        iconStyle: 'icon-usermanage',
+        path: 'intelligentWarning',
+        rightKey: 'analysis_intelligentWarning',
+        children: [
+          {
+            name: '实时预警',
+            path: 'realtime',
+            defaultPath: true,
+            rightKey: 'analysis_intelligentWarning_pending',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'analysis_intelligentWarning_worklist',
+          }, {
+            name: '手动解除',
+            path: 'handleremove',
+            rightKey: 'analysis_intelligentWarning_remove',
+          }, {
+            name: '历史预警',
+            path: 'historywarning',
+            rightKey: '	analysis_intelligentWarning_history',
+          }
+
+        ]
+      },
       {
         name: '清洗模型',
         iconStyle: 'icon-usermanage',
@@ -383,15 +385,20 @@ const menuData = [
         iconStyle: 'icon-planed',
         path: 'config',
         rightKey: 'system_config',
-        children: [{
-          name: '生产计划',
-          path: 'plan',
-          rightKey: 'system_config',
-        }, {
-          name: '预警配置',
-          path: 'warning',
-          rightKey: 'system_config_warning',
-        },
+        children: [
+          {
+            name: '绩效评分',
+            path: 'performanceScore',
+            rightKey: 'system_config',
+          }, {
+            name: '生产计划',
+            path: 'plan',
+            rightKey: 'system_config',
+          }, {
+            name: '预警配置',
+            path: 'warning',
+            rightKey: 'system_config_warning',
+          },
         ]
       }
     ],
