@@ -69,6 +69,7 @@ class OutputPower extends Component{
         grid: {
           left: 10,
           right: 10,
+          height: 110,
           containLabel: true,
         },
         color: ['#d0021b', '#00ffff'],
@@ -208,7 +209,7 @@ class OutputPower extends Component{
         {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={outputType} onChange={this.changeOutputType} />
         </div>}
-        <div id="homeOutputChart" className={styles.outputChart} ></div>
+        <div id="homeOutputChart" className={styles.outputChart}></div>
         <div className={styles.totalPower}>
           <span className={styles.text}>全部电站功率 : </span>
           <span className={styles.highlight}>{dataFormat(realTimeInfo.allStationPower)}</span>

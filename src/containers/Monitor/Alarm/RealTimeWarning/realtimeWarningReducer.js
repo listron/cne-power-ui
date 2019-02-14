@@ -4,7 +4,7 @@ import { realtimeWarningAction } from './realtimeWarningAction.js';
 var initState = Immutable.fromJS({
   warningStatus:'1',//告警状态
   warningTypeStatus:'1',//实时告警
-  stationType:'',
+  stationType:'2',
   warningType:'事件告警',//限值告警
   loading: false,
   orderField:'',

@@ -117,25 +117,7 @@ function* getAllStationMonthPieData(action) {//月/年多电站pie数据、
       console.log(e);
     }
 }
-// function* getAllStationYearBarData(action) {//年多电站图表
-//   const { payload } = action;
-//     //const url = '';
-//     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAllStationYearBar}`
-//     try{
-//       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
-//       const response = yield call(axios.post,url,payload);
-//       if(response.data.code === '10000') {
-//         yield put({
-//           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
-//           payload: {
-//             AllStationYearBarData: response.data.data,          
-//           },
-//         });     
-//       }  
-//     }catch(e){
-//       console.log(e);
-//     }
-// }
+
 function* getSingleStationStatisticData(action) {//月/年/日单电站计划完成情况
   const { payload } = action;
     //const url = '/mock/api/v3/performance/comprehensive/plan';
@@ -195,26 +177,7 @@ function* getSingleStationMonthPieData(action) {//月单电站图表-饼图
       console.log(e);
     }
 }
-// function* getSingleStationYearTargetData(action) {
-//   const { payload } = action;
-//   //const url = '';
-  
-//     //const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSingleStationYearTarget}`
-//     try{
-//       yield put({ type:allStationAnalysisAction.ALLSTATIONDATA_FETCH });
-//       const response = yield call(axios.post,url,payload);
-//       if(response.data.code === '10000') {
-//         yield put({
-//           type: allStationAnalysisAction.GET_ALLSTATIONDATA_FETCH_SUCCESS,
-//           payload: {
-//             SingleStationYearTargetData: response.data.data,          
-//           },
-//         });     
-//       }  
-//     }catch(e){
-//       console.log(e);
-//     }
-// }
+
 function* getSingleStationPlanRateData(action) {//月/年单电站计划完成率分析、
   const { payload } = action;
   //const url = '/mock/api/v3/performance/comprehensive/planrate/years';

@@ -103,9 +103,10 @@
             }
             .tooltipName {
                 position: absolute;
-                right: -16px;
+                right: -12px;
                 top: 12px;
-                color:$lightColor;
+                color:$promptColor;
+                cursor: pointer;
             }
             .tooltipName:hover {
                 color: #f9b600;

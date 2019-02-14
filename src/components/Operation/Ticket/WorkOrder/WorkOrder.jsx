@@ -62,57 +62,6 @@ class DefectDetailForm extends Component {
     onChange({ pageName });  //  退回到之前的页面
   }
 
-  onSubmit = (data) => { // 点击提交的时候
-    let params = {};
-    const { defectDetail, sendDefect, rejectDefect, closeDefect, handleDefect, checkDefect } = this.props;
-    const defectId = defectDetail.defectId; //缺陷ID
-    const status = defectDetail.defectStatus; // 缺陷状态
-    if (status === '1') { // 审核缺陷
-      switch (data.dealResult) {
-        case 'send':
-          params = {
-            defectId,
-            defectProposal: data.defectProposal ? data.defectProposal : null,
-            deadLine: data.deadLine ? data.deadLine.format('YYYY-MM-DD') + ' 23:59:59' : null
-          };
-          sendDefect(params);
-          break;
-        case 'reject':
-          params = {
-            defectId,
-            rejectReason: !data.rejectReason ? null : data.rejectReason
-          };
-          rejectDefect(params);
-          break;
-        case 'close':
-          params = {
-            defectId,
-            defectProposal: !data.defectProposal ? null : data.defectProposal
-          };
-          closeDefect(params);
-          break;
-      }
-    }
-    if (status === '2') { // 处理缺陷
-      let submitImages = this.getSubmitIamges(data.photoData);
-      params = {
-        defectId,
-        defectSolveResult: data.defectSolveResult,
-        defectSolveInfo: !data.defectSolveInfo ? null : data.defectSolveInfo,
-        replaceParts: !data.replaceParts ? null : data.replaceParts,
-        ...submitImages
-      };
-      handleDefect(params);
-    }
-    if (status === '3') { // 验收缺陷
-      params = {
-        defectId,
-        checkResult: data.checkResult,
-        checkInfo: !data.checkInfo ? null : data.checkInfo,
-      };
-      checkDefect(params);
-    }
-  }
 
 
   onPrev = () => { // 向前
@@ -149,26 +98,6 @@ class DefectDetailForm extends Component {
         this.props.getDefectDetail({ defectId: defectIdList[index + 1] });
       }
     }
-  }
-
-
-  getSubmitIamges(images) { // 照片提交
-    if (!images) {
-      return {
-        photoSolveAddress: null,
-        rotatePhoto: null
-      };
-    }
-    let solveAddress = [];
-    let rotate = [];
-    for (var i = 0; i < images.length; i++) {
-      solveAddress.push(images[i].thumbUrl);
-      rotate.push(images[i].rotate);
-    }
-    return {
-      photoSolveAddress: solveAddress.join(','),
-      rotatePhoto: rotate.join(',')
-    };
   }
 
 
@@ -217,7 +146,7 @@ class DefectDetailForm extends Component {
               </div>
               <div className={styles.form}>
                 {status !== '0' && status !== '4' &&
-                  <DefectHandleForm commonList={commonList} onSubmit={this.onSubmit} status={status} />
+                  <DefectHandleForm commonList={commonList} status={status} {...this.props} />
                 }
               </div>
             </div>

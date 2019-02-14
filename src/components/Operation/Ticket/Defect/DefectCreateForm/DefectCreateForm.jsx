@@ -36,6 +36,7 @@ class TmpForm extends Component {
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
+    changeDefectStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -45,6 +46,20 @@ class TmpForm extends Component {
       deviceAreaCode: '',
       deviceTypeCode: '',
     }
+  }
+
+  
+  componentWillReceiveProps(nextProps){
+    const {defectId,stationCode}=nextProps.defectDetail;
+    const oldDefectId=this.props.defectDetail.defectId;
+    if(defectId!==oldDefectId){
+      this.props.getStationDeviceTypes({ stationCodes:stationCode });
+    }
+  }
+
+
+  componentWillUnmount(){
+    this.props.changeDefectStore({defectDetail:{}})
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -137,7 +152,7 @@ class TmpForm extends Component {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
-        if (isContinueAdd && error.get('code') === '') {
+        if (isContinueAdd) {
           this.props.form.resetFields();
         }
       }
@@ -146,6 +161,7 @@ class TmpForm extends Component {
 
   selectedDevice = (value) => { // 选择设备
     this.props.form.setFieldsValue({ deviceCode: value });
+    
   }
 
 
@@ -303,20 +319,20 @@ class TmpForm extends Component {
           {
             defectFinished &&
             <React.Fragment>
-              <FormItem label="处理过程" colon={false}>
-                {getFieldDecorator('defectSolveInfo', {
-                  rules: [{ required: true, message: '请输入处理过程' }],
-                  initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
-                })(
-                  <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
-                )}
-              </FormItem>
               <FormItem label="产生原因" colon={false}>
                 {getFieldDecorator('reasonDesc', {
                   rules: [{ required: true, message: '请输入产生原因' }],
                   initialValue: ''
                 })(
                   <InputLimit placeholder="请描述，不超过80个汉字" />
+                )}
+              </FormItem>
+              <FormItem label="处理过程" colon={false}>
+                {getFieldDecorator('defectSolveInfo', {
+                  rules: [{ required: true, message: '请输入处理过程' }],
+                  initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
+                })(
+                  <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
                 )}
               </FormItem>
               <FormItem label="添加照片" colon={false}>

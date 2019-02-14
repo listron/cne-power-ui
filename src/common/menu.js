@@ -211,6 +211,7 @@ const menuData = [
           {
             name: '通用报表',
             path: 'currency',
+            defaultPath: true,
             rightKey: 'statistics_report_general',
           }
         ]
@@ -229,34 +230,35 @@ const menuData = [
       //   iconStyle: 'icon-usermanage',
       //   rightKey: 'analysis_powerGeneration',
       // },
-      { name: '智能预警',
-      iconStyle: 'icon-usermanage',
-      path: 'intelligentWarning',
-      rightKey: 'analysis_cleanModel',
-      children: [
-        {
-          name: '实时预警',
-          path: 'realtime',
-          defaultPath: true,
-          rightKey: 'monitor',
-        }, {
-          name: '已转工单',
-          path: 'transfer',
-          rightKey: 'monitor',
-        },{
-          name: '手动解除',
-          path: 'handleremove',
-          rightKey: 'monitor',
-        },{
-          name: '历史预警',
-          path: 'historywarning',
-          rightKey: 'monitor',
-        }
-        
-      ]},
+      {
+        name: '智能预警',
+        iconStyle: 'icon-usermanage',
+        path: 'intelligentWarning',
+        rightKey: 'analysis_intelligentWarning',
+        children: [
+          {
+            name: '实时预警',
+            path: 'realtime',
+            // defaultPath: true,
+            rightKey: 'analysis_intelligentWarning_pending',
+          }, {
+            name: '已转工单',
+            path: 'transfer',
+            rightKey: 'analysis_intelligentWarning_worklist',
+          },{
+            name: '手动解除',
+            path: 'handleremove',
+            rightKey: 'analysis_intelligentWarning_remove',
+          },{
+            name: '历史预警',
+            path: 'historywarning',
+            rightKey: 'analysis_intelligentWarning_history',
+          }
+        ]
+      },
       {
         name: '清洗模型',
-        iconStyle: 'icon-usermanage',
+        iconStyle: 'icon-cleaning-model',
         path: 'cleanout',
         rightKey: 'analysis_cleanModel',
         children: [
@@ -390,7 +392,7 @@ const menuData = [
         }, {
           name: '预警配置',
           path: 'warning',
-          rightKey: 'system_config',
+          rightKey: 'system_config_warning',
         },
         ]
       }

@@ -12,9 +12,9 @@ class pvStationHeader extends React.Component {
     realTimePowerUnit: PropTypes.string,
     realCapacityUnit: PropTypes.string,
     powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.number,
-    realCapacityPoint: PropTypes.number,
-    powerPoint: PropTypes.number,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context)
@@ -53,7 +53,7 @@ class pvStationHeader extends React.Component {
           </div>
           <div className={styles.dayStation}>
             <div className={styles.dataValue}>
-              <ValueFormat value={(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+              <ValueFormat value={monitordataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
             </div>
             <div className={styles.dataName}>日发电量 ({powerUnit})</div>
           </div>
@@ -80,8 +80,10 @@ class pvStationHeader extends React.Component {
                   <DeviceValueFormat value={monitordataFormat(yearPlanRate.split('%')[0], '--')} />{'%'}
                 </div>
                 <div className={styles.dataName}>计划完成率</div>
-                <Tooltip placement="bottom" className={styles.tooltipName} overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
-                </Tooltip>
+                <div className={styles.tooltipName}>
+                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </div>
               </div>
             </React.Fragment>
           }

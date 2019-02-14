@@ -63,15 +63,15 @@ class WindStation extends Component {
 
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, deviceTypeCode ,realTimePowerUnit,powerUnit} = this.props;
+    const { deviceTypeFlow, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => e.deviceTypes);
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} />
-          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} yAxisUnit={powerUnit} />
+          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} yAxisValuePoint={realTimePowerPoint} />
+          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} yAxisUnit={powerUnit} yAxisValuePoint={powerPoint} />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
         <div className={styles.threadAndDevice} id="deviceType" >
@@ -110,7 +110,7 @@ class WindStation extends Component {
                   }}
                   onClick={() => this.onSelectedDeviceType(0)}
                 >
-                  <div 
+                  <div
                     className={styles.deviceTypeIcon}
                     style={{
                       color: deviceTypeCode === 0 ? '#199475' : '#dfdfdf'

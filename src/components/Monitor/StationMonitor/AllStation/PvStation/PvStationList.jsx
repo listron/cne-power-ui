@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table,message } from "antd";
+import { unitDataFormat } from '../../../../../utils/utilFunc'
 class PvStationList extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
@@ -13,9 +14,10 @@ class PvStationList extends React.Component {
     realTimePowerUnit: PropTypes.string,
     realCapacityUnit: PropTypes.string,
     powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.number,
-    realCapacityPoint: PropTypes.number,
-    powerPoint: PropTypes.number,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
+    pvMonitorStation: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -42,8 +44,8 @@ class PvStationList extends React.Component {
     message.warning('电站未接入,无法查看详情',2);
   }
   initColumn = () => {
-    const { realTimePowerUnit,realCapacityUnit,powerUnit,windMonitorStation } = this.props;
-    const  planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
+    const { realTimePowerUnit,realCapacityUnit,powerUnit,pvMonitorStation } = this.props;
+    const  planStatus = pvMonitorStation && pvMonitorStation.stationDataSummary && pvMonitorStation.stationDataSummary.planStatus;
     const planPower = planStatus === 0 ? [{
       title: `年累计发电量(${powerUnit})`,
       dataIndex: "yearOutput",
@@ -253,15 +255,13 @@ class PvStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${(realTimePowerUnit==='MW'?item.stationPower:(item.stationPower*1000).toFixed(realTimePowerPoint)) || '--'}`,
-          stationCapacity: `${(realCapacityUnit==='MW'?item.stationCapacity:(item.stationCapacity*1000).toFixed(realCapacityPoint)) || '--'}`,
+          stationPower: `${(realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint) || '--'}`,
+          stationCapacity: `${(realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
-         
-          dayOutput: `${(powerUnit==='万kWh'?item.dayPower:(item.dayPower*10000).toFixed(powerPoint)) || '--'}`,
-          monthOutput: `${(powerUnit==='万kWh'?item.monthPower:(item.monthPower*10000).toFixed(powerPoint)) || '--'}`,
-          yearOutput: `${(powerUnit==='万kWh'?item.yearPower:(item.yearPower*10000).toFixed(powerPoint)) || '--'}`,
-          planOutput: `${(powerUnit==='万kWh'?item.yearPlanPower:(item.yearPlanPower*10000).toFixed(powerPoint)) || '--'}`,
-         
+          dayOutput: unitDataFormat(item.dayPower, '--', powerPoint, powerUnit),
+          monthOutput: unitDataFormat(item.monthPower, '--', powerPoint, powerUnit),
+          yearOutput: unitDataFormat(item.yearPower, '--', powerPoint, powerUnit),
+          planOutput: unitDataFormat(item.yearPlanPower, '--', powerPoint, powerUnit),
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${stationStatus.stationStatus || ''}`

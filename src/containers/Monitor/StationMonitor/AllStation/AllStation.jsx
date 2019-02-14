@@ -26,10 +26,10 @@ class AllStation extends Component {
     super(props);
   }
   componentDidMount() {
-    const { stationTypeTabs } = this.props;
-    if (stationTypeTabs !== '2') {
-      this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false });
-      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypeTabs, getStationTypes: false }), 10000)
+    const { stationTypes } = this.props;
+    if (stationTypes !== '2') {
+      this.props.getMonitorStation({ stationType: this.props.stationTypes, getStationTypes: false });
+      this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: this.props.stationTypes, getStationTypes: false }), 10000)
     } else {
       this.props.getMonitorStation({ stationType: '2', getStationTypes: true });
       this.stationInterval = setInterval(() => this.props.getMonitorStation({ stationType: '2' }), 10000)
@@ -49,8 +49,10 @@ class AllStation extends Component {
     this.props.changeMonitorStationStore({
       //stationTypes: null,
       stationShowType: 'stationBlock',
-      pvMonitorStation: {},
-      windMonitorStation: {},
+      // pvMonitorStation: {},
+      // windMonitorStation: {},
+      stationTypes: '2',
+    
     });
   }
 
@@ -67,7 +69,7 @@ class AllStation extends Component {
     this.queryStationData(activeKey);
   }
   render() {
-    const { stationTypes } = this.props;
+    const { stationTypes,stationTypeCount } = this.props;
     const breadCrumbData = {
       breadData: [
 
@@ -81,14 +83,16 @@ class AllStation extends Component {
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
-          {stationTypes === '2' ?
+          {stationTypeCount === 'multiple' &&
             <Tabs type="card" activeKey={this.props.stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
               <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
               <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
               <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
-            </Tabs> :
-            (stationTypes === '0' ? <WindStation {...this.props} /> : <PvStation {...this.props} />)
+            </Tabs> 
           }
+          {stationTypeCount === 'wind' && <WindStation {...this.props} /> }
+          {stationTypeCount === 'pv'&& <PvStation {...this.props} />}
+          {stationTypeCount === 'none'&&""}
         </div>
         <Footer />
       </div>
@@ -103,6 +107,7 @@ const mapStateToProps = (state) => ({
   realCapacityPoint: state.common.get('realCapacityPoint'),
   powerUnit: state.common.get('powerUnit'),
   powerPoint: state.common.get('powerPoint'),
+  stationTypeCount: state.common.get('stationTypeCount'),
 
 })
 const mapDispatchToProps = (dispatch) => ({

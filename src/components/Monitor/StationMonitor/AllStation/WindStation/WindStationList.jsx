@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table, message } from "antd";
+import { unitDataFormat } from '../../../../../utils/utilFunc'
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -14,9 +15,9 @@ class WindStationList extends React.Component {
     realTimePowerUnit: PropTypes.string,
     realCapacityUnit: PropTypes.string,
     powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.number,
-    realCapacityPoint: PropTypes.number,
-    powerPoint: PropTypes.number,
+    realTimePowerPoint: PropTypes.any,
+    realCapacityPoint: PropTypes.any,
+    powerPoint: PropTypes.any,
   }
 
   constructor(props, context) {
@@ -44,7 +45,7 @@ class WindStationList extends React.Component {
   }
   initColumn = () => {
     const { realTimePowerUnit, realCapacityUnit, powerUnit, windMonitorStation } = this.props;
-    const  planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
+    const planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
     const planPower = planStatus === 0 ? [{
       title: `年累计发电量(${powerUnit})`,
       dataIndex: "yearOutput",
@@ -260,7 +261,7 @@ class WindStationList extends React.Component {
     let endRow = currentPage * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
     let datalist = dataSort.slice(startRow, endRow)
-    // // 表单数据
+    // 表单数据
     const data = datalist.map((item, index) => {
       const stationStatus = item.stationStatus || {};
       return (
@@ -268,13 +269,13 @@ class WindStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${(realTimePowerUnit === 'MW' ? item.stationPower : (item.stationPower * 1000).toFixed(realTimePowerPoint)) || '--'}`,
-          stationCapacity: `${(realCapacityUnit === 'MW' ? item.stationCapacity : (item.stationCapacity * 1000).toFixed(realCapacityPoint)) || '--'}`,
+          stationPower: `${(realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint) || '--'}`,
+          stationCapacity: `${(realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
-          dayOutput: `${(powerUnit === '万kWh' ? item.dayPower : (item.dayPower * 10000).toFixed(powerPoint)) || '--'}`,
-          monthOutput: `${(powerUnit === '万kWh' ? item.monthPower : (item.monthPower * 10000).toFixed(powerPoint)) || '--'}`,
-          yearOutput: `${(powerUnit === '万kWh' ? item.yearPower : (item.yearPower * 10000).toFixed(powerPoint)) || '--'}`,
-          planOutput: `${(powerUnit === '万kWh' ? item.yearPlanPower : (item.yearPlanPower * 10000).toFixed(powerPoint)) || '--'}`,
+          dayOutput: unitDataFormat(item.dayPower, '--', powerPoint, powerUnit),
+          monthOutput: unitDataFormat(item.monthPower, '--', powerPoint, powerUnit),
+          yearOutput: unitDataFormat(item.yearPower, '--', powerPoint, powerUnit),
+          planOutput: unitDataFormat(item.yearPlanPower, '--', powerPoint, powerUnit),
           equipmentNum: `${item.stationUnitCount || '--'}`,
           alarmNum: `${item.alarmNum || '--'}`,
           currentStation: `${stationStatus.stationStatus || ''}`

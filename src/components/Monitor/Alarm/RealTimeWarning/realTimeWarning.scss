@@ -248,9 +248,9 @@
     }
     .ant-form-item-control-wrapper{
      
-      .ant-form-item-control{
+      .ant-form-item-control {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-around;
         .ant-form-item-children{
           display: flex;

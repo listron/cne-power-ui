@@ -26,7 +26,6 @@ class TargetStatisticPieGraph extends React.Component {
     const {pieGraphId,pieData ,pieComplete,hasData} = param;
     const targetPieChart = echarts.init(document.getElementById(pieGraphId));
     targetPieChart.resize();
-    targetPieChart.clear();
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetPieOption = {
       graphic: confluenceTenMinGraphic,
@@ -63,7 +62,7 @@ class TargetStatisticPieGraph extends React.Component {
         }
       ]
     };
-    targetPieChart.setOption(targetPieOption);
+    targetPieChart.setOption(targetPieOption,{ notMerge: true });
   };
 
   render() {

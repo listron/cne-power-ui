@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button,Icon, Input, Form, message } from 'antd';
+import { Table, Button, Icon, Input, Form, message } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import PropTypes from 'prop-types';
 import styles from './planMain.scss';
@@ -30,6 +30,7 @@ class PlanTable extends Component {
     stationCodes: PropTypes.array,
     sortField: PropTypes.string,
     sort: PropTypes.string,
+    totalNum: PropTypes.number,
   };
 
   constructor(props) {
@@ -113,6 +114,8 @@ class PlanTable extends Component {
       const { data } = this.state;
       let saveData = data.find(station => station.key === key)
       saveData = { ...saveData, ...row };
+      let newData = data;
+      newData.splice(key, 1, saveData);
       let month = [];
       let planMonthGens = saveData.planMonthGens.filter((e, index) => {
         if (e !== "null") {
@@ -128,6 +131,7 @@ class PlanTable extends Component {
       let saveOK = planMonthGens.some(e => e === "")
       saveOK && message.warning(`请填写完整之后再保存`);
       if (!saveOK) {
+        this.setState({ editingKey: '' });
         const params = {
           year: saveData.planYear,
           stationCode: saveData.stationCode,
@@ -136,15 +140,14 @@ class PlanTable extends Component {
           planPower: saveData.planPower,
           yearPR: saveData.yearPR || null,
         };
+        this.props.changePlanStore({ planData: newData })
         this.props.editPlanInfo(params);
-        this.setState({ editingKey: '' });
       }
     })
   }
 
   _createTableColumn = () => {//生成表头
     const _this = this;
-    const canEdit=moment().year()-this.props.planYear;
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -198,6 +201,9 @@ class PlanTable extends Component {
         key: 'stationCapacity',
         sorter: true,
         className: styles.stationCapacity,
+        render: text => {
+          return text ? Number(text).toFixed(4) : '--'
+        }
       },
       {
         title: '年份',
@@ -243,13 +249,14 @@ class PlanTable extends Component {
         className: styles.operation,
         render: (text, record) => {
           const editable = this.isEditing(record);
+          const canEdit = moment().year() - record.planYear > 0;
           return (
             <div>
               {editable ? (
                 <span>
                   <EditableContext.Consumer>
                     {form => (
-                      <a  href="javascript:;" className={styles.save}
+                      <a href="javascript:;" className={styles.save}
                         onClick={() => this.save(form, record.key)}
                         style={{ marginRight: 8 }}
                       >
@@ -258,7 +265,7 @@ class PlanTable extends Component {
                     )}
                   </EditableContext.Consumer>
                 </span>
-              ) : (<a onClick={() => this.edit(record.key)} className={canEdit?styles.noEdit:styles.edit}>编辑</a>)}
+              ) : (<a onClick={() => this.edit(record.key)} className={canEdit ? styles.noEdit : styles.edit}>编辑</a>)}
             </div>
           );
         },
@@ -320,7 +327,7 @@ class PlanTable extends Component {
 
   render() {
     const { pageSize, pageNum, totalNum, loading, } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, data } = this.state;
     const components = {
       body: {
         row: EditableFormRow,
@@ -349,7 +356,7 @@ class PlanTable extends Component {
           loading={loading}
           pagination={false}
           components={components}
-          dataSource={this.state.data}
+          dataSource={data}
           onChange={this.tableChange}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           columns={this._createTableColumn()}

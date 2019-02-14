@@ -10,7 +10,7 @@ var initState = Immutable.fromJS({
   pageNum: 1,
   pageSize: 10,
   totalNum: null,
-  sortField: 'station_code', // 排序字段
+  sortField: 'ignore_time', // 排序字段
   sortMethod: 'desc', //asc /desc
   ignoreList: [], //  忽略列表
   matrixList: [] // 电站下方阵列表

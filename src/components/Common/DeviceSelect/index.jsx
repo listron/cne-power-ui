@@ -76,7 +76,7 @@ class DeviceSelect extends Component {
       deviceModalShow: false,
       checkedDevice: props.value || [], // 存储当前选中设备。
       autoCompleteDevice: [], // 自动搜索框的提示内容
-      autoCompleteText: '', // 自动补全框展示内容
+      autoCompleteText: props.value &&  props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
     }
   }
 

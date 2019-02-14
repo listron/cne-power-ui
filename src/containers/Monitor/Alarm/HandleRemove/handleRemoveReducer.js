@@ -5,7 +5,7 @@ var initState = Immutable.fromJS({
   warningStatus:'2',//手动解除
   warningTypeStatus:'2',//手动解除
   warningType:'事件告警',//事件告警
-  stationType:'1',
+  stationType:'2',
   loading:false,
   deviceName:null,//设备名称
   pageSize:10,

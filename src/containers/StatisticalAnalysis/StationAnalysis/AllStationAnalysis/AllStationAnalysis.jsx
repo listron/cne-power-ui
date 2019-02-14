@@ -10,7 +10,6 @@ import AllStationStatistic from '../../../../components/StatisticalAnalysis/Stat
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
-// import moment from 'moment';
 
 
 class AllStationAnalysis extends Component {
@@ -29,31 +28,11 @@ class AllStationAnalysis extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    
-  }
-  componentWillReceiveProps(nextProps) {
-    
-  }
-  
 
-  componentWillUnmount() {
- 
-  
-  }
 
   render() {
-    const { showPage, dateType, year } = this.props;
-    const userId = Cookie.get('userId')
-    // console.log(year); 
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '全部电站',
-        }
-      ],
-    };
-
+    const { showPage } = this.props;
+    const breadCrumbData = {breadData: [{ name: '全部电站' }] };
     return (
       <div className={styles.allStationAnalysisBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
@@ -70,7 +49,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
     stations: state.common.get('stations'),
-     userId : Cookie.get('userId'),
+    userId: Cookie.get('userId'),
 
   }
 }
@@ -81,11 +60,9 @@ const mapDispatchToProps = (dispatch) => ({
   getAllStationStatisticTableData: payload => dispatch({ type: allStationAnalysisAction.getAllStationStatisticTableData, payload }),
   getAllStationMonthBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthBarData, payload }),
   getAllStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getAllStationMonthPieData, payload }),
-  //getAllStationYearBarData: payload => dispatch({ type: allStationAnalysisAction.getAllStationYearBarData, payload }),
   getSingleStationStatisticData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationStatisticData, payload }),
   getSingleStationTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationTargetData, payload }),
   getSingleStationMonthPieData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationMonthPieData, payload }),
-  //getSingleStationYearTargetData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationYearTargetData, payload }),
   getSingleStationPlanRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPlanRateData, payload }),
   getSingleStationDayCompleteRateData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationDayCompleteRateData, payload }),
   getSingleStationPvCompareData: payload => dispatch({ type: allStationAnalysisAction.getSingleStationPvCompareData, payload }),
