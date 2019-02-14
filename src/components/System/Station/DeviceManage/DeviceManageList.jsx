@@ -83,12 +83,13 @@ class DeviceManageList extends Component {
         key: 'enableDisplay',
         sorter: true,
         render: (text, record) => record.enableDisplay?'是':'否'
-      },{
-        title: '编辑',
-        dataIndex: 'edit',
-        key: 'edit',
-        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={this.showEditModal}></span>)
-      }
+      },
+      // {
+      //   title: '编辑',
+      //   dataIndex: 'edit',
+      //   key: 'edit',
+      //   render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={this.showEditModal}></span>)
+      // }
     ];
     const { loading, deviceList } = this.props;
     
@@ -97,7 +98,7 @@ class DeviceManageList extends Component {
         <Table
           loading={loading}
           onChange={this.tableChange}
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
           columns={deviceListColumn}
           dataSource={deviceList.map((e,i)=>({key: i,...e}))}
           pagination={false}

@@ -55,10 +55,10 @@ class DeviceManageHandle extends Component {
     return (
       <div className={styles.deviceManageHandle}>
         <div className={styles.left}>
-          <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
+         {/* <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
           <Button className={styles.deletStyle} onClick={this.deletDevice} >删除</Button>
           <Button className={styles.downloadStyle} href={test} download={test} target="_blank"  >下载设备信息导入模板</Button>
-          <Button className={styles.import} onClick={this.showModal}>导入</Button>
+          <Button className={styles.import} onClick={this.showModal}>导入</Button> */}
           <Button disabled={deviceList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref} target="_blank"  >导出设备信息表</Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
