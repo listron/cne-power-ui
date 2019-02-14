@@ -252,7 +252,7 @@ const menuData = [
           },{
             name: '历史预警',
             path: 'historywarning',
-            rightKey: '	analysis_intelligentWarning_history',
+            rightKey: 'analysis_intelligentWarning_history',
           }
         ]
       },
