@@ -71,9 +71,9 @@ class Warning extends Component {
                   <CleaningMain {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>
 
-                {/* <TabPane tab="预警配置" key="warn">
+                <TabPane tab="预警配置" key="warn">
                   <WarnConfig {...this.props} enterpriseId={enterpriseId} />
-                </TabPane> */}
+                </TabPane>
               </Tabs>
             </div>
             <TransitionContainer
