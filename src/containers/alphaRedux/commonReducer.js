@@ -7,6 +7,7 @@ var initState = Immutable.fromJS({
   enterpriseName: '',
   loading: false,
   stations: [], // 所有电站
+  stationTypeCount:'none',
   deviceTypes: [], // 设备类型
   realTimePowerUnit:'MW',//实时功率单位
   realCapacityUnit:'MW',//装机容量单位
