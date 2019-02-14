@@ -120,43 +120,67 @@ class AddDeviceForm extends Component {
                 <Input placeholder="不超过30字" />
               )}
             </FormItem>
-            <FormItem label="是否位样板机"   {...formItemLayout} colon={false}>
+            <FormItem label="是否为样板机"   {...formItemLayout} colon={false}>
               {getFieldDecorator('relationDevice')(
-                <Input placeholder="不超过30字" />
+                <Select>
+                  <Option value="true">是</Option>
+                  <Option value="false">否</Option>
+                </Select>
               )}
             </FormItem>
             <FormItem label="额定容量"   {...formItemLayout} colon={false}>
               {getFieldDecorator('rated')(
                 <div>
-                <Input placeholder="保留小数点后两位" />
-                <span>kW</span>
+                  <Input placeholder="保留小数点后两位" />
+                  <span>kW</span>
                 </div>
               )}
             </FormItem>
             <FormItem label="装机容量"   {...formItemLayout} colon={false}>
               {getFieldDecorator('capacity')(
                 <div>
-                <Input placeholder="保留小数点后两位" />
-                <span>kW</span>
+                  <Input placeholder="保留小数点后两位" />
+                  <span>kW</span>
                 </div>
               )}
             </FormItem>
             <FormItem label="经度"   {...formItemLayout} colon={false}>
               {getFieldDecorator('longitude')(
                 <div>
-                <Input placeholder="请输入..." />
-                <span>°</span>
+                  <Input placeholder="请输入..." />°
                 </div>
               )}
             </FormItem>
             <FormItem label="纬度"   {...formItemLayout} colon={false}>
               {getFieldDecorator('latitude')(
                 <div>
-                <Input placeholder="请输入..." />
-                <span>°</span>
+                  <Input placeholder="请输入..." />°
                 </div>
               )}
             </FormItem>
+          </div>
+          <div>
+            <Form.Item
+              {...formItemLayout}
+              label="是否显示"
+             
+            >
+              {getFieldDecorator('display')(
+                <Select>
+                  <Option value="true">是</Option>
+                  <Option value="false">否</Option>
+                </Select>
+              )}
+            </Form.Item>
+            <Form.Item
+            {...formItemLayout}
+            label="是否显示"
+            
+          >
+            {getFieldDecorator('connectDate')(
+              <span>1970-01-01</span>
+            )}
+          </Form.Item>
 
           </div>
         </Form>

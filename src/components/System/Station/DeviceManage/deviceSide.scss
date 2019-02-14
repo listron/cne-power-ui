@@ -41,19 +41,30 @@
     
   }
   .colStyles{
-  
+   
     .editPart{
-    
       :global{
         .ant-form-item, .ant-form-horizontal{
-          margin-bottom:12px;
+          margin-bottom:8px;
         }
+        .ant-select, .ant-cascader-picker{
+          width: 198px;
+        }
+        .ant-input{
+          width:198px;
+        }
+        
+      }
+     .defaultConfigStyles{
+      :global{
         .ant-form-item-control{
           width:198px;
         }
       }
+    }
+      
       .defaultConfigStyles{
-        margin: 20px 0;
+        margin:12px 0;
       }
 
     }
