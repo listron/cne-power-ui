@@ -206,9 +206,9 @@ class BarGraph extends React.Component {
     }
   }
 
-  getMaxNumber = (arr) => {
-    console.log(Math.max.apply(null, arr))
-  }
+  // getMaxNumber = (arr) => {
+  //   console.log(Math.max.apply(null, arr))
+  // }
 
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData } = param;
