@@ -20,7 +20,7 @@ var initState = Immutable.fromJS({
   cleanType:0,
   detailPageNum: 1,//单电站当前页
   detailPageSize: 10,//单电站每页条数
-  detailtotal: null,//单电站详细电站总数
+  detailtotal: 0,//单电站详细电站总数
   cleanPlanNum: 0,//人工清洗计划数
   cleanProfit: '',//累计清洗收益
   cleanCycle: '',//平均清洗周期

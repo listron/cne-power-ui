@@ -114,34 +114,36 @@ class PerformanceCharts extends React.Component {
     return name;
   }
 
+  getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
+    const length = data.length;
+    let replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--') }
+    let realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData
+  }
+
   drawChart = (params) => {
-    const { graphId, title, data, hasData, hasSlider,deviceNames } = params;
+    const { graphId, title, data, hasData, hasSlider, deviceNames } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
-    let color = this.getColor(title);
     let seriesData = [];
     const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
-        data: barData[bar],
-        // markLine: {
-        //   data: [
-        //       {type: 'average', name: '平均值'}
-        //   ]
-        // },
+        data: this.getDefaultData(barData[bar]),
         type: 'bar',
         itemStyle: {
           barBorderRadius: 3,
         },
-        barWidth: 5,  
+        barWidth: 5,
       };
       seriesData.push(json);
     }
     for (var line in lineData) {
       var json = {
         name: this.getName(line),
-        data: lineData[line],
+        data: this.getDefaultData(lineData[line]),
         type: 'line',
       }
 
@@ -163,7 +165,7 @@ class PerformanceCharts extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'pr') && '%' || ''}
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'}${(item.seriesName === '计划完成率' || item.seriesName === 'pr') && '%' || ''}
             </div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
@@ -182,8 +184,9 @@ class PerformanceCharts extends React.Component {
       },
       color: this.getColor(title),
       grid: {
-        right: '20%',
-        left: '12%'
+        // right: '20%',
+        // left: '12%',
+        bottom: hasSlider ? 120 : 60,
       },
       legend: {
         icon: 'circle',
@@ -196,10 +199,10 @@ class PerformanceCharts extends React.Component {
           show: hasSlider,
           type: 'slider',
           realtime: true,
-          filterMode:'filter',
+          filterMode: 'filter',
           startValue: 0,
-          endValue: hasSlider?19:100,
-          bottom: '3px',
+          endValue: hasSlider ? 19 : 100,
+          bottom: 40,
           handleSize: '80%',
           handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
           backgroundColor: 'rgba(213,219,228,.8)',
@@ -220,7 +223,6 @@ class PerformanceCharts extends React.Component {
       xAxis: {
         type: 'category',
         data: data && data.xData,
-       
         axisPointer: {
           type: 'shadow'
         },
@@ -260,11 +262,10 @@ class PerformanceCharts extends React.Component {
             }
           },
         },
-
       ],
       series: seriesData || []
     };
-    targetChart.setOption(targetMonthOption,'notMerge')
+    targetChart.setOption(targetMonthOption, 'notMerge')
     targetChart.resize();
   }
 

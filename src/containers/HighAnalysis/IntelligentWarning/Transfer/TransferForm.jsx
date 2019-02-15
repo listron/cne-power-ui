@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 import styles from "./transferForm.scss";
-import { transferFormActive } from './transferFormActive';
+import { transferFormAction } from './transferFormAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import TransferFormContainer from '../../../../components/HighAnalysis/IntelligentWarning/Transfer/TransferFormContainer';
@@ -14,12 +14,30 @@ import WorkOrder from '../../../Operation/Ticket/WorkOrder/WorkOrder';
 
 class TransferForm extends Component {
   static propTypes = {
+    resetTransferFormStore: PropTypes.func,
+    changeTransferFormStore: PropTypes.func,
+    pageName: PropTypes.string,
+    defectId: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
       showPage: false
     }
+  }
+  componentWillUnmount(){
+    this.props.resetTransferFormStore()
+  }
+  onEnterToggleSide = () => {//动态切换页面,开
+    this.setState({ showPage: true })
+  }
+
+  onEndToggleSide = () => {//动态切换页面,关
+    this.setState({ showPage: false })
+    this.props.changeTransferFormStore({defectId:''})
+  }
+  prevChange = (value) => { // 切换到当前页
+    this.props.changeTransferFormStore({ ...value })
   }
   render() {
     const { pageName, defectId } = this.props;
@@ -63,16 +81,16 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  getTransferFormStatistic: payload => dispatch({ type: transferFormActive.getTransferFormStatistic, payload }),
-  changeTransferFormStore: payload => dispatch({ type: transferFormActive.changeTransferFormStore, payload }),
-  resetTransferFormStore: payload => dispatch({ type: transferFormActive.resetTransferFormStore, payload }),
-  getTransferForm: payload => dispatch({ type: transferFormActive.getTransferForm, payload }),
-  getTransferInfo: payload => dispatch({ type: transferFormActive.getTransferInfo, payload }),
+  getTransferFormStatistic: payload => dispatch({ type: transferFormAction.getTransferFormStatistic, payload }),
+  changeTransferFormStore: payload => dispatch({ type: transferFormAction.changeTransferFormStore, payload }),
+  resetTransferFormStore: payload => dispatch({ type: transferFormAction.resetTransferFormStore, payload }),
+  getTransferForm: payload => dispatch({ type: transferFormAction.getTransferForm, payload }),
+  getTransferInfo: payload => dispatch({ type: transferFormAction.getTransferInfo, payload }),
   getLostGenType: params => dispatch({
     type: commonAction.getLostGenType,
     payload: {
       params,
-      actionName: transferFormActive.changeRealtimeWarningStore,
+      actionName: transferFormAction.changeRealtimeWarningStore,
       resultName: 'defectTypes'
     }
   }),

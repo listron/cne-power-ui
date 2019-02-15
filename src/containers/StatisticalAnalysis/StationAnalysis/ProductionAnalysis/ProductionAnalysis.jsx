@@ -14,6 +14,7 @@ import Footer from '../../../../components/Common/Footer';
 class ProductionAnalysisContainer extends Component {
   static propTypes = {
     location: PropTypes.object,
+    resetStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -27,7 +28,7 @@ class ProductionAnalysisContainer extends Component {
   }
 
   componentWillUnmount() {
-
+    this.props.resetStore()
   }
 
   render() {
@@ -64,8 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   ProductionPlanComplete: payload => dispatch({ type: productionAnalysisAction.ProductionPlanComplete, payload }),
   getSingleStationProductionData: payload => dispatch({ type: productionAnalysisAction.getSingleStationProductionData, payload }),
   getSingleStationPlanRateData: payload => dispatch({ type: productionAnalysisAction.getSingleStationPlanRateData, payload }),
-
-
+  resetStore: payload => dispatch({ type: productionAnalysisAction.resetStore, payload }),
 })
 
 

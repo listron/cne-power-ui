@@ -32,6 +32,12 @@ import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
 import AlarmStatistic from '../containers/Monitor/Alarm/AlarmStatistic';
 import TransferAlarm from '../containers/Monitor/Alarm/TransferAlarm';
+import MonitorRealTimeWarning from '../containers/Monitor/Alarm/RealTimeWarning/RealTimeWarning';
+import MonitorTransferForm from '../containers/Monitor/Alarm/Transfer/TransferForm';
+import MonitorHandleRemove from '../containers/Monitor/Alarm/HandleRemove/HandleRemove';
+import MonitorHistoryWarning from '../containers/Monitor/Alarm/HistoryWarning/HistoryWarning';
+
+
 
 import EditPassword from '../containers/Others/EditPassword'; // 更改密码
 import Building from '../components/Common/Building/Building';
@@ -132,23 +138,48 @@ const routers = [
     path: '/system/account/role',
     exact: true,
     component: Role,
-  }, { //实时监控-告警-实施告警
+  },
+  // { //实时监控-告警-实施告警
+  //   path: '/monitor/alarm/realtime',
+  //   exact: true,
+  //   component: RealTimeAlarm,
+  // },
+   {
     path: '/monitor/alarm/realtime',
     exact: true,
-    component: RealTimeAlarm,
-  }, { //实时监控-告警-已转工单
+    component: MonitorRealTimeWarning,
+  },
+  // { //实时监控-告警-已转工单
+  //   path: '/monitor/alarm/transfer',
+  //   exact: true,
+  //   component: TransferAlarm,
+  // },
+  { //实时监控-告警-已转工单222
     path: '/monitor/alarm/transfer',
     exact: true,
-    component: TransferAlarm,
-  }, { //实时监控-告警-手动解除
+    component: MonitorTransferForm,
+  }, 
+  // { //实时监控-告警-手动解除
+  //   path: '/monitor/alarm/relieve',
+  //   exact: true,
+  //   component: RealTimeAlarm,
+  // }, 
+  { //实时监控-告警-手动解除222
     path: '/monitor/alarm/relieve',
     exact: true,
-    component: RealTimeAlarm,
-  }, { //实时监控-告警-历史告警
+    component: MonitorHandleRemove,
+  },
+  // { //实时监控-告警-历史告警
+  //   path: '/monitor/alarm/history',
+  //   exact: true,
+  //   component: HistoryAlarm,
+  // },
+  { //实时监控-告警-历史告警
     path: '/monitor/alarm/history',
     exact: true,
-    component: HistoryAlarm,
-  }, { //实时监控-告警-告警统计
+    component: MonitorHistoryWarning,
+  }, 
+  { //实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     exact: true,
     component: AlarmStatistic,
@@ -257,20 +288,20 @@ const routers = [
   {
     path: '/analysis/intelligentWarning/transfer',
     exact: true,
-    // component: TransferForm
-     component: Building
+    component: TransferForm
+    //  component: Building
   },
   {
     path: '/analysis/intelligentWarning/handleremove',
     exact: true,
-    // component: HandleRemove
-     component: Building
+    component: HandleRemove
+    //  component: Building
   },
   {
     path: '/analysis/intelligentWarning/historywarning',
     exact: true,
-    // component: HistoryWarning
-     component: Building
+    component: HistoryWarning
+    //  component: Building
   },
   // }, 
   { // 高级分析>清洗模型>清洗预警

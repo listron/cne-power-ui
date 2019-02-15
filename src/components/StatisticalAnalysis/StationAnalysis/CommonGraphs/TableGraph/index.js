@@ -135,13 +135,13 @@ class TableGraph extends React.Component {
         }, {
           title: lastYear,
           dataIndex: 'lastYearData',
-          width: 130,
+          width: 110,
           sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'lastYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {
           title: currentYear,
           dataIndex: 'thatYearData',
-          width: 130,
+          width: 110,
           sorter: (a, b, sortBy) => this.getSort(a, b, sortBy, 'thatYearData'),
           render: text => (text || text === 0) ? text : '--'
         }, {

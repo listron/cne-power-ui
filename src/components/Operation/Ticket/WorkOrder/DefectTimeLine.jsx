@@ -110,12 +110,10 @@ class DefectTimeLine extends Component {
     const defectProposal = item.defectProposal;
     const splitIndex = defectProposal.indexOf('：');
     let proccessTitle = '', proccessText = '', refuseText = ['4'], suggestText = ['1', '2', '3', '5', '6'], doneText = ['0', '7'];
-
     splitIndex > 0 && (proccessText = defectProposal.slice(splitIndex + 1));
     refuseText.includes(handleStatus) && (proccessTitle = '驳回原因');
     suggestText.includes(handleStatus) && (proccessTitle = '处理建议');
     doneText.includes(handleStatus) && (proccessTitle = '处理过程');
-
     return (
       <div className={styles.processItem}>
         <div className={styles.lineBasic}>
@@ -124,19 +122,15 @@ class DefectTimeLine extends Component {
           <div className={styles.operateUser}>{item.operateUser}</div>
         </div>
         <div className={styles.advise}>
-          {/* <div className={styles.text}>{proccessTitle}</div> */}
           <div className={styles.status}>{getHandleStatus(handleStatus)}</div>
           <div className={styles.defectProposal}>
-            {/* <span>{proccessText}</span>
-            <span>{item.replaceParts ? item.replaceParts : null}</span> */}
-            {item.reasonDesc && <div><span>产生原因</span>{item.reasonDesc}</div>}
-            {/* {item.defectProposal && <div><span> {proccessTitle}</span>{item.defectProposal}</div>} */}
+            {item.reasonDesc && <div>产生原因: <span className={styles.reason}>{item.reasonDesc}</span></div>}
             {item.defectProposal && <div>{item.defectProposal}</div>}
             {item.photoAddress && <div className={styles.imgBox}>
-              <span>处理照片</span>
+              <span>处理照片:</span>
               {photoAddressArr.length > 0 && <div className={styles.imgList} onClick={() => this.showImgs(photoAddressArr)}>{`有图${photoAddressArr.length}`}</div> || '无'}
             </div>}
-            {handleData.replaceParts && <div><span>更换备件</span>{handleData.replaceParts}</div>}
+            {item.replaceParts && <div>{item.replaceParts}</div>}
           </div>
         </div>
       </div>

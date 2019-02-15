@@ -63,17 +63,20 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
     const { stations, total, pageSize, pageNum } = this.props;
     return (
       <div className={styles.cleanoutRecordMain}>
-        <div className={styles.topFilter}>
-          <FilterCondition
-            option={['stationName',]}
-            stations={stations}
-            onChange={this.filterCondition}
-          />
+        <div className={styles.cleanoutcontainer}>
+          <div className={styles.topFilter}>
+            <FilterCondition
+              option={['stationName',]}
+              stations={stations.filter(e => e.stationType === 1)}
+              onChange={this.filterCondition}
+            />
+          </div>
+          <div className={styles.paginationStyle}>
+            <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} />
+          </div>
+          <CleanoutRecordTable {...this.props} />
         </div>
-        <div className={styles.paginationStyle}>
-          <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} />
-        </div>
-        <CleanoutRecordTable {...this.props} />
+
       </div>
     )
   }

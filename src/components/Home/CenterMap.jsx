@@ -132,6 +132,15 @@ class CenterMap extends Component{
         wind: windStationData.length,
         pv: pvStationData.length,},
     });
+    const { clientWidth } = document.body;
+    let countrySize = 620;
+    if (clientWidth < 1440) {
+      countrySize = 550;
+    } else if (clientWidth < 1920) {
+      countrySize = 650;
+    } else if ( clientWidth >= 1920){
+      countrySize = 900;
+    }
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
       const countryBox = document.getElementById('homeCountryMap');
       const countryChart = echarts.init(countryBox);
@@ -190,7 +199,10 @@ class CenterMap extends Component{
           map: mapName,
           roam: true,
           layoutCenter: ['50%', '55%'],
-          layoutSize: 830,
+          scaleLimit: {
+            min: 0.75
+          },
+          layoutSize: countrySize,
           itemStyle: {
             normal: {
               areaColor: '#1866a8',

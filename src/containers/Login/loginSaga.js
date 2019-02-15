@@ -6,12 +6,13 @@ import { stringify } from 'qs';
 import { loginAction } from './loginAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
+import { Base64 } from 'js-base64';
+
 const { APIBasePath } = Path.basePaths;
 const { login } = Path.APISubPaths;
 message.config({
   maxCount: 1,
 });
-
 // 改变loginStore
 function *changeLoginStore(action){
   let { params } = action;
@@ -34,8 +35,9 @@ function *userNameLogin(action){
       auth: {},
       data: stringify({
         'grant_type': "password",
+        'deviceType': '0',
         username: params.username,
-        password: params.password,
+        password: Base64.encode(params.password),
       }),
     });
     if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){

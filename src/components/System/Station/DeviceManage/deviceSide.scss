@@ -1,0 +1,73 @@
+@import '../../../../theme/theme.scss';
+
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+.deviceSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background:#ececec;
+  padding: 24px 24px 0;
+  z-index:99;
+.addDevice,.detailDevice,.editDevice{
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  background:#fff;
+  .editTop{
+    @include top;
+    justify-content: space-between;
+    .text{
+      font-size: 18px;
+      color: $darkColor;
+      letter-spacing: 4px;
+    }
+    .backIcon{
+      color: $darkColor;
+      font-size: 20px;
+      border-left: 1px solid #dfdfdf;
+      height: 100%;
+      line-height: 64px;
+      width: 64px;
+      cursor: pointer;
+    }
+    
+  }
+  .colStyles{
+   
+    .editPart{
+      :global{
+        .ant-form-item, .ant-form-horizontal{
+          margin-bottom:8px;
+        }
+        .ant-select, .ant-cascader-picker{
+          width: 198px;
+        }
+        .ant-input{
+          width:198px;
+        }
+        
+      }
+     .defaultConfigStyles{
+      :global{
+        .ant-form-item-control{
+          width:198px;
+        }
+      }
+    }
+      
+      .defaultConfigStyles{
+        margin:12px 0;
+      }
+
+    }
+  }
+}
+}

@@ -71,6 +71,7 @@ class ProductionAnalysis extends React.Component {
     }
   }
 
+  
   onTimeChange = (timeObj) => {
     let year = " ";
     let month = "";
@@ -131,13 +132,13 @@ class ProductionAnalysis extends React.Component {
     for (let i = Number(startYear); i < Number(endYear) + 1; i++) {
       rangeYear.push(i.toString())
     }
-    const stationType = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType } })
+    const station = stations.toJS().filter(e => { if (e.stationCode === +stationCode) { return e.stationType }})
     let prams = {
       stationCode: stationCode,
       dateType,
       year: [+startYear, +endYear],
     }
-    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType })
+    props.getAllStationAvalibaData({ ...prams, "userId": userId, "year": rangeYear, stationType:station[0].stationType || 1 })
     props.changeProductionStationStore({ startTime: startYear, endTime: endYear })
     props.ProductionPlanComplete({...prams,year: endYear,})
     props.getSingleStationProductionData({...prams,"year": rangeYear})
@@ -186,7 +187,6 @@ class ProductionAnalysis extends React.Component {
 
   render() {
     const { stations, dateType, year, month, stationCode, productionPlanCompleteData, singleStationPowerData, singleStationBuyPowerData, singleStationSalePowerData, singleStationPlanRateData } = this.props;
-
     // 截止时间
     const statisticTime = moment().subtract(1, 'days').format('YYYY年MM月DD日');
     // 并网时间
@@ -267,9 +267,11 @@ class ProductionAnalysis extends React.Component {
             <div className={styles.status}>
                 <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                 {stationName}-{provinceName}    :
-                计划完成情况{dateType === 'year' ? this.selectProductYear() : dateType === 'month' ? `(  ${Number(year)}年  ) ` : `(${moment(year[0]).format('YYYY年MM月')})`}
+                计划完成情况
+                {dateType === 'year' && this.selectProductYear()}
+                { dateType === 'month' && `(  ${year}年  ) `} 
+                {dateType === 'day' && `( ${+(year)}年${month}月)`}
               </div>
-
               <span className={styles.rightFont}>并网时间{stationGridTime}</span>
             </div>
             <div className={styles.graph}>

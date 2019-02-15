@@ -2,30 +2,92 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { historyWarningActive } from './historyWarningActive';
+import { historyWarningAction } from './historyWarningAction';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
-// function* getStationWarningStatistic(action) {//1.3.2.	获取多电站活动告警数统计
-//   const { payload } = action;
-//    const url = `${APIBasePath}${monitor.getAlarmNum}`
-//   //const url = '/mock/cleanWarning/totalEffect';
-//   try {
+function *getHistoryarningList(action) {  // 请求告警列表
+  const { payload, } = action;
+  const{stationCodes,rangTime,}=payload;
+  const url =`${APIBasePath}${monitor.getHistoryAlarm}`
+  try{
+    yield put({
+      type:historyWarningAction.changeHistoryWarningStore,
+      payload: {
+        loading: true,
+      },
+    });  
+    const response = yield call(axios.post,url,{
+      ...payload,
+      stationCode:stationCodes,
+      startTime:rangTime,
+    });
+    if(response.data.code === '10000') {
+      const total = response.data.data.total || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
+      yield put({
+        type:historyWarningAction.changeHistoryWarningStore,
+        payload: {
+          total : response.data.data.total||0,
+          historyWarningList: response.data.data.list||[],
+          loading:false,
+          ...payload,
+        },
+      });     
+    }else{
+      throw response.data
+    }  
+  }catch(e){
+    console.log(e);
+    yield put({
+      type:historyWarningAction.changeHistoryWarningStore,
+      payload: { ...payload, loading: false ,historyWarningList:[]},
+    })
+  }
+}
+function* getHistoryTicketInfo(action) {  // 请求工单详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getTicketInfo}/${payload.workOrderId}`;
+  try {
    
-//     const response = yield call(axios.get, url, payload);
-//     if (response.data.code === '10000') {
-//       yield put({
-//         payload: {
-//           oneWarningNum: (response.data.oneWarningNum ||  response.data.oneWarningNum===0)?response.data.oneWarningNum:'--',
-//           twoWarningNum: (response.data.twoWarningNum ||  response.data.twoWarningNum===0)?response.data.twoWarningNum:'--',
-//           threeWarningNum: (response.data.threeWarningNum ||  response.data.threeWarningNum===0)?response.data.threeWarningNum:'--',
-//           fourWarningNum: (response.data.fourWarningNum ||  response.data.fourWarningNum===0)?response.data.fourWarningNum:'--',
-//         },
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type:historyWarningAction.changeHistoryWarningStore,
+        payload: {
+          ticketInfo: response.data.data||{}
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getHistoryRelieveInfo(action) {  // 请求屏蔽详情
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getRelieveInfo}/${payload.operateId}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: historyWarningAction.changeHistoryWarningStore,
+        payload: {
+          relieveInfo: response.data.data||{}
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchHistoryWarning() {
-  // yield takeLatest(historyWarningActive.getStationWarningStatistic, getStationWarningStatistic);
+  yield takeLatest(historyWarningAction.getHistoryarningList, getHistoryarningList);
+  yield takeLatest(historyWarningAction.getHistoryTicketInfo, getHistoryTicketInfo);
+  yield takeLatest(historyWarningAction.getHistoryRelieveInfo, getHistoryRelieveInfo);
 }

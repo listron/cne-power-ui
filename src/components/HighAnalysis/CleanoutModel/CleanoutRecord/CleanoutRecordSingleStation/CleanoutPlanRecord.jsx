@@ -10,10 +10,10 @@ import AddCleanoutRecord from './AddCleanoutRecord';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
 import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
+import { Table, Icon, Modal, Form, DatePicker, Input, Button,  } from 'antd';
 const FormItem = Form.Item;
 
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+
 const { RangePicker } = DatePicker;
 class CleanoutPlanRecord extends Component {
   static propTypes = {
@@ -76,10 +76,8 @@ class CleanoutPlanRecord extends Component {
 
   nextStation = () => { // 下一个电站详情
     const { singleStationCode, detailListData, cleanType, selectedStationIndex, detailPageNum, detailPageSize, getDetailList, detailtotal, getPlanRecordList, cleanRecordPageNum, cleanRecordPageSize } = this.props;
-    const maxPage = Math.ceil(5 / detailPageSize); // 最后一页页码
-
-    const lastPageMaxIndex = 5 - (maxPage - 1) * detailPageSize - 1;
-
+    const maxPage = Math.ceil(detailtotal / detailPageSize); // 最后一页页码
+    const lastPageMaxIndex = detailtotal - (maxPage - 1) * detailPageSize - 1;
     if (selectedStationIndex === lastPageMaxIndex && detailPageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
@@ -95,8 +93,8 @@ class CleanoutPlanRecord extends Component {
       })
     } else {
       getPlanRecordList({ // 请求下一条电站详情数据
-        planId: detailListData[selectedStationIndex + 1].planId,
-        selectedStationIndex: selectedStationIndex + 1,
+        planId: detailListData[selectedStationIndex+1].planId,
+        selectedStationIndex: selectedStationIndex+1,
         pageNum: cleanRecordPageNum,
         pageSize: cleanRecordPageSize,
       })
@@ -150,12 +148,12 @@ class CleanoutPlanRecord extends Component {
             </div>
             <div className={styles.statisticData}>
               <div className={styles.statisticTarget}>
-                <div className={styles.numberColor}>{cleanRecordProfit}(10%)</div>
+                <div className={styles.numberColor}>{cleanRecordProfit}</div>
                 <div>累计清洗收益(万kWh)</div>
               </div>
               <div className={styles.statisticTarget}>
                 <div className={styles.numberColor}>{cleanRecordCost}</div>
-                <div>清洗成本(万元)</div>
+                <div>清洗成本(元)</div>
               </div>
               <div className={styles.statisticTarget}>
                 <div className={styles.numberColor}>{cleanRecordTime}</div>
@@ -163,7 +161,7 @@ class CleanoutPlanRecord extends Component {
 
             </div>
             <div className={styles.filterData}>
-              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >电站</Button>
+              <Button className={styles.plusButton} onClick={this.addRecord} icon="plus" >添加</Button>
               {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
               <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} />
             </div>

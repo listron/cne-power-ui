@@ -252,7 +252,7 @@ class FanList extends React.Component {
                 <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
                   <div className={styles.inverterItemR} >
                     <div>{item.deviceName}</div>
-                    <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                    <Progress className={styles.powerProgress} strokeWidth={3} percent={+progressPercent} showInfo={false} />
                     <div className={styles.inverterItemPower}>
                       <div>
                         <span className={styles.showDevicePower}>{showDevicePower}kW</span>

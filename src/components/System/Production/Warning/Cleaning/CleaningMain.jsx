@@ -7,7 +7,7 @@ class CleaningMain extends Component {
   static propTypes = {
     enterpriseId: PropTypes.string,
     getCleaningData: PropTypes.func,
-    changeStore: PropTypes.func,
+    changeWarnStore: PropTypes.func,
     addCleaningData: PropTypes.func,
     lossPowerPercent: PropTypes.any,
   };
@@ -24,8 +24,6 @@ class CleaningMain extends Component {
     this.props.getCleaningData({ enterpriseId });
   }
 
-  
-
   modify = () => { // '修改'按钮
     this.setState({
       isShow: true,
@@ -34,12 +32,11 @@ class CleaningMain extends Component {
 
   changeCount = (value) => { //设置'阈值'
     value && !Number.isInteger(value) && message.info('请输入整数!')
-    this.props.changeStore({ lossPowerPercent: value });
+    this.props.changeWarnStore({ lossPowerPercent: value });
   }
 
   handleClear = () => { //'恢复默认值'按钮
-    const { enterpriseId } = this.props;
-    this.props.getCleaningData({ enterpriseId });
+    this.props.changeWarnStore({ lossPowerPercent: 10 })
   }
 
   handleSubmit = () => { //'保存'按钮
@@ -75,14 +72,12 @@ class CleaningMain extends Component {
   render() {
     const { isShow } = this.state;
     const { lossPowerPercent } = this.props;
-    let thresholdtNum = lossPowerPercent ? lossPowerPercent : '--'
-
     return (
       !isShow ?
         <div className={styles.cleaningBox}>
           <div className={styles.thresholdt}>
             <span className={styles.thresholdtText}>电量损失比阈值</span>
-            <span className={styles.thresholdtNum}>{thresholdtNum}</span>
+            <span className={styles.thresholdtNum}>{lossPowerPercent || '--'}</span>
             <span>%</span>
           </div>
 

@@ -25,7 +25,7 @@ class ProvinceItem extends Component {
     if(cancelCheck){
       newStations = selectedStation.filter(e=>e.stationCode!==station.stationCode);
     }else{
-      const hasMultipleStyle = oneStyleOnly && selectedStation.find(e=>e.stationType !== station.stationType);
+      const hasMultipleStyle = multiple && oneStyleOnly && selectedStation.find(e=>e.stationType !== station.stationType);
       if(hasMultipleStyle){ // 选中了多种电站
         message.error('请选择同为风电或光伏的电站!');
         return;

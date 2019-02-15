@@ -19,9 +19,12 @@ class FilteredItems extends Component {
     defectSourceName: PropTypes.array,
     belongMatrixs: PropTypes.array,
     warningLeveName: PropTypes.array,
+    warningStatusName: PropTypes.array,
     warningLevel: PropTypes.array,
+    warningStatus: PropTypes.array,
     warningConfigName: PropTypes.array,
     rangTime: PropTypes.array,
+    endTime: PropTypes.array,
     onChangeFilter: PropTypes.func,
     defectLevelName:PropTypes.array,
   }
@@ -49,6 +52,12 @@ class FilteredItems extends Component {
     const { onChangeFilter } = this.props;
     onChangeFilter({
       rangTime: [],
+    })
+  }
+  onCancelRangEndTime = () => { //取消结束时间
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      endTime: [],
     })
   }
 
@@ -93,14 +102,20 @@ class FilteredItems extends Component {
   }
 
   onCancelBelongMatrixs = (matrixs) => { // 删除所属方阵
-    const { defectTypeCode, onChangeFilter } = this.props;
-    onChangeFilter({ defectTypeCode: defectTypeCode.filter(e => e !== matrixs), });
+    const { belongMatrixs, onChangeFilter } = this.props;
+    onChangeFilter({ belongMatrixs: belongMatrixs.filter(e => e !== matrixs), });
   }
 
   onCancelWarnLevel = (level) => {//删除某告警级别
     const { warningLevel, onChangeFilter } = this.props;
     onChangeFilter({
       warningLevel: warningLevel.filter(e => e !== level),
+    });
+  }
+  onCancelWarnStatus = (status) => {//删除某告警状态类型
+    const { warningStatus, onChangeFilter } = this.props;
+    onChangeFilter({
+      warningStatus: warningStatus.filter(e => e !== status),
     });
   }
 
@@ -126,7 +141,7 @@ class FilteredItems extends Component {
   }
 
   resetAll = () => {//删除所有筛选条件
-    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningConfigName,rangTime} = this.props;
+    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus,warningConfigName,rangTime,endTime} = this.props;
     const prams = {};
     createTimeEnd !== '' ? prams.createTimeEnd = '' : null;
     createTimeStart !== '' ? prams.createTimeStart = '' : null;
@@ -138,8 +153,10 @@ class FilteredItems extends Component {
     defectTypeCode.length > 0 ? prams.defectTypeCode = [] : null;
     belongMatrixs.length > 0 ? prams.belongMatrixs = [] : null;
     warningLevel.length > 0 ? prams.warningLevel = [] : null;
+    warningStatus.length > 0 ? prams.warningStatus = [] : null;
     warningConfigName.length > 0 ? prams.warningConfigName = [] : null;
     rangTime.length > 0 ? prams.rangTime = [] : null;
+    endTime.length > 0 ? prams.endTime = [] : null;
     onChangeFilter(prams);
   }
 
@@ -167,10 +184,11 @@ class FilteredItems extends Component {
   }
 
   render() {
-    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName, warningLevel, warningConfigName,rangTime,defectLevelName } = this.props;
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName,warningStatusName, warningLevel, warningStatus,warningConfigName,rangTime,endTime,defectLevelName } = this.props;
     const levels =defectLevelName?defectLevelName: ['A级', 'B级', 'C级'];
     let defectSourceNames = defectSourceName ? defectSourceName : ['告警', '上报', '巡检', '预警',];
     let warningLeveNames = warningLeveName ? warningLeveName : ['一级', '二级', '三级', '四级'];
+    let warningStatusNames = warningStatusName ? warningStatusName : ['自动解除', '手动解除', '转工单'];
     const defectLevelArray = defectLevel.map(e => ({
       label: levels[+e - 1],
       value: e,
@@ -182,6 +200,10 @@ class FilteredItems extends Component {
 
     const warningLevelArray = warningLevel.map(e => ({
       label: warningLeveNames[+e-1],
+      value: e,
+    }))
+    const warningStatusArray = warningStatus.map(e => ({
+      label: warningStatusNames[+e>0?+e-1:+e],
       value: e,
     }))
 
@@ -199,7 +221,9 @@ class FilteredItems extends Component {
       defectTypeCode.length === 0 &&
       belongMatrixs.length === 0 &&
       warningLevel.length === 0 &&
+      warningStatus.length === 0 &&
       rangTime.length === 0 &&
+      endTime.length === 0 &&
       warningConfigName.length === 0) {
       return null;
     }
@@ -210,6 +234,7 @@ class FilteredItems extends Component {
         {createTimeStart && <Tag className={styles.tag} closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
         {createTimeEnd  && <Tag className={styles.tag} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
         {rangTime.length>0  && <Tag className={styles.tag} closable onClose={this.onCancelRangTime}>发生时间 {moment(rangTime[0]).format('YYYY-MM-DD')}~{moment(rangTime[1]).format('YYYY-MM-DD')}</Tag>}
+        {endTime.length>0  && <Tag className={styles.tag} closable onClose={this.onCancelRangEndTime}>结束时间 {moment(endTime[0]).format('YYYY-MM-DD')}~{moment(endTime[1]).format('YYYY-MM-DD')}</Tag>}
         {stationType  && <Tag className={styles.tag} closable onClose={this.onCancelStationType}>{stationType === '0' ? '风电' : '光伏'}</Tag>}
         {stationCodes.length > 0 && selectedStationArr.map(e => {// 电站名称
           return (<Tag className={styles.tag} closable onClose={() => this.onCancelProvince(e.stationCode)} key={e.provinceName} >
@@ -242,6 +267,9 @@ class FilteredItems extends Component {
 
         {warningLevel.length > 0 && warningLevelArray.map(e => ( // 告警级别
           <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelWarnLevel(e.value)}>{e.label}</Tag>
+        ))}
+        {warningStatus.length > 0 && warningStatusArray.map(e => ( // 告警状态的类型
+          <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelWarnStatus(e.value)}>{e.label}</Tag>
         ))}
 
         {warningConfigName.length > 0 && warningConfigName.map(e => ( // 告警类型

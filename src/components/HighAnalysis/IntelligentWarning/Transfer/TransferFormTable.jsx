@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 
@@ -8,38 +9,62 @@ import moment from 'moment';
 
 class TransferFormTable extends Component {
   static propTypes = {
+    changeTransferFormStore: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    pageSize: PropTypes.number,
+    getTransferInfo: PropTypes.func,
+    pageNum: PropTypes.number,
+    ticketInfo: PropTypes.object,
+    transferFormList: PropTypes.array,
+    rangTime: PropTypes.array,
+    stationCodes: PropTypes.array,
+    orderField: PropTypes.string,
+    orderCommand: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
-      
       showTransferPopover: [],
     }
   }
+ 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    // this.props.changeRealtimeWarningStore({ currentPage, pageSize })
+    const { changeTransferFormStore,onChangeFilter,   } = this.props;
+    changeTransferFormStore({ pageNum:currentPage, pageSize })
+    onChangeFilter({pageNum:currentPage, pageSize})
   }
+  
   onTransferChange(visible,workOrderId,index) { // 切换需求
     this.setState((state) => {
       return state.showTransferPopover[index] = visible
     })
-    this.props.getTransferInfo({workOrderId})
-  }
-  onSelectChange = (selectedRowKeys) => {//选择checkbox
-    // this.props.changeRealtimeWarningStore({ selectedRowKeys });
-  }
-  cancelRowSelect = () => {//取消选中
-    // this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
+    this.props.getTransferInfo({workOrderId})//请求工单的详细信息
   }
  
+
+  getDetail = (defectId,index) => { // 查看工单详情
+    this.props.changeTransferFormStore({pageName:'detail',defectId})
+    this.setState((state) => {
+      return state.showTransferPopover[index] = false
+    })
+  }
+  
   tableChange = (pagination, filters, sorter) => {
-    // this.setState({
-    //   sortName: sorter.field,
-    //   descend: sorter.order === 'descend'
-    // });
-    // this.props.changeRealtimeWarningStore({
-    //   sortName: sorter.field,
-    // });
+    const { changeTransferFormStore,onChangeFilter, } = this.props;
+    const { field, order } = sorter;
+    const sortInfo = {
+      warningLevel: '1',
+      stationName: '2',
+      deviceName: '3',
+      timeOn: '5',
+      durationTime: '9',
+    };
+     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
+    changeTransferFormStore({ orderField, orderCommand })
+    onChangeFilter({
+        orderField, orderCommand
+    })
   }
  
   renderTransferPopover(index,record) { // 转到工单页面的气泡
@@ -147,7 +172,7 @@ class TransferFormTable extends Component {
         title: '预警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
-          if (record.isTransferWork === 0) {
+          // if (record.isTransferWork === 0) {
             return (
               <Popover
                 content={this.renderTransferPopover(index, record)}
@@ -160,59 +185,24 @@ class TransferFormTable extends Component {
               </Popover>
             );
           }
-        }
+        // }
       }
     ]
-    const { transferFormList, selectedRowKeys, pageSize, currentPage, loading } = this.props;
-    const { sortName, descend } = this.state;
-    const { showTransferTicketModal, showHandleRemoveModal,  } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
-    const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
-    const tableSource = transferFormList.map((e, i) => ({
-      ...e,
-      key: i,
-    })).sort((a, b) => { // 手动排序
-      const sortType = descend ? -1 : 1;
-      if (sortName === 'warningLevel') {
-        return sortType * (a.warningLevel - b.warningLevel);
-      } else if (nameSortArr.includes(sortName)) {
-        return sortType * a[sortName].localeCompare(b[sortName], 'zh');
-      } else if (sortName === 'timeOn') {
-        return sortType * (moment(a.timeOn) - moment(b.timeOn));
-      } else if (sortName === 'durationTime') {
-        return sortType * (moment(b.timeOn) - moment(a.timeOn));
-      } else {
-        return a.key - b.key;
-      }
-    }).filter((e, i) => { // 筛选页面
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = startIndex + pageSize;
-      return (i >= startIndex && i < endIndex);
-    });
+    const { transferFormList,  pageSize, pageNum,total } = this.props;
+   
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-         
-          <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={transferFormList.length} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
-          dataSource={tableSource}
+          dataSource={transferFormList}
           rowKey={record => record.warningLogId}
-          rowSelection={rowSelection}
           columns={columns}
           pagination={false}
           onChange={this.tableChange}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
-        {transferFormList.length > 0 && <div className={styles.tableFooter}>
-          <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>
-          {selectedRowKeys.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
-        </div>}
-
-       
       </div>
     )
   }

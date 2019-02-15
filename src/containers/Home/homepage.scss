@@ -1,18 +1,43 @@
 
-@media screen and (max-width: 1919px) { // 1920以下宽度屏按1680展示
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按1345px进行适配。
+  .innerContent{
+    width: 1345px;
+  }
+  .middleBox{
+    height: 705px;
+  }
   .mapInfo{
-    width: 832px;
+    width: 641px;
   }
 }
 
-@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
+  .innerContent{
+    width: 1420px;
+  }
+  .middleBox{
+    height: 705px;
+  }
   .mapInfo{
-    width: 996px;
+    width: 716px;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .innerContent{
+    width: 1900px;
+  }
+  .middleBox{
+    height: 750px;
+  }
+  .mapInfo{
+    width: 1006px;
   }
 }
 
 .homepage{
   position: relative;
+  width: 100%;
   background:#0c2539;
   background-attachment: local;
   overflow: auto;
@@ -20,21 +45,24 @@
   display: flex;
   min-height: 100vh;
   flex-wrap: wrap;
-  background-image: url('/img/tiltebg.png'),url('/img/homepage.png');
-  background-position: center 40px, center top;
-  background-repeat: no-repeat, no-repeat;
+  background-image: url('/img/homepage.png');
+  background-position: center top;
+  background-repeat: no-repeat;
   .innerContent{
     margin: 0 auto;
     .middleBox{
-      height: 750px;
       display: flex;
+      .leftInfo{
+        z-index: 99;
+      }
       .mapInfo{
         margin: 12px 12px 0 12px;
       }
     }
     .bottomBox{
-      height: 257px;
+      height: 207px;
       display: flex;
+      margin-bottom: 24px;
     }
   }
 }

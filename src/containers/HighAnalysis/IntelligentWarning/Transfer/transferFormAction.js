@@ -1,4 +1,4 @@
-export const transferFormActive={
+export const transferFormAction={
   changeTransferFormStore: Symbol('changeTransferFormStore'), // 改变reducer参数
   resetTransferFormStore: Symbol('resetTransferFormStore'), // 发起重置数据请求
   getTransferFormStatistic:Symbol('getTransferFormStatistic'),//获取转工单告警统计

@@ -20,10 +20,21 @@ function* getStations(action) { // 通用：获取所有电站信息
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const stations = response.data.data || [];
+      const stationTypes = new Set(stations.map(e => e.stationType));
+      let stationTypeCount = 'none';
+      if (stationTypes.size === 2) { // 两种类型电站都有
+        stationTypeCount = 'multiple';
+      } else if (stationTypes.has(1)) { // 只有光伏电站
+        stationTypeCount = 'pv';
+      } else if ( stationTypes.has(0)) { // 只有风电站
+        stationTypeCount = 'wind';
+      }
       yield put({
         type: commonAction.GET_COMMON_FETCH_SUCCESS,
         payload: {
-          stations: response.data.data
+          stations: response.data.data,
+          stationTypeCount,
         }
       });
     }
@@ -51,7 +62,7 @@ function* getDeviceTypes(action) { // 通用： 获取用户权限范围内所�
 }
 function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内所有设备类型信息
   // const url = `/mock/v3/station/monitor/conf`;
-   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getMonitorDataUnit}`;
   yield put({ type: commonAction.COMMON_FETCH });
   try {
     const response = yield call(axios.get, url);
@@ -95,9 +106,9 @@ function* getStationOfEnterprise(action) { // 根据企业id获取下面所有�
 
 function* getStationDeviceTypes(action) { // 新共用接口，获取电站下设备类型。
   const url = `${APIBasePath}${commonPaths.getStationDevicetypes}`;
+  const { payload } = action;
+  const { params, deviceTypeAction, resultName } = payload;
   try {
-    const { payload } = action;
-    const { params, deviceTypeAction, resultName } = payload;
     const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
@@ -106,9 +117,15 @@ function* getStationDeviceTypes(action) { // 新共用接口，获取电站下�
           [resultName]: response.data.data || [],
         }
       })
-    }
+    } else { throw response.data }
   } catch (e) {
     console.log(e)
+    yield put({
+      type: deviceTypeAction,
+      payload: {
+        [resultName]: [],
+      }
+    })
   }
 }
 
@@ -198,11 +215,11 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
     const response = yield call(axios.get, getMatrixUrl, { params }); // 所有分区信息
     if (response.data.code === '10000') {
       const partitionCode = response.data.data.partitions[0].deviceCode; // 第一分区code   
-      const [ matrixDevices, devices ] = yield all([
+      const [matrixDevices, devices] = yield all([
         call(axios.get, getDevicesUrl, { params: { ...params, partitionCode } }),
         call(axios.get, getDevicesUrl, { params })
       ]);
-      if(matrixDevices.data.code==='10000' && devices.data.code==='10000'){
+      if (matrixDevices.data.code === '10000' && devices.data.code === '10000') {
         yield put({
           type: actionName,
           payload: {
@@ -393,7 +410,7 @@ function* getWeather(action) { // 获取电站天气
   try {
     const { params, actionName, resultName } = payload;
     const url = `${APIBasePath}${commonPaths.getWeather}`;
-    const response = yield call(axios.get, url, params);
+    const response = yield call(axios.get, url, { params });
     if (response.data.code === '10000') {
       yield put({
         type: actionName,

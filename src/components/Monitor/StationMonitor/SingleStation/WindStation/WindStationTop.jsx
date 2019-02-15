@@ -8,7 +8,7 @@ import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
 import { monitordataFormat } from '../../../../../utils/utilFunc';
-import { ValueFormat,DeviceValueFormat } from '../../../../Common/UtilComponent';
+import { ValueFormat, DeviceValueFormat } from '../../../../Common/UtilComponent';
 
 // const ValueFormat = ({ value,  points }) => { // value必为数值 或 '--'。
 //   if (value === '--' || (!points && points === 0)) { // value无值，或不需对数据进行浮点处理
@@ -117,11 +117,11 @@ class WindStationTop extends Component {
   }
 
   render() {
-    const { singleStationData, stationList,realTimePowerUnit,realCapacityUnit,powerUnit,realTimePowerPoint,realCapacityPoint,powerPoint  } = this.props;
+    const { singleStationData, stationList, realTimePowerUnit, realCapacityUnit, powerUnit, realTimePowerPoint, realCapacityPoint, powerPoint } = this.props;
     const { showStationList, editValue, editInfoError } = this.state;
 
-    const stationPower =  singleStationData.stationPower;
-    const stationCapacity =  singleStationData.stationCapacity;
+    const stationPower = singleStationData.stationPower;
+    const stationCapacity = singleStationData.stationCapacity;
     const powerPercent = stationPower / stationCapacity * 100;
 
     const provenceCodes = stationList && stationList.length > 0 ? stationList.map(e => e.provinceCode) : [];
@@ -131,10 +131,11 @@ class WindStationTop extends Component {
       tmpProvenceCodes[key] = stationList.filter(e => value === e.provinceCode);
     });
 
-    let stationStatusTime =  singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
+    let stationStatusTime = singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
     let localTime = stationStatusTime && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
 
+    const planStatus = singleStationData.planStatus || 0;
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     //权限控制
@@ -148,11 +149,11 @@ class WindStationTop extends Component {
             {showStationList && <ChangeStation stations={stationList.filter(e => e.isConnected === 1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
-              <h3>{ singleStationData.stationName}-{ singleStationData.provinceName}</h3>
+              <h3>{singleStationData.stationName}-{singleStationData.provinceName}</h3>
             </div>
             <i className="iconfont icon-windlogo" ></i>
-            <span>电站状态：{ singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            { singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime !== null && <span>时间：{tmpStationStatusTime || ""}</span>}
+            <span>电站状态：{singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
+            {singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime !== null && <span>时间：{tmpStationStatusTime || ""}</span>}
           </div>
           <Link to={pathAllStation}  >
             <Icon type="arrow-left" className={styles.backIcon} />
@@ -161,21 +162,21 @@ class WindStationTop extends Component {
         <div className={styles.trueTimeData} >
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
-              <ValueFormat value={monitordataFormat(singleStationData.stationPower,'--', realTimePowerPoint)}  points={realTimePowerPoint} valueunit={realTimePowerUnit} />
-              <ValueFormat value={monitordataFormat(singleStationData.stationCapacity,'--', realCapacityPoint)}  points={realCapacityPoint} valueunit={realCapacityUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationPower, '--', realTimePowerPoint)} points={realTimePowerPoint} valueunit={realTimePowerUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationCapacity, '--', realCapacityPoint)} points={realCapacityPoint} valueunit={realCapacityUnit} />
             </div>
-            <Progress percent={powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+            <Progress percent={+powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
             <div className={styles.trueTimeDesc}><span>实时功率 ({realTimePowerUnit})</span><span>装机容量 ({realCapacityUnit})</span></div>
           </div>
           <div>
             <div className={styles.trueTimeValue}>
-              <DeviceValueFormat value={monitordataFormat(singleStationData.stationUnitCount,'--')} />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.stationUnitCount, '--')} />
             </div>
             <div className={styles.trueTimeUnit}>装机台数 (台)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#3e97d1" }}>
-              <DeviceValueFormat value={monitordataFormat(singleStationData.instantaneous,'--')}   />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.instantaneous, '--')} />
             </div>
             <div className={styles.trueTimeUnit}>平均风速 (m/s)</div>
           </div>
@@ -215,20 +216,37 @@ class WindStationTop extends Component {
               </div>}
 
           </Modal>
-          <div className={styles.stationYearPlan}>
-            <div className={styles.annualEnergyScale} >
+          {
+            planStatus === 0 &&
+            <div>
               <div className={styles.trueTimeValue}>
-                <div className={styles.editYearPower}>
+                <div>
                   <ValueFormat value={monitordataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
+                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }} ><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
-                <ValueFormat value={monitordataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
               </div>
-              <Progress percent={+( yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
-              <div className={styles.trueTimeDesc}><span>年累计发电量 ({powerUnit})</span><span>计划 ({powerUnit})</span></div>
+              <div className={styles.trueTimeUnit}>年累计发电量 ({powerUnit})</div>
             </div>
-            <div className={styles.yearPlanRate} >{ yearPlanRate }</div>
-          </div>
+
+          }
+          {
+            planStatus === 2 &&
+            <div className={styles.stationYearPlan}>
+              <div className={styles.annualEnergyScale} >
+                <div className={styles.trueTimeValue}>
+                  <div className={styles.editYearPower}>
+                    <ValueFormat value={monitordataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                    {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
+                  </div>
+                  <ValueFormat value={monitordataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                </div>
+                <Progress percent={+(yearPlanRate.split('%')[0]) || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+                <div className={styles.trueTimeDesc}><span>年累计发电量 ({powerUnit})</span><span>计划 ({powerUnit})</span></div>
+              </div>
+              <div className={styles.yearPlanRate} >{yearPlanRate}</div>
+            </div>
+          }
+
         </div>
       </div>
     )

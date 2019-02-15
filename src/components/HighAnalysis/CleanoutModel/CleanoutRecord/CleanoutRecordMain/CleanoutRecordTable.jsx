@@ -111,35 +111,36 @@ class CleanoutRecordTable extends Component {
         title: '平均清洗周期(天)',
         dataIndex: 'cleanCycle',
         key: 'cleanCycle',
-        render: text => (<span>{parseInt(text) >= 0 ? `${text}` : '--'}</span>),
+        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
         sorter: true,
       }, {
         title: '累计清洗收益(万kWh)',
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         sorter: true,
+        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
       }, {
         title: '上次清洗时间',
         dataIndex: 'cleanTime',
         key: 'cleanTime',
         sorter: true,
+        render: text => (<span>{(text) ? `${text}` : '--'}</span>),
       }, {
         title: '添加清洗计划/降雨',
         key: 'addplan',
         render: (text, record, index) => {
           // let record2 = 'dianzhan1/qinhxi'
-          return (<div>
-            <div title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
-
-            </div>
-
-          </div>)
+          return (
+            <div className={styles.iconStyles}>
+              <div title="添加清洗计划/降雨" className="iconfont icon-addto" onClick={() => this.showAddPlanModal(record)}>
+              </div>
+            </div>)
         }
       }, {
         title: '查看',
         key: 'check',
         render: (text, record, index) => {
-          return (record.cleanPlanNum > 0 ? <span title="查看" className="iconfont icon-plan" onClick={() => this.showDetailModal(record)}></span> : '')
+          return (record.cleanPlanNum > 0 ? <div className={styles.iconStyles}> <span title="查看" className="iconfont icon-plan" onClick={() => this.showDetailModal(record)}></span> </div> : '')
         }
       }
     ];
@@ -157,8 +158,11 @@ class CleanoutRecordTable extends Component {
     const { getFieldDecorator } = this.props.form;
     const { planType } = this.state;
     const rangeConfig = {
-      rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+      rules: [{ type: 'array', required: true, message: '请选择计划清洗时间' }],
       initialValue: '',
+    };
+    const rainConfig = {
+      rules: [{ type: 'array', required: true, message: '请选择降雨时间' }],
     };
     return (
       <div>
@@ -216,7 +220,10 @@ class CleanoutRecordTable extends Component {
                 >
                   {getFieldDecorator('cleanCost', {
                     initialValue: '',
-                    rules: [{ required: true, message: '只能输入数字', whitespace: true }, { pattern: /(^\d{0,}\.{0,1}\d$)/, message: '仅支持数字，小数点' }],
+                    rules: [{
+
+                      message: '只能输入数字', whitespace: true
+                    }, { pattern: /(^\d{0,}$)/, message: '仅支持整数' }],
                   })(
                     <Input />
                   )}
@@ -226,7 +233,7 @@ class CleanoutRecordTable extends Component {
                   {...formItemLayout}
                   label="降雨时间"
                 >
-                  {getFieldDecorator('rainPlanDate', rangeConfig)(
+                  {getFieldDecorator('rainPlanDate', rainConfig)(
                     <RangePicker />
                   )}
                 </FormItem>

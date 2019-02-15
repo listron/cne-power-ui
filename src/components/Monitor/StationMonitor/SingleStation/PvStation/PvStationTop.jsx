@@ -3,12 +3,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { Icon, Progress, Modal, Input} from 'antd';
+import { Icon, Progress, Modal, Input } from 'antd';
 import moment from 'moment';
 import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
 import { monitordataFormat } from '../../../../../utils/utilFunc';
-import { ValueFormat ,DeviceValueFormat} from '../../../../Common/UtilComponent';
+import { ValueFormat, DeviceValueFormat } from '../../../../Common/UtilComponent';
 
 
 // const ValueFormat = ({ value,  points }) => { // value必为数值 或 '--'。
@@ -36,7 +36,7 @@ class PvStationTop extends Component {
     changeSingleStationStore: PropTypes.func,
     onSelectedDeviceType: PropTypes.func,
     editData: PropTypes.func,
-    stationCode:PropTypes.string,
+    stationCode: PropTypes.string,
   }
 
   constructor(props) {
@@ -62,35 +62,33 @@ class PvStationTop extends Component {
 
   onChange = (e) => {
     const editValue = e.target.value;
-    this.setState({ 
+    this.setState({
       editValue,
-      editInfoError: (!editValue || isNaN(editValue))?true: false,
+      editInfoError: (!editValue || isNaN(editValue)) ? true : false,
     });
   }
   onOk = () => {
-    const { editData,stationCode } = this.props
+    const { editData, stationCode } = this.props
     const { editValue } = this.state;
-    if(!editValue || isNaN(editValue)){
+    if (!editValue || isNaN(editValue)) {
       return;
     }
-    //const editTime = moment().format('YYYY-MM-DD');
-    const editTime=moment().subtract(1,'day').format('YYYY-MM-DD');
-    // console.log(editTime);
-    this.state.modalMonth ? editData({ 
-      monthGen: editValue, 
-      date:editTime, 
-      stationCode:stationCode 
-    }) : editData({ 
-      yearGen: editValue, 
-      date:editTime, 
-      stationCode:stationCode
+    const editTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    this.state.modalMonth ? editData({
+      monthGen: editValue,
+      date: editTime,
+      stationCode: stationCode
+    }) : editData({
+      yearGen: editValue,
+      date: editTime,
+      stationCode: stationCode
     });
     this.setState({ modalMonth: false, modalYear: false, editValue: '' });
   }
   onCancel = () => {
-    this.setState({ 
-      modalMonth: false, 
-      modalYear: false, 
+    this.setState({
+      modalMonth: false,
+      modalYear: false,
       editValue: '',
       editInfoError: false,
     });
@@ -120,13 +118,13 @@ class PvStationTop extends Component {
   }
 
   render() {
-    const { singleStationData, stationList,realTimePowerUnit,realCapacityUnit,powerUnit,realTimePowerPoint,realCapacityPoint,powerPoint } = this.props;
+    const { singleStationData, stationList, realTimePowerUnit, realCapacityUnit, powerUnit, realTimePowerPoint, realCapacityPoint, powerPoint } = this.props;
     const { showStationList, editValue, editInfoError } = this.state;
 
-    const stationPower =  singleStationData.stationPower;
-    const stationCapacity =  singleStationData.stationCapacity;
+    const stationPower = singleStationData.stationPower;
+    const stationCapacity = singleStationData.stationCapacity;
     const powerPercent = stationPower / stationCapacity * 100;
-
+    const planStatus = singleStationData.planStatus || 0;
     const provenceCodes = stationList && stationList.length > 0 ? stationList.map(e => e.provinceCode) : [];
     const stationListSet = new Set(provenceCodes);
     const tmpProvenceCodes = [...stationListSet];
@@ -134,33 +132,33 @@ class PvStationTop extends Component {
       tmpProvenceCodes[key] = stationList.filter(e => value === e.provinceCode);
     });
 
-    let stationStatusTime =  singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
+    let stationStatusTime = singleStationData.stationStatus && singleStationData.stationStatus.stationStatusTime;
     let localTime = stationStatusTime && moment.utc(stationStatusTime).toDate();
     let tmpStationStatusTime = localTime && moment(localTime).fromNow();
-    
+
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     //权限控制
     const rightHandler = localStorage.getItem('rightHandler');
-    const powerUpdate= rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
+    const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     const yearPlanRate = singleStationData.yearPlanRate || '';
     return (
       <div className={styles.pvStationTop} >
         <div className={styles.pvStationTitle} >
           <div className={styles.pvStationName} >
             {showStationList && <ChangeStation
-              stations={stationList.filter(e=>e.isConnected===1)}
+              stations={stationList.filter(e => e.isConnected === 1)}
               stationName={singleStationData.stationName}
               baseLinkPath={baseLinkPath}
               hideStationChange={this.hideStationChange}
             />}
             <div onClick={this.showStationList} className={styles.stationToggle} id="stationToggle" >
               <Icon type="swap" />
-              <h3>{ singleStationData.stationName}-{ singleStationData.provinceName}</h3>
+              <h3>{singleStationData.stationName}-{singleStationData.provinceName}</h3>
             </div>
             <i className="iconfont icon-pvlogo" ></i>
-            <span>电站状态：{ singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
-            { singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime !== null && <span>时间：{tmpStationStatusTime || ""}</span>}
+            <span>电站状态：{singleStationData.stationStatus && singleStationData.stationStatus.stationStatusName}</span>
+            {singleStationData.stationStatus && singleStationData.stationStatus.stationStatus !== 400 && stationStatusTime !== null && <span>时间：{tmpStationStatusTime || ""}</span>}
           </div>
           <Link to={pathAllStation}  >
             <Icon type="arrow-left" className={styles.backIcon} />
@@ -169,8 +167,8 @@ class PvStationTop extends Component {
         <div className={styles.trueTimeData} >
           <div className={styles.powerScale} >
             <div className={styles.trueTimeValue}>
-              <ValueFormat value={monitordataFormat(singleStationData.stationPower,'--', realTimePowerPoint)}  points={realTimePowerPoint} valueunit={realTimePowerUnit} />
-              <ValueFormat value={monitordataFormat(singleStationData.stationCapacity,'--', realCapacityPoint)}  points={realCapacityPoint} valueunit={realCapacityUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationPower, '--', realTimePowerPoint)} points={realTimePowerPoint} valueunit={realTimePowerUnit} />
+              <ValueFormat value={monitordataFormat(singleStationData.stationCapacity, '--', realCapacityPoint)} points={realCapacityPoint} valueunit={realCapacityUnit} />
             </div>
             <Progress percent={+powerPercent || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
             <div className={styles.trueTimeDesc}><span>实时功率 ({realTimePowerUnit})</span><span>装机容量 ({realCapacityUnit})</span></div>
@@ -183,13 +181,13 @@ class PvStationTop extends Component {
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>
-              <DeviceValueFormat value={monitordataFormat(singleStationData.instantaneous,'--')}  />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.instantaneous, '--')} />
             </div>
             <div className={styles.trueTimeUnit}>瞬时辐照 (W/㎡)</div>
           </div>
           <div>
             <div className={styles.trueTimeValue} style={{ color: "#e08031" }}>
-              <DeviceValueFormat value={monitordataFormat(singleStationData.dayResources, '--')}  />
+              <DeviceValueFormat value={monitordataFormat(singleStationData.dayResources, '--')} />
             </div>
             <div className={styles.trueTimeUnit}>日累计辐射 (MJ/㎡)</div>
           </div>
@@ -202,7 +200,7 @@ class PvStationTop extends Component {
           <div>
             <div className={styles.trueTimeValue}>
               <div>
-              <ValueFormat value={monitordataFormat(singleStationData.monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                <ValueFormat value={monitordataFormat(singleStationData.monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
 
                 {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalMonth() }} ><i className="iconfont icon-edit"></i></span> : ''}
               </div>
@@ -217,36 +215,54 @@ class PvStationTop extends Component {
             onCancel={this.onCancel}
             mask={false}
             closable={false}
-            maskClosable={false}           
+            maskClosable={false}
           >
             {this.state.modalMonth ? <div className={styles.editElecDataModal}>
-              截止到昨日，本月累计发电量  
+              截止到昨日，本月累计发电量
               <Input value={editValue} placeholder="请输入" onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
-              </div> : <div className={styles.editElecDataModal}>
-                截止到昨日，本年累计发电量  
+            </div> : <div className={styles.editElecDataModal}>
+                截止到昨日，本年累计发电量
                 <Input placeholder="请输入" value={editValue} onChange={this.onChange} />  万kWh
                 {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
               </div>}
 
           </Modal>
-          <div className={styles.stationYearPlan}>
-            <div className={styles.annualEnergyScale} >
+
+          {
+            planStatus === 0 &&
+            <div>
               <div className={styles.trueTimeValue}>
-                <div className={styles.editYearPower}>
+                <div>
                   <ValueFormat value={monitordataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
+                  {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }} ><i className="iconfont icon-edit"></i></span> : ''}
                 </div>
-                <ValueFormat value={monitordataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
               </div>
-              <Progress percent={+yearPlanRate.split('%')[0] || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
-              <div className={styles.trueTimeDesc}>
-                <span>年累计发电量 ({powerUnit})</span>
-                <span>计划 ({powerUnit})</span>
-              </div>
+              <div className={styles.trueTimeUnit}>年累计发电量 ({powerUnit})</div>
             </div>
-            <div className={styles.yearPlanRate} >{yearPlanRate}</div>
-          </div>
+
+          }
+          {
+            planStatus === 2 &&
+            <div className={styles.stationYearPlan}>
+              <div className={styles.annualEnergyScale} >
+                <div className={styles.trueTimeValue}>
+                  <div className={styles.editYearPower}>
+                    <ValueFormat value={monitordataFormat(singleStationData.yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                    {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModalYear() }}><i className="iconfont icon-edit"></i></span> : ''}
+                  </div>
+                  <ValueFormat value={monitordataFormat(singleStationData.yearPlanPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
+                </div>
+                <Progress percent={+yearPlanRate.split('%')[0] || 0} showInfo={false} strokeWidth={3} type="line" strokeColor="#199475" />
+                <div className={styles.trueTimeDesc}>
+                  <span>年累计发电量 ({powerUnit})</span>
+                  <span>计划 ({powerUnit})</span>
+                </div>
+              </div>
+              <div className={styles.yearPlanRate} >{yearPlanRate}</div>
+            </div>
+          }
+
         </div>
       </div>
     )

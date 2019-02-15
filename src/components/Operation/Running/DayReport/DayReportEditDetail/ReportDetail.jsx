@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button, Table, Icon } from 'antd';
 import styles from './reportDetail.scss';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
@@ -54,7 +55,7 @@ const loseColumn = [
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (
-      <span title={text} >{text}</span>
+      <span title={text} >{dataFormat(text)}</span>
     ),
   }
 ]
@@ -106,7 +107,7 @@ const limitColumn = [
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (
-      <span title={text} >{text}</span>
+      <span title={text} >{dataFormat(text)}</span>
     ),
   }
 ]
@@ -304,6 +305,13 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore , dayRep
       </div>
     </div>
   </div>)
+}
+
+ReportDetail.propTypes = {
+  selectedDayReportDetail: PropTypes.object,
+  toChangeDayReportStore: PropTypes.func,
+  dayReportConfig: PropTypes.array,
+  onSidePageChange: PropTypes.func
 }
 
 export default ReportDetail;

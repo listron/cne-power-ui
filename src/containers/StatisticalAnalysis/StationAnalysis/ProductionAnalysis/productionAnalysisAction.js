@@ -7,4 +7,7 @@ export const productionAnalysisAction = {
   getSingleStationProductionData: Symbol('getSingleStationProductionData'),
   getSingleStationPlanRateData: Symbol('getSingleStationPlanRateData'),
   getAllStationAvalibaData: Symbol('getAllStationAvalibaData'),
+
+  RESET_STORE:Symbol('RESET_STORE'),
+  resetStore:Symbol('resetStore'), // 重置
 }

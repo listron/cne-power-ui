@@ -36,6 +36,7 @@ class TmpForm extends Component {
     error: PropTypes.object,
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
+    changeDefectStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -45,6 +46,20 @@ class TmpForm extends Component {
       deviceAreaCode: '',
       deviceTypeCode: '',
     }
+  }
+
+  
+  componentWillReceiveProps(nextProps){
+    const {defectId,stationCode}=nextProps.defectDetail;
+    const oldDefectId=this.props.defectDetail.defectId;
+    if(defectId!==oldDefectId){
+      this.props.getStationDeviceTypes({ stationCodes:stationCode });
+    }
+  }
+
+
+  componentWillUnmount(){
+    this.props.changeDefectStore({defectDetail:{}})
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -91,7 +106,7 @@ class TmpForm extends Component {
         let partitionName = values.stations[0].zoneName;
         let rotatePhotoArray = [];
         let photoAddress = [];
-        let reasonDesc=values.reasonDesc || '';
+        let reasonDesc = values.reasonDesc || '';
         if (showContainer === 'create') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
@@ -137,7 +152,7 @@ class TmpForm extends Component {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
-        if (isContinueAdd && error.get('code') === '') {
+        if (isContinueAdd) {
           this.props.form.resetFields();
         }
       }
@@ -146,6 +161,7 @@ class TmpForm extends Component {
 
   selectedDevice = (value) => { // 选择设备
     this.props.form.setFieldsValue({ deviceCode: value });
+    
   }
 
 
@@ -168,20 +184,23 @@ class TmpForm extends Component {
     let tmpGenTypes = [];
     let defaultDefectType = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
-    const groupedLostGenTypes = tmpGenTypes.map(ele => {
-      let innerArr = { children: [] };
-      innerArr.label = ele.name;
-      innerArr.value = ele.id;
-      ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
-        if (editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`) {
-          defaultDefectType = [ele.id, innerInfo.id];
-        }
-        innerArr.children.push({
-          label: innerInfo.name,
-          value: innerInfo.id,
-        });
-      })
-      return innerArr;
+    const groupedLostGenTypes=[];
+    tmpGenTypes.forEach(ele => {
+      if (ele && ele.list && ele.list.length > 0) {
+        let innerArr = { children: [] };
+        innerArr.label = ele.name;
+        innerArr.value = ele.id;
+        ele && ele.list && ele.list.length > 0 && ele.list.forEach(innerInfo => {
+          if (editDefect && `${defectDetail.defectTypeCode}` === `${innerInfo.id}`) {
+            defaultDefectType = [ele.id, innerInfo.id];
+          }
+          innerArr.children.push({
+            label: innerInfo.name,
+            value: innerInfo.id,
+          });
+        })
+        groupedLostGenTypes.push(innerArr)
+      }
     })
     const canSelectDefectType = currentStations && deviceTypeCode;
     return (
@@ -300,6 +319,14 @@ class TmpForm extends Component {
           {
             defectFinished &&
             <React.Fragment>
+              <FormItem label="产生原因" colon={false}>
+                {getFieldDecorator('reasonDesc', {
+                  rules: [{ required: true, message: '请输入产生原因' }],
+                  initialValue: ''
+                })(
+                  <InputLimit placeholder="请描述，不超过80个汉字" />
+                )}
+              </FormItem>
               <FormItem label="处理过程" colon={false}>
                 {getFieldDecorator('defectSolveInfo', {
                   rules: [{ required: true, message: '请输入处理过程' }],
@@ -308,14 +335,6 @@ class TmpForm extends Component {
                   <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
                 )}
               </FormItem>
-              <FormItem label="产生原因" colon={false}>
-              {getFieldDecorator('reasonDesc', {
-                rules: [{ required: true, message: '请输入产生原因' }],
-                initialValue: ''
-              })(
-                <InputLimit placeholder="请描述，不超过80个汉字" />
-              )}
-            </FormItem>
               <FormItem label="添加照片" colon={false}>
                 <div className={styles.addImg}>
                   <div className={styles.maxTip}>最多4张</div>

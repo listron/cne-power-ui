@@ -33,7 +33,6 @@ class PlanCompleteRateAnalysisBar extends React.Component {
     const {graphId, yAxisName, title,xAxisData ,planPowerData, actualPowerData ,planRateData,hasData} = param;
     const targetChart = echarts.init(document.getElementById(graphId));
     let targetOption = {};
-    targetChart.clear();
     targetChart.resize();
     let color =['#dfdfdf','#f9b600','#3e97d1'];
     const lineColor = '#f1f1f1';
@@ -71,7 +70,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         formatter: function (params) {
           let paramsItem='';
           params.forEach((item,index) => {
-             paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${color[index]};vertical-align: 3px;margin-right: 3px;"> </span> ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${params[index].seriesType==='line'&&'%'||''}</div>`
+             paramsItem+= `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'}${item.seriesType==='line'&&'%'||''}</div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>${paramsItem}`
         }
@@ -186,7 +185,7 @@ class PlanCompleteRateAnalysisBar extends React.Component {
         }
       ]
     };
-    targetChart.setOption(targetOption)
+    targetChart.setOption(targetOption,{ notMerge: true })
   };
   render() {
     const { graphId,dateType } = this.props;

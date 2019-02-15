@@ -147,9 +147,9 @@ class PowerEfficency extends React.Component {
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
           let paramsItem = '';
-          params.map((item, index) => {
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color[index]}"> </span> 
-            ${params[index].seriesName} :${params[index].value === 0 || params[index].value ? params[index].value : '--'}${(params[index].seriesName === '计划完成率' || params[index].seriesName === 'PR') && '%' || ''}
+          params.map((item) => {
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+            ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'}${(item.seriesName === '计划完成率' || item.seriesName === 'PR') && '%' || ''}
             </div>`
           });
           return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>

@@ -237,6 +237,9 @@
                     flex-wrap: wrap;
                     color: $darkColor;
                     flex-direction: column;
+                    .reason {
+                        margin-left: 6px;
+                    }
                     .imgBox {
                         display: flex;
                         flex-direction: row;
@@ -249,6 +252,7 @@
                             align-items: center;
                             justify-content: center;
                             color: $themeColor;
+                            cursor: pointer;
                         }
                     }
                 }

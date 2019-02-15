@@ -69,18 +69,7 @@ class DefectProcessForm extends Component {
         </FormItem>}
         {defectFinished &&
           <React.Fragment>
-            <FormItem label="添加照片" colon={false}>
-              <div className={styles.addImg}>
-                <div className={styles.maxTip}>最多4张</div>
-                {getFieldDecorator('photoData', {
-                  rules: [{ required: false, message: '请上传图片' }],
-                  initialValue: [],
-                  valuePropName: 'data',
-                })(
-                  <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
-                )}
-              </div>
-            </FormItem>
+            
             <FormItem label="产生原因" colon={false}>
               {getFieldDecorator('reasonDesc', {
                 rules: [{ required: true, message: '请输入产生原因' }],
@@ -97,7 +86,18 @@ class DefectProcessForm extends Component {
                 <CommonInput commonList={this.props.commonList} placeholder="请描述，不超过80个汉字" />
               )}
             </FormItem>
-
+            <FormItem label="添加照片" colon={false}>
+              <div className={styles.addImg}>
+                <div className={styles.maxTip}>最多4张</div>
+                {getFieldDecorator('photoData', {
+                  rules: [{ required: false, message: '请上传图片' }],
+                  initialValue: [],
+                  valuePropName: 'data',
+                })(
+                  <ImgUploader imgStyle={{ width: 98, height: 98 }} uploadPath={`${pathConfig.basePaths.APIBasePath}${pathConfig.commonPaths.imgUploads}`} editable={true} />
+                )}
+              </div>
+            </FormItem>
             <FormItem label="更换备件" colon={false}>
               <div>
                 <Switch checked={this.state.replace} onChange={this.onChangeReplace} />
