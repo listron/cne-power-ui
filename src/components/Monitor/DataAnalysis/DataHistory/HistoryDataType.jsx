@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './dataHistory.scss';
+import styles from './historyStyle.scss';
 
 class HistoryDataType extends Component {
   render(){

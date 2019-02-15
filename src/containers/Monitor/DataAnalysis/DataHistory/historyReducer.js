@@ -10,7 +10,7 @@ const historyAction = {
 }
 
 const initState = Immutable.fromJS({
-  stationCode: null,
+  selectedStationInfo: [], // 选中的电站
   deviceTypeCode: null,
   deviceCodes: [],
   startTime: null,

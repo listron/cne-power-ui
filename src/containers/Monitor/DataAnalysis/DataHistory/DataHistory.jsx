@@ -14,24 +14,23 @@ import Footer from '../../../../components/Common/Footer/index';
 
 class DataHistory extends Component {
   static propTypes = {
-    stationCode: PropTypes.number,
-    deviceTypeCode: PropTypes.number,
-    deviceCodes: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    pointCodes: PropTypes.array, // 选中的测点
-    timeSpace:  PropTypes.string,
-    historyType:  PropTypes.string,
+    // stationCode: PropTypes.number,
+    // deviceTypeCode: PropTypes.number,
+    // deviceCodes: PropTypes.array,
+    // startTime: PropTypes.string,
+    // endTime: PropTypes.string,
+    // pointCodes: PropTypes.array, // 选中的测点
+    // timeSpace:  PropTypes.string,
+    // historyType:  PropTypes.string,
     
-    stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
-    pointInfo: PropTypes.array, // 选中设备内可选测点信息。
-    allHistory: PropTypes.array, // chart图 - 所有历史数据
-    partHistory: PropTypes.array, // 表格内 - 分页后的历史数据
+    // stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
+    // pointInfo: PropTypes.array, // 选中设备内可选测点信息。
+    // allHistory: PropTypes.array, // chart图 - 所有历史数据
+    // partHistory: PropTypes.array, // 表格内 - 分页后的历史数据
 
-    changeHistoryStore: PropTypes.func,
+    // changeHistoryStore: PropTypes.func,
     resetHistoryStore: PropTypes.func,
   };
-
 
   componentWillUnmount() {
     this.props.resetHistoryStore();
@@ -49,8 +48,8 @@ class DataHistory extends Component {
             <HistoryChart />
             <HistoryList />
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     );
   }
