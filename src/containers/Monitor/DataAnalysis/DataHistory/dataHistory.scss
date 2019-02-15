@@ -1,0 +1,9 @@
+@import '../../../../theme/theme.scss';
+
+.dataHistory{
+  @include contentBoxStyle();
+  background-color: lightblue;
+  .historyContent{
+    
+  }
+}

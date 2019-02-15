@@ -27,6 +27,9 @@ import Warning from "../containers/System/Production/Warning/Warning";
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
+// 实时监控 - 数据分析
+import DataHistory from '../containers/Monitor/DataAnalysis/DataHistory/DataHistory';
+import DataRealtime from '../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime';
 // 实时监控-告警
 import RealTimeAlarm from '../containers/Monitor/Alarm/RealTimeAlarm';
 import HistoryAlarm from '../containers/Monitor/Alarm/HistoryAlarm';
@@ -199,6 +202,14 @@ const routers = [
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
+  }, { //实时监控-数据分析-历史趋势
+    path: '/monitor/data/history',
+    exact: true,
+    component: DataHistory,
+  }, { //实时监控-数据分析-实时数据
+    path: '/monitor/data/realtime',
+    exact: true,
+    component: DataRealtime,
   }, { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     exact: true,

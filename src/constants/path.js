@@ -223,7 +223,7 @@ export default {
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       editData:'/v3/management/stationgen',//编辑月，年的累计发电量
-
+      
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计
@@ -236,7 +236,11 @@ export default {
 
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
-      sequencechart:'/v3/monitor/windturbine/sequencechart'
+      sequencechart:'/v3/monitor/windturbine/sequencechart',
+
+      // 数据分析 
+      getPointsInfo: '/v3/monitor', // 数据趋势可用测点信息
+      getAllHistory: '', // 历史趋势 - 测点数据
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
