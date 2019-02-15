@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styles from './deviceSide.scss';
+import styles from '../deviceSide.scss';
 
-
-class DetailDevice extends Component{
+class EditDevice extends Component{
  static propTypes = {
    }
     constructor(props,context){
@@ -11,10 +10,10 @@ class DetailDevice extends Component{
     }
     render(){
         return(
-            <div className={styles.detailDevice}>
-                detail
+            <div className={styles.editDevice}>
+                edit
             </div>
         )
     }
 }
-export default (DetailDevice)
+export default (EditDevice)

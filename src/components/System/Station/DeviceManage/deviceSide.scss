@@ -1,5 +1,12 @@
 @import '../../../../theme/theme.scss';
-
+:global{
+  .ant-select, .ant-cascader-picker{
+    width: 198px;
+  }
+}
+.nextButton{
+  margin-left: 200px;
+}
 @mixin top {
   @include lineheight(64px);
   display: flex;
@@ -21,6 +28,32 @@
   flex: 1 0 auto;
   flex-direction: column;
   background:#fff;
+ 
+  .preFormStyle{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    .formItemStyle{
+      display: flex;
+    }
+    .fontColor{
+      color: #199475;
+    }
+    .nextButton{
+      margin-left: 200px;
+    }
+    :global{
+      .ant-select, .ant-cascader-picker{
+        width: 198px;
+      }
+      .ant-form-item-label{
+        width: 200px;
+      }
+      .ant-btn{
+        width: 200px;
+      }
+    }
+  }
   .editTop{
     @include top;
     justify-content: space-between;
@@ -43,10 +76,74 @@
   .colStyles{
    
     .editPart{
+      display: flex;
+      .formItemStyle{
+        display: flex;
+      }
+      .leftlayout{
+        display:flex;
+        flex-direction: column;
+        flex:1;
+        justify-content: center;
+        :global{
+          .ant-form-item-label{
+            width: 200px;
+          }
+        }
+      }
+      .rightContainer{
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        .rightStyles{
+          margin-top: 12px;
+          display:flex;
+          flex-direction: column;
+         
+          :global{
+            .ant-form-item-label{
+              width: 100px;
+            }
+            .ant-checkbox-inner{
+              border-radius: 8px;
+            }
+            .ant-checkbox-checked .ant-checkbox-inner:after{
+              display: none;
+            }
+          }
+          .linestyle{
+            margin: 0 4px;
+            .selectRingStyle,.ringStyle{
+              display: inline-block;
+              border:1px solid #199475;
+              width: 16px;
+              height: 16px;
+              margin: 0 4px;
+              border-radius: 8px;
+              background: #199475;
+              vertical-align:-3px;
+            }
+            .ringStyle{
+              border:1px solid #666;
+              background:#fff;
+            }
+          }
+         
+         
+        }
+        .submitStyle{
+          margin-left: 100px;
+          .preStyles{
+            margin-right: 40px;
+          }
+        }
+      }
+    
       :global{
         .ant-form-item, .ant-form-horizontal{
           margin-bottom:8px;
         }
+       
         .ant-select, .ant-cascader-picker{
           width: 198px;
         }
