@@ -10,13 +10,13 @@ const historyAction = {
 }
 
 const initState = Immutable.fromJS({
-  selectedStationInfo: [], // 选中的电站
-  deviceTypeCode: null,
-  deviceCodes: [],
+  stationCode: null, // 选中的电站
+  deviceTypeCode: null, // 选中的设备类型
+  deviceCodes: [], // 选中的设备
   startTime: null,
   endTime: null,
   pointCodes: [], // 选中的测点
-  timeSpace: 'tenMin', // 数据时间间隔: 1s, 5s, 10min;
+  timeSpace: 'tenMin', // 数据时间间隔:sec, fiveSec 1s, 5s, 10min;
   historyType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
   
   stationDeviceTypes: [], // 电站下可选设备类型

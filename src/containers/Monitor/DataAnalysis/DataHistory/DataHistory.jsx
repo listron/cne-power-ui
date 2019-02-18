@@ -44,9 +44,9 @@ class DataHistory extends Component {
           <HistorySearch {...this.props} />
           <HistoryDataType {...this.props} />
           <div>
-            <PointTree />
-            <HistoryChart />
-            <HistoryList />
+            <PointTree {...this.props} />
+            <HistoryChart {...this.props} />
+            <HistoryList {...this.props} />
           </div>
         </div>
         <Footer />
@@ -57,7 +57,7 @@ class DataHistory extends Component {
 
 const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
-  stations: state.common.get('stations').toJS(),
+  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
 });
 
 const mapDispatchToProps = (dispatch) => ({
