@@ -1,0 +1,191 @@
+@import "../../../../theme/theme";
+.scoreBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    .topSelect {
+        margin: 24px 0 0 24px;
+    }
+    .scoreLine {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 16px 36px 16px 24px;
+        .initScore {
+            background: #ceebe0;
+            border-radius: 4px;
+            width: 130px;
+            height: 26px;
+            color: #199475;
+            text-align: center;
+            line-height: 26px;
+        }
+        .buttonGroups {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 246px;
+        }
+        :global {
+            .ant-btn-default,
+            .ant-btn-default:active {
+                color: $themeColor;
+                border-color: $themeColor;
+                &:hover {
+                    background-color: $themeColor;
+                    color: #fff;
+                }
+            }
+            .ant-input {
+                width: 60px;
+                padding: 4px 7px;
+            }
+        }
+    }
+}
+
+.detailTable {
+    display: flex;
+    flex-direction: column; // border-bottom: 1px solid $promptColor;
+}
+
+.tHead,
+.tBody {
+    display: flex;
+    flex-direction: row;
+    line-height: 40px;
+    .classification {
+        flex: 0 0 9%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .type {
+        flex: 0 0 13%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .examContent {
+        flex: 0 0 21%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .typeWeight {
+        flex: 0 0 8%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .judgeStandard {
+        flex: 0 0 14%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .inOrDePoints {
+        flex: 0 0 9%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .inOrDeScore {
+        flex: 0 0 8%;
+        border-right: 1px solid $promptColor;
+        text-align: center;
+    }
+    .assessInstruct {
+        flex: 0 0 18%;
+        text-align: center;
+    }
+}
+
+.tHead {
+    background: $pageBackground;
+}
+
+.tBody {
+    .level {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 203px; // line-height: 200px;
+        border-bottom: 1px solid $promptColor;
+    }
+    .manage {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 164px; // line-height: 160px;
+        border-bottom: 1px solid $promptColor;
+    }
+    .oneColumn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 40px;
+        height: 41px;
+        border-bottom: 1px solid $promptColor;
+    }
+    .twoColumn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+        line-height: 40px;
+        border-bottom: 1px solid $promptColor;
+    }
+    .threeColumn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid $promptColor;
+        height: 123px;
+    }
+    .assessInstruct {
+        border-bottom: 1px solid $promptColor;
+        align-items: center; // justify-content: center;
+        display: flex;
+        text-align: justify;
+        padding: 10px;
+        line-height: 30px;
+    }
+    .type,
+    .examContent {
+        .twoColumn,
+        .threeColumn,
+        .oneColumn {
+            justify-content: start;
+            padding-left: 12px;
+            text-align: left;
+        }
+    }
+    :global {
+        .ant-input {
+            width: 60px;
+            padding: 4px 7px;
+        }
+    }
+}
+
+.editTable {
+    .tBody {
+        .judgeStandard,
+            {
+            .twoColumn,
+            .threeColumn,
+            .oneColumn {
+                justify-content: start;
+                padding-left: 10%;
+                text-align: left;
+            }
+        }
+        .inOrDePoints,
+            {
+            .twoColumn,
+            .threeColumn,
+            .oneColumn {
+                justify-content: start;
+                padding-left: 18%;
+                text-align: left;
+            }
+        }
+    }
+}
