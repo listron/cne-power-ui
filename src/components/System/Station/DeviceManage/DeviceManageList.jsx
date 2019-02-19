@@ -13,8 +13,17 @@ class DeviceManageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      selectStation: [],// 选择的电站
+      selectedRowKeys: [], // 导出选择的列数
+      downloadData: [], // 导出的信息
+  
     }
+  }
+  onSelectChange = (keys, record) => {
+    this.setState({
+      selectedRowKeys: keys,
+      downloadData: record,
+    });
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -26,8 +35,17 @@ class DeviceManageList extends Component {
       sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
+  showEditModal=()=>{
+    this.props.changeDeviceManageStore({showPage:'edit'})
+  }
+ 
 
   render() {
+    const {selectedRowKeys} = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const deviceListColumn = [
       {
         title: '设备名称',
@@ -66,6 +84,12 @@ class DeviceManageList extends Component {
         sorter: true,
         render: (text, record) => record.enableDisplay?'是':'否'
       },
+      // {
+      //   title: '编辑',
+      //   dataIndex: 'edit',
+      //   key: 'edit',
+      //   render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={this.showEditModal}></span>)
+      // }
     ];
     const { loading, deviceList } = this.props;
     
@@ -74,6 +98,7 @@ class DeviceManageList extends Component {
         <Table
           loading={loading}
           onChange={this.tableChange}
+          // rowSelection={rowSelection}
           columns={deviceListColumn}
           dataSource={deviceList.map((e,i)=>({key: i,...e}))}
           pagination={false}

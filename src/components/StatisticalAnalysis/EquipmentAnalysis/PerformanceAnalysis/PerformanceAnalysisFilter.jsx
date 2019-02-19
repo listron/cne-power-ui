@@ -157,8 +157,8 @@ class PerformanceAnalysisFilter extends Component {
     const deviceTypeCode = [201, 206];
     const stationCode = stationSelect[0].stationCode;
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
-    let endDate = moment().format('YYYY-MM-DD');
-    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate, contrastSwitch: false, targetTabs: '1', eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
+    let endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate,contrastEndDate:null, contrastSwitch: false, targetTabs: '1', eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
     this.props.getDeviceModels({
       stationCode: stationCode,
     });
