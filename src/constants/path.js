@@ -156,6 +156,10 @@ export default {
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表
+      addDeviceInfo: '/v3/management/device', // 新增设备信息表
+      showDeviceInfo: '/v3/management/device', // 设备详情信息表
+      editDeviceInfo: '/v3/management/device', // 编辑设备信息表
+
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
       deletePoints: '/v3/management/station/device/modes', // 删除点表信息

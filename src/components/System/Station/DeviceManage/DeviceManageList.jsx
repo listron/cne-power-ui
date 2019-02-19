@@ -35,8 +35,12 @@ class DeviceManageList extends Component {
       sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
-  showEditModal=()=>{
-    this.props.changeDeviceManageStore({showPage:'edit'})
+  showDeviceDetail=(record,selectedStationIndex)=>{
+    this.props.changeDeviceManageStore({showPage:'detail'})
+    // this.props.getStationDeviceDetail({
+    //   stationCode: record.stationCode,
+    //   selectedStationIndex,
+    // })
   }
  
 
@@ -87,7 +91,7 @@ class DeviceManageList extends Component {
         title: '编辑',
         dataIndex: 'edit',
         key: 'edit',
-        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={this.showEditModal}></span>)
+        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={()=>this.showDeviceDetail(record,)}></span>)
       }
     ];
     const { loading, deviceList } = this.props;

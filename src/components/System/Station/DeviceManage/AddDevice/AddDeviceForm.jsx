@@ -32,12 +32,34 @@ class AddDeviceForm extends Component {
     });
 
   }
+  submitForm=(e)=>{
+    e.preventDefault();
+    const formState=getFieldsValue();
+    console.log('formState: ', formState);
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+    this.props.changeDeviceManageStore({showPage: 'list',})
+
+  }
+  gobackPre=()=>{
+
+  }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation } = this.props;
+    const stationName=selectStation[0].stationName
+    console.log('stationDeviceTypes: ', stationDeviceTypes);
+    console.log('selectdeviceType,selectStation: ', selectdeviceType, selectStation);
+
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const deviceTypeName = getFieldValue('deviceTypeCode');
-    console.log('deviceTypeName: ', deviceTypeName);
+    // console.log('deviceTypeName: ', deviceTypeName);
+    console.log(typeof(selectdeviceType));
+    const selectDeviceTypeName= typeof(selectdeviceType)==='number'?stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName:selectdeviceType
+  
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
     const modelSelectDisable = deviceModels.length === 0;
 
@@ -52,12 +74,10 @@ class AddDeviceForm extends Component {
                     { message: '请选择电站', required: true, },
                   ]
                 })(
-                  <StationSelect
-                    data={allStationBaseInfo}
-                    onOK={this.selectStation}
-                    holderText="请选择电站"
-                  // value={allStationBaseInfo.filter(e => e.stationCode === stationCode)}
-                  />
+                  
+                 
+                  <span>{stationName}</span>
+
                 )}
               </FormItem>
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
@@ -66,16 +86,8 @@ class AddDeviceForm extends Component {
                     { message: '请选择设备类型', required: true, },
                   ]
                 })(
-                  <Select className={styles.typeSelect} onChange={this.selectDeviceType}
-                    //  value={deviceTypeCode}
-                    placeholder="请选择设备类型"
-                    disabled={typeSelectDisable}>
-                    <Option key={null} value={null}>{'全部设备类型'}</Option>
-                    {stationDeviceTypes.map(e => {
-                      if (!e) { return null; }
-                      return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-                    })}
-                  </Select>
+                 
+                  <span>{selectDeviceTypeName}</span>
                 )}
               </FormItem>
               <FormItem label="设备名称" colon={false} className={styles.formItemStyle}>
@@ -147,18 +159,14 @@ class AddDeviceForm extends Component {
             </div>
             <div className={styles.systermStyle}>
               <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('enableDisplay')(
+                {getFieldDecorator('enableDisplay',{ initialValue: 'true',})(
                   <Select>
                     <Option value="true">是</Option>
                     <Option value="false">否</Option>
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="接入时间" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('connectTime')(
-                  <span>1970-01-01</span>
-                )}
-              </FormItem>
+              
             </div>
           </div>
           <div className={styles.rightContainer}>
@@ -173,8 +181,8 @@ class AddDeviceForm extends Component {
             {deviceTypeName === 101 && <WindInstallDate form={form} />}
             {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence form={form} />}
             <div className={styles.submitStyle}>
-              <Button className={styles.preStyles}>上一步</Button>
-              <Button>保存</Button>
+              <Button onClick={this.gobackPre}  className={styles.preStyles}>上一步</Button>
+              <Button onClick={this.submitForm} >保存</Button>
             </div>
 
 

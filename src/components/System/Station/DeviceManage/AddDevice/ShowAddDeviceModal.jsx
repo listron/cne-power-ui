@@ -10,25 +10,28 @@ class ShowAddDeviceModal extends Component {
   constructor(props, context) {
     super(props, context)
   }
-  handleCancel=()=>{
+  handleCancel = () => {
     this.props.cancleAddDeviceModal()
   }
-  handleOk=()=>{
-    const { getFieldsValue } = this.props.form;
-    
-    let planValue = getFieldsValue();
-   
-    this.props.form.validateFieldsAndScroll((error, values)=>{
-      if (!error) {
-        console.log(planValue);
-      }
 
-    })
+  confirmForm = (e) => {
+    e.preventDefault();
+    const { getFieldsValue } = this.props.form;
+
+    let planValue = getFieldsValue();
+
+  
+        console.log(planValue, '1111');
+        this.props.saveFormState(planValue)
+
+      
+
+   
     this.props.cancleAddDeviceModal()
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const {showAddDeviceModal}=this.props;
+    const { showAddDeviceModal } = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },
@@ -56,7 +59,8 @@ class ShowAddDeviceModal extends Component {
             )}
           </FormItem>
           <FormItem label="属于升压站" colon={false} {...formItemLayout} >
-            {getFieldDecorator('belong', { initialValue: 'false' ,
+            {getFieldDecorator('belong', {
+              initialValue: 'false',
               rules: [
                 { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
               ]
@@ -68,7 +72,7 @@ class ShowAddDeviceModal extends Component {
             )}
 
           </FormItem>
-          <Button type="primary" onClick={this.handleOk} className={styles.nextButton}>确定</Button>
+          <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
         </Form>
       </Modal>
     )

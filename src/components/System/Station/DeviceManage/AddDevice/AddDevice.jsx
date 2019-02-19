@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import StationSelect from '../../../../Common/StationSelect';
-import { Button, Input, Form, Select, DatePicker,Icon } from 'antd';
+import { Button, Input, Form, Select, DatePicker, Icon } from 'antd';
 import WarningTip from '../../../../../components/Common/WarningTip';
 import styles from '../deviceSide.scss';
 import AddDeviceForm from './AddDeviceForm';
@@ -20,6 +20,8 @@ class AddDevice extends Component {
       warningTipText: '退出后信息无法保存!',
       showStep: 'pre',
       showAddDeviceModal: false,
+      deviceTypeName: '',
+      showAddDeviceType:false,
     }
   }
 
@@ -65,16 +67,31 @@ class AddDevice extends Component {
       showAddDeviceModal: true
     })
   }
-  cancleAddDeviceModal=()=>{
+  cancleAddDeviceModal = () => {
     this.setState({
       showAddDeviceModal: false
     })
   }
+  nextStep = () => {
+    this.setState({
+      showStep: 'next'
+    })
+  }
+  saveFormState = (record) => {
+    console.log("record",record)
+    this.setState({ deviceTypeName: record.deviceTypeName,showAddDeviceType:true })
+  }
   render() {
-    const { showWarningTip, warningTipText, showStep,showAddDeviceModal } = this.state;
+    const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName ,showAddDeviceType} = this.state;
+    console.log('showAddDeviceType: ', showAddDeviceType);
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const typeSelectDisable = stationDeviceTypes.length === 0;
+    const selectStation = getFieldValue('stationCode')
+    const selectdeviceType = getFieldValue('deviceTypeCode')
+    const selectdeviceTypeName = deviceTypeName
+    console.log('selectdeviceTypeName: ', selectdeviceTypeName);
+
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -97,29 +114,40 @@ class AddDevice extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-            {getFieldDecorator('deviceTypeCode', {
-              rules: [
-                { message: '请选择设备类型', required: true, },
-              ]
-            })(
-              <Select className={styles.typeSelect} onChange={this.selectDeviceType}
-                //  value={deviceTypeCode}
-                placeholder="请选择设备类型"
-                disabled={typeSelectDisable}>
-                <Option key={null} value={null}>{'全部设备类型'}</Option>
-                {stationDeviceTypes.map(e => {
-                  if (!e) { return null; }
-                  return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-                })}
-              </Select>
-            )}
-            <span className={styles.fontColor} onClick={this.showAddDeviceModal}>添加设备类型</span>
-          </FormItem>
-          <Button type="primary" className={styles.nextButton}>下一步</Button>
+          {showAddDeviceType ?
+            <FormItem label="设备类型" colon={false} className={styles.formItemStyle}>
+              {getFieldDecorator('deviceTypeName', {
+                rules: [
+                  { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
+                ]
+              })(
+               <span>{selectdeviceTypeName}</span>
+              )}
+            </FormItem> :
+            <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
+              {getFieldDecorator('deviceTypeCode', {
+                rules: [
+                  { message: '请选择设备类型', required: true, },
+                ]
+              })(
+                <Select className={styles.typeSelect} onChange={this.selectDeviceType}
+                  //  value={deviceTypeCode}
+                  placeholder="请选择设备类型"
+                  disabled={typeSelectDisable}>
+                  <Option key={null} value={null}>{'全部设备类型'}</Option>
+                  {stationDeviceTypes.map(e => {
+                    if (!e) { return null; }
+                    return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+                  })}
+                </Select>
+              )}
+              <span className={styles.fontColor} onClick={this.showAddDeviceModal}>添加设备类型</span>
+            </FormItem>}
+
+          {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
         </Form>}
-        {showStep === 'next' && <AddDeviceForm {...this.props} />}
-        {showAddDeviceModal&&<ShowAddDeviceModal showAddDeviceModal={showAddDeviceModal} cancleAddDeviceModal={this.cancleAddDeviceModal} />}
+        {showStep === 'next' && <AddDeviceForm {...this.props} selectStation={selectStation} selectdeviceType={selectdeviceType||selectdeviceTypeName} />}
+        {showAddDeviceModal && <ShowAddDeviceModal {...this.props} showAddDeviceModal={showAddDeviceModal} cancleAddDeviceModal={this.cancleAddDeviceModal} saveFormState={this.saveFormState} />}
       </div>
     )
   }
