@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styles from "./customize.scss";
 import PropTypes from 'prop-types';
 import TableHead from './TableHead';
+import { dataFormats } from '../../../../utils/utilFunc'
 
 
 class CustomizeTable extends Component {
@@ -24,9 +25,39 @@ class CustomizeTable extends Component {
 
     getDefaultData = (vlaue, option) => { // 判断如何显示
         if (option === 'stationName') { // 根据电站来判断
-            return vlaue.stionCode ? (vlaue[option] || '--') : '没有电站进行对比'
+            return vlaue.stationCode ? (vlaue[option] || '--') : '没有电站进行对比'
         }
-        return vlaue.stionCode ? (vlaue[option] || '--') : null
+        if (option === 'manufacturer' || option === 'deviceModeName') {
+            return vlaue.stationCode ? `${(vlaue[option] || '--')}` : null
+        }
+        return vlaue.stationCode ? `${dataFormats(vlaue[option], '--', 2, true)} ${this.getUnit(option)}` :null
+    }
+
+    getUnit = (type) => {
+        let result = " ";
+        switch (type) {
+            case "stationName":
+            case "manufacturer":
+            case "deviceModeName":
+                result = '';
+                break;
+            case "powerRating":
+                result = 'KW';
+                break;
+            case "faultHours":
+                result = 'h/台';
+                break;
+            case "conversioneff":
+            case "availability":
+                result = '%';
+                break;
+            case "faultNum":
+                result = '次';
+                break;
+            default:
+                result = " ";
+        }
+        return result;
     }
 
     baseChange = (value) => {  // 基础的数据
@@ -35,15 +66,18 @@ class CustomizeTable extends Component {
 
     comparedChaneg = (value) => { // 作为对比的
         this.props.changeCustomizeStore({
-            anotherStationCode:value.stationCode,
-            anotherManufacturer:value.manufacturer,
-            anotherDeviceModeId:value.deviceModeId,
+            anotherStationCode: value.stationCode,
+            anotherManufacturer: value.manufacturer,
+            anotherDeviceModeId: value.deviceModeId,
         })
     }
 
 
+
+
     render() {
         const { detailData, anotherDetailData } = this.props;
+        console.log('detailData',detailData,anotherDetailData)
         return (
             <div className={styles.table}>
                 <div className={styles.tHead}>

@@ -22,6 +22,7 @@ class CustomizeTable extends Component {
         startDate: PropTypes.string,
         endDate: PropTypes.string,
         type: PropTypes.string,
+        deviceTypeNameLike: PropTypes.string,
     }
 
     constructor(props, context) {
@@ -45,23 +46,23 @@ class CustomizeTable extends Component {
     }
 
     stationSelected = (value) => { // 电站选择
-        const { type } = this.props;
+        const { type,deviceTypeNameLike } = this.props;
         const stationCode = value.length > 0 ? value[0].stationCode : '';
         this.setState({ stationCode, manufacturer: null, deviceModeId: null })
-        this.props.getManufacturer({ params: { stationCode: stationCode }, resultName: this.getName(type)[0] })
+        this.props.getManufacturer({ params: { stationCode: stationCode,deviceTypeNameLike }, resultName: this.getName(type)[0] })
     }
 
     manufacturerSelect = (value) => { // 厂家选择
         const { stationCode } = this.state;
-        const { type } = this.props;
-        this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value }, resultName: this.getName(type)[1] })
-        this.setState({ manufacturer: value })
+        const { type,deviceTypeNameLike } = this.props;
+        this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value,deviceTypeNameLike }, resultName: this.getName(type)[1] })
+        this.setState({ manufacturer: value ,deviceModeId: null})
     }
 
     devicemodeListSelect = (value) => { // 设备选择
-        const { startDate, endDate, deviceTypeCode, type } = this.props;
+        const { startDate, endDate, deviceTypeCode, type,deviceTypeNameLike } = this.props;
         const { stationCode, manufacturer, } = this.state;
-        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeId: value, manufacturer }
+        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeId: value, manufacturer,deviceTypeNameLike }
         this.setState({ deviceModeId: value })
         this.props.onChange({ stationCode, deviceModeId: value, manufacturer })
         this.props.getDetailData({ params, resultName: this.getName(type)[2] })
