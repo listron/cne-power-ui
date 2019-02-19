@@ -24,15 +24,15 @@ class windStationHeader extends React.Component {
 
 
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
-    const stationPower = stationDataSummary.stationPower || ' -- ';
-    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
-    const stationUnitCount = stationDataSummary.stationUnitCount || '--';
-    const instantaneous = stationDataSummary.instantaneous || ' -- ';
-    const dayPower = stationDataSummary.dayPower || ' -- ';
-    const monthPower = stationDataSummary.monthPower || ' -- ';
-    const yearPower = stationDataSummary.yearPower || ' -- ';
-    const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
-    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
+    const stationPower = stationDataSummary.stationPower;
+    const stationCapacity = stationDataSummary.stationCapacity;
+    const stationUnitCount = stationDataSummary.stationUnitCount;
+    const instantaneous = stationDataSummary.instantaneous ;
+    const dayPower = stationDataSummary.dayPower;
+    const monthPower = stationDataSummary.monthPower;
+    const yearPower = stationDataSummary.yearPower;
+    const yearPlanPower = stationDataSummary.yearPlanPower;
+    const yearPlanRate = stationDataSummary.yearPlanRate;
     const planStatus = stationDataSummary.planStatus || 0;
     return (
       <div className={styles.headStation}>
