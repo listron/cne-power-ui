@@ -175,7 +175,7 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择设备型号
   selectDeviceModel = (value) => {
-    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
+    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance,electricLineCode } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
     const deviceTypeCode = value && [Number(value.split('__')[1])];
 
@@ -185,8 +185,8 @@ class PerformanceAnalysisFilter extends Component {
       targetTabs: '1',
       deviceTypeCode,
     })
-    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate }) :
-      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, })
+    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode }) :
+      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode })
   }
   //选择集电线路
   selectEleLine = (value) => {
@@ -304,7 +304,7 @@ class PerformanceAnalysisFilter extends Component {
             <Option key={null} value={null}>{'全部集电线路'}</Option>
             {eleLineCodeData.map(e => {
               if (!e) { return null; }
-              return <Option key={e.deviceId} value={e.deviceId}>{e.deviceName}</Option>
+              return <Option key={e.deviceId} value={e.deviceFullcode}>{e.deviceName}</Option>
             })}
           </Select>
         </div>
