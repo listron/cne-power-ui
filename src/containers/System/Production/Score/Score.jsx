@@ -73,7 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeScoreStore: payload => dispatch({ type: scoreAction.changeScoreStore, payload }),
   getScoreConfig: payload => dispatch({ type: scoreAction.getScoreConfig, payload }),
   editScoreConfig: payload => dispatch({ type: scoreAction.editScoreConfig, payload }),
-
+  getPvStionType: payload => dispatch({ type: scoreAction.getPvStionType, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Score)

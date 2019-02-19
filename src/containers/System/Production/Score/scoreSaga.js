@@ -21,10 +21,10 @@ function* resetStore() {
   })
 }
 
-function* getScoreConfig(action) { // 评分配置
+function* getScoreConfig(action) { // 评分配置 
   const { payload } = action;
-  const url = '/mock/system/performance/score/conf';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.ScoreConfig}/${payload.reportType}`
+  // const url = '/mock/system/performance/score/conf';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.ScoreConfig}/${payload.reportType}/${payload.isInitValue}`
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -41,48 +41,14 @@ function* getScoreConfig(action) { // 评分配置
     yield put({
       type: scoreAction.changeScoreStore,
       payload: {
-        indexList: {},
+        indexList: [],
         basicScore: 0,
       },
     });
     console.log(e);
-    message.error('获取信息失败',1)
+    message.error('获取信息失败', 1)
   }
 }
-
-
-function* getScoreConfig(action) { // 恢复默认
-  const { payload } = action;
-  const url = '/mock/system/performance/score/defaultConf';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.ScoreConfig}/${payload}`
-  try {
-    const response = yield call(axios.get, url);
-    if (response.data.code === '10000') {
-      yield put({
-        type: scoreAction.changeScoreStore,
-        payload: {
-          ...payload,
-          indexList: response.data.data.indexList || {},
-          basicScore: response.data.data.basicScore,
-          reset:false,
-        },
-      });
-    } else { throw response.data.data }
-  } catch (e) {
-    yield put({
-      type: scoreAction.changeScoreStore,
-      payload: {
-        indexList: {},
-        basicScore: 0,
-      },
-    });
-    console.log(e);
-    message.error('获取信息失败',1)
-  }
-}
-
-
-
 
 function* editScoreConfig(action) { // 编辑评分配置
   const { payload } = action;
@@ -91,9 +57,9 @@ function* editScoreConfig(action) { // 编辑评分配置
   try {
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
-      message.success('修改成功！！！',1);
+      message.success('修改成功！！！', 1);
       const params = yield select(state => {
-        return {reportType:state.system.score.get('reportType')};
+        return { reportType: state.system.score.get('reportType') };
       });
       yield put({
         type: scoreAction.getScoreConfig,
@@ -109,7 +75,7 @@ function* editScoreConfig(action) { // 编辑评分配置
       },
     });
     console.log(e);
-    message.error('修改失败',1)
+    message.error('修改失败', 1)
   }
 }
 

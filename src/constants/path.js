@@ -186,6 +186,7 @@ export default {
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
 
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
+      getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
     },
     monitor: {//实时监控
       getStationType: '/v3/monitor/stations/',
