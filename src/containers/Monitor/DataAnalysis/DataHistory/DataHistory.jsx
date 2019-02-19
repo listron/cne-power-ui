@@ -14,21 +14,6 @@ import Footer from '../../../../components/Common/Footer/index';
 
 class DataHistory extends Component {
   static propTypes = {
-    // stationCode: PropTypes.number,
-    // deviceTypeCode: PropTypes.number,
-    // deviceCodes: PropTypes.array,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
-    // pointCodes: PropTypes.array, // 选中的测点
-    // timeSpace:  PropTypes.string,
-    // historyType:  PropTypes.string,
-    
-    // stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
-    // pointInfo: PropTypes.array, // 选中设备内可选测点信息。
-    // allHistory: PropTypes.array, // chart图 - 所有历史数据
-    // partHistory: PropTypes.array, // 表格内 - 分页后的历史数据
-
-    // changeHistoryStore: PropTypes.func,
     resetHistoryStore: PropTypes.func,
   };
 
@@ -40,16 +25,18 @@ class DataHistory extends Component {
     return (
       <div className={styles.dataHistory}>
         <CommonBreadcrumb breadData={[{ name: '历史趋势' }]} />
-        <div className={styles.historyContent} >
-          <HistorySearch {...this.props} />
-          <HistoryDataType {...this.props} />
-          <div>
-            <PointTree {...this.props} />
-            <HistoryChart {...this.props} />
-            <HistoryList {...this.props} />
+        <div className={styles.contentBox}>
+          <div className={styles.historyContent} >
+            <HistorySearch {...this.props} />
+            <HistoryDataType {...this.props} />
+            <div className={styles.dataCenter}>
+              <PointTree {...this.props} />
+              <HistoryChart {...this.props} />
+              <HistoryList {...this.props} />
+            </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     );
   }
@@ -57,7 +44,8 @@ class DataHistory extends Component {
 
 const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
-  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  stations: state.common.get('stations').toJS(),
+  stationTypeCount: state.common.get('stationTypeCount'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

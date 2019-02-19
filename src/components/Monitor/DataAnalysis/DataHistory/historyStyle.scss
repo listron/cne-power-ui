@@ -1,0 +1,105 @@
+
+@import '../../../../theme/theme.scss';
+
+.historySearch{
+  
+  .typeCheck{
+    display: flex;
+    .typeNormal, .typeActive{
+      height: 40px;
+      line-height: 40px;
+      flex-basis: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid $promptColor;
+      border-left: none;
+      color: $lightColor;
+      background-color: #f8f8f8;
+    }
+    .typeActive{
+      background-color: #fff;
+      border-top: 2px solid $themeColor;
+      border-bottom: none;
+      color: #000;
+    }
+    .holder{
+      flex: 1;
+      background-color: #f8f8f8;
+      border-top: 1px solid $promptColor;
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+  .searchPart{
+    padding: 20px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    .stationSelect, .typeSelect{
+      flex: 0 0 25%;
+    }
+    .deviceSelect, .timeSelect, .intervalSelect{
+      flex: 0 0 50%;
+    }
+    .stationSelect, .typeSelect, .deviceSelect, .timeSelect, .intervalSelect{
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+      .text{
+        flex: 0 0 96px;
+        text-align: right;
+        margin-right: 8px;
+      }
+    }
+    .timeSelect{
+      :global{
+        .ant-input{
+          width: 400px;
+        }
+      }
+    }
+  } 
+}
+
+.historyDataType{
+  display: flex;
+  border-top: 1px dotted $promptColor;
+  border-bottom: 1px dotted $promptColor;
+  .tabIcons{
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    .active, .normal{
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active{
+      color: #fff;
+      background-color: $themeColor;
+    }
+    .normal{
+      color: #999;
+      background-color: #f1f1f1;
+    }
+  }
+}
+
+.pointTree{
+  flex: 0 0 150px;
+  h3{
+    height: 40px;
+    line-height: 40px;
+    color: $darkColor;
+    text-align: center;
+    border-bottom: 1px solid $promptColor;
+  }
+}
+
+.historyList{
+  flex: 1;
+
+}

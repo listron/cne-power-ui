@@ -48,7 +48,7 @@ class PointTree extends Component {
     // deviceCodes: PropTypes.array,
     // startTime: PropTypes.string,
     // endTime: PropTypes.string,
-    // pointCodes: PropTypes.array, // 选中的测点
+    pointCodes: PropTypes.array, // 选中的测点
     // timeSpace:  PropTypes.string,
     // historyType:  PropTypes.string,
     
@@ -76,9 +76,10 @@ class PointTree extends Component {
   
 
   render(){
+    const { pointCodes } = this.props;
     return (
-      <div className={styles.pointTree}>
-        树状选择
+      <section className={styles.pointTree}>
+        <h3>选择测点({pointCodes.length})</h3>
         <Tree
           checkable
           // autoExpandParent={this.state.autoExpandParent}
@@ -87,7 +88,7 @@ class PointTree extends Component {
         >
           {this.renderTreeNodes(treeData)}
         </Tree>
-      </div>
+      </section>
     )
   }
 }

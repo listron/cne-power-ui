@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import echarts from 'echarts';
 import styles from './historyStyle.scss';
 
-// const echartBox = document.getElementById(idName);
-//     const inverterChart = echarts.init(echartBox);
-
 class HistoryChart extends Component {
 
   componentDidMount() {
@@ -24,11 +21,9 @@ class HistoryChart extends Component {
   }
 
   render() {
+    // height: 150*测点数 + top(70) + bottom(60) + 30*设备数。
     return (
-      <div className={styles.historyChart}>
-        chart表格内容区
-        <div id="dataHistoryChart" />
-      </div>
+      <div className={styles.historyChart} id="dataHistoryChart" />
     )
   }
 }

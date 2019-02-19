@@ -11,7 +11,11 @@ const { RangePicker } = DatePicker;
 
 class HistorySearch extends Component {
   static propTypes = {
+    selectStationType: PropTypes.number,
+
     stations: PropTypes.array,
+    stationTypeCount: PropTypes.string,
+
     stationCode: PropTypes.number,
     deviceTypeCode: PropTypes.number,
     deviceCodes: PropTypes.array,
@@ -28,6 +32,16 @@ class HistorySearch extends Component {
     getPointInfo: PropTypes.func,
     getHistory: PropTypes.func,
   };
+
+  checkWind = () => { // 选中风电站
+    const { changeHistoryStore } = this.props;
+    changeHistoryStore({selectStationType: 0})
+  }
+
+  checkPv = () => { // 选中光电站
+    const { changeHistoryStore } = this.props;
+    changeHistoryStore({selectStationType: 1})
+  }
 
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getStationDeviceTypes, changeHistoryStore } = this.props;
@@ -73,11 +87,11 @@ class HistorySearch extends Component {
     }
   }
 
-  timeChange = (timeMoment, timeStr) => { // 时间选择
+  timeChange = (timeMoment) => { // 时间选择
     const { changeHistoryStore } = this.props;
     changeHistoryStore({
-      startTime: timeStr[0],
-      endTime: timeStr[1],
+      startTime: timeMoment[0],
+      endTime: timeMoment[1],
     })
   }
 
@@ -87,42 +101,73 @@ class HistorySearch extends Component {
   }
 
   render(){
-    const { stations, stationCode, deviceTypeCode, stationDeviceTypes, startTime, endTime, timeSpace } = this.props;
+    const {
+      selectStationType, stations, stationCode, deviceTypeCode, stationDeviceTypes, startTime, endTime, timeSpace, stationTypeCount
+    } = this.props;
     return (
       <div className={styles.historySearch}>
-        <StationSelect data={stations} onOK={this.selectStation} value={stations.filter(e => e.stationCode === stationCode)} />
-        <Select
-          className={styles.typeSelect}
-          onChange={this.selectDeviceType}
-          value={deviceTypeCode}
-          placeholder="请选择设备类型"
-          disabled={stationDeviceTypes.length === 0}
-        >
-          {stationDeviceTypes.map(e => (
-            <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-          ))}
-        </Select>
-        <DeviceSelect
-          disabled={!deviceTypeCode}
-          stationCode={stationCode}
-          deviceTypeCode={deviceTypeCode}
-          multiple={true}
-          style={{ width: 'auto', minWidth: '198px' }}
-          onChange={this.selectedDevice}
-        />
-        <RangePicker
-          onChange={this.timeChange}
-          value={[startTime ? moment(startTime): null, endTime ? moment(endTime) : null]}
-        />
-        <Select
-          onChange={this.selectTimeSpace}
-          value={timeSpace}
-          placeholder="数据间隔时间"
-        >
-          <Option value="sec">1秒</Option>
-          <Option value="fiveSec">5秒</Option>
-          <Option value="tenMin">10分钟</Option>
-        </Select>
+        {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
+          <div className={selectStationType === 0 ? styles.typeActive: styles.typeNormal} onClick={this.checkWind}>风电</div>
+          <div className={selectStationType === 1 ? styles.typeActive: styles.typeNormal} onClick={this.checkPv}>光伏</div>
+          <div className={styles.holder} />
+        </div>}
+        <div className={styles.searchPart}>
+          <div className={styles.stationSelect}>
+            <span className={styles.text}>电站名称</span>
+            <StationSelect
+              data={selectStationType ? stations.filter(e => e.stationType === selectStationType) : stations}
+              onOK={this.selectStation}
+              value={stations.filter(e => e.stationCode === stationCode)}
+            />
+          </div>
+          <div className={styles.typeSelect}>
+            <span className={styles.text}>设备类型</span>
+            <Select
+              style={{ width: '200px' }}
+              onChange={this.selectDeviceType}
+              value={deviceTypeCode}
+              placeholder="请选择设备类型"
+              disabled={stationDeviceTypes.length === 0}
+            >
+              {stationDeviceTypes.map(e => (
+                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+              ))}
+            </Select>
+          </div>
+          <div className={styles.deviceSelect}>
+            <span className={styles.text}>设备名称</span>
+            <DeviceSelect
+              disabled={!deviceTypeCode}
+              stationCode={stationCode}
+              deviceTypeCode={deviceTypeCode}
+              multiple={true}
+              style={{ width: 'auto', minWidth: '198px' }}
+              onChange={this.selectedDevice}
+            />
+          </div>
+          <div className={styles.timeSelect}>
+            <span className={styles.text}>时间选择</span>
+            <RangePicker
+              allowClear={false}
+              format="YYYY-MM-DD HH:mm:ss"
+              onChange={this.timeChange}
+              value={[moment(startTime), moment(endTime)]}
+            />
+          </div>
+          <div className={styles.intervalSelect}>
+            <span className={styles.text}>数据时间间隔</span>
+            <Select
+              onChange={this.selectTimeSpace}
+              value={timeSpace}
+              placeholder="数据间隔时间"
+            >
+              <Option value="sec">1秒</Option>
+              <Option value="fiveSec">5秒</Option>
+              <Option value="tenMin">10分钟</Option>
+            </Select>
+          </div>
+          
+        </div>
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './historyStyle.scss';
 
@@ -25,18 +25,23 @@ class HistoryDataType extends Component {
     changeHistoryStore({ historyType })
   }
 
+  showChart = () => {
+    console.log('chart show now ')
+  }
+
+  showList = () => {
+    console.log('list now ')
+  }
+
   render(){
+    const { historyType } = this.props;
     return (
       <div className={styles.historyDataType}>
-        <div>
-          <span key="chart">chart</span>
-          <span key="list">list</span>
+        <div className={styles.tabIcons}>
+          <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
+          <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
-        <div>
-          <h3>各设备测点历史数据趋势图</h3>
-          <span>数据为瞬时值</span>
-        </div>
-        <Button>导出</Button>
+        {/* <Button>导出</Button> */}
       </div>
     )
   }

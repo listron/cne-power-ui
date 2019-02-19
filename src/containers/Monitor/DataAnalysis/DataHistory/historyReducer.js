@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import moment from 'moment';
 
 const historyAction = {
   getHistory: Symbol('getHistory'), // 获取时间段内历史数据
@@ -10,11 +11,22 @@ const historyAction = {
 }
 
 const initState = Immutable.fromJS({
+  selectStationType: null, // 选中的电站类型
+  queryParam: {
+    stationCode: null, // 选中的电站
+    deviceTypeCode: null, // 选中的设备类型
+    deviceCodes: [], // 选中的设备
+    startTime: moment().subtract(1, 'day').startOf(),
+    endTime: moment(),
+    pointCodes: [], // 选中的测点
+    timeSpace: 'tenMin', // 数据时间间隔:sec, fiveSec 1s, 5s, 10min;
+  },
+
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
   deviceCodes: [], // 选中的设备
-  startTime: null,
-  endTime: null,
+  startTime: moment().subtract(1, 'day').startOf(),
+  endTime: moment(),
   pointCodes: [], // 选中的测点
   timeSpace: 'tenMin', // 数据时间间隔:sec, fiveSec 1s, 5s, 10min;
   historyType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
