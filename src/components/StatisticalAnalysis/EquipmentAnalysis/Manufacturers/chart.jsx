@@ -3,6 +3,7 @@ import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import styles from "./manufacturers.scss";
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { dataFormats } from '../../../../utils/utilFunc';
 
 /* 
   1 必填   graphId 图表的id名
@@ -122,6 +123,28 @@ class Charts extends React.Component {
     }
 
 
+    getUnit=(type)=>{
+        let result = " ";
+        switch (type) {
+            case "conversioneff":
+                result = '%';
+                break;
+            case "faultHours":
+                result = 'h';
+                break;
+            case "faultNum":
+                result = '次';
+                break;
+            case "deviceCapacity":
+                result = 'MW';
+                break;
+            default:
+                result = " ";
+        }
+        return result;
+    }
+
+
     getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
         const length = data.length;
         let replaceData = [];
@@ -141,6 +164,7 @@ class Charts extends React.Component {
         const lineColor = '#f1f1f1';
         const fontColor = '#999';
         const hasSlider = yData.length > 18;
+        const unit=this.getUnit(type);
         const hasData = yData.some(e => e || e === 0);
         const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
         const targetMonthOption = {
@@ -163,7 +187,7 @@ class Charts extends React.Component {
                     let paramsItem = '';
                     params.map((item) => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span>  
-                        ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'} </div>`
+                        ${item.seriesName} :${dataFormats(item.value,'--', 2, true)} ${unit}</div>`
                     });
                     return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>${paramsItem}`
                 }
@@ -180,7 +204,7 @@ class Charts extends React.Component {
             },
             color: this.getColor(type),
             grid: {
-                bottom: hasSlider ? 140 : 60,
+                bottom: hasSlider ? 140 : 80,
             },
             legend: {
                 left: 'center',
@@ -237,7 +261,7 @@ class Charts extends React.Component {
                     height: 10,
                     width: 10,
                     formatter: (value) => {
-                        return value && value.length > 0 && value.substring(0, 6) + '...' || null
+                        return value && value.length > 6 && value.substring(0, 6) + '...' || value && value || '...'
                     }
                 },
                 axisTick: {
