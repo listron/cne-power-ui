@@ -35,6 +35,7 @@ class PerformanceAnalysisTabs extends Component {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames } = this.props;
+    console.log('contrastEndDate: ', contrastEndDate);
 
 
     //转化效率
@@ -196,8 +197,8 @@ class PerformanceAnalysisTabs extends Component {
       xData: contrastFaultNumDeviceNameData,
       yData: {
         barData: {
-          faultNum: contrastFaultNumDataResults,
-          contrastFaultNumData: contrastFaultNumResults
+          faultNum:contrastFaultNumResults,
+          contrastFaultNumData: contrastFaultNumDataResults,
         },
 
       }
@@ -214,8 +215,8 @@ class PerformanceAnalysisTabs extends Component {
       xData: contrastFaultTimeDeviceNameData,
       yData: {
         barData: {
-          faultTime: contrastFaultTimeDataResults,
-          contrastFaultTimeData: contrastFaultTimeResults
+          faultTime: contrastFaultTimeResults,
+          contrastFaultTimeData: contrastFaultTimeDataResults,
         },
       }
     } : {
