@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Form, Select, DatePicker, Icon, Modal } from 'antd';
+import { Button, Input, Form, Select, DatePicker, Icon, Modal,message } from 'antd';
 import styles from '../deviceSide.scss';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -17,17 +17,33 @@ class ShowAddDeviceModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
+    const {stationDeviceTypes}=this.props;
 
     let planValue = getFieldsValue();
+    this.props.form.validateFieldsAndScroll(["deviceTypeName","belong"],(err,values)=>{
+      console.log(values,'values');
+      console.log(planValue, '1111');
+     const test= stationDeviceTypes.map(e=>e.deviceTypeName);
+     console.log('test: ', test);
+    //  const haha=test.has(values.deviceTypeName)?1:0;
+    //  console.log('haha: ', haha);
 
-  
-        console.log(planValue, '1111');
-        this.props.saveFormState(planValue)
+      if(!err){
+        if(values.deviceTypeName==='test'){
+          message.error('设备名称名称重复')
+        }else{
+          this.props.saveFormState(planValue)
+          this.props.cancleAddDeviceModal()
+        }
+      }
+    })
+       
+
 
       
 
    
-    this.props.cancleAddDeviceModal()
+   
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -45,7 +61,7 @@ class ShowAddDeviceModal extends Component {
         centered={true}
         mask={false}
         footer={null}
-        closable={false}
+        closable
         maskClosable={false}
       >
         <Form className={styles.preFormStyle}>

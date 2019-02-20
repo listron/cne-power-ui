@@ -1,67 +1,42 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Input, Form, Select, DatePicker } from 'antd';
-import StationSelect from '../../../../Common/StationSelect';
-import DeviceSelect from '../../../../Common/DeviceSelect/index';
+
 import styles from '../deviceSide.scss';
-import WindInstallDate from "./WindInstallDate";
-import WindMeasurement from "./WindMeasurement";
-import Confluence from "./Confluence";
+import WindInstallDate from "../AddDevice/WindInstallDate";
+import WindMeasurement from "../AddDevice/WindMeasurement";
+import Confluence from "../AddDevice/Confluence";
 const FormItem = Form.Item;
 const Option = Select.Option;
-class AddDeviceForm extends Component {
+class EditDeviceForm extends Component {
   static propTypes = {
   }
   constructor(props, context) {
     super(props, context)
   }
-  selectStation = (stations) => {
-    const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
-    getStationDeviceTypes({
-      stationCodes: stations[0].stationCode,
-    });
-    changeDeviceManageStore({
-      deviceModels: []
-    })
-  }
-  selectDeviceType = (value) => {
-    const { getDeviceModel, getDeviceList, queryParams, stationCode } = this.props;
-    getDeviceModel({
-      stationCode,
-      deviceTypeCode: value,
-    });
-
-  }
+ 
+ 
   submitForm=(e)=>{
     e.preventDefault();
-    // const formState=getFieldsValue();
-    // console.log('formState: ', formState);
+   
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
       }
     });
-    this.props.changeDeviceManageStore({showPage: 'list',})
+    this.props.changeDeviceManageStore({showPage: 'detail',})
 
   }
-  gobackPre=()=>{
-
-  }
+ 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation } = this.props;
-    const stationName=selectStation[0].stationName
-    console.log('stationDeviceTypes: ', stationDeviceTypes);
-    console.log('selectdeviceType,selectStation: ', selectdeviceType, selectStation);
-
-    const typeSelectDisable = stationDeviceTypes.length === 0;
-    const deviceTypeName = getFieldValue('deviceTypeCode');
+    const stationName='123';
+    const deviceTypeName='风电机组'
     // console.log('deviceTypeName: ', deviceTypeName);
-    console.log(typeof(selectdeviceType));
     const selectDeviceTypeName= typeof(selectdeviceType)==='number'?stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName:selectdeviceType
   
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
-    const modelSelectDisable = deviceModels.length === 0;
 
     return (
       <div className={styles.colStyles}>
@@ -69,48 +44,32 @@ class AddDeviceForm extends Component {
           <div className={styles.leftlayout}>
             <div className={styles.defaultConfigStyles}>
               <FormItem label="电站名称" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('stationCode', {
-                  rules: [
-                    { message: '请选择电站', required: true, },
-                  ]
-                })(
+                {getFieldDecorator('stationCode',)(
+                  
+                 
                   <span>{stationName}</span>
+
                 )}
               </FormItem>
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('deviceTypeCode', {
-                  rules: [
-                    { message: '请选择设备类型', required: true, },
-                  ]
-                })(
+                {getFieldDecorator('deviceTypeCode',)(
                  
-                  <span>{selectDeviceTypeName}</span>
+                  <span>{stationName}</span>
                 )}
               </FormItem>
               <FormItem label="设备名称" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('deviceName', {
-                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
-                })(
-                  <Input placeholder="不超过30字" />
+                {getFieldDecorator('deviceName', )(
+                  <span>{stationName}</span>
                 )}
               </FormItem>
               <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('deviceModeCode', {
-                  rules: [{ required: true, message: '请选择设备型号' }],
-                })(
-                  <Select className={styles.modelSelect} onChange={this.selectDeviceModel} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-                    {deviceModels.map(e => {
-                      if (!e) { return null; }
-                      return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
-                    })}
-                  </Select>
+                {getFieldDecorator('deviceModeCode', )(
+                  <span>{stationName}</span>
                 )}
               </FormItem>
               <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('manufacturer', {
-                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
-                })(
-                  <Input placeholder="不超过30字" />
+                {getFieldDecorator('manufacturer', )(
+                  <span>{stationName}</span>
                 )}
               </FormItem>
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
@@ -167,18 +126,18 @@ class AddDeviceForm extends Component {
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {deviceTypeName === 501 && <WindMeasurement form={form} />}
-            {deviceTypeName === 304 && <div className={styles.rightStyles}>
+          { deviceTypeName==='测风塔'&&<WindMeasurement form={form} />}
+            {deviceTypeName ==='箱变'&& <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('belongMatrix')(
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
             </div>}
-            {deviceTypeName === 101 && <WindInstallDate form={form} />}
-            {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence form={form} />}
+            {deviceTypeName === '风电机组' && <WindInstallDate form={form} />}
+            {(deviceTypeName === '206' || deviceTypeName === 202) && <Confluence form={form} />}
             <div className={styles.submitStyle}>
-              <Button onClick={this.gobackPre}  className={styles.preStyles}>上一步</Button>
+             
               <Button onClick={this.submitForm} >保存</Button>
             </div>
 
@@ -191,6 +150,4 @@ class AddDeviceForm extends Component {
     )
   }
 }
-export default Form.create()(AddDeviceForm)
-//{deviceTypeName===101&& <WindInstallDate form={form} />}
-// {(deviceTypeName===206||deviceTypeName===202)&&<Confluence form={form} />}
+export default Form.create()(EditDeviceForm)

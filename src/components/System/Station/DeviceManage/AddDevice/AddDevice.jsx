@@ -83,14 +83,12 @@ class AddDevice extends Component {
   }
   render() {
     const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName ,showAddDeviceType} = this.state;
-    console.log('showAddDeviceType: ', showAddDeviceType);
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const selectStation = getFieldValue('stationCode')
     const selectdeviceType = getFieldValue('deviceTypeCode')
     const selectdeviceTypeName = deviceTypeName
-    console.log('selectdeviceTypeName: ', selectdeviceTypeName);
 
     return (
       <div className={styles.addDevice}>
@@ -141,7 +139,7 @@ class AddDevice extends Component {
                   })}
                 </Select>
               )}
-              <span className={styles.fontColor} onClick={this.showAddDeviceModal}>添加设备类型</span>
+              <span className={styles.fontColor}  onClick={!typeSelectDisable?this.showAddDeviceModal:''}>添加设备类型</span>
             </FormItem>}
 
           {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}

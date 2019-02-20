@@ -42,7 +42,7 @@ class Confluence extends Component {
               <Row>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((e, i) => {
                   return (
-                    <Col span={3}>
+                    <Col span={3} key={i}>
                       <div>第{e}支路</div>
                       <Checkbox value={i} key={e}></Checkbox>
                     </Col>)
