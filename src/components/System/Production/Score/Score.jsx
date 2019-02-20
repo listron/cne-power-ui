@@ -13,18 +13,20 @@ class ScoreMain extends Component {
         changeScoreStore: PropTypes.func,
         editScoreConfig: PropTypes.func,
         getPvStionType: PropTypes.func,
-        canSave: PropTypes.bool,
+        changeIsVaild: PropTypes.func,
+        hasInitScore: PropTypes.bool,
+        edit: PropTypes.bool,
         reportType: PropTypes.string,
+        isVaild: PropTypes.array,
     };
     constructor(props) {
         super(props);
         this.state = {
-            edit: false, // 是否处于一个编辑状态
             stationTypes: props.reportType, // 电站类型
             warningTipText: '是否放弃当前修改',
             showWarningTip: false,
             allData: [],
-            basicScore: props.basicScore
+            basicScore: "",
         }
     }
 
@@ -33,16 +35,17 @@ class ScoreMain extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // if(!this.props.reset && nextProps.basicScore){this.setState({basicScore:nextProps.basicScore})}
+        if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
         if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
     }
 
     stationCheck = (e) => {// 电站切换
-        const { edit } = this.state;
+        const { edit } = this.props;
         if (edit) {
             this.setState({ showWarningTip: true, stationTypes: e.target.value })
         } else {
-            this.setState({ edit: false, stationTypes: e.target.value })
+            this.setState({ stationTypes: e.target.value })
+            this.props.changeScoreStore({ edit: false })
             this.props.getScoreConfig({ reportType: `${e.target.value}`, isInitValue: 0 })
         }
     }
@@ -50,44 +53,70 @@ class ScoreMain extends Component {
     initChange = (e) => { //初始值的修改
         const value = e.target.value && e.target.value.trim();
         this.setState({ basicScore: value })
-        if (isNaN(value) || !value || value < 0) {
-            this.props.changeScoreStore({ canSave: false, })
-            message.config({ top: 220, maxCount: 1 })
-            message.warn('填写电站初始分不正确，请重新填写！！！', 2);
-        } else {
-            this.props.changeScoreStore({ canSave: true })
+        message.config({ top: 220, maxCount: 1 })
+        if (!value) {
+            this.props.changeScoreStore({ hasInitScore: false, })
+            message.warn('填写电站初始分不能为空！！！', 2);
+            return false
         }
+        if (isNaN(value)) {
+            this.props.changeScoreStore({ hasInitScore: false, })
+            message.warn('电站初始分请填写数字！！！', 2);
+            return false
+        }
+        if (value < 0 || value > 100) {
+            this.props.changeScoreStore({ hasInitScore: false, })
+            message.warn('填写电站初始分为0-100分之间！！！', 2);
+            return false
+        } 
+        this.props.changeScoreStore({ hasInitScore: true })
     }
 
     edit = () => { // 修改配置
-        this.setState({ edit: true })
+        this.props.changeScoreStore({ edit: true })
     }
 
     cancle = () => { // 取消
-        this.setState({ edit: false })
+        this.props.changeScoreStore({ edit: false })
+        this.props.changeIsVaild()
     }
 
     default = () => { // 恢复默认
         const { reportType } = this.props;
+        this.props.changeIsVaild()
         this.props.changeScoreStore({ reset: true })
         this.props.getScoreConfig({ reportType, isInitValue: 1 })
     }
 
     save = () => { //保存
-        const { canSave } = this.props;
+        const { hasInitScore, isVaild, indexList } = this.props;
         const { stationTypes, allData, basicScore } = this.state;
-        if (canSave) {
-            this.setState({ edit: false })
-            this.props.editScoreConfig({ reportType: stationTypes, basicScore, indexList: allData, })
+        const editData = allData.length > 0 && allData || indexList;
+        let newIndexList = [];
+        editData.forEach(item => {
+            newIndexList.push({
+                indexCode: item.indexCode,
+                indexPercent: item.indexPercent,
+                indexLowerLimit: item.indexLowerLimit,
+                indexUpperLimit: item.indexUpperLimit,
+                indexIncrDecrStandard: item.indexIncrDecrStandard,
+                indexIncrDecrValue: item.indexIncrDecrValue,
+            })
+        })
+        const isVaildError = isVaild.some(e => e.includes(false))
+        if (hasInitScore && !isVaildError) {
+            this.props.editScoreConfig({ reportType: stationTypes, basicScore, indexList: newIndexList, })
         } else {
-            message.warn('请先填完信息')
+            message.warn('请填写需要填写的信息')
         }
     }
 
     confirmWarningTip = () => { // 确认跳转
         const { stationTypes } = this.state;
-        this.setState({ edit: false, showWarningTip: false, stationTypes: stationTypes, basicScore: this.props.basicScore })
+        this.setState({ showWarningTip: false, stationTypes: stationTypes, basicScore: this.props.basicScore })
+        this.props.changeScoreStore({ edit: false })
         this.props.getScoreConfig({ reportType: stationTypes, isInitValue: 0 })
+        this.props.changeIsVaild()
     }
 
     cancelWarningTip = () => { // 取消
@@ -97,7 +126,7 @@ class ScoreMain extends Component {
     }
 
     totalInfoChange = (rest) => { // 表格的数据
-        this.setState({ allData: rest })
+        this.setState({ allData: rest || this.props.indexList })
     }
 
 
@@ -117,10 +146,9 @@ class ScoreMain extends Component {
     }
 
     render() {
-        const { edit, stationTypes, showWarningTip, warningTipText, basicScore } = this.state;
-        const { indexList } = this.props;
+        const { stationTypes, showWarningTip, warningTipText, basicScore } = this.state;
+        const { indexList, edit } = this.props;
         const editData = this.deepClone(indexList);
-        console.log('basicScore',basicScore)
         return (
             <div className={styles.scoreBox}>
                 {showWarningTip &&
@@ -139,8 +167,10 @@ class ScoreMain extends Component {
                     </div>}
                 {!!edit &&
                     <div className={styles.scoreLine}>
-                        <div><span>电站初始分</span>
-                            {!!edit &&  < Input placeholder="请填写" onChange={this.initChange} value={basicScore} /> }
+                        <div>
+                            <span>电站初始分</span>
+                            <Input placeholder="请填写" onChange={this.initChange} value={basicScore} />
+                            <span>  注：请输入0-100分的初始分值</span>
                         </div>
                         <div className={styles.buttonGroups}>
                             <Button onClick={this.cancle}>取消</Button>
@@ -150,7 +180,9 @@ class ScoreMain extends Component {
                     </div>
                 }
 
-                {edit === false && <DetailTable indexList={indexList} /> || <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
+                {edit === false && 
+                <DetailTable indexList={indexList} /> || 
+                <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
 
             </div>
         )

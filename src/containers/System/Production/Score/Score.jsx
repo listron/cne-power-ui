@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tabs } from 'antd';
 import { scoreAction } from "./scoreAction";
-import { commonAction } from '../../../alphaRedux/commonAction';
 import styles from "./score.scss";
 import PropTypes from 'prop-types';
 import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
@@ -45,7 +44,7 @@ class Score extends Component {
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&
               <Tabs type="card" onChange={this.onTabChange} activeKey={activeKey}>
-                <TabPane tab="风电" key="wind" disabled> </TabPane>
+                <TabPane tab="风电" key="wind" disabled><div>test</div> </TabPane>
                 <TabPane tab="光伏" key="pv"> <ScoreMain {...this.props} /> </TabPane>
               </Tabs>
             }
@@ -70,6 +69,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: scoreAction.resetStore }),
+  changeIsVaild: () => dispatch({ type: scoreAction.changeIsVaild }),
   changeScoreStore: payload => dispatch({ type: scoreAction.changeScoreStore, payload }),
   getScoreConfig: payload => dispatch({ type: scoreAction.getScoreConfig, payload }),
   editScoreConfig: payload => dispatch({ type: scoreAction.editScoreConfig, payload }),

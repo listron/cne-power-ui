@@ -5,7 +5,6 @@ export const scoreAction = {
     RESET_STORE: Symbol('RESET_STORE'), // 重置数据
     getScoreConfig: Symbol('getScoreConfig'), // 评分配置查询
     editScoreConfig: Symbol('editScoreConfig'), // 评分配置查询
-
-    
+    changeIsVaild: Symbol('changeIsVaild'), 
 }
 

@@ -21,6 +21,25 @@ function* resetStore() {
   })
 }
 
+function* changeIsVaild() {
+  yield put({
+    type: scoreAction.changeScoreStore,
+    payload: {
+      isVaild: [
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+        [true, true, true, true, true],
+      ],
+      hasInitScore: true
+    }
+  })
+}
+
 function* getScoreConfig(action) { // 评分配置 
   const { payload } = action;
   // const url = '/mock/system/performance/score/conf';
@@ -32,8 +51,9 @@ function* getScoreConfig(action) { // 评分配置
         type: scoreAction.changeScoreStore,
         payload: {
           ...payload,
-          indexList: response.data.data.indexList || {},
+          indexList: response.data.data.indexList || [],
           basicScore: response.data.data.basicScore,
+          reset: !payload.isInitValue === 1
         },
       });
     } else { throw response.data.data }
@@ -52,14 +72,23 @@ function* getScoreConfig(action) { // 评分配置
 
 function* editScoreConfig(action) { // 编辑评分配置
   const { payload } = action;
-  const url = '/mock/system/performance/score/conf';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.ScoreConfig}`
+  // const url = '/mock/system/performance/score/conf';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.ScoreConfig}`
   try {
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
       message.success('修改成功！！！', 1);
+      yield put({
+        type:scoreAction.changeScoreStore,
+        payload:{
+          edit:false
+        }
+      })
       const params = yield select(state => {
-        return { reportType: state.system.score.get('reportType') };
+        return { 
+          reportType: state.system.score.get('reportType'),
+          isInitValue:0
+         };
       });
       yield put({
         type: scoreAction.getScoreConfig,
@@ -70,8 +99,7 @@ function* editScoreConfig(action) { // 编辑评分配置
     yield put({
       type: scoreAction.changeScoreStore,
       payload: {
-        indexList: {},
-        basicScore: 0,
+        edit:false
       },
     });
     console.log(e);
@@ -84,4 +112,5 @@ export function* watchScore() {
   yield takeLatest(scoreAction.resetStore, resetStore);
   yield takeLatest(scoreAction.getScoreConfig, getScoreConfig);
   yield takeLatest(scoreAction.editScoreConfig, editScoreConfig);
+  yield takeLatest(scoreAction.changeIsVaild, changeIsVaild);
 }

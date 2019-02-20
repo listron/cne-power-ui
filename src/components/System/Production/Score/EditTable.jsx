@@ -24,16 +24,17 @@ class EditTable extends Component {
         editData: PropTypes.array,
         changeScoreStore: PropTypes.func,
         totalInfoChange: PropTypes.func,
+        isVaild: PropTypes.array,
     };
     constructor(props) {
         super(props);
         this.state = {
-            editData: this.props.editData
+            editData: this.props.editData,
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        if(this.props.reset && !nextProps.reset){this.setState({editData:nextProps.editData})}
+    componentWillReceiveProps(nextProps) {
+        if (this.props.reset && !nextProps.reset) { this.setState({ editData: nextProps.editData })}
     }
 
     Basefun = (keyWord, index) => {
@@ -56,31 +57,39 @@ class EditTable extends Component {
         let checkingValue = value.trim();
         const configText = this.Basefun(keyWord, index)
         const { editData } = this.state;
+        const { isVaild } = this.props;
+        let indexArray = ['indexPercent', 'indexLowerLimit', 'indexUpperLimit', 'indexIncrDecrStandard', 'indexIncrDecrValue'];
         let continued = true;
-        let flag=true;
         message.config({ top: 220, maxCount: 1 })
-        if(!checkingValue){ // 规则  为空校验
+        if (!checkingValue) { // 规则  为空校验
             message.warn(`${configText}不能为空`, 2);
-            this.props.changeScoreStore({ canSave: false })
             continued = false;
-            flag= false
+            isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+            this.props.changeScoreStore({ isVaild });
+            return false
         }
         if (isNaN(checkingValue)) { // 规则1 数值校验
             message.warn(`${configText}请填写数字，最多保留小数点后${pointLength}位`, 2)
             continued = false;
-            flag= false
+            isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+            this.props.changeScoreStore({ isVaild });
+            return false
         }
         if (checkingValue < 0) { // 规则2非负校验
             message.warn(`${configText}数值不能为负数，请重新填写`, 2);
             continued = false;
-            flag= false
+            isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+            this.props.changeScoreStore({ isVaild });
+            return false
         }
         if (`${checkingValue}`.includes('.')) { // 规则3小数点位校验。
             const demicalLength = `${checkingValue}`.split('.')[1].trim().length;
             if (demicalLength > pointLength) {
                 message.warn(`${configText}请填写数字，最多保留小数点后${pointLength}位`, 2)
                 continued = false;
-                flag= false
+                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+                this.props.changeScoreStore({ isVaild });
+                return false
             }
         }
         if (continued && keyWord === 'indexPercent') {// 规则4 指标权重<100%
@@ -92,27 +101,34 @@ class EditTable extends Component {
             if (sum > 100) {
                 message.warn(`${configText}填写的已超出指标权重总和上限（100）`, 2);
                 this.props.changeScoreStore({ canSave: false })
-                flag= false
+                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+                this.props.changeScoreStore({ isVaild })
+                return false
             }
         }
         if (continued && keyWord === 'indexLowerLimit') { //规则5 判断标准 左边数《= 右边数
+            console.log('checkingValue',checkingValue,editData[index]['indexUpperLimit'],
+            checkingValue>editData[index]['indexUpperLimit'])
             if (checkingValue > editData[index]['indexUpperLimit']) {
+                console.log('进来了么')
                 message.warn(`${configText}填写的已超出该判断标准的上限`, 2);
                 this.props.changeScoreStore({ canSave: false })
-                flag= false
+                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+                this.props.changeScoreStore({ isVaild })
+                return false
             }
         }
         if (continued && keyWord === 'indexUpperLimit') { //规则5 判断标准 左边数《= 右边数
             if (checkingValue < editData[index]['indexLowerLimit']) {
                 message.warn(`${configText}填写的已低于该判断标准的上限`, 2);
                 this.props.changeScoreStore({ canSave: false })
-                flag= false
+                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
+                this.props.changeScoreStore({ isVaild })
+                return false
             }
-        }
-        if(flag){
-            this.props.totalInfoChange(editData)
-            this.props.changeScoreStore({ canSave: true })
-        }
+        }     
+        isVaild[index][indexArray.findIndex(e=>e===keyWord)] = true
+        this.props.changeScoreStore({ canSave: true,isVaild })
     }
 
     valueChange = (param) => { // 直接替换数据。
@@ -124,11 +140,12 @@ class EditTable extends Component {
             ...param,
         }
         this.setState({ editData: editData })
+        this.props.totalInfoChange(editData)
     }
 
 
     render() {
-        const {editData}=this.state;
+        const { editData } = this.state;
         return (
             <div className={styles.editTable}>
                 <div className={styles.tHead}>
