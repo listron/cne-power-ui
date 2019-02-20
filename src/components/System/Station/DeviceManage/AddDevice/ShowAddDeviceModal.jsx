@@ -20,7 +20,7 @@ class ShowAddDeviceModal extends Component {
     const {stationDeviceTypes}=this.props;
 
     let planValue = getFieldsValue();
-    this.props.form.validateFieldsAndScroll(["deviceTypeName","belong"],(err,values)=>{
+    this.props.form.validateFieldsAndScroll(["deviceTypeCode","belong"],(err,values)=>{
       console.log(values,'values');
       console.log(planValue, '1111');
      const test= stationDeviceTypes.map(e=>e.deviceTypeName);
@@ -66,7 +66,7 @@ class ShowAddDeviceModal extends Component {
       >
         <Form className={styles.preFormStyle}>
           <FormItem label="设备类型" colon={false} {...formItemLayout}  >
-            {getFieldDecorator('deviceTypeName', {
+            {getFieldDecorator('deviceTypeCode', {
               rules: [
                 { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
               ]

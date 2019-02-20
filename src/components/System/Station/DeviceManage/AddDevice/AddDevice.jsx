@@ -51,15 +51,19 @@ class AddDevice extends Component {
       stationCodes: stations[0].stationCode,
     });
     changeDeviceManageStore({
-      deviceModels: []
+      // deviceModels: []
     })
   }
   selectDeviceType = (value) => {
-    const { getDeviceModel, getDeviceList, queryParams, stationCode } = this.props;
+    const { getDeviceModel, getDeviceList,getPvDevice, queryParams, stationCode } = this.props;
     getDeviceModel({
       stationCode,
       deviceTypeCode: value,
     });
+    getPvDevice({ 
+      stationCode,
+      deviceTypeCode: '509',
+    })
 
   }
   showAddDeviceModal = () => {
@@ -79,14 +83,16 @@ class AddDevice extends Component {
   }
   saveFormState = (record) => {
     console.log("record",record)
-    this.setState({ deviceTypeName: record.deviceTypeName,showAddDeviceType:true })
+    this.setState({ deviceTypeName: record.deviceTypeCode,showAddDeviceType:true })
   }
   render() {
     const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName ,showAddDeviceType} = this.state;
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
+    console.log('deviceModels: ', deviceModels);
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const selectStation = getFieldValue('stationCode')
+    console.log('selectStation: ', selectStation);
     const selectdeviceType = getFieldValue('deviceTypeCode')
     const selectdeviceTypeName = deviceTypeName
 
@@ -108,7 +114,7 @@ class AddDevice extends Component {
                 data={allStationBaseInfo}
                 onOK={this.selectStation}
                 holderText="请选择电站"
-              // value={allStationBaseInfo.filter(e => e.stationCode === stationCode)}
+                //value={allStationBaseInfo.filter(e => e.stationCode === stationCode)}
               />
             )}
           </FormItem>

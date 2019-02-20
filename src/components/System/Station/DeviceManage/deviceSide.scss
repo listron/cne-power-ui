@@ -90,6 +90,15 @@
             width: 200px;
           }
         }
+        .defaultConfigStyles{
+          .formItemStyle{
+            display: flex;
+          }
+          .fontColor{
+            color: #199475;
+          }
+        }
+       
       }
       .rightContainer{
         display: flex;
@@ -99,7 +108,12 @@
           margin-top: 12px;
           display:flex;
           flex-direction: column;
-         
+          .formItemStyle{
+            display: flex;
+          }
+          .fontColor{
+            color: #199475;
+          }
           :global{
             .ant-form-item-label{
               width: 100px;
@@ -153,13 +167,7 @@
         }
         
       }
-     .defaultConfigStyles{
-      :global{
-        .ant-form-item-control{
-          width:198px;
-        }
-      }
-    }
+   
       
       .defaultConfigStyles{
         margin:12px 0;

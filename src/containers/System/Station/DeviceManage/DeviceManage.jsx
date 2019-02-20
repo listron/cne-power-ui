@@ -132,6 +132,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceModels'
     }
   }),
+  getPvDevice: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params,
+      actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      resultName: 'pvDeviceModels'
+    }
+  }),
   getStationOfEnterprise: params => dispatch({
     type: commonAction.getStationOfEnterprise,
     payload: {
