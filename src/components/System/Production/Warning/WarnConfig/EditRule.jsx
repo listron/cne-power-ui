@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Table, Modal, Button, Icon, Tooltip, Form, Input } from 'antd';
+import { Select, Button, Icon, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import styles from "./warnConfig.scss";
 import WarningTip from '../../../../Common/WarningTip';
@@ -133,7 +133,7 @@ class EditRule extends Component {
                   )}
                 </FormItem>
                 <div className={styles.buttonGroup}>
-                  <Button onClick={this.saveRule} className={styles.save}>保存</Button>
+                  <Button onClick={this.saveRule} className={styles.save} type={"default"} >保存</Button>
                 </div>
               </Form>
             </div>

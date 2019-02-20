@@ -300,6 +300,17 @@
                 }
             }
         }
+        :global {
+            .ant-btn-default,
+            .ant-btn-default:active {
+                color: $themeColor;
+                border-color: $themeColor;
+                &:hover {
+                    background-color: $themeColor;
+                    color: #fff;
+                }
+            }
+        }
     }
 
     .gap {
