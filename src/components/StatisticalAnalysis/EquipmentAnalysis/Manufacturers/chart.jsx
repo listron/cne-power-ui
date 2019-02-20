@@ -180,7 +180,7 @@ class Charts extends React.Component {
             },
             color: this.getColor(type),
             grid: {
-                bottom: 140,
+                bottom: hasSlider ? 140 : 60,
             },
             legend: {
                 left: 'center',
