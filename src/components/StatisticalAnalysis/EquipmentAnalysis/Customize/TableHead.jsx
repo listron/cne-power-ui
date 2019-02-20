@@ -14,6 +14,7 @@ class CustomizeTable extends Component {
         getManufacturer: PropTypes.func,
         getDevicemode: PropTypes.func,
         getDetailData: PropTypes.func,
+        onChange: PropTypes.func,
         devicemodeList: PropTypes.array,
         manufacturerList: PropTypes.array,
         anotherManufacturerList: PropTypes.array,
@@ -47,9 +48,10 @@ class CustomizeTable extends Component {
 
     stationSelected = (value) => { // 电站选择
         const { type,deviceTypeNameLike } = this.props;
-        const stationCode = value.length > 0 ? value[0].stationCode : '';
+        const stationCode = value.length > 0 ? value[0].stationCode : null;
         this.setState({ stationCode, manufacturer: null, deviceModeId: null })
         this.props.getManufacturer({ params: { stationCode: stationCode,deviceTypeNameLike }, resultName: this.getName(type)[0] })
+        this.props.onChange({stationCode,deviceModeId: null, manufacturer:null })
     }
 
     manufacturerSelect = (value) => { // 厂家选择
@@ -57,6 +59,7 @@ class CustomizeTable extends Component {
         const { type,deviceTypeNameLike } = this.props;
         this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value,deviceTypeNameLike }, resultName: this.getName(type)[1] })
         this.setState({ manufacturer: value ,deviceModeId: null})
+        this.props.onChange({stationCode,deviceModeId: null, manufacturer:value })
     }
 
     devicemodeListSelect = (value) => { // 设备选择
