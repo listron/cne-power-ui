@@ -73,7 +73,9 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择时间
   onChangeDuration = (value) => {
-    const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode } = this.props;
+    const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
+    console.log('targetTabs: ', targetTabs);
+    const prams={ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
     let startDate, endDate;
     if (value === 'other') {
       this.onFilterShowChange('timeSelect');
@@ -95,9 +97,15 @@ class PerformanceAnalysisFilter extends Component {
       startDate,
       endDate,
       contrastSwitch: false,
+      contrastStartDate: '',
+      contrastEndDate: '',
       timeType: value
     });
-    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+    if (targetTabs === '1') {
+      this.props.getPerformance({ ...prams })
+    } else {
+      this.props.getFault({ ...prams })
+    }
 
   }
   onCalendarChange = (dates) => {
@@ -109,19 +117,27 @@ class PerformanceAnalysisFilter extends Component {
   }
   //其他时间选择
   onChangeTime = (value, dateString) => {
-    const { stationCode, deviceTypeCode } = this.props;
+    const { stationCode, deviceTypeCode,deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
     let startDate = dateString[0];
     let endDate = dateString[1];
+    const prams={ stationCode, startDate, endDate, deviceTypeCode,deviceModeTypeCode, electricLineCode }
     this.props.changePerformanceAnalysisStore({
       startDate,
       endDate,
-      contrastSwitch: false
+      contrastSwitch: false,
+      contrastStartDate: '',
+      contrastEndDate: ''
     });
-    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, })
+    if (targetTabs === '1') {
+      this.props.getPerformance({ ...prams })
+    } else {
+      this.props.getFault({ ...prams })
+    }
   }
   //对比时间选择
   onChangeContrastTime = (value, dateString) => {
-    const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode } = this.props;
+    const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
+    const prams={ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
     let contrastStartDate = dateString[0];
     let contrastEndDate = dateString[1];
     console.log(contrastStartDate, contrastEndDate);
@@ -129,7 +145,12 @@ class PerformanceAnalysisFilter extends Component {
       contrastStartDate,
       contrastEndDate,
     });
-    this.props.getPerformanceContrast({ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+    if (targetTabs === '1') {
+      this.props.getPerformanceContrast({ ...prams })
+    } else {
+      this.props.getFaultContrast({ ...prams })
+    }
+   
   }
   onCalendarChangeContrast = (selectTime, b, c, d) => {
 
