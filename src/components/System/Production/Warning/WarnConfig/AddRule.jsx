@@ -235,10 +235,8 @@ class AddRule extends Component {
                   {
                     validator: (rule, value, callback) => {
                       const [warningRuler, warningValue, warningDeadZone] = value;
-                      // (!warningRuler) && callback('请选择预警规则');
-                      (!warningValue) && callback('请输入预警值');
-                      (!warningDeadZone) && callback('请输入震荡区间');
-                      (isNaN(warningValue) || isNaN(warningDeadZone)) && callback('经纬度需为数字');
+                      (!warningValue && warningValue!==0) && callback('请输入预警值');
+                      (!warningDeadZone && warningValue!==0) && callback('请输入震荡区间');
                       warningValue && warningDeadZone && warningDeadZone >= warningValue && callback('震荡区间的值不能大于预警值');
                       callback();
                     }

@@ -27,7 +27,7 @@ class EditRule extends Component {
   }
 
   saveRule = (e) => { // 保存
-    const warningCheckId=this.props.warnDetail.warningCheckId;
+    const warningCheckId = this.props.warnDetail.warningCheckId;
     this.props.form.validateFields((error, values) => {
       if (!error) {
         const { warningCheckDesc, warnRules, warningLevel, warningEnabled } = values;
@@ -73,7 +73,7 @@ class EditRule extends Component {
               <div>所属电站 <span>{warnDetail.stationName || '--'}</span></div>
               <div>设备类型 <span>{warnDetail.deviceTypeName || '--'}</span></div>
               <div>设备型号 <span>{warnDetail.deviceModeName || '--'}</span></div>
-              <div>测点描述 <span>{warnDetail.devicePointDesc || '--'}</span></div>
+              <div>测点描述 <span>{warnDetail.devicePointName || '--'}</span></div>
               <div>测点单位 <span>{warnDetail.devicePointUnit || '--'}</span></div>
             </div>
             <div className={styles.detailRule}>
@@ -98,11 +98,9 @@ class EditRule extends Component {
                       {
                         validator: (rule, value, callback) => {
                           const [warningRuler, warningValue, warningDeadZone] = value;
-                          // (!warningRuler) && callback('请选择预警规则');
-                          (!warningValue) && callback('请输入预警值');
-                          (!warningDeadZone) && callback('请输入震荡区间');
-                          (isNaN(warningValue) || isNaN(warningDeadZone)) && callback('经纬度需为数字');
-                          warningValue && warningDeadZone && warningDeadZone >= warningValue && callback('震荡区间的值不能大于预警值');
+                          (!warningValue && warningValue !== 0) && callback('请输入预警值');
+                          (!warningDeadZone && warningValue !== 0) && callback('请输入震荡区间');
+                          warningValue && warningDeadZone && +warningDeadZone >= +warningValue && callback('震荡区间的值不能大于预警值');
                           callback();
                         }
                       }],

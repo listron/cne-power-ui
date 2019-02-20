@@ -44,8 +44,10 @@ class WarnRule extends Component {
         const [warningRuler, warningValue, warningDeadZone] = this.props.value;
         return (
             <div>
-                <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail} className={styles.tooltipName}> <i className="iconfont icon-help"></i>
-                </Tooltip>
+                <div className={styles.tooltipName}>
+                    <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail} > <i className="iconfont icon-help"></i>
+                    </Tooltip>
+                </div>
                 <div className={styles.gap}>
                     <Select className={styles.contrastSelect} placeholder="请选择" onChange={this.changeCompare} value={warningRuler}>
                         <Option value={0}>{'大于'}</Option>
