@@ -25,7 +25,7 @@ class CustomizeTable extends Component {
 
     getDefaultData = (vlaue, option) => { // 判断如何显示
         if (option === 'stationName') { // 根据电站来判断
-            return vlaue.stationCode ? (vlaue[option] || '--') : '没有电站进行对比'
+            return vlaue.stationCode ? (vlaue[option] || '--') : '选择之后进行对比'
         }
         if (option === 'manufacturer' || option === 'deviceModeName') {
             return vlaue.stationCode ? `${(vlaue[option] || '--')}` : null
@@ -52,7 +52,7 @@ class CustomizeTable extends Component {
                 result = '%';
                 break;
             case "faultNum":
-                result = '次';
+                result = '次/台';
                 break;
             default:
                 result = " ";
@@ -61,7 +61,7 @@ class CustomizeTable extends Component {
     }
 
     baseChange = (value) => {  // 基础的数据
-        this.props.changeCustomizeStore(value)
+        this.props.changeCustomizeStore({...value,detailData:{}})
     }
 
     comparedChaneg = (value) => { // 作为对比的
@@ -69,6 +69,7 @@ class CustomizeTable extends Component {
             anotherStationCode: value.stationCode,
             anotherManufacturer: value.manufacturer,
             anotherDeviceModeId: value.deviceModeId,
+            anotherDetailData:{},
         })
     }
 
@@ -77,7 +78,6 @@ class CustomizeTable extends Component {
 
     render() {
         const { detailData, anotherDetailData } = this.props;
-        console.log('detailData',detailData,anotherDetailData)
         return (
             <div className={styles.table}>
                 <div className={styles.tHead}>
@@ -101,11 +101,11 @@ class CustomizeTable extends Component {
                         <span className={styles.base}>{this.getDefaultData(detailData, 'deviceModeName')}</span>
                         <span className={styles.compare}>{this.getDefaultData(anotherDetailData, 'deviceModeName')}</span>
                     </div>
-                    <div>
+                    {/* <div>
                         <span className={styles.option}>额定功率</span>
                         <span className={styles.base}>{this.getDefaultData(detailData, 'powerRating')}</span>
                         <span className={styles.compare}>{this.getDefaultData(anotherDetailData, 'powerRating')}</span>
-                    </div>
+                    </div> */}
                     <div>
                         <span className={styles.option}>转换效率</span>
                         <span className={styles.base}>{this.getDefaultData(detailData, 'conversioneff')}</span>

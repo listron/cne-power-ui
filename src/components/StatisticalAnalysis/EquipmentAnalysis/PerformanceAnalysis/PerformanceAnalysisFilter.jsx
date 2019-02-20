@@ -14,9 +14,7 @@ class PerformanceAnalysisFilter extends Component {
   }
   componentDidMount() {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
-    // console.log( stations);
     const initStations = stations.length > 0 && stations.filter(e => e.stationType === 1)[0];
-    stations && stations.length > 0 ? changePerformanceAnalysisStore({ stationCode: initStations.stationCode }) : console.log('no_stations');
     let firstStationCode = stations.length > 0 ? initStations.stationCode : '';
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
@@ -140,7 +138,6 @@ class PerformanceAnalysisFilter extends Component {
     const prams={ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
     let contrastStartDate = dateString[0];
     let contrastEndDate = dateString[1];
-    console.log(contrastStartDate, contrastEndDate);
     this.props.changePerformanceAnalysisStore({
       contrastStartDate,
       contrastEndDate,
