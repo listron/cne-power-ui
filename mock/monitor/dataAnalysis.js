@@ -4,15 +4,43 @@ module.exports = [
   { // 设备类型下对应可展示测点
     api: '/mock/monitor/dataAnalysisPoints',
     method: 'post',
-    response: [
-      {
-        devicePointId: '12345',
-        devicePointCode: '1213131',
-        devicePointName: '展示测试测点',
-        devicePointIecCode: 'fewljl123',
-        devicePointIecName: '分组测点'
-      }
-    ],
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: [
+        {
+          devicePointId: 'sadfsd',
+          devicePointCode: '1组测点a',
+          devicePointName: '展示测试测点',
+          devicePointIecCode: '1',
+          devicePointIecName: '分组1测点'
+        }, {
+          devicePointId: 'sadf1sdf',
+          devicePointCode: '1组测点b',
+          devicePointName: '展示测试测点',
+          devicePointIecCode: '1',
+          devicePointIecName: '分组1测点'
+        }, {
+          devicePointId: 'zcv321a',
+          devicePointCode: '2组测点1',
+          devicePointName: '展示测试测点',
+          devicePointIecCode: '2',
+          devicePointIecName: '分组2测点'
+        }, {
+          devicePointId: '123zsxgd',
+          devicePointCode: '2组点2',
+          devicePointName: '展示测试测点',
+          devicePointIecCode: '2',
+          devicePointIecName: '分组2测点'
+        }, {
+          devicePointId: 'sxzv32dfs',
+          devicePointCode: '3测点',
+          devicePointName: '展示测试测点',
+          devicePointIecCode: '3',
+          devicePointIecName: '分组3测点'
+        }
+      ],
+    },
     error: {}
   }, { // 数据分析 - 历史趋势 - 所有chart数据
     api: '/mock/monitor/dataAnalysis/allHistory',
@@ -36,13 +64,26 @@ module.exports = [
     },
     error: {}
   }, { // 数据分析 - 历史趋势 - 分页数据
-    api: '/mock/monitor/dataAnalysis/partHistory',
-    method: 'get',
+    api: '/mock/monitor/dataAnalysis/listHistory',
+    method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": [],
-      "serviceCode": "3.0"
+      code: '10000',
+      message: '请求成功',
+      data: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
+        deviceName: `测试设备${e}`,
+        stationName: `电站${e * e}`,
+        deviceTypeName: `类型${e * 10}`,
+        deviceModeName: `型号${e * 9}`,
+        time: `${e ** e}`,
+        speed: `类型${e * 10}`,
+        power: `${e ** e / 8}`,
+        pointData: [9, 5, 2].map(m => ({
+          devicePointCode: `编码${m}*${e}${m * e}`,
+          devicePointName: `编码${m}*${e}${m * e}`,
+          pointValue: `${m * e / 10}`
+        }))
+      })),
+      serviceCode: '3.0'
     },
     error: {}
   }

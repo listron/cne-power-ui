@@ -4,89 +4,89 @@ import { Tree } from 'antd';
 import styles from './historyStyle.scss';
 
 const { TreeNode } = Tree;
-const treeData = [{
-  title: '0-0',
-  key: '0-0',
-  children: [{
-    title: '0-0-0',
-    key: '0-0-0',
-    children: [
-      { title: '0-0-0-0', key: '0-0-0-0' },
-      { title: '0-0-0-1', key: '0-0-0-1' },
-      { title: '0-0-0-2', key: '0-0-0-2' },
-    ],
-  }, {
-    title: '0-0-1',
-    key: '0-0-1',
-    children: [
-      { title: '0-0-1-0', key: '0-0-1-0' },
-      { title: '0-0-1-1', key: '0-0-1-1' },
-      { title: '0-0-1-2', key: '0-0-1-2' },
-    ],
-  }, {
-    title: '0-0-2',
-    key: '0-0-2',
-  }],
-}, {
-  title: '0-1',
-  key: '0-1',
-  children: [
-    { title: '0-1-0-0', key: '0-1-0-0' },
-    { title: '0-1-0-1', key: '0-1-0-1' },
-    { title: '0-1-0-2', key: '0-1-0-2' },
-  ],
-}, {
-  title: '0-2',
-  key: '0-2',
-}];
 
 class PointTree extends Component {
 
   static propTypes = {
-    // stationCode: PropTypes.number,
-    // deviceTypeCode: PropTypes.number,
-    // deviceCodes: PropTypes.array,
-    // startTime: PropTypes.string,
-    // endTime: PropTypes.string,
-    pointCodes: PropTypes.array, // 选中的测点
-    // timeSpace:  PropTypes.string,
-    // historyType:  PropTypes.string,
-    
-    changeHistoryStore: PropTypes.func,
-    getHistory: PropTypes.func,
+    queryParam: PropTypes.object,
+    listParam: PropTypes.object,
+    pointInfo: PropTypes.array,
+    getChartHistory: PropTypes.func,
+    getListHistory: PropTypes.func,
   };
 
-  pointSelect = (selectedKeys, info) => {
-    const {  } = this.props;
-    console.log(selectedKeys)
-    console.log(info)
+  pointSelect = (selectedKeys) => {
+    const { queryParam, listParam, getChartHistory, getListHistory } = this.props;
+    const newQueryParam = {
+      ...queryParam,
+      devicePoint: selectedKeys,
+    };
+    getChartHistory({ queryParam: newQueryParam });
+    getListHistory({
+      queryParam: newQueryParam,
+      listParam,
+    })
   }
 
-  renderTreeNodes = data => data.map((item) => {
-    if (item.children) {
-      return (
-        <TreeNode title={item.title} key={item.key} dataRef={item}>
-          {this.renderTreeNodes(item.children)}
-        </TreeNode>
-      );
+  renderTreeNodes = () => {
+    const { pointInfo } = this.props;
+    if (pointInfo.length === 0) {
+      return null;
     }
-    return <TreeNode {...item} />;
-  })
-
-  
+    const tmpGroupArr = pointInfo.map(e => e.devicePointIecCode);
+    const codeGroupArr = Array.from(new Set(tmpGroupArr));
+    const groupInfo = codeGroupArr.map(e => {
+      const innerGroupedInfo = pointInfo.filter(point => point.devicePointIecCode === e);
+      const { devicePointIecCode, devicePointIecName } = innerGroupedInfo[0];
+      return {
+        devicePointIecCode,
+        devicePointIecName,
+        points: innerGroupedInfo.map(point => ({
+          devicePointId: point.devicePointId,
+          devicePointCode: point.devicePointCode,
+          devicePointName: point.devicePointName,
+        }))
+      }
+    })
+    return groupInfo.map(e => {
+      if (e.devicePointIecCode) { // 有分组信息
+        return (
+          <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
+            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)}
+          </TreeNode>
+        )
+      } else { // 无分组信息
+        return e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+      }
+    })
+  }
 
   render(){
-    const { pointCodes } = this.props;
+    const { queryParam } = this.props;
+    const { devicePoint } = queryParam;
+    // queryParam: { // 请求chart数据的参数集合
+    //   stationCode: null, // 选中的电站
+    //   deviceFullCode: [], // 选中的设备
+    //   startTime: moment().subtract(1, 'day').startOf(),
+    //   endTime: moment(),
+    //   devicePoint: [], // 选中的测点
+    //   timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
+    // },
+    // listParam: { // 表格排序额外参数
+    //   orderField: '', // 排序字段(默认时间倒序（最新的时间在最上方）
+    //   orderType: 1, //	排序方式	否	0：ASC正序，1：DESC倒序
+    //   pageNum: 1, // 当前页码（从1开始）
+    //   pageSize: 10 // 每页条数
+    // },
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({pointCodes.length})</h3>
+        <h3>选择测点({devicePoint.length})</h3>
         <Tree
           checkable
-          // autoExpandParent={this.state.autoExpandParent}
           onCheck={this.pointSelect}
-          // selectedKeys={this.state.selectedKeys}
+          selectedKeys={devicePoint}
         >
-          {this.renderTreeNodes(treeData)}
+          {this.renderTreeNodes()}
         </Tree>
       </section>
     )

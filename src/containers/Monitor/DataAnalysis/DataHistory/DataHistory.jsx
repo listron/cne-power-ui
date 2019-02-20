@@ -52,7 +52,8 @@ const mapDispatchToProps = (dispatch) => ({
   changeHistoryStore: payload => dispatch({ type: historyAction.CHANGE_HISTORY_STORE, payload }),
   resetHistoryStore: payload => dispatch({ type: historyAction.RESET_HISTORY, payload }),
   getPointInfo: payload => dispatch({ type: historyAction.getPointInfo, payload }),
-  getHistory: payload => dispatch({ type: historyAction.getHistory, payload }),
+  getChartHistory: payload => dispatch({ type: historyAction.getChartHistory, payload }),
+  getListHistory: payload => dispatch({ type: historyAction.getListHistory, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {

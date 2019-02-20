@@ -8,13 +8,15 @@ const { monitor } = Path.APISubPaths;
 
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
+  const { deviceFullCode } = payload;
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
   try {
-    const response = yield call(axios.get, url, payload);
+    const response = yield call(axios.post, url, { deviceId: deviceFullCode.map(e => e.deviceCode) });
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
+          deviceFullCode,
           pointInfo: response.data.data || [],
         }
       })
@@ -27,19 +29,56 @@ function *getPointInfo(action) { // 获取可选测点
   }
 }
 
-function *getHistory(action) { // 历史趋势chart数据获取
+function *getChartHistory(action) { // 历史趋势chart数据获取
   const { payload } = action;
+  const { queryParam } = payload;
   const url = '/mock/monitor/dataAnalysis/allHistory'; // `${APIBasePath}${monitor.getAllHistory}`;
   try{
-    const historyType = { payload };
-    delete payload.historyType;
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') { // chart数据图时，数据存入all，若为列表数据，存入part
+    const { devicePoint } = queryParam;
+    console.log()
+    console.log(devicePoint)
+    const response = yield call(axios.post, url, {
+      ...queryParam,
+      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+    });
+    console.log('chart error')
+    if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
-        payload: historyType === 'chart' ? {
+        payload: {
+          queryParam,
           allHistory: response.data.data || [],
-        } : {
+        }
+      })
+    } else {
+      throw response.data;
+    }
+  } catch(e) {
+    message.error('获取图表数据失败!');
+    console.log(e);
+  }
+}
+
+function *getListHistory(action) { // 表格数据获取
+  const { payload } = action;
+  const { queryParam, listParam } = payload;
+  const url = '/mock/monitor/dataAnalysis/listHistory'; // `${APIBasePath}${monitor.getListHistory}`;
+  try{
+    const { devicePoint } = queryParam;
+    console.log(queryParam)
+    console.log(devicePoint)
+    const response = yield call(axios.post, url, {
+      ...queryParam,
+      ...listParam,
+      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+    });
+    console.log('list error')
+    if (response.data.code === '10000') {
+      yield put({
+        type: historyAction.GET_HISTORY_SUCCESS,
+        payload: {
+          queryParam,
+          listParam,
           partHistory: response.data.data || [],
         }
       })
@@ -47,12 +86,13 @@ function *getHistory(action) { // 历史趋势chart数据获取
       throw response.data;
     }
   } catch(e) {
-    message.error('获取历史数据趋势失败!');
+    message.error('获取图表数据失败!');
     console.log(e);
   }
 }
 
 export function* watchDataHistoryMonitor() {
   yield takeLatest(historyAction.getPointInfo, getPointInfo);
-  yield takeLatest(historyAction.getHistory, getHistory);
+  yield takeLatest(historyAction.getChartHistory, getChartHistory);
+  yield takeLatest(historyAction.getListHistory, getListHistory);
 }

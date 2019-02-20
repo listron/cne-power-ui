@@ -11,99 +11,118 @@ const { RangePicker } = DatePicker;
 
 class HistorySearch extends Component {
   static propTypes = {
-    selectStationType: PropTypes.number,
-
     stations: PropTypes.array,
     stationTypeCount: PropTypes.string,
 
-    stationCode: PropTypes.number,
-    deviceTypeCode: PropTypes.number,
-    deviceCodes: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    pointCodes: PropTypes.array, // 选中的测点
-    timeSpace:  PropTypes.string,
-    historyType:  PropTypes.string,
+    selectStationType: PropTypes.number, // 选中的电站类型
+    deviceTypeCode: PropTypes.number, // 选中的设备类型
+    queryParam: PropTypes.object,
+    listParam: PropTypes.object,
     
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
-
     changeHistoryStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getPointInfo: PropTypes.func,
-    getHistory: PropTypes.func,
+    getChartHistory: PropTypes.func,
+    getListHistory: PropTypes.func,
   };
 
-  checkWind = () => { // 选中风电站
-    const { changeHistoryStore } = this.props;
-    changeHistoryStore({selectStationType: 0})
+  onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
+    const { changeHistoryStore, queryParam } = this.props;
+    changeHistoryStore({
+      selectStationType,
+      deviceTypeCode: null,
+      queryParam: {
+        ...queryParam,
+        stationCode: null,
+        deviceFullCode: [],
+        devicePoint: [],
+      },
+      pointInfo: [], // 选中设备内可选测点信息。
+      allHistory: [], // chart图 - 所有历史数据
+      partHistory: [], // 表格内 - 分页后的历史数据
+    })
   }
 
-  checkPv = () => { // 选中光电站
-    const { changeHistoryStore } = this.props;
-    changeHistoryStore({selectStationType: 1})
-  }
+  checkWind = () => this.onStationTypeChange(0) // 选中风电站
+
+  checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeHistoryStore } = this.props;
+    const { getStationDeviceTypes, changeHistoryStore, queryParam } = this.props;
     const { stationCode } = selectedStationInfo[0];
     getStationDeviceTypes({ // 设备类型
       stationCodes: stationCode,
     });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
-      stationCode,
       deviceTypeCode: null,
-      deviceCodes: [], // 选中的设备
-      pointCodes: [], // 选中的测点
-      pointInfo: [], // 可选测点信息
+      queryParam: {
+        ...queryParam,
+        stationCode,
+        deviceFullCode: [],
+        devicePoint: [],
+      },
+      pointInfo: [], // 清空测点信息
       allHistory: [], // chart图 - 所有历史数据
       partHistory: [], // 表格内 - 分页后的历史数据
-    })
+    });
   }
 
   selectDeviceType = (deviceTypeCode) => { // 设备类型选择
-    const { changeHistoryStore, getPointInfo } = this.props;
-    getPointInfo({deviceTypeCode});
+    const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
-      deviceCodes: [], // 选中的设备
-      pointCodes: [], // 选中的测点
+      queryParam: {
+        ...queryParam,
+        deviceFullCode: [], // 选中的设备
+        devicePoint: [], // 选中的测点
+      },
       allHistory: [], // chart图 - 所有历史数据
       partHistory: [], // 表格内 - 分页后的历史数据
-    })
+    });
   }
 
   selectedDevice = (devices) => { // 设备选择
-    const {
-      changeHistoryStore, pointCodes, getHistory, deviceTypeCode, deviceCodes, startTime, endTime, timeSpace, historyType, stationCode
-    } = this.props;
-    if (pointCodes.length === 0) { // 若未选测点，则保存选中设备
-      changeHistoryStore({
-        deviceCodes: devices.map(e => e.deviceCode),
-      })
-    } else if (pointCodes.length > 0) { // 若已选择测点，则请求数据
-      getHistory({
-        stationCode, deviceTypeCode, deviceCodes, startTime, endTime, timeSpace, historyType, pointCodes
-      })
-    }
+    const { getPointInfo } = this.props;
+    getPointInfo({ deviceFullCode: devices });
   }
 
   timeChange = (timeMoment) => { // 时间选择
-    const { changeHistoryStore } = this.props;
-    changeHistoryStore({
+    this.historyDataFetch({
       startTime: timeMoment[0],
-      endTime: timeMoment[1],
+      endTime: timeMoment[1]
     })
   }
 
-  selectTimeSpace = (timeSpace) => { // 间隔时间选择
-    const { changeHistoryStore } = this.props;
-    changeHistoryStore({ timeSpace });
+  selectTimeSpace = (timeInterval) => { // 间隔时间选择
+    this.historyDataFetch({ timeInterval })
+  }
+
+  historyDataFetch = (params) => {
+    const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
+    const { devicePoint } = queryParam;
+    if (devicePoint.length > 0) { // 已选择测点 - 重新请求数据
+      const newQueryParam = {
+        ...queryParam,
+        ...params
+      }
+      getChartHistory({
+        queryParam: newQueryParam
+      })
+      getListHistory({
+        queryParam: newQueryParam,
+        listParam,
+      })
+    } else { // 未选时间-暂存信息。
+      changeHistoryStore({ ...params })
+    }
   }
 
   render(){
     const {
-      selectStationType, stations, stationCode, deviceTypeCode, stationDeviceTypes, startTime, endTime, timeSpace, stationTypeCount
+      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount
     } = this.props;
+    const { stationCode, startTime, endTime, timeInterval, deviceFullCode } = queryParam;
     return (
       <div className={styles.historySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
@@ -115,7 +134,7 @@ class HistorySearch extends Component {
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
             <StationSelect
-              data={selectStationType ? stations.filter(e => e.stationType === selectStationType) : stations}
+              data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
             />
@@ -139,6 +158,7 @@ class HistorySearch extends Component {
             <DeviceSelect
               disabled={!deviceTypeCode}
               stationCode={stationCode}
+              value={deviceFullCode}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
               style={{ width: 'auto', minWidth: '198px' }}
@@ -151,19 +171,19 @@ class HistorySearch extends Component {
               allowClear={false}
               format="YYYY-MM-DD HH:mm:ss"
               onChange={this.timeChange}
-              value={[moment(startTime), moment(endTime)]}
+              value={[startTime, endTime]}
             />
           </div>
           <div className={styles.intervalSelect}>
             <span className={styles.text}>数据时间间隔</span>
             <Select
               onChange={this.selectTimeSpace}
-              value={timeSpace}
+              value={timeInterval}
               placeholder="数据间隔时间"
             >
-              <Option value="sec">1秒</Option>
-              <Option value="fiveSec">5秒</Option>
-              <Option value="tenMin">10分钟</Option>
+              <Option value={1}>1秒</Option>
+              <Option value={5}>5秒</Option>
+              <Option value={10}>10分钟</Option>
             </Select>
           </div>
           
