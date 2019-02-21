@@ -35,16 +35,12 @@ class PerformanceAnalysisTabs extends Component {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames } = this.props;
-    console.log('contrastEndDate: ', contrastEndDate);
-
-
     //转化效率
     let xData = conversioneffData.map(e => e.deviceName) || [];
     let haveSliderConver = xData.length > 20;
     let barData = conversioneffData.map(e => e.conversionRate) || [];
     let lineData = Array(xData.length).fill(conversionAvgRate) || [];
     let conversionHasData = xData.some(e => e || e === 0) || barData.some(e => e || e === 0) || lineData.some(e => e || e === 0)
-
     //对比转化效率
     let contrastDeviceName = conversioneffContrastData.map(e => e.deviceName) || [];
     let haveSliderContrastCon = contrastDeviceName.length > 20;
