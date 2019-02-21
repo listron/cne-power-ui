@@ -210,7 +210,7 @@ function* handleDefect(action) {
       })
     } else {
       yield put({
-        type: workOrderAction.SET_DEFECT_FAIL,
+        type: workOrderAction.changeWorkOrderStoreSaga,
         error: {
           code: response.data.code,
           message: response.data.message

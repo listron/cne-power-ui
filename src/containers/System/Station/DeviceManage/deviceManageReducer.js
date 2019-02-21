@@ -12,7 +12,7 @@ const initState = Immutable.fromJS({
   totalNum:  0, // 设备总数
   sortField: '', // 排序字段
   sortMethod: '', // 排序方式('0':正序,'1': 倒序)
-  
+  showPage:'list',
   deviceList: [], // 设备列表
   stationDeviceTypes: [], //电站下设备类型
   deviceModels: [], // 电站设备类型下设备型号

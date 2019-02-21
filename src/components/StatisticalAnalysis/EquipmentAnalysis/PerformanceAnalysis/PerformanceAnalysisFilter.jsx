@@ -14,9 +14,7 @@ class PerformanceAnalysisFilter extends Component {
   }
   componentDidMount() {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
-    // console.log( stations);
     const initStations = stations.length > 0 && stations.filter(e => e.stationType === 1)[0];
-    stations && stations.length > 0 ? changePerformanceAnalysisStore({ stationCode: initStations.stationCode }) : console.log('no_stations');
     let firstStationCode = stations.length > 0 ? initStations.stationCode : '';
     //把最近三十天的值存起来
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
@@ -73,7 +71,9 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择时间
   onChangeDuration = (value) => {
-    const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode } = this.props;
+    const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
+    console.log('targetTabs: ', targetTabs);
+    const prams={ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
     let startDate, endDate;
     if (value === 'other') {
       this.onFilterShowChange('timeSelect');
@@ -95,9 +95,15 @@ class PerformanceAnalysisFilter extends Component {
       startDate,
       endDate,
       contrastSwitch: false,
+      contrastStartDate: '',
+      contrastEndDate: '',
       timeType: value
     });
-    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+    if (targetTabs === '1') {
+      this.props.getPerformance({ ...prams })
+    } else {
+      this.props.getFault({ ...prams })
+    }
 
   }
   onCalendarChange = (dates) => {
@@ -109,27 +115,39 @@ class PerformanceAnalysisFilter extends Component {
   }
   //其他时间选择
   onChangeTime = (value, dateString) => {
-    const { stationCode, deviceTypeCode } = this.props;
+    const { stationCode, deviceTypeCode,deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
     let startDate = dateString[0];
     let endDate = dateString[1];
+    const prams={ stationCode, startDate, endDate, deviceTypeCode,deviceModeTypeCode, electricLineCode }
     this.props.changePerformanceAnalysisStore({
       startDate,
       endDate,
-      contrastSwitch: false
+      contrastSwitch: false,
+      contrastStartDate: '',
+      contrastEndDate: ''
     });
-    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, })
+    if (targetTabs === '1') {
+      this.props.getPerformance({ ...prams })
+    } else {
+      this.props.getFault({ ...prams })
+    }
   }
   //对比时间选择
   onChangeContrastTime = (value, dateString) => {
-    const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode } = this.props;
+    const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
+    const prams={ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
     let contrastStartDate = dateString[0];
     let contrastEndDate = dateString[1];
-    console.log(contrastStartDate, contrastEndDate);
     this.props.changePerformanceAnalysisStore({
       contrastStartDate,
       contrastEndDate,
     });
-    this.props.getPerformanceContrast({ stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+    if (targetTabs === '1') {
+      this.props.getPerformanceContrast({ ...prams })
+    } else {
+      this.props.getFaultContrast({ ...prams })
+    }
+   
   }
   onCalendarChangeContrast = (selectTime, b, c, d) => {
 
@@ -157,8 +175,8 @@ class PerformanceAnalysisFilter extends Component {
     const deviceTypeCode = [201, 206];
     const stationCode = stationSelect[0].stationCode;
     let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
-    let endDate = moment().format('YYYY-MM-DD');
-    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate, contrastSwitch: false, targetTabs: '1', eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
+    let endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate,contrastEndDate:null, contrastSwitch: false, targetTabs: '1', eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
     this.props.getDeviceModels({
       stationCode: stationCode,
     });
@@ -175,7 +193,7 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择设备型号
   selectDeviceModel = (value) => {
-    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance } = this.props;
+    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance,electricLineCode } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
     const deviceTypeCode = value && [Number(value.split('__')[1])];
 
@@ -185,8 +203,8 @@ class PerformanceAnalysisFilter extends Component {
       targetTabs: '1',
       deviceTypeCode,
     })
-    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate }) :
-      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, })
+    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode }) :
+      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode })
   }
   //选择集电线路
   selectEleLine = (value) => {
@@ -304,7 +322,7 @@ class PerformanceAnalysisFilter extends Component {
             <Option key={null} value={null}>{'全部集电线路'}</Option>
             {eleLineCodeData.map(e => {
               if (!e) { return null; }
-              return <Option key={e.deviceId} value={e.deviceId}>{e.deviceName}</Option>
+              return <Option key={e.deviceId} value={e.deviceFullcode}>{e.deviceName}</Option>
             })}
           </Select>
         </div>
