@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree } from 'antd';
+import { Tree, message } from 'antd';
 import styles from './historyStyle.scss';
 
 const { TreeNode } = Tree;
@@ -13,9 +13,15 @@ class PointTree extends Component {
     pointInfo: PropTypes.array,
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
+    // changeHistoryStore: PropTypes.func,
   };
 
   pointSelect = (selectedKeys) => {
+    const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
+    if (valideKeys.length > 4) {
+      message.error('所选测点不得超过4个');
+      return;
+    }
     const { queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const newQueryParam = {
       ...queryParam,
@@ -28,7 +34,7 @@ class PointTree extends Component {
     })
   }
 
-  renderTreeNodes = () => {
+  renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
     const { pointInfo } = this.props;
     if (pointInfo.length === 0) {
       return null;
@@ -64,27 +70,13 @@ class PointTree extends Component {
   render(){
     const { queryParam } = this.props;
     const { devicePoint } = queryParam;
-    // queryParam: { // 请求chart数据的参数集合
-    //   stationCode: null, // 选中的电站
-    //   deviceFullCode: [], // 选中的设备
-    //   startTime: moment().subtract(1, 'day').startOf(),
-    //   endTime: moment(),
-    //   devicePoint: [], // 选中的测点
-    //   timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
-    // },
-    // listParam: { // 表格排序额外参数
-    //   orderField: '', // 排序字段(默认时间倒序（最新的时间在最上方）
-    //   orderType: 1, //	排序方式	否	0：ASC正序，1：DESC倒序
-    //   pageNum: 1, // 当前页码（从1开始）
-    //   pageSize: 10 // 每页条数
-    // },
     return (
       <section className={styles.pointTree}>
         <h3>选择测点({devicePoint.length})</h3>
         <Tree
           checkable
           onCheck={this.pointSelect}
-          selectedKeys={devicePoint}
+          checkedKeys={devicePoint}
         >
           {this.renderTreeNodes()}
         </Tree>

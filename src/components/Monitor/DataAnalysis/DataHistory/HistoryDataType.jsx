@@ -26,11 +26,11 @@ class HistoryDataType extends Component {
   }
 
   showChart = () => {
-    console.log('chart show now ')
+    this.selectHistoryType('chart');
   }
 
   showList = () => {
-    console.log('list now ')
+    this.selectHistoryType('list');
   }
 
   render(){
@@ -41,7 +41,7 @@ class HistoryDataType extends Component {
           <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
-        {/* <Button>导出</Button> */}
+        {/* <Button onClick={this.exportHistory}>导出</Button> */}
       </div>
     )
   }

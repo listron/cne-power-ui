@@ -9,9 +9,12 @@
   }
   .historyContent{
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
     flex: 1;
   }
   .dataCenter{
+    flex: 1;
     display: flex;
   }
 }

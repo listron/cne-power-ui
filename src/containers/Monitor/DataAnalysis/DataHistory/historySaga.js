@@ -3,6 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { historyAction } from './historyReducer';
 import { message } from 'antd';
+import moment from 'moment';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
@@ -35,19 +36,17 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const url = '/mock/monitor/dataAnalysis/allHistory'; // `${APIBasePath}${monitor.getAllHistory}`;
   try{
     const { devicePoint } = queryParam;
-    console.log()
-    console.log(devicePoint)
     const response = yield call(axios.post, url, {
       ...queryParam,
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
-    console.log('chart error')
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           queryParam,
-          allHistory: response.data.data || [],
+          chartTime: moment().unix(), // 用于比较
+          allHistory: response.data.data || {},
         }
       })
     } else {
@@ -65,21 +64,18 @@ function *getListHistory(action) { // 表格数据获取
   const url = '/mock/monitor/dataAnalysis/listHistory'; // `${APIBasePath}${monitor.getListHistory}`;
   try{
     const { devicePoint } = queryParam;
-    console.log(queryParam)
-    console.log(devicePoint)
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
-    console.log('list error')
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           queryParam,
           listParam,
-          partHistory: response.data.data || [],
+          partHistory: response.data.data || {},
         }
       })
     } else {

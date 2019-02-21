@@ -14,14 +14,21 @@ import Footer from '../../../../components/Common/Footer/index';
 
 class DataHistory extends Component {
   static propTypes = {
+    historyType: PropTypes.string,
     resetHistoryStore: PropTypes.func,
   };
+
+  componentDidMount(){ // 调试用 - 后删。
+    const { queryParam } = this.props;
+    this.props.getChartHistory({ queryParam });
+  }
 
   componentWillUnmount() {
     this.props.resetHistoryStore();
   }
 
   render() {
+    const { historyType } = this.props;
     return (
       <div className={styles.dataHistory}>
         <CommonBreadcrumb breadData={[{ name: '历史趋势' }]} />
@@ -31,8 +38,8 @@ class DataHistory extends Component {
             <HistoryDataType {...this.props} />
             <div className={styles.dataCenter}>
               <PointTree {...this.props} />
-              <HistoryChart {...this.props} />
-              <HistoryList {...this.props} />
+              {historyType === 'chart' && <HistoryChart {...this.props} />}
+              {historyType === 'list' && <HistoryList {...this.props} />}
             </div>
           </div>
           <Footer />
