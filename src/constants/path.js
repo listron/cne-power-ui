@@ -186,7 +186,6 @@ export default {
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
 
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
-      getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
     },
     monitor: {//实时监控
       getStationType: '/v3/monitor/stations/',
@@ -263,7 +262,6 @@ export default {
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
       //生产分析
       ProductionPlanComplete: '/v3/performance/productanalysis/plan',
-
       // 运行分析
       getOperatePlanComplete: '/v3/performance/operationanalysis/plan',
       getOperateComponentPower: '/v3/performance/operationanalysis/devicepower',
@@ -272,7 +270,6 @@ export default {
       getOperateLimitPowerRate: '/v3/performance/operationanalysis/limitpower/months',
       getOperateYearLimitPower: '/v3/performance/operationanalysis/limitpower/year',
       getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
-
       // 资源分析
       getResourcePlan: '/v3/performance/resource/plan',
       getResourceMonthLight: '/v3/performance/resource/distribution/months',
@@ -298,6 +295,10 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
+      // 电站评分
+      singleStaionScore:'v3/performance/score',
+      getScoreList:'/v3/performance/score/list',
+      getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

@@ -1,184 +1,107 @@
-.stationScore{
-  min-height: 100%;
-  display: flex;
-  flex:1;
-  flex-direction: column;
-  .scoreContainer{
+@import "../../../../theme/theme.scss";
+.stationScore {
     display: flex;
-    flex:1;
+    flex: 1;
     flex-direction: column;
-    padding:24px 24px 0;
-    background: #ececec;
-    .scoreMain{
-      background: #fff;
-      .stationTab{
-        :global{
-          .ant-switch-checked {
-            background-color: #199475;
-          }
-          .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-            background: #199475;
-            border-color: #199475;
-            color: #fff;
-          }
-          .ant-progress-bg {
-            border-radius: 100px;
-            background-color: #199475;
-          }
-          .ant-tabs-nav-scroll{
-            background: #f8f8f8;
-          }
-          .ant-tabs.ant-tabs-card  .ant-tabs-bar .ant-tabs-tab-active {
-            background: #fff;
-            border-color: #e8e8e8;
-            border-top: 2px solid #199475;
-            border-left: 0;
-            border-radius: 0;
-            color: #199475;
-            margin: 0;
-          }
-          .ant-tabs-nav .ant-tabs-tab {
-            display: inline-block;
-            text-align: center;
-            height: 100%;
-            margin: 0;
-            box-sizing: border-box;
-            position: relative;
-            transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-            cursor: pointer;
-            text-decoration: none;
-            width: 120px;
-            border-top: 0px;
-            border-radius: 0;
-          }
-          .ant-tabs-bar{
-            margin-bottom: 0;
-          }
-    
-          .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation{
+    min-height: 100%;
+    background-color: $pageBackground;
+    .scoreContainer {
+        @include contentBoxStyle();
+        .scoreContent {
             display: flex;
-            flex:1;
-            flex-direction: column;
-          }
-          .ant-tabs-content{
-            display: flex;
-            flex:1;
-            flex-direction: column;
-            .ant-tabs-tabpane-active{
-              display: flex;
-              flex:1;
-            }
-            .ant-tabs-tabpane-inactive{
-              max-height: 0;
-            }  
-          }
-        }
-      }
-      .scoreCon{
-        display: flex;
-        flex-direction: column;
-        padding:20px 32px;
-        .stationTypeTab{
-          margin-bottom: 32px;
-        }
-        .scoreMiddle{
-          display: flex;
-          justify-content: space-between;
-          .scoreFilter{
-            display: flex;
-            .text{
-              display: inline-block;
-              margin-right: 10px;
-            }
-            .stationFilter{
-              margin-right: 20px;
-            }
-          }
-        }
-        .stationCardContainer{
-          display: flex;
-          flex-flow: row wrap;
-          align-content: flex-start;
-          width: 100%;
-          margin-top:20px;
-          .stationCard{
-            margin: 0 19px 24px 0;
-            box-sizing: border-box;
-            flex: 0 0 15%;
-            :global{
-              .ant-card{
-                box-shadow:0 0 10px #888888;
-                line-height: 0.2;
+            flex-direction: row;
+            flex: 1;
+            background: $pageGround;
+            min-height: 100%;
+            overflow: hidden;
+            :global {
+              .ant-switch-checked {
+                  background-color: #199475;
               }
-              .ant-card-head{
-                border-bottom:0;
+              .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+                  background: #199475;
+                  border-color: #199475;
+                  color: #fff;
               }
-              .ant-card-body{
-                padding: 2px 24px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+              .ant-progress-bg {
+                  border-radius: 100px;
+                  background-color: #199475;
               }
-            }
-            .scoreCircleCon{
-              width: 86px;
-              height: 86px;
-              background: linear-gradient(66deg, #faff0e, #939417);
-              border-radius: 50%;
-              border: 1px solid #fff;
-              text-align: center;
-              line-height: 100px;
-              margin-bottom:14px;
-              .evaluate{
-                width: 76px;
-                height: 76px;
-                background-color: #fff;
-                border-radius: 50%;
-                margin: 0 auto;
-                margin-top: 5px;
-                .num{
-                  height: 0px;
-                  line-height: 56px;
-                  font-size: 20px;
-                }
-                .text{
-                  height: 0;
-                  line-height: 72px;
-                  font-size: 14px;
-                }
+              .ant-tabs-nav-scroll {
+                  background: #f8f8f8;
               }
-            }
-            .installedCapacity{
-              margin: 20px 0px 20px 12px;
-            }
+              .ant-tabs.ant-tabs-card .ant-tabs-bar .ant-tabs-tab-active {
+                  background: #fff;
+                  border-color: #e8e8e8;
+                  border-top: 2px solid #199475;
+                  border-left: 0;
+                  border-radius: 0;
+                  color: #199475;
+                  margin: 0;
+              }
+              .ant-tabs-nav .ant-tabs-tab {
+                  display: inline-block;
+                  text-align: center;
+                  height: 100%;
+                  margin: 0;
+                  box-sizing: border-box;
+                  position: relative;
+                  transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+                  cursor: pointer;
+                  text-decoration: none;
+                  width: 120px;
+                  border-top: 0px;
+                  border-radius: 0;
+              }
+              .ant-tabs-bar {
+                  margin-bottom: 0;
+              }
+              .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation {
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+              }
+              .ant-tabs-content {
+                  display: flex;
+                  flex: 1;
+                  flex-direction: column;
+                  .ant-tabs-tabpane-active {
+                      display: flex;
+                      flex: 1;
+                  }
+                  .ant-tabs-tabpane-inactive {
+                      max-height: 0;
+                  }
+              }
           }
+            
         }
-      }
     }
-  }
 }
-:global{
-  .ant-popover-inner-content{
-    padding:12px 28px;
-  }
+
+:global {
+    .ant-popover-inner-content {
+        padding: 12px 28px;
+    }
 }
-  .scoreTable{
-    width:872px;
+
+.scoreTable {
+    width: 872px;
     height: 435px;
     display: flex;
     flex-direction: column;
-    .text{
-      display: flex;
-      justify-content:space-between;
-      .stationScore{
-        margin-top:19px;
-        font-size: 18px;
-        color:#199475;
-      }
-      .scoreTime{
-        margin-top:19px;
-        font-size: 16px;
-        color:#232222;
-      }
+    .text {
+        display: flex;
+        justify-content: space-between;
+        .stationScore {
+            margin-top: 19px;
+            font-size: 18px;
+            color: #199475;
+        }
+        .scoreTime {
+            margin-top: 19px;
+            font-size: 16px;
+            color: #232222;
+        }
     }
-  }
+}

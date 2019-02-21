@@ -1,0 +1,77 @@
+.PvScore{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 32px;
+    .stationTypeTab {
+        margin-bottom: 32px;
+    }
+    .scoreMiddle {
+        display: flex;
+        justify-content: space-between;
+        .scoreFilter {
+            display: flex;
+            .text {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .stationFilter {
+                margin-right: 20px;
+            }
+        }
+    }
+    .stationCardContainer {
+        display: flex;
+        flex-flow: row wrap;
+       
+        width: 100%;
+        margin-top: 20px;
+        p{margin-bottom: 0;}
+        .stationCard {
+            margin: 0 19px 24px 0;
+            box-sizing: border-box;
+            flex: 0 0 15%;
+            box-shadow:0 0 8px 0 rgba(0,0,0,0.30);
+            border-radius:2px;
+            height:180px;
+            align-items: center;
+            .stationName{
+                padding: 8px 8px 0;
+            }
+            .scoreCircleCon {
+                width: 86px;
+                height: 86px;
+                background: linear-gradient(66deg, #faff0e, #939417);
+                border-radius: 50%;
+                border: 1px solid #fff;
+                text-align: center;
+                line-height: 100px;
+                margin: 0 auto;
+                margin-bottom: 14px;
+                .evaluate {
+                    width: 76px;
+                    height: 76px;
+                    background-color: #fff;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    margin-top: 5px;
+                    .num {
+                        height: 0px;
+                        line-height: 56px;
+                        font-size: 20px;
+                    }
+                    .text {
+                        height: 0;
+                        line-height: 72px;
+                        font-size: 14px;
+                    }
+                }
+            }
+            .installedCapacity {
+               margin-left: 24px;
+            }
+            .equivalent{
+                margin-left: 9px;
+            }
+        }
+    }
+}
