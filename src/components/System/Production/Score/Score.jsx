@@ -5,6 +5,7 @@ import styles from "./score.scss";
 import WarningTip from '../../../Common/WarningTip';
 import DetailTable from './DetailTable';
 import EditTable from './EditTable';
+import { ifError } from "assert";
 class ScoreMain extends Component {
     static propTypes = {
         getScoreConfig: PropTypes.func,
@@ -35,6 +36,7 @@ class ScoreMain extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.props.reportType !== nextProps.reportType) { this.setState({ basicScore: nextProps.basicScore }) }
         if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
         if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
     }
