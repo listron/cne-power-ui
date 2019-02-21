@@ -72,6 +72,18 @@ class WarnConfig extends Component {
         this.props.changeWarnStore({ showPage: 'add' })
     }
 
+    changeLevel = (e) => {
+        let result = '';
+        switch(e){
+          case 1:result='一';break;
+          case 2:result='二';break;
+          case 3:result='三';break;
+          case 4:result='四';break;
+          case 5:result='五';break;
+          default:result='--';break;
+        }
+        return result
+      }
    
 
     render() {
@@ -142,7 +154,7 @@ class WarnConfig extends Component {
                     loading={loading}
                     onChange={this.tableChange}
                     columns={warnListColumn}
-                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e }))}
+                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e,warningLevel: `${this.changeLevel(e.warningLevel)}级`}))}
                     pagination={false}
                     rowSelection={rowSelection}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}

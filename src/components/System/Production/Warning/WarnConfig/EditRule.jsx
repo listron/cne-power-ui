@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Select, Table, Modal, Button, Icon, Tooltip, Form, Input } from 'antd';
+import { Select, Button, Icon, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import styles from "./warnConfig.scss";
 import WarningTip from '../../../../Common/WarningTip';
@@ -18,7 +18,9 @@ class EditRule extends Component {
     super(props, context)
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息将无法保存'
+      showSaveWarningTip: false,
+      warningTipText: '退出后信息将无法保存',
+      warningTipSaveText: '请确认预警规则',
     }
   }
 
@@ -27,7 +29,24 @@ class EditRule extends Component {
   }
 
   saveRule = (e) => { // 保存
-    const warningCheckId=this.props.warnDetail.warningCheckId;
+    this.setState({ showSaveWarningTip: true })
+  }
+
+  cancelWarningTip = () => { // 取消
+    this.setState({ showWarningTip: false })
+  }
+
+  confirmWarningTip = () => { // 确定
+    this.setState({ showWarningTip: false })
+    this.props.changeWarnStore({ showPage: 'home' })
+  }
+
+  cancelSaveWarningTip = () => { // 保存取消
+    this.setState({ showSaveWarningTip: false })
+  }
+
+  confirmSaveWarningTip = () => { // 保存确定
+    const warningCheckId = this.props.warnDetail.warningCheckId;
     this.props.form.validateFields((error, values) => {
       if (!error) {
         const { warningCheckDesc, warnRules, warningLevel, warningEnabled } = values;
@@ -46,23 +65,16 @@ class EditRule extends Component {
     });
   }
 
-  cancelWarningTip = () => { // 取消
-    this.setState({ showWarningTip: false })
-  }
-
-  confirmWarningTip = () => { // 确定
-    this.setState({ showWarningTip: false })
-    this.props.changeWarnStore({ showPage: 'home' })
-  }
-
   render() {
     const { warnDetail } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText,showSaveWarningTip,warningTipSaveText} = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.editRule} >
         {showWarningTip &&
           <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        {showSaveWarningTip &&
+          <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
@@ -73,7 +85,7 @@ class EditRule extends Component {
               <div>所属电站 <span>{warnDetail.stationName || '--'}</span></div>
               <div>设备类型 <span>{warnDetail.deviceTypeName || '--'}</span></div>
               <div>设备型号 <span>{warnDetail.deviceModeName || '--'}</span></div>
-              <div>测点描述 <span>{warnDetail.devicePointDesc || '--'}</span></div>
+              <div>测点描述 <span>{warnDetail.devicePointName || '--'}</span></div>
               <div>测点单位 <span>{warnDetail.devicePointUnit || '--'}</span></div>
             </div>
             <div className={styles.detailRule}>
@@ -98,11 +110,9 @@ class EditRule extends Component {
                       {
                         validator: (rule, value, callback) => {
                           const [warningRuler, warningValue, warningDeadZone] = value;
-                          // (!warningRuler) && callback('请选择预警规则');
-                          (!warningValue) && callback('请输入预警值');
-                          (!warningDeadZone) && callback('请输入震荡区间');
-                          (isNaN(warningValue) || isNaN(warningDeadZone)) && callback('经纬度需为数字');
-                          warningValue && warningDeadZone && warningDeadZone >= warningValue && callback('震荡区间的值不能大于预警值');
+                          (!warningValue && warningValue !== 0) && callback('请输入预警值');
+                          (!warningDeadZone && warningValue !== 0) && callback('请输入震荡区间');
+                          warningValue && warningDeadZone && +warningDeadZone >= +warningValue && callback('震荡区间的值不能大于预警值');
                           callback();
                         }
                       }],
@@ -135,7 +145,7 @@ class EditRule extends Component {
                   )}
                 </FormItem>
                 <div className={styles.buttonGroup}>
-                  <Button onClick={this.saveRule} className={styles.save}>保存</Button>
+                  <Button onClick={this.saveRule} className={styles.save} type={"default"} >保存</Button>
                 </div>
               </Form>
             </div>
