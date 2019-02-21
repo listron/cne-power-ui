@@ -18,7 +18,9 @@ class EditRule extends Component {
     super(props, context)
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息将无法保存'
+      showSaveWarningTip: false,
+      warningTipText: '退出后信息将无法保存',
+      warningTipSaveText: '请确认预警规则',
     }
   }
 
@@ -27,6 +29,23 @@ class EditRule extends Component {
   }
 
   saveRule = (e) => { // 保存
+    this.setState({ showSaveWarningTip: true })
+  }
+
+  cancelWarningTip = () => { // 取消
+    this.setState({ showWarningTip: false })
+  }
+
+  confirmWarningTip = () => { // 确定
+    this.setState({ showWarningTip: false })
+    this.props.changeWarnStore({ showPage: 'home' })
+  }
+
+  cancelSaveWarningTip = () => { // 保存取消
+    this.setState({ showSaveWarningTip: false })
+  }
+
+  confirmSaveWarningTip = () => { // 保存确定
     const warningCheckId = this.props.warnDetail.warningCheckId;
     this.props.form.validateFields((error, values) => {
       if (!error) {
@@ -46,23 +65,16 @@ class EditRule extends Component {
     });
   }
 
-  cancelWarningTip = () => { // 取消
-    this.setState({ showWarningTip: false })
-  }
-
-  confirmWarningTip = () => { // 确定
-    this.setState({ showWarningTip: false })
-    this.props.changeWarnStore({ showPage: 'home' })
-  }
-
   render() {
     const { warnDetail } = this.props;
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText,showSaveWarningTip,warningTipSaveText} = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <div className={styles.editRule} >
         {showWarningTip &&
           <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        {showSaveWarningTip &&
+          <WarningTip onCancel={this.cancelSaveWarningTip} onOK={this.confirmSaveWarningTip} value={warningTipSaveText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
