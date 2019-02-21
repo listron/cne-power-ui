@@ -68,7 +68,7 @@ class ScoreMain extends Component {
             this.props.changeScoreStore({ hasInitScore: false, })
             message.warn('填写电站初始分为0-100分之间！！！', 2);
             return false
-        } 
+        }
         this.props.changeScoreStore({ hasInitScore: true })
     }
 
@@ -105,10 +105,37 @@ class ScoreMain extends Component {
         })
         const isVaildError = isVaild.some(e => e.includes(false))
         if (hasInitScore && !isVaildError) {
-            this.props.editScoreConfig({ reportType: stationTypes, basicScore, indexList: newIndexList, })
+            this.dataCheck(editData) && this.props.editScoreConfig({ reportType: stationTypes, basicScore, indexList: newIndexList })
         } else {
-            message.warn('请填写需要填写的信息')
+            message.warn('请正确填写需要填写的信息')
         }
+    }
+
+
+    dataCheck = (data) => { // 点击保存的时候校验
+        // 规则4 指标权重<100%
+        let flag = true;
+        const indexPercentArray = [];
+        data.forEach(e => indexPercentArray.push(e.indexPercent));
+        const sum = indexPercentArray.reduce(function (prev = 0, curr = 0, idx, arr) {
+            return +prev + +curr;
+        })
+        if (sum > 100) {
+            message.warn(`指标权重填写的已超出总和上限（100）`, 2);
+            flag = false
+        }
+        if (sum < 100) {
+            message.warn(`指标权重填写的总和小于100`, 2);
+            flag = false
+        }
+        //规则5 判断标准 左边数《= 右边数
+        data.forEach(item => {
+            if (+item.indexLowerLimit > +item.indexUpperLimit) {
+                message.warn(`${item.indexName}判断标准的下限已经超过上限，请修改`, 2);
+                flag = false
+            }
+        })
+        return flag
     }
 
     confirmWarningTip = () => { // 确认跳转
@@ -180,9 +207,9 @@ class ScoreMain extends Component {
                     </div>
                 }
 
-                {edit === false && 
-                <DetailTable indexList={indexList} /> || 
-                <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
+                {edit === false &&
+                    <DetailTable indexList={indexList} /> ||
+                    <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
 
             </div>
         )

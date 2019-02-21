@@ -56,28 +56,23 @@ class EditTable extends Component {
         let pointLength = 2;
         let checkingValue = value.trim();
         const configText = this.Basefun(keyWord, index)
-        const { editData } = this.state;
         const { isVaild } = this.props;
         let indexArray = ['indexPercent', 'indexLowerLimit', 'indexUpperLimit', 'indexIncrDecrStandard', 'indexIncrDecrValue'];
-        let continued = true;
         message.config({ top: 220, maxCount: 1 })
         if (!checkingValue) { // 规则  为空校验
             message.warn(`${configText}不能为空`, 2);
-            continued = false;
             isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
             this.props.changeScoreStore({ isVaild });
             return false
         }
         if (isNaN(checkingValue)) { // 规则1 数值校验
             message.warn(`${configText}请填写数字，最多保留小数点后${pointLength}位`, 2)
-            continued = false;
             isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
             this.props.changeScoreStore({ isVaild });
             return false
         }
         if (checkingValue < 0) { // 规则2非负校验
             message.warn(`${configText}数值不能为负数，请重新填写`, 2);
-            continued = false;
             isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
             this.props.changeScoreStore({ isVaild });
             return false
@@ -86,49 +81,13 @@ class EditTable extends Component {
             const demicalLength = `${checkingValue}`.split('.')[1].trim().length;
             if (demicalLength > pointLength) {
                 message.warn(`${configText}请填写数字，最多保留小数点后${pointLength}位`, 2)
-                continued = false;
                 isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
                 this.props.changeScoreStore({ isVaild });
                 return false
             }
         }
-        if (continued && keyWord === 'indexPercent') {// 规则4 指标权重<100%
-            const indexPercentArray = [];
-            editData.forEach(e => indexPercentArray.push(e.indexPercent));
-            const sum = indexPercentArray.reduce(function (prev = 0, curr = 0, idx, arr) {
-                return +prev + +curr;
-            })
-            if (sum > 100) {
-                message.warn(`${configText}填写的已超出指标权重总和上限（100）`, 2);
-                this.props.changeScoreStore({ canSave: false })
-                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
-                this.props.changeScoreStore({ isVaild })
-                return false
-            }
-        }
-        if (continued && keyWord === 'indexLowerLimit') { //规则5 判断标准 左边数《= 右边数
-            console.log('checkingValue',checkingValue,editData[index]['indexUpperLimit'],
-            checkingValue>editData[index]['indexUpperLimit'])
-            if (checkingValue > editData[index]['indexUpperLimit']) {
-                console.log('进来了么')
-                message.warn(`${configText}填写的已超出该判断标准的上限`, 2);
-                this.props.changeScoreStore({ canSave: false })
-                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
-                this.props.changeScoreStore({ isVaild })
-                return false
-            }
-        }
-        if (continued && keyWord === 'indexUpperLimit') { //规则5 判断标准 左边数《= 右边数
-            if (checkingValue < editData[index]['indexLowerLimit']) {
-                message.warn(`${configText}填写的已低于该判断标准的上限`, 2);
-                this.props.changeScoreStore({ canSave: false })
-                isVaild[index][indexArray.findIndex(e=>e===keyWord)] = false
-                this.props.changeScoreStore({ isVaild })
-                return false
-            }
-        }     
         isVaild[index][indexArray.findIndex(e=>e===keyWord)] = true
-        this.props.changeScoreStore({ canSave: true,isVaild })
+        this.props.changeScoreStore({ isVaild })
     }
 
     valueChange = (param) => { // 直接替换数据。
