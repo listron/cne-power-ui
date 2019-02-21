@@ -109,8 +109,8 @@ module.exports = [
           speed: `类型${e * 10}`,
           power: `${e ** e / 8}`,
           pointData: [9, 5, 2].map(m => ({
-            devicePointCode: `编码${m}*${e}${m * e}`,
-            devicePointName: `编码${m}*${e}${m * e}`,
+            devicePointCode: `编码${m}`,
+            devicePointName: `编码${m}`,
             pointValue: `${m * e / 10}`,
             pointUnit: 'kWh',
           }))

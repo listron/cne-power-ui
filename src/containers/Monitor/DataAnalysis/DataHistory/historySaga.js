@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { historyAction } from './historyReducer';
@@ -13,11 +13,12 @@ function *getPointInfo(action) { // 获取可选测点
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
   try {
     const response = yield call(axios.post, url, { deviceId: deviceFullCode.map(e => e.deviceCode) });
+    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
-          deviceFullCode,
+          queryParam: { ...queryParam, deviceFullCode },
           pointInfo: response.data.data || [],
         }
       })

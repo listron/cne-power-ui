@@ -100,13 +100,15 @@
   }
 }
 
-// .historyChart{
-//   height: 400px;
-//   width: 400px;
-//   // flex-basis: calc(100% - 150px);
-// }
-
 .historyList{
   flex: 1;
-
+  .pagination {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+    .text{
+      margin-left: 36px;
+    }
+  }
 }

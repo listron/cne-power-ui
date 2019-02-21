@@ -19,8 +19,8 @@ class DataHistory extends Component {
   };
 
   componentDidMount(){ // 调试用 - 后删。
-    const { queryParam } = this.props;
-    this.props.getChartHistory({ queryParam });
+    const { queryParam, listParam } = this.props;
+    this.props.getListHistory({ queryParam, listParam });
   }
 
   componentWillUnmount() {
