@@ -15,6 +15,7 @@ import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
 import { watchWarning } from './System/Production/Warning/warningSaga';
+import { watchScore } from './System/Production/Score/scoreSaga';
 
 import { watchStationManage } from './System/Station/StationManage/stationManageSaga';
 import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSaga';
@@ -86,6 +87,7 @@ export default function* rootSaga() {
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
+    watchScore(), // 绩效评分
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),

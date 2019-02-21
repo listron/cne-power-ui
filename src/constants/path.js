@@ -3,13 +3,13 @@
 import config from '../config/apiConfig';
 
 export default {
-  basePaths:{
+  basePaths: {
     originUri: config.originUri,
     APIBasePath: config.apiHostUri,
     TokenBasePath: config.tokenUri
   },
-  commonPaths:{
-    imgUploads:'/v3/uploadfile', //上传文件
+  commonPaths: {
+    imgUploads: '/v3/uploadfile', //上传文件
     getStations: '/v3/station/datalist',//按照用户权限获取电站
     getDevicetypes: '/v3/station/devicetype',
     getMonitorDataUnit: '/v3/station/monitor/conf',//获取电站监控单位的单位以及精确值接口名
@@ -24,7 +24,7 @@ export default {
     getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     getWeather: '/v3/monitor/weather', // 单电站未来天气
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
-    getDictionaryInfo:'/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+    getDictionaryInfo: '/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
 
   },
   APISubPaths: {
@@ -57,7 +57,7 @@ export default {
       phoneCodeRegister: '/v3/login/phoneregister',
       inviteUserLink: '/v3/user/link',
     },
-    homepage:{
+    homepage: {
       realTimeData: '/v3/monitor/largescreen/websummary', // 电站概况，实时监控，设备状态等
       completeRate: '/v3/monitor/largescreen/completionrate', // 完成率
       energySaving: '/v3/monitor/largescreen/energysaving', // 节能减排
@@ -96,14 +96,14 @@ export default {
       transformDefect: '/v3/inspect/defect',
       setInspectCheck: '/v3/inspect/check',
       finishInspect: '/v3/inspect/finish',
-      createInspect:'/v3/inspect',
+      createInspect: '/v3/inspect',
       deleteAbnormal: '/v3/inspect/deleteabnormal',
-      getInspectStandard:'/v3/inspect/getstandard',
-      inspectCheckBatch:'/v3/inspect/check/batch',
-      getInspectDetailRecord:'/v3/inspect/record',//获取巡检记录
-      getPersonnelGpsData:'/v3/location',//获取员工位置
-      getInspectUsers:'/v3/user/getusers',//获取巡检人员
-      getInspectOrbit:'/v3/inspect/track',//获取巡航轨迹
+      getInspectStandard: '/v3/inspect/getstandard',
+      inspectCheckBatch: '/v3/inspect/check/batch',
+      getInspectDetailRecord: '/v3/inspect/record',//获取巡检记录
+      getPersonnelGpsData: '/v3/location',//获取员工位置
+      getInspectUsers: '/v3/user/getusers',//获取巡检人员
+      getInspectOrbit: '/v3/inspect/track',//获取巡航轨迹
 
     },
     operation: { // 运维管理
@@ -129,7 +129,7 @@ export default {
 
       getRoleList: '/v3/role/list',
       getMenuList: '/v3/right',
-      getDefaultRight:'/v3/role/defaultright', // 获取角色下的默认权限
+      getDefaultRight: '/v3/role/defaultright', // 获取角色下的默认权限
       createRole: '/v3/role',
       editRole: '/v3/role/{enterpriseId}',
       deleteRole: '/v3/role',
@@ -173,23 +173,23 @@ export default {
       importPowercurve: '/v3/management/powercurve/import', //导入功率曲线
       downloadPowercurve: '/v3/management/powercurve/export', // 导出功率曲线
 
-     
-      //  生产计划
-      getPlanList:'/v3/performance/stationplanlist', //查看生产计划列表
-      addPlanList:'/v3/performance/stationplan', //  添加生产计划
-      eddPlanList:'/v3/performance/stationplan', //  编辑生产计划
-      getYearList:'/v3/station/yearlist',// 生产计划的年份
+      // 计划配置
+      getPlanList: '/v3/performance/stationplanlist', //查看生产计划列表
+      addPlanList: '/v3/performance/stationplan', //  添加生产计划
+      eddPlanList: '/v3/performance/stationplan', //  编辑生产计划
+      getYearList: '/v3/station/yearlist',// 生产计划的年份
 
-      //预警配置
-      getSeriesData:'/v3/forewarning/conf',  //获取低效组串预警配置
-      addSeriesData:'/v3/forewarning/conf',  //设置低效组串预警配置
-      getCleaningData:'/v3/pvclean/conf', //获取清洗模型预警配置
-      addCleaningData:'/v3/pvclean/conf', //设置清洗模型预警配置    
-      
-      warnConf:'/v3/smartalarm/conf',// 预警配置 增删改查
+      getSeriesData: '/v3/forewarning/conf',  //获取低效组串预警配置
+      addSeriesData: '/v3/forewarning/conf',  //设置低效组串预警配置
+      getCleaningData: '/v3/pvclean/conf', //获取清洗模型预警配置
+      addCleaningData: '/v3/pvclean/conf', //设置清洗模型预警配置    
+      warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
+
+      ScoreConfig:'/v3/performance/score/conf', //	评分配置
+      getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
     },
     monitor: {//实时监控
-      getStationType:'/v3/monitor/stations/',
+      getStationType: '/v3/monitor/stations/',
       stationDeviceList: '/v3/station/devicelist', // 单电站设备列表获取
       seriesinverterDetail: '/v3/monitor/seriesinverter',//组串式逆变器详情
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
@@ -222,7 +222,7 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
-      editData:'/v3/management/stationgen',//编辑月，年的累计发电量
+      editData: '/v3/management/stationgen',//编辑月，年的累计发电量
 
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
@@ -234,35 +234,35 @@ export default {
       relieveAlarm: '/v3/alarm/relievealarm',//屏蔽告警
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
-      getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
-      windturbine:'/v3/monitor/windturbine',  //风机实时数据
-      sequencechart:'/v3/monitor/windturbine/sequencechart'
+      getFanList: '/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      windturbine: '/v3/monitor/windturbine',  //风机实时数据
+      sequencechart: '/v3/monitor/windturbine/sequencechart'
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
     },
-    statisticalAnalysis:{
-      getAllStationAvaliba:'/v3/performance/comprehensive/dataavaliba',
-      getAllStationStatistic:'/v3/performance/comprehensive/plans',
-      getAllStationStatisticTable:'/v3/performance/comprehensive/statistics',
-      getAllStationMonthBar:'/v3/performance/comprehensive/chart/monthOrYear',
-      getAllStationMonthPie:'/v3/performance/comprehensive/piecharts/month',
+    statisticalAnalysis: {
+      getAllStationAvaliba: '/v3/performance/comprehensive/dataavaliba',
+      getAllStationStatistic: '/v3/performance/comprehensive/plans',
+      getAllStationStatisticTable: '/v3/performance/comprehensive/statistics',
+      getAllStationMonthBar: '/v3/performance/comprehensive/chart/monthOrYear',
+      getAllStationMonthPie: '/v3/performance/comprehensive/piecharts/month',
       //getAllStationYearBar:'v3/performance/comprehensive/chart/year',
-      getSingleStationStatistic:'/v3/performance/comprehensive/plan',
-      getSingleStationTarget:'/v3/performance/comprehensive/power/monthsorYear',
-      getSingleStationMonthPie:'/v3/performance/comprehensive/piechart/month',
+      getSingleStationStatistic: '/v3/performance/comprehensive/plan',
+      getSingleStationTarget: '/v3/performance/comprehensive/power/monthsorYear',
+      getSingleStationMonthPie: '/v3/performance/comprehensive/piechart/month',
 
-      getSingleStationYearTarget:'/v3/performance/comprehensive/power/year',
-      getSingleStationPlanRate:'/v3/performance/comprehensive/planrate/years',
-      getSingleStationDayCompleteRate:'/v3/performance/comprehensive/planrate/day',
-      getSingleStationPvCompare:'/v3/performance/comprehensive/light/months',
-      getSingleStationYearPvCompare:'/v3/performance/comprehensive/light/year',
-      getSingleStationPowerEffective:'/v3/performance/comprehensive/efficiencygen',
+      getSingleStationYearTarget: '/v3/performance/comprehensive/power/year',
+      getSingleStationPlanRate: '/v3/performance/comprehensive/planrate/years',
+      getSingleStationDayCompleteRate: '/v3/performance/comprehensive/planrate/day',
+      getSingleStationPvCompare: '/v3/performance/comprehensive/light/months',
+      getSingleStationYearPvCompare: '/v3/performance/comprehensive/light/year',
+      getSingleStationPowerEffective: '/v3/performance/comprehensive/efficiencygen',
       // 电站对比
       getStationContrast: '/v3/performance/stationcontrast',
       getStationContrastDetail: '/v3/performance/stationcontrast/list',
       //生产分析
-      ProductionPlanComplete:'/v3/performance/productanalysis/plan',
+      ProductionPlanComplete: '/v3/performance/productanalysis/plan',
 
       // 运行分析
       getOperatePlanComplete: '/v3/performance/operationanalysis/plan',
@@ -274,48 +274,48 @@ export default {
       getOperatePlantPower: '/v3/performance/operationanalysis/plantpower',
 
       // 资源分析
-      getResourcePlan:'/v3/performance/resource/plan',
-      getResourceMonthLight:'/v3/performance/resource/distribution/months',
-      getResourceYearLight:'/v3/performance/resource/distribution/year',
-      getResourceMonthWeather:'/v3/performance/resource/weather/years',
-      getResourceDayWeather:'/v3/performance/resource/weather/day',
+      getResourcePlan: '/v3/performance/resource/plan',
+      getResourceMonthLight: '/v3/performance/resource/distribution/months',
+      getResourceYearLight: '/v3/performance/resource/distribution/year',
+      getResourceMonthWeather: '/v3/performance/resource/weather/years',
+      getResourceDayWeather: '/v3/performance/resource/weather/day',
       //设备分析
-      getEleLineCode:'/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
-      getconversioneff:'/v3/performance/deviceanalysis/conversioneff',//转换效率
-      getconversioneffContrast:'/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
-      getHours:'/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
-      getHoursContrast:'/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
-      getAvailability:'/v3/performance/deviceanalysis/availability',//利用率及损失电量
-      getAvailabilityContrast:'/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
-      getManufacturer :'/v3/performance/deviceanalysis/manufacturer', // 获取所有的生产厂家
-      getDevicemode:'/v3/performance/deviceanalysis/devicemode',// 获取电站下的所有设备型号
-      getDevicemodes:'/v3/performance/deviceanalysis/manufacturer/devicemode',// 获取电站下的所有设备型号
-      getDevicecontrast:'/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
-      getStationcontrast:'/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
-      getStationcontrastmore:'/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
+      getEleLineCode: '/v3/performance/deviceanalysis/getEleLineCode',//集成线路接口
+      getconversioneff: '/v3/performance/deviceanalysis/conversioneff',//转换效率
+      getconversioneffContrast: '/v3/performance/deviceanalysis/conversioneff/contrast',//转换效率对比
+      getHours: '/v3/performance/deviceanalysis/hours',//等效小时数、故障次数、故障时长
+      getHoursContrast: '/v3/performance/deviceanalysis/hours/contrast',//等效小时数、故障次数、故障时长对比
+      getAvailability: '/v3/performance/deviceanalysis/availability',//利用率及损失电量
+      getAvailabilityContrast: '/v3/performance/deviceanalysis/availability/contrast',//利用率及损失电量对比
+      getManufacturer: '/v3/performance/deviceanalysis/manufacturer', // 获取所有的生产厂家
+      getDevicemode: '/v3/performance/deviceanalysis/devicemode',// 获取电站下的所有设备型号
+      getDevicemodes: '/v3/performance/deviceanalysis/manufacturer/devicemode',// 获取电站下的所有设备型号
+      getDevicecontrast: '/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
+      getStationcontrast: '/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
+      getStationcontrastmore: '/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
       //通用报表
-      dailyreport:'v3/performance/dailyreport',
+      dailyreport: 'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
     },
-    highAnalysis:{
+    highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
       getCleanWarningDetail: '/v3/pvclean/warning/details', // 指定清洗预警详情
       getTotalDustEffect: '/v3/pvclean/station/dustinfluence', // 全局灰尘影响
       getMatrixDustEffect: '/v3/pvclean/matrix/dustinfluence', // 方阵灰尘影响
 
-      getUnhandleList:'/v3/forewarning/unhandlelist', // 待处理预警／历史预警
-      getIgnorelist:'/v3/forewarning/ignorelist', //已忽略历史预警
-      getTransferlist:'/v3/forewarning/toorderlist',// 已转工单列表
-      toorder:'/v3/forewarning/toorder',//预警转工单
-      ignore:'/v3/forewarning/ignore', // 忽略预警
-      warnDetail:'/v3/forewarning',//预警信息
-      getSequencechart:'/v3/pv/sequencechart',//电流时序图
-      getMatrixList:'/v3/station/matrix', //获取电站下方阵
-      getStationDust:'/v3/pvclean/station/dustinfluence',
+      getUnhandleList: '/v3/forewarning/unhandlelist', // 待处理预警／历史预警
+      getIgnorelist: '/v3/forewarning/ignorelist', //已忽略历史预警
+      getTransferlist: '/v3/forewarning/toorderlist',// 已转工单列表
+      toorder: '/v3/forewarning/toorder',//预警转工单
+      ignore: '/v3/forewarning/ignore', // 忽略预警
+      warnDetail: '/v3/forewarning',//预警信息
+      getSequencechart: '/v3/pv/sequencechart',//电流时序图
+      getMatrixList: '/v3/station/matrix', //获取电站下方阵
+      getStationDust: '/v3/pvclean/station/dustinfluence',
       getMatrixDust: '/v3/pvclean/matrix/dustinfluence',
-      unignore:'/v3/forewarning/unignore',//取消忽略列表
+      unignore: '/v3/forewarning/unignore',//取消忽略列表
       //清洗模型的首页
       getMainList: '/v3/pvclean/plan/list',
       //清洗模型点击进入单电站清洗详情
@@ -332,11 +332,11 @@ export default {
       //清洗记录列表，增，编辑，获取，删记录
       getPlanRecordList: '/v3/pvclean/record/list',
       getAddCleanRecord: '/v3/pvclean/record',
-      editCleanRecord:'/v3/pvclean/record',
+      editCleanRecord: '/v3/pvclean/record',
       getCleanRecordDetail: '/v3/pvclean/record',
       deleteCleanRecord: '/v3/pvclean/record',
       //通用报表
-      dailyreport:'v3/performance/dailyreport', // 日报
+      dailyreport: 'v3/performance/dailyreport', // 日报
       faultReport: 'v3/performance/generalreport/fault', // 故障日报
       genReport: 'v3/performance/generalreport/gen', // 发电量信息
       indicatorReport: 'v3/performance/generalreport/indicator', // 生产运营指标
