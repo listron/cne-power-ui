@@ -36,7 +36,7 @@ class ShowAddComponentMode extends Component {
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showAddDeviceModeModal } = this.props;
+    const { showAddComponentMode } = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },
@@ -44,7 +44,7 @@ class ShowAddComponentMode extends Component {
     return (
       <Modal
         title="新增组件型号"
-        visible={showAddDeviceModeModal}
+        visible={showAddComponentMode}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         centered={true}

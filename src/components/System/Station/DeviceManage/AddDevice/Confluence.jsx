@@ -12,45 +12,55 @@ class Confluence extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      showAddDeviceModeModal: false,
-      showAddDeviceMode: false,
+      showAddComponentMode: false,
+      showAddComponent: false,
+      componentModeCodeAdd: '',
+      manufacturerComAdd: '',
 
     }
   }
-  showAddDeviceModeModal = () => {
+  showAddComponentMode = () => {
     this.setState({
-      showAddDeviceModeModal: true
+      showAddComponentMode: true
     })
   }
   cancleDeviceModeModal = () => {
     this.setState({
-      showAddDeviceModeModal: false
+      showAddComponentMode: false
     })
   }
   saveFormState = (record) => {
     console.log(record, "record");
-    this.setState({ deviceModeCodeAdd: record.deviceModeCode, manufacturerAdd: record.manufacturer, showAddDeviceMode: true })
+    this.setState({ componentModeCodeAdd: record.componentMode, manufacturerComAdd: record.manufacturerCom, showAddComponent: true })
   }
-
-
   render() {
-    const { showAddDeviceModeModal, showAddDeviceMode, deviceModeCodeAdd, manufacturerAdd } = this.state;
+    const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
     const { pvDeviceModels } = this.props;
     console.log('pvDeviceModels: ', pvDeviceModels);
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const branchCount = getFieldValue("branchCount");
+    console.log('branchCount: ', branchCount);
+    let branchCountArr = [];
+    for (let i = 0; i < branchCount; i++) {
+       branchCountArr.push(i+1)
+    }
     return (
       <div className={styles.rightStyles}>
-        <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('componentMode')(
-            <Select className={styles.modelSelect} placeholder="请选择设备型号" disabled={pvDeviceModels.length === 0} >
-              {pvDeviceModels.map(e => {
-                if (!e) { return null; }
-                return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
-              })}
-            </Select>
-          )}
-          <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
-        </FormItem>
+        {showAddComponent ? <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
+          {getFieldDecorator('componentName', )(
+            <span>{componentModeCodeAdd}</span>
+          )} <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加设备型号</span>
+        </FormItem> : <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
+            {getFieldDecorator('componentMode')(
+              <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
+                {pvDeviceModels.map(e => {
+                  if (!e) { return null; }
+                  return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                })}
+              </Select>
+            )}
+            <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加设备型号</span>
+          </FormItem>}
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('branchCount', {
             rules: [
@@ -66,25 +76,22 @@ class Confluence extends Component {
               { message: '选择所用支路', required: true, },
             ]
           })(
-            <Checkbox.Group  >
+            <Checkbox.Group>
               <Row>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((e, i) => {
+                {branchCountArr.map((e, i) => {
                   return (
                     <Col span={3} key={i}>
                       <div>第{e}支路</div>
-                      <Checkbox value={i} key={e}></Checkbox>
+                      <Checkbox value={e} key={i}></Checkbox>
                     </Col>)
                 })}
-
-
-
               </Row>
             </Checkbox.Group>,
 
           )}
           <div className={styles.linestyle}>(  点击后变<span className={styles.selectRingStyle}></span>，表示接入;<span className={styles.ringStyle}></span>表示未接入 )</div>
         </FormItem>
-        {showAddDeviceModeModal && <ShowAddComponentMode {...this.props} showAddDeviceModeModal={showAddDeviceModeModal} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} />}
+        {showAddComponentMode && <ShowAddComponentMode {...this.props} showAddComponentMode={showAddComponentMode} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} />}
       </div>
     )
   }
