@@ -146,7 +146,8 @@
         }
         :global {
             .ant-form-inline .ant-form-item-with-help {
-                margin-bottom: 0
+                margin-bottom: 0;
+                position: inherit;
             }
             .ant-row.ant-form-item.ant-form-item-no-colon{
                 width:287px;
@@ -289,12 +290,24 @@
             }
             :global {
                 .ant-form-inline .ant-form-item-with-help {
-                    margin-bottom: 0
+                    margin-bottom: 0;
+                    position: inherit;
                 }
                 .ant-row.ant-form-item.ant-form-item-no-colon{
                     min-width:287px;
                     display: flex;
                     flex-direction: row;
+                }
+            }
+        }
+        :global {
+            .ant-btn-default,
+            .ant-btn-default:active {
+                color: $themeColor;
+                border-color: $themeColor;
+                &:hover {
+                    background-color: $themeColor;
+                    color: #fff;
                 }
             }
         }
