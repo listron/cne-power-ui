@@ -21,7 +21,8 @@ class PerformanceAnalysisFilter extends Component {
     let endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     this.props.changePerformanceAnalysisStore({
       startDate,
-      endDate
+      endDate,
+      stationCode:firstStationCode
     });
     //获取设备型号
     getDeviceModels({
@@ -72,9 +73,7 @@ class PerformanceAnalysisFilter extends Component {
   //选择时间
   onChangeDuration = (value) => {
     const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
-    console.log('targetTabs: ', targetTabs);
-    const prams={ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
-    let startDate, endDate;
+     let startDate, endDate;
     if (value === 'other') {
       this.onFilterShowChange('timeSelect');
     } else {
@@ -91,6 +90,7 @@ class PerformanceAnalysisFilter extends Component {
       endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
     }
     this.setState({ timeType: value })
+    const prams={ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
     this.props.changePerformanceAnalysisStore({
       startDate,
       endDate,
@@ -143,9 +143,9 @@ class PerformanceAnalysisFilter extends Component {
       contrastEndDate,
     });
     if (targetTabs === '1') {
-      this.props.getPerformanceContrast({ ...prams })
+      this.props.getPerformanceContrast({ ...prams,contrastStartDate,contrastEndDate })
     } else {
-      this.props.getFaultContrast({ ...prams })
+      this.props.getFaultContrast({ ...prams,contrastStartDate,contrastEndDate })
     }
    
   }
@@ -189,40 +189,69 @@ class PerformanceAnalysisFilter extends Component {
   };
   //选择设备类型,此处不可选设备类型
   selectDeviceType = (value) => {
-
   }
   //选择设备型号
   selectDeviceModel = (value) => {
-    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance,electricLineCode } = this.props;
+    const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance,electricLineCode,targetTabs } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
     const deviceTypeCode = value && [Number(value.split('__')[1])];
+    const prams={stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode,electricLineCode}
 
     changePerformanceAnalysisStore({
       deviceModeCode: value,
       deviceModeTypeCode: deviceModeTypeCode,
-      targetTabs: '1',
       deviceTypeCode,
     })
-    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode }) :
-      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate,electricLineCode })
+      if (contrastSwitch) {
+        if (targetTabs === '1') {
+          this.props.getPerformanceContrast({ ...prams, contrastStartDate, contrastEndDate })
+        } else {
+          this.props.getFaultContrast({ ...prams, contrastStartDate, contrastEndDate })
+        }
+      } else {
+        if (targetTabs === '1') {
+          this.props.getPerformance({ ...prams })
+        } else {
+          this.props.getFault({ ...prams })
+        }
+      }
   }
   //选择集电线路
   selectEleLine = (value) => {
-    const { stationCode, changePerformanceAnalysisStore, startDate, endDate, getPerformance, electricLineCode, contrastStartDate, contrastEndDate, deviceModeTypeCode, deviceTypeCode, contrastSwitch, getPerformanceContrast } = this.props;
+    const { stationCode, changePerformanceAnalysisStore, startDate, endDate, getPerformance, electricLineCode, contrastStartDate, contrastEndDate, deviceModeTypeCode, deviceTypeCode, contrastSwitch, getPerformanceContrast ,targetTabs} = this.props;
+    const prams={stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode,  electricLineCode: value}
     changePerformanceAnalysisStore({
       electricLineCode: value,
-      targetTabs: '1'
+     
     })
-    contrastSwitch ? getPerformanceContrast({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, electricLineCode: value }) : getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, contrastStartDate, contrastEndDate, electricLineCode: value })
+    if (contrastSwitch) {
+      if (targetTabs === '1') {
+        this.props.getPerformanceContrast({ ...prams, contrastStartDate, contrastEndDate })
+      } else {
+        this.props.getFaultContrast({ ...prams, contrastStartDate, contrastEndDate })
+      }
+    } else {
+      if (targetTabs === '1') {
+        this.props.getPerformance({ ...prams })
+      } else {
+        this.props.getFault({ ...prams })
+      }
+    }
   }
   //switch开关
   contrastSwitch = (checked) => {
-    const { getPerformance, changePerformanceAnalysisStore, stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode } = this.props;
+    const { getPerformance,getFault, changePerformanceAnalysisStore, stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
+    const params={stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
     if (checked) {
       changePerformanceAnalysisStore({ contrastSwitch: checked })
     } else {
       changePerformanceAnalysisStore({ contrastSwitch: checked, contrastStartDate: '', contrastEndDate: '' })
-      getPerformance({ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode })
+      
+      if(targetTabs==='1'){
+        getPerformance({...params })
+      }else{
+       getFault({...params })
+      }
     }
   }
   //不可选择的时间
@@ -254,7 +283,6 @@ class PerformanceAnalysisFilter extends Component {
     const dateFormat = 'YYYY-MM-DD';
     const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode } = this.props;
     const { showFilter, startTime } = this.state;
-
     // const eleLineCodeDisable = eleLineCodeData.length === 0;
     let station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
     return (
