@@ -99,10 +99,10 @@ class Search extends Component {
   }
 
   changeType = (value) => { // 改变厂家型号
-    this.setState({ selectOption: value }, () => {
+    this.setState({ selectOption: value,optionValue:[] }, () => {
       value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
     })
-    this.props.changeManufacturersStore({ selectOption: value ,conversioneffList: [], faultNumList: [],  faultHoursList: [] ,deviceCapacityList: [] }) // 暂时的解决办法，缓解数据访问过慢
+    this.props.changeManufacturersStore({ selectOption: value  })
   }
 
 

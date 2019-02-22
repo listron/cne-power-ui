@@ -5,6 +5,7 @@ import styles from "./score.scss";
 import WarningTip from '../../../Common/WarningTip';
 import DetailTable from './DetailTable';
 import EditTable from './EditTable';
+import { ifError } from "assert";
 class ScoreMain extends Component {
     static propTypes = {
         getScoreConfig: PropTypes.func,
@@ -35,6 +36,7 @@ class ScoreMain extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.props.reportType !== nextProps.reportType) { this.setState({ basicScore: nextProps.basicScore }) }
         if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
         if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
     }
@@ -210,7 +212,9 @@ class ScoreMain extends Component {
                 {edit === false &&
                     <DetailTable indexList={indexList} /> ||
                     <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
-
+                <div className={styles.explanation}>
+                    样例：如完成率指标判定标准为95%~105%，增减分标准为1%，增减分值为2。则当完成率＞105%时，每多出1%（不足1%时，按1%计算），完成率得分+2；当完成率＜95%时，每减少1%，完成率得分-2。
+                </div>
             </div>
         )
     }
