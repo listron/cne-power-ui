@@ -11,16 +11,19 @@ import HistoryChart from '../../../../components/Monitor/DataAnalysis/DataHistor
 import HistoryList from '../../../../components/Monitor/DataAnalysis/DataHistory/HistoryList';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
+import Cookie from 'js-cookie';
 
 class DataHistory extends Component {
   static propTypes = {
     historyType: PropTypes.string,
+    enterpriseId: PropTypes.string,
     resetHistoryStore: PropTypes.func,
+    getSecendInterval: PropTypes.func,
   };
 
-  componentDidMount(){ // 调试用 - 后删。
-    const { queryParam, listParam } = this.props;
-    this.props.getListHistory({ queryParam, listParam });
+  componentDidMount(){ // 获取数据时间间隔
+    const { enterpriseId } = this.props;
+    this.props.getSecendInterval({ enterpriseId });
   }
 
   componentWillUnmount() {
@@ -53,6 +56,7 @@ const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
   stations: state.common.get('stations').toJS(),
   stationTypeCount: state.common.get('stationTypeCount'),
+  enterpriseId: Cookie.get('enterpriseId'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -61,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPointInfo: payload => dispatch({ type: historyAction.getPointInfo, payload }),
   getChartHistory: payload => dispatch({ type: historyAction.getChartHistory, payload }),
   getListHistory: payload => dispatch({ type: historyAction.getListHistory, payload }),
+  getSecendInterval: payload => dispatch({ type: historyAction.getSecendInterval, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {

@@ -100,6 +100,66 @@
   }
 }
 
+.historyChart{
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  h4{
+    flex-basis: 100%;
+    height: 60px;
+    line-height: 60px;
+    display: flex;
+    margin-bottom: 0;
+    .eachTitle, .tipTitle{
+      flex: 1 0 33.33%;
+    }
+    .tipTitle{
+      text-align: right;
+      margin-right: 24px;
+    }
+  }
+  .innerChart{
+    flex-basis: 100%;
+  }
+  .chartTool{
+    .title{
+      font-size: 14px;
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+    }
+    .content{
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      height: 24px;
+      .itemStyle{
+        margin: 0 8px;
+        position: relative;
+        &::before, &::after{
+          color: inherit;
+          content: '-';
+          position: absolute;
+        }
+        &::before{
+          left: 5px;
+        }
+        &::after{
+          right: 5px;
+        }
+      }
+      .text{
+        color: $darkColor;
+        margin-right: 4px;
+      }
+      .value{
+        color: $darkColor;
+      }
+    }
+    
+  }
+}
+
 .historyList{
   flex: 1;
   .pagination {
@@ -109,6 +169,20 @@
     justify-content: space-between;
     .text{
       margin-left: 36px;
+    }
+  }
+  .sorterType{
+    :global{
+      .ant-table-column-sorters{
+        .ant-table-column-sorter{
+          display: none;
+        }
+        &:hover{
+          .ant-table-column-sorter{
+            display: block;
+          }
+        }
+      }
     }
   }
 }

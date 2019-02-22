@@ -239,8 +239,11 @@ export default {
       sequencechart:'/v3/monitor/windturbine/sequencechart',
 
       // 数据分析 
-      getPointsInfo: '/v3/monitor', // 数据趋势可用测点信息
-      getAllHistory: '', // 历史趋势 - 测点数据
+      getPointsInfo: '/v3/wind/analysis/history/devicepoint', // 数据趋势可用测点信息
+      getListHistory: '/v3/wind/analysis/history/devicedata', // 历史数据 - 列表数据
+      getAllHistory: '/v3/wind/analysis/history/devicechart', // 历史趋势 - 图表数据
+      exportHistory: '/v3/wind/analysis/history/export', // 导出历史数据
+      getSecendInteral: '/v3/wind/analysis/second', // 可用时间间隔
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

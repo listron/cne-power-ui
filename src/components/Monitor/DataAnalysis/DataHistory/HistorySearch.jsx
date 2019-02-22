@@ -19,6 +19,7 @@ class HistorySearch extends Component {
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
     
+    intervalInfo: PropTypes.array, // 可选时间间隔
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeHistoryStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
@@ -120,7 +121,7 @@ class HistorySearch extends Component {
 
   render(){
     const {
-      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount
+      queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
     } = this.props;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCode } = queryParam;
     return (
@@ -181,9 +182,9 @@ class HistorySearch extends Component {
               value={timeInterval}
               placeholder="数据间隔时间"
             >
-              <Option value={1}>1秒</Option>
-              <Option value={5}>5秒</Option>
-              <Option value={10}>10分钟</Option>
+              {intervalInfo.map(e => (
+                <Option key={e} value={e}>{e === 10 ? '10分' : `${e}秒`}</Option>
+              ))}
             </Select>
           </div>
           

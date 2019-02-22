@@ -119,5 +119,16 @@ module.exports = [
       serviceCode: '3.0'
     },
     error: {}
+  }, { // 数据分析 -- 企业的时间间隔
+    api: '/mock/monitor/dataAnalysisSecendInteral',
+    method: 'get',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        hasSecond: 1
+      }
+    },
+    error: {}
   }
 ]

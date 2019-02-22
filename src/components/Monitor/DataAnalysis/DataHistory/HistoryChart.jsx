@@ -3,6 +3,7 @@ import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './historyStyle.scss';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 class HistoryChart extends Component {
   static propTypes = {
@@ -12,17 +13,19 @@ class HistoryChart extends Component {
   }
 
   componentDidMount() {
-    const { allHistory, chartTime } = this.props;
+    const { allHistory, chartTime, queryParam } = this.props;
+    const { timeInterval } = queryParam;
     if (chartTime) {
-      this.renderChart(allHistory);
+      this.renderChart(allHistory, timeInterval);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { allHistory, chartTime } = this.props;
+    const { allHistory, chartTime, queryParam } = this.props;
+    const { timeInterval } = queryParam;
     const preTime = prevProps.chartTime;
     if (chartTime !== preTime) { // 数据重新请求后重绘。
-      this.renderChart(allHistory);
+      this.renderChart(allHistory, timeInterval);
     }
   }
 
@@ -41,7 +44,7 @@ class HistoryChart extends Component {
       show: i === pointData.length - 1,
       lineStyle: { color: '#666' }
     },
-    splitLine: { 
+    splitLine: {
       lineStyle: {
         color: '#dfdfdf',
         type: 'dotted',
@@ -79,7 +82,7 @@ class HistoryChart extends Component {
 
   gridCreate = (pointData, deviceInfo) => pointData.map((e, i) => { // 基于数据生成各grid. grid固定高160
     const baseGridOption = {
-      top: 70 + 160 * i,
+      top: 10 + 160 * i,
       height: 160,
       left: 90,
       right: 40
@@ -125,7 +128,7 @@ class HistoryChart extends Component {
     return { series, legend }
   }
 
-  renderChart = (allHistory) => {
+  renderChart = (allHistory, timeInterval) => {
     const chartDOM = document.getElementById('dataHistoryChart');
     if (!chartDOM) { return; }
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
@@ -133,7 +136,23 @@ class HistoryChart extends Component {
     const { pointTime, deviceInfo, pointData } = allHistory;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
-      tooltip: { trigger: 'axis', },
+      tooltip: {
+        trigger: 'axis',
+        extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:4px;',
+        padding: 16,
+        formatter: params => {
+          return (
+            `<div class=${styles.chartTool}>
+              <div class=${styles.title}>${params[0].name}</div>
+              ${params.map(e => `<div class=${styles.content}>
+                <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
+                <span class=${styles.text}>${e.seriesName}: </span>
+                <span class=${styles.value}>${dataFormat(e.value)}</span>
+              </div>`).join('')}
+            </div>`
+          )
+        }
+      },
       axisPointer: {
         link: {xAxisIndex: 'all'},
         type: 'line',
@@ -165,13 +184,21 @@ class HistoryChart extends Component {
   }
 
   render() {
-    // height: 150*测点数 + top(70) + bottom(60) + 24*设备数。
+    // height: 150 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
     const { queryParam } = this.props;
-    const { deviceFullCode, devicePoint } = queryParam;
-    const calcHeight = 150 * devicePoint.length + 130 + 24 * deviceFullCode.length;
+    const { deviceFullCode, devicePoint, timeInterval } = queryParam;
+    const calcHeight = 150 * devicePoint.length + 70 + 24 * deviceFullCode.length;
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
-      <div id="dataHistoryChart" style={{ flex: '1', height: `${chartHeight}px`}} />
+      <section className={styles.historyChart}>
+        <h4>
+          <span className={styles.eachTitle} />
+          <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
+          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
+        </h4>
+        <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
+      </section>
+      
     )
   }
 }
