@@ -10,6 +10,15 @@ class DetailTable extends Component {
         super(props);
     }
 
+    judgeStandard = (data, percent) => {
+        const unit=percent===true ? '%':''
+        if (data.indexLowerLimit === data.indexUpperLimit) {
+            return `${data.indexLowerLimit}${unit }`
+        }
+        return `${data.indexLowerLimit}${unit}~${data.indexUpperLimit}${unit}`
+    }
+
+
     render() {
         const { indexList } = this.props;
         let indexLowerLimit = [], indexUpperLimit = [];
@@ -53,24 +62,22 @@ class DetailTable extends Component {
                         <div className={styles.oneColumn}> C级故障平均处理时长（h）</div>
                     </div>
                     <div className={styles.typeWeight}>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[0].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[1].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[2].indexPercent}%</div>
-                        <div className={styles.twoColumn}> {indexList.length > 0 && indexList[3].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[4].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[5].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[6].indexPercent}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[7].indexPercent}%</div>
+                        {indexList.length > 0 && indexList.map((item, index) => {
+                            if (index === 3) {
+                                return <div className={styles.twoColumn} key={item.indexCode}> {indexList[index].indexPercent}%</div>
+                            }
+                            return <div className={styles.oneColumn} key={item.indexCode}> {indexList[index].indexPercent}%</div>
+                        })}
                     </div>
                     <div className={styles.judgeStandard}>
-                        <div className={styles.oneColumn}>{indexList.length > 0 && indexLowerLimit[0]}%~{indexList.length > 0 && indexUpperLimit[0]}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexLowerLimit[1]}%~{indexList.length > 0 && indexUpperLimit[1]}%</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexLowerLimit[2]}</div>
-                        <div className={styles.twoColumn}> {indexList.length > 0 && indexLowerLimit[3]}%</div>
-                        <div className={styles.oneColumn}>{indexList.length > 0 && indexLowerLimit[4]}%</div>
-                        <div className={styles.oneColumn}>{indexList.length > 0 && indexLowerLimit[5]}~{indexList.length > 0 && indexUpperLimit[5]}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexLowerLimit[6]}~{indexList.length > 0 && indexUpperLimit[6]}</div>
-                        <div className={styles.oneColumn}>{indexList.length > 0 && indexLowerLimit[7]}~{indexList.length > 0 && indexUpperLimit[7]}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[0],true)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[1],true)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[2],false)}</div>
+                        <div className={styles.twoColumn}>{indexList.length > 0 && this.judgeStandard(indexList[3],true)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[4],true)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[5],false)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[6],false)}</div>
+                        <div className={styles.oneColumn}>{indexList.length > 0 && this.judgeStandard(indexList[7],false)}</div>
                     </div>
                     <div className={styles.inOrDePoints}>
                         <div className={styles.oneColumn}> {indexList.length > 0 && indexList[0].indexIncrDecrStandard}%</div>
@@ -83,14 +90,12 @@ class DetailTable extends Component {
                         <div className={styles.oneColumn}> {indexList.length > 0 && indexList[7].indexIncrDecrStandard}</div>
                     </div>
                     <div className={styles.inOrDeScore}>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[0].indexPercent}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[1].indexIncrDecrValue}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[2].indexIncrDecrValue}</div>
-                        <div className={styles.twoColumn}> {indexList.length > 0 && indexList[3].indexIncrDecrValue}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[4].indexIncrDecrValue}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[5].indexIncrDecrValue}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[6].indexIncrDecrValue}</div>
-                        <div className={styles.oneColumn}> {indexList.length > 0 && indexList[7].indexIncrDecrValue}</div>
+                        {indexList.length > 0 && indexList.map((item, index) => {
+                            if (index === 3) {
+                                return <div className={styles.twoColumn} key={item.indexCode}> {indexList[index].indexIncrDecrValue}</div>
+                            }
+                            return <div className={styles.oneColumn} key={item.indexCode}> {indexList[index].indexIncrDecrValue}</div>
+                        })}
                     </div>
                     <div className={styles.assessInstruct}>
                         每一项指标拥有同样初始分，在判定标准范围外，增/减数值达到相应标准，则能获得/扣除相应分值。

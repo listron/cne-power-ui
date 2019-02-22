@@ -212,7 +212,9 @@ class ScoreMain extends Component {
                 {edit === false &&
                     <DetailTable indexList={indexList} /> ||
                     <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
-
+                <div className={styles.explanation}>
+                    样例：如完成率指标判定标准为95%~105%，增减分标准为1%，增减分值为2。则当完成率＞105%时，每多出1%（不足1%时，按1%计算），完成率得分+2；当完成率＜95%时，每减少1%，完成率得分-2。
+                </div>
             </div>
         )
     }
