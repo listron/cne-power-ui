@@ -1,7 +1,9 @@
-.PvScore{
+@import '../../../../theme/theme.scss';
+.PvScore {
     display: flex;
     flex-direction: column;
     padding: 20px 32px;
+    width: 100%;
     .stationTypeTab {
         margin-bottom: 32px;
     }
@@ -19,28 +21,32 @@
             }
         }
     }
+    .title {
+        color: $themeColor;
+    }
     .stationCardContainer {
         display: flex;
         flex-flow: row wrap;
-       
         width: 100%;
         margin-top: 20px;
-        p{margin-bottom: 0;}
+        p {
+            margin-bottom: 0;
+        }
         .stationCard {
             margin: 0 19px 24px 0;
             box-sizing: border-box;
             flex: 0 0 15%;
-            box-shadow:0 0 8px 0 rgba(0,0,0,0.30);
-            border-radius:2px;
-            height:180px;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
+            border-radius: 2px;
+            height: 180px;
             align-items: center;
-            .stationName{
+            cursor: pointer;
+            .stationName {
                 padding: 8px 8px 0;
             }
             .scoreCircleCon {
                 width: 86px;
-                height: 86px;
-                background: linear-gradient(66deg, #faff0e, #939417);
+                height: 86px; // background: linear-gradient(66deg, #faff0e, #939417);
                 border-radius: 50%;
                 border: 1px solid #fff;
                 text-align: center;
@@ -53,7 +59,7 @@
                     background-color: #fff;
                     border-radius: 50%;
                     margin: 0 auto;
-                    margin-top: 5px;
+                    margin-top: 4px;
                     .num {
                         height: 0px;
                         line-height: 56px;
@@ -61,17 +67,99 @@
                     }
                     .text {
                         height: 0;
-                        line-height: 72px;
                         font-size: 14px;
                     }
                 }
+                .nodata {
+                    line-height: 76px;
+                }
             }
             .installedCapacity {
-               margin-left: 24px;
+                margin-left: 24px;
             }
-            .equivalent{
+            .equivalent {
                 margin-left: 9px;
             }
+        }
+        .excellent {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #1670a6, #3ea6f6);
+            }
+            &:hover .evaluate {
+                background: #1670a6
+            }
+        }
+        .good {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #08b294, #7ddfb2);
+            }
+            &:hover .evaluate {
+                background: #08b294
+            }
+        }
+        .qualified {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #eefc75, #c69037);
+            }
+            &:hover .evaluate {
+                background: #eefc75;
+            }
+        }
+        .poor {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #ffb8be, #9f041b);
+            }
+            &:hover .evaluate {
+                background: #ffb8be;
+            }
+        }
+    }
+}
+
+.card {
+    .scoreTable {
+        width: 700px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        .text {
+            display: flex;
+            justify-content: space-between;
+            .scoreTime {
+                margin-top: 19px;
+                font-size: 16px;
+                color: #232222;
+            }
+        }
+        .stationScore {
+            margin-top: 19px;
+            font-size: 18px;
+            color: #199475;
+        }
+    }
+    .excellent {
+        .stationScore {
+            color: #3ea6f6;
+        }
+    }
+    .good {
+        .stationScore {
+            color: #7ddfb2;
+        }
+    }
+    .qualified {
+        .stationScore {
+            color: #c69037;
+        }
+    }
+    .poor {
+        .stationScore {
+            color: #9f041b;
+        }
+    }
+    :global {
+        .ant-popover-inner-content {
+            padding: 0px 28px;
         }
     }
 }

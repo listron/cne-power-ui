@@ -49,7 +49,7 @@ class ScoreAnalysis extends Component {
 const mapStateToProps = (state) => {
   return ({
     ...state.statisticalAnalysisReducer.scoreAnalysis.toJS(),
-    stations: state.common.get('stations').toJS(),
+    stations: state.common.get('stations').toJS(),  
     stationTypeCount: state.common.get('stationTypeCount'),
   });
 }

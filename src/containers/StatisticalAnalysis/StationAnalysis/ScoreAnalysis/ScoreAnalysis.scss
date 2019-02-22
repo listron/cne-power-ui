@@ -79,29 +79,5 @@
     }
 }
 
-:global {
-    .ant-popover-inner-content {
-        padding: 12px 28px;
-    }
-}
 
-.scoreTable {
-    width: 872px;
-    height: 435px;
-    display: flex;
-    flex-direction: column;
-    .text {
-        display: flex;
-        justify-content: space-between;
-        .stationScore {
-            margin-top: 19px;
-            font-size: 18px;
-            color: #199475;
-        }
-        .scoreTime {
-            margin-top: 19px;
-            font-size: 16px;
-            color: #232222;
-        }
-    }
-}
+

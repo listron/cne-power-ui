@@ -5,107 +5,6 @@ import styles from "./scoreAnalysis.scss";
 import StationScoreList from './StationScoreList';
 const { MonthPicker } = DatePicker;
 
-const renderContent = (value, row, index) => {
-    const obj = {
-        children: value,
-        props: {},
-    };
-    if (index === 4) {
-        obj.props.colSpan = 0;
-    }
-    return obj;
-};
-
-const dataSource = [{
-    key: '1',
-    classification: '发电水平',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}, {
-    key: '2',
-    classification: '发电水平',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}, {
-    key: '3',
-    classification: '发电水平',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}, {
-    key: '4',
-    classification: '运维管理',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}, {
-    key: '5',
-    classification: '运维管理',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}, {
-    key: '6',
-    classification: '运维管理',
-    target: '发电量完成率',
-    judgementStandard: '95%~100%',
-    completionStatus: '123%',
-    evaluate: '优秀',
-}];
-
-const columns = [{
-    title: '分类',
-    dataIndex: 'classification',
-    key: 'classification',
-    render: (value, row, index) => {
-        const obj = {
-            children: value,
-            props: {},
-        };
-        console.log(index, value);
-
-        if (index === 0 || index === 3) {
-            obj.props.rowSpan = 3;
-        }
-        if (index === 1 || index === 2 || index === 4 || index === 5) {
-            obj.props.rowSpan = 0;
-        }
-        return obj;
-    },
-}, {
-    title: '指标',
-    dataIndex: 'target',
-    key: 'target',
-}, {
-    title: '判断标准',
-    dataIndex: 'judgementStandard',
-    key: 'judgementStandard',
-}, {
-    title: '完成情况',
-    dataIndex: 'completionStatus',
-    key: 'completionStatus',
-}, {
-    title: '评价',
-    dataIndex: 'evaluate',
-    key: 'evaluate',
-}];
-
-const content = (
-    <div className={styles.scoreTable}>
-        <div className={styles.text}>
-            <p className={styles.stationScore}>xxx电站总分：88分 良好</p>
-            <p className={styles.scoreTime}>评分时间；2019年1月1日~2019年1月2日</p>
-        </div>
-        <Table dataSource={dataSource} columns={columns} pagination={false} bordered />
-    </div>
-);
 
 class PvScoreAnalysis extends Component {
     static propTypes = {
@@ -118,27 +17,38 @@ class PvScoreAnalysis extends Component {
         time: PropTypes.string,
         sortField: PropTypes.string,
         sortMethod: PropTypes.string,
+        reportType: PropTypes.string,
+        scoreList: PropTypes.array,
+        singleStaionScore: PropTypes.func,
+        singleScoreData: PropTypes.object,
     };
     constructor(props) {
         super(props);
         this.state = {
-
+            stationSelect: ''
         }
     }
 
     componentDidMount() {
         this.props.getPvStationType();
-        const {reportType,stationCodes,dataType,time,sortField,sortMethod}=this.props;
-        console.log(reportType,stationCodes,dataType,time,sortField,sortMethod)
-        this.props.getScoreList({reportType,stationCodes,dataType,time,sortField,sortMethod})
+        const { reportType, stationCodes, dataType, time, sortField, sortMethod } = this.props;
+        this.props.getScoreList({ reportType, stationCodes, dataType, time, sortField, sortMethod })
     }
 
-    stionSelect = (value) => {
-        console.log(value)
+    stionSelect = (e) => {
+        const reportType = e.target.value;
+        const { stationCodes, dataType, time, sortField, sortMethod } = this.props;
+        this.props.getScoreList({ reportType, stationCodes, dataType, time, sortField, sortMethod })
+    }
+
+    singleDetail = (data) => { // 查看单电站详情
+       const stationCode=data.stationCode;
+       const {dataType,time}=this.props;
+       this.props.singleStaionScore({dataType,time,stationCode})
     }
 
     render() {
-        const { pvStationType } = this.props;
+        const { pvStationType, scoreList, reportType,singleScoreData} = this.props;
         return (
             <div className={styles.PvScore}>
                 <div className={styles.stationTypeTab}>
@@ -170,10 +80,20 @@ class PvScoreAnalysis extends Component {
                         <div className={styles.scoreTranslateBtn}>排序</div>
                     </div>
                 </div> */}
+                {
+                    !reportType &&
+                    (<div>
+                        <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} sigleData={singleScoreData} />
+                        <div>
+                            <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>
+                            <StationScoreList dataList={scoreList.filter(e => !e.reportType)} onChange={this.singleDetail} sigleData={singleScoreData} />
+                        </div>
+                    </div>)
+                    || <StationScoreList dataList={scoreList} onChange={this.singleDetail} sigleData={singleScoreData} />
+                }
 
-                <StationScoreList {...this.props} />
             </div>
         )
-    } 
+    }
 }
 export default PvScoreAnalysis;

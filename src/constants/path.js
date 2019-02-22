@@ -296,7 +296,7 @@ export default {
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
       // 电站评分
-      singleStaionScore:'v3/performance/score',
+      singleStaionScore:'/v3/performance/score',
       getScoreList:'/v3/performance/score/list',
       getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
     },
