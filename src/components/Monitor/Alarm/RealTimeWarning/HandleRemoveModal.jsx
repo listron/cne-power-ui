@@ -97,7 +97,7 @@ class HandleRemoveModal extends Component {
           okText='保存'
           visible={true}
           onCancel={this.props.onCancel}>
-          <FormItem className={styles.formItemTime} label="截止时间">
+          <FormItem className={styles.formItem} label="截止时间">
             <Select className={styles.duration} style={{ width: 120 }} value={timeType} onChange={this.onChangeDuration}>
               <Option value="oneDay">1天</Option>
               <Option value="threeDay">3天</Option>
@@ -115,7 +115,7 @@ class HandleRemoveModal extends Component {
               )}
             </div> : ''}
           </FormItem>
-          <FormItem className={styles.formItemReason} label="解除原因">
+          <FormItem className={styles.formItem} label="解除原因">
             {getFieldDecorator('operateReason', {
               rules: [{
                 required: true,

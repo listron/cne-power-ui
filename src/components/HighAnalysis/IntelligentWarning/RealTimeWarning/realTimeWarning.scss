@@ -223,21 +223,7 @@
   }
 }
 .relieveModal {
-  .formItemTime {
-    display: flex;
-    flex-direction: row;
-    :global {
-      .ant-form-item-label{
-        overflow: visible;
-        .ant-form-item-required::before{
-          position: absolute;
-          top: 5px;
-          left: -10px;
-        }
-      }
-    }
-  }
-  .formItemReason{
+  .formItem {
     display: flex;
     flex-direction: row;
     :global {
