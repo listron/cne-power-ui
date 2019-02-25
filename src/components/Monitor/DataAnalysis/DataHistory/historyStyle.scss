@@ -65,6 +65,8 @@
   display: flex;
   border-top: 1px dotted $promptColor;
   border-bottom: 1px dotted $promptColor;
+  justify-content: space-between;
+  align-items: center;
   .tabIcons{
     font-size: 24px;
     display: flex;
@@ -85,6 +87,9 @@
       color: #999;
       background-color: #f1f1f1;
     }
+  }
+  .export{
+    margin-right: 24px;
   }
 }
 
