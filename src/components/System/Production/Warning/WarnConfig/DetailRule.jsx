@@ -77,21 +77,21 @@ class DetailRule extends Component {
 
   changeLevel = (e) => {
     let result = '';
-    switch(e){
-      case 1:result='一';break;
-      case 2:result='二';break;
-      case 3:result='三';break;
-      case 4:result='四';break;
-      case 5:result='五';break;
-      default:result='--';break;
+    switch (e) {
+      case 1: result = '一'; break;
+      case 2: result = '二'; break;
+      case 3: result = '三'; break;
+      case 4: result = '四'; break;
+      case 5: result = '五'; break;
+      default: result = '--'; break;
     }
     return result
   }
 
   warnDetail = (warnDetail) => { // 预警详情
     const value = warnDetail.warningValue - warnDetail.warningDeadZone;
-    const rule = warnDetail.warningRuler === 1 ? '大于' : '小于';
-    const rule2 = warnDetail.warningRuler === 1 ? '小于或等于' : '大于或等于';
+    const rule = warnDetail.warningRuler === 1 ? '小于' : '大于';
+    const rule2 = warnDetail.warningRuler === 1 ? '大于或等于' : '小于或等于';
     return (<div>
       <span>{'预警规则：'}</span>
       <div>{`当测点值 ${rule}${warnDetail.warningValue}会产生预警， 当测点${rule2}${value}时预警才会消失`}</div>
@@ -131,9 +131,11 @@ class DetailRule extends Component {
             </div>
             <div className={styles.detailRule}>
               <div>预警描述 <span>{warnDetail.warningCheckDesc || '--'}</span></div>
-              <div>预警规则
-                <Tooltip placement="topLeft" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail(warnDetail)} className={styles.tooltip}> <i className="iconfont icon-help"></i>
-                </Tooltip>
+              <div className={styles.detailWarnRule}>预警规则
+                <div className={styles.tooltip}>
+                  <Tooltip placement="topLeft" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail(warnDetail)} > <i className="iconfont icon-help"></i>
+                  </Tooltip>
+                </div>
                 <span className={styles.warningRuler}>{warnDetail.warningRuler === 1 ? '小于' : '大于'}{warnDetail.warningValue},震荡区间 {warnDetail.warningDeadZone} </span></div>
               <div>预警级别 <span>{this.changeLevel(warnDetail.warningLevel)}级</span></div>
               <div>是否启用 <span>{warnDetail.warningEnabled === 1 ? '是' : '否' || '--'}</span></div>

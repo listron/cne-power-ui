@@ -82,7 +82,7 @@ class AddRule extends Component {
   selectPoints = (value) => { // 选中测点
     const unit = value.split('_')[1];
     const { setFieldsValue } = this.props.form;
-    setFieldsValue({ pointUnit: unit!=='null' && unit || '--' })
+    setFieldsValue({ pointUnit: unit !== 'null' && unit || '--' })
   }
 
 
@@ -213,7 +213,7 @@ class AddRule extends Component {
               {getFieldDecorator('pointUnit', {
                 rules: [{ required: false, message: '请选择测点' }],
               })(
-                <Input type="text" placeholder="测点单位" disabled={pointSelectDisable} />
+                <Input type="text" placeholder="测点单位" style={{ 'pointerEvents': 'none' }} />
               )}
             </FormItem>
           </div>
