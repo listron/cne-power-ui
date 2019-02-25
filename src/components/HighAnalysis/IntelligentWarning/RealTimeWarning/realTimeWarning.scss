@@ -223,9 +223,33 @@
   }
 }
 .relieveModal {
-  .formItem {
+  .formItemTime {
     display: flex;
     flex-direction: row;
+    :global {
+      .ant-form-item-label{
+        overflow: visible;
+        .ant-form-item-required::before{
+          position: absolute;
+          top: 5px;
+          left: -10px;
+        }
+      }
+    }
+  }
+  .formItemReason{
+    display: flex;
+    flex-direction: row;
+    :global {
+      .ant-form-item-label{
+        overflow: visible;
+        .ant-form-item-required::before{
+          position: absolute;
+          top: 5px;
+          left: -10px;
+        }
+      }
+    }
   }
   .input {
     margin-left: -60px;

@@ -152,6 +152,10 @@ class HistoryWarningTable extends Component {
             <span className={styles.value}>{relieveInfo.userFullName?relieveInfo.userFullName:relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
+            <span className={styles.label}>截至时间：</span>
+            <span className={styles.value}>{moment(relieveInfo.endTime).format('YYYY-MM-DD HH:mm')}</span>
+          </div>
+          <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
             <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
