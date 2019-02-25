@@ -76,9 +76,9 @@ class DetailRule extends Component {
   }
 
   warnDetail = (warnDetail) => { // 预警详情
-    const value = warnDetail.warningValue - warnDetail.warningDeadZone;
     const rule = warnDetail.warningRuler === 1 ? '小于' : '大于';
     const rule2 = warnDetail.warningRuler === 1 ? '大于或等于' : '小于或等于';
+    const value = warnDetail.warningRuler === 1 ? +warnDetail.warningValue + +warnDetail.warningDeadZone : warnDetail.warningValue - warnDetail.warningDeadZone;
     return (<div>
       <span>{'预警规则：'}</span>
       <div>{`当测点值 ${rule}${warnDetail.warningValue}会产生预警， 当测点${rule2}${value}时预警才会消失`}</div>

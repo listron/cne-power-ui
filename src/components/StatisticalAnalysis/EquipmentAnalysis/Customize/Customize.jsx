@@ -6,7 +6,7 @@ import moment from 'moment';
 import StationSelect from "../../../Common/StationSelect";
 import CustomizeTable from './CustomizeTable';
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
+const { RangePicker, MonthPicker } = DatePicker;
 
 class Customize extends Component {
   static propTypes = {
@@ -27,16 +27,16 @@ class Customize extends Component {
 
   timeSelect = (date, dateString) => {
     const { stationCode, anotherStationCode, manufacturer, anotherManufacturer, deviceModeId,
-      anotherDeviceModeId, deviceTypeNameLike} = this.props;
-    this.props.getDetailData({ 
-      params: { stationCode, manufacturer, deviceModeId, startDate: dateString[0], endDate: dateString[1],deviceTypeNameLike },
-      resultName:'detailData',
-     })
-    this.props.getDetailData({ 
-      params: { stationCode:anotherStationCode, manufacturer:anotherManufacturer, deviceModeId:anotherDeviceModeId, startDate: dateString[0], endDate: dateString[1],deviceTypeNameLike },
-      resultName:'anotherDetailData',
-     })
-     this.props.changeCustomizeStore({ startDate: dateString[0], endDate: dateString[1] })
+      anotherDeviceModeId, deviceTypeNameLike } = this.props;
+    this.props.getDetailData({
+      params: { stationCode, manufacturer, deviceModeId, startDate: dateString[0], endDate: dateString[1], deviceTypeNameLike },
+      resultName: 'detailData',
+    })
+    this.props.getDetailData({
+      params: { stationCode: anotherStationCode, manufacturer: anotherManufacturer, deviceModeId: anotherDeviceModeId, startDate: dateString[0], endDate: dateString[1], deviceTypeNameLike },
+      resultName: 'anotherDetailData',
+    })
+    this.props.changeCustomizeStore({ startDate: dateString[0], endDate: dateString[1] })
   }
 
   render() {
@@ -48,13 +48,21 @@ class Customize extends Component {
           <Select defaultValue="逆变器" style={{ width: 200, marginLeft: 15 }}  >
             <Option value="逆变器">逆变器</Option>
           </Select>
-          <RangePicker
+          {/* <RangePicker
             defaultValue={[moment(currentYearDay, 'YYYY-MM-DD'), moment(moment(), 'YYYY-MM-DD')]}
             format={'YYYY-MM-DD'}
             style={{ width: 230, marginLeft: 15, marginRight: 15 }}
             onChange={this.timeSelect}
             allowClear={false}
+          /> */}
+          <MonthPicker
+            defaultValue={moment(currentYearDay, 'YYYY-MM')}
+            format={'YYYY-MM'}
+            style={{ width: 230, marginLeft: 15, marginRight: 15 }}
+            onChange={this.timeSelect}
+            allowClear={false}
           />
+
         </div>
         <CustomizeTable {...this.props} />
       </div>
