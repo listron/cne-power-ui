@@ -75,19 +75,6 @@ class DetailRule extends Component {
     this.props.changeWarnStore({ showPage: 'home' })
   }
 
-  changeLevel = (e) => {
-    let result = '';
-    switch (e) {
-      case 1: result = '一'; break;
-      case 2: result = '二'; break;
-      case 3: result = '三'; break;
-      case 4: result = '四'; break;
-      case 5: result = '五'; break;
-      default: result = '--'; break;
-    }
-    return result
-  }
-
   warnDetail = (warnDetail) => { // 预警详情
     const value = warnDetail.warningValue - warnDetail.warningDeadZone;
     const rule = warnDetail.warningRuler === 1 ? '小于' : '大于';
@@ -137,7 +124,7 @@ class DetailRule extends Component {
                   </Tooltip>
                 </div>
                 <span className={styles.warningRuler}>{warnDetail.warningRuler === 1 ? '小于' : '大于'}{warnDetail.warningValue},震荡区间 {warnDetail.warningDeadZone} </span></div>
-              <div>预警级别 <span>{this.changeLevel(warnDetail.warningLevel)}级</span></div>
+              <div>预警级别 <span>{['一','二','三','四','五'][warnDetail.warningLevel-1]||'--'}级</span></div>
               <div>是否启用 <span>{warnDetail.warningEnabled === 1 ? '是' : '否' || '--'}</span></div>
             </div>
           </div>

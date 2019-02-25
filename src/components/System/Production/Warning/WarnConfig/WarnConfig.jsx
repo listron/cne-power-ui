@@ -42,12 +42,12 @@ class WarnConfig extends Component {
         getWarnList({ ...listQueryParams, pageNum: currentPage, pageSize, });
     }
 
-    onShowDetail=(record)=>{ // 查看详情
+    onShowDetail = (record) => { // 查看详情
         this.props.changeWarnStore({ showPage: 'detail' })
         this.props.getDetail(record.warningCheckId)
     }
 
-    wranEdit=(record)=>{
+    wranEdit = (record) => {
         this.props.changeWarnStore({ showPage: 'edit' })
         this.props.getDetail(record.warningCheckId)
     }
@@ -74,17 +74,17 @@ class WarnConfig extends Component {
 
     changeLevel = (e) => {
         let result = '';
-        switch(e){
-          case 1:result='一';break;
-          case 2:result='二';break;
-          case 3:result='三';break;
-          case 4:result='四';break;
-          case 5:result='五';break;
-          default:result='--';break;
+        switch (e) {
+            case 1: result = '一'; break;
+            case 2: result = '二'; break;
+            case 3: result = '三'; break;
+            case 4: result = '四'; break;
+            case 5: result = '五'; break;
+            default: result = '--'; break;
         }
         return result
-      }
-   
+    }
+
 
     render() {
         const warnListColumn = [{
@@ -102,6 +102,7 @@ class WarnConfig extends Component {
             title: '预警描述',
             dataIndex: 'warningDescription',
             key: 'warningDescription',
+            width:'350px'
         }, {
             title: '预警规则',
             dataIndex: 'warningCheckRule',
@@ -154,7 +155,7 @@ class WarnConfig extends Component {
                     loading={loading}
                     onChange={this.tableChange}
                     columns={warnListColumn}
-                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e,warningLevel: `${this.changeLevel(e.warningLevel)}级`}))}
+                    dataSource={warnList.map((e, i) => ({ key: e.warningCheckId, ...e, warningLevel: `${['一', '二', '三', '四', '五'][e.warningLevel - 1] || '--'}级` }))}
                     pagination={false}
                     rowSelection={rowSelection}
                     locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
