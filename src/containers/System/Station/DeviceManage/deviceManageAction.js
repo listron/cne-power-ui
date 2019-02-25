@@ -14,6 +14,13 @@ export const deviceManageAction = {
   getStationDeviceDetail: Symbol('getStationDeviceDetail'), // 获取设备详情页数据
   getOtherPageDeviceDetail: Symbol('getOtherPageDeviceDetail'), // 获取其他页详情页数据
   editDeviceDetail: Symbol('editDeviceDetail'), // 编辑设备详情页数据
+  getConnectDevice: Symbol('getConnectDevice'), // 关联设备数据
+  deleteDevice: Symbol('deleteDevice'), // 删除设备信息
+  addDeviceType:Symbol('addDeviceType'),
+  addDeviceMode:Symbol('addDeviceMode'),
+  checkDeviceName:Symbol('checkDeviceName'),
+  checkDeviceType:Symbol('checkDeviceType'),
+  checkDeviceMode:Symbol('checkDeviceMode'),
 }
 
 

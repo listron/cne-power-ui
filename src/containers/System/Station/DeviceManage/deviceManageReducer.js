@@ -18,8 +18,19 @@ const initState = Immutable.fromJS({
   deviceModels: [], // 电站设备类型下设备型号
   pvDeviceModels:[],//光伏组件下的设备型号
   allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
-  selectedStationIndex: null, // 展示详情的电站index
+  selectedStationIndex: null, // 展示详情的电站index 
   stationDeviceDetail:{},//设备详情
+  connectDevice:[],//关联设备
+  selectedRowKeys:[],//选择的行的索引
+  selectedRowData:[],//选择的行的数据
+  addDeviceTypeData:{},//添加设备类型结果
+  addSuccess:null,
+  deviceNameOk:null,
+  checkDeviceModeOk:null,
+  addDeviceModeData:{},//添加设备型号结果
+  checkDeviceNameData:{},//添加设备名重复结果
+  checkDeviceTypeData:{},//添加设备类型重复结果
+  checkDeviceModeData:{},//添加设备型号重复结果
 });
 
 const deviceManageReducer = (state = initState, action) => {

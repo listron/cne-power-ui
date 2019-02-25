@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest,select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { deviceManageAction } from './deviceManageAction';
@@ -81,8 +81,8 @@ function *addDeviceDetail(action){ // 增加设备详情；
 function *getStationDeviceDetail(action){ // 获取选中设备详情；
   const { payload } = action;
   const { selectedStationIndex } = payload;
-  // const url = '/mock/system/stationDetail/001';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.showDeviceInfo}/${payload.deviceFullcode}`
+   const url = '/mock/system/management/device/deviceFullcode';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.showDeviceInfo}/${payload.deviceFullCode}`
   try{
     const response = yield call(axios.get, url);
     // if(response.data.code === "10000"){
@@ -100,26 +100,49 @@ function *getStationDeviceDetail(action){ // 获取选中设备详情；
     message.error('获取电站设备详情失败，请重试');
   }
 }
+function *getConnectDevice(action){ // 获取设备类型关联设备；
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getConnectDevice}`
+  try{
+    const response = yield call(axios.get, url);
+    // if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        connectDevice: response.data.data || [],
+      }
+    })
+    // }
+  }catch(e){
+    console.log(e);
+    message.error('获取关联设备失败，请重试');
+  }
+}
 
 function *getOtherPageDeviceDetail(action){ // 设备详情页面翻页时请求详情+table数据翻页
+  console.log('翻页函数执行');
   const { payload } = action;
+  console.log('payload: ', payload);
   const listUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDeviceList}`
   try{
     yield put({ type:deviceManageAction.DEVICE_MANAGE_FETCH });
     const { selectedStationIndex } = payload;
-    delete payload.selectedStationIndex;
-    const listResponse = yield call(axios.post, listUrl, payload);
-    const selectedStationCode = listResponse.data.data.context[selectedStationIndex].stationCode;
-    const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${selectedStationCode}`
+    //delete payload.selectedStationIndex;
+    const listResponse = yield call(axios.post, listUrl, {...payload});
+
+    const selecteddeviceFullCode = listResponse.data.data.context[selectedStationIndex].deviceFullCode;
+    const detailUrl = '/mock/system/management/device/deviceFullcode';
+    // const detailUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.showDeviceInfo}/${selecteddeviceFullCode}`
     const detailResponse = yield call(axios.get, detailUrl);
-    if(detailResponse.data.code === "10000"){
+    if(1){
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           ...payload,
           selectedStationIndex,
           deviceList: listResponse.data.data.context || [],
-          totalNum: listResponse.data.data.total || 0,
+          totalNum: listResponse.data.data.totalNum || 0,
+          stationDeviceDetail: detailResponse.data.data || {},
         }
       })
     }else{
@@ -142,7 +165,7 @@ function *editDeviceDetail(action){ // 编辑设备详情；
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.editDeviceInfo}`
   try{
-    const response = yield call(axios.put, url);
+    const response = yield call(axios.put, url,{...payload});
     // if(response.data.code === "10000"){
     yield put({
       type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -155,6 +178,162 @@ function *editDeviceDetail(action){ // 编辑设备详情；
     message.error('编辑电站详情失败，请重试');
   }
 }
+function *deleteDevice(action){ // 删除设备信息；
+  const { payload } = action;
+  console.log('payload: ', payload);
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteDevice}`
+  try{
+    const response = yield call(axios.delete, url,{data:payload.deviceFullcodes});
+    // if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        selectedRowKeys:[],
+        selectedRowData:[]
+
+      }
+    })
+    const params = yield select(state => ({//继续请求部门列表
+     stationCode: state.system.deviceManage.get('stationCode'),
+     pageNum: state.system.deviceManage.get('pageNum'),
+     pageSize: state.system.deviceManage.get('pageSize'),
+     deviceModeCode: state.system.deviceManage.get('deviceModeCode'),
+     deviceTypeCode: state.system.deviceManage.get('deviceTypeCode'),
+     sortMethod: state.system.deviceManage.get('sortMethod'),
+     sortField: state.system.deviceManage.get('sortField'),
+    }));
+    yield put({
+      type:  deviceManageAction.GET_DEVICE_MANAGE_LIST,
+      payload: params,
+    });
+    // }
+  }catch(e){
+    console.log(e);
+    message.error('删除设备信息失败，请重试');
+  }
+}
+
+function *checkDeviceMode(action){ // 查询设备型号是否重复
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.checkDeviceMode}/${payload.deviceModeName}`
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        checkDeviceModeData: response.data.data || {},
+        checkDeviceModeOk:true
+      }
+    })
+    }else{
+      throw response.data.data
+    }
+  }catch(e){
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
+      payload: {
+        checkDeviceModeOk:true
+      }
+    })
+    console.log(e);
+    message.error('查询设备型号是否重复失败，请重试');
+  }
+}
+function *checkDeviceType(action){ // 查询设备类型是否重复
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.checkDeviceType}/${payload.deviceTypeName}`
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        checkDeviceTypeData: response.data.data || {},
+      }
+    })
+    }else{
+      throw response.data.data 
+    }
+  }catch(e){
+    console.log(e);
+    message.error('查询设备类型是否重复失败，请重试');
+  }
+}
+function *checkDeviceName(action){ // 查询设备名字是否重复
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.checkDeviceName}/${payload.deviceName}`
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        checkDeviceNameData: response.data.data || {},
+        deviceNameOk:true,
+      }
+    })
+    }else{
+      throw response.data.data 
+    }
+  }catch(e){
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
+      payload: {
+        deviceNameOk:true,
+      }
+    })
+    console.log(e);
+    message.error('查询设备名字是否重复失败，请重试');
+  }
+}
+function *addDeviceMode(action){ // 添加设备型号
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addDeviceMode}`
+  try{
+    const response = yield call(axios.post,url,payload);
+    // if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        addDeviceModeData: response.data.data || {},
+      }
+    })
+    // }
+  }catch(e){
+    console.log(e);
+    message.error('添加设备型号失败，请重试');
+  }
+}
+function *addDeviceType(action){ // 添加设备类型
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addDeviceType}`
+  try{
+    const response = yield call(axios.post,url,payload);
+    if(response.data.code === "10000"){
+      message.success('添加设备类型成功')
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+
+        addDeviceTypeData: response.data.data || {},
+        addSuccess:true
+      }
+    })
+    }else{
+      throw response.data.data
+    }
+  }catch(e){
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
+      payload: {
+        addSuccess:true
+      }
+    })
+    console.log(e);
+    message.error('添加设备类型失败，请重试');
+  }
+}
 
 
 export function* watchDeviceManage() {
@@ -163,7 +342,14 @@ export function* watchDeviceManage() {
   yield takeLatest(deviceManageAction.GET_DEVICE_MANAGE_LIST,getDeviceList);
   yield takeLatest(deviceManageAction.addDeviceDetail,addDeviceDetail);
   yield takeLatest(deviceManageAction.getStationDeviceDetail,getStationDeviceDetail);
-  yield takeLatest(deviceManageAction.getStationDeviceDetail,getOtherPageDeviceDetail);
+  yield takeLatest(deviceManageAction.getOtherPageDeviceDetail,getOtherPageDeviceDetail);
   yield takeLatest(deviceManageAction.editDeviceDetail,editDeviceDetail);
+  yield takeLatest(deviceManageAction.getConnectDevice,getConnectDevice);
+  yield takeLatest(deviceManageAction.deleteDevice,deleteDevice);
+  yield takeLatest(deviceManageAction.checkDeviceMode,checkDeviceMode);
+  yield takeLatest(deviceManageAction.checkDeviceType,checkDeviceType);
+  yield takeLatest(deviceManageAction.checkDeviceName,checkDeviceName);
+  yield takeLatest(deviceManageAction.addDeviceMode,addDeviceMode);
+  yield takeLatest(deviceManageAction.addDeviceType,addDeviceType);
 }
 

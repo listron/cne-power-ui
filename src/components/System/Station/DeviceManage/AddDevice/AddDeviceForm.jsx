@@ -22,6 +22,33 @@ class AddDeviceForm extends Component {
       showAddDeviceMode: false,
     }
   }
+  componentWillReceiveProps(nextprops){
+    console.log('11111111');
+    const{deviceNameOk}=nextprops;
+    console.log(deviceNameOk);
+    if(deviceNameOk!==this.props.deviceNameOk&&deviceNameOk===true){
+      this.props.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          let branchCountArr = [];
+          for (let i = 0; i < values.branchCount; i++) {
+            branchCountArr.push(i + 1)
+          }
+          if(values.branchCount){
+            values.connectedBranches = branchCountArr.map((e, i) => {
+              return values.connectedBranches.includes(e) ? 1 : 0
+            })
+          }
+          values.stationCode = values.stationCode[0].stationCode;
+          this.props.addDeviceDetail({ ...values })
+        }else{
+          console.log(err);
+        }
+      });
+  
+  
+    }
+
+  }
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
     getStationDeviceTypes({
@@ -47,12 +74,13 @@ class AddDeviceForm extends Component {
         for (let i = 0; i < values.branchCount; i++) {
           branchCountArr.push(i + 1)
         }
-        values.connectedBranches=  branchCountArr.map((e, i) => {
+        values.connectedBranches = branchCountArr.map((e, i) => {
           return values.connectedBranches.includes(e) ? 1 : 0
         })
-        values.stationCode= values.stationCode[0].stationCode;
-        
-        this.props.addDeviceDetail({ ...values })
+        values.stationCode = values.stationCode[0].stationCode;
+        this.props.checkDeviceName({deviceName:values.deviceName})
+
+        // this.props.addDeviceDetail({ ...values })
       }
     });
 
@@ -77,7 +105,7 @@ class AddDeviceForm extends Component {
   render() {
     const { showAddDeviceModeModal, showAddDeviceMode, deviceModeCodeAdd, manufacturerAdd } = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation, pvDeviceModels } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation, pvDeviceModels,connectDevice,addDeviceTypeData } = this.props;
     const stationName = selectStation ? selectStation[0].stationName : '';
     // const typeSelectDisable = stationDeviceTypes.length === 0;
     const deviceTypeName = getFieldValue('deviceTypeCode');
@@ -101,8 +129,9 @@ class AddDeviceForm extends Component {
                   <span>{stationName}</span>
                 )}
               </FormItem>
+              {/*// addDeviceTypeData.deviceTypeCode*/}
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('deviceTypeCode', {
+                {getFieldDecorator('deviceTypeCode', {initialValue:'asd',
                   rules: [
                     { message: '请选择设备类型', required: true, },
                   ]
@@ -149,8 +178,6 @@ class AddDeviceForm extends Component {
                     <Input placeholder="不超过30字" />
                   )}
                 </FormItem>}
-
-
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('lotNumber')(
                   <Input placeholder="不超过30字" />
@@ -160,7 +187,12 @@ class AddDeviceForm extends Component {
             <div className={styles.valueStyles}>
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('pareneDeviceName')(
-                  <Input placeholder="不超过30字" />
+                  <Select placeholder="请选择关联设备" disabled={connectDevice.length===0}>
+                    {connectDevice.map((e,i)=>{
+                      if (!e) { return null; }
+                      return <Option key={i} value={e.pareneDeviceName}>{e.pareneDeviceName}</Option>
+                    })}
+                  </Select>
                 )}
               </FormItem>
               <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>

@@ -98,6 +98,9 @@
             color: #199475;
           }
         }
+        .submitStyle{
+          margin:40px 0 0 216px;
+        }
        
       }
       .rightContainer{
@@ -147,7 +150,7 @@
         }
         .submitStyle{
 
-          margin:100px 0 0 100px;
+          margin:40px 0 0 100px;
           .preStyles{
             margin-right: 40px;
           }
@@ -156,7 +159,7 @@
     
       :global{
         .ant-form-item, .ant-form-horizontal{
-          margin-bottom:8px;
+          margin-bottom:4px;
         }
        
         .ant-select, .ant-cascader-picker{

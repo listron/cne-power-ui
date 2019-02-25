@@ -9,9 +9,9 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '设备名称', value: detailData.deviceName, },
     { name: '设备型号', value: detailData.deviceModeName, },
     { name: '生产厂家', value: detailData.manufacturer, },
-    { name: '批次号', value: detailData.lotNumbe,  },
+    { name: '批次号', value: detailData.lotNumber,  },
     { name: '关联设备', value: detailData.pareneDeviceName,  },
-    { name: '是否为样板机', value: detailData.templateMachine,  },
+    { name: '是否为样板机', value: ['否','是'][detailData.templateMachine], },
     { name: '额定容量', value: detailData.ratedPower, },
     { name: '装机容量', value: detailData.deviceCapacity, },
     { name: '经度', value: `${longitude}`, },
@@ -35,7 +35,7 @@ export const windTimeFun = (detailData) => {
     { name: '进入质保时间', value: detailData.warrantyBegintime?moment(detailData.warrantyBegintime).format('YYYY-MM-DD'):'',},
     { name: '出质保时间', value: detailData.warrantyEndtime?moment(detailData.warrantyEndtime).format('YYYY-MM-DD'):'',},
     { name: '报废时间', value: detailData.scrapTime?moment(detailData.scrapTime).format('YYYY-MM-DD'):'',},
-    { name: '轮毂高度', value: detailData.hubHeight?moment(detailData.hubHeight).format('YYYY-MM-DD'):'',},
+    { name: '轮毂高度', value: detailData.hubHeight},
   ];
   return windTimeArray;
 }

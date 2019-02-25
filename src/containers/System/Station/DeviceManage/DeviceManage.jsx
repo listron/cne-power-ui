@@ -98,7 +98,7 @@ class DeviceManage extends Component {
             effect="side"
           >
          
-           <DeviceSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+           <DeviceSide {...this.props} queryParams={queryParams} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
         </div>
         <Footer />
@@ -154,6 +154,17 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceDetail:payload => dispatch({ type: deviceManageAction.getStationDeviceDetail, payload }),
   getOtherPageDeviceDetail:payload => dispatch({ type: deviceManageAction.getOtherPageDeviceDetail, payload }),
   editDeviceDetail:payload => dispatch({ type: deviceManageAction.editDeviceDetail, payload }),
+  getConnectDevice:payload => dispatch({ type: deviceManageAction.getConnectDevice, payload }),
+  deleteDevice:payload => dispatch({ type: deviceManageAction.deleteDevice, payload }),
+
+  addDeviceType:payload => dispatch({ type: deviceManageAction.addDeviceType, payload }),
+  addDeviceMode:payload => dispatch({ type: deviceManageAction.addDeviceMode, payload }),
+  checkDeviceName:payload => dispatch({ type: deviceManageAction.checkDeviceName, payload }),
+  checkDeviceType:payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
+  checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
+
+
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);

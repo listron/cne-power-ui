@@ -20,10 +20,10 @@ class UserSide extends Component {
   }
 
   render(){
-    const { showSidePage } = this.props;
+    const { showSidePage,queryParams } = this.props;
     return (
       <div className={styles.deviceSide}>
-        { showSidePage === 'detail' && <DetailDevice {...this.props} /> }
+        { showSidePage === 'detail' && <DetailDevice {...this.props}  /> }
         { showSidePage === 'add' && <AddDevice {...this.props} /> } 
         { showSidePage === 'edit' && <EditDevice {...this.props} /> }
       

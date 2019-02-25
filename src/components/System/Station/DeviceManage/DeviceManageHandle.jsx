@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './deviceManage.scss';
 import ImportDevice from './ImportDevice';
 import CommonPagination from '../../../Common/CommonPagination';
+import WarningTip from '../../../Common/WarningTip';
 import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
@@ -19,7 +20,9 @@ class DeviceManageHandle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      showDeleteWarning:false,
+      warningTipText:'确定要删除选中设备信息?'
     }
   }
 
@@ -35,7 +38,7 @@ class DeviceManageHandle extends Component {
     this.props.changeDeviceManageStore({showPage:'add'})
   }
   deletDevice = () => {
-    alert('shanchu ')
+    this.setState({showDeleteWarning:true});
   }
   showModal = () => {
     this.setState({
@@ -46,9 +49,20 @@ class DeviceManageHandle extends Component {
   cancelModal = () => {
     this.setState({ showModal: false })
   }
+  cancelWarningTip=()=>{
+    this.setState({showDeleteWarning:false})
+  }
+  confirmWarningTip=()=>{
+    const {selectedRowData,deleteDevice}=this.props;
+    const deviceFullcodes=selectedRowData.map((e,i)=> {
+      return e.deviceFullCode
+    })
+    deleteDevice({deviceFullcodes})
+    this.setState({showDeleteWarning:false})
+  }
 
   render() {
-    const { showModal } = this.state;
+    const { showModal,showDeleteWarning,warningTipText } = this.state;
     const { totalNum, deviceList, stationCode, pageSize, pageNum } = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
     const test = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
@@ -63,6 +77,7 @@ class DeviceManageHandle extends Component {
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         {showModal ?<ImportDevice showModal={showModal} cancelModal={this.cancelModal} />  : ''}
+        {showDeleteWarning&&<WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
       </div>
 
     );

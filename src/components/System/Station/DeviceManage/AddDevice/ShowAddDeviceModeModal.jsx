@@ -10,6 +10,25 @@ class ShowAddDeviceModeModal extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  componentWillReceiveProps(nextProps){
+    const{checkDeviceModeOk,addDeviceTypeData}=nextProps;
+    if(checkDeviceModeOk!==this.props.checkDeviceModeOk&&checkDeviceModeOk===true){
+      this.props.form.validateFieldsAndScroll(["deviceModeCode","manufacturer"],(err,values)=>{
+        if(!err){
+          this.props.addDeviceMode({
+            deviceTypeCode:addDeviceTypeData.deviceTypeCode,
+            deviceModeName:values.deviceModeCode,
+            manufacturer:values.manufacturer,
+          })
+            this.props.saveFormState(values)
+           this.props.cancleDeviceModeModal()
+        }
+      })
+
+     
+    }
+   
+  }
   handleCancel = () => {
     this.props.cancleDeviceModeModal()
   }
@@ -17,19 +36,19 @@ class ShowAddDeviceModeModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
+    const{addDeviceTypeData}=this.props;
     // const {stationDeviceTypes}=this.props;
 
    
     this.props.form.validateFieldsAndScroll(["deviceModeCode","manufacturer"],(err,values)=>{
-      console.log(values,'values');
-   
       if(!err){
-        if(values.deviceTypeName==='test'){
-          message.error('设备名称名称重复')
-        }else{
-          this.props.saveFormState(values)
-           this.props.cancleDeviceModeModal()
-        }
+       this.props.checkDeviceMode({
+        deviceModeName:values.deviceModeCode
+       })
+        
+          // this.props.saveFormState(values)
+          //  this.props.cancleDeviceModeModal()
+       
       }
     })
   

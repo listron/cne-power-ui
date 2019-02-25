@@ -14,6 +14,11 @@ class EditDevice extends Component {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',
     }
+   
+  }
+  backToList=()=>{
+    this.props.changeDeviceManageStore({ showPage: 'detail' });
+    this.props.onShowSideChange('detail');
   }
   render() {
     const { showWarningTip, warningTipText, } = this.state;
@@ -22,7 +27,7 @@ class EditDevice extends Component {
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.editTop}>
           <span className={styles.text}>编辑</span>
-          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
         </div>
         <EditDeviceForm {...this.props} />
       </div>

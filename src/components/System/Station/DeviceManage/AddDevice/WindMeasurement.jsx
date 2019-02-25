@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 import { Input, Form, DatePicker, Select,  } from 'antd';
 const FormItem = Form.Item;
+import moment from 'moment';
 
-const WindMeasurement =({form})=>{
+const WindMeasurement =({form,stationDeviceDetail})=>{
   const { getFieldDecorator } = form;
   return(
     <div className={styles.rightStyles}>
@@ -13,7 +14,7 @@ const WindMeasurement =({form})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('altitude')(
+        {getFieldDecorator('altitude',{ initialValue:stationDeviceDetail.altitude})(
           <Input placeholder="保留小数点后两位" />
         )}米
       </FormItem>
@@ -23,7 +24,7 @@ const WindMeasurement =({form})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('towerAssemblyTime')(
+        {getFieldDecorator('towerAssemblyTime',{ initialValue:moment(stationDeviceDetail.towerAssemblyTime),})(
           <DatePicker />
         )}
       </FormItem>
@@ -32,7 +33,7 @@ const WindMeasurement =({form})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('towerHeight')(
+        {getFieldDecorator('towerHeight',{ initialValue:stationDeviceDetail.towerHeight})(
           <Input placeholder="保留小数点后两位" />
         )}
       </FormItem>
@@ -41,7 +42,7 @@ const WindMeasurement =({form})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('windMeasurementEquipment')(
+        {getFieldDecorator('windMeasurementEquipment',{ initialValue:stationDeviceDetail.windMeasurementEquipment})(
           <Input placeholder="不超过30字" />
         )}米
       </FormItem>
