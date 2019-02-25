@@ -11,6 +11,7 @@ export default function table(props) {
         const judgementStandard=e.indexLowerLimit===e.indexUpperLimit ?e.indexLowerLimit:`${e.indexLowerLimit}~${e.indexUpperLimit}`
         return  ({
             ...e,
+            key:i,
             judgementStandard: judgementStandard
         })
     })
@@ -85,7 +86,6 @@ export default function table(props) {
 
    
     return (
-
         <div className={`${styles.scoreTable}  ${styles[getColor(sigleData.scoreLevel)]}`}>
             <div className={styles.text}>
                 <p className={styles.stationScore}>{sigleData.stationName} {title(sigleData)} </p>
