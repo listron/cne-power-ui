@@ -74,6 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'stationDeviceTypes'
     }
   }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataHistory);

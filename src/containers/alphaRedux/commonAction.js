@@ -28,5 +28,6 @@ export const commonAction = {
   getDictionaryInfo: Symbol('getDictionaryInfo'),  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
 
   getWeather: Symbol('getWeather'), // 获取天气列表数据
+  downLoadFile: Symbol('downLoadFile'), // 下载文件
 }
 

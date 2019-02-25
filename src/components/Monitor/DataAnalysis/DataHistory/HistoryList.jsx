@@ -51,10 +51,10 @@ class HistoryList extends Component {
 
   render() {
     const { partHistory, listParam, queryParam } = this.props;
-    const { total, list } = partHistory;
+    const { total, list = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize, orderField } = listParam;
-    const { pointData = [] } = list[0];
+    const { pointData = [] } = list[0] || {};
     const columns = [
       {
         title: '设备名称',
