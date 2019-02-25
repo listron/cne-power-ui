@@ -86,7 +86,7 @@ function* getPerformance(action) {
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailability}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload})]);
+      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload,availabilitySortField:0})]);
       if(conversioneff.data.code === '10000') {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
@@ -123,7 +123,7 @@ function* getFault(action) {
     const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHours}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-      const [availability,faultNum,faultTime] = yield all([call(axios.post,availabilityUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
+      const [availability,faultNum,faultTime] = yield all([call(axios.post,availabilityUrl,{...payload,availabilitySortField:1}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
       if(availability.data.code==='10000'){
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
