@@ -112,7 +112,7 @@ class WarnConfig extends Component {
             dataIndex: 'warningLevel',
             key: 'warningLevel',
             sorter: true,
-            defaultSortOrder: 'descend',
+            defaultSortOrder: 'ascend',
         }, {
             title: '是否启用',
             dataIndex: 'warningEnable',
