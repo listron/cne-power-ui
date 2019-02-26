@@ -106,6 +106,10 @@ class TimeSelect extends React.Component {
     this.props.onChange({ ...params });
   }
 
+  disabledDate = (current) => { // 不可以选择的时间
+    return current > moment().endOf('day');
+  }
+
 
 
   render() {
@@ -127,6 +131,7 @@ class TimeSelect extends React.Component {
           onChange={this.onMonthSelect} 
           placeholder="选择月份" 
           allowClear={false}
+          disabledDate={this.disabledDate}
         />}
         {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}
         {timeStyle === 'year' && <span>
