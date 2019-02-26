@@ -70,12 +70,10 @@ function *getRealtimeList(action) { // 实时表格数据获取
   const { queryParam, listParam } = payload;
   const url = '/mock/monitor/dataAnalysisListRealtime'; // `${APIBasePath}${monitor.getRealtimeList}`;
   try{
-    const { devicePoint, startTime, endTime } = queryParam;
+    const { devicePoint } = queryParam;
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
     const { total = 0 } = response.data.data;
@@ -96,7 +94,7 @@ function *getRealtimeList(action) { // 实时表格数据获取
             pageNum, 
             pageSize
           },
-          partHistory: response.data.data || {},
+          listRealtime: response.data.data || {},
         }
       })
     } else {
@@ -137,3 +135,14 @@ export function* watchDataRealtimeMonitor() {
   yield takeLatest(realtimeAction.getRealtimeList, getRealtimeList);
   yield takeLatest(realtimeAction.getSecendInterval, getSecendInterval);
 }
+
+
+// todo 参数选择完成时, 需根据是哪种请求格式来定制实时请求：实时请求图表或实时请求列表。
+
+// 每当切换图表或列表时，需刷新数，重新请求。
+
+// const queryExisting = null; // 记录的fork请求
+
+// function *getChartInterval (){
+
+// }
