@@ -163,7 +163,7 @@ const mapDispatchToProps = (dispatch) => ({
   checkDeviceType:payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
   checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
 
-
+  deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload })
   
 });
 

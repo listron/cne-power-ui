@@ -21,8 +21,8 @@ class DeviceManageHandle extends Component {
     super(props);
     this.state = {
       showModal: false,
-      showDeleteWarning:false,
-      warningTipText:'确定要删除选中设备信息?'
+      showDeleteWarning: false,
+      warningTipText: '确定要删除选中设备信息?'
     }
   }
 
@@ -34,11 +34,11 @@ class DeviceManageHandle extends Component {
       pageSize,
     })
   }
-  addDevice=()=>{
-    this.props.changeDeviceManageStore({showPage:'add'})
+  addDevice = () => {
+    this.props.changeDeviceManageStore({ showPage: 'add' })
   }
   deletDevice = () => {
-    this.setState({showDeleteWarning:true});
+    this.setState({ showDeleteWarning: true });
   }
   showModal = () => {
     this.setState({
@@ -49,35 +49,39 @@ class DeviceManageHandle extends Component {
   cancelModal = () => {
     this.setState({ showModal: false })
   }
-  cancelWarningTip=()=>{
-    this.setState({showDeleteWarning:false})
+  cancelWarningTip = () => {
+    this.setState({ showDeleteWarning: false })
   }
-  confirmWarningTip=()=>{
-    const {selectedRowData,deleteDevice}=this.props;
-    const deviceFullcodes=selectedRowData.map((e,i)=> {
+  confirmWarningTip = () => {
+    const { selectedRowData, deleteDevice } = this.props;
+    const deviceFullcodes = selectedRowData.map((e, i) => {
       return e.deviceFullCode
     })
-    deleteDevice({deviceFullcodes})
-    this.setState({showDeleteWarning:false})
+    deleteDevice({ deviceFullcodes })
+    this.setState({ showDeleteWarning: false })
+  }
+  deleteStationDevice = () => {
+
   }
 
   render() {
-    const { showModal,showDeleteWarning,warningTipText } = this.state;
+    const { showModal, showDeleteWarning, warningTipText } = this.state;
     const { totalNum, deviceList, stationCode, pageSize, pageNum } = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
     const test = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
     return (
       <div className={styles.deviceManageHandle}>
         <div className={styles.left}>
-          <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
-          <Button className={styles.deletStyle} onClick={this.deletDevice} >删除</Button>
-          <Button className={styles.downloadStyle} href={test} download={test} target="_blank"  >下载设备信息导入模板</Button>
-          <Button className={styles.import} onClick={this.showModal}>导入</Button>
-          <Button disabled={deviceList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref} target="_blank"  >导出设备信息表</Button>
+            <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
+            <Button className={styles.deletStyle} onClick={this.deletDevice} >删除</Button>
+            <Button className={styles.downloadStyle} href={test} download={test} target="_blank"  >下载设备信息导入模板</Button>
+            <Button className={styles.import} onClick={this.showModal}>导入</Button>
+            <Button disabled={deviceList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref} target="_blank"  >导出</Button>
+            <Button onClick={this.deleteStationDevice} disabled={!stationCode}>清除设备</Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
-        {showModal ?<ImportDevice showModal={showModal} cancelModal={this.cancelModal} />  : ''}
-        {showDeleteWarning&&<WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+        {showModal ? <ImportDevice showModal={showModal} cancelModal={this.cancelModal} /> : ''}
+        {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
       </div>
 
     );

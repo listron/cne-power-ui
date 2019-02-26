@@ -213,6 +213,42 @@ function *deleteDevice(action){ // 删除设备信息；
   }
 }
 
+function *deleteStationDevice(action){ // 清除设备；
+  const { payload } = action;
+  console.log('payload: ', payload);
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteDevice}`
+  try{
+    const response = yield call(axios.post, url,payload);
+    // if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        selectedRowKeys:[],
+        selectedRowData:[]
+
+      }
+    })
+    const params = yield select(state => ({//继续请求部门列表
+     stationCode: state.system.deviceManage.get('stationCode'),
+     pageNum: state.system.deviceManage.get('pageNum'),
+     pageSize: state.system.deviceManage.get('pageSize'),
+     deviceModeCode: state.system.deviceManage.get('deviceModeCode'),
+     deviceTypeCode: state.system.deviceManage.get('deviceTypeCode'),
+     sortMethod: state.system.deviceManage.get('sortMethod'),
+     sortField: state.system.deviceManage.get('sortField'),
+    }));
+    yield put({
+      type:  deviceManageAction.GET_DEVICE_MANAGE_LIST,
+      payload: params,
+    });
+    // }
+  }catch(e){
+    console.log(e);
+    message.error('删除电站设备信息失败，请重试');
+  }
+}
+
+
 function *checkDeviceMode(action){ // 查询设备型号是否重复
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.checkDeviceMode}/${payload.deviceModeName}`
@@ -351,5 +387,6 @@ export function* watchDeviceManage() {
   yield takeLatest(deviceManageAction.checkDeviceName,checkDeviceName);
   yield takeLatest(deviceManageAction.addDeviceMode,addDeviceMode);
   yield takeLatest(deviceManageAction.addDeviceType,addDeviceType);
+  yield takeLatest(deviceManageAction.deleteStationDevice,deleteStationDevice);
 }
 

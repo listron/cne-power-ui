@@ -69,13 +69,21 @@
       color: $darkColor;
     }
   }
+  .left{
+    display: flex;
+    justify-content: space-between;
+  }
   .deletStyle,.downloadStyle,.import{
-    margin:0 12px;
+    margin:0 4px;
   }
   .exportInfo{
-    margin-left: 24px;
+    margin-left: 12px;
     // background-color: #dfdfdf;
     // color: #fff;
+  }
+  .deleteStationDevice{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
