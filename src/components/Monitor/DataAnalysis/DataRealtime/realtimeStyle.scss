@@ -1,0 +1,53 @@
+@import '../../../../theme/theme.scss';
+
+.realtimeSearch{
+  
+  .typeCheck{
+    display: flex;
+    .typeNormal, .typeActive{
+      height: 40px;
+      line-height: 40px;
+      flex-basis: 120px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid $promptColor;
+      border-left: none;
+      color: $lightColor;
+      background-color: #f8f8f8;
+    }
+    .typeActive{
+      background-color: #fff;
+      border-top: 2px solid $themeColor;
+      border-bottom: none;
+      color: #000;
+    }
+    .holder{
+      flex: 1;
+      background-color: #f8f8f8;
+      border-top: 1px solid $promptColor;
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+  .searchPart{
+    padding: 20px 0;
+    display: flex;
+    .stationSelect, .typeSelect{
+      flex: 0 0 25%;
+    }
+    .deviceSelect{
+      flex: 0 0 50%;
+    }
+    .stationSelect, .typeSelect, .deviceSelect{
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+      .text{
+        flex: 0 0 96px;
+        text-align: right;
+        margin-right: 8px;
+      }
+    }
+  } 
+}

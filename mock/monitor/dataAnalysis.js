@@ -130,5 +130,78 @@ module.exports = [
       }
     },
     error: {}
+  }, { // 数据分析 - 实时chart
+    api: '/mock/monitor/dataAnalysisChartRealtime',
+    method: 'post',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        pointTime: ['2018-01-11 18:20:30', '2018-01-11 18:20:35', '2018-01-11 18:20:40', '2018-01-11 18:20:45', '2018-01-11 18:20:50'], 
+        pointInfo: [
+          {
+            pointName: '背板温度',
+            pointCode: 'temp',
+            deviceInfo: [ // 每个测点下，各个设备的5组数据。
+              {
+                deviceCode: 'M350M206M2M1',
+                deviceName: '汇流箱2#1',
+                pointValue: ['12.12', '15.44', '0.74', null, '22.11']
+              },{
+                deviceCode: 'M350M206M2M2',
+                deviceName: '汇流箱2#2',
+                pointValue: ['52.12', '11.44', null, null, '0.11']
+              },{
+                deviceCode: 'M350M206M2M3',
+                deviceName: '汇流箱2#3',
+                pointValue: [null, null, null, null, null]
+              }
+            ]
+          }, {
+            pointName: '组件节温',
+            pointCode: 'xb01',
+            deviceInfo: [
+              {
+                deviceCode: 'M350M206M2M1',
+                deviceName: '汇流箱2#1',
+                pointValue: ['22', '18', '0', '2.47', '9.57']
+              },{
+                deviceCode: 'M350M206M2M2',
+                deviceName: '汇流箱2#2',
+                pointValue: ['52.12', '11.44', '10.14', '9.77', '9.11']
+              },{
+                deviceCode: 'M350M206M2M3',
+                deviceName: '汇流箱2#3',
+                pointValue: ['12.11', '23.14', '11.11', '8.10', '2.11']
+              }
+            ]
+          },
+        ]
+      }
+    },
+    error: {}
+  }, { // 数据分析 - 实时list
+    api: '/mock/monitor/dataAnalysisListRealtime',
+    method: 'post',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        total: 124,
+        list: [1, 2, 3, 4, 5, 6, 7, 8].map((e, i) => ({
+          deviceName: '',
+          stationName: '',
+          deviceTypeName: '',
+          deviceModeName: '',
+          pointData: ['first', 'secend', 'third'].map((point, index) => ({
+            devicePointCode: point,
+            pointName: point,
+            pointValue: e * e * index,
+            pointUnit: ['kW', 'h', '台'][index]
+          }))
+        })),
+      }
+    },
+    error: {}
   }
 ]

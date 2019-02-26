@@ -1,7 +1,7 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest, select, fork, cancel } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import { historyAction } from './historyReducer';
+import { realtimeAction } from './realtimeReducer';
 import { message } from 'antd';
 import moment from 'moment';
 const { APIBasePath } = Path.basePaths;
@@ -13,10 +13,10 @@ function *getPointInfo(action) { // 获取可选测点
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
   try {
     const response = yield call(axios.post, url, { deviceId: deviceFullCode.map(e => e.deviceCode) });
-    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
+    const { queryParam } = yield select(state => state.monitor.dataRealtime.toJS());
     if (response.data.code === '10000') {
       yield put({
-        type: historyAction.GET_HISTORY_SUCCESS,
+        type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
           queryParam: {
             ...queryParam,
@@ -24,8 +24,8 @@ function *getPointInfo(action) { // 获取可选测点
             devicePoint: [],
           },
           pointInfo: response.data.data || [],
-          allHistory: {},
-          partHistory: {},
+          chartRealtime: {},
+          listRealtime: {},
         }
       })
     } else {
@@ -37,25 +37,23 @@ function *getPointInfo(action) { // 获取可选测点
   }
 }
 
-function *getChartHistory(action) { // 历史趋势chart数据获取
+function *getRealtimeChart(action) { // 实时chart数据获取
   const { payload } = action;
   const { queryParam } = payload;
-  const url = '/mock/monitor/dataAnalysis/allHistory'; // `${APIBasePath}${monitor.getAllHistory}`;
+  const url = '/mock/monitor/dataAnalysisChartRealtime'; // `${APIBasePath}${monitor.getRealtimeChart}`;
   try{
-    const { devicePoint, startTime, endTime } = queryParam;
+    const { devicePoint } = queryParam;
     const response = yield call(axios.post, url, {
       ...queryParam,
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
     if (response.data.code === '10000') {
       yield put({
-        type: historyAction.GET_HISTORY_SUCCESS,
+        type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
           queryParam,
-          chartTime: moment().unix(), // 用于比较
-          allHistory: response.data.data || {},
+          dataTime: moment().unix(), // 用于比较
+          chartRealtime: response.data.data || {},
         }
       })
     } else {
@@ -67,10 +65,10 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   }
 }
 
-function *getListHistory(action) { // 表格数据获取
+function *getRealtimeList(action) { // 实时表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
-  const url = '/mock/monitor/dataAnalysis/listHistory'; // `${APIBasePath}${monitor.getListHistory}`;
+  const url = '/mock/monitor/dataAnalysisListRealtime'; // `${APIBasePath}${monitor.getRealtimeList}`;
   try{
     const { devicePoint, startTime, endTime } = queryParam;
     const response = yield call(axios.post, url, {
@@ -90,7 +88,7 @@ function *getListHistory(action) { // 表格数据获取
     }
     if (response.data.code === '10000') {
       yield put({
-        type: historyAction.GET_HISTORY_SUCCESS,
+        type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
           queryParam,
           listParam: {
@@ -119,9 +117,9 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;
       yield put({
-        type: historyAction.GET_HISTORY_SUCCESS,
+        type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
-          intervalInfo: hasSecond === 1 ? [1, 5 ,10] : [5 ,10],
+          intervalInfo: hasSecond === 1 ? 1 : 5, // 1s级数据与5s级数据。
         }
       })
     } else {
@@ -133,9 +131,9 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   }
 }
 
-export function* watchDataHistoryMonitor() {
-  yield takeLatest(historyAction.getPointInfo, getPointInfo);
-  yield takeLatest(historyAction.getChartHistory, getChartHistory);
-  yield takeLatest(historyAction.getListHistory, getListHistory);
-  yield takeLatest(historyAction.getSecendInterval, getSecendInterval);
+export function* watchDataRealtimeMonitor() {
+  yield takeLatest(realtimeAction.getPointInfo, getPointInfo);
+  yield takeLatest(realtimeAction.getRealtimeChart, getRealtimeChart);
+  yield takeLatest(realtimeAction.getRealtimeList, getRealtimeList);
+  yield takeLatest(realtimeAction.getSecendInterval, getSecendInterval);
 }

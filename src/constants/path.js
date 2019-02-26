@@ -244,6 +244,8 @@ export default {
       getAllHistory: '/v3/wind/analysis/history/devicechart', // 历史趋势 - 图表数据
       exportHistory: '/v3/wind/analysis/history/export', // 导出历史数据
       getSecendInteral: '/v3/wind/analysis/second', // 可用时间间隔
+      getRealtimeChart: '/v3/wind/analysis/devicechart', // 实时数据 - 图表
+      getRealtimeList: '/v3/wind/analysis/devicedata', // 实时数据 - 表格
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

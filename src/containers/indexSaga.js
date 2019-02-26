@@ -31,6 +31,7 @@ import {watchMonitorTransferForm} from './Monitor/Alarm/Transfer/transferFormSag
 import {watchMonitorHandleWarning} from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
 import {watchMonitorHistoryWarning} from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
+import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
@@ -96,7 +97,8 @@ export default function* rootSaga() {
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
     watchMonitorHistoryWarning(),
-    watchDataHistoryMonitor(),
+    watchDataHistoryMonitor(), // 数据分析 - 历史趋势
+    watchDataRealtimeMonitor(), // 数据分析 - 实时数据
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
     //统计分析的全部电站

@@ -34,7 +34,7 @@ class DataHistory extends Component {
     const { historyType } = this.props;
     return (
       <div className={styles.dataHistory}>
-        <CommonBreadcrumb breadData={[{ name: '历史趋势' }]} />
+        <CommonBreadcrumb breadData={[{ name: '历史趋势' }]} style={{ marginLeft: '40px' }} />
         <div className={styles.contentBox}>
           <div className={styles.historyContent} >
             <HistorySearch {...this.props} />
