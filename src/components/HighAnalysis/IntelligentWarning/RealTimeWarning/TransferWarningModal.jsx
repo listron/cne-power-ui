@@ -26,10 +26,14 @@ class TransferWarningModal extends Component {
   }
 
   onSubmit = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '确定是否要转工单'
-    });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '确定是否要转工单'
+        });
+      }
+    })
   }
 
   onTransferAlarm = () => {
