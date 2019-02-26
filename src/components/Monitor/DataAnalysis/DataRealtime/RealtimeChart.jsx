@@ -2,29 +2,30 @@ import React, { Component } from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import styles from './historyStyle.scss';
+import styles from './realtimeStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-class HistoryChart extends Component {
+class RealtimeChart extends Component {
   static propTypes = {
+    dataTime: PropTypes.string,
     queryParam: PropTypes.object,
     chartTime: PropTypes.number,
-    allHistory: PropTypes.object,
+    chartRealtime: PropTypes.object,
   }
 
   componentDidMount() {
-    const { allHistory, chartTime } = this.props;
-    if (chartTime) {
-      this.renderChart(allHistory);
-    }
+    // const { chartRealtime, chartTime } = this.props;
+    // if (chartTime) {
+    //   this.renderChart(chartRealtime);
+    // }
   }
 
   componentDidUpdate(prevProps) {
-    const { allHistory, chartTime } = this.props;
-    const preTime = prevProps.chartTime;
-    if (chartTime !== preTime) { // 数据重新请求后重绘。
-      this.renderChart(allHistory);
-    }
+    // const { chartRealtime, chartTime } = this.props;
+    // const preTime = prevProps.chartTime;
+    // if (chartTime !== preTime) { // 数据重新请求后重绘。
+    //   this.renderChart(chartRealtime);
+    // }
   }
 
   xAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
@@ -126,12 +127,12 @@ class HistoryChart extends Component {
     return { series, legend }
   }
 
-  renderChart = (allHistory) => {
-    const chartDOM = document.getElementById('dataHistoryChart');
+  renderChart = (chartRealtime) => {
+    const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
-    const historyChart = echarts.init(chartDOM);
-    const { pointTime, deviceInfo, pointData } = allHistory;
+    const realtimeChart = echarts.init(chartDOM);
+    const { pointTime, deviceInfo, pointData } = chartRealtime;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {
@@ -178,27 +179,27 @@ class HistoryChart extends Component {
       }],
       ...this.legendSeriesCreate(pointData, deviceInfo) // 
     };
-    historyChart.setOption(option);
+    realtimeChart.setOption(option);
   }
 
   render() {
     // height: 150 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
-    const { queryParam } = this.props;
-    const { deviceFullCode, devicePoint, timeInterval } = queryParam;
+    const { queryParam, dataTime } = this.props;
+    const { deviceFullCode, devicePoint } = queryParam;
     const calcHeight = 150 * devicePoint.length + 70 + 24 * deviceFullCode.length;
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
-      <section className={styles.historyChart}>
+      <section className={styles.realtimeChart}>
         <h4>
           <span className={styles.eachTitle} />
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
+          <span className={styles.tipTitle}>刷新时间: {dataTime}</span>
         </h4>
-        <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
+        <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px`}} />
       </section>
       
     )
   }
 }
 
-export default HistoryChart;
+export default RealtimeChart;

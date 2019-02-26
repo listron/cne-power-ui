@@ -246,6 +246,7 @@ export default {
       getSecendInteral: '/v3/wind/analysis/second', // 可用时间间隔
       getRealtimeChart: '/v3/wind/analysis/devicechart', // 实时数据 - 图表
       getRealtimeList: '/v3/wind/analysis/devicedata', // 实时数据 - 表格
+      exportRealtime: '/v3/wind/analysis/export', // 导出实时数据
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

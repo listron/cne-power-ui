@@ -36,8 +36,8 @@ class RealtimeSearch extends Component {
         devicePoint: [],
       },
       pointInfo: [], // 选中设备内可选测点信息。
-      allHistory: {}, // chart图 - 所有历史数据
-      partHistory: {}, // 表格内 - 分页后的历史数据
+      chartRealtime: {}, // chart图 - 所有历史数据
+      listRealtime: {}, // 表格内 - 分页后的历史数据
     })
   }
 
@@ -60,8 +60,8 @@ class RealtimeSearch extends Component {
         devicePoint: [],
       },
       pointInfo: [], // 清空测点信息
-      allHistory: {}, // chart图 - 所有历史数据
-      partHistory: {}, // 表格内 - 分页后的历史数据
+      chartRealtime: {}, // chart图 - 所有历史数据
+      listRealtime: {}, // 表格内 - 分页后的历史数据
     });
   }
 
@@ -74,8 +74,8 @@ class RealtimeSearch extends Component {
         deviceFullCode: [], // 选中的设备
         devicePoint: [], // 选中的测点
       },
-      allHistory: {}, // chart图 - 所有历史数据
-      partHistory: {}, // 表格内 - 分页后的历史数据
+      chartRealtime: {}, // chart图 - 所有历史数据
+      listRealtime: {}, // 表格内 - 分页后的历史数据
     });
   }
 

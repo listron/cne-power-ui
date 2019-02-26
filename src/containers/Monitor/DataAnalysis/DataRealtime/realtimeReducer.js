@@ -23,8 +23,6 @@ const initState = immutable.fromJS({
     devicePoint: [], // 选中的测点
   },
   listParam: { // 表格排序额外参数
-    orderField: 'time', // 排序字段(默认时间倒序（最新的时间在最上方）
-    orderType: 1, //	排序方式	否	0：ASC正序，1：DESC倒序
     pageNum: 1, // 当前页码（从1开始）
     pageSize: 10 // 每页条数
   },

@@ -6,10 +6,10 @@ import { Button } from 'antd';
 import { realtimeAction } from './realtimeReducer';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import RealtimeSearch from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeSearch';
-// import HistoryDataType from '../../../../components/Monitor/DataAnalysis/DataHistory/HistoryDataType';
-// import PointTree from '../../../../components/Monitor/DataAnalysis/DataHistory/PointTree';
-// import HistoryChart from '../../../../components/Monitor/DataAnalysis/DataHistory/HistoryChart';
-// import HistoryList from '../../../../components/Monitor/DataAnalysis/DataHistory/HistoryList';
+import RealtimeDataType from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeDataType';
+import PointTree from '../../../../components/Monitor/DataAnalysis/DataRealtime/PointTree';
+import RealtimeChart from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeChart';
+import RealtimeList from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeList';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
@@ -39,12 +39,11 @@ class DataRealtime extends Component {
         <div className={styles.contentBox}>
           <div className={styles.realtimeContent} >
             <RealtimeSearch {...this.props} />
-            {/* <HistoryDataType {...this.props} /> */}
+            <RealtimeDataType {...this.props} />
             <div className={styles.dataCenter}>
-              <Button onClick={this.test}>测试开始</Button>
-              {/* <PointTree {...this.props} /> */}
-              {/* {historyType === 'chart' && <HistoryChart {...this.props} />} */}
-              {/* {historyType === 'list' && <HistoryList {...this.props} />} */}
+              <PointTree {...this.props} />
+              {realtimeType === 'chart' && <RealtimeChart {...this.props} />}
+              {realtimeType === 'list' && <RealtimeList {...this.props} />}
             </div>
           </div>
           <Footer />
