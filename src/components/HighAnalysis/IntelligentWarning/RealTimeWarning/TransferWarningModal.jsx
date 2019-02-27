@@ -119,7 +119,7 @@ class TransferWarningModal extends Component {
               <InputLimit style={{ marginLeft: -80, marginTop: 15 }} placeholder="请输入不超过80字的缺陷描述..." />
             )}
           </FormItem>
-          <div className={styles.instructionText}>注意：保存后，多条告警将转为多个消缺工单。</div>
+          <div className={styles.instructionText}>注意：保存后，多条预警将转为多个消缺工单。</div>
         </Modal>
       </Form>
     );
