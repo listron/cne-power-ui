@@ -8,11 +8,14 @@ const { TreeNode } = Tree;
 class PointTree extends Component {
 
   static propTypes = {
+    realtimeType: PropTypes.string,
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
     pointInfo: PropTypes.array,
     getRealtimeChart: PropTypes.func,
     getRealtimeList: PropTypes.func,
+    stopRealtimeChart: PropTypes.func,
+    stopRealtimeList: PropTypes.func,
   };
 
   pointSelect = (selectedKeys) => {
@@ -21,16 +24,23 @@ class PointTree extends Component {
       message.error('所选测点不得超过4个');
       return;
     }
-    const { queryParam, listParam, getRealtimeChart, getRealtimeList } = this.props;
+    const {
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
+    } = this.props;
     const newQueryParam = {
       ...queryParam,
       devicePoint: selectedKeys,
     };
-    getRealtimeChart({ queryParam: newQueryParam });
-    getRealtimeList({
-      queryParam: newQueryParam,
-      listParam,
-    })
+    if (realtimeType === 'chart') { // 停止计时，重启计时。
+      stopRealtimeChart();
+      getRealtimeChart({ queryParam: newQueryParam });
+    } else {
+      stopRealtimeList();
+      getRealtimeList({
+        queryParam: newQueryParam,
+        listParam,
+      });
+    }
   }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。

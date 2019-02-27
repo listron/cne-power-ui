@@ -25,6 +25,8 @@ class DataRealtime extends Component {
   componentDidMount(){ // 获取数据时间间隔
     const { enterpriseId } = this.props;
     this.props.getSecendInterval({ enterpriseId });
+
+    this.props.getRealtimeChart({});// 测试代码，后删。
   }
 
   componentWillUnmount() {
@@ -42,6 +44,7 @@ class DataRealtime extends Component {
             <RealtimeDataType {...this.props} />
             <div className={styles.dataCenter}>
               <PointTree {...this.props} />
+              <Button onClick={this.props.getRealtimeChart}></Button>
               {realtimeType === 'chart' && <RealtimeChart {...this.props} />}
               {realtimeType === 'list' && <RealtimeList {...this.props} />}
             </div>
@@ -66,6 +69,8 @@ const mapDispatchToProps = (dispatch) => ({
   getPointInfo: payload => dispatch({ type: realtimeAction.getPointInfo, payload }),
   getRealtimeChart: payload => dispatch({ type: realtimeAction.getRealtimeChart, payload }),
   getRealtimeList: payload => dispatch({ type: realtimeAction.getRealtimeList, payload }),
+  stopRealtimeChart: () => dispatch({ type: realtimeAction.stopRealtimeChart }),
+  stopRealtimeList: () => dispatch({ type: realtimeAction.stopRealtimeList }),
   getSecendInterval: payload => dispatch({ type: realtimeAction.getSecendInterval, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,

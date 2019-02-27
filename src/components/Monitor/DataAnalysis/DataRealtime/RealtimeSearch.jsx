@@ -16,16 +16,19 @@ class RealtimeSearch extends Component {
     selectStationType: PropTypes.number, // 选中的电站类型
     deviceTypeCode: PropTypes.number, // 选中的设备类型
     queryParam: PropTypes.object,
-    listParam: PropTypes.object,
     
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeRealtimeStore: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
     getPointInfo: PropTypes.func,
+    stopRealtimeChart: PropTypes.func,
+    stopRealtimeList: PropTypes.func,
   };
 
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
-    const { changeRealtimeStore, queryParam } = this.props;
+    const { changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
+    stopRealtimeList();
+    stopRealtimeChart();
     changeRealtimeStore({
       selectStationType,
       deviceTypeCode: null,
@@ -38,7 +41,7 @@ class RealtimeSearch extends Component {
       pointInfo: [], // 选中设备内可选测点信息。
       chartRealtime: {}, // chart图 - 所有历史数据
       listRealtime: {}, // 表格内 - 分页后的历史数据
-    })
+    });
   }
 
   checkWind = () => this.onStationTypeChange(0) // 选中风电站
@@ -46,8 +49,10 @@ class RealtimeSearch extends Component {
   checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeRealtimeStore, queryParam } = this.props;
+    const { getStationDeviceTypes, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
     const { stationCode } = selectedStationInfo[0];
+    stopRealtimeChart();
+    stopRealtimeList();
     getStationDeviceTypes({ // 设备类型
       stationCodes: stationCode,
     });
@@ -66,7 +71,9 @@ class RealtimeSearch extends Component {
   }
 
   selectDeviceType = (deviceTypeCode) => { // 设备类型选择
-    const { changeRealtimeStore, queryParam } = this.props;
+    const { changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
+    stopRealtimeChart();
+    stopRealtimeList();
     changeRealtimeStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
       queryParam: {
@@ -80,7 +87,9 @@ class RealtimeSearch extends Component {
   }
 
   selectedDevice = (devices) => { // 设备选择
-    const { getPointInfo } = this.props;
+    const { getPointInfo, stopRealtimeChart, stopRealtimeList } = this.props;
+    stopRealtimeChart();
+    stopRealtimeList();
     getPointInfo({ deviceFullCode: devices });
   }
 

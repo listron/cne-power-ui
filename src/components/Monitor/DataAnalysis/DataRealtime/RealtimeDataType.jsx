@@ -12,21 +12,37 @@ class RealtimeDataType extends Component {
   static propTypes = {
     realtimeType:  PropTypes.string,
     queryParam: PropTypes.object,
+    listParam: PropTypes.object,
     changeRealtimeStore: PropTypes.func,
     downLoadFile: PropTypes.func,
+    getRealtimeChart: PropTypes.func,
+    getRealtimeList: PropTypes.func,
+    stopRealtimeChart: PropTypes.func,
+    stopRealtimeList: PropTypes.func,
   };
 
-  selectRealtimeType = (realtimeType) => { // 切换图表展示类型 'chart'图 / 'list'表格
-    const { changeRealtimeStore } = this.props;
-    changeRealtimeStore({ realtimeType })
+  showChart = () => { // 若已选测点=>终止当前请求启动图表定时请求,若未选测点则存储属性
+    const { changeRealtimeStore, queryParam, getRealtimeChart, stopRealtimeList } = this.props;
+    const { devicePoint } = queryParam;
+    if (devicePoint.length > 0) {
+      stopRealtimeList();
+      getRealtimeChart({ queryParam });
+      changeRealtimeStore({ chartRealtime: {} });
+    } else {
+      changeRealtimeStore({ realtimeType: 'chart' });
+    }
   }
 
-  showChart = () => {
-    this.selectRealtimeType('chart');
-  }
-
-  showList = () => {
-    this.selectRealtimeType('list');
+  showList = () => { // 若已选测点=>终止当前请求启动列表定时请求,未选测点则存储属性
+    const { changeRealtimeStore, queryParam, listParam, getRealtimeList, stopRealtimeChart } = this.props;
+    const { devicePoint } = queryParam;
+    if (devicePoint.length > 0) {
+      stopRealtimeChart();
+      getRealtimeList({ queryParam, listParam });
+      changeRealtimeStore({ listRealtime: {} });
+    } else {
+      changeRealtimeStore({ realtimeType: 'list' });
+    }
   }
 
   exportRealtime = () => { // '导出实时数据excel'

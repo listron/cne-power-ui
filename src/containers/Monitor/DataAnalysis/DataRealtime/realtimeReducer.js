@@ -3,7 +3,9 @@ import moment from 'moment';
 
 const realtimeAction = {
   getRealtimeChart: Symbol('getRealtimeChart'), // 获取实时图表chart数据
+  stopRealtimeChart: Symbol('stopRealtimeChart'), // 停止图表实时
   getRealtimeList: Symbol('getRealtimeList'), // 测点实时数据-表格
+  stopRealtimeList: Symbol('stopRealtimeList'), // 停止列表实时
   getPointInfo: Symbol('getPointInfo'), // 根据选中电站/设备得到的可选测点信息
   getSecendInterval: Symbol('getSecendInterval'), // 获取是否有秒级数据。
 
