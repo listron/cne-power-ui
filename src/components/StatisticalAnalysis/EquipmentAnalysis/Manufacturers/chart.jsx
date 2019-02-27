@@ -184,10 +184,11 @@ class Charts extends React.Component {
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 formatter: function (params) {
+                    const pointLength=(type==="faultHours" || type==="faultNum") ? 0 :2;
                     let paramsItem = '';
                     params.map((item) => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span>  
-                        ${item.seriesName} :${dataFormats(item.value, '--', 2, true)} ${unit}</div>`
+                        ${item.seriesName} :${dataFormats(item.value, '--', pointLength, true)} ${unit}</div>`
                     });
                     return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>${paramsItem}`
                 }

@@ -6,7 +6,7 @@ import moment from 'moment';
 import StationSelect from "../../../Common/StationSelect";
 const Option = Select.Option;
 
-class CustomizeTable extends Component {
+class TableHead extends Component {
     static propTypes = {
         stations: PropTypes.array,
         stationCode: PropTypes.number,
@@ -112,4 +112,4 @@ class CustomizeTable extends Component {
     }
 }
 
-export default CustomizeTable
+export default TableHead
