@@ -36,6 +36,7 @@ class Customize extends Component {
       startDate = moment(startTime).startOf('month').format('YYYY-MM-DD');
       endDate = moment(startTime).endOf('month').format('YYYY-MM-DD');
     }
+    console.log(startDate,endDate)
     const { stationCode, anotherStationCode, manufacturer, anotherManufacturer, deviceModeId,
       anotherDeviceModeId, deviceTypeNameLike } = this.props;
     if (stationCode) {
