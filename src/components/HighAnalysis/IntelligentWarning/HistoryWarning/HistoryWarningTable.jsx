@@ -77,9 +77,10 @@ class HistoryWarningTable extends Component {
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
-      deviceName: '3',
+      deviceName: '8',
+      deviceTypeName:'3',
       timeOn: '5',
-      durationTime: '9',
+      timeOff: '6',
     };
      const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
