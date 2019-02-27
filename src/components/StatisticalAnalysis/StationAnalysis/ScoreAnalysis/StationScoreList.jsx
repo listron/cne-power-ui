@@ -49,8 +49,16 @@ class StationScoreList extends Component {
                                         </div>
                                     </div>
                                     <div className={styles.scoreCardBottom}>
-                                        <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity, '--', 2, true)}MW</p>
-                                        <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours, '--', 2, true)}h</p>
+                                        <p className={styles.installedCapacity}>
+                                            <span className={styles.name}>装机容量</span>
+                                            <span className={styles.value}>{dataFormats(item.stationCapacity, '--', 2, true)}MW
+                                    </span>
+                                        </p>
+                                        <p className={styles.equivalent}>
+                                            <span className={styles.name}>发电等效时</span>
+                                            <span className={styles.value}>{dataFormats(item.equivalentHours, '--', 2, true)}h
+                                        </span>
+                                        </p>
                                     </div>
                                 </div>
                             </Link>
@@ -79,8 +87,16 @@ class StationScoreList extends Component {
                                     }
                                 </div>
                                 <div className={styles.scoreCardBottom}>
-                                    <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity, '--', 2, true)}MW</p>
-                                    <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours, '--', 2, true)}h</p>
+                                    <p className={styles.installedCapacity}>
+                                        <span className={styles.name}>装机容量</span>
+                                        <span className={styles.value}>{dataFormats(item.stationCapacity, '--', 2, true)}MW
+                                    </span>
+                                    </p>
+                                    <p className={styles.equivalent}>
+                                        <span className={styles.name}>发电等效时</span>
+                                        <span className={styles.value}>{dataFormats(item.equivalentHours, '--', 2, true)}h
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
                         </Link>

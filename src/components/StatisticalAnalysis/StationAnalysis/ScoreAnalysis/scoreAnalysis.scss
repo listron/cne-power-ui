@@ -92,11 +92,16 @@
                     line-height: 76px;
                 }
             }
-            .installedCapacity {
-                margin-left: 24px;
-            }
-            .equivalent {
-                margin-left: 9px;
+            .installedCapacity,.equivalent {
+                display: flex;
+                .name{
+                    flex: 1;
+                    text-align: right;
+                    padding-right: 4px;
+                }
+                .value{
+                    flex: 1;
+                }
             }
         }
         .excellent {

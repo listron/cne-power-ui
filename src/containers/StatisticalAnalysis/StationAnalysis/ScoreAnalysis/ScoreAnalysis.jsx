@@ -22,6 +22,14 @@ class ScoreAnalysis extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this.props.resetStore()
+  }
+
+  onTabChange=(e)=>{
+  }
+
+
   render() {
     const { stationTypeCount } = this.props;
     const { activeKey } = this.state;
