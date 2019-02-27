@@ -24,11 +24,16 @@ class CustomizeTable extends Component {
     }
 
     getDefaultData = (vlaue, option) => { // 判断如何显示
+        const {stations}=this.props;
+        const stationName=stations.filter(e=>e.stationCode===vlaue.stationCode);
         if (option === 'stationName') { // 根据电站来判断
-            return vlaue.stationCode ? (vlaue[option] || '--') : '选择之后进行对比'
+            return vlaue.stationCode ? ( stationName.length>0 && stationName[0].stationName || '--') : '选择之后进行对比'
         }
         if (option === 'manufacturer' || option === 'deviceModeName') {
             return vlaue.stationCode ? `${(vlaue[option] || '--')}` : null
+        }
+        if(option === 'faultNum' || option === 'faultHours'){ // 故障次数和故障时常显示所有的小数
+            return vlaue.stationCode ? `${dataFormats(vlaue[option], '--', 0, true)} ${this.getUnit(option)}` :null
         }
         return vlaue.stationCode ? `${dataFormats(vlaue[option], '--', 2, true)} ${this.getUnit(option)}` :null
     }

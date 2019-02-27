@@ -5,7 +5,7 @@ import { Select, DatePicker, TreeSelect } from 'antd';
 import moment from 'moment';
 import StationSelect from "../../../Common/StationSelect";
 const Option = Select.Option;
-const { RangePicker } = DatePicker;
+const { RangePicker, MonthPicker } = DatePicker;
 
 class Search extends Component {
   static propTypes = {
@@ -35,9 +35,9 @@ class Search extends Component {
   }
 
   componentDidMount() {
-    const { stationCode,deviceTypeNameLike } = this.props;
-    this.props.getManufacturer({ stationCode ,deviceTypeNameLike})
-    this.props.getDevicemode({ stationCode ,deviceTypeNameLike})
+    const { stationCode, deviceTypeNameLike } = this.props;
+    this.props.getManufacturer({ stationCode, deviceTypeNameLike })
+    this.props.getDevicemode({ stationCode, deviceTypeNameLike })
   }
 
   getDevice = (value) => { // 获取筛选之后的厂家型号
@@ -80,7 +80,9 @@ class Search extends Component {
   }
 
   timeSelect = (date, dateString) => { // 切换时间
-    this.getDevice({ startDate: dateString[0], endDate: dateString[1] })
+    const startDate = moment(dateString).startOf('month').format('YYYY-MM-DD');
+    const endDate = moment(dateString).endOf('month').format('YYYY-MM-DD')
+    this.getDevice({ startDate, endDate })
   }
 
   disabledDate = (current) => { // 不可以选择的时间
@@ -89,20 +91,20 @@ class Search extends Component {
 
   stationSelected = (value) => { // 电站选择
     const stationCode = [];
-    const {deviceTypeNameLike}=this.props;
+    const { deviceTypeNameLike } = this.props;
     value.forEach(e => { stationCode.push(e.stationCode) })
-    this.props.getManufacturer({ stationCode,deviceTypeNameLike })
-    this.props.getDevicemode({ stationCode,deviceTypeNameLike })
+    this.props.getManufacturer({ stationCode, deviceTypeNameLike })
+    this.props.getDevicemode({ stationCode, deviceTypeNameLike })
     this.setState({ optionValue: [] })
     const { selectOption } = this.state;
     selectOption === 'manufacturer' ? this.getDevice({ stationCode: stationCode, manufacturers: [] }) : this.getDevice({ stationCode: stationCode, deviceModeIds: [] })
   }
 
   changeType = (value) => { // 改变厂家型号
-    this.setState({ selectOption: value,optionValue:[] }, () => {
+    this.setState({ selectOption: value, optionValue: [] }, () => {
       value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
     })
-    this.props.changeManufacturersStore({ selectOption: value  })
+    this.props.changeManufacturersStore({ selectOption: value })
   }
 
 
@@ -126,12 +128,20 @@ class Search extends Component {
           <Select defaultValue={deviceTypeNameLike} style={{ width: 200, marginLeft: 15 }}  >
             <Option value="逆变器">逆变器</Option>
           </Select>
-          <RangePicker
+          {/* <RangePicker
             defaultValue={[moment(currentYearDay, 'YYYY-MM-DD'), moment(moment(), 'YYYY-MM-DD')]}
             format={'YYYY-MM-DD'}
             style={{ marginLeft: 15, marginRight: 15 }}
             onChange={this.timeSelect}
             disabledDate={this.disabledDate}
+          /> */}
+          <MonthPicker
+            defaultValue={moment(moment(), 'YYYY-MM')}
+            format={'YYYY-MM'}
+            style={{ width: 230, marginLeft: 15, marginRight: 15 }}
+            onChange={this.timeSelect}
+            disabledDate={this.disabledDate}
+            allowClear={false}
           />
           <StationSelect
             data={stations.filter(e => e.stationType === 1)}
