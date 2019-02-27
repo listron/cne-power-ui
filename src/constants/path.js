@@ -156,17 +156,19 @@ export default {
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表
+      downloadDeviceTemplet: '/template/DeviceInfoTemplate.zip', // 下载设备配置模板
       addDeviceInfo: '/v3/management/device', // 新增设备信息表
       showDeviceInfo: '/v3/management/device', // 设备详情信息表
       editDeviceInfo: '/v3/management/device', // 编辑设备信息表
-      getConnectDevice:'/v3/station/devicetype',//关联设备
+      getConnectDevice:'/v3/management/queryParentDeviceBySubType',//关联设备
+      // getConnectDevice:'/v3/station/devicetype',//关联设备
       deleteDevice:'/v3/management/device',//删除设备信息
-      // checkDeviceMode:'/v3/management/queryModeExits',//查询设备型号是否重复
-      checkDeviceMode:'/v3/management/deviceType',//查询设备型号是否重复
+      importStationDevice:'/v3/management/stationimport',//批量导入设备
+      deleteStationDevice:'/v3/management/emptydevice',//删除设备
+      checkDeviceMode:'/v3/management/queryModeExits',//查询设备型号是否重复
       addDeviceType:'/v3/management/deviceType',//添加设备类型
       addDeviceMode:'/v3/management/deviceMode',//添加设备型号
-      // checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
-      checkDeviceName:'/v3/management/deviceType',//查询设备名字是否重复
+      checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
       checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
 
 

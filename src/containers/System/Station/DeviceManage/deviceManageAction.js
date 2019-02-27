@@ -22,6 +22,7 @@ export const deviceManageAction = {
   checkDeviceType:Symbol('checkDeviceType'),
   checkDeviceMode:Symbol('checkDeviceMode'),
   deleteStationDevice:Symbol('deleteStationDevice'),
+  importStationDevice:Symbol('importStationDevice'),
 }
 
 

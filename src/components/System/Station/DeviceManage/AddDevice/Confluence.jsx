@@ -30,16 +30,13 @@ class Confluence extends Component {
     })
   }
   saveFormState = (record) => {
-    console.log(record, "record");
     this.setState({ componentModeCodeAdd: record.componentMode, manufacturerComAdd: record.manufacturerCom, showAddComponent: true })
   }
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
     const { pvDeviceModels } = this.props;
-    console.log('pvDeviceModels: ', pvDeviceModels);
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const branchCount = getFieldValue("branchCount");
-    console.log('branchCount: ', branchCount);
     let branchCountArr = [];
     for (let i = 0; i < branchCount; i++) {
        branchCountArr.push(i+1)

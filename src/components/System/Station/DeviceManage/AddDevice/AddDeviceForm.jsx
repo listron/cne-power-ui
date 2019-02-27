@@ -22,30 +22,28 @@ class AddDeviceForm extends Component {
       showAddDeviceMode: false,
     }
   }
-  componentWillReceiveProps(nextprops){
-    console.log('11111111');
-    const{deviceNameOk}=nextprops;
-    console.log(deviceNameOk);
-    if(deviceNameOk!==this.props.deviceNameOk&&deviceNameOk===true){
+  componentWillReceiveProps(nextprops) {
+    const { deviceNameOk } = nextprops;
+    if (deviceNameOk !== this.props.deviceNameOk && deviceNameOk === true) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           let branchCountArr = [];
           for (let i = 0; i < values.branchCount; i++) {
             branchCountArr.push(i + 1)
           }
-          if(values.branchCount){
+          if (values.branchCount) {
             values.connectedBranches = branchCountArr.map((e, i) => {
               return values.connectedBranches.includes(e) ? 1 : 0
             })
           }
           values.stationCode = values.stationCode[0].stationCode;
           this.props.addDeviceDetail({ ...values })
-        }else{
+        } else {
           console.log(err);
         }
       });
-  
-  
+
+
     }
 
   }
@@ -78,7 +76,7 @@ class AddDeviceForm extends Component {
           return values.connectedBranches.includes(e) ? 1 : 0
         })
         values.stationCode = values.stationCode[0].stationCode;
-        this.props.checkDeviceName({deviceName:values.deviceName})
+        this.props.checkDeviceName({ deviceName: values.deviceName })
 
         // this.props.addDeviceDetail({ ...values })
       }
@@ -87,7 +85,7 @@ class AddDeviceForm extends Component {
 
   }
   gobackPre = () => {
-
+    this.props.gobackPre()
   }
   showAddDeviceModeModal = () => {
     this.setState({
@@ -102,17 +100,23 @@ class AddDeviceForm extends Component {
   saveFormState = (record) => {
     this.setState({ deviceModeCodeAdd: record.deviceModeCode, manufacturerAdd: record.manufacturer, showAddDeviceMode: true })
   }
+  changeDeviceMode=()=>{
+    console.log(1111);
+  }
   render() {
     const { showAddDeviceModeModal, showAddDeviceMode, deviceModeCodeAdd, manufacturerAdd } = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation, pvDeviceModels,connectDevice,addDeviceTypeData } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData } = this.props;
     const stationName = selectStation ? selectStation[0].stationName : '';
     // const typeSelectDisable = stationDeviceTypes.length === 0;
     const deviceTypeName = getFieldValue('deviceTypeCode');
+    const deviceModeCodeValue = getFieldValue('deviceModeCode');
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
 
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
     const modelSelectDisable = deviceModels.length === 0;
+    const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
+    const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
 
 
     return (
@@ -131,7 +135,8 @@ class AddDeviceForm extends Component {
               </FormItem>
               {/*// addDeviceTypeData.deviceTypeCode*/}
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('deviceTypeCode', {initialValue:'asd',
+                {getFieldDecorator('deviceTypeCode', {
+                  initialValue: 'asd',
                   rules: [
                     { message: '请选择设备类型', required: true, },
                   ]
@@ -156,10 +161,12 @@ class AddDeviceForm extends Component {
                   {getFieldDecorator('deviceModeCode', {
                     rules: [{ required: true, message: '请选择设备型号' }],
                   })(
-                    <Select className={styles.modelSelect} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-                      {deviceModels.map(e => {
-                        if (!e) { return null; }
-                        return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                    <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
+                      {deviceModels.map((e, i) => {
+                        if (!e) { return null; } else {
+                          return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                        }
+
                       })}
                     </Select>
                   )}
@@ -173,6 +180,7 @@ class AddDeviceForm extends Component {
                   )}
                 </FormItem> : <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
                   {getFieldDecorator('manufacturer', {
+                    initialValue: manufactureName,
                     rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
                   })(
                     <Input placeholder="不超过30字" />
@@ -187,10 +195,11 @@ class AddDeviceForm extends Component {
             <div className={styles.valueStyles}>
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('pareneDeviceName')(
-                  <Select placeholder="请选择关联设备" disabled={connectDevice.length===0}>
-                    {connectDevice.map((e,i)=>{
-                      if (!e) { return null; }
-                      return <Option key={i} value={e.pareneDeviceName}>{e.pareneDeviceName}</Option>
+                  <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
+                    {connectDevice.map((e, i) => {
+                      if (!e) { return null; } else {
+                        return <Option key={e.deviceFullCode} value={e.deviceFullCode}>{e.deviceName}</Option>
+                      }
                     })}
                   </Select>
                 )}

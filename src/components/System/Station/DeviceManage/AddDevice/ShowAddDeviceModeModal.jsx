@@ -17,6 +17,7 @@ class ShowAddDeviceModeModal extends Component {
         if(!err){
           this.props.addDeviceMode({
             deviceTypeCode:addDeviceTypeData.deviceTypeCode,
+            // deviceTypeCode:'202',
             deviceModeName:values.deviceModeCode,
             manufacturer:values.manufacturer,
           })

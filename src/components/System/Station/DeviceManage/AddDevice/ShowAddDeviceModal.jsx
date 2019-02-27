@@ -29,7 +29,8 @@ class ShowAddDeviceModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
-    const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess } = this.props;
+    const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess ,selectStation} = this.props;
+    console.log('selectStation: ', selectStation);
     let planValue = getFieldsValue();
     this.props.form.validateFieldsAndScroll(["deviceTypeCode", "isPertain"], (err, values) => {
       // const deviceTypeNameArr = stationDeviceTypes.map(e => e.deviceTypeName);
@@ -38,6 +39,7 @@ class ShowAddDeviceModal extends Component {
       // console.log('modalConfirm: ', modalConfirm);
       if (!err) {
         this.props.addDeviceType({
+          stationCode:selectStation,
           isPertain: values.isPertain,
           deviceTypeName: values.deviceTypeCode
         })

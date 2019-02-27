@@ -61,14 +61,17 @@ class DeviceManageHandle extends Component {
     this.setState({ showDeleteWarning: false })
   }
   deleteStationDevice = () => {
-
+    const {stationCode,deleteStationDevice}=this.props;
+    deleteStationDevice({
+      stationCode,
+    })
   }
 
   render() {
     const { showModal, showDeleteWarning, warningTipText } = this.state;
-    const { totalNum, deviceList, stationCode, pageSize, pageNum } = this.props;
+    const { totalNum, deviceList, stationCode, pageSize, pageNum ,allStationBaseInfo} = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
-    const test = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
+    const test = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
     return (
       <div className={styles.deviceManageHandle}>
         <div className={styles.left}>
@@ -80,7 +83,7 @@ class DeviceManageHandle extends Component {
             <Button onClick={this.deleteStationDevice} disabled={!stationCode}>清除设备</Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
-        {showModal ? <ImportDevice showModal={showModal} cancelModal={this.cancelModal} /> : ''}
+        {showModal ? <ImportDevice {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}
         {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
       </div>
 
