@@ -115,7 +115,7 @@ class PvScoreAnalysis extends Component {
                     <div className={styles.scoreTranslate}>
                         <div className={styles.scoreTranslateBtn}>排序</div>
                         <div onClick={() => { this.scoreSort(highToLow) }} className={styles.scoreSort}>
-                            <i className="iconfont icon-menu-open" />
+                            <i className="iconfont icon-mark" />
                             {highToLow && '分数由高到低' || '分数由低到高'}
                         </div>
                     </div>
