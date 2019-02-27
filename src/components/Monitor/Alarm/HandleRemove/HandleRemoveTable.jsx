@@ -90,7 +90,8 @@ class HandleRemoveTable extends Component {
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
-      deviceName: '3',
+      deviceName: '8',
+      deviceTypeName:'3',
       timeOn: '5',
       durationTime: '9',
     };
@@ -123,12 +124,12 @@ class HandleRemoveTable extends Component {
             <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
-            <span className={styles.label}>操作时间：</span>
-            <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
+            <span className={styles.label}>截至时间：</span>
+            <span className={styles.value}>{moment(relieveInfo.endTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
-            <span className={styles.label}>出现次数：</span>
-            <span className={styles.value}>{relieveInfo.warningCount}</span>
+            <span className={styles.label}>操作时间：</span>
+            <span className={styles.value}>{moment(relieveInfo.operateTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除原因：</span>

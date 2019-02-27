@@ -43,6 +43,16 @@ const initState = Immutable.fromJS({
   lostPowerDeviceNames:[],//前五设备名
   faultNumDeviceNames:[],//前五设备名
   faultTimeDeviceNames:[],//前五设备名
+  conversionNullValue:[],
+  hourNullValue:[],
+  faultNumNullvalue:[],
+  faultTimeNullValue:[],
+  // conConversNullValue:[],
+  // conHourNullValue:[],
+  // conFaultNumNullValue:[],
+  // conFaultTimeNullValue:[],
+
+
 
 })
 
