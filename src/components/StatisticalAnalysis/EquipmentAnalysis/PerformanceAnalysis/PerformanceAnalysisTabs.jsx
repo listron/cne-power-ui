@@ -31,10 +31,43 @@ class PerformanceAnalysisTabs extends Component {
       }
     }
   }
+  showText = (data) => {
+    if (data.length > 0) {
+      return (
+        <div>
+        <span className="iconfont icon-ha">
+        </span>
+        建议关注排名变化较大的:
+        <span className={styles.fontColor}>
+       {data.slice(0, 5).map((e, i) =>(`${e},`))}
+        </span>
+        {data.length>5?'等':''}设备
+        </div>
+      )
+     
+    }
+  }
+  showNullValue=(data)=>{
+    if (data.length > 0) {
+      return (
+        <div>
+        <span className="iconfont icon-ha">
+        </span>
+        建议检查无数据设备传输状态,无数据设备有:
+        <span className={styles.fontColor}>
+       {data.slice(0, 5).map((e, i) =>(`${e},`))}
+        </span>
+        {data.length>5?'等':''}
+        </div>
+      )
+    }
+  }
+
   render() {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
-    const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames } = this.props;
+    const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames ,conversionNullValue,hourNullValue,faultNumNullvalue,faultTimeNullValue} = this.props;
+   
     //转化效率
     let xData = conversioneffData.map(e => e.deviceName) || [];
     let haveSliderConver = xData.length > 20;
@@ -95,7 +128,7 @@ class PerformanceAnalysisTabs extends Component {
     //损失电量
     let lostPowerDeviceName = lostPowerData.map(e => e.deviceName);
     let haveSliderLostPower = lostPowerDeviceName.length > 20;
-    let lostPowerDataResults = lostPowerData.map(e => e.lostPower);
+    let lostPowerDataResults = lostPowerData.map(e => e.lossPower);
     let lostPowerHasData = lostPowerDataResults.some(e => e || e === 0);
 
     //对比利用率及
@@ -108,7 +141,7 @@ class PerformanceAnalysisTabs extends Component {
     //对比损失电量
     let contrastLossPowerDeviceName = lostPowerContrastData.map((e, i) => { return e.deviceName });
     let haveSliderConLostPower = contrastLossPowerDeviceName.length > 20;
-    let lostPowerDataCon = lostPowerContrastData.map((e, i) => { return e.lostPower });
+    let lostPowerDataCon = lostPowerContrastData.map((e, i) => { return e.lossPower });
     let contrastLossPowerData = lostPowerContrastData.map((e, i) => { return e.contrastLossPower });
     let contrastLostPowerHasData = lostPowerDataCon.some(e => e || e === 0) || contrastLossPowerData.some(e => e || e === 0)
 
@@ -193,7 +226,7 @@ class PerformanceAnalysisTabs extends Component {
       xData: contrastFaultNumDeviceNameData,
       yData: {
         barData: {
-          faultNum:contrastFaultNumResults,
+          faultNum: contrastFaultNumResults,
           contrastFaultNumData: contrastFaultNumDataResults,
         },
 
@@ -245,7 +278,8 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
-                {conversDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {this.showNullValue(conversionNullValue)}
+                {contrastSwitch && contrastEndDate ?this.showText(conversDeviceNames):''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -258,7 +292,10 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
-                {hourDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+               
+                {this.showNullValue(hourNullValue)}
+                {contrastSwitch && contrastEndDate ?this.showText(hourDeviceNames):''}
+                
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -271,7 +308,8 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
-                {availabilityDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{availabilityDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {this.showText(availabilityDeviceNames)}
+                
               </div>
             </div>
           </TabPane>
@@ -288,7 +326,7 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查损失电量较多的设备是否故障</div>
-                {lostPowerDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+                {this.showText(lostPowerDeviceNames)}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -301,7 +339,10 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultNumDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+               
+                {this.showNullValue(faultNumNullvalue)}
+                {contrastSwitch && contrastEndDate ?this.showText(faultNumDeviceNames):''}
+               
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -314,7 +355,9 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-                {faultTimeDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultTimeDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
+               
+               {this.showNullValue(faultTimeNullValue)}
+               {contrastSwitch && contrastEndDate ?this.showText(faultTimeDeviceNames):''}
               </div>
             </div>
           </TabPane>
@@ -324,4 +367,5 @@ class PerformanceAnalysisTabs extends Component {
   }
 }
 export default (PerformanceAnalysisTabs)
+
 
