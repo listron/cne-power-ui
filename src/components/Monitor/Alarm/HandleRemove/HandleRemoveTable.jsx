@@ -90,7 +90,8 @@ class HandleRemoveTable extends Component {
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
-      deviceName: '3',
+      deviceName: '8',
+      deviceTypeName:'3',
       timeOn: '5',
       durationTime: '9',
     };
