@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from "./scoreAnalysis.scss";
 import PvStationTable from './PvStationTable';
 import { Link } from 'react-router-dom';
-import {dataFormats} from '../../../../utils/utilFunc'
+import { dataFormats } from '../../../../utils/utilFunc'
 class StationScoreList extends Component {
     static propTypes = {
         dataList: PropTypes.array,
@@ -25,35 +25,6 @@ class StationScoreList extends Component {
     }
 
 
-
-    getLevel = (e) => {
-        let result = '';
-        switch (e) {
-            case "1": result = '优秀'; break;
-            case "2": result = '良好'; break;
-            case "3": result = '合格'; break;
-            case "4": result = '较差'; break;
-            default: result = '--'
-                break;
-        }
-        return result;
-
-    }
-
-    getColor = (level) => {
-        let result = '';
-        switch (level) {
-            case "1": result = 'excellent'; break;
-            case "2": result = 'good'; break;
-            case "3": result = 'qualified'; break;
-            case "4": result = 'poor'; break;
-            default: result = 'poor'
-        }
-        return result
-    }
-
-
-
     popoverChange = (visible, data) => {
         if (visible) {
             this.props.onChange(data)
@@ -66,25 +37,20 @@ class StationScoreList extends Component {
         return (
             <div className={styles.stationCardContainer} id={"stationCardContainer"}>
                 {dataList.map(item => {
+                    const scoreLevel = ['优秀', '良好', '合格', '较差'][item.scoreLevel - 1] || '--'
                     if (!hasReportType) {
                         return (
                             <Link to={`/statistical/stationaccount/allstation/${item.stationCode}`} key={item.stationCode} className={`${styles.stationCard} ${styles.uncategorized}`}>
                                 <div>
                                     <p className={styles.stationName}>{item.stationName}</p>
                                     <div className={`${styles.scoreCircleCon}`}>
-                                        {
-                                            item.scoreValue && <div className={styles.evaluate}>
-                                                <p className={styles.num}>{item.scoreValue || '--'}</p>
-                                                <p className={styles.text}>{this.getLevel(item.scoreLevel)}</p>
-                                            </div> ||
-                                            <div className={`${styles.evaluate} ${styles.nodata}`}>
-                                                <p>{'未分类'}</p>
-                                            </div>
-                                        }
+                                        <div className={`${styles.evaluate} ${styles.nodata}`}>
+                                            <p>{'未分类'}</p>
+                                        </div>
                                     </div>
                                     <div className={styles.scoreCardBottom}>
-                                        <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity,'--',2,true)}MW</p>
-                                        <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours,'--',2,true)}h</p>
+                                        <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity, '--', 2, true)}MW</p>
+                                        <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours, '--', 2, true)}h</p>
                                     </div>
                                 </div>
                             </Link>
@@ -98,14 +64,14 @@ class StationScoreList extends Component {
                         arrowPointAtCenter={true}
                         overlayClassName={styles.card}
                     >
-                        <Link to={`/statistical/stationaccount/allstation/${item.stationCode}`} key={item.stationCode} className={`${styles.stationCard} ${styles[this.getColor(item.scoreLevel)]}`}>
+                        <Link to={`/statistical/stationaccount/allstation/${item.stationCode}`} key={item.stationCode} className={`${styles.stationCard} ${styles[['excellent', 'good', 'qualified', 'poor'][sigleData.scoreLevel - 1] || 'poor']}`}>
                             <div>
                                 <p className={styles.stationName}>{item.stationName}</p>
                                 <div className={`${styles.scoreCircleCon}`}>
                                     {
                                         item.scoreValue && <div className={styles.evaluate}>
                                             <p className={styles.num}>{item.scoreValue || '--'}</p>
-                                            <p className={styles.text}>{this.getLevel(item.scoreLevel)}</p>
+                                            <p className={styles.text}>{scoreLevel}</p>
                                         </div> ||
                                         <div className={`${styles.evaluate} ${styles.nodata}`}>
                                             <p>{'数据缺失'}</p>
@@ -113,8 +79,8 @@ class StationScoreList extends Component {
                                     }
                                 </div>
                                 <div className={styles.scoreCardBottom}>
-                                    <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity,'--',2,true)}MW</p>
-                                    <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours,'--',2,true)}h</p>
+                                    <p className={styles.installedCapacity}>装机容量 {dataFormats(item.stationCapacity, '--', 2, true)}MW</p>
+                                    <p className={styles.equivalent}>发电等效时 {dataFormats(item.equivalentHours, '--', 2, true)}h</p>
                                 </div>
                             </div>
                         </Link>
