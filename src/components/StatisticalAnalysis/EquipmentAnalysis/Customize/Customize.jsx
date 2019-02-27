@@ -32,21 +32,26 @@ class Customize extends Component {
     if (timeStyle === "month") {
       startDate = moment(startTime).startOf('year').format('YYYY-MM-DD');
       endDate = currentYear && moment().format('YYYY-MM-DD') || moment(startTime).endOf('year').format('YYYY-MM-DD')
-    }else{
+    } else {
       startDate = moment(startTime).startOf('month').format('YYYY-MM-DD');
       endDate = moment(startTime).endOf('month').format('YYYY-MM-DD');
     }
     const { stationCode, anotherStationCode, manufacturer, anotherManufacturer, deviceModeId,
       anotherDeviceModeId, deviceTypeNameLike } = this.props;
+    if (stationCode) {
       this.props.getDetailData({
         params: { stationCode, manufacturer, deviceModeId, startDate, endDate, deviceTypeNameLike },
         resultName: 'detailData',
       })
+    }
+
+    if (anotherStationCode) {
       this.props.getDetailData({
         params: { stationCode: anotherStationCode, manufacturer: anotherManufacturer, deviceModeId: anotherDeviceModeId, startDate, endDate, deviceTypeNameLike },
         resultName: 'anotherDetailData',
       })
-      this.props.changeCustomizeStore({ startDate, endDate })
+    }
+    this.props.changeCustomizeStore({ startDate, endDate })
   }
 
   render() {
