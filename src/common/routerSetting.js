@@ -45,6 +45,7 @@ import Building from '../components/Common/Building/Building';
 
 //电站分析
 import AllStationAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis';
+import ScoreAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/ScoreAnalysis/ScoreAnalysis';
 import ProductionAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/ProductionAnalysis/ProductionAnalysis';
 import StationResourceAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/StationResourceAnalysis';
 import OperateAnalysis from '../containers/StatisticalAnalysis/StationAnalysis/OperateAnalysis/OperateAnalysis';
@@ -245,6 +246,10 @@ const routers = [
     path: '/statistical/stationaccount/allstation/:stationCode',
     exact: true,
     component: AllStationAnalysis
+  }, { // 统计分析-电站分析-电站评分
+    path: '/statistical/stationaccount/score',
+    exact: true,
+    component: ScoreAnalysis
   }, { // 统计分析-电站分析-生产分析
     path: '/statistical/stationaccount/production',
     exact: true,

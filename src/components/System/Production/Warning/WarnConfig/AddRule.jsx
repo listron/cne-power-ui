@@ -131,6 +131,7 @@ class AddRule extends Component {
             params: params,
             continueAdd: false,
           })
+          this.setState({ showSaveWarningTip: false })
         } else { // 保存并添加
           this.props.addWran({
             params: params,

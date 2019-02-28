@@ -58,7 +58,7 @@ class WarnConfig extends Component {
         getWarnList({
             ...listQueryParams,
             sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
-            sortOrder: order ? (sorter.order === 'ascend' ? 'acs' : 'desc') : '',
+            sortOrder: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
         })
     }
 

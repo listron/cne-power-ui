@@ -163,6 +163,10 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_station_all',
           }, {
+            name: '电站评分',
+            path: 'score',
+            rightKey: 'statistics_station_score',
+          }, {
             name: '生产分析',
             path: 'production',
             rightKey: 'statistics_station_production',
@@ -213,7 +217,7 @@ const menuData = [
             path: 'currency',
             defaultPath: true,
             rightKey: 'statistics_report_general',
-          }
+          },
         ]
       }
     ]
@@ -389,7 +393,7 @@ const menuData = [
           {
             name: '绩效评分',
             path: 'performanceScore',
-            rightKey: 'system_config',
+            rightKey: 'system_config_score',
           }, {
             name: '生产计划',
             path: 'plan',

@@ -91,7 +91,7 @@ function* getDetailData(action) { // 获取详细数据
       });
     } else { throw response.data }
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     yield put({
       type: customizeAction.changeCustomizeStore,
       payload: {

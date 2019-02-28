@@ -41,6 +41,7 @@ import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/
 import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
+import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
 
 
 
@@ -105,6 +106,7 @@ export default function* rootSaga() {
     watchOperateStationSaga(),
     watchStationContrastSaga(),
     watchStationResourceStationSaga(),
+    watchScoreAnalysis(), //电站评分
     //设备分析
     watchPerformanceAnalysisSaga(),
     watchManufacturers(),
