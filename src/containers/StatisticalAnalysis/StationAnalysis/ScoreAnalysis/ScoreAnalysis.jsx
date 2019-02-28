@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Tabs, } from 'antd';
-import styles from "./scoreAnalysis.scss";
+import styles from "./ScoreAnalysis.scss";
 import { scoreAnalysisAction } from "./scoreAnalysisAction";
 import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
 import PvScoreAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ScoreAnalysis/PvScoreAnalysis';
