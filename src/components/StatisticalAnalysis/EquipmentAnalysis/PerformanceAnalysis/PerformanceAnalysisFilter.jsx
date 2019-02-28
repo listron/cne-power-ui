@@ -203,9 +203,8 @@ class PerformanceAnalysisFilter extends Component {
   selectDeviceModel = (value) => {
     const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance, electricLineCode, targetTabs } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
-    const deviceTypeCode = value && [Number(value.split('__')[1])];
+    const deviceTypeCode = value ?[Number(value.split('__')[1])]:[201,206];
     const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode }
-
     changePerformanceAnalysisStore({
       deviceModeCode: value,
       deviceModeTypeCode: deviceModeTypeCode,
