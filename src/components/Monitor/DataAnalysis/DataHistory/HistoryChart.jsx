@@ -182,10 +182,10 @@ class HistoryChart extends Component {
   }
 
   render() {
-    // height: 150 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
+    // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
     const { queryParam } = this.props;
     const { deviceFullCode, devicePoint, timeInterval } = queryParam;
-    const calcHeight = 150 * devicePoint.length + 70 + 24 * deviceFullCode.length;
+    const calcHeight = 160 * devicePoint.length + 70 + 24 * deviceFullCode.length;
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.historyChart}>

@@ -188,11 +188,12 @@ module.exports = [
       message: '请求成功',
       data: {
         total: 124,
+        time: '2019-01-20 16:30:20',
         list: [1, 2, 3, 4, 5, 6, 7, 8].map((e, i) => ({
-          deviceName: '',
-          stationName: '',
-          deviceTypeName: '',
-          deviceModeName: '',
+          deviceName: `${e}设备`,
+          stationName: `电站${e*e}`,
+          deviceTypeName: `类型${e * (e + 2 )}`,
+          deviceModeName: `型号${e * e + e}`,
           pointData: ['first', 'secend', 'third'].map((point, index) => ({
             devicePointCode: point,
             pointName: point,

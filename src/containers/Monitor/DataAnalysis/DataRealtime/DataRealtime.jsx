@@ -20,17 +20,21 @@ class DataRealtime extends Component {
     enterpriseId: PropTypes.string,
     resetRealtimeStore: PropTypes.func,
     getSecendInterval: PropTypes.func,
+    stopRealtimeChart: PropTypes.func,
+    stopRealtimeList: PropTypes.func,
   };
 
   componentDidMount(){ // 获取数据时间间隔
     const { enterpriseId } = this.props;
     this.props.getSecendInterval({ enterpriseId });
-
     this.props.getRealtimeChart({});// 测试代码，后删。
   }
 
-  componentWillUnmount() {
-    this.props.resetRealtimeStore();
+  componentWillUnmount() { // 停止定时并重置数据。
+    const { stopRealtimeChart, stopRealtimeList, resetRealtimeStore} = this.props;
+    stopRealtimeChart();
+    stopRealtimeList();
+    resetRealtimeStore();
   }
 
   render() {
@@ -44,7 +48,6 @@ class DataRealtime extends Component {
             <RealtimeDataType {...this.props} />
             <div className={styles.dataCenter}>
               <PointTree {...this.props} />
-              <Button onClick={this.props.getRealtimeChart}></Button>
               {realtimeType === 'chart' && <RealtimeChart {...this.props} />}
               {realtimeType === 'list' && <RealtimeList {...this.props} />}
             </div>

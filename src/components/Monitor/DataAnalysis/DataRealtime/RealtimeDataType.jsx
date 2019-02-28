@@ -35,7 +35,7 @@ class RealtimeDataType extends Component {
 
   showList = () => { // 若已选测点=>终止当前请求启动列表定时请求,未选测点则存储属性
     const { changeRealtimeStore, queryParam, listParam, getRealtimeList, stopRealtimeChart } = this.props;
-    const { devicePoint } = queryParam;
+    const { devicePoint = [] } = queryParam;
     if (devicePoint.length > 0) {
       stopRealtimeChart();
       getRealtimeList({ queryParam, listParam });

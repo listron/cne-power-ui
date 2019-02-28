@@ -77,8 +77,8 @@ class PointTree extends Component {
   }
 
   render(){
-    const { queryParam } = this.props;
-    const { devicePoint } = queryParam;
+    const { queryParam = {} } = this.props;
+    const { devicePoint = [] } = queryParam;
     return (
       <section className={styles.pointTree}>
         <h3>选择测点({devicePoint.length})</h3>

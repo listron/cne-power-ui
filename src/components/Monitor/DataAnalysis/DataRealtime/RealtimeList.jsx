@@ -7,7 +7,6 @@ import moment from 'moment';
 
 class RealtimeList extends Component {
   static propTypes = {
-    dataTime: PropTypes.string,
     listParam: PropTypes.object,
     queryParam: PropTypes.object,
     listRealtime: PropTypes.object,
@@ -27,8 +26,8 @@ class RealtimeList extends Component {
   }
 
   render() {
-    const { dataTime, listRealtime, listParam } = this.props;
-    const { total, list = [] } = listRealtime;
+    const { listRealtime, listParam } = this.props;
+    const { total, time, list = [] } = listRealtime;
     const { pageNum, pageSize } = listParam;
     const { pointData = [] } = list[0] || {};
     const columns = [
@@ -45,16 +44,13 @@ class RealtimeList extends Component {
         title: '型号',
         dataIndex: 'deviceModeName',
       }, {
-        title: '时间',
-        dataIndex: 'time',
-      }, {
         title: '风速',
         dataIndex: 'speed',
       }
     ];
     
     const pointColumn = pointData.map(e => ({
-      title: e.devicePointName,
+      title: e.pointName, // e.pointUnit
       dataIndex: e.devicePointCode,
     }));
     const dataSource = list.map((e, i) => { // 数据处理及时间规范。
@@ -66,13 +62,12 @@ class RealtimeList extends Component {
         key: i,
         ...e,
         ...pointInfo,
-        time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--',
       }
     });
     return (
       <div className={styles.realtimeList}>
         <div className={styles.pagination}>
-          <span className={styles.text}>刷新时间: {dataTime}</span>
+          <span className={styles.text}>刷新时间: {time}</span>
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table

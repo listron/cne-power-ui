@@ -9,26 +9,22 @@ class RealtimeChart extends Component {
   static propTypes = {
     dataTime: PropTypes.string,
     queryParam: PropTypes.object,
-    chartTime: PropTypes.number,
     chartRealtime: PropTypes.object,
   }
 
-  componentDidMount() {
-    // const { chartRealtime, chartTime } = this.props;
-    // if (chartTime) {
-    //   this.renderChart(chartRealtime);
-    // }
-  }
-
   componentDidUpdate(prevProps) {
-    // const { chartRealtime, chartTime } = this.props;
-    // const preTime = prevProps.chartTime;
-    // if (chartTime !== preTime) { // 数据重新请求后重绘。
-    //   this.renderChart(chartRealtime);
-    // }
+    const { chartRealtime, dataTime, queryParam = {} } = this.props;
+    const { devicePoint = [] } = queryParam;
+    const preTime = prevProps.chartTime;
+    const preParam = prevProps.queryParam || {};
+    const prePoints = preParam.devicePoint || [];
+    if (dataTime !== preTime) { // 数据重新请求后重绘。
+      const reRender = prePoints.length !== devicePoint.length;
+      this.renderChart(chartRealtime, reRender);
+    }
   }
 
-  xAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
+  xAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于测点数据生成各grid的x轴。
     type : 'category',
     gridIndex: i,
     axisLine: {
@@ -40,7 +36,7 @@ class RealtimeChart extends Component {
       show: false 
     },
     axisLabel: { 
-      show: i === pointData.length - 1,
+      show: i === pointInfo.length - 1,
       lineStyle: { color: '#666' }
     },
     splitLine: {
@@ -51,7 +47,7 @@ class RealtimeChart extends Component {
     },
   }));
 
-  yAxisCreate = (pointData) => pointData.map((e, i) => ({ // 基于pointData生成多y轴
+  yAxisCreate = (pointInfo) => pointInfo.map((e, i) => ({ // 基于pointData生成多y轴
     type : 'value',
     gridIndex: i,
     axisLine: {
@@ -79,61 +75,61 @@ class RealtimeChart extends Component {
     }
   }))
 
-  gridCreate = (pointData, deviceInfo) => pointData.map((e, i) => { // 基于数据生成各grid. grid固定高160
+  gridCreate = (pointInfo) => pointInfo.map((e, i) => { // 基于数据生成各grid. grid固定高160
     const baseGridOption = {
       top: 10 + 160 * i,
       height: 160,
       left: 90,
       right: 40
     }
-    if (i === pointData.length - 1) { // 最后一个grid
+    if (i === pointInfo.length - 1) { // 最后一个grid
       return {
         ...baseGridOption,
-        bottom: 60 + deviceInfo.length * 24
+        bottom: 60 + pointInfo.length * 24
       }
     } else {
       return baseGridOption
     }
-    
   })
 
-  legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
+  legendSeriesCreate = (pointData) => { // 嵌套遍历生成相关的series 与legend;
     const series = [], legend = [];
+    const pointNum = pointData.length;
     pointData.forEach((point, index) => {
-      let eachLegend = [];
+      const { deviceInfo = [] } = point || {};
+      const deviceNum = deviceInfo.length;
       deviceInfo.forEach((device, deviceIndex) => {
-        const lengendName = `${device.deviceName}${point.pointName}`;
-        eachLegend.push(lengendName);
-        if (!legend[deviceIndex]) {
-          legend[deviceIndex] = {
-            bottom: 24 + (deviceInfo.length - 1 - deviceIndex) * 24,
-            textStyle:{
-              color: '#666',
-            },
-            data: [lengendName]
-          }
-        } else {
-          legend[deviceIndex].data.push(lengendName)
-        }
+        const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
+        const lengendName = `${point.pointName}${device.deviceName}`;
+        const { pointValue = [] } = device || {};
+        legend.push({
+          top: 34 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
+          left: `${4 + (mapNumber % 4) * 23}%`,
+          textStyle: {
+            fontSize: 12,
+            color: '#666',
+          },
+          data: [lengendName],
+        });
         series.push({
           name: lengendName,
           xAxisIndex: index,
           yAxisIndex: index,
           type: 'line',
-          data: point.pointInfo[deviceIndex]
+          data: pointValue
         });
       });
     })
     return { series, legend }
   }
 
-  renderChart = (chartRealtime) => {
+  renderChart = (chartRealtime, reRender = false) => {
     const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
-    echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
+    reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const realtimeChart = echarts.init(chartDOM);
-    const { pointTime, deviceInfo, pointData } = chartRealtime;
-    const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
+    const { pointTime = [], pointInfo = [] } = chartRealtime;
+    const { deviceInfo = [] } = pointInfo[0] || {};
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -159,45 +155,47 @@ class RealtimeChart extends Component {
           backgroundColor: '#6a7985'
         }
       },
-      grid: this.gridCreate(pointData, deviceInfo),
-      xAxis: this.xAxisCreate(pointData).map(e => ({ ...e, data: xAxisData })),
-      yAxis: this.yAxisCreate(pointData),
-      dataZoom:[{
-        type: 'slider',
-        start: 0,
-        end: 100,
-        bottom: 24 * deviceInfo.length + 24,
-        left: 150,
-        right: 150,
-        filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      },{
-        type: 'inside',
-        orient: 'horizontal',
-        filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      }],
-      ...this.legendSeriesCreate(pointData, deviceInfo) // 
+      grid: this.gridCreate(pointInfo),
+      xAxis: this.xAxisCreate(pointInfo).map(e => ({ ...e, data: pointTime })),
+      yAxis: this.yAxisCreate(pointInfo),
+      // dataZoom:[{
+      //   type: 'slider',
+      //   start: 0,
+      //   end: 100,
+      //   // bottom: 24 * deviceInfo.length + 24,
+      //   left: 150,
+      //   right: 150,
+      //   filterMode: 'empty',
+      //   xAxisIndex: pointInfo.map((e, i)=> i),
+      // },{
+      //   type: 'inside',
+      //   orient: 'horizontal',
+      //   filterMode: 'empty',
+      //   xAxisIndex: pointInfo.map((e, i)=> i),
+      // }],
+      ...this.legendSeriesCreate(pointInfo)
     };
     realtimeChart.setOption(option);
   }
 
   render() {
-    // height: 150 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
-    const { queryParam, dataTime } = this.props;
-    const { deviceFullCode, devicePoint } = queryParam;
-    const calcHeight = 150 * devicePoint.length + 70 + 24 * deviceFullCode.length;
-    const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
+    // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
+    const { queryParam = {}, dataTime = null } = this.props;
+    const { deviceFullCode = [], devicePoint = [] } = queryParam;
+    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCode.length * devicePoint.length) / 4);
+    const chartHeight = calcHeight > 800 ? calcHeight : 800; // 图表高度不小于300
     return (
       <section className={styles.realtimeChart}>
         <h4>
           <span className={styles.eachTitle} />
-          <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>刷新时间: {dataTime}</span>
+          <span className={styles.eachTitle}>各设备测点实时数据检测</span>
+          <span className={styles.tipTitle}>
+            <span>刷新时间: </span>
+            <span className={styles.currentTime}>{dataTime || '暂无'}</span>
+          </span>
         </h4>
         <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px`}} />
       </section>
-      
     )
   }
 }

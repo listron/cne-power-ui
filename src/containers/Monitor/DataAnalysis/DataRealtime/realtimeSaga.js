@@ -11,8 +11,7 @@ const { monitor } = Path.APISubPaths;
 let realtimeChartInterval = null;
 let realtimeListInterval = null;
 
-function *getPointInfo(action) { // 获取可选测点
-  const { payload } = action;
+function *getPointInfo({ payload }) { // 获取可选测点
   const { deviceFullCode } = payload;
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
   try {
@@ -41,7 +40,7 @@ function *getPointInfo(action) { // 获取可选测点
   }
 }
 
-function *realChartInterval({ payload }) { // 请求。=> (推送)处理数据及错误判断
+function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
   const url = '/mock/monitor/dataAnalysisChartRealtime'; // `${APIBasePath}${monitor.getRealtimeChart}`;
   const { chartRealtime, dataTime, timeInterval } = yield select(state => state.monitor.dataRealtime.toJS());
   try {
@@ -58,7 +57,6 @@ function *realChartInterval({ payload }) { // 请求。=> (推送)处理数据�
       const chartInfo = response.data.data || {};
       const { pointTime = [], pointInfo = [] } = chartInfo;
       if (!dataTime) { // 初次请求得到数据
-        const { pointTime = [] } = chartInfo;
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
@@ -73,10 +71,10 @@ function *realChartInterval({ payload }) { // 请求。=> (推送)处理数据�
         }
         const newPointTime = chartRealtime.pointTime || [];
         const prePointInfo = chartRealtime.pointInfo || [];
-        const timeSpace = (moment(maxTime) - moment(dataTime)) / 1000 / timeInterval; // 需插入数据的段数.
+        const timeSpace = (moment(maxTime) - moment(dataTime)) / 10000 / timeInterval; // 需插入数据的段数.
         const maxInfoLength = 30 * 60 / timeInterval;
         for (let insertTime = 0; insertTime < timeSpace; insertTime ++) {
-          const insertParam = moment(maxTime).subtract((timeSpace - 1) * timeInterval,'s').format('YYYY-MM-DD HH:mm:ss');
+          const insertParam = moment(maxTime).subtract((timeSpace - insertTime - 1) * timeInterval,'s').format('YYYY-MM-DD HH:mm:ss');
           newPointTime.push(insertParam);
         }
         if (newPointTime.length > maxInfoLength) { // 若数据长度超出指定长度，则需要去除前部分数据。
@@ -167,58 +165,42 @@ function *getRealtimeChart(action) { // 实时chart数据获取
   realtimeChartInterval = yield fork(getRealtimeChart, action);
 }
 
-function *stopRealtimeChart(){
+function *stopRealtimeChart(){ // 停止图表数据定时请求
   yield cancel(realtimeChartInterval);
 }
 
-function *getRealtimeList(action) { // 实时表格数据获取
-  const { payload } = action;
-  const { queryParam, listParam } = payload;
+function *realListInterval({ payload = {} }) {
+  const { queryParam = {}, listParam = {} } = payload;
   const url = '/mock/monitor/dataAnalysisListRealtime'; // `${APIBasePath}${monitor.getRealtimeList}`;
-  // yield fork(getRealtimeList, action)
-  try{
-    // yield fork(stopRealtimeChart); // 异步执行
-    // yield delay(3000); // 阻塞3秒
-    // console.log('试试看，是否每3秒执行一次')
-    // console.log(moment().format('mm: ss'))
-    // realtimeMark = yield fork(getRealtimeList,action)
-    // const { devicePoint } = queryParam;
-    // const response = yield call(axios.post, url, {
-    //   ...queryParam,
-    //   ...listParam,
-    //   devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
-    // });
-    // const { total = 0 } = response.data.data;
-    // let { pageNum, pageSize } = listParam;
-    // const maxPage = Math.ceil(total / pageSize);
-    // if(total === 0){ // 总数为0时，展示0页
-    //   pageNum = 1;
-    // }else if(maxPage < pageNum){ // 当前页已超出
-    //   pageNum = maxPage;
-    // }
-    // if (response.data.code === '10000') {
-    //   yield put({
-    //     type: realtimeAction.GET_REALTIME_SUCCESS,
-    //     payload: {
-    //       queryParam,
-    //       listParam: {
-    //         ...listParam,
-    //         pageNum, 
-    //         pageSize
-    //       },
-    //       listRealtime: response.data.data || {},
-    //     }
-    //   })
-    // } else {
-    //   throw response.data;
-    // }
-  } catch(e) {
-    message.error('获取图表数据失败!');
-    console.log(e);
+  try {
+    const { devicePoint = [] } = queryParam;
+    const response = yield call(axios.post, url, {
+      ...queryParam,
+      ...listParam,
+      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: realtimeAction.GET_REALTIME_SUCCESS,
+        payload: {
+          queryParam,
+          listParam,
+          listRealtime: response.data.data || {},
+        }
+      })
+    }
+  } catch (err) {
+    console.log(err);
   }
 }
 
-function *stopRealtimeList() {
+function *getRealtimeList(action) { // 实时表格数据获取
+  yield fork(realListInterval, action);
+  yield delay(5000); // 阻塞5秒
+  yield fork(getRealtimeList, action);
+}
+
+function *stopRealtimeList() { // 停止列表数据定时请求
   yield cancel(realtimeListInterval);
 }
 
@@ -253,14 +235,3 @@ export function* watchDataRealtimeMonitor() {
   yield takeLatest(realtimeAction.stopRealtimeChart, stopRealtimeChart);
   yield takeLatest(realtimeAction.stopRealtimeList, stopRealtimeList);
 }
-
-
-// todo 参数选择完成时, 需根据是哪种请求格式来定制实时请求：实时请求图表或实时请求列表。
-
-// 每当切换图表或列表时，需刷新数，重新请求。
-
-// const queryExisting = null; // 记录的fork请求
-
-// function *getChartInterval (){
-
-// }
