@@ -127,7 +127,7 @@ class PerformanceCharts extends React.Component {
         result = '%';
         break;
       case "损失电量":
-        result = 'KWh';
+        result = 'kWh';
         break;
       case "设备故障次数":
         result ='次';
