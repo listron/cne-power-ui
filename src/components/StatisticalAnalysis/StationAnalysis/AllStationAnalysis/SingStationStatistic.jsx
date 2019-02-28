@@ -281,8 +281,8 @@ class SingleStationStatistic extends React.Component {
 
     const { showStationSelect } = this.state;
     const stationItems = stations && stations.toJS();
-    const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0];
-    const stationGridTime = stationItem.onGridTime && stationItem.onGridTime ? moment(stationItem.onGridTime).format('YYYY年MM月DD日') : '--';
+    const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
+    const stationGridTime = stationItem.onGridTime && stationItem.onGridTime && moment(stationItem.onGridTime).format('YYYY年MM月DD日')  || '--'
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
     return (
       <div className={styles.singleStationType}>

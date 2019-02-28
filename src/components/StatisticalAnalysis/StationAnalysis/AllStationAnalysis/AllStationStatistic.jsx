@@ -41,6 +41,13 @@ class AllStationStatistic extends React.Component {
   }
 
   componentDidMount() {
+    const {params}=this.props.match;
+    if(params.stationCode){
+      this.props.changeAllStationStore({
+        showPage: 'single',
+        singleStationCode: `${params.stationCode}`
+      });
+    }
     this.getMonthData(this.props)
   }
 
