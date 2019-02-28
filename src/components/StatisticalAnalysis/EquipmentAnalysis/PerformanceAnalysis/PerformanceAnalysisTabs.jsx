@@ -35,29 +35,37 @@ class PerformanceAnalysisTabs extends Component {
     if (data.length > 0) {
       return (
         <div>
-        <span className="iconfont icon-ha">
-        </span>
-        建议关注排名变化较大的:
+          <span className="iconfont icon-ha">
+          </span>
+          建议关注排名变化较大的:
         <span className={styles.fontColor}>
-       {data.slice(0, 5).map((e, i) =>(`${e},`))}
-        </span>
-        {data.length>5?'等':''}设备
+            {data.slice(0, 5).map((e, i) => {
+              if (i === 0) { return `${e}` } else {
+                return `,${e}`
+              }
+            })}
+          </span>
+          {data.length > 5 ? '等' : ''}设备
         </div>
       )
-     
+
     }
   }
-  showNullValue=(data)=>{
+  showNullValue = (data) => {
     if (data.length > 0) {
       return (
         <div>
-        <span className="iconfont icon-ha">
-        </span>
-        建议检查无数据设备传输状态,无数据设备有:
+          <span className="iconfont icon-ha">
+          </span>
+          建议检查无数据设备传输状态,无数据设备有:
         <span className={styles.fontColor}>
-       {data.slice(0, 5).map((e, i) =>(`${e},`))}
-        </span>
-        {data.length>5?'等':''}
+            {data.slice(0, 5).map((e, i) => {
+              if (i === 0) { return `${e}` } else {
+                return `,${e}`
+              }
+            })}
+          </span>
+          {data.length > 5 ? '等' : ''}
         </div>
       )
     }
@@ -66,8 +74,8 @@ class PerformanceAnalysisTabs extends Component {
   render() {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
-    const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames ,conversionNullValue,hourNullValue,faultNumNullvalue,faultTimeNullValue} = this.props;
-   
+    const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames, conversionNullValue, hourNullValue, faultNumNullvalue, faultTimeNullValue } = this.props;
+
     //转化效率
     let xData = conversioneffData.map(e => e.deviceName) || [];
     let haveSliderConver = xData.length > 20;
@@ -279,7 +287,7 @@ class PerformanceAnalysisTabs extends Component {
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
                 {this.showNullValue(conversionNullValue)}
-                {contrastSwitch && contrastEndDate ?this.showText(conversDeviceNames):''}
+                {contrastSwitch && contrastEndDate ? this.showText(conversDeviceNames) : ''}
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -292,10 +300,10 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
-               
+
                 {this.showNullValue(hourNullValue)}
-                {contrastSwitch && contrastEndDate ?this.showText(hourDeviceNames):''}
-                
+                {contrastSwitch && contrastEndDate ? this.showText(hourDeviceNames) : ''}
+
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -309,7 +317,7 @@ class PerformanceAnalysisTabs extends Component {
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
                 {this.showText(availabilityDeviceNames)}
-                
+
               </div>
             </div>
           </TabPane>
@@ -339,10 +347,10 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-               
+
                 {this.showNullValue(faultNumNullvalue)}
-                {contrastSwitch && contrastEndDate ?this.showText(faultNumDeviceNames):''}
-               
+                {contrastSwitch && contrastEndDate ? this.showText(faultNumDeviceNames) : ''}
+
               </div>
               <div className={styles.chart}>
                 <PerformanceCharts
@@ -355,9 +363,9 @@ class PerformanceAnalysisTabs extends Component {
               </div>
               <div className={styles.textStyle}>
                 <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-               
-               {this.showNullValue(faultTimeNullValue)}
-               {contrastSwitch && contrastEndDate ?this.showText(faultTimeDeviceNames):''}
+
+                {this.showNullValue(faultTimeNullValue)}
+                {contrastSwitch && contrastEndDate ? this.showText(faultTimeDeviceNames) : ''}
               </div>
             </div>
           </TabPane>
