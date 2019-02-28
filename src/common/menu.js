@@ -82,7 +82,7 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
@@ -243,7 +243,7 @@ const menuData = [
           {
             name: '实时预警',
             path: 'realtime',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'analysis_intelligentWarning_pending',
           }, {
             name: '已转工单',
