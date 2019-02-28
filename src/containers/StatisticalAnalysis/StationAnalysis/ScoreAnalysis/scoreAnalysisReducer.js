@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 import { scoreAnalysisAction } from './scoreAnalysisAction.js';
 import moment from 'moment';
 
-let time=moment().subtract(1, 'months').format('YYYY-MM')
+let time=moment().subtract(1, 'months').format('YYYY-MM');
 var initState = Immutable.fromJS({
     reportType: '',//1-集中式光伏电站，2-分布式光伏电站 null 为全部
     stationCode:null, // 电站编码

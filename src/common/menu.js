@@ -82,7 +82,7 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',

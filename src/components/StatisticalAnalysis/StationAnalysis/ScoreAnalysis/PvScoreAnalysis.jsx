@@ -5,7 +5,7 @@ import styles from "./scoreAnalysis.scss";
 import StationScoreList from './StationScoreList';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import PvStationSelect from '../../../../components/Common/PvStationSelect';
-
+import moment from 'moment';
 class PvScoreAnalysis extends Component {
     static propTypes = {
         pvStationType: PropTypes.string,
@@ -109,7 +109,10 @@ class PvScoreAnalysis extends Component {
                                 showYearPick={false}
                                 onChange={this.onTimeChange}
                                 style={{ lineHeight: '42px' }}
-                            />
+                                value={{ timeStyle: 'day',
+                                startTime:moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                                endTime:moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                            }}   />
                         </div>
                     </div>
                     <div className={styles.scoreTranslate}>
@@ -123,13 +126,13 @@ class PvScoreAnalysis extends Component {
                 {
                     !reportType &&
                     (<div>
-                        <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} sigleData={singleScoreData} />
+                        <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} />
                         <div>
                             <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>
-                            <StationScoreList dataList={scoreList.filter(e => !e.reportType)} onChange={this.singleDetail} sigleData={singleScoreData} hasReportType={false} />
+                            <StationScoreList dataList={scoreList.filter(e => !e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} hasReportType={false} />
                         </div>
                     </div>)
-                    || <StationScoreList dataList={scoreList} onChange={this.singleDetail} sigleData={singleScoreData} />
+                    || <StationScoreList dataList={scoreList} onChange={this.singleDetail} singleData={singleScoreData} />
                 }
 
             </div>
