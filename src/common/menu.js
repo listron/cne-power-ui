@@ -165,7 +165,7 @@ const menuData = [
           }, {
             name: '电站评分',
             path: 'score',
-            rightKey: 'statistics_station',
+            rightKey: 'statistics_station_score',
           }, {
             name: '生产分析',
             path: 'production',
@@ -393,7 +393,7 @@ const menuData = [
           {
             name: '绩效评分',
             path: 'performanceScore',
-            rightKey: 'system_config',
+            rightKey: 'system_config_score',
           }, {
             name: '生产计划',
             path: 'plan',
