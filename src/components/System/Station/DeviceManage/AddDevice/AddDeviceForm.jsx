@@ -23,20 +23,46 @@ class AddDeviceForm extends Component {
     }
   }
   componentWillReceiveProps(nextprops) {
-    const { deviceNameOk } = nextprops;
-    if (deviceNameOk !== this.props.deviceNameOk && deviceNameOk === true) {
+    const { deviceNameOk, addDeviceTypeData, addDeviceModeData } = nextprops;
+    if (deviceNameOk === true && deviceNameOk !== this.props.deviceNameOk) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          let branchCountArr = [];
-          for (let i = 0; i < values.branchCount; i++) {
-            branchCountArr.push(i + 1)
+          if (values.deviceTypeCode === 202 || values.deviceTypeCode === 206) {
+            let branchCountArr = [];
+            for (let i = 0; i < values.branchCount; i++) {
+              branchCountArr.push(i + 1)
+            }
+            if (values.branchCount) {
+              values.connectedBranches = branchCountArr.map((e, i) => {
+                return values.connectedBranches.includes(e) ? 1 : 0
+              })
+            }
+            values.map = { componentMode: values.componentMode, branchCount: +values.branchCount, connectedBranches: values.connectedBranches };
           }
-          if (values.branchCount) {
-            values.connectedBranches = branchCountArr.map((e, i) => {
-              return values.connectedBranches.includes(e) ? 1 : 0
-            })
+          if (values.deviceTypeCode === 304) {
+            values.map = { belongMatrix: values.belongMatrix }
+          } else if (values.deviceTypeCode === 101) {
+            values.map = {
+              assemblyTime: values.assemblyTime,
+              ongridTime: values.ongridTime,
+              warrantyBegintime: values.warrantyBegintime,
+              warrantyEndtime: values.warrantyEndtime,
+              scrapTime: values.scrapTime,
+              hubHeight: values.hubHeight,
+            }
+          } else if (values.deviceTypeCode === 501){
+            values.map = {
+              altitude: values.altitude,
+              towerAssemblyTime: values.towerAssemblyTime,
+              towerHeight: values.towerHeight,
+              windMeasurementEquipment: values.windMeasurementEquipment,
+            }
           }
-          values.stationCode = values.stationCode[0].stationCode;
+          values.stationCode = `${values.stationCode[0].stationCode}`;
+          values.deviceTypeCode = addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`;
+          values.deviceModeCode = addDeviceModeData.deviceModeCode?`${addDeviceModeData.deviceModeCode}`:`${values.deviceModeCode}`;
+         
+
           this.props.addDeviceDetail({ ...values })
         } else {
           console.log(err);
@@ -68,14 +94,7 @@ class AddDeviceForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        let branchCountArr = [];
-        for (let i = 0; i < values.branchCount; i++) {
-          branchCountArr.push(i + 1)
-        }
-        values.connectedBranches = branchCountArr.map((e, i) => {
-          return values.connectedBranches.includes(e) ? 1 : 0
-        })
-        values.stationCode = values.stationCode[0].stationCode;
+
         this.props.checkDeviceName({ deviceName: values.deviceName })
 
         // this.props.addDeviceDetail({ ...values })
@@ -94,13 +113,14 @@ class AddDeviceForm extends Component {
   }
   cancleDeviceModeModal = () => {
     this.setState({
-      showAddDeviceModeModal: false
+      showAddDeviceModeModal: false,
+     
     })
   }
   saveFormState = (record) => {
-    this.setState({ deviceModeCodeAdd: record.deviceModeCode, manufacturerAdd: record.manufacturer, showAddDeviceMode: true })
+    this.setState({ deviceModeCodeAdd: record.addDeviceModeCodeName, manufacturerAdd: record.addManufacturer, showAddDeviceMode: true })
   }
-  changeDeviceMode=()=>{
+  changeDeviceMode = () => {
     console.log(1111);
   }
   render() {
@@ -125,22 +145,13 @@ class AddDeviceForm extends Component {
           <div className={styles.leftlayout}>
             <div className={styles.defaultConfigStyles}>
               <FormItem label="电站名称" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('stationCode', {
-                  rules: [
-                    { message: '请选择电站', required: true, },
-                  ]
-                })(
+                {getFieldDecorator('stationCode')(
                   <span>{stationName}</span>
                 )}
               </FormItem>
               {/*// addDeviceTypeData.deviceTypeCode*/}
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-                {getFieldDecorator('deviceTypeCode', {
-                  initialValue: 'asd',
-                  rules: [
-                    { message: '请选择设备类型', required: true, },
-                  ]
-                })(
+                {getFieldDecorator('deviceTypeCode')(
 
                   <span>{selectDeviceTypeName}</span>
                 )}
@@ -164,7 +175,7 @@ class AddDeviceForm extends Component {
                     <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
                       {deviceModels.map((e, i) => {
                         if (!e) { return null; } else {
-                          return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                          return <Option key={e.deviceModeCode} value={`${e.deviceModeCode}`}>{e.deviceModeName}</Option>
                         }
 
                       })}
@@ -194,7 +205,7 @@ class AddDeviceForm extends Component {
             </div>
             <div className={styles.valueStyles}>
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('pareneDeviceName')(
+                {getFieldDecorator('parentDeviceFullcode')(
                   <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; } else {
@@ -207,8 +218,8 @@ class AddDeviceForm extends Component {
               <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('templateMachine')(
                   <Select>
-                    <Option value={true}>是</Option>
-                    <Option value={false}>否</Option>
+                    <Option value={'1'}>是</Option>
+                    <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>
@@ -235,10 +246,10 @@ class AddDeviceForm extends Component {
             </div>
             <div className={styles.systermStyle}>
               <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('enableDisplay', { initialValue: true, })(
+                {getFieldDecorator('enableDisplay', { initialValue: '1', })(
                   <Select>
-                    <Option value={true}>是</Option>
-                    <Option value={false}>否</Option>
+                    <Option value={'1'}>是</Option>
+                    <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>

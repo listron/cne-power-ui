@@ -27,6 +27,7 @@ const initState = Immutable.fromJS({
   addSuccess:null,
   deviceNameOk:null,
   checkDeviceModeOk:null,
+  checkDeviceTypeok:null,
   addDeviceModeData:{},//添加设备型号结果
   checkDeviceNameData:{},//添加设备名重复结果
   checkDeviceTypeData:{},//添加设备类型重复结果

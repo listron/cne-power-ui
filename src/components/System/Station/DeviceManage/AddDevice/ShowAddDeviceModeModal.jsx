@@ -12,14 +12,16 @@ class ShowAddDeviceModeModal extends Component {
   }
   componentWillReceiveProps(nextProps){
     const{checkDeviceModeOk,addDeviceTypeData}=nextProps;
+    console.log('addDeviceTypeData: ', addDeviceTypeData);
     if(checkDeviceModeOk!==this.props.checkDeviceModeOk&&checkDeviceModeOk===true){
-      this.props.form.validateFieldsAndScroll(["deviceModeCode","manufacturer"],(err,values)=>{
+      this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer","deviceTypeCode"],(err,values)=>{
+        console.log('values: ', values);
         if(!err){
           this.props.addDeviceMode({
-            deviceTypeCode:addDeviceTypeData.deviceTypeCode,
+            deviceTypeCode:addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`,
             // deviceTypeCode:'202',
-            deviceModeName:values.deviceModeCode,
-            manufacturer:values.manufacturer,
+            deviceModeName:values.addDeviceModeCodeName,
+            manufacturer:values.addManufacturer,
           })
             this.props.saveFormState(values)
            this.props.cancleDeviceModeModal()
@@ -41,10 +43,10 @@ class ShowAddDeviceModeModal extends Component {
     // const {stationDeviceTypes}=this.props;
 
    
-    this.props.form.validateFieldsAndScroll(["deviceModeCode","manufacturer"],(err,values)=>{
+    this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer"],(err,values)=>{
       if(!err){
        this.props.checkDeviceMode({
-        deviceModeName:values.deviceModeCode
+        deviceModeName:values.addDeviceModeCodeName
        })
         
           // this.props.saveFormState(values)
@@ -75,7 +77,7 @@ class ShowAddDeviceModeModal extends Component {
       >
         <Form className={styles.preFormStyle}>
           <FormItem label="设备型号" colon={false} {...formItemLayout}  >
-            {getFieldDecorator('deviceModeCode', {
+            {getFieldDecorator('addDeviceModeCodeName', {
               rules: [
                 { message: '设备型号不超过30字', required: true, type: 'string', max: 30 },
               ]
@@ -84,7 +86,7 @@ class ShowAddDeviceModeModal extends Component {
             )}
           </FormItem>
           <FormItem label="生产厂家" colon={false} {...formItemLayout} >
-            {getFieldDecorator('manufacturer', {
+            {getFieldDecorator('addManufacturer', {
              
               rules: [
                 { message: '不超过30字', required: true, type: 'string', max: 30 },

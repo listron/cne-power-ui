@@ -57,7 +57,7 @@ class DeviceManageHandle extends Component {
     const deviceFullcodes = selectedRowData.map((e, i) => {
       return e.deviceFullCode
     })
-    deleteDevice({ deviceFullcodes })
+    deleteDevice({ deviceFullcodes:deviceFullcodes })
     this.setState({ showDeleteWarning: false })
   }
   deleteStationDevice = () => {

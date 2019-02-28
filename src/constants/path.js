@@ -161,7 +161,6 @@ export default {
       showDeviceInfo: '/v3/management/device', // 设备详情信息表
       editDeviceInfo: '/v3/management/device', // 编辑设备信息表
       getConnectDevice:'/v3/management/queryParentDeviceBySubType',//关联设备
-      // getConnectDevice:'/v3/station/devicetype',//关联设备
       deleteDevice:'/v3/management/device',//删除设备信息
       importStationDevice:'/v3/management/stationimport',//批量导入设备
       deleteStationDevice:'/v3/management/emptydevice',//删除设备

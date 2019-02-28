@@ -20,7 +20,8 @@ class AddDevice extends Component {
       showStep: 'pre',
       showAddDeviceModal: false,
       deviceTypeName: '',
-      showAddDeviceType: false,
+      showAddDeviceName:false,
+    
     }
   }
 
@@ -82,15 +83,14 @@ class AddDevice extends Component {
   nextStep = () => {
     //在这请求关联设备的数据
     const selectdeviceType = this.props.form.getFieldValue('deviceTypeCode')
-    this.props.getConnectDevice({
-      deviceTypeCode: selectdeviceType
-    })
+   
     this.setState({
-      showStep: 'next'
+      showStep: 'next',showAddDeviceName:false,
     })
+    this.props.changeDeviceManageStore({addSuccess:null})
   }
   saveFormState = (record) => {
-    this.setState({ deviceTypeName: record.deviceTypeCode, showAddDeviceType: true })
+    this.setState({ deviceTypeName: record.addDeviceTypeCodeName,showAddDeviceName:true  })
   }
   gobackPre = () => {
     this.setState({
@@ -98,7 +98,7 @@ class AddDevice extends Component {
     })
   }
   render() {
-    const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName, showAddDeviceType } = this.state;
+    const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName,showAddDeviceName  } = this.state;
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const typeSelectDisable = stationDeviceTypes.length === 0;
@@ -126,9 +126,9 @@ class AddDevice extends Component {
               />
             )}
           </FormItem>
-          {showAddDeviceType ?
+          {showAddDeviceName ?
             <FormItem label="设备类型" colon={false} className={styles.formItemStyle}>
-              {getFieldDecorator('deviceTypeName', {
+              {getFieldDecorator('addDeviceTypeCodeName', {
                 rules: [
                   { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
                 ]

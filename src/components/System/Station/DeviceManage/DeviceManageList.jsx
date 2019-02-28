@@ -33,7 +33,6 @@ class DeviceManageList extends Component {
     })
   }
   showDeviceDetail=(record)=>{
-    console.log(record);
     this.props.changeDeviceManageStore({showPage:'detail'})
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,

@@ -14,9 +14,20 @@ class ShowAddDeviceModal extends Component {
     }
   }
   componentWillReceiveProps(nextprops) {
-    const { addSuccess } = nextprops;
+    const { addSuccess ,checkDeviceTypeok} = nextprops;
     let planValue =this.props.form.getFieldsValue();
-    if (addSuccess !== this.props.addSuccess&&addSuccess===true) {
+    if(checkDeviceTypeok!== this.props.checkDeviceTypeok&&checkDeviceTypeok===true){
+      this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
+        if (!err) {
+          this.props.addDeviceType({
+            stationCode:this.props.selectStation,
+            isPertain: values.isPertain,
+            deviceTypeName: values.addDeviceTypeCodeName
+          })
+        }
+      })
+    }
+    if (addSuccess===true) {
       this.props.saveFormState(planValue)
       this.props.cancleAddDeviceModal()
     }
@@ -32,17 +43,14 @@ class ShowAddDeviceModal extends Component {
     const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess ,selectStation} = this.props;
     console.log('selectStation: ', selectStation);
     let planValue = getFieldsValue();
-    this.props.form.validateFieldsAndScroll(["deviceTypeCode", "isPertain"], (err, values) => {
+    this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
       // const deviceTypeNameArr = stationDeviceTypes.map(e => e.deviceTypeName);
       // console.log('deviceTypeNameArr: ', deviceTypeNameArr);
-      // const modalConfirm = deviceTypeNameArr.includes(values.deviceTypeCode) ? 1 : 0;
+      // const modalConfirm = deviceTypeNameArr.includes(values.addDeviceTypeCodeName) ? 1 : 0;
       // console.log('modalConfirm: ', modalConfirm);
       if (!err) {
-        this.props.addDeviceType({
-          stationCode:selectStation,
-          isPertain: values.isPertain,
-          deviceTypeName: values.deviceTypeCode
-        })
+        this.props.checkDeviceType({deviceTypeName:values.addDeviceTypeCodeName})
+       
       
       }
     })
@@ -70,7 +78,7 @@ class ShowAddDeviceModal extends Component {
         >
           <Form className={styles.preFormStyle}>
             <FormItem label="设备类型" colon={false} {...formItemLayout}  >
-              {getFieldDecorator('deviceTypeCode', {
+              {getFieldDecorator('addDeviceTypeCodeName', {
                 rules: [
                   { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
                 ]

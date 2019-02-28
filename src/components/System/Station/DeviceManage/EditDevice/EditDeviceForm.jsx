@@ -16,16 +16,47 @@ class EditDeviceForm extends Component {
   }
   submitForm = (e) => {
     e.preventDefault();
+    const { stationDeviceDetail } = this.props;
+    const { deviceTypeCode } = stationDeviceDetail;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        let branchCountArr = [];
-        for (let i = 0; i < values.branchCount; i++) {
-          branchCountArr.push(i + 1)
+        if (deviceTypeCode === '202' || deviceTypeCode === '206') {
+          let branchCountArr = [];
+          for (let i = 0; i < values.branchCount; i++) {
+            branchCountArr.push(i + 1)
+          }
+          if (values.branchCount) {
+            values.connectedBranches = branchCountArr.map((e, i) => {
+              return values.connectedBranches.includes(e) ? 1 : 0
+            })
+          }
+          values.map = { componentMode: values.componentMode, branchCount: +values.branchCount, connectedBranches: values.connectedBranches };
         }
-        values.connectedBranches = branchCountArr.map((e, i) => {
-          return values.connectedBranches.includes(e) ? 1 : 0
-        })
-        this.props.addDeviceDetail({ ...values })
+        if (deviceTypeCode === '304') {
+          values.map = { belongMatrix: values.belongMatrix }
+        } else if (deviceTypeCode === '101') {
+          values.map = {
+            assemblyTime: values.assemblyTime,
+            ongridTime: values.ongridTime,
+            warrantyBegintime: values.warrantyBegintime,
+            warrantyEndtime: values.warrantyEndtime,
+            scrapTime: values.scrapTime,
+            hubHeight: values.hubHeight,
+          }
+        } else if (deviceTypeCode === '501'){
+          values.map = {
+            altitude: values.altitude,
+            towerAssemblyTime: values.towerAssemblyTime,
+            towerHeight: values.towerHeight,
+            windMeasurementEquipment: values.windMeasurementEquipment,
+          }
+        }
+        values.stationCode = stationDeviceDetail.stationCode;
+       if(values.parentDeviceFullcode === stationDeviceDetail.pareneDeviceName){
+        values.parentDeviceFullcode=stationDeviceDetail.parentDeviceFullcode
+       }
+
+        this.props.editDeviceDetail({ ...values })
       }
     });
     this.props.changeDeviceManageStore({ showPage: 'detail', })
@@ -82,20 +113,20 @@ class EditDeviceForm extends Component {
             </div>
             <div className={styles.valueStyles}>
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('pareneDeviceName', { initialValue: stationDeviceDetail.pareneDeviceName, })(
+                {getFieldDecorator('parentDeviceFullcode', { initialValue: stationDeviceDetail.pareneDeviceName, })(
                   <Select placeholder="请选择关联设备" disabled={connectDevice.length === 0}>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; }
-                      return <Option key={i} value={e.pareneDeviceName}>{e.pareneDeviceName}</Option>
+                      return <Option key={i} value={e.deviceFullCode}>{e.deviceName}</Option>
                     })}
                   </Select>
                 )}
               </FormItem>
               {isShow && <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('templateMachine', { initialValue: !!stationDeviceDetail.templateMachine, })(
+                {getFieldDecorator('templateMachine', { initialValue: stationDeviceDetail.templateMachine, })(
                   <Select>
-                    <Option value={true}>是</Option>
-                    <Option value={false}>否</Option>
+                    <Option value={'1'}>是</Option>
+                    <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>}
@@ -127,10 +158,10 @@ class EditDeviceForm extends Component {
                 )}
               </FormItem>
               <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('enableDisplay', { initialValue: !!stationDeviceDetail.enableDisplay, })(
+                {getFieldDecorator('enableDisplay', { initialValue: stationDeviceDetail.enableDisplay, })(
                   <Select>
-                    <Option value={true}>是</Option>
-                    <Option value={false}>否</Option>
+                    <Option value={'1'}>是</Option>
+                    <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>
@@ -148,7 +179,7 @@ class EditDeviceForm extends Component {
             {deviceTypeCode === '501' && <WindMeasurement stationDeviceDetail={stationDeviceDetail} form={form} />}
             {deviceTypeCode === '304' && <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('belongMatrix', { initialValue: stationDeviceDetail.belongMatrix, })(
+                {getFieldDecorator('belongMatrix', { initialValue: stationDeviceDetail.map.belongMatrix, })(
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>

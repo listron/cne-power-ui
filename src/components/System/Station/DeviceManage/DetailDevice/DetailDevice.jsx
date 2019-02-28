@@ -22,16 +22,22 @@ class DetailDevice extends Component {
     }
   }
   onShowSideChange = () => { // 编辑页
-    const{getPvDevice,stationDeviceDetail,stationCode}=this.props;
+    const{getPvDevice,stationDeviceDetail,stationCode,getConnectDevice}=this.props;
+    console.log('stationCode: ', stationCode);
     const{deviceTypeCode,}=stationDeviceDetail;
     this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.onShowSideChange('edit');
+    getConnectDevice({
+      stationCode:stationCode,
+      deviceTypeCode: deviceTypeCode,
+    })
     if(deviceTypeCode === '202'||deviceTypeCode === '206'){
       getPvDevice({ 
         stationCode,
         deviceTypeCode: '509',
       })
     }
+
   }
   preStation = () => { // 上一个电站详情
     const { queryParams, selectedStationIndex, pageNum, pageSize, getOtherPageDeviceDetail, getStationDeviceDetail, deviceList } = this.props;
@@ -50,13 +56,16 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 正常请求上一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex - 1,
-        deviceFullcode: deviceList[selectedStationIndex].deviceFullcode,
+        deviceFullCode: deviceList[selectedStationIndex-1].deviceFullCode,
       })
     }
   }
 
   nextStation = () => { // 下一个电站详情
     const { queryParams, selectedStationIndex, pageNum, pageSize, getOtherPageDeviceDetail, totalNum, getStationDeviceDetail, deviceList } = this.props;
+    
+    const deviceFullCode=deviceList[selectedStationIndex]['deviceFullCode'];
+    console.log(deviceFullCode);
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
     const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
     if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
@@ -74,7 +83,7 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
-        deviceFullcode: deviceList[selectedStationIndex].deviceFullcode,
+        deviceFullCode: deviceFullCode,
       })
     }
   }
