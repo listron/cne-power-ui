@@ -98,7 +98,7 @@ class DeviceManage extends Component {
             effect="side"
           >
          
-           <DeviceSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+           <DeviceSide {...this.props} queryParams={queryParams} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
         </div>
         <Footer />
@@ -132,6 +132,14 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'deviceModels'
     }
   }),
+  getPvDevice: params => dispatch({
+    type: commonAction.getDeviceModel,
+    payload: {
+      params,
+      actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      resultName: 'pvDeviceModels'
+    }
+  }),
   getStationOfEnterprise: params => dispatch({
     type: commonAction.getStationOfEnterprise,
     payload: {
@@ -141,6 +149,24 @@ const mapDispatchToProps = (dispatch) => ({
     }
   }),
   changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
+  
+  addDeviceDetail:payload => dispatch({ type: deviceManageAction.addDeviceDetail, payload }),
+  getStationDeviceDetail:payload => dispatch({ type: deviceManageAction.getStationDeviceDetail, payload }),
+  getOtherPageDeviceDetail:payload => dispatch({ type: deviceManageAction.getOtherPageDeviceDetail, payload }),
+  editDeviceDetail:payload => dispatch({ type: deviceManageAction.editDeviceDetail, payload }),
+  getConnectDevice:payload => dispatch({ type: deviceManageAction.getConnectDevice, payload }),
+  deleteDevice:payload => dispatch({ type: deviceManageAction.deleteDevice, payload }),
+
+  addDeviceType:payload => dispatch({ type: deviceManageAction.addDeviceType, payload }),
+  addDeviceMode:payload => dispatch({ type: deviceManageAction.addDeviceMode, payload }),
+  addPvDeviceMode:payload => dispatch({ type: deviceManageAction.addPvDeviceMode, payload }),
+  checkDeviceName:payload => dispatch({ type: deviceManageAction.checkDeviceName, payload }),
+  checkDeviceType:payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
+  checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
+
+  deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
+  importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload })
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);

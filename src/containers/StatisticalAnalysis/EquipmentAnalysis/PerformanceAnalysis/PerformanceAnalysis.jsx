@@ -17,7 +17,6 @@ import Cookie from 'js-cookie';
 
 class PerformanceAnalysis extends Component {
   static propTypes = {
-
     changePerformanceAnalysisStore: PropTypes.func,
     targetTabs: PropTypes.string,
   }
@@ -56,6 +55,7 @@ class PerformanceAnalysis extends Component {
   render() {
 
     const TabPane = Tabs.TabPane;
+   
     const breadCrumbData = {
       breadData: [
         {
