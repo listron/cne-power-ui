@@ -19,6 +19,7 @@ class ScoreMain extends Component {
         edit: PropTypes.bool,
         reportType: PropTypes.string,
         isVaild: PropTypes.array,
+        resetStore: PropTypes.func,
     };
     constructor(props) {
         super(props);
@@ -39,6 +40,10 @@ class ScoreMain extends Component {
         if (this.props.reportType !== nextProps.reportType) { this.setState({ basicScore: nextProps.basicScore }) }
         if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
         if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
+    }
+
+    componentWillUnmount() {
+        this.props.resetStore(); // 重置数据
     }
 
     stationCheck = (e) => {// 电站切换

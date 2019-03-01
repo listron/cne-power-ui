@@ -26,9 +26,6 @@ class Score extends Component {
 
   }
 
-  componentWillUnmount() {
-    // this.props.resetStore(); // 重置数据
-  }
 
   onTabChange = () => { //tab 切换
 
