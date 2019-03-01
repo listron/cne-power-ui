@@ -16,19 +16,11 @@ function *getPointInfo({ payload }) { // 获取可选测点
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
   try {
     const response = yield call(axios.post, url, { deviceId: deviceFullCode.map(e => e.deviceCode) });
-    const { queryParam } = yield select(state => state.monitor.dataRealtime.toJS());
     if (response.data.code === '10000') {
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
-          queryParam: {
-            ...queryParam,
-            deviceFullCode,
-            devicePoint: [],
-          },
           pointInfo: response.data.data || [],
-          chartRealtime: {},
-          listRealtime: {},
         }
       })
     } else {
@@ -46,6 +38,10 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
   try {
     const { queryParam = {} } = payload;
     const { devicePoint = [] } = queryParam;
+    yield put({
+      type: realtimeAction.CHANGE_REALTIME_STORE,
+      payload: { queryParam }
+    })
     const [response, timeoutInfo] = yield race([
       call(axios.post, url, {
         ...queryParam,
@@ -174,6 +170,10 @@ function *realListInterval({ payload = {} }) {
   const url = '/mock/monitor/dataAnalysisListRealtime'; // `${APIBasePath}${monitor.getRealtimeList}`;
   try {
     const { devicePoint = [] } = queryParam;
+    yield put({
+      type: realtimeAction.CHANGE_REALTIME_STORE,
+      payload: { queryParam, listParam }
+    })
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
@@ -183,8 +183,6 @@ function *realListInterval({ payload = {} }) {
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
-          queryParam,
-          listParam,
           listRealtime: response.data.data || {},
         }
       })

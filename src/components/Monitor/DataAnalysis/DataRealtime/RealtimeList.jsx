@@ -27,9 +27,9 @@ class RealtimeList extends Component {
 
   render() {
     const { listRealtime, listParam } = this.props;
-    const { total, time, list = [] } = listRealtime;
+    const { totalCount, time, dataList = [] } = listRealtime;
     const { pageNum, pageSize } = listParam;
-    const { pointData = [] } = list[0] || {};
+    const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
         title: '设备名称',
@@ -53,7 +53,7 @@ class RealtimeList extends Component {
       title: e.pointName, // e.pointUnit
       dataIndex: e.devicePointCode,
     }));
-    const dataSource = list.map((e, i) => { // 数据处理及时间规范。
+    const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
       let pointInfo = {}
       e.pointData.forEach(point => {
         pointInfo[point.devicePointCode] = point.pointValue
@@ -68,7 +68,7 @@ class RealtimeList extends Component {
       <div className={styles.realtimeList}>
         <div className={styles.pagination}>
           <span className={styles.text}>刷新时间: {time}</span>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
           dataSource={dataSource}

@@ -87,9 +87,18 @@ class RealtimeSearch extends Component {
   }
 
   selectedDevice = (devices) => { // 设备选择
-    const { getPointInfo, stopRealtimeChart, stopRealtimeList } = this.props;
+    const { getPointInfo, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, queryParam } = this.props;
     stopRealtimeChart();
     stopRealtimeList();
+    changeRealtimeStore({
+      queryParam: {
+        ...queryParam,
+        deviceFullCode: devices,
+        devicePoint: [],
+      },
+      allHistory: {},
+      partHistory: {},
+    })
     getPointInfo({ deviceFullCode: devices });
   }
 

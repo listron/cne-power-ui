@@ -100,10 +100,7 @@ class HistoryChart extends Component {
     const deviceNum = deviceInfo.length || 0;
     const pointNum = pointData.length || 0;
     pointData.forEach((point, index) => {
-      let eachLegend = [];
       deviceInfo.forEach((device, deviceIndex) => {
-        const lengendName = `${point.pointName}${device.deviceName}`;
-        eachLegend.push(lengendName);
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
         const lengendName = `${point.pointName}${device.deviceName}`;
         legend.push({
