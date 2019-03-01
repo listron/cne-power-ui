@@ -88,32 +88,33 @@ class HistoryChart extends Component {
     if (i === pointData.length - 1) { // 最后一个grid
       return {
         ...baseGridOption,
-        bottom: 60 + deviceInfo.length * 24
+        bottom: 60 + Math.ceil(deviceInfo.length * pointData.length / 4) * 24
       }
     } else {
       return baseGridOption
     }
-    
   })
 
   legendSeriesCreate = (pointData, deviceInfo) => { // 嵌套遍历生成相关的series 与legend;
     const series = [], legend = [];
+    const deviceNum = deviceInfo.length || 0;
+    const pointNum = pointData.length || 0;
     pointData.forEach((point, index) => {
       let eachLegend = [];
       deviceInfo.forEach((device, deviceIndex) => {
-        const lengendName = `${device.deviceName}${point.pointName}`;
+        const lengendName = `${point.pointName}${device.deviceName}`;
         eachLegend.push(lengendName);
-        if (!legend[deviceIndex]) {
-          legend[deviceIndex] = {
-            bottom: 24 + (deviceInfo.length - 1 - deviceIndex) * 24,
-            textStyle:{
-              color: '#666',
-            },
-            data: [lengendName]
-          }
-        } else {
-          legend[deviceIndex].data.push(lengendName)
-        }
+        const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
+        const lengendName = `${point.pointName}${device.deviceName}`;
+        legend.push({
+          top: 34 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
+          left: `${4 + (mapNumber % 4) * 23}%`,
+          textStyle: {
+            fontSize: 12,
+            color: '#666',
+          },
+          data: [lengendName],
+        });
         series.push({
           name: lengendName,
           xAxisIndex: index,
@@ -182,10 +183,10 @@ class HistoryChart extends Component {
   }
 
   render() {
-    // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
+    // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 数据指示条行数。
     const { queryParam } = this.props;
     const { deviceFullCode, devicePoint, timeInterval } = queryParam;
-    const calcHeight = 160 * devicePoint.length + 70 + 24 * deviceFullCode.length;
+    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCode.length * devicePoint.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.historyChart}>

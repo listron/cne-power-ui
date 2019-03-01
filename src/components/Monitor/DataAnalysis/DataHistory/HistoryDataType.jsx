@@ -19,6 +19,7 @@ class HistoryDataType extends Component {
     timeSpace:  PropTypes.string,
     historyType:  PropTypes.string,
     queryParam: PropTypes.object,
+    partHistory: PropTypes.object,
 
     changeHistoryStore: PropTypes.func,
     getHistory: PropTypes.func,
@@ -56,14 +57,19 @@ class HistoryDataType extends Component {
   }
 
   render(){
-    const { historyType } = this.props;
+    const { historyType, partHistory = {} } = this.props;
+    const { dataList = [] } = partHistory;
     return (
       <div className={styles.historyDataType}>
         <div className={styles.tabIcons}>
           <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
-        {historyType === 'list' && <Button className={styles.export} onClick={this.exportHistory}>导出</Button>}
+        {historyType === 'list' && <Button
+          className={styles.export}
+          onClick={this.exportHistory}
+          disabled={dataList.length === 0}
+        >导出</Button>}
       </div>
     )
   }

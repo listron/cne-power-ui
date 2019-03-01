@@ -95,13 +95,18 @@
 
 .pointTree{
   flex: 0 0 150px;
+  overflow: hidden;
   border-right: 1px solid $promptColor;
   h3{
     height: 40px;
     line-height: 40px;
     color: $darkColor;
     text-align: center;
-    border-bottom: 1px solid $promptColor;
+  }
+  :global{
+    .ant-tree{
+      border-top: 1px solid $promptColor;
+    }
   }
 }
 

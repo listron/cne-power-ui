@@ -84,7 +84,16 @@ class HistorySearch extends Component {
   }
 
   selectedDevice = (devices) => { // 设备选择
-    const { getPointInfo } = this.props;
+    const { getPointInfo, changeHistoryStore, queryParam } = this.props;
+    changeHistoryStore({
+      queryParam: {
+        ...queryParam,
+        deviceFullCode: devices,
+        devicePoint: [],
+      },
+      allHistory: {},
+      partHistory: {},
+    })
     getPointInfo({ deviceFullCode: devices });
   }
 

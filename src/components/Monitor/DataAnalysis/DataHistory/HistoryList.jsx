@@ -51,10 +51,10 @@ class HistoryList extends Component {
 
   render() {
     const { partHistory, listParam, queryParam } = this.props;
-    const { total, list = [] } = partHistory;
+    const { totalCount, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize, orderField } = listParam;
-    const { pointData = [] } = list[0] || {};
+    const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
         title: '设备名称',
@@ -90,7 +90,7 @@ class HistoryList extends Component {
       title: e.devicePointName,
       dataIndex: e.devicePointCode,
     }));
-    const dataSource = list.map((e, i) => { // 数据处理及时间规范。
+    const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
       let pointInfo = {}
       e.pointData.forEach(point => {
         pointInfo[point.devicePointCode] = point.pointValue
@@ -106,7 +106,7 @@ class HistoryList extends Component {
       <div className={styles.historyList}>
         <div className={styles.pagination}>
           <span className={styles.text}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
           dataSource={dataSource}

@@ -424,8 +424,9 @@ function* getWeather(action) { // 获取电站天气
   }
 }
 
-function* downLoadFile(action) { // 根据路径，名称生成下载文件。(默认post请求)
-  const { url, fileName, method='post', params } = action;
+function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求)
+  const { url, fileName, method='post', params } = payload;
+  console.log(payload)
   let newFileName = fileName;
   try {
     const response = yield call(axios, {
