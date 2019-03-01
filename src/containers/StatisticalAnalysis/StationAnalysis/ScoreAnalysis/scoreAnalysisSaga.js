@@ -30,7 +30,7 @@ function* getScoreList(action) {
             yield put({
                 type: scoreAnalysisAction.changeScoreStore,
                 payload: {
-                    ...payload,
+                    pvParams:{...payload,},
                     scoreList: response.data.data || [],
                 },
             });
