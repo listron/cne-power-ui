@@ -72,10 +72,7 @@ class AddRule extends Component {
     const { getPoints } = this.props;
     const { stationCode, deviceTypeCode } = this.state;
     this.setState({ deviceModeCode: value })
-    getPoints({
-      payload: { stationCode, deviceTypeCode, deviceModeCode: value },
-      resultName: 'ruleDevicePoints'
-    });
+    getPoints({stationCode, deviceTypeCode, deviceModeCode: value });
     this.props.form.setFieldsValue({ pointCode: '', pointUnit: '' })
   }
 
