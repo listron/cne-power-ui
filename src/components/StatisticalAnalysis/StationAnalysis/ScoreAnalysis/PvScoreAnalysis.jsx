@@ -5,6 +5,7 @@ import styles from "./scoreAnalysis.scss";
 import StationScoreList from './StationScoreList';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import PvStationSelect from '../../../../components/Common/PvStationSelect';
+import WarningTip from '../../../Common/WarningTip';
 import moment from 'moment';
 class PvScoreAnalysis extends Component {
     static propTypes = {
@@ -29,7 +30,9 @@ class PvScoreAnalysis extends Component {
         this.state = {
             stationSelect: '',
             reportStation: [],
-            highToLow: true
+            highToLow: true,
+            warningTipText: '数据计算中，请选择其他月份进行查看',
+            showWarningTip: moment().isBefore(moment().format('YYYY-MM') + '-03', 'day'),// 在每个月前两天没有数据提示
         }
     }
 
@@ -42,11 +45,11 @@ class PvScoreAnalysis extends Component {
         const { startTime, timeStyle } = value;
         let dataType = timeStyle === 'month' ? 'year' : 'month';
         this.getScoreList({ dataType, time: startTime })
+        dataType === 'month' && this.setState({ showWarningTip: moment(startTime).isBefore(moment().format('YYYY-MM') + '-03', 'day'), })
     }
 
     getScoreList = (param) => {
-        const { pvParams, stationType,getScoreList } = this.props;
-        console.log('tets',{ ...pvParams, stationType, ...param })
+        const { pvParams, stationType, getScoreList } = this.props;
         getScoreList({ ...pvParams, stationType, ...param })
     }
 
@@ -74,13 +77,20 @@ class PvScoreAnalysis extends Component {
         this.getScoreList({ sortMethod })
     }
 
+    confirmWarningTip = () => {
+        this.setState({ showWarningTip: false })
+    }
+
     render() {
         const { pvStationType, scoreList, reportType, singleScoreData, stations } = this.props;
         const { reportStation, highToLow } = this.state;
         const PvStations = stations.filter(e => e.stationType === 1);
         const PVSelectStations = reportType === '' ? PvStations : PvStations.filter(e => e.reportType === reportType);
+        const { showWarningTip, warningTipText } = this.state;
         return (
             <div className={styles.PvScore}>
+                {showWarningTip &&
+                    <WarningTip onOK={this.confirmWarningTip} value={warningTipText} style={{ height: '110px', width: '210px' }} />}
                 <div className={styles.stationTypeTab}>
                     {pvStationType === 'multiple' &&
                         <Radio.Group defaultValue="" buttonStyle="solid" onChange={this.PvStationSelect}>
@@ -112,9 +122,11 @@ class PvScoreAnalysis extends Component {
                                 onChange={this.onTimeChange}
                                 style={{ lineHeight: '42px' }}
                                 defaultLast={true}
-                                value={{ timeStyle: 'day',
-                                startTime:moment().subtract(1, 'months').format('YYYY-MM-DD'),
-                                endTime:moment().subtract(1, 'months').format('YYYY-MM-DD')} }   />
+                                value={{
+                                    timeStyle: 'day',
+                                    startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                                    endTime: moment().subtract(1, 'months').format('YYYY-MM-DD')
+                                }} />
                         </div>
                     </div>
                     <div className={styles.scoreTranslate}>

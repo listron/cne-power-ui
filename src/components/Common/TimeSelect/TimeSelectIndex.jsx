@@ -113,7 +113,7 @@ class TimeSelect extends React.Component {
 
   disabledDate = (current) => { // 不可以选择的时间
     const { defaultLast } = this.props;
-    return !defaultLast && current > moment().endOf('day') || current >= moment().endOf('day');
+    return !defaultLast && current > moment().endOf('day') || current > moment().subtract(1,'month').endOf('day');
   }
 
 

@@ -44,7 +44,7 @@ class ScoreMain extends Component {
 
     componentWillUnmount() {
         this.props.resetStore(); // 重置数据
-      }
+    }
 
     stationCheck = (e) => {// 电站切换
         const { edit } = this.props;
@@ -183,7 +183,7 @@ class ScoreMain extends Component {
         const { stationTypes, showWarningTip, warningTipText, basicScore } = this.state;
         const { indexList, edit } = this.props;
         const editData = this.deepClone(indexList);
-                                                                                                                                                                                                                                               return (
+        return (
             <div className={styles.scoreBox}>
                 {showWarningTip &&
                     <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
