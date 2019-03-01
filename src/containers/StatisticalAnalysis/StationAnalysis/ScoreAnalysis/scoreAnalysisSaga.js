@@ -59,7 +59,7 @@ function* singleStaionScore(action) {
             yield put({
                 type: scoreAnalysisAction.changeScoreStore,
                 payload: {
-                    ...payload,
+                    pvParams:{...payload},
                     singleScoreData: response.data.data || {},
                 },
             });

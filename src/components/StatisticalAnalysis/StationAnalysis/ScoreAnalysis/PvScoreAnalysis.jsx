@@ -22,6 +22,7 @@ class PvScoreAnalysis extends Component {
         singleStaionScore: PropTypes.func,
         singleScoreData: PropTypes.object,
         stations: PropTypes.array,
+        pvParams: PropTypes.object,
     };
     constructor(props) {
         super(props);
@@ -44,8 +45,9 @@ class PvScoreAnalysis extends Component {
     }
 
     getScoreList = (param) => {
-        const { reportType, stationCodes, dataType, time, sortField, sortMethod, stationType } = this.props;
-        this.props.getScoreList({ reportType, stationCodes, dataType, time, sortField, sortMethod, stationType, ...param })
+        const { pvParams, stationType,getScoreList } = this.props;
+        console.log('tets',{ ...pvParams, stationType, ...param })
+        getScoreList({ ...pvParams, stationType, ...param })
     }
 
     PvStationSelect = (e) => {
@@ -56,7 +58,7 @@ class PvScoreAnalysis extends Component {
 
     singleDetail = (data) => { // 查看单电站详情
         const stationCode = data.stationCode;
-        const { dataType, time } = this.props;
+        const { dataType, time } = this.props.pvParams;
         this.props.singleStaionScore({ dataType, time, stationCode })
     }
 
@@ -109,10 +111,10 @@ class PvScoreAnalysis extends Component {
                                 showYearPick={false}
                                 onChange={this.onTimeChange}
                                 style={{ lineHeight: '42px' }}
+                                defaultLast={true}
                                 value={{ timeStyle: 'day',
                                 startTime:moment().subtract(1, 'months').format('YYYY-MM-DD'),
-                                endTime:moment().subtract(1, 'months').format('YYYY-MM-DD'),
-                            }}   />
+                                endTime:moment().subtract(1, 'months').format('YYYY-MM-DD')} }   />
                         </div>
                     </div>
                     <div className={styles.scoreTranslate}>

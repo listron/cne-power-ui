@@ -19,6 +19,7 @@ class ScoreMain extends Component {
         edit: PropTypes.bool,
         reportType: PropTypes.string,
         isVaild: PropTypes.array,
+        resetStore: PropTypes.func,
     };
     constructor(props) {
         super(props);
@@ -40,6 +41,10 @@ class ScoreMain extends Component {
         if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
         if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
     }
+
+    componentWillUnmount() {
+        this.props.resetStore(); // 重置数据
+      }
 
     stationCheck = (e) => {// 电站切换
         const { edit } = this.props;
@@ -178,7 +183,7 @@ class ScoreMain extends Component {
         const { stationTypes, showWarningTip, warningTipText, basicScore } = this.state;
         const { indexList, edit } = this.props;
         const editData = this.deepClone(indexList);
-        return (
+                                                                                                                                                                                                                                               return (
             <div className={styles.scoreBox}>
                 {showWarningTip &&
                     <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
