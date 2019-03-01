@@ -12,7 +12,6 @@ class DeviceManageList extends Component {
   }
   constructor(props) {
     super(props);
-   
   }
   onSelectChange = (keys, record) => {
     console.log('record:',record);
@@ -20,9 +19,7 @@ class DeviceManageList extends Component {
       selectedRowData:record,
       selectedRowKeys:keys,
     })
-   
   }
-
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getDeviceList, queryParams } = this.props;
     const { field, order } = sorter;
@@ -39,8 +36,6 @@ class DeviceManageList extends Component {
       selectedStationIndex:record.key,
     })
   }
- 
-
   render() {
     const {selectedRowKeys} = this.props;
     const rowSelection = {
@@ -92,7 +87,6 @@ class DeviceManageList extends Component {
       }
     ];
     const { loading, deviceList } = this.props;
-    
     return (
       <div className={styles.deviceManageList}>
         <Table

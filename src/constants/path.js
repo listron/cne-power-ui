@@ -167,6 +167,7 @@ export default {
       checkDeviceMode:'/v3/management/queryModeExits',//查询设备型号是否重复
       addDeviceType:'/v3/management/deviceType',//添加设备类型
       addDeviceMode:'/v3/management/deviceMode',//添加设备型号
+      addPvDeviceMode:'/v3/management/deviceMode',//添加pv设备型号
       checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
       checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
 

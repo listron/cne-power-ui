@@ -66,27 +66,25 @@ class DeviceManageHandle extends Component {
       stationCode,
     })
   }
-
   render() {
     const { showModal, showDeleteWarning, warningTipText } = this.state;
     const { totalNum, deviceList, stationCode, pageSize, pageNum ,allStationBaseInfo} = this.props;
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
-    const test = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
+    const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
     return (
       <div className={styles.deviceManageHandle}>
         <div className={styles.left}>
             <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
             <Button className={styles.deletStyle} onClick={this.deletDevice} >删除</Button>
-            <Button className={styles.downloadStyle} href={test} download={test} target="_blank"  >下载设备信息导入模板</Button>
+            <Button className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank"  >下载设备信息导入模板</Button>
             <Button className={styles.import} onClick={this.showModal}>导入</Button>
             <Button disabled={deviceList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref} target="_blank"  >导出</Button>
-            <Button onClick={this.deleteStationDevice} disabled={!stationCode}>清除设备</Button>
+            <Button onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</Button>
         </div>
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         {showModal ? <ImportDevice {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}
         {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
       </div>
-
     );
   }
 }

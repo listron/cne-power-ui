@@ -22,17 +22,16 @@ class DetailDevice extends Component {
     }
   }
   onShowSideChange = () => { // 编辑页
-    const{getPvDevice,stationDeviceDetail,stationCode,getConnectDevice}=this.props;
-    console.log('stationCode: ', stationCode);
-    const{deviceTypeCode,}=stationDeviceDetail;
+    const { getPvDevice, stationDeviceDetail, stationCode, getConnectDevice } = this.props;
+    const { deviceTypeCode, } = stationDeviceDetail;
     this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.onShowSideChange('edit');
     getConnectDevice({
-      stationCode:stationCode,
+      stationCode: stationCode,
       deviceTypeCode: deviceTypeCode,
     })
-    if(deviceTypeCode === '202'||deviceTypeCode === '206'){
-      getPvDevice({ 
+    if (deviceTypeCode === '202' || deviceTypeCode === '206') {
+      getPvDevice({
         stationCode,
         deviceTypeCode: '509',
       })
@@ -56,16 +55,15 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 正常请求上一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex - 1,
-        deviceFullCode: deviceList[selectedStationIndex-1].deviceFullCode,
+        deviceFullCode: deviceList[selectedStationIndex - 1].deviceFullCode,
       })
     }
   }
 
   nextStation = () => { // 下一个电站详情
     const { queryParams, selectedStationIndex, pageNum, pageSize, getOtherPageDeviceDetail, totalNum, getStationDeviceDetail, deviceList } = this.props;
-    
-    const deviceFullCode=deviceList[selectedStationIndex]['deviceFullCode'];
-    console.log(deviceFullCode);
+
+    const deviceFullCode = deviceList[selectedStationIndex]['deviceFullCode'];
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
     const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
     if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
@@ -87,26 +85,21 @@ class DetailDevice extends Component {
       })
     }
   }
-
   confirmWarningTip = () => { // 提示框确认
     this.setState({
       showWarningTip: false,
       warningTipText: '',
     })
   }
-
   backToList = () => { // 返回列表页
     this.props.changeDeviceManageStore({
       showPage: 'list',
       selectedStationIndex: null,
     });
   }
-
-
-  
   render() {
     const { stationDeviceDetail } = this.props;
-    const {deviceTypeCode,connectedBranches}=stationDeviceDetail;
+    const { deviceTypeCode, connectedBranches } = stationDeviceDetail;
     const baseInfo = baseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
     const windTime = windTimeFun(stationDeviceDetail);
@@ -129,7 +122,7 @@ class DetailDevice extends Component {
           <div className={styles.rightPart}>
             {deviceTypeCode === '501' && <DetailInfoPart infoArray={windTower} />}
             {deviceTypeCode === '101' && <DetailInfoPart infoArray={windTime} />}
-            {(deviceTypeCode === '202'||deviceTypeCode === '206') && <div className={styles.infoBox}>
+            {(deviceTypeCode === '202' || deviceTypeCode === '206') && <div className={styles.infoBox}>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件型号</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
@@ -145,23 +138,21 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
-                    <Row>
-                      {connectedBranches.map((e, i) => {
-                        return (
-                          <Col span={3}>
-                            <div>第{i+1}支路</div>
-                            <Checkbox checked={!!e} key={i}></Checkbox>
-                          </Col>)
-                      })}
-                    </Row>
+                  <Row>
+                    {connectedBranches.map((e, i) => {
+                      return (
+                        <Col span={3}>
+                          <div>第{i + 1}支路</div>
+                          <Checkbox checked={!!e} key={i}></Checkbox>
+                        </Col>)
+                    })}
+                  </Row>
                   <div className={styles.linestyle}>
                     <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
                 </div>
                   </div>
                 </div>
               </div>
-
-
             </div>
             }
             {deviceTypeCode === '304' && <div className={styles.infoBox}>
@@ -172,12 +163,8 @@ class DetailDevice extends Component {
                 </div>
               </div>
             </div>}
-
           </div>
         </div>
-
-
-
       </div>
     )
   }

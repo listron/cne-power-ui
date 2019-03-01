@@ -18,6 +18,7 @@ export const deviceManageAction = {
   deleteDevice: Symbol('deleteDevice'), // 删除设备信息
   addDeviceType:Symbol('addDeviceType'),
   addDeviceMode:Symbol('addDeviceMode'),
+  addPvDeviceMode:Symbol('addPvDeviceMode'),
   checkDeviceName:Symbol('checkDeviceName'),
   checkDeviceType:Symbol('checkDeviceType'),
   checkDeviceMode:Symbol('checkDeviceMode'),

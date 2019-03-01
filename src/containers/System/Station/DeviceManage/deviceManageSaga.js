@@ -303,7 +303,7 @@ function* checkDeviceMode(action) { // 查询设备型号是否重复
     yield put({
       type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
       payload: {
-        checkDeviceModeOk: true
+        checkDeviceModeOk: null
       }
     })
     console.log(e);
@@ -364,6 +364,25 @@ function* checkDeviceName(action) { // 查询设备名字是否重复
     })
     console.log(e);
     message.error('查询设备名字是否重复失败，请重试');
+  }
+}
+function* addPvDeviceMode(action) { // 添加设备型号
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPvDeviceMode}`
+  try {
+    const response = yield call(axios.post, url, payload);
+    // if(response.data.code === "10000"){
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        addPvDeviceModeData: response.data.data || {},
+        checkDeviceeOk: null,
+      }
+    })
+    // }
+  } catch (e) {
+    console.log(e);
+    message.error('添加设备型号失败，请重试');
   }
 }
 function* addDeviceMode(action) { // 添加设备型号
@@ -430,6 +449,7 @@ export function* watchDeviceManage() {
   yield takeLatest(deviceManageAction.checkDeviceType, checkDeviceType);
   yield takeLatest(deviceManageAction.checkDeviceName, checkDeviceName);
   yield takeLatest(deviceManageAction.addDeviceMode, addDeviceMode);
+  yield takeLatest(deviceManageAction.addPvDeviceMode, addPvDeviceMode);
   yield takeLatest(deviceManageAction.addDeviceType, addDeviceType);
   yield takeLatest(deviceManageAction.deleteStationDevice, deleteStationDevice);
   yield takeLatest(deviceManageAction.importStationDevice, importStationDevice);

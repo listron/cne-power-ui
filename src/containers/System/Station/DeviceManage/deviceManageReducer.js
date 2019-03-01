@@ -29,6 +29,7 @@ const initState = Immutable.fromJS({
   checkDeviceModeOk:null,
   checkDeviceTypeok:null,
   addDeviceModeData:{},//添加设备型号结果
+  addPvDeviceModeData:{},//添加光伏组件型号结果
   checkDeviceNameData:{},//添加设备名重复结果
   checkDeviceTypeData:{},//添加设备类型重复结果
   checkDeviceModeData:{},//添加设备型号重复结果

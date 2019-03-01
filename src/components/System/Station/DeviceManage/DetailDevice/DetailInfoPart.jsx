@@ -13,7 +13,6 @@ function DetailInfoPart({ title, infoArray, handler, noBottomBorder = false, ext
   const borderStyle = noBottomBorder ? { borderBottom: 'none' } : {};
   return (
     <div className={styles.infoBox} style={{ ...borderStyle }}>
-
       <div className={styles.infoPart}>
         {infoArray.map(e => {
           let value;
@@ -29,7 +28,6 @@ function DetailInfoPart({ title, infoArray, handler, noBottomBorder = false, ext
             >{`${value}${e.unit || ''}`}</div>
           </div>)
         })}
-
       </div>
     </div>
   )

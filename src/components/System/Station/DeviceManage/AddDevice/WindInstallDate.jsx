@@ -3,19 +3,16 @@ import { Input, Form, DatePicker } from 'antd';
 import styles from '../deviceSide.scss'
 import moment from 'moment';
 const FormItem = Form.Item;
-const WindInstallDate = ({ form,stationDeviceDetail }) => {
+const WindInstallDate = ({ form, stationDeviceDetail }) => {
   const { getFieldDecorator } = form;
-  console.log('stationDeviceDetail: ', stationDeviceDetail);
-
   return (
-
     <div className={styles.rightStyles}>
       <FormItem
         label="安装时间"
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('assemblyTime',{ initialValue:moment(stationDeviceDetail.map.assemblyTime),})(
+        {getFieldDecorator('assemblyTime', { initialValue: moment(stationDeviceDetail.map.assemblyTime), })(
           <DatePicker />
         )}
       </FormItem>
@@ -24,7 +21,7 @@ const WindInstallDate = ({ form,stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('ongridTime',{ initialValue:moment(stationDeviceDetail.map.ongridTime),})(
+        {getFieldDecorator('ongridTime', { initialValue: moment(stationDeviceDetail.map.ongridTime), })(
           <DatePicker />
         )}
       </FormItem>
@@ -33,7 +30,7 @@ const WindInstallDate = ({ form,stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('warrantyBegintime',{ initialValue: moment(stationDeviceDetail.map.warrantyBegintime),})(
+        {getFieldDecorator('warrantyBegintime', { initialValue: moment(stationDeviceDetail.map.warrantyBegintime), })(
           <DatePicker />
         )}
       </FormItem>
@@ -42,7 +39,7 @@ const WindInstallDate = ({ form,stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('warrantyEndtime',{ initialValue: moment(stationDeviceDetail.map.warrantyEndtime),})(
+        {getFieldDecorator('warrantyEndtime', { initialValue: moment(stationDeviceDetail.map.warrantyEndtime), })(
           <DatePicker />
         )}
       </FormItem>
@@ -51,7 +48,7 @@ const WindInstallDate = ({ form,stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('scrapTime',{ initialValue:moment(stationDeviceDetail.map.scrapTime),})(
+        {getFieldDecorator('scrapTime', { initialValue: moment(stationDeviceDetail.map.scrapTime), })(
           <DatePicker />
         )}
       </FormItem>
@@ -60,10 +57,10 @@ const WindInstallDate = ({ form,stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('hubHeight',{ initialValue: stationDeviceDetail.map.hubHeight,})(
+        {getFieldDecorator('hubHeight', { initialValue: stationDeviceDetail.map.hubHeight, })(
           <Input placeholder="保留小数点后两位" />
         )}米
-</FormItem>
+      </FormItem>
 
     </div>
   )

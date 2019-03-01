@@ -14,20 +14,20 @@ class ShowAddDeviceModal extends Component {
     }
   }
   componentWillReceiveProps(nextprops) {
-    const { addSuccess ,checkDeviceTypeok} = nextprops;
-    let planValue =this.props.form.getFieldsValue();
-    if(checkDeviceTypeok!== this.props.checkDeviceTypeok&&checkDeviceTypeok===true){
+    const { addSuccess, checkDeviceTypeok } = nextprops;
+    let planValue = this.props.form.getFieldsValue();
+    if (checkDeviceTypeok !== this.props.checkDeviceTypeok && checkDeviceTypeok === true) {
       this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
         if (!err) {
           this.props.addDeviceType({
-            stationCode:this.props.selectStation,
+            stationCode: this.props.selectStation,
             isPertain: values.isPertain,
             deviceTypeName: values.addDeviceTypeCodeName
           })
         }
       })
     }
-    if (addSuccess===true) {
+    if (addSuccess === true) {
       this.props.saveFormState(planValue)
       this.props.cancleAddDeviceModal()
     }
@@ -35,23 +35,15 @@ class ShowAddDeviceModal extends Component {
   handleCancel = () => {
     this.props.cancleAddDeviceModal()
   }
-
-
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
-    const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess ,selectStation} = this.props;
+    const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess, selectStation } = this.props;
     console.log('selectStation: ', selectStation);
     let planValue = getFieldsValue();
     this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
-      // const deviceTypeNameArr = stationDeviceTypes.map(e => e.deviceTypeName);
-      // console.log('deviceTypeNameArr: ', deviceTypeNameArr);
-      // const modalConfirm = deviceTypeNameArr.includes(values.addDeviceTypeCodeName) ? 1 : 0;
-      // console.log('modalConfirm: ', modalConfirm);
       if (!err) {
-        this.props.checkDeviceType({deviceTypeName:values.addDeviceTypeCodeName})
-       
-      
+        this.props.checkDeviceType({ deviceTypeName: values.addDeviceTypeCodeName })
       }
     })
   }
@@ -98,12 +90,10 @@ class ShowAddDeviceModal extends Component {
                   <Option value="0">否</Option>
                 </Select>
               )}
-
             </FormItem>
             <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
           </Form>
         </Modal>
-
       </div>
     )
   }

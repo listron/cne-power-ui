@@ -10,29 +10,40 @@ class ShowAddComponentMode extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  componentWillReceiveProps(nextProps){
+    const{checkDeviceModeOk,addDeviceTypeData}=nextProps;
+    console.log('addDeviceTypeData: ', addDeviceTypeData);
+    if(checkDeviceModeOk!==this.props.checkDeviceModeOk&&checkDeviceModeOk===true){
+      this.props.form.validateFieldsAndScroll(["addComponentMode","addmanufacturerCom","deviceTypeCode"],(err,values)=>{
+        console.log('values: ', values);
+        if(!err){
+          this.props.addPvDeviceMode({
+            // deviceTypeCode:addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`,
+             deviceTypeCode:'509',
+            deviceModeName:values.addComponentMode,
+            manufacturer:values.addmanufacturerCom,
+          })
+            this.props.saveFormState(values)
+           this.props.cancleDeviceModeModal()
+        }
+      })
+    }
+  }
   handleCancel = () => {
     this.props.cancleDeviceModeModal()
   }
-
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
     // const {stationDeviceTypes}=this.props;
-
-   
-    this.props.form.validateFieldsAndScroll(["componentMode","manufacturerCom"],(err,values)=>{
-      console.log(values,'values');
-   
+    this.props.form.validateFieldsAndScroll(["addComponentMode","addmanufacturerCom"],(err,values)=>{
       if(!err){
-        if(values.deviceTypeName==='test'){
-          message.error('设备名称名称重复')
-        }else{
-          this.props.saveFormState(values)
-           this.props.cancleDeviceModeModal()
-        }
+        this.props.checkDeviceMode({
+          deviceModeName:values.addComponentMode,
+          deviceTypeCode:509
+         })
       }
     })
-  
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -55,7 +66,7 @@ class ShowAddComponentMode extends Component {
       >
         <Form className={styles.preFormStyle}>
           <FormItem label="组件型号" colon={false} {...formItemLayout}  >
-            {getFieldDecorator('componentMode', {
+            {getFieldDecorator('addComponentMode', {
               rules: [
                 { message: '设备型号不超过30字', required: true, type: 'string', max: 30 },
               ]
@@ -64,15 +75,13 @@ class ShowAddComponentMode extends Component {
             )}
           </FormItem>
           <FormItem label="生产厂家" colon={false} {...formItemLayout} >
-            {getFieldDecorator('manufacturerCom', {
-             
+            {getFieldDecorator('addmanufacturerCom', {
               rules: [
                 { message: '不超过30字', required: true, type: 'string', max: 30 },
               ]
             })(
               <Input placeholder="请输入..." />
             )}
-
           </FormItem>
           <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
         </Form>

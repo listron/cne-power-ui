@@ -46,12 +46,8 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
           <Input placeholder="不超过30字" />
         )}米
       </FormItem>
-      
-
-
     </div>
   )
-
 }
 
 export default (WindMeasurement)

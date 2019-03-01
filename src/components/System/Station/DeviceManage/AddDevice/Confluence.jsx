@@ -16,10 +16,10 @@ class Confluence extends Component {
       showAddComponent: false,
       componentModeCodeAdd: '',
       manufacturerComAdd: '',
-
     }
   }
   showAddComponentMode = () => {
+    this.props.changeDeviceManageStore({ checkDeviceModeOk: null })
     this.setState({
       showAddComponentMode: true
     })
@@ -30,7 +30,7 @@ class Confluence extends Component {
     })
   }
   saveFormState = (record) => {
-    this.setState({ componentModeCodeAdd: record.componentMode, manufacturerComAdd: record.manufacturerCom, showAddComponent: true })
+    this.setState({ componentModeCodeAdd: record.addComponentMode, manufacturerComAdd: record.addmanufacturerCom, showAddComponent: true })
   }
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
@@ -39,24 +39,24 @@ class Confluence extends Component {
     const branchCount = getFieldValue("branchCount");
     let branchCountArr = [];
     for (let i = 0; i < branchCount; i++) {
-       branchCountArr.push(i+1)
+      branchCountArr.push(i + 1)
     }
     return (
       <div className={styles.rightStyles}>
         {showAddComponent ? <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('componentName', )(
+          {getFieldDecorator('componentName')(
             <span>{componentModeCodeAdd}</span>
-          )} <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加设备型号</span>
+          )} <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加组件型号</span>
         </FormItem> : <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('componentMode')(
               <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
                 {pvDeviceModels.map(e => {
                   if (!e) { return null; }
-                  return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                  return <Option key={e.deviceModeCode} value={e.deviceModeId}>{e.deviceModeName}</Option>
                 })}
               </Select>
             )}
-            <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加设备型号</span>
+            <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加组件型号</span>
           </FormItem>}
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('branchCount', {
@@ -84,7 +84,6 @@ class Confluence extends Component {
                 })}
               </Row>
             </Checkbox.Group>,
-
           )}
           <div className={styles.linestyle}>(  点击后变<span className={styles.selectRingStyle}></span>，表示接入;<span className={styles.ringStyle}></span>表示未接入 )</div>
         </FormItem>

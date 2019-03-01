@@ -23,7 +23,9 @@ class AddDeviceForm extends Component {
     }
   }
   componentWillReceiveProps(nextprops) {
-    const { deviceNameOk, addDeviceTypeData, addDeviceModeData } = nextprops;
+    const { deviceNameOk, addDeviceTypeData, addDeviceModeData, addPvDeviceModeData } = nextprops;
+    console.log('addPvDeviceModeData: ', addPvDeviceModeData);
+    console.log(addPvDeviceModeData.deviceModeCode);
     if (deviceNameOk === true && deviceNameOk !== this.props.deviceNameOk) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -37,7 +39,11 @@ class AddDeviceForm extends Component {
                 return values.connectedBranches.includes(e) ? 1 : 0
               })
             }
-            values.map = { componentMode: values.componentMode, branchCount: +values.branchCount, connectedBranches: values.connectedBranches };
+            values.map = {
+              componentMode: addPvDeviceModeData.deviceModeCode ? addPvDeviceModeData.deviceModeCode : values.componentMode,
+              branchCount: +values.branchCount,
+              connectedBranches: values.connectedBranches
+            };
           }
           if (values.deviceTypeCode === 304) {
             values.map = { belongMatrix: values.belongMatrix }
@@ -50,7 +56,7 @@ class AddDeviceForm extends Component {
               scrapTime: values.scrapTime,
               hubHeight: values.hubHeight,
             }
-          } else if (values.deviceTypeCode === 501){
+          } else if (values.deviceTypeCode === 501) {
             values.map = {
               altitude: values.altitude,
               towerAssemblyTime: values.towerAssemblyTime,
@@ -59,19 +65,15 @@ class AddDeviceForm extends Component {
             }
           }
           values.stationCode = `${values.stationCode[0].stationCode}`;
-          values.deviceTypeCode = addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`;
-          values.deviceModeCode = addDeviceModeData.deviceModeCode?`${addDeviceModeData.deviceModeCode}`:`${values.deviceModeCode}`;
-         
-
+          values.deviceTypeCode = addDeviceTypeData.deviceTypeCode ? `${addDeviceTypeData.deviceTypeCode}` : `${values.deviceTypeCode}`;
+          values.deviceModeCode = addDeviceModeData.deviceModeCode ? `${addDeviceModeData.deviceModeCode}` : `${values.deviceModeCode}`;
           this.props.addDeviceDetail({ ...values })
+          this.props.changeDeviceManageStore({ addDeviceTypeData: {}, addDeviceModeData: {} })
         } else {
           console.log(err);
         }
       });
-
-
     }
-
   }
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
@@ -88,25 +90,21 @@ class AddDeviceForm extends Component {
       stationCode,
       deviceTypeCode: value,
     });
-
   }
   submitForm = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-
         this.props.checkDeviceName({ deviceName: values.deviceName })
-
-        // this.props.addDeviceDetail({ ...values })
       }
     });
-
-
   }
   gobackPre = () => {
     this.props.gobackPre()
+    this.props.changeDeviceManageStore({ addDeviceTypeData: {}, addDeviceModeData: {} })
   }
   showAddDeviceModeModal = () => {
+    this.props.changeDeviceManageStore({ checkDeviceModeOk: null })
     this.setState({
       showAddDeviceModeModal: true
     })
@@ -114,31 +112,25 @@ class AddDeviceForm extends Component {
   cancleDeviceModeModal = () => {
     this.setState({
       showAddDeviceModeModal: false,
-     
     })
   }
   saveFormState = (record) => {
     this.setState({ deviceModeCodeAdd: record.addDeviceModeCodeName, manufacturerAdd: record.addManufacturer, showAddDeviceMode: true })
   }
   changeDeviceMode = () => {
-    console.log(1111);
   }
   render() {
     const { showAddDeviceModeModal, showAddDeviceMode, deviceModeCodeAdd, manufacturerAdd } = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData } = this.props;
+    const { stationDeviceTypes, deviceModels, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData } = this.props;
     const stationName = selectStation ? selectStation[0].stationName : '';
-    // const typeSelectDisable = stationDeviceTypes.length === 0;
     const deviceTypeName = getFieldValue('deviceTypeCode');
     const deviceModeCodeValue = getFieldValue('deviceModeCode');
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
-
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
     const modelSelectDisable = deviceModels.length === 0;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
-
-
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -175,9 +167,8 @@ class AddDeviceForm extends Component {
                     <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
                       {deviceModels.map((e, i) => {
                         if (!e) { return null; } else {
-                          return <Option key={e.deviceModeCode} value={`${e.deviceModeCode}`}>{e.deviceModeName}</Option>
+                          return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
                         }
-
                       })}
                     </Select>
                   )}
@@ -265,7 +256,7 @@ class AddDeviceForm extends Component {
               </FormItem>
             </div>}
             {deviceTypeName === 101 && <WindInstallDate form={form} />}
-            {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence pvDeviceModels={pvDeviceModels} form={form} />}
+            {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence {...this.props} pvDeviceModels={pvDeviceModels} form={form} />}
             <div className={styles.submitStyle}>
               <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
               <Button onClick={this.submitForm} >保存</Button>
@@ -278,5 +269,3 @@ class AddDeviceForm extends Component {
   }
 }
 export default Form.create()(AddDeviceForm)
-//{deviceTypeName===101&& <WindInstallDate form={form} />}
-// {(deviceTypeName===206||deviceTypeName===202)&&<Confluence form={form} />}

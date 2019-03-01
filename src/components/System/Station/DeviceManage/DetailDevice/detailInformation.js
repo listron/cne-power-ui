@@ -1,6 +1,5 @@
 import moment from 'moment';
 export const baseFun = (detailData) => { // 根据基础信息配置输出指定规则数据。
-
   const longitude = (detailData.longitude || parseFloat(detailData.longitude) === 0)? `${parseFloat(detailData.longitude).toFixed(2)}°` : '--';
   const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(2)}°` : '--';
   let baseArray = [  // 基础信息配置 -- > 
@@ -20,12 +19,6 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
     { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
     { name: '接入日期', value: detailData.connectTime },
   ];
-  // if(isWind){ // 没有的指标去掉
-  //   return baseArray.filter(e=> {
-  //     const windRemoveConf = ['一级区域', '覆盖类型', '组装角度'];
-  //     return !windRemoveConf.includes(e.name);
-  //   });
-  // }
   return baseArray;
 }
 export const windTimeFun = (detailData) => {
@@ -45,7 +38,6 @@ export const windTowerFun = (detailData) => {
     { name: '立塔时间', value: detailData.towerAssemblyTime ?moment(detailData.towerAssemblyTime).format('YYYY-MM-DD'):'',},
     { name: '塔高', value: detailData.towerHeight },
     { name: '测风设备', value: detailData.windMeasurementEquipment },
-   
   ];
   return windTowerArray;
 }

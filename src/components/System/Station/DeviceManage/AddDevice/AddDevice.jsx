@@ -21,10 +21,8 @@ class AddDevice extends Component {
       showAddDeviceModal: false,
       deviceTypeName: '',
       showAddDeviceName:false,
-    
     }
   }
-
   onWarningTipShow = () => {
     this.setState({
       showWarningTip: true,
@@ -55,7 +53,6 @@ class AddDevice extends Component {
   selectDeviceType = (value) => {
     const { getDeviceModel, getDeviceList, getConnectDevice, getPvDevice, queryParams } = this.props;
     const selectStation = this.props.form.getFieldValue('stationCode')[0];
-    console.log('selectStation: ', selectStation);
     getDeviceModel({
       stationCode:selectStation.stationCode,
       deviceTypeCode: value,

@@ -6,9 +6,6 @@ import StationSelect from '../../../../components/Common/StationSelect';
 import { Modal, Form, Button, Upload, Select, Row, Col, message } from 'antd';
 const FormItem = Form.Item;
 const { Option } = Select;
-
-
-
 class ImportDevice extends Component {
   static propTypes = {
   }
@@ -34,9 +31,6 @@ class ImportDevice extends Component {
     if (file.status === 'done' && file.response && file.response.code === '10000') {
       message.success(`${file.name} 文件上传成功`);
       this.setState({ fileList: [] });
-      // const { getStationList, queryListParams, getStations } = this.props;
-      // getStationList({ ...queryListParams }); //上传成功后，重新请求列表数据
-      // getStations && getStations(); // 重新请求数据流程中的电站列表。
     } else if (file.status === 'done' && (!file.response || file.response.code !== '10000')) {
       message.error(`${file.name} 文件上传失败: ${file.response.message},请重试!`);
     } else if (file.status === 'error') {
@@ -54,27 +48,17 @@ class ImportDevice extends Component {
   cancelModal = () => {
     this.props.cancelModal()
   }
-  confirmAddRecord = () => {
-    // this.setState({ showAddRecordModal: false })
-    const { getFieldsValue } = this.props.form;
-    let recordValue = getFieldsValue(['select', 'upload']);
 
-    this.props.form.validateFieldsAndScroll((error, values) => {
-      values.stationCode = values.select[0].stationCode;
-      if (!error) {
-        this.props.importStationDevice({ ...values })
-        this.props.cancelModal()
-      }
-
-    })
-  }
 
   handleSubmit = (e) => {
+    const{stationCode,pageNum,pageSize,deviceModeCode,deviceTypeCode,sortMethod,sortField,getDeviceList}=this.props;
+   const params={stationCode,pageNum,pageSize,deviceModeCode,deviceTypeCode,sortMethod,sortField};
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.confirmAddRecord()
+        getDeviceList({...params})
+        this.props.cancelModal()
       }
     });
   }
@@ -90,10 +74,10 @@ class ImportDevice extends Component {
 
   render() {
     const { showModal, allStationBaseInfo } = this.props;
-    const stationCode=this.props.form.getFieldsValue('select')[0].stationCode;
-    console.log('stationCode: ', stationCode);
     const authData = Cookie.get('authData') || null;
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const selectStationArr=getFieldValue('select');
+    const stationCode=selectStationArr?selectStationArr[0]['stationCode']:null
     const { fileList } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -143,7 +127,6 @@ class ImportDevice extends Component {
               label="附件"
             >
               {getFieldDecorator('upload', {
-                valuePropName: 'fileList',
                 getValueFromEvent: this.normFile,
                 rules: [
                   { required: true, message: '请上传文件' },

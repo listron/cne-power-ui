@@ -159,6 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   addDeviceType:payload => dispatch({ type: deviceManageAction.addDeviceType, payload }),
   addDeviceMode:payload => dispatch({ type: deviceManageAction.addDeviceMode, payload }),
+  addPvDeviceMode:payload => dispatch({ type: deviceManageAction.addPvDeviceMode, payload }),
   checkDeviceName:payload => dispatch({ type: deviceManageAction.checkDeviceName, payload }),
   checkDeviceType:payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
   checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),

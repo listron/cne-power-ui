@@ -15,7 +15,6 @@ class ShowAddDeviceModeModal extends Component {
     console.log('addDeviceTypeData: ', addDeviceTypeData);
     if(checkDeviceModeOk!==this.props.checkDeviceModeOk&&checkDeviceModeOk===true){
       this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer","deviceTypeCode"],(err,values)=>{
-        console.log('values: ', values);
         if(!err){
           this.props.addDeviceMode({
             deviceTypeCode:addDeviceTypeData.deviceTypeCode?`${addDeviceTypeData.deviceTypeCode}`:`${values.deviceTypeCode}`,
@@ -27,31 +26,21 @@ class ShowAddDeviceModeModal extends Component {
            this.props.cancleDeviceModeModal()
         }
       })
-
-     
     }
-   
   }
   handleCancel = () => {
     this.props.cancleDeviceModeModal()
   }
-
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
     const{addDeviceTypeData}=this.props;
-    // const {stationDeviceTypes}=this.props;
-
-   
-    this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer"],(err,values)=>{
+    this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer","deviceTypeCode"],(err,values)=>{
       if(!err){
        this.props.checkDeviceMode({
-        deviceModeName:values.addDeviceModeCodeName
+        deviceModeName:values.addDeviceModeCodeName,
+        deviceTypeCode:addDeviceTypeData.deviceTypeCode?addDeviceTypeData.deviceTypeCode:values.deviceTypeCode
        })
-        
-          // this.props.saveFormState(values)
-          //  this.props.cancleDeviceModeModal()
-       
       }
     })
   
