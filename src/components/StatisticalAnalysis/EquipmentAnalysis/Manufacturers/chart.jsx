@@ -160,6 +160,8 @@ class Charts extends React.Component {
         const xData = selectOption === 'manufacturer' ? manufacturerData : deviceModeIdsData;
         const yData = data.map(e => e[type]);
         const targetChart = echarts.init(document.getElementById(graphId));
+        // xData.length > 0 && targetChart.hideLoading();
+        // !xData.length > 0 && targetChart.showLoading('default',{color:'#199475'}) loading 暂时不修改
         const color = this.getColor(type);
         const lineColor = '#f1f1f1';
         const fontColor = '#999';
@@ -184,7 +186,7 @@ class Charts extends React.Component {
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 formatter: function (params) {
-                    const pointLength=(type==="faultHours" || type==="faultNum") ? 0 :2;
+                    const pointLength = (type === "faultHours" || type === "faultNum") ? 0 : 2;
                     let paramsItem = '';
                     params.map((item) => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span>  
