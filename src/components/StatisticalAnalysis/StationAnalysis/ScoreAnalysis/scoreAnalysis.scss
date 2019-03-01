@@ -1,0 +1,210 @@
+@import '../../../../theme/theme.scss';
+.PvScore {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 32px;
+    width: 100%;
+    .stationTypeTab {
+        margin-bottom: 32px;
+    }
+    .scoreMiddle {
+        display: flex;
+        justify-content: space-between;
+        .scoreFilter {
+            display: flex;
+            .text {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .stationFilter {
+                margin-right: 20px;
+                display: flex;
+                flex-direction: row;
+                line-height: 42px;
+            }
+            .timeSelect{
+                height: auto;
+                line-height: 42px;
+            }
+        }
+        .scoreTranslate{
+            display: flex;
+            flex-direction: row;
+            line-height: 42px;
+            .scoreSort{
+                color: $themeColor;
+                display: flex;
+                flex-direction: row;
+                padding: 0 8px;
+            }
+        }
+    }
+    .title {
+        color: $themeColor;
+    }
+    .stationCardContainer {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        margin-top: 20px;
+        p {
+            margin-bottom: 0;
+        }
+        .stationCard {
+            margin: 0 19px 24px 0;
+            box-sizing: border-box;
+            flex: 0 0 15%;
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
+            border-radius: 2px;
+            height: 180px;
+            align-items: center;
+            cursor: pointer;
+            color: #666;
+            .stationName {
+                padding: 8px 8px 0;
+            }
+            .scoreCircleCon {
+                width: 86px;
+                height: 86px; // background: linear-gradient(66deg, #faff0e, #939417);
+                border-radius: 50%;
+                border: 1px solid #fff;
+                text-align: center;
+                line-height: 100px;
+                margin: 0 auto;
+                margin-bottom: 14px;
+                .evaluate {
+                    width: 76px;
+                    height: 76px;
+                    background-color: #fff;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    margin-top: 4px;
+                    .num {
+                        height: 0px;
+                        line-height: 56px;
+                        font-size: 20px;
+                    }
+                    .text {
+                        height: 0;
+                        font-size: 14px;
+                    }
+                }
+                .nodata {
+                    line-height: 76px;
+                }
+            }
+            .installedCapacity,.equivalent {
+                display: flex;
+                .name{
+                    flex: 1;
+                    text-align: right;
+                    padding-right: 4px;
+                }
+                .value{
+                    flex: 1;
+                }
+            }
+        }
+        .excellent {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #1670a6, #3ea6f6);
+            }
+            .evaluate{
+                background: #1670a6
+            }
+            &:hover .evaluate {
+                background: #1670a6
+            }
+        }
+        .good {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #08b294, #7ddfb2);
+            }
+            .evaluate{
+                background: #08b294
+            }
+            &:hover .evaluate {
+                background: #08b294
+            }
+        }
+        .qualified {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #eefc75, #c69037);
+            }
+            .evaluate{
+                background: #eefc75;
+            }
+            &:hover .evaluate {
+                background: #eefc75;
+            }
+        }
+        .poor {
+            .scoreCircleCon {
+                background: linear-gradient(66deg, #ffb8be, #9f041b);
+            }
+            .evaluate{
+                background: #ffb8be;
+            }
+            &:hover .evaluate {
+                background: #ffb8be;
+            }
+        }
+        .uncategorized{
+            .scoreCircleCon {
+                background: $promptColor;
+            }
+        }
+    }
+}
+
+.card {
+    .scoreTable {
+        width: 700px;
+        height: 435px;
+        display: flex;
+        flex-direction: column;
+        .text {
+            display: flex;
+            justify-content: space-between;
+            p{
+                margin-bottom: 0
+            }
+            .scoreTime {
+                font-size: 16px;
+                color: #232222;
+                line-height: 40px;
+            }
+        }
+        .stationScore {
+            font-size: 18px;
+            color: $themeColor;
+            line-height: 40px;
+        }
+        
+    }
+    .excellent {
+        .stationScore {
+            color: #3ea6f6;
+        }
+    }
+    .good {
+        .stationScore {
+            color: #7ddfb2;
+        }
+    }
+    .qualified {
+        .stationScore {
+            color: #c69037;
+        }
+    }
+    .poor {
+        .stationScore {
+            color: #9f041b;
+        }
+    }
+    :global {
+        .ant-popover-inner-content {
+            padding: 10px 28px;
+        }
+    }
+}

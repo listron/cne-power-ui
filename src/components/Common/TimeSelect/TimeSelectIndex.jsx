@@ -30,6 +30,7 @@ class TimeSelect extends React.Component {
     showMonthPick: PropTypes.bool,
     showDayPick: PropTypes.bool,
     onChange: PropTypes.func,
+    style: PropTypes.object,
   }
 
   static defaultProps = {
@@ -41,7 +42,7 @@ class TimeSelect extends React.Component {
       timeStyle: 'month', 
       startTime: moment().format('YYYY-MM-DD'), // 默认今年
       endTime: moment().format('YYYY-MM-DD'),
-    }
+    },
   }
   
   constructor(props) {
@@ -106,13 +107,17 @@ class TimeSelect extends React.Component {
     this.props.onChange({ ...params });
   }
 
+  disabledDate = (current) => { // 不可以选择的时间
+    return current > moment().endOf('day');
+  }
+
 
 
   render() {
-    const { timerText, showYearPick, showMonthPick, showDayPick } = this.props;
+    const { timerText, showYearPick, showMonthPick, showDayPick,style } = this.props;
     const { timeStyle, startTime, endTime } = this.state;
     return (
-      <div className={styles.timeSelect}>
+      <div className={styles.timeSelect} style={style}>
         <div className={styles.textStyle}>{timerText}</div>
         <div className={styles.buttonStyle}>
           <Radio.Group buttonStyle="solid" onChange={this.onTimeStyleChange} value={timeStyle} >
@@ -127,6 +132,7 @@ class TimeSelect extends React.Component {
           onChange={this.onMonthSelect} 
           placeholder="选择月份" 
           allowClear={false}
+          disabledDate={this.disabledDate}
         />}
         {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}
         {timeStyle === 'year' && <span>

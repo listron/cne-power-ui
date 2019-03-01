@@ -15,6 +15,7 @@ import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
 import { watchWarning } from './System/Production/Warning/warningSaga';
+import { watchScore } from './System/Production/Score/scoreSaga';
 
 import { watchStationManage } from './System/Station/StationManage/stationManageSaga';
 import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSaga';
@@ -40,6 +41,7 @@ import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/
 import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
+import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
 
 
 
@@ -86,6 +88,7 @@ export default function* rootSaga() {
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
+    watchScore(), // 绩效评分
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
@@ -103,6 +106,7 @@ export default function* rootSaga() {
     watchOperateStationSaga(),
     watchStationContrastSaga(),
     watchStationResourceStationSaga(),
+    watchScoreAnalysis(), //电站评分
     //设备分析
     watchPerformanceAnalysisSaga(),
     watchManufacturers(),
