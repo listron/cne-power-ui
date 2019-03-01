@@ -45,7 +45,9 @@ class PvScoreAnalysis extends Component {
         const { startTime, timeStyle } = value;
         let dataType = timeStyle === 'month' ? 'year' : 'month';
         this.getScoreList({ dataType, time: startTime })
-        dataType === 'month' && this.setState({ showWarningTip: moment(startTime).isBefore(moment().format('YYYY-MM') + '-03', 'day'), })
+        let currentMoth=moment(startTime).add(1, 'months').isBefore(moment(), 'month');
+        let isBefore=!currentMoth && moment(startTime).add(1, 'months').isBefore(moment().format('YYYY-MM') + '-03', 'day')
+        dataType === 'month' && this.setState({ showWarningTip: isBefore, })
     }
 
     getScoreList = (param) => {
@@ -82,7 +84,8 @@ class PvScoreAnalysis extends Component {
     }
 
     render() {
-        const { pvStationType, scoreList, reportType, singleScoreData, stations } = this.props;
+        const { pvStationType, scoreList,  singleScoreData, stations } = this.props;
+        const {reportType}=this.props.pvParams;
         const { reportStation, highToLow } = this.state;
         const PvStations = stations.filter(e => e.stationType === 1);
         const PVSelectStations = reportType === '' ? PvStations : PvStations.filter(e => e.reportType === reportType);

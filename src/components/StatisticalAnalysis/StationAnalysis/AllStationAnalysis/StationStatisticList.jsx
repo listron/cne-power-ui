@@ -4,7 +4,7 @@ import styles from './stationStatisticList.scss';
 import CommonPagination from '../../../../components/Common/CommonPagination';
 import { Table, Radio } from "antd";
 import Cookie from 'js-cookie';
-
+import moment from 'moment'
 class StationStatisticList extends React.Component {
   static propTypes = {
     allStationAvalibaData: PropTypes.array,
@@ -131,13 +131,12 @@ class StationStatisticList extends React.Component {
       return (
         <Radio.Group value={+powerSelectMonth} buttonStyle="solid" onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
-            if (e.isTrue === true) {
+            if (e.isTrue === true || +e.year === moment().month() + 1) {
               return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
             } else {
               return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
             }
-          }
-          )}
+          } )}
         </Radio.Group>
       )
     }
