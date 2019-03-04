@@ -57,7 +57,7 @@ class PvScoreAnalysis extends Component {
 
     PvStationSelect = (e) => {
         const reportType = e.target.value;
-        this.getScoreList({ reportType })
+        this.getScoreList({ reportType,stationCodes:[] })
         this.setState({ reportStation: [] })
     }
 
