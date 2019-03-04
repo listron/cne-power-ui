@@ -1,11 +1,15 @@
 
 
   const path = require('path');
+  const webpack = require('webpack');
   const HtmlWebpackPlugin = require('html-webpack-plugin');
   const CopyWebpackPlugin = require('copy-webpack-plugin');
-  const { mockConfig } = require('./mock.config.js')
+  const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
-  module.exports = {
+  const smp = new SpeedMeasurePlugin();
+  const { mockConfig } = require('./mock.config.js');
+
+  module.exports = smp.wrap({
     mode:'development',
     entry: {
       app: './src/app.js',
@@ -13,8 +17,8 @@
     devtool: 'inline-source-map',
     devServer: {
       contentBase: './dist',
-      port:8080,
-      inline:true,
+      port: 8080,
+      hot: true,
       before(server) {
         mockConfig.forEach(e=>{
           server[e.method](`${e.api}`, (req, res) => {
@@ -106,13 +110,14 @@
         title: 'Donut-UI',
         template : __dirname + '/index.ejs',
       }),
+      new webpack.HotModuleReplacementPlugin(),
     ],
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].[hash].js',
       chunkFilename:'[name].[hash].async.js',
     }
-  };
+  });
 
 
 // module.exports = {
