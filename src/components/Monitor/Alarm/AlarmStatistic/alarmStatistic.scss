@@ -77,6 +77,7 @@
     background-color: #fff;
     display: flex;
     flex: 1;
+    width:100%;
     flex-direction: column;
     .filter {
       height: 80px;
@@ -150,7 +151,7 @@
           }
         }     
         .exportBtn{
-          color: #199475;
+          color: $themeColor;
           background-color:#fff;
           border-radius: 4px;
           border: 1px solid #199475;     
@@ -158,6 +159,11 @@
           height: 30px;
           width: 66px;
           margin-top: 9px;
+          cursor: pointer;
+        }
+        .exportBtn:hover{
+          background: $themeColor;
+          color: #fff;
         }
       }
       .statisticGraph {
