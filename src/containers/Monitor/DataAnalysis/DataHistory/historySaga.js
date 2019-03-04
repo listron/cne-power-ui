@@ -37,7 +37,7 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
     const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
-      payload: { queryParam }
+      payload: { queryParam, chartLoading: true }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -52,6 +52,7 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
         payload: {
           chartTime: moment().unix(), // 用于比较
           allHistory: response.data.data || {},
+          chartLoading: false
         }
       })
     } else {
@@ -59,6 +60,10 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
     }
   } catch(e) {
     message.error('获取图表数据失败!');
+    yield put({
+      type: historyAction.CHANGE_HISTORY_STORE,
+      payload: { chartLoading: false }
+    })
     console.log(e);
   }
 }
@@ -71,7 +76,7 @@ function *getListHistory(action) { // 表格数据获取
     const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
-      payload: { queryParam, listParam }
+      payload: { queryParam, listParam, tableLoading: true }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -94,6 +99,7 @@ function *getListHistory(action) { // 表格数据获取
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           listParam: {
+            tableLoading: false,
             ...listParam,
             pageNum, 
             pageSize
@@ -106,6 +112,10 @@ function *getListHistory(action) { // 表格数据获取
     }
   } catch(e) {
     message.error('获取图表数据失败!');
+    yield put({
+      type: historyAction.CHANGE_HISTORY_STORE,
+      payload: { tableLoading: false }
+    })
     console.log(e);
   }
 }

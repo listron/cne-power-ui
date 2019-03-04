@@ -7,6 +7,7 @@ import { dataFormat } from '../../../../utils/utilFunc';
 
 class HistoryChart extends Component {
   static propTypes = {
+    chartLoading: PropTypes.bool,
     queryParam: PropTypes.object,
     chartTime: PropTypes.number,
     allHistory: PropTypes.object,
@@ -125,11 +126,17 @@ class HistoryChart extends Component {
   }
 
   renderChart = (allHistory) => {
+    const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataHistoryChart');
     if (!chartDOM) { return; }
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const historyChart = echarts.init(chartDOM);
-    const { pointTime, deviceInfo, pointData } = allHistory;
+    if (chartLoading) { // loading态控制。
+      historyChart.showLoading()
+    } else {
+      historyChart.hideLoading()
+    }
+    const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {
@@ -159,21 +166,21 @@ class HistoryChart extends Component {
       grid: this.gridCreate(pointData, deviceInfo),
       xAxis: this.xAxisCreate(pointData).map(e => ({ ...e, data: xAxisData })),
       yAxis: this.yAxisCreate(pointData),
-      dataZoom:[{
-        type: 'slider',
-        start: 0,
-        end: 100,
-        bottom: 24 * deviceInfo.length + 24,
-        left: 150,
-        right: 150,
-        filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      },{
-        type: 'inside',
-        orient: 'horizontal',
-        filterMode: 'empty',
-        xAxisIndex: pointData.map((e, i)=> i),
-      }],
+      // dataZoom:[{
+      //   type: 'slider',
+      //   start: 0,
+      //   end: 100,
+      //   bottom: 24 * deviceInfo.length + 24,
+      //   left: 150,
+      //   right: 150,
+      //   filterMode: 'empty',
+      //   xAxisIndex: pointData.map((e, i)=> i),
+      // },{
+      //   type: 'inside',
+      //   orient: 'horizontal',
+      //   filterMode: 'empty',
+      //   xAxisIndex: pointData.map((e, i)=> i),
+      // }],
       ...this.legendSeriesCreate(pointData, deviceInfo) // 
     };
     historyChart.setOption(option);

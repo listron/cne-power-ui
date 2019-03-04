@@ -7,6 +7,7 @@ import moment from 'moment';
 
 class HistoryList extends Component {
   static propTypes = {
+    tableLoading: PropTypes.bool,
     listParam: PropTypes.object,
     queryParam: PropTypes.object,
     partHistory: PropTypes.object,
@@ -50,7 +51,7 @@ class HistoryList extends Component {
   }
 
   render() {
-    const { partHistory, listParam, queryParam } = this.props;
+    const { partHistory, listParam, queryParam, tableLoading } = this.props;
     const { totalCount, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize, orderField } = listParam;
@@ -109,6 +110,7 @@ class HistoryList extends Component {
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
+          loading={tableLoading}
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
           onChange={this.onListChange}
