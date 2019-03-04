@@ -66,7 +66,7 @@ function *getTransferForm(action) {  // 请求告警列表
       yield put({
         type:transferFormAction.changeTransferFormStore,
         payload: {
-          total : response.data.data.total,
+          total : response.data.data.total||0,
           transferFormList: response.data.data.list||[],
           loading:false,
           ...payload,
