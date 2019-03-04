@@ -67,7 +67,7 @@ class TimeSelect extends React.Component {
     } else if (timeStyle === 'month') { // 默认今年
       params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
     } else if (timeStyle === 'day') { // 默认本月
-      params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month');
+      params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
     }
     this.setState({ ...params });
     this.props.onChange({ ...params });

@@ -189,7 +189,7 @@ class AddRule extends Component {
                   <Option key={null} value={null} disabled>{'请选择设备型号'}</Option>
                   {ruleDeviceModels.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                    return <Option key={e.deviceModeCode} value={e.deviceModeCode} title={e.deviceModeName}>{e.deviceModeName}</Option>
                   })}
                 </Select>
               )}
@@ -202,7 +202,7 @@ class AddRule extends Component {
                   <Option key={null} value={''} disabled>{'请选择测点'}</Option>
                   {ruleDevicePoints.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit}>{e.devicePointName}</Option>
+                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit} title={e.devicePointName} >{e.devicePointName}</Option>
                   })}
                 </Select>
               )}
