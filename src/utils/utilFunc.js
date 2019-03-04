@@ -26,6 +26,21 @@ export const monitordataFormat = (data, placeholder = '--', pointLength) => { //
   return showData
 }
 
+export const unitDataFormat = (data, placeholder = '--', pointLength, unit) => { // 电站监控得数据规范展示
+  if (isNaN(data) || (!data && data !== 0)) { // 数据不规范
+    return placeholder;
+  }
+  let showData = unit === '万kWh' ? data : data * 10000;
+  if (pointLength > 0 || pointLength === 0) {
+    showData = parseFloat(showData).toFixed(pointLength);
+  } else {
+    showData = parseFloat(showData);
+  }
+  return showData
+}
+
+
+
 export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = false) => { // 数值处理(生成指定小数位的字符串)=>string
   let resultString = '';
   if ((!data && data !== 0) || isNaN(data)) { // 输入数据不存在或非数据。
