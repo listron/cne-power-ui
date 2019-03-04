@@ -110,7 +110,6 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime = `/monitor/alarm/realtime?stationCode=${stationCode}`;
-
     return (
       <div className={styles.cardSection}>
         <Row gutter={16} type="flex" justify="space-around" >
@@ -126,7 +125,7 @@ class CardSection extends Component {
                           <div key={i} className={styles.userInfo} >
                             <span title={e.userFullName || e.userName} style={{ width: '55px', }} className={styles.userMes}>{e.userFullName || e.userName}</span>
                             <span title={e.roleDesc} style={{ width: '104px' }} className={styles.userMes}>{e.roleDesc}</span>
-                            <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userMes}>{e.phoneNum}</span>
+                            <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userPhone}>{e.phoneNum}</span>
                           </div>
                         )
                       })}
