@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styles from './realtimeStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 class RealtimeChart extends Component {
   static propTypes = {
+    chartLoading: PropTypes.bool,
     dataTime: PropTypes.string,
     queryParam: PropTypes.object,
     chartRealtime: PropTypes.object,
@@ -124,10 +124,16 @@ class RealtimeChart extends Component {
   }
 
   renderChart = (chartRealtime, reRender = false) => {
+    const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
     reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const realtimeChart = echarts.init(chartDOM);
+    if (chartLoading) { // loading态控制。
+      realtimeChart.showLoading()
+    } else {
+      realtimeChart.hideLoading()
+    }
     const { pointTime = [], pointInfo = [] } = chartRealtime;
     const { deviceInfo = [] } = pointInfo[0] || {};
     const option = {

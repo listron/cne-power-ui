@@ -13,6 +13,8 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
 
+console.log(module.hot)
+
 class DataHistory extends Component {
   static propTypes = {
     historyType: PropTypes.string,

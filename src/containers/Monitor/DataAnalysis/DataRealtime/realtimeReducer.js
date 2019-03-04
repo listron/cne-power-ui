@@ -18,6 +18,8 @@ const initState = immutable.fromJS({
   selectStationType: null, // 选中的电站类型
   deviceTypeCode: null, // 选中的设备类型
   dataTime: null, // 记录的最新数据时间
+  tableLoading: false, // 列表请求的loading
+  chartLoading: false, // chart图表的loading
   timeInterval: 5, // 实时数据间隔时间,
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站

@@ -3,10 +3,10 @@ import { Table } from 'antd';
 import styles from './realtimeStyle.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
-import moment from 'moment';
 
 class RealtimeList extends Component {
   static propTypes = {
+    tableLoading: PropTypes.bool,
     listParam: PropTypes.object,
     queryParam: PropTypes.object,
     listRealtime: PropTypes.object,
@@ -26,7 +26,7 @@ class RealtimeList extends Component {
   }
 
   render() {
-    const { listRealtime, listParam } = this.props;
+    const { listRealtime, listParam, tableLoading } = this.props;
     const { totalCount, time, dataList = [] } = listRealtime;
     const { pageNum, pageSize } = listParam;
     const { pointData = [] } = dataList[0] || {};
@@ -71,6 +71,7 @@ class RealtimeList extends Component {
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
+          loading={tableLoading}
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
           onChange={this.onListChange}

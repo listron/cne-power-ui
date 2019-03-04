@@ -58,6 +58,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           payload: {
             dataTime: pointTime.pop(), // 存储最后时刻
             chartRealtime: chartInfo || {},
+            chartLoading: false,
           }
         })
       } else { // 已有存储的数据信息，将api结果追加进入当前chart数据组。
@@ -115,6 +116,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
               pointTime: newPointTime,
               pointInfo: newPointInfo,
             },
+            chartLoading: false,
           }
         })
       }
@@ -149,6 +151,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           pointTime,
           pointInfo: newPointInfo,
         },
+        chartLoading: false,
       }
     })
     console.log(err);
@@ -156,9 +159,16 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
 }
 
 function *getRealtimeChart(action) { // 实时chart数据获取
-  yield fork(realChartInterval,action);
+  const { firtQuery = true } = action;
+  if (firtQuery) {
+    yield put({
+      type: realtimeAction.CHANGE_REALTIME_STORE,
+      payload: { chartLoading: true }
+    })
+  }
+  yield fork(realChartInterval, action);
   yield delay(5000); // 阻塞5秒
-  realtimeChartInterval = yield fork(getRealtimeChart, action);
+  realtimeChartInterval = yield fork(getRealtimeChart, { ...action, firtQuery: false });
 }
 
 function *stopRealtimeChart(){ // 停止图表数据定时请求
@@ -184,18 +194,30 @@ function *realListInterval({ payload = {} }) {
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
           listRealtime: response.data.data || {},
+          tableLoading: false,
         }
       })
-    }
+    } else { throw response }
   } catch (err) {
     console.log(err);
+    yield put({
+      type: realtimeAction.CHANGE_REALTIME_STORE,
+      payload: { tableLoading: false }
+    })
   }
 }
 
 function *getRealtimeList(action) { // 实时表格数据获取
+  const { firtQuery = true } = action;
+  if (firtQuery) {
+    yield put({
+      type: realtimeAction.CHANGE_REALTIME_STORE,
+      payload: { tableLoading: true }
+    })
+  }
   yield fork(realListInterval, action);
   yield delay(5000); // 阻塞5秒
-  yield fork(getRealtimeList, action);
+  yield fork(getRealtimeList,  { ...action, firtQuery: false });
 }
 
 function *stopRealtimeList() { // 停止列表数据定时请求
