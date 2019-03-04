@@ -60,7 +60,7 @@ export default function table(props) {
         if (data.scoreLevel) {
             return `电站总分: ${dataFormats(data.scoreValue, '--', 2, true)} ${['优秀', '良好', '合格', '较差'][data.scoreLevel - 1] || '--'}`
         }
-        return '数据缺失'
+        return ' 数据缺失'
     }
 
     return (
