@@ -12,7 +12,7 @@ var initState = Immutable.fromJS({
         time:time,//日期
         stationCodes:[], // 电站编码
         sortField:'scoreValue',
-        sortMethod:'desc ',//排序方式  desc asc
+        sortMethod:'asc ',//排序方式  desc asc
     },
     stationCode:null, // 电站编码
     scoreList:[], 

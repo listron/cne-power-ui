@@ -30,7 +30,7 @@ class PvScoreAnalysis extends Component {
         this.state = {
             stationSelect: '',
             reportStation: [],
-            highToLow: true,
+            highToLow: false,
             warningTipText: '数据计算中，请选择其他月份进行查看',
             showWarningTip: moment().isBefore(moment().format('YYYY-MM') + '-03', 'day'),// 在每个月前两天没有数据提示
         }
@@ -46,7 +46,7 @@ class PvScoreAnalysis extends Component {
         let dataType = timeStyle === 'month' ? 'year' : 'month';
         this.getScoreList({ dataType, time: startTime })
         let currentMoth=moment(startTime).add(1, 'months').isBefore(moment(), 'month');
-        let isBefore=!currentMoth && moment(startTime).add(1, 'months').isBefore(moment().format('YYYY-MM') + '-03', 'day')
+        let isBefore=!currentMoth && moment().date()<3
         dataType === 'month' && this.setState({ showWarningTip: isBefore, })
     }
 
@@ -74,7 +74,7 @@ class PvScoreAnalysis extends Component {
     }
 
     scoreSort = (highToLow) => { // 分数排序切换
-        this.setState({ highToLow: !highToLow })
+        this.setState({ highToLow: !this.state.highToLow })
         const sortMethod = highToLow ? 'desc' : 'asc';
         this.getScoreList({ sortMethod })
     }
@@ -134,7 +134,7 @@ class PvScoreAnalysis extends Component {
                     </div>
                     <div className={styles.scoreTranslate}>
                         <div className={styles.scoreTranslateBtn}>排序</div>
-                        <div onClick={() => { this.scoreSort(highToLow) }} className={styles.scoreSort}>
+                        <div onClick={this.scoreSort} className={styles.scoreSort}>
                             <i className="iconfont icon-mark" />
                             {highToLow && '分数由高到低' || '分数由低到高'}
                         </div>

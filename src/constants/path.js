@@ -184,7 +184,7 @@ export default {
       getCleaningData: '/v3/pvclean/conf', //获取清洗模型预警配置
       addCleaningData: '/v3/pvclean/conf', //设置清洗模型预警配置    
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
-      getStationPoints:'/v3/smartalarm/smartwarning/devicepointcode', // 测点，已预警的测点删除
+      getStationPoints:'/v3/smartalarm/devicepointcode', // 测点，已预警的测点删除
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
     },
     monitor: {//实时监控
