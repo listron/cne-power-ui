@@ -10,6 +10,7 @@ const user = require('./mock/system/user');
 const stationManage = require('./mock/system/stationManage');
 
 const monitor =require('./mock/monitor/stationMonitor')
+const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
@@ -38,6 +39,7 @@ exports.mockConfig = [
   ...stationManage, //电站管理-电站
 
   ...monitor,
+  ...dataAnalysis,
 
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
