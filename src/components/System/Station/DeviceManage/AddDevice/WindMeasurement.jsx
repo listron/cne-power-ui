@@ -14,7 +14,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('altitude',{ initialValue:stationDeviceDetail.map.altitude})(
+        {getFieldDecorator('altitude',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.altitude:null})(
           <Input placeholder="保留小数点后两位" />
         )}米
       </FormItem>
@@ -24,7 +24,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('towerAssemblyTime',{ initialValue:moment(stationDeviceDetail.map.towerAssemblyTime),})(
+        {getFieldDecorator('towerAssemblyTime',{ initialValue:stationDeviceDetail.map?moment(stationDeviceDetail.map.towerAssemblyTime):null,})(
           <DatePicker />
         )}
       </FormItem>
@@ -33,7 +33,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('towerHeight',{ initialValue:stationDeviceDetail.map.towerHeight})(
+        {getFieldDecorator('towerHeight',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.towerHeight:null})(
           <Input placeholder="保留小数点后两位" />
         )}
       </FormItem>
@@ -42,7 +42,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('windMeasurementEquipment',{ initialValue:stationDeviceDetail.map.windMeasurementEquipment})(
+        {getFieldDecorator('windMeasurementEquipment',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.windMeasurementEquipment:null})(
           <Input placeholder="不超过30字" />
         )}米
       </FormItem>
