@@ -73,9 +73,10 @@ class PvScoreAnalysis extends Component {
         this.getScoreList({ stationCodes })
     }
 
-    scoreSort = (highToLow) => { // 分数排序切换
-        this.setState({ highToLow: !this.state.highToLow })
-        const sortMethod = highToLow ? 'desc' : 'asc';
+    scoreSort = () => { // 分数排序切换
+        const unit=!this.state.highToLow
+        this.setState({ highToLow: unit })
+        const sortMethod = unit ? 'desc' : 'asc';
         this.getScoreList({ sortMethod })
     }
 
