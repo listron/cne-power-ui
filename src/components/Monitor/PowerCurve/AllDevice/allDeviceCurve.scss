@@ -1,0 +1,32 @@
+.allDeviceBox{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  background: #fff;
+  .filterStyle{
+    display: flex;
+    flex:1;
+    flex-direction: row;
+    .searchPart{
+      padding: 20px 0;
+      display: flex;
+      .stationSelect, .typeSelect{
+        flex: 0 0 25%;
+      }
+      .deviceSelect{
+        flex: 0 0 50%;
+      }
+      .stationSelect, .typeSelect, .deviceSelect{
+        display: flex;
+        line-height: 40px;
+        height: 40px;
+        align-items: center;
+        .text{
+          flex: 0 0 96px;
+          text-align: right;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
