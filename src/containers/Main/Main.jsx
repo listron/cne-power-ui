@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
 import { message, Modal, Button } from 'antd';
 import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
@@ -178,4 +179,4 @@ const mapDispatchToProps = (dispatch) => ({
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default hot(withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)));
