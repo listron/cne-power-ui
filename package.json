@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "dll": "webpack --config webpack.dll.config.js"
   },
   "author": "Ruth",
   "license": "ISC",
@@ -52,7 +53,6 @@
     "jquery": "^3.3.1",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.0",
-    "keymirror": "0.1.1",
     "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "qs": "^6.5.2",

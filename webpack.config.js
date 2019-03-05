@@ -106,6 +106,11 @@
         from: __dirname + '/assets',
         to:__dirname + '/dist'
       }]),
+      // new webpack.DllReferencePlugin({
+      //   context: __dirname,
+      //   manifest: require('./vendors/manifest.json'),
+      //   name: './vendors/vendors.dll.js'
+      // }),
       new HtmlWebpackPlugin({
         title: 'Donut-UI',
         template : __dirname + '/index.ejs',
