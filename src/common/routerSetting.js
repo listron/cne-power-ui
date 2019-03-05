@@ -28,6 +28,9 @@ import Score from "../containers/System/Production/Score/Score";
 import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStation';
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
+//功率曲线
+import AllDeviceCurve from '../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve';
+import SingleDeviceCurve from '../containers/Monitor/PowerCurve/SingleDeviceCurve/SingleDeviceCurve';
 // 实时监控 - 数据分析
 import DataHistory from '../containers/Monitor/DataAnalysis/DataHistory/DataHistory';
 import DataRealtime from '../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime';
@@ -204,6 +207,14 @@ const routers = [
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
+  },{//实时监控-功率曲线-多设备
+    path:'/monitor/powercurve',
+    exact:true,
+    component:AllDeviceCurve
+  },{//实时监控-功率曲线-单设备
+    path:'/monitor/powercurve/:deviceCode',
+    exact:true,
+    component:SingleDeviceCurve
   }, { //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
     exact: true,
