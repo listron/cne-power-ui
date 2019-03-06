@@ -2,6 +2,7 @@ import immutable from 'immutable';
 import moment from 'moment';
 
 const realtimeAction = {
+  getAvailableDeviceType: Symbol('getAvailableDeviceType'), // 获取有测点的设备类型
   getRealtimeChart: Symbol('getRealtimeChart'), // 获取实时图表chart数据
   stopRealtimeChart: Symbol('stopRealtimeChart'), // 停止图表实时
   getRealtimeList: Symbol('getRealtimeList'), // 测点实时数据-表格

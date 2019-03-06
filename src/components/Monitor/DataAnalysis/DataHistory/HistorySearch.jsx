@@ -22,7 +22,7 @@ class HistorySearch extends Component {
     intervalInfo: PropTypes.array, // 可选时间间隔
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeHistoryStore: PropTypes.func,
-    getStationDeviceTypes: PropTypes.func,
+    getAvailableDeviceType: PropTypes.func,
     getPointInfo: PropTypes.func,
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
@@ -50,11 +50,10 @@ class HistorySearch extends Component {
   checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeHistoryStore, queryParam } = this.props;
+    const { getAvailableDeviceType, changeHistoryStore, queryParam } = this.props;
     const { stationCode } = selectedStationInfo[0];
-    getStationDeviceTypes({ // 设备类型
-      stationCodes: stationCode,
-    });
+    console.log(stationCode)
+    getAvailableDeviceType({ stationCode });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
       queryParam: {

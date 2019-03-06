@@ -19,7 +19,7 @@ class RealtimeSearch extends Component {
     
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeRealtimeStore: PropTypes.func,
-    getStationDeviceTypes: PropTypes.func,
+    getAvailableDeviceType: PropTypes.func,
     getPointInfo: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
@@ -49,13 +49,11 @@ class RealtimeSearch extends Component {
   checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
+    const { getAvailableDeviceType, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
     const { stationCode } = selectedStationInfo[0];
     stopRealtimeChart();
     stopRealtimeList();
-    getStationDeviceTypes({ // 设备类型
-      stationCodes: stationCode,
-    });
+    getAvailableDeviceType({ stationCode });
     changeRealtimeStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
       queryParam: {

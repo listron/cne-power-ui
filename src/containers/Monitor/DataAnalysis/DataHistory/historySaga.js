@@ -7,6 +7,24 @@ import moment from 'moment';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
+function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
+  const { stationCode } = payload;
+  try {
+    const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: historyAction.GET_HISTORY_SUCCESS,
+        payload: {
+          stationDeviceTypes: response.data.data || [],
+        }
+      })
+    } else { throw response }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
   const { deviceFullCode } = payload;
@@ -149,6 +167,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
 }
 
 export function* watchDataHistoryMonitor() {
+  yield takeLatest(historyAction.getAvailableDeviceType, getAvailableDeviceType);
   yield takeLatest(historyAction.getPointInfo, getPointInfo);
   yield takeLatest(historyAction.getChartHistory, getChartHistory);
   yield takeLatest(historyAction.getListHistory, getListHistory);

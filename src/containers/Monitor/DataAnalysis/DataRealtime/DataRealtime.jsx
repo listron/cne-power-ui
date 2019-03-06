@@ -27,7 +27,6 @@ class DataRealtime extends Component {
   componentDidMount(){ // 获取数据时间间隔
     const { enterpriseId } = this.props;
     this.props.getSecendInterval({ enterpriseId });
-    this.props.getRealtimeChart({});// 测试代码，后删。
   }
 
   componentWillUnmount() { // 停止定时并重置数据。
@@ -61,8 +60,8 @@ class DataRealtime extends Component {
 
 const mapStateToProps = state => ({
   ...state.monitor.dataRealtime.toJS(),
-  stations: state.common.get('stations').toJS(),
-  stationTypeCount: state.common.get('stationTypeCount'),
+  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  stationTypeCount: 'wind', // state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 
@@ -75,14 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   stopRealtimeChart: () => dispatch({ type: realtimeAction.stopRealtimeChart }),
   stopRealtimeList: () => dispatch({ type: realtimeAction.stopRealtimeList }),
   getSecendInterval: payload => dispatch({ type: realtimeAction.getSecendInterval, payload }),
-  getStationDeviceTypes: params => dispatch({
-    type: commonAction.getStationDeviceTypes,
-    payload: {
-      params, 
-      deviceTypeAction: realtimeAction.GET_REALTIME_SUCCESS,
-      resultName: 'stationDeviceTypes'
-    }
-  }),
+  getAvailableDeviceType: payload => dispatch({ type: realtimeAction.getAvailableDeviceType, payload }),
   downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
 });
 

@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 
 const historyAction = {
+  getAvailableDeviceType: Symbol('getAvailableDeviceType'), // 获取有测点的设备类型
   getChartHistory: Symbol('getChartHistory'), // 获取时间段内图表chart历史数据
   getListHistory: Symbol('getListHistory'), // 表格历史数据
   getPointInfo: Symbol('getPointInfo'), // 根据选中电站/设备得到的可选测点信息

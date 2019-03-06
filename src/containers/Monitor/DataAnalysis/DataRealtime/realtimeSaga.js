@@ -11,6 +11,24 @@ const { monitor } = Path.APISubPaths;
 let realtimeChartInterval = null;
 let realtimeListInterval = null;
 
+function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
+  const { stationCode } = payload;
+  try {
+    const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: realtimeAction.GET_REALTIME_SUCCESS,
+        payload: {
+          stationDeviceTypes: response.data.data || [],
+        }
+      })
+    } else { throw response }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 function *getPointInfo({ payload }) { // 获取可选测点
   const { deviceFullCode } = payload;
   const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
@@ -172,7 +190,9 @@ function *getRealtimeChart(action) { // 实时chart数据获取
 }
 
 function *stopRealtimeChart(){ // 停止图表数据定时请求
-  yield cancel(realtimeChartInterval);
+  if (realtimeChartInterval) {
+    yield cancel(realtimeChartInterval);
+  }
 }
 
 function *realListInterval({ payload = {} }) {
@@ -221,7 +241,9 @@ function *getRealtimeList(action) { // 实时表格数据获取
 }
 
 function *stopRealtimeList() { // 停止列表数据定时请求
-  yield cancel(realtimeListInterval);
+  if (realtimeListInterval) {
+    yield cancel(realtimeListInterval);
+  }
 }
 
 function *getSecendInterval(action) { // 用户所在企业数据时间间隔
@@ -248,6 +270,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
 }
 
 export function* watchDataRealtimeMonitor() {
+  yield takeLatest(realtimeAction.getAvailableDeviceType, getAvailableDeviceType);
   yield takeLatest(realtimeAction.getPointInfo, getPointInfo);
   yield takeLatest(realtimeAction.getRealtimeChart, getRealtimeChart);
   yield takeLatest(realtimeAction.getRealtimeList, getRealtimeList);
