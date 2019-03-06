@@ -8,6 +8,7 @@
   const HtmlWebpackPlugin = require('html-webpack-plugin');
   const CopyWebpackPlugin = require('copy-webpack-plugin');
   const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+  const ProgressBarPlugin = require('progress-bar-webpack-plugin');
   
   const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
   const smp = new SpeedMeasurePlugin();
@@ -133,6 +134,7 @@
       }]
     },
     plugins: [
+      new ProgressBarPlugin(),
       new CopyWebpackPlugin([{
         from: __dirname + '/assets',
         to:__dirname + '/dist'
