@@ -118,7 +118,7 @@ class HistoryChart extends Component {
           xAxisIndex: index,
           yAxisIndex: index,
           type: 'line',
-          data: point.pointInfo[deviceIndex]
+          data: point.pointInfo[deviceIndex] // point.pointInfo[device.deviceCode]
         });
       });
     })
@@ -189,8 +189,8 @@ class HistoryChart extends Component {
   render() {
     // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 数据指示条行数。
     const { queryParam } = this.props;
-    const { deviceFullCode, devicePoint, timeInterval } = queryParam;
-    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCode.length * devicePoint.length) / 4);
+    const { deviceFullCodes, devicePoint, timeInterval } = queryParam;
+    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCodes.length * devicePoint.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.historyChart}>

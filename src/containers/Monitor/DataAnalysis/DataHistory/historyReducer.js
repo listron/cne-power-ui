@@ -21,14 +21,14 @@ const initState = Immutable.fromJS({
   chartTime: null, // 记录chart表的数据时间
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
-    deviceFullCode: [], // 选中的设备
+    deviceFullCodes: [], // 选中的设备
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
     devicePoint: [], // 选中的测点
     timeInterval: null, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
   listParam: { // 表格排序额外参数
-    orderField: 'time', // 排序字段(默认时间倒序（最新的时间在最上方）
+    orderField: 'deviceName', // 排序字段(默认时间倒序（最新的时间在最上方）
     orderType: 1, //	排序方式	否	0：ASC正序，1：DESC倒序
     pageNum: 1, // 当前页码（从1开始）
     pageSize: 10 // 每页条数

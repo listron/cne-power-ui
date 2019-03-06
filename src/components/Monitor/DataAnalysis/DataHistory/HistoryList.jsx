@@ -56,13 +56,20 @@ class HistoryList extends Component {
     const { timeInterval } = queryParam;
     const { pageNum, pageSize, orderField } = listParam;
     const { pointData = [] } = dataList[0] || {};
+    console.log(orderField)
     const columns = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
+        sorter: true,
+        className: orderField === 'deviceTypeName' ? null : styles.sorterType,
+        sortOrder: this.getSortOrder('deviceTypeName')
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
+        sorter: true,
+        className: orderField === 'deviceTypeName' ? null : styles.sorterType,
+        sortOrder: this.getSortOrder('deviceTypeName')
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -72,6 +79,9 @@ class HistoryList extends Component {
       }, {
         title: '型号',
         dataIndex: 'deviceModeName',
+        sorter: true,
+        className: orderField === 'deviceModeName' ? null : styles.sorterType,
+        sortOrder: this.getSortOrder('deviceModeName')
       }, {
         title: '时间',
         dataIndex: 'time',
@@ -86,10 +96,12 @@ class HistoryList extends Component {
         sortOrder: this.getSortOrder('speed')
       }
     ];
-    
     const pointColumn = pointData.map(e => ({
       title: e.devicePointName,
       dataIndex: e.devicePointCode,
+      sorter: true,
+      className: orderField === e.e.devicePointCode ? null : styles.sorterType,
+      sortOrder: this.getSortOrder(e.e.devicePointCode)
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
       let pointInfo = {}

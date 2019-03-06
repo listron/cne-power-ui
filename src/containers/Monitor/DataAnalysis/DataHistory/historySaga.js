@@ -27,10 +27,13 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
 
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
-  const { deviceFullCode } = payload;
+  const { deviceFullCode, timeInterval } = payload;
   const url = `${APIBasePath}${monitor.getPointsInfo}` // '/mock/monitor/dataAnalysisPoints';
   try {
-    const response = yield call(axios.post, url, { deviceIds: deviceFullCode.map(e => e.deviceId) });
+    const response = yield call(axios.post, url, {
+      deviceIds: deviceFullCode.map(e => e.deviceId),
+      devicePointTypes: timeInterval === 10 ? ['YM', 'YC'] : ['YM', 'YC', 'YX']
+    });
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
@@ -52,14 +55,14 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const { queryParam } = payload;
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
-    const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
+    const { devicePoint, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, chartLoading: true }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
-      deviceFullCodes: deviceFullCode.map(e => e.deviceCode),
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
       startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
       endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
@@ -90,16 +93,23 @@ function *getListHistory(action) { // 表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
   const url = `${APIBasePath}${monitor.getListHistory}`; // /mock/monitor/dataAnalysis/listHistory;
+  const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
   try{
-    const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
+    const { devicePoint, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, listParam, tableLoading: true }
     })
+    let { orderField } = listParam;
+    const orderIndex = orderText.indexOf(orderField);
+    if (orderIndex !== -1) { // 规定排序字段以数字字符串返回。
+      orderField = `${orderIndex}`
+    }
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
-      deviceFullCodes: deviceFullCode.map(e => e.deviceCode),
+      orderField,
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
       startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
       endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
       devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
@@ -117,11 +127,11 @@ function *getListHistory(action) { // 表格数据获取
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           listParam: {
-            tableLoading: false,
             ...listParam,
             pageNum, 
             pageSize
           },
+          tableLoading: false,
           partHistory: response.data.data || {},
         }
       })
