@@ -24,8 +24,6 @@ class AddDeviceForm extends Component {
   }
   componentWillReceiveProps(nextprops) {
     const { deviceNameOk, addDeviceTypeData, addDeviceModeData, addPvDeviceModeData } = nextprops;
-    console.log('addPvDeviceModeData: ', addPvDeviceModeData);
-    console.log(addPvDeviceModeData.deviceModeCode);
     if (deviceNameOk === true && deviceNameOk !== this.props.deviceNameOk) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -247,7 +245,7 @@ class AddDeviceForm extends Component {
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {deviceTypeName === 501 && <WindMeasurement form={form} />}
+            {deviceTypeName === 501 && <WindMeasurement {...this.props} form={form} />}
             {deviceTypeName === 304 && <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('belongMatrix')(
@@ -255,7 +253,7 @@ class AddDeviceForm extends Component {
                 )}
               </FormItem>
             </div>}
-            {deviceTypeName === 101 && <WindInstallDate form={form} />}
+            {deviceTypeName === 101 && <WindInstallDate {...this.props} form={form}  />}
             {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence {...this.props} pvDeviceModels={pvDeviceModels} form={form} />}
             <div className={styles.submitStyle}>
               <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
