@@ -13,7 +13,7 @@ import FanList from './FanList';
 import IntegrateList from '../SingleStationCommon/DeviceList/IntegrateList';
 import Boosterstation from '../SingleStationCommon/DeviceList/Boosterstation';
 import PowerNet from '../SingleStationCommon/DeviceList/PowerNet';
-import { getDeviceTypeIcon,getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
+import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
 const { TabPane } = Tabs;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -72,6 +72,8 @@ class WindStation extends Component {
     const { deviceTypeFlow, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => { return e.deviceTypes && e.deviceTypes[0] });
+    const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
+    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -86,9 +88,7 @@ class WindStation extends Component {
               <div className={styles.deviceTypeFlow}>
                 <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
                   {deviceTypeType.map((item, index) => {
-                    const alarmList = this.props[getAlarmStatus(item.deviceTypeCode)];
-                    let alarmStatus = !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length>0 && alarmList.some(e => e.warningStatus))
-                    return (this.createFlowButton(item.deviceTypeCode, item.deviceTypeName, 'deviceTypeItem', 'arrowgo', true, alarmStatus))
+                    return (this.createFlowButton(item.deviceTypeCode, item.deviceTypeName, 'deviceTypeItem', 'arrowgo', true, deviceTypeCode === item.deviceTypeCode && alarmStatus))
                   })}
                   <RadioButton value={0} className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >
