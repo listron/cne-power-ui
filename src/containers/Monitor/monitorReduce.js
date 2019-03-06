@@ -10,6 +10,22 @@ import historyWarningReducer from './Alarm/HistoryWarning/historyWarningReducer'
 import alarm from './Alarm/alarmReducer';
 import alarmStatistic from './Alarm/alarmStatisticReducer';
 
-const monitorReducer = combineReducers({ stationMonitor,deviceMonitor, singleStation,alarm,realtimeWarningReducer,transferFormReducer, alarmStatistic,handleRemoveReducer,historyWarningReducer });
+import { dataHistory } from './DataAnalysis/DataHistory/historyReducer'; // 数据分析 - 历史趋势
+import { dataRealtime } from './DataAnalysis/DataRealtime/realtimeReducer'; // 数据分析 - 实时数据
+
+const monitorReducer = combineReducers({
+  stationMonitor,
+  deviceMonitor,
+  singleStation,
+  alarm,
+  realtimeWarningReducer,
+  transferFormReducer,
+  alarmStatistic,
+  handleRemoveReducer,
+  historyWarningReducer, 
+
+  dataHistory,
+  dataRealtime,
+});
 
 export default monitorReducer;
