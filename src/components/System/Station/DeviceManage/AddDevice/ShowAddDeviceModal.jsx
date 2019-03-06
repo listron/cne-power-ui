@@ -14,7 +14,7 @@ class ShowAddDeviceModal extends Component {
     }
   }
   componentWillReceiveProps(nextprops) {
-    const { addSuccess, checkDeviceTypeok } = nextprops;
+    const { addSuccess, checkDeviceTypeok, selectStation,form } = nextprops;
     let planValue = this.props.form.getFieldsValue();
     if (checkDeviceTypeok !== this.props.checkDeviceTypeok && checkDeviceTypeok === true) {
       this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
@@ -24,13 +24,15 @@ class ShowAddDeviceModal extends Component {
             isPertain: values.isPertain,
             deviceTypeName: values.addDeviceTypeCodeName
           })
+          this.props.saveFormState(planValue)
+          this.props.cancleAddDeviceModal()
+          if(addSuccess){
+            form.resetFields("deviceTypeCode");
+          }
         }
       })
     }
-    if (addSuccess === true) {
-      this.props.saveFormState(planValue)
-      this.props.cancleAddDeviceModal()
-    }
+   
   }
   handleCancel = () => {
     this.props.cancleAddDeviceModal()
@@ -40,7 +42,7 @@ class ShowAddDeviceModal extends Component {
     const { getFieldsValue } = this.props.form;
     const { stationDeviceTypes, saveFormState, cancleAddDeviceModal, addSuccess, selectStation } = this.props;
     console.log('selectStation: ', selectStation);
-    let planValue = getFieldsValue();
+    this.props.changeDeviceManageStore({checkDeviceTypeok:null})
     this.props.form.validateFieldsAndScroll(["addDeviceTypeCodeName", "isPertain"], (err, values) => {
       if (!err) {
         this.props.checkDeviceType({ deviceTypeName: values.addDeviceTypeCodeName })

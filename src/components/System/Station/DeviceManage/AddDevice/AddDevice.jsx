@@ -20,7 +20,7 @@ class AddDevice extends Component {
       showStep: 'pre',
       showAddDeviceModal: false,
       deviceTypeName: '',
-      showAddDeviceName:false,
+      showAddDeviceName: false,
     }
   }
   onWarningTipShow = () => {
@@ -42,27 +42,27 @@ class AddDevice extends Component {
     })
   }
   selectStation = (stations) => {
-    const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
-    getStationDeviceTypes({
-      stationCodes: stations[0].stationCode,
-    });
-    changeDeviceManageStore({
-       deviceModels: []
-    })
+    const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore, getStationDeviceType, form } = this.props;
+    this.props.changeDeviceManageStore({ addDeviceTypeData: {} })
+    form.resetFields("deviceTypeCode");
+    getStationDeviceType({ stationCode: stations[0].stationCode })
+
+
+
   }
   selectDeviceType = (value) => {
     const { getDeviceModel, getDeviceList, getConnectDevice, getPvDevice, queryParams } = this.props;
     const selectStation = this.props.form.getFieldValue('stationCode')[0];
     getDeviceModel({
-      stationCode:selectStation.stationCode,
+      stationCode: selectStation.stationCode,
       deviceTypeCode: value,
     });
     getPvDevice({
-      stationCode:selectStation.stationCode,
+      stationCode: selectStation.stationCode,
       deviceTypeCode: '509',
     })
     getConnectDevice({
-      stationCode:selectStation.stationCode,
+      stationCode: selectStation.stationCode,
       deviceTypeCode: value,
     })
 
@@ -80,28 +80,32 @@ class AddDevice extends Component {
   nextStep = () => {
     //在这请求关联设备的数据
     const selectdeviceType = this.props.form.getFieldValue('deviceTypeCode')
-   
+
     this.setState({
-      showStep: 'next',showAddDeviceName:false,
+      showStep: 'next', showAddDeviceName: false,
     })
-    this.props.changeDeviceManageStore({addSuccess:null})
+    this.props.changeDeviceManageStore({ addSuccess: null })
   }
   saveFormState = (record) => {
-    this.setState({ deviceTypeName: record.addDeviceTypeCodeName,showAddDeviceName:true  })
+    this.setState({ deviceTypeName: record.addDeviceTypeCodeName, showAddDeviceName: true })
   }
   gobackPre = () => {
     this.setState({
       showStep: 'pre'
     })
+    this.props.changeDeviceManageStore({ addDeviceTypeData: {} })
   }
   render() {
-    const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName,showAddDeviceName  } = this.state;
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form } = this.props;
+    const { showWarningTip, warningTipText, showStep, showAddDeviceModal, deviceTypeName, showAddDeviceName } = this.state;
+    const { allStationBaseInfo, stationDevices, deviceModels, deviceTypeCode, deviceModeCode, stationCode, form, addDeviceTypeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const typeSelectDisable = stationDeviceTypes.length === 0;
+    const typeSelectDisable = stationDevices.length === 0;
+
     const selectStation = getFieldValue('stationCode')
     const selectdeviceType = getFieldValue('deviceTypeCode')
     const selectdeviceTypeName = deviceTypeName
+    const initi = addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : null;
+    console.log('initi: ', initi);
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -123,35 +127,29 @@ class AddDevice extends Component {
               />
             )}
           </FormItem>
-          {showAddDeviceName ?
-            <FormItem label="设备类型" colon={false} className={styles.formItemStyle}>
-              {getFieldDecorator('addDeviceTypeCodeName', {
-                rules: [
-                  { message: '设备名称不超过30字', required: true, type: 'string', max: 30 },
-                ]
-              })(
-                <span>{selectdeviceTypeName}</span>
-              )}
-            </FormItem> :
-            <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
-              {getFieldDecorator('deviceTypeCode', {
-                rules: [
-                  { message: '请选择设备类型', required: true, },
-                ]
-              })(
-                <Select className={styles.typeSelect} onChange={this.selectDeviceType}
-                  //  value={deviceTypeCode}
-                  placeholder="请选择设备类型"
-                  disabled={typeSelectDisable}>
-                  <Option key={null} value={null}>{'全部设备类型'}</Option>
-                  {stationDeviceTypes.map((e, i) => {
-                    if (!e) { return null; }else{ 
-                      return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option> }
-                  })}
-                </Select>
-              )}
-              <span className={styles.fontColor} onClick={selectStation ? this.showAddDeviceModal : null}>添加设备类型</span>
-            </FormItem>}
+         
+          <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
+            {getFieldDecorator('deviceTypeCode', {
+              initialValue: initi,
+              rules: [
+                { message: '请选择设备类型', required: true, },
+              ]
+            })(
+              <Select className={styles.typeSelect} onChange={this.selectDeviceType}
+                //  value={deviceTypeCode}
+                placeholder="请选择设备类型"
+                disabled={typeSelectDisable}>
+                <Option key={null} value={null}>{'全部设备类型'}</Option>
+                {stationDevices.map((e, i) => {
+                  if (!e) { return null; } else {
+                    return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+                  }
+                })}
+              </Select>
+            )}
+            <span className={styles.fontColor} onClick={selectStation ? this.showAddDeviceModal : null}>添加设备类型</span>
+          </FormItem>
+       
 
           {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
         </Form>}

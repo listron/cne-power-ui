@@ -170,6 +170,7 @@ export default {
       addPvDeviceMode:'/v3/management/deviceMode',//添加pv设备型号
       checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
       checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
+      getStationDeviceType:'/v3/management/queryDevicesTypeByStation',//查询电站下的设备类型
 
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
