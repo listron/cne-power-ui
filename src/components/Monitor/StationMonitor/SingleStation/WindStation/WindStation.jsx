@@ -13,7 +13,10 @@ import FanList from './FanList';
 import IntegrateList from '../SingleStationCommon/DeviceList/IntegrateList';
 import Boosterstation from '../SingleStationCommon/DeviceList/Boosterstation';
 import PowerNet from '../SingleStationCommon/DeviceList/PowerNet';
+import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
 const { TabPane } = Tabs;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 class WindStation extends Component {
   static propTypes = {
@@ -25,6 +28,14 @@ class WindStation extends Component {
     stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     resetSingleStationStore: PropTypes.func,
+    realTimePowerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    powerUnit: PropTypes.string,
+    powerPoint: PropTypes.any,
+    fanList: PropTypes.object,
+    collectorList: PropTypes.array,
+    boosterList: PropTypes.array,
+    powerNetList: PropTypes.array,
   }
 
   constructor(props) {
@@ -38,34 +49,31 @@ class WindStation extends Component {
     this.props.changeSingleStationStore({ deviceTypeCode });
   }
 
-  getDeviceTypeIcon = (e) => {
-    switch (e) {
-      case 101:
-        return 'iconfont icon-windlogo';
-      case 509:
-        return 'iconfont icon-pvs';
-      case 206:
-      case 201:
-        return 'iconfont icon-nb';
-      case 202:
-      case 207:
-        return 'iconfont icon-hl';
-      case 304:
-        return 'iconfont icon-xb';
-      case 302:
-        return 'iconfont icon-jidian';
-      case 301:
-        return 'iconfont icon-syz';
-      default:
-        return;
-    }
+
+  onSelectedDeviceType = (e) => {
+    const deviceTypeCode = parseInt(e.target.value);
+    this.props.changeSingleStationStore({ deviceTypeCode });
   }
+
+
+  createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
+    <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={typeCode}>
+      <div className={styles.deviceTypeIcon} >
+        <i className={getDeviceTypeIcon(typeCode)} ></i>
+        {alarm && <i className="iconfont icon-alarm alarmIcon" ></i>}
+        <img src="/img/arrowgo.png" className={styles[imgClass]} />
+      </div>
+      <div>{typeName}</div>
+    </RadioButton>
+  )
 
   render() {
     const { stationCode } = this.props.match.params;
     const { deviceTypeFlow, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
-    const deviceTypeType = deviceFlowTypes.map(e => e.deviceTypes);
+    const deviceTypeType = deviceFlowTypes.map(e => { return e.deviceTypes && e.deviceTypes[0] });
+    const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
+    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
     return (
       <div className={styles.windStation} >
         <WindStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
@@ -78,47 +86,17 @@ class WindStation extends Component {
           <Tabs type="card" defaultActiveKey="2" >
             <TabPane tab="示意图" key="2">
               <div className={styles.deviceTypeFlow}>
-                {deviceTypeType.map((item, index) => {
-                  const deviceInfo = item[0] || {};
-                  const isActiveType = deviceTypeCode === deviceInfo.deviceTypeCode;
-                  return (
-                    <div
-                      key={index}
-                      className={styles.eachDeviceType}
-                      style={{
-                        backgroundColor: isActiveType ? '#fff' : 'transparent'
-                      }}
-                      onClick={() => this.onSelectedDeviceType(deviceInfo.deviceTypeCode)}
-                    >
-                      <div
-                        className={styles.deviceTypeIcon}
-                        style={{
-                          color: isActiveType ? '#199475' : '#dfdfdf'
-                        }}
-                      >
-                        <i className={this.getDeviceTypeIcon(deviceInfo.deviceTypeCode)} />
-                        <span className={styles.text}>{deviceInfo.deviceTypeName}</span>
-                      </div>
-                      <img src="/img/arrowgo.png" className={styles.rightArrow} />
+                <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
+                  {deviceTypeType.map((item, index) => {
+                    return (this.createFlowButton(item.deviceTypeCode, item.deviceTypeName, 'deviceTypeItem', 'arrowgo', true, deviceTypeCode === item.deviceTypeCode && alarmStatus))
+                  })}
+                  <RadioButton value={0} className={styles.elecnettingItem}>
+                    <div className={styles.deviceTypeIcon} >
+                      <i className="iconfont icon-elecnetting" ></i>
                     </div>
-                  )
-                })}
-                <div
-                  className={styles.eachDeviceType}
-                  style={{
-                    backgroundColor: deviceTypeCode === 0 ? '#fff' : 'transparent'
-                  }}
-                  onClick={() => this.onSelectedDeviceType(0)}
-                >
-                  <div
-                    className={styles.deviceTypeIcon}
-                    style={{
-                      color: deviceTypeCode === 0 ? '#199475' : '#dfdfdf'
-                    }} >
-                    <i className="iconfont icon-elecnetting" />
-                    <span className={styles.text}>电网</span>
-                  </div>
-                </div>
+                    <div>电网</div>
+                  </RadioButton>
+                </RadioGroup>
               </div>
               {deviceTypeCode === 101 && <FanList {...this.props} />}
               {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
