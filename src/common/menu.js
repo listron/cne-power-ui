@@ -46,6 +46,10 @@ const menuData = [
             name: '实时监控',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime', // dataAnalysis_realTime
+          }, {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
           }
         ]
       }, {

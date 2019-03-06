@@ -28,6 +28,7 @@ import AllStation from '../containers/Monitor/StationMonitor/AllStation/AllStati
 import DeviceMonitor from '../containers/Monitor/StationMonitor/DeviceMonitor/DeviceMonitor';
 import SingleStation from '../containers/Monitor/StationMonitor/SingleStation/SingleStation';
 // 实时监控 - 数据分析
+import ScatterDiagram from '../containers/Monitor/DataAnalysis/DataScatterDiagram/DataScatterDiagram';
 import DataHistory from '../containers/Monitor/DataAnalysis/DataHistory/DataHistory';
 import DataRealtime from '../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime';
 // 实时监控-告警
@@ -203,7 +204,11 @@ const routers = [
     path: '/monitor/singleStation/:stationCode',
     exact: true,
     component: SingleStation,
-  }, { //实时监控-数据分析-历史趋势
+  }, { //实时监控-数据分析-散点图
+    path: '/monitor/data/scatterDiagram',
+    exact: true,
+    component: ScatterDiagram,
+  },{ //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
     exact: true,
     component: DataHistory,

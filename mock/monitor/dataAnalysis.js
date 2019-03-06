@@ -204,5 +204,53 @@ module.exports = [
       }
     },
     error: {}
+  }, { // 数据分析 - 散点图 - 所有chart数据
+    api: '/mock/monitor/dataAnalysis/allScatterDiagram',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        pointTime: ['2018-01-02 12:01:10', '2018-01-02 12:11:10', '2018-01-02 12:21:10', '2018-01-02 12:31:10' ],
+        deviceInfo: [
+          {
+            windSpeed: '1.13m/s',
+            power: '13kW',
+          }, {
+            windSpeed: '2.13m/s',
+            power: '2443kW',
+          }, {
+            windSpeed: '3.13m/s',
+            power: '3522kW',
+          }, {
+            windSpeed: '4.13m/s',
+            power: '4122kW',
+          }
+        ],
+      },
+      "serviceCode": "3.0"
+    },
+    error: {}
+  }, { // 数据分析 - 散点图 - 分页数据
+    api: '/mock/monitor/dataAnalysis/listScatterDiagram',
+    method: 'post',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        total: 9,
+        list: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
+          deviceName: `测试设备${e}`,
+          stationName: `电站${e * e}`,
+          deviceTypeName: `类型${e * 10}`,
+          deviceModeName: `型号${e * 9}`,
+          time: `${e ** e}`,
+          speed: `类型${e * 10}`,
+          power: `${e ** e / 8}`,
+        }))
+      },
+      serviceCode: '3.0'
+    },
+    error: {}
   }
 ]

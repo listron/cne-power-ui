@@ -12,6 +12,7 @@ import alarmStatistic from './Alarm/alarmStatisticReducer';
 
 import { dataHistory } from './DataAnalysis/DataHistory/historyReducer'; // 数据分析 - 历史趋势
 import { dataRealtime } from './DataAnalysis/DataRealtime/realtimeReducer'; // 数据分析 - 实时数据
+import { dataScatterDiagram } from './DataAnalysis/DataScatterDiagram/scatterDiagramReducer'; // 数据分析 - 散点图
 
 const monitorReducer = combineReducers({
   stationMonitor,
@@ -26,6 +27,7 @@ const monitorReducer = combineReducers({
 
   dataHistory,
   dataRealtime,
+  dataScatterDiagram
 });
 
 export default monitorReducer;
