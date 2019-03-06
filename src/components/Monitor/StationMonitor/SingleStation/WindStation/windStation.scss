@@ -186,41 +186,76 @@
     }
     .threadAndDevice {
         .deviceTypeFlow {
+            display: flex;
+            text-align: center;
+            justify-content: space-between;
+            color: #dfdfdf;
             background: #f8f8f8;
             padding: 16px 25px 0;
-            display: flex;
-            .eachDeviceType{
-                position: relative;
-            }
-            .deviceTypeIcon{
-                display: flex;
-                cursor: pointer;
-                height: 84px;
+            .deviceTypeItem,
+            .elecnettingItem {
+                // 正常单线流程
+                margin-top: 0px;
                 width: 110px;
-                flex-direction: column;
-                border-radius: 4px 4px 0 0;
-                color: $promptColor;
-                align-items: center;
-                :global{
-                    .iconfont{
-                        font-size: 36px;
+                height: 90px;
+                padding: 10px;
+                border: 0;
+                color: #dfdfdf;
+                .deviceTypeIcon {
+                    margin: 10px 10px 0;
+                    position: relative;
+                    .arrowgo {
+                        position: absolute;
+                        z-index: 999;
+                        right: -44px;
+                        top: 12px;
+                        pointer-events: none;
                     }
                 }
-                &:hover{
-                    background-color: #fff;
-                    color: $themeColor;
-                }
-            }
-            .rightArrow {
-                width: 48px;
-                height: 5px;
-                position: absolute;
-                z-index: 99;
-                right: -30px;
-                top: 24px;
             }
         }
         :global {
+            .ant-radio-group {
+                display: flex;
+                align-items: center;
+                .ant-radio-button-wrapper-checked {
+                    background: #fff;
+                    border-color: $themeColor;
+                    color: $themeColor;
+                }
+            }
+            .ant-radio-button-wrapper:hover,
+            .ant-radio-button-wrapper-focused {
+                color: $themeColor;
+                position: relative;
+                background: #fff;
+            }
+            .ant-radio-button-wrapper {
+                background: #f8f8f8;
+            }
+            .ant-radio-button-wrapper-checked {
+                background: #fff;
+                border-color: $themeColor;
+                color: $themeColor;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                z-index: 1;
+            }
+            .ant-radio-button-wrapper:not(:first-child)::before {
+                width: 0px;
+            }
+            .iconfont {
+                font-size: 27px;
+                cursor: pointer;
+            }
+            .alarmIcon{
+                font-size: 14px;
+                color: #a42b2c;
+                margin-left: -8px;
+            }
+            .iconfont:hover {
+                color: $themeColor;
+            }
             .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
                 height: 33px;
             }
@@ -258,6 +293,9 @@
         .inverterTab {
             .inverterRight {
                 margin-right: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .inverterBlockBox {
                 padding: 20px 20px 60px;
@@ -561,6 +599,13 @@
             .ant-radio-button-wrapper-focused {
                 color: $themeColor;
                 position: relative;
+            }
+            .iconfont {
+                font-size: 14px;
+                cursor: pointer;
+            }
+            .iconfont:hover {
+                color: $themeColor;
             }
         }
     }
