@@ -24,7 +24,7 @@ const initState = Immutable.fromJS({
     deviceFullCodes: [], // 选中的设备
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
-    devicePoint: [], // 选中的测点
+    devicePoints: [], // 选中的测点
     timeInterval: null, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
   listParam: { // 表格排序额外参数

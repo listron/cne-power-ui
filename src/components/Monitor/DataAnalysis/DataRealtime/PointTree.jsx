@@ -63,17 +63,21 @@ class PointTree extends Component {
         }))
       }
     })
-    return groupInfo.map(e => {
+    const PointsNodes = [], tmpNoneGroupNodes = []; // 无分组的测点，应放末尾。
+    groupInfo.forEach(e => {
       if (e.devicePointIecCode) { // 有分组信息
-        return (
+        PointsNodes.push(
           <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
             {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)}
           </TreeNode>
         )
       } else { // 无分组信息
-        return e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+        tmpNoneGroupNodes.push(
+          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+        )
       }
-    })
+    });
+    return PointsNodes.concat(tmpNoneGroupNodes);
   }
 
   render(){

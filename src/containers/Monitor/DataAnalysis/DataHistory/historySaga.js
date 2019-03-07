@@ -4,6 +4,7 @@ import Path from '../../../../constants/path';
 import { historyAction } from './historyReducer';
 import { message } from 'antd';
 import moment from 'moment';
+import Cookie from 'js-cookie';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
@@ -55,7 +56,7 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const { queryParam } = payload;
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
-    const { devicePoint, startTime, endTime, deviceFullCodes } = queryParam;
+    const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, chartLoading: true }
@@ -63,9 +64,10 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
     const response = yield call(axios.post, url, {
       ...queryParam,
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
-      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+      startTime: startTime.utc().format(),
+      endTime: endTime.utc().format(),
+      devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     if (response.data.code === '10000') {
       yield put({
@@ -93,26 +95,27 @@ function *getListHistory(action) { // 表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
   const url = `${APIBasePath}${monitor.getListHistory}`; // /mock/monitor/dataAnalysis/listHistory;
-  const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
+  // const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
   try{
-    const { devicePoint, startTime, endTime, deviceFullCodes } = queryParam;
+    const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, listParam, tableLoading: true }
     })
-    let { orderField } = listParam;
-    const orderIndex = orderText.indexOf(orderField);
-    if (orderIndex !== -1) { // 规定排序字段以数字字符串返回。
-      orderField = `${orderIndex}`
-    }
+    // let { orderField } = listParam;
+    // const orderIndex = orderText.indexOf(orderField);
+    // if (orderIndex !== -1) { // 规定排序字段以数字字符串返回。
+    //   orderField = `${orderIndex}`
+    // }
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
-      orderField,
+      // orderField,
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
-      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+      startTime: startTime.utc().format(),
+      endTime: endTime.utc().format(),
+      devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     const { totalCount = 0 } = response.data.data;
     let { pageNum, pageSize } = listParam;
@@ -132,7 +135,7 @@ function *getListHistory(action) { // 表格数据获取
             pageSize
           },
           tableLoading: false,
-          partHistory: response.data.data || {},
+          partHistory: response.data.data[0] || {},
         }
       })
     } else {

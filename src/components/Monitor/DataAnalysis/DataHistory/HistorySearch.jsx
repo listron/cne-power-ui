@@ -37,7 +37,7 @@ class HistorySearch extends Component {
         ...queryParam,
         stationCode: null,
         deviceFullCodes: [],
-        devicePoint: [],
+        devicePoints: [],
       },
       pointInfo: [], // 选中设备内可选测点信息。
       allHistory: {}, // chart图 - 所有历史数据
@@ -59,7 +59,7 @@ class HistorySearch extends Component {
         ...queryParam,
         stationCode,
         deviceFullCodes: [],
-        devicePoint: [],
+        devicePoints: [],
       },
       pointInfo: [], // 清空测点信息
       allHistory: {}, // chart图 - 所有历史数据
@@ -74,7 +74,7 @@ class HistorySearch extends Component {
       queryParam: {
         ...queryParam,
         deviceFullCodes: [], // 选中的设备
-        devicePoint: [], // 选中的测点
+        devicePoints: [], // 选中的测点
       },
       allHistory: {}, // chart图 - 所有历史数据
       partHistory: {}, // 表格内 - 分页后的历史数据
@@ -88,7 +88,7 @@ class HistorySearch extends Component {
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
-        devicePoint: [],
+        devicePoints: [],
       },
       allHistory: {},
       partHistory: {},
@@ -115,7 +115,7 @@ class HistorySearch extends Component {
         queryParam: {
           ...queryParam,
           timeInterval: interval,
-          devicePoint: [],
+          devicePoints: [],
         },
         allHistory: {},
         partHistory: {},
@@ -132,8 +132,8 @@ class HistorySearch extends Component {
 
   historyDataFetch = (params) => {
     const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
-    const { devicePoint } = queryParam;
-    if (devicePoint.length > 0) { // 已选择测点 - 重新请求数据
+    const { devicePoints } = queryParam;
+    if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据
       const newQueryParam = {
         ...queryParam,
         ...params

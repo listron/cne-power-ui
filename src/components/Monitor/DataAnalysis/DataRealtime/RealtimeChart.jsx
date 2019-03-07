@@ -164,23 +164,25 @@ class RealtimeChart extends Component {
       grid: this.gridCreate(pointInfo),
       xAxis: this.xAxisCreate(pointInfo).map(e => ({ ...e, data: pointTime })),
       yAxis: this.yAxisCreate(pointInfo),
-      // dataZoom:[{
-      //   type: 'slider',
-      //   start: 0,
-      //   end: 100,
-      //   // bottom: 24 * deviceInfo.length + 24,
-      //   left: 150,
-      //   right: 150,
-      //   filterMode: 'empty',
-      //   xAxisIndex: pointInfo.map((e, i)=> i),
-      // },{
-      //   type: 'inside',
-      //   orient: 'horizontal',
-      //   filterMode: 'empty',
-      //   xAxisIndex: pointInfo.map((e, i)=> i),
-      // }],
       ...this.legendSeriesCreate(pointInfo)
     };
+    if (pointTime.length > 0) { // 有数据时，展示数据筛选条
+      option.dataZoom = [{
+        type: 'slider',
+        start: 0,
+        end: 100,
+        // bottom: 24 * deviceInfo.length + 24,
+        left: 150,
+        right: 150,
+        filterMode: 'empty',
+        xAxisIndex: pointInfo.map((e, i)=> i),
+      },{
+        type: 'inside',
+        orient: 'horizontal',
+        filterMode: 'empty',
+        xAxisIndex: pointInfo.map((e, i)=> i),
+      }]
+    }
     realtimeChart.setOption(option);
   }
 
