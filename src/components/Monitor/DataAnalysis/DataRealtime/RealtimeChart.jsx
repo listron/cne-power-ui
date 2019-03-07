@@ -14,12 +14,12 @@ class RealtimeChart extends Component {
 
   componentDidUpdate(prevProps) {
     const { chartRealtime, dataTime, queryParam = {} } = this.props;
-    const { devicePoint = [] } = queryParam;
+    const { devicePoints = [] } = queryParam;
     const preTime = prevProps.chartTime;
     const preParam = prevProps.queryParam || {};
-    const prePoints = preParam.devicePoint || [];
+    const prePoints = preParam.devicePoints || [];
     if (dataTime !== preTime) { // 数据重新请求后重绘。
-      const reRender = prePoints.length !== devicePoint.length;
+      const reRender = prePoints.length !== devicePoints.length;
       this.renderChart(chartRealtime, reRender);
     }
   }
@@ -189,8 +189,8 @@ class RealtimeChart extends Component {
   render() {
     // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
     const { queryParam = {}, dataTime = null } = this.props;
-    const { deviceFullCode = [], devicePoint = [] } = queryParam;
-    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCode.length * devicePoint.length) / 4);
+    const { deviceFullCodes = [], devicePoints = [] } = queryParam;
+    const calcHeight = 160 * devicePoints.length + 70 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 800 ? calcHeight : 800; // 图表高度不小于300
     return (
       <section className={styles.realtimeChart}>

@@ -29,7 +29,7 @@ class PointTree extends Component {
     } = this.props;
     const newQueryParam = {
       ...queryParam,
-      devicePoint: selectedKeys,
+      devicePoints: selectedKeys,
     };
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
@@ -82,14 +82,14 @@ class PointTree extends Component {
 
   render(){
     const { queryParam = {} } = this.props;
-    const { devicePoint = [] } = queryParam;
+    const { devicePoints = [] } = queryParam;
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({devicePoint.length})</h3>
+        <h3>选择测点({devicePoints.length})</h3>
         <Tree
           checkable
           onCheck={this.pointSelect}
-          checkedKeys={devicePoint}
+          checkedKeys={devicePoints}
         >
           {this.renderTreeNodes()}
         </Tree>

@@ -28,11 +28,11 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
 
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
-  const { deviceFullCode, timeInterval } = payload;
+  const { deviceFullCodes, timeInterval } = payload;
   const url = `${APIBasePath}${monitor.getPointsInfo}` // '/mock/monitor/dataAnalysisPoints';
   try {
     const response = yield call(axios.post, url, {
-      deviceIds: deviceFullCode.map(e => e.deviceId),
+      deviceIds: deviceFullCodes.map(e => e.deviceId),
       devicePointTypes: timeInterval === 10 ? ['YM', 'YC'] : ['YM', 'YC', 'YX']
     });
     if (response.data.code === '10000') {

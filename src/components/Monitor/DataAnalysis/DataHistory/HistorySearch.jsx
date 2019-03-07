@@ -94,7 +94,7 @@ class HistorySearch extends Component {
       partHistory: {},
     })
     getPointInfo({
-      deviceFullCode: devices,
+      deviceFullCodes: devices,
       timeInterval,
     });
   }

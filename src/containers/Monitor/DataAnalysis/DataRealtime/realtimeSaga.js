@@ -30,10 +30,13 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
 }
 
 function *getPointInfo({ payload }) { // 获取可选测点
-  const { deviceFullCode } = payload;
-  const url = '/mock/monitor/dataAnalysisPoints'; // `${APIBasePath}${monitor.getPointsInfo}`;
+  const { deviceFullCodes, timeInterval } = payload;
+  const url = `${APIBasePath}${monitor.getPointsInfo}` // '/mock/monitor/dataAnalysisPoints';
   try {
-    const response = yield call(axios.post, url, { deviceId: deviceFullCode.map(e => e.deviceCode) });
+    const response = yield call(axios.post, url, {
+      deviceIds: deviceFullCodes.map(e => e.deviceId),
+      devicePointTypes: timeInterval === 10 ? ['YM', 'YC'] : ['YM', 'YC', 'YX']
+    });
     if (response.data.code === '10000') {
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
@@ -51,11 +54,11 @@ function *getPointInfo({ payload }) { // 获取可选测点
 }
 
 function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
-  const url = '/mock/monitor/dataAnalysisChartRealtime'; // `${APIBasePath}${monitor.getRealtimeChart}`;
+  const url = `${APIBasePath}${monitor.getRealtimeChart}` // '/mock/monitor/dataAnalysisChartRealtime';
   const { chartRealtime, dataTime, timeInterval } = yield select(state => state.monitor.dataRealtime.toJS());
   try {
     const { queryParam = {} } = payload;
-    const { devicePoint = [] } = queryParam;
+    const { devicePoints = [] } = queryParam;
     yield put({
       type: realtimeAction.CHANGE_REALTIME_STORE,
       payload: { queryParam }
@@ -63,7 +66,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
     const [response, timeoutInfo] = yield race([
       call(axios.post, url, {
         ...queryParam,
-        devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+        devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
       }),
       delay(3000) // 请求3秒无响应即为超时。
     ]);
@@ -197,9 +200,9 @@ function *stopRealtimeChart(){ // 停止图表数据定时请求
 
 function *realListInterval({ payload = {} }) {
   const { queryParam = {}, listParam = {} } = payload;
-  const url = '/mock/monitor/dataAnalysisListRealtime'; // `${APIBasePath}${monitor.getRealtimeList}`;
+  const url = `${APIBasePath}${monitor.getRealtimeList}` // '/mock/monitor/dataAnalysisListRealtime';
   try {
-    const { devicePoint = [] } = queryParam;
+    const { devicePoints = [] } = queryParam;
     yield put({
       type: realtimeAction.CHANGE_REALTIME_STORE,
       payload: { queryParam, listParam }
@@ -207,7 +210,7 @@ function *realListInterval({ payload = {} }) {
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
-      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+      devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
     if (response.data.code === '10000') {
       yield put({
