@@ -123,6 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
   getFaultContrast: payload => dispatch({ type: performanceAnalysisAction.getFaultContrast, payload }),
   getStationDeviceType: payload => dispatch({ type: commonAction.getStationDeviceType, payload }),
   resetStore: () => dispatch({ type: performanceAnalysisAction.resetStore }),
+  getEleDeviceData: payload => dispatch({ type: performanceAnalysisAction.getEleDeviceData, payload }),
+  
 
 })
 

@@ -17,10 +17,7 @@ class PerformanceAnalysisFilter extends Component {
     const { stations, contrastSwitch, stationCode, deviceTypeCode, changePerformanceAnalysisStore, getDeviceModels, getDeviceModelother, getEleLineCode, getPerformance } = this.props;
     const initStations = stations.length > 0 && stations.filter(e => e.stationType === 1)[0];
     let firstStationCode = stations.length > 0 ? initStations.stationCode : '';
-    //把最近三十天的值存起来
-    // let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
-    // let endDate = moment(moment()).subtract(1, 'days').format('YYYY-MM-DD');
-    let startDate =  moment(moment()).startOf('month').format('YYYY-MM-DD');
+    let startDate = moment(moment()).startOf('month').format('YYYY-MM-DD');
     let endDate = moment(moment()).endOf('month').format('YYYY-MM-DD');
     this.props.changePerformanceAnalysisStore({
       startDate,
@@ -74,42 +71,7 @@ class PerformanceAnalysisFilter extends Component {
       })
     }
   }
-  //选择时间
-  // onChangeDuration = (value) => {
-  //   const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode,targetTabs } = this.props;
-  //    let startDate, endDate;
-  //   if (value === 'other') {
-  //     this.onFilterShowChange('timeSelect');
-  //   } else {
-  //     this.onFilterShowChange('filterText');
-  //   }
-  //   if (value === 'yesterday') {
-  //     startDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  //     endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  //   } else if (value === 'last7') {
-  //     startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
-  //     endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  //   } else if (value === 'last30') {
-  //     startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
-  //     endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  //   }
-  //   this.setState({ timeType: value })
-  //   const prams={ stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode}
-  //   this.props.changePerformanceAnalysisStore({
-  //     startDate,
-  //     endDate,
-  //     contrastSwitch: false,
-  //     contrastStartDate: '',
-  //     contrastEndDate: '',
-  //     timeType: value
-  //   });
-  //   if (targetTabs === '1') {
-  //     this.props.getPerformance({ ...prams })
-  //   } else {
-  //     this.props.getFault({ ...prams })
-  //   }
-
-  // }
+  
   onCalendarChange = (dates) => {
     if (dates.length === 1) {
       this.start = dates[0].format('YYYY-MM-DD');
@@ -117,31 +79,12 @@ class PerformanceAnalysisFilter extends Component {
       this.start = null;
     }
   }
-  //其他时间选择
-  // onChangeTime = (value, dateString) => {
-  //   const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode, targetTabs } = this.props;
-  //   let startDate = dateString[0];
-  //   let endDate = dateString[1];
-  //   const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode }
-  //   this.props.changePerformanceAnalysisStore({
-  //     startDate,
-  //     endDate,
-  //     contrastSwitch: false,
-  //     contrastStartDate: '',
-  //     contrastEndDate: ''
-  //   });
-  //   if (targetTabs === '1') {
-  //     this.props.getPerformance({ ...prams })
-  //   } else {
-  //     this.props.getFault({ ...prams })
-  //   }
-  // }
+ 
   //对比时间选择
   onChangeContrastTime = (value, dateString) => {
     const { stationCode, deviceTypeCode, startDate, endDate, deviceModeTypeCode, electricLineCode, targetTabs } = this.props;
     const prams = { stationCode, startDate, endDate, contrastStartDate, contrastEndDate, deviceTypeCode, deviceModeTypeCode, electricLineCode };
-    // let contrastStartDate = dateString[0];
-    // let contrastEndDate = dateString[1];
+    
     let contrastStartDate = moment(dateString).startOf('month').format('YYYY-MM-DD')
     let contrastEndDate = moment(dateString).endOf('month').format('YYYY-MM-DD');
     this.props.changePerformanceAnalysisStore({
@@ -178,23 +121,17 @@ class PerformanceAnalysisFilter extends Component {
   }
   //选择电站
   stationSelected = (stationSelect) => {
-    const{startDate, endDate}=this.props;
+    const { startDate, endDate } = this.props;
     const deviceTypeCode = [201, 206];
     const stationCode = stationSelect[0].stationCode;
-    // let startDate = moment().subtract(30, 'days').hour(0).minute(0).second(0).format('YYYY-MM-DD');
-    // let endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
-    // let startDate =  moment(moment()).startOf('month').format('YYYY-MM-DD');
-    // let endDate = moment(moment()).endOf('month').format('YYYY-MM-DD');
-    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate, contrastEndDate: null, contrastSwitch: false, targetTabs: '1', eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
-    this.props.getDeviceModels({
-      stationCode: stationCode,
-    });
-    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, })
+  
+    this.props.changePerformanceAnalysisStore({ stationCode, startDate, endDate, contrastEndDate: null, contrastSwitch: false, targetTabs: '1',eleDeviceModels:[], eleLineCodeData: [], electricLineCode: null, deviceModeCode: null, deviceModeTypeCode: null, timeType: 'last30' })
+  
     this.props.getEleLineCode({
       stationCode,
       deviceTypeCode: 302,
     })
-
+    this.props.getPerformance({ stationCode, startDate, endDate, deviceTypeCode, })
   };
   //选择设备类型,此处不可选设备类型
   selectDeviceType = (value) => {
@@ -203,7 +140,7 @@ class PerformanceAnalysisFilter extends Component {
   selectDeviceModel = (value) => {
     const { stationCode, contrastSwitch, changePerformanceAnalysisStore, getPerformanceContrast, getEleLineCode, startDate, endDate, deviceModeCode, contrastStartDate, contrastEndDate, getPerformance, electricLineCode, targetTabs } = this.props;
     const deviceModeTypeCode = value && Number(value.split('__')[0]);
-    const deviceTypeCode = value ?[Number(value.split('__')[1])]:[201,206];
+    const deviceTypeCode = value ? [Number(value.split('__')[1])] : [201, 206];
     const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode }
     changePerformanceAnalysisStore({
       deviceModeCode: value,
@@ -230,7 +167,9 @@ class PerformanceAnalysisFilter extends Component {
     const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode: value }
     changePerformanceAnalysisStore({
       electricLineCode: value,
-
+    })
+    this.props.getEleDeviceData({
+      deviceFullCode: value
     })
     if (contrastSwitch) {
       if (targetTabs === '1') {
@@ -280,13 +219,11 @@ class PerformanceAnalysisFilter extends Component {
         return true;
       }
     }
-
   }
   timeSelectMonth = (date, dateString) => {
     const { stationCode, deviceTypeCode, deviceModeTypeCode, electricLineCode, targetTabs } = this.props;
     const startDate = moment(dateString).startOf('month').format('YYYY-MM-DD');
     const endDate = moment(dateString).endOf('month').format('YYYY-MM-DD');
-    console.log(startDate, endDate);
     const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode }
     this.props.changePerformanceAnalysisStore({
       startDate,
@@ -301,14 +238,11 @@ class PerformanceAnalysisFilter extends Component {
       this.props.getFault({ ...prams })
     }
   }
-
-
   render() {
-   
     const { Option } = Select;
     const { RangePicker, MonthPicker } = DatePicker;
     const dateFormat = 'YYYY-MM-DD';
-    const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode } = this.props;
+    const { stationCode, stations, deviceTypeCode, deviceTypes, timeType, contrastSwitch, contrastStartDate, contrastEndDate, deviceModeCode, deviceModeTypeCode, deviceModels, deviceModelOther, eleLineCodeData, electricLineCode,eleDeviceModels } = this.props;
     const { showFilter, startTime } = this.state;
     // const eleLineCodeDisable = eleLineCodeData.length === 0;
     let station = stationCode ? stations.filter(e => `${e.stationCode}` === `${stationCode}`) : '';
@@ -322,7 +256,6 @@ class PerformanceAnalysisFilter extends Component {
             value={station.length > 0 ? station : []}
             onChange={this.stationSelected}
           />
-         
           <MonthPicker
             defaultValue={moment(moment(), 'YYYY-MM')}
             format={'YYYY-MM'}
@@ -333,7 +266,6 @@ class PerformanceAnalysisFilter extends Component {
           />
           <Switch className={styles.switch} onChange={this.contrastSwitch} checked={contrastSwitch} />
           <span className={styles.switchText}>对比同期</span>
-         
           {contrastSwitch ? <MonthPicker
             format={'YYYY-MM'}
             style={{ width: 230, marginLeft: 15, marginRight: 15 }}
@@ -341,34 +273,25 @@ class PerformanceAnalysisFilter extends Component {
             onCalendarChange={this.onCalendarChangeContrast}
             onChange={this.onChangeContrastTime}
             placeholder={'请选择年月'}
-
           /> : ''}
-
         </div>
-       
         <div className={styles.equipmentSelection}>
           <span className={styles.equipmentText}>设备选择</span>
           <Select placeholder="请选择设备类型" onChange={this.selectDeviceType} value={null} >
             <Option key={null} value={null}>{'逆变器'}</Option>
-
-          </Select>
-          <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号">
-            <Option key={null} value={null}>{'全部设备型号'}</Option>
-            {deviceModels.map(e => {
-              if (!e) { return null; }
-              return <Option key={e.deviceModeName} value={`${e.deviceModeCode}__${e.deviceTypeCode}`}>{e.deviceModeName}</Option>
-            })}
-            {deviceModelOther.map(e => {
-              if (!e) { return null; }
-              return <Option key={e.deviceModeName} value={`${e.deviceModeCode}__${e.deviceTypeCode}`}>{e.deviceModeName}</Option>
-            })}
-
           </Select>
           <Select className={styles.modelSelect} onChange={this.selectEleLine} value={electricLineCode} placeholder="请选择集电线路">
             <Option key={null} value={null}>{'全部集电线路'}</Option>
             {eleLineCodeData.map(e => {
               if (!e) { return null; }
               return <Option key={e.deviceId} value={e.deviceFullcode}>{e.deviceName}</Option>
+            })}
+          </Select>
+          <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={eleDeviceModels.length===0}>
+            <Option key={null} value={null}>{'全部设备型号'}</Option>
+            {eleDeviceModels.map(e => {
+              if (!e) { return null; }
+              return <Option key={e.deviceModeName} value={`${e.deviceModeCode}__${e.deviceTypeCode}`}>{e.deviceModeName}</Option>
             })}
           </Select>
         </div>
