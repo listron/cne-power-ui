@@ -3,18 +3,22 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'production',
   entry: {
-    vendors: ['antd', 'axios', 'echarts', 'immutable', 'js-base64', 'js-cookie', 'moment', 'prop-types', 'qs', 'react', 'react-dom', 'react-loadable', 'react-player', 'react-redux', 'react-router-dom', 'react-transition-group', 'redux', 'redux-saga'],
+    reacts: ['react', 'react-dom', 'redux', 'react-loadable', 'react-player', 'react-redux', 'react-router-dom', 'react-transition-group', 'redux-saga'],
+    uiPlugin: ['antd'],
+    chartPlugin: ['echarts'],
+    restPlugin: ['axios', 'immutable', 'js-base64', 'js-cookie', 'moment', 'prop-types', 'qs']
   },
   output: {
-    path: path.resolve(__dirname, './vendors'),
+    path: path.resolve(__dirname, './assets/vendors'),
     filename: '[name].dll.js',
-    library: '[name]'
+    library: '[name]_dll_lib'
   },
   plugins: [
     new webpack.DllPlugin({
-      path: path.resolve(__dirname, './vendors/manifest.json'),
-      name: '[name]',
+      path: path.resolve(__dirname, './assets/vendors/[name]-manifest.json'),
+      name: '[name]_dll_lib',
       context: __dirname,
     })
   ]

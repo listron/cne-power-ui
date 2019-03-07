@@ -24,7 +24,7 @@ const initState = Immutable.fromJS({
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
     devicePoint: [], // 选中的测点
-    timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
+    timeInterval: null, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
   listParam: { // 表格排序额外参数
     orderField: 'time', // 排序字段(默认时间倒序（最新的时间在最上方）
