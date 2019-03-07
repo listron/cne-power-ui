@@ -62,14 +62,14 @@ class HistoryList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         sorter: true,
-        className: orderField === 'deviceTypeName' ? null : styles.sorterType,
-        sortOrder: this.getSortOrder('deviceTypeName')
+        className: orderField === 'deviceName' ? null : styles.sorterType,
+        sortOrder: this.getSortOrder('deviceName')
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         sorter: true,
-        className: orderField === 'deviceTypeName' ? null : styles.sorterType,
-        sortOrder: this.getSortOrder('deviceTypeName')
+        className: orderField === 'stationName' ? null : styles.sorterType,
+        sortOrder: this.getSortOrder('stationName')
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
