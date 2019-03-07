@@ -103,7 +103,6 @@ class AddDevice extends Component {
     const selectdeviceType = getFieldValue('deviceTypeCode')
     const selectdeviceTypeName = deviceTypeName
     const initi = addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : null;
-    console.log('initi: ', initi);
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
