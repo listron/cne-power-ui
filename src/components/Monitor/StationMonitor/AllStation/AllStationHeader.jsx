@@ -4,7 +4,7 @@ import styles from './allStation.scss';
 import { Tooltip } from 'antd';
 import CommonProgress from '../../../Common/CommonProgress';
 import { ValueFormat, DeviceValueFormat } from '../../../Common/UtilComponent';
-import { monitordataFormat } from '../../../../utils/utilFunc';
+import { monitordataFormat,dataFormat } from '../../../../utils/utilFunc';
 
 
 
@@ -19,16 +19,16 @@ class AllStationHeader extends React.Component {
     const { allMonitorStation, realTimePowerUnit, realCapacityUnit, powerUnit, realTimePowerPoint, realCapacityPoint, powerPoint, } = this.props;
 
     const stationDataSummary = allMonitorStation.stationDataSummary || {};
-    const stationPower = stationDataSummary.stationPower || ' -- ';
-    const stationCapacity = stationDataSummary.stationCapacity || ' -- ';
-    const dayPower = stationDataSummary.dayPower || ' -- ';
-    const monthPower = stationDataSummary.monthPower || ' -- ';
-    const yearPower = stationDataSummary.yearPower || ' -- ';
-    const yearPlanPower = stationDataSummary.yearPlanPower || ' -- ';
-    const yearPlanRate = stationDataSummary.yearPlanRate || ' -- ';
+    const stationPower = stationDataSummary.stationPower;
+    const stationCapacity = stationDataSummary.stationCapacity;
+    const dayPower = stationDataSummary.dayPower;
+    const monthPower = stationDataSummary.monthPower;
+    const yearPower = stationDataSummary.yearPower;
+    const yearPlanPower = stationDataSummary.yearPlanPower;
+    const yearPlanRate = stationDataSummary.yearPlanRate;
     const stationTypeSummary = stationDataSummary.stationTypeSummary || [];
-    const windStation = stationTypeSummary.windStationNum || '--';
-    const lightStation = stationTypeSummary.lightStationNum || '--';
+    const windStation = stationTypeSummary.windStationNum;
+    const lightStation = stationTypeSummary.lightStationNum;
     const planStatus = stationDataSummary.planStatus || 0;
 
     return (
@@ -95,8 +95,8 @@ class AllStationHeader extends React.Component {
             <i className="iconfont icon-map"></i>
           </div>
           <div className={styles.typeTotal}>
-            <div className={styles.windTotal}>风电<span className={styles.stationNum}>{windStation}</span></div>
-            <div className={styles.pvTotal}>光伏<span className={styles.stationNum}>{lightStation}</span></div>
+            <div className={styles.windTotal}>风电<span className={styles.stationNum}>{dataFormat(windStation,'--',0)}</span></div>
+            <div className={styles.pvTotal}>光伏<span className={styles.stationNum}>{dataFormat(lightStation,'--',0)}</span></div>
           </div>
         </div>
       </div>

@@ -58,7 +58,7 @@ const menuData = [
             name: '实时告警',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '已转工单',
             path: 'transfer',
             rightKey: 'monitor_alarm_realTime',
@@ -66,11 +66,11 @@ const menuData = [
             name: '手动解除',
             path: 'relieve',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',
-          },{
+          }, {
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
@@ -405,15 +405,20 @@ const menuData = [
         iconStyle: 'icon-planed',
         path: 'config',
         rightKey: 'system_config',
-        children: [{
-          name: '生产计划',
-          path: 'plan',
-          rightKey: 'system_config',
-        }, {
-          name: '预警配置',
-          path: 'warning',
-          rightKey: 'system_config_warning',
-        },
+        children: [
+          {
+            name: '绩效评分',
+            path: 'performanceScore',
+            rightKey: 'system_config',
+          }, {
+            name: '生产计划',
+            path: 'plan',
+            rightKey: 'system_config',
+          }, {
+            name: '预警配置',
+            path: 'warning',
+            rightKey: 'system_config_warning',
+          },
         ]
       }
     ],

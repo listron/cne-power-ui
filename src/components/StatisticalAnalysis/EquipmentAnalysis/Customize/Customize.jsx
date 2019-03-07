@@ -18,6 +18,7 @@ class Customize extends Component {
     anotherManufacturer: PropTypes.string,
     deviceModeId: PropTypes.string,
     anotherDeviceModeId: PropTypes.string,
+    deviceTypeNameLike: PropTypes.string,
   }
 
   constructor(props, context) {
@@ -26,13 +27,13 @@ class Customize extends Component {
 
   timeSelect = (date, dateString) => {
     const { stationCode, anotherStationCode, manufacturer, anotherManufacturer, deviceModeId,
-      anotherDeviceModeId } = this.props;
+      anotherDeviceModeId, deviceTypeNameLike} = this.props;
     this.props.getDetailData({ 
-      params: { stationCode, manufacturer, deviceModeId, startDate: dateString[0], endDate: dateString[1] },
+      params: { stationCode, manufacturer, deviceModeId, startDate: dateString[0], endDate: dateString[1],deviceTypeNameLike },
       resultName:'detailData',
      })
     this.props.getDetailData({ 
-      params: { stationCode:anotherStationCode, manufacturer:anotherManufacturer, deviceModeId:anotherDeviceModeId, startDate: dateString[0], endDate: dateString[1] },
+      params: { stationCode:anotherStationCode, manufacturer:anotherManufacturer, deviceModeId:anotherDeviceModeId, startDate: dateString[0], endDate: dateString[1],deviceTypeNameLike },
       resultName:'anotherDetailData',
      })
      this.props.changeCustomizeStore({ startDate: dateString[0], endDate: dateString[1] })
