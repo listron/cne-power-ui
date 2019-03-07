@@ -251,6 +251,10 @@ export default {
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
       sequencechart:'/v3/monitor/windturbine/sequencechart',
+      //功率曲线
+      getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',
+      getPowerdeviceList:'/v3/wind/powercurve/fans/list',
+      exportPowerdevice:'/v3/wind/powercurve/fans/export',
 
       // 数据分析 
       getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
