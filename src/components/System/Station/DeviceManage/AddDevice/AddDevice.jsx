@@ -54,11 +54,9 @@ class AddDevice extends Component {
     const { getDeviceModel, getDeviceList, getConnectDevice, getPvDevice, queryParams } = this.props;
     const selectStation = this.props.form.getFieldValue('stationCode')[0];
     getDeviceModel({
-      stationCode: selectStation.stationCode,
       deviceTypeCode: value,
     });
     getPvDevice({
-      stationCode: selectStation.stationCode,
       deviceTypeCode: '509',
     })
     getConnectDevice({
