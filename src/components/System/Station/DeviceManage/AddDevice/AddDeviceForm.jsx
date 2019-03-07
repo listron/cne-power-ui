@@ -8,6 +8,8 @@ import WindInstallDate from "./WindInstallDate";
 import WindMeasurement from "./WindMeasurement";
 import ShowAddDeviceModeModal from "./ShowAddDeviceModeModal";
 import Confluence from "./Confluence";
+import moment from 'moment';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 class AddDeviceForm extends Component {
@@ -47,17 +49,17 @@ class AddDeviceForm extends Component {
             values.map = { belongMatrix: values.belongMatrix }
           } else if (values.deviceTypeCode === 101) {
             values.map = {
-              assemblyTime: values.assemblyTime,
-              ongridTime: values.ongridTime,
-              warrantyBegintime: values.warrantyBegintime,
-              warrantyEndtime: values.warrantyEndtime,
-              scrapTime: values.scrapTime,
+              assemblyTime: moment(values.assemblyTime).format('YYYY-MM-DD'),
+              ongridTime: moment(values.ongridTime).format('YYYY-MM-DD'),
+              warrantyBegintime:moment(values.warrantyBegintime).format('YYYY-MM-DD'),
+              warrantyEndtime:moment(values.warrantyEndtime).format('YYYY-MM-DD'),
+              scrapTime: moment(values.scrapTime).format('YYYY-MM-DD'),
               hubHeight: values.hubHeight,
             }
           } else if (values.deviceTypeCode === 501) {
             values.map = {
               altitude: values.altitude,
-              towerAssemblyTime: values.towerAssemblyTime,
+              towerAssemblyTime: moment(values.towerAssemblyTime).format('YYYY-MM-DD'),
               towerHeight: values.towerHeight,
               windMeasurementEquipment: values.windMeasurementEquipment,
             }
