@@ -306,6 +306,7 @@ export default {
       getDevicecontrast: '/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       getStationcontrast: '/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore: '/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
+      getEleDeviceData:'/v3/performance/deviceanalysis/devicemodeandtype',//查询集电线路下的设备型号和设备类型数据
       //通用报表
       dailyreport: 'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',

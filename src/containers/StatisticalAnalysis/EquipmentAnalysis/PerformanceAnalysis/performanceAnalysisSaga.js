@@ -40,25 +40,26 @@ function* getDeviceModels(action) { // 新共用接口，获取电站设备类�
     console.log(e);
   }
 }
-// function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
-//   const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
-//   const { payload } = action;
-//   console.log(payload);
-//   try{
-//     const zuchuan = yield call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:payload.deviceTypeCode}});
-//     if(zuchuan.data.code === '10000') {
-//       yield put({
-//         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-//         payload: {
-//           deviceModels: zuchuan.data.data||[],          
-//         },
-//       });     
-//     }  
+function* getEleDeviceData(action) { // 查询集电线路下的设备型号和设备类型数据
+  const { payload } = action;
+  console.log('payload: ', payload);
+  const url =  `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleDeviceData}/${payload.deviceFullCode}`;
+ 
+  try{
+    const response = yield call(axios.get,url);
+    if(response.data.code === '10000') {
+      yield put({
+        type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+        payload: {
+          eleDeviceModels: response.data.data||[],          
+        },
+      });     
+    }  
     
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* getEleLineCode(action) {//集电线路
   const { payload } = action;
     //const url = '';
@@ -258,5 +259,6 @@ export function* watchPerformanceAnalysisSaga() {
   yield takeLatest(performanceAnalysisAction.getPerformanceContrast, getPerformanceContrast);
   yield takeLatest(performanceAnalysisAction.getFaultContrast, getFaultContrast);
   yield takeEvery(performanceAnalysisAction.getDeviceModels, getDeviceModels);
+  yield takeEvery(performanceAnalysisAction.getEleDeviceData, getEleDeviceData);
  
 }
