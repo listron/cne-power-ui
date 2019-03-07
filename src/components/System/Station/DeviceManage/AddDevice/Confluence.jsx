@@ -34,21 +34,21 @@ class Confluence extends Component {
   }
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
-    const { pvDeviceModels } = this.props;
+    const { pvDeviceModels,addPvDeviceModeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const branchCount = getFieldValue("branchCount");
     let branchCountArr = [];
     for (let i = 0; i < branchCount; i++) {
       branchCountArr.push(i + 1)
     }
+    const initComponentMode=addPvDeviceModeData.deviceModeCode?addPvDeviceModeData.deviceModeCode:null;
+    console.log('initComponentMode: ', initComponentMode);
     return (
       <div className={styles.rightStyles}>
-        {showAddComponent ? <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('componentName')(
-            <span>{componentModeCodeAdd}</span>
-          )} <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加组件型号</span>
-        </FormItem> : <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('componentMode')(
+        <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
+            {getFieldDecorator('componentMode', {
+              initialValue: initComponentMode,
+            })(
               <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
                 {pvDeviceModels.map(e => {
                   if (!e) { return null; }
@@ -57,7 +57,7 @@ class Confluence extends Component {
               </Select>
             )}
             <span className={styles.fontColor} onClick={this.showAddComponentMode}>添加组件型号</span>
-          </FormItem>}
+          </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('branchCount', {
             rules: [

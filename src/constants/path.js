@@ -170,6 +170,7 @@ export default {
       addPvDeviceMode:'/v3/management/deviceMode',//添加pv设备型号
       checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
       checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
+      getStationDeviceType:'/v3/management/queryDevicesTypeByStation',//查询电站下的设备类型
 
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
@@ -305,6 +306,7 @@ export default {
       getDevicecontrast: '/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       getStationcontrast: '/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore: '/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
+      getEleDeviceData:'/v3/performance/deviceanalysis/devicemodeandtype',//查询集电线路下的设备型号和设备类型数据
       //通用报表
       dailyreport: 'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',

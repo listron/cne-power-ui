@@ -62,17 +62,33 @@ function* addDeviceDetail(action) { // 增加设备详情；
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addDeviceInfo}`
   try {
     const response = yield call(axios.post, url, { ...payload });
-    // if(response.data.code === "10000"){
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        showPage: 'list',
-        deviceNameOk:null,
-      }
-    })
-    // }
+    if (response.data.code === "10000") {
+      message.success('新增成功')
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          showPage: 'list',
+          deviceNameOk: null,
+          addSuccess: null,
+          deviceNameOk: null,
+          checkDeviceModeOk: null,
+          checkDeviceTypeok: null,
+        }
+      })
+    } else {
+      throw response.data
+    }
   } catch (e) {
     console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
+      payload: {
+        addSuccess: null,
+        deviceNameOk: null,
+        checkDeviceModeOk: null,
+        checkDeviceTypeok: null,
+      }
+    })
     message.error('新增电站设备失败');
   }
 }
@@ -82,9 +98,9 @@ function* getStationDeviceDetail(action) { // 获取选中设备详情；
   const { payload } = action;
   const { selectedStationIndex } = payload;
   // const url = '/mock/system/management/device/deviceFullcode';
-   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.showDeviceInfo}/${payload.deviceFullCode}`
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.showDeviceInfo}/${payload.deviceFullCode}`
   try {
-    const response = yield call(axios.get, url,payload);
+    const response = yield call(axios.get, url, payload);
     // if(response.data.code === "10000"){
     yield put({
       type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -212,7 +228,6 @@ function* deleteDevice(action) { // 删除设备信息；
 
 function* deleteStationDevice(action) { // 清除设备；
   const { payload } = action;
-  console.log('payload: ', payload);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.deleteStationDevice}/${payload.stationCode}`
   try {
     const response = yield call(axios.post, url, payload);
@@ -247,11 +262,11 @@ function* deleteStationDevice(action) { // 清除设备；
 }
 function* importStationDevice(action) { // 导入设备；
   const { payload } = action;
-  console.log('payload: ', payload);
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.importStationDevice}/${payload.stationCode}`
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
+      message.success("导入成功")
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
@@ -289,6 +304,11 @@ function* checkDeviceMode(action) { // 查询设备型号是否重复
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
+      if (response.data.data) {
+        message.error('设备类型已经存在')
+      } else {
+        message.success('此设备型号可以添加')
+      }
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
@@ -314,13 +334,18 @@ function* checkDeviceType(action) { // 查询设备类型是否重复
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.checkDeviceType}`
   try {
-    const response = yield call(axios.post, url,payload);
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
+      if (response.data.data.exits) {
+        message.error('设备类型已经存在')
+      } else {
+        message.success("设备类型可以添加")
+      }
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           checkDeviceTypeData: response.data.data || {},
-          checkDeviceTypeok:true,
+          checkDeviceTypeok: true,
         }
       })
     } else {
@@ -330,7 +355,7 @@ function* checkDeviceType(action) { // 查询设备类型是否重复
     yield put({
       type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
       payload: {
-        checkDeviceTypeok:null,
+        checkDeviceTypeok: null,
       }
     })
     console.log(e);
@@ -343,18 +368,20 @@ function* checkDeviceName(action) { // 查询设备名字是否重复
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
+      if (response.data.data) {
+        message.error('此设备名称已经存在')
+      } else {
+        message.success('此设备名称可以添加')
+      }
       yield put({
         type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
         payload: {
           deviceNameOk: true,
         }
       })
-      if (response.data.data !== 0) {
-        message.error('设备名字已存在');
-      }
-    }else{
+    } else {
       throw response.data
-    } 
+    }
   } catch (e) {
     yield put({
       type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
@@ -371,15 +398,16 @@ function* addPvDeviceMode(action) { // 添加设备型号
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addPvDeviceMode}`
   try {
     const response = yield call(axios.post, url, payload);
-    // if(response.data.code === "10000"){
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        addPvDeviceModeData: response.data.data || {},
-        checkDeviceeOk: null,
-      }
-    })
-    // }
+    if (response.data.code === "10000") {
+      message.success('添加光伏设备型号成功')
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          addPvDeviceModeData: response.data.data || {},
+          checkDeviceeOk: null,
+        }
+      })
+    }
   } catch (e) {
     console.log(e);
     message.error('添加设备型号失败，请重试');
@@ -390,15 +418,16 @@ function* addDeviceMode(action) { // 添加设备型号
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addDeviceMode}`
   try {
     const response = yield call(axios.post, url, payload);
-    // if(response.data.code === "10000"){
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        addDeviceModeData: response.data.data || {},
-        checkDeviceModeOk: null,
-      }
-    })
-    // }
+    if (response.data.code === "10000") {
+      message.success('添加设备型号成功')
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          addDeviceModeData: response.data.data || {},
+          checkDeviceModeOk: null,
+        }
+      })
+    }
   } catch (e) {
     console.log(e);
     message.error('添加设备型号失败，请重试');
@@ -406,6 +435,7 @@ function* addDeviceMode(action) { // 添加设备型号
 }
 function* addDeviceType(action) { // 添加设备类型
   const { payload } = action;
+  
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.addDeviceType}`
   try {
     const response = yield call(axios.post, url, payload);
@@ -416,8 +446,12 @@ function* addDeviceType(action) { // 添加设备类型
         payload: {
           addDeviceTypeData: response.data.data || {},
           addSuccess: true,
-          checkDeviceTypeok:null,
+          checkDeviceTypeok: null,
         }
+      })
+      yield put({
+        type: deviceManageAction.getStationDeviceType,
+        payload:{stationCode:payload.stationCode},
       })
     } else {
       throw response.data.data
@@ -431,6 +465,27 @@ function* addDeviceType(action) { // 添加设备类型
     })
     console.log(e);
     message.error('添加设备类型失败，请重试');
+  }
+}
+function* getStationDeviceType(action) { //获取电站设备类型
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDeviceType}/${payload.stationCode}`
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          stationDevices: response.data.data || [],
+        }
+      })
+    } else {
+      throw response.data.data
+    }
+  } catch (e) {
+    
+    console.log(e);
+    message.error('查找电站下的设备类型失败，请重试');
   }
 }
 
@@ -453,5 +508,6 @@ export function* watchDeviceManage() {
   yield takeLatest(deviceManageAction.addDeviceType, addDeviceType);
   yield takeLatest(deviceManageAction.deleteStationDevice, deleteStationDevice);
   yield takeLatest(deviceManageAction.importStationDevice, importStationDevice);
+  yield takeLatest(deviceManageAction.getStationDeviceType, getStationDeviceType);
 }
 

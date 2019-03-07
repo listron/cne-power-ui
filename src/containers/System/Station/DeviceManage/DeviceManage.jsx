@@ -165,8 +165,8 @@ const mapDispatchToProps = (dispatch) => ({
   checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
 
   deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
-  importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload })
-  
+  importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
+  getStationDeviceType:payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceManage);
