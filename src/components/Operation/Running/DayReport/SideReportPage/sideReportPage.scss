@@ -486,7 +486,26 @@
   }
   .reasonBox{
     margin-bottom: 21px;
+    .reasonText{
+      height: 60px;
+      line-height: 30px;
+    }
+    .lostInputTip{
+      margin-left: 12px;
+      color: $themeColor;
+    }
     :global{
+      .ant-form-item-children{
+        width: 800px;
+        align-items: flex-end;
+      }
+      .ant-form-item-required{
+        display: flex;
+        justify-content: flex-end;
+        &::before{
+          line-height: 30px;
+        }
+      }
       .has-error{
         .ant-form-item-children{
           height: 60px;

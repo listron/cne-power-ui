@@ -15,13 +15,6 @@ class LimitGenTable extends Component {
     reportDate: PropTypes.string,
   }
 
-  constructor(props){
-    super(props);
-    this.state = {
-
-    }
-  }
-
   removeListInfo = (id) => {
     const { limitGenList, changeLimitList, rememberRemove } = this.props;
     const newLimitGenList = limitGenList.filter(e=>{

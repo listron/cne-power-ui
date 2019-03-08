@@ -141,6 +141,8 @@ class LostAddForm extends Component {
     const { form, lostGenTypes, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
+    const reasonLength = getFieldValue('reason') ? getFieldValue('reason').length : 0;
+    const processLength = getFieldValue('process') ? getFieldValue('process').length : 0;
     let tmpGenTypes = [];
     lostGenTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = [];
@@ -331,25 +333,35 @@ class LostAddForm extends Component {
         </Row>
         <Row className={styles.reasonBox} >
           <Col span={8}>
-            <Form.Item label="原因说明" {...formItemLayout1} >
+            <Form.Item label={
+              <div className={styles.reasonText}>
+                <div>原因说明</div>
+                <div>({reasonLength}/999)</div>
+              </div>
+            } {...formItemLayout1} >
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
-                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit size={999} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('reason') ? getFieldValue('reason').length : 0}/80)</span>
+              {reasonLength >= 999 && <span className={styles.lostInputTip}>字数已超出限制</span>}
             </Form.Item>
           </Col>
         </Row>
         <Row className={styles.reasonBox}>
           <Col span={8}>
-            <Form.Item label="处理进展及说明" {...formItemLayout1} >
+            <Form.Item label={
+              <div className={styles.reasonText}>
+                <div>处理进展及说明</div>
+                <div>({processLength}/999)</div>
+              </div>
+            } {...formItemLayout1} >
               {getFieldDecorator('process', {
                 rules: [{ required: true, message: '请填写处理进展及说明' }],
               })(
-                <InputLimit size={80} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
+                <InputLimit size={999} className={styles.reasonArea} numberIsShow={false} width={520} height={60} />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('process') ? getFieldValue('process').length : 0}/80)</span>
+              {processLength >= 999 && <span className={styles.lostInputTip}>字数已超出限制</span>}
             </Form.Item>
           </Col>
         </Row>

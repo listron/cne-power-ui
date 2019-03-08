@@ -122,6 +122,7 @@ class LimitAddForm extends Component {
     const { form, defaultLimitLost, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
+    const reasonLength = getFieldValue('reason') ? getFieldValue('reason').length : 0;
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -301,20 +302,25 @@ class LimitAddForm extends Component {
         </Row>
         <Row className={styles.reasonBox} >
           <Col span={8}>
-            <Form.Item label="原因说明" {...formItemLayout1} >
+            <Form.Item label = {
+              <div className={styles.reasonText}>
+                <div>原因说明</div>
+                <div>({reasonLength}/999)</div>
+              </div>
+            } {...formItemLayout1} >
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
                 <InputLimit
                   placeholder="填写样例: 8:00至10:00调度下令负荷控制在10MW以内"
-                  size={80}
+                  size={999}
                   className={styles.reasonArea}
                   numberIsShow={false}
                   width={520}
                   height={60}
                 />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
+              {reasonLength >= 999 && <span className={styles.lostInputTip}>字数已超出限制</span>}
             </Form.Item>
           </Col>
         </Row>
