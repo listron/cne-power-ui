@@ -82,10 +82,24 @@ const routers = [
     component: () => import('../containers/Monitor/StationMonitor/SingleStation/SingleStation'),
   }, { //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
-    component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
+    // component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
+    component: () => import('../components/Common/Building/Building'),
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
-    component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
+    // component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-电量报表
+    path: '/monitor/report/powerReport',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-设备状态
+    path: '/monitor/report/deviceStatus',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-故障报表
+    path: '/monitor/report/malfunction',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-损失电量
+    path: '/monitor/report/powerLost',
+    component: () => import('../components/Common/Building/Building'),
   }, { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     component: () => import('../containers/Others/EditPassword'),
