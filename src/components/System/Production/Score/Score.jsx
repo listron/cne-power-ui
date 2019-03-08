@@ -5,6 +5,7 @@ import styles from "./score.scss";
 import WarningTip from '../../../Common/WarningTip';
 import DetailTable from './DetailTable';
 import EditTable from './EditTable';
+import { ifError } from "assert";
 class ScoreMain extends Component {
     static propTypes = {
         getScoreConfig: PropTypes.func,
@@ -15,9 +16,11 @@ class ScoreMain extends Component {
         getPvStionType: PropTypes.func,
         changeIsVaild: PropTypes.func,
         hasInitScore: PropTypes.bool,
+        reset: PropTypes.bool,
         edit: PropTypes.bool,
         reportType: PropTypes.string,
         isVaild: PropTypes.array,
+        resetStore: PropTypes.func,
     };
     constructor(props) {
         super(props);
@@ -35,8 +38,12 @@ class ScoreMain extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
-        if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
+        const { reportType, basicScore, reset, indexList } = nextProps;
+        if (this.props.reportType !== reportType || !this.props.basicScore && basicScore || this.props.reset && !reset) { this.setState({ basicScore, allData: indexList }) }
+    }
+
+    componentWillUnmount() {
+        this.props.resetStore(); // 重置数据
     }
 
     stationCheck = (e) => {// 电站切换
@@ -210,7 +217,9 @@ class ScoreMain extends Component {
                 {edit === false &&
                     <DetailTable indexList={indexList} /> ||
                     <EditTable editData={editData} totalInfoChange={this.totalInfoChange} {...this.props} />}
-
+                <div className={styles.explanation}>
+                    样例：如完成率指标判定标准为95%~105%，增减分标准为1%，增减分值为2。则当完成率＞105%时，每多出1%（不足1%时，按1%计算），完成率得分+2；当完成率＜95%时，每减少1%，完成率得分-2。
+                </div>
             </div>
         )
     }

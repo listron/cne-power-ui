@@ -84,6 +84,7 @@ class AllStationStatistic extends React.Component {
     const currentMonth = moment().month();
     timeObj.timeStyle === 'year' ?
       this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType, year: [timeObj.startTime], powerSelectMonth: currentMonth })
+    this.props.changeAllStationStore({targetShowType:'EqpGen'})
   }
 
   onChangeStation = (stationCode) => {

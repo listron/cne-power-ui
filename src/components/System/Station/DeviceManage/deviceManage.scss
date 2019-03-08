@@ -19,7 +19,6 @@
     margin: 0 12px;
   }
 }
-
 .deviceManageHandle{ // 导出设备， 翻页器
   display:flex;
   justify-content: space-between;
@@ -69,13 +68,19 @@
       color: $darkColor;
     }
   }
+  .left{
+    display: flex;
+    flex:1;
+  }
   .deletStyle,.downloadStyle,.import{
-    margin:0 12px;
+    margin:0 4px;
   }
   .exportInfo{
-    margin-left: 24px;
-    // background-color: #dfdfdf;
-    // color: #fff;
+    margin-left: 12px;
+  }
+  .deleteStationDevice{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 

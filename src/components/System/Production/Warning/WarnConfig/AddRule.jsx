@@ -72,22 +72,23 @@ class AddRule extends Component {
     const { getPoints } = this.props;
     const { stationCode, deviceTypeCode } = this.state;
     this.setState({ deviceModeCode: value })
-    getPoints({
-      payload: { stationCode, deviceTypeCode, deviceModeCode: value },
-      resultName: 'ruleDevicePoints'
-    });
+    getPoints({stationCode, deviceTypeCode, deviceModeCode: value });
     this.props.form.setFieldsValue({ pointCode: '', pointUnit: '' })
   }
 
   selectPoints = (value) => { // 选中测点
     const unit = value.split('_')[1];
     const { setFieldsValue } = this.props.form;
-    setFieldsValue({ pointUnit: unit  })
+    setFieldsValue({ pointUnit: unit !== 'null' && unit || '--' })
   }
 
 
   saveRule = (e) => { // 保存／保存并添加
-    this.setState({ showSaveWarningTip: true, buttonStatus: e })
+    this.props.form.validateFields((error, values) => {
+      if (!error) {
+        this.setState({ showSaveWarningTip: true, buttonStatus: e })
+      }
+    });
   }
 
   cancelWarningTip = () => { // 取消
@@ -127,6 +128,7 @@ class AddRule extends Component {
             params: params,
             continueAdd: false,
           })
+          this.setState({ showSaveWarningTip: false })
         } else { // 保存并添加
           this.props.addWran({
             params: params,
@@ -171,6 +173,7 @@ class AddRule extends Component {
                 rules: [{ required: true, message: '请选择设备类型' }],
               })(
                 <Select className={styles.typeSelect} onChange={this.selectDeviceType} placeholder="请选择设备类型" disabled={typeSelectDisable}>
+                  <Option key={null} value={null} disabled>{'请选择设备类型'}</Option>
                   {ruleStationDeviceTypes.map(e => {
                     if (!e) { return null; }
                     return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
@@ -183,9 +186,10 @@ class AddRule extends Component {
                 rules: [{ required: true, message: '请选择设备型号' }],
               })(
                 <Select className={styles.modelSelect} onChange={this.selectDeviceModel} placeholder="请选择设备型号" disabled={modelSelectDisable}>
+                  <Option key={null} value={null} disabled>{'请选择设备型号'}</Option>
                   {ruleDeviceModels.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                    return <Option key={e.deviceModeCode} value={e.deviceModeCode} title={e.deviceModeName}>{e.deviceModeName}</Option>
                   })}
                 </Select>
               )}
@@ -195,18 +199,19 @@ class AddRule extends Component {
                 rules: [{ required: true, message: '请选择测点' }],
               })(
                 <Select className={styles.pointSelect} onChange={this.selectPoints} placeholder="请选择测点" disabled={pointSelectDisable}>
+                  <Option key={null} value={''} disabled>{'请选择测点'}</Option>
                   {ruleDevicePoints.map(e => {
                     if (!e) { return null; }
-                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit}>{e.devicePointName}</Option>
+                    return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode + '_' + e.devicePointUnit} title={e.devicePointName} >{e.devicePointName}</Option>
                   })}
                 </Select>
               )}
             </FormItem>
             <FormItem label="测点单位" colon={false} className={styles.unit}>
               {getFieldDecorator('pointUnit', {
-                rules: [{ required: false, message: '请选择设备型号' }],
+                rules: [{ required: false, message: '请选择测点' }],
               })(
-                <Input type="text" placeholder="测点单位" disabled={pointSelectDisable} />
+                <Input type="text" placeholder="测点单位" style={{ 'pointerEvents': 'none' }} />
               )}
             </FormItem>
           </div>

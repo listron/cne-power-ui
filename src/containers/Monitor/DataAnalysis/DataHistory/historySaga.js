@@ -4,15 +4,37 @@ import Path from '../../../../constants/path';
 import { historyAction } from './historyReducer';
 import { message } from 'antd';
 import moment from 'moment';
+import Cookie from 'js-cookie';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
+function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
+  const { stationCode } = payload;
+  try {
+    const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: historyAction.GET_HISTORY_SUCCESS,
+        payload: {
+          stationDeviceTypes: response.data.data || [],
+        }
+      })
+    } else { throw response }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
-  const { deviceFullCode } = payload;
+  const { deviceFullCodes, timeInterval } = payload;
   const url = `${APIBasePath}${monitor.getPointsInfo}` // '/mock/monitor/dataAnalysisPoints';
   try {
-    const response = yield call(axios.post, url, { deviceIds: deviceFullCode.map(e => e.deviceId) });
+    const response = yield call(axios.post, url, {
+      deviceIds: deviceFullCodes.map(e => e.deviceId),
+      devicePointTypes: timeInterval === 10 ? ['YM', 'YC'] : ['YM', 'YC', 'YX']
+    });
     if (response.data.code === '10000') {
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
@@ -34,17 +56,18 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const { queryParam } = payload;
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
-    const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
+    const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, chartLoading: true }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
-      deviceFullCodes: deviceFullCode.map(e => e.deviceCode),
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
-      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+      startTime: startTime.utc().format(),
+      endTime: endTime.utc().format(),
+      devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     if (response.data.code === '10000') {
       yield put({
@@ -72,19 +95,27 @@ function *getListHistory(action) { // 表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
   const url = `${APIBasePath}${monitor.getListHistory}`; // /mock/monitor/dataAnalysis/listHistory;
+  // const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
   try{
-    const { devicePoint, startTime, endTime, deviceFullCode } = queryParam;
+    const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: { queryParam, listParam, tableLoading: true }
     })
+    // let { orderField } = listParam;
+    // const orderIndex = orderText.indexOf(orderField);
+    // if (orderIndex !== -1) { // 规定排序字段以数字字符串返回。
+    //   orderField = `${orderIndex}`
+    // }
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
-      deviceFullCodes: deviceFullCode.map(e => e.deviceCode),
-      startTime: startTime.format('YYYY-MM-DD HH:mm:ss'),
-      endTime: endTime.format('YYYY-MM-DD HH:mm:ss'),
-      devicePoint: devicePoint.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
+      // orderField,
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+      startTime: startTime.utc().format(),
+      endTime: endTime.utc().format(),
+      devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     const { totalCount = 0 } = response.data.data;
     let { pageNum, pageSize } = listParam;
@@ -99,12 +130,12 @@ function *getListHistory(action) { // 表格数据获取
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           listParam: {
-            tableLoading: false,
             ...listParam,
             pageNum, 
             pageSize
           },
-          partHistory: response.data.data || {},
+          tableLoading: false,
+          partHistory: response.data.data[0] || {},
         }
       })
     } else {
@@ -149,6 +180,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
 }
 
 export function* watchDataHistoryMonitor() {
+  yield takeLatest(historyAction.getAvailableDeviceType, getAvailableDeviceType);
   yield takeLatest(historyAction.getPointInfo, getPointInfo);
   yield takeLatest(historyAction.getChartHistory, getChartHistory);
   yield takeLatest(historyAction.getListHistory, getListHistory);

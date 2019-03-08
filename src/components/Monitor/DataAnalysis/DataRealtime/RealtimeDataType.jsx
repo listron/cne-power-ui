@@ -23,11 +23,14 @@ class RealtimeDataType extends Component {
 
   showChart = () => { // 若已选测点=>终止当前请求启动图表定时请求,若未选测点则存储属性
     const { changeRealtimeStore, queryParam, getRealtimeChart, stopRealtimeList } = this.props;
-    const { devicePoint } = queryParam;
-    if (devicePoint.length > 0) {
+    const { devicePoints } = queryParam;
+    if (devicePoints.length > 0) {
       stopRealtimeList();
       getRealtimeChart({ queryParam });
-      changeRealtimeStore({ chartRealtime: {} });
+      changeRealtimeStore({
+        realtimeType: 'chart',
+        chartRealtime: {}
+      });
     } else {
       changeRealtimeStore({ realtimeType: 'chart' });
     }
@@ -35,11 +38,14 @@ class RealtimeDataType extends Component {
 
   showList = () => { // 若已选测点=>终止当前请求启动列表定时请求,未选测点则存储属性
     const { changeRealtimeStore, queryParam, listParam, getRealtimeList, stopRealtimeChart } = this.props;
-    const { devicePoint = [] } = queryParam;
-    if (devicePoint.length > 0) {
+    const { devicePoints = [] } = queryParam;
+    if (devicePoints.length > 0) {
       stopRealtimeChart();
       getRealtimeList({ queryParam, listParam });
-      changeRealtimeStore({ listRealtime: {} });
+      changeRealtimeStore({
+        realtimeType: 'list',
+        listRealtime: {}
+      });
     } else {
       changeRealtimeStore({ realtimeType: 'list' });
     }

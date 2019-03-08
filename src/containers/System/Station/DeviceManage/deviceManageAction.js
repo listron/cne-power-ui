@@ -10,6 +10,21 @@ export const deviceManageAction = {
   GET_DEVICE_MANAGE_LIST: Symbol('GET_DEVICE_MANAGE_LIST'), // 获取设备列表
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据
+  addDeviceDetail: Symbol('addDeviceDetail'), // 增加设备详情页数据
+  getStationDeviceDetail: Symbol('getStationDeviceDetail'), // 获取设备详情页数据
+  getOtherPageDeviceDetail: Symbol('getOtherPageDeviceDetail'), // 获取其他页详情页数据
+  editDeviceDetail: Symbol('editDeviceDetail'), // 编辑设备详情页数据
+  getConnectDevice: Symbol('getConnectDevice'), // 关联设备数据
+  deleteDevice: Symbol('deleteDevice'), // 删除设备信息
+  addDeviceType:Symbol('addDeviceType'),
+  addDeviceMode:Symbol('addDeviceMode'),
+  addPvDeviceMode:Symbol('addPvDeviceMode'),
+  checkDeviceName:Symbol('checkDeviceName'),
+  checkDeviceType:Symbol('checkDeviceType'),
+  checkDeviceMode:Symbol('checkDeviceMode'),
+  deleteStationDevice:Symbol('deleteStationDevice'),
+  importStationDevice:Symbol('importStationDevice'),
+  getStationDeviceType:Symbol('getStationDeviceType'),
 }
 
 

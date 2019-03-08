@@ -6,7 +6,7 @@ import moment from 'moment';
 import StationSelect from "../../../Common/StationSelect";
 const Option = Select.Option;
 
-class CustomizeTable extends Component {
+class TableHead extends Component {
     static propTypes = {
         stations: PropTypes.array,
         stationCode: PropTypes.number,
@@ -47,25 +47,25 @@ class CustomizeTable extends Component {
     }
 
     stationSelected = (value) => { // 电站选择
-        const { type,deviceTypeNameLike } = this.props;
+        const { type, deviceTypeNameLike } = this.props;
         const stationCode = value.length > 0 ? value[0].stationCode : null;
         this.setState({ stationCode, manufacturer: null, deviceModeId: null })
-        this.props.getManufacturer({ params: { stationCode: stationCode,deviceTypeNameLike }, resultName: this.getName(type)[0] })
-        this.props.onChange({stationCode,deviceModeId: null, manufacturer:null })
+        this.props.getManufacturer({ params: { stationCode: stationCode, deviceTypeNameLike }, resultName: this.getName(type)[0] })
+        this.props.onChange({ stationCode, deviceModeId: null, manufacturer: null })
     }
 
     manufacturerSelect = (value) => { // 厂家选择
         const { stationCode } = this.state;
-        const { type,deviceTypeNameLike } = this.props;
-        this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value,deviceTypeNameLike }, resultName: this.getName(type)[1] })
-        this.setState({ manufacturer: value ,deviceModeId: null})
-        this.props.onChange({stationCode,deviceModeId: null, manufacturer:value })
+        const { type, deviceTypeNameLike } = this.props;
+        this.props.getDevicemode({ params: { stationCode: stationCode, manufacturer: value, deviceTypeNameLike }, resultName: this.getName(type)[1] })
+        this.setState({ manufacturer: value, deviceModeId: null })
+        this.props.onChange({ stationCode, deviceModeId: null, manufacturer: value })
     }
 
     devicemodeListSelect = (value) => { // 设备选择
-        const { startDate, endDate, deviceTypeCode, type,deviceTypeNameLike } = this.props;
+        const { startDate, endDate, deviceTypeCode, type, deviceTypeNameLike } = this.props;
         const { stationCode, manufacturer, } = this.state;
-        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeId: value, manufacturer,deviceTypeNameLike }
+        const params = { stationCode, deviceTypeCode, startDate, endDate, deviceModeId: value, manufacturer, deviceTypeNameLike }
         this.setState({ deviceModeId: value })
         this.props.onChange({ stationCode, deviceModeId: value, manufacturer })
         this.props.getDetailData({ params, resultName: this.getName(type)[2] })
@@ -93,7 +93,7 @@ class CustomizeTable extends Component {
                     value={manufacturer}
                 >
                     {manufacturers.map(e => {
-                        return <Option value={e.manufacturer} key={e.manufacturer}>{e.manufacturer}</Option>
+                        return <Option value={e.manufacturer} key={e.manufacturer} title={e.manufacturer}>{e.manufacturer}</Option>
                     })}
                 </Select>
                 <Select
@@ -112,4 +112,4 @@ class CustomizeTable extends Component {
     }
 }
 
-export default CustomizeTable
+export default TableHead

@@ -53,11 +53,12 @@ class WarnRule extends Component {
                         <Option value={0}>{'大于'}</Option>
                         <Option value={1}>{'小于'}</Option>
                     </Select>
-                    <InputNumber min={0} step={0.01} onChange={this.changeRule} placeholder={'请输入'} value={warningValue} className={styles.gapWarn} />
+                    <InputNumber min={0} step={0.01} onChange={this.changeRule} placeholder={'请输入'} value={warningValue} className={styles.gapWarn} precision={2} />
                 </div>
                 <div>
                     <span className={styles.gapZone}> 震荡区间</span>
                     <InputNumber min={0} step={0.01} onChange={this.changeGap} placeholder={'请输入'} value={warningDeadZone}
+                         precision={2}
                     />
                 </div>
             </div>

@@ -156,6 +156,22 @@ export default {
 
       getDeviceList: '/v3/management/devicelist', // 获取设备列表
       downloadDeviceInfo: '/v3/management/station/devices', // 导出设备信息表
+      downloadDeviceTemplet: '/template/DeviceInfoTemplate.zip', // 下载设备配置模板
+      addDeviceInfo: '/v3/management/device', // 新增设备信息表
+      showDeviceInfo: '/v3/management/device', // 设备详情信息表
+      editDeviceInfo: '/v3/management/device', // 编辑设备信息表
+      getConnectDevice:'/v3/management/queryParentDeviceBySubType',//关联设备
+      deleteDevice:'/v3/management/device',//删除设备信息
+      importStationDevice:'/v3/management/stationimport',//批量导入设备
+      deleteStationDevice:'/v3/management/emptydevice',//删除设备
+      checkDeviceMode:'/v3/management/queryModeExits',//查询设备型号是否重复
+      addDeviceType:'/v3/management/deviceType',//添加设备类型
+      addDeviceMode:'/v3/management/deviceMode',//添加设备型号
+      addPvDeviceMode:'/v3/management/deviceMode',//添加pv设备型号
+      checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
+      checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
+      getStationDeviceType:'/v3/management/queryDevicesTypeByStation',//查询电站下的设备类型
+
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
       deletePoints: '/v3/management/station/device/modes', // 删除点表信息
@@ -184,7 +200,7 @@ export default {
       getCleaningData: '/v3/pvclean/conf', //获取清洗模型预警配置
       addCleaningData: '/v3/pvclean/conf', //设置清洗模型预警配置    
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
-
+      getStationPoints:'/v3/smartalarm/devicepointcode', // 测点，已预警的测点删除
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
     },
     monitor: {//实时监控
@@ -221,8 +237,8 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
-      editData:'/v3/management/stationgen',//编辑月，年的累计发电量
-      
+      editData: '/v3/management/stationgen',//编辑月，年的累计发电量
+
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
       getSingleStationAlarmStatistic: '/v3/alarm/station/alarmsummary',//单电站统计
@@ -239,6 +255,7 @@ export default {
 
       // 数据分析 
       getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
+      getAvailableDeviceType: '/v3/wind/analysis/deviceTypeList', // 获取有测点的设备类型
       getListHistory: '/v3/wind/analysis/history/devicedata', // 历史数据 - 列表数据
       getAllHistory: '/v3/wind/analysis/history/devicechart', // 历史趋势 - 图表数据
       exportHistory: '/v3/wind/analysis/history/export', // 导出历史数据
@@ -300,6 +317,7 @@ export default {
       getDevicecontrast: '/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       getStationcontrast: '/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore: '/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
+      getEleDeviceData:'/v3/performance/deviceanalysis/devicemodeandtype',//查询集电线路下的设备型号和设备类型数据
       //通用报表
       dailyreport: 'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',

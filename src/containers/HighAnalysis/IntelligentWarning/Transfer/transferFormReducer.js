@@ -22,10 +22,10 @@ var initState = Immutable.fromJS({
   ticketInfo:{},
   currentPage:1,
   stationCodes:[],//电站编码
-  oneWarningNum:null,//一级告警
-  twoWarningNum: null,//二级告警
-  threeWarningNum: null,//三级告警
-  fourWarningNum:null,//四级告警
+  oneWarningNum:'--',//一级告警
+  twoWarningNum: '--',//二级告警
+  threeWarningNum: '--',//三级告警
+  fourWarningNum:'--',//四级告警
   transferFormList:[],//实时预警的列表
   selectedRowKeys: [], //表格选中的行key
   defectTypes:[],
