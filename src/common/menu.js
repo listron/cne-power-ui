@@ -36,16 +36,16 @@ const menuData = [
         name: '数据分析',
         iconStyle: 'icon-monitoring',
         path: 'data',
-        rightKey: 'monitor_station', // monitor_dataAnalysis
+        rightKey: 'monitor_dataAnalysis',
         children: [
           {
             name: '历史趋势',
             path: 'history',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_historyTrend
+            rightKey: 'dataAnalysis_historyTrend',
           }, {
             name: '实时监控',
             path: 'realtime',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_realTime
+            rightKey: 'dataAnalysis_realTime',
           }
         ]
       }, {
