@@ -20,6 +20,7 @@ const plan = require('./mock/system/plan');
 const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysis');
 const stationContrast = require('./mock/statisticalAnalysis/stationContrast');
 const cleanWarning = require('./mock/highAnalysis/cleanWarning');
+const score = require('./mock/system/score.js');
 
 
 // as
@@ -48,4 +49,5 @@ exports.mockConfig = [
   ...allstationanalysis,//电站分析
   ...stationContrast,
   ...cleanWarning, // 高级分析-清洗预警
+  ...score,//电站评分
 ]

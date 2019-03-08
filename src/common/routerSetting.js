@@ -110,6 +110,9 @@ const routers = [
   }, { // 系统管理-预警配置
     path: '/system/config/warning',
     component: () => import('../containers/System/Production/Warning/Warning'),
+  }, { // 系统管理-预警配置
+    path: '/system/config/performanceScore',
+    component: () => import('../containers/System/Production/Score/Score')
   }, { // 统计分析-电站分析-全部电站
     path: '/statistical/stationaccount/allstation',
     component: () => import('../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis'),

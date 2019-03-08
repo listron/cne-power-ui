@@ -11,16 +11,18 @@ var initState = Immutable.fromJS({
   pageSize:10,
   pageNum:1,
   total:0,
+  orderField:'',
+  orderCommand:'',
   rangTime:[],//时间
   startTime:[],//开始时间
   endTime:[],//结束时间
   stationCodes:[],//电站编码
   warningLevel:[],//告警级别多个
   deviceTypeCode:[],//设备类型多个
-  oneWarningNum:null,//一级告警
-  twoWarningNum: null,//二级告警
-  threeWarningNum: null,//三级告警
-  fourWarningNum:null,//四级告警
+  oneWarningNum:'--',//一级告警
+  twoWarningNum: '--',//二级告警
+  threeWarningNum: '--',//三级告警
+  fourWarningNum:'--',//四级告警
   handleRemoveList:[],//手动解除告警列表
   selectedRowKeys: [], //表格选中的行key
   defectTypes:[],

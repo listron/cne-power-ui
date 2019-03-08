@@ -71,7 +71,7 @@ class Warning extends Component {
                   <CleaningMain {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>
 
-                <TabPane tab="预警配置" key="warn">
+                <TabPane tab="智能预警" key="warn">
                   <WarnConfig {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>
               </Tabs>
@@ -115,6 +115,7 @@ const mapDispatchToProps = (dispatch) => ({
   getDetail: payload => dispatch({ type: warningAction.getDetail, payload }),
   warnDelete: payload => dispatch({ type: warningAction.warnDelete, payload }),
   getOtherPageDetail: payload => dispatch({ type: warningAction.getOtherPageDetail, payload }),
+  getPoints: payload => dispatch({ type: warningAction.getPoints, payload }), // 选取测点
 
   getStationOfEnterprise: params => dispatch({ // 企业电站下的所有电站
     type: commonAction.getStationOfEnterprise,
@@ -136,14 +137,6 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({ // 设备型号
     type: commonAction.getDeviceModel,
     payload: { //deviceModels
-      params:params.payload,
-      actionName: warningAction.changeWarnStore,
-      resultName: params.resultName
-    }
-  }),
-  getPoints: params => dispatch({ // 测点
-    type: commonAction.getPoints,
-    payload: { //devicePoints
       params:params.payload,
       actionName: warningAction.changeWarnStore,
       resultName: params.resultName

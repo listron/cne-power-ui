@@ -17,7 +17,6 @@ import Cookie from 'js-cookie';
 
 class PerformanceAnalysis extends Component {
   static propTypes = {
-
     changePerformanceAnalysisStore: PropTypes.func,
     targetTabs: PropTypes.string,
   }
@@ -56,6 +55,7 @@ class PerformanceAnalysis extends Component {
   render() {
 
     const TabPane = Tabs.TabPane;
+   
     const breadCrumbData = {
       breadData: [
         {
@@ -123,6 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
   getFaultContrast: payload => dispatch({ type: performanceAnalysisAction.getFaultContrast, payload }),
   getStationDeviceType: payload => dispatch({ type: commonAction.getStationDeviceType, payload }),
   resetStore: () => dispatch({ type: performanceAnalysisAction.resetStore }),
+  getEleDeviceData: payload => dispatch({ type: performanceAnalysisAction.getEleDeviceData, payload }),
+  
 
 })
 

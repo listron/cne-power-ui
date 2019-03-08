@@ -29,11 +29,17 @@ class HandleRemoveModal extends Component {
   }
 
   onSubmit = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '点击确定，解除告警'
-    });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '点击确定，解除告警'
+        });
+      }
+    })
+    
   }
+  
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
       showWarningTip: false
@@ -89,7 +95,7 @@ class HandleRemoveModal extends Component {
           style={{ marginTop: '280px', width: '210px', height: '88px' }}
           onCancel={this.onCancelWarningTip}
           onOK={this.HandleRemoveWarning} value={warningTipText} />}
-        <Modal title="手动解除告警" className={styles.relieveModal}
+        <Modal title="手动解除预警" className={styles.relieveModal}
           style={{ minHeight: 450 }}
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
@@ -125,7 +131,7 @@ class HandleRemoveModal extends Component {
               <InputLimit style={{ marginLeft: -80, marginTop: 15 }} placeholder="请输入不超过80字的解除原因..." />
             )}
           </FormItem>
-          <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除。</div>
+          <div className={styles.instructionText}>注意：保存后，此设备的同类预警在所选时限内均被解除。</div>
         </Modal>
       </Form>
     );

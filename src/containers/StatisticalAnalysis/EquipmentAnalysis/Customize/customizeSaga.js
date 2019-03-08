@@ -86,7 +86,7 @@ function* getDetailData(action) { // 获取详细数据
       yield put({
         type: customizeAction.changeCustomizeStore,
         payload: {
-          [resultName]: response.data.data.length>0 &&response.data.data[0]  || {},
+          [resultName]: response.data.data || {},
         },
       });
     } else { throw response.data }

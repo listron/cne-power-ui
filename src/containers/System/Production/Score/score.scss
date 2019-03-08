@@ -1,0 +1,60 @@
+@import "../../../../theme/theme.scss";
+.scoreBox {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 100%;
+    background-color: $pageBackground;
+    .scoreContainer {
+        @include contentBoxStyle();
+    }
+    .scoreContent {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        background: $pageGround;
+        min-height: 100%;
+        overflow: hidden;
+        :global{
+            .ant-tabs.ant-tabs-card  .ant-tabs-bar .ant-tabs-tab-active {
+              background: #fff;
+              border-color: #e8e8e8;
+              color: #199475;
+              margin: 0;
+            }
+            .ant-tabs-nav .ant-tabs-tab {
+              display: inline-block;
+              text-align: center;
+              height: 100%;
+              margin: 0;
+              box-sizing: border-box;
+              position: relative;
+              transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+              cursor: pointer;
+              text-decoration: none;
+              width: 120px;
+              border-radius: 0;
+            }
+            .ant-tabs-bar{
+              margin-bottom: 0;
+            }
+            .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation{
+              display: flex;
+              flex:1;
+              flex-direction: column;
+            }
+            .ant-tabs-content{
+              display: flex;
+              flex:1;
+              flex-direction: column;
+              .ant-tabs-tabpane-active{
+                display: flex;
+                flex:1;
+              }
+              .ant-tabs-tabpane-inactive{
+                max-height: 0;
+              }  
+            }
+          }
+    }
+}

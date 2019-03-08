@@ -2,6 +2,7 @@
   display: flex;
   flex:1;
   flex-direction: column;
+  background-color: #fff;
   .fontColor{
     color:red
     }
@@ -11,6 +12,9 @@
       display: flex;
       justify-content:space-between;
     }
+    .ant-tabs-bar{
+      margin: 0;
+    }
     .ant-tabs-nav-scroll {
     background-color: #f8f8f8;
     }
@@ -18,6 +22,7 @@
     .iconfont{
       color:#2d9e81;
       font-size: 14px;
+      margin-right: 4px;
     }
    
     }
@@ -28,13 +33,15 @@
     width: 100%;
     overflow: hidden;
     .textStyle{
+      margin: 0 32px 40px 32px; 
       background:#f8f8f8;
       border-radius:4px;
       // height:60px;
-      padding-left: 32px;
+      padding-left: 11px;
       div{
         height: 30px;
         line-height: 30px;
+        font-size: 12px;
       }
       
     }
@@ -44,9 +51,10 @@
       flex-direction: column;
       // background: #199475; 
       width: 100%;
-      border-bottom: 1px solid #ececec;
       overflow: hidden;
       margin-right: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #ececec;
     }
     .chart>div{
       flex: 1;
