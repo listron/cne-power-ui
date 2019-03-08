@@ -5,13 +5,17 @@ import { scatterDiagramAction } from './scatterDiagramAction';
 const initState = Immutable.fromJS({
   loading: false,
   selectStationType: null,// 选中的电站类型
+  stationType: "", // 风-0，光-1
   stationCode: null, // 选中的电站
-  deviceTypeCode: null, // 选中的设备类型
-  deviceModeCode: null, // 选中的设备型号
-  stationDeviceTypes : [],// 电站下可选设备类型
+  deviceTypeCode: '', // 选中的设备类型
+  devicePointCode: '', // 选中的测点
+  pointInfo:[], // 所有出现的测点
+  chartTime: null, // 记录chart表的数据时间
+  allScatterData: {}, //所有的chart时间数据
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
     deviceFullCode: [], // 选中的设备
+    deviceTypeName: '101',// 设备型号
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
     devicePoint: [], // 选中的测点

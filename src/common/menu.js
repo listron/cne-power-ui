@@ -39,6 +39,10 @@ const menuData = [
         rightKey: 'monitor_station', // monitor_dataAnalysis
         children: [
           {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+          },{
             name: '历史趋势',
             path: 'history',
             rightKey: 'monitor_alarm_realTime', // dataAnalysis_historyTrend
@@ -46,11 +50,7 @@ const menuData = [
             name: '实时监控',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime', // dataAnalysis_realTime
-          }, {
-            name: '散点图',
-            path: 'scatterDiagram',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
-          }
+          }, 
         ]
       }, {
         name: '告警',

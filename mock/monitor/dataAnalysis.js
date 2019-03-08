@@ -11,31 +11,31 @@ module.exports = [
         {
           devicePointId: 'sadfsd',
           devicePointCode: '1组测点a',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点1',
           devicePointIecCode: '1',
           devicePointIecName: '分组1测点'
         }, {
           devicePointId: 'sadf1sdf',
           devicePointCode: '1组测点b',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点2',
           devicePointIecCode: '1',
           devicePointIecName: '分组1测点'
         }, {
           devicePointId: 'zcv321a',
           devicePointCode: '2组测点1',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点3',
           devicePointIecCode: '2',
           devicePointIecName: '分组2测点'
         }, {
           devicePointId: '123zsxgd',
           devicePointCode: '2组点2',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点4',
           devicePointIecCode: '2',
           devicePointIecName: '分组2测点'
         }, {
           devicePointId: 'sxzv32dfs',
           devicePointCode: '3测点',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点5',
           devicePointIecCode: '3',
           devicePointIecName: '分组3测点'
         }

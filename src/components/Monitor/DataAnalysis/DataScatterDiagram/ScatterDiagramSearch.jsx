@@ -1,50 +1,121 @@
 import React,{Component} from 'react';
 import styles from './scatterDiagram.scss';
-import { Select } from 'antd';
+import { Select, DatePicker } from 'antd';
+import PropTypes from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 class ScatterDiagramSearch extends Component{
+  static propTypes = {
+    stations: PropTypes.array,
+    deviceTypeCode: PropTypes.number, // 选中的设备类型
+    queryParam: PropTypes.object,
+    changeScatterDiagramStore: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    getPointInfo: PropTypes.func,
+  };
+
+
+  selectStation = (selectedStationInfo) => { // 选择电站
+    const { getDeviceModel, changeScatterDiagramStore, queryParam, deviceTypeCode, devicePoint } = this.props;
+    const { stationCode } = selectedStationInfo[0];
+    getDeviceModel({ // 设备型号
+      stationCodes: stationCode,
+    });
+    changeScatterDiagramStore({
+      deviceTypeCode: '101',
+      queryParam:{
+        ...queryParam,
+        stationCode,
+        deviceFullCode: [],
+        devicePoint: [],
+      }
+    })
+  }
+
+  selectedDevice = (devices) => { // 选择设备
+    const { getPointInfo, changeScatterDiagramStore, queryParam } = this.props;
+    changeScatterDiagramStore({
+      queryParam: {
+        ...queryParam,
+        deviceFullCode: devices,
+        devicePoint: [],
+      }
+    })
+    getPointInfo({ 
+      deviceFullCode: devices,
+
+     });
+    
+  }
+
+  // timeChange = () => { // 选择时间
+
+  // }
+
+  // scatterDiagramDataFetch = () => {
+  //   const { changeScatterDiagramStore, queryParam } = this.props;
+  //   const { devicePoint } = queryParam;
+  //   if (devicePoint.length > 0) {
+      
+  //   }
+  // }
+
+  selectPoints = (value) => { // 选择x轴测点
+    const { changeScatterDiagramStore,devicePointCode } = this.props;
+    changeScatterDiagramStore({
+      devicePointCode: value,
+    })
+  }
+
   render(){
-    const {queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes} = this.props;
-    const {stationCode, deviceFullCode} = queryParam;
+    const { queryParam, stations, deviceTypeCode, devicePointCode, pointInfo } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, devicePoint } = queryParam;
     return(
       <div className={styles.scatterDiagramSearch}>
         <div className={styles.searchPart}>
           <div className={styles.stationSelect}>
             <span className={styles.text}>选择电站</span>
             <StationSelect 
-            data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
+            data={stations}
             onOK={this.selectStation}
             value={stations.filter(e => e.stationCode === stationCode)}
             />
           </div>
-          <div className={styles.typeSelect}>
-            <span className={styles.text}>选择设备类型</span>
-            <Select
-              style={{ width: '200px' }}
-              value={deviceTypeCode}
-              placeholder="选择设备类型"
-              disabled={stationDeviceTypes.length === 0}
-            >
-              {stationDeviceTypes.map(e => (
-                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-              ))}
-            </Select>
-          </div>
-          {/* <div className={styles.deviceSelect}>
+          <div className={styles.deviceSelect}>
             <span className={styles.text}>选择设备</span>
             <DeviceSelect 
             disabled={!deviceTypeCode}
             stationCode={stationCode}
             value={deviceFullCode}
             deviceTypeCode={deviceTypeCode}
-            multiple={true}
+            multiple={false}
             style={{ width: 'auto', minWidth: '198px' }}
+            onChange={this.selectedDevice} 
             />
-          </div> */}
+          </div>
+          <div className={styles.timeSelect}>
+            <span className={styles.text}>时间选择</span>
+            <RangePicker
+              allowClear={false}
+              format="YYYY-MM-DD HH:mm:ss"
+              onChange={this.timeChange}
+              value={[startTime, endTime]}
+            />
+          </div>
+          <div className={styles.xPointSelect}>
+            <span className={styles.text}>x轴测点</span>
+            <Select className={styles.pointSelect} onChange={this.selectPoints} value={devicePointCode} placeholder="请选择x轴测点" disabled={!pointInfo}>
+              <Option key={''} value={''}>{'全部测点'}</Option>
+              {pointInfo.map(e=>{
+                if(!e){ return null; }
+                return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+              })}
+            </Select>
+          </div>
         </div>
       </div>
     )
