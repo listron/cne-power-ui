@@ -167,6 +167,8 @@ class PerformanceAnalysisFilter extends Component {
     const prams = { stationCode, startDate, endDate, deviceTypeCode, deviceModeTypeCode, electricLineCode: value }
     changePerformanceAnalysisStore({
       electricLineCode: value,
+      deviceModeCode:null
+
     })
     this.props.getEleDeviceData({
       deviceFullCode: value

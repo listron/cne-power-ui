@@ -99,7 +99,8 @@ class DetailDevice extends Component {
   }
   render() {
     const { stationDeviceDetail } = this.props;
-    const { deviceTypeCode, connectedBranches } = stationDeviceDetail;
+    const { deviceTypeCode, map } = stationDeviceDetail;
+    const connectedBranches=map.connectedBranches?map.connectedBranches:[]
     const baseInfo = baseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
     const windTime = windTimeFun(stationDeviceDetail);

@@ -38,7 +38,7 @@ class EditConflunce extends Component {
     const { pvDeviceModels,stationDeviceDetail } = this.props;
     console.log('stationDeviceDetail: ', stationDeviceDetail);
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const branchCount =  stationDeviceDetail.connectedBranches;
+    const branchCount =  stationDeviceDetail.map?stationDeviceDetail.map.connectedBranches:[];
     const branchCountArr=branchCount.map((e,i)=>{
     return e===1?i+1:null
     })
@@ -67,7 +67,7 @@ class EditConflunce extends Component {
           {getFieldDecorator('connectedBranches',{ initialValue: branchCountArr,} )(
             <Checkbox.Group>
               <Row>
-                {(stationDeviceDetail.connectedBranches).map((e, i) => {
+                {(branchCount).map((e, i) => {
                   return (
                     <Col span={3} key={i}>
                       <div>第{i+1}支路</div>

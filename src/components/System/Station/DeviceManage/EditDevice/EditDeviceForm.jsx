@@ -69,7 +69,7 @@ class EditDeviceForm extends Component {
     const { stationName, manufacturer, deviceModeName, deviceTypeCode, deviceTypeName, deviceFullCode, connectTime, deviceName } = stationDeviceDetail
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
-    const isShow = ['501', '2022', '206', '304', '101'].includes(stationDeviceDetail.deviceTypeCode);
+    const isShow = ['501', '202', '206', '304', '101'].includes(stationDeviceDetail.deviceTypeCode);
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -115,6 +115,7 @@ class EditDeviceForm extends Component {
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode', { initialValue: stationDeviceDetail.pareneDeviceName, })(
                   <Select placeholder="请选择关联设备" disabled={connectDevice.length === 0}>
+                  <Option key={'all'} value={''}>全部关联设备</Option>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; }
                       return <Option key={i} value={e.deviceFullCode}>{e.deviceName}</Option>
@@ -185,7 +186,7 @@ class EditDeviceForm extends Component {
               </FormItem>
             </div>}
             {deviceTypeCode === '101' && <WindInstallDate stationDeviceDetail={stationDeviceDetail} form={form} />}
-            {(deviceTypeCode === '206' || deviceTypeCode === '2022') && <EditConflunce stationDeviceDetail={stationDeviceDetail} pvDeviceModels={pvDeviceModels} form={form} />}
+            {(deviceTypeCode === '206' || deviceTypeCode === '202') && <EditConflunce stationDeviceDetail={stationDeviceDetail} pvDeviceModels={pvDeviceModels} form={form} />}
             <div className={styles.submitStyle}>
               <Button onClick={this.submitForm} >保存</Button>
             </div>
