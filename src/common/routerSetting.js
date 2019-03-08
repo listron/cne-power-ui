@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
-
+import styles from './loading.scss'
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -191,12 +191,26 @@ const routers = [
   },
 ];
 
+
+const Loading = ({ pastDelay, timedOut, error }) => {
+  if (pastDelay) {
+    return (<div className={styles.preComponent}>
+    <i className={`${styles.rotate}`}></i>
+     <p>loading....</p>
+  </div>);
+  } else if (timedOut) {
+    return <div>Taking a long time...</div>;
+  } else if (error) {
+    return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
+  }
+  return null;
+};
+
 const RouteWithSubRoutes = route => {
   const Component = Loadable({
     loader: route.component,
-    loading: ({ isloading, error }) => {
-      return <div></div>
-    }
+    loading: Loading,
+    timeout: 10000
   });
   return (
     <Route
