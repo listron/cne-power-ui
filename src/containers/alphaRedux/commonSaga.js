@@ -424,6 +424,50 @@ function* getWeather(action) { // 获取电站天气
   }
 }
 
+function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求)
+  const { url, fileName, method='post', params } = payload;
+  console.log(payload)
+  let newFileName = fileName;
+  try {
+    const response = yield call(axios, {
+      method,
+      url,
+      data: params,
+      responseType: 'blob',
+    });
+    if (response.data) {
+      const fileContent = response.data;
+      const fileNameInfo = response.headers['content-disposition'];
+      if(fileNameInfo){
+        const fileString = fileNameInfo.split(';')[1];
+        const fileNameCode = fileString? fileString.split('=')[1]: '';
+        const fileResult = fileNameCode?decodeURIComponent(fileNameCode): '';
+        fileResult && (newFileName = fileResult)
+      }
+      if(fileContent) {
+        const blob = new Blob([fileContent]);
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a');
+          elink.download = newFileName;
+          elink.style.display = 'none';
+          elink.href = URL.createObjectURL(blob);
+          document.body.appendChild(elink);
+          elink.click();
+          URL.revokeObjectURL(elink.href); // 释放URL 对象
+          document.body.removeChild(elink);
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, newFileName);
+        }   
+      }
+    } else {
+      throw response;
+    }
+  } catch (error) {
+    message.warning(`下载失败！请重新尝试`)
+    console.log(error)
+  }
+}
+
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
     const { payload } = action;
@@ -476,4 +520,6 @@ export function* watchCommon() {
   yield takeLatest(commonAction.getDictionaryInfo, getDictionaryInfo);
   yield takeEvery(commonAction.getStationTargetInfo, getStationTargetInfo);
   yield takeEvery(commonAction.getWeather, getWeather);
+
+  yield takeLatest(commonAction.downLoadFile, downLoadFile);
 }

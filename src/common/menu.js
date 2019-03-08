@@ -33,6 +33,22 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '数据分析',
+        iconStyle: 'icon-monitoring',
+        path: 'data',
+        rightKey: 'monitor_dataAnalysis',
+        children: [
+          {
+            name: '历史趋势',
+            path: 'history',
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
+            name: '实时监控',
+            path: 'realtime',
+            rightKey: 'dataAnalysis_realTime',
+          }
+        ]
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
