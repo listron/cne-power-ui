@@ -22,22 +22,24 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
   return baseArray;
 }
 export const windTimeFun = (detailData) => {
+  const isMap=detailData.map;
   const windTimeArray = [  
-    { name: '安装日期', value: detailData.map.assemblyTime?moment(detailData.assemblyTime).format('YYYY-MM-DD'):'', },
-    { name: '并网日期', value:  detailData.map.ongridTime?moment(detailData.ongridTime).format('YYYY-MM-DD'):'',},
-    { name: '进入质保时间', value: detailData.map.warrantyBegintime?moment(detailData.warrantyBegintime).format('YYYY-MM-DD'):'',},
-    { name: '出质保时间', value: detailData.map.warrantyEndtime?moment(detailData.warrantyEndtime).format('YYYY-MM-DD'):'',},
-    { name: '报废时间', value: detailData.map.scrapTime?moment(detailData.scrapTime).format('YYYY-MM-DD'):'',},
-    { name: '轮毂高度', value: detailData.map.hubHeight},
+    { name: '安装日期', value: (isMap&&detailData.map.assemblyTime)?moment(detailData.map.assemblyTime).format('YYYY-MM-DD'):'', },
+    { name: '并网日期', value:  (isMap&&detailData.map.ongridTime)?moment(detailData.map.ongridTime).format('YYYY-MM-DD'):'',},
+    { name: '进入质保时间', value: (isMap&&detailData.map.warrantyBegintime)?moment(detailData.map.warrantyBegintime).format('YYYY-MM-DD'):'',},
+    { name: '出质保时间', value: (isMap&&detailData.map.warrantyEndtime)?moment(detailData.map.warrantyEndtime).format('YYYY-MM-DD'):'',},
+    { name: '报废时间', value: (isMap&&detailData.map.scrapTime)?moment(detailData.map.scrapTime).format('YYYY-MM-DD'):'',},
+    { name: '轮毂高度', value: (isMap&&detailData.map.hubHeight)?detailData.map.hubHeight:''},
   ];
   return windTimeArray;
 }
 export const windTowerFun = (detailData) => {
+  const isMap=detailData.map;
   const windTowerArray = [ 
-    { name: '海拔高度', value: detailData.map.altitude },
-    { name: '立塔时间', value: detailData.map.towerAssemblyTime ?moment(detailData.towerAssemblyTime).format('YYYY-MM-DD'):'',},
-    { name: '塔高', value: detailData.map.towerHeight },
-    { name: '测风设备', value: detailData.map.windMeasurementEquipment },
+    { name: '海拔高度', value: (isMap&&detailData.map.altitude)?detailData.map.altitude:'' },
+    { name: '立塔时间', value: (isMap&&detailData.map.towerAssemblyTime) ?moment(detailData.map.towerAssemblyTime).format('YYYY-MM-DD'):'',},
+    { name: '塔高', value: (isMap&&detailData.map.towerHeight)?detailData.map.towerHeight:''},
+    { name: '测风设备', value: (isMap&&detailData.map.windMeasurementEquipment)?detailData.map.windMeasurementEquipment:'' },
   ];
   return windTowerArray;
 }

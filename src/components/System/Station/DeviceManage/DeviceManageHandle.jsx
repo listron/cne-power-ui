@@ -69,7 +69,6 @@ class DeviceManageHandle extends Component {
   render() {
     const { showModal, showDeleteWarning, warningTipText } = this.state;
     const { totalNum, deviceList, stationCode, pageSize, pageNum ,allStationBaseInfo,selectedRowKeys} = this.props;
-    console.log('selectedRowKeys: ', selectedRowKeys);
     const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadDeviceInfo}?stationCode=${stationCode}`;
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
     return (

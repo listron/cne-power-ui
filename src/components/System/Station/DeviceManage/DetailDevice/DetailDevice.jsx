@@ -99,11 +99,15 @@ class DetailDevice extends Component {
   }
   render() {
     const { stationDeviceDetail } = this.props;
-    const { deviceTypeCode, map } = stationDeviceDetail;
-    const connectedBranches=map.connectedBranches?map.connectedBranches:[]
-    const baseInfo = baseFun(stationDeviceDetail);
-    const windTower = windTowerFun(stationDeviceDetail);
-    const windTime = windTimeFun(stationDeviceDetail);
+    const { deviceTypeCode, } = stationDeviceDetail;
+    const deviceDetailMap=stationDeviceDetail.map;
+    const connectedBranches=deviceDetailMap?deviceDetailMap.connectedBranches:[]
+   
+      const baseInfo = baseFun(stationDeviceDetail);
+      const windTower = windTowerFun(stationDeviceDetail);
+      const windTime = windTimeFun(stationDeviceDetail);
+    
+   
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.detailDevice}>
@@ -127,13 +131,13 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件型号</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
-                  {(stationDeviceDetail.componentMode || stationDeviceDetail.componentMode === 0) ? stationDeviceDetail.componentMode : '--'}
+                  {(deviceDetailMap&&(deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件个数</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.branchCount}>
-                  {(stationDeviceDetail.branchCount || stationDeviceDetail.branchCount === 0) ? stationDeviceDetail.branchCount : '--'}
+                  {(deviceDetailMap&&(deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
@@ -159,8 +163,8 @@ class DetailDevice extends Component {
             {deviceTypeCode === '304' && <div className={styles.infoBox}>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所属方阵</div>
-                <div className={styles.infoValue} title={stationDeviceDetail.belongMatrix}>
-                  {(stationDeviceDetail.belongMatrix || stationDeviceDetail.belongMatrix === 0) ? stationDeviceDetail.belongMatrix : '--'}
+                <div className={styles.infoValue} title={deviceDetailMap.belongMatrix}>
+                  {(deviceDetailMap&&(deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
                 </div>
               </div>
             </div>}
