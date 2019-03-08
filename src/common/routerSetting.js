@@ -109,7 +109,8 @@ const routers = [
     exact:true,
     component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve//AllDeviceCurve')
   },{//实时监控-功率曲线-单设备
-    path:'/monitor/powercurve/:deviceCode',
+    path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
+    // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
     exact:true,
     component:() => import('../containers/Monitor/PowerCurve/SingleDeviceCurve/SingleDeviceCurve')
   }, { //实时监控-数据分析-历史趋势

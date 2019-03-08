@@ -15,6 +15,9 @@ class AllDeviceCurve extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  componentWillUnmount(){
+    this.props.resetAllDeviceCurve()
+  }
   queryTargetData = (activeKey) => {
     this.props.changeAllDeviceStore({ stationTypeTabs: activeKey, deviceShowType: 'graph', });
    
@@ -68,5 +71,6 @@ const mapDispatchToProps = (dispatch) => ({
   getAllDeviceCurveData:payload => dispatch({ type: allDeviceCurveAction.getAllDeviceCurveData, payload }),
   getPowerdeviceList:payload => dispatch({ type: allDeviceCurveAction.getPowerdeviceList, payload }),
   exportPowerdevice:payload => dispatch({ type: allDeviceCurveAction.exportPowerdevice, payload }),
+  resetAllDeviceCurve:payload => dispatch({ type: allDeviceCurveAction.RESET_ALLDEVICECURVE, payload }),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)

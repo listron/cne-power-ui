@@ -28,18 +28,18 @@ class DeviceFilter extends Component {
   selectDeviceType = (selectdevice) => {//设备选择
     console.log('selectdevice: ', selectdevice);
     this.props.changeAllDeviceStore({
-      deviceFullCode:selectdevice
+      deviceFullCode: selectdevice
     })
   }
   seekDeviceData = () => {//查询按钮
-    const{stationCode,deviceFullCode,startTime,endTime,getAllDeviceCurveData,getPowerdeviceList,deviceShowType}=this.props;
-    const params={stationCode,deviceFullCode,startTime,endTime};
-    deviceShowType==='graph'? getAllDeviceCurveData({...params, }):getPowerdeviceList({...params, })
+    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
+    const params = { stationCode, deviceFullCode, startTime, endTime };
+    deviceShowType === 'graph' ? getAllDeviceCurveData({ ...params, }) : getPowerdeviceList({ ...params, })
   }
   timeChange = (time) => {//时间选择
     console.log('time', time);
-    const startTime=moment(time[0]).format('YYYY-MM-DD');
-    const endTime=moment(time[1]).format('YYYY-MM-DD');
+    const startTime = moment(time[0]).format('YYYY-MM-DD');
+    const endTime = moment(time[1]).format('YYYY-MM-DD');
     console.log('startTime: ', startTime);
     console.log('endTime: ', endTime);
     this.props.changeAllDeviceStore({
@@ -63,6 +63,9 @@ class DeviceFilter extends Component {
   }
   render() {
     const { stationDeviceTypes, stations, stationCode, deviceTypeCode, deviceShowType } = this.props;
+    const test1=350;
+    const test2=202;
+    const test3='2019-03-07~2019-03-08';
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
@@ -99,6 +102,7 @@ class DeviceFilter extends Component {
           </div>
           <Button className={styles.buttonStyle} onClick={this.seekDeviceData}>查询</Button>
           {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.seekDeviceData}>导出</Button> : ''}
+          <a href={`#/monitor/powercurve/${test1}/${test2}/${test3}`}>点击跳转</a>
         </div>
         <div className={styles.showType}>
           <div className={styles.tabIcons}>

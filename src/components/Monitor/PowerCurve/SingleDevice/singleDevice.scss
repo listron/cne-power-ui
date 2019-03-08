@@ -1,0 +1,77 @@
+@import '../../../../theme/theme.scss';
+.singleDevice{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  background: #fff;
+  .headerStyle{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    line-height: 60px;
+    border-bottom: 1px solid #dfdfdf;
+    .left{
+      display: flex;
+      justify-content:center;
+      .singleInfo{
+        margin: 0 12px;
+      }
+    }
+    .right{
+      .backIcon {
+        border-left: 1px solid #dfdfdf;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        color: $darkColor;
+        cursor: pointer;
+        font-size: 18px;
+        display: block;
+    }
+    }
+   
+  }
+  .showType{
+    margin-top: 20px;
+    display: flex;
+    border-top: 1px dotted $promptColor;
+    border-bottom: 1px dotted $promptColor;
+    align-items: center;
+    justify-content: space-between;
+    .tabIcons{
+      font-size: 24px;
+      display: flex;
+      .active, .normal{
+        cursor: pointer;
+        flex: 0 0 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .active{
+        color: #fff;
+        background-color: $themeColor;
+      }
+      .normal{
+        color: #999;
+        background-color: #f1f1f1;
+      }
+    }
+    .exportStyle,.rightInfo{
+      margin-right: 20px;
+    }
+  }
+  .windDeviceList{
+    .tableHeader {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      height: 55px;
+      padding: 0 28px;
+      background-color: #fff;
+    }
+  }
+}

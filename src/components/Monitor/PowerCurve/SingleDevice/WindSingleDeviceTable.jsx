@@ -1,34 +1,36 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styles from "./allDeviceCurve.scss";
+import styles from "./singleDevice.scss";
 import CommonPagination from '../../../Common/CommonPagination';
 import { Table, } from 'antd';
 
 
 
-class WindDeviceTable extends Component {
+class WindSingleDeviceTable extends Component {
   static propTypes = {
   }
   constructor(props, context) {
     super(props, context)
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeAllDeviceStore, onChangeFilter, } = this.props;
-    changeAllDeviceStore({ pageNum: currentPage, pageSize })
+    const { changeSingleDeviceStore, onChangeFilter, } = this.props;
+    changeSingleDeviceStore({ pageNum: currentPage, pageSize })
     onChangeFilter({ pageNum: currentPage, pageSize })
   }
   tableChange=(pagination, filters, sorter)=>{
-    const {changeAllDeviceStore,onChangeFilter}=this.props;
+    const {changeSingleDeviceStore,onChangeFilter}=this.props;
     const { field, order } = sorter;
     const sortInfo = {
-      deviceName: '0',
-      windSpeedCenter:'3',
-      powerAvg: '4',
-      powerTheory: '7',
+      deviceName: '1',
+      deviceTypeName: '2',
+      deviceName: '8',
+      deviceTypeName:'3',
+      timeOn: '5',
+      durationTime: '9',
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderType = order ? (sorter.order === 'ascend' ? '0' : '1') : '';
-    changeAllDeviceStore({ orderField, orderType })
+    changeSingleDeviceStore({ orderField, orderType })
     onChangeFilter({
         orderField, orderType
     })
@@ -43,9 +45,9 @@ class WindDeviceTable extends Component {
         key: 'deviceName',
         sorter: true,
         render:(value,record,index)=>{
-          return  (<a href={`#/monitor/powercurve/${stationCode}/${record.key}/${time}`}>
+          return  (
           <div title={record.deviceName} className={styles.deviceName}>{record.deviceName}</div>
-        </a>)
+        )
         }
       }, {
         title: '电站名称',
@@ -99,4 +101,4 @@ class WindDeviceTable extends Component {
     )
   }
 }
-export default (WindDeviceTable)
+export default (WindSingleDeviceTable)

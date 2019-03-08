@@ -6,13 +6,16 @@ import { singleDeviceCurveAction } from './singleDeviceCurveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import Header from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
-import AllDeviceCurveBox from '../../../../components/Monitor/PowerCurve/AllDevice/AllDeviceCurve';
+import SingleDeviceContainer from '../../../../components/Monitor/PowerCurve/SingleDevice/SingleDeviceContainer';
 
 class AllDeviceCurve extends Component {
   static propTypes = {
   }
   constructor(props, context) {
     super(props, context)
+  }
+  componentWillUnmount(){
+    this.props.resetSingleDeviceCurve();
   }
   render() {
     const breadCrumbData = {
@@ -26,7 +29,7 @@ class AllDeviceCurve extends Component {
       <div className={styles.allDeviceCurve} >
         <Header {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.allDeviceCurveBox}>
-          <AllDeviceCurveBox {...this.props} />
+          <SingleDeviceContainer {...this.props} />
         </div>
         <Footer />
       </div>
@@ -41,7 +44,16 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   changeSingleDeviceStore: payload => dispatch({ type: singleDeviceCurveAction.changeSingleDeviceStore, payload }),
- 
+  resetSingleDeviceCurve: payload => dispatch({ type: singleDeviceCurveAction.RESET_SINGLEDEVICECURVE, payload }),
   getSingleDeviceCurveData:payload => dispatch({ type: singleDeviceCurveAction.getSingleDeviceCurveData, payload }),
+  getSingleDeviceCurveList:payload => dispatch({ type: singleDeviceCurveAction.getSingleDeviceCurveList, payload }),
+  exportSinglePowerdevice:payload => dispatch({ type: singleDeviceCurveAction.exportSinglePowerdevice, payload }),
+  getRoseChart:payload => dispatch({ type: singleDeviceCurveAction.getRoseChart, payload }),
+  getpowerspeedchart:payload => dispatch({ type: singleDeviceCurveAction.getpowerspeedchart, payload }),
+  getpitchanglespeedchart:payload => dispatch({ type: singleDeviceCurveAction.getpitchanglespeedchart, payload }),
+  getwinddistributionchart:payload => dispatch({ type: singleDeviceCurveAction.getwinddistributionchart, payload }),
+  getsequencechart:payload => dispatch({ type: singleDeviceCurveAction.getsequencechart, payload }),
+
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)

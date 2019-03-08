@@ -1,9 +1,24 @@
 import immutable from 'immutable';
 import { singleDeviceCurveAction } from './singleDeviceCurveAction';
 const initState = immutable.fromJS({
-  // stationCode:'',
-  // allDeviceCurveData:[],//多设备图表数据
-  // stationDeviceTypes: [], // 电站下可选设备类型
+  stationCode:'',
+  deviceFullCode:'',
+  time:'',
+  deviceShowType:'graph',
+  correct:0,
+  pageSize:10,
+  pageNum:1,
+  total:0,
+  orderField:'',//排序方式
+  orderType:'0',//'0'是正序，'1'是倒序
+
+  singleDeviceCurveData:[],//功率曲线图数据
+  singleDeviceCurveList:[],//列表数据
+  roseChartData:[],//玫瑰图数据
+  powerspeedchartData:[],//转速图
+  pitchanglespeedchartData:[],//桨距角图
+  winddistributionchartData:[],//风频图
+  sequencechartData:[],//时序图
 
 
 });
