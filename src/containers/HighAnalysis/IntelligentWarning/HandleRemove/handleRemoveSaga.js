@@ -87,7 +87,7 @@ function* getHandleRemoveTransfer(action) {  // 转工单
   const { payload } = action;
   const url = `${APIBasePath}${monitor.transferAlarm}`
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, {...payload,warningType:'限值告警'});
     if (response.data.code === '10000') {
       yield put({
         type: handleRemoveAction.changeHandleRemoveStore,

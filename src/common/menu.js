@@ -33,6 +33,22 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '数据分析',
+        iconStyle: 'icon-monitoring',
+        path: 'data',
+        rightKey: 'monitor_dataAnalysis',
+        children: [
+          {
+            name: '历史趋势',
+            path: 'history',
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
+            name: '实时监控',
+            path: 'realtime',
+            rightKey: 'dataAnalysis_realTime',
+          }
+        ]
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
@@ -42,7 +58,7 @@ const menuData = [
             name: '实时告警',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '已转工单',
             path: 'transfer',
             rightKey: 'monitor_alarm_realTime',
@@ -50,11 +66,11 @@ const menuData = [
             name: '手动解除',
             path: 'relieve',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',
-          },{
+          }, {
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
@@ -163,6 +179,10 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_station_all',
           }, {
+            name: '电站评分',
+            path: 'score',
+            rightKey: 'statistics_station_score',
+          }, {
             name: '生产分析',
             path: 'production',
             rightKey: 'statistics_station_production',
@@ -213,7 +233,7 @@ const menuData = [
             path: 'currency',
             defaultPath: true,
             rightKey: 'statistics_report_general',
-          }
+          },
         ]
       }
     ]
@@ -385,15 +405,20 @@ const menuData = [
         iconStyle: 'icon-planed',
         path: 'config',
         rightKey: 'system_config',
-        children: [{
-          name: '生产计划',
-          path: 'plan',
-          rightKey: 'system_config',
-        }, {
-          name: '预警配置',
-          path: 'warning',
-          rightKey: 'system_config_warning',
-        },
+        children: [
+          {
+            name: '绩效评分',
+            path: 'performanceScore',
+            rightKey: 'system_config_score',
+          }, {
+            name: '生产计划',
+            path: 'plan',
+            rightKey: 'system_config',
+          }, {
+            name: '预警配置',
+            path: 'warning',
+            rightKey: 'system_config_warning',
+          },
         ]
       }
     ],

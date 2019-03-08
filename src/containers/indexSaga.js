@@ -15,6 +15,7 @@ import { watchRole } from './System/Account/Role/roleSaga';
 import { watchUser } from './System/Account/User/userSaga';
 import { watchPlan } from './System/Production/Plan/planSaga';
 import { watchWarning } from './System/Production/Warning/warningSaga';
+import { watchScore } from './System/Production/Score/scoreSaga';
 
 import { watchStationManage } from './System/Station/StationManage/stationManageSaga';
 import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSaga';
@@ -30,6 +31,8 @@ import {watchMonitorRealtimeWarning} from './Monitor/Alarm/RealTimeWarning/realt
 import {watchMonitorTransferForm} from './Monitor/Alarm/Transfer/transferFormSaga';
 import {watchMonitorHandleWarning} from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
 import {watchMonitorHistoryWarning} from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
+import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
+import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
@@ -40,6 +43,7 @@ import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/
 import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
 import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
+import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
 
 
 
@@ -86,6 +90,7 @@ export default function* rootSaga() {
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
+    watchScore(), // 绩效评分
     // monitor
     watchStationMonitor(),
     watchDeviceMonitor(),
@@ -95,6 +100,8 @@ export default function* rootSaga() {
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
     watchMonitorHistoryWarning(),
+    watchDataHistoryMonitor(), // 数据分析 - 历史趋势
+    watchDataRealtimeMonitor(), // 数据分析 - 实时数据
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
     //统计分析的全部电站
@@ -103,6 +110,7 @@ export default function* rootSaga() {
     watchOperateStationSaga(),
     watchStationContrastSaga(),
     watchStationResourceStationSaga(),
+    watchScoreAnalysis(), //电站评分
     //设备分析
     watchPerformanceAnalysisSaga(),
     watchManufacturers(),

@@ -2,6 +2,7 @@ import React from 'react';
 import echarts from 'echarts';
 import moment from 'moment';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import {dataFormat} from '../../../../utils/utilFunc'
 
 
 
@@ -17,10 +18,9 @@ function SequenceChart({ idName, title, sequenceChartList, currentDeviceName, })
       time.push(moment(e.time).format('MM-DD HH:mm'));
     })
     sequenceChartList.forEach((item, index) => {
-      // console.log('item',item.pointName,currentDeviceName)
       const data = [];
       item.pointData.forEach((e) => {
-        data.push(e.value)
+        data.push(dataFormat(e.value,'--',2))
       })
       series.push({
         name: item.pointName,

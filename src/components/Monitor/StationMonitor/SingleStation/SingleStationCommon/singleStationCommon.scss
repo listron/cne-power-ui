@@ -187,7 +187,7 @@
     border: 1px solid #dfdfdf;
     border-radius:4px;
     height: 140px;
-    padding: 0 16px;
+    padding: 0 14px;
     position: relative;
     background-image: url(/img/blurbg.png);
     background-position: center 140px;
@@ -214,11 +214,16 @@
         justify-content: space-around;
         text-align: left;
         color: $darkColor;
-        :global{
-          .ant-row{
-            width: 100%;
-          }
+        .userMes{
+          height: 21px;
+          overflow: hidden;
+          white-space:  nowrap;
+          text-overflow: ellipsis;
         }
+        .userPhone{
+          height: 21px;
+        }
+
       }
     }
     .cardTitle{

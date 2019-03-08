@@ -44,18 +44,21 @@ class WarnRule extends Component {
         const [warningRuler, warningValue, warningDeadZone] = this.props.value;
         return (
             <div>
-                <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail} className={styles.tooltipName}> <i className="iconfont icon-help"></i>
-                </Tooltip>
+                <div className={styles.tooltipName}>
+                    <Tooltip placement="top" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={this.warnDetail} > <i className="iconfont icon-help"></i>
+                    </Tooltip>
+                </div>
                 <div className={styles.gap}>
                     <Select className={styles.contrastSelect} placeholder="请选择" onChange={this.changeCompare} value={warningRuler}>
                         <Option value={0}>{'大于'}</Option>
                         <Option value={1}>{'小于'}</Option>
                     </Select>
-                    <InputNumber min={0} step={0.01} onChange={this.changeRule} placeholder={'请输入'} value={warningValue} className={styles.gapWarn} />
+                    <InputNumber min={0} step={0.01} onChange={this.changeRule} placeholder={'请输入'} value={warningValue} className={styles.gapWarn} precision={2} />
                 </div>
                 <div>
                     <span className={styles.gapZone}> 震荡区间</span>
                     <InputNumber min={0} step={0.01} onChange={this.changeGap} placeholder={'请输入'} value={warningDeadZone}
+                         precision={2}
                     />
                 </div>
             </div>

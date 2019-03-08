@@ -45,7 +45,14 @@ class DefectDetailForm extends Component {
 
 
   onCancelEdit = () => {
-    this.setState({ showWarningTip: true, });
+    const data = this.props;
+    if(data.defectDetail.defectStatus === '4'){//已完成的状态
+      this.setState({ showWarningTip: false, });
+      const { pageName, onChange } = this.props;
+      onChange({ pageName });  //  退回到之前的页面
+    }else{
+      this.setState({ showWarningTip: true, });
+    }
   }
 
   onCancelWarningTip = () => { //取消
