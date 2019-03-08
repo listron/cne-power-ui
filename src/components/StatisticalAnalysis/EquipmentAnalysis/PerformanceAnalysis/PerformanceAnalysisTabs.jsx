@@ -35,6 +35,7 @@ class PerformanceAnalysisTabs extends Component {
     const TabPane = Tabs.TabPane;
     const { targetTabs } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames } = this.props;
+    console.log('contrastEndDate: ', contrastEndDate);
 
 
     //转化效率
@@ -196,8 +197,8 @@ class PerformanceAnalysisTabs extends Component {
       xData: contrastFaultNumDeviceNameData,
       yData: {
         barData: {
-          faultNum: contrastFaultNumDataResults,
-          contrastFaultNumData: contrastFaultNumResults
+          faultNum:contrastFaultNumResults,
+          contrastFaultNumData: contrastFaultNumDataResults,
         },
 
       }
@@ -214,8 +215,8 @@ class PerformanceAnalysisTabs extends Component {
       xData: contrastFaultTimeDeviceNameData,
       yData: {
         barData: {
-          faultTime: contrastFaultTimeDataResults,
-          contrastFaultTimeData: contrastFaultTimeResults
+          faultTime: contrastFaultTimeResults,
+          contrastFaultTimeData: contrastFaultTimeDataResults,
         },
       }
     } : {
@@ -237,10 +238,13 @@ class PerformanceAnalysisTabs extends Component {
           <TabPane tab="发电性能" key="1">
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'conversioneff'} title={'转换效率'} data={conversionData}
+                <PerformanceCharts
+                  graphId={'conversioneff'}
+                  title={'转换效率'}
+                  data={conversionData}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderContrastCon : haveSliderConver}
                   hasData={contrastSwitch && contrastEndDate ? contrastConversionHasData : conversionHasData}
-                  deviceNames={conversDeviceNames}
+                  deviceNames={contrastSwitch && contrastEndDate ? conversDeviceNames : []}
                 />
               </div>
               <div className={styles.textStyle}>
@@ -248,7 +252,11 @@ class PerformanceAnalysisTabs extends Component {
                 {conversDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{conversDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'hours'} title={'等效小时数'} data={hoursData}
+                <PerformanceCharts
+                  graphId={'hours'}
+                  title={'等效小时数'}
+                  data={hoursData}
+                  deviceNames={contrastSwitch && contrastEndDate ? hourDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastHour : haveSliderHour}
                   hasData={contrastSwitch && contrastEndDate ? contrastHoursHasData : hoursHasData} />
               </div>
@@ -257,7 +265,11 @@ class PerformanceAnalysisTabs extends Component {
                 {hourDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{hourDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'availability'} title={'可利用率'} data={availabilityAnalysis}
+                <PerformanceCharts
+                  graphId={'availability'}
+                  title={'可利用率'}
+                  data={availabilityAnalysis}
+                  deviceNames={contrastSwitch && contrastEndDate ? availabilityDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
                   hasData={contrastSwitch && contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
               </div>
@@ -270,8 +282,12 @@ class PerformanceAnalysisTabs extends Component {
           <TabPane tab="故障情况" key="2">
             <div className={styles.chartsContainer}>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'lostPower'} title={'损失电量'} data={lossPowerAnalysis}
+                <PerformanceCharts
+                  graphId={'lostPower'}
+                  title={'损失电量'}
+                  data={lossPowerAnalysis}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
+                  deviceNames={contrastSwitch && contrastEndDate ? lostPowerDeviceNames : []}
                   hasData={contrastSwitch && contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
               </div>
               <div className={styles.textStyle}>
@@ -279,7 +295,11 @@ class PerformanceAnalysisTabs extends Component {
                 {lostPowerDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{lostPowerDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'faultNum'} title={'设备故障次数'} data={faultNumAnalysis}
+                <PerformanceCharts
+                  graphId={'faultNum'}
+                  title={'设备故障次数'}
+                  data={faultNumAnalysis}
+                  deviceNames={contrastSwitch && contrastEndDate ? faultNumDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
                   hasData={contrastSwitch && contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
               </div>
@@ -288,7 +308,11 @@ class PerformanceAnalysisTabs extends Component {
                 {faultNumDeviceNames.length > 0 ? <div><span className="iconfont icon-ha"></span>建议关注排名变化较大的{faultNumDeviceNames.map((e, i) => (<span key={e} className={styles.fontColor}>{e},</span>))}设备</div> : ''}
               </div>
               <div className={styles.chart}>
-                <PerformanceCharts graphId={'faultTime'} title={'设备故障时长'} data={faultTimeAnalysis}
+                <PerformanceCharts
+                  graphId={'faultTime'}
+                  title={'设备故障时长'}
+                  data={faultTimeAnalysis}
+                  deviceNames={contrastSwitch && contrastEndDate ? faultTimeDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
                   hasData={contrastSwitch && contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
               </div>

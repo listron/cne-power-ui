@@ -35,9 +35,9 @@ class Search extends Component {
   }
 
   componentDidMount() {
-    const { stationCode } = this.props;
-    this.props.getManufacturer({ stationCode })
-    this.props.getDevicemode({ stationCode })
+    const { stationCode,deviceTypeNameLike } = this.props;
+    this.props.getManufacturer({ stationCode ,deviceTypeNameLike})
+    this.props.getDevicemode({ stationCode ,deviceTypeNameLike})
   }
 
   getDevice = (value) => { // 获取筛选之后的厂家型号
@@ -89,9 +89,10 @@ class Search extends Component {
 
   stationSelected = (value) => { // 电站选择
     const stationCode = [];
+    const {deviceTypeNameLike}=this.props;
     value.forEach(e => { stationCode.push(e.stationCode) })
-    this.props.getManufacturer({ stationCode })
-    this.props.getDevicemode({ stationCode })
+    this.props.getManufacturer({ stationCode,deviceTypeNameLike })
+    this.props.getDevicemode({ stationCode,deviceTypeNameLike })
     this.setState({ optionValue: [] })
     const { selectOption } = this.state;
     selectOption === 'manufacturer' ? this.getDevice({ stationCode: stationCode, manufacturers: [] }) : this.getDevice({ stationCode: stationCode, deviceModeIds: [] })
@@ -101,7 +102,7 @@ class Search extends Component {
     this.setState({ selectOption: value }, () => {
       value === 'manufacturer' ? this.getDevice({ manufacturers: [] }) : this.getDevice({ deviceModeIds: [] })
     })
-    this.props.changeManufacturersStore({ selectOption: value })
+    this.props.changeManufacturersStore({ selectOption: value ,conversioneffList: [], faultNumList: [],  faultHoursList: [] ,deviceCapacityList: [] }) // 暂时的解决办法，缓解数据访问过慢
   }
 
 

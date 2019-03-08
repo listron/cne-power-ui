@@ -64,8 +64,8 @@
             border: none
         }
     }
-    .edit{
-        color:$themeColor;
+    .edit {
+        color: $themeColor;
         cursor: pointer;
     }
 }
@@ -109,14 +109,14 @@
             flex-direction: column;
             align-items: center;
             line-height: 40px;
-            margin-top: 35px; 
+            margin-top: 35px;
             .typeSelect,
             .modelSelect,
             .pointSelect {
                 width: 198px;
                 margin-right: 12px;
             }
-            .unit{
+            .unit {
                 margin-left: 22px;
             }
         }
@@ -126,7 +126,6 @@
             align-items: center;
             margin-top: 43px;
             line-height: 40px;
-            
             .contrastSelect {
                 width: 100px;
             }
@@ -137,19 +136,22 @@
                 margin-right: 12px;
             }
         }
-        .buttonGroup{
-           .save{
-               margin-right: 10px;
-               color: $themeColor;
-               border: 1px solid $themeColor;
-           }
+        .buttonGroup {
+            width: 287px;
+            margin-left: 138px;
+            .save {
+                margin-right: 4px;
+                color: $themeColor;
+                border: 1px solid $themeColor;
+            }
         }
         :global {
             .ant-form-inline .ant-form-item-with-help {
-                margin-bottom: 0
+                margin-bottom: 0;
+                position: inherit;
             }
-            .ant-row.ant-form-item.ant-form-item-no-colon{
-                width:287px;
+            .ant-row.ant-form-item.ant-form-item-no-colon {
+                width: 287px;
                 display: flex;
                 flex-direction: row;
             }
@@ -167,7 +169,7 @@
                 color: $darkColor;
                 letter-spacing: 4px;
             }
-            i{
+            i {
                 cursor: pointer;
             }
             .backIcon {
@@ -269,7 +271,7 @@
                     align-items: center;
                     margin-top: 43px;
                     line-height: 40px;
-                    .form{
+                    .form {
                         display: flex;
                         flex: 1;
                         flex-direction: column;
@@ -289,36 +291,52 @@
             }
             :global {
                 .ant-form-inline .ant-form-item-with-help {
-                    margin-bottom: 0
+                    margin-bottom: 0;
+                    position: inherit;
                 }
-                .ant-row.ant-form-item.ant-form-item-no-colon{
-                    min-width:287px;
+                .ant-row.ant-form-item.ant-form-item-no-colon {
+                    min-width: 287px;
                     display: flex;
                     flex-direction: row;
                 }
             }
         }
+        .buttonGroup {
+            width: 287px;
+            .save {
+                margin-left: 68px;
+                margin-top: 8px;
+            }
+        }
+        :global {
+            .ant-btn-default,
+            .ant-btn-default:active {
+                color: $themeColor;
+                border-color: $themeColor;
+                &:hover {
+                    background-color: $themeColor;
+                    color: #fff;
+                }
+            }
+        }
     }
-
     .gap {
         display: flex;
         flex: 1;
         justify-content: space-between;
-        .gapWarn{
+        .gapWarn {
             margin-left: 8px;
-        } 
+        }
     }
-    .gapZone{
+    .gapZone {
         margin-right: 52px;
     }
-
-    .tooltipName{
+    .tooltipName {
         position: absolute;
         left: -16px;
         top: -16px;
         color: #f9b600;
     }
-    
 }
 
 .warnConfigSearch {
