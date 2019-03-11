@@ -495,9 +495,14 @@
       color: $themeColor;
     }
     :global{
-      .ant-form-item-children{
-        width: 800px;
-        align-items: flex-end;
+      .ant-form-item-label{
+        width: 11.11%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 88.88%;
+        .ant-form-item-children{
+          width: 800px;
+        }
       }
       .ant-form-item-required{
         display: flex;

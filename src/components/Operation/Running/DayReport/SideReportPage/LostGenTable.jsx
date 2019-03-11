@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Table, Form, Input, DatePicker } from 'antd';
+import { Table, Form, Input, DatePicker, message } from 'antd';
 import moment from 'moment';
 
 class LostGenTable extends Component {
@@ -15,8 +15,51 @@ class LostGenTable extends Component {
     changeFaultList: PropTypes.func,
   }
 
-  constructor(props){
-    super(props);
+  onStartChange = (recordId, startMoment) => {
+    const { form } = this.props;
+    const endTime = form.getFieldValue(`${recordId}_endTime`);
+    this.timeEnableCheck(recordId, 'startTime', startMoment, endTime);
+  }
+  
+  onEndChange = (recordId, endMoment) => {
+    const { form } = this.props;
+    const startTime = form.getFieldValue(`${recordId}_startTime`);
+    this.timeEnableCheck(recordId, 'endTime', startTime, endMoment);
+  }
+
+  timeEnableCheck = (recordId, recordType, startMoment, endMoment) => { // recordType: startTime || endTime
+    const { form, faultGenList, changeFaultList } = this.props;
+    const enableInfo = { // 时间信息规范无误时的设置项。
+      [`${recordId}_startTime`]: {
+        value: startMoment,
+        errors: null
+      },
+      [`${recordId}_endTime`]: {
+        value: endMoment,
+        errors: null
+      }
+    }
+    if (!startMoment || !endMoment){ // 有时间未填写 => 允许
+      form.setFields(enableInfo);
+    } else if (startMoment > endMoment) { // 时间不规范 错误提示
+      message.error('结束时间必须大于开始时间');
+      form.setFields({
+        [`${recordId}_${recordType}`]: {
+          value: recordType === 'startTime' ? startMoment : endMoment,
+          errors: [new Error('结束时间必须大于开始时间')]
+        }
+      });
+      const newFaultGenList = faultGenList.map(e => {
+        if (`${e.id}` === recordId) {
+          e[recordType] = recordType === 'startTime' ? startMoment : endMoment;
+        }
+        return e
+      })
+      changeFaultList(newFaultGenList);
+    } else { // 时间规范 => 关闭错误
+      form.setFields(enableInfo);
+    }
+    // return { value: recordType === 'startTime' ? startMoment : endMoment };
   }
 
   removeFaultInfo = (id) => {
@@ -81,7 +124,13 @@ class LostGenTable extends Component {
               {getFieldDecorator(`${id}_startTime`, {
                 initialValue: startTime,
               })(
-                <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker
+                  placeholder="开始时间"
+                  style={{width: '100%'}}
+                  showTime={{format: 'HH:mm'}}
+                  format="YYYY-MM-DD HH:mm"
+                  onChange={(startMoment) => this.onStartChange(`${id}`, startMoment)}
+                />
               )}
             </Form.Item>
           )
@@ -95,7 +144,13 @@ class LostGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+              <DatePicker
+                placeholder="结束时间"
+                style={{width: '100%'}}
+                showTime={{format: 'HH:mm'}}
+                format="YYYY-MM-DD HH:mm"
+                onChange={(endMoment) => this.onEndChange(`${record.id}`, endMoment)}
+              />
             )}
           </Form.Item>)
         }
@@ -158,7 +213,7 @@ class LostGenTable extends Component {
 }
 
 export default Form.create({ // 上述form值变化调整对应数据并保存对应数据。
-  onValuesChange:(props, changedValues, allValues)=>{
+  onValuesChange: (props, changedValues, allValues) => {
     const { faultGenList, changeFaultList } = props;
     const changeArr = Object.entries(changedValues)[0] || [];
     const recordBase = changeArr[0] || '';

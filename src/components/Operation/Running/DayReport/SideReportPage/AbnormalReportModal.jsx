@@ -49,6 +49,12 @@ class AbnormalReportModal extends Component {
       message.error('请先确认完成损失电量表单信息的填写!');
       return;
     }
+    const faultTimeError = faultGenList.find(e => e.startTime > e.endTime);
+    const limitTimeError = limitGenList.find(e => e.startTime > e.endTime);
+    if (faultTimeError || limitTimeError) {
+      message.error('结束时间必须大于开始时间');
+      return;
+    }
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === abnormalInfo.stationCode){
         const { dailyReport } = info;

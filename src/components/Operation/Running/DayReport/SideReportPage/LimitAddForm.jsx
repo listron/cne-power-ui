@@ -234,7 +234,7 @@ class LimitAddForm extends Component {
                       timeEnable && form.setFields({
                         endTime: {
                           value: endTime,
-                          error: null
+                          errors: null
                         }
                       });
                       timeUnable && callback('结束时间必须大于开始时间');
@@ -261,7 +261,7 @@ class LimitAddForm extends Component {
                       timeEnable && form.setFields({
                         startTime: {
                           value: startTime,
-                          error: null
+                          errors: null
                         }
                       });
                       timeUnable && callback('结束时间必须大于开始时间');
@@ -300,7 +300,7 @@ class LimitAddForm extends Component {
           </Col>
         </Row>
         <Row className={styles.reasonBox} >
-          <Col span={8}>
+          <Col span={24}>
             <Form.Item label = {
               <div className={styles.reasonText}>
                 <div>原因说明</div>
