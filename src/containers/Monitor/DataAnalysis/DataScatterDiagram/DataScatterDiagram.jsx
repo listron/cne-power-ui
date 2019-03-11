@@ -7,6 +7,7 @@ import { commonAction } from '../../../alphaRedux/commonAction';
 import { scatterDiagramAction } from './scatterDiagramAction';
 import ScatterDiagramSearch from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramSearch';
 import ScatterDiagramHandle from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramHandle';
+// import ScatterDiagramChart from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramChart';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
@@ -30,6 +31,7 @@ class DataScatterDiagram extends Component{
           <div className={styles.scatterDiagramContent}>
             <ScatterDiagramSearch {...this.props} />
             <ScatterDiagramHandle {...this.props} />
+            {/* <ScatterDiagramChart {...this.props} /> */}
           </div>
           <Footer />
         </div>

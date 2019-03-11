@@ -1,19 +1,26 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
+import Path from '../../../../constants/path';
 import { scatterDiagramAction } from './scatterDiagramAction';
 import { message } from 'antd';
+const { APIBasePath } = Path.basePaths;
+const { monitor } = Path.APISubPaths;
 
 function *getPointInfo(action) { // 获取可选测点
   const { payload } = action;
   const { deviceFullCode } = payload;
-  const url = '/mock/monitor/dataAnalysisPoints';
+  console.log(payload);
+  console.log(deviceFullCode);
+  
+  const url = `${APIBasePath}${monitor.getXYaxis}/${payload.deviceFullCode}`; // '/mock/monitor/dataAnalysisPoints';
   try {
     const response = yield call(axios.post, url, { deviceIds: deviceFullCode.map(e => e.deviceId) });
     if (response.data.code === '10000') {
       yield put({
         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
         payload: {
-          pointInfo: response.data.data || [],
+          xPoint: response.data.data || [],
+          // yPoint: response.data.data || [],
         }
       })
     } else {
@@ -56,4 +63,5 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
 export function* watchDataScatterDiagramMonitor() {
   yield takeLatest(scatterDiagramAction.getSecendInterval, getSecendInterval);
   yield takeLatest(scatterDiagramAction.getPointInfo, getPointInfo);
+  // yield takeLatest(scatterDiagramAction.getChartScatterDiagram, getChartScatterDiagram);
 }

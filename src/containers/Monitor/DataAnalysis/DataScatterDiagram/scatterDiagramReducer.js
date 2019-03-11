@@ -8,8 +8,6 @@ const initState = Immutable.fromJS({
   stationType: "", // 风-0，光-1
   stationCode: null, // 选中的电站
   deviceTypeCode: '', // 选中的设备类型
-  devicePointCode: '', // 选中的测点
-  pointInfo:[], // 所有出现的测点
   chartTime: null, // 记录chart表的数据时间
   allScatterData: {}, //所有的chart时间数据
   queryParam: { // 请求chart数据的参数集合
@@ -18,7 +16,8 @@ const initState = Immutable.fromJS({
     deviceTypeName: '101',// 设备型号
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
-    devicePoint: [], // 选中的测点
+    xPoint: [], // 选中的x测点
+    yPoint: [], // 选中的y测点
   },
 })
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './scatterDiagram';
+import styles from './scatterDiagram.scss';
 
 class ScatterDiagramChart extends Component{
 
