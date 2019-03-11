@@ -125,7 +125,6 @@ class LimitGenTable extends Component {
 
   render(){
     const { limitGenList } = this.props;
-    
     return (
       <Form>
         <Table 

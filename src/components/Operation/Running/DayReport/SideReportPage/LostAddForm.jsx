@@ -131,7 +131,6 @@ class LostAddForm extends Component {
     return value
   }
 
-
   cancelAddFault = () => {
     const { faultGenList, changeFaultList } = this.props;
     changeFaultList(faultGenList, true);

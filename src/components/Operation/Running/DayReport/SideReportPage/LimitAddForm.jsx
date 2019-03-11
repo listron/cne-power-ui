@@ -5,7 +5,6 @@ import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col, Select } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
-import moment from 'moment';
 const { Option } = Select;
 
 class LimitAddForm extends Component {
