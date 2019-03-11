@@ -140,7 +140,56 @@ module.exports = [
     },
     delay: 1000,
     error: {}
-  },{ // 请求测点列表
+  },{ // 请求设备列表
+    api: '/mock/system/management/device/deviceFullcode',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+          stationName:'电站名称',
+          deviceFullCode: `设备编码(全)`,
+          deviceName: `设备名称`,
+          deviceTypeName: `设备类型名称`,
+          deviceModeCode:`设备型号编码`,
+          deviceModeName:`设备型号名称`,
+          deviceTypeCode: `202`,
+          manufacturer: `生产厂商名称`,
+          lotNumber: `批次号`,
+          enableDisplay: 1,
+          connectTime:`接入时间（yyyy-MM-dd）`,
+          parentDeviceFullcode: '关联(上级)设备编码(全) (部分设备有)',
+          pareneDeviceName: `关联(上级)设备名称(部分设备有)`,
+          templateMachine:1,
+          ratedPower:'额定容量',
+          deviceCapacity:'装机容量',
+          longitude: `0.1124545122`,
+          latitude: `0.1124545122`,
+          componentMode:`组件型号`,
+          branchCount:13,
+          connectedBranches:[0,1,1,1,0,1,1,1,0,1,1,0,1],
+          assemblyTime:'2019-02-21',
+          ongridTime:'2019-02-21',
+          warrantyBegintime:'2019-02-21',
+          warrantyEndtime:'2019-02-21',
+          scrapTime:'2019-02-21',
+          hubHeight:'轮毂高度',
+          altitude:'海拔高度',
+          towerAssemblyTime:'2019-02-21',
+          towerHeight:'塔高',
+          windMeasurementEquipment:'测风设备',
+          belongMatrix:'所属方阵'
+      },
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
+  },
+  
+  
+  
+  
+  { // 请求测点列表
     api: '/mock/system/pointManage/pointsList',
     method: 'post',
     response: {

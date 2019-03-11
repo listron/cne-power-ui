@@ -3,6 +3,7 @@ import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import styles from "./manufacturers.scss";
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { dataFormats } from '../../../../utils/utilFunc';
 
 /* 
   1 必填   graphId 图表的id名
@@ -44,10 +45,10 @@ class Charts extends React.Component {
                 result = '转换效率(%)';
                 break;
             case "faultHours":
-                result = '故障时长(h)';
+                result = '故障时长(h/台)';
                 break;
             case "faultNum":
-                result = '故障次数(次)';
+                result = '故障次数(次/台)';
                 break;
             case "deviceCapacity":
                 result = '装机容量(MW)';
@@ -79,20 +80,20 @@ class Charts extends React.Component {
         return result;
     };
 
-    getTitle = (type) => {
+    getTitle = (type, selectOption) => {
         let result = " ";
         switch (type) {
             case "conversioneff":
-                result = '各厂家设备转换效率对比图';
+                result = selectOption === 'manufacturer' ? '各厂家设备转换效率对比图' : '各型号设备转换效率对比图';
                 break;
             case "faultHours":
-                result = '各厂家设备故障时长对比图';
+                result = selectOption === 'manufacturer' ? '各厂家设备故障时长对比图' : '各型号设备故障时长对比图';
                 break;
             case "faultNum":
-                result = '各厂家设备故障次数对比图';
+                result = selectOption === 'manufacturer' ? '各厂家设备故障次数对比图' : '各型号设备故障次数对比图';
                 break;
             case "deviceCapacity":
-                result = '各厂家装机容量对比图';
+                result = selectOption === 'manufacturer' ? '各厂家装机容量对比图' : '各型号装机容量对比图';
                 break;
             default:
                 result = "";
@@ -122,6 +123,28 @@ class Charts extends React.Component {
     }
 
 
+    getUnit = (type) => {
+        let result = " ";
+        switch (type) {
+            case "conversioneff":
+                result = '%';
+                break;
+            case "faultHours":
+                result = 'h/台';
+                break;
+            case "faultNum":
+                result = '次/台';
+                break;
+            case "deviceCapacity":
+                result = 'MW';
+                break;
+            default:
+                result = " ";
+        }
+        return result;
+    }
+
+
     getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
         const length = data.length;
         let replaceData = [];
@@ -137,10 +160,13 @@ class Charts extends React.Component {
         const xData = selectOption === 'manufacturer' ? manufacturerData : deviceModeIdsData;
         const yData = data.map(e => e[type]);
         const targetChart = echarts.init(document.getElementById(graphId));
+        // xData.length > 0 && targetChart.hideLoading();
+        // !xData.length > 0 && targetChart.showLoading('default',{color:'#199475'}) loading 暂时不修改
         const color = this.getColor(type);
         const lineColor = '#f1f1f1';
         const fontColor = '#999';
         const hasSlider = yData.length > 18;
+        const unit = this.getUnit(type);
         const hasData = yData.some(e => e || e === 0);
         const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
         const targetMonthOption = {
@@ -160,16 +186,17 @@ class Charts extends React.Component {
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 formatter: function (params) {
+                    const pointLength = (type === "faultHours" || type === "faultNum") ? 0 : 2;
                     let paramsItem = '';
                     params.map((item) => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span>  
-                        ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'} </div>`
+                        ${item.seriesName} :${dataFormats(item.value, '--', pointLength, true)} ${unit}</div>`
                     });
                     return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>${paramsItem}`
                 }
             },
             title: {
-                text: this.getTitle(type),
+                text: this.getTitle(type, selectOption),
                 left: '23',
                 top: 'top',
                 textStyle: {
@@ -180,7 +207,7 @@ class Charts extends React.Component {
             },
             color: this.getColor(type),
             grid: {
-                bottom: 140,
+                bottom: hasSlider ? 140 : 80,
             },
             legend: {
                 left: 'center',
@@ -203,6 +230,7 @@ class Charts extends React.Component {
                 handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
                 backgroundColor: 'rgba(213,219,228,.8)',
                 height: '20px',
+                zoomLock: true,
                 handleStyle: {
                     width: '16px',
                     height: '16px',
@@ -237,7 +265,7 @@ class Charts extends React.Component {
                     height: 10,
                     width: 10,
                     formatter: (value) => {
-                        return value && value.length > 0 && value.substring(0, 6) + '...' || null
+                        return value && value.length > 6 && value.substring(0, 6) + '...' || value
                     }
                 },
                 axisTick: {

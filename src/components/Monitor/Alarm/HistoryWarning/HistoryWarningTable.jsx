@@ -77,9 +77,10 @@ class HistoryWarningTable extends Component {
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
-      deviceName: '3',
+      deviceName: '8',
+      deviceTypeName:'3',
       timeOn: '5',
-      durationTime: '9',
+      timeOff: '6',
     };
      const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
@@ -149,6 +150,10 @@ class HistoryWarningTable extends Component {
           <div className={styles.infoItem}>
             <span className={styles.label}>解除人：</span>
             <span className={styles.value}>{relieveInfo.userFullName?relieveInfo.userFullName:relieveInfo.username}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>截至时间：</span>
+            <span className={styles.value}>{moment(relieveInfo.endTime).format('YYYY-MM-DD HH:mm')}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>操作时间：</span>
@@ -246,12 +251,14 @@ class HistoryWarningTable extends Component {
         key: 'timeOn',
         render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
         sorter: true,
-      }, {
-        title: '持续时间',
-        dataIndex: 'durationTime',
-        key: 'durationTime',
-        sorter: true,
       },{
+        title: '结束时间',
+        dataIndex: 'timeOff',
+        key: 'timeOff',
+        sorter: true,
+        render: (text, record) => moment(text).format('YYYY-MM-DD HH:mm'),
+      },
+      {
         title: '告警处理',
         key: 'warningRemove',
         render: (text, record, index) => {

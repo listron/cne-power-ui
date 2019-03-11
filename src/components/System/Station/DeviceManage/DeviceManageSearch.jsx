@@ -21,14 +21,11 @@ class DeviceManageSearch extends Component {
     getDeviceModel: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
   }
-
   constructor(props) {
     super(props);
     this.state = {
-      
     }
   }
-
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
     getStationDeviceTypes({
@@ -45,7 +42,6 @@ class DeviceManageSearch extends Component {
       deviceModels: []
     })
   }
-
   selectDeviceType = (value) => {
     const { getDeviceModel, getDeviceList, queryParams, stationCode } = this.props;
     getDeviceModel({
@@ -59,7 +55,6 @@ class DeviceManageSearch extends Component {
       pageNum: 1,
     })
   }
-
   selectDeviceModel = (value) => {
     const { getDeviceList, queryParams } = this.props;
     getDeviceList({
@@ -68,7 +63,6 @@ class DeviceManageSearch extends Component {
       pageNum: 1,
     })
   }
-
   render() {
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;

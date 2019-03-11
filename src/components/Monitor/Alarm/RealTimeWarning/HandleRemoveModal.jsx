@@ -29,10 +29,14 @@ class HandleRemoveModal extends Component {
   }
 
   onSubmit = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '点击确定，解除告警'
-    });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.setState({
+          showWarningTip: true,
+          warningTipText: '点击确定，解除告警'
+        });
+      }
+    })
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({

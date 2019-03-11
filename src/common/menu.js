@@ -42,7 +42,7 @@ const menuData = [
             name: '实时告警',
             path: 'realtime',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '已转工单',
             path: 'transfer',
             rightKey: 'monitor_alarm_realTime',
@@ -50,11 +50,11 @@ const menuData = [
             name: '手动解除',
             path: 'relieve',
             rightKey: 'monitor_alarm_realTime',
-          },{
+          }, {
             name: '历史告警',
             path: 'history',
             rightKey: 'monitor_alarm_history',
-          },{
+          }, {
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
@@ -82,7 +82,7 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
@@ -163,6 +163,10 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_station_all',
           }, {
+            name: '电站评分',
+            path: 'score',
+            rightKey: 'statistics_station_score',
+          }, {
             name: '生产分析',
             path: 'production',
             rightKey: 'statistics_station_production',
@@ -213,7 +217,7 @@ const menuData = [
             path: 'currency',
             defaultPath: true,
             rightKey: 'statistics_report_general',
-          }
+          },
         ]
       }
     ]
@@ -239,7 +243,7 @@ const menuData = [
           {
             name: '实时预警',
             path: 'realtime',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'analysis_intelligentWarning_pending',
           }, {
             name: '已转工单',
@@ -252,7 +256,7 @@ const menuData = [
           },{
             name: '历史预警',
             path: 'historywarning',
-            rightKey: '	analysis_intelligentWarning_history',
+            rightKey: 'analysis_intelligentWarning_history',
           }
         ]
       },
@@ -385,15 +389,20 @@ const menuData = [
         iconStyle: 'icon-planed',
         path: 'config',
         rightKey: 'system_config',
-        children: [{
-          name: '生产计划',
-          path: 'plan',
-          rightKey: 'system_config',
-        }, {
-          name: '预警配置',
-          path: 'warning',
-          rightKey: 'system_config_warning',
-        },
+        children: [
+          {
+            name: '绩效评分',
+            path: 'performanceScore',
+            rightKey: 'system_config_score',
+          }, {
+            name: '生产计划',
+            path: 'plan',
+            rightKey: 'system_config',
+          }, {
+            name: '预警配置',
+            path: 'warning',
+            rightKey: 'system_config_warning',
+          },
         ]
       }
     ],

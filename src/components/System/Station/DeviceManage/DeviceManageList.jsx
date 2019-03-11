@@ -12,11 +12,14 @@ class DeviceManageList extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      
-    }
   }
-
+  onSelectChange = (keys, record) => {
+    console.log('record:',record);
+    this.props.changeDeviceManageStore({
+      selectedRowData:record,
+      selectedRowKeys:keys,
+    })
+  }
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getDeviceList, queryParams } = this.props;
     const { field, order } = sorter;
@@ -26,8 +29,19 @@ class DeviceManageList extends Component {
       sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
-
+  showDeviceDetail=(record)=>{
+    this.props.changeDeviceManageStore({showPage:'detail'})
+    this.props.getStationDeviceDetail({
+      deviceFullCode: record.deviceFullCode,
+      selectedStationIndex:record.key,
+    })
+  }
   render() {
+    const {selectedRowKeys} = this.props;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     const deviceListColumn = [
       {
         title: '设备名称',
@@ -65,15 +79,20 @@ class DeviceManageList extends Component {
         key: 'enableDisplay',
         sorter: true,
         render: (text, record) => record.enableDisplay?'是':'否'
-      },
+      }, //{
+      //   title: '编辑',
+      //   dataIndex: 'edit',
+      //   key: 'edit',
+      //   render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={()=>this.showDeviceDetail(record)}></span>)
+      // }
     ];
     const { loading, deviceList } = this.props;
-    
     return (
       <div className={styles.deviceManageList}>
         <Table
           loading={loading}
           onChange={this.tableChange}
+          // rowSelection={rowSelection}
           columns={deviceListColumn}
           dataSource={deviceList.map((e,i)=>({key: i,...e}))}
           pagination={false}

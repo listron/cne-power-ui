@@ -55,21 +55,24 @@
             align-items: center;
             justify-content: center;
             border-right: 1px solid $promptColor;
+            line-height: 42px;
         }
         .base {
             display: flex;
             flex-direction: row;
             flex: 4 0 0;
             align-items: center;
-            justify-content: center;
+            margin-left: 40px;
             border-right: 1px solid $promptColor;
+            // justify-content: center;
         }
         .compare {
             display: flex;
             flex-direction: row;
             flex: 4 0 0;
             align-items: center;
-            justify-content: center;
+            margin-left: 40px;
+            // justify-content: center;
         }
     }
 }
