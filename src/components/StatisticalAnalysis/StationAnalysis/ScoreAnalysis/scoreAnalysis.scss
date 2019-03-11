@@ -52,9 +52,9 @@
             margin-bottom: 0;
         }
         .stationCard {
-            margin: 0 19px 24px 0;
+            margin: 0 24px 24px 0;
             box-sizing: border-box;
-            flex: 0 0 15%;
+            flex: 0 0 14.5%;
             box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
             border-radius: 2px;
             // height: 180px;
@@ -117,7 +117,7 @@
         .excellent {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #1670a6, #3ea6f6);
-                color: #3ea6f6;
+                color: #3e97d1;
             }
             &:hover .innerBox .evaluate {
                 background: rgba(62, 166, 246, 0.4)
@@ -126,7 +126,7 @@
         .good {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #08b294, #7ddfb2);
-                color: #08b294;
+                color: #199475;
             }
             &:hover .evaluate {
                 background: rgba(8, 178, 148, 0.40)
@@ -135,7 +135,7 @@
         .qualified {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #eefc75, #c69037);
-                color: #c69037;
+                color: #e08031;
             }
             &:hover .evaluate {
                 background: rgba(238, 252, 117, 0.4);
@@ -144,7 +144,7 @@
         .poor {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #ffb8be, #9f041b);
-                color: #9f041b;
+                color: #a42b2c;
             }
             &:hover .evaluate {
                 background: rgba(255, 184, 190, 0.4);
@@ -185,25 +185,25 @@
     .excellent {
         .stationScore,
         .stationScore a {
-            color: #3ea6f6;
+            color: #3e97d1;
         }
     }
     .good {
         .stationScore,
         .stationScore a {
-            color: #7ddfb2;
+            color: #199475;
         }
     }
     .qualified {
         .stationScore,
         .stationScore a {
-            color: #c69037;
+            color: #e08031;
         }
     }
     .poor {
         .stationScore,
         .stationScore a {
-            color: #9f041b;
+            color: #a42b2c;
         }
     }
     :global {

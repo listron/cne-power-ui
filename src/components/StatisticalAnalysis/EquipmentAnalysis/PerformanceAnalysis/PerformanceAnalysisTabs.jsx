@@ -81,7 +81,7 @@ class PerformanceAnalysisTabs extends Component {
     let haveSliderConver = xData.length > 20;
     let barData = conversioneffData.map(e => e.conversionRate) || [];
     let lineData = Array(xData.length).fill(conversionAvgRate) || [];
-    let conversionHasData = xData.some(e => e || e === 0) || barData.some(e => e || e === 0) || lineData.some(e => e || e === 0)
+    let conversionHasData = barData.some(e => e || e === 0) || lineData.some(e => e || e === 0)
     //对比转化效率
     let contrastDeviceName = conversioneffContrastData.map(e => e.deviceName) || [];
     let haveSliderContrastCon = contrastDeviceName.length > 20;
@@ -89,7 +89,7 @@ class PerformanceAnalysisTabs extends Component {
     let contrastConversionRate = conversioneffContrastData.map(e => e.contrastConversionRate) || [];
     let contrastAvgRateData = Array(xData.length).fill(contrastAvgRate) || [];
     let contrastConversionAvgRateData = Array(xData.length).fill(contrastConversionAvgRate) || [];
-    let contrastConversionHasData = contrastDeviceName.some(e => e || e === 0) || conversionRate.some(e => e || e === 0) || contrastConversionRate.some(e => e || e === 0) || contrastAvgRateData.some(e => e || e === 0) || contrastConversionAvgRateData.some(e => e || e === 0);
+    let contrastConversionHasData = conversionRate.some(e => e || e === 0) || contrastConversionRate.some(e => e || e === 0) || contrastAvgRateData.some(e => e || e === 0) || contrastConversionAvgRateData.some(e => e || e === 0);
 
     //等效小时数、故障次数、故障时长
     let hoursDeviceNameData = hourData.map(e => e.deviceName);
