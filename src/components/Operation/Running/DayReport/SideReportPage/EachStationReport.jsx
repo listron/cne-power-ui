@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Input, Icon,message } from 'antd';
+import { Input, Icon, message } from 'antd';
 import { valueCheck } from '../reportBaseFun';
 import moment from 'moment';
 
