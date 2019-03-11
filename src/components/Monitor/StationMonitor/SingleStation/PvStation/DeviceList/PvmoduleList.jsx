@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import classnames from 'classnames';
 import { Spin } from 'antd';
-import {dataFormats}  from '../../../../../../utils/utilFunc';
 
 class PvmoduleList extends Component {
   static propTypes = {
@@ -59,6 +58,10 @@ class PvmoduleList extends Component {
     const { pvmoduleList,loading } = this.props;
     const pvmoduleListSet = new Set(pvmoduleList);
     const tmpPvmoduleList = [...pvmoduleListSet];
+    let tmpNBList = new Array();
+    for(let i=0;i<16;i++){
+      tmpNBList.push(i);
+    }
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
@@ -67,14 +70,28 @@ class PvmoduleList extends Component {
                 return (
                   <div key={index} className={styles.pvmoduleItem} >
                     <div className={styles.deviceName} ><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
-                    {item.electricityList.map((e,i)=>{
+                    {item.electricityList && tmpNBList.map((e,i)=>{
+                      let num;
+                      let obj = item.electricityList[i];
+                      if(obj){
+                        for(let key in obj){
+                          if(key.indexOf('pointValue') === 0){
+                            num = obj[key];
+                          }
+                        }
                         return (<span className={classnames({
-                          normalValue:!!e.pointStatus,
-                          commonStyle:true
-                        })} key={i}>
-                        {!!e.pointStatus && dataFormats(e.pointValue,'--',1,false)}
-                        </span>)
-                      })} 
+                          normalValue: !!num,
+                          // stopValue: obj.pointStatus === 200,
+                          // breakValue: obj.pointStatus === 300,
+                          // noValue: obj.pointStatus === 900,
+                          commonStyle: true,
+                        })} key={i} >{num || ''}</span>);
+                      }else{
+                        return (<span className={classnames({
+                          commonStyle: true,
+                        })}  key={i} >{num || ''}</span>)
+                      }
+                    })}
                   </div>
                 );
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
@@ -86,3 +103,4 @@ class PvmoduleList extends Component {
 }
 
 export default PvmoduleList;
+
