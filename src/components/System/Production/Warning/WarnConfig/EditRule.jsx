@@ -29,7 +29,11 @@ class EditRule extends Component {
   }
 
   saveRule = (e) => { // 保存
-    this.setState({ showSaveWarningTip: true })
+    this.props.form.validateFields((error, values) => {
+      if (!error) {
+        this.setState({ showSaveWarningTip: true, buttonStatus: e })
+      }
+    });
   }
 
   cancelWarningTip = () => { // 取消

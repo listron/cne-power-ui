@@ -146,9 +146,11 @@
             }
         }
         :global {
-            .ant-form-inline .ant-form-item-with-help {
-                margin-bottom: 0;
+            .ant-form-inline .ant-form-explain {
                 position: inherit;
+            }
+            .ant-form-inline .ant-form-item-with-help{
+                margin-bottom: 0;
             }
             .ant-row.ant-form-item.ant-form-item-no-colon {
                 width: 287px;
@@ -212,15 +214,16 @@
                     flex-direction: column;
                     color: #000;
                     span {
-                        color: $darkColor;
                         margin-left: 15px;
                     }
+                }
+                .detailWarnRule{
+                    position: relative;
                     .tooltip {
+                        position: absolute;
                         color: #f9b600;
-                        margin-left: -3px;
-                    }
-                    .warningRuler {
-                        margin-left: 0;
+                        left:41px;
+                        top:-9px;
                     }
                 }
             }
@@ -290,9 +293,11 @@
                 }
             }
             :global {
-                .ant-form-inline .ant-form-item-with-help {
-                    margin-bottom: 0;
+                .ant-form-inline .ant-form-explain {
                     position: inherit;
+                }
+                .ant-form-inline .ant-form-item-with-help{
+                    margin-bottom: 0;
                 }
                 .ant-row.ant-form-item.ant-form-item-no-colon {
                     min-width: 287px;

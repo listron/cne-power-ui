@@ -40,25 +40,26 @@ function* getDeviceModels(action) { // 新共用接口，获取电站设备类�
     console.log(e);
   }
 }
-// function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
-//   const url = `${APIBasePath}${commonPaths.getDeviceModel}`;
-//   const { payload } = action;
-//   console.log(payload);
-//   try{
-//     const zuchuan = yield call(axios.get,url,{params:{stationCode:payload.stationCode,deviceTypeCode:payload.deviceTypeCode}});
-//     if(zuchuan.data.code === '10000') {
-//       yield put({
-//         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-//         payload: {
-//           deviceModels: zuchuan.data.data||[],          
-//         },
-//       });     
-//     }  
+function* getEleDeviceData(action) { // 查询集电线路下的设备型号和设备类型数据
+  const { payload } = action;
+  console.log('payload: ', payload);
+  const url =  `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleDeviceData}/${payload.deviceFullCode}`;
+ 
+  try{
+    const response = yield call(axios.get,url);
+    if(response.data.code === '10000') {
+      yield put({
+        type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
+        payload: {
+          eleDeviceModels: response.data.data||[],          
+        },
+      });     
+    }  
     
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* getEleLineCode(action) {//集电线路
   const { payload } = action;
     //const url = '';
@@ -86,13 +87,14 @@ function* getPerformance(action) {
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailability}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload})]);
+      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload,availabilitySortField:0})]);
       if(conversioneff.data.code === '10000') {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {
             conversionAvgRate:conversioneff.data.data.conversionAvgRate||'',
             conversioneffData:conversioneff.data.data.conversionRateData||[],          
+            conversionNullValue:conversioneff.data.data.deviceNamesNullValue||[],          
           },
         });     
       }  
@@ -100,7 +102,8 @@ function* getPerformance(action) {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {                 
-            hourData: hour.data.data||[],          
+            hourData: hour.data.data.dataResults||[],          
+            hourNullValue: hour.data.data.deviceNamesNullValue||[],          
           },
         });     
       }
@@ -123,7 +126,7 @@ function* getFault(action) {
     const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHours}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-      const [availability,faultNum,faultTime] = yield all([call(axios.post,availabilityUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
+      const [availability,faultNum,faultTime] = yield all([call(axios.post,availabilityUrl,{...payload,availabilitySortField:1}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
       if(availability.data.code==='10000'){
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
@@ -136,7 +139,8 @@ function* getFault(action) {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {                 
-            faultNumData: faultNum.data.data||[],          
+            faultNumData: faultNum.data.data.dataResults||[],          
+            faultNumNullvalue: faultNum.data.data.deviceNamesNullValue||[],          
           },
         });     
       }
@@ -144,7 +148,8 @@ function* getFault(action) {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
           payload: {                 
-            faultTimeData: faultTime.data.data||[],          
+            faultTimeData: faultTime.data.data.dataResults||[],          
+            faultTimeNullValue: faultTime.data.data.deviceNamesNullValue||[],          
           },
         });     
       }
@@ -161,7 +166,7 @@ function* getPerformanceContrast(action) {
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailabilityContrast}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload})]);
+      const [conversioneff,hour,availability] = yield all([call(axios.post,conversioneffUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'hour'}),call(axios.post,availabilityUrl,{...payload,availabilitySortField:0})]);
       if(conversioneff.data.code === '10000') {
         yield put({
           type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
@@ -169,7 +174,9 @@ function* getPerformanceContrast(action) {
             conversioneffContrastData: conversioneff.data.data.conversionRateData||[],   
             contrastConversionAvgRate:conversioneff.data.data.contrastConversionAvgRate||'',
             contrastAvgRate:conversioneff.data.data.conversionAvgRate||'',
-            conversDeviceNames:conversioneff.data.data.deviceNames||[]
+            conversDeviceNames:conversioneff.data.data.deviceNames||[],
+            // conConversNullValue:conversioneff.data.data.deviceNamesNullValue||[],
+            conversionNullValue:conversioneff.data.data.deviceNamesNullValue||[],
           },
         });     
       }  
@@ -179,6 +186,8 @@ function* getPerformanceContrast(action) {
           payload: {                 
             hourContrastData: hour.data.data.results||[],
             hourDeviceNames:hour.data.data.deviceNames||[],          
+            // conHourNullValue:hour.data.data.deviceNamesNullValue||[],          
+            hourNullValue:hour.data.data.deviceNamesNullValue||[],          
           },
         });     
       }
@@ -202,7 +211,7 @@ function* getFaultContrast(action) {
   const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHoursContrast}`
   try{
     yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH });
-    const [lostPower,faultNum,faultTime] = yield all([call(axios.post,lostPowerUrl,{...payload}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
+    const [lostPower,faultNum,faultTime] = yield all([call(axios.post,lostPowerUrl,{...payload,availabilitySortField:1}),call(axios.post,hoursUrl,{...payload,dataType:'faultNum'}),call(axios.post,hoursUrl,{...payload,dataType:'faultTime'})]);
     if(lostPower.data.code==='10000'){
       yield put({
         type: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
@@ -218,6 +227,8 @@ function* getFaultContrast(action) {
         payload: {                 
           faultNumContrastData: faultNum.data.data.results||[],          
           faultNumDeviceNames: faultNum.data.data.deviceNames||[],          
+          // conFaultNumNullValue: faultNum.data.data.deviceNamesNullValue||[],          
+          faultNumNullvalue: faultNum.data.data.deviceNamesNullValue||[],          
         },
       });     
     }
@@ -227,6 +238,8 @@ function* getFaultContrast(action) {
         payload: {                 
           faultTimeContrastData: faultTime.data.data.results||[],          
           faultTimeDeviceNames: faultTime.data.data.deviceNames||[],          
+          // conFaultTimeNullValue: faultTime.data.data.deviceNamesNullValue||[],          
+          faultTimeNullValue: faultTime.data.data.deviceNamesNullValue||[],          
         },
       });     
     }
@@ -246,5 +259,6 @@ export function* watchPerformanceAnalysisSaga() {
   yield takeLatest(performanceAnalysisAction.getPerformanceContrast, getPerformanceContrast);
   yield takeLatest(performanceAnalysisAction.getFaultContrast, getFaultContrast);
   yield takeEvery(performanceAnalysisAction.getDeviceModels, getDeviceModels);
+  yield takeEvery(performanceAnalysisAction.getEleDeviceData, getEleDeviceData);
  
 }

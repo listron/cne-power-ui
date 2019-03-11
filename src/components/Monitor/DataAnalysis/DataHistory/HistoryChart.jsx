@@ -63,6 +63,7 @@ class HistoryChart extends Component {
     },
     axisLabel: {
       color: '#666',
+      showMinLabel: false
     },
     axisTick: {
       show: false
@@ -73,7 +74,7 @@ class HistoryChart extends Component {
         type: 'dotted',
       } 
     },
-    name: `${e.pointName}\n(${e.pointUnit})`,
+    name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
     nameGap: 48,
     nameTextStyle: {
@@ -107,7 +108,7 @@ class HistoryChart extends Component {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
         const lengendName = `${point.pointName}${device.deviceName}`;
         legend.push({
-          top: 34 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
+          top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
           left: `${4 + (mapNumber % 4) * 23}%`,
           textStyle: {
             fontSize: 12,
@@ -120,7 +121,7 @@ class HistoryChart extends Component {
           xAxisIndex: index,
           yAxisIndex: index,
           type: 'line',
-          data: point.pointInfo[deviceIndex]
+          data: point.pointInfo[device.deviceCode] || [],
         });
       });
     })
@@ -139,6 +140,7 @@ class HistoryChart extends Component {
       historyChart.hideLoading()
     }
     const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
+    console.log(allHistory)
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {
@@ -168,31 +170,33 @@ class HistoryChart extends Component {
       grid: this.gridCreate(pointData, deviceInfo),
       xAxis: this.xAxisCreate(pointData).map(e => ({ ...e, data: xAxisData })),
       yAxis: this.yAxisCreate(pointData),
-      // dataZoom:[{
-      //   type: 'slider',
-      //   start: 0,
-      //   end: 100,
-      //   bottom: 24 * deviceInfo.length + 24,
-      //   left: 150,
-      //   right: 150,
-      //   filterMode: 'empty',
-      //   xAxisIndex: pointData.map((e, i)=> i),
-      // },{
-      //   type: 'inside',
-      //   orient: 'horizontal',
-      //   filterMode: 'empty',
-      //   xAxisIndex: pointData.map((e, i)=> i),
-      // }],
-      ...this.legendSeriesCreate(pointData, deviceInfo) // 
+      ...this.legendSeriesCreate(pointData, deviceInfo)
     };
+    if (pointTime.length > 0) { // 有数据时，展示数据筛选条
+      option.dataZoom = [{
+        type: 'slider',
+        start: 0,
+        end: 100,
+        top: 160 * pointData.length + 34,
+        left: 150,
+        right: 150,
+        filterMode: 'empty',
+        xAxisIndex: pointData.map((e, i)=> i),
+      },{
+        type: 'inside',
+        orient: 'horizontal',
+        filterMode: 'empty',
+        xAxisIndex: pointData.map((e, i)=> i),
+      }]
+    }
     historyChart.setOption(option);
   }
 
   render() {
-    // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 数据指示条行数。
+    // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
     const { queryParam } = this.props;
-    const { deviceFullCode, devicePoint, timeInterval } = queryParam;
-    const calcHeight = 160 * devicePoint.length + 70 + 24 * Math.ceil((deviceFullCode.length * devicePoint.length) / 4);
+    const { deviceFullCodes, devicePoints, timeInterval } = queryParam;
+    const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.historyChart}>

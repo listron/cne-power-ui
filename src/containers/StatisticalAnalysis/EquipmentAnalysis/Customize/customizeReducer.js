@@ -1,8 +1,8 @@
 import Immutable from 'immutable';
 import { customizeAction } from './customizeAction';
 import moment from 'moment';
-const startDate = moment().year() + '-01-01';
-const endDate = moment().format('YYYY-MM-DD');
+const startDate = moment(moment()).startOf('month').format('YYYY-MM-DD');
+const endDate = moment(moment()).endOf('month').format('YYYY-MM-DD');
 var initState = Immutable.fromJS({
   manufacturerList: [],// 电站下的生产厂商
   anotherManufacturerList: [],// 电站下的生产厂商

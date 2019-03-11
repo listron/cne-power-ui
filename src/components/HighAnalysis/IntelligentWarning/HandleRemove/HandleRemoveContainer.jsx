@@ -46,7 +46,7 @@ class HandleRemoveContainer extends Component {
             <div className={styles.handleRemoveContainer}>
                 <WarningStatisticTop {...this.props} warningStatus={'2'} />
                 <HandleRemoveFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
-                <HandleRemoveTable {...this.props} />
+                <HandleRemoveTable {...this.props} onChangeFilter={this.onChangeFilter} />
             </div>
         )
     }

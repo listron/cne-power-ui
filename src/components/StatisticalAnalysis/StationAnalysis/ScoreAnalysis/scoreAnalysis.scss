@@ -22,19 +22,21 @@
                 flex-direction: row;
                 line-height: 42px;
             }
-            .timeSelect{
+            .timeSelect {
                 height: auto;
                 line-height: 42px;
             }
         }
-        .scoreTranslate{
+        .scoreTranslate {
             display: flex;
             flex-direction: row;
             line-height: 42px;
-            .scoreSort{
+            .scoreSort {
+                cursor: pointer;
                 color: $themeColor;
                 display: flex;
                 flex-direction: row;
+                padding: 0 8px;
             }
         }
     }
@@ -55,12 +57,13 @@
             flex: 0 0 15%;
             box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
             border-radius: 2px;
-            height: 180px;
+            // height: 180px;
             align-items: center;
             cursor: pointer;
             color: #666;
+            padding-bottom: 10px;
             .stationName {
-                padding: 8px 8px 0;
+                padding: 8px 4px 0 8px;
             }
             .scoreCircleCon {
                 width: 86px;
@@ -71,13 +74,19 @@
                 line-height: 100px;
                 margin: 0 auto;
                 margin-bottom: 14px;
-                .evaluate {
+                .innerBox {
                     width: 76px;
                     height: 76px;
-                    background-color: #fff;
                     border-radius: 50%;
+                    background-color: #fff;
                     margin: 0 auto;
                     margin-top: 4px;
+                }
+                .evaluate {
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 50%;
+                    background-color: #fff;
                     .num {
                         height: 0px;
                         line-height: 56px;
@@ -92,58 +101,56 @@
                     line-height: 76px;
                 }
             }
-            .installedCapacity {
-                margin-left: 24px;
-            }
+            .installedCapacity,
             .equivalent {
-                margin-left: 9px;
+                display: flex;
+                .name {
+                    flex: 1;
+                    text-align: right;
+                    padding-right: 4px;
+                }
+                .value {
+                    flex: 1;
+                }
             }
         }
         .excellent {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #1670a6, #3ea6f6);
+                color: #3ea6f6;
             }
-            .evaluate{
-                background: #1670a6
-            }
-            &:hover .evaluate {
-                background: #1670a6
+            &:hover .innerBox .evaluate {
+                background: rgba(62, 166, 246, 0.4)
             }
         }
         .good {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #08b294, #7ddfb2);
-            }
-            .evaluate{
-                background: #08b294
+                color: #08b294;
             }
             &:hover .evaluate {
-                background: #08b294
+                background: rgba(8, 178, 148, 0.40)
             }
         }
         .qualified {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #eefc75, #c69037);
-            }
-            .evaluate{
-                background: #eefc75;
+                color: #c69037;
             }
             &:hover .evaluate {
-                background: #eefc75;
+                background: rgba(238, 252, 117, 0.4);
             }
         }
         .poor {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #ffb8be, #9f041b);
-            }
-            .evaluate{
-                background: #ffb8be;
+                color: #9f041b;
             }
             &:hover .evaluate {
-                background: #ffb8be;
+                background: rgba(255, 184, 190, 0.4);
             }
         }
-        .uncategorized{
+        .uncategorized {
             .scoreCircleCon {
                 background: $promptColor;
             }
@@ -160,7 +167,7 @@
         .text {
             display: flex;
             justify-content: space-between;
-            p{
+            p {
                 margin-bottom: 0
             }
             .scoreTime {
@@ -174,25 +181,28 @@
             color: $themeColor;
             line-height: 40px;
         }
-        
     }
     .excellent {
-        .stationScore {
+        .stationScore,
+        .stationScore a {
             color: #3ea6f6;
         }
     }
     .good {
-        .stationScore {
+        .stationScore,
+        .stationScore a {
             color: #7ddfb2;
         }
     }
     .qualified {
-        .stationScore {
+        .stationScore,
+        .stationScore a {
             color: #c69037;
         }
     }
     .poor {
-        .stationScore {
+        .stationScore,
+        .stationScore a {
             color: #9f041b;
         }
     }

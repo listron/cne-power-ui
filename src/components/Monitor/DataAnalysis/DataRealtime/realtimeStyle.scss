@@ -85,6 +85,7 @@
 
 .pointTree{
   flex: 0 0 150px;
+  overflow-x: auto;
   border-right: 1px solid $promptColor;
   h3{
     height: 40px;
@@ -170,6 +171,14 @@
     justify-content: space-between;
     .text{
       margin-left: 36px;
+    }
+  }
+  .listTitle{
+    height: 60px;
+    padding: 9px;
+    .text, .unit{
+      line-height: 21px;
+      text-align: center;
     }
   }
 }

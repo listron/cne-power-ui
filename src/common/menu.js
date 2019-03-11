@@ -36,7 +36,7 @@ const menuData = [
         name: '数据分析',
         iconStyle: 'icon-monitoring',
         path: 'data',
-        rightKey: 'monitor_station', // monitor_dataAnalysis
+        rightKey: 'monitor_dataAnalysis',
         children: [
           {
             name: '散点图',
@@ -45,12 +45,12 @@ const menuData = [
           },{
             name: '历史趋势',
             path: 'history',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_historyTrend
+            rightKey: 'dataAnalysis_historyTrend',
           }, {
             name: '实时监控',
             path: 'realtime',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_realTime
-          }, 
+            rightKey: 'dataAnalysis_realTime',
+          }
         ]
       }, {
         name: '告警',
@@ -102,7 +102,7 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
@@ -185,7 +185,7 @@ const menuData = [
           }, {
             name: '电站评分',
             path: 'score',
-            rightKey: 'statistics_station',
+            rightKey: 'statistics_station_score',
           }, {
             name: '生产分析',
             path: 'production',
@@ -263,7 +263,7 @@ const menuData = [
           {
             name: '实时预警',
             path: 'realtime',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'analysis_intelligentWarning_pending',
           }, {
             name: '已转工单',
@@ -413,7 +413,7 @@ const menuData = [
           {
             name: '绩效评分',
             path: 'performanceScore',
-            rightKey: 'system_config',
+            rightKey: 'system_config_score',
           }, {
             name: '生产计划',
             path: 'plan',
