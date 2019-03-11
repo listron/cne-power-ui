@@ -11,8 +11,7 @@ class ShowAddDeviceModeModal extends Component {
     super(props, context)
   }
   componentWillReceiveProps(nextProps){
-    const{checkDeviceModeOk,addDeviceTypeData}=nextProps;
-    console.log('addDeviceTypeData: ', addDeviceTypeData);
+    const{checkDeviceModeOk,addDeviceTypeData,selectStation}=nextProps;
     if(checkDeviceModeOk!==this.props.checkDeviceModeOk&&checkDeviceModeOk===true){
       this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName","addManufacturer","deviceTypeCode"],(err,values)=>{
         if(!err){
@@ -21,6 +20,10 @@ class ShowAddDeviceModeModal extends Component {
             // deviceTypeCode:'202',
             deviceModeName:values.addDeviceModeCodeName,
             manufacturer:values.addManufacturer,
+          })
+          this.props.getDeviceModel({
+            // stationCode:selectStation?selectStation[0].stationCode:null,
+            deviceTypeCode:this.props.selectdeviceType,
           })
             this.props.saveFormState(values)
            this.props.cancleDeviceModeModal()

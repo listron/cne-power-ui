@@ -170,6 +170,7 @@ export default {
       addPvDeviceMode:'/v3/management/deviceMode',//添加pv设备型号
       checkDeviceName:'/v3/management/queryDeviceExits',//查询设备名字是否重复
       checkDeviceType:'/v3/management/queryTypeExits',//查询设备类型是否重复
+      getStationDeviceType:'/v3/management/queryDevicesTypeByStation',//查询电站下的设备类型
 
 
       getPointList: '/v3/management/station/device/point/list', // 获取点表列表
@@ -248,9 +249,20 @@ export default {
       relieveAlarm: '/v3/alarm/relievealarm',//屏蔽告警
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
-      getFanList: '/v3/monitor/windturbine/datalist', // 风机实时数据列表
-      windturbine: '/v3/monitor/windturbine',  //风机实时数据
-      sequencechart: '/v3/monitor/windturbine/sequencechart'
+      getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      windturbine:'/v3/monitor/windturbine',  //风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart',
+
+      // 数据分析 
+      getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
+      getAvailableDeviceType: '/v3/wind/analysis/deviceTypeList', // 获取有测点的设备类型
+      getListHistory: '/v3/wind/analysis/history/devicedata', // 历史数据 - 列表数据
+      getAllHistory: '/v3/wind/analysis/history/devicechart', // 历史趋势 - 图表数据
+      exportHistory: '/v3/wind/analysis/history/export', // 导出历史数据
+      getSecendInteral: '/v3/wind/analysis/second', // 可用时间间隔
+      getRealtimeChart: '/v3/wind/analysis/devicechart', // 实时数据 - 图表
+      getRealtimeList: '/v3/wind/analysis/devicedata', // 实时数据 - 表格
+      exportRealtime: '/v3/wind/analysis/export', // 导出实时数据
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
@@ -305,6 +317,7 @@ export default {
       getDevicecontrast: '/v3/performance/deviceanalysis/devicecontrast',// 设备对比数据
       getStationcontrast: '/v3/performance/deviceanalysis/stationcontrast',// 设备电站对比数据
       getStationcontrastmore: '/v3/performance/deviceanalysis/stationcontrastmore', // 设备对比(多电站)
+      getEleDeviceData:'/v3/performance/deviceanalysis/devicemodeandtype',//查询集电线路下的设备型号和设备类型数据
       //通用报表
       dailyreport: 'v3/performance/dailyreport',
       faultReport: 'v3/performance/generalreport/fault',

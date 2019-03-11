@@ -30,7 +30,14 @@ class DeviceManageList extends Component {
     })
   }
   showDeviceDetail=(record)=>{
+    this.props.getStationDeviceDetail({
+      deviceFullCode: record.deviceFullCode,
+      selectedStationIndex:record.key,
+    })
     this.props.changeDeviceManageStore({showPage:'detail'})
+  }
+  showDeviceEdit=(record)=>{
+    this.props.changeDeviceManageStore({showPage:'edit'})
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
       selectedStationIndex:record.key,
@@ -48,6 +55,7 @@ class DeviceManageList extends Component {
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
+      render: (text, record) =>(<span className={styles.deviceNameStyle} onClick={()=>this.showDeviceDetail(record)} >{text}</span>)
       },{
         title: '设备类型',
         dataIndex: 'deviceTypeName',
@@ -83,7 +91,7 @@ class DeviceManageList extends Component {
         title: '编辑',
         dataIndex: 'edit',
         key: 'edit',
-        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={()=>this.showDeviceDetail(record)}></span>)
+        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={()=>this.showDeviceEdit(record)}></span>)
       }
     ];
     const { loading, deviceList } = this.props;

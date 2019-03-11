@@ -19,6 +19,7 @@ export const performanceAnalysisAction = {
   getPerformanceContrast: Symbol('getPerformanceContrast'),//发电性能对比
   getFaultContrast: Symbol('getFaultContrast'),//故障情况对比
   getDeviceModels:Symbol('getDeviceModels'),//两种逆变器
+  getEleDeviceData:Symbol('getEleDeviceData'),//集电线路下的设备型号和设备类型数据
 
 
 
