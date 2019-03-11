@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from "./manufacturers.scss";
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { dataFormats } from '../../../../utils/utilFunc';
+import { hidden } from "ansi-colors";
 
 /* 
   1 必填   graphId 图表的id名
@@ -264,9 +265,15 @@ class Charts extends React.Component {
                     rotate: -45,
                     height: 10,
                     width: 10,
-                    formatter: (value) => {
-                        return value && value.length > 6 && value.substring(0, 6) + '...' || value
-                    }
+                    formatter: (value, index) => {
+                        const hasChinese = /[\u4e00-\u9fa5]+/.test(value) // 展示文字是否有汉字
+                        let maxText = hasChinese ? 6 : 10;// 中文最多展示4字, 英文12,超出展示...
+                        let showText = value;
+                        if (value.length > maxText) {
+                            showText = `${showText.substring(0, maxText)}...`;
+                        }
+                        return showText
+                    },
                 },
                 axisTick: {
                     show: false,
