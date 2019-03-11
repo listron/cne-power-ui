@@ -21,7 +21,7 @@ class PerformanceAnalysisFilter extends Component {
     startDate: PropTypes.string,
     endDate: PropTypes.string,
     deviceModels: PropTypes.array,
-    stationCode: PropTypes.number,
+    stationCode: PropTypes.any,
     getEleDeviceData: PropTypes.func,
     contrastSwitch: PropTypes.bool,
     contrastEndDate: PropTypes.string,
