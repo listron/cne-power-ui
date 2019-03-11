@@ -53,7 +53,7 @@ class LostGenTable extends Component {
         if (`${e.id}` === recordId) {
           e[recordType] = recordType === 'startTime' ? startMoment : endMoment;
         }
-        return e
+        return e;
       })
       changeFaultList(newFaultGenList);
     } else { // 时间规范 => 关闭错误

@@ -176,7 +176,7 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           const { id } = record;
           return (<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}>
-            <i className="iconfont icon-del" ></i>
+            <i className="iconfont icon-del"></i>
           </span>)
         }
       }

@@ -197,7 +197,7 @@ class LimitAddForm extends Component {
             </Form.Item> 
           </Col>
         </Row>
-        <Row className={styles.deviceSelect} >
+        <Row className={styles.deviceSelect}>
           <Col span={24}>
             <Form.Item label="设备名称" className={styles.deviceSelect} >
               {getFieldDecorator('deviceName', {

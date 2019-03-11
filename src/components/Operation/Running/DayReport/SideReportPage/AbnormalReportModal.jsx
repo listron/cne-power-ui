@@ -160,13 +160,13 @@ class AbnormalReportModal extends Component {
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
-      },0);
+      }, 0);
       const limitLostPower = limitGenList.reduce((pre,cur) => { // 限电损失
         if(cur.lostPower || cur.lostPower === 0){
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
-      },0);
+      }, 0);
       const tmpDefaultList = theryGen - realityGen - faultLostPower - limitLostPower;
       tmpDefaultList > 0 && (defaultLimitLost = tmpDefaultList.toFixed(2));
     }
@@ -207,7 +207,7 @@ class AbnormalReportModal extends Component {
         /> }
         <div className={styles.addLimitGenHeader} >
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
+          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}>添加</Button>
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable
           stationDeviceTypes={stationDeviceTypes}

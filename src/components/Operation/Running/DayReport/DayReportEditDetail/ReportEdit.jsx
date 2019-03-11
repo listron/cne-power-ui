@@ -151,16 +151,16 @@ class ReportEdit extends Component {
       const decimalData = requiredValue && `${requiredValue}`.split('.')[1];
       const paramPointLength = decimalData ? decimalData.length : 0;
       const dataFormatError = (requiredValue && isNaN(requiredValue)) || paramPointLength > maxPointLength; // 数据格式错误;
-      if(configRequired && !requiredValue && requiredValue !== 0){ // 必填项未填
+      if (configRequired && !requiredValue && requiredValue !== 0) { // 必填项未填
         errorText = `${updateDayReportDetail.stationName}${config.configText}未填写!`;
         return true;
-      }else if(dataFormatError){ // 填写数据不规范
+      } else if(dataFormatError) { // 填写数据不规范
         errorText = `${updateDayReportDetail.stationName}${config.configText}请填写数字,不超过${maxPointLength}位小数!`;
         return true;
       }
       return false;
     })
-    faultList.forEach(e=>{
+    faultList.forEach(e => {
       !e.process && (errorText = '损失电量进展未填写!');
       (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间')
       e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
@@ -168,16 +168,16 @@ class ReportEdit extends Component {
       let decimalLength = decimal && decimal.length;
       if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }
     })
-    limitList.forEach(e=>{
+    limitList.forEach(e => {
       e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
       (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间')
       let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
       let decimalLength = decimal && decimal.length;
       if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }
     })
-    if(errorText){ // 数据错误存在，提示
+    if (errorText) { // 数据错误存在，提示
       this.messageWarning(errorText);
-    }else{ // 无错误，提交信息。
+    } else { // 无错误，提交信息。
       const newFaultList = faultList?faultList.map(e=>{
         e.id > 0? null: delete e.id;
         delete e.stationCode;

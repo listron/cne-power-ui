@@ -247,7 +247,7 @@ class SideReportPage extends Component {
             <span><i>*</i>日报时间</span>
             <DatePicker onChange={this.selectReportTime} value={moment(reportDay)} disabledDate={this.disabledDate} />
           </div>
-          <div className={styles.selectStation} >
+          <div className={styles.selectStation}>
             <span><i>*</i>电站选择</span>
             <StationSelect 
               value={reportStation}

@@ -270,7 +270,6 @@ class LostAddForm extends Component {
                         }
                       });
                       timeUnable && callback('结束时间必须大于开始时间');
-
                     }
                     callback();
                   } 
