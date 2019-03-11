@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from "./manufacturers.scss";
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { dataFormats } from '../../../../utils/utilFunc';
-import { hidden } from "ansi-colors";
 
 /* 
   1 必填   graphId 图表的id名
