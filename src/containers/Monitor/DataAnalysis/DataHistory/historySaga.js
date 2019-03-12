@@ -135,7 +135,7 @@ function *getListHistory(action) { // 表格数据获取
             pageSize
           },
           tableLoading: false,
-          partHistory: response.data.data[0] || {},
+          partHistory: response.data.data || {},
         }
       })
     } else {

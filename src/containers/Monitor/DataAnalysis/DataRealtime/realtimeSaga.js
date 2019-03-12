@@ -240,7 +240,7 @@ function *getRealtimeList(action) { // 实时表格数据获取
   }
   yield fork(realListInterval, action);
   yield delay(5000); // 阻塞5秒
-  yield fork(getRealtimeList,  { ...action, firtQuery: false });
+  realtimeListInterval = yield fork(getRealtimeList,  { ...action, firtQuery: false });
 }
 
 function *stopRealtimeList() { // 停止列表数据定时请求
@@ -253,7 +253,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   const { payload } = action;
   try {
     const { enterpriseId } = payload;
-    const url = '/mock/monitor/dataAnalysisSecendInteral'; // `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}`;
+    const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}` // '/mock/monitor/dataAnalysisSecendInteral'
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;
