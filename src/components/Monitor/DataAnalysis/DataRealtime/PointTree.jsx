@@ -68,12 +68,12 @@ class PointTree extends Component {
       if (e.devicePointIecCode) { // 有分组信息
         PointsNodes.push(
           <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
-            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)}
+            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)}
           </TreeNode>
         )
       } else { // 无分组信息
         tmpNoneGroupNodes.push(
-          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)
         )
       }
     });
