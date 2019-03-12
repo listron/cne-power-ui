@@ -183,10 +183,10 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/" exact component={Login} />
           <Route path="/login" exact component={Login} />
           <Route path="/userAgreement" exact component={Agreement} />
           <Route path="/contactUs" exact component={Contact} />
+          <Redirect to="/login" />
         </Switch>
       );
     }
