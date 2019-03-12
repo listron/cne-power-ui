@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input, Icon } from 'antd';
+import { Form, Input, Icon } from 'antd';
 import styles from './reportDetail.scss';
 import moment from 'moment';
 

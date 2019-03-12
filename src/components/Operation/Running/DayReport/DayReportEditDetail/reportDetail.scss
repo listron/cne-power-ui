@@ -37,7 +37,7 @@
         border: 1px solid $themeColor;
         color: $themeColor;
         margin-right: 10px;
-        &:hover,&:focus{
+        &:hover, &:focus{
           box-shadow: 0 0 2px $themeColor;
         }
       }

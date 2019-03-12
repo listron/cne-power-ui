@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Table, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
+import { message } from 'antd';
 
 class LimitGenTable extends Component {
   static propTypes = {
@@ -15,10 +16,51 @@ class LimitGenTable extends Component {
     reportDate: PropTypes.string,
   }
 
-  constructor(props){
-    super(props);
-    this.state = {
+  onStartChange = (recordId, startMoment) => {
+    const { form } = this.props;
+    const endTime = form.getFieldValue(`${recordId}_endTime`);
+    this.timeEnableCheck(recordId, 'startTime', startMoment, endTime);
+    return startMoment;
+  }
+  
+  onEndChange = (recordId, endMoment) => {
+    const { form } = this.props;
+    const startTime = form.getFieldValue(`${recordId}_startTime`);
+    this.timeEnableCheck(recordId, 'endTime', startTime, endMoment);
+    return endMoment;
+  }
 
+  timeEnableCheck = (recordId, recordType, startMoment, endMoment) => { // recordType: startTime || endTime
+    const { form, limitGenList, changeLimitList } = this.props;
+    const enableInfo = { // 时间信息规范无误时的设置项。
+      [`${recordId}_startTime`]: {
+        value: startMoment,
+        errors: null
+      },
+      [`${recordId}_endTime`]: {
+        value: endMoment,
+        errors: null
+      }
+    }
+    if (!startMoment || !endMoment){ // 有时间未填写 => 允许
+      form.setFields(enableInfo);
+    } else if (startMoment > endMoment) { // 时间不规范 错误提示
+      message.error('结束时间必须大于开始时间');
+      form.setFields({
+        [`${recordId}_${recordType}`]: {
+          value: recordType === 'startTime' ? startMoment : endMoment,
+          errors: [new Error('结束时间必须大于开始时间')]
+        }
+      });
+      const newFaultGenList = limitGenList.map(e => {
+        if (`${e.id}` === recordId) {
+          e[recordType] = recordType === 'startTime' ? startMoment : endMoment;
+        }
+        return e
+      })
+      changeLimitList(newFaultGenList);
+    } else { // 时间规范 => 关闭错误
+      form.setFields(enableInfo);
     }
   }
 
@@ -84,7 +126,13 @@ class LimitGenTable extends Component {
               {getFieldDecorator(`${id}_startTime`, {
                 initialValue: startTime,
               })(
-                <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+                <DatePicker
+                  placeholder="开始时间"
+                  style={{width: '100%'}}
+                  showTime={{format: 'HH:mm'}}
+                  onChange={(startMoment) => this.onStartChange(`${id}`, startMoment)}
+                  format="YYYY-MM-DD HH:mm"
+                />
               )}
             </Form.Item>
           )
@@ -98,7 +146,13 @@ class LimitGenTable extends Component {
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
             })(
-              <DatePicker placeholder="结束时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"   />
+              <DatePicker
+                placeholder="结束时间"
+                style={{width: '100%'}}
+                showTime={{format: 'HH:mm'}}
+                format="YYYY-MM-DD HH:mm"
+                onChange={(endMoment) => this.onEndChange(`${record.id}`, endMoment)}
+              />
             )}
           </Form.Item>)
         }
@@ -122,7 +176,7 @@ class LimitGenTable extends Component {
         render : (text, record) => {
           const { id } = record;
           return (<span onClick={()=>this.removeListInfo(id)} className={styles.removeFaultInfo}>
-            <i className="iconfont icon-del" ></i>
+            <i className="iconfont icon-del"></i>
           </span>)
         }
       }
@@ -132,7 +186,6 @@ class LimitGenTable extends Component {
 
   render(){
     const { limitGenList } = this.props;
-    
     return (
       <Form>
         <Table 
@@ -147,7 +200,7 @@ class LimitGenTable extends Component {
 }
 
 export default Form.create({ // 上述form值变化调整对应数据并保存对应数据。
-  onValuesChange:(props, changedValues, allValues)=>{
+  onValuesChange: (props, changedValues, allValues) => {
     const { limitGenList, changeLimitList } = props;
     const changeArr = Object.entries(changedValues)[0] || [];
     const recordBase = changeArr[0] || '';
