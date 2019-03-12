@@ -7,6 +7,10 @@
     border-bottom: 1px solid $promptColor;
 }
 
+.nextButton{
+    margin-left: 156px;
+    width: 200px;
+  }
 .deviceSide {
     display: flex;
     flex-direction: column;
@@ -21,9 +25,10 @@
         width: 198px;
       }
     }
-    .nextButton{
-      margin-left: 200px;
+    .unitStyle{
+      margin-left: 8px;
     }
+   
     .addDevice,
     .detailDevice,
     .editDevice {
@@ -170,8 +175,12 @@
                 .defaultConfigStyles {
                     margin: 12px 0;
                 }
+                .unitStyle{
+                    margin-left: 8px;
+                }
             }
         }
+       
     }
     .detailDevice {
         .detailTop {
