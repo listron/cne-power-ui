@@ -205,9 +205,48 @@
       }
     }
   }
+  :global{
+    .ant-table {
+      .ant-table-thead tr th{
+        height: 60px;
+      }
+      tr{
+        display: flex;
+        th, td{
+          padding: 8px;
+          line-height: 21px;
+        }
+      }
+      
+      .stationName, .deviceTypeName, .deviceModeName, .time, .deviceName, .points{
+        text-align: center;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .stationName {
+        flex: 0 0 118px;
+      }
+      .deviceTypeName{
+        flex: 0 0 108px;
+      }
+      .deviceModeName{
+        flex: 1 0 124px;
+      }
+      .time{
+        flex: 0 0 156px;
+      }
+      .deviceName, .points{
+        flex: 1 0 100px;
+      }
+      // .points{
+      //   text-align: right;
+      // }
+    }
+  }
+  
   .listTitle{
-    height: 60px;
-    padding: 9px;
     .text, .unit{
       line-height: 21px;
       text-align: center;
