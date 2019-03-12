@@ -42,11 +42,11 @@ class SingleDeviceContainer extends Component {
   }
   onOk = (selectdevice) => {
     console.log('selectdevice: ', selectdevice);
-    const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
-    this.props.changeAllDeviceStore({
-      deviceFullCode
-    })
-    this.onChangeFilter({ deviceFullCode })
+    // const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
+    // this.props.changeSingleDeviceStore({
+    //   deviceFullCode
+    // })
+    // this.onChangeFilter({ deviceFullCode })
 
   }
   onSwitchChange = (checked) => {
@@ -108,8 +108,9 @@ class SingleDeviceContainer extends Component {
                 deviceTypeCode={101}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
-                multiple={true}
+                // multiple={true}
                 deviceShowNumber={true}
+                // value={[{}]}
                 holderText={'请选择风机'}
               />
 

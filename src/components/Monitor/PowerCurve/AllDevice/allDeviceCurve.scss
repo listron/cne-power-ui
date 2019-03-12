@@ -5,6 +5,13 @@
   flex:1;
   flex-direction: column;
   background: #fff;
+  .graphStyle{
+    display: flex;
+    flex:1;
+    .powerCurveChart{
+      width: 100%;
+    }
+  }
   .filterStyle{
     display: flex;
     flex-direction: column;

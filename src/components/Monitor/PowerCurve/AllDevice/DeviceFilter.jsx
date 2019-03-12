@@ -82,7 +82,7 @@ class DeviceFilter extends Component {
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
             <StationSelect
-              data={stations.filter(e => e.stationType === 1)}
+              data={stations.filter(e => e.stationType === 0)}
               onOK={this.selectStation}
               style={{ width: '200px' }}
               value={stations.filter(e => e.stationCode === stationCode)}
