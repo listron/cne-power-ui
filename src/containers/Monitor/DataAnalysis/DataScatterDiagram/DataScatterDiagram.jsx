@@ -8,6 +8,7 @@ import { scatterDiagramAction } from './scatterDiagramAction';
 import ScatterDiagramSearch from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramSearch';
 // import ScatterDiagramHandle from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramHandle';
 // import ScatterDiagramChart from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramChart';
+import ScatterDiagramList from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramList';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
@@ -32,6 +33,7 @@ class DataScatterDiagram extends Component{
             <ScatterDiagramSearch {...this.props} />
             {/* <ScatterDiagramHandle {...this.props} /> */}
             {/* <ScatterDiagramChart {...this.props} /> */}
+            <ScatterDiagramList {...this.props} />
           </div>
           <Footer />
         </div>
@@ -49,13 +51,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) =>({
   changeScatterDiagramStore: payload => dispatch({ type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,payload }),
-  resetScatterDiagramStore: payload => dispatch({ type: scatterDiagramAction.RESETS_CATTERDIAGRAM_STORE,payload }),
+  resetScatterDiagramStore: payload => dispatch({ type: scatterDiagramAction.RESETS_SCATTERDIAGRAM_STORE,payload }),
   getSecendInterval: payload => dispatch({ type: scatterDiagramAction.getSecendInterval,payload }),
-  getPointInfo: payload => {
-    return dispatch({ type: scatterDiagramAction.getPointInfo,payload })
-    
-  },
-  getChartScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getchartscatterdiagram,payload }),
+  getPointInfo: payload => dispatch({ type: scatterDiagramAction.getPointInfo,payload }),
+  getChartScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getChartScatterDiagram,payload }),
   getListScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getListScatterDiagram,payload }),
   
 

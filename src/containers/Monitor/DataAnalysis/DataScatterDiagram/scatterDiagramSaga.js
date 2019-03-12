@@ -3,6 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { scatterDiagramAction } from './scatterDiagramAction';
 import { message } from 'antd';
+import Cookie from 'js-cookie';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
@@ -12,7 +13,6 @@ function *getPointInfo({payload = {} }) { // 获取可选测点
     const url = '/mock/monitor/dataAnalysis/dataAnalysisPoints';    // `${APIBasePath}${monitor.getXYaxis}/${deviceFullCode[0].deviceCode}`; 
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      console.log('data',response.data.data)
       yield put({
         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
         payload: {
@@ -33,7 +33,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   const { payload } = action;
   try {
     const { enterpriseId } = payload;
-    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
+    const { queryParam } = yield select(state => state.monitor.dataScatterDiagram.toJS());
     const url = '/mock/monitor/dataAnalysisSecendInteral';
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -57,8 +57,61 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   }
 }
 
+function *getListScatterDiagram(action) { // 获取表格数据
+  const { payload } = action;
+  const { queryParam, listParam } = payload;
+  const url = '/mock/monitor/dataAnalysis/listScatterDiagram';
+  try{
+    const { startTime, endTime, deviceFullCode } = queryParam;
+    yield put({
+      type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
+      payload: { queryParam, listParam, tableLoading: true }
+    })
+    
+    const response = yield call(axios.post, url, {
+      ...queryParam,
+      ...listParam,
+      deviceFullCode: deviceFullCode.map(e => e.deviceCode),
+      startTime: startTime.utc().format(),
+      endTime: endTime.utc().format(),
+      enterpriseId: Cookie.get('enterpriseId'),
+    });
+    const { totalCount = 0 } = response.data.data;
+    let { pageNum, pageSize } = listParam;
+    const maxPage = Math.ceil(totalCount / pageSize);
+    if (totalCount === 0) { // 总数为0时，展示0页
+      pageNum = 1;
+    } else if (maxPage < pageNum) { // 当前页已超出
+      pageNum = maxPage;
+    }
+    if (response.data.code === '10000') {
+      yield put({
+        type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
+        payload: {
+          listParam: {
+            ...listParam,
+            pageNum, 
+            pageSize
+          },
+          tableLoading: false,
+          partScatterDiagram: response.data.data.dataList || {},
+        }
+      })
+    } else {
+      throw response.data;
+    }
+  } catch(e) {
+    message.error('获取图表数据失败!');
+    yield put({
+      type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
+      payload: { tableLoading: false }
+    })
+    console.log(e);
+  }
+}
+
 export function* watchDataScatterDiagramMonitor() {
   yield takeLatest(scatterDiagramAction.getSecendInterval, getSecendInterval);
   yield takeLatest(scatterDiagramAction.getPointInfo, getPointInfo);
-  // yield takeLatest(scatterDiagramAction.getChartScatterDiagram, getChartScatterDiagram);
+  yield takeLatest(scatterDiagramAction.getListScatterDiagram, getListScatterDiagram);
 }

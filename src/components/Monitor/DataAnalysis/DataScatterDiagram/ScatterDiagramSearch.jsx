@@ -16,7 +16,19 @@ class ScatterDiagramSearch extends Component{
     changeScatterDiagramStore: PropTypes.func,
     getDeviceModel: PropTypes.func,
     getPointInfo: PropTypes.func,
+    selectStationType: PropTypes.number, // 选中的电站类型
+    xPointList: PropTypes.array,
+    yPointList: PropTypes.array,
   };
+
+  constructor(props){
+    super(props);
+    this.state = {
+     
+    }
+  }
+
+
 
   selectStation = (selectedStationInfo) => { // 选择电站
     const { getDeviceModel, changeScatterDiagramStore, queryParam, deviceTypeCode } = this.props;
@@ -52,12 +64,12 @@ class ScatterDiagramSearch extends Component{
     })
   }
 
-  selectPoints = (value) => { // 选择x轴测点
-    const { changeScatterDiagramStore,queryParam } = this.props;
-    const {devicePointCode} = queryParam;
-    if (devicePointCode.length > 0) {
-      console.log(456);
-    }
+  xSelectPoints = (value) => { // 选择x轴测点
+    const { changeScatterDiagramStore,queryParam,xPointList, yPointList  } = this.props;
+    const { devicePointCode } = queryParam;
+    // if (devicePointCode.length > 0) {
+      
+    // }
     changeScatterDiagramStore({
       queryParam:{
         ...queryParam,
@@ -67,10 +79,12 @@ class ScatterDiagramSearch extends Component{
   }
 
 
+
   render(){
-    const { queryParam, stations, deviceTypeCode, selectStationType, xPointList, yPointList, stationTypeCount} = this.props;
+    const { queryParam, stations, deviceTypeCode, selectStationType, xPointList, yPointList, } = this.props;
     const { stationCode, deviceFullCode, startTime, endTime, devicePointCode} = queryParam;
-    console.log(selectStationType);
+    const xPointSelectDisable = xPointList.length === 0; // 显示x轴测点
+    const yPointSelectDisable = yPointList.length === 0; // 显示y轴测点
     
     return(
       <div className={styles.scatterDiagramSearch}>
@@ -78,6 +92,7 @@ class ScatterDiagramSearch extends Component{
           <div className={styles.stationSelect}>
             <span className={styles.text}>选择电站</span>
             <StationSelect 
+            holderText={'请选择'}
             data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
             onOK={this.selectStation}
             value={stations.filter(e => e.stationCode === stationCode)}
@@ -86,6 +101,7 @@ class ScatterDiagramSearch extends Component{
           <div className={styles.deviceSelect}>
             <span className={styles.text}>选择设备</span>
             <DeviceSelect 
+            holderText={'请选择'}
             disabled={!deviceTypeCode}
             stationCode={stationCode}
             value={deviceFullCode}
@@ -105,12 +121,12 @@ class ScatterDiagramSearch extends Component{
             />
           </div>
           <div className={styles.xPointSelect}>
-            <span className={styles.text}>x轴测点</span>
+            <span className={styles.text}>X轴测点</span>
             <Select 
             className={styles.pointSelect} 
-            onChange={this.selectPoints}  
-            placeholder="请选择x轴测点" 
-            disabled={!deviceFullCode}>
+            onChange={this.xSelectPoints}  
+            placeholder="请选择" 
+            disabled={xPointSelectDisable}>
               <Option key={''} value={''}>{'全部测点'}</Option>
               {xPointList.map(e=>{
                 if(!e){ return null; }
@@ -119,12 +135,12 @@ class ScatterDiagramSearch extends Component{
             </Select>
           </div>
           <div className={styles.xPointSelect}>
-            <span className={styles.text}>y轴测点</span>
+            <span className={styles.text}>Y轴测点</span>
             <Select 
             className={styles.pointSelect} 
-            onChange={this.selectPoints} 
-            placeholder="请选择y轴测点" 
-            disabled={!deviceFullCode}>
+            onChange={this.ySelectPoints} 
+            placeholder="请选择" 
+            disabled={yPointSelectDisable}>
               <Option key={''} value={''}>{'全部测点'}</Option>
               {yPointList.map(e=>{
                 if(!e){ return null; }

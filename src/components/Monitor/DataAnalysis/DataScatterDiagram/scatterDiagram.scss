@@ -4,7 +4,7 @@
   padding: 20px 32px;
   display: flex;
   flex-wrap: wrap;
-  .stationSelect,.deviceSelect,.xPointSelect{
+  .stationSelect,.deviceSelect,.xPointSelect,.yPointSelect{
     flex: 0 0 25%;
     display: flex;
     line-height: 40px;
@@ -14,6 +14,13 @@
       flex: 0 0 96px;
       text-align: right;
       margin-right: 8px;
+    }
+  }
+  .xPointSelect,.yPointSelect{
+    :global{
+      .ant-select{
+        width: 198px;
+      }
     }
   }
   .timeSelect{
@@ -34,3 +41,11 @@
     }
   }
 } 
+
+.scatterDiagramList{
+  padding: 20px 32px;
+  .pagination{
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

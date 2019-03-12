@@ -239,14 +239,14 @@ module.exports = [
       message: '请求成功',
       data: {
         total: 9,
-        list: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
+        dataList: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
           deviceName: `测试设备${e}`,
           stationName: `电站${e * e}`,
           deviceTypeName: `类型${e * 10}`,
           deviceModeName: `型号${e * 9}`,
           time: `${e ** e}`,
-          speed: `类型${e * 10}`,
           power: `${e ** e / 8}`,
+          speed: `${e * 2}`,
         }))
       },
       serviceCode: '3.0'
@@ -261,12 +261,12 @@ module.exports = [
       data: {
         xPoint: [1, 2, 3, 4].map(e => ({
           devicePointCode: `${e}`,
-          devicePointName: `x测点${e * 2}`,
+          devicePointName: `测点${e * 2}`,
           devicePointUnit:  `m/s`
         })),
         yPoint: [1, 2, 3, 4].map(e =>({
           devicePointCode: `${e}`,
-          devicePointName: `y测点${e * 2}`,
+          devicePointName: `测点${e * 2}`,
           devicePointUnit:  `m/s`
         })),
       }
