@@ -85,6 +85,10 @@
 }
 
 .deviceManageList{ // 设备表格区
+  .deviceNameStyle{
+    cursor: pointer;
+    text-decoration: underline;
+  }
   border-top: 1px solid $promptColor;
   :global{
     .ant-table{

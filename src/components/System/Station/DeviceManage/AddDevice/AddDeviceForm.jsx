@@ -194,6 +194,7 @@ class AddDeviceForm extends Component {
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode')(
                   <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
+                  <Option key={'all'} value={''}>全部关联设备</Option>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; } else {
                         return <Option key={e.deviceFullCode} value={e.deviceFullCode}>{e.deviceName}</Option>

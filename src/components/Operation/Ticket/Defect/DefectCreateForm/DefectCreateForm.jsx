@@ -232,7 +232,7 @@ class TmpForm extends Component {
           <FormItem label="设备名称" colon={false}>
             {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
-              initialValue: defectDetail && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || [],
+              initialValue: defectDetail.deviceName && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || null,
             })(
               <DeviceSelect
                 disabled={deviceTypeCode ? false : true}
