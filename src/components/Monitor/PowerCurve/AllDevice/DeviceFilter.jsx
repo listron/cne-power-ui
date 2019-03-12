@@ -4,6 +4,8 @@ import { Select, DatePicker, Button, Icon } from 'antd';
 import moment from 'moment';
 import styles from "./allDeviceCurve.scss";
 import StationSelect from '../../../Common/StationSelect';
+import DeviceSelect from '../../../Common/DeviceSelect/index';
+
 const { Option } = Select;
 const RangePicker = DatePicker.RangePicker;
 class DeviceFilter extends Component {
@@ -12,25 +14,31 @@ class DeviceFilter extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  onOk = (selectdevice) => {
+    console.log('selectdevice: ', selectdevice);
+    const deviceFullCode=selectdevice.map((e,i)=>e.deviceCode);
+    this.props.changeAllDeviceStore({
+      deviceFullCode
+    })
+
+
+  }
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeAllDeviceStore } = this.props;
+    const { getDeviceModel, changeAllDeviceStore } = this.props;
     const { stationCode } = selectedStationInfo[0];
-    getStationDeviceTypes({ // 设备类型
+    getDeviceModel({ // 风电设备类型下的设备编号
       stationCodes: stationCode,
+      deviceTypeCode: 101,
     });
     console.log(stationCode);
     changeAllDeviceStore({
-      stationCode
+      stationCode, deviceTypeCode: 101,
     })
 
 
   }
-  selectDeviceType = (selectdevice) => {//设备选择
-    console.log('selectdevice: ', selectdevice);
-    this.props.changeAllDeviceStore({
-      deviceFullCode: selectdevice
-    })
-  }
+  
+ 
   seekDeviceData = () => {//查询按钮
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
@@ -62,17 +70,19 @@ class DeviceFilter extends Component {
     this.selectShowType('list');
   }
   render() {
-    const { stationDeviceTypes, stations, stationCode, deviceTypeCode, deviceShowType } = this.props;
-    const test1=350;
-    const test2=202;
-    const test3='2019-03-07~2019-03-08';
+    const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType,deviceFullCode } = this.props;
+    console.log('stationCode: ', stationCode);
+    console.log('windDeviceMode: ', windDeviceMode);
+    const test1 = 350;
+    const test2 = 202;
+    const test3 = '2019-03-07~2019-03-08';
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
           <div className={styles.stationSelect}>
             <span className={styles.text}>电站名称</span>
             <StationSelect
-              data={stations}
+              data={stations.filter(e => e.stationType === 1)}
               onOK={this.selectStation}
               style={{ width: '200px' }}
               value={stations.filter(e => e.stationCode === stationCode)}
@@ -80,17 +90,18 @@ class DeviceFilter extends Component {
           </div>
           <div className={styles.typeSelect}>
             <span className={styles.text}>选择设备</span>
-            <Select
-              style={{ width: '200px' }}
-              onChange={this.selectDeviceType}
-              value={deviceTypeCode}
-              placeholder="请选择风机"
-              disabled={stationDeviceTypes.length === 0}
-            >
-              {stationDeviceTypes.map(e => (
-                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
-              ))}
-            </Select>
+
+            <DeviceSelect
+              disabled={+stationCode ? false : true}
+              stationCode={+stationCode}
+              deviceTypeCode={101}
+              style={{ width: 'auto', minWidth: '198px' }}
+              onOK={this.onOk}
+              multiple={true}
+              deviceShowNumber={true}
+              holderText={'请选择'}
+              value={deviceFullCode}
+            />
           </div>
           <div className={styles.timeSelect}>
             <span className={styles.text}>时间选择</span>

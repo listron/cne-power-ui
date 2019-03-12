@@ -60,12 +60,12 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => ({
   changeAllDeviceStore: payload => dispatch({ type: allDeviceCurveAction.changeAllDeviceStore, payload }),
-  getStationDeviceTypes: params => dispatch({
-    type: commonAction.getStationDeviceTypes,
+  getDeviceModel: params => dispatch({
+    type: commonAction.getDeviceModel,
     payload: {
       params, 
-      deviceTypeAction: allDeviceCurveAction.GET_ALLDEVICECURVE_SUCCESS,
-      resultName: 'stationDeviceTypes'
+      actionName: allDeviceCurveAction.changeAllDeviceStore,
+      resultName: 'windDeviceMode'
     }
   }),
   getAllDeviceCurveData:payload => dispatch({ type: allDeviceCurveAction.getAllDeviceCurveData, payload }),

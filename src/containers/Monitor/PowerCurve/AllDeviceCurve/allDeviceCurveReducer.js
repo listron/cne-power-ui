@@ -3,14 +3,15 @@ import { allDeviceCurveAction } from './allDeviceCurveAction';
 const initState = immutable.fromJS({
   stationTypeTabs:'0',//默认风
   deviceShowType:'graph',//默认展示图形
-  stationCode:'',
+  stationCode:null,
+  deviceTypeCode:101,
   deviceFullCode:[],
   startTime:'',
   endTime:'',
 
   allDeviceCurveData:[],//多设备图表数据
   powerCurveListData:[],//table列表数据
-  stationDeviceTypes: [], // 电站下可选设备类型
+  windDeviceMode: [], // 电站下风电机组可选设备型号
   pageSize:10,
   pageNum:1,
   total:0,
