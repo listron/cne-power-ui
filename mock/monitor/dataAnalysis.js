@@ -252,5 +252,25 @@ module.exports = [
       serviceCode: '3.0'
     },
     error: {}
-  }
+  },{ // 数据分析 - 散点图 - x/y轴测点数据
+    api: '/mock/monitor/dataAnalysis/dataAnalysisPoints',
+    method: 'get',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        xPoint: [1, 2, 3, 4].map(e => ({
+          devicePointCode: `${e}`,
+          devicePointName: `x测点${e * 2}`,
+          devicePointUnit:  `m/s`
+        })),
+        yPoint: [1, 2, 3, 4].map(e =>({
+          devicePointCode: `${e}`,
+          devicePointName: `y测点${e * 2}`,
+          devicePointUnit:  `m/s`
+        })),
+      }
+      }
+    }
+  
 ]

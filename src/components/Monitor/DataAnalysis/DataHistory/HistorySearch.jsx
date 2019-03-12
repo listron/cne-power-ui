@@ -155,6 +155,8 @@ class HistorySearch extends Component {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
     } = this.props;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
+    console.log(stations)
+  
     return (
       <div className={styles.historySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>

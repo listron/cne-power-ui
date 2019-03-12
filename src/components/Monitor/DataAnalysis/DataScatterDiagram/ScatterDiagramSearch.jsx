@@ -18,7 +18,6 @@ class ScatterDiagramSearch extends Component{
     getPointInfo: PropTypes.func,
   };
 
-
   selectStation = (selectedStationInfo) => { // 选择电站
     const { getDeviceModel, changeScatterDiagramStore, queryParam, deviceTypeCode } = this.props;
     const { stationCode } = selectedStationInfo[0];
@@ -32,57 +31,54 @@ class ScatterDiagramSearch extends Component{
         ...queryParam,
         stationCode,
         deviceFullCode: [],
-        xPoint: [],
-        yPoint: [],
+        devicePointCode: [],
+        xPoint:[],
       }
     })
   }
 
   selectedDevice = (devices) => { // 选择设备
     const { getPointInfo, changeScatterDiagramStore, queryParam } = this.props;
+    getPointInfo({ // 测点
+      deviceFullCode: devices,
+    });
     changeScatterDiagramStore({
       queryParam: {
         ...queryParam,
         deviceFullCode: devices,
-        xPoint: [],
-        yPoint: [],
+        devicePointCode: '',
+        xPoint:[],
       }
     })
-    getPointInfo({ 
-      deviceFullCode: devices,
-     });
-    
   }
 
-  // timeChange = () => { // 选择时间
+  selectPoints = (value) => { // 选择x轴测点
+    const { changeScatterDiagramStore,queryParam } = this.props;
+    const {devicePointCode} = queryParam;
+    if (devicePointCode.length > 0) {
+      console.log(456);
+    }
+    changeScatterDiagramStore({
+      queryParam:{
+        ...queryParam,
+        devicePointCode: value,
+      }
+    })
+  }
 
-  // }
-
-  // scatterDiagramDataFetch = () => {
-  //   const { changeScatterDiagramStore, queryParam } = this.props;
-  //   const { devicePoint } = queryParam;
-  //   if (devicePoint.length > 0) {
-      
-  //   }
-  // }
-
-  // selectPoints = (value) => { // 选择x轴测点
-  //   const { changeScatterDiagramStore,devicePointCode } = this.props;
-  //   changeScatterDiagramStore({
-  //     devicePointCode: value,
-  //   })
-  // }
 
   render(){
-    const { queryParam, stations, deviceTypeCode } = this.props;
-    const { stationCode, deviceFullCode, startTime, endTime, xPoint, yPoint } = queryParam;
+    const { queryParam, stations, deviceTypeCode, selectStationType, xPointList, yPointList, stationTypeCount} = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, devicePointCode} = queryParam;
+    console.log(selectStationType);
+    
     return(
       <div className={styles.scatterDiagramSearch}>
         <div className={styles.searchPart}>
           <div className={styles.stationSelect}>
             <span className={styles.text}>选择电站</span>
             <StationSelect 
-            data={stations}
+            data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
             onOK={this.selectStation}
             value={stations.filter(e => e.stationCode === stationCode)}
             />
@@ -108,11 +104,15 @@ class ScatterDiagramSearch extends Component{
               value={[startTime, endTime]}
             />
           </div>
-          {/* <div className={styles.xPointSelect}>
+          <div className={styles.xPointSelect}>
             <span className={styles.text}>x轴测点</span>
-            <Select className={styles.pointSelect} onChange={this.selectPoints} value={deviceFullCode} placeholder="请选择x轴测点" disabled={!deviceFullCode}>
+            <Select 
+            className={styles.pointSelect} 
+            onChange={this.selectPoints}  
+            placeholder="请选择x轴测点" 
+            disabled={!deviceFullCode}>
               <Option key={''} value={''}>{'全部测点'}</Option>
-              {xPoint.map(e=>{
+              {xPointList.map(e=>{
                 if(!e){ return null; }
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
@@ -120,14 +120,18 @@ class ScatterDiagramSearch extends Component{
           </div>
           <div className={styles.xPointSelect}>
             <span className={styles.text}>y轴测点</span>
-            <Select className={styles.pointSelect} onChange={this.selectPoints} value={deviceFullCode} placeholder="请选择y轴测点" disabled={!deviceFullCode}>
+            <Select 
+            className={styles.pointSelect} 
+            onChange={this.selectPoints} 
+            placeholder="请选择y轴测点" 
+            disabled={!deviceFullCode}>
               <Option key={''} value={''}>{'全部测点'}</Option>
-              {yPoint.map(e=>{
+              {yPointList.map(e=>{
                 if(!e){ return null; }
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
             </Select>
-          </div> */}
+          </div>
         </div>
       </div>
     )

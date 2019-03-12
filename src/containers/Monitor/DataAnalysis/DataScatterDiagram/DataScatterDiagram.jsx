@@ -6,7 +6,7 @@ import { commonAction } from '../../../alphaRedux/commonAction';
 
 import { scatterDiagramAction } from './scatterDiagramAction';
 import ScatterDiagramSearch from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramSearch';
-import ScatterDiagramHandle from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramHandle';
+// import ScatterDiagramHandle from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramHandle';
 // import ScatterDiagramChart from '../../../../components/Monitor/DataAnalysis/DataScatterDiagram/ScatterDiagramChart';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
@@ -30,7 +30,7 @@ class DataScatterDiagram extends Component{
         <div className={styles.contentBox}>
           <div className={styles.scatterDiagramContent}>
             <ScatterDiagramSearch {...this.props} />
-            <ScatterDiagramHandle {...this.props} />
+            {/* <ScatterDiagramHandle {...this.props} /> */}
             {/* <ScatterDiagramChart {...this.props} /> */}
           </div>
           <Footer />
@@ -42,8 +42,8 @@ class DataScatterDiagram extends Component{
 
 const mapStateToProps = state => ({
   ...state.monitor.dataScatterDiagram.toJS(),
-  stations: state.common.get('stations').toJS(),
-  stationTypeCount: state.common.get('stationTypeCount'),
+  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  stationTypeCount: 'wind',
   enterpriseId: Cookie.get('enterpriseId'),
 })
 
@@ -53,6 +53,7 @@ const mapDispatchToProps = (dispatch) =>({
   getSecendInterval: payload => dispatch({ type: scatterDiagramAction.getSecendInterval,payload }),
   getPointInfo: payload => {
     return dispatch({ type: scatterDiagramAction.getPointInfo,payload })
+    
   },
   getChartScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getchartscatterdiagram,payload }),
   getListScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getListScatterDiagram,payload }),

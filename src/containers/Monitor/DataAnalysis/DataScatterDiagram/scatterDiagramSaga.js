@@ -6,21 +6,18 @@ import { message } from 'antd';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
-function *getPointInfo(action) { // 获取可选测点
-  const { payload } = action;
+function *getPointInfo({payload = {} }) { // 获取可选测点
   const { deviceFullCode } = payload;
-  console.log(payload);
-  console.log(deviceFullCode);
-  
-  const url = `${APIBasePath}${monitor.getXYaxis}/${payload.deviceFullCode}`; // '/mock/monitor/dataAnalysisPoints';
   try {
-    const response = yield call(axios.post, url, { deviceIds: deviceFullCode.map(e => e.deviceId) });
+    const url = '/mock/monitor/dataAnalysis/dataAnalysisPoints';    // `${APIBasePath}${monitor.getXYaxis}/${deviceFullCode[0].deviceCode}`; 
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      console.log('data',response.data.data)
       yield put({
         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
         payload: {
-          xPoint: response.data.data || [],
-          // yPoint: response.data.data || [],
+          xPointList: response.data.data.xPoint || [],
+          yPointList: response.data.data.yPoint || [],
         }
       })
     } else {

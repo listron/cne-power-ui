@@ -6,6 +6,7 @@ const initState = Immutable.fromJS({
   loading: false,
   selectStationType: null,// 选中的电站类型
   stationType: "", // 风-0，光-1
+  stationTypeCount: null,
   stationCode: null, // 选中的电站
   deviceTypeCode: '', // 选中的设备类型
   chartTime: null, // 记录chart表的数据时间
@@ -14,11 +15,14 @@ const initState = Immutable.fromJS({
     stationCode: null, // 选中的电站
     deviceFullCode: [], // 选中的设备
     deviceTypeName: '101',// 设备型号
+    devicePointCode: '', // 测点
     startTime: moment().startOf('day').subtract(1, 'day'),
     endTime: moment(),
-    xPoint: [], // 选中的x测点
-    yPoint: [], // 选中的y测点
+    xPoint:'',
+    yPoint:'',
   },
+  xPointList: [],
+  yPointList: [],
 })
 
 const dataScatterDiagram = (state = initState, action) => {
