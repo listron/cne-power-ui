@@ -5,7 +5,6 @@ import ShowAddComponentMode from './ShowAddComponentMode';
 import { Input, Form, DatePicker, Select, Checkbox, Row, Col } from 'antd';
 const FormItem = Form.Item;
 const { Option } = Select;
-
 class Confluence extends Component {
   static propTypes = {
   }
@@ -41,13 +40,14 @@ class Confluence extends Component {
     for (let i = 0; i < branchCount; i++) {
       branchCountArr.push(i + 1)
     }
-    const initComponentMode=addPvDeviceModeData.deviceModeCode?addPvDeviceModeData.deviceModeCode:null;
-    console.log('initComponentMode: ', initComponentMode);
+    const initComponentMode=addPvDeviceModeData.data?+addPvDeviceModeData.data:null;
+    const filterComponentModeId=pvDeviceModels.filter((e,i)=>(e.deviceModeCode===initComponentMode))[0];
+    const initValue=filterComponentModeId?filterComponentModeId.deviceModeId:null;
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('componentMode', {
-              initialValue: initComponentMode,
+              initialValue: initValue,
             })(
               <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
                 {pvDeviceModels.map(e => {

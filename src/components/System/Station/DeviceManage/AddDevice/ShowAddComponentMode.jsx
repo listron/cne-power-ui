@@ -24,10 +24,6 @@ class ShowAddComponentMode extends Component {
             deviceModeName: values.addComponentMode,
             manufacturer: values.addmanufacturerCom,
           })
-          this.props.getPvDevice({
-            stationCode:selectStation,
-            deviceTypeCode: '509',
-          })
           this.props.saveFormState(values)
           this.props.cancleDeviceModeModal()
         }
