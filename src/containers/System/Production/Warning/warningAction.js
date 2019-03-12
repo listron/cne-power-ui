@@ -11,6 +11,7 @@ export const warningAction = {
   getDetail: Symbol('getDetail'),// 预警配置 详情
   warnDelete: Symbol('warnDelete'),// 预警配置 删除
   getOtherPageDetail: Symbol('getOtherPageDetail'),//  查看上下详情
+  getPoints: Symbol('getPoints'),//  选取测点 过滤掉已预警的测点
 
   resetStore: Symbol('resetStore'), // 发起重置数据请求
   RESET_STORE: Symbol('RESET_STORE'), // 重置数据

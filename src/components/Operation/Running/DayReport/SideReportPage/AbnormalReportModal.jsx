@@ -49,6 +49,12 @@ class AbnormalReportModal extends Component {
       message.error('请先确认完成损失电量表单信息的填写!');
       return;
     }
+    const faultTimeError = faultGenList.find(e => e.startTime > e.endTime);
+    const limitTimeError = limitGenList.find(e => e.startTime > e.endTime);
+    if (faultTimeError || limitTimeError) {
+      message.error('结束时间必须大于开始时间');
+      return;
+    }
     const uploadParams = dayReportTotalInfoArr.map(info=>{
       if(info.dailyReport.stationCode === abnormalInfo.stationCode){
         const { dailyReport } = info;
@@ -154,13 +160,13 @@ class AbnormalReportModal extends Component {
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
-      },0);
+      }, 0);
       const limitLostPower = limitGenList.reduce((pre,cur) => { // 限电损失
         if(cur.lostPower || cur.lostPower === 0){
           return pre + parseFloat(cur.lostPower);
         }
         return pre;
-      },0);
+      }, 0);
       const tmpDefaultList = theryGen - realityGen - faultLostPower - limitLostPower;
       tmpDefaultList > 0 && (defaultLimitLost = tmpDefaultList.toFixed(2));
     }
@@ -201,7 +207,7 @@ class AbnormalReportModal extends Component {
         /> }
         <div className={styles.addLimitGenHeader} >
           <span>限电信息<Icon type="caret-right" theme="outlined" /></span>
-          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}  >添加</Button>
+          <Button disabled={addLimitFormShow} onClick={this.toAddGenLimit} icon="plus" className={styles.uploadGenLost}>添加</Button>
         </div>
         {(limitGenList && limitGenList.length > 0)? <LimitGenTable
           stationDeviceTypes={stationDeviceTypes}

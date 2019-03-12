@@ -16,9 +16,11 @@ class ScoreMain extends Component {
         getPvStionType: PropTypes.func,
         changeIsVaild: PropTypes.func,
         hasInitScore: PropTypes.bool,
+        reset: PropTypes.bool,
         edit: PropTypes.bool,
         reportType: PropTypes.string,
         isVaild: PropTypes.array,
+        resetStore: PropTypes.func,
     };
     constructor(props) {
         super(props);
@@ -36,9 +38,12 @@ class ScoreMain extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.reportType !== nextProps.reportType) { this.setState({ basicScore: nextProps.basicScore }) }
-        if (!this.props.basicScore && nextProps.basicScore) { this.setState({ basicScore: nextProps.basicScore }) }
-        if (this.props.reset && !nextProps.reset) { this.setState({ basicScore: nextProps.basicScore }) }
+        const { reportType, basicScore, reset, indexList } = nextProps;
+        if (this.props.reportType !== reportType || !this.props.basicScore && basicScore || this.props.reset && !reset) { this.setState({ basicScore, allData: indexList }) }
+    }
+
+    componentWillUnmount() {
+        this.props.resetStore(); // 重置数据
     }
 
     stationCheck = (e) => {// 电站切换

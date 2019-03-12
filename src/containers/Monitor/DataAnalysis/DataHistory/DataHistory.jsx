@@ -54,8 +54,8 @@ class DataHistory extends Component {
 
 const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
-  stations: state.common.get('stations').toJS(),
-  stationTypeCount: state.common.get('stationTypeCount'),
+  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  stationTypeCount: 'wind', // state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 
@@ -66,14 +66,7 @@ const mapDispatchToProps = (dispatch) => ({
   getChartHistory: payload => dispatch({ type: historyAction.getChartHistory, payload }),
   getListHistory: payload => dispatch({ type: historyAction.getListHistory, payload }),
   getSecendInterval: payload => dispatch({ type: historyAction.getSecendInterval, payload }),
-  getStationDeviceTypes: params => dispatch({
-    type: commonAction.getStationDeviceTypes,
-    payload: {
-      params, 
-      deviceTypeAction: historyAction.GET_HISTORY_SUCCESS,
-      resultName: 'stationDeviceTypes'
-    }
-  }),
+  getAvailableDeviceType: payload => dispatch({ type: historyAction.getAvailableDeviceType, payload }),
   downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
 });
 

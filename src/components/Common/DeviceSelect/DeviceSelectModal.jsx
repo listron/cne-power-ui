@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Select  } from 'antd';
+import { Modal, Select, Checkbox } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const { Option } = Select;
@@ -27,11 +27,12 @@ class DeviceSelectModal extends Component {
       modalDevices: [], // modal弹框中的所有设备。
       checkedDevice: [...props.checkedDevice], // 选中的设备。
       checkedMatrix: null, // 默认选中的方阵
+      checkAll:false,
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const {  filterDevices, deviceTypeCode, filterKey, partitions } = nextProps;
+    const { filterDevices, deviceTypeCode, filterKey, partitions } = nextProps;
     const prePartitions = this.props.partitions;
     let newState = { modalDevices: [...filterDevices] };
     if (filterKey.includes(deviceTypeCode) && (partitions.length > 0 && prePartitions.length === 0)) {
@@ -48,7 +49,7 @@ class DeviceSelectModal extends Component {
       checkedDevice: [...checkedDevice],
     });
   }
-  
+
   handleOK = () => {
     const { devices, deviceTypeCode, filterKey, changeCommonStore } = this.props;
     if (!filterKey.includes(deviceTypeCode)) { // 非必须分区展示的设备类型,弹框内数据需重置。
@@ -69,8 +70,8 @@ class DeviceSelectModal extends Component {
 
   matrixChange = partitionCode => { // 请求分区数据。
     const { stationCode, deviceTypeCode } = this.props;
-    this.setState({ checkedMatrix: partitionCode});
-    this.props.getDevices({ stationCode, deviceTypeCode, partitionCode }, 'filterDevices' );
+    this.setState({ checkedMatrix: partitionCode });
+    this.props.getDevices({ stationCode, deviceTypeCode, partitionCode }, 'filterDevices');
   }
 
   checkDevice = device => { // 点击选中设备
@@ -86,22 +87,32 @@ class DeviceSelectModal extends Component {
         this.setState({ checkedDevice });
       }
     } else { // 单选
-      this.setState({checkedDevice: [device] });
+      this.setState({ checkedDevice: [device] });
     }
   }
 
   clearDevice = () => { // 清除所有选中设备
-    this.setState({checkedDevice: []});
+    this.setState({ checkedDevice: [] ,checkAll:false});
   }
 
   cancelChecked = (deviceCode) => { // 取消单个选中设备。
     const { checkedDevice } = this.state;
     const newDevices = checkedDevice.filter(e => e.deviceCode !== deviceCode);
-    this.setState({checkedDevice: newDevices});
+    this.setState({ checkedDevice: newDevices });
+  }
+
+  allCheckDevice = (e) => { //全部选择
+    const checked=e.target.checked;
+    const {modalDevices}=this.state;
+    if(checked){
+      this.setState({ checkedDevice: modalDevices,checkAll:true })
+    }else{
+      this.setState({ checkedDevice: [],checkAll:false })
+    }
   }
 
   render() {
-    const { deviceModalShow, partitions } = this.props;
+    const { deviceModalShow, partitions, multiple } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
     return (
@@ -133,18 +144,34 @@ class DeviceSelectModal extends Component {
                 </Option>))}
               </Select>
             </div>
+            {multiple && <div className={styles.allCheckDevice}><Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>  </div>}
             <div className={styles.deviceList}>
               {modalDevices.map(e => {
                 const activeDevice = checkedDevice.find(info => info.deviceCode === e.deviceCode);
-                return (<span
-                  key={e.deviceCode}
-                  onClick={()=>this.checkDevice(e)}
-                  className={styles.eachDevice}
-                  style={{
-                    backgroundColor: activeDevice ? '#199475' : '#f1f1f1',
-                    color: activeDevice ? '#fff' : '#666',
-                  }}
-                >{e.deviceName}</span>)
+                return multiple ?
+                  (<div
+                    // onClick={()=>this.checkStation(m)} 
+                    key={e.deviceCode}
+                    title={e.stationName}
+                    style={{ 'backgroundColor': activeDevice ? '#199475' : '#f1f1f1' }}
+                    className={styles.eachDevice}>
+                    <Checkbox
+                      style={{ color: activeDevice ? '#fff' : '#666' }}
+                      onChange={() => this.checkDevice(e)}
+                      checked={activeDevice}
+                    >
+                      {e.deviceName}
+                    </Checkbox>
+                  </div>) :
+                  (<div
+                    key={e.deviceCode}
+                    onClick={() => this.checkDevice(e)}
+                    className={styles.eachDevice}
+                    style={{
+                      backgroundColor: activeDevice ? '#199475' : '#f1f1f1',
+                      color: activeDevice ? '#fff' : '#666',
+                    }}
+                  >{e.deviceName}</div>)
               })}
             </div>
             <div className={styles.checkedList}>
@@ -153,8 +180,8 @@ class DeviceSelectModal extends Component {
                 <span className={styles.clear} onClick={this.clearDevice}>清空</span>
               </div>
               <div className={styles.checkedInfo}>
-                {checkedDevice.map((e,index)=> (
-                  <span key={e.deviceCode+index} className={styles.eachDevice}>
+                {checkedDevice.map((e, index) => (
+                  <span key={e.deviceCode + index} className={styles.eachDevice}>
                     <span className={styles.name}>{e.deviceName}</span>
                     <span className={styles.cancel} onClick={() => this.cancelChecked(e.deviceCode)}>X</span>
                   </span>
@@ -165,7 +192,7 @@ class DeviceSelectModal extends Component {
         </Modal>
       </div>
     )
-    
+
   }
 }
 export default DeviceSelectModal;

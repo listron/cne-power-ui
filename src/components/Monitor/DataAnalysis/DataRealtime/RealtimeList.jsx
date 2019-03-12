@@ -25,6 +25,15 @@ class RealtimeList extends Component {
     })
   }
 
+  getTitle = (title, unit) => { // 标题调整。
+    return (
+      <div className={styles.listTitle}>
+        <div className={styles.text}>{title}</div>
+        <div className={styles.unit}>{unit ? `(${unit})` : ''}</div>
+      </div>
+    )
+  }
+
   render() {
     const { listRealtime, listParam, tableLoading } = this.props;
     const { totalCount, time, dataList = [] } = listRealtime;
@@ -32,26 +41,28 @@ class RealtimeList extends Component {
     const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
-        title: '设备名称',
+        title: this.getTitle('设备名称'),
         dataIndex: 'deviceName',
+        // className: 'deviceName',
       }, {
-        title: '电站名称',
+        title: this.getTitle('电站名称'),
         dataIndex: 'stationName',
+        // className: 'stationName',
       }, {
-        title: '设备类型',
+        title: this.getTitle('设备类型'),
         dataIndex: 'deviceTypeName',
+        // className: 'deviceTypeName',
       }, {
-        title: '型号',
+        title: this.getTitle('型号'),
         dataIndex: 'deviceModeName',
-      }, {
-        title: '风速',
-        dataIndex: 'speed',
+        // className: 'deviceModeName',
       }
     ];
     
     const pointColumn = pointData.map(e => ({
-      title: e.pointName, // e.pointUnit
+      title: this.getTitle(e.pointName, e.pointUnit),
       dataIndex: e.devicePointCode,
+      // align: 'right'
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
       let pointInfo = {}
@@ -74,7 +85,6 @@ class RealtimeList extends Component {
           loading={tableLoading}
           dataSource={dataSource}
           columns={columns.concat(pointColumn)}
-          onChange={this.onListChange}
           pagination={false}
           locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
         />

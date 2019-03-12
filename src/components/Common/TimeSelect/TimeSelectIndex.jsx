@@ -19,6 +19,7 @@ const { MonthPicker } = DatePicker;
 2.接收必填的组件输出函数onChange = (timObj)=>{}输出timObj格式同上;
 3.可选参数输入showYearPick(默认true) , showMonthPick(默认true), showDayPick(默认true); 均为bool
 4.可选展示参数timerText: string; 默认'统计时间选择'
+5 defaultLast:true 默认是去年
 */
 
 class TimeSelect extends React.Component {
@@ -29,6 +30,7 @@ class TimeSelect extends React.Component {
     showYearPick: PropTypes.bool,
     showMonthPick: PropTypes.bool,
     showDayPick: PropTypes.bool,
+    defaultLast: PropTypes.bool,
     onChange: PropTypes.func,
     style: PropTypes.object,
   }
@@ -38,13 +40,14 @@ class TimeSelect extends React.Component {
     showYearPick: true,
     showMonthPick: true,
     showDayPick: true,
-    value: { 
-      timeStyle: 'month', 
+    defaultLast: false,
+    value: {
+      timeStyle: 'month',
       startTime: moment().format('YYYY-MM-DD'), // 默认今年
       endTime: moment().format('YYYY-MM-DD'),
     },
   }
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -57,21 +60,22 @@ class TimeSelect extends React.Component {
   onTimeStyleChange = (e) => { // 时间模式选择
     const timeStyle = e.target.value;
     const params = { timeStyle };
-    if(timeStyle === 'year'){ // 默认近五年
+    const { defaultLast } = this.props;
+    if (timeStyle === 'year') { // 默认近五年
       params.startTime = moment().subtract(5, 'year').format('YYYY');
       params.endTime = moment().format('YYYY');
-    }else if(timeStyle === 'month'){ // 默认今年
-      params.endTime = params.startTime = moment().startOf('year').format('YYYY');
-    }else if(timeStyle === 'day'){ // 默认本月
-      params.endTime = params.startTime = moment().startOf('month').format('YYYY-MM');
+    } else if (timeStyle === 'month') { // 默认今年
+      params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
+    } else if (timeStyle === 'day') { // 默认本月
+      params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
     }
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
 
-  onMonthSelect = (dateMoment, dateString)=>{ // 选择月份。
+  onMonthSelect = (dateMoment, dateString) => { // 选择月份。
     const { timeStyle } = this.state;
-    
+
     const params = {
       timeStyle,
       startTime: dateString,
@@ -81,7 +85,7 @@ class TimeSelect extends React.Component {
     this.props.onChange({ ...params });
   }
 
-  onYearSelect = ({selectedYear}) => { // 选择年份
+  onYearSelect = ({ selectedYear }) => { // 选择年份
     const { timeStyle } = this.state;
     const params = {
       timeStyle,
@@ -108,13 +112,14 @@ class TimeSelect extends React.Component {
   }
 
   disabledDate = (current) => { // 不可以选择的时间
-    return current > moment().endOf('day');
+    const { defaultLast } = this.props;
+    return !defaultLast && current > moment().endOf('day') || current > moment().subtract(1,'month').endOf('day');
   }
 
 
 
   render() {
-    const { timerText, showYearPick, showMonthPick, showDayPick,style } = this.props;
+    const { timerText, showYearPick, showMonthPick, showDayPick, style } = this.props;
     const { timeStyle, startTime, endTime } = this.state;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -126,11 +131,11 @@ class TimeSelect extends React.Component {
             {showDayPick && <Radio.Button value="day" >月</Radio.Button>}
           </Radio.Group>
         </div>
-        {timeStyle === 'day' && <MonthPicker 
+        {timeStyle === 'day' && <MonthPicker
           // format="YYYY年MM月"
-          value={moment(startTime)} 
-          onChange={this.onMonthSelect} 
-          placeholder="选择月份" 
+          value={moment(startTime)}
+          onChange={this.onMonthSelect}
+          placeholder="选择月份"
           allowClear={false}
           disabledDate={this.disabledDate}
         />}
@@ -139,7 +144,7 @@ class TimeSelect extends React.Component {
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
           <span>—</span>
           <YearSelect yearValue={endTime} onYearSelect={this.onEndYearSelect} />
-        </span> }
+        </span>}
       </div>
     )
   }

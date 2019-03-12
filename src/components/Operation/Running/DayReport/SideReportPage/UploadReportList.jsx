@@ -108,7 +108,6 @@ class UploadReportList extends Component {
           getStationDeviceTypes={getStationDeviceTypes}
           getLostGenType={getLostGenType}
         />}
-        
       </div>
     )
   }

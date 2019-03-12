@@ -38,7 +38,8 @@ class EditConflunce extends Component {
     const { pvDeviceModels,stationDeviceDetail } = this.props;
     console.log('stationDeviceDetail: ', stationDeviceDetail);
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const branchCount =  stationDeviceDetail.connectedBranches;
+    const detailMap=stationDeviceDetail?stationDeviceDetail.map:{};
+    const branchCount =  stationDeviceDetail.map?stationDeviceDetail.map.connectedBranches:[];
     const branchCountArr=branchCount.map((e,i)=>{
     return e===1?i+1:null
     })
@@ -48,7 +49,7 @@ class EditConflunce extends Component {
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('componentMode',{ initialValue: stationDeviceDetail.componentMode,})(
+            {getFieldDecorator('componentMode',{ initialValue: stationDeviceDetail.map.componentMode,})(
               <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
                 {pvDeviceModels.map(e => {
                   if (!e) { return null; }
@@ -59,15 +60,15 @@ class EditConflunce extends Component {
            
           </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('branchCount',{ initialValue: stationDeviceDetail.branchCount,})(
-          <span>{stationDeviceDetail.branchCount}</span>
+          {getFieldDecorator('branchCount',{ initialValue: stationDeviceDetail.map.branchCount,})(
+          <span>{stationDeviceDetail.map.branchCount}</span>
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('connectedBranches',{ initialValue: branchCountArr,} )(
             <Checkbox.Group>
               <Row>
-                {(stationDeviceDetail.connectedBranches).map((e, i) => {
+                {(branchCount).map((e, i) => {
                   return (
                     <Col span={3} key={i}>
                       <div>第{i+1}支路</div>

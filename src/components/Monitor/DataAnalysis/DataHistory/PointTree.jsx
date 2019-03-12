@@ -25,7 +25,7 @@ class PointTree extends Component {
     const { queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const newQueryParam = {
       ...queryParam,
-      devicePoint: selectedKeys,
+      devicePoints: selectedKeys,
     };
     getChartHistory({ queryParam: newQueryParam });
     getListHistory({
@@ -49,34 +49,38 @@ class PointTree extends Component {
         devicePointIecName,
         points: innerGroupedInfo.map(point => ({
           devicePointId: point.devicePointId,
-          devicePointCode: point.devicePointCode,
+          devicePointId: point.devicePointId,
           devicePointName: point.devicePointName,
         }))
       }
     })
-    return groupInfo.map(e => {
+    const PointsNodes = [], tmpNoneGroupNodes = [];
+    groupInfo.forEach(e => { // 无分组的测点，应放末尾。
       if (e.devicePointIecCode) { // 有分组信息
-        return (
+        PointsNodes.push(
           <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
-            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)}
+            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)}
           </TreeNode>
         )
       } else { // 无分组信息
-        return e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+        tmpNoneGroupNodes.push(
+          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)
+        )
       }
-    })
+    });
+    return PointsNodes.concat(tmpNoneGroupNodes);
   }
 
   render(){
     const { queryParam } = this.props;
-    const { devicePoint } = queryParam;
+    const { devicePoints } = queryParam;
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({devicePoint.length})</h3>
+        <h3>选择测点({devicePoints.length})</h3>
         <Tree
           checkable
           onCheck={this.pointSelect}
-          checkedKeys={devicePoint}
+          checkedKeys={devicePoints}
         >
           {this.renderTreeNodes()}
         </Tree>

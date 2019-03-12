@@ -11,6 +11,7 @@ class HistoryDataType extends Component {
 
   static propTypes = {
     stationCode: PropTypes.number,
+    enterpriseId: PropTypes.string,
     deviceTypeCode: PropTypes.number,
     deviceCodes: PropTypes.array,
     startTime: PropTypes.string,
@@ -40,16 +41,19 @@ class HistoryDataType extends Component {
   }
 
   exportHistory = () => { // '导出历史数据excel'
-    const { downLoadFile, queryParam } = this.props;
+    const { downLoadFile, queryParam, enterpriseId } = this.props;
     const url = `${APIBasePath}${monitor.exportHistory}`;
-    let { startTime, endTime } = queryParam;
-    startTime = startTime.format('YYYY-MM-DD HH:mm:ss');
-    endTime = endTime.format('YYYY-MM-DD HH:mm:ss');
+    let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
+    startTime = startTime.utc().format();
+    endTime = endTime.utc().format();
     downLoadFile({ // 
       url,
       fileName: `${startTime}至${endTime}历史数据`,
       params: {
         ...queryParam,
+        deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+        devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+        enterpriseId,
         startTime,
         endTime,
       },

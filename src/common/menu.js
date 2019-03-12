@@ -41,16 +41,40 @@ const menuData = [
         name: '数据分析',
         iconStyle: 'icon-monitoring',
         path: 'data',
-        rightKey: 'monitor_station', // monitor_dataAnalysis
+        rightKey: 'monitor_dataAnalysis',
         children: [
           {
             name: '历史趋势',
             path: 'history',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_historyTrend
+            rightKey: 'dataAnalysis_historyTrend',
           }, {
             name: '实时监控',
             path: 'realtime',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_realTime
+            rightKey: 'dataAnalysis_realTime',
+          }
+        ]
+      }, {
+        name: '报表查询',
+        iconStyle: 'icon-monitoring',
+        path: 'report',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
           }
         ]
       }, {
@@ -103,7 +127,7 @@ const menuData = [
           {
             name: '工单列表',
             path: 'list',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'operation_worklist_work',
           }, {
             name: '工单统计',
@@ -264,7 +288,7 @@ const menuData = [
           {
             name: '实时预警',
             path: 'realtime',
-            // defaultPath: true,
+            defaultPath: true,
             rightKey: 'analysis_intelligentWarning_pending',
           }, {
             name: '已转工单',

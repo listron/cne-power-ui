@@ -8,6 +8,8 @@ import WindInstallDate from "./WindInstallDate";
 import WindMeasurement from "./WindMeasurement";
 import ShowAddDeviceModeModal from "./ShowAddDeviceModeModal";
 import Confluence from "./Confluence";
+import moment from 'moment';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 class AddDeviceForm extends Component {
@@ -24,8 +26,6 @@ class AddDeviceForm extends Component {
   }
   componentWillReceiveProps(nextprops) {
     const { deviceNameOk, addDeviceTypeData, addDeviceModeData, addPvDeviceModeData } = nextprops;
-    console.log('addPvDeviceModeData: ', addPvDeviceModeData);
-    console.log(addPvDeviceModeData.deviceModeCode);
     if (deviceNameOk === true && deviceNameOk !== this.props.deviceNameOk) {
       this.props.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
@@ -49,17 +49,17 @@ class AddDeviceForm extends Component {
             values.map = { belongMatrix: values.belongMatrix }
           } else if (values.deviceTypeCode === 101) {
             values.map = {
-              assemblyTime: values.assemblyTime,
-              ongridTime: values.ongridTime,
-              warrantyBegintime: values.warrantyBegintime,
-              warrantyEndtime: values.warrantyEndtime,
-              scrapTime: values.scrapTime,
+              assemblyTime: moment(values.assemblyTime).format('YYYY-MM-DD'),
+              ongridTime: moment(values.ongridTime).format('YYYY-MM-DD'),
+              warrantyBegintime:moment(values.warrantyBegintime).format('YYYY-MM-DD'),
+              warrantyEndtime:moment(values.warrantyEndtime).format('YYYY-MM-DD'),
+              scrapTime: moment(values.scrapTime).format('YYYY-MM-DD'),
               hubHeight: values.hubHeight,
             }
           } else if (values.deviceTypeCode === 501) {
             values.map = {
               altitude: values.altitude,
-              towerAssemblyTime: values.towerAssemblyTime,
+              towerAssemblyTime: moment(values.towerAssemblyTime).format('YYYY-MM-DD'),
               towerHeight: values.towerHeight,
               windMeasurementEquipment: values.windMeasurementEquipment,
             }
@@ -70,7 +70,7 @@ class AddDeviceForm extends Component {
           this.props.addDeviceDetail({ ...values })
           this.props.changeDeviceManageStore({ addDeviceTypeData: {}, addDeviceModeData: {} })
         } else {
-          console.log(err);
+          
         }
       });
     }
@@ -92,6 +92,7 @@ class AddDeviceForm extends Component {
     });
   }
   submitForm = (e) => {
+    this.props.changeDeviceManageStore({deviceNameOk:null})
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -122,13 +123,14 @@ class AddDeviceForm extends Component {
   render() {
     const { showAddDeviceModeModal, showAddDeviceMode, deviceModeCodeAdd, manufacturerAdd } = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { stationDeviceTypes, deviceModels, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData } = this.props;
+    const { stationDevices, deviceModels, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData ,addDeviceModeData} = this.props;
     const stationName = selectStation ? selectStation[0].stationName : '';
     const deviceTypeName = getFieldValue('deviceTypeCode');
     const deviceModeCodeValue = getFieldValue('deviceModeCode');
-    const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
+    const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDevices.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
     const modelSelectDisable = deviceModels.length === 0;
+    const initiDeviceMode=addDeviceModeData.data?+addDeviceModeData.data:null;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
     return (
@@ -155,13 +157,10 @@ class AddDeviceForm extends Component {
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
-              {showAddDeviceMode ?
+            
                 <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
-                  {getFieldDecorator('deviceModeCodeName')(
-                    <span>{deviceModeCodeAdd}</span>
-                  )} <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
-                </FormItem> : <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
                   {getFieldDecorator('deviceModeCode', {
+                    initialValue: initiDeviceMode,
                     rules: [{ required: true, message: '请选择设备型号' }],
                   })(
                     <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
@@ -174,20 +173,16 @@ class AddDeviceForm extends Component {
                   )}
                   <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
                 </FormItem>
-              }
-              {showAddDeviceMode ?
+            
                 <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
-                  {getFieldDecorator('manufacturerName')(
-                    <span>{manufacturerAdd}</span>
-                  )}
-                </FormItem> : <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
                   {getFieldDecorator('manufacturer', {
                     initialValue: manufactureName,
                     rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
                   })(
                     <Input placeholder="不超过30字" />
                   )}
-                </FormItem>}
+                </FormItem>
+          
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('lotNumber')(
                   <Input placeholder="不超过30字" />
@@ -198,6 +193,7 @@ class AddDeviceForm extends Component {
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode')(
                   <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
+                  <Option key={'all'} value={''}>请选择关联设备</Option>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; } else {
                         return <Option key={e.deviceFullCode} value={e.deviceFullCode}>{e.deviceName}</Option>
@@ -217,22 +213,22 @@ class AddDeviceForm extends Component {
               <FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('ratedPower')(
                   <Input placeholder="保留小数点后两位" />
-                )}kW
+                )}<span className={styles.unitStyle}>kW</span>
               </FormItem>
               <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceCapacity')(
                   <Input placeholder="保留小数点后两位" />
-                )}<span>kW</span>
+                )}<span className={styles.unitStyle}>kW</span>
               </FormItem>
               <FormItem label="经度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('longitude')(
                   <Input placeholder="请输入..." />
-                )}°
+                )}<span className={styles.unitStyle}>°</span>
               </FormItem>
               <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('latitude')(
                   <Input placeholder="请输入..." />
-                )}°
+                )}<span className={styles.unitStyle}>°</span>
               </FormItem>
             </div>
             <div className={styles.systermStyle}>
@@ -247,7 +243,7 @@ class AddDeviceForm extends Component {
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {deviceTypeName === 501 && <WindMeasurement form={form} />}
+            {deviceTypeName === 501 && <WindMeasurement {...this.props} form={form} />}
             {deviceTypeName === 304 && <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('belongMatrix')(
@@ -255,15 +251,15 @@ class AddDeviceForm extends Component {
                 )}
               </FormItem>
             </div>}
-            {deviceTypeName === 101 && <WindInstallDate form={form} />}
-            {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence {...this.props} pvDeviceModels={pvDeviceModels} form={form} />}
+            {deviceTypeName === 101 && <WindInstallDate {...this.props} form={form}  />}
+            {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence {...this.props} selectStation={selectStation[0].stationCode} pvDeviceModels={pvDeviceModels} form={form} />}
             <div className={styles.submitStyle}>
               <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
               <Button onClick={this.submitForm} >保存</Button>
             </div>
           </div>
         </Form>
-        {showAddDeviceModeModal && <ShowAddDeviceModeModal {...this.props} showAddDeviceModeModal={showAddDeviceModeModal} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} />}
+        {showAddDeviceModeModal && <ShowAddDeviceModeModal {...this.props} showAddDeviceModeModal={showAddDeviceModeModal} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} selectdeviceType={selectdeviceType} />}
       </div>
     )
   }

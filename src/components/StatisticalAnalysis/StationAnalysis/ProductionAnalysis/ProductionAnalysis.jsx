@@ -36,7 +36,6 @@ class ProductionAnalysis extends React.Component {
     endTime: PropTypes.string,
     selectYear: PropTypes.any,
     year: PropTypes.any,
-    // stationCode: PropTypes.oneOfType([ PropTypes.string, PropTypes.number]),
     stationCode: PropTypes.any,
   }
   constructor(props) {

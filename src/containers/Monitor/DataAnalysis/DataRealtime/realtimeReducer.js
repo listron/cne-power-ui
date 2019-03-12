@@ -2,6 +2,7 @@ import immutable from 'immutable';
 import moment from 'moment';
 
 const realtimeAction = {
+  getAvailableDeviceType: Symbol('getAvailableDeviceType'), // 获取有测点的设备类型
   getRealtimeChart: Symbol('getRealtimeChart'), // 获取实时图表chart数据
   stopRealtimeChart: Symbol('stopRealtimeChart'), // 停止图表实时
   getRealtimeList: Symbol('getRealtimeList'), // 测点实时数据-表格
@@ -23,8 +24,8 @@ const initState = immutable.fromJS({
   timeInterval: 5, // 实时数据间隔时间,
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
-    deviceFullCode: [], // 选中的设备
-    devicePoint: [], // 选中的测点
+    deviceFullCodes: [], // 选中的设备
+    devicePoints: [], // 选中的测点
   },
   listParam: { // 表格排序额外参数
     pageNum: 1, // 当前页码（从1开始）

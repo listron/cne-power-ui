@@ -24,6 +24,7 @@ const initState = Immutable.fromJS({
   selectedRowKeys:[],//选择的行的索引
   selectedRowData:[],//选择的行的数据
   addDeviceTypeData:{},//添加设备类型结果
+  stationDevices:[],//电站下设备类型
   addSuccess:null,
   deviceNameOk:null,
   checkDeviceModeOk:null,

@@ -19,7 +19,7 @@ class RealtimeSearch extends Component {
     
     stationDeviceTypes: PropTypes.array, // 电站下可选设备类型
     changeRealtimeStore: PropTypes.func,
-    getStationDeviceTypes: PropTypes.func,
+    getAvailableDeviceType: PropTypes.func,
     getPointInfo: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
@@ -35,8 +35,8 @@ class RealtimeSearch extends Component {
       queryParam: {
         ...queryParam,
         stationCode: null,
-        deviceFullCode: [],
-        devicePoint: [],
+        deviceFullCodes: [],
+        devicePoints: [],
       },
       pointInfo: [], // 选中设备内可选测点信息。
       chartRealtime: {}, // chart图 - 所有历史数据
@@ -49,20 +49,18 @@ class RealtimeSearch extends Component {
   checkPv = () => this.onStationTypeChange(1) // 选中光伏电站
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getStationDeviceTypes, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
+    const { getAvailableDeviceType, changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
     const { stationCode } = selectedStationInfo[0];
     stopRealtimeChart();
     stopRealtimeList();
-    getStationDeviceTypes({ // 设备类型
-      stationCodes: stationCode,
-    });
+    getAvailableDeviceType({ stationCode });
     changeRealtimeStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
       queryParam: {
         ...queryParam,
         stationCode,
-        deviceFullCode: [],
-        devicePoint: [],
+        deviceFullCodes: [],
+        devicePoints: [],
       },
       pointInfo: [], // 清空测点信息
       chartRealtime: {}, // chart图 - 所有历史数据
@@ -78,8 +76,8 @@ class RealtimeSearch extends Component {
       deviceTypeCode,
       queryParam: {
         ...queryParam,
-        deviceFullCode: [], // 选中的设备
-        devicePoint: [], // 选中的测点
+        deviceFullCodes: [], // 选中的设备
+        devicePoints: [], // 选中的测点
       },
       chartRealtime: {}, // chart图 - 所有历史数据
       listRealtime: {}, // 表格内 - 分页后的历史数据
@@ -88,25 +86,29 @@ class RealtimeSearch extends Component {
 
   selectedDevice = (devices) => { // 设备选择
     const { getPointInfo, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, queryParam } = this.props;
+    const { timeInterval } = queryParam;
     stopRealtimeChart();
     stopRealtimeList();
     changeRealtimeStore({
       queryParam: {
         ...queryParam,
-        deviceFullCode: devices,
-        devicePoint: [],
+        deviceFullCodes: devices,
+        devicePoints: [],
       },
       allHistory: {},
       partHistory: {},
     })
-    getPointInfo({ deviceFullCode: devices });
+    getPointInfo({
+      deviceFullCodes: devices,
+      timeInterval,
+    });
   }
 
   render(){
     const {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount
     } = this.props;
-    const { stationCode, deviceFullCode } = queryParam;
+    const { stationCode, deviceFullCodes } = queryParam;
     return (
       <div className={styles.realtimeSearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
@@ -142,7 +144,7 @@ class RealtimeSearch extends Component {
             <DeviceSelect
               disabled={!deviceTypeCode}
               stationCode={stationCode}
-              value={deviceFullCode}
+              value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
               style={{ width: 'auto', minWidth: '198px' }}
