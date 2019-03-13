@@ -34,6 +34,9 @@ import {watchMonitorHistoryWarning} from './Monitor/Alarm/HistoryWarning/history
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 
+import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
+
+
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
 import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysis/ProductionAnalysis/productionAnalysisSaga';
@@ -60,7 +63,6 @@ import { watchTransfer } from "./HighAnalysis/EarlyWarning/Transfer/transferSaga
 import { watchHistory } from "./HighAnalysis/EarlyWarning/HistoryWarn/historyWarnSaga";
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
-
 
 
 // root saga
@@ -102,6 +104,8 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
+    
+    watchMonitorPowerReport(),//报表
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
     //统计分析的全部电站
