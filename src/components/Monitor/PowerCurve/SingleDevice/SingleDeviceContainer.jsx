@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from './singleDevice.scss';
 import WindSingleDeviceTable from './WindSingleDeviceTable';
+import SingleWindDeviceCharts from './SingleWindDeviceCharts';
 
 import { Icon, Button, Switch } from 'antd';
 import { Link } from 'react-router-dom';
@@ -134,7 +135,7 @@ class SingleDeviceContainer extends Component {
           {deviceShowType === 'list' && <Button className={styles.exportStyle}>导出</Button>}
           {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:1.23kg/m³</div>}
         </div>
-        {deviceShowType === 'graph' ? '1' : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
+        {deviceShowType === 'graph' ? <SingleWindDeviceCharts {...this.props} /> : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
 
       </div>
 

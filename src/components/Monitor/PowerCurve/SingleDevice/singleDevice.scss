@@ -63,6 +63,69 @@
     .exportStyle,.rightInfo{
       margin-right: 20px;
     }
+   
+  }
+  .chartsLayout{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    .topBox{
+      display: flex;
+      flex:1;
+     .left{
+      height: 600px;
+      display: flex;
+      flex:2;
+      border-right:1px solid #666;
+      flex-direction: column;
+      .leftTop{
+        display: flex;
+        flex:1;
+        background: pink;
+      }
+      .leftBottom{
+        display: flex;
+        flex:1;
+        background: red;
+        .leftScatter{
+          display: flex;
+          flex:1;
+          background: yellow;
+
+        }
+        .rightScatter{
+          display: flex;
+          flex:1;
+          background: blue;
+        }
+      }
+
+     } 
+     .right{
+      height: 600px;
+      display: flex;
+      flex:1;
+      flex-direction: column;
+      .rightTop{
+        display: flex;
+        flex:1;
+        background: gray;
+      }
+      .rightBottom{
+        display: flex;
+        flex:1;
+        background: green;
+
+      }
+
+     }
+    }
+    .bottomBox{
+      display: flex;
+      height: 300px;
+      background: orange;
+    }
+
   }
   .windDeviceList{
     .tableHeader {

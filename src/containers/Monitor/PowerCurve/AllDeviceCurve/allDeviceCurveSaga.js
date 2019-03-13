@@ -17,15 +17,16 @@ const { monitor } = Path.APISubPaths;
 function *getAllDeviceCurveData(action) { 
   const { payload } = action;
   try {
-    const url = `${APIBasePath}${monitor.getAllDeviceCurveData}` 
-    // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const response = yield call(axios.get, url);
+    //const url = `${APIBasePath}${monitor.getAllDeviceCurveData}` 
+     const url = '/mock/wind/powercurve/fans/chart'; 
+    const response = yield call(axios.post, url,payload);
     if (response.data.code === '10000') {
       
       yield put({
         type:allDeviceCurveAction.GET_ALLDEVICECURVE_SUCCESS,
         payload: {
           allDeviceCurveData:response.data.data||[],
+          ...payload
         }
       })
     } else {

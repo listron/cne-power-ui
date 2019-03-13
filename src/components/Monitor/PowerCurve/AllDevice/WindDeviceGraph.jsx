@@ -1,150 +1,203 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
+import { Switch } from 'antd';
 import styles from './allDeviceCurve.scss';
+import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class WindDeviceGraph extends Component {
-    static propTypes = {
+  static propTypes = {
+    startTime:PropTypes.string,
+    endTime:PropTypes.string,
+    allDeviceCurveData:PropTypes.array,
+    checkedAll:PropTypes.bool,
+    stationCode:PropTypes.number,
+
+  }
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      checkedAll: true,
     }
-    constructor(props, context) {
-        super(props, context)
-    }
-    componentDidMount() {
-        this.drawChart(this.props.allDeviceCurveData || [])
-    }
-    componentWillReceiveProps(nextProps) {
-        const theoryPowers = nextProps.allDeviceCurveData || [];
-        const air = nextProps.air;
-        this.drawChart(theoryPowers, air)
-    }
-    drawChart = (params, air) => {
-        const inverterChart = echarts.init(document.getElementById('powerCurveChart'));
-        let powerData = [], speedData = [];
-        params.length > 0 && params.forEach(e => {
-          powerData.push(e.power || '--');
-          speedData.push(e.windSpeed);
-        });
+  }
+  componentDidMount() {
+    const {stationCode,startTime,endTime}=this.props;
+    const { checkedAll } = this.state;
+    this.drawChart((this.props.allDeviceCurveData || []),checkedAll,stationCode,startTime,endTime)
+  }
+  componentWillReceiveProps(nextProps) {
+    const theoryPowers = nextProps.allDeviceCurveData || [];
+    const{ stationCode,startTime,endTime}=nextProps;
+    const { checkedAll } = this.state;
+    this.drawChart(theoryPowers, checkedAll,stationCode,startTime,endTime)
+  }
+  onChange = (checked) => {
+    const { checkedAll } = this.state;
+    const {stationCode,startTime,endTime}=this.props;
+    this.setState({
+      checkedAll: checked
+    })
+    this.drawChart((this.props.allDeviceCurveData || []), checked,stationCode,startTime,endTime)
+  }
+  drawChart = (params, checkedAll,stationCode,startTime,endTime) => {
+    const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
+    const filterDeviceName = params.map(e => e.deviceName);
+    const filterPowerAvg = params.map((e, i) => {
+      return e.dataList.map((item, i) => {
+        return item.powerAvg
+      })
+    })
+    const hasData = filterPowerAvg.length > 0 ? filterPowerAvg.reduce((pre, next) => {
+      return pre.concat(next)
+    }):[];
     
-        const filterpower = params.filter(e => e.power);
-        const filterWindSpeed = params.filter(e => e.speed);
-    
-        const inverterTenMinGraphic = (filterpower.length === 0 && filterWindSpeed.length === 0) ? showNoData : hiddenNoData;
-        const lineColor = '#666';
-        let color = ['#199475'];
-        const option = {
-          graphic: inverterTenMinGraphic,
-          color: color,
-          legend: {
-            top: 24,
-            itemWidth: 24,
-            itemHeight: 6,
-            textStyle: {
-              color: lineColor,
-              fontSize: 12,
-            }
-          },
-          grid: {
-            top: 90,
-            right: '20%',
-          },
-          tooltip: {
-            trigger: 'axis',
-            show: true,
-            backgroundColor: '#fff',
-            axisPointer: {
-              type: 'cross',
-              label: {
-                backgroundColor: lineColor,
-              }
-            },
-            backgroundColor: '#fff',
-            padding: 10,
-            textStyle: {
-              color: 'rgba(0, 0, 0, 0.65)',
-              fontSize: 12,
-            },
-            extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-            formatter: function (params) {
-              let paramsItem = '';
-              params.forEach((item, index) => {
-                return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${'理论功率'} :${item.value === '0' || item.value || '--'}</div>`
-              });
-              return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${'风速：'}${params[0].name} </span>
-                </div>${paramsItem}`
-            },
-          },
-          xAxis: {
-            type: 'category',
-            data: [5,10,15,20,25],
-            name: '风速(m/s)',
-            nameTextStyle: {
-              color: lineColor,
-            },
-            axisTick: {
-              show: false,
-            },
-            axisLine: {
-              onZero: false,
-              lineStyle: {
-                color: '#dfdfdf',
-              },
-            },
-            axisLabel: {
-              color: lineColor,
-            },
-            axisPointer: {
-              label: {
-                show: false,
-              }
-            },
-          },
-          yAxis: [
-            {
-              name: '功率(KW)',
-              nameTextStyle: {
-                color: lineColor,
-              },
-              splitLine: {
-                show: false
-              },
-              axisLine: {
-                lineStyle: {
-                  color: '#dfdfdf',
-                },
-              },
-              axisLabel: {
-                color: lineColor,
-              },
-              axisTick: {
-                show: false,
-              },
-            }
-          ],
-          series: [
-            {
-              name: `理论功率 ( ${air} )`,
-              type: 'line',
-              label: {
-                normal: {
-                  show: false
-                }
-              },
-              yAxisIndex: 0,
-              data: powerData,
-            }
-          ]
-        };
-        inverterChart.setOption(option);
-        inverterChart.resize();
-      }
-    
-    render() {
-        return (
-            <div className={styles.graphStyle}>
-                <div id="powerCurveChart" className={styles.powerCurveChart}></div>
+    const inverterTenMinGraphic = (filterDeviceName.length === 0 && hasData.length === 0) ? showNoData : hiddenNoData;
+    const lineColor = '#666';
+    // let color = ['#199475'];
+    const option = {
+      graphic: inverterTenMinGraphic,
+      // color: color,
+      legend: {
+        show: checkedAll,
+        left: '10%',
+        // right:'30%',
+        // top: 'bottom',
+        width: '80%',
+        bottom: '80%',
+        itemWidth: 14,
+        itemHeight: 6,
+        x: 'center',
+        y: 'bottom',
+        padding: [100, 0],
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        }
+      },
+      grid: {
+        top: 90,
+        right: '10%',
+        height: '300px',
+      },
+      tooltip: {
+        trigger: 'item',
+        enterable: true,
+        show: true,
+        formatter: (params) => {
+          
+          const info = params.data;
+          // const currentData = monthPower[currentInfo.dataIndex] || {};
+          return `<div class=${styles.formatStyle}>
+            <div class=${styles.topStyle}>
+              <div>${params.seriesName}</div>
+              <div>${dataFormat(info.windSpeedInterval)}</div>
             </div>
-        )
-    }
+            <div  style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div class=${styles.lineStyle}>型号:  ${info.deviceFullCode}</div>
+            <div class=${styles.lineStyle}>平均风速:  ${dataFormat(params.name)}</div>
+            <div class=${styles.lineStyle}>平均功率: ${dataFormat(params.value)}</div>
+          </div>`
+        },
+        backgroundColor: '#fff',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: lineColor,
+          }
+        },
+        backgroundColor: '#fff',
+        padding: 10,
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.65)',
+          fontSize: 12,
+        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+      },
+      xAxis: {
+        type: 'category',
+        data: [5, 10, 15, 20, 25],
+        name: '风速(m/s)',
+        nameTextStyle: {
+          color: lineColor,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: '#dfdfdf',
+          },
+        },
+        axisLabel: {
+          color: lineColor,
+        },
+        axisPointer: {
+          label: {
+            show: false,
+          }
+        },
+      },
+      yAxis: [
+        {
+          name: '功率(KW)',
+          nameTextStyle: {
+            color: lineColor,
+          },
+          splitLine: {
+            show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dfdfdf',
+            },
+          },
+          axisLabel: {
+            color: lineColor,
+          },
+          axisTick: {
+            show: false,
+          },
+        }
+      ],
+
+      series: params.map((e, i) => {
+        let lineData = []
+        e.dataList.forEach((item, i) => {
+          lineData.push({
+            value: item.powerAvg,
+            ...item,
+            ...e,
+          })
+        })
+        return {
+          name: `${e.deviceName}`,
+          deviceMode: `${e.deviceFullCode}`,
+          type: 'line',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          data: lineData,
+        }
+      })
+    };
+    powercurveChart.setOption(option,'notMerge');
+    powercurveChart.resize();
+    powercurveChart.on('click', (params) => {
+      return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
+    })
+  }
+  render() {
+    return (
+      <div className={styles.graphStyle}>
+        <div id="powerCurveChart" className={styles.powerCurveChart}></div>
+        <div className={styles.switchStyle}> <Switch defaultChecked onChange={this.onChange} />全部显示</div>
+      </div>
+    )
+  }
 }
 export default (WindDeviceGraph)

@@ -10,18 +10,24 @@ const { Option } = Select;
 const RangePicker = DatePicker.RangePicker;
 class DeviceFilter extends Component {
   static propTypes = {
+    startTime:PropTypes.string,
+    deviceShowType:PropTypes.string,
+    endTime:PropTypes.string,
+    stationCode:PropTypes.number,
+    changeAllDeviceStore:PropTypes.func,
+    getDeviceModel:PropTypes.func,
+    getAllDeviceCurveData:PropTypes.func,
+    getPowerdeviceList:PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
   }
   onOk = (selectdevice) => {
-    console.log('selectdevice: ', selectdevice);
+    
     const deviceFullCode=selectdevice.map((e,i)=>e.deviceCode);
     this.props.changeAllDeviceStore({
       deviceFullCode
     })
-
-
   }
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getDeviceModel, changeAllDeviceStore } = this.props;
@@ -30,32 +36,23 @@ class DeviceFilter extends Component {
       stationCodes: stationCode,
       deviceTypeCode: 101,
     });
-    console.log(stationCode);
+    
     changeAllDeviceStore({
-      stationCode, deviceTypeCode: 101,
+      stationCode, deviceTypeCode: 101,deviceFullCode:[]
     })
-
-
   }
-  
- 
   seekDeviceData = () => {//查询按钮
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
     deviceShowType === 'graph' ? getAllDeviceCurveData({ ...params, }) : getPowerdeviceList({ ...params, })
   }
   timeChange = (time) => {//时间选择
-    console.log('time', time);
     const startTime = moment(time[0]).format('YYYY-MM-DD');
     const endTime = moment(time[1]).format('YYYY-MM-DD');
-    console.log('startTime: ', startTime);
-    console.log('endTime: ', endTime);
     this.props.changeAllDeviceStore({
       startTime,
       endTime
     })
-
-
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeAllDeviceStore } = this.props;
@@ -65,14 +62,11 @@ class DeviceFilter extends Component {
   showChart = () => {
     this.selectShowType('graph');
   }
-
   showList = () => {
     this.selectShowType('list');
   }
   render() {
     const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType,deviceFullCode } = this.props;
-    console.log('stationCode: ', stationCode);
-    console.log('windDeviceMode: ', windDeviceMode);
     const test1 = 350;
     const test2 = 202;
     const test3 = '2019-03-07~2019-03-08';

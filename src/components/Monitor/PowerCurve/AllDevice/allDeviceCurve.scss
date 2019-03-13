@@ -3,14 +3,40 @@
 .allDeviceBox{
   display: flex;
   flex:1;
+ 
   flex-direction: column;
   background: #fff;
   .graphStyle{
     display: flex;
     flex:1;
+    // position: relative;
     .powerCurveChart{
+      // height:70%;
       width: 100%;
     }
+    .switchStyle{
+      position: absolute;
+      top:78%;
+      right:14%;
+
+    }
+    .formatStyle{
+      width: 150px;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      .topStyle{
+        display: flex;
+        justify-content: space-between;
+        line-height: 20px;
+        height: 20px;
+      }
+      .lineStyle{
+        line-height: 28px;
+        height: 28px;
+      }
+    }
+  
   }
   .filterStyle{
     display: flex;

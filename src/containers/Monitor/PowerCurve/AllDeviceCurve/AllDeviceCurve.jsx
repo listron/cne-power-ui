@@ -8,12 +8,30 @@ import { commonAction } from '../../../alphaRedux/commonAction';
 import Header from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import AllDeviceCurveBox from '../../../../components/Monitor/PowerCurve/AllDevice/AllDeviceCurve';
+import moment from 'moment';
+
 const TabPane = Tabs.TabPane;
 class AllDeviceCurve extends Component {
   static propTypes = {
+    startTime:PropTypes.string,
+    deviceShowType:PropTypes.string,
+    endTime:PropTypes.string,
+    stationCode:PropTypes.number,
+    changeAllDeviceStore:PropTypes.func,
+    getDeviceModel:PropTypes.func,
+    getAllDeviceCurveData:PropTypes.func,
+    getPowerdeviceList:PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
+  }
+  componentDidMount(){
+    const{stationCode,deviceFullCode,getAllDeviceCurveData,changeAllDeviceStore}=this.props;
+    const startTime = moment().subtract(1, "days").format('YYYY-MM-DD');
+    const endTime = moment().format('YYYY-MM-DD');
+    const params={stationCode,deviceFullCode,startTime,endTime};
+    changeAllDeviceStore(params)
+    // getAllDeviceCurveData({...params, })
   }
   componentWillUnmount(){
     this.props.resetAllDeviceCurve()
