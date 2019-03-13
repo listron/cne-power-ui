@@ -175,6 +175,26 @@
           min-width: 72px;
           width:72px;
         }
+        .ant-table-thead{
+          th>div{
+            height: 60px;
+          }
+          .month{
+            &>div{
+              padding-top: 13px;
+            }
+          }
+          :local{
+            .regionName, .stationName, .planYear, .operation{
+              &>div{
+                padding-top: 13px;
+              }
+            }
+          }
+        }
+        .ant-table-column-sorter{
+          top: 18px;
+        }
         .ant-input.ant-input-disabled {
           background: #f8f8f8;
           border: 1px solid #dfdfdf;
