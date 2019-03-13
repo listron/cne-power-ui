@@ -37,22 +37,17 @@ class ScatterDiagramList extends Component{
   
   render(){
     const { listParam, partScatterDiagram, tableLoading } = this.props;
-    const { totalCount, dataList = [] } = partScatterDiagram;
+    const { pageCount, dataList = [] } = partScatterDiagram;
     const { pageNum, pageSize, } = listParam;
-
+    // const { pointData = [] } = dataList[0] || {};
     const dataSource = dataList.map((e,i)=>{ // 表格数据
-      let pointInfo = {};
-      e.pointData.forEach(point => {
-        pointInfo[point.devicePointCode] = point.pointValue
-      })
       return {
         key: i,
         ...e,
-        ...pointInfo,
+       
         time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
       }
     })
-    console.log(partScatterDiagram)
     
     const columns = [{
       title: this.getTitle('设备名称'),
