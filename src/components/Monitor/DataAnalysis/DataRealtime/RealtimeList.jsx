@@ -43,26 +43,26 @@ class RealtimeList extends Component {
       {
         title: this.getTitle('设备名称'),
         dataIndex: 'deviceName',
+        // className: 'deviceName',
       }, {
         title: this.getTitle('电站名称'),
         dataIndex: 'stationName',
+        // className: 'stationName',
       }, {
         title: this.getTitle('设备类型'),
         dataIndex: 'deviceTypeName',
+        // className: 'deviceTypeName',
       }, {
         title: this.getTitle('型号'),
         dataIndex: 'deviceModeName',
-      }, {
-        title: this.getTitle('风速'),
-        dataIndex: 'speed',
-        align: 'right'
+        // className: 'deviceModeName',
       }
     ];
     
     const pointColumn = pointData.map(e => ({
       title: this.getTitle(e.pointName, e.pointUnit),
       dataIndex: e.devicePointCode,
-      align: 'right'
+      // align: 'right'
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。
       let pointInfo = {}

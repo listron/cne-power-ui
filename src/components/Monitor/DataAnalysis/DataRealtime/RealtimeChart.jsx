@@ -191,7 +191,7 @@ class RealtimeChart extends Component {
     const { queryParam = {}, dataTime = null } = this.props;
     const { deviceFullCodes = [], devicePoints = [] } = queryParam;
     const calcHeight = 160 * devicePoints.length + 70 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
-    const chartHeight = calcHeight > 800 ? calcHeight : 800; // 图表高度不小于300
+    const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
       <section className={styles.realtimeChart}>
         <h4>

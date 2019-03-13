@@ -82,12 +82,12 @@ const routers = [
     component: () => import('../containers/Monitor/StationMonitor/SingleStation/SingleStation'),
   }, { //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
-    // component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
+    // component: () => import('../components/Common/Building/Building'),
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
-    // component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
+    // component: () => import('../components/Common/Building/Building'),
   }, { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
     component: () => import('../components/Common/Building/Building'),
