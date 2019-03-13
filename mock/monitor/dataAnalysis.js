@@ -214,17 +214,17 @@ module.exports = [
         pointTime: ['2018-01-02 12:01:10', '2018-01-02 12:11:10', '2018-01-02 12:21:10', '2018-01-02 12:31:10' ],
         deviceInfo: [
           {
-            windSpeed: '1.13m/s',
-            power: '13kW',
+            xData: '1.13',
+            yData: '13',
           }, {
-            windSpeed: '2.13m/s',
-            power: '2443kW',
+            xData: '2.13m/s',
+            yData: '2443kW',
           }, {
-            windSpeed: '3.13m/s',
-            power: '3522kW',
+            xData: '3.13m/s',
+            yData: '3522kW',
           }, {
-            windSpeed: '4.13m/s',
-            power: '4122kW',
+            xData: '4.13m/s',
+            yData: '4122kW',
           }
         ],
       },
@@ -238,7 +238,7 @@ module.exports = [
       code: '10000',
       message: '请求成功',
       data: {
-        total: 9,
+        pageCount: 9,
         dataList: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
           deviceName: `测试设备${e}`,
           stationName: `电站${e * e}`,

@@ -8,10 +8,12 @@ const initState = Immutable.fromJS({
   deviceTypeCode: null, // 选中的设备类型
   stationDeviceTypes: [], // 电站下可选设备类型
   chartTime: null, // 记录chart表的数据时间
+  allscatterDiagram: {}, // 所有散点图chart数据
   xPointList: [], // x轴测点
   yPointList: [], // y轴测点
   dataList: [], // 列表数据
   tableLoading: false, // 列表请求的loading
+  chartLoading: false, // 图表请求的loading
   partScatterDiagram: [], // 表格内 - 分页后数据
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站

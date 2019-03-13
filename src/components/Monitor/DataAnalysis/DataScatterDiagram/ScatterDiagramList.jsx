@@ -37,14 +37,12 @@ class ScatterDiagramList extends Component{
   
   render(){
     const { listParam, partScatterDiagram, tableLoading } = this.props;
-    const { pageCount, dataList = [] } = partScatterDiagram;
+    const { totalSize, dataList = [] } = partScatterDiagram;
     const { pageNum, pageSize, } = listParam;
-    // const { pointData = [] } = dataList[0] || {};
     const dataSource = dataList.map((e,i)=>{ // 表格数据
       return {
         key: i,
         ...e,
-       
         time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
       }
     })
@@ -75,7 +73,7 @@ class ScatterDiagramList extends Component{
     return(
       <div className={styles.scatterDiagramList}>
         <div className={styles.pagination}>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalSize} onPaginationChange={this.onPaginationChange} />
         </div>
           <Table
             loading={tableLoading}

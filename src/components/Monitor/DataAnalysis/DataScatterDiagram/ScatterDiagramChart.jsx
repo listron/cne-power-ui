@@ -1,43 +1,55 @@
 import React, {Component} from 'react';
+import echarts from 'echarts';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import styles from './scatterDiagram.scss';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 class ScatterDiagramChart extends Component{
+  static propTypes = {
 
-  componentDidMount(){
-    
+  }
+  componentDidMount() {
+    this.drawChart(this.props.)
   }
 
-  renderChart = () => {
-    const charDOM = document.getElementById('scatterDiagramChart');
+  drawChart = (params) => {
+    var scatterChart = echarts.init(document.getElementById('main'));
+    let xData = [], yData = [];
+    params.length > 0 && params.forEath(e => {
+      xData.push(e.power || '--');
+      yData.push(e.windSpeed);
+    })
+    // 绘制图表
+    scatterChart.setOption({
+      xAxis: {
+        splitNumber: 16
+      },
+      yAxis: {
+        splitNumber: 6
+      },
+      series: [
+        { 
+          symbolSize: 20,
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'scatter'
+      }
+    ]
+    });
+  }
+
     
 
-    const option = {
-      xAxis: {},
-      yAxis: {},
-      series: [{
-        symbolSize: 20,
-        data: [
-          [10.0, 8.04],
-          [8.0, 6.95],
-          [13.0, 7.58],
-          [9.0, 8.81],
-          [11.0, 8.33],
-          [14.0, 9.96],
-          [6.0, 7.24],
-          [4.0, 4.26],
-          [12.0, 10.84],
-          [7.0, 4.82],
-          [5.0, 5.68]
-        ],
-        type: 'scatter'
-      }]
-    };
-  }
+
+
 
   render(){
+    const {allscatterDiagram} = this.props;
+    console.log(allscatterDiagram);
+    
     return(
       <div className={styles.scatterDiagramChart}>
-         <div className={styles.innerChart} id="scatterDiagramChart" />
+        <div id="main"></div>
       </div>
     )
   }
