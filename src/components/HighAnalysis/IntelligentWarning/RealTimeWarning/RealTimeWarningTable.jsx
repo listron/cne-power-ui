@@ -4,12 +4,23 @@ import CommonPagination from '../../../Common/CommonPagination';
 import TransferWarningModal from './TransferWarningModal';
 import HandleRemoveModal from './HandleRemoveModal';
 import { Link } from 'react-router-dom';
-import { Table, Select, Popover, Icon, Button } from 'antd';
+import PropTypes from 'prop-types';
+import { Table, Select } from 'antd';
 import moment from 'moment';
 const Option = Select.Option;
 
 class RealTimeWarningTable extends Component {
   static propTypes = {
+    selectedTransfer:PropTypes.array,
+    defectTypes:PropTypes.array,
+    changeRealtimeWarningStore:PropTypes.func,
+    transferWarning:PropTypes.func,
+    HandleRemoveWarning:PropTypes.func,
+    realtimeWarning:PropTypes.array,
+    selectedRowKeys:PropTypes.array,
+    getLostGenType:PropTypes.func,
+    pageSize:PropTypes.number,
+    currentPage:PropTypes.number,
   }
   constructor(props, context) {
     super(props, context)
@@ -24,7 +35,7 @@ class RealTimeWarningTable extends Component {
     this.props.changeRealtimeWarningStore({ currentPage, pageSize })
   }
   onHandle = (value) => {//转工单或手动解除的modal
-    if (value === 'ticket') {
+    if (value === 'ticket') { // 暂时批量转工单去掉
       this.setState({
         showTransferTicketModal: true
       });
@@ -37,9 +48,18 @@ class RealTimeWarningTable extends Component {
   onSelectChange = (selectedRowKeys) => {//选择checkbox
     this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
+
+  onShowDetail=(record)=>{
+    this.setState({
+      showTransferTicketModal: true,
+    });
+    this.props.changeRealtimeWarningStore({selectedTransfer:[record]})
+  }
+
   cancelRowSelect = () => {//取消选中
     this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
   }
+  
  
   tableChange = (pagination, filters, sorter) => {
     this.setState({
@@ -114,9 +134,19 @@ class RealTimeWarningTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },
+      }, {
+        title: '操作',
+        className: styles.iconDetail,
+        render: (text, record) => (
+          <div>
+            <span>
+              <i className="iconfont icon-tranlist icon-action" onClick={() => {this.onShowDetail (record)}} />
+            </span>
+          </div>
+        )
+      }
     ]
-    const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading } = this.props;
+    const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading,selectedTransfer,getLostGenType,defectTypes,transferWarning} = this.props;
     const { sortName, descend } = this.state;
     const { showTransferTicketModal, showHandleRemoveModal,  } = this.state;
     const rowSelection = {
@@ -149,7 +179,7 @@ class RealTimeWarningTable extends Component {
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
           <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-            <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
+            {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option> */}
             <Option value="relieve" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>手动解除</Option>
           </Select>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.onPaginationChange} total={realtimeWarning.length} />
@@ -169,11 +199,12 @@ class RealTimeWarningTable extends Component {
         </div>}
 
         {showTransferTicketModal &&
-          <TransferWarningModal
+            <TransferWarningModal
             onCancel={() => this.setState({ showTransferTicketModal: false })}
-            onTransferAlarm={this.props.transferWarning}
-            defectTypes={this.props.defectTypes}
-            selectedRowKeys={this.props.selectedRowKeys}
+            onTransferAlarm={transferWarning}
+            defectTypes={defectTypes}
+            selectedTransfer={selectedTransfer}
+            getLostGenType={getLostGenType}
           />
         }
         {showHandleRemoveModal &&
