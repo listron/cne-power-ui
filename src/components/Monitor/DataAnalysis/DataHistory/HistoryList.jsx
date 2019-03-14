@@ -69,46 +69,45 @@ class HistoryList extends Component {
       {
         title: this.getTitle('设备名称'),
         dataIndex: 'deviceName',
+        className: 'deviceName',
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
       }, {
         title: this.getTitle('电站名称'),
         dataIndex: 'stationName',
+        className: 'stationName',
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('stationName')
       }, {
         title: this.getTitle('设备类型'),
         dataIndex: 'deviceTypeName',
+        className: 'deviceTypeName',
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceTypeName')
       }, {
         title: this.getTitle('型号'),
         dataIndex: 'deviceModeName',
+        className: 'deviceModeName',
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceModeName')
       }, {
         title: this.getTitle('时间'),
         dataIndex: 'time',
+        className: 'time',
         // sorter: true,
         // className: orderField === 'time' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('time')
-      }, {
-        title: this.getTitle('风速', 'm/s'),
-        dataIndex: 'speed',
-        align: 'right'
-        // sorter: true,
-        // className: orderField === 'speed' ? null : styles.sorterType,
-        // sortOrder: this.getSortOrder('speed')
       }
     ];
     const pointColumn = pointData.map(e => ({
       title: this.getTitle(e.pointName, e.pointUnit),
       dataIndex: e.devicePointCode,
-      align: 'right'
+      className: 'points',
+      // align: 'right'
       // sorter: true,
       // className: orderField === e.e.devicePointCode ? null : styles.sorterType,
       // sortOrder: this.getSortOrder(e.e.devicePointCode)

@@ -14,7 +14,7 @@ import WeatherRate from './Charts/WeatherRate';
 import WeatherDayStatus from './Charts/WeatherDayChart'
 import moment from 'moment';
 
-class ProductionAnalysis extends React.Component {
+class StationResourceAnalysis extends React.Component {
   static propTypes = {
     changeResourceStore: PropTypes.func,
     dateType: PropTypes.string,
@@ -23,7 +23,7 @@ class ProductionAnalysis extends React.Component {
     endTime: PropTypes.string,
     selectYear: PropTypes.any,
     year: PropTypes.any,
-    stationCode: PropTypes.number,
+    stationCode: PropTypes.any,
     getResourcePlan: PropTypes.func,
     resetStore: PropTypes.func,
     resourceAvalibaData: PropTypes.array, //计划完成是否有数据
@@ -467,4 +467,4 @@ class ProductionAnalysis extends React.Component {
     );
   }
 }
-export default (ProductionAnalysis);
+export default (StationResourceAnalysis);

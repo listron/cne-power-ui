@@ -59,7 +59,7 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
       >
         {getFieldDecorator('hubHeight', { initialValue:stationDeviceDetail.map? stationDeviceDetail.map.hubHeight:null, })(
           <Input placeholder="保留小数点后两位" />
-        )}米
+        )}<span className={styles.unitStyle}>米</span>
       </FormItem>
 
     </div>

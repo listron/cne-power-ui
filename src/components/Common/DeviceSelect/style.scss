@@ -64,6 +64,9 @@
       }
     }
   }
+  .allCheckDevice{
+   padding: 0 8px 8px;
+  }
   .deviceList, .checkedList{
     display: flex;
     flex-wrap: wrap;
@@ -93,6 +96,16 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      display: flex;
+      :global{
+        .ant-checkbox-wrapper{
+          flex: 1;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          word-break: break-all;
+        }
+      }
     }
   }
   .checkedList{
