@@ -21,7 +21,7 @@ class EditableCell extends React.Component {
     if (dataIndex === 'yearPR') { // PR年计划
       return (<span>
         <Input onChange={(e) => this.valueChange(e, dataIndex, record, 'pr')}
-          defaultValue={record[dataIndex]} disabled={stationType === 0} placeholder={'--'} />%</span>);
+          defaultValue={record[dataIndex]} disabled={stationType === 0} placeholder={'--'} /></span>);
     }
     if (record.setGridTime) {// 并网数据
       if (getMonth(dataIndex) < +(record.setGridTime)) {
