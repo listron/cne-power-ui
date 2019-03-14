@@ -148,6 +148,10 @@
         .notSet{
           color: $darkColor;
         }
+        .editStation{
+          cursor: pointer;
+          margin-right: 12px;
+        }
         .deleteStation{
           cursor: pointer;
         }

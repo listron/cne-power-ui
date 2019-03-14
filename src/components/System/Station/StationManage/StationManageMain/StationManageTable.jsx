@@ -138,6 +138,7 @@ class StationManageTable extends Component {
       departmentSetInfo: {},
     })
   }
+
   deleteEdit = (record) => {
     this.setState({
       showWarningTip: true,
@@ -150,11 +151,20 @@ class StationManageTable extends Component {
       showWarningTip: false,
     })
   }
+
   confirmWarningTip = (deleteInfo) => {
     this.setState({
       showWarningTip: false,
     })
     this.onStationDelete(deleteInfo)
+  }
+
+  editStation = (record, selectedStationIndex) => { // 直接编辑电站
+    this.props.getStationDetail({
+      stationCode: record.stationCode,
+      selectedStationIndex,
+      showPage: 'edit',
+    })
   }
 
   render(){
@@ -192,12 +202,17 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
-      
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           if(deletable){
-            return <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
+            return (<span>
+              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+              <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
+            </span>)
           }else{
-            return <span className={styles.deleteDisable}>删除</span>
+            return (<span>
+              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+              <span className={styles.deleteDisable}>删除</span>
+            </span>)
           }
         }
       }
