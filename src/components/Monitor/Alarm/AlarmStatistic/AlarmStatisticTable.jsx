@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './alarmStatistic.scss';
 import { Table } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
+import { numWithComma } from '../../../../utils/utilFunc';
 import moment from 'moment';
 
 class AlarmStatisticTable extends React.Component {
@@ -55,40 +56,37 @@ class AlarmStatisticTable extends React.Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-      },
-      {
+      }, {
         title: '告警总数',
         dataIndex: 'alarmNum',
         key: 'alarmNum',
+        render: value => numWithComma(value),
         sorter: true,
-      },
-      {
+      }, {
         title: '一级总数',
         dataIndex: 'oneWarningNum',
         key: 'oneWarningNum',
+        render: value => numWithComma(value),
         sorter: true,
-
-      },
-      {
+      }, {
         title: '二级总数',
         dataIndex: 'twoWarningNum',
         key: 'twoWarningNum',
+        render: value => numWithComma(value),
         sorter: true,
-
-      },
-      {
+      }, {
         title: '三级总数',
         dataIndex: 'threeWarningNum',
         key: 'threeWarningNum',
+        render: value => numWithComma(value),
         sorter: true,
-      },
-      {
+      }, {
         title: '四级总数',
         dataIndex: 'fourWarningNum',
         key: 'fourWarningNum',
+        render: value => numWithComma(value),
         sorter: true,
-      },
-      {
+      }, {
         title: '平均处理时间',
         dataIndex: 'handleAvgTime',
         key: 'handleAvgTime',
@@ -96,8 +94,7 @@ class AlarmStatisticTable extends React.Component {
           return this.getDuration(text);
         },
         sorter: true,
-      },
-      {
+      }, {
         title: '一级处理时间',
         dataIndex: 'oneHandleAvgTime',
         key: 'oneHandleAvgTime',
@@ -105,8 +102,7 @@ class AlarmStatisticTable extends React.Component {
           return this.getDuration(text);
         },
         sorter: true,
-      },
-      {
+      }, {
         title: '二级处理时间',
         dataIndex: 'twoHandleAvgTime',
         key: 'twoHandleAvgTime',
@@ -114,8 +110,7 @@ class AlarmStatisticTable extends React.Component {
           return this.getDuration(text);
         },
         sorter: true,
-      },
-      {
+      }, {
         title: '三级处理时间',
         dataIndex: 'threeHandleAvgTime',
         key: 'threeHandleAvgTime',
@@ -123,8 +118,7 @@ class AlarmStatisticTable extends React.Component {
           return this.getDuration(text);
         },
         sorter: true,
-      },
-      {
+      }, {
         title: '四级处理时间',
         dataIndex: 'fourHandleAvgTime',
         key: 'fourHandleAvgTime',
