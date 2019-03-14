@@ -53,7 +53,7 @@ const routers = [
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: () => import('../containers/System/Account/Role/Role'),
-  }, { // 实时监控-告警-已转工单
+  }, { // 实时监控-告警-实时告警
     path: '/monitor/alarm/realtime',
     component: () => import('../containers/Monitor/Alarm/RealTimeWarning/RealTimeWarning'),
   }, { // 实时监控-告警-已转工单
@@ -67,10 +67,10 @@ const routers = [
     component: () => import('../containers/Monitor/Alarm/HistoryWarning/HistoryWarning'),
   }, { // 实时监控-告警-单电站告警统计
     path: '/monitor/alarm/statistic/:stationCode',
-    component: () => import('../containers/Monitor/Alarm/AlarmStatistic'),
+    component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
   }, { // 实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
-    component: () => import('../containers/Monitor/Alarm/AlarmStatistic'),
+    component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
   }, { // 实时监控-电站监控-全部电站
     path: '/monitor/station',
     component: () => import('../containers/Monitor/StationMonitor/AllStation/AllStation'),

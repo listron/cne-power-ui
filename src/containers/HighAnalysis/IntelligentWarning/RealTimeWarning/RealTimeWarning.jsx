@@ -18,9 +18,7 @@ class RealTimeWarning extends Component {
   constructor(props, context) {
     super(props, context)
   }
-  componentDidMount(){
-  this.props.getLostGenType({objectType: 1})
-  }
+  
   componentWillUnmount(){
     this.props.resetRealtimeWarninStore()
   }

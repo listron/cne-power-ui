@@ -3,11 +3,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import styles from "./alarm.scss";
 import PropTypes from "prop-types";
-import AlarmAllStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic';
-import AlarmSingleStationStatistic from '../../../components/Monitor/Alarm/AlarmStatistic/AlarmSingleStationStatistic'
+import AlarmAllStationStatistic from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmAllStationStatistic';
+import AlarmSingleStationStatistic from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmSingleStationStatistic'
 import { alarmAction } from './alarmAction';
-import CommonBreadcrumb from '../../../components/Common/CommonBreadcrumb';
-import Footer from '../../../components/Common/Footer';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb/index';
+import Footer from '../../../../components/Common/Footer/index';
 
 
 class ALarmStatistic extends Component {
@@ -48,7 +48,7 @@ class ALarmStatistic extends Component {
         }
       ],
     };
-  
+
     return (
       <div className={styles.alarmStatisticBox} >
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />

@@ -26,7 +26,7 @@ import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
 import {watchStationMonitor} from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
-import {watchAlarmMonitor} from './Monitor/Alarm/alarmSaga';
+import {watchAlarmMonitor} from './Monitor/Alarm/AlarmStatic/alarmSaga';
 import {watchMonitorRealtimeWarning} from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
 import {watchMonitorTransferForm} from './Monitor/Alarm/Transfer/transferFormSaga';
 import {watchMonitorHandleWarning} from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
@@ -129,6 +129,6 @@ export default function* rootSaga() {
     watchHistory(),
     // 工单
     watchWorkOrder(),
-    
+
   ])
 }
