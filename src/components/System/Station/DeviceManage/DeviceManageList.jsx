@@ -2,24 +2,27 @@ import React, { Component } from 'react';
 import styles from './deviceManage.scss';
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class DeviceManageList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     queryParams: PropTypes.object,
     deviceList: PropTypes.array,
+    selectedRowKeys: PropTypes.array,
     getDeviceList: PropTypes.func,
+    changeDeviceManageStore: PropTypes.func,
+    getStationDeviceDetail: PropTypes.func,
   }
-  constructor(props) {
-    super(props);
-  }
+  
   onSelectChange = (keys, record) => {
-    console.log('record:',record);
     this.props.changeDeviceManageStore({
       selectedRowData:record,
       selectedRowKeys:keys,
     })
   }
+
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getDeviceList, queryParams } = this.props;
     const { field, order } = sorter;
@@ -29,6 +32,7 @@ class DeviceManageList extends Component {
       sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
     })
   }
+
   showDeviceDetail=(record)=>{
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
@@ -43,8 +47,9 @@ class DeviceManageList extends Component {
       selectedStationIndex:record.key,
     })
   }
+
   render() {
-    const {selectedRowKeys} = this.props;
+    const { selectedRowKeys } = this.props;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -76,10 +81,10 @@ class DeviceManageList extends Component {
         key: 'connectDeviceName',
         sorter: true,
       },{
-        title: '装机容量',
+        title: <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        render: text=>(<span>{parseInt(text) >= 0 ?`${text}kW`:'--'}</span>),
+        render(text){ return numWithComma(text); },
         sorter: true,
       },{
         title: '是否显示',
