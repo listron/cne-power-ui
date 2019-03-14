@@ -6,17 +6,16 @@ import CommonPagination from '../../../Common/CommonPagination';
 
 class TableList extends Component {
   static propTypes = {
-    // getPowerReportList: PropTypes.func,
-    // changePowerReportStore: PropTypes.func,
+    getPowerReportList: PropTypes.func,
+    changePowerReportStore: PropTypes.func,
   }
   componentDidMount() {
-    console.log(this.props)
+    const { getPowerReportList, pageNum, pageSize } = this.props;
+    getPowerReportList({ stationCodes: '', pageNum, pageSize })
   }
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
     const { getPowerReportList } = this.props;
-    getPowerReportList({
-
-    })
+    getPowerReportList({ pageNum: currentPage, pageSize })
     this.props.changePowerReportStore({ pageNum: currentPage, pageSize, })
   }
   ontableSort = (pagination, filter, sorter) => {
@@ -149,13 +148,13 @@ class TableList extends Component {
     }))
     return (
       <React.Fragment>
-        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
-        <div>
-          <Table columns={columns}
-            dataSource={dataSource}
-            onChange={this.ontableSort}
-            pagination={false} />
+        <div className={styles.tableHeader}>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
+        <Table columns={columns}
+          dataSource={dataSource}
+          onChange={this.ontableSort}
+          pagination={false} />
       </React.Fragment>
     )
   }
