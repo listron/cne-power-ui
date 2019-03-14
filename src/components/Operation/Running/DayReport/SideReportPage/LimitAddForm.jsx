@@ -5,6 +5,7 @@ import styles from './sideReportPage.scss';
 import { Form, Input, DatePicker, Button,Row,Col, Select } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
+import moment from 'moment';
 const { Option } = Select;
 
 class LimitAddForm extends Component {
@@ -115,6 +116,10 @@ class LimitAddForm extends Component {
   cancelAddLimit = () => { // 取消限电添加
     const { limitGenList, changeLimitList } = this.props;
     changeLimitList(limitGenList, true);
+  }
+
+  disabledDate = (start) => {
+    return start && start > moment();
   }
 
   render(){
@@ -244,7 +249,7 @@ class LimitAddForm extends Component {
                   } 
                 }],
               })(
-                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+                <DatePicker disabledDate={this.disabledDate} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
               )}
             </Form.Item>
           </Col>
@@ -270,7 +275,7 @@ class LimitAddForm extends Component {
                   } 
                 }],
               })(
-                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker disabledDate={this.disabledDate} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>

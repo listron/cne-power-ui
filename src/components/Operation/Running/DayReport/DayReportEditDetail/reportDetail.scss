@@ -97,6 +97,11 @@
         .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
           padding: 0 8px;
         }
+        .ant-table .ant-table-thead{
+          th, th>div{
+            height: 60px;
+          }
+        }
         .ant-table tr {
           display: flex;
           width: calc(100vw - 285px);
