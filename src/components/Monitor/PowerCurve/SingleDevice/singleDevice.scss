@@ -109,7 +109,10 @@
       .rightTop{
         display: flex;
         flex:1;
-        background: gray;
+        .windrosechart{
+          width: 100%;
+        }
+      
       }
       .rightBottom{
         display: flex;

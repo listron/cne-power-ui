@@ -11,7 +11,8 @@ const { monitor } = Path.APISubPaths;
 
 function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-单风机
   const { payload } = action;
-  const powercurveUrl = `${APIBasePath}${monitor.getSingleDeviceCurveData}`;
+  const powercurveUrl = `/mock/wind/powercurve/fan/powercurvechart`;
+  // const powercurveUrl = `${APIBasePath}${monitor.getSingleDeviceCurveData}`;
  
   const response = yield call(axios.post, powercurveUrl, payload);
   try {
@@ -84,7 +85,9 @@ function* exportSinglePowerdevice(action) { //导出
 }
 function* getRoseChart(action) { //功率曲线图表-风向玫瑰图-单风机
   const { payload } = action;
-  const RoseChartUrl = `${APIBasePath}${monitor.getRoseChart}`;
+  const RoseChartUrl = `/mock/wind/powercurve/fan/windrosechart`;
+  // const RoseChartUrl = `${APIBasePath}${monitor.getRoseChart}`;
+
   // const powerspeedUrl = `${APIBasePath}${monitor.getpowerspeedchart}`;
   // const changlespeedUrl = `${APIBasePath}${monitor.getpitchanglespeedchart}`;
   // const winddistributionUrl = `${APIBasePath}${monitor.getwinddistributionchart}`;
@@ -92,7 +95,7 @@ function* getRoseChart(action) { //功率曲线图表-风向玫瑰图-单风机
   try {
     // const response = yield call(axios.post, RoseChartUrl, payload);
     const [rose,powerspeed,changlespeed,winddistribution,sequencechart] = yield all([
-      call(axios.post,RoseChartUrl,{...payload}),
+      call(axios.get,RoseChartUrl,{...payload}),
       // call(axios.post,powerspeedUrl,{...payload}),
       // call(axios.post,changlespeedUrl,{...payload}),
       // call(axios.post,winddistributionUrl,{...payload}),

@@ -30,15 +30,15 @@ class SingleDeviceContainer extends Component {
   }
   componentWillReceiveProps(nextProp) {
     const { stations, deviceShowType, changeSingleDeviceStore, getSingleDeviceCurveList } = nextProp;
-    if (stations.length > 0) {
-      const { stationCode, deviceFullCode, time } = this.props.match.params;
-      const startTime = time.split('~')[0];
-      const endTime = time.split('~')[1];
-      const params = { stationCode, deviceFullCode, startTime, endTime }
-      changeSingleDeviceStore({ ...params })
-      deviceShowType === 'graph' ? this.queryGraphData() : getSingleDeviceCurveList({ ...params })
+    // if (stations.length > 0) {
+      // const { stationCode, deviceFullCode, time } = this.props.match.params;
+      // const startTime = time.split('~')[0];
+      // const endTime = time.split('~')[1];
+      // const params = { stationCode, deviceFullCode, startTime, endTime }
+      // changeSingleDeviceStore({ ...params })
+      // deviceShowType === 'graph' ? this.queryGraphData() : getSingleDeviceCurveList({ ...params })
 
-    }
+    // }
 
   }
   onOk = (selectdevice) => {
@@ -65,12 +65,12 @@ class SingleDeviceContainer extends Component {
   queryGraphData = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, correct, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
-    this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
-    this.props.getsequencechart({ ...params, ...value });
-    this.props.getwinddistributionchart({ ...params, ...value });
-    this.props.getpowerspeedchart({ ...params, ...value });
+    // this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
+    // this.props.getsequencechart({ ...params, ...value });
+    // this.props.getwinddistributionchart({ ...params, ...value });
+    // this.props.getpowerspeedchart({ ...params, ...value });
     this.props.getRoseChart({ ...params, ...value });
-    this.props.getpitchanglespeedchart({ ...params, ...value });
+    // this.props.getpitchanglespeedchart({ ...params, ...value });
 
 
 
