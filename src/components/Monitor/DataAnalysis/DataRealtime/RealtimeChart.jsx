@@ -67,7 +67,7 @@ class RealtimeChart extends Component {
         type: 'dotted',
       } 
     },
-    name: `${e.pointName}\n(${e.pointUnit})`,
+    name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
     nameGap: 48,
     nameTextStyle: {
