@@ -18,9 +18,10 @@ function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-�
   try {
     if (response.data.code === '10000') {
       yield put({
-        type:singleDeviceCurveAction.PERFORMANCEANALYSIS_FETCH ,
+        type:singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS ,
         payload: {
-          singleDeviceCurveData: response.data.data || {},
+          singleDeviceCurveData: response.data.data.powerCurveData || [],
+          airDensity:response.data.data.airDensity||'',
         }
       })
     } else {
@@ -150,8 +151,8 @@ function* getRoseChart(action) { //功率曲线图表-风向玫瑰图-单风机
 function* getpowerspeedchart(action) { //功率曲线图表-功率&转速-单风机
   const { payload } = action;
   try {
-    // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const url = `${APIBasePath}${monitor.getpowerspeedchart}`
+    const url = '/mock//wind/powercurve/fan/powerspeedchart'; 
+    // const url = `${APIBasePath}${monitor.getpowerspeedchart}`
     const response = yield call(axios.post, url, payload);
 
     if (response.data.code === '10000') {
@@ -172,8 +173,8 @@ function* getpowerspeedchart(action) { //功率曲线图表-功率&转速-单风
 function* getpitchanglespeedchart(action) { //功率曲线图表-桨距角&风速-单风机
   const { payload } = action;
   try {
-    // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const url = `${APIBasePath}${monitor.getpitchanglespeedchart}`
+    const url = '/mock/wind/powercurve/fan/pitchanglespeedchart'; 
+    // const url = `${APIBasePath}${monitor.getpitchanglespeedchart}`
     const response = yield call(axios.post, url, payload);
 
     if (response.data.code === '10000') {
@@ -194,8 +195,8 @@ function* getpitchanglespeedchart(action) { //功率曲线图表-桨距角&风�
 function* getwinddistributionchart(action) { //功率曲线图表-风频分布-单风机
   const { payload } = action;
   try {
-    // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const url = `${APIBasePath}${monitor.getwinddistributionchart}`
+    const url = '/mock/wind/powercurve/fan/winddistributionchart'; 
+    // const url = `${APIBasePath}${monitor.getwinddistributionchart}`
     const response = yield call(axios.post, url, payload);
 
     if (response.data.code === '10000') {
@@ -216,8 +217,8 @@ function* getwinddistributionchart(action) { //功率曲线图表-风频分布-�
 function* getsequencechart(action) { //功率曲线图表-时序图-单风机
   const { payload } = action;
   try {
-    // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const url = `${APIBasePath}${monitor.getsequencechart}`
+    const url = '/mock/wind/powercurve/fan/sequencechart'; 
+    // const url = `${APIBasePath}${monitor.getsequencechart}`
     const response = yield call(axios.post, url, payload);
 
     if (response.data.code === '10000') {

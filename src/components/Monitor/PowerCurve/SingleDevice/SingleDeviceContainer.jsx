@@ -42,7 +42,7 @@ class SingleDeviceContainer extends Component {
 
   }
   onOk = (selectdevice) => {
-    console.log('selectdevice: ', selectdevice);
+    
     // const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
     // this.props.changeSingleDeviceStore({
     //   deviceFullCode
@@ -51,7 +51,7 @@ class SingleDeviceContainer extends Component {
 
   }
   onSwitchChange = (checked) => {
-    console.log('checked: ', checked);
+    
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
     this.onChangeFilter({ correct: checked ? 1 : 0 })
 
@@ -65,12 +65,12 @@ class SingleDeviceContainer extends Component {
   queryGraphData = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, correct, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
-    // this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
-    // this.props.getsequencechart({ ...params, ...value });
-    // this.props.getwinddistributionchart({ ...params, ...value });
-    // this.props.getpowerspeedchart({ ...params, ...value });
+    this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
+    this.props.getsequencechart({ ...params, ...value });
+    this.props.getwinddistributionchart({ ...params, ...value });
+    this.props.getpowerspeedchart({ ...params, ...value });
     this.props.getRoseChart({ ...params, ...value });
-    // this.props.getpitchanglespeedchart({ ...params, ...value });
+    this.props.getpitchanglespeedchart({ ...params, ...value });
 
 
 
@@ -90,10 +90,10 @@ class SingleDeviceContainer extends Component {
 
   render() {
     // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime } = this.props;
-    console.log('stationCode: ', stationCode);
+    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime,airDensity  } = this.props;
+    
     const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
-    console.log('stationInfo: ', stationInfo);
+    
     const pathAllDevice = `#/monitor/powercurve`;
     return (
       <div className={styles.singleDevice}>
@@ -133,7 +133,7 @@ class SingleDeviceContainer extends Component {
             <Icon onClick={this.showList} type="bars" className={deviceShowType === 'list' ? styles.active : styles.normal} />
           </div>
           {deviceShowType === 'list' && <Button className={styles.exportStyle}>导出</Button>}
-          {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:1.23kg/m³</div>}
+          {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:{airDensity}kg/m³</div>}
         </div>
         {deviceShowType === 'graph' ? <SingleWindDeviceCharts {...this.props} /> : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
 

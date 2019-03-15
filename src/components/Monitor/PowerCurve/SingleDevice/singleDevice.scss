@@ -81,22 +81,55 @@
       .leftTop{
         display: flex;
         flex:1;
-        background: pink;
+        .graphStyle{
+          display: flex;
+          flex:1;
+          // position: absolute;
+          .singlePowerCurveChart{
+            width: 100%;
+          }
+          .switchStyle{
+            position: absolute;
+            top:28%;
+            left:60%;
+          }
+          .formatStyle{
+            width: 150px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            .topStyle{
+              display: flex;
+              justify-content: space-between;
+              line-height: 20px;
+              height: 20px;
+            }
+            .lineStyle{
+              line-height: 28px;
+              height: 28px;
+            }
+          }
+        
+        }
       }
       .leftBottom{
         display: flex;
         flex:1;
-        background: red;
         .leftScatter{
           display: flex;
           flex:1;
-          background: yellow;
+         .powerSpeedChart{
+           width: 100%;
+         }
 
         }
         .rightScatter{
           display: flex;
           flex:1;
-          background: blue;
+          .powerSpeedChart{
+            width: 100%;
+          }
+         
         }
       }
 
@@ -111,13 +144,31 @@
         flex:1;
         .windrosechart{
           width: 100%;
+          .formatStyle{
+            // width: 150px;
+            // height: 100px;
+            display: flex;
+            flex-direction: column;
+            .topStyle{
+              display: flex;
+              justify-content: space-between;
+              line-height: 20px;
+              height: 20px;
+            }
+            .lineStyle{
+              line-height: 20px;
+              height: 20px;
+            }
+          }
         }
       
       }
       .rightBottom{
         display: flex;
         flex:1;
-        background: green;
+        .windDistribution{
+          width: 100%;
+        }
 
       }
 
@@ -125,8 +176,10 @@
     }
     .bottomBox{
       display: flex;
-      height: 300px;
-      background: orange;
+      height: 320px;
+      .sequenceChart{
+        width: 100%;
+      }
     }
 
   }
