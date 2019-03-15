@@ -160,6 +160,10 @@
           cursor: pointer;
         }
       }
+      .editDepartment, .deleteDepartment{
+        margin-right: 12px;
+        cursor: pointer;
+      }
       :global{
         .ant-table-placeholder{
           z-index: auto;

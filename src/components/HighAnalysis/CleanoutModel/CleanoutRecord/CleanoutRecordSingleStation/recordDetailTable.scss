@@ -14,6 +14,14 @@
     .ant-table .ant-table-tbody > tr > td{
       padding: 0 24px;
     }
+    .ant-table-thead{
+      th>div{
+        height: 60px;
+      }
+    }
+    .ant-table-column-sorter{
+      top: 18px;
+    }
     .iconfont{
       font-size: 20px;
       &:hover{

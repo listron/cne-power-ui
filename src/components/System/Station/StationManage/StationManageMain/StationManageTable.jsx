@@ -11,6 +11,8 @@ import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
+// to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
+// 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
 
 class StationManageTable extends Component {
   static propTypes = {
@@ -138,6 +140,7 @@ class StationManageTable extends Component {
       departmentSetInfo: {},
     })
   }
+
   deleteEdit = (record) => {
     this.setState({
       showWarningTip: true,
@@ -150,11 +153,20 @@ class StationManageTable extends Component {
       showWarningTip: false,
     })
   }
+
   confirmWarningTip = (deleteInfo) => {
     this.setState({
       showWarningTip: false,
     })
     this.onStationDelete(deleteInfo)
+  }
+
+  editStation = (record, selectedStationIndex) => { // 直接编辑电站
+    this.props.getStationDetail({
+      stationCode: record.stationCode,
+      selectedStationIndex,
+      showPage: 'edit',
+    })
   }
 
   render(){
@@ -192,12 +204,17 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
-      
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           if(deletable){
-            return <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
+            return (<span>
+              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+              <span className={styles.deleteStation} onClick={()=>this.deleteEdit(record)}>删除</span>
+            </span>)
           }else{
-            return <span className={styles.deleteDisable}>删除</span>
+            return (<span>
+              <i className={`${styles.editStation} iconfont icon-edit`} onClick={() => this.editStation(record, index)} />
+              <span className={styles.deleteDisable}>删除</span>
+            </span>)
           }
         }
       }

@@ -6,6 +6,7 @@ import { Form, Input, DatePicker, Button, Row, Col } from 'antd';
 import { Select, Cascader } from 'antd';
 import InputLimit from '../../../../Common/InputLimit';
 import DeviceSelect from '../../../../Common/DeviceSelect';
+import moment from 'moment';
 const { Option } = Select;
 
 class LostAddForm extends Component {
@@ -134,6 +135,10 @@ class LostAddForm extends Component {
   cancelAddFault = () => {
     const { faultGenList, changeFaultList } = this.props;
     changeFaultList(faultGenList, true);
+  }
+
+  disabledDate = (start) => {
+    return start && start > moment();
   }
 
   render() {
@@ -275,7 +280,12 @@ class LostAddForm extends Component {
                   } 
                 }],
               })(
-                <DatePicker placeholder="请选择" showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
+                <DatePicker
+                  disabledDate={this.disabledDate}
+                  placeholder="请选择"
+                  showTime={{ format: 'HH:mm' }}
+                  format="YYYY-MM-DD HH:mm"
+                />
               )}
             </Form.Item>
           </Col>
@@ -301,7 +311,12 @@ class LostAddForm extends Component {
                   } 
                 }],
               })(
-                <DatePicker placeholder="结束时间" showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
+                <DatePicker
+                  disabledDate={this.disabledDate}
+                  placeholder="结束时间"
+                  showTime={{ format: 'HH:mm' }}
+                  format="YYYY-MM-DD HH:mm"
+                />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
