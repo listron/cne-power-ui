@@ -24,8 +24,8 @@ class PowerReport extends Component {
   render() {
     return (
       <div style={{ width: '100%' }}>
-        <TimeSelectReport onChange={this.onTimeChange} timerText="选择时间" timeStyle="day" />
-        <SummaryMode onChange={this.onModechange} modeText="汇总方式" modeStyle="station" {...this.props} />
+        <TimeSelectReport onChange={this.onTimeChange} />
+        <SummaryMode onChange={this.onModechange}  {...this.props} />
         <TableList {...this.props} />
       </div>
     )

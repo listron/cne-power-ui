@@ -1,9 +1,12 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Radio, Button, Select } from 'antd';
+import { Radio, Button, Select, Icon } from 'antd';
 import styles from './styles.scss';
 import SelectModal from './Modal'
+// import { uniqBy, groupBy } from 'lodash';
+import { stationsByArea } from '../../../utils/utilFunc';
+
 const Option = Select.Option;
 /* 
 时间选择共用控件。可自由选择按年，按月，按日，自定义。
@@ -13,8 +16,16 @@ const Option = Select.Option;
   list
 2.接收必填的组件输出函数onChange = (modeObj)=>{}输出modeObj格式同上;
 3.可选参数输入showArea(默认true) , showStation(默认true), showModal(默认true),showWind(默认true); 均为bool
-4.可选展示参数timerText: string; 默认'统计时间选择'
+4.可选展示参数timerText: string; 默认'汇总方式'
 */
+
+
+// const defaultObj = {
+//   area: 'stations',
+//   station: 'stations',
+//   modal: 'deviceTypes',
+//   wind: 'stations',
+// }
 
 class TimeSelectReport extends React.Component {
 
@@ -29,6 +40,7 @@ class TimeSelectReport extends React.Component {
     style: PropTypes.object,
     list: PropTypes.array,
     stations: PropTypes.array,
+    deviceTypes: PropTypes.array,
   }
 
   static defaultProps = {
@@ -39,7 +51,7 @@ class TimeSelectReport extends React.Component {
     showWind: true,
     modeStyle: 'wind',
     list: [],
-    visiableModal:false,
+    visiableModal: false,
   }
 
   constructor(props) {
@@ -47,10 +59,11 @@ class TimeSelectReport extends React.Component {
     this.state = {
       modeStyle: props.modeStyle,
       list: props.list,
+      areaList: stationsByArea(props.stations)
+      // optionList: props[defaultObj[props.modeStyle]]
     }
   }
-  componentDidMount() {
-  }
+
   onModeChange = (e) => {
     const modeStyle = e.target.value;
     const params = { modeStyle, list: [] };
@@ -58,13 +71,16 @@ class TimeSelectReport extends React.Component {
     this.props.onChange({ ...params });
   }
   onSearch = () => {
-    const params = { modeStyle: this.state.modeStyle, list: [] };
+    const params = { modeStyle: this.state.modeStyle, list: this.state.list };
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
-  onModalHandelOK=(v)=>{
+  onModalHandelOK = (v) => {
     console.log(v)
-    this.setState({ visiableModal: false })
+    this.setState({
+      visiableModal: false,
+      list: v
+    })
   }
   hideModal = () => {
     this.setState({ visiableModal: false })
@@ -73,17 +89,29 @@ class TimeSelectReport extends React.Component {
   showModal = () => {
     this.setState({ visiableModal: true });
   }
-  maxTagPlaceholder = (v) => {
-    return <div>已选{this.state.list.length}/{this.props.stations.length}</div>
+  maxTagPlaceholder = () => {
+    let count = 0;
+    if (this.state.modeStyle === 'station') {
+      count = this.props.stations.length
+    } else if (this.state.modeStyle === 'modal') {
+      count = this.props.deviceTypes.length
+    } else if (this.state.modeStyle === 'area') {
+      count = this.state.areaList.length
+    } else {
+      count = this.props.stations.length
+    }
+    return <div>已选{this.state.list.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
   }
- 
+  clearList = () => {
+    this.setState({ list: [] });
+  }
   handleChange = (v) => {
     this.setState({ list: v });
   }
-
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations } = this.props;
-    const { modeStyle, list ,visiableModal} = this.state;
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes } = this.props;
+    const { modeStyle, list, visiableModal, areaList } = this.state;
+    const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
         <div className={styles.textStyle}>{modeText}</div>
@@ -103,81 +131,88 @@ class TimeSelectReport extends React.Component {
           style={{ width: '200px' }}
           maxTagCount={0}
           maxTagPlaceholder={this.maxTagPlaceholder}
+          filterOption={filterOption}
         >
-          {stations && stations.map((e) => {
-            return <Option key={e.stationCode}>{e.stationName}</Option>
+          {areaList && areaList.map((e) => {
+            return <Option key={e.key}>{e.title}</Option>
           })}
         </Select>}
-        {modeStyle === 'station' && <div style={{position:'relative'}}>
-        <Select
-          mode="multiple"
-          placeholder="选择电站"
-          value={list}
-          onChange={this.handleChange}
-          style={{ width: '200px' }}
-          maxTagCount={0}
-          maxTagPlaceholder={this.maxTagPlaceholder}
-        >
-          {stations && stations.map((e) => {
-            return <Option key={e.stationCode}>{e.stationName}</Option>
-          })}
-        </Select>
-        <SelectModal
-          {...this.props}
-          list = {list}
-          handleOK={this.onModalHandelOK}
-          visiable={visiableModal}
-          hideModal={this.hideModal}
-          showModal={this.showModal}
-        />
-      </div>
-      }
-        {modeStyle === 'modal' && <div style={{position:'relative'}}>
-        <Select
-          mode="multiple"
-          placeholder="选择型号"
-          value={list}
-          onChange={this.handleChange}
-          style={{ width: '200px' }}
-          maxTagCount={0}
-          maxTagPlaceholder={this.maxTagPlaceholder}
-        >
-          {stations && stations.map((e) => {
-            return <Option key={e.stationCode}>{e.stationName}</Option>
-          })}
-        </Select>
-        <SelectModal
-          {...this.props}
-          list = {list}
-          handleOK={this.onModalHandelOK}
-          visiable={visiableModal}
-          hideModal={this.hideModal}
-          showModal={this.showModal}
-        />
-      </div>}
-        {modeStyle === 'wind' && <div style={{position:'relative'}}>
-        <Select
-          mode="multiple"
-          placeholder="选择风机"
-          value={list}
-          onChange={this.handleChange}
-          style={{ width: '200px' }}
-          maxTagCount={0}
-          maxTagPlaceholder={this.maxTagPlaceholder}
-        >
-          {stations && stations.map((e) => {
-            return <Option key={e.stationCode}>{e.stationName}</Option>
-          })}
-        </Select>
-        <SelectModal
-          {...this.props}
-          list = {list}
-          handleOK={this.onModalHandelOK}
-          visiable={visiableModal}
-          hideModal={this.hideModal}
-          showModal={this.showModal}
-        />
-      </div>}
+        {modeStyle === 'station' && <div style={{ position: 'relative' }}>
+          <Select
+            mode="multiple"
+            placeholder="选择电站"
+            value={list}
+            onChange={this.handleChange}
+            style={{ width: '200px' }}
+            maxTagCount={0}
+            maxTagPlaceholder={this.maxTagPlaceholder}
+            filterOption={filterOption}
+          >
+            {stations && stations.map((e) => {
+              return <Option key={e.stationCode}>{e.stationName}</Option>
+            })}
+          </Select>
+          <SelectModal
+            {...this.props}
+            list={list}
+            sourceData={areaList}
+            handleOK={this.onModalHandelOK}
+            visiable={visiableModal}
+            hideModal={this.hideModal}
+            showModal={this.showModal}
+          />
+        </div>
+        }
+        {modeStyle === 'modal' && <div style={{ position: 'relative' }}>
+          <Select
+            mode="multiple"
+            placeholder="选择型号"
+            value={list}
+            onChange={this.handleChange}
+            style={{ width: '200px' }}
+            maxTagCount={0}
+            maxTagPlaceholder={this.maxTagPlaceholder}
+            filterOption={filterOption}
+          >
+            {deviceTypes && deviceTypes.map((e) => {
+              return <Option key={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+            })}
+          </Select>
+          <SelectModal
+            {...this.props}
+            list={list}
+            sourceData={areaList}
+            handleOK={this.onModalHandelOK}
+            visiable={visiableModal}
+            hideModal={this.hideModal}
+            showModal={this.showModal}
+          />
+        </div>}
+        {modeStyle === 'wind' && <div style={{ position: 'relative' }}>
+          <Select
+            mode="multiple"
+            placeholder="选择风机"
+            value={list}
+            onChange={this.handleChange}
+            style={{ width: '200px' }}
+            maxTagCount={0}
+            maxTagPlaceholder={this.maxTagPlaceholder}
+            filterOption={filterOption}
+          >
+            {stations && stations.map((e) => {
+              return <Option key={e.stationCode}>{e.stationName}</Option>
+            })}
+          </Select>
+          <SelectModal
+            {...this.props}
+            list={list}
+            sourceData={areaList}
+            handleOK={this.onModalHandelOK}
+            visiable={visiableModal}
+            hideModal={this.hideModal}
+            showModal={this.showModal}
+          />
+        </div>}
         <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
         <Button onClick={this.onSearch}>导出</Button>
       </div>

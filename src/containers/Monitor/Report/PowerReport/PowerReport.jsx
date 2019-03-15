@@ -14,10 +14,10 @@ class PowerReport extends Component {
   constructor(props, context) {
     super(props, context)
   }
-  componentDidMount(){
+  componentDidMount() {
     console.log(this.props)
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetPowerReportStore()
   }
   render() {

@@ -1,97 +1,63 @@
 import React, { Component } from 'react';
-import { Modal, Select,Tree   } from 'antd';
+import { Modal, Tree } from 'antd';
 import styles from './styles.scss';
 import PropTypes from 'prop-types';
 const { TreeNode } = Tree;
 
 
-const treeData = [{
-  title: '全部',
-  key: '01',
-  children: [
-    {
-      title: '0-0',
-      key: '0-0',
-      children: [{
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      }, {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      }, {
-        title: '0-0-2',
-        key: '0-0-2',
-      }],
-    }, {
-      title: '0-1',
-      key: '0-1',
-      children: [
-        { title: '0-1-0-0', key: '0-1-0-0' },
-        { title: '0-1-0-1', key: '0-1-0-1' },
-        { title: '0-1-0-2', key: '0-1-0-2' },
-      ],
-    }, {
-      title: '0-2',
-      key: '0-2',
-    }
-    
-  ],
-}];
-
 class SelectModal extends Component {
   static propTypes = {
-  
+    hideModal: PropTypes.func,
+    showModal: PropTypes.func,
+    handleOK: PropTypes.func,
+    sourceData: PropTypes.array,
+    list: PropTypes.array,
+    visiable: PropTypes.bool,
   }
   constructor(props) {
     super(props);
     this.state = {
-    expandedKeys: ['0-0-0', '0-0-1'],
-    autoExpandParent: true,
-    checkedKeys: ['0-0-0-1'],
-    selectedKeys: [],
+      checkedKeys: [...props.list],
+      tree: [
+        {
+          title: '全部',
+          key: '-999999',
+          children: props.sourceData
+        }
+      ]
     }
+
   }
-
-
-  showModal = () => {
-    this.props.showModal();
+  componentWillReceiveProps(nextProps) {
+    this.setState({ checkedKeys: nextProps.list });
   }
-
-
-  handleOK = () => {
-    this.props.handleOK(this.state.checkedKeys);
-  }
-
-  hideModal = () => {
-    this.props.hideModal(); 
-  }
- 
-  onExpand = (expandedKeys) => {
-    console.log('onExpand', expandedKeys);
-    this.setState({
-      expandedKeys,
-      autoExpandParent: false,
-    });
-  }
-
   onCheck = (checkedKeys) => {
-    console.log('onCheck', checkedKeys);
     this.setState({ checkedKeys });
   }
-
-  onSelect = (selectedKeys, info) => {
-    console.log('onSelect', info);
-    this.setState({ selectedKeys });
+  showModal = () => {
+    this.props.showModal();
+    this.setState({
+      list: [...this.props.list],
+    });
+  }
+  handleOK = () => {
+    let keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
+    this.props.handleOK(keys);
+  }
+  //去除选中节点中的父节点 需要递归
+  delParentNode = (data, keys) => {
+    data.forEach(e => {
+      if (e.children) {
+        if (keys.indexOf(String(e.key)) !== -1) {
+          keys.splice(keys.indexOf(String(e.key)), 1)
+        }
+        this.delParentNode(e.children, keys)
+      }
+    })
+    return keys
+  }
+  hideModal = () => {
+    this.props.hideModal();
   }
 
   renderTreeNodes = data => data.map((item) => {
@@ -105,10 +71,10 @@ class SelectModal extends Component {
     return <TreeNode {...item} />;
   })
 
-  
+
 
   render() {
-    const { visiable} = this.props;
+    const { visiable } = this.props;
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -123,23 +89,20 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
-          <Tree
-            checkable
-            onExpand={this.onExpand}
-            expandedKeys={this.state.expandedKeys}
-            autoExpandParent={this.state.autoExpandParent}
-            onCheck={this.onCheck}
-            checkedKeys={this.state.checkedKeys}
-            onSelect={this.onSelect}
-            selectedKeys={this.state.selectedKeys}
-          >
-            {this.renderTreeNodes(treeData)}
-          </Tree>
+            <Tree
+              checkable
+              autoExpandParent={true}
+              onCheck={this.onCheck}
+              checkedKeys={this.state.checkedKeys}
+              blockNode={false}
+            >
+              {this.renderTreeNodes(this.state.tree)}
+            </Tree>
           </div>
         </Modal>
       </div>
     )
-    
+
   }
 }
 export default SelectModal;
