@@ -1,9 +1,13 @@
 import React,{Component} from 'react';
 import styles from './scatterDiagram.scss';
-import { Select, DatePicker } from 'antd';
+import { Select, DatePicker, Button, message } from 'antd';
 import PropTypes from 'prop-types';
+import path from '../../../../constants/path';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect';
+
+const { APIBasePath } = path.basePaths;
+const { monitor } = path.APISubPaths;
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -19,12 +23,16 @@ class ScatterDiagramSearch extends Component{
     selectStationType: PropTypes.number, // 选中的电站类型
     xPointList: PropTypes.array,
     yPointList: PropTypes.array,
+    queryListParams: PropTypes.object, // 所有上级传下来用于请求表格的参数集合对象
+    getListScatterDiagram: PropTypes.func,
   };
 
   constructor(props){
     super(props);
     this.state = {
-     
+     stationName: '',
+     stationDeviceType: '', 
+     isShow: false,
     }
   }
 
@@ -59,17 +67,36 @@ class ScatterDiagramSearch extends Component{
         ...queryParam,
         deviceFullCode: devices,
         devicePointCode: '',
-        xPoint:[],
+        xPoint: [],
+        yPoint: [],
       }
     })
   }
 
   xSelectPoints = (value) => { // 选择x轴测点
-    const { changeScatterDiagramStore,queryParam,xPointList, yPointList  } = this.props;
+    const { changeScatterDiagramStore, queryParam, xPointList, yPointList  } = this.props;
     const { devicePointCode } = queryParam;
-    // if (devicePointCode.length > 0) {
-      
-    // }
+    // xPointList.map(e => {
+    //   if(xPointList[0].devicePointCode === yPointList[0].devicePointCode){
+    //     yPointList[0] = []
+    //   }
+    // })
+    changeScatterDiagramStore({
+      queryParam:{
+        ...queryParam,
+        devicePointCode: value,
+      }
+    })
+  }
+  
+  ySelectPoints = (value) => { // 选择y轴测点
+    const { changeScatterDiagramStore, queryParam, xPointList, yPointList  } = this.props;
+    const { devicePointCode } = queryParam;    
+    yPointList.map(e => {
+      if(xPointList[e].devicePointCode === yPointList[e].devicePointCode){
+        xPointList[e] = []
+      }
+    })
     changeScatterDiagramStore({
       queryParam:{
         ...queryParam,
@@ -78,11 +105,80 @@ class ScatterDiagramSearch extends Component{
     })
   }
 
+  timeChange = (timeMoment) => { // 选择时间
+    this.scatterDiagramDataFetch({
+      startTime: timeMoment[0],
+      endTime: timeMoment[1]
+    })
+  }
 
+  scatterDiagramDataFetch = (params) => {
+    const { changeScatterDiagramStore, queryParam, listParam, getChartScatterDiagram, getListScatterDiagram } = this.props;
+    const { xPoint, yPoint } = queryParam;
+    if (xPoint && yPoint) { // 选择测点后重新请求数据
+      const newQueryParam = {
+        ...queryParam,
+        ...params
+      }
+      // getChartScatterDiagram({
+      //   queryParam : newQueryParam
+      // })
+      // getListScatterDiagram({
+      //   queryParam : newQueryParam,
+      //   listParam
+      // })
+      changeScatterDiagramStore({
+        queryParam : newQueryParam,
+        listParam
+      })
+    } else {
+      changeScatterDiagramStore({ ...params })
+    }
+  }
+
+  searchPointList = (selectXPoint, selectYPoint) => { // 测点查询
+    const { listParam, queryParam, getListScatterDiagram, getChartScatterDiagram, xPointList, yPointList} = this.props;
+    if(xPointList.length === 0 || yPointList.length.length === 0){
+      message.error('请先选择测点');
+      return;
+    }
+    const newQueryParam = {
+      ...queryParam,
+      xPoint: selectXPoint,
+      yPoint: selectYPoint,
+    }
+    getListScatterDiagram({
+      queryParam: newQueryParam,
+      listParam,
+    })
+    getChartScatterDiagram({
+      queryParam: newQueryParam
+    })
+  }
+
+  exportPointList = () => { // 导出表格
+    const { downLoadFile, queryParam, enterpriseId } = this.props;
+    const url = `${APIBasePath}${monitor.exportScatterDiagram}`;
+    let { startTime, endTime, deviceFullCode, xPoint, yPoint, } = queryParam;
+    startTime = startTime.utc().format();
+    endTime = endTime.utc().format();
+    downLoadFile({ 
+      url,
+      fileName: `${startTime}至${endTime}散点图数据`,
+      params: {
+        ...queryParam,
+        deviceFullCode: deviceFullCode.map(e => e.deviceCode),
+        enterpriseId,
+        startTime,
+        endTime,
+      },
+    })
+  }
 
   render(){
-    const { queryParam, stations, deviceTypeCode, selectStationType, xPointList, yPointList, } = this.props;
+    const { queryParam, stations, deviceTypeCode, selectStationType, xPointList, yPointList, partScatterDiagram = {}} = this.props;
     const { stationCode, deviceFullCode, startTime, endTime, devicePointCode} = queryParam;
+    const { dataList = [] } = partScatterDiagram;
     const xPointSelectDisable = xPointList.length === 0; // 显示x轴测点
     const yPointSelectDisable = yPointList.length === 0; // 显示y轴测点
     
@@ -127,7 +223,7 @@ class ScatterDiagramSearch extends Component{
             onChange={this.xSelectPoints}  
             placeholder="请选择" 
             disabled={xPointSelectDisable}>
-              <Option key={''} value={''}>{'全部测点'}</Option>
+              <Option key={''} value={''}>{'请选择'}</Option>
               {xPointList.map(e=>{
                 if(!e){ return null; }
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
@@ -141,12 +237,16 @@ class ScatterDiagramSearch extends Component{
             onChange={this.ySelectPoints} 
             placeholder="请选择" 
             disabled={yPointSelectDisable}>
-              <Option key={''} value={''}>{'全部测点'}</Option>
+              <Option key={''} value={''}>{'请选择'}</Option>
               {yPointList.map(e=>{
                 if(!e){ return null; }
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
             </Select>
+          </div>
+          <div className={styles.rightHandle}>
+            <Button className={styles.searchInfo} onClick={this.searchPointList}>查询</Button>
+            <Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0}>导出</Button>
           </div>
         </div>
       </div>

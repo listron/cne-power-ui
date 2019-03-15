@@ -1,55 +1,68 @@
 import React, {Component} from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import styles from './scatterDiagram.scss';
-import { dataFormat } from '../../../../utils/utilFunc';
 
 class ScatterDiagramChart extends Component{
   static propTypes = {
-
+    allscatterDiagram: PropTypes.object,
+    chartLoading: PropTypes.bool,
   }
   componentDidMount() {
-    this.drawChart(this.props.)
+    const {allscatterDiagram, getChartScatterDiagram} = this.props;
+    this.drawChart(allscatterDiagram);
+    getChartScatterDiagram({
+
+    })
   }
 
-  drawChart = (params) => {
-    var scatterChart = echarts.init(document.getElementById('main'));
-    let xData = [], yData = [];
-    params.length > 0 && params.forEath(e => {
-      xData.push(e.power || '--');
-      yData.push(e.windSpeed);
-    })
-    // 绘制图表
-    scatterChart.setOption({
+  drawChart = (allscatterDiagram) => {
+    var myChart = echarts.init(document.getElementById('main'));
+    let powerData = [], speedData = [];
+    console.log(allscatterDiagram.pointData.length)
+    allscatterDiagram.pointData.length > 0 && allscatterDiagram.pointData.forEach(e => {
+        // powerData.push(e.xData || '--')
+        powerData.push(e.xData)
+        // speedData.push(e.yData)
+        // powerData.push(e.yData)
+      })
+      console.log(powerData)
+    // allscatterDiagram.pointData.length > 0 && allscatterDiagram.pointData.forEach(e => {
+    //   powerData.push(e.xData || '--')
+    //   speedData.push(e.yData)
+    // })
+   
+    const data = powerData;
+    myChart.setOption({
+      tooltip: {
+        trigger: 'axis',
+          axisPointer: {
+              type: 'cross'
+          }
+      },
       xAxis: {
-        splitNumber: 16
+        type: 'value',
+        // data: speedData,
+        splitNumber: 20
       },
       yAxis: {
-        splitNumber: 6
+        type: 'value',
       },
-      series: [
-        { 
-          symbolSize: 20,
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'scatter'
-      }
-    ]
+      series: [{
+        name: 'scatter',
+        type: 'scatter',
+        data: data
+      }]
     });
-  }
-
-    
-
-
-
+  }   
 
   render(){
     const {allscatterDiagram} = this.props;
-    console.log(allscatterDiagram);
-    
+    // console.log(allscatterDiagram.pointData.length)
+    // console.log(allscatterDiagram.pointData.length)
     return(
       <div className={styles.scatterDiagramChart}>
-        <div id="main"></div>
+        <div id="main" style={{ width: 400, height: 400 }}></div>
       </div>
     )
   }

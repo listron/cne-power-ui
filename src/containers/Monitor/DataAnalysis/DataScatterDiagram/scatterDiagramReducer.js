@@ -24,6 +24,7 @@ const initState = Immutable.fromJS({
     endTime: moment(),
     xPoint:'',
     yPoint:'',
+    timeInterval: null, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
   listParam: {
     orderField: 'deviceName', // 排序字段(默认时间倒序（最新的时间在最上方）

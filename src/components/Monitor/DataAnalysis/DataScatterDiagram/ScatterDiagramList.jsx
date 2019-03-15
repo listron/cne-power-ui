@@ -12,11 +12,12 @@ class ScatterDiagramList extends Component{
     getListScatterDiagram: PropTypes.func,
     queryParam: PropTypes.object,
     partScatterDiagram: PropTypes.object,
+    changeScatterDiagramStore: PropTypes.func,
   }
   
   onPaginationChange = ({ pageSize, currentPage }) => { // 操作分页器
-    const { getListScatterDiagram, queryParam, listParam } = this.props;
-    getListScatterDiagram({
+    const { getListScatterDiagram, changeScatterDiagramStore, queryParam, listParam } = this.props;
+    changeScatterDiagramStore({
       queryParam,
       listParam: {
         ...listParam,

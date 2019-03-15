@@ -1,6 +1,6 @@
 @import '../../../../theme/theme.scss';
 
-.searchPart{
+.searchPart{ // 搜索
   padding: 20px 32px;
   display: flex;
   flex-wrap: wrap;
@@ -40,12 +40,53 @@
       }
     }
   }
+  .rightHandle{
+    margin-left: 40px;
+    .searchInfo{
+      margin-right: 40px;
+    }
+  }
 } 
 
-.scatterDiagramList{
+.scatterDiagramList{ // 列表
   padding: 20px 32px;
   .pagination{
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.scatterDiagramChart{ //chart
+  display: flex;
+  width: 90%;
+  height: 350px;
+}
+
+.scatterDiagramDataType{ // 切换chart/list
+  display: flex;
+  border-top: 1px dotted $promptColor;
+  border-bottom: 1px dotted $promptColor;
+  justify-content: space-between;
+  align-items: center;
+  .tabIcon{
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    .active, .normal{
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active{
+      color: #fff;
+      background-color: $themeColor;
+    }
+    .normal{
+      color: #999;
+      background-color: #f1f1f1;
+    }
   }
 }

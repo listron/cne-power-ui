@@ -114,47 +114,42 @@ function *getListScatterDiagram(action) { // 获取表格数据
 function *getChartScatterDiagram(action){ // 获取散点图echarts数据
   const { payload } = action;
   const { queryParam } = payload;
-  console.log(payload);
-
+  // console.log(action);
   const url = '/mock/monitor/dataAnalysis/allScatterDiagram';
   try{
-    const {  startTime, endTime, deviceFullCode } = queryParam;
-    yield put({
-      type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { queryParam, chartLoading: true }
-    })
-    const response = yield call(axios.post, url, {
-      ...queryParam,
-      deviceFullCode: deviceFullCode.map(e => e.deviceCode),
-      startTime: startTime.utc().format(),
-      endTime: endTime.utc().format(),
-      enterpriseId: Cookie.get('enterpriseId'),
-    });
-    if(response.data.data === '10000'){
-
-      yield put({
-        type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
-        payload: {
-          chartTime: moment().unix(), 
-          allscatterDiagram: response.data.data || {},
-          chartLoading: false
-        }
-      })
-    }else{
-      throw response.data;
-    }
+    //  const { deviceFullCode, startTime, endTime, xPoint, yPoint } = queryParam;
+    //  yield put({
+    //    type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
+    //    payload: {queryParam, tableLoading: true}
+    //  })
+     const response = yield call(axios.post, url,{
+      //  ...queryParam,
+      //  deviceFullCode: deviceFullCode.map(e => e.deviceCode),
+      //  startTime: startTime.utc().format(),
+      //  endTime: endTime.utc().format(),
+      //  enterpriseId: Cookie.get('enterpriseId')
+     });
+     if (response.data.code === '10000') {
+       yield put({
+         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
+         payload:{
+           chartTime: moment().unix(), 
+           allscatterDiagram: response.data.data || {},
+           chartLoading: false
+         }
+       });
+     }else{
+       throw response.data;
+     }
   }catch(e){
-    message.error('获取图表数据失败!');
-    yield put({
-      type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { chartLoading: false }
-    })
-
-    console.log(e);
+     message.error("获取图表数据失败!");
+     yield put({
+       type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
+       payload: { tableLoading: false }
+     })
+     console.log(e);
   }
 }
-
-
 
 export function* watchDataScatterDiagramMonitor() {
   yield takeLatest(scatterDiagramAction.getSecendInterval, getSecendInterval);
