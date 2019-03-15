@@ -30,7 +30,7 @@ class ProvinceItem extends Component {
         message.error('请选择同为风电或光伏的电站!');
         return;
       }
-      newStations = multiple?[station,...selectedStation]:[station];
+      newStations = multiple?[...selectedStation,station]:[station];
     }
     this.props.checkStation(newStations)
   }
