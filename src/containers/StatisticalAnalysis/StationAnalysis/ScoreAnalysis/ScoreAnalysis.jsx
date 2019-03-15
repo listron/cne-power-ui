@@ -44,7 +44,7 @@ class ScoreAnalysis extends Component {
                 <TabPane tab="光伏" key="pv"> <PvScoreAnalysis {...this.props} /> </TabPane>
               </Tabs>
             }
-            {stationTypeCount === 'pv' && <div> <PvScoreAnalysis {...this.props} /></div>}
+            {stationTypeCount === 'pv' &&  <PvScoreAnalysis {...this.props} />}
             {stationTypeCount === 'wind' && <div>风电</div>}
           </div>
           <Footer />

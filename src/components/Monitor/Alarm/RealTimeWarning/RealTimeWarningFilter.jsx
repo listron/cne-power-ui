@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './realTimeWarning.scss';
 import { Input, Button } from 'antd';
-
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
-
 
 
 class RealTimeWarningFilter extends Component {
@@ -24,13 +22,11 @@ class RealTimeWarningFilter extends Component {
     // this.props.getRealtimeWarning({ ...params, ...value })
     this.props.onSearch({ ...params, ...value })
   }
-
   onChange = (e) => {
     this.setState({
       value: e.target.value
     });
   }
-
   onReset = () => {
     this.setState({
       value: ''

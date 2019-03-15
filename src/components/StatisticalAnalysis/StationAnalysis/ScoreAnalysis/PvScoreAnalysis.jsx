@@ -30,7 +30,7 @@ class PvScoreAnalysis extends Component {
         this.state = {
             stationSelect: '',
             reportStation: [],
-            highToLow: true,
+            highToLow: false,
             warningTipText: '数据计算中，请选择其他月份进行查看',
             showWarningTip: moment().isBefore(moment().format('YYYY-MM') + '-03', 'day'),// 在每个月前两天没有数据提示
         }
@@ -45,7 +45,9 @@ class PvScoreAnalysis extends Component {
         const { startTime, timeStyle } = value;
         let dataType = timeStyle === 'month' ? 'year' : 'month';
         this.getScoreList({ dataType, time: startTime })
-        dataType === 'month' && this.setState({ showWarningTip: moment(startTime).isBefore(moment().format('YYYY-MM') + '-03', 'day'), })
+        let currentMoth=moment(startTime).add(1, 'months').isBefore(moment(), 'month');
+        let isBefore=!currentMoth && moment().date()<3
+        dataType === 'month' && this.setState({ showWarningTip: isBefore, })
     }
 
     getScoreList = (param) => {
@@ -55,7 +57,7 @@ class PvScoreAnalysis extends Component {
 
     PvStationSelect = (e) => {
         const reportType = e.target.value;
-        this.getScoreList({ reportType })
+        this.getScoreList({ reportType,stationCodes:[] })
         this.setState({ reportStation: [] })
     }
 
@@ -71,9 +73,10 @@ class PvScoreAnalysis extends Component {
         this.getScoreList({ stationCodes })
     }
 
-    scoreSort = (highToLow) => { // 分数排序切换
-        this.setState({ highToLow: !highToLow })
-        const sortMethod = highToLow ? 'desc' : 'asc';
+    scoreSort = () => { // 分数排序切换
+        const unit=!this.state.highToLow
+        this.setState({ highToLow: unit })
+        const sortMethod = unit ? 'desc' : 'asc';
         this.getScoreList({ sortMethod })
     }
 
@@ -82,7 +85,8 @@ class PvScoreAnalysis extends Component {
     }
 
     render() {
-        const { pvStationType, scoreList, reportType, singleScoreData, stations } = this.props;
+        const { pvStationType, scoreList,  singleScoreData, stations } = this.props;
+        const {reportType}=this.props.pvParams;
         const { reportStation, highToLow } = this.state;
         const PvStations = stations.filter(e => e.stationType === 1);
         const PVSelectStations = reportType === '' ? PvStations : PvStations.filter(e => e.reportType === reportType);
@@ -131,7 +135,7 @@ class PvScoreAnalysis extends Component {
                     </div>
                     <div className={styles.scoreTranslate}>
                         <div className={styles.scoreTranslateBtn}>排序</div>
-                        <div onClick={() => { this.scoreSort(highToLow) }} className={styles.scoreSort}>
+                        <div onClick={this.scoreSort} className={styles.scoreSort}>
                             <i className="iconfont icon-mark" />
                             {highToLow && '分数由高到低' || '分数由低到高'}
                         </div>

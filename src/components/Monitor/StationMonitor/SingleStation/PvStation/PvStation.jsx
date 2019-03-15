@@ -10,6 +10,7 @@ import styles from './pvStation.scss';
 import DeviceList from './DeviceList/DeviceList';
 import { Tabs, Radio } from 'antd';
 import { Link } from 'react-router-dom';
+import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
 
 const { TabPane } = Tabs;
 const RadioButton = Radio.Button;
@@ -24,6 +25,10 @@ class PvStation extends Component {
     deviceTypeCode: PropTypes.number,
     stationCode: PropTypes.string,
     resetSingleStationStore: PropTypes.func,
+    realTimePowerUnit: PropTypes.string,
+    realTimePowerPoint: PropTypes.any,
+    powerUnit: PropTypes.string,
+    powerPoint: PropTypes.any,
   }
 
   constructor(props) {
@@ -38,37 +43,17 @@ class PvStation extends Component {
     this.props.changeSingleStationStore({ deviceTypeCode });
   }
 
-  getDeviceTypeIcon = (e) => {
-    switch (e) {
-      case 509:
-        return 'iconfont icon-pvs';
-      case 206:
-      case 201:
-        return 'iconfont icon-nb';
-      case 202:
-      case 207:
-        return 'iconfont icon-hl';
-      case 304:
-        return 'iconfont icon-xb';
-      case 302:
-        return 'iconfont icon-jidian';
-      case 301:
-        return 'iconfont icon-syz';
-      default:
-        return;
-    }
-  }
-
   hiddenStationList = () => {
     this.setState({
       hiddenStationList: true,
     });
   }
 
-  createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true) => ( // 设备流程生成函数
+  createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
     <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }}>
       <div className={styles.deviceTypeIcon} >
-        <i className={this.getDeviceTypeIcon(typeCode)} ></i>
+        <i className={getDeviceTypeIcon(typeCode)} ></i>
+        {alarm && <i className="iconfont icon-alarm alarmIcon" ></i>}
         <img src="/img/arrowgo.png" className={styles[imgClass]} />
       </div>
       <div>{typeName}</div>
@@ -79,6 +64,8 @@ class PvStation extends Component {
   render() {
     const clickable = [509, 201, 206, 304, 202, 302, 301];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
+    const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
+    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
     const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
@@ -86,7 +73,7 @@ class PvStation extends Component {
     let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, boosterInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
     deviceFlowTypes.forEach(device => { // 抽取各设备类型信息
       const deviceTypes = device.deviceTypes || [];
-      let tmpSeriesInfo = deviceTypes.find(e => e.deviceTypeCode === 509); // 组串
+      let tmpSeriesInfo = deviceTypes.find(e => e.deviceTypeCode === 509); // 组串 光伏组件
       let tmpBoxConfluentInfo = deviceTypes.find(e => e.deviceTypeCode === 304); // 箱变
       let tmpIntegrateInfo = deviceTypes.find(e => e.deviceTypeCode === 302); // 集电线路
       let tmpBoosterInfo = deviceTypes.find(e => e.deviceTypeCode === 301); // 升压站
@@ -108,14 +95,16 @@ class PvStation extends Component {
         stepTwoInfo.deviceTypeName,
         'deviceTypeItem',
         'arrowgo',
-        clickable.includes(stepTwoInfo.deviceTypeCode)
+        clickable.includes(stepTwoInfo.deviceTypeCode),
+        deviceTypeCode === stepTwoInfo.deviceTypeCode && alarmStatus,
       ) : null;
       RowThreeButton = stepThreeInfo ? this.createFlowButton(
         stepThreeInfo.deviceTypeCode,
         stepThreeInfo.deviceTypeName,
         'deviceTypeItem',
         'arrowgo',
-        clickable.includes(stepThreeInfo.deviceTypeCode)
+        clickable.includes(stepThreeInfo.deviceTypeCode),
+        deviceTypeCode === stepThreeInfo.deviceTypeCode && alarmStatus,
       ) : null;
     } else if (deviceFlowRowTwo.length === 2 && deviceFlowRowThree.length === 2) { // 两行4种设备类型顺序。
       needClassBox = true;
@@ -129,13 +118,14 @@ class PvStation extends Component {
           concentrateConflu.deviceTypeName,
           'innerItem',
           'innerArrow',
-          clickable.includes(concentrateConflu.deviceTypeCode)
+          clickable.includes(concentrateConflu.deviceTypeCode),
+          deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus,
         )}
-        {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode))}
+        {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus)}
       </div>)
       RowThreeButton = (<div>
-        {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode))}
-        {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode))}
+        {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus)}
+        {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)}
       </div>)
     } else {  // 1 + 2设备类型情况
       needClassBox = true;
@@ -148,18 +138,18 @@ class PvStation extends Component {
       const distributeType = seriesInver && acConflu // 有分布光伏电站流程
       if (concentrateType) {  // 有集中光伏电站流程-顶部为集中流程，底部为分布式居中
         RowTwoButton = (<div>
-          {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(concentrateConflu.deviceTypeCode))}
-          {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode))}
+          {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(concentrateConflu.deviceTypeCode), deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus)}
+          {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus)}
         </div>)
-        RowThreeButton = acConflu ? this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode))
-          : this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(seriesInver.deviceTypeCode));
+        RowThreeButton = acConflu ? this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)
+          : this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus);
       } else if (distributeType) { // 有分布光伏流程-顶部为集中流程居中，底部为分布式流程
         RowTwoButton = (<div>
-          {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode))}
-          {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode))}
+          {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus)}
+          {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)}
         </div>)
-        RowThreeButton = concentrateConflu ? this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateConflu.deviceTypeCode))
-          : this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode));
+        RowThreeButton = concentrateConflu ? this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateConflu.deviceTypeCode), deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus)
+          : this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus);
       }
     }
     return (
@@ -190,7 +180,8 @@ class PvStation extends Component {
                     seriesInfo.deviceTypeName,
                     'deviceTypeItem',
                     'arrowgo',
-                    clickable.includes(seriesInfo.deviceTypeCode)
+                    clickable.includes(seriesInfo.deviceTypeCode),
+                    deviceTypeCode === seriesInfo.deviceTypeCode && alarmStatus
                   )}
                   {!needClassBox && RowTwoButton}
                   {!needClassBox && RowThreeButton}
@@ -204,21 +195,24 @@ class PvStation extends Component {
                     boxConfluentInfo.deviceTypeName,
                     'deviceTypeItem',
                     'arrowgo',
-                    clickable.includes(boxConfluentInfo.deviceTypeCode)
+                    clickable.includes(boxConfluentInfo.deviceTypeCode),
+                    deviceTypeCode === boxConfluentInfo.deviceTypeCode && alarmStatus
                   )}
                   {integrateInfo.deviceTypeCode && this.createFlowButton(
                     integrateInfo.deviceTypeCode,
                     integrateInfo.deviceTypeName,
                     'deviceTypeItem',
                     'arrowgo',
-                    clickable.includes(integrateInfo.deviceTypeCode)
+                    clickable.includes(integrateInfo.deviceTypeCode),
+                    deviceTypeCode === integrateInfo.deviceTypeCode && alarmStatus
                   )}
                   {boosterInfo.deviceTypeCode && this.createFlowButton(
                     boosterInfo.deviceTypeCode,
                     boosterInfo.deviceTypeName,
                     'deviceTypeItem',
                     'arrowgo',
-                    clickable.includes(boosterInfo.deviceTypeCode)
+                    clickable.includes(boosterInfo.deviceTypeCode),
+                    deviceTypeCode === boosterInfo.deviceTypeCode && alarmStatus
                   )}
                   <RadioButton value={0} className={styles.elecnettingItem}>
                     <div className={styles.deviceTypeIcon} >

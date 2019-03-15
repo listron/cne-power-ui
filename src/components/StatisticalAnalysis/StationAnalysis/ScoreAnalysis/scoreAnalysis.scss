@@ -22,16 +22,16 @@
                 flex-direction: row;
                 line-height: 42px;
             }
-            .timeSelect{
+            .timeSelect {
                 height: auto;
                 line-height: 42px;
             }
         }
-        .scoreTranslate{
+        .scoreTranslate {
             display: flex;
             flex-direction: row;
             line-height: 42px;
-            .scoreSort{
+            .scoreSort {
                 cursor: pointer;
                 color: $themeColor;
                 display: flex;
@@ -52,17 +52,18 @@
             margin-bottom: 0;
         }
         .stationCard {
-            margin: 0 19px 24px 0;
+            margin: 0 24px 24px 0;
             box-sizing: border-box;
-            flex: 0 0 15%;
+            flex: 0 0 14.5%;
             box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
             border-radius: 2px;
-            height: 180px;
+            // height: 180px;
             align-items: center;
             cursor: pointer;
             color: #666;
+            padding-bottom: 10px;
             .stationName {
-                padding: 8px 8px 0;
+                padding: 8px 4px 0 8px;
             }
             .scoreCircleCon {
                 width: 86px;
@@ -73,7 +74,7 @@
                 line-height: 100px;
                 margin: 0 auto;
                 margin-bottom: 14px;
-                .innerBox{
+                .innerBox {
                     width: 76px;
                     height: 76px;
                     border-radius: 50%;
@@ -100,14 +101,15 @@
                     line-height: 76px;
                 }
             }
-            .installedCapacity,.equivalent {
+            .installedCapacity,
+            .equivalent {
                 display: flex;
-                .name{
+                .name {
                     flex: 1;
                     text-align: right;
                     padding-right: 4px;
                 }
-                .value{
+                .value {
                     flex: 1;
                 }
             }
@@ -115,7 +117,7 @@
         .excellent {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #1670a6, #3ea6f6);
-                color:#3ea6f6;
+                color: #3e97d1;
             }
             &:hover .innerBox .evaluate {
                 background: rgba(62, 166, 246, 0.4)
@@ -124,7 +126,7 @@
         .good {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #08b294, #7ddfb2);
-                color: #08b294;
+                color: #199475;
             }
             &:hover .evaluate {
                 background: rgba(8, 178, 148, 0.40)
@@ -133,7 +135,7 @@
         .qualified {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #eefc75, #c69037);
-                color: #c69037;
+                color: #e08031;
             }
             &:hover .evaluate {
                 background: rgba(238, 252, 117, 0.4);
@@ -142,13 +144,13 @@
         .poor {
             .scoreCircleCon {
                 background: linear-gradient(66deg, #ffb8be, #9f041b);
-                color: #9f041b;
+                color: #a42b2c;
             }
             &:hover .evaluate {
                 background: rgba(255, 184, 190, 0.4);
             }
         }
-        .uncategorized{
+        .uncategorized {
             .scoreCircleCon {
                 background: $promptColor;
             }
@@ -165,7 +167,7 @@
         .text {
             display: flex;
             justify-content: space-between;
-            p{
+            p {
                 margin-bottom: 0
             }
             .scoreTime {
@@ -179,26 +181,29 @@
             color: $themeColor;
             line-height: 40px;
         }
-        
     }
     .excellent {
-        .stationScore {
-            color: #3ea6f6;
+        .stationScore,
+        .stationScore a {
+            color: #3e97d1;
         }
     }
     .good {
-        .stationScore {
-            color: #7ddfb2;
+        .stationScore,
+        .stationScore a {
+            color: #199475;
         }
     }
     .qualified {
-        .stationScore {
-            color: #c69037;
+        .stationScore,
+        .stationScore a {
+            color: #e08031;
         }
     }
     .poor {
-        .stationScore {
-            color: #9f041b;
+        .stationScore,
+        .stationScore a {
+            color: #a42b2c;
         }
     }
     :global {
