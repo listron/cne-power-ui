@@ -19,7 +19,7 @@ const Option = Select.Option;
   5. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，未选设备时的占位文字。 
   7. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
-
+  8. 选填- deviceShowNumber:bool; 默认是false，展示具体的设备名称  传入为true时，显示的时已选设备 已选设备数量/所有设备数量
 其余参数：组件内部自动挂载数据:
 1. devices // 依据父组件stationCode, deviceTypeCode请求得的所有设备array[object];
   格式如: {
@@ -47,6 +47,7 @@ class DeviceSelect extends Component {
     deviceTypeCode: PropTypes.number,
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
+    deviceShowNumber: PropTypes.bool,
     holderText: PropTypes.string,
     value: PropTypes.array,
     onChange: PropTypes.func,
@@ -68,6 +69,7 @@ class DeviceSelect extends Component {
     multiple: false,
     holderText: '输入关键字快速查询',
     disabled: false,
+    deviceShowNumber: false,
   }
 
   constructor(props) {
@@ -167,9 +169,13 @@ class DeviceSelect extends Component {
   }
 
   render() {
-    const { multiple, holderText, disabled, style, devices } = this.props;
+    const { multiple, holderText, disabled, style, devices,deviceShowNumber } = this.props;
     const { deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
+    const deviceShow = checkedDeviceCodes.length>1 && deviceShowNumber && {
+      maxTagCount: 0,
+      maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`
+    } || {};
     return (
       <div className={styles.deviceSelect} style={style}>
         {multiple ? <Select
@@ -180,6 +186,7 @@ class DeviceSelect extends Component {
           onChange={this.selectDevice}
           value={checkedDeviceCodes}
           className={styles.stationSelectMainInput}
+          {...deviceShow}
         >
           {devices.map((e, i) => (
             <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>

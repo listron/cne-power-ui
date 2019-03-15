@@ -30,7 +30,6 @@ class RealTimeWarning extends Component {
       stationCodes: stationCode ? [stationCode] : [],
       warningTypeStatus, warningType 
     })
-    this.props.getLostGenType({ objectType: 1 })
   }
   componentWillUnmount() {
     this.props.resetRealtimeWarninStore()

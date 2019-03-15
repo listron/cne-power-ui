@@ -53,7 +53,7 @@ const routers = [
   }, { // 系统管理-账户管理-角色
     path: '/system/account/role',
     component: () => import('../containers/System/Account/Role/Role'),
-  }, { // 实时监控-告警-已转工单
+  }, { // 实时监控-告警-实时告警
     path: '/monitor/alarm/realtime',
     component: () => import('../containers/Monitor/Alarm/RealTimeWarning/RealTimeWarning'),
   }, { // 实时监控-告警-已转工单
@@ -65,12 +65,12 @@ const routers = [
   }, { // 实时监控-告警-历史告警
     path: '/monitor/alarm/history',
     component: () => import('../containers/Monitor/Alarm/HistoryWarning/HistoryWarning'),
+  }, { // 实时监控-告警-单电站告警统计
+    path: '/monitor/alarm/statistic/:stationCode',
+    component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
   }, { // 实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
-    component: () => import('../containers/Monitor/Alarm/AlarmStatistic'),
-  }, { // 告警统计单电站
-    path: '/monitor/alarm/statistic/:stationCode',
-    component: () => import('../containers/Monitor/Alarm/AlarmStatistic'),
+    component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
   }, { // 实时监控-电站监控-全部电站
     path: '/monitor/station',
     component: () => import('../containers/Monitor/StationMonitor/AllStation/AllStation'),
@@ -85,11 +85,23 @@ const routers = [
     component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
   }, { //实时监控-数据分析-散点图
     path: '/monitor/data/scatterDiagram',
-    exact: true,
     component: () => import('../containers/Monitor/DataAnalysis/DataScatterDiagram/DataScatterDiagram'),
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
     component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
+    // component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-电量报表
+    path: '/monitor/report/powerReport',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-设备状态
+    path: '/monitor/report/deviceStatus',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-故障报表
+    path: '/monitor/report/malfunction',
+    component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-报表查询-损失电量
+    path: '/monitor/report/powerLost',
+    component: () => import('../components/Common/Building/Building'),
   }, { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     component: () => import('../containers/Others/EditPassword'),
@@ -117,11 +129,11 @@ const routers = [
   }, { // 系统管理-预警配置
     path: '/system/config/performanceScore',
     component: () => import('../containers/System/Production/Score/Score')
-  }, { // 统计分析-电站分析-全部电站
-    path: '/statistical/stationaccount/allstation',
-    component: () => import('../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis'),
   }, { // 统计分析-电站分析-全部电站-单电站
     path: '/statistical/stationaccount/allstation/:stationCode',
+    component: () => import('../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis'),
+  }, { // 统计分析-电站分析-全部电站
+    path: '/statistical/stationaccount/allstation',
     component: () => import('../containers/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationAnalysis'),
   }, { // 统计分析-电站分析-电站评分
     path: '/statistical/stationaccount/score',
@@ -165,11 +177,11 @@ const routers = [
   }, { // 高级分析>清洗模型>清洗预警
     path: '/analysis/cleanout/warning',
     component: () => import('../containers/HighAnalysis/CleanoutModel/CleanWarning/CleanWarning'),
-  }, { // 高级分析>清洗模型>清洗计划与记录
-    path: '/analysis/cleanout/record',
-    component: () => import('../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord'),
   }, { // 单电站清洗计划与记录详情
     path: '/analysis/cleanout/record/:stationCode',
+    component: () => import('../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord'),
+  }, { // 高级分析>清洗模型>清洗计划与记录
+    path: '/analysis/cleanout/record',
     component: () => import('../containers/HighAnalysis/CleanoutModel/CleanoutRecord/CleanoutRecord'),
   }, { // 组串异常分析
     path: '/analysis/formation/abnormal',
@@ -210,18 +222,18 @@ const Loading = ({ pastDelay, timedOut, error }) => {
   return null;
 };
 
-const RouteWithSubRoutes = route => {
+const RouteWithSubRoutes = ({ component, routes, path, exact = true}) => {
   const Component = Loadable({
-    loader: route.component,
+    loader: component,
     loading: Loading,
     timeout: 10000
   });
   return (
     <Route
-      path={route.path}
-      exact
+      path={path}
+      exact={exact}
       render={props => (
-        <Component {...props} routes={route.routes} />
+        <Component {...props} routes={routes} />
       )}
     />
   )

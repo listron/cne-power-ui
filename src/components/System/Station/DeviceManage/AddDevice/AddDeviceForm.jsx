@@ -70,7 +70,7 @@ class AddDeviceForm extends Component {
           this.props.addDeviceDetail({ ...values })
           this.props.changeDeviceManageStore({ addDeviceTypeData: {}, addDeviceModeData: {} })
         } else {
-          console.log(err);
+          
         }
       });
     }
@@ -130,10 +130,9 @@ class AddDeviceForm extends Component {
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDevices.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
     const modelSelectDisable = deviceModels.length === 0;
-    const initiDeviceMode=addDeviceModeData.deviceModeCode?addDeviceModeData.deviceModeCode:null;
+    const initiDeviceMode=addDeviceModeData.data?+addDeviceModeData.data:null;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
-    
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -194,6 +193,7 @@ class AddDeviceForm extends Component {
               <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode')(
                   <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
+                  <Option key={'all'} value={''}>请选择关联设备</Option>
                     {connectDevice.map((e, i) => {
                       if (!e) { return null; } else {
                         return <Option key={e.deviceFullCode} value={e.deviceFullCode}>{e.deviceName}</Option>
@@ -213,22 +213,22 @@ class AddDeviceForm extends Component {
               <FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('ratedPower')(
                   <Input placeholder="保留小数点后两位" />
-                )}kW
+                )}<span className={styles.unitStyle}>kW</span>
               </FormItem>
               <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceCapacity')(
                   <Input placeholder="保留小数点后两位" />
-                )}<span>kW</span>
+                )}<span className={styles.unitStyle}>kW</span>
               </FormItem>
               <FormItem label="经度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('longitude')(
                   <Input placeholder="请输入..." />
-                )}°
+                )}<span className={styles.unitStyle}>°</span>
               </FormItem>
               <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('latitude')(
                   <Input placeholder="请输入..." />
-                )}°
+                )}<span className={styles.unitStyle}>°</span>
               </FormItem>
             </div>
             <div className={styles.systermStyle}>

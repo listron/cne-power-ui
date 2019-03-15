@@ -7,7 +7,6 @@ import { message } from 'antd';
 import moment from 'moment';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
-
 let realtimeChartInterval = null;
 let realtimeListInterval = null;
 
@@ -58,7 +57,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
   const { chartRealtime, dataTime, timeInterval } = yield select(state => state.monitor.dataRealtime.toJS());
   try {
     const { queryParam = {} } = payload;
-    const { devicePoints = [] } = queryParam;
+    const { devicePoints = [], deviceFullCodes = [] } = queryParam;
     yield put({
       type: realtimeAction.CHANGE_REALTIME_STORE,
       payload: { queryParam }
@@ -66,6 +65,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
     const [response, timeoutInfo] = yield race([
       call(axios.post, url, {
         ...queryParam,
+        deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
       }),
       delay(3000) // 请求3秒无响应即为超时。
@@ -77,8 +77,11 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
-            dataTime: pointTime.pop(), // 存储最后时刻
-            chartRealtime: chartInfo || {},
+            chartRealtime: {
+              ...chartInfo,
+              pointTime: pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')),
+            },
+            dataTime: moment(pointTime.pop()).format('YYYY-MM-DD HH:mm:ss'), // 存储最后时刻
             chartLoading: false,
           }
         })
@@ -89,7 +92,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         }
         const newPointTime = chartRealtime.pointTime || [];
         const prePointInfo = chartRealtime.pointInfo || [];
-        const timeSpace = (moment(maxTime) - moment(dataTime)) / 10000 / timeInterval; // 需插入数据的段数.
+        const timeSpace = parseInt((moment(maxTime) - moment(dataTime)) / 1000 / timeInterval); // 需插入数据的段数.
         const maxInfoLength = 30 * 60 / timeInterval;
         for (let insertTime = 0; insertTime < timeSpace; insertTime ++) {
           const insertParam = moment(maxTime).subtract((timeSpace - insertTime - 1) * timeInterval,'s').format('YYYY-MM-DD HH:mm:ss');
@@ -202,7 +205,7 @@ function *realListInterval({ payload = {} }) {
   const { queryParam = {}, listParam = {} } = payload;
   const url = `${APIBasePath}${monitor.getRealtimeList}` // '/mock/monitor/dataAnalysisListRealtime';
   try {
-    const { devicePoints = [] } = queryParam;
+    const { devicePoints = [], deviceFullCodes = [] } = queryParam;
     yield put({
       type: realtimeAction.CHANGE_REALTIME_STORE,
       payload: { queryParam, listParam }
@@ -210,6 +213,7 @@ function *realListInterval({ payload = {} }) {
     const response = yield call(axios.post, url, {
       ...queryParam,
       ...listParam,
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
       devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
     });
     if (response.data.code === '10000') {
@@ -240,7 +244,7 @@ function *getRealtimeList(action) { // 实时表格数据获取
   }
   yield fork(realListInterval, action);
   yield delay(5000); // 阻塞5秒
-  yield fork(getRealtimeList,  { ...action, firtQuery: false });
+  realtimeListInterval = yield fork(getRealtimeList,  { ...action, firtQuery: false });
 }
 
 function *stopRealtimeList() { // 停止列表数据定时请求
@@ -253,7 +257,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   const { payload } = action;
   try {
     const { enterpriseId } = payload;
-    const url = '/mock/monitor/dataAnalysisSecendInteral'; // `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}`;
+    const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}` // '/mock/monitor/dataAnalysisSecendInteral'
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;

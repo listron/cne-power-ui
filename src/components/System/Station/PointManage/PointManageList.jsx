@@ -10,12 +10,6 @@ class PointManageList extends Component {
     pointList: PropTypes.array,
     getPointList: PropTypes.func,
   }
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    }
-  }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getPointList, queryParams } = this.props;

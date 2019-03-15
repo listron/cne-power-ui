@@ -64,8 +64,8 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
     const response = yield call(axios.post, url, {
       ...queryParam,
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-      startTime: startTime.utc().format(),
-      endTime: endTime.utc().format(),
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
       devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
       enterpriseId: Cookie.get('enterpriseId'),
     });
@@ -113,8 +113,8 @@ function *getListHistory(action) { // 表格数据获取
       ...listParam,
       // orderField,
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-      startTime: startTime.utc().format(),
-      endTime: endTime.utc().format(),
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
       devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
       enterpriseId: Cookie.get('enterpriseId'),
     });
@@ -136,7 +136,7 @@ function *getListHistory(action) { // 表格数据获取
             pageSize
           },
           tableLoading: false,
-          partHistory: response.data.data[0] || {},
+          partHistory: response.data.data || {},
         }
       })
     } else {

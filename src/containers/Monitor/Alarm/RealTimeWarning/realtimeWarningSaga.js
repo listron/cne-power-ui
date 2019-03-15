@@ -87,6 +87,7 @@ function* transferWarning(action) {  // 转工单
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      message.success('转工单成功',1)
       yield put({
         type: realtimeWarningAction.changeRealtimeWarningStore,
         payload: {
@@ -107,6 +108,7 @@ function* transferWarning(action) {  // 转工单
         payload: params
       });
     }else{
+      message.warning('转工单失败',1)
       throw response.data.data
     }
   } catch (e) {

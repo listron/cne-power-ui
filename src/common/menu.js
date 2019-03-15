@@ -53,6 +53,30 @@ const menuData = [
           }
         ]
       }, {
+        name: '报表查询',
+        iconStyle: 'icon-monitoring',
+        path: 'report',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
+          }
+        ]
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',
