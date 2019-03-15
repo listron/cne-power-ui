@@ -149,7 +149,10 @@
           color:#3e97d1;
         }
       }
-      
+      .editUser, .deleteUser{
+        margin-right: 8px;
+        cursor: pointer;
+      }
       .userHelper{
         display: flex;
         justify-content: space-between;

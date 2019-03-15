@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table, message } from "antd";
-import { unitDataFormat } from '../../../../../utils/utilFunc'
+import { unitDataFormat } from '../../../../../utils/utilFunc';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -47,12 +49,13 @@ class WindStationList extends React.Component {
     const { realTimePowerUnit, realCapacityUnit, powerUnit, windMonitorStation } = this.props;
     const planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
     const planPower = planStatus === 0 ? [{
-      title: `年累计发电量(${powerUnit})`,
+      title: <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
+      render(value){ return numWithComma(value); },
     }] : [{
-      title: `年累计发电量(${powerUnit})`,
+      title: <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
@@ -63,8 +66,8 @@ class WindStationList extends React.Component {
               <div className={styles.progressInfo}>
                 <div className={styles.progressData}>
                   <div className={styles.stationValue}>
-                    <div>{record.yearOutput}</div>
-                    <div className={styles.planOutput}>{record.planOutput}</div>
+                    <div>{numWithComma(record.yearOutput)}</div>
+                    <div className={styles.planOutput}>{numWithComma(record.planOutput)}</div>
                   </div>
                   <Progress strokeWidth={3} percent={+(record.planOutput) ? (record.yearOutput / record.planOutput * 100) : 0} showInfo={false} />
                 </div>
@@ -78,7 +81,7 @@ class WindStationList extends React.Component {
       }
     },
     {
-      title: `计划发电量(${powerUnit})`,
+      title: <TableColumnTitle title="计划发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "planOutput",
       defaultSortOrder: "descend",
       sorter: true,
@@ -129,8 +132,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: `实时功率(${realTimePowerUnit})`,
-
+        title: <TableColumnTitle title="实时功率" unit={`${realTimePowerUnit}`} className="nonePadding" />,
         dataIndex: "stationPower",
         defaultSortOrder: "descend",
         sorter: true,
@@ -142,8 +144,8 @@ class WindStationList extends React.Component {
                 <div className={styles.progressInfo}>
                   <div className={styles.progressData}>
                     <div className={styles.stationValue}>
-                      <div>{record.stationPower}</div>
-                      <div className={styles.planOutput}>{record.stationCapacity}</div>
+                      <div>{numWithComma(record.stationPower)}</div>
+                      <div className={styles.planOutput}>{numWithComma(record.stationCapacity)}</div>
                     </div>
                     <Progress strokeWidth={3} percent={+(record.stationCapacity) ? (record.stationPower / record.stationCapacity * 100) : 0} showInfo={false} />
                   </div>
@@ -157,7 +159,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: `装机容量(${realCapacityUnit})`,
+        title: <TableColumnTitle title="装机容量" unit={`${realCapacityUnit}`} className="nonePadding" />,
         dataIndex: "stationCapacity",
         defaultSortOrder: "descend",
         sorter: true,
@@ -173,34 +175,39 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: "平均风速(m/s)",
+        title: <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
         dataIndex: "windSpeed",
         defaultSortOrder: "descend",
+        render(value){ return numWithComma(value); },
         sorter: true,
       },
       {
-        title: `日发电量(${powerUnit})`,
+        title: <TableColumnTitle title="日发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "dayOutput",
         defaultSortOrder: "descend",
+        render(value){ return numWithComma(value); },
         sorter: true,
       },
       {
-        title: `月累计发电量(${powerUnit})`,
+        title: <TableColumnTitle title="月累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
+        render(value){ return numWithComma(value); },
         sorter: true,
       },
       ...planPower,
       {
-        title: "装机(台)",
+        title: <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: "equipmentNum",
         defaultSortOrder: "descend",
+        render(value){ return numWithComma(value); },
         sorter: true,
       },
       {
-        title: "告警(个)",
+        title: <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
         dataIndex: "alarmNum",
         defaultSortOrder: "descend",
+        render(value){ return numWithComma(value); },
         sorter: true,
         // (a, b) => a.alarmNum - b.alarmNum
       },
