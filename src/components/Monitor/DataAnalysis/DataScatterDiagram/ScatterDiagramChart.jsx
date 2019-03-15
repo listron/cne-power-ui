@@ -2,38 +2,45 @@ import React, {Component} from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import styles from './scatterDiagram.scss';
+import moment from 'moment';
 
 class ScatterDiagramChart extends Component{
+
   static propTypes = {
-    allscatterDiagram: PropTypes.object,
+    chartTime: PropTypes.number,
+    scatterDiagramCharts: PropTypes.array,
     chartLoading: PropTypes.bool,
   }
-  componentDidMount() {
-    const {allscatterDiagram, getChartScatterDiagram} = this.props;
-    this.drawChart(allscatterDiagram);
-    getChartScatterDiagram({
 
-    })
+  componentDidMount() {
+    const { scatterDiagramCharts } = this.props;
+    // scatterDiagramCharts.length > 0 && this.renderScatterChart(scatterDiagramCharts);
+    this.renderScatterChart(scatterDiagramCharts);
   }
 
-  drawChart = (allscatterDiagram) => {
-    var myChart = echarts.init(document.getElementById('main'));
-    let powerData = [], speedData = [];
-    console.log(allscatterDiagram.pointData.length)
-    allscatterDiagram.pointData.length > 0 && allscatterDiagram.pointData.forEach(e => {
-        // powerData.push(e.xData || '--')
-        powerData.push(e.xData)
-        // speedData.push(e.yData)
-        // powerData.push(e.yData)
-      })
-      console.log(powerData)
-    // allscatterDiagram.pointData.length > 0 && allscatterDiagram.pointData.forEach(e => {
-    //   powerData.push(e.xData || '--')
-    //   speedData.push(e.yData)
-    // })
-   
-    const data = powerData;
-    myChart.setOption({
+  componentDidUpdate(prevProps) {
+    const { scatterDiagramCharts, chartTime } = this.props;
+    const preTime = prevProps.chartTime;
+    if (chartTime !== preTime) { // 数据重新请求后重绘。
+      this.renderChart(scatterDiagramCharts);
+    }
+  }
+
+  renderScatterChart = (scatterDiagramCharts) => {
+    const { chartLoading } = this.props;
+    const monitorScatter = echarts.init(document.getElementById('monitorScatterDiagram'));
+    if (chartLoading) { // loading态控制。
+      monitorScatter.showLoading()
+    } else {
+      monitorScatter.hideLoading()
+    }
+    scatterDiagramCharts = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map(e => ({ // 调试代码。待数据分析返回后删除。
+      time: moment().add(e, 'm'),
+      xData: e,
+      yData: (16 - e) * e
+    }))
+    const scatterData = scatterDiagramCharts.map(e => [e.xData, e.yData]);
+    monitorScatter.setOption({
       tooltip: {
         trigger: 'axis',
           axisPointer: {
@@ -42,7 +49,6 @@ class ScatterDiagramChart extends Component{
       },
       xAxis: {
         type: 'value',
-        // data: speedData,
         splitNumber: 20
       },
       yAxis: {
@@ -51,18 +57,15 @@ class ScatterDiagramChart extends Component{
       series: [{
         name: 'scatter',
         type: 'scatter',
-        data: data
+        data: scatterData
       }]
     });
   }   
 
   render(){
-    const {allscatterDiagram} = this.props;
-    // console.log(allscatterDiagram.pointData.length)
-    // console.log(allscatterDiagram.pointData.length)
     return(
       <div className={styles.scatterDiagramChart}>
-        <div id="main" style={{ width: 400, height: 400 }}></div>
+        <div id="monitorScatterDiagram" style={{ width: 400, height: 400 }}></div>
       </div>
     )
   }
