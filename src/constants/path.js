@@ -266,7 +266,7 @@ export default {
       getAllScatterDiagram: 'v3/wind/scatterpoint/fan/chart', // 散点图 - 图标数据
       getListScatterDiagram: 'v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: 'v3/wind/scatterpoint/fan/export', // 导出散点图数据
-      getXYaxis: 'v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+      getPoints: 'v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
                   
     },
     other: {
