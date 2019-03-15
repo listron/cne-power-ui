@@ -9,6 +9,9 @@ import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
 
+// to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
+// 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
+
 const { Option } = Select;
 
 class DepartmentTable extends Component {
@@ -97,7 +100,7 @@ class DepartmentTable extends Component {
         enterpriseId: enterpriseId
       });
     }
-    this.setState({
+    this.setState({ // 操作完成后，重置提示框状态。
       showWarningTip: false,
       warningTipText: '',
       handlRemove: false,
@@ -303,17 +306,29 @@ class DepartmentTable extends Component {
             return <span>{stations[0] ? stations[0] : ''}</span>
           }
         }
-      }, {
+      }
+    ];
+    const rightHandler = localStorage.getItem('rightHandler');
+    const departmentDeleteRight = rightHandler && rightHandler.split(',').includes('account_department_delete');
+    const departmentUpdateRight = rightHandler && rightHandler.split(',').includes('account_department_update');
+    if (departmentDeleteRight || departmentUpdateRight) { // 至少有编辑或删除权限时。
+      return columns.concat({
         title: '操作',
         width:'100px',
         dataIndex: 'handler',
         render: (text, record) => (<span>
-            <i className={`${styles.editDepartment} iconfont icon-edit`} onClick={() => this.editDepartment(record)} />
-            <i className={`${styles.deleteDepartment} iconfont icon-del`} onClick={() => this.deleteDepartment(record)} />
+            {departmentDeleteRight && <i
+              className={`${styles.editDepartment} iconfont icon-edit`}
+              onClick={() => this.editDepartment(record)}
+            />}
+            {departmentUpdateRight && <i
+              className={`${styles.deleteDepartment} iconfont icon-del`}
+              onClick={() => this.deleteDepartment(record)}
+            />}
           </span>
         )
-      }
-    ];
+      })
+    }
     return columns
   }
 

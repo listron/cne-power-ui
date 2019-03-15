@@ -11,6 +11,8 @@ import Cookie from 'js-cookie';
 import path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 
+// to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
+// 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
 
 class StationManageTable extends Component {
   static propTypes = {
