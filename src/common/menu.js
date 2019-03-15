@@ -39,6 +39,10 @@ const menuData = [
         rightKey: 'monitor_dataAnalysis',
         children: [
           {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+          },{
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
@@ -46,6 +50,30 @@ const menuData = [
             name: '实时监控',
             path: 'realtime',
             rightKey: 'dataAnalysis_realTime',
+          }
+        ]
+      }, {
+        name: '报表查询',
+        iconStyle: 'icon-monitoring',
+        path: 'report',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
           }
         ]
       }, {

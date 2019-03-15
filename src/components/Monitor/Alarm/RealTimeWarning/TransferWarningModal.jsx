@@ -13,8 +13,9 @@ class TransferWarningModal extends Component {
     form: PropTypes.object,
     onTransferAlarm: PropTypes.func,
     defectTypes: PropTypes.array,
-    selectedRowKeys: PropTypes.array,
+    selectedTransfer: PropTypes.array,
     onCancel: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props) {
@@ -23,6 +24,18 @@ class TransferWarningModal extends Component {
       showWarningTip: false,
       warningTipText: ''
     };
+  }
+
+  componentDidMount() {
+    // 现在只是单电站转工单 如果是批量转工单,不需要查询stationType, deviceTypeCode，或者变成数组 
+    const { selectedTransfer } = this.props;
+    const stationType = Array.from(new Set(selectedTransfer.map(e => e.stationType)))
+    const deviceTypeCode = Array.from((selectedTransfer.map(e => e.deviceTypeCode)))
+    this.props.getLostGenType({
+      objectType: 1,
+      stationType: stationType.length > 0 && stationType[0] || null,
+      deviceTypeCode: deviceTypeCode.length > 0 && deviceTypeCode[0] || null
+    })
   }
 
   onSubmit = () => {
@@ -38,11 +51,12 @@ class TransferWarningModal extends Component {
 
   onTransferAlarm = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
+      const warningLogId = this.props.selectedTransfer.map(e => e.warningLogId)
       if (!err) {
         this.props.onTransferAlarm({
           ...values,
           defectTypeCode: values.defectTypeCode[1],
-          warningLogId: this.props.selectedRowKeys,
+          warningLogId: warningLogId
         });
         this.props.onCancel();
       }
@@ -93,7 +107,7 @@ class TransferWarningModal extends Component {
           okText='保存'
           onOk={this.onSubmit}
           onCancel={this.props.onCancel}>
-         
+
           <FormItem className={styles.formItem} label="缺陷类型">
             {getFieldDecorator('defectTypeCode', {
               rules: [{
@@ -120,7 +134,7 @@ class TransferWarningModal extends Component {
               <InputLimit style={{ marginLeft: -80, marginTop: 15 }} placeholder="请输入不超过80字的缺陷描述..." />
             )}
           </FormItem>
-          <div className={styles.instructionText}>注意：保存后，多条告警将转为多个消缺工单。</div>
+          {/* <div className={styles.instructionText}>注意：保存后，多条告警将转为多个消缺工单。</div> */}
         </Modal>
       </Form>
     );

@@ -37,7 +37,7 @@
         border: 1px solid $themeColor;
         color: $themeColor;
         margin-right: 10px;
-        &:hover,&:focus{
+        &:hover, &:focus{
           box-shadow: 0 0 2px $themeColor;
         }
       }
@@ -96,6 +96,11 @@
       :global{
         .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
           padding: 0 8px;
+        }
+        .ant-table .ant-table-thead{
+          th, th>div{
+            height: 60px;
+          }
         }
         .ant-table tr {
           display: flex;

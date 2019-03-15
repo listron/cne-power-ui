@@ -17,8 +17,8 @@ class EditDevice extends Component {
    
   }
   backToList=()=>{
-    this.props.changeDeviceManageStore({ showPage: 'detail' });
-    this.props.onShowSideChange('detail');
+    this.props.changeDeviceManageStore({ showPage: 'list' });
+    this.props.onShowSideChange('list');
   }
   render() {
     const { showWarningTip, warningTipText, } = this.state;

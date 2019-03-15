@@ -62,7 +62,7 @@ function *getStationList(action){ // 请求电站列表信息
 
 function *getStationDetail(action){ // 获取选中电站详情；
   const { payload } = action;
-  const { selectedStationIndex } = payload;
+  const { selectedStationIndex, showPage = 'detail' } = payload;
   // const url = '/mock/system/stationDetail/001';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationDetail}/${payload.stationCode}`
   try{
@@ -73,7 +73,7 @@ function *getStationDetail(action){ // 获取选中电站详情；
       payload: {
         selectedStationIndex,
         stationDetail: response.data.data || {},
-        showPage: 'detail',
+        showPage,
       }
     })
     // }

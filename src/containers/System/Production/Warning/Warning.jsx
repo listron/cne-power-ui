@@ -70,7 +70,6 @@ class Warning extends Component {
                 <TabPane tab="清洗模型" key="clean">
                   <CleaningMain {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>
-
                 <TabPane tab="智能预警" key="warn">
                   <WarnConfig {...this.props} enterpriseId={enterpriseId} />
                 </TabPane>

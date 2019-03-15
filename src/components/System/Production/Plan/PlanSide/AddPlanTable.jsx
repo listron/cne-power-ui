@@ -6,7 +6,8 @@ import { getMonth } from "../plan";
 import EditableCell from './EditableCell';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
-
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -53,7 +54,6 @@ class PlanAddTable extends React.Component {
 
   _createTableColumn = () => {//生成表头
     const { stationType } = this.props;
-    console.log('stationType', stationType)
     function _MonthColumns() {
       let tabelKey = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return tabelKey.map((item, index) => {
@@ -72,7 +72,7 @@ class PlanAddTable extends React.Component {
     }
     const MonthColumn = _MonthColumns();
     const PRColumn = stationType !== 0 ? {
-      title: 'PR年计划',
+      title: <TableColumnTitle title="PR年计划" unit="%" />,
       dataIndex: 'yearPR',
       key: 'yearPR',
       className: 'yearPR',
@@ -99,17 +99,15 @@ class PlanAddTable extends React.Component {
         render: text => {
           return text ? text : '--';
         }
-      },
-      {
-        title: '装机容量(MW)',
+      }, {
+        title: <TableColumnTitle title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
         key: 'stationCapacity',
         className: styles.stationCapacity,
         render: text => {
           return text ? text : '--';
         }
-      },
-      {
+      }, {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
@@ -117,15 +115,14 @@ class PlanAddTable extends React.Component {
         render: text => {
           return text ? text : '--';
         }
-      },
-      {
-        title: '年计划发电量(万kWh)',
+      }, {
+        title: <TableColumnTitle title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
         editable: true,
         className: styles.planPower,
         render: text => {
-          var textValue = text ? Number(text).toFixed(4) : '--';
+          const textValue = numWithComma(text);
           return <span className={text ? styles.save : ''}>{textValue}</span>
         }
       },

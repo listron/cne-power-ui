@@ -49,7 +49,6 @@ class PointTree extends Component {
         devicePointIecName,
         points: innerGroupedInfo.map(point => ({
           devicePointId: point.devicePointId,
-          devicePointId: point.devicePointId,
           devicePointName: point.devicePointName,
         }))
       }

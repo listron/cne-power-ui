@@ -552,6 +552,14 @@
             }
         }
         :global {
+            .ant-table .ant-table-thead{
+                th>div{
+                    height: 60px;
+                }
+            }
+            .ant-table .ant-table-thead .ant-table-column-sorter{
+                top: 18px;
+            }
             .ant-spin-dot i {
                 background-color: #199475;
             }

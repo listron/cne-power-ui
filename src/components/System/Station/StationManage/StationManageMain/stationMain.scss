@@ -136,9 +136,21 @@
               cursor: pointer;
             }
           }
+          .ant-table-thead{
+            th>div{
+              height: 60px;
+            }
+          }
+          .ant-table-column-sorter{
+            top: 18px;
+          }
         }
         .notSet{
           color: $darkColor;
+        }
+        .editStation{
+          cursor: pointer;
+          margin-right: 12px;
         }
         .deleteStation{
           cursor: pointer;

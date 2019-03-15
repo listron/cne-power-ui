@@ -6,20 +6,18 @@ import operation from './Operation/operationReducer';
 import system from './System/systemReducer';
 import login from './Login/loginReducer';
 import monitor from './Monitor/monitorReduce';
-import alarmReducer from './Monitor/Alarm/alarmReducer';
 import otherReducer from './alphaRedux/otherReducer';
 import statisticalAnalysisReducer from './StatisticalAnalysis/statisticalAnalysisReducer';
 import highAanlysisReducer from './HighAnalysis/highAanlysisReducer';
 
 
 const appReducer = combineReducers({
-  common, 
+  common,
   homepage,
-  operation, 
-  login, 
+  operation,
+  login,
   system ,
-  monitor, 
-  alarmReducer, 
+  monitor,
   otherReducer,
   statisticalAnalysisReducer,
   highAanlysisReducer,

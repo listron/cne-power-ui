@@ -4,6 +4,8 @@ import styles from './alarmStatistic.scss';
 import { Table } from 'antd';
 import moment from 'moment';
 import CommonPagination from '../../../Common/CommonPagination';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class AlarmSingleStationTable extends React.Component {
   static propTypes = {
@@ -14,9 +16,6 @@ class AlarmSingleStationTable extends React.Component {
     orderCommand: PropTypes.string,
     onChangeFilter: PropTypes.func,
     onPaginationChange: PropTypes.func,
-  }
-  constructor(props) {
-    super(props);
   }
 
   onChangeTable = (pagination, filters, sorter) => {
@@ -42,24 +41,26 @@ class AlarmSingleStationTable extends React.Component {
         dataIndex: 'alarmNum',
         key: 'alarmNum',
         sorter: true,
+        render: value => numWithComma(value),
       },
       {
         title: '转工单数',
         dataIndex: 'transferWorkAlarmNum',
         key: 'transferWorkAlarmNum',
         sorter: true,
+        render: value => numWithComma(value),
       },
       {
         title: '未转工单数',
         dataIndex: 'noTransferWorkAlarmNum',
         key: 'noTransferWorkAlarmNum',
         sorter: true,
+        render: value => numWithComma(value),
       },
       {
-        title: '转工单率',
+        title: <TableColumnTitle title="转工单率" unit="%" />,
         dataIndex: 'transferWorkRate',
-        dataIndex: 'transferWorkRate',
-        render: (text, record) => `${text}%`,
+        render: value => numWithComma(value),
         sorter: true,
       }
     ];

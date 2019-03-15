@@ -4,7 +4,7 @@ import { Checkbox } from 'antd';
 import styles from './defectFilter.scss';
 const CheckboxGroup = Checkbox.Group;
 
-class AlarmLevelFilter extends Component {
+class DeviceTypeFilter extends Component {
   static propTypes = {
     deviceTypes: PropTypes.object,
     deviceTypeCode: PropTypes.string,
@@ -43,4 +43,4 @@ class AlarmLevelFilter extends Component {
   }
 }
 
-export default AlarmLevelFilter;
+export default DeviceTypeFilter;

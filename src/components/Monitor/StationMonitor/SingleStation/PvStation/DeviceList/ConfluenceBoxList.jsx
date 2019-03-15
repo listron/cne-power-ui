@@ -6,6 +6,8 @@ import styles from './deviceList.scss';
 import { Tabs, Switch, Spin, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
+import TableColumnTitle from '../../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../../utils/utilFunc';
 const TabPane = Tabs.TabPane;
 
 class ConfluenceBoxList extends Component {
@@ -112,7 +114,7 @@ class ConfluenceBoxList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`}  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
-        title: '实时功率(kW)',
+        title: <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -122,8 +124,8 @@ class ConfluenceBoxList extends Component {
                 <div className={styles.devicePower}>
                   <div className={styles.progressPower}>
                     <div className={styles.deviceValue}>
-                      <div>{record.devicePower}</div>
-                      <div>{record.deviceCapacity}</div>
+                      <div>{numWithComma(record.devicePower)}</div>
+                      <div>{numWithComma(record.deviceCapacity)}</div>
                     </div>
                     <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
                   </div>
@@ -137,7 +139,7 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: '装机容量(kW)',
+        title: <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -152,28 +154,28 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: '电压(V)',
+        title: <TableColumnTitle title="电压" unit="V" />,
         dataIndex: 'voltage',
         key: 'voltage',
-        render: (text,record) => (<span>{text || 0}</span>),
+        render: value => numWithComma(value),
         sorter: (a, b) => a.voltage - b.voltage,
       }, {
-        title: '电流(A)',
+        title: <TableColumnTitle title="电流" unit="A" />,
         dataIndex: 'electricity',
         key: 'electricity',
-        render: (text,record) => (<span>{text || 0}</span>),
+        render: value => numWithComma(value),
         sorter: (a, b) => a.electricity - b.electricity,
       }, {
-        title: '离散率(%)',
+        title: <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
-        render: (text,record) => (<span>{text || 0}</span>),
+        render: value => numWithComma(value),
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
-        title: '温度(℃)',
+        title: <TableColumnTitle title="温度" unit="℃" />,
         dataIndex: 'temp',
         key: 'temp',
-        render: (text,record) => (<span>{text || 0}</span>),
+        render: value => numWithComma(value),
         sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
