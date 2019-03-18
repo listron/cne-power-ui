@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
 import { Table, Form, Input, DatePicker, message } from 'antd';
 import moment from 'moment';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
 
 class LostGenTable extends Component {
   static propTypes = {
@@ -71,6 +72,10 @@ class LostGenTable extends Component {
     changeFaultList(newFaultGenList);
   }
 
+  disabledDate = (start) => {
+    return start && start > moment();
+  }
+
   _loseColumn = () => {
     const { getFieldDecorator } = this.props.form;
     const column = [
@@ -127,6 +132,7 @@ class LostGenTable extends Component {
                 <DatePicker
                   placeholder="开始时间"
                   style={{width: '100%'}}
+                  disabledDate = {this.disabledDate}
                   showTime={{format: 'HH:mm'}}
                   format="YYYY-MM-DD HH:mm"
                   onChange={(startMoment) => this.onStartChange(`${id}`, startMoment)}
@@ -146,6 +152,7 @@ class LostGenTable extends Component {
             })(
               <DatePicker
                 placeholder="结束时间"
+                disabledDate = {this.disabledDate}
                 style={{width: '100%'}}
                 showTime={{format: 'HH:mm'}}
                 format="YYYY-MM-DD HH:mm"
@@ -168,7 +175,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量(kWh)',
+        title: <TableColumnTitle title="日损失电量" unit="kWh" />,
         dataIndex: 'lostPower',
         className: 'lostPower',
         render : (text, record) => {

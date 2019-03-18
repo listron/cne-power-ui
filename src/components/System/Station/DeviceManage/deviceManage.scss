@@ -95,6 +95,14 @@
       .ant-table-placeholder{
         border-bottom: none;
       }
+      .ant-table-thead{
+        th>div{
+          height: 60px;
+        }
+      }
+      .ant-table-column-sorter{
+        top: 18px;
+      }
     }
   }
 }
