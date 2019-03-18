@@ -93,14 +93,14 @@ const routers = [
     component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus'),
   }, { //实时监控-报表查询-故障报表
     path: '/monitor/report/malfunction',
     component: () => import('../components/Common/Building/Building'),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
     component: () => import('../components/Common/Building/Building'),
-  }, 
+  },
   { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     component: () => import('../containers/Others/EditPassword'),
@@ -210,9 +210,9 @@ const routers = [
 const Loading = ({ pastDelay, timedOut, error }) => {
   if (pastDelay) {
     return (<div className={styles.preComponent}>
-    <i className={`${styles.rotate}`}></i>
-     <p>loading....</p>
-  </div>);
+      <i className={`${styles.rotate}`}></i>
+      <p>loading....</p>
+    </div>);
   } else if (timedOut) {
     return <div>Taking a long time...</div>;
   } else if (error) {

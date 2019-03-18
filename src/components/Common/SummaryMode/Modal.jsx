@@ -5,6 +5,20 @@ import PropTypes from 'prop-types';
 const { TreeNode } = Tree;
 
 
+
+/* 
+汇总方式弹窗共用控件。
+参数：
+1.组件接收参数
+    hideModal:  必填  隐藏弹窗方法
+    showModal: 必填   显示弹窗方法
+    handleOK: 必填    数据选择后的回调
+    sourceData: 必填  初始数据tree
+    list: 必填        默认所选项
+    visiable: 必填    控制弹窗显示隐藏变量
+2.tree结构要符合antd要求
+*/
+
 class SelectModal extends Component {
   static propTypes = {
     hideModal: PropTypes.func,

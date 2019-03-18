@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { powerReportAction } from './powerReportAction';
+import { deviceStatusAction } from './deviceStatusAction';
 
 var initState = Immutable.fromJS({
   loading: false,
@@ -8,17 +8,17 @@ var initState = Immutable.fromJS({
   pageSize: 10,
   pageNum: 1,
   total: 0,
-  powerReportList: [],
+  deviceStatusList: [],
   orderField: '',
   orderCommand: '',
 });
-const powerReportReducer = (state = initState, action) => {
+const deviceStatusReducer = (state = initState, action) => {
   switch (action.type) {
-    case powerReportAction.changePowerReportStore:
+    case deviceStatusAction.changeDeviceStatusStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case powerReportAction.resetPowerReportStore:
+    case deviceStatusAction.resetDeviceStatusStore:
       return initState
   }
   return state;
 }
-export default powerReportReducer;
+export default deviceStatusReducer;

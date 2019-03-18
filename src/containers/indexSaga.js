@@ -25,17 +25,17 @@ import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
 
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
-import {watchStationMonitor} from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
-import {watchAlarmMonitor} from './Monitor/Alarm/alarmSaga';
-import {watchMonitorRealtimeWarning} from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
-import {watchMonitorTransferForm} from './Monitor/Alarm/Transfer/transferFormSaga';
-import {watchMonitorHandleWarning} from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
-import {watchMonitorHistoryWarning} from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
+import { watchStationMonitor } from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
+import { watchAlarmMonitor } from './Monitor/Alarm/alarmSaga';
+import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
+import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
+import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
+import { watchMonitorHistoryWarning } from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
 
 import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
-
+import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
@@ -50,12 +50,12 @@ import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreA
 
 
 
-import { watchRealtimeWarning} from "./HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga";
-import { watchTransferForm} from "./HighAnalysis/IntelligentWarning/Transfer/transferFormSaga";
-import { watchHandleWarning} from "./HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga";
-import { watchHistoryWarning} from "./HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga";
+import { watchRealtimeWarning } from "./HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga";
+import { watchTransferForm } from "./HighAnalysis/IntelligentWarning/Transfer/transferFormSaga";
+import { watchHandleWarning } from "./HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga";
+import { watchHistoryWarning } from "./HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga";
 
-import { watchCleanoutRecord} from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
+import { watchCleanoutRecord } from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
 import { watchCleanWarning } from "./HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga";
 import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
 import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
@@ -104,8 +104,10 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
-    
-    watchMonitorPowerReport(),//报表
+
+    watchMonitorPowerReport(),//报表--电量
+    watchMonitorDeviceStatus(),//报表-设备状态
+
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
     //统计分析的全部电站
@@ -133,6 +135,6 @@ export default function* rootSaga() {
     watchHistory(),
     // 工单
     watchWorkOrder(),
-    
+
   ])
 }

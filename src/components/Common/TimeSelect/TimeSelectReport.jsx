@@ -28,6 +28,7 @@ const defaultEndTime = {
 2.接收必填的组件输出函数onChange = (timObj)=>{}输出timObj格式同上;
 3.可选参数输入showYearPick(默认true) , showMonthPick(默认true), showDayPick(默认true),showCustomPick(默认true); 均为bool
 4.可选展示参数timerText: string; 默认'选择时间'
+5、按月选择目前不支持设置不可用日期-->如需支持需要用两个monthPicker进行设置
 */
 
 class TimeSelectReport extends React.Component {
