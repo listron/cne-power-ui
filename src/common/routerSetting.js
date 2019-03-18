@@ -99,7 +99,7 @@ const routers = [
     component: () => import('../containers/Monitor/Report/Malfunction/Malfunction'),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
   },
   { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',

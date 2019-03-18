@@ -37,6 +37,8 @@ import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/re
 import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
 import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
 import { watchMonitorMalfunction } from './Monitor/Report/Malfunction/malfunctionSaga'; // 报表
+import { watchMonitorPowerLost } from './Monitor/Report/PowerLost/powerLostSaga'; // 报表
+
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
@@ -109,6 +111,7 @@ export default function* rootSaga() {
     watchMonitorPowerReport(),//报表--电量
     watchMonitorDeviceStatus(),//报表-设备状态
     watchMonitorMalfunction(),//报表-故障
+    watchMonitorPowerLost(),//报表--电量损失
 
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
