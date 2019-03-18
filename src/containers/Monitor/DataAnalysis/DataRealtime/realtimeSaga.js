@@ -76,10 +76,11 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           payload: {
             chartRealtime: {
               pointInfo: pointInfo.map(e => {
-                const { pointCode, pointName, deviceInfo = [] } = e || {};
+                const { pointCode, pointName, pointUnit, deviceInfo = [] } = e || {};
                 return {
                   pointCode,
                   pointName,
+                  pointUnit,
                   deviceInfo: deviceInfo.map(device => {
                     const { deviceCode, deviceName, pointValue = [] } = device || {};
                     return {
@@ -112,11 +113,12 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           newPointTime.splice(0, newPointTime.length - maxInfoLength);
         }
         const newPointInfo = prePointInfo.map(e => { // 新数据添加推送入旧数据
-          const { pointName, pointCode, deviceInfo } = e;
+          const { pointName, pointCode, pointUnit, deviceInfo } = e;
           const matchedPoint = pointInfo.find(res => res.pointCode === e.pointCode) || {deviceInfo: []};
           return {
             pointName,
             pointCode,
+            pointUnit,
             deviceInfo: deviceInfo.map(inner => {
               const { deviceCode, deviceName, pointValue } = inner;
               const matchedDevice = matchedPoint.deviceInfo.find(res => res.deviceCode === deviceCode) || {pointValue: []};

@@ -61,7 +61,7 @@ class HistoryChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: false
+      showMinLabel: i === pointData.length - 1 ? true : false,
     },
     axisTick: {
       show: false
@@ -104,7 +104,7 @@ class HistoryChart extends Component {
     pointData.forEach((point, index) => {
       deviceInfo.forEach((device, deviceIndex) => {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}${device.deviceName}`;
+        const lengendName = `${point.pointName}-${device.deviceName}`;
         legend.push({
           top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
           left: `${4 + (mapNumber % 4) * 23}%`,
@@ -145,6 +145,7 @@ class HistoryChart extends Component {
         extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:4px;',
         padding: 16,
         formatter: params => {
+          console.log(params)
           return (
             `<div class=${styles.chartTool}>
               <div class=${styles.title}>${params[0].name}</div>

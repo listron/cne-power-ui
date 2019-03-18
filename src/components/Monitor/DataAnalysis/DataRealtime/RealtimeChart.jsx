@@ -58,7 +58,7 @@ class RealtimeChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: false
+      showMinLabel: i === pointInfo.length - 1 ? true : false,
     },
     axisTick: {
       show: false
@@ -102,7 +102,7 @@ class RealtimeChart extends Component {
       const deviceNum = deviceInfo.length;
       deviceInfo.forEach((device, deviceIndex) => {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}${device.deviceName}`;
+        const lengendName = `${point.pointName}-${device.deviceName}`;
         const { pointValue = [] } = device || {};
         legend.push({
           top: 34 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
@@ -186,6 +186,8 @@ class RealtimeChart extends Component {
         xAxisIndex: pointInfo.map((e, i)=> i),
       }]
     }
+    console.log(pointInfo)
+    console.log(option)
     realtimeChart.setOption(option);
   }
 
