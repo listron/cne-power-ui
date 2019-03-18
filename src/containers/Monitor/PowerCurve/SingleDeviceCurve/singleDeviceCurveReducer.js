@@ -3,6 +3,7 @@ import { singleDeviceCurveAction } from './singleDeviceCurveAction';
 const initState = immutable.fromJS({
   stationCode:'',
   deviceFullCode:[],
+  selectDeviceFullCode:[],
   time:'',
   deviceShowType:'graph',
   correct:0,

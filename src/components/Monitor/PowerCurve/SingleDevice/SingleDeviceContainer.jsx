@@ -8,9 +8,6 @@ import { Icon, Button, Switch } from 'antd';
 import { Link } from 'react-router-dom';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
 
-
-
-
 class SingleDeviceContainer extends Component {
   static propTypes = {
   }
@@ -23,9 +20,8 @@ class SingleDeviceContainer extends Component {
     const startTime = time.split('~')[0];
     const endTime = time.split('~')[1];
     const params = { stationCode, deviceFullCode, startTime, endTime }
-    changeSingleDeviceStore({ ...params })
+    changeSingleDeviceStore({ ...params,selectDeviceFullCode:[{deviceCode:deviceFullCode}] })
     deviceShowType === 'graph' ? this.queryGraphData() : getSingleDeviceCurveList({ ...params })
-
 
   }
   componentWillReceiveProps(nextProp) {
@@ -42,20 +38,15 @@ class SingleDeviceContainer extends Component {
 
   }
   onOk = (selectdevice) => {
-    
-    // const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
-    // this.props.changeSingleDeviceStore({
-    //   deviceFullCode
-    // })
-    // this.onChangeFilter({ deviceFullCode })
-
+    const deviceFullCode=selectdevice.map((e,i)=>e.deviceCode);
+    this.props.changeSingleDeviceStore({
+      deviceFullCode,
+      selectDeviceFullCode:selectdevice
+    })
   }
   onSwitchChange = (checked) => {
-    
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
     this.onChangeFilter({ correct: checked ? 1 : 0 })
-
-
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, deviceShowType, getSingleDeviceCurveList } = this.props;
@@ -63,7 +54,7 @@ class SingleDeviceContainer extends Component {
     deviceShowType === 'graph' ? this.queryGraphData(value) : getSingleDeviceCurveList({ ...params, ...value })
   }
   queryGraphData = (value) => {
-    const { stationCode, deviceFullCode, startTime, endTime, correct, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, correct,  } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
     this.props.getsequencechart({ ...params, ...value });
@@ -90,7 +81,10 @@ class SingleDeviceContainer extends Component {
 
   render() {
     // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime,airDensity  } = this.props;
+    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime,airDensity ,selectDeviceFullCode } = this.props;
+    
+    
+    const deviceTypeCode=101;
     
     const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
     
@@ -104,14 +98,14 @@ class SingleDeviceContainer extends Component {
             <div className={styles.singleInfo}>时间:{startTime}~{endTime}</div>
             {deviceShowType === 'graph' && <div className={styles.singleInfo}>增加对比设备:
             <DeviceSelect
-                disabled={82 ? false : true}
-                stationCode={82}
-                deviceTypeCode={101}
+                disabled={stationInfo ? false : true}
+                stationCode={+stationCode}
+                deviceTypeCode={deviceTypeCode}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
-                // multiple={true}
+                multiple={true}
                 deviceShowNumber={true}
-                // value={[{}]}
+                value={selectDeviceFullCode}
                 holderText={'请选择风机'}
               />
 

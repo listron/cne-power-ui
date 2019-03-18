@@ -23,10 +23,13 @@ class DeviceFilter extends Component {
     super(props, context)
   }
   onOk = (selectdevice) => {
+    console.log('selectdevice: ', selectdevice);
     
     const deviceFullCode=selectdevice.map((e,i)=>e.deviceCode);
+    console.log(deviceFullCode);
     this.props.changeAllDeviceStore({
-      deviceFullCode
+      deviceFullCode,
+      selectdeviceCode:selectdevice
     })
   }
   selectStation = (selectedStationInfo) => { // 电站选择。
@@ -66,7 +69,7 @@ class DeviceFilter extends Component {
     this.selectShowType('list');
   }
   render() {
-    const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType,deviceFullCode } = this.props;
+    const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType,deviceFullCode,selectdeviceCode } = this.props;
     const test1 = 350;
     const test2 = 202;
     const test3 = '2019-03-07~2019-03-08';
@@ -94,7 +97,7 @@ class DeviceFilter extends Component {
               multiple={true}
               deviceShowNumber={true}
               holderText={'请选择'}
-              value={deviceFullCode}
+              value={selectdeviceCode}
             />
           </div>
           <div className={styles.timeSelect}>
@@ -105,7 +108,7 @@ class DeviceFilter extends Component {
               onChange={this.timeChange}
             />
           </div>
-          <Button className={styles.buttonStyle} onClick={this.seekDeviceData}>查询</Button>
+          <Button className={styles.buttonStyle} disabled={selectdeviceCode.length>0?false:true} onClick={this.seekDeviceData}>查询</Button>
           {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.seekDeviceData}>导出</Button> : ''}
           <a href={`#/monitor/powercurve/${test1}/${test2}/${test3}`}>点击跳转</a>
         </div>

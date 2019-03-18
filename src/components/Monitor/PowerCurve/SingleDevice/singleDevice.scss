@@ -14,8 +14,10 @@
       display: flex;
       justify-content:center;
       .singleInfo{
-        margin: 0 12px;
+        padding: 12px 12px;
         display: flex;
+       line-height: 42px;
+        
         
       }
     }
@@ -81,6 +83,7 @@
       .leftTop{
         display: flex;
         flex:1;
+        position: relative;
         .graphStyle{
           display: flex;
           flex:1;
@@ -90,12 +93,12 @@
           }
           .switchStyle{
             position: absolute;
-            top:28%;
-            left:60%;
+            top:6%;
+            left:82%;
           }
           .formatStyle{
-            width: 150px;
-            height: 120px;
+            // width: 150px;
+            // height: 120px;
             display: flex;
             flex-direction: column;
             .topStyle{

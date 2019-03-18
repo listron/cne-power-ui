@@ -6,6 +6,7 @@ const initState = immutable.fromJS({
   stationCode:null,
   deviceTypeCode:101,
   deviceFullCode:[],
+  selectdeviceCode:[],
   startTime:'',
   endTime:'',
 
