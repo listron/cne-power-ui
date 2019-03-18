@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import styles from "./singleDevice.scss";
 import CommonPagination from '../../../Common/CommonPagination';
 import { Table, } from 'antd';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 
 
@@ -59,29 +61,29 @@ class WindSingleDeviceTable extends Component {
         key: 'deviceModeName',
        
       }, {
-        title: '中心风速(m/s)',
+        title: <TableColumnTitle title="中心风速" unit="m/s" />,
         dataIndex: 'windSpeedCenter',
-        key: 'windSpeedCenter',
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: '平均风速(m/s)',
+        title: <TableColumnTitle title="平均风速" unit="m/s" />, 
         dataIndex: 'windSpeedAvg',
-        key: 'windSpeedAvg',
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: '平均功率(kW)',
+        title: <TableColumnTitle title="平均功率" unit="kW" />,
         dataIndex: 'powerAvg',
-        key: 'powerAvg',
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: '理论功率(kW)',
+        title: <TableColumnTitle title="理论功率" unit="kW" />, 
         dataIndex: 'powerTheory',
-        key: 'powerTheory',
+        render(text){ return numWithComma(text); },
         sorter: true,
       },{
-        title: '频次(次)',
+        title: <TableColumnTitle title="频次" unit="次" />, 
         dataIndex: 'frequency',
-        key: 'frequency',
+        render(text){ return numWithComma(text); },
       }
     ]
     

@@ -6,7 +6,6 @@ import WindDeviceTable from "./WindDeviceTable";
 import WindDeviceGraph from "./WindDeviceGraph";
 import moment from 'moment';
 
-
 class AllDeviceCurve extends Component {
   static propTypes = {
     startTime:PropTypes.string,

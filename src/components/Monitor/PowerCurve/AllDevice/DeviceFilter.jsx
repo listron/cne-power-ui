@@ -5,31 +5,36 @@ import moment from 'moment';
 import styles from "./allDeviceCurve.scss";
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
+import path from '../../../../constants/path';
+
+const { APIBasePath } = path.basePaths;
+const { monitor } = path.APISubPaths;
+
 
 const { Option } = Select;
 const RangePicker = DatePicker.RangePicker;
 class DeviceFilter extends Component {
   static propTypes = {
-    startTime:PropTypes.string,
-    deviceShowType:PropTypes.string,
-    endTime:PropTypes.string,
-    stationCode:PropTypes.number,
-    changeAllDeviceStore:PropTypes.func,
-    getDeviceModel:PropTypes.func,
-    getAllDeviceCurveData:PropTypes.func,
-    getPowerdeviceList:PropTypes.func,
+    startTime: PropTypes.string,
+    deviceShowType: PropTypes.string,
+    endTime: PropTypes.string,
+    stationCode: PropTypes.number,
+    changeAllDeviceStore: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    getAllDeviceCurveData: PropTypes.func,
+    getPowerdeviceList: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
   }
   onOk = (selectdevice) => {
-    console.log('selectdevice: ', selectdevice);
     
-    const deviceFullCode=selectdevice.map((e,i)=>e.deviceCode);
-    console.log(deviceFullCode);
+
+    const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
+    
     this.props.changeAllDeviceStore({
       deviceFullCode,
-      selectdeviceCode:selectdevice
+      selectdeviceCode: selectdevice
     })
   }
   selectStation = (selectedStationInfo) => { // 电站选择。
@@ -39,14 +44,17 @@ class DeviceFilter extends Component {
       stationCodes: stationCode,
       deviceTypeCode: 101,
     });
-    
+
     changeAllDeviceStore({
-      stationCode, deviceTypeCode: 101,deviceFullCode:[]
+      stationCode, deviceTypeCode: 101, deviceFullCode: []
     })
   }
   seekDeviceData = () => {//查询按钮
+    
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
+    
+
     deviceShowType === 'graph' ? getAllDeviceCurveData({ ...params, }) : getPowerdeviceList({ ...params, })
   }
   timeChange = (time) => {//时间选择
@@ -68,11 +76,31 @@ class DeviceFilter extends Component {
   showList = () => {
     this.selectShowType('list');
   }
+  exportList = () => {
+    const url = `${APIBasePath}${monitor.exportPowerdevice}`;
+    let { startTime, endTime, stationCode, deviceFullCode, stations,downLoadFile } = this.props;
+    startTime = moment(startTime).utc().format();
+    endTime =  moment(endTime).utc().format();
+    let timeZone = moment().zone();
+    const stationInfo = stations.filter((e, i) => e.stationCode)[0];
+    downLoadFile({ // 
+      url,
+      fileName: `${stationInfo.stationName}-${startTime}-${endTime}功率曲线.xlsx`,
+      params: {
+        stationCode,
+        deviceFullCode,
+        startTime,
+        endTime,
+        timeZone
+      },
+    })
+  }
   render() {
-    const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType,deviceFullCode,selectdeviceCode } = this.props;
+    const { windDeviceMode, stations, stationCode, deviceTypeCode, deviceShowType, deviceFullCode, selectdeviceCode, powerCurveListData } = this.props;
     const test1 = 350;
     const test2 = 202;
     const test3 = '2019-03-07~2019-03-08';
+
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
@@ -108,8 +136,10 @@ class DeviceFilter extends Component {
               onChange={this.timeChange}
             />
           </div>
-          <Button className={styles.buttonStyle} disabled={selectdeviceCode.length>0?false:true} onClick={this.seekDeviceData}>查询</Button>
-          {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.seekDeviceData}>导出</Button> : ''}
+          <Button className={styles.buttonStyle} disabled={selectdeviceCode.length > 0 ? false : true} onClick={this.seekDeviceData}>查询</Button>
+          {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList} 
+          disabled={powerCurveListData.length === 0}
+          >导出</Button> : ''}
           <a href={`#/monitor/powercurve/${test1}/${test2}/${test3}`}>点击跳转</a>
         </div>
         <div className={styles.showType}>

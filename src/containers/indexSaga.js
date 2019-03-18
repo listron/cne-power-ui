@@ -106,6 +106,8 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
+    watchAllDeviceCurve(),//功率曲线
+    watchSingleDeviceCurve(),//单风机功率曲线
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     
     // 无逻辑关系隐藏页面

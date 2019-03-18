@@ -47,12 +47,12 @@ const mapDispatchToProps = (dispatch) => ({
   resetSingleDeviceCurve: payload => dispatch({ type: singleDeviceCurveAction.RESET_SINGLEDEVICECURVE, payload }),
   getSingleDeviceCurveData:payload => dispatch({ type: singleDeviceCurveAction.getSingleDeviceCurveData, payload }),
   getSingleDeviceCurveList:payload => dispatch({ type: singleDeviceCurveAction.getSingleDeviceCurveList, payload }),
-  exportSinglePowerdevice:payload => dispatch({ type: singleDeviceCurveAction.exportSinglePowerdevice, payload }),
   getRoseChart:payload => dispatch({ type: singleDeviceCurveAction.getRoseChart, payload }),
   getpowerspeedchart:payload => dispatch({ type: singleDeviceCurveAction.getpowerspeedchart, payload }),
   getpitchanglespeedchart:payload => dispatch({ type: singleDeviceCurveAction.getpitchanglespeedchart, payload }),
   getwinddistributionchart:payload => dispatch({ type: singleDeviceCurveAction.getwinddistributionchart, payload }),
   getsequencechart:payload => dispatch({ type: singleDeviceCurveAction.getsequencechart, payload }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
 
 
 })

@@ -10,38 +10,39 @@ import Footer from '../../../../components/Common/Footer';
 import AllDeviceCurveBox from '../../../../components/Monitor/PowerCurve/AllDevice/AllDeviceCurve';
 import moment from 'moment';
 
+
 const TabPane = Tabs.TabPane;
 class AllDeviceCurve extends Component {
   static propTypes = {
-    startTime:PropTypes.string,
-    deviceShowType:PropTypes.string,
-    endTime:PropTypes.string,
-    stationCode:PropTypes.number,
-    changeAllDeviceStore:PropTypes.func,
-    getDeviceModel:PropTypes.func,
-    getAllDeviceCurveData:PropTypes.func,
-    getPowerdeviceList:PropTypes.func,
+    startTime: PropTypes.string,
+    deviceShowType: PropTypes.string,
+    endTime: PropTypes.string,
+    stationCode: PropTypes.number,
+    changeAllDeviceStore: PropTypes.func,
+    getDeviceModel: PropTypes.func,
+    getAllDeviceCurveData: PropTypes.func,
+    getPowerdeviceList: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
   }
-  componentDidMount(){
-    const{stationCode,deviceFullCode,getAllDeviceCurveData,changeAllDeviceStore}=this.props;
+  componentDidMount() {
+    const { stationCode, deviceFullCode, getAllDeviceCurveData, changeAllDeviceStore } = this.props;
     const startTime = moment().subtract(1, "days").format('YYYY-MM-DD');
     const endTime = moment().format('YYYY-MM-DD');
-    const params={stationCode,deviceFullCode,startTime,endTime};
+    const params = { stationCode, deviceFullCode, startTime, endTime };
     changeAllDeviceStore(params)
     // getAllDeviceCurveData({...params, })
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetAllDeviceCurve()
   }
   queryTargetData = (activeKey) => {
     this.props.changeAllDeviceStore({ stationTypeTabs: activeKey, deviceShowType: 'graph', });
-   
+
   }
   render() {
-    const {stationTypeTabs,stationTypeCount} = this.props;
+    const { stationTypeTabs, stationTypeCount } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -53,16 +54,16 @@ class AllDeviceCurve extends Component {
       <div className={styles.allDeviceCurve} >
         <Header {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.allDeviceCurveBox}>
-        {stationTypeCount === 'multiple' &&
-        <Tabs type="card" activeKey={stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
-          <TabPane tab="风电" key="0"><AllDeviceCurveBox {...this.props} /></TabPane>
-          <TabPane tab="光伏" key="1"><AllDeviceCurveBox {...this.props} /></TabPane>
-        </Tabs> 
-      }
-      {stationTypeCount === 'wind' && <AllDeviceCurveBox {...this.props} /> }
-      {stationTypeCount === 'pv'&& <AllDeviceCurveBox {...this.props} />}
-      {stationTypeCount === 'none'&&""}
-        
+          {stationTypeCount === 'multiple' &&
+            <Tabs type="card" activeKey={stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
+              <TabPane tab="风电" key="0"><AllDeviceCurveBox {...this.props} /></TabPane>
+              <TabPane tab="光伏" key="1"><AllDeviceCurveBox {...this.props} /></TabPane>
+            </Tabs>
+          }
+          {stationTypeCount === 'wind' && <AllDeviceCurveBox {...this.props} />}
+          {stationTypeCount === 'pv' && <AllDeviceCurveBox {...this.props} />}
+          {stationTypeCount === 'none' && ""}
+
         </div>
         <Footer />
       </div>
@@ -81,14 +82,15 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({
     type: commonAction.getDeviceModel,
     payload: {
-      params, 
+      params,
       actionName: allDeviceCurveAction.changeAllDeviceStore,
       resultName: 'windDeviceMode'
     }
   }),
-  getAllDeviceCurveData:payload => dispatch({ type: allDeviceCurveAction.getAllDeviceCurveData, payload }),
-  getPowerdeviceList:payload => dispatch({ type: allDeviceCurveAction.getPowerdeviceList, payload }),
-  exportPowerdevice:payload => dispatch({ type: allDeviceCurveAction.exportPowerdevice, payload }),
-  resetAllDeviceCurve:payload => dispatch({ type: allDeviceCurveAction.RESET_ALLDEVICECURVE, payload }),
+  getAllDeviceCurveData: payload =>dispatch({ type: allDeviceCurveAction.getAllDeviceCurveData, payload }),
+  getPowerdeviceList: payload => dispatch({ type: allDeviceCurveAction.getPowerdeviceList, payload }),
+  exportPowerdevice: payload => dispatch({ type: allDeviceCurveAction.exportPowerdevice, payload }),
+  resetAllDeviceCurve: payload => dispatch({ type: allDeviceCurveAction.RESET_ALLDEVICECURVE, payload }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)
