@@ -53,6 +53,7 @@ class PointTree extends Component {
         }))
       }
     })
+    console.log(groupInfo)
     const PointsNodes = [], tmpNoneGroupNodes = [];
     groupInfo.forEach(e => { // 无分组的测点，应放末尾。
       if (e.devicePointIecCode) { // 有分组信息

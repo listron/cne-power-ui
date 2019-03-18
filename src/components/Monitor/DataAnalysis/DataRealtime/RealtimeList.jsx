@@ -11,17 +11,22 @@ class RealtimeList extends Component {
     queryParam: PropTypes.object,
     listRealtime: PropTypes.object,
     getRealtimeList: PropTypes.func,
+    changeRealtimeStore: PropTypes.func,
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 操作分页器
-    const { getRealtimeList, queryParam, listParam } = this.props;
+    const { getRealtimeList, queryParam, listParam, changeRealtimeStore } = this.props;
+    const newListParam = {
+      ...listParam,
+      pageSize,
+      pageNum: currentPage,
+    }
+    changeRealtimeStore({
+      listParam: newListParam,
+    })
     getRealtimeList({
       queryParam,
-      listParam: {
-        ...listParam,
-        pageSize,
-        pageNum: currentPage,
-      }
+      listParam: newListParam,
     })
   }
 
