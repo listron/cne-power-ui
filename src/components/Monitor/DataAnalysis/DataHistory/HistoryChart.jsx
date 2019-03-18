@@ -74,7 +74,7 @@ class HistoryChart extends Component {
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
-    nameGap: 48,
+    nameGap: 72,
     nameTextStyle: {
       color: '#666',
     }
@@ -84,7 +84,7 @@ class HistoryChart extends Component {
     const baseGridOption = {
       top: 10 + 160 * i,
       height: 160,
-      left: 90,
+      left: 108,
       right: 40
     }
     if (i === pointData.length - 1) { // 最后一个grid
