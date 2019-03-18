@@ -103,9 +103,9 @@ class ProvinceItem extends Component {
                 key={m.stationCode}
                 style={
                   {
-                    'backgroundColor':checked?'#199475':'#f1f1f1',
-                    'color':checked?'#fff':'#666',
-                    cursor: disableCheck?'not-allowed':'pointer',
+                    'backgroundColor':checked ? '#199475' : '#f1f1f1',
+                    'color': checked ? '#fff': (disableCheck ? '#dfdfdf' : '#666'),
+                    cursor: disableCheck ?'not-allowed':'pointer',
                   }
                 } 
                 className={styles.eachStation}>

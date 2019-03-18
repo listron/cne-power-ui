@@ -172,6 +172,7 @@ class HistorySearch extends Component {
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>
           <div className={styles.typeSelect}>
