@@ -3,9 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-
 import { message } from 'antd';
-
 
 function* changeDeviceManageStore(action) { // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -27,6 +25,12 @@ function* getDeviceList(action) { // 请求设备列表
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getDeviceList}`
   try {
     yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
+    yield put({
+      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      payload: {
+        ...payload,
+      },
+    });
     const response = yield call(axios.post, url, {
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g, e => `_${e.toLowerCase()}`), //重组字符串
@@ -43,7 +47,6 @@ function* getDeviceList(action) { // 请求设备列表
     yield put({
       type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
       payload: {
-        ...payload,
         deviceList: response.data.data.context || [],
         totalNum,
         pageNum,
@@ -260,7 +263,7 @@ function* deleteStationDevice(action) { // 清除设备；
         payload: params,
       });
     } else {
-      message.error(response.data)
+      message.error(response.data.message)
     }
   } catch (e) {
     console.log(e);
@@ -271,7 +274,13 @@ function* importStationDevice(action) { // 导入设备；
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.importStationDevice}/${payload.stationCode}`
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload.formData,
+      processData: false,  // 不处理数据
+      contentType: false   // 不设置内容类型
+    });
     if (response.data.code === "10000") {
       message.success("导入成功")
       yield put({
@@ -295,11 +304,11 @@ function* importStationDevice(action) { // 导入设备；
         payload: params,
       });
     } else {
-      message.error(response.data)
+      message.config({ top: 200,  duration: 2,maxCount: 3,});
+      message.error(response.data.message)
     }
   } catch (e) {
     console.log(e);
-    message.error('删除电站设备失败，请重试');
   }
 }
 
