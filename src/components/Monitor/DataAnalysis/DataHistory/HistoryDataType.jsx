@@ -47,14 +47,16 @@ class HistoryDataType extends Component {
     let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
+    const timeZone = moment().zone() / (-60); // utc时区获取
     downLoadFile({ // 
       url,
-      fileName: `${startTime}至${endTime}历史数据`,
+      fileName: `${startTime}至${endTime}历史数据.xlsx`,
       params: {
         ...queryParam,
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         enterpriseId,
+        timeZone,
         startTime,
         endTime,
       },

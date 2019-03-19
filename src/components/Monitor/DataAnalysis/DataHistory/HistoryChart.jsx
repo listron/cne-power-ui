@@ -21,9 +21,10 @@ class HistoryChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { allHistory, chartTime } = this.props;
+    const { allHistory, chartTime, chartLoading } = this.props;
     const preTime = prevProps.chartTime;
-    if (chartTime !== preTime) { // 数据重新请求后重绘。
+    const preLoading = prevProps.chartLoading;
+    if (chartTime !== preTime || preLoading !== chartLoading) { // 数据重新请求后重绘。
       this.renderChart(allHistory);
     }
   }
@@ -61,7 +62,7 @@ class HistoryChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: false
+      showMinLabel: i === pointData.length - 1 ? true : false,
     },
     axisTick: {
       show: false
@@ -74,7 +75,7 @@ class HistoryChart extends Component {
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
-    nameGap: 48,
+    nameGap: 72,
     nameTextStyle: {
       color: '#666',
     }
@@ -84,7 +85,7 @@ class HistoryChart extends Component {
     const baseGridOption = {
       top: 10 + 160 * i,
       height: 160,
-      left: 90,
+      left: 108,
       right: 40
     }
     if (i === pointData.length - 1) { // 最后一个grid
@@ -104,7 +105,7 @@ class HistoryChart extends Component {
     pointData.forEach((point, index) => {
       deviceInfo.forEach((device, deviceIndex) => {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}${device.deviceName}`;
+        const lengendName = `${point.pointName}-${device.deviceName}`;
         legend.push({
           top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
           left: `${4 + (mapNumber % 4) * 23}%`,
@@ -133,9 +134,13 @@ class HistoryChart extends Component {
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const historyChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
-      historyChart.showLoading()
+      historyChart.showLoading();
+      return;
     } else {
-      historyChart.hideLoading()
+      historyChart.hideLoading();
+    }
+    if (Object.keys(allHistory).length === 0) { // 空数据销毁后，不进行处理
+      return;
     }
     const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));

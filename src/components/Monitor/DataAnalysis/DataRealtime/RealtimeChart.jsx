@@ -13,13 +13,14 @@ class RealtimeChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chartRealtime, dataTime, queryParam = {} } = this.props;
+    const { chartRealtime, dataTime, queryParam = {}, chartLoading } = this.props;
     const { devicePoints = [] } = queryParam;
     const preTime = prevProps.dataTime;
     const preParam = prevProps.queryParam || {};
     const prePoints = preParam.devicePoints || [];
+    const preLoading = prevProps.chartLoading;
     const emptyRealTime = Object.keys(chartRealtime).length === 0;
-    if (dataTime !== preTime || emptyRealTime) { // 数据重新请求后重绘。
+    if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
       const reRender = prePoints.length !== devicePoints.length || emptyRealTime;
       this.renderChart(chartRealtime, reRender);
     }
@@ -58,7 +59,7 @@ class RealtimeChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: false
+      showMinLabel: i === pointInfo.length - 1 ? true : false,
     },
     axisTick: {
       show: false
@@ -71,7 +72,7 @@ class RealtimeChart extends Component {
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
-    nameGap: 48,
+    nameGap: 72,
     nameTextStyle: {
       color: '#666',
     }
@@ -81,7 +82,7 @@ class RealtimeChart extends Component {
     const baseGridOption = {
       top: 10 + 160 * i,
       height: 160,
-      left: 90,
+      left: 108,
       right: 40
     }
     if (i === pointInfo.length - 1) { // 最后一个grid
@@ -102,7 +103,7 @@ class RealtimeChart extends Component {
       const deviceNum = deviceInfo.length;
       deviceInfo.forEach((device, deviceIndex) => {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}${device.deviceName}`;
+        const lengendName = `${point.pointName}-${device.deviceName}`;
         const { pointValue = [] } = device || {};
         legend.push({
           top: 34 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
@@ -129,15 +130,16 @@ class RealtimeChart extends Component {
     const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
-    reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
-    if (Object.keys(chartRealtime).length === 0) {
-      return;
-    }
+    reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。 
     const realtimeChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
       realtimeChart.showLoading();
+      return;
     } else {
       realtimeChart.hideLoading();
+    }
+    if (Object.keys(chartRealtime).length === 0) {
+      return;
     }
     const { pointTime = [], pointInfo = [] } = chartRealtime;
     const option = {
