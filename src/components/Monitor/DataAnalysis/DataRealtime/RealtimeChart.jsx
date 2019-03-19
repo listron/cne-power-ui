@@ -13,13 +13,14 @@ class RealtimeChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chartRealtime, dataTime, queryParam = {} } = this.props;
+    const { chartRealtime, dataTime, queryParam = {}, chartLoading } = this.props;
     const { devicePoints = [] } = queryParam;
     const preTime = prevProps.dataTime;
     const preParam = prevProps.queryParam || {};
     const prePoints = preParam.devicePoints || [];
+    const preLoading = prevProps.chartLoading;
     const emptyRealTime = Object.keys(chartRealtime).length === 0;
-    if (dataTime !== preTime || emptyRealTime) { // 数据重新请求后重绘。
+    if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
       const reRender = prePoints.length !== devicePoints.length || emptyRealTime;
       this.renderChart(chartRealtime, reRender);
     }
@@ -125,19 +126,24 @@ class RealtimeChart extends Component {
     return { series, legend }
   }
 
+  chartLoading = () => {
+
+  }
+
   renderChart = (chartRealtime, reRender = false) => {
     const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
-    reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
-    if (Object.keys(chartRealtime).length === 0) {
-      return;
-    }
+    reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。 
     const realtimeChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
       realtimeChart.showLoading();
+      return;
     } else {
       realtimeChart.hideLoading();
+    }
+    if (Object.keys(chartRealtime).length === 0) {
+      return;
     }
     const { pointTime = [], pointInfo = [] } = chartRealtime;
     const option = {
@@ -186,8 +192,6 @@ class RealtimeChart extends Component {
         xAxisIndex: pointInfo.map((e, i)=> i),
       }]
     }
-    console.log(pointInfo)
-    console.log(option)
     realtimeChart.setOption(option);
   }
 

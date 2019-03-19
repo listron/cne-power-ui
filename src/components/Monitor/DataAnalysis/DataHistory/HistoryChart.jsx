@@ -21,9 +21,10 @@ class HistoryChart extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { allHistory, chartTime } = this.props;
+    const { allHistory, chartTime, chartLoading } = this.props;
     const preTime = prevProps.chartTime;
-    if (chartTime !== preTime) { // 数据重新请求后重绘。
+    const preLoading = prevProps.chartLoading;
+    if (chartTime !== preTime || preLoading !== chartLoading) { // 数据重新请求后重绘。
       this.renderChart(allHistory);
     }
   }
@@ -133,9 +134,13 @@ class HistoryChart extends Component {
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const historyChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
-      historyChart.showLoading()
+      historyChart.showLoading();
+      return;
     } else {
-      historyChart.hideLoading()
+      historyChart.hideLoading();
+    }
+    if (Object.keys(allHistory).length === 0) { // 空数据销毁后，不进行处理
+      return;
     }
     const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));

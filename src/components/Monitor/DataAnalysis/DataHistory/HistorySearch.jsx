@@ -33,6 +33,7 @@ class HistorySearch extends Component {
     changeHistoryStore({
       selectStationType,
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode: null,
@@ -55,6 +56,7 @@ class HistorySearch extends Component {
     getAvailableDeviceType({ stationCode });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode,
@@ -71,6 +73,7 @@ class HistorySearch extends Component {
     const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: [], // 选中的设备
@@ -86,6 +89,7 @@ class HistorySearch extends Component {
     const { getPointInfo, changeHistoryStore, queryParam } = this.props;
     const { timeInterval } = queryParam;
     changeHistoryStore({
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
