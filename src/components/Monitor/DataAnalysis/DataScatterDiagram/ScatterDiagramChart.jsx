@@ -40,19 +40,48 @@ class ScatterDiagramChart extends Component{
       yData: (16 - e) * e
     }))
     const scatterData = scatterDiagramCharts.map(e => [e.xData, e.yData]);
+    const lineColor = '#666';
+    let color = ['#199475'];
     monitorScatter.setOption({
+      color: color,
       tooltip: {
         trigger: 'axis',
-          axisPointer: {
-              type: 'cross'
-          }
+        width: 192,
+        height: 86,
+        backgroundColor: '#fff',
+        textStyle: {
+          color: 'rgba(0, 0, 0, 0.65)',
+          fontSize: 12,
+        },
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+        axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: lineColor,
+            }
+        },
       },
       xAxis: {
         type: 'value',
-        splitNumber: 20
+        splitNumber: 20,
+        splitLine: { 
+          　show:false
+        },
+        axisTick: { 
+          show: false
+        },
+        axisLine: { 
+          show: false
+        }
       },
       yAxis: {
         type: 'value',
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        },
       },
       series: [{
         name: 'scatter',
@@ -65,7 +94,7 @@ class ScatterDiagramChart extends Component{
   render(){
     return(
       <div className={styles.scatterDiagramChart}>
-        <div id="monitorScatterDiagram" style={{ width: 400, height: 400 }}></div>
+        <div id="monitorScatterDiagram" style={{ width: '100%', height: 400 }}></div>
       </div>
     )
   }

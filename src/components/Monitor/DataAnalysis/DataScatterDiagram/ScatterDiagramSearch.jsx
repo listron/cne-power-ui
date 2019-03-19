@@ -145,15 +145,16 @@ class ScatterDiagramSearch extends Component{
               deviceTypeCode={101}
               multiple={false}
               deviceShowNumber={true}
-              style={{ width: 'auto', minWidth: '198px' }}
+              style={{ width: '198px', minWidth: '183px' }}
               onChange={this.selectedDevice} 
             />
+            
           </div>
           <div className={styles.timeSelect}>
-            <span className={styles.text}>时间选择</span>
+            <span className={styles.text}>时间</span>
             <RangePicker
               allowClear={false}
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               showTime
               disabledDate={(current) => current > moment()}
               onChange={this.timeChange}
