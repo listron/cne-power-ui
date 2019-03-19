@@ -271,7 +271,13 @@ function* importStationDevice(action) { // 导入设备；
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.importStationDevice}/${payload.stationCode}`
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      data: payload.formData,
+      processData: false,  // 不处理数据
+      contentType: false   // 不设置内容类型
+    });
     if (response.data.code === "10000") {
       message.success("导入成功")
       yield put({
@@ -295,11 +301,11 @@ function* importStationDevice(action) { // 导入设备；
         payload: params,
       });
     } else {
-      message.error(response.data)
+      message.config({ top: 200,  duration: 2,maxCount: 3,});
+      message.error(response.data.message)
     }
   } catch (e) {
     console.log(e);
-    message.error('删除电站设备失败，请重试');
   }
 }
 
