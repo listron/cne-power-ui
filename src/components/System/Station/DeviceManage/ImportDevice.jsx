@@ -12,6 +12,7 @@ class ImportDevice extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
+      file:File,
       fileList: [],
       uploading: false,
     }
@@ -51,13 +52,28 @@ class ImportDevice extends Component {
 
 
   handleSubmit = (e) => {
-    const{stationCode,pageNum,pageSize,deviceModeCode,deviceTypeCode,sortMethod,sortField,getDeviceList}=this.props;
-   const params={stationCode,pageNum,pageSize,deviceModeCode,deviceTypeCode,sortMethod,sortField};
+    const { stationCode, pageNum, pageSize, deviceModeCode, deviceTypeCode, sortMethod, sortField, getDeviceList } = this.props;
+    const params = { stationCode, pageNum, pageSize, deviceModeCode, deviceTypeCode, sortMethod, sortField };
+    const selectStationArr = this.props.form.getFieldValue('select');
+    const selectstationCode = selectStationArr ? selectStationArr[0]['stationCode'] : null
     e.preventDefault();
+    const{fileList,file}=this.state;
+    const formData = new FormData();
+    
+    fileList.forEach(file => {
+      formData.append("file", file);
+    });
+    formData.append("stationCode", selectstationCode);
+    console.log('file: ', file);
+    console.log('fileList: ', fileList);
+    console.log('formData: ', formData);
+
+    // onStationUpload()
+    this.props.importStationDevice({stationCode:selectstationCode,formData})
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        getDeviceList({...params})
+        getDeviceList({ ...params })
         this.props.cancelModal()
       }
     });
@@ -67,6 +83,10 @@ class ImportDevice extends Component {
     if (Array.isArray(e)) {
       return e;
     }
+    this.setState({
+      file:e,
+      fileList:e.fileList
+    })
     return e && e.fileList;
   }
 
@@ -76,8 +96,8 @@ class ImportDevice extends Component {
     const { showModal, allStationBaseInfo } = this.props;
     const authData = Cookie.get('authData') || null;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const selectStationArr=getFieldValue('select');
-    const stationCode=selectStationArr?selectStationArr[0]['stationCode']:null
+    const selectStationArr = getFieldValue('select');
+    const stationCode = selectStationArr ? selectStationArr[0]['stationCode'] : null
     const { fileList } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -88,6 +108,31 @@ class ImportDevice extends Component {
         xs: { span: 24 },
         sm: { span: 16 },
       },
+    };
+    const uploadprops = {
+      onRemove: (file) => {
+        this.setState((state) => {
+          const index = state.fileList.indexOf(file);
+          const newFileList = state.fileList.slice();
+          newFileList.splice(index, 1);
+          return {
+            fileList: newFileList,
+          };
+        });
+      },
+      beforeUpload: (file) => {
+        this.setState(state => ({
+          fileList: [...state.fileList, file],
+        }));
+        const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
+        const validFile = validType.includes(file.type);
+        if (!validFile) {
+          message.error('只支持上传excel文件!');
+        }
+        // return !!validFile
+        return false;
+      },
+      fileList,
     };
 
     return (
@@ -132,25 +177,18 @@ class ImportDevice extends Component {
                   { required: true, message: '请上传文件' },
                 ],
               })(
-                <Upload
-                  action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importStationDevice}/${stationCode}`}
-                  onChange={this.onStationUpload}
-                  headers={{ 'Authorization': 'bearer ' + JSON.parse(authData) }}
-                  beforeUpload={this.beforeUploadStation}
-                  data={(file) => ({ file })}
-                  showUploadList={false}
-                  fileList={fileList}
-                >
-                  <Button  >选择文件</Button>
-                  <span>支持xls、xlsx文件</span>
-                </Upload >
+                <Upload {...uploadprops}>
+                  <Button>
+                    选择文件
+                </Button>
+                </Upload>
               )}
 
             </Form.Item>
             <Form.Item
               wrapperCol={{ span: 12, offset: 12 }}
             >
-              <Button type="primary" htmlType="submit">导入</Button>
+              <Button type="primary"  disabled={fileList.length === 0} htmlType="submit">导入</Button>
             </Form.Item>
           </Form>
 
@@ -160,3 +198,17 @@ class ImportDevice extends Component {
   }
 }
 export default Form.create()(ImportDevice)
+
+
+// <Upload
+// action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importStationDevice}/${stationCode}`}
+// onChange={this.onStationUpload}
+// headers={{ 'Authorization': 'bearer ' + JSON.parse(authData) }}
+// beforeUpload={this.beforeUploadStation}
+// data={(file) => ({ file })}
+// showUploadList={true}
+// fileList={fileList}
+// >
+// <Button  >选择文件</Button>
+// <span>支持xls、xlsx文件</span>
+// </Upload >
