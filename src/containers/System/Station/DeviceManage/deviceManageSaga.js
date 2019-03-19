@@ -3,9 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-
 import { message } from 'antd';
-
 
 function* changeDeviceManageStore(action) { // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;

@@ -33,6 +33,8 @@ class ImportDevice extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const{fileList,file}=this.state;
+    const selectStationArr = this.props.form.getFieldValue('select');
+    const selectstationCode = selectStationArr ? selectStationArr[0]['stationCode'] : null
     const formData = new FormData();
     
     fileList.forEach(file => {
