@@ -45,7 +45,10 @@ class RoleEdit extends Component {
     this.setState({
       showWarningTip: false,
     });
-    this.props.changeRoleStore({showPage: 'list'});   
+    this.props.changeRoleStore({
+      showPage: 'list',
+      selectedRole: [],
+    });   
   }
 
   render(){

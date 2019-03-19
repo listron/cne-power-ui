@@ -123,6 +123,26 @@
         min-width: 72px;
         width:72px;
       }
+      .ant-table-thead{
+        th>div{
+          height: 60px;
+        }
+        .month{
+          &>div{
+            padding-top: 13px;
+          }
+        }
+        :local{
+          .regionName, .stationNameBox, .planYear, .operation{
+            &>div{
+              padding-top: 13px;
+            }
+          }
+        }
+      }
+      .ant-table-column-sorter{
+        top: 18px;
+      }
       .ant-input.ant-input-disabled {
         background: #f8f8f8;
         border: 1px solid #dfdfdf;
@@ -152,11 +172,11 @@
       min-width: 38px;
     }
     .planYear {
-      width: 6.2%;
+      width: 5%;
       min-width: 40px;
     }
     .planPower {
-      width: 9%;
+      width: 10%;
       min-width: 105px;
     }
     .stationCapacity{

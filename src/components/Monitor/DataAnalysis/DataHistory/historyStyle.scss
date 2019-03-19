@@ -101,9 +101,7 @@
 }
 
 .pointTree{
-  flex: 0 0 150px;
-  overflow-x: auto;
-  border-right: 1px solid $promptColor;
+  flex: 0 0 196px;
   h3{
     height: 40px;
     line-height: 40px;
@@ -111,11 +109,21 @@
     border-bottom: 1px solid $promptColor;
     text-align: center;
   }
-  // :global{
-  //   .ant-tree{
-  //     border-top: 1px solid $promptColor;
-  //   }
-  // }
+  :global{
+    .ant-tree{
+      max-height: 780px;
+      width: 196px;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+  }
 }
 
 .historyChart{
@@ -123,6 +131,7 @@
   flex-wrap: wrap;
   flex: 1;
   align-content: flex-start;
+  border-left: 1px solid $promptColor;
   h4{
     flex-basis: 100%;
     height: 60px;

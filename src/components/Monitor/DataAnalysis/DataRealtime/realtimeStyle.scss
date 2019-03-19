@@ -84,15 +84,39 @@
 }
 
 .pointTree{
-  flex: 0 0 150px;
-  overflow-x: auto;
-  border-right: 1px solid $promptColor;
+  flex: 0 0 196px;
   h3{
     height: 40px;
     line-height: 40px;
     color: $darkColor;
     text-align: center;
     border-bottom: 1px solid $promptColor;
+    button{
+      color: #fff;
+      background-color: $themeColor;
+      height: 24px;
+    }
+    :global{
+      .ant-btn:hover, .ant-btn:focus, .ant-btn:active, .ant-btn.active{
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
+  }
+  :global{
+    .ant-tree{
+      max-height: 780px;
+      width: 196px;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
   }
 }
 
@@ -100,6 +124,8 @@
   display: flex;
   flex-wrap: wrap;
   flex: 1;
+  align-content: flex-start;
+  border-left: 1px solid $promptColor;
   h4{
     flex-basis: 100%;
     height: 60px;

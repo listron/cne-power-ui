@@ -85,8 +85,9 @@ function* transferWarning(action) {  // 转工单
   const { payload } = action;
   const url = `${APIBasePath}${monitor.transferAlarm}`
   try {
-    const response = yield call(axios.post, url, {...payload,warningType:'限值告警'});
+    const response = yield call(axios.post, url, { ...payload, warningType: '限值告警' });
     if (response.data.code === '10000') {
+      message.success('转工单成功',1)
       yield put({
         type: realtimeWarningAction.changeRealtimeWarningStore,
         payload: {
@@ -105,10 +106,11 @@ function* transferWarning(action) {  // 转工单
         type: realtimeWarningAction.getRealtimeWarning,
         payload: params
       });
-    }else{
+    } else {
       throw response.data.data
     }
   } catch (e) {
+    message.success('转工单失败',1)
     console.log(e);
   }
 }
@@ -136,7 +138,7 @@ function* HandleRemoveWarning(action) {  // 手动解除告警
         type: realtimeWarningAction.getRealtimeWarning,
         payload: params
       });
-    }else{
+    } else {
       throw response.data.data
     }
   } catch (e) {

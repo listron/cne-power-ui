@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree, message } from 'antd';
+import { Tree, message, Button } from 'antd';
 import styles from './realtimeStyle.scss';
 
 const { TreeNode } = Tree;
@@ -16,31 +16,38 @@ class PointTree extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    changeRealtimeStore: PropTypes.func,
   };
 
+  onPointsQuery = () => {
+    const {
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
+    } = this.props;
+    if (realtimeType === 'chart') { // 停止计时，重启计时。
+      stopRealtimeChart();
+      getRealtimeChart({ queryParam });
+    } else {
+      stopRealtimeList();
+      getRealtimeList({
+        queryParam,
+        listParam,
+      });
+    }
+  }
+
   pointSelect = (selectedKeys) => {
+    const { queryParam, changeRealtimeStore } = this.props;
     const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
     if (valideKeys.length > 4) {
       message.error('所选测点不得超过4个');
       return;
     }
-    const {
-      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
-    } = this.props;
-    const newQueryParam = {
-      ...queryParam,
-      devicePoints: selectedKeys,
-    };
-    if (realtimeType === 'chart') { // 停止计时，重启计时。
-      stopRealtimeChart();
-      getRealtimeChart({ queryParam: newQueryParam });
-    } else {
-      stopRealtimeList();
-      getRealtimeList({
-        queryParam: newQueryParam,
-        listParam,
-      });
-    }
+    changeRealtimeStore({
+      queryParam: {
+        ...queryParam,
+        devicePoints: selectedKeys,
+      }
+    })
   }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
@@ -68,12 +75,12 @@ class PointTree extends Component {
       if (e.devicePointIecCode) { // 有分组信息
         PointsNodes.push(
           <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
-            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)}
+            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)}
           </TreeNode>
         )
       } else { // 无分组信息
         tmpNoneGroupNodes.push(
-          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointCode} />)
+          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)
         )
       }
     });
@@ -85,7 +92,9 @@ class PointTree extends Component {
     const { devicePoints = [] } = queryParam;
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({devicePoints.length})</h3>
+        <h3>
+          <Button onClick={this.onPointsQuery} disabled={devicePoints.length === 0}>确定选择({devicePoints.length})</Button>
+        </h3>
         <Tree
           checkable
           onCheck={this.pointSelect}

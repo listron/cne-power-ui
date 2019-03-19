@@ -76,6 +76,7 @@ class HistorySearch extends Component {
         deviceFullCodes: [], // 选中的设备
         devicePoints: [], // 选中的测点
       },
+      pointInfo: [], // 清空测点信息
       allHistory: {}, // chart图 - 所有历史数据
       partHistory: {}, // 表格内 - 分页后的历史数据
     });
@@ -133,11 +134,11 @@ class HistorySearch extends Component {
   historyDataFetch = (params) => {
     const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const { devicePoints } = queryParam;
+    const newQueryParam = {
+      ...queryParam,
+      ...params
+    }
     if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据
-      const newQueryParam = {
-        ...queryParam,
-        ...params
-      }
       getChartHistory({
         queryParam: newQueryParam
       })
@@ -146,7 +147,9 @@ class HistorySearch extends Component {
         listParam,
       })
     } else { // 未选时间-暂存信息。
-      changeHistoryStore({ ...params })
+      changeHistoryStore({
+        queryParam: newQueryParam
+      })
     }
   }
 
@@ -193,6 +196,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
             />
@@ -204,6 +208,8 @@ class HistorySearch extends Component {
               format="YYYY-MM-DD HH:mm:ss"
               onChange={this.timeChange}
               value={[startTime, endTime]}
+              disabledDate={(current) => current > moment()}
+              showTime
             />
           </div>
           <div className={styles.intervalSelect}>

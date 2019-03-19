@@ -6,6 +6,8 @@ import styles from './deviceList.scss';
 import { Tabs, Switch, Spin, Table, Progress  } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
+import TableColumnTitle from '../../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../../utils/utilFunc';
 
 const TabPane = Tabs.TabPane;
 
@@ -111,7 +113,7 @@ class BoxTransformerList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`}  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
-        title: '实时功率(kW)',
+        title: <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -121,8 +123,8 @@ class BoxTransformerList extends Component {
                 <div className={styles.devicePower}>
                   <div className={styles.progressPower}>
                     <div className={styles.deviceValue}>
-                      <div>{record.devicePower}</div>
-                      <div>{record.deviceCapacity}</div>
+                      <div>{numWithComma(record.devicePower)}</div>
+                      <div>{numWithComma(record.deviceCapacity)}</div>
                     </div>
                     <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
                   </div>
@@ -136,7 +138,7 @@ class BoxTransformerList extends Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: '装机容量(kW)',
+        title: <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -151,10 +153,10 @@ class BoxTransformerList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: '告警(个)',
+        title: <TableColumnTitle title="告警" unit="个" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
-        render: (text,record) => (<span>{text || 0}</span>),
+        render: value => numWithComma(value),
         sorter: (a, b) => a.alarmNum - b.alarmNum,
       }, {
         title: '设备状态',

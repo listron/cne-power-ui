@@ -8,6 +8,8 @@ import Footer from '../../../Common/Footer';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './cleanStyle.scss';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class CleanWarningMain extends Component { // 电站管理列表页
   static propTypes = {
@@ -103,12 +105,14 @@ class CleanWarningMain extends Component { // 电站管理列表页
                 dataIndex: 'stationName',
                 sorter: true,
               }, {
-                title: '灰尘影响占比',
+                title: <TableColumnTitle title="灰尘影响占比" unit="%" />,
                 dataIndex: 'influencePercent',
+                render(text){ return numWithComma(text); },
                 sorter: true,
               }, {
-                title: '距离上次清洗(天)',
+                title: <TableColumnTitle title="距离上次清洗" unit="天" />,
                 dataIndex: 'cleanDays',
+                render(text){ return numWithComma(text); },
                 sorter: true,
               }, {
                 title: '本次预警时间',
@@ -122,7 +126,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
             ]}
             loading={loading}
             pagination={false}
-            dataSource={cleanWarningList.map(e => ({ ...e, key: e.stationCode,influencePercent:`${e.influencePercent}%` }))}
+            dataSource={cleanWarningList.map((e, i) => ({ ...e, key: i }))}
             onChange={this.tableSort}
             locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
           />

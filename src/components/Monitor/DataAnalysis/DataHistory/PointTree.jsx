@@ -49,11 +49,11 @@ class PointTree extends Component {
         devicePointIecName,
         points: innerGroupedInfo.map(point => ({
           devicePointId: point.devicePointId,
-          devicePointId: point.devicePointId,
           devicePointName: point.devicePointName,
         }))
       }
     })
+    console.log(groupInfo)
     const PointsNodes = [], tmpNoneGroupNodes = [];
     groupInfo.forEach(e => { // 无分组的测点，应放末尾。
       if (e.devicePointIecCode) { // 有分组信息

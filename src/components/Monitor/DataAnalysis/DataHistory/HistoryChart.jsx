@@ -138,7 +138,6 @@ class HistoryChart extends Component {
       historyChart.hideLoading()
     }
     const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
-    console.log(allHistory)
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {

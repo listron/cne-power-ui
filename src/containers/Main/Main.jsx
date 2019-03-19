@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button } from 'antd';
+import { message, Modal, Button,Spin } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -104,8 +104,7 @@ class Main extends Component {
    Loading = ({ pastDelay, timedOut, error }) => {
     if (pastDelay) {
       return (<div className={styles.preComponent}>
-      <i className={`${styles.rotate}`}></i>
-       <p>loading....</p>
+       <Spin size="large" tip="Loading..."/>
     </div>);
     } else if (timedOut) {
       return <div>Taking a long time...</div>;
@@ -183,10 +182,10 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/" exact component={Login} />
           <Route path="/login" exact component={Login} />
           <Route path="/userAgreement" exact component={Agreement} />
           <Route path="/contactUs" exact component={Contact} />
+          <Redirect to="/login" />
         </Switch>
       );
     }

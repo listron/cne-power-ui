@@ -7,6 +7,8 @@ import { getDefectSortField, getDefaultMonth } from '../plan';
 import WarningTip from '../../../../Common/WarningTip';
 import EditableCell from './EditableCell';
 import moment from 'moment';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 
 const EditableContext = React.createContext();
 
@@ -182,8 +184,7 @@ class PlanTable extends Component {
         render: text => {
           return text ? text : '--'
         }
-      },
-      {
+      }, {
         title: '电站名称',
         dataIndex: 'stationName',
         key: 'stationName',
@@ -194,26 +195,21 @@ class PlanTable extends Component {
           const textValue = text ? text : '--';
           return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
         }
-      },
-      {
-        title: '装机容量(MW)',
+      }, {
+        title: <TableColumnTitle title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
         key: 'stationCapacity',
         sorter: true,
         className: styles.stationCapacity,
-        render: text => {
-          return text ? Number(text).toFixed(4) : '--'
-        }
-      },
-      {
+        render(text){ return numWithComma(text); },
+      }, {
         title: '年份',
         dataIndex: 'planYear',
         key: 'planYear',
         sorter: false, // 暂时不排序了
         className: styles.planYear
-      },
-      {
-        title: '年计划发电量(万kWh)',
+      }, {
+        title: <TableColumnTitle title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
         className: styles.planPower,
@@ -226,20 +222,20 @@ class PlanTable extends Component {
           })
         },
         render: (text, record) => {
-          const textValue = text ? text : '--';
+          const textValue = numWithComma(text);
           return <div className={this.isEditing(record) ? styles.save : ""}>{textValue}</div>
         }
       },
       ...MonthColumn,
       {
-        title: 'PR年计划',
+        title: <TableColumnTitle title="PR年计划" unit="%" />,
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,
         className: "yearPR",
         render: text => {
           const textValue = text ? text : '--';
-          return (<span><Input defaultValue={textValue} disabled={true} />%</span>)
+          return (<span><Input defaultValue={textValue} disabled={true} /></span>)
         }
       },
       {
