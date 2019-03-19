@@ -150,7 +150,6 @@ class HistoryChart extends Component {
         extraCssText: 'background-color: #fff; box-shadow:0 0 6px 0 rgba(0,0,0,0.3); border-radius:4px;',
         padding: 16,
         formatter: params => {
-          console.log(params)
           return (
             `<div class=${styles.chartTool}>
               <div class=${styles.title}>${params[0].name}</div>

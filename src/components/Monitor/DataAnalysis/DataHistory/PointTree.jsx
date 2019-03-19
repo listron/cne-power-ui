@@ -16,12 +16,23 @@ class PointTree extends Component {
     // changeHistoryStore: PropTypes.func,
   };
 
-  pointSelect = (selectedKeys) => {
+  state = {
+    halfCheckedKeys: []
+  }
+
+  pointSelect = (selectedKeys, { halfCheckedKeys }) => {
     const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
     if (valideKeys.length > 4) {
+      const preHalfCheckedKeys = this.state.halfCheckedKeys;
       message.error('所选测点不得超过4个');
+      this.setState({
+        halfCheckedKeys: preHalfCheckedKeys
+      });
       return;
     }
+    this.setState({
+      halfCheckedKeys,
+    })
     const { queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const newQueryParam = {
       ...queryParam,
@@ -72,6 +83,7 @@ class PointTree extends Component {
 
   render(){
     const { queryParam } = this.props;
+    const { halfCheckedKeys } = this.state;
     const { devicePoints } = queryParam;
     return (
       <section className={styles.pointTree}>
@@ -79,7 +91,10 @@ class PointTree extends Component {
         <Tree
           checkable
           onCheck={this.pointSelect}
-          checkedKeys={devicePoints}
+          checkedKeys={{
+            checked: devicePoints,
+            halfChecked: halfCheckedKeys
+          }}
         >
           {this.renderTreeNodes()}
         </Tree>
