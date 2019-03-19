@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
-import { baseFun, windTowerFun, windTimeFun } from './detailInformation';
+import { baseFun, windTowerFun, windTimeFun, selcetbaseFun } from './detailInformation';
 import DetailInfoPart from './DetailInfoPart';
 import moment from 'moment';
 import { Icon, Button, Checkbox, Row, Col } from 'antd';
@@ -99,15 +99,13 @@ class DetailDevice extends Component {
   }
   render() {
     const { stationDeviceDetail } = this.props;
-    const { deviceTypeCode, } = stationDeviceDetail;
-    const deviceDetailMap=stationDeviceDetail.map;
-    const connectedBranches=deviceDetailMap?deviceDetailMap.connectedBranches:[]
-   
-      const baseInfo = baseFun(stationDeviceDetail);
-      const windTower = windTowerFun(stationDeviceDetail);
-      const windTime = windTimeFun(stationDeviceDetail);
-    
-   
+    const deviceTypeCode = stationDeviceDetail.deviceTypeCode;
+    const deviceDetailMap = stationDeviceDetail.map;
+    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : []
+    const baseInfo = baseFun(stationDeviceDetail);
+    const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
+    const windTower = windTowerFun(stationDeviceDetail);
+    const windTime = windTimeFun(stationDeviceDetail);
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.detailDevice}>
@@ -123,7 +121,10 @@ class DetailDevice extends Component {
           </span>
         </div>
         <div className={styles.detailPart}>
-          <DetailInfoPart infoArray={baseInfo} />
+          <div>
+            <DetailInfoPart infoArray={baseInfo} />
+            <DetailInfoPart infoArray={selcetbaseInfo} />
+          </div>
           <div className={styles.rightPart}>
             {deviceTypeCode === '501' && <DetailInfoPart infoArray={windTower} />}
             {deviceTypeCode === '101' && <DetailInfoPart infoArray={windTime} />}
@@ -131,13 +132,13 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件型号</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
-                  {(deviceDetailMap&&(deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
+                  {(deviceDetailMap && (deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件个数</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.branchCount}>
-                  {(deviceDetailMap&&(deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
+                  {(deviceDetailMap && (deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
@@ -164,7 +165,7 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所属方阵</div>
                 <div className={styles.infoValue} title={deviceDetailMap.belongMatrix}>
-                  {(deviceDetailMap&&(deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
+                  {(deviceDetailMap && (deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
                 </div>
               </div>
             </div>}
