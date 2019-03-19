@@ -4,6 +4,7 @@ import { Button, Table, Icon } from 'antd';
 import styles from './reportDetail.scss';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { dataFormat } from '../../../../../utils/utilFunc';
 
 const loseColumn = [
@@ -21,37 +22,37 @@ const loseColumn = [
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '损失电量类型',
     dataIndex: 'faultName',
     className: 'faultName',
     render: (text, record) => (
       <span title={text} >{text}</span>
     ),
-  },{
+  }, {
     title: '原因说明',
     dataIndex: 'reason',
     className: 'reason',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '发生时间',
     dataIndex: 'startTime',
     className: 'startTime',
-  },{
+  }, {
     title: '结束时间',
     dataIndex: 'endTime',
     className: 'endTime',
-  },{
+  }, {
     title: '处理进展及问题',
     dataIndex: 'process',
     className: 'process',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
-    title: '日损失电量(kWh)',
+  }, {
+    title: <TableColumnTitle title="日损失电量" unit="kWh" />,
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (
@@ -74,36 +75,36 @@ const limitColumn = [
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '限功率(%)',
     dataIndex: 'limitPower',
     className: 'limitPower',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '原因说明',
     dataIndex: 'reason',
     className: 'reason',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '发生时间',
     dataIndex: 'startTime',
     className: 'startTime',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
+  }, {
     title: '结束时间',
     dataIndex: 'endTime',
     className: 'endTime',
     render: (text, record) => (
       <span title={text}>{text}</span>
     ),
-  },{
-    title: '日损失电量(kWh)',
+  }, {
+    title: <TableColumnTitle title="日损失电量" unit="kWh" />,
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (

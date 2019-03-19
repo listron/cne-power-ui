@@ -15,11 +15,12 @@ class RealtimeChart extends Component {
   componentDidUpdate(prevProps) {
     const { chartRealtime, dataTime, queryParam = {} } = this.props;
     const { devicePoints = [] } = queryParam;
-    const preTime = prevProps.chartTime;
+    const preTime = prevProps.dataTime;
     const preParam = prevProps.queryParam || {};
     const prePoints = preParam.devicePoints || [];
-    if (dataTime !== preTime) { // 数据重新请求后重绘。
-      const reRender = prePoints.length !== devicePoints.length;
+    const emptyRealTime = Object.keys(chartRealtime).length === 0;
+    if (dataTime !== preTime || emptyRealTime) { // 数据重新请求后重绘。
+      const reRender = prePoints.length !== devicePoints.length || emptyRealTime;
       this.renderChart(chartRealtime, reRender);
     }
   }
@@ -57,6 +58,7 @@ class RealtimeChart extends Component {
     },
     axisLabel: {
       color: '#666',
+      showMinLabel: false
     },
     axisTick: {
       show: false
@@ -67,7 +69,7 @@ class RealtimeChart extends Component {
         type: 'dotted',
       } 
     },
-    name: `${e.pointName}\n(${e.pointUnit})`,
+    name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
     nameGap: 48,
     nameTextStyle: {
@@ -128,14 +130,16 @@ class RealtimeChart extends Component {
     const chartDOM = document.getElementById('dataRealtimeChart');
     if (!chartDOM) { return; }
     reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
+    if (Object.keys(chartRealtime).length === 0) {
+      return;
+    }
     const realtimeChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
-      realtimeChart.showLoading()
+      realtimeChart.showLoading();
     } else {
-      realtimeChart.hideLoading()
+      realtimeChart.hideLoading();
     }
     const { pointTime = [], pointInfo = [] } = chartRealtime;
-    const { deviceInfo = [] } = pointInfo[0] || {};
     const option = {
       tooltip: {
         trigger: 'axis',
@@ -166,12 +170,11 @@ class RealtimeChart extends Component {
       yAxis: this.yAxisCreate(pointInfo),
       ...this.legendSeriesCreate(pointInfo)
     };
-    if (pointTime.length > 0) { // 有数据时，展示数据筛选条
+    if (pointTime.length > 0 && pointInfo.length > 0) { // 有数据时，展示数据筛选条
       option.dataZoom = [{
         type: 'slider',
         start: 0,
         end: 100,
-        // bottom: 24 * deviceInfo.length + 24,
         left: 150,
         right: 150,
         filterMode: 'empty',
