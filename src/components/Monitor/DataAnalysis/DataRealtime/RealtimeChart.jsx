@@ -126,10 +126,6 @@ class RealtimeChart extends Component {
     return { series, legend }
   }
 
-  chartLoading = () => {
-
-  }
-
   renderChart = (chartRealtime, reRender = false) => {
     const { chartLoading } = this.props;
     const chartDOM = document.getElementById('dataRealtimeChart');

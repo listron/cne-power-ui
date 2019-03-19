@@ -160,7 +160,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
       throw { response, timeoutInfo };
     }
   } catch (err) { // 请求失败，推送入null进入各数据数组，时间 + 5s存储。
-    if (dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
+    if (!dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
       return;
     }
     const newDataTime = moment(dataTime).add(5,'s').format('YYYY-MM-DD HH:mm:ss');
@@ -169,6 +169,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
     const newPointInfo = pointInfo.map(e => ({
       pointName: e.pointName,
       pointCode: e.pointCode,
+      pointUnit: e.pointUnit,
       deviceInfo: e.deviceInfo.map(inner => {
         const { deviceCode, deviceName, pointValue } = inner;
         pointValue.push(null);

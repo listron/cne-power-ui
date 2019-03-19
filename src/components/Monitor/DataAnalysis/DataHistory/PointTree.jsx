@@ -75,7 +75,7 @@ class PointTree extends Component {
     const { devicePoints } = queryParam;
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({devicePoints.length})</h3>
+        <h3>选择测点({devicePoints.filter(e => !e.includes('group_')).length})</h3>
         <Tree
           checkable
           onCheck={this.pointSelect}

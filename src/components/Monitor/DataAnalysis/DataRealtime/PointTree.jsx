@@ -93,7 +93,9 @@ class PointTree extends Component {
     return (
       <section className={styles.pointTree}>
         <h3>
-          <Button onClick={this.onPointsQuery} disabled={devicePoints.length === 0}>确定选择({devicePoints.length})</Button>
+          <Button onClick={this.onPointsQuery} disabled={devicePoints.length === 0}>
+            确定选择({devicePoints.filter(e => !e.includes('group_')).length})
+          </Button>
         </h3>
         <Tree
           checkable
