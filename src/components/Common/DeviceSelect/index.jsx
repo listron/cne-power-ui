@@ -186,6 +186,7 @@ class DeviceSelect extends Component {
           onChange={this.selectDevice}
           value={checkedDeviceCodes}
           className={styles.stationSelectMainInput}
+          filterOption={(input, option) => option.props.children.indexOf(input) >= 0}
           {...deviceShow}
         >
           {devices.map((e, i) => (
