@@ -3,25 +3,41 @@ import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import styles from './realtimeStyle.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
+import moment from 'moment';
 
 class RealtimeChart extends Component {
   static propTypes = {
     chartLoading: PropTypes.bool,
+    timeInterval: PropTypes.number,
     dataTime: PropTypes.string,
     queryParam: PropTypes.object,
     chartRealtime: PropTypes.object,
   }
 
+  constructor(props){
+    super(props);
+    this.state = {
+      datazoomStart: 0,
+      datazoomEnd: 0,
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    const { chartRealtime, dataTime, queryParam = {}, chartLoading } = this.props;
+    const { chartRealtime, dataTime, queryParam = {}, chartLoading, timeInterval } = this.props;
     const { devicePoints = [] } = queryParam;
     const preTime = prevProps.dataTime;
     const preParam = prevProps.queryParam || {};
     const prePoints = preParam.devicePoints || [];
     const preLoading = prevProps.chartLoading;
     const emptyRealTime = Object.keys(chartRealtime).length === 0;
-    if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
-      const reRender = prePoints.length !== devicePoints.length || emptyRealTime;
+    const reRender = prePoints.length !== devicePoints.length || emptyRealTime;
+    if (!preTime && dataTime) { // 第一次得到数据 => 计算默认的datazoom
+      const maxValues = 30 * 60 / timeInterval; // 最大数据量。
+      this.setState({
+        datazoomStart: 20000 / maxValues ,
+        datazoomEnd: 100,
+      }, () => this.renderChart(chartRealtime, reRender))
+    }else if (dataTime !== preTime || emptyRealTime || chartLoading !== preLoading) { // 数据重新请求后重绘。
       this.renderChart(chartRealtime, reRender);
     }
   }
@@ -128,7 +144,9 @@ class RealtimeChart extends Component {
 
   renderChart = (chartRealtime, reRender = false) => {
     const { chartLoading } = this.props;
+    const { datazoomStart, datazoomEnd } = this.state;
     const chartDOM = document.getElementById('dataRealtimeChart');
+    
     if (!chartDOM) { return; }
     reRender && echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。 
     const realtimeChart = echarts.init(chartDOM);
@@ -154,7 +172,7 @@ class RealtimeChart extends Component {
               ${params.map(e => `<div class=${styles.content}>
                 <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
                 <span class=${styles.text}>${e.seriesName}: </span>
-                <span class=${styles.value}>${dataFormat(e.value)}</span>
+                <span class=${styles.value}>${dataFormat(e.value, '--', 2)}</span>
               </div>`).join('')}
             </div>`
           )
@@ -168,17 +186,19 @@ class RealtimeChart extends Component {
         }
       },
       grid: this.gridCreate(pointInfo),
-      xAxis: this.xAxisCreate(pointInfo).map(e => ({ ...e, data: pointTime })),
+      xAxis: this.xAxisCreate(pointInfo).map(e => ({
+        ...e,
+        data: pointTime.map(e => moment(e).format('HH:mm:ss')),
+      })),
       yAxis: this.yAxisCreate(pointInfo),
       ...this.legendSeriesCreate(pointInfo)
     };
-    if (pointTime.length > 0 && pointInfo.length > 0) { // 有数据时，展示数据筛选条
-      option.dataZoom = [{
+    pointTime.length > 0 && pointInfo.length > 0 && (option.dataZoom = [{ // 有数据时，展示数据筛选条 
         type: 'slider',
-        start: 0,
-        end: 100,
-        left: 150,
-        right: 150,
+        start: datazoomStart,
+        end: datazoomEnd,
+        left: 80,
+        right: 80,
         filterMode: 'empty',
         xAxisIndex: pointInfo.map((e, i)=> i),
       },{
@@ -186,8 +206,25 @@ class RealtimeChart extends Component {
         orient: 'horizontal',
         filterMode: 'empty',
         xAxisIndex: pointInfo.map((e, i)=> i),
-      }]
-    }
+      }]);
+    realtimeChart.on('datazoom',(datazoom) => {
+      const { type, start, end, batch } = datazoom;
+      if (type !== 'datazoom') {
+        return;
+      }
+      if (start || end) { // 拖拽底部
+        this.setState({
+          datazoomStart: start,
+          datazoomEnd: end,
+        })
+      } else if (batch && batch[0]) { // chart图中滚轮
+        const zoomInfo = batch[0];
+        this.setState({
+          datazoomStart: zoomInfo.start,
+          datazoomEnd: zoomInfo.end,
+        })
+      }
+    })
     realtimeChart.setOption(option);
   }
 

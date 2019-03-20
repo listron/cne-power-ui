@@ -155,8 +155,18 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   const { payload } = action;
   try {
     const { enterpriseId } = payload;
-    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
     const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}` // '/mock/monitor/dataAnalysisSecendInteral';
+    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
+    yield put({
+      type: historyAction.CHANGE_HISTORY_STORE,
+      payload: {
+        queryParam: {
+          ...queryParam,
+          startTime: moment().startOf('day').subtract(1, 'day'),
+          endTime: moment(),
+        }
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;
@@ -166,6 +176,8 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
           intervalInfo: hasSecond === 1 ? [1, 5 ,10] : [5 ,10],
           queryParam: {
             ...queryParam,
+            startTime: moment().startOf('day').subtract(1, 'day'),
+            endTime: moment(),
             timeInterval: hasSecond === 1 ? 1 : 5,
           }
         }

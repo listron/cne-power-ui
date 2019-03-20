@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './dataRealtime.scss';
-import { Button } from 'antd';
 import { realtimeAction } from './realtimeReducer';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import RealtimeSearch from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeSearch';
