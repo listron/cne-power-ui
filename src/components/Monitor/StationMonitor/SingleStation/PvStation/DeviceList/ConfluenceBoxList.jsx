@@ -3,11 +3,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
-import { Tabs, Switch, Spin, Table, Progress  } from 'antd';
+import { Tabs, Switch, Spin, Table, Progress, Radio } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
-import { numWithComma } from '../../../../../../utils/utilFunc';
+import { numWithComma, dataFormat } from '../../../../../../utils/utilFunc';
 const TabPane = Tabs.TabPane;
 
 class ConfluenceBoxList extends Component {
@@ -19,35 +19,35 @@ class ConfluenceBoxList extends Component {
     loading: PropTypes.bool,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       currentStatus: 0,//当前状态值
       alarmSwitch: false,
-      pageSize: 10, 
+      pageSize: 10,
       currentPage: 1,
       sortName: '',
-      descend : false,
-      firstLoad : true,
+      descend: false,
+      firstLoad: true,
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextStation = nextParams.stationCode;
-    if( nextStation !== stationCode ){
+    if (nextStation !== stationCode) {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearTimeout(this.timeOutId);
   }
 
@@ -67,16 +67,16 @@ class ConfluenceBoxList extends Component {
 
   getData = (stationCode) => {
     const { firstLoad } = this.state;
-    this.props.getConfluenceBoxList({stationCode,firstLoad});
-    this.timeOutId = setTimeout(()=>{
-      if(firstLoad){
-        this.setState({firstLoad: false});
+    this.props.getConfluenceBoxList({ stationCode, firstLoad });
+    this.timeOutId = setTimeout(() => {
+      if (firstLoad) {
+        this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
     }, 10000);
   }
   getDeviceStatus = (value) => {
-    switch(value){
+    switch (value) {
       case 100:
         return '正常';
       case 200:
@@ -90,7 +90,7 @@ class ConfluenceBoxList extends Component {
     }
   }
   getStatusColor = (value) => {
-    switch(value){
+    switch (value) {
       case 100:
         return '#199475';
       case 200:
@@ -112,7 +112,7 @@ class ConfluenceBoxList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`}  className={styles.tableDeviceName}  >{text}</Link></div>)
+        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
         title: <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
@@ -181,9 +181,9 @@ class ConfluenceBoxList extends Component {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
-        render: (text,record) => (<span><i className={styles.statusColor} style={{backgroundColor: this.getStatusColor(record.deviceStatus)}} ></i>{this.getDeviceStatus(text)}</span>),
+        render: (text, record) => (<span><i className={styles.statusColor} style={{ backgroundColor: this.getStatusColor(record.deviceStatus) }} ></i>{this.getDeviceStatus(text)}</span>),
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
-      }, 
+      },
     ];
     return columns;
   }
@@ -191,9 +191,9 @@ class ConfluenceBoxList extends Component {
     this.setState({ pageSize, currentPage })
   }
   tableChange = (pagination, filters, sorter) => {
-    this.setState({ 
+    this.setState({
       sortName: sorter.field,
-      descend : sorter.order === 'descend'
+      descend: sorter.order === 'descend'
     })
   }
   createTableSource = (data) => {
@@ -203,7 +203,7 @@ class ConfluenceBoxList extends Component {
       key: i,
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['parentDeviceName','deviceStatus'];
+      const arraySort = ['parentDeviceName', 'deviceStatus'];
       const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
@@ -221,46 +221,49 @@ class ConfluenceBoxList extends Component {
     // }else if(maxPage < currentPage){ // 当前页已超出
     //   currentPage = maxPage;
     // }
-    return tableSource.splice((currentPage-1)*pageSize,pageSize);
+    return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
-  
-  render(){
-    const { confluenceBoxList, deviceTypeCode,loading } = this.props;
-    const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;
-    const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
+
+  render() {
+    const { confluenceBoxList, deviceTypeCode, loading } = this.props;
+    const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
+    const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
     // const initDeviceList = confluenceBoxList && confluenceBoxList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
-    const filteredDeviceList = initDeviceList.filter(e=>(!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e=>{
-      return (currentStatus === 0 || e.deviceStatus === currentStatus);
+    const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
+      return (currentStatus === 0 || e.dispRateStatus === currentStatus);
     }) // 根据筛选条件处理数据源。
-    const sortedParentList = filteredDeviceList.sort((a,b)=>{
+    const sortedParentList = filteredDeviceList.sort((a, b) => {
       return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
     })
-    const parentDeviceCodeSet = new Set(sortedParentList.map(e=>e.parentDeviceCode));
+    const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
     const parentDeviceCodes = [...parentDeviceCodeSet];
-    const deviceGroupedList = parentDeviceCodes.map(e=>{
+    const deviceGroupedList = parentDeviceCodes.map(e => {
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
-      return subDeviceList.sort((a,b)=>a.deviceName && a.deviceName.localeCompare(b.deviceName));
+      return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
     const deviceStatus = confluenceBoxList.deviceStatusSummary || [];
+    const { dispRateStatusSummary = {} } = confluenceBoxList;
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
-      {/* <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
+      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        {deviceStatus.map(e=>
-          (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
-        )}
-      </Radio.Group> */}
+        <Radio.Button value={1} >正常 {dataFormat(dispRateStatusSummary.normalNum)}</Radio.Button>
+        <Radio.Button value={2} >离散率>10% {dataFormat(dispRateStatusSummary.biggerThanTenNum)}</Radio.Button>
+        <Radio.Button value={3} >离散率>20% {dataFormat(dispRateStatusSummary.biggerThanTwentyNum)}</Radio.Button>
+        <Radio.Button value={4} >无通讯 {dataFormat(dispRateStatusSummary.unConnectNum)}</Radio.Button>
+        <Radio.Button value={5} >未接入 {dataFormat(dispRateStatusSummary.unJoinNum)}</Radio.Button>
+      </Radio.Group>
     </div>);
-    
+
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
     const transData = (value, pointLength) => { // 数据转换。
       let tmpValue = parseFloat(value);
       let tmpBackData;
-      if(tmpValue || tmpValue === 0 ){
-        tmpBackData = (pointLength || pointLength === 0)?tmpValue.toFixed(pointLength):tmpValue;
-      }else{
+      if (tmpValue || tmpValue === 0) {
+        tmpBackData = (pointLength || pointLength === 0) ? tmpValue.toFixed(pointLength) : tmpValue;
+      } else {
         tmpBackData = '--'
       }
       return tmpBackData;
@@ -269,32 +272,35 @@ class ConfluenceBoxList extends Component {
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
-            {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> : 
-              (deviceGroupedList.length > 0 ? deviceGroupedList.map((e,index)=>{
+            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+              (deviceGroupedList.length > 0 ? deviceGroupedList.map((e, index) => {
                 return (<div key={index}>
                   <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                  {e.map((item,i)=>{
+                  {e.map((item, i) => {
                     const { devicePower, deviceCapacity, voltage, electricity, dispersionRatio, temp } = item;
-                    const showDevicePower = transData(devicePower,2);
-                    const showDeviceCapacity = transData(deviceCapacity,2);
+                    const showDevicePower = transData(devicePower, 2);
+                    const showDeviceCapacity = transData(deviceCapacity, 2);
                     const showVoltage = transData(voltage);
                     const showElectricity = transData(electricity);
                     const showTemp = transData(temp);
+                    const status = ['orange', 'red'][item.dispRateStatus - 2] || 'common'
                     let percent, progressPercent;
-                    if(!deviceCapacity || isNaN(deviceCapacity)){
+                    if (!deviceCapacity || isNaN(deviceCapacity)) {
                       percent = '--';
                       progressPercent = 0;
-                    }else{
-                      percent = transData(devicePower/deviceCapacity*100,2);
-                      progressPercent = percent;
+                    } else {
+                      percent = transData(devicePower / deviceCapacity * 100, 2);
+                      progressPercent = +percent;
                     }
-                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{height: "121px"}}>
+                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{ height: "121px" }}>
                       <div className={styles.inverterItemIcon} >
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
+                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}
+                          className={styles[status]} >
+                          {item.dispRateStatus === 4 && <i className="iconfont icon-outage" ></i> || null}
                           <i className="iconfont icon-hl" ></i>
                         </Link>
                         <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
-                          {(item.alarmNum && item.alarmNum>0)? <i className="iconfont icon-alarm" ></i> : <div></div>}
+                          {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
                         </Link>
                       </div>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
@@ -311,7 +317,7 @@ class ConfluenceBoxList extends Component {
                         <div className={styles.hlBlockFooter} >
                           <div>电压：{showVoltage}V</div>
                           <div>电流：{showElectricity}A</div>
-                          <div>离散率：{dispersionRatio || '--'}</div>
+                          <div className={styles[status]}>离散率：{dispersionRatio || '--'}</div>
                           <div>温度：{showTemp}℃</div>
                         </div>
                       </Link>
@@ -327,8 +333,8 @@ class ConfluenceBoxList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table
-                dataSource={currentTableList} 
-                columns={this.tableColumn()} 
+                dataSource={currentTableList}
+                columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
                 className={styles.inverterTable}

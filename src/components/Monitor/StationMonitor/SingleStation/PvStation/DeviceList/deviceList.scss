@@ -174,7 +174,6 @@
           :global{
             .iconfont{
               font-size: 22px;
-              color: #dfdfdf;
             }
             .icon-alarm{
               position: absolute;
@@ -184,10 +183,29 @@
               height: 10px;
               color: #a42b2c;
               font-size: 14px;
+              background: #fff;
             }
             a{
               color: $darkColor;
             }
+            .icon-outage{
+              position: absolute;
+              bottom: 9px;
+              left: -5px;
+              width: 10px;
+              height: 10px;
+              color: #e08031;
+              font-size: 14px;
+            }
+          }
+          .orange{
+            color: #f9b600;
+          }
+          .red{
+            color: #a42b2c;
+          }
+          .common{
+            color: #dfdfdf;
           }
         }
         .inverterItemR{
@@ -222,6 +240,12 @@
             display: inline-block;
             width: 50%;
             text-align: left;
+          }
+          .orange{
+            color: #f9b600;
+          }
+          .red{
+            color: #a62e2f;
           }
         }
         .hlBlockLink:hover{
