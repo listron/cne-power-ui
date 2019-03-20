@@ -13,28 +13,35 @@ class AlarmManageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
+
     }
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
     const { getAlarmList, queryParams } = this.props;
     const { field, order } = sorter;
-    
+
 
     getAlarmList({
       ...queryParams,
       //sortField: field?field:'',
-      sortField: field?field==='warningLevel'?'1':'2':'',
-      sortOrder: order?(sorter.order==='ascend'?'1':'2'):'',
+      sortField: field ? field === 'warningLevel' ? '1' : '2' : '',
+      sortOrder: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
 
       // sortOrder: order?(sorter.order==='ascend'?'asc':'desc'):'',
 
     })
   }
- 
+
 
   render() {
+    const warnTypeList = [
+      { warnTypeName: '设备状态', warnTypeCode: 101 },
+      { warnTypeName: '开关状态', warnTypeCode: 102 },
+      { warnTypeName: '信息', warnTypeCode: 103 },
+      { warnTypeName: '警告', warnTypeCode: 104 },
+      { warnTypeName: '告警', warnTypeCode: 105 },
+    ]
     const alarmListColumn = [
       {
         title: '测点描述',
@@ -45,26 +52,35 @@ class AlarmManageList extends Component {
         title: '测点编号',
         dataIndex: 'pointCode',
         key: 'pointCode',
-      },{
-        title: '告警描述',
-        dataIndex: 'warningDescription',
-        key: 'warningDescription',
-      },{
-        title: '告警参数',
+      }, , {
+        title: '事件编码',
         dataIndex: 'warningCheckRule',
         key: 'warningCheckRule',
-      },{
+      }, {
+        title: '事件/告警描述',
+        dataIndex: 'warningDescription',
+        key: 'warningDescription',
+      }, {
+        title: '事件类别',
+        dataIndex: 'warningType',
+        key: 'warningType',
+        render: text => warnTypeList.map(e => { if (e.warnTypeCode === +text) return e.warnTypeName })
+      }, {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
         sorter: true,
-      },{
-        title: '是否启用',
+      }, {
+        title: '是否启用告警',
         dataIndex: 'warningEnable',
         key: 'warningEnable',
         sorter: true,
-        //render: (text, record) => record.enableDisplay?'是':'否',
-        render: (text, record) => record.warningEnable?'是':'否',
+        render: text => text ? '是' : '否',
+      }, {
+        title: '所属部件',
+        dataIndex: 'belongComponent',
+        key: 'belongComponent',
+        render: text => (text || text === 0) ? text : '--'
       }
     ];
     const { loading, alarmList } = this.props;
@@ -74,9 +90,9 @@ class AlarmManageList extends Component {
           loading={loading}
           onChange={this.tableChange}
           columns={alarmListColumn}
-          dataSource={alarmList.map((e,i)=>({key: i,...e}))}
+          dataSource={alarmList.map((e, i) => ({ key: i, ...e }))}
           pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );
