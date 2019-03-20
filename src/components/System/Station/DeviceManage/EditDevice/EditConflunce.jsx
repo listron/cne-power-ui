@@ -40,9 +40,14 @@ class EditConflunce extends Component {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const detailMap=stationDeviceDetail?stationDeviceDetail.map:{};
     const branchCount =  stationDeviceDetail.map?stationDeviceDetail.map.connectedBranches:[];
-    const branchCountArr=branchCount.map((e,i)=>{
-    return e===1?i+1:null
-    })
+    const branchCount2 = getFieldValue("branchCount");
+    let branchCountArr = [];
+    for (let i = 0; i < branchCount2; i++) {
+      branchCountArr.push(i + 1)
+    }
+    // const branchCountArr=branchCount.map((e,i)=>{
+    // return e===1?i+1:null
+    // })
     console.log('branchCountArr: ', branchCountArr);
     
     
@@ -60,15 +65,18 @@ class EditConflunce extends Component {
            
           </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('branchCount',{ initialValue: stationDeviceDetail.map.branchCount,})(
-          <span>{stationDeviceDetail.map.branchCount}</span>
+          {getFieldDecorator('branchCount',{ initialValue: ((stationDeviceDetail.map.branchCount||+stationDeviceDetail.map.branchCount===0)?stationDeviceDetail.map.branchCount:''), rules: [
+            { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
+          ]})(
+          <Input placeholder="请输入..." />
+             // {/*  <span>{stationDeviceDetail.map.branchCount}</span> */}
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
           {getFieldDecorator('connectedBranches',{ initialValue: branchCountArr,} )(
             <Checkbox.Group>
               <Row>
-                {(branchCount).map((e, i) => {
+                {(branchCountArr).map((e, i) => {
                   return (
                     <Col span={3} key={i}>
                       <div>第{i+1}支路</div>

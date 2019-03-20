@@ -47,7 +47,7 @@ const menuData = [
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
           }, {
-            name: '实时监控',
+            name: '实时数据',
             path: 'realtime',
             rightKey: 'dataAnalysis_realTime',
           }

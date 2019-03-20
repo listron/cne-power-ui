@@ -121,7 +121,10 @@ function* getWarnList(action) { // 请求预警事件列表
     yield put({
       type: warningAction.changeWarnStore,
       payload: {
-        loading: true
+        loading: true,
+        listQueryParams: {
+          ...payload,
+        },
       }
     });
     const response = yield call(axios.post, url, payload);

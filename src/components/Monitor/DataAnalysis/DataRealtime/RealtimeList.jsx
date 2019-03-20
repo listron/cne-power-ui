@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import styles from './realtimeStyle.scss';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import CommonPagination from '../../../Common/CommonPagination'
 
 class RealtimeList extends Component {
@@ -11,17 +12,22 @@ class RealtimeList extends Component {
     queryParam: PropTypes.object,
     listRealtime: PropTypes.object,
     getRealtimeList: PropTypes.func,
+    changeRealtimeStore: PropTypes.func,
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 操作分页器
-    const { getRealtimeList, queryParam, listParam } = this.props;
+    const { getRealtimeList, queryParam, listParam, changeRealtimeStore } = this.props;
+    const newListParam = {
+      ...listParam,
+      pageSize,
+      pageNum: currentPage,
+    }
+    changeRealtimeStore({
+      listParam: newListParam,
+    })
     getRealtimeList({
       queryParam,
-      listParam: {
-        ...listParam,
-        pageSize,
-        pageNum: currentPage,
-      }
+      listParam: newListParam,
     })
   }
 
@@ -78,7 +84,7 @@ class RealtimeList extends Component {
     return (
       <div className={styles.realtimeList}>
         <div className={styles.pagination}>
-          <span className={styles.text}>刷新时间: {time}</span>
+          <span className={styles.text}>刷新时间: {moment(time).format('YYYY-MM-DD HH:mm:ss')}</span>
           <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table

@@ -2,6 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import styles from './loading.scss'
+import { Spin } from 'antd';
+
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -216,9 +218,8 @@ const routers = [
 const Loading = ({ pastDelay, timedOut, error }) => {
   if (pastDelay) {
     return (<div className={styles.preComponent}>
-      <i className={`${styles.rotate}`}></i>
-      <p>loading....</p>
-    </div>);
+     <Spin size="large" tip="Loading..."/>
+  </div>);
   } else if (timedOut) {
     return <div>Taking a long time...</div>;
   } else if (error) {

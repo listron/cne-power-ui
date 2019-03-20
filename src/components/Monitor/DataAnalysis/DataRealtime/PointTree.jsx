@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tree, message } from 'antd';
+import { Tree, message, Button } from 'antd';
 import styles from './realtimeStyle.scss';
 
 const { TreeNode } = Tree;
@@ -16,31 +16,49 @@ class PointTree extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    changeRealtimeStore: PropTypes.func,
   };
 
-  pointSelect = (selectedKeys) => {
-    const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
-    if (valideKeys.length > 4) {
-      message.error('所选测点不得超过4个');
-      return;
-    }
+  state = {
+    halfCheckedKeys: []
+  }
+
+  onPointsQuery = () => {
     const {
       queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
     } = this.props;
-    const newQueryParam = {
-      ...queryParam,
-      devicePoints: selectedKeys,
-    };
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
-      getRealtimeChart({ queryParam: newQueryParam });
+      getRealtimeChart({ queryParam });
     } else {
       stopRealtimeList();
       getRealtimeList({
-        queryParam: newQueryParam,
+        queryParam,
         listParam,
       });
     }
+  }
+
+  pointSelect = (selectedKeys, { halfCheckedKeys }) => {
+    const { queryParam, changeRealtimeStore } = this.props;
+    const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
+    if (valideKeys.length > 4) {
+      const preHalfCheckedKeys = this.state.halfCheckedKeys;
+      message.error('所选测点不得超过4个');
+      this.setState({
+        halfCheckedKeys: preHalfCheckedKeys
+      });
+      return;
+    }
+    this.setState({
+      halfCheckedKeys
+    })
+    changeRealtimeStore({
+      queryParam: {
+        ...queryParam,
+        devicePoints: selectedKeys,
+      }
+    })
   }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
@@ -82,14 +100,22 @@ class PointTree extends Component {
 
   render(){
     const { queryParam = {} } = this.props;
+    const { halfCheckedKeys } = this.state;
     const { devicePoints = [] } = queryParam;
     return (
       <section className={styles.pointTree}>
-        <h3>选择测点({devicePoints.length})</h3>
+        <h3>
+          <Button onClick={this.onPointsQuery} disabled={devicePoints.length === 0}>
+            确定选择({devicePoints.filter(e => !e.includes('group_')).length})
+          </Button>
+        </h3>
         <Tree
           checkable
           onCheck={this.pointSelect}
-          checkedKeys={devicePoints}
+          checkedKeys={{
+            checked: devicePoints,
+            halfChecked: halfCheckedKeys
+          }}
         >
           {this.renderTreeNodes()}
         </Tree>

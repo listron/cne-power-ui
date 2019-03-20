@@ -33,6 +33,7 @@ class HistorySearch extends Component {
     changeHistoryStore({
       selectStationType,
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode: null,
@@ -55,6 +56,7 @@ class HistorySearch extends Component {
     getAvailableDeviceType({ stationCode });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode,
@@ -71,11 +73,13 @@ class HistorySearch extends Component {
     const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: [], // 选中的设备
         devicePoints: [], // 选中的测点
       },
+      pointInfo: [], // 清空测点信息
       allHistory: {}, // chart图 - 所有历史数据
       partHistory: {}, // 表格内 - 分页后的历史数据
     });
@@ -85,6 +89,7 @@ class HistorySearch extends Component {
     const { getPointInfo, changeHistoryStore, queryParam } = this.props;
     const { timeInterval } = queryParam;
     changeHistoryStore({
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
@@ -133,11 +138,11 @@ class HistorySearch extends Component {
   historyDataFetch = (params) => {
     const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const { devicePoints } = queryParam;
+    const newQueryParam = {
+      ...queryParam,
+      ...params
+    }
     if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据
-      const newQueryParam = {
-        ...queryParam,
-        ...params
-      }
       getChartHistory({
         queryParam: newQueryParam
       })
@@ -146,7 +151,9 @@ class HistorySearch extends Component {
         listParam,
       })
     } else { // 未选时间-暂存信息。
-      changeHistoryStore({ ...params })
+      changeHistoryStore({
+        queryParam: newQueryParam
+      })
     }
   }
 
@@ -170,6 +177,7 @@ class HistorySearch extends Component {
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>
           <div className={styles.typeSelect}>
@@ -206,6 +214,8 @@ class HistorySearch extends Component {
               format="YYYY-MM-DD HH:mm:ss"
               onChange={this.timeChange}
               value={[startTime, endTime]}
+              disabledDate={(current) => current > moment()}
+              showTime
             />
           </div>
           <div className={styles.intervalSelect}>

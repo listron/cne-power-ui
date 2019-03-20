@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import styles from './realtimeStyle.scss';
 import path from '../../../../constants/path';
 
@@ -54,10 +55,18 @@ class RealtimeDataType extends Component {
   exportRealtime = () => { // '导出实时数据excel'
     const { downLoadFile, queryParam } = this.props;
     const url = `${APIBasePath}${monitor.exportRealtime}`;
-    downLoadFile({ // 
+    const { deviceFullCodes, devicePoints } = queryParam;
+    const timeZone = moment().zone() / (-60);
+    downLoadFile({
       url,
-      fileName: '实时数据',
-      params: queryParam,
+      timeZone,
+      fileName: '实时数据.xlsx',
+      params: {
+        ...queryParam,
+        deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+        devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+        timeZone,
+      },
     })
   }
 

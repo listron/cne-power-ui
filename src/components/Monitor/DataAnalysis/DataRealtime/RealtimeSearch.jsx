@@ -79,6 +79,7 @@ class RealtimeSearch extends Component {
         deviceFullCodes: [], // 选中的设备
         devicePoints: [], // 选中的测点
       },
+      pointInfo: [], // 清空测点信息
       chartRealtime: {}, // chart图 - 所有历史数据
       listRealtime: {}, // 表格内 - 分页后的历史数据
     });
@@ -122,6 +123,7 @@ class RealtimeSearch extends Component {
             <StationSelect
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
               value={stations.filter(e => e.stationCode === stationCode)}
             />
           </div>
