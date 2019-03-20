@@ -82,6 +82,15 @@ const routers = [
   }, { // 实时监控-电站监控-单电站
     path: '/monitor/singleStation/:stationCode',
     component: () => import('../containers/Monitor/StationMonitor/SingleStation/SingleStation'),
+  },{//实时监控-功率曲线-多设备
+    path:'/monitor/powercurve',
+    exact:true,
+    component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve//AllDeviceCurve')
+  },{//实时监控-功率曲线-单设备
+    path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
+    // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
+    exact:true,
+    component:() => import('../containers/Monitor/PowerCurve/SingleDeviceCurve/SingleDeviceCurve')
   }, { //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
     component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),

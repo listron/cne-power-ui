@@ -33,6 +33,11 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '功率曲线',
+        iconStyle: 'icon-monitoring',
+        path: 'powercurve',
+        rightKey: 'monitor_station',
+      },{
         name: '数据分析',
         iconStyle: 'icon-monitoring',
         path: 'data',

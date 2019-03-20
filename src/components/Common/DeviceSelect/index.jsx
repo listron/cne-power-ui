@@ -190,7 +190,7 @@ class DeviceSelect extends Component {
           {...deviceShow}
         >
           {devices.map((e, i) => (
-            <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
+            <Option key={i} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
         </Select> : <AutoComplete
