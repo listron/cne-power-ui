@@ -94,7 +94,6 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
 function *getListHistory(action) { // 表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
-  console.log(payload)
   const url = `${APIBasePath}${monitor.getListHistory}`; // /mock/monitor/dataAnalysis/listHistory;
   // const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
   try{
