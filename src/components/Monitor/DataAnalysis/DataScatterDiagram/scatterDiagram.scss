@@ -1,0 +1,104 @@
+@import '../../../../theme/theme.scss';
+
+.searchPart{ // 搜索
+  padding: 20px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  .stationSelect,.deviceSelect,.xPointSelect,.yPointSelect{
+    flex: 0 0 25%;
+    display: flex;
+    line-height: 40px;
+    height: 40px;
+    align-items: center;
+    .text{
+      flex: 0 0 96px;
+      text-align: right;
+      margin-right: 8px;
+    }
+  }
+  .xPointSelect,.yPointSelect{
+    :global{
+      .ant-select{
+        width: 198px;
+      }
+    }
+    .text{
+      letter-spacing: 1px;
+    }
+  }
+  .timeSelect{
+    flex: 0 0 50%;
+    display: flex;
+    line-height: 40px;
+    height: 40px;
+    align-items: center;
+    margin-bottom: 11px;
+    .text{
+      flex: 0 0 96px;
+      text-align: right;
+      margin-right: 8px;
+    }
+    :global{
+      .ant-input{
+        width: 400px;
+      }
+    }
+  }
+  .rightHandle{
+    margin-left: 67px;
+    padding-top: 4px;
+    .searchInfo,.exportPoint:hover{
+      margin-right: 8px;
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .searchInfo:hover,.exportPoint:hover{
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+} 
+
+.scatterDiagramList{ // 列表
+  padding: 20px 32px;
+  .pagination{
+    display: flex;
+    flex-direction: row-reverse;
+    margin-bottom: 20px;
+  }
+}
+
+.scatterDiagramChart{ //chart
+  display: flex;
+  width: 90%;
+  height: 400px;
+}
+
+.scatterDiagramDataType{ // 切换chart/list
+  display: flex;
+  border-top: 1px dotted $promptColor;
+  border-bottom: 1px dotted $promptColor;
+  justify-content: space-between;
+  align-items: center;
+  .tabIcon{
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    .active, .normal{
+      cursor: pointer;
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .active{
+      color: #fff;
+      background-color: $themeColor;
+    }
+    .normal{
+      color: #999;
+      background-color: #f1f1f1;
+    }
+  }
+}

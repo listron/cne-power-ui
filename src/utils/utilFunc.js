@@ -1,3 +1,5 @@
+import { uniqBy, groupBy } from 'lodash';
+
 
 export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据规范展示
   if (isNaN(data) || (!data && data !== 0)) { // 数据不规范
@@ -10,7 +12,6 @@ export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据
     showData = parseFloat(showData);
   }
   return showData
-
 }
 
 
@@ -52,6 +53,22 @@ export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = fal
     resultString = `${tmpResult}`;
   }
   return resultString;
+}
+
+export const stationsByArea = (stations = []) => {
+  stations.forEach(e => {
+    e.title = e.stationName;
+    e.key = e.stationCode
+  })
+  let areaList = []
+  uniqBy(stations, 'provinceCode').forEach((e) => {
+    areaList.push({ key: e.provinceCode, title: e.provinceName })
+  })
+  let stationsGroup = groupBy(stations, 'provinceCode')
+  areaList.forEach((e) => {
+    e.children = stationsGroup[e.key]
+  })
+  return areaList
 }
 
 export const numWithComma = (data, placeholder = '--', joinText = ',', divisionNum = 1000, outputArr = []) => {

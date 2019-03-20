@@ -61,6 +61,20 @@ class PvStation extends Component {
   )
 
 
+  filterDeviceFlowTypes = (deviceFlowTypes) => { // 删选出交流汇流箱(业务需求)
+    let newDeviceFlowTypes = [];
+    deviceFlowTypes.forEach(item => {
+      if (item.deviceTypes.length > 1) {
+        let newArray = []
+        item.deviceTypes.forEach(list => { list.deviceTypeCode !== 207 && newArray.push(list) })
+        newDeviceFlowTypes.push({ deviceTypes: newArray })
+      } else {
+        item.deviceTypes[0].deviceTypeCode !== 207 && newDeviceFlowTypes.push(item)
+      }
+    })
+    return newDeviceFlowTypes
+  }
+
   render() {
     const clickable = [509, 201, 206, 304, 202, 302, 301];
     const { deviceTypeFlow, stationDeviceList, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
@@ -68,7 +82,8 @@ class PvStation extends Component {
     let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
     const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
     const { stationCode } = this.props.match.params;
-    const deviceFlowTypes = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
+    const deviceFlowTypesArray = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
+    const deviceFlowTypes = this.filterDeviceFlowTypes(deviceFlowTypesArray)
     const isCombinedType = deviceFlowTypes.some(e => e.deviceTypes.length > 1);
     let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, boosterInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
     deviceFlowTypes.forEach(device => { // 抽取各设备类型信息

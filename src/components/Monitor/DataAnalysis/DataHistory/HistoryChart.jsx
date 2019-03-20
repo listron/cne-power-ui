@@ -18,6 +18,8 @@ class HistoryChart extends Component {
     if (chartTime) {
       this.renderChart(allHistory);
     }
+    console.log(chartTime);
+    
   }
 
   componentDidUpdate(prevProps) {

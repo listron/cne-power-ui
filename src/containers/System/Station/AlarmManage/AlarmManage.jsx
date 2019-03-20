@@ -56,10 +56,10 @@ class AlarmManage extends Component {
   render() {
     const { showAlarmTip } = this.state;
     const { 
-      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder
+      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder,warningType
     } = this.props;
     const queryParams = { 
-      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder 
+      stationCode, deviceTypeCode, deviceModeCode, pointCode, pageNum, pageSize, sortField, sortOrder,warningType
     }
     return (
       <div className={styles.alarmManageContainer}>
