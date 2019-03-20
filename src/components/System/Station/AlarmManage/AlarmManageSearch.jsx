@@ -28,7 +28,7 @@ class AlarmManageSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+
     }
   }
 
@@ -46,7 +46,7 @@ class AlarmManageSearch extends Component {
       pageNum: 1,
     })
     changeAlarmManageStore({
-      deviceModels: [], 
+      deviceModels: [],
       devicePoints: [],
     })
   }
@@ -93,36 +93,58 @@ class AlarmManageSearch extends Component {
     })
   }
 
+  selectWarnType=(value)=>{ // 选中告警类型
+    const { getAlarmList, queryParams } = this.props;
+    getAlarmList({
+      ...queryParams,
+      warningType: value,
+      pageNum: 1,
+    })
+  }
+
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, devicePoints, deviceTypeCode, deviceModeCode, pointCode, stationCode } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, devicePoints, deviceTypeCode, deviceModeCode, pointCode, stationCode,warningType } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     const pointSelectDisable = devicePoints.length === 0;
-    const getSelectedStation = allStationBaseInfo.find(e=> e.stationCode === stationCode);
-    const selectedStationInfo = getSelectedStation? [getSelectedStation] : []; 
+    const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === stationCode);
+    const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
+    const warnTypeList = [
+      { warnTypeName: '设备状态', warnTypeCode: 101 },
+      { warnTypeName: '开关状态', warnTypeCode: 102 },
+      { warnTypeName: '信息', warnTypeCode: 103 },
+      { warnTypeName: '警告', warnTypeCode: 104 },
+      { warnTypeName: '告警', warnTypeCode: 105 },
+    ]
     return (
       <div className={styles.alarmManageSearch}>
         <span className={styles.titleText}>条件查询</span>
         <StationSelect data={allStationBaseInfo} onOK={this.selectStation} value={selectedStationInfo} holderText="请选择电站" />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部设备类型'}</Option>
-          {stationDeviceTypes.map(e=>{
-            if(!e){ return null; }
+          {stationDeviceTypes.map(e => {
+            if (!e) { return null; }
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
         <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={null} value={null}>{'全部设备型号'}</Option>
-          {deviceModels.map(e=>{
-            if(!e){ return null; }
+          {deviceModels.map(e => {
+            if (!e) { return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
         </Select>
         <Select className={styles.pointSelect} onChange={this.selectPoints} value={pointCode} placeholder="请选择测点" disabled={pointSelectDisable}>
           <Option key={''} value={''}>{'全部测点'}</Option>
-          {devicePoints.map(e=>{
-            if(!e){ return null; }
+          {devicePoints.map(e => {
+            if (!e) { return null; }
             return <Option key={e.devicePointStandardCode} value={e.devicePointStandardCode}>{e.devicePointName}</Option>
+          })}
+        </Select>
+        <Select className={styles.warnTypeSelect} onChange={this.selectWarnType} value={warningType} placeholder="请选择告警类型" disabled={typeSelectDisable}>
+          <Option key={''} value={null}>{'全部告警类型'}</Option>
+          {warnTypeList.map(e => {
+            return <Option key={e.warnTypeCode} value={e.warnTypeCode}>{e.warnTypeName}</Option>
           })}
         </Select>
       </div>
