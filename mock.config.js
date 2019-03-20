@@ -14,6 +14,7 @@ const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
+const monitorpowerCurve = require('./mock/monitor/powerCurve');
 const others = require('./mock/others/other');
 const MockStationContrast = require('./mock/statisticalAnalysis/MockStationContrast');
 const plan = require('./mock/system/plan');
@@ -41,6 +42,7 @@ exports.mockConfig = [
 
   ...monitor,
   ...dataAnalysis,
+  ...monitorpowerCurve,//监控功率曲线
 
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情

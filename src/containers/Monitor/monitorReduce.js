@@ -3,6 +3,11 @@ import { combineReducers } from 'redux';
 import stationMonitor from './StationMonitor/AllStation/stationMonitorReducer';
 import deviceMonitor from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
 import singleStation from './StationMonitor/SingleStation/singleStationReducer';
+
+import allDeviceCurveReducer from './PowerCurve/AllDeviceCurve/allDeviceCurveReducer';
+import singleDeviceCurveReducer from './PowerCurve/SingleDeviceCurve/singleDeviceCurveReducer';
+
+
 import realtimeWarningReducer from './Alarm/RealTimeWarning/realtimeWarningReducer';
 import transferFormReducer from './Alarm/Transfer/transferFormReducer';
 import handleRemoveReducer from './Alarm/HandleRemove/handleRemoveReducer';
@@ -31,6 +36,9 @@ const monitorReducer = combineReducers({
   malfunctionReducer,
   powerLostReducer,
 
+  historyWarningReducer, 
+  allDeviceCurveReducer,
+  singleDeviceCurveReducer,
   dataHistory,
   dataRealtime,
   dataScatterDiagram

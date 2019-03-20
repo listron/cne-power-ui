@@ -252,6 +252,19 @@ export default {
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
       sequencechart:'/v3/monitor/windturbine/sequencechart',
+      //功率曲线
+      getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',//功率曲线图表-多风机
+      getPowerdeviceList:'/v3/wind/powercurve/fans/list',//..功率曲线列表-多风机
+      exportPowerdevice:'/v3/wind/powercurve/fans/export',//功率曲线导出-多风机/单风机
+      getSingleDeviceCurveData:'/v3/wind/powercurve/fan/powercurvechart',//功率曲线图表-功率曲线-单风机
+      getSingleDeviceCurveList:'/v3/wind/powercurve/fan/list',//功率曲线列表-单风机
+      getRoseChart:'/v3/wind/powercurve/fan/windrosechart',//功率曲线图表-风向玫瑰图-单风机
+      getpowerspeedchart:'/v3/wind/powercurve/fan/powerspeedchart',//功率曲线图表-功率&转速-单风机
+      getpitchanglespeedchart:'/v3/wind/powercurve/fan/pitchanglespeedchart',//功率曲线图表-桨距角&风速-单风机
+      getwinddistributionchart:'/v3/wind/powercurve/fan/winddistributionchart',//功率曲线图表-风频分布-单风机
+      getsequencechart:'/v3/wind/powercurve/fan/sequencechart',//功率曲线图表-时序图-单风机
+      getDeviceInfo: '/v3/management/device', // 设备详情信息表
+
 
       // 数据分析 
       getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
