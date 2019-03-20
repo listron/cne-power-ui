@@ -74,7 +74,12 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
       const chartInfo = response.data.data || {};
       const { pointTime = [], pointInfo = [] } = chartInfo;
       const maxTime = moment(pointTime[0]); // api返回的最大时刻。
-      if (!dataTime) { // 初次请求得到数据
+
+      if (!dataTime && pointTime[0]) { // 初次请求得到数据 => 30min内数据需用null补全。
+        const tmpFillTimes = []; // 基于返回数据，填充的长度为最大长度的时间数据.
+        for (let i = maxInfoLength - 1; i >= 0; i--){
+          tmpFillTimes.push(moment(pointTime[0]).subtract(i * timeInterval, 's').format('YYYY-MM-DD HH:mm:ss'));
+        }
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
@@ -87,35 +92,44 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
                   pointUnit,
                   deviceInfo: deviceInfo.map(device => {
                     const { deviceCode, deviceName, pointValue = [] } = device || {};
+                    const tmpFillValues = [];
+                    if (pointTime.length > 0 && pointValue.length > 0) { // 有时间和数据，才进行填充管理。
+                      for (let i = 0; i < maxInfoLength; i++) {
+                        if (i < maxInfoLength - pointValue.length) { // 无数据位 以null填充
+                          tmpFillValues.push(null);
+                        } else { // 将有数据位倒序填充。
+                          tmpFillValues.push(pointValue[ maxInfoLength - i - 1 ]);
+                        }
+                      }
+                    }
                     return {
                       deviceCode,
                       deviceName,
-                      pointValue: pointValue.reverse(),
+                      pointValue: tmpFillValues,
                     }
                   })
                 }
               }),
-              pointTime: pointTime.reverse().map(e => moment(e).format('YYYY-MM-DD HH:mm:ss')), // 后台倒序调整为正序
+              pointTime: tmpFillTimes,
             },
             dataTime: maxTime.format('YYYY-MM-DD HH:mm:ss'), // 存储最大数据时刻
             chartLoading: false,
           }
         })
       } else { // 已有存储的数据信息，将api结果追加进入当前chart数据组。
-        if (moment(dataTime) >= maxTime || !pointTime[0]) { // 若数据记录时间 大于或等于 返回值得最大时间，为无用数据
+        if (moment(dataTime) >= maxTime || !pointTime[0]) { // 若数据记录时间大于或等于返回值的最大时间，为无用数据
           throw { response };
         }
         const newPointTime = chartRealtime.pointTime || [];
-        const prePointInfo = chartRealtime.pointInfo || []; // 先假定response中的time和info为连续时刻。
+        const prePointInfo = chartRealtime.pointInfo || [];
         const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval); // 超出记录的最大时间的段数.
 
         for (let i = 0; i < timeSpace; i++) {
-          newPointTime.push(moment(dataTime).add(i * timeInterval, 's').format('YYYY-MM-DD HH:mm:ss'));
+          newPointTime.shift();
+          const currentMaxTime = newPointTime[newPointTime.length - 1];
+          newPointTime.push(moment(currentMaxTime).add(timeInterval, 's').format('YYYY-MM-DD HH:mm:ss'));
         }
-        if (newPointTime.length > maxInfoLength) { // 若数据长度超出指定长度，则需要去除前部分数据。
-          newPointTime.splice(0, newPointTime.length - maxInfoLength);
-        }
-
+        // console.log('时间跨度'+newPointTime.length+'最小时间:'+newPointTime[0]+'---最大时间:' + newPointTime[newPointTime.length - 1])
         const newPointInfo = prePointInfo.map(e => { // 新数据添加推送入旧数据
           const { pointName, pointCode, pointUnit, deviceInfo } = e;
           const matchedPoint = pointInfo.find(res => res.pointCode === e.pointCode) || {deviceInfo: []};
@@ -126,23 +140,17 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
             deviceInfo: deviceInfo.map(inner => {
               const { deviceCode, deviceName, pointValue } = inner;
               const matchedDevice = matchedPoint.deviceInfo.find(res => res.deviceCode === deviceCode) || {pointValue: []};
-              const valueLength = matchedDevice.pointValue.length;
-              if (timeSpace > valueLength) { // 需追加数据超过api传来的数据长度，需null补足
-                for (let i = 0; i < timeSpace; i++) {
-                  if (i < (timeSpace - valueLength)) { // 不足部分 null补足
-                    pointValue.push(null);
-                  } else { // 有数据部分，倒序输入数据
-                    pointValue.push(matchedDevice.pointValue[timeSpace - 1 - i]);
-                  }
+              const reverseValues = [...matchedDevice.pointValue].reverse();
+              if (timeSpace > pointTime.length) { // 需追加数据超过api传来的数据长度，null补足后，再倒序插入api数据。
+                for (let i = 0; i < timeSpace - pointTime.length; i++) {
+                  pointValue.push(null);
                 }
-              } else { // api传来的数据根据记录的时间对应数据项进行切割后, push入新数据
-                const cutLength = valueLength - timeSpace; // 切割长度。
-                pointValue.splice(pointValue.length - cutLength);
-                pointValue.push([...matchedDevice.pointValue].reverse());
+                pointValue.push(...reverseValues);
+              } else { // 队列操作, 位移长度 = pointTime.length - timeSpace 
+                const cutLength = pointTime.length - timeSpace;
+                pointValue.splice(pointValue.length - cutLength, pointValue.length - 1, ...reverseValues); // 切末尾并插入新数据
               }
-              if (pointValue.length > maxInfoLength) { // 若数据长度超出指定长度，则需要去除前部分数据。
-                pointValue.splice(0, pointValue.length - maxInfoLength);
-              }
+              pointValue.splice(0, pointValue.length - maxInfoLength); // 额外长度切除。
               return {
                 deviceCode,
                 deviceName,
@@ -151,6 +159,9 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
             })
           }
         })
+        // const testConsoleValue = newPointInfo[0].deviceInfo[0].pointValue;
+        // console.log(pointInfo[0].deviceInfo[0].pointValue.reverse())
+        // console.log(testConsoleValue.slice(testConsoleValue.length - 5, testConsoleValue.length - 1));
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
@@ -168,10 +179,17 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
     }
   } catch (err) { // 请求失败，推送入null进入各数据数组，时间 + 5s存储。
     if (!dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
+      yield put({
+        type: realtimeAction.CHANGE_REALTIME_STORE,
+        payload: {
+          chartLoading: false,
+        }
+      })
       return;
     }
-    const newDataTime = moment(dataTime).add(5,'s').format('YYYY-MM-DD HH:mm:ss');
+    const newDataTime = moment(dataTime).add(timeInterval, 's').format('YYYY-MM-DD HH:mm:ss');
     const { pointTime = [], pointInfo = [] } = chartRealtime;
+    pointTime.shift();
     pointTime.push(newDataTime);
     const newPointInfo = pointInfo.map(e => ({
       pointName: e.pointName,
@@ -179,6 +197,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
       pointUnit: e.pointUnit,
       deviceInfo: e.deviceInfo.map(inner => {
         const { deviceCode, deviceName, pointValue } = inner;
+        pointValue.shift();
         pointValue.push(null);
         return {
           deviceCode,
@@ -188,7 +207,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
       })
     }));
     yield put({
-      type: realtimeAction.GET_REALTIME_SUCCESS,
+      type: realtimeAction.CHANGE_REALTIME_STORE,
       payload: {
         dataTime: newDataTime, // 存储时刻 + 5s
         chartRealtime: {
