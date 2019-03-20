@@ -128,11 +128,16 @@ class AddDeviceForm extends Component {
     const deviceTypeName = getFieldValue('deviceTypeCode');
     const deviceModeCodeValue = getFieldValue('deviceModeCode');
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDevices.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
-    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
+    //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202，集中式逆变器：201
     const modelSelectDisable = deviceModels.length === 0;
     const initiDeviceMode=addDeviceModeData.data?+addDeviceModeData.data:null;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
+    console.log('selectdeviceType: ', selectdeviceType);
+    const isShow = [ '202', '206', '304', '101','201','207'].includes(`${selectdeviceType}`);//通用的:关联设备，额定，装机，经纬度
+    const isMeteorology = ['203','501',].includes(`${selectdeviceType}`);//测风塔和气象站呈现经纬度
+    const isTemplateMachine = ['201','304','206'].includes(`${selectdeviceType}`);//是否呈现样板机的设备
+
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -190,7 +195,7 @@ class AddDeviceForm extends Component {
               </FormItem>
             </div>
             <div className={styles.valueStyles}>
-              <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
+             {isShow && <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode')(
                   <Select placeholder="请选择关联设备" onChange={this.changeConnect} disabled={connectDevice.length === 0}>
                   <Option key={'all'} value={''}>请选择关联设备</Option>
@@ -201,35 +206,35 @@ class AddDeviceForm extends Component {
                     })}
                   </Select>
                 )}
-              </FormItem>
-              <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
+              </FormItem>}
+             {isTemplateMachine&&<FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('templateMachine')(
                   <Select>
                     <Option value={'1'}>是</Option>
                     <Option value={'0'}>否</Option>
                   </Select>
                 )}
-              </FormItem>
-              <FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
+              </FormItem>}
+              {isShow &&<FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('ratedPower')(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
-              </FormItem>
-              <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
+              </FormItem>}
+             {isShow && <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceCapacity')(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
-              </FormItem>
-              <FormItem label="经度" colon={false} className={styles.formItemStyle}>
+              </FormItem>}
+             {(isShow||isMeteorology) && <FormItem label="经度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('longitude')(
                   <Input placeholder="请输入..." />
                 )}<span className={styles.unitStyle}>°</span>
-              </FormItem>
-              <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
+              </FormItem>}
+             {(isShow||isMeteorology) && <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('latitude')(
                   <Input placeholder="请输入..." />
                 )}<span className={styles.unitStyle}>°</span>
-              </FormItem>
+              </FormItem>}
             </div>
             <div className={styles.systermStyle}>
               <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>

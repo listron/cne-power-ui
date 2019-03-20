@@ -123,6 +123,7 @@ class RealtimeSearch extends Component {
             <StationSelect
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
               value={stations.filter(e => e.stationCode === stationCode)}
             />
           </div>

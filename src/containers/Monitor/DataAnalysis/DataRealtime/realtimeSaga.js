@@ -5,6 +5,8 @@ import Path from '../../../../constants/path';
 import { realtimeAction } from './realtimeReducer';
 import { message } from 'antd';
 import moment from 'moment';
+import Cookie from 'js-cookie';
+
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 let realtimeChartInterval = null;
@@ -55,12 +57,14 @@ function *getPointInfo({ payload }) { // 获取可选测点
 function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
   const url = `${APIBasePath}${monitor.getRealtimeChart}` // '/mock/monitor/dataAnalysisChartRealtime';
   const { chartRealtime, dataTime, timeInterval } = yield select(state => state.monitor.dataRealtime.toJS());
+  const maxInfoLength = 30 * 60 / timeInterval; // 规定的最大数据长度30min.
   try {
     const { queryParam = {} } = payload;
     const { devicePoints = [], deviceFullCodes = [] } = queryParam;
     const [response, timeoutInfo] = yield race([
       call(axios.post, url, {
         ...queryParam,
+        enterpriseId: Cookie.get('enterpriseId'),
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
       }),
@@ -76,10 +80,11 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           payload: {
             chartRealtime: {
               pointInfo: pointInfo.map(e => {
-                const { pointCode, pointName, deviceInfo = [] } = e || {};
+                const { pointCode, pointName, pointUnit, deviceInfo = [] } = e || {};
                 return {
                   pointCode,
                   pointName,
+                  pointUnit,
                   deviceInfo: deviceInfo.map(device => {
                     const { deviceCode, deviceName, pointValue = [] } = device || {};
                     return {
@@ -102,35 +107,39 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         }
         const newPointTime = chartRealtime.pointTime || [];
         const prePointInfo = chartRealtime.pointInfo || []; // 先假定response中的time和info为连续时刻。
-        const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval); // 需插入数据的段数.
-        const maxInfoLength = 30 * 60 / timeInterval; // 规定的最大数据长度30min.
-        for (let insertTime = 0; insertTime < timeSpace; insertTime ++) {
-          const insertParam = moment(maxTime).subtract((timeSpace - insertTime - 1) * timeInterval,'s').format('YYYY-MM-DD HH:mm:ss');
-          newPointTime.push(insertParam);
+        const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval); // 超出记录的最大时间的段数.
+
+        for (let i = 0; i < timeSpace; i++) {
+          newPointTime.push(moment(dataTime).add(i * timeInterval, 's').format('YYYY-MM-DD HH:mm:ss'));
         }
         if (newPointTime.length > maxInfoLength) { // 若数据长度超出指定长度，则需要去除前部分数据。
           newPointTime.splice(0, newPointTime.length - maxInfoLength);
         }
+
         const newPointInfo = prePointInfo.map(e => { // 新数据添加推送入旧数据
-          const { pointName, pointCode, deviceInfo } = e;
+          const { pointName, pointCode, pointUnit, deviceInfo } = e;
           const matchedPoint = pointInfo.find(res => res.pointCode === e.pointCode) || {deviceInfo: []};
           return {
             pointName,
             pointCode,
+            pointUnit,
             deviceInfo: deviceInfo.map(inner => {
               const { deviceCode, deviceName, pointValue } = inner;
               const matchedDevice = matchedPoint.deviceInfo.find(res => res.deviceCode === deviceCode) || {pointValue: []};
               const valueLength = matchedDevice.pointValue.length;
-              let tmpAddValues = [];
-              for (let insertTime = 0; insertTime < timeSpace; insertTime ++) {
-                if (timeSpace - insertTime > valueLength) { // 时间段内无值
-                  tmpAddValues.push(null);
-                } else { // 指定时间点推送数据
-                  const addValue = matchedDevice.pointValue[valueLength - insertTime - 1]
-                  tmpAddValues.push(addValue);
+              if (timeSpace > valueLength) { // 需追加数据超过api传来的数据长度，需null补足
+                for (let i = 0; i < timeSpace; i++) {
+                  if (i < (timeSpace - valueLength)) { // 不足部分 null补足
+                    pointValue.push(null);
+                  } else { // 有数据部分，倒序输入数据
+                    pointValue.push(matchedDevice.pointValue[timeSpace - 1 - i]);
+                  }
                 }
+              } else { // api传来的数据根据记录的时间对应数据项进行切割后, push入新数据
+                const cutLength = valueLength - timeSpace; // 切割长度。
+                pointValue.splice(pointValue.length - cutLength);
+                pointValue.push([...matchedDevice.pointValue].reverse());
               }
-              pointValue.push(...tmpAddValues);
               if (pointValue.length > maxInfoLength) { // 若数据长度超出指定长度，则需要去除前部分数据。
                 pointValue.splice(0, pointValue.length - maxInfoLength);
               }
@@ -158,7 +167,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
       throw { response, timeoutInfo };
     }
   } catch (err) { // 请求失败，推送入null进入各数据数组，时间 + 5s存储。
-    if (dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
+    if (!dataTime) { // 初次(dataTime === null)请求数据即失败，不做任何处理。
       return;
     }
     const newDataTime = moment(dataTime).add(5,'s').format('YYYY-MM-DD HH:mm:ss');
@@ -167,6 +176,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
     const newPointInfo = pointInfo.map(e => ({
       pointName: e.pointName,
       pointCode: e.pointCode,
+      pointUnit: e.pointUnit,
       deviceInfo: e.deviceInfo.map(inner => {
         const { deviceCode, deviceName, pointValue } = inner;
         pointValue.push(null);

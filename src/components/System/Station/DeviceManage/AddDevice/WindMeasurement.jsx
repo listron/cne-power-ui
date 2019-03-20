@@ -7,6 +7,9 @@ import moment from 'moment';
 
 const WindMeasurement =({form,stationDeviceDetail})=>{
   const { getFieldDecorator } = form;
+  const mapData=stationDeviceDetail.map;
+  const towerAssemblyTime=mapData?(mapData.towerAssemblyTime?moment(mapData.towerAssemblyTime):''):'';
+
   return(
     <div className={styles.rightStyles}>
     <FormItem
@@ -24,7 +27,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('towerAssemblyTime',{ initialValue:stationDeviceDetail.map?moment(stationDeviceDetail.map.towerAssemblyTime):null,})(
+        {getFieldDecorator('towerAssemblyTime',{ initialValue:towerAssemblyTime,})(
           <DatePicker />
         )}
       </FormItem>

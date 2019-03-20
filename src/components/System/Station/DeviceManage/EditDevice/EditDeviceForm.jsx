@@ -72,7 +72,10 @@ class EditDeviceForm extends Component {
     const { stationName, manufacturer, deviceModeName, deviceTypeCode, deviceTypeName, deviceFullCode, connectTime, deviceName } = stationDeviceDetail
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
-    const isShow = ['501', '202', '206', '304', '101'].includes(stationDeviceDetail.deviceTypeCode);
+    const isShow = [ '202', '206', '304', '101','201','207'].includes(stationDeviceDetail.deviceTypeCode);//特殊设备通用的，看产品文档备注，关联设备，额定，装机，经纬度
+    const isShowComponent= ['501', '202', '206', '304', '101',].includes(stationDeviceDetail.deviceTypeCode);//显示组件
+    const isMeteorology = ['203','501',].includes(stationDeviceDetail.deviceTypeCode);//测风塔和气象站呈现经纬度
+    const isTemplateMachine = ['201','304','206'].includes(stationDeviceDetail.deviceTypeCode);//是否呈现样板机的设备
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -115,7 +118,7 @@ class EditDeviceForm extends Component {
               </FormItem>
             </div>
             <div className={styles.valueStyles}>
-              <FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
+              {isShow &&<FormItem label="关联设备" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('parentDeviceFullcode', { initialValue: stationDeviceDetail.pareneDeviceName, })(
                   <Select placeholder="请选择关联设备" disabled={connectDevice.length === 0}>
                     <Option key={'all'} value={''}>请选择关联设备</Option>
@@ -125,31 +128,31 @@ class EditDeviceForm extends Component {
                     })}
                   </Select>
                 )}
-              </FormItem>
-              {isShow && <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('templateMachine', { initialValue: stationDeviceDetail.templateMachine, })(
+              </FormItem>}
+              {isTemplateMachine && <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('templateMachine', { initialValue: ((stationDeviceDetail.templateMachine||+stationDeviceDetail.templateMachine===0)?stationDeviceDetail.templateMachine:''), })(
                   <Select>
                     <Option value={'1'}>是</Option>
                     <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>}
-              <FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
+              {isShow &&<FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('ratedPower', { initialValue: stationDeviceDetail.ratedPower, })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
-              </FormItem>
+              </FormItem>}
               {isShow && <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceCapacity', { initialValue: stationDeviceDetail.deviceCapacity, })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
               </FormItem>}
-              {isShow && <FormItem label="经度" colon={false} className={styles.formItemStyle}>
+              {(isShow||isMeteorology) && <FormItem label="经度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('longitude', { initialValue: stationDeviceDetail.longitude, })(
                   <Input placeholder="请输入..." />
                 )}<span className={styles.unitStyle}>°</span>
               </FormItem>}
-              {isShow && <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
+              {(isShow||isMeteorology) && <FormItem label="纬度" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('latitude', { initialValue: stationDeviceDetail.latitude, })(
                   <Input placeholder="请输入..." />
                 )}<span className={styles.unitStyle}>°</span>
@@ -179,7 +182,7 @@ class EditDeviceForm extends Component {
               </div>}
             </div>
           </div>
-          {isShow && <div className={styles.rightContainer}>
+          {isShowComponent && <div className={styles.rightContainer}>
             {deviceTypeCode === '501' && <WindMeasurement stationDeviceDetail={stationDeviceDetail} form={form} />}
             {deviceTypeCode === '304' && <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
