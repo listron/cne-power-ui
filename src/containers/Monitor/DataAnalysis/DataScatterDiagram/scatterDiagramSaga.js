@@ -11,13 +11,8 @@ function *getPoints({ payload = {} }) { // 获取设备测点
   const { deviceFullCode = [] } = payload;
   try {
     const deviceInfo = deviceFullCode[0] || {};
-    // const url = `${APIBasePath}${monitor.getPoints}/${deviceInfo.deviceCode}`; 
-    const url = `${APIBasePath}${monitor.getPointsInfo}` // 暂用其他接口替代。
-    // const response = yield call(axios.get, url);
-    const response = yield call(axios.post, url, { // 发布后删除。
-      deviceIds: deviceFullCode.map(e => e.deviceId),
-      devicePointTypes: ['YM', 'YC']
-    });
+    const url = `${APIBasePath}${monitor.getPoints}/${deviceInfo.deviceCode}`; 
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,

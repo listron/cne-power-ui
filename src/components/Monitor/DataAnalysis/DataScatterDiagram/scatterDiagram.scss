@@ -22,6 +22,9 @@
         width: 198px;
       }
     }
+    .text{
+      letter-spacing: 1px;
+    }
   }
   .timeSelect{
     flex: 0 0 50%;
@@ -29,6 +32,7 @@
     line-height: 40px;
     height: 40px;
     align-items: center;
+    margin-bottom: 11px;
     .text{
       flex: 0 0 96px;
       text-align: right;
@@ -41,9 +45,16 @@
     }
   }
   .rightHandle{
-    margin-left: 40px;
-    .searchInfo{
-      margin-right: 40px;
+    margin-left: 67px;
+    padding-top: 4px;
+    .searchInfo,.exportPoint:hover{
+      margin-right: 8px;
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .searchInfo:hover,.exportPoint:hover{
+      background: $themeColor;
+      color: #fff;
     }
   }
 } 
@@ -53,13 +64,14 @@
   .pagination{
     display: flex;
     flex-direction: row-reverse;
+    margin-bottom: 20px;
   }
 }
 
 .scatterDiagramChart{ //chart
   display: flex;
   width: 90%;
-  height: 350px;
+  height: 400px;
 }
 
 .scatterDiagramDataType{ // 切换chart/list
