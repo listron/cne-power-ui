@@ -85,7 +85,12 @@ class RealtimeList extends Component {
       <div className={styles.realtimeList}>
         <div className={styles.pagination}>
           <span className={styles.text}>刷新时间: {moment(time).format('YYYY-MM-DD HH:mm:ss')}</span>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination
+            currentPage={pageNum}
+            pageSize={pageSize}
+            total={parseInt(totalCount)}
+            onPaginationChange={this.onPaginationChange}
+          />
         </div>
         <Table
           loading={tableLoading}

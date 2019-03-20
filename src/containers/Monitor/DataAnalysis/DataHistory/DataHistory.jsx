@@ -22,13 +22,13 @@ class DataHistory extends Component {
   };
 
   componentDidMount(){ // 获取数据时间间隔
-    const { enterpriseId } = this.props;
-    this.props.getSecendInterval({ enterpriseId });
+    const { enterpriseId, getSecendInterval } = this.props;
+    getSecendInterval({ enterpriseId });
   }
 
-  // componentWillUnmount() {
-  //   this.props.resetHistoryStore();
-  // }
+  componentWillUnmount() {
+    this.props.resetHistoryStore();
+  }
 
   render() {
     const { historyType } = this.props;

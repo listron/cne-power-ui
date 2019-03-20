@@ -158,7 +158,7 @@ class HistoryChart extends Component {
               ${params.map(e => `<div class=${styles.content}>
                 <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
                 <span class=${styles.text}>${e.seriesName}: </span>
-                <span class=${styles.value}>${dataFormat(e.value)}</span>
+                <span class=${styles.value}>${e.value, '--', 2}</span>
               </div>`).join('')}
             </div>`
           )
