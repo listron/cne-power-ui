@@ -7,6 +7,11 @@ import realtimeWarningReducer from './Alarm/RealTimeWarning/realtimeWarningReduc
 import transferFormReducer from './Alarm/Transfer/transferFormReducer';
 import handleRemoveReducer from './Alarm/HandleRemove/handleRemoveReducer';
 import historyWarningReducer from './Alarm/HistoryWarning/historyWarningReducer';
+import alarmStatistic from './Alarm/alarmStatisticReducer';
+import powerReportReducer from './Report/PowerReport/powerReportReducer';
+import deviceStatusReducer from './Report/DeviceStatus/deviceStatusReducer';
+import malfunctionReducer from './Report/Malfunction/malfunctionReducer';
+import powerLostReducer from './Report/PowerLost/powerLostReducer';
 import alarmStatistic from './Alarm/AlarmStatic/alarmStatisticReducer';
 
 import { dataHistory } from './DataAnalysis/DataHistory/historyReducer'; // 数据分析 - 历史趋势
@@ -22,6 +27,10 @@ const monitorReducer = combineReducers({
   alarmStatistic,
   handleRemoveReducer,
   historyWarningReducer,
+  powerReportReducer,
+  deviceStatusReducer,
+  malfunctionReducer,
+  powerLostReducer,
 
   dataHistory,
   dataRealtime,

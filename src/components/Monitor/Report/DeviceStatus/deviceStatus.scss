@@ -1,0 +1,16 @@
+
+@import '../../../../theme/theme.scss';
+
+.container{
+  margin: 0 auto;
+}
+.tableHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  height: 55px;
+  padding: 0 28px;
+  background-color: #fff;
+}

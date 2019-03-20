@@ -89,20 +89,22 @@ const routers = [
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
     component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
-    // component: () => import('../components/Common/Building/Building'),
-  }, { //实时监控-报表查询-电量报表
+  },
+  { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
-    component: () => import('../components/Common/Building/Building'),
+    // component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus'),
   }, { //实时监控-报表查询-故障报表
     path: '/monitor/report/malfunction',
-    component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/Malfunction/Malfunction'),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
-    component: () => import('../components/Common/Building/Building'),
-  }, { // 隐藏页： 修改密码
+    component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
+  },
+  { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     component: () => import('../containers/Others/EditPassword'),
   }, { // 系统管理-电站管理-电站;
@@ -211,9 +213,9 @@ const routers = [
 const Loading = ({ pastDelay, timedOut, error }) => {
   if (pastDelay) {
     return (<div className={styles.preComponent}>
-    <i className={`${styles.rotate}`}></i>
-     <p>loading....</p>
-  </div>);
+      <i className={`${styles.rotate}`}></i>
+      <p>loading....</p>
+    </div>);
   } else if (timedOut) {
     return <div>Taking a long time...</div>;
   } else if (error) {
