@@ -33,10 +33,12 @@ class ScatterDiagramSearch extends Component{
         ...queryParam,
         stationCode: selectedStationInfo,
         deviceFullCode: null,
-        xPointCode: null,
-        yPointCode: null,
+        xPoint: null,
+        yPoint: null,
       },
-      pointsInfo: [],
+      pointsInfo: [], // 清空测点
+      scatterDiagramCharts: [], // 清空所有散点图chart数据
+      scatterDiagramList: {}, // 清空散点图列表
     })
   }
 
@@ -47,28 +49,30 @@ class ScatterDiagramSearch extends Component{
       queryParam: {
         ...queryParam,
         deviceFullCode: devices,
-        xPointCode: null,
-        yPointCode: null,
-      }
+        xPoint: null,
+        yPoint: null,
+      },
+      scatterDiagramCharts: [], // 清空所有散点图chart数据
+      scatterDiagramList: {}, // 清空散点图列表
     })
   }
 
-  xSelectPoints = (xPointCode) => { // 选择x轴测点
+  xSelectPoints = (xPoint) => { // 选择x轴测点
     const { changeScatterDiagramStore, queryParam  } = this.props;
     changeScatterDiagramStore({
       queryParam:{
         ...queryParam,
-        xPointCode,
+        xPoint,
       }
     })
   }
   
-  ySelectPoints = (yPointCode) => { // 选择y轴测点
+  ySelectPoints = (yPoint) => { // 选择y轴测点
     const { changeScatterDiagramStore, queryParam  } = this.props;
     changeScatterDiagramStore({
       queryParam:{
         ...queryParam,
-        yPointCode,
+        yPoint,
       }
     })
   }
@@ -103,15 +107,15 @@ class ScatterDiagramSearch extends Component{
     const stationInfo = stationCode[0] || {};
     const deviceInfo = deviceFullCode[0] || {};
     const timeZone = moment().zone() / (-60);
-    
+
     downLoadFile({ 
       url,
-      fileName: `${startTime}至${endTime}散点图数据`,
+      fileName: `${stationInfo.stationName}-${deviceInfo.deviceName}-${startTime}散点图数据`,
       params: {
         ...queryParam,
         stationCode: stationInfo.stationCode,
         deviceFullCode: deviceInfo.deviceCode,
-        startTime: moment(startTime).utc().format(),
+        startTime: moment(startTime).utc().format(), 
         endTime: moment(endTime).utc().format(),
         timeZone,
       },
@@ -119,8 +123,9 @@ class ScatterDiagramSearch extends Component{
   }
 
   render(){
-    const { stations, queryParam, pointsInfo } = this.props;
-    const { stationCode, deviceFullCode, xPointCode, yPointCode, startTime, endTime } = queryParam;
+    const { stations, queryParam, pointsInfo, scatterDiagramList } = this.props;
+    const { dataList = [] } = scatterDiagramList;
+    const { stationCode, deviceFullCode, xPoint, yPoint, startTime, endTime } = queryParam;
     const selectedStation = stationCode[0] || {};
     return(
       <div className={styles.scatterDiagramSearch}>
@@ -129,7 +134,6 @@ class ScatterDiagramSearch extends Component{
             <span className={styles.text}>电站选择</span>
             <StationSelect 
               holderText={'请选择'}
-              // data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               data={stations.filter(e => e.stationType === 0)}
               onOK={this.selectStation}
               value={stationCode}
@@ -166,10 +170,11 @@ class ScatterDiagramSearch extends Component{
             <Select
               className={styles.pointSelect} 
               onChange={this.xSelectPoints}  
-              placeholder="请选择" 
               disabled={pointsInfo.length === 0}
+              value={xPoint}
+              placeholder="请选择" 
             >
-              {pointsInfo.filter(e => e !== xPointCode).map(e => {
+              {pointsInfo.filter(e => e.devicePointCode !== yPoint).map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
             </Select>
@@ -179,17 +184,18 @@ class ScatterDiagramSearch extends Component{
             <Select 
               className={styles.pointSelect} 
               onChange={this.ySelectPoints} 
-              placeholder="请选择" 
               disabled={pointsInfo.length === 0}
+              value={yPoint}
+              placeholder="请选择" 
             >
-              {pointsInfo.filter(e => e !== yPointCode).map(e => {
+              {pointsInfo.filter(e => e.devicePointCode !== xPoint).map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
             </Select>
           </div>
           <div className={styles.rightHandle}>
             <Button className={styles.searchInfo} onClick={this.searchPointList}>查询</Button>
-            {/* <Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0}>导出</Button> */}
+            <Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0}>导出</Button>
           </div>
         </div>
       </div>

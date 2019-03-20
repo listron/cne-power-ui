@@ -4,6 +4,8 @@ import styles from './scatterDiagram.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
 import moment from 'moment';
+import { dataFormat } from '../../../../utils/utilFunc';
+
 
 class ScatterDiagramList extends Component{
   static propTypes = {
@@ -32,24 +34,28 @@ class ScatterDiagramList extends Component{
   }
   
   render(){
-    const { listParam, scatterDiagramList, tableLoading } = this.props;
+    const { listParam, scatterDiagramList, tableLoading, pointsInfo, queryParam } = this.props;
+    const { xPoint, yPoint } = queryParam;
+
+    const xCurrentPoint = pointsInfo.find(e =>{ 
+      return e.devicePointCode === xPoint;
+    }) || {};
+
+    const yCurrentPoint = pointsInfo.find(e =>{ 
+      return e.devicePointCode === yPoint;
+    }) || {};
+
     const { totalSize, dataList = [] } = scatterDiagramList;
     const { pageNum, pageSize, } = listParam;
-    // const dataSource = dataList.map((e,i) => ({
-    //   key: i,
-    //   ...e,
-    //   time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
-    // }))
-    const dataSource = [1,2,3,4,5,6,7,7,8,9,10].map((e,i) => ({
-      key: e * i,
-      deviceName: `设备名${e * i}`,
-      stationName: `电站${e * e * i}`,
-      deviceTypeName: `类型${e}`,
-      deviceModeName: `${i}`,
-      time: moment().add(e * i * i *e ,'s').format('YYYY-MM-DD'),
-      xData: e*e*i,
-      yData: i*i*e*e*e
-    }))
+    const dataSource = dataList.map((e,i) =>{
+      return  ({
+        key: i,
+        ...e,
+        xData: dataFormat(e.xData,'--',2),
+        yData: dataFormat(e.yData,'--',2),
+        time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
+      })
+    })
     
     const columns = [{
       title: '设备名称',
@@ -67,10 +73,10 @@ class ScatterDiagramList extends Component{
       title: '时间',
       dataIndex: 'time',
     }, {
-      title: 'X轴测点',
+      title: xCurrentPoint.devicePointName || 'X轴',
       dataIndex: 'xData',
     },{
-      title: 'X轴测点',
+      title: yCurrentPoint.devicePointName || 'X轴',
       dataIndex: 'yData',
     }];
 

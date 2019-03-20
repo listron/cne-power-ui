@@ -14,7 +14,12 @@ import Footer from '../../../../components/Common/Footer/index';
 class DataScatterDiagram extends Component{
   static propTypes = {
     scatterDiagramType: PropTypes.string,
+    resetScatterDiagramStore: PropTypes.func,
   };
+
+  componentWillUnmount() {
+    this.props.resetScatterDiagramStore();
+  }
 
   render(){
     const { scatterDiagramType } = this.props;
