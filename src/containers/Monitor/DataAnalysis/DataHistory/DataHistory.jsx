@@ -26,9 +26,9 @@ class DataHistory extends Component {
     this.props.getSecendInterval({ enterpriseId });
   }
 
-  componentWillUnmount() {
-    this.props.resetHistoryStore();
-  }
+  // componentWillUnmount() {
+  //   this.props.resetHistoryStore();
+  // }
 
   render() {
     const { historyType } = this.props;

@@ -11,31 +11,31 @@ module.exports = [
         {
           devicePointId: 'sadfsd',
           devicePointCode: '1组测点a',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点1',
           devicePointIecCode: '1',
           devicePointIecName: '分组1测点'
         }, {
           devicePointId: 'sadf1sdf',
           devicePointCode: '1组测点b',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点2',
           devicePointIecCode: '1',
           devicePointIecName: '分组1测点'
         }, {
           devicePointId: 'zcv321a',
           devicePointCode: '2组测点1',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点3',
           devicePointIecCode: '2',
           devicePointIecName: '分组2测点'
         }, {
           devicePointId: '123zsxgd',
           devicePointCode: '2组点2',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点4',
           devicePointIecCode: '2',
           devicePointIecName: '分组2测点'
         }, {
           devicePointId: 'sxzv32dfs',
           devicePointCode: '3测点',
-          devicePointName: '展示测试测点',
+          devicePointName: '展示测试测点5',
           devicePointIecCode: '3',
           devicePointIecName: '分组3测点'
         }
@@ -204,5 +204,73 @@ module.exports = [
       }
     },
     error: {}
-  }
+  }, { // 数据分析 - 散点图 - 所有chart数据
+    api: '/mock/monitor/dataAnalysis/allScatterDiagram',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        pointTime: ['2018-01-02 12:01:10', '2018-01-02 12:11:10', '2018-01-02 12:21:10', '2018-01-02 12:31:10' ],
+        pointData: [
+          {
+            xData: [1.13],
+            yData: [13],
+          }, {
+            xData: [2.13],
+            yData: [2443],
+          }, {
+            xData: [3.13],
+            yData: [3522],
+          }, {
+            xData: [4.13],
+            yData: [4122],
+          }
+        ],
+      },
+      "serviceCode": "3.0"
+    },
+    error: {}
+  }, { // 数据分析 - 散点图 - 分页数据
+    api: '/mock/monitor/dataAnalysis/listScatterDiagram',
+    method: 'post',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        pageCount: 10,
+        dataList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(e => ({
+          deviceName: `测试设备${e}`,
+          stationName: `电站${e * e}`,
+          deviceTypeName: `类型${e * 10}`,
+          deviceModeName: `型号${e * 9}`,
+          time: `${e ** e}`,
+          power: `${e ** e / 8}`,
+          speed: `${e * 2}`,
+        }))
+      },
+      serviceCode: '3.0'
+    },
+    error: {}
+  },{ // 数据分析 - 散点图 - x/y轴测点数据
+    api: '/mock/monitor/dataAnalysis/dataAnalysisPoints',
+    method: 'get',
+    response: {
+      code: '10000',
+      message: '请求成功',
+      data: {
+        xPoint: [1, 2, 3, 4].map(e => ({
+          devicePointCode: `${e}`,
+          devicePointName: `测点${e * 2}`,
+          devicePointUnit:  `m/s`
+        })),
+        yPoint: [1, 2, 3, 4].map(e =>({
+          devicePointCode: `${e}`,
+          devicePointName: `测点${e * 2}`,
+          devicePointUnit:  `m/s`
+        })),
+      }
+      }
+    }
+  
 ]
