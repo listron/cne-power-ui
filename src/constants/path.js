@@ -263,6 +263,7 @@ export default {
       getpitchanglespeedchart:'/v3/wind/powercurve/fan/pitchanglespeedchart',//功率曲线图表-桨距角&风速-单风机
       getwinddistributionchart:'/v3/wind/powercurve/fan/winddistributionchart',//功率曲线图表-风频分布-单风机
       getsequencechart:'/v3/wind/powercurve/fan/sequencechart',//功率曲线图表-时序图-单风机
+      getDeviceInfo: '/v3/management/device', // 设备详情信息表
 
 
       // 数据分析 

@@ -18,21 +18,22 @@ class SequenceChart extends Component {
     const theoryPowers = nextProps.sequencechartData || [];
     this.drawChart(theoryPowers)
   }
-
+  // <div class=${styles.lineStyle}>${params[0].seriesName}风速:  ${dataFormat(params[0].value)}</div>
+  // <div class=${styles.lineStyle}>${params[1].seriesName}风速: ${dataFormat(params[1].value)}</div>
   drawChart = (params) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
     const lineColor = '#666';
     const { xAxisDate } = this.props;
     let color = ['#3e97d1', '#a42b2c'];
     let yData = params.map(e => e.deviceName)
-    const inverterTenMinGraphic = (xAxisDate.length === 0 && yData.length === 0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (xAxisDate.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
         text: '时序图',
         x: 'left',
-        textStyle:{
-          fontSize:14
+        textStyle: {
+          fontSize: 14
         }
       },
       color: color,
@@ -59,6 +60,9 @@ class SequenceChart extends Component {
         show: true,
         formatter: (params) => {
 
+          const windSpeed = params.map((e, i) => {
+            return (`<div class=${styles.lineStyle}> ${e.marker}${e.seriesName}风速: ${dataFormat(e.value)}</div>`)
+          })
 
           return `<div class=${styles.formatStyle}>
                 <div class=${styles.topStyle}>
@@ -66,9 +70,7 @@ class SequenceChart extends Component {
                 </div>
                 <div  style='background:#dfdfdf;height:1px;
                 width:100%;' ></div>
-              
-                <div class=${styles.lineStyle}>${params[0].seriesName}风速:  ${dataFormat(params[0].value)}</div>
-                <div class=${styles.lineStyle}>${params[1].seriesName}风速: ${dataFormat(params[1].value)}</div>
+                ${windSpeed}
               </div>`
         },
         backgroundColor: '#fff',

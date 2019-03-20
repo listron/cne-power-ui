@@ -87,15 +87,16 @@ class WindDeviceGraph extends Component {
         formatter: (params) => {
           
           const info = params.data;
+          const windSpeedInterval=info.windSpeedInterval.replace(',','~')
           // const currentData = monthPower[currentInfo.dataIndex] || {};
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>
-              <div>${dataFormat(info.windSpeedInterval)}</div>
+              <div>风速区间:${windSpeedInterval}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>型号:  ${info.deviceFullCode}</div>
+            <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
             <div class=${styles.lineStyle}>平均风速:  ${dataFormat(params.name)}</div>
             <div class=${styles.lineStyle}>平均功率: ${dataFormat(params.value)}</div>
           </div>`

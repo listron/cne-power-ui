@@ -20,17 +20,13 @@ class AllDeviceCurve extends Component {
   constructor(props, context) {
     super(props, context)
   }
-  // componentDidMount(){
-  //   const{stationCode,deviceFullCode,getAllDeviceCurveData}=this.props;
-  //   const startTime = moment().subtract(1, "days").format('YYYY-MM-DD');
-  //   const endTime = moment().format('YYYY-MM-DD');
-  //   const params={stationCode,deviceFullCode,startTime,endTime};
-  //   getAllDeviceCurveData({...params, })
-  // }
+
   onChangeFilter=(value)=>{
     const{stationCode,deviceFullCode,startTime,endTime,getAllDeviceCurveData,getPowerdeviceList,deviceShowType}=this.props;
     const params={stationCode,deviceFullCode,startTime,endTime};
-    deviceShowType==='graph'? getAllDeviceCurveData({...params, ...value}):getPowerdeviceList({...params, ...value})
+  
+   getAllDeviceCurveData({...params, ...value})
+   getPowerdeviceList({...params, ...value})
   }
   render() {
     const{deviceShowType}=this.props;

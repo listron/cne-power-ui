@@ -10,6 +10,7 @@ export const singleDeviceCurveAction={
   getpitchanglespeedchart:Symbol("getpitchanglespeedchart"),
   getwinddistributionchart:Symbol("getwinddistributionchart"),
   getsequencechart:Symbol("getsequencechart"),
+  getDeviceInfo:Symbol("getDeviceInfo"),
   
   
   

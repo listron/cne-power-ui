@@ -14,6 +14,7 @@ class AllDeviceCurve extends Component {
   constructor(props, context) {
     super(props, context)
   }
+  
   componentWillUnmount(){
     this.props.resetSingleDeviceCurve();
   }
@@ -43,6 +44,7 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
+  getDeviceInfo: payload => dispatch({ type: singleDeviceCurveAction.getDeviceInfo, payload }),
   changeSingleDeviceStore: payload => dispatch({ type: singleDeviceCurveAction.changeSingleDeviceStore, payload }),
   resetSingleDeviceCurve: payload => dispatch({ type: singleDeviceCurveAction.RESET_SINGLEDEVICECURVE, payload }),
   getSingleDeviceCurveData:payload => dispatch({ type: singleDeviceCurveAction.getSingleDeviceCurveData, payload }),

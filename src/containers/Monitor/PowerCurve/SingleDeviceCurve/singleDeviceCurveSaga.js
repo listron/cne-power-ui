@@ -16,10 +16,10 @@ function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-�
   try {
     if (response.data.code === '10000') {
       yield put({
-        type:singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS ,
+        type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
         payload: {
           singleDeviceCurveData: response.data.data.powerCurveData || [],
-          airDensity:response.data.data.airDensity||'',
+          airDensity: response.data.data.airDensity || '',
         }
       })
     } else {
@@ -35,7 +35,7 @@ function* getSingleDeviceCurveList(action) { //功率曲线列表-单风机
   try {
     // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
     const url = `${APIBasePath}${monitor.getSingleDeviceCurveList}`
-    const response = yield call(axios.post, url);
+    const response = yield call(axios.post, url, payload);
     const total = response.data.data.pageCount || 0;
     let { pageNum, pageSize } = payload;
     const maxPage = Math.ceil(total / pageSize);
@@ -65,14 +65,8 @@ function* getRoseChart(action) { //功率曲线图表-风向玫瑰图-单风机
   const { payload } = action;
   // const RoseChartUrl = `/mock/wind/powercurve/fan/windrosechart`;
   const RoseChartUrl = `${APIBasePath}${monitor.getRoseChart}`;
-
   try {
-    // const response = yield call(axios.post, RoseChartUrl, payload);
-    const [rose,powerspeed,changlespeed,winddistribution,sequencechart] = yield all([
-      call(axios.get,RoseChartUrl,{...payload}),
-    
-    ]);
-
+    const rose=yield call(axios.post, RoseChartUrl, {...payload});
     if (rose.data.code === '10000') {
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
@@ -81,7 +75,7 @@ function* getRoseChart(action) { //功率曲线图表-风向玫瑰图-单风机
         }
       })
     }
-   
+
   } catch (error) {
     message.error('获取功率曲线图表-风向玫瑰图-单风机失败!');
     console.log(error);
@@ -175,6 +169,27 @@ function* getsequencechart(action) { //功率曲线图表-时序图-单风机
     console.log(error);
   }
 }
+function* getDeviceInfo(action) { //设备型号详情，全编码获得名称
+  const { payload } = action;
+  try {
+  
+    const url = `${APIBasePath}${monitor.getDeviceInfo}/${payload.deviceFullcode}`;
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
+        payload: {
+          deviceInfo: response.data.data || {},
+        }
+      })
+    } else {
+      throw response.data;
+    }
+  } catch (error) {
+    message.error('获取功率曲线图表-时序图-单风机失败!');
+    console.log(error);
+  }
+}
 export function* watchSingleDeviceCurve() {
   yield takeLatest(singleDeviceCurveAction.getSingleDeviceCurveData, getSingleDeviceCurveData);
   yield takeLatest(singleDeviceCurveAction.getSingleDeviceCurveList, getSingleDeviceCurveList);
@@ -183,6 +198,7 @@ export function* watchSingleDeviceCurve() {
   yield takeLatest(singleDeviceCurveAction.getpitchanglespeedchart, getpitchanglespeedchart);
   yield takeLatest(singleDeviceCurveAction.getwinddistributionchart, getwinddistributionchart);
   yield takeLatest(singleDeviceCurveAction.getsequencechart, getsequencechart);
+  yield takeLatest(singleDeviceCurveAction.getDeviceInfo, getDeviceInfo);
 
 
 }

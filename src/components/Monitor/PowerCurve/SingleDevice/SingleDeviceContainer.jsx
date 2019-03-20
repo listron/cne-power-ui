@@ -19,33 +19,29 @@ class SingleDeviceContainer extends Component {
   }
   componentDidMount() {
     const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, changeSingleDeviceStore, getSingleDeviceCurveList } = this.props;
+    const {  changeSingleDeviceStore, } = this.props;
+    this.props.getDeviceInfo({ // 风电设备类型下的设备编号
+      deviceFullcode:deviceFullCode
+    });
     const startTime = time.split('~')[0];
     const endTime = time.split('~')[1];
     const params = { stationCode, deviceFullCode: [deviceFullCode], startTime, endTime }
     changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
-    deviceShowType === 'graph' ? this.queryGraphData() : getSingleDeviceCurveList({ ...params })
-
+    this.props.getRoseChart({ ...params,deviceFullCode });
+    this.props.getwinddistributionchart({ ...params,deviceFullCode  });
+    this.queryGraphData({...params}) 
   }
   componentWillReceiveProps(nextProp) {
-    const { stations, deviceShowType, changeSingleDeviceStore, getSingleDeviceCurveList, deviceFullCode } = nextProp;
+    const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
+    const params = { stationCode, deviceFullCode, startTime, endTime }
     if (deviceFullCode.length !== this.props.deviceFullCode.length) {
-      this.queryGraphData({ deviceFullCode: deviceFullCode })
+      this.queryGraphData(params)
     }
     for (let i = 0; i < deviceFullCode.length; i++) {
       if (deviceFullCode[i] !== this.props.deviceFullCode[i]) {
-        return this.queryGraphData({ deviceFullCode: deviceFullCode })
+        return this.queryGraphData(params)
       }
     }
-
-    // if (stations.length > 0) {
-    // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    // const startTime = time.split('~')[0];
-    // const endTime = time.split('~')[1];
-    // const params = { stationCode, deviceFullCode, startTime, endTime }
-    // changeSingleDeviceStore({ ...params })
-    // deviceShowType === 'graph' ? this.queryGraphData() : getSingleDeviceCurveList({ ...params })
-    // }
   }
   onOk = (selectdevice) => {
     const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
@@ -55,27 +51,34 @@ class SingleDeviceContainer extends Component {
     })
   }
   onSwitchChange = (checked) => {
+    const { stationCode, deviceFullCode, startTime, endTime, correct, } = this.props;
+    const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
-    this.onChangeFilter({ correct: checked ? 1 : 0 })
+   
+    this.props.getSingleDeviceCurveList({ ...params,correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, deviceShowType, getSingleDeviceCurveList } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
-    deviceShowType === 'graph' ? this.queryGraphData(value) : getSingleDeviceCurveList({ ...params, ...value })
+   this.queryGraphData({...params,...value});
+ 
   }
   queryGraphData = (value) => {
-    const { stationCode, deviceFullCode, startTime, endTime, correct, } = this.props;
+    const tabledeviceFullCode= this.props.match.params.deviceFullCode;
+    const { stationCode, deviceFullCode, startTime, endTime, correct,pageNum,pageSize } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
-    this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
-    this.props.getsequencechart({ ...params, ...value });
-    this.props.getwinddistributionchart({ ...params, ...value });
+     this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
+     this.props.getsequencechart({ ...params, ...value });
+   
     this.props.getpowerspeedchart({ ...params, ...value });
-    this.props.getRoseChart({ ...params, ...value });
+  
     this.props.getpitchanglespeedchart({ ...params, ...value });
+    this.props.getSingleDeviceCurveList({ ...params,...value,deviceFullCode:tabledeviceFullCode,pageNum,pageSize,correct })
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeSingleDeviceStore } = this.props;
     changeSingleDeviceStore({ deviceShowType: type })
+   
   }
   showChart = () => {
     this.selectShowType('graph');
@@ -104,7 +107,7 @@ class SingleDeviceContainer extends Component {
   }
   render() {
     // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime, airDensity, selectDeviceFullCode } = this.props;
+    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime, airDensity, selectDeviceFullCode,deviceInfo } = this.props;
     const deviceTypeCode = 101;
     const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
     const pathAllDevice = `#/monitor/powercurve`;
@@ -113,7 +116,7 @@ class SingleDeviceContainer extends Component {
         <div className={styles.headerStyle}>
           <div className={styles.left}>
             <div className={styles.singleInfo}>电站名称:{stationInfo && stationInfo.regionName}-{stationInfo && stationInfo.stationName}</div>
-            <div className={styles.singleInfo}>设备名称:{deviceFullCode}</div>
+            <div className={styles.singleInfo}>设备名称:{deviceInfo.deviceName}</div>
             <div className={styles.singleInfo}>时间:{startTime}~{endTime}</div>
             {deviceShowType === 'graph' && <div className={styles.singleInfo}>增加对比设备:
             <DeviceSelect
@@ -148,7 +151,7 @@ class SingleDeviceContainer extends Component {
           {deviceShowType === 'list' && <Button onClick={this.exportList} className={styles.exportStyle}>导出</Button>}
           {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:{airDensity}kg/m³</div>}
         </div>
-        {deviceShowType === 'graph' ? <SingleWindDeviceCharts {...this.props} /> : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
+        {deviceShowType === 'graph' ? <SingleWindDeviceCharts {...this.props} onChangeFilter={this.onChangeFilter} /> : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
 
       </div>
 

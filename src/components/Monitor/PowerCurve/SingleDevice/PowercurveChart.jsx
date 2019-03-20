@@ -22,23 +22,29 @@ class PowercurveChart extends Component {
   }
   onChange = (checked) => {
     if(checked){
-      console.log('空气密度校正请求');
+      // console.log('功率曲线图空气密度校正请求');
+      const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
+      const params = { stationCode, deviceFullCode, startTime, endTime };
+      this.props.getSingleDeviceCurveData({ ...params,correct: checked ? 1 : 0 })
     }
     
   }
   drawChart = (params) => {
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
     //横坐标
-    // let xData=params.length>0?params[0].actualPowerData.map(e=>e.windSpeedAvg):[];
     let xData=params.length>0?params[0].scatterPointData.map(e=>e.windSpeedAvg):[];
-    
+    let ishaveData=[];
+    params.forEach((e,i)=>{
+      if(e.scatterPointData.length>0){
+        ishaveData.push(e.scatterPointData)
+      }
+    })
+    const inverterTenMinGraphic = (ishaveData.length === 0 ) ? showNoData : hiddenNoData;
     //各种数据
     let scatter = [], actual = [], theory = [],deviceNames=[],itemAll={},allData=[];
     let series=[];
-   const test= params.forEach((e, i) => {
-
+    params.forEach((e, i) => {
       scatter[e.deviceName] = []; actual[e.deviceName] = []; theory[e.deviceName] = [];
-      let allcharts=[];
       e.scatterPointData.forEach((item, i) => {
         scatter[e.deviceName].push([item.windSpeedAvg, item.powerActual, item.time, item.windDirection])
       })
@@ -53,35 +59,11 @@ class PowercurveChart extends Component {
         {type:'line',name:`${e.deviceName}实际功率曲线`,data:actual[e.deviceName],},
         {type:'line',name:`${e.deviceName}理论功率曲线`,data:theory[e.deviceName]}
         )
-    //   itemAll={
-    //   product:[`${e.deviceName}散点,${e.deviceName}功率曲线,${e.deviceName}理论功率曲线,`],
-    //   'scatter':scatter[e.deviceName],
-    //   'actual':actual[e.deviceName],
-    //   'theory':theory[e.deviceName],
-    // }
-    // allData.push(itemAll)
-    // 
-
-    
-
-      // scatter.push( scatter[e.deviceName])
-      // actual.push(actual[e.deviceName])
-      // theory.push(theory[e.deviceName])
-      // deviceNames.push(e.deviceName)
-      // 
-
-      // 
-      // 
-      // 
-      // 
-      // return  {type:'line',data:actual[e.deviceName]},{type:'line',data:theory[e.deviceName]},{type:'scatter',data:[e.deviceName]}
-    
     })
-    
     const lineColor = '#666';
     // let color = ['#199475'];
     const option = {
-      // graphic: inverterTenMinGraphic,
+       graphic: inverterTenMinGraphic,
       // color: color,
       title: {
         text: '功率曲线',

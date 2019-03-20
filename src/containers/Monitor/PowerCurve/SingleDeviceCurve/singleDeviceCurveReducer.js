@@ -6,6 +6,7 @@ const initState = immutable.fromJS({
   selectDeviceFullCode:[],
   time:'',
   deviceShowType:'graph',
+  deviceInfo:{},
   correct:0,
   pageSize:10,
   pageNum:1,

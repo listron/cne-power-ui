@@ -20,11 +20,11 @@ class WindRoseChart extends Component {
   }
   drawChart = (params) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
-    let windDirection = [], windSpeedAvg = [], percent = [], XData = [];
+    let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
     params.forEach((e, i) => {
       XData.push(i),
         windDirection.push(e.windDirection),
-        windSpeedAvg.push([e.windSpeedAvg, i, e.windDirection]),
+        avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
         percent.push([e.percent, i, e.windDirection])
     })
     const lineColor = '#666';
@@ -148,7 +148,7 @@ class WindRoseChart extends Component {
         name: '平均风速',
         type: 'line',
         showSymbol: false,
-        data: windSpeedAvg
+        data: avgWindSpeed
       }, {
         coordinateSystem: 'polar',
         polarIndex: 1,

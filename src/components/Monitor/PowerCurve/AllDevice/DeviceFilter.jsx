@@ -46,15 +46,13 @@ class DeviceFilter extends Component {
     });
 
     changeAllDeviceStore({
-      stationCode, deviceTypeCode: 101, deviceFullCode: []
+      stationCode, deviceTypeCode: 101, deviceFullCode: [],selectdeviceCode:[]
     })
   }
   seekDeviceData = () => {//查询按钮
     
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, deviceShowType } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
-    
-
+    const params = { stationCode, deviceFullCode, startTime:moment(startTime).utc().format(), endTime:moment(endTime).utc().format(), };
     deviceShowType === 'graph' ? getAllDeviceCurveData({ ...params, }) : getPowerdeviceList({ ...params, })
   }
   timeChange = (time) => {//时间选择
@@ -66,8 +64,10 @@ class DeviceFilter extends Component {
     })
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
-    const { changeAllDeviceStore } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, changeAllDeviceStore } = this.props;
+    const params = { stationCode, deviceFullCode, startTime, endTime };
     changeAllDeviceStore({ deviceShowType: type })
+    type === 'graph' ? getAllDeviceCurveData({ ...params, }) : getPowerdeviceList({ ...params, })
   }
 
   showChart = () => {
@@ -140,7 +140,7 @@ class DeviceFilter extends Component {
           {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList} 
           disabled={powerCurveListData.length === 0}
           >导出</Button> : ''}
-          <a href={`#/monitor/powercurve/${test1}/${test2}/${test3}`}>点击跳转</a>
+         {/* <a href={`#/monitor/powercurve/${test1}/${test2}/${test3}`}>点击跳转</a> */}
         </div>
         <div className={styles.showType}>
           <div className={styles.tabIcons}>

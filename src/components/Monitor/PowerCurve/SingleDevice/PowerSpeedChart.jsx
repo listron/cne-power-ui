@@ -23,48 +23,44 @@ class PowerSpeedChart extends Component {
     let result = " ";
     switch (title) {
       case "powerSpeedChart":
-        result = ["功率&转速","功率(kW)", "转速(rpm)"];
+        result = ["功率&转速", "功率(kW)", "转速(rpm)"];
         break;
       case "pitchange":
-        result = ["桨距角&风速","桨距角(°)", "风速(m/s)"];
+        result = ["桨距角&风速", "桨距角(°)", "风速(m/s)"];
         break;
       default:
         result = " ";
     }
     return result;
   };
-  drawChart = (params,) => {
-    const {chartId}=this.props;
+  drawChart = (params, ) => {
+    const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);
-    const filterData = params.map((e, i) => {
-      if(e.powerSpeedData){
-        return e.powerSpeedData.map((item, i) => {
-          return item.power
+    let filterData = []
+    params.forEach((e, i) => {
+      if (e.powerSpeedData) {
+        e.powerSpeedData.forEach((item, i) => {
+          item.power ? filterData.push(item.power) : null
         })
       }
-      if(e.pitChangleSpeedData){
-        return e.pitChangleSpeedData.map((item, i) => {
-          return item.pitchangle
+      if (e.pitChangleSpeedData) {
+        e.pitChangleSpeedData.forEach((item, i) => {
+          item.pitchangle ? filterData.push(item.pitchangle) : null;
         })
       }
-     
     })
-    const hasData = filterData.length > 0 ? filterData.reduce((pre, next) => {
-      return pre.concat(next)
-    }):[];
-    
-    const inverterTenMinGraphic = (filterDeviceName.length === 0 && hasData.length === 0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (filterData.length === 0||filterDeviceName.length===0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     // let color = ['#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
       // color: color,
-      title:{
-        text:this.getYaxisName(chartId)[0],
-        x:'left',
-        textStyle:{
-          fontSize:14
+      title: {
+        text: this.getYaxisName(chartId)[0],
+        x: 'left',
+        textStyle: {
+          fontSize: 14
         }
       },
       // legend: {
@@ -100,8 +96,8 @@ class PowerSpeedChart extends Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>${chartId==="powerSpeedChart"?"转速":"风速"}: ${dataFormat(info[0])}</div>
-            <div class=${styles.lineStyle}>${chartId==="powerSpeedChart"?"功率":"桨距角"}: ${dataFormat(info[1])}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0])}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1])}</div>
           </div>`
         },
         backgroundColor: '#fff',
@@ -121,7 +117,7 @@ class PowerSpeedChart extends Component {
       },
       xAxis: {
         type: 'value',
-       
+
         name: this.getYaxisName(chartId)[2],
         nameTextStyle: {
           color: lineColor,
@@ -147,7 +143,7 @@ class PowerSpeedChart extends Component {
       yAxis: [
         {
           name: this.getYaxisName(chartId)[1],
-          type:'value',
+          type: 'value',
           nameTextStyle: {
             color: lineColor,
           },
@@ -167,31 +163,33 @@ class PowerSpeedChart extends Component {
           },
         }
       ],
-      series:params.map((e,i)=>{
+      series: params.map((e, i) => {
         let lineData = [];
-        if(e.powerSpeedData){
-          e.powerSpeedData.forEach((item,i)=>{
-            lineData.push([item.speed,item.power,item.time])
+        if (e.powerSpeedData) {
+          e.powerSpeedData.forEach((item, i) => {
+            lineData.push([item.speed, item.power, item.time])
           })
-        }else{
-          e.pitChangleSpeedData.forEach((item,i)=>{
-            lineData.push([item.windSpeed,item.pitchangle,item.time])
+        } else {
+          e.pitChangleSpeedData.forEach((item, i) => {
+            lineData.push([item.windSpeed, item.pitchangle, item.time])
+            
           })
         }
-        // console.log('lineData: ', lineData);
         
-        return{
-          name:`${e.deviceName}`,
+        // 
+
+        return {
+          name: `${e.deviceName}`,
           type: 'scatter',
           data: lineData
         }
       })
     };
-    powercurveChart.setOption(option,'notMerge');
+    powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
   }
   render() {
-    const {chartId}=this.props;
+    const { chartId } = this.props;
     return (
       <div id={chartId} className={styles.powerSpeedChart}></div>
     )

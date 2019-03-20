@@ -38,7 +38,9 @@ class WindSingleDeviceTable extends Component {
     })
   }
   render() {
-    const { pageSize, pageNum, total,powerCurveListData,stationCode,startTime,endTime } = this.props;
+    const { pageSize, pageNum, total,singleDeviceCurveList,stationCode,startTime,endTime } = this.props;
+    console.log('singleDeviceCurveList: ', singleDeviceCurveList);
+  
     const time=`${startTime}-${endTime}`
     const columns = [
       {
@@ -93,7 +95,7 @@ class WindSingleDeviceTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
         </div>
         <Table
-          dataSource={powerCurveListData}
+          dataSource={singleDeviceCurveList}
           columns={columns}
           pagination={false}
           onChange={this.tableChange}
