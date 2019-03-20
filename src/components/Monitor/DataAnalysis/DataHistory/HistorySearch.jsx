@@ -202,6 +202,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              max={5}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
@@ -226,7 +227,7 @@ class HistorySearch extends Component {
               placeholder="数据间隔时间"
             >
               {intervalInfo.map(e => (
-                <Option key={e} value={e}>{e === 10 ? '10分' : `${e}秒`}</Option>
+                <Option key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
               ))}
             </Select>
           </div>

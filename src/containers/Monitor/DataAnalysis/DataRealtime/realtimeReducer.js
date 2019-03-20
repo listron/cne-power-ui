@@ -21,6 +21,7 @@ const initState = immutable.fromJS({
   dataTime: null, // 记录的最新数据时间
   tableLoading: false, // 列表请求的loading
   chartLoading: false, // chart图表的loading
+  downloading: false, // 文件下载状态
   timeInterval: 5, // 实时数据间隔时间,
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站

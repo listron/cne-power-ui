@@ -11,6 +11,7 @@ const { monitor } = path.APISubPaths;
 class HistoryDataType extends Component {
 
   static propTypes = {
+    downloading: PropTypes.bool,
     stationCode: PropTypes.number,
     enterpriseId: PropTypes.string,
     deviceTypeCode: PropTypes.number,
@@ -64,7 +65,7 @@ class HistoryDataType extends Component {
   }
 
   render(){
-    const { historyType, partHistory = {} } = this.props;
+    const { historyType, downloading, partHistory = {} } = this.props;
     const { dataList = [] } = partHistory;
     return (
       <div className={styles.historyDataType}>
@@ -74,6 +75,7 @@ class HistoryDataType extends Component {
         </div>
         {historyType === 'list' && <Button
           className={styles.export}
+          loading={downloading}
           onClick={this.exportHistory}
           disabled={dataList.length === 0}
         >导出</Button>}

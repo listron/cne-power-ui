@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Select, Checkbox } from 'antd';
+import { Modal, Select, Checkbox, message } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const { Option } = Select;
 
 class DeviceSelectModal extends Component {
   static propTypes = {
+    max: PropTypes.number,
     stationCode: PropTypes.number, // 需传props
     deviceTypeCode: PropTypes.number,
     deviceModalShow: PropTypes.bool,
@@ -75,14 +76,19 @@ class DeviceSelectModal extends Component {
   }
 
   checkDevice = device => { // 点击选中设备
-    const { multiple } = this.props;
+    const { multiple, max } = this.props;
     const { checkedDevice } = this.state;
+    
     if (multiple) { // 多选
       if (checkedDevice.find(e => e.deviceCode === device.deviceCode)) { // 已选中删除
         this.setState({
           checkedDevice: checkedDevice.filter(e => e.deviceCode !== device.deviceCode)
         })
       } else { // 添加选中
+        if (max > 0 && checkedDevice.length === max) {
+          message.error(`所选设备不得超过${max}个`);
+          return;
+        }
         checkedDevice.push(device);
         this.setState({ checkedDevice });
       }

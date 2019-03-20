@@ -11,6 +11,7 @@ const { monitor } = path.APISubPaths;
 class RealtimeDataType extends Component {
 
   static propTypes = {
+    downloading: PropTypes.bool,
     realtimeType:  PropTypes.string,
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
@@ -71,14 +72,18 @@ class RealtimeDataType extends Component {
   }
 
   render(){
-    const { realtimeType } = this.props;
+    const { realtimeType, downloading } = this.props;
     return (
       <div className={styles.realtimeDataType}>
         <div className={styles.tabIcons}>
           <Icon onClick={this.showChart} type="bar-chart" className={realtimeType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={realtimeType === 'list'? styles.active : styles.normal} />
         </div>
-        {realtimeType === 'list' && <Button className={styles.export} onClick={this.exportRealtime}>导出</Button>}
+        {realtimeType === 'list' && <Button
+          className={styles.export}
+          onClick={this.exportRealtime}
+          loading={downloading}
+        >导出</Button>}
       </div>
     )
   }

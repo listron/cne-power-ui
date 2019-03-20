@@ -74,7 +74,13 @@ const mapDispatchToProps = (dispatch) => ({
   stopRealtimeList: () => dispatch({ type: realtimeAction.stopRealtimeList }),
   getSecendInterval: payload => dispatch({ type: realtimeAction.getSecendInterval, payload }),
   getAvailableDeviceType: payload => dispatch({ type: realtimeAction.getAvailableDeviceType, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: realtimeAction.CHANGE_REALTIME_STORE
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataRealtime);

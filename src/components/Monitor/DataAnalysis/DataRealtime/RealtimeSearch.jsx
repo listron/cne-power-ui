@@ -149,6 +149,7 @@ class RealtimeSearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              max={5}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}

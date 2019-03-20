@@ -424,16 +424,24 @@ function* getWeather(action) { // 获取电站天气
   }
 }
 
-function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求)
-  const { url, fileName, method='post', params } = payload;
+function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求), resultName会指定action去标识download的loading状态。
+  const { url, fileName, method='post', params, actionName } = payload;
   let newFileName = fileName;
   try {
+    yield put({
+      type: actionName,
+      payload: { downloading: true }
+    })
     const response = yield call(axios, {
       method,
       url,
       data: params,
       responseType: 'blob',
     });
+    yield put({
+      type: actionName,
+      payload: { downloading: false }
+    })
     if (response.data) {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
@@ -462,6 +470,10 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
       throw response;
     }
   } catch (error) {
+    yield put({
+      type: actionName,
+      payload: { downloading: false }
+    })
     message.warning(`下载失败！请重新尝试`)
     console.log(error)
   }
