@@ -25,6 +25,7 @@ var initState = Immutable.fromJS({
   fourWarningNum:'--',//四级告警
   realtimeWarning:[],//实时预警的列表
   selectedRowKeys: [], //表格选中的行key
+  selectedTransfer:[], // 选中的转工单数据
   defectTypes:[],
   defectId: '',
 });

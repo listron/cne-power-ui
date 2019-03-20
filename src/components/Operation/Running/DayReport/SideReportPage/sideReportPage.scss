@@ -364,6 +364,11 @@
       width: 100%;
       padding: 4px;
     }
+    .ant-table .ant-table-thead{
+      th, th>div{
+        height: 60px;
+      }
+    }
     .ant-table tr {
       display: flex;
       width: calc(100vw - 285px);
@@ -373,7 +378,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower,{
+      .deviceTypeName, .faultName, .deviceName, .reason,  .limitPower {
         text-align: center;
         flex:1 0 110px;
       }
@@ -486,7 +491,31 @@
   }
   .reasonBox{
     margin-bottom: 21px;
+    .reasonText{
+      height: 60px;
+      line-height: 30px;
+    }
+    .lostInputTip{
+      margin-left: 12px;
+      color: $themeColor;
+    }
     :global{
+      .ant-form-item-label{
+        width: 11.11%;
+      }
+      .ant-form-item-control-wrapper{
+        width: 88.88%;
+        .ant-form-item-children{
+          width: 800px;
+        }
+      }
+      .ant-form-item-required{
+        display: flex;
+        justify-content: flex-end;
+        &::before{
+          line-height: 30px;
+        }
+      }
       .has-error{
         .ant-form-item-children{
           height: 60px;
@@ -540,5 +569,4 @@
     }
   }
 }
-
 

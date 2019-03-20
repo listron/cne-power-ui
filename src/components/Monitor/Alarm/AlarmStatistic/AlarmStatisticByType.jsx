@@ -5,7 +5,7 @@ import { Button, Icon, Tabs, DatePicker, Select } from 'antd';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticTable from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticTable.jsx';
 import AlarmStatisticGraph from '../../../../components/Monitor/Alarm/AlarmStatistic/AlarmStatisticGraph.jsx';
-import StationFilter from '../AlarmFilter/StationFilter.jsx';
+import StationFilter from '../AlarmFilter/StationFilter';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;

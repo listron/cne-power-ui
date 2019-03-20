@@ -47,7 +47,6 @@ class DeviceManage extends Component {
       })
     }, 3000)
   }
-
   componentWillUnmount() {
     clearTimeout(this.timeout);
     this.props.resetStore(); // 重置数据
@@ -68,8 +67,6 @@ class DeviceManage extends Component {
       showDeviceTip: false
     })
   }
-
-
   render() {
     const { showDeviceTip,showSidePage } = this.state;
     const {
@@ -149,21 +146,18 @@ const mapDispatchToProps = (dispatch) => ({
     }
   }),
   changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
-  
   addDeviceDetail:payload => dispatch({ type: deviceManageAction.addDeviceDetail, payload }),
   getStationDeviceDetail:payload => dispatch({ type: deviceManageAction.getStationDeviceDetail, payload }),
   getOtherPageDeviceDetail:payload => dispatch({ type: deviceManageAction.getOtherPageDeviceDetail, payload }),
   editDeviceDetail:payload => dispatch({ type: deviceManageAction.editDeviceDetail, payload }),
   getConnectDevice:payload => dispatch({ type: deviceManageAction.getConnectDevice, payload }),
   deleteDevice:payload => dispatch({ type: deviceManageAction.deleteDevice, payload }),
-
   addDeviceType:payload => dispatch({ type: deviceManageAction.addDeviceType, payload }),
   addDeviceMode:payload => dispatch({ type: deviceManageAction.addDeviceMode, payload }),
   addPvDeviceMode:payload => dispatch({ type: deviceManageAction.addPvDeviceMode, payload }),
   checkDeviceName:payload => dispatch({ type: deviceManageAction.checkDeviceName, payload }),
   checkDeviceType:payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
   checkDeviceMode:payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
-
   deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
   importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
   getStationDeviceType:payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),

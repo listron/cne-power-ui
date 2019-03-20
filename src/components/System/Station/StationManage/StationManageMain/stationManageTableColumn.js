@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './stationMain.scss';
-import {stationStatusArray}  from '../../../../../constants/stationBaseInfo';
+import { stationStatusArray }  from '../../../../../constants/stationBaseInfo';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 
 const stationManageTableColumn = [{
     title: '区域',
@@ -12,10 +14,10 @@ const stationManageTableColumn = [{
     dataIndex: 'coverType',
     key: 'coverType',
   },{
-    title: '装机容量',
+    title: <TableColumnTitle title="装机容量" unit="MW" />,
     dataIndex: 'stationCapacity',
     key: 'stationCapacity',
-    render: text=>(<span>{parseInt(text) >= 0 ?`${text}MW`:'--'}</span>),
+    render(text){ return numWithComma(text); },
     sorter: true,
   },{
     title: '发电单元数',

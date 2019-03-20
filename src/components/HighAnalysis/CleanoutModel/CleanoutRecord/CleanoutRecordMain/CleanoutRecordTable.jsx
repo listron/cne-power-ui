@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { Table, Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
 import styles from './cleanoutRecordMain.scss';
 import moment from 'moment';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
+
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const RadioGroup = Radio.Group;
+
 class CleanoutRecordTable extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -22,6 +26,7 @@ class CleanoutRecordTable extends Component {
     getMainList: PropTypes.func,
     history: PropTypes.object,
   }
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -30,11 +35,13 @@ class CleanoutRecordTable extends Component {
       record: {},
     }
   }
+  
   onChange = (e) => {
     this.setState({
       planType: e.target.value
     })
   }
+
   tableChange = (pagination, filter, sorter) => { // 电站list排序=>重新请求数据
     const { changeCleanoutRecordStore, getMainList, stationCodes, pageNum, pageSize, } = this.props;
     const { field, order } = sorter;
@@ -45,22 +52,26 @@ class CleanoutRecordTable extends Component {
       stationCodes, pageNum, pageSize, sortField, sortType
     })
   }
+
   showDetailModal = (record) => {//跳转到单电站清洗模型详情
     this.props.changeCleanoutRecordStore({ showPage: 'single', singleStationCode: record.stationCode, mainListData: [] })
     this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
     // this.props.history.push(`/analysis/cleanout/record/${record.stationCode}`);
   }
+
   showAddPlanModal = (record) => {
     this.setState({
       showModal: true,
       record: record
     })
   }
+
   cancelModal = () => {
     this.setState({
       showModal: false
     })
   }
+
   confirmModal = () => {
     const { getFieldsValue } = this.props.form;
     const { record } = this.state;
@@ -88,6 +99,7 @@ class CleanoutRecordTable extends Component {
       }
     })
   }
+
   render() {
     const { loading, mainListData } = this.props;
     const { record } = this.state;
@@ -103,22 +115,23 @@ class CleanoutRecordTable extends Component {
           )
         }
       }, {
-        title: '清洗计划(个)',
+        title: <TableColumnTitle title="清洗计划" unit="个" />,
         dataIndex: 'cleanPlanNum',
         key: 'cleanPlanNum',
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: '平均清洗周期(天)',
+        title: <TableColumnTitle title="平均清洗周期" unit="天" />,
         dataIndex: 'cleanCycle',
         key: 'cleanCycle',
-        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: '累计清洗收益(万kWh)',
+        title: <TableColumnTitle title="累计清洗收益" unit="万kWh" />,
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         sorter: true,
-        render: text => (<span>{(text && +text !== 0) ? `${text}` : '--'}</span>),
+        render(text){ return numWithComma(text); },
       }, {
         title: '上次清洗时间',
         dataIndex: 'cleanTime',

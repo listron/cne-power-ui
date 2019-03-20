@@ -183,9 +183,10 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/login" excat component={Login} />
-          <Route path="/userAgreement" excat component={Agreement} />
-          <Route path="/contactUs" excat component={Contact} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/userAgreement" exact component={Agreement} />
+          <Route path="/contactUs" exact component={Contact} />
+          <Redirect to="/login" />
         </Switch>
       );
     }

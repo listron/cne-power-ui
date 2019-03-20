@@ -39,6 +39,10 @@ const menuData = [
         rightKey: 'monitor_dataAnalysis',
         children: [
           {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+          },{
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
@@ -72,7 +76,7 @@ const menuData = [
             rightKey: 'reportQuery_powerLost',
           }
         ]
-      },{
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',

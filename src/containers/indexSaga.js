@@ -33,6 +33,7 @@ import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRe
 import { watchMonitorHistoryWarning } from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
+import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
 
 import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerReportSaga'; // 报表
 import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
@@ -107,12 +108,12 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
-
     watchMonitorPowerReport(),//报表--电量
     watchMonitorDeviceStatus(),//报表-设备状态
     watchMonitorMalfunction(),//报表-故障
     watchMonitorPowerLost(),//报表--电量损失
-
+    watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
+    
     // 无逻辑关系隐藏页面
     watchOtherSaga(),
     //统计分析的全部电站

@@ -16,7 +16,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
       >
         {getFieldDecorator('altitude',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.altitude:null})(
           <Input placeholder="保留小数点后两位" />
-        )}米
+        )}<span className={styles.unitStyle}>米</span>
       </FormItem>
       
       <FormItem
@@ -35,7 +35,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
       >
         {getFieldDecorator('towerHeight',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.towerHeight:null})(
           <Input placeholder="保留小数点后两位" />
-        )}
+        )}<span className={styles.unitStyle}>米</span>
       </FormItem>
       <FormItem
         label="测风设备"
@@ -44,7 +44,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
       >
         {getFieldDecorator('windMeasurementEquipment',{ initialValue:stationDeviceDetail.map?stationDeviceDetail.map.windMeasurementEquipment:null})(
           <Input placeholder="不超过30字" />
-        )}米
+        )}
       </FormItem>
     </div>
   )

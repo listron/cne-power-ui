@@ -1,10 +1,10 @@
 import moment from 'moment';
 export const baseFun = (detailData) => { // 根据基础信息配置输出指定规则数据。
-  const longitude = (detailData.longitude || parseFloat(detailData.longitude) === 0)? `${parseFloat(detailData.longitude).toFixed(2)}°` : '--';
-  const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(2)}°` : '--';
+  const longitude = (detailData.longitude || parseFloat(detailData.longitude) === 0)? `${parseFloat(detailData.longitude).toFixed(6)}°` : '--';
+  const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(6)}°` : '--';
   let baseArray = [  // 基础信息配置 -- > 
     { name: '电站名称', value: detailData.stationName || '--'}, 
-    { name: '设备类型', value: detailData.deviceTypeCode, },
+    { name: '设备类型', value: detailData.deviceTypeName, },
     { name: '设备名称', value: detailData.deviceName, },
     { name: '设备型号', value: detailData.deviceModeName, },
     { name: '生产厂家', value: detailData.manufacturer, },
@@ -22,22 +22,24 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
   return baseArray;
 }
 export const windTimeFun = (detailData) => {
+  const isMap=detailData.map;
   const windTimeArray = [  
-    { name: '安装日期', value: detailData.assemblyTime?moment(detailData.assemblyTime).format('YYYY-MM-DD'):'', },
-    { name: '并网日期', value:  detailData.ongridTime?moment(detailData.ongridTime).format('YYYY-MM-DD'):'',},
-    { name: '进入质保时间', value: detailData.warrantyBegintime?moment(detailData.warrantyBegintime).format('YYYY-MM-DD'):'',},
-    { name: '出质保时间', value: detailData.warrantyEndtime?moment(detailData.warrantyEndtime).format('YYYY-MM-DD'):'',},
-    { name: '报废时间', value: detailData.scrapTime?moment(detailData.scrapTime).format('YYYY-MM-DD'):'',},
-    { name: '轮毂高度', value: detailData.hubHeight},
+    { name: '安装日期', value: (isMap&&detailData.map.assemblyTime)?moment(detailData.map.assemblyTime).format('YYYY-MM-DD'):'', },
+    { name: '并网日期', value:  (isMap&&detailData.map.ongridTime)?moment(detailData.map.ongridTime).format('YYYY-MM-DD'):'',},
+    { name: '进入质保时间', value: (isMap&&detailData.map.warrantyBegintime)?moment(detailData.map.warrantyBegintime).format('YYYY-MM-DD'):'',},
+    { name: '出质保时间', value: (isMap&&detailData.map.warrantyEndtime)?moment(detailData.map.warrantyEndtime).format('YYYY-MM-DD'):'',},
+    { name: '报废时间', value: (isMap&&detailData.map.scrapTime)?moment(detailData.map.scrapTime).format('YYYY-MM-DD'):'',},
+    { name: '轮毂高度', value: (isMap&&detailData.map.hubHeight)?detailData.map.hubHeight:'', unit:'m'},
   ];
   return windTimeArray;
 }
 export const windTowerFun = (detailData) => {
+  const isMap=detailData.map;
   const windTowerArray = [ 
-    { name: '海拔高度', value: detailData.altitude },
-    { name: '立塔时间', value: detailData.towerAssemblyTime ?moment(detailData.towerAssemblyTime).format('YYYY-MM-DD'):'',},
-    { name: '塔高', value: detailData.towerHeight },
-    { name: '测风设备', value: detailData.windMeasurementEquipment },
+    { name: '海拔高度', value: (isMap&&detailData.map.altitude)?detailData.map.altitude:'' , unit:'m'},
+    { name: '立塔时间', value: (isMap&&detailData.map.towerAssemblyTime) ?moment(detailData.map.towerAssemblyTime).format('YYYY-MM-DD'):'',},
+    { name: '塔高', value: (isMap&&detailData.map.towerHeight)?detailData.map.towerHeight:'',unit:'m'},
+    { name: '测风设备', value: (isMap&&detailData.map.windMeasurementEquipment)?detailData.map.windMeasurementEquipment:'' },
   ];
   return windTowerArray;
 }
