@@ -30,7 +30,6 @@ class TransferWarningModal extends Component {
     // 现在只是单电站转工单 如果是批量转工单,不需要查询stationType, deviceTypeCode，或者变成数组 
     const { selectedTransfer } = this.props;
     const stationType = Array.from(new Set(selectedTransfer.map(e => e.stationType)))
-    console.log('stationType', stationType)
     const deviceTypeCode = Array.from((selectedTransfer.map(e => e.deviceTypeCode)))
     this.props.getLostGenType({
       objectType: 1,

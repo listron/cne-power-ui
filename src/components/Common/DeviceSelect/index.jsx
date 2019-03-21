@@ -20,6 +20,8 @@ const Option = Select.Option;
   6. 选填 - holderText: string, 可选填，未选设备时的占位文字。 
   7. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   8. 选填- deviceShowNumber:bool; 默认是false，展示具体的设备名称  传入为true时，显示的时已选设备 已选设备数量/所有设备数量
+  9. 选填 - max: number; 传入时，限定最多展示设备个数, 否则提示：'所选设备不得超过max个'。
+  10. 选填 - needAllCheck: bool; 默认false, 是否需要开启弹框内的全选功能。
 其余参数：组件内部自动挂载数据:
 1. devices // 依据父组件stationCode, deviceTypeCode请求得的所有设备array[object];
   格式如: {
@@ -53,6 +55,7 @@ class DeviceSelect extends Component {
     onChange: PropTypes.func,
     onOK: PropTypes.func,
     style: PropTypes.object,
+    max: PropTypes.number,
 
     devices: PropTypes.array, // 自带props
     partitions: PropTypes.array,
@@ -143,8 +146,12 @@ class DeviceSelect extends Component {
   }
 
   selectDevice = checkedDevices => { // 设备多选下拉框
-    const { devices } = this.props;
-    const outputDevices = devices.filter(e => checkedDevices.includes(e.deviceCode))
+    const { devices, max } = this.props;
+    if (max > 0 && checkedDevices.length > max) {
+      message.error(`所选设备不得超过${max}个`);
+      return;
+    }
+    const outputDevices = devices.filter(e => checkedDevices.includes(e.deviceCode));
     this.onOK(outputDevices)
   }
 
@@ -190,7 +197,7 @@ class DeviceSelect extends Component {
           {...deviceShow}
         >
           {devices.map((e, i) => (
-            <Option key={i} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
+            <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
         </Select> : <AutoComplete

@@ -75,34 +75,41 @@ class ConfluenceBoxList extends Component {
       this.getData(stationCode);
     }, 10000);
   }
+
   getDeviceStatus = (value) => {
     switch (value) {
-      case 100:
+      case 1:
         return '正常';
-      case 200:
-        return '停机';
-      case 300:
-        return '故障';
-      case 900:
+      case 2:
+        return '离散率>10%';
+      case 3:
+        return '离散率>20%';
+      case 4:
+        return '无通讯';
+      case 5:
         return '未接入';
       default:
         return '';
     }
   }
+
   getStatusColor = (value) => {
     switch (value) {
-      case 100:
+      case 1:
         return '#199475';
-      case 200:
-        return '#666';
-      case 300:
+      case 2:
+        return '#f5a623';
+      case 3:
         return '#a42b2c';
-      case 900:
+      case 4:
+        return '#999999';
+      case 5:
         return '#c7ceb2';
       default:
         return '#c7ceb2';
     }
   }
+
   tableColumn = () => {
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
@@ -169,7 +176,7 @@ class ConfluenceBoxList extends Component {
         title: <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
-        render: value => numWithComma(value),
+        render: value => value,
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
         title: <TableColumnTitle title="温度" unit="℃" />,
@@ -179,9 +186,9 @@ class ConfluenceBoxList extends Component {
         sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
-        dataIndex: 'deviceStatus',
-        key: 'deviceStatus',
-        render: (text, record) => (<span><i className={styles.statusColor} style={{ backgroundColor: this.getStatusColor(record.deviceStatus) }} ></i>{this.getDeviceStatus(text)}</span>),
+        dataIndex: 'dispRateStatus',
+        key: 'dispRateStatus',
+        render: text => (<span><i className={styles.statusColor} style={{ backgroundColor: this.getStatusColor(text) }} ></i>{this.getDeviceStatus(text)}</span>),
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
       },
     ];

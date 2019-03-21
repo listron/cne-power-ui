@@ -61,7 +61,7 @@ class HistoryList extends Component {
 
   render() {
     const { partHistory, listParam, queryParam, tableLoading } = this.props;
-    const { totalCount, dataList = [] } = partHistory;
+    const { totalCount = 0, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize } = listParam; // orderField
     const { pointData = [] } = dataList[0] || {};
@@ -128,7 +128,12 @@ class HistoryList extends Component {
       <div className={styles.historyList}>
         <div className={styles.pagination}>
           <span className={styles.text}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination
+            currentPage={pageNum}
+            pageSize={pageSize}
+            total={parseInt(totalCount)}
+            onPaginationChange={this.onPaginationChange}
+          />
         </div>
         <Table
           loading={tableLoading}

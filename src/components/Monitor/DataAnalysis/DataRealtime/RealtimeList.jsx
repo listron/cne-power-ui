@@ -42,7 +42,7 @@ class RealtimeList extends Component {
 
   render() {
     const { listRealtime, listParam, tableLoading } = this.props;
-    const { totalCount, time, dataList = [] } = listRealtime;
+    const { totalCount = 0, time, dataList = [] } = listRealtime;
     const { pageNum, pageSize } = listParam;
     const { pointData = [] } = dataList[0] || {};
     const columns = [
