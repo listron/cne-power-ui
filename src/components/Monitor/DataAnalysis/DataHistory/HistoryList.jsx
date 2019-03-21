@@ -4,6 +4,8 @@ import styles from './historyStyle.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
 import moment from 'moment';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class HistoryList extends Component {
   static propTypes = {
@@ -67,35 +69,35 @@ class HistoryList extends Component {
     const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
-        title: this.getTitle('设备名称'),
+        title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
       }, {
-        title: this.getTitle('电站名称'),
+        title: '电站名称',
         dataIndex: 'stationName',
         className: 'stationName',
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('stationName')
       }, {
-        title: this.getTitle('设备类型'),
+        title: '设备类型',
         dataIndex: 'deviceTypeName',
         className: 'deviceTypeName',
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceTypeName')
       }, {
-        title: this.getTitle('型号'),
+        title: '型号',
         dataIndex: 'deviceModeName',
         className: 'deviceModeName',
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceModeName')
       }, {
-        title: this.getTitle('时间'),
+        title: '时间',
         dataIndex: 'time',
         className: 'time',
         // sorter: true,
@@ -104,9 +106,14 @@ class HistoryList extends Component {
       }
     ];
     const pointColumn = pointData.map(e => ({
-      title: this.getTitle(e.pointName, e.pointUnit),
+      title: e.pointUnit ? <TableColumnTitle
+        title={e.pointName}
+        unit={e.pointUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      /> : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
+      render: value => numWithComma(parseFloat(value).toFixed(2)),
       // align: 'right'
       // sorter: true,
       // className: orderField === e.e.devicePointCode ? null : styles.sorterType,
