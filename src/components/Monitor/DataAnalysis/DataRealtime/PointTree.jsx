@@ -9,6 +9,7 @@ class PointTree extends Component {
 
   static propTypes = {
     realtimeType: PropTypes.string,
+    reRenderTree: PropTypes.number,
     queryParam: PropTypes.object,
     listParam: PropTypes.object,
     pointInfo: PropTypes.array,
@@ -20,7 +21,18 @@ class PointTree extends Component {
   };
 
   state = {
-    halfCheckedKeys: []
+    halfCheckedKeys: [],
+    expandedKeys: []
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { reRenderTree } = nextProps;
+    const preReRenderTree =  this.props.reRenderTree;
+    if (reRenderTree !== preReRenderTree) {
+      this.setState({
+        expandedKeys: []
+      })
+    }
   }
 
   onPointsQuery = () => {
@@ -37,6 +49,10 @@ class PointTree extends Component {
         listParam,
       });
     }
+  }
+
+  expandTree = (expandedKeys) => {
+    this.setState({ expandedKeys });
   }
 
   pointSelect = (selectedKeys, { halfCheckedKeys }) => {
@@ -100,7 +116,7 @@ class PointTree extends Component {
 
   render(){
     const { queryParam = {} } = this.props;
-    const { halfCheckedKeys } = this.state;
+    const { halfCheckedKeys, expandedKeys } = this.state;
     const { devicePoints = [] } = queryParam;
     return (
       <section className={styles.pointTree}>
@@ -112,6 +128,8 @@ class PointTree extends Component {
         <Tree
           checkable
           onCheck={this.pointSelect}
+          expandedKeys={expandedKeys}
+          onExpand={this.expandTree}
           checkedKeys={{
             checked: devicePoints,
             halfChecked: halfCheckedKeys

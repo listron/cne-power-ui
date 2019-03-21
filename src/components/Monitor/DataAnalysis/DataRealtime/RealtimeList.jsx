@@ -3,7 +3,9 @@ import { Table } from 'antd';
 import styles from './realtimeStyle.scss';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CommonPagination from '../../../Common/CommonPagination'
+import CommonPagination from '../../../Common/CommonPagination';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class RealtimeList extends Component {
   static propTypes = {
@@ -31,15 +33,6 @@ class RealtimeList extends Component {
     })
   }
 
-  getTitle = (title, unit) => { // 标题调整。
-    return (
-      <div className={styles.listTitle}>
-        <div className={styles.text}>{title}</div>
-        <div className={styles.unit}>{unit ? `(${unit})` : ''}</div>
-      </div>
-    )
-  }
-
   render() {
     const { listRealtime, listParam, tableLoading } = this.props;
     const { totalCount = 0, time, dataList = [] } = listRealtime;
@@ -47,27 +40,33 @@ class RealtimeList extends Component {
     const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
-        title: this.getTitle('设备名称'),
+        title: '设备名称',
         dataIndex: 'deviceName',
-        // className: 'deviceName',
+        className: 'deviceName',
       }, {
-        title: this.getTitle('电站名称'),
+        title: '电站名称',
         dataIndex: 'stationName',
-        // className: 'stationName',
+        className: 'stationName',
       }, {
-        title: this.getTitle('设备类型'),
+        title: '设备类型',
         dataIndex: 'deviceTypeName',
-        // className: 'deviceTypeName',
+        className: 'deviceTypeName',
       }, {
-        title: this.getTitle('型号'),
+        title: '型号',
         dataIndex: 'deviceModeName',
-        // className: 'deviceModeName',
+        className: 'deviceModeName',
       }
     ];
     
     const pointColumn = pointData.map(e => ({
-      title: this.getTitle(e.pointName, e.pointUnit),
+      title: e.pointUnit ? <TableColumnTitle
+        title={e.pointName}
+        unit={e.pointUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      /> : e.pointName,
       dataIndex: e.devicePointCode,
+      className: 'points',
+      render: value => numWithComma(parseFloat(value).toFixed(2)),
       // align: 'right'
     }));
     const dataSource = dataList.map((e, i) => { // 数据处理及时间规范。

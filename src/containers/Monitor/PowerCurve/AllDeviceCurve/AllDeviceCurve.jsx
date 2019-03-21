@@ -91,6 +91,9 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerdeviceList: payload => dispatch({ type: allDeviceCurveAction.getPowerdeviceList, payload }),
   exportPowerdevice: payload => dispatch({ type: allDeviceCurveAction.exportPowerdevice, payload }),
   resetAllDeviceCurve: payload => dispatch({ type: allDeviceCurveAction.RESET_ALLDEVICECURVE, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: allDeviceCurveAction.changeAllDeviceStore
+  }})
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)

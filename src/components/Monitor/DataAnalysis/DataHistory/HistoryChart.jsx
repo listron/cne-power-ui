@@ -24,7 +24,12 @@ class HistoryChart extends Component {
     const { allHistory, chartTime, chartLoading } = this.props;
     const preTime = prevProps.chartTime;
     const preLoading = prevProps.chartLoading;
-    if (chartTime !== preTime || preLoading !== chartLoading) { // 数据重新请求后重绘。
+    const preHistory = prevProps.allHistory;
+    if (
+      chartTime !== preTime // 数据更新
+      || preLoading !== chartLoading // loading状态更新
+      || (Object.keys(preHistory).length > 0 && Object.keys(allHistory).length === 0) // 手动清除数据。
+    ) { // 数据重新请求后重绘。
       this.renderChart(allHistory);
     }
   }
@@ -197,7 +202,7 @@ class HistoryChart extends Component {
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
     const { queryParam } = this.props;
-    const { deviceFullCodes, devicePoints, timeInterval } = queryParam;
+    const { deviceFullCodes, devicePoints } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (
@@ -205,7 +210,7 @@ class HistoryChart extends Component {
         <h4>
           <span className={styles.eachTitle} />
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
+          <span className={styles.tipTitle}>数据为均值或累计</span>
         </h4>
         <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
       </section>
