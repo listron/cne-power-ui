@@ -46,7 +46,7 @@ const menuData = [
           {
             name: '散点图',
             path: 'scatterDiagram',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+            rightKey: 'dataAnalysis_scatterPlot', 
           },{
             name: '历史趋势',
             path: 'history',
