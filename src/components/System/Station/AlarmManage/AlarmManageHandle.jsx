@@ -61,9 +61,9 @@ class AlarmManageHandle extends Component {
   }
 
   deleteAlarmList = () => {
-    const { stationCode, stations } = this.props;
-    const StationName = stations.filter(e => e.stationCode === stationCode)
-    this.setState({ showWarningTip: true, warningTipText: `确定要清除${StationName[0]}告警的配置？` })
+    const { stationCode, allStationBaseInfo } = this.props;
+    const stationName = allStationBaseInfo.find(e => e.stationCode === stationCode).stationName;
+    this.setState({ showWarningTip: true, warningTipText: `确定要清除${stationName}电站告警事件配置？` })
   }
 
   downloadAlarmExcel = () => {
@@ -84,12 +84,12 @@ class AlarmManageHandle extends Component {
   }
 
   render() {
-    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo } = this.props;
+    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo, stations } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.alarmManageHandle}>
         {showWarningTip &&
-          <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+          <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} style={{width: '210px',height:'100px',marginTop:'50px'}}/>}
         <div className={styles.leftHandler}>
           <SingleStationImportFileModel
             data={allStationBaseInfo}
