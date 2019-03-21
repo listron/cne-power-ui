@@ -7,6 +7,8 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class SequenceChart extends Component {
   static propTypes = {
+    xAxisDate:PropTypes.array,
+    sequencechartData:PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -18,8 +20,7 @@ class SequenceChart extends Component {
     const theoryPowers = nextProps.sequencechartData || [];
     this.drawChart(theoryPowers)
   }
-  // <div class=${styles.lineStyle}>${params[0].seriesName}风速:  ${dataFormat(params[0].value)}</div>
-  // <div class=${styles.lineStyle}>${params[1].seriesName}风速: ${dataFormat(params[1].value)}</div>
+ 
   drawChart = (params) => {
     const sequenceChart = echarts.init(document.getElementById('sequenceChart'));
     const lineColor = '#666';

@@ -12,7 +12,6 @@ function *getAllDeviceCurveData(action) {
   const { payload } = action;
   try {
     const url = `${APIBasePath}${monitor.getAllDeviceCurveData}` 
-    console.log('url: ', url);
     //  const url = '/mock/wind/powercurve/fans/chart'; 
     const response = yield call(axios.post, url,payload);
     if (response.data.code === '10000') {

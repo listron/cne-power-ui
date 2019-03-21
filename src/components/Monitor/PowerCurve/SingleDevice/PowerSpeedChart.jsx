@@ -8,6 +8,9 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class PowerSpeedChart extends Component {
   static propTypes = {
+    chartData:PropTypes.array,
+    chartId:PropTypes.string,
+
   }
   constructor(props, context) {
     super(props, context)

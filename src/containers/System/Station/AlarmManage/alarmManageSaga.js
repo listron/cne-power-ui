@@ -130,7 +130,6 @@ function* downloadAlarmExcel(action) { // 导出告警时间
 }
 
 export function* watchAlarmManage() {
-  downloadAlarmExcel
   yield takeLatest(alarmManageAction.CHANGE_ALARM_MANAGE_STORE_SAGA, changeAlarmManageStore);
   yield takeLatest(alarmManageAction.resetStore, resetStore);
   yield takeLatest(alarmManageAction.downloadAlarmExcel, downloadAlarmExcel);

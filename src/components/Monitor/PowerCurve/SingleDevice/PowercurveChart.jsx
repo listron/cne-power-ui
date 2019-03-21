@@ -8,6 +8,13 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class PowercurveChart extends Component {
   static propTypes = {
+    singleDeviceCurveData:PropTypes.array,
+    deviceFullCode:PropTypes.array,
+    getSingleDeviceCurveData:PropTypes.func,
+    stationCode:PropTypes.string,
+    startTime:PropTypes.string,
+    endTime:PropTypes.string,
+
   }
   constructor(props, context) {
     super(props, context)
@@ -41,7 +48,7 @@ class PowercurveChart extends Component {
     })
     const inverterTenMinGraphic = (ishaveData.length === 0 ) ? showNoData : hiddenNoData;
     //各种数据
-    let scatter = [], actual = [], theory = [],deviceNames=[],itemAll={},allData=[];
+    let scatter = [], actual = [], theory = [];
     let series=[];
     params.forEach((e, i) => {
       scatter[e.deviceName] = []; actual[e.deviceName] = []; theory[e.deviceName] = [];

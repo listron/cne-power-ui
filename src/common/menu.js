@@ -36,7 +36,7 @@ const menuData = [
         name: '功率曲线',
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
-        rightKey: 'monitor_station',
+        rightKey: 'monitor_powerCurve',
       },{
         name: '数据分析',
         iconStyle: 'icon-monitoring',
@@ -46,7 +46,7 @@ const menuData = [
           {
             name: '散点图',
             path: 'scatterDiagram',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+            rightKey: 'dataAnalysis_scatterPlot', 
           },{
             name: '历史趋势',
             path: 'history',

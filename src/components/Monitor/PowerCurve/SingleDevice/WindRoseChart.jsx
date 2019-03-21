@@ -7,6 +7,7 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class WindRoseChart extends Component {
   static propTypes = {
+    rosedata:PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -18,6 +19,7 @@ class WindRoseChart extends Component {
     const rosedata = nextProps.rosedata || [];
     this.drawChart(rosedata)
   }
+ 
   drawChart = (params) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
     let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
@@ -27,9 +29,15 @@ class WindRoseChart extends Component {
         avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
         percent.push([e.percent, i, e.windDirection])
     })
+    
+
+   const hasData=(windDirection.length===0||avgWindSpeed.length===0)?showNoData:hiddenNoData;
+
+
     const lineColor = '#666';
     let color = ['#199475', 'orange'];
     const option = {
+      graphic:hasData,
       title: {
         text: '风向玫瑰图',
         padding: [10, 10],
@@ -87,6 +95,7 @@ class WindRoseChart extends Component {
         },
       },
       angleAxis: [{
+        clockwise:false,
         boundaryGap: false,
         startAngle: 90,
         polarIndex: 0,

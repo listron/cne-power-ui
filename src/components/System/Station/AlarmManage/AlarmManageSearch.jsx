@@ -110,11 +110,11 @@ class AlarmManageSearch extends Component {
     const getSelectedStation = allStationBaseInfo.find(e => e.stationCode === stationCode);
     const selectedStationInfo = getSelectedStation ? [getSelectedStation] : [];
     const warnTypeList = [
-      { warnTypeName: '设备状态', warnTypeCode: 101 },
-      { warnTypeName: '开关状态', warnTypeCode: 102 },
-      { warnTypeName: '信息', warnTypeCode: 103 },
-      { warnTypeName: '警告', warnTypeCode: 104 },
-      { warnTypeName: '告警', warnTypeCode: 105 },
+      { warnTypeName: '信息', warnTypeCode: 101 },
+      { warnTypeName: '警告', warnTypeCode: 102 },
+      { warnTypeName: '故障', warnTypeCode: 103 },
+      { warnTypeName: '设备状态', warnTypeCode: 104 },
+      { warnTypeName: '开关状态', warnTypeCode: 105 },
     ]
     return (
       <div className={styles.alarmManageSearch}>

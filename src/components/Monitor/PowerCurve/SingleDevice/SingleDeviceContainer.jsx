@@ -13,6 +13,22 @@ const { monitor } = path.APISubPaths;
 
 class SingleDeviceContainer extends Component {
   static propTypes = {
+    getSingleDeviceCurveList:PropTypes.func,
+    downLoadFile:PropTypes.func,
+    getDeviceInfo:PropTypes.func,
+    getwinddistributionchart:PropTypes.func,
+    getSingleDeviceCurveData:PropTypes.func,
+    getsequencechart:PropTypes.func,
+    getpowerspeedchart:PropTypes.func,
+    changeSingleDeviceStore:PropTypes.func,
+    getpitchanglespeedchart:PropTypes.func,
+    getRoseChart:PropTypes.func,
+    correct:PropTypes.number,
+    stationCode:PropTypes.string,
+    match:PropTypes.object,
+    deviceFullCode:PropTypes.array,
+    stations:PropTypes.array,
+    deviceShowType:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -58,10 +74,9 @@ class SingleDeviceContainer extends Component {
     this.props.getSingleDeviceCurveList({ ...params,correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
-    const { stationCode, deviceFullCode, startTime, endTime, deviceShowType, getSingleDeviceCurveList } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime,  } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
    this.queryGraphData({...params,...value});
- 
   }
   queryGraphData = (value) => {
     const tabledeviceFullCode= this.props.match.params.deviceFullCode;
@@ -107,7 +122,7 @@ class SingleDeviceContainer extends Component {
   }
   render() {
     // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime, airDensity, selectDeviceFullCode,deviceInfo } = this.props;
+    const { stations, deviceShowType, stationCode,  startTime, endTime, airDensity, selectDeviceFullCode,deviceInfo } = this.props;
     const deviceTypeCode = 101;
     const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
     const pathAllDevice = `#/monitor/powercurve`;
