@@ -21,6 +21,7 @@ const Option = Select.Option;
   7. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   8. 选填- deviceShowNumber:bool; 默认是false，展示具体的设备名称  传入为true时，显示的时已选设备 已选设备数量/所有设备数量
   9. 选填 - max: number; 传入时，限定最多展示设备个数, 否则提示：'所选设备不得超过max个'。
+  10. 选填 - needAllCheck: bool; 默认false, 是否需要开启弹框内的全选功能。
 其余参数：组件内部自动挂载数据:
 1. devices // 依据父组件stationCode, deviceTypeCode请求得的所有设备array[object];
   格式如: {

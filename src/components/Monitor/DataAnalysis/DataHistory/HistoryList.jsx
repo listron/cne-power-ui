@@ -61,7 +61,7 @@ class HistoryList extends Component {
 
   render() {
     const { partHistory, listParam, queryParam, tableLoading } = this.props;
-    const { totalCount, dataList = [] } = partHistory;
+    const { totalCount = 0, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize } = listParam; // orderField
     const { pointData = [] } = dataList[0] || {};

@@ -9,6 +9,7 @@ class DeviceSelectModal extends Component {
     max: PropTypes.number,
     stationCode: PropTypes.number, // 需传props
     deviceTypeCode: PropTypes.number,
+    needAllCheck: PropTypes.bool,
     deviceModalShow: PropTypes.bool,
     checkedDevice: PropTypes.array,
     filterDevices: PropTypes.array,
@@ -118,7 +119,7 @@ class DeviceSelectModal extends Component {
   }
 
   render() {
-    const { deviceModalShow, partitions, multiple } = this.props;
+    const { deviceModalShow, partitions, multiple, needAllCheck } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
     return (
@@ -150,7 +151,9 @@ class DeviceSelectModal extends Component {
                 </Option>))}
               </Select>
             </div>
-            {multiple && <div className={styles.allCheckDevice}><Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>  </div>}
+            {multiple && needAllCheck && <div className={styles.allCheckDevice}>
+              <Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>
+            </div>}
             <div className={styles.deviceList}>
               {modalDevices.map(e => {
                 const activeDevice = checkedDevice.find(info => info.deviceCode === e.deviceCode);
