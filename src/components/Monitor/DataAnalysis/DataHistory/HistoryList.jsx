@@ -134,7 +134,6 @@ class HistoryList extends Component {
     return (
       <div className={styles.historyList}>
         <div className={styles.pagination}>
-          <span className={styles.text}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
