@@ -36,7 +36,7 @@ const menuData = [
         name: '功率曲线',
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
-        rightKey: 'system_station_powercurve',
+        rightKey: 'monitor_powerCurve',
       },{
         name: '数据分析',
         iconStyle: 'icon-monitoring',

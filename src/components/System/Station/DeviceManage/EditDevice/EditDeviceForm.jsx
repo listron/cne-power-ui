@@ -68,7 +68,7 @@ class EditDeviceForm extends Component {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceModeCode, stationCode, form, selectdeviceType, selectStation, stationDeviceDetail, pvDeviceModels, connectDevice } = this.props;
-    console.log('stationDeviceDetail: ', stationDeviceDetail);
+    
     const { stationName, manufacturer, deviceModeName, deviceTypeCode, deviceTypeName, deviceFullCode, connectTime, deviceName } = stationDeviceDetail
     const selectDeviceTypeName = typeof (selectdeviceType) === 'number' ? stationDeviceTypes.filter((e, i) => (e.deviceTypeCode === selectdeviceType))[0].deviceTypeName : selectdeviceType
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202

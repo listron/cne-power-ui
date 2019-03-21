@@ -29,7 +29,7 @@ class WindRoseChart extends Component {
         avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
         percent.push([e.percent, i, e.windDirection])
     })
-    console.log('windDirection: ', windDirection);
+    
 
    const hasData=(windDirection.length===0||avgWindSpeed.length===0)?showNoData:hiddenNoData;
 
