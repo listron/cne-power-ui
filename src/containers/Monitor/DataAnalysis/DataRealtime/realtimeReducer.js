@@ -23,6 +23,8 @@ const initState = immutable.fromJS({
   chartLoading: false, // chart图表的loading
   downloading: false, // 文件下载状态
   timeInterval: 5, // 实时数据间隔时间,
+  reRenderTree: null, // 记录属性控件生成时间
+  chartTimeMoment: null, // 记录由后台返回的chart图最新数据刷新时间
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备

@@ -190,6 +190,7 @@
 
 .realtimeList{
   flex: 1;
+  border-left: 1px solid $promptColor;
   .pagination {
     display: flex;
     align-items: center;
@@ -199,12 +200,36 @@
       margin-left: 36px;
     }
   }
-  .listTitle{
-    height: 60px;
-    padding: 9px;
-    .text, .unit{
-      line-height: 21px;
-      text-align: center;
+  :global{
+    .ant-table {
+      .ant-table-thead tr th{
+        height: 60px;
+      }
+      tr{
+        display: flex;
+        th, td{
+          padding: 8px;
+          line-height: 21px;
+        }
+      }
+      .stationName, .deviceTypeName, .deviceModeName, .deviceName, .points{
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .stationName {
+        flex: 0 0 124px;
+      }
+      .deviceTypeName{
+        flex: 0 0 128px;
+      }
+      .deviceModeName{
+        flex: 1 0 140px;
+      }
+      .deviceName, .points{
+        flex: 1 0 120px;
+      }
     }
   }
 }

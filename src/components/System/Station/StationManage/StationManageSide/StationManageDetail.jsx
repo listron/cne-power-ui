@@ -24,7 +24,7 @@ class StationManageDetail extends Component {
     getOtherPageStationDetail: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false,
@@ -34,18 +34,18 @@ class StationManageDetail extends Component {
 
   preStation = () => { // 上一个电站详情
     const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, getStationDetail, stationList } = this.props;
-    if(selectedStationIndex === 0 && pageNum === 1){ // 第一页第一条
+    if (selectedStationIndex === 0 && pageNum === 1) { // 第一页第一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
       })
-    }else if( selectedStationIndex === 0 && pageNum > 1){ // 其他页向前翻页
+    } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
       getOtherPageStationDetail({
         ...queryListParams,
         pageNum: pageNum - 1,
         selectedStationIndex: pageSize - 1,
       })
-    }else{
+    } else {
       getStationDetail({ // 正常请求上一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex - 1,
@@ -57,19 +57,19 @@ class StationManageDetail extends Component {
   nextStation = () => { // 下一个电站详情
     const { queryListParams, selectedStationIndex, pageNum, pageSize, getOtherPageStationDetail, totalNum, getStationDetail, stationList } = this.props;
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1)*pageSize - 1;
-    if(selectedStationIndex === lastPageMaxIndex && pageNum === maxPage){ // 最后一页最后一条
+    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
+    if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
       })
-    }else if( selectedStationIndex === pageSize - 1 && pageNum < maxPage){ // 向后翻页
+    } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
       getOtherPageStationDetail({
         ...queryListParams,
         pageNum: pageNum + 1,
         selectedStationIndex: 0,
       })
-    }else{
+    } else {
       getStationDetail({ // 请求下一条电站详情数据
         ...queryListParams,
         selectedStationIndex: selectedStationIndex + 1,
@@ -84,7 +84,7 @@ class StationManageDetail extends Component {
       warningTipText: '',
     })
   }
-  
+
   backToList = () => { // 返回列表页
     this.props.changeStationManageStore({
       showPage: 'list',
@@ -93,31 +93,31 @@ class StationManageDetail extends Component {
   }
 
   editDetail = () => { // 编辑页
-    this.props.onShowSideChange({ showSidePage:'edit' });
+    this.props.onShowSideChange({ showSidePage: 'edit' });
     this.props.changeStationManageStore({ showPage: 'edit' });
   }
 
   departmentInfoFun = (departmentList) => { // 根据部门信息，重组子部门/ 父部门，根据层级关系输出展示。
     const parentDepartmentArray = [];
     const subDepartmentArray = [];
-    departmentList.forEach(e=>{
-      if(!e){ return; }
-      e.parentDepartmentId?subDepartmentArray.push({ 
-        ...e 
-      }):parentDepartmentArray.push({
+    departmentList.forEach(e => {
+      if (!e) { return; }
+      e.parentDepartmentId ? subDepartmentArray.push({
+        ...e
+      }) : parentDepartmentArray.push({
         ...e
       })
     })
-    const departmentInfoTree = parentDepartmentArray.map(e=>{
+    const departmentInfoTree = parentDepartmentArray.map(e => {
       const subArray = subDepartmentArray.filter(sub => sub.parentDepartmentId === e.departmentId);
       return {
         ...e,
-        children: subArray, 
+        children: subArray,
       }
     })
-    const departmentInfo = departmentInfoTree.map(e=>{
+    const departmentInfo = departmentInfoTree.map(e => {
       let subInfo = '';
-      if(e.children && e.children.length > 0){
+      if (e.children && e.children.length > 0) {
         subInfo = `-${e.children.map(sub => sub.departmentName).join(',')}`;
       }
       return `${e.departmentName}${subInfo}`
@@ -125,7 +125,7 @@ class StationManageDetail extends Component {
     return departmentInfo.join('；');
   }
 
-  render(){
+  render() {
     const { stationDetail } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const baseInfo = baseFun(stationDetail);
@@ -141,11 +141,11 @@ class StationManageDetail extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <span className={styles.title}>{stationDetail.stationName||'--'}详情</span>
-            {stationDetail.stationStatus?<span>
-              接入时间:{stationDetail.ongridTime?moment(stationDetail.ongridTime).format('YYYY-MM-DD'):'--'}
+            <span className={styles.title}>{stationDetail.stationName || '--'}详情</span>
+            {stationDetail.stationStatus ? <span>
+              接入时间:{stationDetail.ongridTime ? moment(stationDetail.ongridTime).format('YYYY-MM-DD') : '--'}
             </span>
-            :<span>电站未接入</span>}
+              : <span>电站未接入</span>}
             {departmentInfo ? ` | ` : ``}
             <span className={styles.departmentInfo} title={departmentInfo}>
               {departmentInfo}
@@ -153,23 +153,31 @@ class StationManageDetail extends Component {
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
-            <i className="iconfont icon-next"  title="下一个" onClick={this.nextStation} />
+            <i className="iconfont icon-next" title="下一个" onClick={this.nextStation} />
             <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
           </span>
         </div>
         <div className={styles.stationManageContent} >
-          <DetailInfoPart 
-            title="基本信息" 
-            infoArray={baseInfo} 
-            handler={this.editDetail} 
+          <DetailInfoPart
+            title="基本信息"
+            infoArray={baseInfo}
+            handler={this.editDetail}
             extraInfo={
-              isWind? <div className={styles.windInfo}>
-                <span className={styles.titleStart}>可研报告轮毂高度年平均风速</span>
-                <span className={styles.valueStart}>{stationDetail.hubAnnualAverageSpeed || '--'}m/s</span>
-                <span className={styles.titleEnd}>可研报告轮毂高度年平均功率密度</span>
-                <span className={styles.valueEnd}>{stationDetail.hubAnnualAveragePower || '--'}W/㎡</span>
-              </div>: null
-            } 
+              isWind ? <div className={styles.windInfo}>
+                <div className={styles.eachItem}>
+                  <span className={styles.altitudeName}>海拔</span>
+                  <span className={styles.altitudeValue}>{stationDetail.altitude || '--'}m</span>
+                </div>
+                <div className={styles.eachItem}>
+                  <span className={styles.titleStart}>可研报告轮毂高度年平均风速</span>
+                  <span className={styles.valueStart}>{stationDetail.hubAnnualAverageSpeed || '--'}m/s</span>
+                </div>
+                <div className={styles.eachItem}>
+                  <span className={styles.titleEnd}>可研报告轮毂高度年平均功率密度</span>
+                  <span className={styles.valueEnd}>{stationDetail.hubAnnualAveragePower || '--'}W/㎡</span>
+                </div>
+              </div> : null
+            }
           />
           {isPv && <DetailInfoPart title="电站分类" infoArray={stationBelongInfo} />}
           <DetailInfoPart title="并网信息及电价情况" infoArray={connectionPriceInfo} />
@@ -180,6 +188,6 @@ class StationManageDetail extends Component {
   }
 }
 
-export default StationManageDetail ;
+export default StationManageDetail;
 
 

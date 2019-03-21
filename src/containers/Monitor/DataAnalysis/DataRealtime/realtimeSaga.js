@@ -42,6 +42,7 @@ function *getPointInfo({ payload }) { // 获取可选测点
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
+          reRenderTree: moment().unix(), // 记录时间
           pointInfo: response.data.data || [],
         }
       })
@@ -56,7 +57,7 @@ function *getPointInfo({ payload }) { // 获取可选测点
 
 function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
   const url = `${APIBasePath}${monitor.getRealtimeChart}` // '/mock/monitor/dataAnalysisChartRealtime';
-  const { chartRealtime, dataTime, timeInterval } = yield select(state => state.monitor.dataRealtime.toJS());
+  const { chartRealtime, dataTime, timeInterval, chartTimeText } = yield select(state => state.monitor.dataRealtime.toJS());
   const maxInfoLength = 30 * 60 / timeInterval; // 规定的最大数据长度30min.
   try {
     const { queryParam = {} } = payload;
@@ -68,7 +69,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')) // 去掉测点的所属分组code
       }),
-      delay(3000) // 请求3秒无响应即为超时。
+      delay(4500) // 请求4.5秒无响应即为超时。
     ]);
     if (response && response.data && response.data.code === '10000') { // 请求成功
       const chartInfo = response.data.data || {};
@@ -83,6 +84,7 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
+            chartTimeMoment: maxTime, // 仅用于展示的最新api数据时间。
             chartRealtime: {
               pointInfo: pointInfo.map(e => {
                 const { pointCode, pointName, pointUnit, deviceInfo = [] } = e || {};
@@ -165,7 +167,8 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
         yield put({
           type: realtimeAction.GET_REALTIME_SUCCESS,
           payload: {
-            dataTime: maxTime.format('YYYY-MM-DD HH:mm:ss'),
+            dataTime: moment(maxTime).format('YYYY-MM-DD HH:mm:ss'),
+            chartTimeMoment: (maxTime > moment(dataTime)) ? maxTime : moment(dataTime), // 仅用于展示的最新api数据时间。
             chartRealtime: {
               pointTime: newPointTime,
               pointInfo: newPointInfo,
