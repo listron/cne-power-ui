@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { Modal, Select, Checkbox } from 'antd';
+import { Modal, Select, Checkbox, message } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const { Option } = Select;
 
 class DeviceSelectModal extends Component {
   static propTypes = {
+    max: PropTypes.number,
     stationCode: PropTypes.number, // 需传props
     deviceTypeCode: PropTypes.number,
+    needAllCheck: PropTypes.bool,
     deviceModalShow: PropTypes.bool,
     checkedDevice: PropTypes.array,
     filterDevices: PropTypes.array,
@@ -75,14 +77,19 @@ class DeviceSelectModal extends Component {
   }
 
   checkDevice = device => { // 点击选中设备
-    const { multiple } = this.props;
+    const { multiple, max } = this.props;
     const { checkedDevice } = this.state;
+    
     if (multiple) { // 多选
       if (checkedDevice.find(e => e.deviceCode === device.deviceCode)) { // 已选中删除
         this.setState({
           checkedDevice: checkedDevice.filter(e => e.deviceCode !== device.deviceCode)
         })
       } else { // 添加选中
+        if (max > 0 && checkedDevice.length === max) {
+          message.error(`所选设备不得超过${max}个`);
+          return;
+        }
         checkedDevice.push(device);
         this.setState({ checkedDevice });
       }
@@ -112,7 +119,7 @@ class DeviceSelectModal extends Component {
   }
 
   render() {
-    const { deviceModalShow, partitions, multiple } = this.props;
+    const { deviceModalShow, partitions, multiple, needAllCheck } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
     return (
@@ -144,7 +151,9 @@ class DeviceSelectModal extends Component {
                 </Option>))}
               </Select>
             </div>
-            {multiple && <div className={styles.allCheckDevice}><Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>  </div>}
+            {multiple && needAllCheck && <div className={styles.allCheckDevice}>
+              <Checkbox onChange={this.allCheckDevice} checked={this.state.checkAll}>全选</Checkbox>
+            </div>}
             <div className={styles.deviceList}>
               {modalDevices.map(e => {
                 const activeDevice = checkedDevice.find(info => info.deviceCode === e.deviceCode);
