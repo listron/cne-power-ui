@@ -36,7 +36,7 @@ class EditConflunce extends Component {
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
     const { pvDeviceModels,stationDeviceDetail } = this.props;
-    console.log('stationDeviceDetail: ', stationDeviceDetail);
+    
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const detailMap=stationDeviceDetail?stationDeviceDetail.map:{};
     const branchCount =  stationDeviceDetail.map?stationDeviceDetail.map.connectedBranches:[];
@@ -48,7 +48,7 @@ class EditConflunce extends Component {
     // const branchCountArr=branchCount.map((e,i)=>{
     // return e===1?i+1:null
     // })
-    console.log('branchCountArr: ', branchCountArr);
+    
     
     
     return (
@@ -65,7 +65,7 @@ class EditConflunce extends Component {
            
           </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('branchCount',{ initialValue: ((stationDeviceDetail.map.branchCount||+stationDeviceDetail.map.branchCount===0)?stationDeviceDetail.map.branchCount:''), rules: [
+          {getFieldDecorator('branchCount',{ initialValue: ((stationDeviceDetail.map.componentCount||+stationDeviceDetail.map.componentCount===0)?stationDeviceDetail.map.componentCount:''), rules: [
             { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
           ]})(
           <Input placeholder="请输入..." />
