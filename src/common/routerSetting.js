@@ -82,27 +82,43 @@ const routers = [
   }, { // 实时监控-电站监控-单电站
     path: '/monitor/singleStation/:stationCode',
     component: () => import('../containers/Monitor/StationMonitor/SingleStation/SingleStation'),
+  },{//实时监控-功率曲线-多设备
+    path:'/monitor/powercurve',
+    exact:true,
+    component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve//AllDeviceCurve')
+  },{//实时监控-功率曲线-单设备
+    path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
+    // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
+    exact:true,
+    component:() => import('../containers/Monitor/PowerCurve/SingleDeviceCurve/SingleDeviceCurve')
   }, { //实时监控-数据分析-历史趋势
     path: '/monitor/data/history',
     component: () => import('../containers/Monitor/DataAnalysis/DataHistory/DataHistory'),
-    // component: () => import('../components/Common/Building/Building'),
+  }, { //实时监控-数据分析-散点图
+    path: '/monitor/data/scatterDiagram',
+    component: () => import('../containers/Monitor/DataAnalysis/DataScatterDiagram/DataScatterDiagram'),
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
     component: () => import('../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime'),
-    // component: () => import('../components/Common/Building/Building'),
-  }, { //实时监控-报表查询-电量报表
+  },
+  { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
     component: () => import('../components/Common/Building/Building'),
+    // component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     component: () => import('../components/Common/Building/Building'),
+    // component: () => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus'),
   }, { //实时监控-报表查询-故障报表
     path: '/monitor/report/malfunction',
     component: () => import('../components/Common/Building/Building'),
+    // component: () => import('../containers/Monitor/Report/Malfunction/Malfunction'),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
     component: () => import('../components/Common/Building/Building'),
-  }, { // 隐藏页： 修改密码
+    // component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
+  },
+  { // 隐藏页： 修改密码
     path: '/hidden/user/editPassword',
     component: () => import('../containers/Others/EditPassword'),
   }, { // 系统管理-电站管理-电站;

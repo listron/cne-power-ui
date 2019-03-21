@@ -33,12 +33,21 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '功率曲线',
+        iconStyle: 'icon-monitoring',
+        path: 'powercurve',
+        rightKey: 'monitor_station',
+      },{
         name: '数据分析',
         iconStyle: 'icon-monitoring',
         path: 'data',
         rightKey: 'monitor_dataAnalysis',
         children: [
           {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+          },{
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',

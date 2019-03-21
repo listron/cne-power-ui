@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './dataRealtime.scss';
-import { Button } from 'antd';
 import { realtimeAction } from './realtimeReducer';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import RealtimeSearch from '../../../../components/Monitor/DataAnalysis/DataRealtime/RealtimeSearch';
@@ -75,7 +74,13 @@ const mapDispatchToProps = (dispatch) => ({
   stopRealtimeList: () => dispatch({ type: realtimeAction.stopRealtimeList }),
   getSecendInterval: payload => dispatch({ type: realtimeAction.getSecendInterval, payload }),
   getAvailableDeviceType: payload => dispatch({ type: realtimeAction.getAvailableDeviceType, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: realtimeAction.CHANGE_REALTIME_STORE
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataRealtime);

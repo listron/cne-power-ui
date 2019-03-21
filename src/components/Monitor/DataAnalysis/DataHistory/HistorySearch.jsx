@@ -28,6 +28,10 @@ class HistorySearch extends Component {
     getListHistory: PropTypes.func,
   };
 
+  state = {
+    disableDateFun: (current) => current > moment(),
+  }
+
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
     const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({
@@ -104,7 +108,31 @@ class HistorySearch extends Component {
     });
   }
 
-  timeChange = (timeMoment) => { // 时间选择
+  calendarChange = (rangeMoments) => {
+    const { queryParam } = this.props;
+    const { timeInterval } = queryParam;
+    if (rangeMoments.length === 1) {
+      this.setState({ // 10min时间跨度不超过2个月 秒级时间跨度不超过48小时
+        disableDateFun: (current) => {
+          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(3, 'M') : moment(rangeMoments[0]).add(48, 'h');
+          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(3, 'M') : moment(rangeMoments[0]).subtract(48, 'h');
+          return current > moment() || current > maxTime || current < minTime;
+        }
+      })
+    } else {
+      this.setState({
+        disableDateFun: (current) => current > moment(),
+      })
+    }
+  }
+
+  openChange = (status) => {
+    !status && this.setState({ // 重置不可选日期为今日以前。
+      disableDateFun: (current) => current > moment(),
+    })
+  } 
+
+  DateChange = (timeMoment) => { // 日期跨度选择
     this.historyDataFetch({
       startTime: timeMoment[0],
       endTime: timeMoment[1]
@@ -162,6 +190,7 @@ class HistorySearch extends Component {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
     } = this.props;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
+    const { disableDateFun } = this.state;
     return (
       <div className={styles.historySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
@@ -201,6 +230,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              max={2}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
@@ -211,9 +241,11 @@ class HistorySearch extends Component {
             <RangePicker
               allowClear={false}
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.timeChange}
+              onChange={this.DateChange}
+              onCalendarChange={this.calendarChange}
+              onOpenChange={this.openChange}
               value={[startTime, endTime]}
-              disabledDate={(current) => current > moment()}
+              disabledDate={disableDateFun}
               showTime
             />
           </div>
@@ -225,11 +257,10 @@ class HistorySearch extends Component {
               placeholder="数据间隔时间"
             >
               {intervalInfo.map(e => (
-                <Option key={e} value={e}>{e === 10 ? '10分' : `${e}秒`}</Option>
+                <Option key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
               ))}
             </Select>
           </div>
-          
         </div>
       </div>
     )
