@@ -33,7 +33,6 @@ class WindDeviceGraph extends Component {
     this.drawChart(theoryPowers, checkedAll,stationCode,startTime,endTime)
   }
   onChange = (checked) => {
-    const { checkedAll } = this.state;
     const {stationCode,startTime,endTime}=this.props;
     this.setState({
       checkedAll: checked
@@ -88,7 +87,6 @@ class WindDeviceGraph extends Component {
           
           const info = params.data;
           const windSpeedInterval=info.windSpeedInterval.replace(',','~')
-          // const currentData = monthPower[currentInfo.dataIndex] || {};
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>

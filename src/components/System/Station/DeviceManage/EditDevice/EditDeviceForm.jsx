@@ -177,8 +177,8 @@ class EditDeviceForm extends Component {
                   <span>{connectTime}</span>
                 )}
               </FormItem>
-              {!isShow && <div className={styles.submitStyle}>
-                <Button onClick={this.submitForm} >保存</Button>
+              {!isShowComponent && <div className={styles.submitStyle}>
+                <Button onClick={this.leftsubmitForm} >保存</Button>
               </div>}
             </div>
           </div>

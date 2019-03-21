@@ -7,6 +7,7 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class WindDistributionChart extends Component {
   static propTypes = {
+    winddistributionchartData:PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
