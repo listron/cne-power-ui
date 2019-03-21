@@ -7,11 +7,9 @@ import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
 
 
-
-
-
 class WindDeviceTable extends Component {
   static propTypes = {
+    changeAllDeviceStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -22,26 +20,10 @@ class WindDeviceTable extends Component {
     }
   }
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeAllDeviceStore, onChangeFilter, } = this.props;
+    const { changeAllDeviceStore, } = this.props;
     changeAllDeviceStore({ pageNum: currentPage, pageSize })
-    onChangeFilter({ pageNum: currentPage, pageSize })
   }
-  // tableChange=(pagination, filters, sorter)=>{
-  //   const {changeAllDeviceStore,onChangeFilter}=this.props;
-  //   const { field, order } = sorter;
-  //   const sortInfo = {
-  //     deviceName: '0',
-  //     windSpeedCenter:'3',
-  //     powerAvg: '4',
-  //     powerTheory: '7',
-  //   };
-  //   const orderField = sortInfo[field] ? sortInfo[field] : '';
-  //   const orderType = order ? (sorter.order === 'ascend' ? '0' : '1') : '';
-  //   changeAllDeviceStore({ orderField, orderType })
-  //   onChangeFilter({
-  //       orderField, orderType
-  //   })
-  // }
+ 
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
@@ -68,8 +50,8 @@ class WindDeviceTable extends Component {
     return tableSource
   }
   render() {
-    const { pageSize, pageNum, total,powerCurveListData,stationCode,startTime,endTime } = this.props;
-    const time=`${startTime}-${endTime}`;
+    const { pageSize, pageNum, powerCurveListData,stationCode,startTime,endTime } = this.props;
+    const time=`${startTime}~${endTime}`;
     const dataSort = this.createTableSource(powerCurveListData);
     const totalNum = powerCurveListData.length;
     let startRow = (pageNum - 1) * pageSize;
@@ -83,7 +65,7 @@ class WindDeviceTable extends Component {
         key: 'deviceName',
         sorter: true,
         render:(value,record,index)=>{
-          return  (<a href={`#/monitor/powercurve/${stationCode}/${record.key}/${time}`}>
+          return  (<a href={`#/monitor/powercurve/${stationCode}/${record.deviceFullCode}/${time}`}>
           <div title={record.deviceName} className={styles.deviceName}>{record.deviceName}</div>
         </a>)
         }

@@ -10,13 +10,36 @@ import SequenceChart from './SequenceChart';
 
 class SingleWindDeviceCharts extends Component {
   static propTypes = {
+    pitchanglespeedchartData:PropTypes.array,
+    sequencechartData:PropTypes.array,
+    roseChartData:PropTypes.array,
+    powerspeedchartData:PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
   }
+  compare = (key) => {
+    return (a, b) => {
+      let val1 = a[key];
+      let val2 = b[key];
+      if (val1 < val2) { //正序
+        return 1;
+      } else if (val1 > val2) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  }
+
   render() {
     const {powerspeedchartData,pitchanglespeedchartData,sequencechartData,roseChartData}=this.props;
-   let rosedata= roseChartData.length>0?roseChartData.concat([roseChartData[0]]):[];
+    console.log('roseChartData: ', roseChartData);
+  //  let rosedata= roseChartData.length>0?roseChartData.concat([roseChartData[0]]):[];
+   let sortrosedata= roseChartData.length>0?roseChartData.sort(this.compare('rangeId')):[];
+   console.log('sortrosedata: ', sortrosedata);
+   let rosedata=sortrosedata.length>0?sortrosedata.concat([sortrosedata[0]]):[];
+   console.log('roseData: ', rosedata);
     const xAxisDate=sequencechartData.length>0?sequencechartData[0].sequenceChartData.map(e=>e.time):[];
     return (
       <div className={styles.chartsLayout}>
