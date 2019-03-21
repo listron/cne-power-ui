@@ -39,6 +39,19 @@ class WindDeviceGraph extends Component {
     })
     this.drawChart((this.props.allDeviceCurveData || []), checked,stationCode,startTime,endTime)
   }
+  compare = (key) => {
+    return (a, b) => {
+      let val1 = +a[key];
+      let val2 = +b[key];
+      if (val1 < val2) { //正序
+        return -1;
+      } else if (val1 > val2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
   drawChart = (params, checkedAll,stationCode,startTime,endTime) => {
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
     const filterDeviceName = params.map(e => e.deviceName);
@@ -54,6 +67,11 @@ class WindDeviceGraph extends Component {
     const inverterTenMinGraphic = (filterDeviceName.length === 0 && hasData.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     // let color = ['#199475'];
+    
+    params.forEach((e,i)=>{
+      e.dataList.sort(this.compare('windSpeedCenter'))
+e
+    })
     const option = {
       graphic: inverterTenMinGraphic,
       // color: color,
@@ -115,8 +133,8 @@ class WindDeviceGraph extends Component {
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
       },
       xAxis: {
-        type: 'category',
-        data: [5, 10, 15, 20, 25],
+        type: 'value',
+        // data: [5, 10, 15, 20, 25],
         name: '风速(m/s)',
         nameTextStyle: {
           color: lineColor,
@@ -163,10 +181,12 @@ class WindDeviceGraph extends Component {
       ],
 
       series: params.map((e, i) => {
-        let lineData = []
-        e.dataList.forEach((item, i) => {
+        let lineData = [];
+        let sortData= e.dataList.sort(this.compare('windSpeedCenter'));
+       
+        sortData.forEach((item, i) => {
           lineData.push({
-            value: item.powerAvg,
+            value: [item.windSpeedCenter,item.powerAvg],
             ...item,
             ...e,
           })
