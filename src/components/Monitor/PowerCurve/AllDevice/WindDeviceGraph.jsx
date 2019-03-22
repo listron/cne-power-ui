@@ -8,11 +8,11 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class WindDeviceGraph extends Component {
   static propTypes = {
-    startTime:PropTypes.string,
-    endTime:PropTypes.string,
-    allDeviceCurveData:PropTypes.array,
-    checkedAll:PropTypes.bool,
-    stationCode:PropTypes.number,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    allDeviceCurveData: PropTypes.array,
+    checkedAll: PropTypes.bool,
+    stationCode: PropTypes.number,
 
   }
   constructor(props, context) {
@@ -22,22 +22,22 @@ class WindDeviceGraph extends Component {
     }
   }
   componentDidMount() {
-    const {stationCode,startTime,endTime}=this.props;
+    const { stationCode, startTime, endTime } = this.props;
     const { checkedAll } = this.state;
-    this.drawChart((this.props.allDeviceCurveData || []),checkedAll,stationCode,startTime,endTime)
+    this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, startTime, endTime)
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allDeviceCurveData || [];
-    const{ stationCode,startTime,endTime}=nextProps;
+    const { stationCode, startTime, endTime } = nextProps;
     const { checkedAll } = this.state;
-    this.drawChart(theoryPowers, checkedAll,stationCode,startTime,endTime)
+    this.drawChart(theoryPowers, checkedAll, stationCode, startTime, endTime)
   }
   onChange = (checked) => {
-    const {stationCode,startTime,endTime}=this.props;
+    const { stationCode, startTime, endTime } = this.props;
     this.setState({
       checkedAll: checked
     })
-    this.drawChart((this.props.allDeviceCurveData || []), checked,stationCode,startTime,endTime)
+    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, startTime, endTime)
   }
   compare = (key) => {
     return (a, b) => {
@@ -52,7 +52,7 @@ class WindDeviceGraph extends Component {
       }
     }
   }
-  drawChart = (params, checkedAll,stationCode,startTime,endTime) => {
+  drawChart = (params, checkedAll, stationCode, startTime, endTime) => {
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
     const filterDeviceName = params.map(e => e.deviceName);
     const filterPowerAvg = params.map((e, i) => {
@@ -62,15 +62,15 @@ class WindDeviceGraph extends Component {
     })
     const hasData = filterPowerAvg.length > 0 ? filterPowerAvg.reduce((pre, next) => {
       return pre.concat(next)
-    }):[];
-    
+    }) : [];
+
     const inverterTenMinGraphic = (filterDeviceName.length === 0 && hasData.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    // let color = ['#199475'];
-    
-    params.forEach((e,i)=>{
+    let color = ['#a42b2c', '#0e6650', '#de930c', '#004a79', '#6a3302', '#b00016', '#2d5600', '#006a6c'];
+
+    params.forEach((e, i) => {
       e.dataList.sort(this.compare('windSpeedCenter'))
-e
+
     })
     const option = {
       graphic: inverterTenMinGraphic,
@@ -79,9 +79,9 @@ e
         show: checkedAll,
         left: '10%',
         // right:'30%',
-        // top: 'bottom',
+        top: '60%',
         width: '80%',
-        bottom: '80%',
+        // bottom: '80%',
         itemWidth: 14,
         itemHeight: 6,
         x: 'center',
@@ -102,9 +102,9 @@ e
         enterable: true,
         show: true,
         formatter: (params) => {
-          
+
           const info = params.data;
-          const windSpeedInterval=info.windSpeedInterval.replace(',','~')
+          const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>
@@ -139,6 +139,13 @@ e
         nameTextStyle: {
           color: lineColor,
         },
+        splitLine:{
+          show:true,
+          lineStyle:{
+            color:['#dfdfdf'],
+            type:'dashed',
+          }
+        },
         axisTick: {
           show: false,
         },
@@ -158,7 +165,7 @@ e
         },
       },
       yAxis: [
-        {
+        { type: 'value',
           name: '功率(KW)',
           nameTextStyle: {
             color: lineColor,
@@ -171,6 +178,13 @@ e
               color: '#dfdfdf',
             },
           },
+          splitLine:{
+            show:true,
+            lineStyle:{
+              color:['#dfdfdf'],
+              type:'dashed',
+            }
+          },
           axisLabel: {
             color: lineColor,
           },
@@ -182,11 +196,11 @@ e
 
       series: params.map((e, i) => {
         let lineData = [];
-        let sortData= e.dataList.sort(this.compare('windSpeedCenter'));
-       
+        let sortData = e.dataList.sort(this.compare('windSpeedCenter'));
+
         sortData.forEach((item, i) => {
           lineData.push({
-            value: [item.windSpeedCenter,item.powerAvg],
+            value: [item.windSpeedCenter, item.powerAvg],
             ...item,
             ...e,
           })
@@ -204,7 +218,7 @@ e
         }
       })
     };
-    powercurveChart.setOption(option,'notMerge');
+    powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
       return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
