@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import styles from './scatterDiagram.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
 import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 
 class ScatterDiagramList extends Component{
@@ -36,23 +38,27 @@ class ScatterDiagramList extends Component{
   render(){
     const { listParam, scatterDiagramList, tableLoading, pointsInfo, queryParam } = this.props;
     const { xPoint, yPoint } = queryParam;
-
-    const xCurrentPoint = pointsInfo.find(e =>{ 
+    const { totalSize, dataList = [], xUnit, yUnit } = scatterDiagramList;
+    const { pageNum, pageSize, } = listParam;
+    
+    
+    const xCurrentPoint = dataList.find(e =>{ 
       return e.devicePointCode === xPoint;
     }) || {};
-
-    const yCurrentPoint = pointsInfo.find(e =>{ 
+    
+    const yCurrentPoint = dataList.find(e =>{ 
       return e.devicePointCode === yPoint;
     }) || {};
-
-    const { totalSize, dataList = [] } = scatterDiagramList;
-    const { pageNum, pageSize, } = listParam;
+    
+    console.log(scatterDiagramList);
+    console.log(pointsInfo);
+    console.log(xPoint)
     const dataSource = dataList.map((e,i) =>{
       return  ({
         key: i,
         ...e,
-        xData: dataFormat(e.xData,'--',2),
-        yData: dataFormat(e.yData,'--',2),
+        xData: numWithComma(dataFormat(e.xData,'--',2)),
+        yData: numWithComma(dataFormat(e.yData,'--',2)),
         time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
       })
     })
@@ -73,10 +79,10 @@ class ScatterDiagramList extends Component{
       title: '时间',
       dataIndex: 'time',
     }, {
-      title: xCurrentPoint.devicePointName || 'X轴',
+      title: <TableColumnTitle title={xCurrentPoint.devicePointName} unit={xUnit} />,
       dataIndex: 'xData',
     },{
-      title: yCurrentPoint.devicePointName || 'X轴',
+      title: <TableColumnTitle title={yCurrentPoint.devicePointName} unit={yUnit} />,
       dataIndex: 'yData',
     }];
 

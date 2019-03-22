@@ -79,7 +79,7 @@ class ScatterDiagramSearch extends Component{
 
   timeChange = (timeMoment) => { // 选择时间
     const { changeScatterDiagramStore, queryParam  } = this.props;
-    const [ startTime, endTime ] = timeMoment;
+    const [ startTime, endTime ] = timeMoment;    
     changeScatterDiagramStore({
       queryParam:{
         ...queryParam,
@@ -123,7 +123,7 @@ class ScatterDiagramSearch extends Component{
   }
 
   render(){
-    const { stations, queryParam, pointsInfo, scatterDiagramList } = this.props;
+    const { stations, queryParam, pointsInfo, scatterDiagramList, scatterDiagramType } = this.props;
     const { dataList = [] } = scatterDiagramList;
     const { stationCode, deviceFullCode, xPoint, yPoint, startTime, endTime } = queryParam;
     const selectedStation = stationCode[0] || {};
@@ -137,6 +137,7 @@ class ScatterDiagramSearch extends Component{
               data={stations.filter(e => e.stationType === 0)}
               onOK={this.selectStation}
               value={stationCode}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>
           <div className={styles.deviceSelect}>
@@ -168,34 +169,40 @@ class ScatterDiagramSearch extends Component{
           <div className={styles.xPointSelect}>
             <span className={styles.text}>X轴测点</span>
             <Select
-              className={styles.pointSelect} 
-              onChange={this.xSelectPoints}  
+              showSearch
+              className={styles.pointSelect}
+              placeholder="请选择"
               disabled={pointsInfo.length === 0}
               value={xPoint}
-              placeholder="请选择" 
+              optionFilterProp="children"
+              onChange={this.xSelectPoints}
+              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             >
-              {pointsInfo.filter(e => e.devicePointCode !== yPoint).map(e => {
+             {pointsInfo.filter(e => e.devicePointCode !== yPoint).map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
-              })}
-            </Select>
+            })}
+          </Select>
           </div>
           <div className={styles.xPointSelect}>
             <span className={styles.text}>Y轴测点</span>
-            <Select 
-              className={styles.pointSelect} 
-              onChange={this.ySelectPoints} 
-              disabled={pointsInfo.length === 0}
-              value={yPoint}
-              placeholder="请选择" 
-            >
-              {pointsInfo.filter(e => e.devicePointCode !== xPoint).map(e => {
+            <Select
+            showSearch
+            className={styles.pointSelect}
+            placeholder="请选择"
+            disabled={pointsInfo.length === 0}
+            value={yPoint}
+            optionFilterProp="children"
+            onChange={this.ySelectPoints}
+            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          >
+           {pointsInfo.filter(e => e.devicePointCode !== xPoint).map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
               })}
-            </Select>
+          </Select>
           </div>
           <div className={styles.rightHandle}>
-            <Button className={styles.searchInfo} onClick={this.searchPointList}>查询</Button>
-            <Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0}>导出</Button>
+            <Button className={styles.searchInfo} onClick={this.searchPointList} disabled={!xPoint || !yPoint}>查询</Button>
+            {scatterDiagramType === 'list' &&<Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0 }>导出</Button> }
           </div>
         </div>
       </div>
