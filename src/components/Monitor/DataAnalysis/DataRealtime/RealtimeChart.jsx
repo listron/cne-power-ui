@@ -8,6 +8,7 @@ import moment from 'moment';
 class RealtimeChart extends Component {
   static propTypes = {
     chartLoading: PropTypes.bool,
+    chartTimeMoment: PropTypes.object,
     timeInterval: PropTypes.number,
     dataTime: PropTypes.string,
     queryParam: PropTypes.object,
@@ -230,7 +231,9 @@ class RealtimeChart extends Component {
 
   render() {
     // height: 160 * 测点数 + top(10) + bottom(60) + 24 * 设备数。
-    const { queryParam = {}, dataTime = null } = this.props;
+    // const { queryParam = {}, dataTime = null } = this.props;
+    const { queryParam = {}, chartTimeMoment } = this.props;
+    
     const { deviceFullCodes = [], devicePoints = [] } = queryParam;
     const calcHeight = 160 * devicePoints.length + 70 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
@@ -241,7 +244,9 @@ class RealtimeChart extends Component {
           <span className={styles.eachTitle}>各设备测点实时数据检测</span>
           <span className={styles.tipTitle}>
             <span>刷新时间: </span>
-            <span className={styles.currentTime}>{dataTime || '暂无'}</span>
+            <span className={styles.currentTime}>
+              {chartTimeMoment ? moment(chartTimeMoment).format('YYYY-MM-DD HH:mm:ss') : '暂无'}
+            </span>
           </span>
         </h4>
         <div className={styles.innerChart} id="dataRealtimeChart" style={{ height: `${chartHeight}px`}} />

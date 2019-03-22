@@ -39,6 +39,7 @@ function *getPointInfo(action) { // 获取可选测点
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
+          reRenderTree: moment().unix(), // 记录时间
           pointInfo: response.data.data || [],
         }
       })

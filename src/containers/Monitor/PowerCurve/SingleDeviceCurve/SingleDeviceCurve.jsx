@@ -54,8 +54,9 @@ const mapDispatchToProps = (dispatch) => ({
   getpitchanglespeedchart:payload => dispatch({ type: singleDeviceCurveAction.getpitchanglespeedchart, payload }),
   getwinddistributionchart:payload => dispatch({ type: singleDeviceCurveAction.getwinddistributionchart, payload }),
   getsequencechart:payload => dispatch({ type: singleDeviceCurveAction.getsequencechart, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
-
-
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: singleDeviceCurveAction.changeSingleDeviceStore
+  }})
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)

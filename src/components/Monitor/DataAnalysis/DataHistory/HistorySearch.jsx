@@ -112,10 +112,10 @@ class HistorySearch extends Component {
     const { queryParam } = this.props;
     const { timeInterval } = queryParam;
     if (rangeMoments.length === 1) {
-      this.setState({ // 10min时间跨度不超过2个月 秒级时间跨度不超过48小时
+      this.setState({ // 10min时间跨度不超过2个月 秒级时间跨度不超过2天
         disableDateFun: (current) => {
-          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(3, 'M') : moment(rangeMoments[0]).add(48, 'h');
-          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(3, 'M') : moment(rangeMoments[0]).subtract(48, 'h');
+          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(3, 'M') : moment(rangeMoments[0]).add(1, 'd');
+          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(3, 'M') : moment(rangeMoments[0]).subtract(1, 'd');
           return current > moment() || current > maxTime || current < minTime;
         }
       })
@@ -132,11 +132,24 @@ class HistorySearch extends Component {
     })
   } 
 
-  DateChange = (timeMoment) => { // 日期跨度选择
-    this.historyDataFetch({
-      startTime: timeMoment[0],
-      endTime: timeMoment[1]
-    })
+  DateChange = (timeMoment, timeStr) => { // 日期跨度选择
+    const [startTime, endTime] = timeMoment;
+    const { queryParam } = this.props;
+    const preStartTime = queryParam.startTime;
+    const preEndTime = queryParam.endTime;
+    if (startTime - preStartTime === 0 && endTime - preEndTime === 0) { // 未进行时间改变
+      return;
+    }
+
+    if (startTime.isSame(preStartTime, 'd') && endTime.isSame(preEndTime, 'd')) { // 正在进行时间选择
+      this.historyDataFetch({ startTime, endTime });      
+    } else { // 进行的是日期选择
+      const isToday  = endTime.isSame(moment(), 'd'); // 今天则用当前时间
+      this.historyDataFetch({
+        startTime: startTime.startOf('d'),
+        endTime: isToday ? moment() : endTime.endOf('d'),
+      })
+    }
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
@@ -246,6 +259,7 @@ class HistorySearch extends Component {
               onOpenChange={this.openChange}
               value={[startTime, endTime]}
               disabledDate={disableDateFun}
+              dropdownClassName={styles.historyRangeDropdown}
               showTime
             />
           </div>
