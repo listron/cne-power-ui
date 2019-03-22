@@ -150,6 +150,7 @@ class AddDevice extends Component {
        
 
           {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
+       
         </Form>}
         {showStep === 'next' && <AddDeviceForm {...this.props} selectStation={selectStation} selectdeviceType={selectdeviceType || selectdeviceTypeName} gobackPre={this.gobackPre} />}
         {showAddDeviceModal && <ShowAddDeviceModal {...this.props} showAddDeviceModal={showAddDeviceModal} cancleAddDeviceModal={this.cancleAddDeviceModal} saveFormState={this.saveFormState} selectStation={selectStation[0].stationCode} />}

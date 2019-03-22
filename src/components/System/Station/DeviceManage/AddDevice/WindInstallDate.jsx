@@ -11,7 +11,8 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
   const warrantyBegintime=mapData?(mapData.warrantyBegintime?moment(mapData.warrantyBegintime):''):'';
   const warrantyEndtime=mapData?(mapData.warrantyEndtime?moment(mapData.warrantyEndtime):''):'';
   const scrapTime=mapData?(mapData.scrapTime?moment(mapData.scrapTime):''):'';
-  const hubHeight=mapData?(mapData.hubHeight?mapData.scrapTime:''):'--';
+  const hubHeight=mapData?(mapData.hubHeight?mapData.hubHeight:''):'';
+  const altitude=mapData?(mapData.altitude?mapData.altitude:''):'';
   
   return (
     <div className={styles.rightStyles}>
@@ -66,6 +67,15 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
         className={styles.formItemStyle}
       >
         {getFieldDecorator('hubHeight', { initialValue:hubHeight })(
+          <Input placeholder="保留小数点后两位" />
+        )}<span className={styles.unitStyle}>米</span>
+      </FormItem>
+      <FormItem
+        label="海拔"
+        colon={false}
+        className={styles.formItemStyle}
+      >
+        {getFieldDecorator('altitude', { initialValue:altitude })(
           <Input placeholder="保留小数点后两位" />
         )}<span className={styles.unitStyle}>米</span>
       </FormItem>

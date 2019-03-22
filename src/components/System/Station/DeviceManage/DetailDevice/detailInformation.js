@@ -74,6 +74,7 @@ export const windTimeFun = (detailData) => {
     { name: '出质保时间', value: (isMap&&detailData.map.warrantyEndtime)?moment(detailData.map.warrantyEndtime).format('YYYY-MM-DD'):'',},
     { name: '报废时间', value: (isMap&&detailData.map.scrapTime)?moment(detailData.map.scrapTime).format('YYYY-MM-DD'):'',},
     { name: '轮毂高度', value: (isMap&&detailData.map.hubHeight)?detailData.map.hubHeight:'', unit:'m'},
+    { name: '海拔', value: (isMap&&detailData.map.altitude)?detailData.map.altitude:'', unit:'m'},
   ];
   return windTimeArray;
 }
