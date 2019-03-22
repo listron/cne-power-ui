@@ -76,7 +76,7 @@ class RealtimeChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: i === pointInfo.length - 1 ? true : false,
+      showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
       show: false

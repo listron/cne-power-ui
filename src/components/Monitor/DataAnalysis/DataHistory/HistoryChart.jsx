@@ -39,7 +39,7 @@ class HistoryChart extends Component {
     gridIndex: i,
     axisLine: {
       lineStyle: {
-          color: '#666'
+        color: '#666'
       },
     },
     axisTick: { 
@@ -67,7 +67,7 @@ class HistoryChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: i === pointData.length - 1 ? true : false,
+      showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
       show: false
