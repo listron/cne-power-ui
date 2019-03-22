@@ -63,10 +63,11 @@ class DetailDevice extends Component {
   nextStation = () => { // 下一个电站详情
     const { queryParams, selectedStationIndex, pageNum, pageSize, getOtherPageDeviceDetail, totalNum, getStationDeviceDetail, deviceList } = this.props;
 
-    const deviceFullCode = deviceList[selectedStationIndex]['deviceFullCode'];
+    // const deviceFullCode = deviceList[selectedStationIndex+1]['deviceFullCode'];
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
-    if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
+    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize ;
+    console.log('lastPageMaxIndex: ', lastPageMaxIndex);
+    if (selectedStationIndex+1 === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
@@ -81,7 +82,7 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
-        deviceFullCode: deviceFullCode,
+        deviceFullCode:  deviceList[selectedStationIndex+1]['deviceFullCode'],
       })
     }
   }

@@ -5,6 +5,9 @@ import { Modal, Form, Button, Upload, Select, Row, Col, message } from 'antd';
 const FormItem = Form.Item;
 class ImportDevice extends Component {
   static propTypes = {
+    importStationDevice:PropTypes.func,
+    cancelModal:PropTypes.func,
+
   }
   constructor(props, context) {
     super(props, context)
@@ -32,41 +35,22 @@ class ImportDevice extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const{fileList,file}=this.state;
-    const selectStationArr = this.props.form.getFieldValue('select');
-    const selectstationCode = selectStationArr ? selectStationArr[0]['stationCode'] : null
-    const formData = new FormData();
-    
-    fileList.forEach(file => {
-      formData.append("file", file);
-    });
-    formData.append("stationCode", selectstationCode);
-    console.log('file: ', file);
-    console.log('fileList: ', fileList);
-    console.log('formData: ', formData);
-
-    // onStationUpload()
-    this.props.importStationDevice({stationCode:selectstationCode,formData})
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { select, upload } = values;
+        const {fileList}=this.state;
         const selectStaionCode = select.length > 0 && select[0].stationCode || '';
         const formData = new FormData();
-        formData.append('file', upload[0].originFileObj);
+        formData.append('file', fileList[0]);
         this.props.importStationDevice({ stationCode: selectStaionCode, formData })
         this.props.cancelModal()
       }
     });
   }
-
   normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
     }
-    this.setState({
-      file:e,
-      fileList:e.fileList
-    })
     return e && e.fileList;
   }
 
@@ -75,11 +59,14 @@ class ImportDevice extends Component {
       const index = state.fileList.indexOf(file);
       const newFileList = state.fileList.slice();
       newFileList.splice(index, 1);
+      
       return {
         fileList: newFileList,
       };
     });
   }
+
+ 
 
   selectStation = () => {
     this.removeFile()
@@ -89,6 +76,8 @@ class ImportDevice extends Component {
     const { showModal, allStationBaseInfo } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { fileList } = this.state;
+    
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -98,31 +87,6 @@ class ImportDevice extends Component {
         xs: { span: 24 },
         sm: { span: 16 },
       },
-    };
-    const uploadprops = {
-      onRemove: (file) => {
-        this.setState((state) => {
-          const index = state.fileList.indexOf(file);
-          const newFileList = state.fileList.slice();
-          newFileList.splice(index, 1);
-          return {
-            fileList: newFileList,
-          };
-        });
-      },
-      beforeUpload: (file) => {
-        this.setState(state => ({
-          fileList: [...state.fileList, file],
-        }));
-        const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
-        const validFile = validType.includes(file.type);
-        if (!validFile) {
-          message.error('只支持上传excel文件!');
-        }
-        // return !!validFile
-        return false;
-      },
-      fileList,
     };
 
     return (
