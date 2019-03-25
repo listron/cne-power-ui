@@ -102,7 +102,7 @@ class WindDeviceGraph extends Component {
         enterable: true,
         show: true,
         formatter: (params) => {
-
+          console.log(params);
           const info = params.data;
           const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
           return `<div class=${styles.formatStyle}>
@@ -113,8 +113,8 @@ class WindDeviceGraph extends Component {
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
-            <div class=${styles.lineStyle}>平均风速:  ${dataFormat(params.name)}</div>
-            <div class=${styles.lineStyle}>平均功率: ${dataFormat(params.value)}</div>
+            <div class=${styles.lineStyle}>平均风速:  ${dataFormat(info.windSpeedAvg)}</div>
+            <div class=${styles.lineStyle}>平均功率: ${dataFormat(info.powerAvg)}</div>
           </div>`
         },
         backgroundColor: '#fff',
@@ -139,11 +139,11 @@ class WindDeviceGraph extends Component {
         nameTextStyle: {
           color: lineColor,
         },
-        splitLine:{
-          show:true,
-          lineStyle:{
-            color:['#dfdfdf'],
-            type:'dashed',
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ['#dfdfdf'],
+            type: 'dashed',
           }
         },
         axisTick: {
@@ -165,7 +165,8 @@ class WindDeviceGraph extends Component {
         },
       },
       yAxis: [
-        { type: 'value',
+        {
+          type: 'value',
           name: '功率(KW)',
           nameTextStyle: {
             color: lineColor,
@@ -178,11 +179,11 @@ class WindDeviceGraph extends Component {
               color: '#dfdfdf',
             },
           },
-          splitLine:{
-            show:true,
-            lineStyle:{
-              color:['#dfdfdf'],
-              type:'dashed',
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#dfdfdf'],
+              type: 'dashed',
             }
           },
           axisLabel: {
