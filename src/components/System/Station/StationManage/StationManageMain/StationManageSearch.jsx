@@ -35,7 +35,7 @@ class StationManageSearch extends Component {
 
   onRegionChange = (e) => {
     this.setState({
-      // regionNameState: e.target.value,
+      regionNameState: e.target.value,
     })
   }
 

@@ -27,7 +27,9 @@ class ScatterDiagramChart extends Component{
     }
   }
 
-  renderScatterChart = (scatterDiagramCharts) => {    
+  renderScatterChart = (scatterDiagramCharts) => {  
+    console.log(scatterDiagramCharts);
+      
     const { chartLoading, pointsInfo, queryParam } = this.props;
     const { xPoint, yPoint } = queryParam;
     const xCurrentPoint = pointsInfo.find(e =>{ // 选中x轴devicePointName
@@ -78,8 +80,8 @@ class ScatterDiagramChart extends Component{
                 const yName = yCurrentPoint.devicePointName || 'Y轴';
                 return `<div class=${styles.chartTool}>
                   <h3 class=${styles.title}>${scatterTime.time ? moment(scatterTime.time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
-                  <p class=${styles.value}>${xName}：${dataFormat(value[0], '--', 2) + scatterUnit.xUnit }</p>
-                  <p class=${styles.value}>${yName}：${dataFormat(value[1], '--', 2) + scatterUnit.yUnit }</p>
+                  <p class=${styles.value}>${xName}：${dataFormat(value[0], '--', 2)}${scatterUnit.xUnit || ''}</p>
+                  <p class=${styles.value}>${yName}：${dataFormat(value[1], '--', 2)}${scatterUnit.yUnit || ''}</p>
                 </div>`
               })}
             </div>`
@@ -87,7 +89,7 @@ class ScatterDiagramChart extends Component{
         }
       },
       xAxis: {
-        name: `${xCurrentPoint.devicePointName ? `${xCurrentPoint.devicePointName}` : ''}${xCurrentPoint.devicePointUnit ? `(${xCurrentPoint.devicePointUnit})` : ''}`,
+        name: `${xCurrentPoint.devicePointName || ''}${xCurrentPoint.devicePointUnit || ''}`,
         type: 'value',
         scale: true,
         splitNumber: 20,
@@ -102,7 +104,7 @@ class ScatterDiagramChart extends Component{
         }
       },
       yAxis: {
-        name: `${yCurrentPoint.devicePointName ? `${yCurrentPoint.devicePointName}` : ''}${yCurrentPoint.devicePointUnit ? `(${yCurrentPoint.devicePointUnit})` : ''}`,
+        name: `${yCurrentPoint.devicePointName || ''}${yCurrentPoint.devicePointUnit || ''}`,
         type: 'value',
         scale: true,
         axisTick: {
