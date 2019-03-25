@@ -18,7 +18,7 @@ const initState = immutable.fromJS({
   queryParam: { // 请求chart数据的参数集合
     stationCode: [], // 选中的电站
     deviceFullCode: [], // 选中的设备
-    startTime: moment().startOf('day').subtract(1, 'day'),
+    startTime: moment().startOf('day').subtract(0, 'day'),
     endTime: moment(),
     xPoint: null,
     yPoint: null,
