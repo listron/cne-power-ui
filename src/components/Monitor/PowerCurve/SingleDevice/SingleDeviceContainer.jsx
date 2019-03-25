@@ -29,6 +29,13 @@ class SingleDeviceContainer extends Component {
     deviceFullCode:PropTypes.array,
     stations:PropTypes.array,
     deviceShowType:PropTypes.string,
+    startTime:PropTypes.string,
+    endTime:PropTypes.string,
+    pageNum:PropTypes.number,
+    pageSize:PropTypes.number,
+    airDensity:PropTypes.string,
+    selectDeviceFullCode:PropTypes.array,
+    deviceInfo:PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -67,7 +74,7 @@ class SingleDeviceContainer extends Component {
     })
   }
   onSwitchChange = (checked) => {
-    const { stationCode, deviceFullCode, startTime, endTime, correct, } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
    
@@ -116,7 +123,7 @@ class SingleDeviceContainer extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone
+        timeZone:timeZone/-60
       },
     })
   }

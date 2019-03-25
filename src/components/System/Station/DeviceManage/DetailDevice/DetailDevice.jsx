@@ -65,9 +65,8 @@ class DetailDevice extends Component {
 
     // const deviceFullCode = deviceList[selectedStationIndex+1]['deviceFullCode'];
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize ;
-    console.log('lastPageMaxIndex: ', lastPageMaxIndex);
-    if (selectedStationIndex+1 === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
+    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize;
+    if (selectedStationIndex + 1 === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
@@ -82,7 +81,7 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
-        deviceFullCode:  deviceList[selectedStationIndex+1]['deviceFullCode'],
+        deviceFullCode: deviceList[selectedStationIndex + 1]['deviceFullCode'],
       })
     }
   }
@@ -137,7 +136,7 @@ class DetailDevice extends Component {
                 </div>
               </div>
               <div className={styles.eachInfo}>
-                <div className={styles.infoName}>组件个数</div>
+                <div className={styles.infoName}>支路个数</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.branchCount}>
                   {(deviceDetailMap && (deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
                 </div>
@@ -145,15 +144,16 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
-                  <Row>
-                    {connectedBranches.map((e, i) => {
-                      return (
-                        <Col span={3}>
-                          <div>第{i + 1}支路</div>
-                          <Checkbox checked={!!e} key={i}></Checkbox>
-                        </Col>)
-                    })}
-                  </Row>
+                  <div className={styles.checkItem}>
+                  {connectedBranches.map((e, i) => {
+                    return (
+                      <div className={styles.itemStyle} key={i}>
+                        <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
+                        <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
+                      </div>
+                    )
+                  })}
+                  </div>
                   <div className={styles.linestyle}>
                     <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
                 </div>
@@ -178,3 +178,7 @@ class DetailDevice extends Component {
 }
 export default (DetailDevice)
 //(deviceTypeCode === 202||deviceTypeCode === 206)
+// <Col span={3}>
+// <div>第{i + 1}支路</div>
+// <Checkbox checked={!!e} key={i}></Checkbox>
+// </Col>

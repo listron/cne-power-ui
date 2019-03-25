@@ -87,7 +87,7 @@ class DeviceFilter extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone
+        timeZone:timeZone/-60
       },
     })
   }

@@ -32,12 +32,23 @@ class WindDeviceGraph extends Component {
     const { checkedAll } = this.state;
     this.drawChart(theoryPowers, checkedAll, stationCode, startTime, endTime)
   }
+
   onChange = (checked) => {
     const { stationCode, startTime, endTime } = this.props;
     this.setState({
       checkedAll: checked
     })
     this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, startTime, endTime)
+  }
+  changeSelect = (checked) => {
+    let select = {};
+    this.props.allDeviceCurveData.forEach((e,i)=>{
+      e.dataList.forEach((item,i)=>{
+        select[e.deviceName]=checked;
+      })
+    })
+    return select
+
   }
   compare = (key) => {
     return (a, b) => {
@@ -76,7 +87,7 @@ class WindDeviceGraph extends Component {
       graphic: inverterTenMinGraphic,
       // color: color,
       legend: {
-        show: checkedAll,
+        show: true,
         left: '10%',
         // right:'30%',
         top: '60%',
@@ -90,7 +101,8 @@ class WindDeviceGraph extends Component {
         textStyle: {
           color: lineColor,
           fontSize: 12,
-        }
+        },
+        selected: this.changeSelect(checkedAll)
       },
       grid: {
         top: 90,
@@ -102,7 +114,6 @@ class WindDeviceGraph extends Component {
         enterable: true,
         show: true,
         formatter: (params) => {
-          console.log(params);
           const info = params.data;
           const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
           return `<div class=${styles.formatStyle}>
