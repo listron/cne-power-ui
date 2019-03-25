@@ -56,14 +56,14 @@ class SingleDeviceContainer extends Component {
   }
   componentWillReceiveProps(nextProp) {
     const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
+    // console.log('deviceFullCode: ', deviceFullCode);
+    // console.log('this.props.deviceFullCode: ', this.props.deviceFullCode);
     const params = { stationCode, deviceFullCode, startTime, endTime }
-    if (deviceFullCode.length !== this.props.deviceFullCode.length) {
-      this.queryGraphData(params)
-    }
-    for (let i = 0; i < deviceFullCode.length; i++) {
-      if (deviceFullCode[i] !== this.props.deviceFullCode[i]) {
-        return this.queryGraphData(params)
-      }
+    if (deviceFullCode && deviceFullCode.length > 0) {
+      const preLength = this.props.deviceFullCode ? this.props.deviceFullCode.length : 0;
+      const curLength = deviceFullCode.length;
+      (preLength !== curLength) && this.queryGraphData(params);
+      deviceFullCode.find(e => !this.props.deviceFullCode.includes(e)) && this.queryGraphData(params);
     }
   }
   onOk = (selectdevice) => {

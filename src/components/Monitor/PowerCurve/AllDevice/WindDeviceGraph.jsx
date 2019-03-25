@@ -233,6 +233,8 @@ class WindDeviceGraph extends Component {
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
+      // console.log('click')
+      // console.log(params)
       return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
     })
   }
