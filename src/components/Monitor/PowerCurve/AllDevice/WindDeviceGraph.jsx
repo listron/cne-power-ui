@@ -13,29 +13,26 @@ class WindDeviceGraph extends Component {
     allDeviceCurveData: PropTypes.array,
     checkedAll: PropTypes.bool,
     stationCode: PropTypes.number,
+    changeAllDeviceStore: PropTypes.func,
 
   }
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      checkedAll: true,
-    }
+   
   }
   componentDidMount() {
-    const { stationCode, startTime, endTime } = this.props;
-    const { checkedAll } = this.state;
+    const { stationCode, startTime, endTime,checkedAll } = this.props;
     this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, startTime, endTime)
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allDeviceCurveData || [];
-    const { stationCode, startTime, endTime } = nextProps;
-    const { checkedAll } = this.state;
+    const { stationCode, startTime, endTime,checkedAll } = nextProps;
     this.drawChart(theoryPowers, checkedAll, stationCode, startTime, endTime)
   }
 
   onChange = (checked) => {
     const { stationCode, startTime, endTime } = this.props;
-    this.setState({
+    this.props.changeAllDeviceStore({
       checkedAll: checked
     })
     this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, startTime, endTime)
@@ -239,10 +236,11 @@ class WindDeviceGraph extends Component {
     })
   }
   render() {
+    const {checkedAll}=this.props;
     return (
       <div className={styles.graphStyle}>
         <div id="powerCurveChart" className={styles.powerCurveChart}></div>
-        <div className={styles.switchStyle}> <Switch defaultChecked onChange={this.onChange} />全部显示</div>
+        <div className={styles.switchStyle}> <Switch checked={checkedAll} onChange={this.onChange} />全部显示</div>
       </div>
     )
   }
