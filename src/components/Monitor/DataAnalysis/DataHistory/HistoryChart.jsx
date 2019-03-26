@@ -7,6 +7,7 @@ import { dataFormat } from '../../../../utils/utilFunc';
 
 class HistoryChart extends Component {
   static propTypes = {
+    timeInterval: PropTypes.number,
     chartLoading: PropTypes.bool,
     queryParam: PropTypes.object,
     chartTime: PropTypes.number,
@@ -205,7 +206,7 @@ class HistoryChart extends Component {
 
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
-    const { queryParam } = this.props;
+    const { queryParam, timeInterval } = this.props;
     const { deviceFullCodes, devicePoints } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
@@ -214,7 +215,8 @@ class HistoryChart extends Component {
         <h4>
           <span className={styles.eachTitle} />
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>数据为均值或累计</span>
+          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '均值或累计' : '瞬时'}值</span>
+
         </h4>
         <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
       </section>
