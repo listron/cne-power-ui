@@ -29,12 +29,10 @@ class PowercurveChart extends Component {
     this.drawChart(theoryPowers)
   }
   onChange = (checked) => {
-    if(checked){
-      // 
       const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
       const params = { stationCode, deviceFullCode, startTime, endTime };
       this.props.getSingleDeviceCurveData({ ...params,correct: checked ? 1 : 0 })
-    }
+    
     
   }
   drawChart = (params) => {
