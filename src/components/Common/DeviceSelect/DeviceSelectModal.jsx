@@ -119,7 +119,7 @@ class DeviceSelectModal extends Component {
   }
 
   render() {
-    const { deviceModalShow, partitions, multiple, needAllCheck } = this.props;
+    const { deviceModalShow, partitions, multiple, needAllCheck, max } = this.props;
     const { modalDevices, checkedDevice, checkedMatrix } = this.state;
     const { deviceTypeName } = modalDevices[0] || {};
     return (
@@ -131,7 +131,7 @@ class DeviceSelectModal extends Component {
           onCancel={this.hideModal}
           cancelText="取消"
           okText="确定"
-          title="请选择"
+          title={`请选择${multiple && max > 0 ? ` (最多选择${max}个)` : ''}`}
           width={625}
           wrapClassName={styles.deviceModal}
         >
