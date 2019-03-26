@@ -89,8 +89,8 @@ class WindRoseChart extends Component {
           </div>
           <div  style='background:#dfdfdf;height:1px;
           width:100%;' ></div>
-          <div class=${styles.lineStyle}>${params[0].marker}平均风速:  ${dataFormat(params[0].value[0])}</div>
-          <div class=${styles.lineStyle}>${params[1].marker}风向占比: ${dataFormat(params[1].value[0])}%</div>
+          <div class=${styles.lineStyle}>${params[0].marker}平均风速:  ${dataFormat(params[0].value[0],'--',2)}</div>
+          <div class=${styles.lineStyle}>${params[1].marker}风向占比: ${dataFormat(params[1].value[0],'--',2)}%</div>
         </div>`
         },
       },

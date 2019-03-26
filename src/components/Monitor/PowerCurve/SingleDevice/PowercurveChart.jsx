@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
 import { Switch } from 'antd';
+import moment from 'moment';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -29,7 +30,7 @@ class PowercurveChart extends Component {
   }
   onChange = (checked) => {
     if(checked){
-      // console.log('功率曲线图空气密度校正请求');
+      // 
       const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
       const params = { stationCode, deviceFullCode, startTime, endTime };
       this.props.getSingleDeviceCurveData({ ...params,correct: checked ? 1 : 0 })
@@ -105,15 +106,15 @@ class PowercurveChart extends Component {
         formatter: (params) => {
           const info = params.data;
           if(params.seriesType==="scatter"){
-            return ` <div class=${styles.lineStyle}>时间:  ${info[2]}</div>
-            <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0])}</div>
-            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1])}</div>
-            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3])}</div>`
+            return ` <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0],'--',2)}</div>
+            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1],'--')}</div>
+            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3],'--')}</div>`
           }
           if(info.belong){
             return `<div class=${styles.lineStyle}>${params.seriesName}</div>
             <div class=${styles.lineStyle}>风速区间: ${info.windSpeedInterval}</div>
-            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info.value)}</div>`
+            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info.value,'--')}</div>`
           }
           return `<div class=${styles.formatStyle}>
           <div class=${styles.topStyle}>
@@ -123,8 +124,8 @@ class PowercurveChart extends Component {
           <div  style='background:#dfdfdf;height:1px;
           width:100%;' ></div>
           <div class=${styles.lineStyle}>风速区间: ${info.windSpeedInterval}</div>
-          <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info.windSpeedAvg)}</div>
-          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info.powerAvg)}</div>
+          <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info.windSpeedAvg,'--',2)}</div>
+          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info.powerAvg,'--')}</div>
         </div>`
         },
         backgroundColor: '#fff',

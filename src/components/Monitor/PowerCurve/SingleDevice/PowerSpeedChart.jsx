@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
+import moment from 'moment';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -95,12 +96,12 @@ class PowerSpeedChart extends Component {
           const info = params.data;
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-              <div>${info[2]}</div>
+              <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0])}</div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1])}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0],'--',2)}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1],'--')}</div>
           </div>`
         },
         backgroundColor: '#fff',

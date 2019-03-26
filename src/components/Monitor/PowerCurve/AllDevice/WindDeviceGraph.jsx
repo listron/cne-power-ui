@@ -5,6 +5,7 @@ import { Switch } from 'antd';
 import styles from './allDeviceCurve.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import moment from 'moment';
 
 class WindDeviceGraph extends Component {
   static propTypes = {
@@ -18,24 +19,31 @@ class WindDeviceGraph extends Component {
   }
   constructor(props, context) {
     super(props, context)
-   
+
   }
   componentDidMount() {
     const { stationCode, startTime, endTime,checkedAll } = this.props;
-    this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, startTime, endTime)
+    const beginTime=moment(startTime).format('YYYY-MM-DD');
+    const stopTime=moment(endTime).format('YYYY-MM-DD');
+
+    this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, beginTime, stopTime)
   }
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allDeviceCurveData || [];
     const { stationCode, startTime, endTime,checkedAll } = nextProps;
-    this.drawChart(theoryPowers, checkedAll, stationCode, startTime, endTime)
+    const beginTime=moment(startTime).format('YYYY-MM-DD');
+    const stopTime=moment(endTime).format('YYYY-MM-DD');
+    this.drawChart(theoryPowers, checkedAll, stationCode, beginTime, stopTime)
   }
 
   onChange = (checked) => {
     const { stationCode, startTime, endTime } = this.props;
+    const beginTime=moment(startTime).format('YYYY-MM-DD');
+    const stopTime=moment(endTime).format('YYYY-MM-DD');
     this.props.changeAllDeviceStore({
       checkedAll: checked
     })
-    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, startTime, endTime)
+    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode,  beginTime, stopTime)
   }
   changeSelect = (checked) => {
     let select = {};
@@ -230,8 +238,8 @@ class WindDeviceGraph extends Component {
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
-      // console.log('click')
-      // console.log(params)
+      // 
+      // 
       return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
     })
   }

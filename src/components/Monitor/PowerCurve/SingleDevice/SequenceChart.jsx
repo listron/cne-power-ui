@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
+import moment from 'moment';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -62,7 +63,7 @@ class SequenceChart extends Component {
         formatter: (params) => {
 
           const windSpeed = params.map((e, i) => {
-            return (`<div class=${styles.lineStyle}> ${e.marker}${e.seriesName}风速: ${dataFormat(e.value)}</div>`)
+            return (`<div class=${styles.lineStyle}> ${e.marker}${e.seriesName}风速: ${dataFormat(e.value,'--',2)}</div>`)
           })
 
           return `<div class=${styles.formatStyle}>

@@ -56,8 +56,8 @@ class SingleDeviceContainer extends Component {
   }
   componentWillReceiveProps(nextProp) {
     const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
-    // console.log('deviceFullCode: ', deviceFullCode);
-    // console.log('this.props.deviceFullCode: ', this.props.deviceFullCode);
+    // 
+    // 
     const params = { stationCode, deviceFullCode, startTime, endTime }
     if (deviceFullCode && deviceFullCode.length > 0) {
       const preLength = this.props.deviceFullCode ? this.props.deviceFullCode.length : 0;
@@ -139,7 +139,7 @@ class SingleDeviceContainer extends Component {
           <div className={styles.left}>
             <div className={styles.singleInfo}>电站名称:{stationInfo && stationInfo.regionName}-{stationInfo && stationInfo.stationName}</div>
             <div className={styles.singleInfo}>设备名称:{deviceInfo.deviceName}</div>
-            <div className={styles.singleInfo}>时间:{moment(startTime).format('YYYY-MM-DD')}~{moment(endTime).format('YYYY-MM-DD')}</div>
+            <div className={styles.singleInfo}>时间:{moment(startTime).format('YYYY/MM/DD')}~{moment(endTime).format('YYYY/MM/DD')}</div>
             {deviceShowType === 'graph' && <div className={styles.singleInfo}>增加对比设备:
             <DeviceSelect
                 disabled={stationInfo ? false : true}
