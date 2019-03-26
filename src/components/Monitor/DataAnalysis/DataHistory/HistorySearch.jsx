@@ -260,6 +260,11 @@ class HistorySearch extends Component {
               value={[startTime, endTime]}
               disabledDate={disableDateFun}
               dropdownClassName={styles.historyRangeDropdown}
+              renderExtraFooter={() => (
+                <span className={styles.infoTip}>
+                  {timeInterval === 10 ? '时间选择范围不可超过3个月' : '时间选择范围不可超过2天'}
+                </span>
+              )}
               showTime
             />
           </div>

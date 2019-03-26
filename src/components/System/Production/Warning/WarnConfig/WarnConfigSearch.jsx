@@ -36,10 +36,6 @@ class WarnConfigSearch extends Component {
 
   selectStation = (stations) => { // 选中电站
     const { getStationDeviceTypes, getWarnList, listQueryParams, changeWarnStore } = this.props;
-    getStationDeviceTypes({
-      payload: { stationCodes: stations.length > 0 && stations[0].stationCode || "", },
-      resultName: 'stationDeviceTypes'
-    });
     getWarnList({
       ...listQueryParams,
       stationCode: stations.length > 0 && stations[0].stationCode || null,
@@ -51,16 +47,17 @@ class WarnConfigSearch extends Component {
     changeWarnStore({
       deviceModels: [],
       devicePoints: [],
+      stationDeviceTypes: [],
     })
+    stations.length > 0 && getStationDeviceTypes({
+      payload: { stationCodes: stations.length > 0 && stations[0].stationCode || "", },
+      resultName: 'stationDeviceTypes'
+    });
   }
 
   selectDeviceType = (value) => { // 选中设备类型
     const { getWarnList, listQueryParams, changeWarnStore, getDeviceModel } = this.props;
     const { stationCode } = listQueryParams;
-    getDeviceModel({
-      payload: { stationCode,deviceTypeCode: value, },
-      resultName: 'deviceModels'
-    });
     getWarnList({
       ...listQueryParams,
       deviceTypeCode: value,
@@ -70,21 +67,26 @@ class WarnConfigSearch extends Component {
     })
     changeWarnStore({
       devicePoints: [],
+      deviceModels: [],
     })
+    value && getDeviceModel({
+      payload: { stationCode, deviceTypeCode: value, },
+      resultName: 'deviceModels'
+    });
   }
 
   selectDeviceModel = (value) => { // 选中设备型号
-    const { getWarnList, listQueryParams, getPoints } = this.props;
+    const { getWarnList, listQueryParams, getPoints, changeWarnStore } = this.props;
     const { stationCode, deviceTypeCode } = listQueryParams;
-    getPoints({
-      payload: { stationCode,deviceTypeCode, deviceModeCode: value },
-      resultName: 'devicePoints'
-    });
     getWarnList({
       ...listQueryParams,
       deviceModeCode: value,
       pointCode: '',
       pageNum: 1,
+    })
+    value && getPoints({ stationCode, deviceTypeCode, deviceModeCode: value });
+    changeWarnStore({
+      devicePoints: [],
     })
   }
 
@@ -118,9 +120,9 @@ class WarnConfigSearch extends Component {
         </Select>
         <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={null} value={null}>{'全部设备型号'}</Option>
-          {deviceModels.map(e => {
+          {deviceModels.map((e, index) => {
             if (!e) { return null; }
-            return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+            return <Option key={index} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
         </Select>
         <Select className={styles.pointSelect} onChange={this.selectPoints} value={pointCode} placeholder="请选择测点" disabled={pointSelectDisable}>

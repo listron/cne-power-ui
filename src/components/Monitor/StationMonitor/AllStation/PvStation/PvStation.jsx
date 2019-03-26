@@ -51,6 +51,7 @@ class PvStation extends React.Component {
   }
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
+    this.setState({ stationType: 'all', currentPage: 1, })
   }
   statisticStatusNum = () => {
     const { pvMonitorStation } = this.props;
@@ -75,12 +76,12 @@ class PvStation extends React.Component {
       return e && e.stationStatus === 900
     })[0].stationNum : '0';
     return {
-      normalNum, 
+      normalNum,
       dataInterruptionNum,
       unconnectionNum
     }
   }
-  statusDataList=()=>{
+  statusDataList = () => {
     let { checked, stationType } = this.state;
     const { pvMonitorStation } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
@@ -100,8 +101,8 @@ class PvStation extends React.Component {
     })
     return newStationDataList
   }
-  mapData=()=>{
-    const { pvMonitorStation, realTimePowerUnit, realCapacityUnit,realTimePowerPoint ,realCapacityPoint} = this.props;
+  mapData = () => {
+    const { pvMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
     let iconArray = [
       {
@@ -126,13 +127,13 @@ class PvStation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
-        symbolSize: stationType > 0 ? [30, 20]: [31, 36],
+        symbolSize: stationType > 0 ? [30, 20] : [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint),
-        stationCapacity: (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint),
+        stationPower: (realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint),
+        stationCapacity: (realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
-        stationStatus:stationStatus,
+        stationStatus: stationStatus,
         realTimePowerUnit,
         realCapacityUnit
       })
@@ -174,43 +175,31 @@ class PvStation extends React.Component {
           )
         })}
       </div>
-    )  
+    )
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
         <Tabs className={styles.containerTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey} animated={false}>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-grid"></i>
-              </span>
-            }
+            tab={<span><i className="iconfont icon-grid"></i> </span>}
             key="stationBlock"
           >
             <PvStationItem {...this.props} stationDataList={this.statusDataList()} />
           </TabPane>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-table"></i>
-              </span>
-            }
+            tab={<span><i className="iconfont icon-table"></i> </span>}
             key="stationList"
           >
-            <PvStationList 
-            {...this.props} 
-            currentPage={currentPage} 
-            pageSize={pageSize} 
-            onPaginationChange={this.onPaginationChange}
-            stationDataList={this.statusDataList()} 
+            <PvStationList
+              {...this.props}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              onPaginationChange={this.onPaginationChange}
+              stationDataList={this.statusDataList()}
             />
           </TabPane>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-map"></i>
-              </span>
-            }
+            tab={<span> <i className="iconfont icon-map"></i></span>}
             key="stationMap"
           >
             <Map testId="pv_bmap_station" {...this.props} stationDataList={this.mapData()} />

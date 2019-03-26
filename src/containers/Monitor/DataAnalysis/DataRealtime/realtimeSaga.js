@@ -119,12 +119,12 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
           }
         })
       } else { // 已有存储的数据信息，将api结果追加进入当前chart数据组。
-        if (moment(dataTime) >= maxTime || !pointTime[0]) { // 若数据记录时间大于或等于返回值的最大时间，为无用数据
-          throw { response };
-        }
         const newPointTime = chartRealtime.pointTime || [];
         const prePointInfo = chartRealtime.pointInfo || [];
-        const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval); // 超出记录的最大时间的段数.
+        if (!pointTime[0] || (moment(pointTime[0]) <= moment(newPointTime[0]))) { // api时间不存在或返回时间已小于记录中的最小时间，抛弃。
+          throw { response };
+        }
+        const timeSpace = parseInt((maxTime - moment(dataTime)) / 1000 / timeInterval); // 超出记录的最大时间的段数.(可为负数)
 
         for (let i = 0; i < timeSpace; i++) {
           newPointTime.shift();
@@ -148,9 +148,14 @@ function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数
                   pointValue.push(null);
                 }
                 pointValue.push(...reverseValues);
+              } else if (timeSpace + maxInfoLength < pointTime.length) { // timeSpace < 0，需插入数据位置在头部部分需舍弃位置。
+                const cutLength = maxInfoLength + timeSpace; // 20 5 -20
+                reverseValues.splice(0, cutLength);
+                pointValue.splice(0, pointTime.length - cutLength, ...reverseValues);
+                // 返回的时间
               } else { // 队列操作, 位移长度 = pointTime.length - timeSpace 
                 const cutLength = pointTime.length - timeSpace;
-                pointValue.splice(pointValue.length - cutLength, pointValue.length - 1, ...reverseValues); // 切末尾并插入新数据
+                pointValue.splice(pointValue.length - cutLength, pointValue.length, ...reverseValues); // 切末尾并插入新数据
               }
               pointValue.splice(0, pointValue.length - maxInfoLength); // 额外长度切除。
               return {

@@ -53,7 +53,7 @@ class WindStationList extends React.Component {
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
-      render(value){ return numWithComma(value); },
+      render(value) { return numWithComma(value); },
     }] : [{
       title: <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
@@ -62,15 +62,13 @@ class WindStationList extends React.Component {
       render: (value, record, index) => {
         return {
           children: (
-            <div >
-              <div className={styles.progressInfo}>
-                <div className={styles.progressData}>
-                  <div className={styles.stationValue}>
-                    <div>{numWithComma(record.yearOutput)}</div>
-                    <div className={styles.planOutput}>{numWithComma(record.planOutput)}</div>
-                  </div>
-                  <Progress strokeWidth={3} percent={+(record.planOutput) ? (record.yearOutput / record.planOutput * 100) : 0} showInfo={false} />
+            <div className={styles.progressInfo}>
+              <div className={styles.progressData}>
+                <div className={styles.stationValue}>
+                  <div>{numWithComma(record.yearOutput)}</div>
+                  <div className={styles.planOutput}>{numWithComma(record.planOutput)}</div>
                 </div>
+                <Progress strokeWidth={3} percent={+(record.planOutput) ? (record.yearOutput / record.planOutput * 100) : 0} showInfo={false} />
               </div>
             </div>
           ),
@@ -102,7 +100,6 @@ class WindStationList extends React.Component {
         dataIndex: "stationName",
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
-        // (a, b) => a.stationName.localeCompare(b.stationName),
         render: (value, record, index) => {
           if (record.currentStation !== '900') {
             return {
@@ -122,12 +119,9 @@ class WindStationList extends React.Component {
         dataIndex: "stationrovince",
         defaultSortOrder: "descend",
         sorter: true,
-        // (a, b) => a.stationrovince.localeCompare(b.stationrovince),
-        render: (value, record, index) => {
+        render: (value, record) => {
           return {
-            children: (
-              <div className={styles.stationrovince}>{record.stationrovince}</div>
-            )
+            children: (<div className={styles.stationrovince}>{record.stationrovince}</div>)
           }
         }
       },
@@ -136,25 +130,20 @@ class WindStationList extends React.Component {
         dataIndex: "stationPower",
         defaultSortOrder: "descend",
         sorter: true,
-        // (a, b) => a.stationPower - b.stationPower,
         render: (value, record, index) => {
           return {
             children: (
-              <div>
-                <div className={styles.progressInfo}>
-                  <div className={styles.progressData}>
-                    <div className={styles.stationValue}>
-                      <div>{numWithComma(record.stationPower)}</div>
-                      <div className={styles.planOutput}>{numWithComma(record.stationCapacity)}</div>
-                    </div>
-                    <Progress strokeWidth={3} percent={+(record.stationCapacity) ? (record.stationPower / record.stationCapacity * 100) : 0} showInfo={false} />
+              <div className={styles.progressInfo}>
+                <div className={styles.progressData}>
+                  <div className={styles.stationValue}>
+                    <div>{numWithComma(record.stationPower)}</div>
+                    <div className={styles.planOutput}>{numWithComma(record.stationCapacity)}</div>
                   </div>
+                  <Progress strokeWidth={3} percent={+(record.stationCapacity) ? (record.stationPower / record.stationCapacity * 100) : 0} showInfo={false} />
                 </div>
               </div>
             ),
-            props: {
-              colSpan: 2
-            }
+            props: { colSpan: 2 }
           };
         }
       },
@@ -163,13 +152,10 @@ class WindStationList extends React.Component {
         dataIndex: "stationCapacity",
         defaultSortOrder: "descend",
         sorter: true,
-        // (a, b) => a.stationCapacity - b.stationCapacity,
         render: (value, columns, index) => {
           const obj = {
             children: null,
-            props: {
-              colSpan: 0
-            }
+            props: { colSpan: 0 }
           };
           return obj;
         }
@@ -178,21 +164,21 @@ class WindStationList extends React.Component {
         title: <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
         dataIndex: "windSpeed",
         defaultSortOrder: "descend",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
         title: <TableColumnTitle title="日发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "dayOutput",
         defaultSortOrder: "descend",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
         title: <TableColumnTitle title="月累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       ...planPower,
@@ -200,23 +186,21 @@ class WindStationList extends React.Component {
         title: <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: "equipmentNum",
         defaultSortOrder: "descend",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
         title: <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
         dataIndex: "alarmNum",
         defaultSortOrder: "descend",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
-        // (a, b) => a.alarmNum - b.alarmNum
       },
       {
         title: "状态",
         dataIndex: "currentStation",
         defaultSortOrder: "descend",
         sorter: true,
-        // (a, b) => a.currentStation - b.currentStation,
         render: (value, record, index) => {
           return {
             children: (

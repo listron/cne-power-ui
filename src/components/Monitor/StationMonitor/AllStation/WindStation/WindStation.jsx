@@ -51,8 +51,9 @@ class WindStation extends React.Component {
 
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
+    this.setState({stationType:'all',currentPage: 1,})
   }
-  
+
   statisticStatusNum = () => {
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
@@ -76,12 +77,12 @@ class WindStation extends React.Component {
       return e && e.stationStatus === 900
     })[0].stationNum : '0';
     return {
-      normalNum, 
+      normalNum,
       dataInterruptionNum,
       unconnectionNum
     }
   }
-  statusDataList=()=>{
+  statusDataList = () => {
     let { checked, stationType } = this.state;
     const { windMonitorStation, } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
@@ -101,8 +102,8 @@ class WindStation extends React.Component {
     })
     return newStationDataList
   }
-  mapData=()=>{
-    const { windMonitorStation ,realTimePowerUnit,realCapacityUnit,realTimePowerPoint,realCapacityPoint } = this.props;
+  mapData = () => {
+    const { windMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
     const stationDataList = windMonitorStation.stationDataList || [];
     let iconArray = [
       {
@@ -127,13 +128,13 @@ class WindStation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
-        symbolSize: stationType > 0 ? [30, 20]: [31, 36],
+        symbolSize: stationType > 0 ? [30, 20] : [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint),
-        stationCapacity: (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint),
+        stationPower: (realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint),
+        stationCapacity: (realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
-        stationStatus:stationStatus,
+        stationStatus: stationStatus,
         realTimePowerUnit,
         realCapacityUnit
       })
@@ -146,7 +147,7 @@ class WindStation extends React.Component {
     const { currentPage, pageSize, } = this.state;
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
-    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || []; 
+    const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const TabPane = Tabs.TabPane;
     const operations = ( // 状态筛选部分样式
       <div style={{ border: 'none' }}>
@@ -177,45 +178,34 @@ class WindStation extends React.Component {
         })}
       </div>
     )
-   
+
     return (
       <div className={styles.WindStation}>
         <WindStationHeader {...this.props} />
-        <Tabs className={styles.containerTabs} activeKey={this.props.stationShowType} tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province} onChange={this.setkey} animated={false}>
+        <Tabs className={styles.containerTabs}
+          activeKey={this.props.stationShowType}
+          tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province}
+          onChange={this.setkey} animated={false}>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-grid"></i>
-              </span>
-            }
+            tab={<span> <i className="iconfont icon-grid"></i></span>}
             key="stationBlock"
           >
             <WindStationItem {...this.props} stationDataList={this.statusDataList()} />
-
           </TabPane>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-table"></i>
-              </span>
-            }
+            tab={<span><i className="iconfont icon-table"></i></span>}
             key="stationList"
           >
-            <WindStationList 
-              {...this.props} 
-              stationDataList={this.statusDataList()} 
-              currentPage={currentPage} 
-              pageSize={pageSize} 
+            <WindStationList
+              {...this.props}
+              stationDataList={this.statusDataList()}
+              currentPage={currentPage}
+              pageSize={pageSize}
               onPaginationChange={this.onPaginationChange}
             />
-
           </TabPane>
           <TabPane
-            tab={
-              <span>
-                <i className="iconfont icon-map"></i>
-              </span>
-            }
+            tab={<span> <i className="iconfont icon-map"></i>  </span>}
             key="stationMap"
           >
             <Map {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" />
