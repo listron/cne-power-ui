@@ -9,6 +9,9 @@ class ScatterDiagramChart extends Component{
 
   static propTypes = {
     chartTime: PropTypes.number,
+    pointsInfo: PropTypes.array,
+    logPointX: PropTypes.string,
+    logPointY: PropTypes.string,
     scatterDiagramCharts: PropTypes.array,
     chartLoading: PropTypes.bool,
   }
@@ -28,16 +31,13 @@ class ScatterDiagramChart extends Component{
   }
 
   renderScatterChart = (scatterDiagramCharts) => {  
-    console.log(scatterDiagramCharts);
-      
-    const { chartLoading, pointsInfo, queryParam } = this.props;
-    const { xPoint, yPoint } = queryParam;
+    const { chartLoading, pointsInfo, logPointX, logPointY } = this.props;
     const xCurrentPoint = pointsInfo.find(e =>{ // 选中x轴devicePointName
-      return e.devicePointCode === xPoint;
+      return e.devicePointCode === logPointX;
     }) || {};
 
     const yCurrentPoint = pointsInfo.find(e =>{ // 选中y轴devicePointName
-      return e.devicePointCode === yPoint;
+      return e.devicePointCode === logPointY;
     }) || {};
     const monitorScatter = echarts.init(document.getElementById('monitorScatterDiagram'));
     if (chartLoading) { // loading态控制。

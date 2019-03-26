@@ -13,8 +13,12 @@ class ScatterDiagramList extends Component{
   static propTypes = {
     tableLoading: PropTypes.bool,
     listParam: PropTypes.object,
+    logPointX: PropTypes.string,
+    logPointY: PropTypes.string,
     getListScatterDiagram: PropTypes.func,
+    pointsInfo: PropTypes.array,
     queryParam: PropTypes.object,
+    scatterDiagramList: PropTypes.object,
     partScatterDiagram: PropTypes.object,
     changeScatterDiagramStore: PropTypes.func,
   }
@@ -36,20 +40,19 @@ class ScatterDiagramList extends Component{
   }
   
   render(){
-    const { listParam, scatterDiagramList, tableLoading, pointsInfo, queryParam } = this.props;
-    const { xPoint, yPoint } = queryParam;
+    const { listParam, scatterDiagramList, tableLoading, pointsInfo, logPointX, logPointY } = this.props;
     const { totalSize, dataList = [], xUnit, yUnit } = scatterDiagramList;
     const { pageNum, pageSize, } = listParam;
     
     
-    const xCurrentPoint = dataList.find(e =>{ 
-      return e.devicePointCode === xPoint;
+    const xCurrentPoint = pointsInfo.find(e => {
+      return e.devicePointCode === logPointX;
     }) || {};
     
-    const yCurrentPoint = dataList.find(e =>{ 
-      return e.devicePointCode === yPoint;
+    const yCurrentPoint = pointsInfo.find(e => {
+      return e.devicePointCode === logPointY;
     }) || {};
-    const dataSource = dataList.map((e,i) =>{
+    const dataSource = dataList.map((e,i) => {
       return  ({
         key: i,
         ...e,
