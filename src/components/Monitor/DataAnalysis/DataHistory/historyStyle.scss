@@ -61,7 +61,7 @@
     .intervalSelect{
       :global{
         .ant-select-selection__rendered{
-          width: 50px;
+          width: 70px;
         }
       }
     }
@@ -254,9 +254,16 @@
 }
 
 .historyRangeDropdown{
+  .infoTip{
+    padding-left: 160px;
+    color: $themeColor;
+  }
   :global{
     .ant-calendar-input{
       pointer-events: none;
+    }
+    .ant-calendar-ok-btn{
+      display: none;   
     }
   }
 }

@@ -35,60 +35,69 @@ class EditConflunce extends Component {
   }
   render() {
     const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd } = this.state;
-    const { pvDeviceModels,stationDeviceDetail } = this.props;
-    
+    const { pvDeviceModels, stationDeviceDetail } = this.props;
+
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const detailMap=stationDeviceDetail?stationDeviceDetail.map:{};
-    const branchCount =  stationDeviceDetail.map?stationDeviceDetail.map.connectedBranches:[];
-    const branchCount2 = getFieldValue("branchCount");
+    const detailMap = stationDeviceDetail ? stationDeviceDetail.map : {};
+    const branchCount = detailMap ? detailMap.connectedBranches : [];
+    const componentCount = getFieldValue("branchCount");
     let branchCountArr = [];
-    for (let i = 0; i < branchCount2; i++) {
+    for (let i = 0; i < componentCount; i++) {
       branchCountArr.push(i + 1)
     }
     // const branchCountArr=branchCount.map((e,i)=>{
     // return e===1?i+1:null
     // })
-    
-    
-    
+    let initChecked = [];
+    branchCount.forEach((e, i) => {
+      if (e) {
+        initChecked.push(i + 1)
+      }
+    })
+
+
+
+
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('componentMode',{ initialValue: stationDeviceDetail.map.componentMode,})(
-              <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
-                {pvDeviceModels.map(e => {
-                  if (!e) { return null; }
-                  return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
-                })}
-              </Select>
-            )}
-           
-          </FormItem>
+          {getFieldDecorator('componentMode', { initialValue: stationDeviceDetail.map.componentMode, })(
+            <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
+              {pvDeviceModels.map(e => {
+                if (!e) { return null; }
+                return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+              })}
+            </Select>
+          )}
+
+        </FormItem>
         <FormItem label="支路个数" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('branchCount',{ initialValue: ((stationDeviceDetail.map.componentCount||+stationDeviceDetail.map.componentCount===0)?stationDeviceDetail.map.componentCount:''), rules: [
-            { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
-          ]})(
-          <Input placeholder="请输入..." />
-             // {/*  <span>{stationDeviceDetail.map.branchCount}</span> */}
+          {getFieldDecorator('branchCount', {
+            initialValue: ((stationDeviceDetail.map.componentCount || +stationDeviceDetail.map.componentCount === 0) ? stationDeviceDetail.map.componentCount : ''), rules: [
+              { message: '1~20之间的整数', required: true, pattern: /^(0|1\d?|20?|[3-9])$/ },
+            ]
+          })(
+            <Input placeholder="请输入..." />
+            // {/*  <span>{stationDeviceDetail.map.branchCount}</span> */}
           )}
         </FormItem>
         <FormItem label="所用支路" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('connectedBranches',{ initialValue: branchCountArr,} )(
+          {getFieldDecorator('connectedBranches', { initialValue: initChecked, })(
             <Checkbox.Group>
               <Row>
                 {(branchCountArr).map((e, i) => {
                   return (
                     <Col span={3} key={i}>
-                      <div>第{i+1}支路</div>
-                      <Checkbox value={i+1} key={i}></Checkbox>
+                      <div>第{i + 1}支路</div>
+                      <Checkbox value={e} key={i}></Checkbox>
                     </Col>)
                 })}
               </Row>
-              </Checkbox.Group>
+            </Checkbox.Group>
           )}
           <div className={styles.linestyle}>(  点击后变<span className={styles.selectRingStyle}></span>，表示接入;<span className={styles.ringStyle}></span>表示未接入 )</div>
         </FormItem>
-  
+
       </div>
     )
   }

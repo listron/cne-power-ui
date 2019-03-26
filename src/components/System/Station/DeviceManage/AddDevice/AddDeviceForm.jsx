@@ -55,6 +55,7 @@ class AddDeviceForm extends Component {
               warrantyEndtime:moment(values.warrantyEndtime).format('YYYY-MM-DD'),
               scrapTime: moment(values.scrapTime).format('YYYY-MM-DD'),
               hubHeight: values.hubHeight,
+              altitude: values.altitude,
             }
           } else if (values.deviceTypeCode === 501) {
             values.map = {
@@ -69,9 +70,7 @@ class AddDeviceForm extends Component {
           values.deviceModeCode = addDeviceModeData.deviceModeCode ? `${addDeviceModeData.deviceModeCode}` : `${values.deviceModeCode}`;
           this.props.addDeviceDetail({ ...values })
           this.props.changeDeviceManageStore({ addDeviceTypeData: {}, addDeviceModeData: {} })
-        } else {
-          
-        }
+        } 
       });
     }
   }
@@ -151,7 +150,6 @@ class AddDeviceForm extends Component {
               {/*// addDeviceTypeData.deviceTypeCode*/}
               <FormItem label="设备类型" colon={false} className={styles.formItemStyle} >
                 {getFieldDecorator('deviceTypeCode')(
-
                   <span>{selectDeviceTypeName}</span>
                 )}
               </FormItem>

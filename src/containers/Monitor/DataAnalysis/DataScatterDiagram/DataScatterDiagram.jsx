@@ -53,7 +53,10 @@ const mapDispatchToProps = (dispatch) =>({
   getPoints: payload => dispatch({ type: scatterDiagramAction.getPoints, payload }),
   getChartScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getChartScatterDiagram, payload }),
   getListScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getListScatterDiagram, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: scatterDiagramAction.RESETS_SCATTERDIAGRAM_STORE
+  } }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataScatterDiagram);

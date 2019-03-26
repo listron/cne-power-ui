@@ -117,6 +117,7 @@ class DeviceFilter extends Component {
               multiple={true}
               deviceShowNumber={true}
               holderText={'请选择'}
+              needAllCheck={true}
               value={selectdeviceCode}
             />
           </div>

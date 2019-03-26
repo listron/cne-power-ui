@@ -9,6 +9,9 @@ class ScatterDiagramChart extends Component{
 
   static propTypes = {
     chartTime: PropTypes.number,
+    pointsInfo: PropTypes.array,
+    logPointX: PropTypes.string,
+    logPointY: PropTypes.string,
     scatterDiagramCharts: PropTypes.array,
     chartLoading: PropTypes.bool,
   }
@@ -27,15 +30,14 @@ class ScatterDiagramChart extends Component{
     }
   }
 
-  renderScatterChart = (scatterDiagramCharts) => {
-    const { chartLoading, pointsInfo, queryParam } = this.props;
-    const { xPoint, yPoint } = queryParam;
+  renderScatterChart = (scatterDiagramCharts) => {  
+    const { chartLoading, pointsInfo, logPointX, logPointY } = this.props;
     const xCurrentPoint = pointsInfo.find(e =>{ // 选中x轴devicePointName
-      return e.devicePointCode === xPoint;
+      return e.devicePointCode === logPointX;
     }) || {};
 
     const yCurrentPoint = pointsInfo.find(e =>{ // 选中y轴devicePointName
-      return e.devicePointCode === yPoint;
+      return e.devicePointCode === logPointY;
     }) || {};
     const monitorScatter = echarts.init(document.getElementById('monitorScatterDiagram'));
     if (chartLoading) { // loading态控制。
@@ -73,12 +75,13 @@ class ScatterDiagramChart extends Component{
               ${params.map(e => {
                 const { value = [], dataIndex } = e;
                 const scatterTime = scatterDiagramCharts[dataIndex] || {};
+                const scatterUnit = scatterDiagramCharts[dataIndex] || {};
                 const xName = xCurrentPoint.devicePointName || 'X轴';
                 const yName = yCurrentPoint.devicePointName || 'Y轴';
-                return `<div>
-                  <h3>${scatterTime.time ? moment(scatterTime.time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
-                  <p>${xName}：${dataFormat(value[0], '--', 2)}</p>
-                  <p>${yName}：${dataFormat(value[1], '--', 2)}</p>
+                return `<div class=${styles.chartTool}>
+                  <h3 class=${styles.title}>${scatterTime.time ? moment(scatterTime.time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
+                  <p class=${styles.value}>${xName}：${dataFormat(value[0], '--', 2)}${scatterUnit.xUnit || ''}</p>
+                  <p class=${styles.value}>${yName}：${dataFormat(value[1], '--', 2)}${scatterUnit.yUnit || ''}</p>
                 </div>`
               })}
             </div>`
@@ -86,8 +89,9 @@ class ScatterDiagramChart extends Component{
         }
       },
       xAxis: {
-        name: xCurrentPoint.devicePointName || '',
+        name: `${xCurrentPoint.devicePointName || ''}${xCurrentPoint.devicePointUnit || ''}`,
         type: 'value',
+        scale: true,
         splitNumber: 20,
         splitLine: { 
           show:false
@@ -100,8 +104,9 @@ class ScatterDiagramChart extends Component{
         }
       },
       yAxis: {
-        name: yCurrentPoint.devicePointName || '',
+        name: `${yCurrentPoint.devicePointName || ''}${yCurrentPoint.devicePointUnit || ''}`,
         type: 'value',
+        scale: true,
         axisTick: {
           show: false
         },
