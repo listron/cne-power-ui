@@ -199,6 +199,9 @@ class ScatterDiagramSearch extends Component{
               onOpenChange={this.openChange}
               disabledDate={disableDateFun}
               value={[startTime, endTime]}
+              renderExtraFooter={() => (
+                <span className={styles.infoTip}>选择时间段需小于24小时</span>
+              )}
             />
           </div>
           <div className={styles.xPointSelect}>
