@@ -132,7 +132,7 @@ class AddDeviceForm extends Component {
     const initiDeviceMode=addDeviceModeData.data?+addDeviceModeData.data:null;
     const manufacturerArr = deviceModels.filter((e, i) => (e.deviceModeCode === deviceModeCodeValue))[0];
     const manufactureName = manufacturerArr && manufacturerArr.manufacturer;
-    console.log('selectdeviceType: ', selectdeviceType);
+    // console.log('selectdeviceType: ', selectdeviceType);
     const isShow = [ '202', '206', '304', '101','201','207'].includes(`${selectdeviceType}`);//通用的:关联设备，额定，装机，经纬度
     const isMeteorology = ['203','501',].includes(`${selectdeviceType}`);//测风塔和气象站呈现经纬度
     const isTemplateMachine = ['201','304','206'].includes(`${selectdeviceType}`);//是否呈现样板机的设备
@@ -167,6 +167,7 @@ class AddDeviceForm extends Component {
                     rules: [{ required: true, message: '请选择设备型号' }],
                   })(
                     <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
+                    <Option key={'all'} value={''}>请选择设备设备</Option>
                       {deviceModels.map((e, i) => {
                         if (!e) { return null; } else {
                           return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>

@@ -29,6 +29,13 @@ class SingleDeviceContainer extends Component {
     deviceFullCode:PropTypes.array,
     stations:PropTypes.array,
     deviceShowType:PropTypes.string,
+    startTime:PropTypes.string,
+    endTime:PropTypes.string,
+    pageNum:PropTypes.number,
+    pageSize:PropTypes.number,
+    airDensity:PropTypes.string,
+    selectDeviceFullCode:PropTypes.array,
+    deviceInfo:PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -49,14 +56,14 @@ class SingleDeviceContainer extends Component {
   }
   componentWillReceiveProps(nextProp) {
     const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
+    // console.log('deviceFullCode: ', deviceFullCode);
+    // console.log('this.props.deviceFullCode: ', this.props.deviceFullCode);
     const params = { stationCode, deviceFullCode, startTime, endTime }
-    if (deviceFullCode.length !== this.props.deviceFullCode.length) {
-      this.queryGraphData(params)
-    }
-    for (let i = 0; i < deviceFullCode.length; i++) {
-      if (deviceFullCode[i] !== this.props.deviceFullCode[i]) {
-        return this.queryGraphData(params)
-      }
+    if (deviceFullCode && deviceFullCode.length > 0) {
+      const preLength = this.props.deviceFullCode ? this.props.deviceFullCode.length : 0;
+      const curLength = deviceFullCode.length;
+      (preLength !== curLength) && this.queryGraphData(params);
+      deviceFullCode.find(e => !this.props.deviceFullCode.includes(e)) && this.queryGraphData(params);
     }
   }
   onOk = (selectdevice) => {
@@ -67,7 +74,7 @@ class SingleDeviceContainer extends Component {
     })
   }
   onSwitchChange = (checked) => {
-    const { stationCode, deviceFullCode, startTime, endTime, correct, } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
    
@@ -116,7 +123,7 @@ class SingleDeviceContainer extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone
+        timeZone:timeZone/-60
       },
     })
   }

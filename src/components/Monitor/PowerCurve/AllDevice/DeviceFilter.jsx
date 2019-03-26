@@ -12,10 +12,10 @@ const RangePicker = DatePicker.RangePicker;
 class DeviceFilter extends Component {
   static propTypes = {
     startTime: PropTypes.string,
-    deviceFullCode:PropTypes.array,
-    powerCurveListData:PropTypes.array,
-    selectdeviceCode:PropTypes.array,
-    stations:PropTypes.array,
+    deviceFullCode: PropTypes.array,
+    powerCurveListData: PropTypes.array,
+    selectdeviceCode: PropTypes.array,
+    stations: PropTypes.array,
     deviceShowType: PropTypes.string,
     endTime: PropTypes.string,
     stationCode: PropTypes.number,
@@ -44,18 +44,21 @@ class DeviceFilter extends Component {
     });
 
     changeAllDeviceStore({
-      stationCode, deviceTypeCode: 101, deviceFullCode: [],selectdeviceCode:[]
+      stationCode, deviceTypeCode: 101, deviceFullCode: [], selectdeviceCode: []
     })
   }
   seekDeviceData = () => {//查询按钮
-    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList,  } = this.props;
-    const params = { stationCode, deviceFullCode, startTime:moment(startTime).utc().format(), endTime:moment(endTime).utc().format(), };
-    getAllDeviceCurveData({ ...params, }) 
+    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList,changeAllDeviceStore } = this.props;
+    const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format(), };
+    getAllDeviceCurveData({ ...params, })
     getPowerdeviceList({ ...params, })
+    changeAllDeviceStore({checkedAll:true})
   }
   timeChange = (time) => {//时间选择
     const startTime = moment(time[0]).format('YYYY-MM-DD');
-    const endTime = moment(time[1]).format('YYYY-MM-DD');
+    let endTime = moment(time[1]).format('YYYY-MM-DD');
+    let curTime = moment().format('YYYY-MM-DD');
+    endTime === curTime ? endTime = moment().format('YYYY-MM-DD HH:MM:SS') : endTime;
     this.props.changeAllDeviceStore({
       startTime,
       endTime
@@ -74,9 +77,9 @@ class DeviceFilter extends Component {
   }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
-    let { startTime, endTime, stationCode, deviceFullCode, stations,downLoadFile } = this.props;
+    let { startTime, endTime, stationCode, deviceFullCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
-    endTime =  moment(endTime).utc().format();
+    endTime = moment(endTime).utc().format();
     let timeZone = moment().zone();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
@@ -87,12 +90,17 @@ class DeviceFilter extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone
+        timeZone: timeZone / -60
       },
     })
   }
+  disabledDate = (current) => { // 不可选时间
+
+    return current && current > moment().endOf('day')
+
+  }
   render() {
-    const {  stations, stationCode,  deviceShowType,  selectdeviceCode, powerCurveListData } = this.props;
+    const { stations, stationCode, deviceShowType, selectdeviceCode, powerCurveListData } = this.props;
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
@@ -126,12 +134,13 @@ class DeviceFilter extends Component {
             <RangePicker
               defaultValue={[moment(moment().subtract(1, "days"), 'YYYY/MM/DD'), moment(moment(), 'YYYY/MM/DD')]}
               format={'YYYY/MM/DD'}
+              disabledDate={this.disabledDate}
               onChange={this.timeChange}
             />
           </div>
           <Button className={styles.buttonStyle} disabled={selectdeviceCode.length > 0 ? false : true} onClick={this.seekDeviceData}>查询</Button>
-          {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList} 
-          disabled={powerCurveListData.length === 0}
+          {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList}
+            disabled={powerCurveListData.length === 0}
           >导出</Button> : ''}
         </div>
         <div className={styles.showType}>
