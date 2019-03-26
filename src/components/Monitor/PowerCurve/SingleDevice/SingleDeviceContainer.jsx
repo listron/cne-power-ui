@@ -139,7 +139,7 @@ class SingleDeviceContainer extends Component {
           <div className={styles.left}>
             <div className={styles.singleInfo}>电站名称:{stationInfo && stationInfo.regionName}-{stationInfo && stationInfo.stationName}</div>
             <div className={styles.singleInfo}>设备名称:{deviceInfo.deviceName}</div>
-            <div className={styles.singleInfo}>时间:{startTime}~{endTime}</div>
+            <div className={styles.singleInfo}>时间:{moment(startTime).format('YYYY-MM-DD')}~{moment(endTime).format('YYYY-MM-DD')}</div>
             {deviceShowType === 'graph' && <div className={styles.singleInfo}>增加对比设备:
             <DeviceSelect
                 disabled={stationInfo ? false : true}

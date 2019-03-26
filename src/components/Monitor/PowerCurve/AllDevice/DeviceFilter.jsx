@@ -55,10 +55,13 @@ class DeviceFilter extends Component {
     changeAllDeviceStore({checkedAll:true})
   }
   timeChange = (time) => {//时间选择
+    
+    // let endTime=moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+    // 
     const startTime = moment(time[0]).format('YYYY-MM-DD');
-    let endTime = moment(time[1]).format('YYYY-MM-DD');
-    let curTime = moment().format('YYYY-MM-DD');
-    endTime === curTime ? endTime = moment().format('YYYY-MM-DD HH:MM:SS') : endTime;
+    let endTime=moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+    const isToday  = moment(endTime).isSame(moment(), 'd');
+    isToday ? endTime = moment().format('YYYY-MM-DD HH:mm:ss') : endTime;
     this.props.changeAllDeviceStore({
       startTime,
       endTime

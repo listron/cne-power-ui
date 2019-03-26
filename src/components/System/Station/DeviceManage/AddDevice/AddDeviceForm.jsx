@@ -136,6 +136,8 @@ class AddDeviceForm extends Component {
     const isShow = [ '202', '206', '304', '101','201','207'].includes(`${selectdeviceType}`);//通用的:关联设备，额定，装机，经纬度
     const isMeteorology = ['203','501',].includes(`${selectdeviceType}`);//测风塔和气象站呈现经纬度
     const isTemplateMachine = ['201','304','206'].includes(`${selectdeviceType}`);//是否呈现样板机的设备
+    const isShowSaveButton= ['501', '202', '206', '304', '101',].includes(`${selectdeviceType}`);//显示组件
+
 
     return (
       <div className={styles.colStyles}>
@@ -155,7 +157,7 @@ class AddDeviceForm extends Component {
               </FormItem>
               <FormItem label="设备名称" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceName', {
-                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
+                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
                 })(
                   <Input placeholder="不超过30字" />
                 )}
@@ -188,7 +190,9 @@ class AddDeviceForm extends Component {
                 </FormItem>
           
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('lotNumber')(
+                {getFieldDecorator('lotNumber',{
+                  rules: [{ max: 30, message: '不超过30字' }]
+                })(
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
@@ -215,12 +219,16 @@ class AddDeviceForm extends Component {
                 )}
               </FormItem>}
               {isShow &&<FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('ratedPower')(
+                {getFieldDecorator('ratedPower',{
+                  rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}]
+                })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
               </FormItem>}
              {isShow && <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('deviceCapacity')(
+                {getFieldDecorator('deviceCapacity',{
+                  rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}]
+                })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
               </FormItem>}
@@ -244,23 +252,29 @@ class AddDeviceForm extends Component {
                   </Select>
                 )}
               </FormItem>
-            </div>
+              {!isShowSaveButton&&<div className={styles.leftsubmitStyle}>
+              <Button onClick={this.gobackPre} className={styles.leftpreStyles}>上一步</Button>
+              <Button onClick={this.submitForm} >保存</Button>
+            </div>}
+              </div>
           </div>
           <div className={styles.rightContainer}>
             {deviceTypeName === 501 && <WindMeasurement {...this.props} form={form} />}
             {deviceTypeName === 304 && <div className={styles.rightStyles}>
               <FormItem label="所属方阵" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('belongMatrix')(
+                {getFieldDecorator('belongMatrix',{
+                  rules: [{ max: 30, message: '不超过30字' }]
+                })(
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
             </div>}
             {deviceTypeName === 101 && <WindInstallDate {...this.props} form={form}  />}
             {(deviceTypeName === 206 || deviceTypeName === 202) && <Confluence {...this.props} selectStation={selectStation[0].stationCode} pvDeviceModels={pvDeviceModels} form={form} />}
-            <div className={styles.submitStyle}>
-              <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
-              <Button onClick={this.submitForm} >保存</Button>
-            </div>
+           {isShowSaveButton&& <div className={styles.submitStyle}>
+           <Button onClick={this.gobackPre} className={styles.preStyles}>上一步</Button>
+           <Button onClick={this.submitForm} >保存</Button>
+         </div>}
           </div>
         </Form>
         {showAddDeviceModeModal && <ShowAddDeviceModeModal {...this.props} showAddDeviceModeModal={showAddDeviceModeModal} cancleDeviceModeModal={this.cancleDeviceModeModal} saveFormState={this.saveFormState} selectdeviceType={selectdeviceType} />}

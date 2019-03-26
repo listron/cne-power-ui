@@ -66,7 +66,9 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('hubHeight', { initialValue:hubHeight })(
+        {getFieldDecorator('hubHeight', { 
+          initialValue:hubHeight,
+          rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}], })(
           <Input placeholder="保留小数点后两位" />
         )}<span className={styles.unitStyle}>米</span>
       </FormItem>
@@ -75,7 +77,10 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
         colon={false}
         className={styles.formItemStyle}
       >
-        {getFieldDecorator('altitude', { initialValue:altitude })(
+        {getFieldDecorator('altitude', { 
+          initialValue:altitude, 
+          rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
+        })(
           <Input placeholder="保留小数点后两位" />
         )}<span className={styles.unitStyle}>米</span>
       </FormItem>
