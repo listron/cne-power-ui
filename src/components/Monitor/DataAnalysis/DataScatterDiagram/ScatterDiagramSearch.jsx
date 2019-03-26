@@ -38,11 +38,10 @@ class ScatterDiagramSearch extends Component{
       queryParam:{
         ...queryParam,
         stationCode: selectedStationInfo,
-        deviceFullCode: null,
+        deviceFullCode: [],
         xPoint: null,
         yPoint: null,
       },
-      pointsInfo: [], // 清空测点
     })
   }
 
@@ -158,7 +157,7 @@ class ScatterDiagramSearch extends Component{
     const { disableDateFun } = this.state;
     const { stations, queryParam, pointsInfo, scatterDiagramList, scatterDiagramType } = this.props;
     const { dataList = [] } = scatterDiagramList;
-    const { stationCode, deviceFullCode, xPoint, yPoint, startTime, endTime } = queryParam;
+    const { stationCode, deviceFullCode, xPoint, yPoint, startTime, endTime } = queryParam;   
     const selectedStation = stationCode[0] || {};
     return(
       <div className={styles.scatterDiagramSearch}>
@@ -210,7 +209,7 @@ class ScatterDiagramSearch extends Component{
               showSearch
               className={styles.pointSelect}
               placeholder="请选择"
-              disabled={pointsInfo.length === 0}
+              disabled={deviceFullCode.length === 0}
               value={xPoint}
               optionFilterProp="children"
               onChange={this.xSelectPoints}
@@ -227,7 +226,7 @@ class ScatterDiagramSearch extends Component{
             showSearch
             className={styles.pointSelect}
             placeholder="请选择"
-            disabled={pointsInfo.length === 0}
+            disabled={deviceFullCode.length === 0}
             value={yPoint}
             optionFilterProp="children"
             onChange={this.ySelectPoints}

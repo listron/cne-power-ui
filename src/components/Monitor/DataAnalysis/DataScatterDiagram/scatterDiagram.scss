@@ -63,18 +63,55 @@
 } 
 
 .scatterDiagramList{ // 列表
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 20px 32px;
   .pagination{
     display: flex;
     flex-direction: row-reverse;
     margin-bottom: 20px;
   }
+  :global{
+    .ant-table{
+      tr{
+        display: flex;
+        th, td{
+          padding:8px;
+          line-height: 21px;
+        }
+      }
+      .ant-table-thead tr th{
+        height: 60px;
+      }
+      .deviceName, .stationName, .deviceTypeName, .deviceModeName, .time, .xData, .yData{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
+      }
+      .deviceName,.xData,.yData{
+        flex: 1 0 100px;
+      }
+      .stationName{
+        flex: 1 0 118px;
+      }
+      .deviceTypeName{
+        flex: 0 0 108px; 
+      }
+      .deviceModeName{
+        flex: 1 0 120px;
+      }
+      .time{
+        flex: 0 0 150px;
+      }
+    }
+  }
 }
 
 .scatterDiagramChart{ //chart
   display: flex;
-  width: 90%;
-  height: 400px;
+  flex: 1;
   .chartTool{
     .title,.value{
       font-size: 12px;
