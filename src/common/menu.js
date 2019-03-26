@@ -39,7 +39,7 @@ const menuData = [
         rightKey: 'monitor_powerCurve',
       },{
         name: '数据分析',
-        iconStyle: 'icon-monitoring',
+        iconStyle: 'icon-da',
         path: 'data',
         rightKey: 'monitor_dataAnalysis',
         children: [
@@ -59,7 +59,7 @@ const menuData = [
         ]
       }, {
         name: '报表查询',
-        iconStyle: 'icon-monitoring',
+        iconStyle: 'icon-trends',
         path: 'report',
         rightKey: 'monitor_reportQuery',
         children: [
