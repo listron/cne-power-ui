@@ -30,7 +30,7 @@ var initState = Immutable.fromJS({
     pageSize: 10,
     sortField: 1, // 1 是告警级别
     sortOrder: '1', //  1 asc  2 desc
-    warningTypeCode: '201',  // 201 预警  告警查看告警列表
+    warningType: '201',  // 201 预警  告警查看告警列表
   },
   totalNum:0, //  所有的数据
 

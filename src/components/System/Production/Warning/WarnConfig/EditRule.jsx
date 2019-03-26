@@ -55,7 +55,6 @@ class EditRule extends Component {
       if (!error) {
         const { warningCheckDesc, warnRules, warningLevel, warningEnabled } = values;
         const params = {
-          // warningTypeCode: 1,
           warningCheckId,
           warningCheckDesc,
           warningRuler: warnRules[0],
