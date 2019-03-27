@@ -55,7 +55,7 @@ const mapDispatchToProps = (dispatch) =>({
   getListScatterDiagram: payload => dispatch({ type: scatterDiagramAction.getListScatterDiagram, payload }),
   downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
     ...payload,
-    actionName: scatterDiagramAction.RESETS_SCATTERDIAGRAM_STORE
+    actionName: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE
   } }),
 })
 
