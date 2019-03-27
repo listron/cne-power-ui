@@ -37,7 +37,7 @@ class PowerSpeedChart extends Component {
     }
     return result;
   };
-  drawChart = (params, ) => {
+  drawChart = (params ) => {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);

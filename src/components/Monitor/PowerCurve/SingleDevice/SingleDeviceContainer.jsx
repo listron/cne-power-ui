@@ -57,12 +57,10 @@ class SingleDeviceContainer extends Component {
   }
   componentWillReceiveProps(nextProp) {
     const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
-    // 
-    // 
     const params = { stationCode, deviceFullCode, startTime, endTime }
-    if (deviceFullCode && deviceFullCode.length > 0) {
-      const preLength = this.props.deviceFullCode ? this.props.deviceFullCode.length : 0;
-      const curLength = deviceFullCode.length;
+    if (deviceFullCode && deviceFullCode.length) {
+      const preLength =( this.props.deviceFullCode&&this.props.deviceFullCode.length) ? this.props.deviceFullCode.length : 0;
+      const curLength = deviceFullCode&&deviceFullCode.length;
       (preLength !== curLength) && this.queryGraphData(params);
       deviceFullCode.find(e => !this.props.deviceFullCode.includes(e)) && this.queryGraphData(params);
     }
