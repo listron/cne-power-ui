@@ -37,9 +37,7 @@ class SingleDeviceContainer extends Component {
     selectDeviceFullCode:PropTypes.array,
     deviceInfo:PropTypes.object,
   }
-  constructor(props, context) {
-    super(props, context)
-  }
+ 
   componentDidMount() {
     const { stationCode, deviceFullCode, time } = this.props.match.params;
     const {  changeSingleDeviceStore, } = this.props;

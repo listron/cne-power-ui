@@ -41,8 +41,8 @@ class PowerSpeedChart extends Component {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);
-    let filterData = []
-    params.length > 0 &&params.forEach((e, i) => {
+    let filterData = [];
+    (params.length&&params.length > 0) &&params.forEach((e, i) => {
       if (e.powerSpeedData) {
         e.powerSpeedData.forEach((item, i) => {
           item.power ? filterData.push(item.power) : null

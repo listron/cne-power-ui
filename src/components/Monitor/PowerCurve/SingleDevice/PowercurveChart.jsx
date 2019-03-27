@@ -50,8 +50,8 @@ class PowercurveChart extends Component {
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
     //横坐标
 
-    let xData = params.length > 0 ? params[0].scatterPointData.sort(this.compare('windSpeedAvg')).map(e => (e.windSpeedAvg)) : [];
-    let xData2 = params.length > 0 ? params[0].theoryPowerData.sort(this.compare('windSpeedCenter')).map(e => (e.windSpeedCenter)) : [];
+    // let xData = (params.length&&params.length > 0) ? params[0].scatterPointData.sort(this.compare('windSpeedAvg')).map(e => (e.windSpeedAvg)) : [];
+   
     let ishaveData = [];
     params.length > 0 &&params.forEach((e, i) => {
       if (e.scatterPointData&&e.scatterPointData.length > 0) {
@@ -62,7 +62,7 @@ class PowercurveChart extends Component {
     //各种数据
     let scatter = [], actual = [], theory = [];
     let series = [];
-    params.length > 0 &&params.forEach((e, i) => {
+    (params.length&&params.length > 0) &&params.forEach((e, i) => {
       const sortscatterPointData= e.scatterPointData.sort(this.compare('windSpeedAvg'));
       const sortactualPowerData= e.actualPowerData.sort(this.compare('windSpeedAvg'));
       const sorttheoryPowerData= e.theoryPowerData.sort(this.compare('windSpeedCenter'));
@@ -77,7 +77,6 @@ class PowercurveChart extends Component {
       sorttheoryPowerData.forEach((item, i) => {
         theory[e.deviceName].push(  [item.windSpeedCenter,item.powerTheory,item.windSpeedInterval,], ...item,  )
       })
-      console.log(e.theoryPowerData.sort(this.compare('windSpeedCenter')));
       series.push(
         {
           type: 'scatter',
@@ -128,7 +127,7 @@ class PowercurveChart extends Component {
         enterable: true,
         show: true,
         formatter: (params) => {
-          console.log('params: ', params);
+          
           const info = params.data;
           if (params.seriesType === "scatter") {
             return ` <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
