@@ -114,7 +114,8 @@ const mapDispatchToProps = (dispatch) => ({
   getDetail: payload => dispatch({ type: warningAction.getDetail, payload }),
   warnDelete: payload => dispatch({ type: warningAction.warnDelete, payload }),
   getOtherPageDetail: payload => dispatch({ type: warningAction.getOtherPageDetail, payload }),
-  getPoints: payload => dispatch({ type: warningAction.getPoints, payload }), // 选取测点
+  getFilterPoints: payload => dispatch({ type: warningAction.getFilterPoints, payload }), // 选取测点
+
 
   getStationOfEnterprise: params => dispatch({ // 企业电站下的所有电站
     type: commonAction.getStationOfEnterprise,
@@ -136,6 +137,15 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModel: params => dispatch({ // 设备型号
     type: commonAction.getDeviceModel,
     payload: { //deviceModels
+      params:params.payload,
+      actionName: warningAction.changeWarnStore,
+      resultName: params.resultName
+    }
+  }),
+
+  getPoints: params => dispatch({ // 测点
+    type: commonAction.getPoints,
+    payload: {
       params:params.payload,
       actionName: warningAction.changeWarnStore,
       resultName: params.resultName

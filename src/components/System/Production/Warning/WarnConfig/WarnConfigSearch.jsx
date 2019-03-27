@@ -84,7 +84,10 @@ class WarnConfigSearch extends Component {
       pointCode: '',
       pageNum: 1,
     })
-    value && getPoints({ stationCode, deviceTypeCode, deviceModeCode: value });
+    value && getPoints({
+      payload: { stationCode,deviceTypeCode, deviceModeCode: value },
+      resultName: 'devicePoints'
+    });
     changeWarnStore({
       devicePoints: [],
     })

@@ -14,7 +14,7 @@ class AddRule extends Component {
     getStationDeviceTypes: PropTypes.func,
     changeWarnStore: PropTypes.func,
     getDeviceModel: PropTypes.func,
-    getPoints: PropTypes.func,
+    getFilterPoints: PropTypes.func,
     ruleStationDeviceTypes: PropTypes.array,
     ruleDeviceModels: PropTypes.array,
     ruleDevicePoints: PropTypes.array,
@@ -69,10 +69,10 @@ class AddRule extends Component {
   }
 
   selectDeviceModel = (value) => { // 选中设备型号
-    const { getPoints } = this.props;
+    const { getFilterPoints } = this.props;
     const { stationCode, deviceTypeCode } = this.state;
     this.setState({ deviceModeCode: value })
-    getPoints({stationCode, deviceTypeCode, deviceModeCode: value });
+    getFilterPoints({stationCode, deviceTypeCode, deviceModeCode: value });
     this.props.form.setFieldsValue({ pointCode: '', pointUnit: '' })
   }
 
