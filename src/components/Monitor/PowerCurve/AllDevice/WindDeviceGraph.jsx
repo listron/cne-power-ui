@@ -21,35 +21,30 @@ class WindDeviceGraph extends Component {
     super(props, context)
 
   }
-  componentDidMount() {
-    const { stationCode, startTime, endTime,checkedAll } = this.props;
-    const beginTime=moment(startTime).format('YYYY-MM-DD');
-    const stopTime=moment(endTime).format('YYYY-MM-DD');
-
-    this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, beginTime, stopTime)
-  }
+ 
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allDeviceCurveData || [];
-    const { stationCode, startTime, endTime,checkedAll } = nextProps;
-    const beginTime=moment(startTime).format('YYYY-MM-DD');
-    const stopTime=moment(endTime).format('YYYY-MM-DD');
+    const { stationCode, startTime, endTime, checkedAll } = nextProps;
+    const beginTime = moment(startTime).format('YYYY-MM-DD');
+    const stopTime = moment(endTime).format('YYYY-MM-DD');
     this.drawChart(theoryPowers, checkedAll, stationCode, beginTime, stopTime)
   }
 
   onChange = (checked) => {
     const { stationCode, startTime, endTime } = this.props;
-    const beginTime=moment(startTime).format('YYYY-MM-DD');
-    const stopTime=moment(endTime).format('YYYY-MM-DD');
+    
+    const beginTime = moment(startTime).format('YYYY-MM-DD');
+    const stopTime = moment(endTime).format('YYYY-MM-DD');
     this.props.changeAllDeviceStore({
       checkedAll: checked
     })
-    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode,  beginTime, stopTime)
+    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, beginTime, stopTime)
   }
   changeSelect = (checked) => {
     let select = {};
-    this.props.allDeviceCurveData.forEach((e,i)=>{
-      e.dataList.forEach((item,i)=>{
-        select[e.deviceName]=checked;
+    this.props.allDeviceCurveData.forEach((e, i) => {
+      e.dataList.forEach((item, i) => {
+        select[e.deviceName] = checked;
       })
     })
     return select
@@ -69,6 +64,7 @@ class WindDeviceGraph extends Component {
     }
   }
   drawChart = (params, checkedAll, stationCode, startTime, endTime) => {
+    
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
     const filterDeviceName = params.map(e => e.deviceName);
     const filterPowerAvg = params.map((e, i) => {
@@ -238,13 +234,11 @@ class WindDeviceGraph extends Component {
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
-      // 
-      // 
-      return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
+      return stationCode && this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
     })
   }
   render() {
-    const {checkedAll}=this.props;
+    const { checkedAll } = this.props;
     return (
       <div className={styles.graphStyle}>
         <div id="powerCurveChart" className={styles.powerCurveChart}></div>
