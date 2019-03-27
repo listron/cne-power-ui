@@ -63,7 +63,7 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeTransferStoreSaga: payload => dispatch({ type: workOrderAction.changeWorkOrderStoreSaga, payload }),
+  changeWorkOrderStore: payload => dispatch({ type: workOrderAction.changeWorkOrderStoreSaga, payload }),
   resetStore: payload => dispatch({ type: workOrderAction.resetStore, payload }),
   getDefectDetail: payload => dispatch({ type: workOrderAction.getDefectDetail, payload }),
   getDefectIdList: payload => dispatch({ type: workOrderAction.getDefectIdList, payload }),

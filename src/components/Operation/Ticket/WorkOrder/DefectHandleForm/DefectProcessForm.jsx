@@ -27,6 +27,17 @@ class DefectProcessForm extends Component {
     };
   }
 
+  componentWillUnmount(){
+    this.props.changeWorkOrderStore({modify:false})
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.defectId!==this.props.defectId){
+      nextProps.form.resetFields();
+      nextProps.changeWorkOrderStore({modify:false})
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -69,7 +80,6 @@ class DefectProcessForm extends Component {
         </FormItem>}
         {defectFinished &&
           <React.Fragment>
-            
             <FormItem label="产生原因" colon={false}>
               {getFieldDecorator('reasonDesc', {
                 rules: [{ required: true, message: '请输入产生原因' }],
@@ -112,7 +122,6 @@ class DefectProcessForm extends Component {
               </div>
             </FormItem>
           </React.Fragment>
-
         }
         <div className={styles.actionBar}>
           <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
@@ -123,4 +132,8 @@ class DefectProcessForm extends Component {
   }
 }
 
-export default Form.create()(DefectProcessForm);
+export default Form.create({
+  onFieldsChange(props,changedFields){
+    props.changeWorkOrderStore({modify:true})
+  },
+})(DefectProcessForm);
