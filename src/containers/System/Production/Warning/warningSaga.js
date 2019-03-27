@@ -303,7 +303,7 @@ function* getOtherPageDetail(action) {//预警规则 第一条查看前一条详
 
 
 
-function* getPoints(action) { // 新-获取电站下测点数据
+function* getFilterPoints(action) { // 新-获取电站下测点数据
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationPoints}`;
   const { payload } = action;
   try {
@@ -312,7 +312,7 @@ function* getPoints(action) { // 新-获取电站下测点数据
       yield put({
         type: warningAction.changeWarnStore,
         payload: {
-          devicePoints: response.data.data || [],
+          ruleDevicePoints: response.data.data || [],
         }
       });
     }
@@ -335,6 +335,6 @@ export function* watchWarning() {
   yield takeLatest(warningAction.getDetail, getDetail);
   yield takeLatest(warningAction.warnDelete, warnDelete);
   yield takeLatest(warningAction.getOtherPageDetail, getOtherPageDetail);
-  yield takeLatest(warningAction.getPoints, getPoints);
+  yield takeLatest(warningAction.getFilterPoints, getFilterPoints);
 
 }

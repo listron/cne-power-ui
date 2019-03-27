@@ -76,7 +76,7 @@ class DefectCreate extends Component {
     const { showContainer, defectDetail, editDefect } = this.props;
     let rejectReason;
     if (showContainer === 'edit') {
-      const processData = defectDetail.processData;
+      const processData = defectDetail.processData || [];
       const processLength = processData.length || [];
       if (processLength > 0) {
         rejectReason = processData[processLength - 1].defectProposal;

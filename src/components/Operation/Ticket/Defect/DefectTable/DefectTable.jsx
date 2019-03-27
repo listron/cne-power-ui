@@ -113,8 +113,8 @@ class DefectTable extends Component {
       defectId: defect.defectId
     });
     if (defect.defectStatus === '0') {
-      this.props.onChangeShowContainer({container: 'edit'});
       this.props.getDefectDetail({ defectId: defect.defectId, });
+      this.props.onChangeShowContainer({container: 'edit'});
     } else {
       this.props.onChangeShowContainer({ container: 'detail' });
     }
