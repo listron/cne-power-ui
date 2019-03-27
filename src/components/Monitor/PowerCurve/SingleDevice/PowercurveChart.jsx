@@ -32,13 +32,26 @@ class PowercurveChart extends Component {
     const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
     this.props.getSingleDeviceCurveData({ ...params, correct: checked ? 1 : 0 })
-
-
+  }
+  compare = (key) => {
+    return (a, b) => {
+      let val1 = a[key];
+      let val2 = b[key];
+      if (val1 < val2) { //正序
+        return -1;
+      } else if (val1 > val2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
   }
   drawChart = (params) => {
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
     //横坐标
-    let xData = params.length > 0 ? params[0].scatterPointData.map(e => e.windSpeedAvg) : [];
+
+    let xData = params.length > 0 ? params[0].scatterPointData.sort(this.compare('windSpeedAvg')).map(e => (e.windSpeedAvg)) : [];
+    let xData2 = params.length > 0 ? params[0].theoryPowerData.sort(this.compare('windSpeedCenter')).map(e => (e.windSpeedCenter)) : [];
     let ishaveData = [];
     params.length > 0 &&params.forEach((e, i) => {
       if (e.scatterPointData&&e.scatterPointData.length > 0) {

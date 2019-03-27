@@ -43,7 +43,7 @@ class SingleWindDeviceCharts extends Component {
       <div className={styles.chartsLayout}>
         <div className={styles.topBox}>
           <div className={styles.left}>
-            <div className={styles.leftTop}><PowercurveChart {...this.props} /></div>
+            <div className={styles.leftTop}><PowercurveChart {...this.props} compare={this.compare}  /></div>
             <div className={styles.leftBottom}>
               <div className={styles.leftScatter}><PowerSpeedChart {...this.props} chartData={powerspeedchartData} chartId={'powerSpeedChart'} /></div>
               <div className={styles.rightScatter}><PowerSpeedChart {...this.props} chartData={pitchanglespeedchartData} chartId={'pitchange'} /></div>
