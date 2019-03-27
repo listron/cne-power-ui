@@ -196,7 +196,7 @@ class PlanTable extends Component {
           return <div title={record.stationName} className={styles.stationName}>{textValue}</div>
         }
       }, {
-        title: <TableColumnTitle title="装机容量" unit="MW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
         key: 'stationCapacity',
         sorter: true,
@@ -209,7 +209,7 @@ class PlanTable extends Component {
         sorter: false, // 暂时不排序了
         className: styles.planYear
       }, {
-        title: <TableColumnTitle title="年计划发电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
         className: styles.planPower,
@@ -228,7 +228,7 @@ class PlanTable extends Component {
       },
       ...MonthColumn,
       {
-        title: <TableColumnTitle title="PR年计划" unit="%" />,
+        title: () => <TableColumnTitle title="PR年计划" unit="%" />,
         dataIndex: 'yearPR',
         key: 'yearPR',
         editable: true,

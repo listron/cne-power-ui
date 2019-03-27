@@ -125,19 +125,19 @@ class FanList extends React.Component {
         sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       },
       {
-        title: <TableColumnTitle title="风速" unit="m/s" />,
+        title: () => <TableColumnTitle title="风速" unit="m/s" />,
         dataIndex: 'windSpeed',
         key: 'windSpeed',
         render(value){ return numWithComma(value); },
         sorter: (a, b) => a.windSpeed - b.windSpeed,
       }, {
-        title: <TableColumnTitle title="风向" unit="°" />,
+        title: () => <TableColumnTitle title="风向" unit="°" />,
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
         render(value){ return numWithComma(value); },
         sorter: (a, b) => a.angleOfYaw - b.angleOfYaw,
       }, {
-        title: <TableColumnTitle title="实时功率" unit="kW" />,
+        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -162,7 +162,7 @@ class FanList extends React.Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: <TableColumnTitle title="装机容量" unit="kW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -177,7 +177,7 @@ class FanList extends React.Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: <TableColumnTitle title="告警" unit="个" />,
+        title: () => <TableColumnTitle title="告警" unit="个" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
         render(value){ return numWithComma(value); },
