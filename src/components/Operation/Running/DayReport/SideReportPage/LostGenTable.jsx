@@ -188,7 +188,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: <TableColumnTitle title="日损失电量" unit="kWh" />,
+        title: () => <TableColumnTitle title="日损失电量" unit="kWh" />,
         dataIndex: 'lostPower',
         className: 'lostPower',
         render : (text, record) => {

@@ -49,13 +49,13 @@ class WindStationList extends React.Component {
     const { realTimePowerUnit, realCapacityUnit, powerUnit, windMonitorStation } = this.props;
     const planStatus = windMonitorStation && windMonitorStation.stationDataSummary && windMonitorStation.stationDataSummary.planStatus || 0;
     const planPower = planStatus === 0 ? [{
-      title: <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
+      title: () => <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
       render(value) { return numWithComma(value); },
     }] : [{
-      title: <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
+      title: () => <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
@@ -79,7 +79,7 @@ class WindStationList extends React.Component {
       }
     },
     {
-      title: <TableColumnTitle title="计划发电量" unit={`${powerUnit}`} className="nonePadding" />,
+      title: () => <TableColumnTitle title="计划发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "planOutput",
       defaultSortOrder: "descend",
       sorter: true,
@@ -126,7 +126,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: <TableColumnTitle title="实时功率" unit={`${realTimePowerUnit}`} className="nonePadding" />,
+        title: () => <TableColumnTitle title="实时功率" unit={`${realTimePowerUnit}`} className="nonePadding" />,
         dataIndex: "stationPower",
         defaultSortOrder: "descend",
         sorter: true,
@@ -148,7 +148,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: <TableColumnTitle title="装机容量" unit={`${realCapacityUnit}`} className="nonePadding" />,
+        title: () => <TableColumnTitle title="装机容量" unit={`${realCapacityUnit}`} className="nonePadding" />,
         dataIndex: "stationCapacity",
         defaultSortOrder: "descend",
         sorter: true,
@@ -161,21 +161,21 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
+        title: () => <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
         dataIndex: "windSpeed",
         defaultSortOrder: "descend",
         render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
-        title: <TableColumnTitle title="日发电量" unit={`${powerUnit}`} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "dayOutput",
         defaultSortOrder: "descend",
         render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
-        title: <TableColumnTitle title="月累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
+        title: () => <TableColumnTitle title="月累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "monthOutput",
         defaultSortOrder: "descend",
         render(value) { return numWithComma(value); },
@@ -183,14 +183,14 @@ class WindStationList extends React.Component {
       },
       ...planPower,
       {
-        title: <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
+        title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: "equipmentNum",
         defaultSortOrder: "descend",
         render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
-        title: <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
+        title: () => <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
         dataIndex: "alarmNum",
         defaultSortOrder: "descend",
         render(value) { return numWithComma(value); },

@@ -145,7 +145,7 @@ class HistoryWarnCon extends Component {
         sorter: true,
         defaultSortOrder: 'descend',
       }, {
-        title: <TableColumnTitle title="电量损失比" unit="%" />,
+        title: () => <TableColumnTitle title="电量损失比" unit="%" />,
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
         render(text){ return numWithComma(text); },

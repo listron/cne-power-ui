@@ -59,11 +59,11 @@ class RealtimeList extends Component {
     ];
     
     const pointColumn = pointData.map(e => ({
-      title: e.pointUnit ? <TableColumnTitle
+      title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
         style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
-      /> : e.pointName,
+      />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
       render: value => numWithComma(parseFloat(value).toFixed(2)),
