@@ -37,12 +37,12 @@ class PowerSpeedChart extends Component {
     }
     return result;
   };
-  drawChart = (params ) => {
+  drawChart = (params) => {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);
     let filterData = [];
-    (params.length&&params.length > 0) &&params.forEach((e, i) => {
+    (params && params.length > 0) && params.forEach((e, i) => {
       if (e.powerSpeedData) {
         e.powerSpeedData.forEach((item, i) => {
           item.power ? filterData.push(item.power) : null
@@ -127,7 +127,7 @@ class PowerSpeedChart extends Component {
           color: lineColor,
           verticalAlign: 'bottom',
           lineHeight: 40,
-          padding: [60, 0,0,0]
+          padding: [60, 0, 0, 0]
         },
         axisTick: {
           show: false,
@@ -184,11 +184,11 @@ class PowerSpeedChart extends Component {
       ],
       series: params.map((e, i) => {
         let lineData = [];
-        if (e.powerSpeedData&&e.powerSpeedData.length>0) {
+        if (e.powerSpeedData && e.powerSpeedData.length > 0) {
           (e.powerSpeedData).forEach((item, i) => {
             lineData.push([item.speed, item.power, item.time])
           })
-        } else if(e.pitChangleSpeedData&&e.pitChangleSpeedData.length>0) {
+        } else if (e.pitChangleSpeedData && e.pitChangleSpeedData.length > 0) {
           (e.pitChangleSpeedData).forEach((item, i) => {
             lineData.push([item.windSpeed, item.pitchangle, item.time])
           })

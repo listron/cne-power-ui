@@ -23,7 +23,7 @@ class WindRoseChart extends Component {
   drawChart = (params) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
     let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
-    params.length>0&&params.forEach((e, i) => {
+    params&&params.length>0&&params.forEach((e, i) => {
       XData.push(i),
         windDirection.push(e.windDirection),
         avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
