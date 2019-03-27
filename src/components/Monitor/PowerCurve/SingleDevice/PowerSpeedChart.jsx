@@ -9,8 +9,8 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class PowerSpeedChart extends Component {
   static propTypes = {
-    chartData:PropTypes.array,
-    chartId:PropTypes.string,
+    chartData: PropTypes.array,
+    chartId: PropTypes.string,
 
   }
   constructor(props, context) {
@@ -42,7 +42,7 @@ class PowerSpeedChart extends Component {
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);
     let filterData = []
-    params.forEach((e, i) => {
+    params.length > 0 &&params.forEach((e, i) => {
       if (e.powerSpeedData) {
         e.powerSpeedData.forEach((item, i) => {
           item.power ? filterData.push(item.power) : null
@@ -54,12 +54,12 @@ class PowerSpeedChart extends Component {
         })
       }
     })
-    const inverterTenMinGraphic = (filterData.length === 0||filterDeviceName.length===0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (filterData.length === 0 || filterDeviceName.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    // let color = ['#199475'];
+    let color = ['#199475', '#e08031', '#a42b2c'];
     const option = {
       graphic: inverterTenMinGraphic,
-      // color: color,
+      color: color,
       title: {
         text: this.getYaxisName(chartId)[0],
         x: 'left',
@@ -100,13 +100,13 @@ class PowerSpeedChart extends Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0],'--',2)}</div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1],'--')}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--')}</div>
           </div>`
         },
         backgroundColor: '#fff',
         axisPointer: {
-          type: 'cross',
+          // type: 'cross',
           label: {
             backgroundColor: lineColor,
           }
@@ -121,15 +121,19 @@ class PowerSpeedChart extends Component {
       },
       xAxis: {
         type: 'value',
-
+        nameGap: -40,
         name: this.getYaxisName(chartId)[2],
         nameTextStyle: {
           color: lineColor,
+          verticalAlign: 'bottom',
+          lineHeight: 40,
+          padding: [60, 0,0,0]
         },
         axisTick: {
           show: false,
         },
         axisLine: {
+          show: true,
           onZero: false,
           lineStyle: {
             color: '#dfdfdf',
@@ -143,6 +147,9 @@ class PowerSpeedChart extends Component {
             show: false,
           }
         },
+        splitLine: {
+          show: false
+        },
       },
       yAxis: [
         {
@@ -151,8 +158,13 @@ class PowerSpeedChart extends Component {
           nameTextStyle: {
             color: lineColor,
           },
+
           splitLine: {
-            show: false
+            show: true,
+            lineStyle: {
+              color: ['#dfdfdf'],
+              type: 'dashed',
+            }
           },
           axisLine: {
             lineStyle: {
@@ -163,28 +175,31 @@ class PowerSpeedChart extends Component {
             color: lineColor,
           },
           axisTick: {
-            show: false,
+            show: true,
+            lineStyle: {
+              type: 'dashed'
+            }
           },
         }
       ],
       series: params.map((e, i) => {
         let lineData = [];
-        if (e.powerSpeedData) {
-          e.powerSpeedData.forEach((item, i) => {
+        if (e.powerSpeedData&&e.powerSpeedData.length>0) {
+          (e.powerSpeedData).forEach((item, i) => {
             lineData.push([item.speed, item.power, item.time])
           })
-        } else {
-          e.pitChangleSpeedData.forEach((item, i) => {
+        } else if(e.pitChangleSpeedData&&e.pitChangleSpeedData.length>0) {
+          (e.pitChangleSpeedData).forEach((item, i) => {
             lineData.push([item.windSpeed, item.pitchangle, item.time])
-            
           })
         }
-        
-        // 
-
         return {
           name: `${e.deviceName}`,
           type: 'scatter',
+          symbolSize: 5,
+          emphasis: {
+            symbolSize: 8,
+          },
           data: lineData
         }
       })

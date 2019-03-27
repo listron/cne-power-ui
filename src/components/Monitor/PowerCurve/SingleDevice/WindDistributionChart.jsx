@@ -149,6 +149,13 @@ class WindDistributionChart extends Component {
           axisTick: {
             show: false,
           },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#dfdfdf'],
+              type: 'dashed',
+            }
+          },
         }
       ],
       dataZoom:

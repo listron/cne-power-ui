@@ -27,7 +27,7 @@ class SequenceChart extends Component {
     const lineColor = '#666';
     const { xAxisDate } = this.props;
     let color = ['#3e97d1', '#a42b2c'];
-    let yData = params.map(e => e.deviceName)
+    let yData = params.map(e => (e.deviceName))
     const inverterTenMinGraphic = (xAxisDate.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
@@ -168,7 +168,7 @@ class SequenceChart extends Component {
 
       series: params.map((e, i) => {
         let lineData = [];
-        e.sequenceChartData.forEach((item, i) => {
+       (e.sequenceChartData&&e.sequenceChartData.length>0).forEach((item, i) => {
           lineData.push(item.windSpeed)
         }
         )

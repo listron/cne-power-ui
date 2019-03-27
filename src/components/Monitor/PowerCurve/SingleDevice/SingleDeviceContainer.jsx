@@ -46,9 +46,10 @@ class SingleDeviceContainer extends Component {
     this.props.getDeviceInfo({ // 风电设备类型下的设备编号
       deviceFullcode:deviceFullCode
     });
-    const startTime = time.split('~')[0];
-    const endTime = time.split('~')[1];
-    const params = { stationCode, deviceFullCode: [deviceFullCode], startTime, endTime }
+    const startTime = time?time.split('~')[0]:'';
+    const endTime = time?time.split('~')[1]:'';
+    const singleDeviceFullCode=deviceFullCode?[deviceFullCode]:[];
+    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime, endTime }
     changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
     this.props.getRoseChart({ ...params,deviceFullCode });
     this.props.getwinddistributionchart({ ...params,deviceFullCode  });
@@ -67,7 +68,7 @@ class SingleDeviceContainer extends Component {
     }
   }
   onOk = (selectdevice) => {
-    const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
+    const deviceFullCode = selectdevice.map((e, i) => (e.deviceCode));
     this.props.changeSingleDeviceStore({
       deviceFullCode,
       selectDeviceFullCode: selectdevice
@@ -131,7 +132,7 @@ class SingleDeviceContainer extends Component {
     // const { stationCode, deviceFullCode, time } = this.props.match.params;
     const { stations, deviceShowType, stationCode,  startTime, endTime, airDensity, selectDeviceFullCode,deviceInfo } = this.props;
     const deviceTypeCode = 101;
-    const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
+    const stationInfo = stations?stations.filter(e => (e.stationCode === +stationCode))[0]:{};
     const pathAllDevice = `#/monitor/powercurve`;
     return (
       <div className={styles.singleDevice}>

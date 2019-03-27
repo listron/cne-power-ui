@@ -35,9 +35,14 @@ class SingleWindDeviceCharts extends Component {
 
   render() {
     const { powerspeedchartData, pitchanglespeedchartData, sequencechartData, roseChartData } = this.props;
+    console.log('pitchanglespeedchartData: ', pitchanglespeedchartData);
+    console.log('powerspeedchartData: ', powerspeedchartData);
+    console.log('sequencechartData: ', sequencechartData);
     let sortrosedata = roseChartData.length > 0 ? roseChartData.sort(this.compare('rangeId')) : [];
     let rosedata = sortrosedata.length > 0 ? sortrosedata.concat([sortrosedata[0]]) : [];
-    const xAxisDate = sequencechartData.length > 0 ? sequencechartData[0].sequenceChartData.map(e => moment(e.time).format('YYYY-MM-DD HH:mm:ss')) : [];
+    const firstXAxisAllDate=sequencechartData.length > 0 ? sequencechartData[0]:{};
+    console.log('firstXAxisAllDate: ', firstXAxisAllDate);
+    const xAxisDate = (firstXAxisAllDate.sequenceChartData&&(firstXAxisAllDate.sequenceChartData).length> 0 ) ? firstXAxisAllDate.sequenceChartData.map(e => moment(e.time).format('YYYY-MM-DD HH:mm:ss')) : [];
     return (
       <div className={styles.chartsLayout}>
         <div className={styles.topBox}>

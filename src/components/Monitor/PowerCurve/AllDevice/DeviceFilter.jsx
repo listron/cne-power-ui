@@ -125,7 +125,6 @@ class DeviceFilter extends Component {
           </div>
           <div className={styles.typeSelect}>
             <span className={styles.text}>选择设备</span>
-
             <DeviceSelect
               disabled={+stationCode ? false : true}
               stationCode={+stationCode}
