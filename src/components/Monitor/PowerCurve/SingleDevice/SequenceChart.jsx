@@ -168,7 +168,7 @@ class SequenceChart extends Component {
 
       series: params.map((e, i) => {
         let lineData = [];
-       (e.sequenceChartData&&e.sequenceChartData.length>0).forEach((item, i) => {
+       (e.sequenceChartData&&e.sequenceChartData.length>0)&&e.sequenceChartData.forEach((item, i) => {
           lineData.push(item.windSpeed)
         }
         )
