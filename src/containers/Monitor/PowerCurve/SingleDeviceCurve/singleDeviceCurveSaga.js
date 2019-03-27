@@ -92,7 +92,7 @@ function* getpowerspeedchart(action) { //功率曲线图表-功率&转速-单风
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
         payload: {
-          powerspeedchartData: response.data.data || {},
+          powerspeedchartData: response.data.data || [],
         }
       })
     } else {
@@ -114,7 +114,7 @@ function* getpitchanglespeedchart(action) { //功率曲线图表-桨距角&风�
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
         payload: {
-          pitchanglespeedchartData: response.data.data || {},
+          pitchanglespeedchartData: response.data.data || [],
         }
       })
     } else {
@@ -136,7 +136,7 @@ function* getwinddistributionchart(action) { //功率曲线图表-风频分布-�
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
         payload: {
-          winddistributionchartData: response.data.data || {},
+          winddistributionchartData: response.data.data || [],
         }
       })
     } else {
@@ -158,7 +158,7 @@ function* getsequencechart(action) { //功率曲线图表-时序图-单风机
       yield put({
         type: singleDeviceCurveAction.GET_SINGLE_DEVICECURVE_SUCCESS,
         payload: {
-          sequencechartData: response.data.data || {},
+          sequencechartData: response.data.data || [],
         }
       })
     } else {

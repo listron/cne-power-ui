@@ -80,11 +80,11 @@ class WindDistributionChart extends Component {
 
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-            <div>风速:${dataFormat(params.name)}</div>
+            <div>风速:${dataFormat(params.name,'--',2)}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>采样占比: ${dataFormat(params.value)}</div>
+            <div class=${styles.lineStyle}>频次占比: ${dataFormat(params.value,'--',2)}</div>
           </div>`
         },
         backgroundColor: '#fff',
@@ -148,6 +148,13 @@ class WindDistributionChart extends Component {
           },
           axisTick: {
             show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#dfdfdf'],
+              type: 'dashed',
+            }
           },
         }
       ],

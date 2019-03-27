@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
 import { Switch } from 'antd';
+import moment from 'moment';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class PowercurveChart extends Component {
   static propTypes = {
-    singleDeviceCurveData:PropTypes.array,
-    deviceFullCode:PropTypes.array,
-    getSingleDeviceCurveData:PropTypes.func,
-    stationCode:PropTypes.string,
-    startTime:PropTypes.string,
-    endTime:PropTypes.string,
+    singleDeviceCurveData: PropTypes.array,
+    deviceFullCode: PropTypes.array,
+    getSingleDeviceCurveData: PropTypes.func,
+    stationCode: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
 
   }
   constructor(props, context) {
@@ -28,50 +29,56 @@ class PowercurveChart extends Component {
     this.drawChart(theoryPowers)
   }
   onChange = (checked) => {
-    if(checked){
-      // console.log('功率曲线图空气密度校正请求');
-      const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
-      const params = { stationCode, deviceFullCode, startTime, endTime };
-      this.props.getSingleDeviceCurveData({ ...params,correct: checked ? 1 : 0 })
-    }
-    
+    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
+    const params = { stationCode, deviceFullCode, startTime, endTime };
+    this.props.getSingleDeviceCurveData({ ...params, correct: checked ? 1 : 0 })
+
+
   }
   drawChart = (params) => {
     const singlePowerCurveChart = echarts.init(document.getElementById('singlePowerCurveChart'));
     //横坐标
-    let xData=params.length>0?params[0].scatterPointData.map(e=>e.windSpeedAvg):[];
-    let ishaveData=[];
-    params.forEach((e,i)=>{
-      if(e.scatterPointData.length>0){
+    let xData = params.length > 0 ? params[0].scatterPointData.map(e => e.windSpeedAvg) : [];
+    let ishaveData = [];
+    params.length > 0 &&params.forEach((e, i) => {
+      if (e.scatterPointData&&e.scatterPointData.length > 0) {
         ishaveData.push(e.scatterPointData)
       }
     })
-    const inverterTenMinGraphic = (ishaveData.length === 0 ) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (ishaveData.length === 0) ? showNoData : hiddenNoData;
     //各种数据
     let scatter = [], actual = [], theory = [];
-    let series=[];
-    params.forEach((e, i) => {
+    let series = [];
+    params.length > 0 &&params.forEach((e, i) => {
       scatter[e.deviceName] = []; actual[e.deviceName] = []; theory[e.deviceName] = [];
       e.scatterPointData.forEach((item, i) => {
         scatter[e.deviceName].push([item.windSpeedAvg, item.powerActual, item.time, item.windDirection])
       })
       e.actualPowerData.forEach((item, i) => {
-        actual[e.deviceName].push({ value: item.powerAvg, ...item,...e  })
+        actual[e.deviceName].push({ value: item.powerAvg, ...item, ...e })
       })
       e.theoryPowerData.forEach((item, i) => {
-        theory[e.deviceName].push({ value: item.powerTheory, ...item, belong:'理论' })
+        theory[e.deviceName].push({ value: item.powerTheory, ...item, belong: '理论' })
       })
       series.push(
-        {type:'scatter',name:`${e.deviceName}散点`,data:scatter[e.deviceName]},
-        {type:'line',name:`${e.deviceName}实际功率曲线`,data:actual[e.deviceName],},
-        {type:'line',name:`${e.deviceName}理论功率曲线`,data:theory[e.deviceName]}
-        )
+        {
+          type: 'scatter',
+          name: `${e.deviceName}散点`,
+          data: scatter[e.deviceName],
+          symbolSize: 5,
+          emphasis: {
+            symbolSize: 8,
+          },
+        },
+        { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName], },
+        { type: 'line', name: `${e.deviceName}理论功率曲线`, data: theory[e.deviceName] }
+      )
     })
     const lineColor = '#666';
-    // let color = ['#199475'];
+     let color = ['#e08031','#a42b2c','#199475','#f9b600'];
     const option = {
-       graphic: inverterTenMinGraphic,
-      // color: color,
+      graphic: inverterTenMinGraphic,
+      color: color,
       title: {
         text: '功率曲线',
         // x:'left',
@@ -104,16 +111,16 @@ class PowercurveChart extends Component {
         show: true,
         formatter: (params) => {
           const info = params.data;
-          if(params.seriesType==="scatter"){
-            return ` <div class=${styles.lineStyle}>时间:  ${info[2]}</div>
-            <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0])}</div>
-            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1])}</div>
-            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3])}</div>`
+          if (params.seriesType === "scatter") {
+            return ` <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0], '--', 2)}</div>
+            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1], '--')}</div>
+            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3], '--')}</div>`
           }
-          if(info.belong){
+          if (info.belong) {
             return `<div class=${styles.lineStyle}>${params.seriesName}</div>
             <div class=${styles.lineStyle}>风速区间: ${info.windSpeedInterval}</div>
-            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info.value)}</div>`
+            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info.value, '--')}</div>`
           }
           return `<div class=${styles.formatStyle}>
           <div class=${styles.topStyle}>
@@ -123,8 +130,8 @@ class PowercurveChart extends Component {
           <div  style='background:#dfdfdf;height:1px;
           width:100%;' ></div>
           <div class=${styles.lineStyle}>风速区间: ${info.windSpeedInterval}</div>
-          <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info.windSpeedAvg)}</div>
-          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info.powerAvg)}</div>
+          <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info.windSpeedAvg, '--', 2)}</div>
+          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info.powerAvg, '--')}</div>
         </div>`
         },
         backgroundColor: '#fff',
@@ -167,6 +174,13 @@ class PowercurveChart extends Component {
             show: false,
           }
         },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: ['#dfdfdf'],
+            type: 'dashed',
+          }
+        },
       },
       yAxis: [
         {
@@ -174,9 +188,7 @@ class PowercurveChart extends Component {
           nameTextStyle: {
             color: lineColor,
           },
-          splitLine: {
-            show: false
-          },
+
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -188,9 +200,16 @@ class PowercurveChart extends Component {
           axisTick: {
             show: false,
           },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: ['#dfdfdf'],
+              type: 'dashed',
+            }
+          },
         }
       ],
-      series:series,
+      series: series,
       // dataset:{
       //   source:allData
       // }
@@ -203,7 +222,7 @@ class PowercurveChart extends Component {
       <div className={styles.graphStyle}>
         <div id="singlePowerCurveChart" className={styles.singlePowerCurveChart}>
         </div>
-        <div className={styles.switchStyle}> <Switch  onChange={this.onChange} />  空气密度校正</div>
+        <div className={styles.switchStyle}> <Switch onChange={this.onChange} />  空气密度校正</div>
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import echarts from 'echarts';
+import moment from 'moment';
 import styles from './singleDevice.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
@@ -26,7 +27,7 @@ class SequenceChart extends Component {
     const lineColor = '#666';
     const { xAxisDate } = this.props;
     let color = ['#3e97d1', '#a42b2c'];
-    let yData = params.map(e => e.deviceName)
+    let yData = params.map(e => (e.deviceName))
     const inverterTenMinGraphic = (xAxisDate.length === 0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
@@ -62,7 +63,7 @@ class SequenceChart extends Component {
         formatter: (params) => {
 
           const windSpeed = params.map((e, i) => {
-            return (`<div class=${styles.lineStyle}> ${e.marker}${e.seriesName}风速: ${dataFormat(e.value)}</div>`)
+            return (`<div class=${styles.lineStyle}> ${e.marker}${e.seriesName}风速: ${dataFormat(e.value,'--',2)}</div>`)
           })
 
           return `<div class=${styles.formatStyle}>
@@ -167,7 +168,7 @@ class SequenceChart extends Component {
 
       series: params.map((e, i) => {
         let lineData = [];
-        e.sequenceChartData.forEach((item, i) => {
+       (e.sequenceChartData&&e.sequenceChartData.length>0)&&e.sequenceChartData.forEach((item, i) => {
           lineData.push(item.windSpeed)
         }
         )
