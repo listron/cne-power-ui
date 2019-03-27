@@ -6,7 +6,7 @@ import styles from './homepageParts.scss';
 import axios from 'axios';
 import { dataFormat } from '../../utils/utilFunc';
 import { message } from 'antd';
-import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
+// import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
 
 class CenterMap extends Component{
   static propTypes = {
@@ -163,9 +163,8 @@ class CenterMap extends Component{
           name: 'wind',
           type: 'scatter',
           coordinateSystem: 'geo',
-          data: windStationData, 
-          symbol: `path://${windSvgPath}`,
-          symbolRotate: 180,
+          data: windStationData,
+          symbol: `image:///img/ico_wind.png`,
           symbolSize: [15,18],
           itemStyle: {
             color: '#fff',
@@ -181,8 +180,8 @@ class CenterMap extends Component{
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: `path://${pvSvgPath}`,
-          symbolRotate: 180,
+          symbol: `image:///img/ico_pv.png`,
+          symbolRotate: 0,
           symbolSize: [25,16],
           itemStyle: {
             color: '#fff',

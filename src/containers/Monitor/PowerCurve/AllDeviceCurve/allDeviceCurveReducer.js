@@ -9,6 +9,7 @@ const initState = immutable.fromJS({
   selectdeviceCode:[],
   startTime:'',
   endTime:'',
+  checkedAll:true,
 
   allDeviceCurveData:[],//多设备图表数据
   powerCurveListData:[],//table列表数据

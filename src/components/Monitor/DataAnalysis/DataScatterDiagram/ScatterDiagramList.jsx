@@ -65,24 +65,31 @@ class ScatterDiagramList extends Component{
     const columns = [{
       title: '设备名称',
       dataIndex: 'deviceName',
+      className: 'deviceName',
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
+      className: 'stationName',
     }, {
       title: '设备类型',
       dataIndex: 'deviceTypeName',
+      className: 'deviceTypeName',
     },{
       title: '型号',
       dataIndex: 'deviceModeName',
+      className: 'deviceModeName',
     }, {
       title: '时间',
       dataIndex: 'time',
+      className: 'time',
     }, {
-      title: <TableColumnTitle title={xCurrentPoint.devicePointName} unit={xUnit} />,
+      title: <TableColumnTitle title={xCurrentPoint.devicePointName} unit={xUnit} style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }} />,
       dataIndex: 'xData',
+      className: 'xData',
     },{
-      title: <TableColumnTitle title={yCurrentPoint.devicePointName} unit={yUnit} />,
+      title: <TableColumnTitle title={yCurrentPoint.devicePointName} unit={yUnit} style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }} />,
       dataIndex: 'yData',
+      className: 'yData',
     }];
 
     return(

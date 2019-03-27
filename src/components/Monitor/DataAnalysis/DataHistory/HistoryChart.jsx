@@ -206,8 +206,8 @@ class HistoryChart extends Component {
 
   render() {
     // height: 160 * 测点数 + top(10) + bottom(80) + 24 * 数据指示条行数。
-    const { queryParam, timeInterval } = this.props;
-    const { deviceFullCodes, devicePoints } = queryParam;
+    const { queryParam } = this.props;
+    const { deviceFullCodes, devicePoints, timeInterval } = queryParam;
     const calcHeight = 160 * devicePoints.length + 90 + 24 * Math.ceil((deviceFullCodes.length * devicePoints.length) / 4);
     const chartHeight = calcHeight > 300 ? calcHeight : 300; // 图表高度不小于300
     return (

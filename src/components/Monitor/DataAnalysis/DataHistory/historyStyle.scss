@@ -114,6 +114,24 @@
       max-height: 780px;
       width: 196px;
       overflow: auto;
+      li .ant-tree-node-content-wrapper{
+        height: auto;
+        line-height: 21px;
+      }
+      .ant-tree-title{
+        display: inline-block;
+        white-space: normal;
+      }
+      .ant-tree-treenode-switcher-open{
+        .ant-tree-title{
+          width: 120px;
+        }
+      }
+      .ant-tree-treenode-switcher-close{
+        .ant-tree-title{
+          width: 134px;
+        }
+      }
       &::-webkit-scrollbar {
         width: 6px;
         height: 6px;

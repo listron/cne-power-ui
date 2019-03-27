@@ -138,12 +138,17 @@ class EditDeviceForm extends Component {
                 )}
               </FormItem>}
               {isShow &&<FormItem label="额定容量" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('ratedPower', { initialValue: stationDeviceDetail.ratedPower, })(
+                {getFieldDecorator('ratedPower', { initialValue: stationDeviceDetail.ratedPower,
+                 rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
+                 })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
               </FormItem>}
               {isShow && <FormItem label="装机容量" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('deviceCapacity', { initialValue: stationDeviceDetail.deviceCapacity, })(
+                {getFieldDecorator('deviceCapacity', { 
+                  initialValue: stationDeviceDetail.deviceCapacity,
+                  rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
+                 })(
                   <Input placeholder="保留小数点后两位" />
                 )}<span className={styles.unitStyle}>kW</span>
               </FormItem>}
@@ -172,7 +177,7 @@ class EditDeviceForm extends Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="接入日期" colon={false} className={styles.formItemStyle} >
+              <FormItem label="创建日期" colon={false} className={styles.formItemStyle} >
                 {getFieldDecorator('connectTime', { initialValue: stationDeviceDetail.connectTime, })(
                   <span>{connectTime}</span>
                 )}
