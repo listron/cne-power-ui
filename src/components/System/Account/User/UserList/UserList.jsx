@@ -44,8 +44,8 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnsHandleArr: ['用户名', '真实姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
-      selectedUserColumns: new Set(['用户名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
+      columnsHandleArr: ['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
+      selectedUserColumns: new Set(['用户名', '用户姓名','电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
@@ -110,7 +110,7 @@ class UserList extends Component {
     let tmpUserColumns = selectedUserColumns;
     if (value === '全选') {
       tmpUserColumns = new Set(columnsHandleArr);
-      // tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
+      // tmpUserColumns = new Set(['用户名','用户姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
     } else {
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -212,7 +212,7 @@ class UserList extends Component {
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
-        title: '真实姓名',
+        title: '用户姓名',
         width:'200px',
         dataIndex: 'userFullName',
         key: 'userFullName',

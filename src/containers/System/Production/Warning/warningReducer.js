@@ -17,7 +17,6 @@ var initState = Immutable.fromJS({
   deviceModels: [], // 电站设备类型下设备型号
   devicePoints: [], // 设备测点列表
   allStationBaseInfo: [], // 用户所在企业下所有电站基本信息(与用户token无关)
-
   ruleStationDeviceTypes: [], // 规则电站下设备类型
   ruleDeviceModels: [], // 规则电站设备类型下设备型号
   ruleDevicePoints: [], // 规则设备测点列表

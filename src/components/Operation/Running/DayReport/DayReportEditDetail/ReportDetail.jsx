@@ -52,7 +52,7 @@ const loseColumn = [
       <span title={text}>{text}</span>
     ),
   }, {
-    title: <TableColumnTitle title="日损失电量" unit="kWh" />,
+    title: () => <TableColumnTitle title="日损失电量" unit="kWh" />,
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (
@@ -104,7 +104,7 @@ const limitColumn = [
       <span title={text}>{text}</span>
     ),
   }, {
-    title: <TableColumnTitle title="日损失电量" unit="kWh" />,
+    title: () => <TableColumnTitle title="日损失电量" unit="kWh" />,
     dataIndex: 'lostPower',
     className: 'lostPower',
     render: (text, record) => (
