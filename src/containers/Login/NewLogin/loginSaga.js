@@ -1,0 +1,513 @@
+import { call, put, takeLatest } from 'redux-saga/effects';
+import axios from 'axios';
+import Path from '../../constants/path';
+import moment from 'moment';
+import { stringify } from 'qs';
+import { loginAction } from './loginReducer';
+import { message } from 'antd';
+import Cookie from 'js-cookie';
+import { Base64 } from 'js-base64';
+
+const { APIBasePath } = Path.basePaths;
+const { login } = Path.APISubPaths;
+
+function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据存储。
+  localStorage.setItem('authData', payload.access_token); // token
+  localStorage.setItem('refresh_token', payload.refresh_token); // refresh token
+  localStorage.setItem('userInfo', JSON.stringify({ // 用户个人信息存储。
+    enterpriseId: payload.enterpriseId,
+    enterpriseName: payload.enterpriseName,
+    enterpriseLogo: payload.enterpriseLogo,
+    userId: payload.userId,
+    username: payload.username,
+    userFullName: payload.userFullName,
+    userLogo: payload.userLogo,
+    payload: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
+  }))
+  localStorage.setItem('rightMenu', payload.rightMenu); // 权限信息存储
+  localStorage.setItem('rightHandler', payload.right); // 权限信息存储
+}
+
+function *userNameLogin(action){ //账号密码登录
+  const url = `${APIBasePath}${login.userNameLogin}`;
+  const { params } = action;
+  yield put({ type: loginAction.LOGIN_FETCH });
+  try {
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      auth: {},
+      data: stringify({
+        'grant_type': "password",
+        'deviceType': '0',
+        username: params.username,
+        password: Base64.encode(params.password),
+      }),
+    });
+    if (response.data.code === '10000') { // 账户密码正确，但用户状态不确定。需根据用户状态确定是否能够进行登录。
+      const { data = {} } = response.data || {};
+      const { userEnterpriseStatus, auto } = data || {};
+      // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
+      if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
+        yield call(loginInfoSave, { payload: data }); // 正常登录，信息存储
+      }
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: {
+          userEnterpriseStatus,
+          userAuto: auto,
+        },
+      })
+    } else { // 账户或密码错误 response.data.code === '20009'
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: { loginError: true }
+      }); 
+    }
+    /*
+      if (response.data.code === '10000' && response.data.data.userEnterpriseStatus) {
+        const { data } = response.data;
+        if(data.userEnterpriseStatus === 3) { // 3 启用状态
+          data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+          data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+          data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+          data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+          data.userId && Cookie.set('userId', data.userId);
+          data.username && Cookie.set('username', data.username);
+          data.userFullName && Cookie.set('userFullName', data.userFullName);
+          data.userLogo && Cookie.set('userLogo', data.userLogo);
+          data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+          data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
+          Cookie.set('isNotLogin', 0);
+          if(data.auto === '1'){ // 导入用户/生成用户 需走完善密码步骤
+            yield put({ 
+              type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+              params: {
+                importUser: true,
+                pageTab: 'joinIn',
+                joinStep: 3,
+              }
+            })
+          }else if(data.auto === '0'){//正常用户，直接登录
+            yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
+            // action.params.history.push('/monitor/station');
+          }
+        } else {
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
+          if(data.userEnterpriseStatus){
+            yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+          }
+        }
+      } else{
+        yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
+        // message.error(response.data.message);    
+      }
+    */
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function *getVerificationCode(action){ // 获取短信验证码
+  const { params } = action;
+  const url = `${APIBasePath}${login.getVerificationCode}/${params.phoneNum}`;
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+      yield put({ type: loginAction.SEND_CODE_SUCCESS, params });
+    } else {
+      message.error(response.data.message);
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *phoneCodeLogin(action){ // 手机+验证码登录
+  const { params } = action;
+  const url = `${APIBasePath}${login.phoneCodeLogin}`;
+  yield put({ type: loginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      auth: {},
+      data: stringify({
+        'grant_type': "password",
+        phoneNum: params.phoneNum,
+        verificationCode: params.verificationCode,
+      }),
+    });
+    if (response.data.code === '10000') {
+      const { data = {} } = response.data || {};
+      const { userEnterpriseStatus, auto } = data || {};
+      // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
+      if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
+        yield call(loginInfoSave, { payload: data }); // 正常登录，信息存储
+      }
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: {
+          userEnterpriseStatus,
+          userAuto: auto,
+        },
+      })
+      /*
+        if(data.userEnterpriseStatus === 3) {
+          if(params.isNotLogin === 1 || (data.auto==='0' && data.enterpriseId!==null)) {//非登录/正常用户
+            data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+            data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+            data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
+            data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
+            data.userId && Cookie.set('userId', data.userId);
+            data.username && Cookie.set('username', data.username);
+            data.userFullName && Cookie.set('userFullName', data.userFullName);
+            data.userLogo && Cookie.set('userLogo', data.userLogo);
+            data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
+            data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
+            Cookie.set('isNotLogin', action.params.isNotLogin);
+            data.auto && Cookie.set('auto', data.auto);
+            data.right && Cookie.set('userRight', data.right);
+            data.rightMenu && Cookie.set('rightMenu', data.rightMenu);
+
+            data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
+            data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
+          }
+          
+          if(data.auto==='1'){//auto为1导入用户/生成用户 需走完善密码步骤
+            message.error('请完善密码！');
+            yield put({ 
+              type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+              params: {
+                importUser: true,
+                pageTab: 'joinIn',
+                joinStep: 3,
+              }
+            });
+          }
+
+          yield put({
+            type: loginAction.PHONE_CODE_LOGIN_SUCCESS,
+            params, //params为请求传入的值
+            data, //data为API返回的值
+          });
+        } else {
+          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
+          if(data.userEnterpriseStatus){
+            yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
+          }
+          // message.error(data.userEnterpriseStatus);
+        }  
+      */  
+    } else { // 账户或密码错误 response.data.code === '20009'
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: { loginError: true }
+      }); 
+    }
+    // else{
+    //   message.error(response.data.message);
+    //   yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
+    //   yield put({
+    //     type: loginAction.CHANGE_LOGIN_STORE_SAGA,
+    //     params: {
+    //       checkLoginPhone: false,
+    //     }
+    //   });
+    // }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *phoneCodeRegister(action) { // 验证手机号和验证码是否正确 加入企业/注册企业，手机验证码正确会调用手机号验证码登录获取token）
+  const { params } = action;
+  let url = `${APIBasePath}${login.phoneCodeRegister}`;
+  try{
+    const response = yield call(axios.post, url, {
+      phoneNum: params.phoneNum, 
+      verificationCode: params.verificationCode,
+    });
+    if (response.data.code === '00000') { // 验证码错误
+      yield put({
+        type: loginAction.PHONE_CODE_REGISTER_FAIL,
+        data: response.data
+      });
+    } else { // todo => 应暂存数据，不应去登录。
+      yield put({ type: loginAction.PHONE_CODE_LOGIN_SAGA, params });
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *checkEnterpriseDomain(action){ // 验证企业域名是否有效
+  const { params } = action;
+  let url = `${APIBasePath}${login.checkEnterpriseDomain}/${params.enterpriseDomain}`;
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({
+        type: loginAction.CHECK_ENTERPRISE_DOMAIN_SUCCESS, 
+        params,
+        data: response.data.data,
+      });
+      if(response.data.data.isRegister === '1') {
+        yield put({type: loginAction.CHECK_ENTERPRISE_NAME_SAGA, params})
+      }
+    }else{
+      yield put({ type: loginAction.CHECK_ENTERPRISE_DOMAIN_FAIL, data: response.data })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
+function *checkEnterpriseName(action){ // 验证企业名是否已注册
+  const { params } = action;
+  const url = `${APIBasePath}${login.checkEnterpriseName}/${params.enterpriseName}`;
+  try{
+    const response = yield call(axios.get, url);
+    if(response.data.code === '10000'){
+      yield put({
+        type: loginAction.CHECK_ENTERPRISE_NAME_SUCCESS, 
+        params,
+        data: response.data.data,
+      });
+      if(response.data.data.isRegister === '1') {
+        yield put({
+          type: loginAction.CHANGE_LOGIN_STORE_SAGA,
+          params: {
+            registerStep: 3
+          }
+        });
+      }
+    }else{
+      yield put({ type: loginAction.CHECK_ENTERPRISE_NAME_FAIL, data: response.data})
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
+function *registerEnterprise(action){ // 注册企业 完善个人信息
+  const { params } = action;
+  const url = `${APIBasePath}${login.registerEnterprise}`;
+  yield put({ type: loginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+      data: stringify({
+        'grant_type': "password",
+        phoneNum: params.phoneNum,
+        enterpriseDomain: params.enterpriseDomain,
+        enterpriseName: params.enterpriseName,
+        username: params.username,
+        password: params.password,
+        confirmPwd: params.confirmPwd,        
+      }),
+    });
+    message.success("请求成功");
+    if(response.data.code === '10000'){
+      message.success('注册成功！');
+      yield put({
+        type: loginAction.USER_NAME_LOGIN_SAGA,
+        params:{
+          username: params.username,
+          password: params.password,
+          history: params.history,
+        }
+      });
+    }else{
+      message.error('注册失败！');
+      yield put({type: loginAction.REGISTER_ENTERPRISE_FAIL, data: response.data });
+      if(response.data.code !== '20015') {
+        message.error(response.data.message);
+      }
+    }
+  }catch(e){
+    console.log(e);
+    message.error('服务器异常！');
+  }
+}
+
+function *getEnterPriseInfo(action){ // 获取企业信息
+  const { params } = action;
+  const url = `${APIBasePath}${login.getEnterpriseInfo}/${params.enterpriseName}`;
+  try{
+    yield put({ type: loginAction.LOGIN_FETCH});
+    const response = yield call(axios.get, url);
+    if(response.data.code === "10000"){
+      yield put({
+        type: loginAction.GET_ENTERPRISE_INFO_SUCCESS,
+        params,
+        data: response.data.data || {},
+      })
+    }else{
+      yield put({type: loginAction.GET_ENTERPRISE_INFO_FAIL, data: response.data})
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *joinEnterprise(action){ // 加入企业
+  const { params } = action;
+  const url = `${APIBasePath}${login.joinEnterprise}`;
+  try{
+    yield put({ type: loginAction.LOGIN_FETCH });
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+      data: stringify({
+        'grant_type': "password",
+        confirmPwd: params.confirmPwd,
+        enterpriseId: params.enterpriseId,
+        password: params.password,
+        phoneNum: params.phoneNum,
+        username: params.username,
+      }),
+    });
+    if(response.data.code === '10000'){
+      yield put({
+        type: loginAction.USER_NAME_LOGIN_SAGA,
+        params:{
+          username: params.username,
+          password: params.password,
+          history: params.history,
+        }
+      });
+      message.success(response.data.message);
+    } else{
+      yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
+      if(response.data.code !== '20015') {
+        message.error(response.data.message);
+      }
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *resetPassword(action){ // 设置新密码
+  const { params } = action;
+  const url = `${APIBasePath}${login.resetPassword}`;
+  yield put({type: loginAction.LOGIN_FETCH});
+  try{
+    const tmpAuthData = params.tmpAuthData || '';
+    const tmpAuthorization = `bearer ${tmpAuthData}`;
+    const response = yield call(axios, {
+      method: 'post',
+      url,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Authorization: tmpAuthorization
+      },
+      data: stringify({
+        'grant_type': "password",
+        confirmPwd: params.confirmPwd,
+        password: params.password,
+        phoneNum: params.phoneNum,
+      }),
+    });
+    if(response.data.code === "10000"){
+      message.success('密码设置成功，请重新登录！');
+      yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
+      
+    }else{
+      yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
+      message.error('设置失败！');
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+function *inviteUserLink(action){ // 邀请用户加入企业(获取邀请企业信息)
+  const { params } = action;
+  console.log(params)
+  const url = `${APIBasePath}${login.inviteUserLink}/${params.linkId}`;
+  yield put({type: loginAction.LOGIN_FETCH});
+  try{
+    const response = yield call(axios.post, url,params);
+    if(response.data.code === '10000'){//邀请链接成功
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+        params:{
+          pageTab: 'joinIn',
+          joinStep: 2,
+        }
+      });
+      yield put({type: loginAction.INVITE_USER_LINK_SUCCESS,
+        data: response.data.data || {},
+      });
+
+    }else if(response.data.code === '20021'){//邀请链接已失效
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+        params:{
+          pageTab: 'joinIn',
+          joinStep: 2,
+          inviteValid: false,
+        }
+      });
+    }else{
+      console.log(response.data);
+    }
+  }catch(e){
+    console.log(e);
+  }
+}
+
+/*
+  function *checkUserRegister(action) { // （暂时弃用）动态验证用户名是否注册
+    const { params } = action;
+    const url = `${APIBasePath}${login.checkUserRegister}/${params.username}`;
+    yield put({type: loginAction.LOGIN_FETCH});
+    try {
+      const response = yield call(axios.get, url);
+      if(response.data.code === "10000"){
+        yield put({ type: loginAction.CHECK_USER_REGISTER_SUCCESS})
+      }else{
+        yield put({ type: loginAction.CHECK_USER_REGISTER_FAIL})
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  function *checkPhoneRegister(action) { // 注册验证手机号是否已存在(接口暂弃用)
+    let url = `${APIBasePath}${login.loginPhoneRegister}/${action.params}`;
+    try {
+      const response = yield call(axios.get, url);
+      if(response.data.code === '10000'){
+        yield put({type: loginAction.CHECK_PHONE_REGISTER_SUCCESS, data: response.data.data});
+      }else{
+        yield put({type: loginAction.CHECK_PHONE_REGISTER_FAIL, data: {error: response.data.message}});
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+*/
+
+export function* watchLogin() {
+  yield takeLatest(loginAction.userNameLogin, userNameLogin);
+  yield takeLatest(loginAction.getVerificationCode, getVerificationCode);
+  yield takeLatest(loginAction.phoneCodeLogin, phoneCodeLogin);
+  // yield takeLatest(loginAction.phoneCodeRegister, phoneCodeRegister);
+  // yield takeLatest(loginAction.checkEnterpriseDomain, checkEnterpriseDomain);
+  // yield takeLatest(loginAction.checkEnterpriseName, checkEnterpriseName);
+  // yield takeLatest(loginAction.registerEnterprise, registerEnterprise);
+  // yield takeLatest(loginAction.getEnterPriseInfo, getEnterPriseInfo);
+  // yield takeLatest(loginAction.joinEnterprise, joinEnterprise);
+  // yield takeLatest(loginAction.resetPassword, resetPassword);
+  // yield takeLatest(loginAction.inviteUserLink, inviteUserLink);
+}

@@ -21,7 +21,6 @@ import Loadable from 'react-loadable';
 
 
 
-
 class Main extends Component {
   static propTypes = {
     getStations: PropTypes.func,
@@ -120,8 +119,8 @@ class Main extends Component {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
-    const userRight = Cookie.get('userRight');
-    const rightMenu = Cookie.get('rightMenu');
+    const userRight = localStorage.getItem('userRight');
+    const rightMenu = localStorage.getItem('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     
     const  Login=Loadable({
