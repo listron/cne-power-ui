@@ -49,8 +49,8 @@ class AbnormalReportModal extends Component {
       message.error('请先确认完成损失电量表单信息的填写!');
       return;
     }
-    const faultTimeError = faultGenList.find(e => e.startTime > e.endTime);
-    const limitTimeError = limitGenList.find(e => e.startTime > e.endTime);
+    const faultTimeError = faultGenList.find(e => e.endTime && e.startTime && e.startTime > e.endTime);
+    const limitTimeError = limitGenList.find(e => e.endTime && e.startTime && e.startTime > e.endTime);
     if (faultTimeError || limitTimeError) {
       message.error('结束时间必须大于开始时间');
       return;
@@ -144,7 +144,7 @@ class AbnormalReportModal extends Component {
     const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     const { modelInverterPowerGen, modelInverterCapacity, stationCapacity, reportDate } = abnormalInfo;
-
+    console.log(faultGenList[0])
     let defaultLimitLost, tmpRealityGen = 0; // 默认限电剩余损失电量, 
     if(modelInverterCapacity > 0){
       const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量
