@@ -14,14 +14,29 @@ let realtimeListInterval = null;
 
 function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
   const { stationCode } = payload;
+  const sortTypes = [ // 默认排序顺序
+    '风电机组', '集电线路', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '功率预测系统', '能量管理平台'
+  ];
   try {
     const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const stationDeviceTypes = response.data.data || [];
+      stationDeviceTypes.sort((a, b) => {
+        const tmpIndexA = sortTypes.indexOf(a.deviceTypeName);
+        const tmpIndexB = sortTypes.indexOf(b.deviceTypeName);
+        if (tmpIndexA === -1) {
+          return 1;
+        }
+        if (tmpIndexB === -1) {
+          return -1
+        }
+        return (tmpIndexA - tmpIndexB);
+      })
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
-          stationDeviceTypes: response.data.data || [],
+          stationDeviceTypes,
         }
       })
     } else { throw response }

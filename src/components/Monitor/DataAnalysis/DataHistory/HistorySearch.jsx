@@ -12,6 +12,7 @@ const { RangePicker } = DatePicker;
 class HistorySearch extends Component {
   static propTypes = {
     stations: PropTypes.array,
+    filterDevices: PropTypes.array,
     stationTypeCount: PropTypes.string,
 
     selectStationType: PropTypes.number, // 选中的电站类型
@@ -30,6 +31,32 @@ class HistorySearch extends Component {
 
   state = {
     disableDateFun: (current) => current > moment(),
+  }
+
+  componentDidUpdate(prevProps){
+    const { queryParam, changeHistoryStore, filterDevices } = this.props;
+    const prevDevices = prevProps.filterDevices;
+    if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    } else if (
+      prevDevices.length > 0
+        && filterDevices.length > 0
+        && prevDevices[0].deviceTypeCode !== filterDevices[0].deviceTypeCode
+    ) { // 设备类型切换
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]])
+    }
   }
 
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
@@ -112,10 +139,10 @@ class HistorySearch extends Component {
     const { queryParam } = this.props;
     const { timeInterval } = queryParam;
     if (rangeMoments.length === 1) {
-      this.setState({ // 10min时间跨度不超过2个月 秒级时间跨度不超过2天
+      this.setState({ // 10min时间跨度不超过1个月 秒级时间跨度不超过2天
         disableDateFun: (current) => {
-          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(3, 'M') : moment(rangeMoments[0]).add(1, 'd');
-          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(3, 'M') : moment(rangeMoments[0]).subtract(1, 'd');
+          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(1, 'M') : moment(rangeMoments[0]).add(1, 'd');
+          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(1, 'M') : moment(rangeMoments[0]).subtract(1, 'd');
           return current > moment() || current > maxTime || current < minTime;
         }
       })
@@ -132,7 +159,7 @@ class HistorySearch extends Component {
     })
   } 
 
-  DateChange = (timeMoment, timeStr) => { // 日期跨度选择
+  dateChange = (timeMoment, timeStr) => { // 日期跨度选择
     const [startTime, endTime] = timeMoment;
     const { queryParam } = this.props;
     const preStartTime = queryParam.startTime;
@@ -162,6 +189,8 @@ class HistorySearch extends Component {
           ...queryParam,
           timeInterval: interval,
           devicePoints: [],
+          startTime: interval === 10 ? moment().startOf('day').subtract(1, 'M') :  moment().startOf('day').subtract(1, 'd'),
+          endTime: moment(),
         },
         allHistory: {},
         partHistory: {},
@@ -243,7 +272,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
-              max={2}
+              max={timeInterval === 10 ? 5 : 2}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
@@ -254,7 +283,7 @@ class HistorySearch extends Component {
             <RangePicker
               allowClear={false}
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.DateChange}
+              onChange={this.dateChange}
               onCalendarChange={this.calendarChange}
               onOpenChange={this.openChange}
               value={[startTime, endTime]}
@@ -262,7 +291,7 @@ class HistorySearch extends Component {
               dropdownClassName={styles.historyRangeDropdown}
               renderExtraFooter={() => (
                 <span className={styles.infoTip}>
-                  {timeInterval === 10 ? '时间选择范围不可超过3个月' : '时间选择范围不可超过2天'}
+                  {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过2天'}
                 </span>
               )}
               showTime
