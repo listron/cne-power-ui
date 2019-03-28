@@ -280,8 +280,12 @@ class WindStationList extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
-
-        <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          onChange={this.ontableSort}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          pagination={false} />
       </div>
     )
   }
