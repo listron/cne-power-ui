@@ -25,7 +25,7 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
           return 1;
         }
         if (tmpIndexB === -1) {
-          return -1
+          return -1;
         }
         return (tmpIndexA - tmpIndexB);
       })
