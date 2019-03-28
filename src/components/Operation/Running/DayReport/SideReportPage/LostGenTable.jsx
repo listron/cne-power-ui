@@ -116,7 +116,7 @@ class LostGenTable extends Component {
               })(
                 <DatePicker
                   placeholder="开始时间"
-                  style={{width: '100%'}}
+                  style={{width: '100%', minWidth: 'auto'}}
                   disabledDate = {this.disabledDate}
                   showTime={{format: 'HH:mm'}}
                   format="YYYY-MM-DD HH:mm"
@@ -167,7 +167,7 @@ class LostGenTable extends Component {
               <DatePicker
                 placeholder="结束时间"
                 disabledDate = {this.disabledDate}
-                style={{width: '100%'}}
+                style={{width: '100%', minWidth: 'auto'}}
                 showTime={{format: 'HH:mm'}}
                 format="YYYY-MM-DD HH:mm"
               />
