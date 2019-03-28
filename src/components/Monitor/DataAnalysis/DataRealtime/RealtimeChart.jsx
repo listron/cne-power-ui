@@ -100,7 +100,10 @@ class RealtimeChart extends Component {
       top: 10 + 160 * i,
       height: 160,
       left: 108,
-      right: 40
+      right: 40,
+      show: true,
+      borderColor: '#eee',
+      backgroundColor: i % 2 === 0 ? '#eee' : 'transparent'
     }
     if (i === pointInfo.length - 1) { // 最后一个grid
       return {

@@ -60,6 +60,7 @@ class DataRealtime extends Component {
 const mapStateToProps = state => ({
   ...state.monitor.dataRealtime.toJS(),
   stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  filterDevices: state.common.get('filterDevices').toJS(),
   stationTypeCount: 'wind', // state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
