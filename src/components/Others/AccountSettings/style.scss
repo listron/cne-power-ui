@@ -1,0 +1,19 @@
+
+.editUserName,.editPasswordForm,.ediPhone{
+  margin-top: 24px;
+  .account{
+    // text-align: center;
+    :global{
+      .ant-form-item {
+        display: flex;
+        .ant-form-item-control-wrapper input{
+          width: 200px;
+        }
+      }
+    }
+    .instructionText{
+      color: #dfdfdf;
+      margin-left: 12px;
+    }
+  }
+}

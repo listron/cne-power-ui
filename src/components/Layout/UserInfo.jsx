@@ -17,8 +17,8 @@ class UserInfo extends Component{
     super(props)
   }
 
-  editPassword = () => {
-    this.props.history.push('/hidden/user/editPassword');
+  accountSettings = () => {
+    this.props.history.push('/hidden/user/accountSettings');
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -48,9 +48,9 @@ class UserInfo extends Component{
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
-        <Menu.Item className={styles.innerItem} onClick={this.editPassword}>
+        <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
           <span className="iconfont icon-password1"></span>
-          <span className={styles.text}>修改密码</span>
+          <span className={styles.text}>账户设置</span>
         </Menu.Item>
         <Menu.Item className={styles.innerItem} onClick={this.logout}>
           <span className="iconfont icon-quit"></span>
