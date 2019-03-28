@@ -51,10 +51,14 @@ class SingleWindDeviceCharts extends Component {
           </div>
           <div className={styles.right}>
             <div className={styles.rightTop}><WindRoseChart {...this.props} rosedata={rosedata} /></div>
-            <div className={styles.rightBottom}><WindDistributionChart {...this.props} /></div>
+            <div className={styles.rightBottom}>
+             <WindDistributionChart {...this.props} /> 
+            </div>
           </div>
         </div>
-        <div className={styles.bottomBox}><SequenceChart {...this.props} xAxisDate={xAxisDate} /></div>
+        <div className={styles.bottomBox}>
+        <SequenceChart {...this.props} xAxisDate={xAxisDate} /> 
+        </div>
 
       </div>
     )
