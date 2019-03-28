@@ -51,7 +51,7 @@ class WindStation extends React.Component {
 
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
-    this.setState({stationType:'all',currentPage: 1,})
+    this.setState({ stationType: 'all', currentPage: 1, })
   }
 
   statisticStatusNum = () => {
@@ -144,19 +144,20 @@ class WindStation extends React.Component {
   }
 
   render() {
-    const { currentPage, pageSize, } = this.state;
+    const { currentPage, pageSize, checked,stationType } = this.state;
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const TabPane = Tabs.TabPane;
     const operations = ( // 状态筛选部分样式
       <div style={{ border: 'none' }}>
-        <Switch onChange={this.onHandleAlarm} />告警
+        <Switch onChange={this.onHandleAlarm} checked={checked} />告警
         <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
           style={{ margin: "0 30px 0 15px" }}
+          value={stationType}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {this.statisticStatusNum().normalNum}<span></span></Radio.Button>
@@ -186,16 +187,10 @@ class WindStation extends React.Component {
           activeKey={this.props.stationShowType}
           tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province}
           onChange={this.setkey} animated={false}>
-          <TabPane
-            tab={<span> <i className="iconfont icon-grid"></i></span>}
-            key="stationBlock"
-          >
+          <TabPane tab={<span> <i className="iconfont icon-grid"></i></span>} key="stationBlock" >
             <WindStationItem {...this.props} stationDataList={this.statusDataList()} />
           </TabPane>
-          <TabPane
-            tab={<span><i className="iconfont icon-table"></i></span>}
-            key="stationList"
-          >
+          <TabPane tab={<span><i className="iconfont icon-table"></i></span>} key="stationList" >
             <WindStationList
               {...this.props}
               stationDataList={this.statusDataList()}
@@ -204,10 +199,7 @@ class WindStation extends React.Component {
               onPaginationChange={this.onPaginationChange}
             />
           </TabPane>
-          <TabPane
-            tab={<span> <i className="iconfont icon-map"></i>  </span>}
-            key="stationMap"
-          >
+          <TabPane tab={<span> <i className="iconfont icon-map"></i>  </span>} key="stationMap"  >
             <Map {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" />
           </TabPane>
         </Tabs>
