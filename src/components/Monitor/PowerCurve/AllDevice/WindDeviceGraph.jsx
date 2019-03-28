@@ -117,6 +117,19 @@ class WindDeviceGraph extends Component {
         formatter: (params) => {
           const info = params.data;
           const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
+          if(params.seriesName.search('理论')!==-1){
+            return `<div class=${styles.formatStyle}>
+            <div class=${styles.topStyle}>
+              <div>${params.seriesName}</div>
+             
+            </div>
+            <div  style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}</div>
+            <div class=${styles.lineStyle}>风速:  ${dataFormat(info.windSpeedCenter)}</div>
+            <div class=${styles.lineStyle}>功率: ${dataFormat(info.powerAvg)}</div>
+          </div>`
+          }
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>
@@ -234,6 +247,10 @@ class WindDeviceGraph extends Component {
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
+   
+      if(params.seriesName.search('理论')!==-1){
+        return;
+      }
       return stationCode && this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
     })
   }
