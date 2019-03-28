@@ -1,0 +1,75 @@
+@import '../../../../theme/theme.scss';
+.singleAlarmCount {
+    background: $pageGround;
+    display: flex;
+    flex: 1;
+}
+
+.alarmCount {
+    background: $pageGround;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .typeSelect {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        height: 40px;
+        line-height: 40px;
+        justify-content: space-between;
+        background: #f8f8f8; // border-bottom:1px solid #dfdfdf;
+        .type {
+            display: flex;
+            flex-direction: row;
+            >div {
+                width: 120px;
+                text-align: center;
+                color: $lightColor;
+                border-right: 1px solid #dfdfdf;
+                cursor: pointer;
+            }
+            .active {
+                background: #fff;
+                color: #000;
+                position: relative;
+            }
+            .active::before {
+                content: '';
+                width: 120px;
+                height: 2px;
+                background: #199475;
+                position: absolute;
+                left: 0;
+            }
+        }
+    }
+    .serchSelect {
+        display: flex;
+        width: 100%;
+    }
+    .alarmCountCont {
+        .exportData {
+            margin-right: 30px;
+            :global {
+                button:focus {
+                    outline: none;
+                }
+            }
+            .exportBtn {
+                color: $themeColor;
+                background-color: #fff;
+                border-radius: 4px;
+                border: 1px solid #199475;
+                line-height: 30px;
+                height: 30px;
+                width: 66px;
+                margin-top: 9px;
+                cursor: pointer;
+            }
+            .exportBtn:hover {
+                background: $themeColor;
+                color: #fff;
+            }
+        }
+    }
+}

@@ -73,6 +73,10 @@ const routers = [
   }, { // 实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
+  },
+  { // 实时监控-告警-告警统计
+    path: '/monitor/alarm/statistics',
+    component: () => import('../containers/Monitor/Alarm/AlarmCount/AlarmCount'),
   }, { // 实时监控-电站监控-全部电站
     path: '/monitor/station',
     component: () => import('../containers/Monitor/StationMonitor/AllStation/AllStation'),
