@@ -33,10 +33,12 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
         }
         return (tmpIndexA - tmpIndexB);
       })
+      const defaultTypes = stationDeviceTypes.find(e => e.deviceTypeCode === 101); // 默认风电机组
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
           stationDeviceTypes,
+          deviceTypeCode: defaultTypes ? defaultTypes.deviceTypeCode : null,
         }
       })
     } else { throw response }

@@ -117,14 +117,16 @@
         display: inline-block;
         white-space: normal;
       }
-      .ant-tree-treenode-switcher-open{
-        .ant-tree-title{
-          width: 120px;
-        }
-      }
-      .ant-tree-treenode-switcher-close{
+      .ant-tree-treenode-switcher-close{ // 一级分组
         .ant-tree-title{
           width: 134px;
+        }
+      }
+      .ant-tree-treenode-switcher-open{ // 子集测点
+        .ant-tree-treenode-switcher-close{
+          .ant-tree-title{
+            width: 116px;
+          }
         }
       }
       &::-webkit-scrollbar {

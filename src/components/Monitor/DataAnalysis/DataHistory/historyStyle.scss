@@ -123,14 +123,16 @@
         display: inline-block;
         white-space: normal;
       }
-      .ant-tree-treenode-switcher-open{
-        .ant-tree-title{
-          width: 120px;
-        }
-      }
       .ant-tree-treenode-switcher-close{
         .ant-tree-title{
           width: 134px;
+        }
+      }
+      .ant-tree-node-content-wrapper .ant-tree-node-content-wrapper-normal{
+        .ant-tree-treenode-switcher-close{
+          .ant-tree-title{
+            width: 120px;
+          }
         }
       }
       &::-webkit-scrollbar {
