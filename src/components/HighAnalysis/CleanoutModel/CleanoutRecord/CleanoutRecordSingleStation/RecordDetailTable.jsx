@@ -215,7 +215,7 @@ class RecordDetailTable extends Component {
           )
         }
       }, {
-        title: <TableColumnTitle title="实际清洗用时" unit="天" />,
+        title: () => <TableColumnTitle title="实际清洗用时" unit="天" />,
         dataIndex: 'actualCleanTime',
         key: 'actualCleanTime',
         render(text){ return numWithComma(text); },
@@ -237,13 +237,13 @@ class RecordDetailTable extends Component {
         key: 'company',
         render: text => (<span>{text? `${text}` : '- -'}</span>),
       }, {
-        title: <TableColumnTitle title="清洗费用" unit="元" />,
+        title: () => <TableColumnTitle title="清洗费用" unit="元" />,
         dataIndex: 'cleanCost',
         key: '',
         render(text){ return numWithComma(text); },
 
       }, {
-        title: <TableColumnTitle title="清洗收益" unit="万kWh" />,
+        title: () => <TableColumnTitle title="清洗收益" unit="万kWh" />,
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         render(text){ return numWithComma(text); },

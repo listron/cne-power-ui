@@ -156,7 +156,7 @@ class DeviceSelectModal extends Component {
             </div>}
             <div className={styles.deviceList}>
               {modalDevices.map(e => {
-                const activeDevice = checkedDevice.find(info => info.deviceCode === e.deviceCode);
+                const activeDevice = checkedDevice.some(info => info.deviceCode === e.deviceCode);
                 return multiple ?
                   (<div
                     // onClick={()=>this.checkStation(m)} 

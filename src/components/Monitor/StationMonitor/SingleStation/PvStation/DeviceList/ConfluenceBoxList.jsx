@@ -133,7 +133,7 @@ class ConfluenceBoxList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
-        title: <TableColumnTitle title="实时功率" unit="kW" />,
+        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -158,7 +158,7 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: <TableColumnTitle title="装机容量" unit="kW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -173,25 +173,25 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: <TableColumnTitle title="电压" unit="V" />,
+        title: () => <TableColumnTitle title="电压" unit="V" />,
         dataIndex: 'voltage',
         key: 'voltage',
         render: value => numWithComma(value),
         sorter: (a, b) => a.voltage - b.voltage,
       }, {
-        title: <TableColumnTitle title="电流" unit="A" />,
+        title: () => <TableColumnTitle title="电流" unit="A" />,
         dataIndex: 'electricity',
         key: 'electricity',
         render: value => numWithComma(value),
         sorter: (a, b) => a.electricity - b.electricity,
       }, {
-        title: <TableColumnTitle title="离散率" unit="%" />,
+        title: () => <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
         render: value => value,
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
-        title: <TableColumnTitle title="温度" unit="℃" />,
+        title: () => <TableColumnTitle title="温度" unit="℃" />,
         dataIndex: 'temp',
         key: 'temp',
         render: value => numWithComma(value),

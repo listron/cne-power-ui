@@ -74,7 +74,7 @@ class ScatterDiagramList extends Component{
       title: '设备类型',
       dataIndex: 'deviceTypeName',
       className: 'deviceTypeName',
-    },{
+    }, {
       title: '型号',
       dataIndex: 'deviceModeName',
       className: 'deviceModeName',
@@ -83,11 +83,19 @@ class ScatterDiagramList extends Component{
       dataIndex: 'time',
       className: 'time',
     }, {
-      title: <TableColumnTitle title={xCurrentPoint.devicePointName} unit={xUnit} style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }} />,
+      title: () => (<TableColumnTitle
+        title={xCurrentPoint.devicePointName}
+        unit={xUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      />),
       dataIndex: 'xData',
       className: 'xData',
-    },{
-      title: <TableColumnTitle title={yCurrentPoint.devicePointName} unit={yUnit} style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }} />,
+    }, {
+      title: () => (<TableColumnTitle
+        title={yCurrentPoint.devicePointName}
+        unit={yUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      />),
       dataIndex: 'yData',
       className: 'yData',
     }];

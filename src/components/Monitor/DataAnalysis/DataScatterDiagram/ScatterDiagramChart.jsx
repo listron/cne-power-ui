@@ -69,8 +69,8 @@ class ScatterDiagramChart extends Component{
           return(
             `<div class=${styles.chartTool}>
               <h3 class=${styles.title}>${time ? moment(time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
-              <p class=${styles.value}>${xName}：${dataFormat(xValue[0], '--', 2)}${xUnit || ''}</p>
-              <p class=${styles.value}>${yName}：${dataFormat(yValue[0], '--', 2)}${yUnit || ''}</p>
+              <p class=${styles.value}>${xName}：${dataFormat(xValue, '--', 2)}${xUnit || ''}</p>
+              <p class=${styles.value}>${yName}：${dataFormat(yValue, '--', 2)}${yUnit || ''}</p>
             </div>`
           )
         }
