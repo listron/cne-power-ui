@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import Path from '../../constants/path';
+import Path from '../../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from './loginReducer';
@@ -22,7 +22,7 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
     username: payload.username,
     userFullName: payload.userFullName,
     userLogo: payload.userLogo,
-    payload: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
+    expireData: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
   }))
   localStorage.setItem('rightMenu', payload.rightMenu); // 权限信息存储
   localStorage.setItem('rightHandler', payload.right); // 权限信息存储
@@ -46,18 +46,15 @@ function *userNameLogin(action){ //账号密码登录
       }),
     });
     if (response.data.code === '10000') { // 账户密码正确，但用户状态不确定。需根据用户状态确定是否能够进行登录。
-      const { data = {} } = response.data || {};
-      const { userEnterpriseStatus, auto } = data || {};
+      const { loginResponse = {} } = response.data || {};
+      const { userEnterpriseStatus } = loginResponse || {};
       // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
       if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
-        yield call(loginInfoSave, { payload: data }); // 正常登录，信息存储
+        yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: {
-          userEnterpriseStatus,
-          userAuto: auto,
-        },
+        payload: { loginResponse }, // 返回信息暂存， 用于判定异常登录状态
       })
     } else { // 账户或密码错误 response.data.code === '20009'
       yield put({
@@ -141,18 +138,15 @@ function *phoneCodeLogin(action){ // 手机+验证码登录
       }),
     });
     if (response.data.code === '10000') {
-      const { data = {} } = response.data || {};
-      const { userEnterpriseStatus, auto } = data || {};
+      const { loginResponse = {} } = response.data || {};
+      const { userEnterpriseStatus } = loginResponse || {};
       // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
       if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
-        yield call(loginInfoSave, { payload: data }); // 正常登录，信息存储
+        yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: {
-          userEnterpriseStatus,
-          userAuto: auto,
-        },
+        payload: { loginResponse }, // 登录异常， 信息暂存，用于判定异常状态并给出相应提示
       })
       /*
         if(data.userEnterpriseStatus === 3) {

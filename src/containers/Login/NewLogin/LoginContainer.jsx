@@ -13,19 +13,12 @@ import ReactPlayer from 'react-player';
 class LoginContainer extends Component {
   static propTypes = {
     pageTab: PropTypes.string, // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
-    changeLoginStore: PropTypes.func,
     resetLoginState: PropTypes.func,
   }
 
   componentWillUnmount() {
     this.props.resetLoginState();
   }
-
-  // backToLogin = () => {
-  //   this.props.changeLoginStore({
-  //     pageTab: 'login',
-  //   })
-  // }
 
   playerVideoError = () => { // 媒体错误
     const videoPlayer = document.querySelector('#videoPlayer');
@@ -37,22 +30,22 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { pageTab, changeLoginStore } = this.props;
+    const { pageTab } = this.props;
     // pageTab: PropTypes.string, // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
     return (
       <div className={styles.loginLayout}>
-          <ReactPlayer 
-            url="/video/01-1000.mp4" 
-            id="videoPlayer"
-            muted 
-            autoPlay 
-            loop
-            playing={true} 
-            className={styles.backgroundVideo}
-            onError={this.playerVideoError}
-            width="auto"
-            height="auto" 
-          />
+        <ReactPlayer
+          url="/video/01-1000.mp4" 
+          id="videoPlayer"
+          muted 
+          autoPlay 
+          loop
+          playing={true} 
+          className={styles.backgroundVideo}
+          onError={this.playerVideoError}
+          width="auto"
+          height="auto" 
+        />
         <div className={styles.right}>
           <div className={styles.rightContent}>
             <div className={styles.mainBox}>
@@ -60,10 +53,10 @@ class LoginContainer extends Component {
               {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
               {/* {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />} */}
               {/* {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />} */}
-              <div className={styles.contactUs}>
+              {/* <div className={styles.contactUs}>
                 <Link to="/userAgreement" >用户协议</Link>
                 <Link to="/contactUs" >联系我们</Link>
-              </div>
+              </div> */}
               <div className={styles.footerTitle}>
                 京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
               </div>

@@ -1,4 +1,4 @@
-@import '../../theme/theme.scss';
+@import '../../../theme/theme.scss';
 
 .loginLayout {
   display: flex;
@@ -31,61 +31,7 @@
         .login,.registerContent {
           width: 100%;
           height: 100%;
-          padding: 24px 130px 0px 130px;
-          :global{
-            .ant-tabs-nav-wrap{
-              .ant-tabs-nav-scroll{
-                .ant-tabs-nav {
-                  width: 100%;
-                }
-              }
-            }
-            .ant-tabs-nav .ant-tabs-tab{
-              margin: 0;
-              width: 100%;
-              text-align: center;
-              font-size: 18px;
-            }
-          }
-          .joinTop {
-            height: 20px;
-            width: 430px;
-            margin-bottom: 12px;
-            margin-left: -108px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            .fontIcon {
-              float: left;
-              width: 21px;
-              height: 21px;
-              border-radius: 3px 0 0 3px;
-              text-align: center;
-              margin-right: 8px;
-              i {
-                font-size: 14px;
-                text-align: center;
-                width: 22px;
-                height: 22px;
-              }
-            }
-            .join {
-              font-size: 14px;
-              height: 20px;
-              width: 86px;
-              margin-left: 8px;
-              font-weight: 500;
-              color: $darkColor;
-              text-align: left;
-            }
-            
-          }
-          // .joinTop:hover {
-          //   color: #199475;
-          //   .join:hover{
-          //     color: #199475;
-          //   }
-          // }
+          padding: 24px 0px;
         }
         //忘记密码/加入企业
         .forgetPassword,.joinInContent {
@@ -128,11 +74,11 @@
           }
           /*单个步骤流程*/
           .ant-steps-item-icon .ant-steps-item ,.ant-steps-item-finish{
-            background: url("../../../assets/img/firstbg.png") no-repeat center ;
+            background: url("/img/firstbg.png") no-repeat center ;
             width: 105px;
           }
           .ant-steps-item-process{
-            background: url("../../../assets/img/firstbg.png") no-repeat center ;
+            background: url("/img/firstbg.png") no-repeat center ;
           }
         }
       }

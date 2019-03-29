@@ -113,18 +113,19 @@ class Main extends Component {
     return null;
   };
 
- 
-
   render() {
     const { changeLoginStore, history, resetMonitorData } = this.props;
-    const authData = Cookie.get('authData') || null;
-    const isNotLogin = Cookie.get('isNotLogin');
+    // const authData = Cookie.get('authData') || null;
+    // const isNotLogin = Cookie.get('isNotLogin');
     const userRight = localStorage.getItem('userRight');
     const rightMenu = localStorage.getItem('rightMenu');
-    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+    const authData = localStorage.getItem('authData');
+    const { expireData } = userInfo;
+    const isTokenValid = moment().isBefore(expireData, 's');
     
     const  Login=Loadable({
-      loader: () => import('../Login/LoginLayout'),
+      loader: () => import('../Login/NewLogin/LoginContainer'),
       loading: this.Loading
     })
     const Agreement=Loadable({
@@ -139,7 +140,7 @@ class Main extends Component {
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    if (isTokenValid && authData && (isNotLogin === '0')) {
+    if (isTokenValid && authData) {
       // if(true){
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
@@ -191,13 +192,17 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return ({
-    login: state.login.get('loginData'),
-    enterpriseId: state.login.get('enterpriseId'),
-    username: state.login.get('username'),
-  });
-}
+const mapStateToProps = (state) => ({
+  ...state.login.toJS()
+})
+// ({
+//   ...state.login.toJS()
+//   // return ({
+//   // login: state.login.get('loginData'),
+//   // enterpriseId: state.login.get('enterpriseId'),
+//   // username: state.login.get('username'),
+//   // });
+// })
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),

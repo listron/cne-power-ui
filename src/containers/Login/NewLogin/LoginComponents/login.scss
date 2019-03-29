@@ -1,0 +1,194 @@
+@import '../../theme/theme.scss';
+
+.login{
+
+  .joinTop {
+    height: 20px;
+    width: 430px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    // .fontIcon {
+    //   float: left;
+    //   width: 21px;
+    //   height: 21px;
+    //   border-radius: 3px 0 0 3px;
+    //   text-align: center;
+    //   margin-right: 8px;
+    //   i {
+    //     font-size: 14px;
+    //     text-align: center;
+    //     width: 22px;
+    //     height: 22px;
+    //   }
+    // }
+    .join {
+      font-size: 14px;
+      height: 20px;
+      width: 86px;
+      margin-left: 8px;
+      font-weight: 500;
+      color: $darkColor;
+      text-align: left;
+    }
+    
+  }
+  .loginAbnormal, .waitExamine{
+    width: 220px;
+    text-align: center;
+    margin-top: 60px;
+    color:$darkColor;
+    .abnormalIcon{
+      display: block;
+      margin: 0 auto;
+      :global{
+        .iconfont{
+          font-size: 62px;
+          color: $darkColor;
+        }
+      }
+    }
+  }
+  .waitExamine{
+    color: #e08031;
+    .waitExamineIcon{
+      :global{
+        .iconfont{
+          color: #e08031;
+        }
+      }
+    }
+  }
+}
+.loginForm{
+  :global{
+    .ant-input:focus {
+      border-color: $themeColor;
+      -webkit-box-shadow: 0 0 0 0;
+      box-shadow: 0 0 0 0;
+    }
+    .ant-input-group-addon{
+      background-color: #f1f1f1;
+      padding: 0 7px;
+    }
+    .ant-input{
+      padding: 4px;
+    }
+    .ant-input:focus {
+      border-color: $themeColor;
+      box-shadow: 0 0 0 0;
+    }
+    .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
+      color: #fff;
+    }
+    .ant-btn-primary:focus {
+      background-color: $themeColor;
+    }
+    .ant-form {
+      width: 220px;
+      .ant-form-item {
+        .ant-btn {
+          width: 220px;
+        }
+      }
+    }
+  }
+  .usernameInput{
+    margin-top: 24px;
+  }
+  .verificationCode{
+    margin-top: 24px;
+    .checkCodeBox{
+      display: flex;
+      justify-content: space-between;
+      width: 220px;
+      .testCode{
+        width: 64px;
+        :global{
+          .ant-input{
+            width:90px;
+          }
+        }
+      }
+      .queryCode{
+        width: 114px;
+        margin-top: 6px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background: #fff;
+        border-color: #199475;
+        color: #199475;
+      }
+      .queryCodeClick{
+        width: 114px;
+        margin-top: 6px;
+        margin-right: 0;
+        padding: 0 5px;
+        height: 30px;
+        :global{
+          button{
+            width: 80px;
+          }
+        }
+        background:#f7f7f7;
+        border:1px solid #dfdfdf;
+        color: #dfdfdf;
+      }
+    }
+  }
+  .loginChange{
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+  
+    span{
+      font-size: 12px;
+      color:#199475;
+      cursor: pointer;
+    }
+  
+  }
+  .loginBtn{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    :global{
+      .ant-btn-primary {
+        width: 220px;
+      }
+    }
+    .yiLogin{
+      font-size:14px;
+      color:#199475;
+      text-align: right;
+      cursor: pointer;
+    }
+  }
+  
+  .checkLoginPhone{
+    width: 200px;
+    height: 60px;
+    margin: 20px auto;
+    background: #f1f1f1;
+    border-radius:2px;
+    font-size: 12px;
+    padding-top: 6px;
+    p{
+      text-align: left;
+      text-indent: 2em;
+      margin-bottom: 0;
+      line-height: 24px;
+      color: $darkColor;
+      span{
+        color: $themeColor;
+        cursor: pointer;
+      }
+    }
+  }
+}
