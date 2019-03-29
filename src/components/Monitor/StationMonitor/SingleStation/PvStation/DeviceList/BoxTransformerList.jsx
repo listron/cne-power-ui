@@ -113,7 +113,7 @@ class BoxTransformerList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`}  className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
-        title: <TableColumnTitle title="实时功率" unit="kW" />,
+        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -138,7 +138,7 @@ class BoxTransformerList extends Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: <TableColumnTitle title="装机容量" unit="kW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -153,7 +153,7 @@ class BoxTransformerList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: <TableColumnTitle title="告警" unit="个" />,
+        title: () => <TableColumnTitle title="告警" unit="个" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
         render: value => numWithComma(value),

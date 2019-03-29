@@ -27,6 +27,8 @@ const initState = immutable.fromJS({
     pageNum: 1, // 当前页（第一页）
     pageSize: 10, // 每页条数
   },
+  logPointX: null, // 请求时暂存的测点数据
+  logPointY: null, // 请求时暂存的测点数据
   scatterDiagramCharts: [], // 所有散点图chart数据
   scatterDiagramList: {}, // 散点图表格
   pointsInfo: [],

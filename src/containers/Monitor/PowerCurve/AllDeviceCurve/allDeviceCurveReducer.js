@@ -1,4 +1,5 @@
 import immutable from 'immutable';
+import moment from 'moment';
 import { allDeviceCurveAction } from './allDeviceCurveAction';
 const initState = immutable.fromJS({
   stationTypeTabs:'0',//默认风
@@ -7,8 +8,9 @@ const initState = immutable.fromJS({
   deviceTypeCode:101,
   deviceFullCode:[],
   selectdeviceCode:[],
-  startTime:'',
-  endTime:'',
+  startTime: '',
+  endTime: '',
+  checkedAll:true,
 
   allDeviceCurveData:[],//多设备图表数据
   powerCurveListData:[],//table列表数据

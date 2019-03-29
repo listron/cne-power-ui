@@ -23,7 +23,7 @@ class WindRoseChart extends Component {
   drawChart = (params) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
     let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
-    params.forEach((e, i) => {
+    params&&params.length>0&&params.forEach((e, i) => {
       XData.push(i),
         windDirection.push(e.windDirection),
         avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
@@ -47,14 +47,17 @@ class WindRoseChart extends Component {
           // color: '#666'          // 主标题文字颜色
         },
       },
+    
       color: color,
       legend: {
         show: true,
         top: '5%',
+        right:'5%',
         width: '80%',
         itemWidth: 14,
         itemHeight: 6,
         x: 'right',
+        selectedMode:false,
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -62,10 +65,12 @@ class WindRoseChart extends Component {
         data: ['平均风速', '风向占比']
       },
       polar: [{
-        center: ['50%', '54%']
+        center: ['50%', '54%'],
+        radius:'60%',
       },
       {
-        center: ['50%', '54%']
+        center: ['50%', '54%'],
+        radius:'60%',
       }],
       tooltip: {
         trigger: 'axis',
@@ -89,8 +94,8 @@ class WindRoseChart extends Component {
           </div>
           <div  style='background:#dfdfdf;height:1px;
           width:100%;' ></div>
-          <div class=${styles.lineStyle}>${params[0].marker}平均风速:  ${dataFormat(params[0].value[0])}</div>
-          <div class=${styles.lineStyle}>${params[1].marker}风向占比: ${dataFormat(params[1].value[0])}%</div>
+          <div class=${styles.lineStyle}>${params[0].marker}平均风速:  ${dataFormat(params[0].value[0],'--',2)}</div>
+          <div class=${styles.lineStyle}>${params[1].marker}风向占比: ${dataFormat(params[1].value[0],'--',2)}%</div>
         </div>`
         },
       },

@@ -113,7 +113,28 @@
     .ant-tree{
       max-height: 780px;
       width: 196px;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+      li .ant-tree-node-content-wrapper{
+        height: auto;
+        line-height: 21px;
+      }
+      .ant-tree-title{
+        display: inline-block;
+        white-space: normal;
+      }
+      .ant-tree-treenode-switcher-close{
+        .ant-tree-title{
+          width: 134px;
+        }
+      }
+      .ant-tree-node-content-wrapper .ant-tree-node-content-wrapper-normal{
+        .ant-tree-treenode-switcher-close{
+          .ant-tree-title{
+            width: 120px;
+          }
+        }
+      }
       &::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -192,6 +213,7 @@
 .historyList{
   flex: 1;
   border-left: 1px solid $promptColor;
+  padding: 0 16px;
   .pagination {
     display: flex;
     align-items: center;
@@ -235,13 +257,13 @@
         white-space: nowrap;
       }
       .stationName {
-        flex: 0 0 118px;
+        flex: 0 0 100px;
       }
       .deviceTypeName{
-        flex: 0 0 108px;
+        flex: 0 0 100px;
       }
       .deviceModeName{
-        flex: 1 0 120px;
+        flex: 1 0 114px;
       }
       .time{
         flex: 0 0 150px;
@@ -261,6 +283,9 @@
   :global{
     .ant-calendar-input{
       pointer-events: none;
+    }
+    .ant-calendar-ok-btn{
+      display: none;   
     }
   }
 }

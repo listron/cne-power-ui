@@ -5,6 +5,7 @@ import { Switch } from 'antd';
 import styles from './allDeviceCurve.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import moment from 'moment';
 
 class WindDeviceGraph extends Component {
   static propTypes = {
@@ -13,31 +14,41 @@ class WindDeviceGraph extends Component {
     allDeviceCurveData: PropTypes.array,
     checkedAll: PropTypes.bool,
     stationCode: PropTypes.number,
+    changeAllDeviceStore: PropTypes.func,
 
   }
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      checkedAll: true,
-    }
+
   }
-  componentDidMount() {
-    const { stationCode, startTime, endTime } = this.props;
-    const { checkedAll } = this.state;
-    this.drawChart((this.props.allDeviceCurveData || []), checkedAll, stationCode, startTime, endTime)
-  }
+ 
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allDeviceCurveData || [];
-    const { stationCode, startTime, endTime } = nextProps;
-    const { checkedAll } = this.state;
-    this.drawChart(theoryPowers, checkedAll, stationCode, startTime, endTime)
+    const { stationCode, startTime, endTime, checkedAll } = nextProps;
+    const beginTime = moment(startTime).format('YYYY-MM-DD');
+    const stopTime = moment(endTime).format('YYYY-MM-DD');
+    this.drawChart(theoryPowers, checkedAll, stationCode, beginTime, stopTime)
   }
+
   onChange = (checked) => {
     const { stationCode, startTime, endTime } = this.props;
-    this.setState({
+    
+    const beginTime = moment(startTime).format('YYYY-MM-DD');
+    const stopTime = moment(endTime).format('YYYY-MM-DD');
+    this.props.changeAllDeviceStore({
       checkedAll: checked
     })
-    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, startTime, endTime)
+    this.drawChart((this.props.allDeviceCurveData || []), checked, stationCode, beginTime, stopTime)
+  }
+  changeSelect = (checked) => {
+    let select = {};
+    this.props.allDeviceCurveData.forEach((e, i) => {
+      e.dataList.forEach((item, i) => {
+        select[e.deviceName] = checked;
+      })
+    })
+    return select
+
   }
   compare = (key) => {
     return (a, b) => {
@@ -53,6 +64,7 @@ class WindDeviceGraph extends Component {
     }
   }
   drawChart = (params, checkedAll, stationCode, startTime, endTime) => {
+    
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
     const filterDeviceName = params.map(e => e.deviceName);
     const filterPowerAvg = params.map((e, i) => {
@@ -76,7 +88,7 @@ class WindDeviceGraph extends Component {
       graphic: inverterTenMinGraphic,
       // color: color,
       legend: {
-        show: checkedAll,
+        show: true,
         left: '10%',
         // right:'30%',
         top: '60%',
@@ -90,7 +102,8 @@ class WindDeviceGraph extends Component {
         textStyle: {
           color: lineColor,
           fontSize: 12,
-        }
+        },
+        selected: this.changeSelect(checkedAll)
       },
       grid: {
         top: 90,
@@ -102,9 +115,21 @@ class WindDeviceGraph extends Component {
         enterable: true,
         show: true,
         formatter: (params) => {
-          console.log(params);
           const info = params.data;
           const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
+          if(params.seriesName.search('理论')!==-1){
+            return `<div class=${styles.formatStyle}>
+            <div class=${styles.topStyle}>
+              <div>${params.seriesName}</div>
+             
+            </div>
+            <div  style='background:#dfdfdf;height:1px;
+            width:100%;' ></div>
+            <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}</div>
+            <div class=${styles.lineStyle}>风速:  ${dataFormat(info.windSpeedCenter)}</div>
+            <div class=${styles.lineStyle}>功率: ${dataFormat(info.powerAvg)}</div>
+          </div>`
+          }
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>
@@ -222,14 +247,19 @@ class WindDeviceGraph extends Component {
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
     powercurveChart.on('click', (params) => {
-      return this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
+   
+      if(params.seriesName.search('理论')!==-1){
+        return;
+      }
+      return stationCode && this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
     })
   }
   render() {
+    const { checkedAll } = this.props;
     return (
       <div className={styles.graphStyle}>
         <div id="powerCurveChart" className={styles.powerCurveChart}></div>
-        <div className={styles.switchStyle}> <Switch defaultChecked onChange={this.onChange} />全部显示</div>
+        <div className={styles.switchStyle}> <Switch checked={checkedAll} onChange={this.onChange} />全部显示</div>
       </div>
     )
   }
