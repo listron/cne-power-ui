@@ -29,10 +29,8 @@ class Map extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
-    if (this.props.stationDataList.length !== nextProps.stationDataList.length) {
-      const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
-    }
+    const testChart = echarts.init(document.getElementById(testId));
+    this.setMapChart(testChart, stationDataList);
   }
 
   setMapChart = (testChart, stationDataList) => {
