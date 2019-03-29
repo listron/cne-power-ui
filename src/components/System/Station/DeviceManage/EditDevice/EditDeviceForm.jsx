@@ -32,13 +32,13 @@ class EditDeviceForm extends Component {
               return values.connectedBranches.includes(e) ? 1 : 0
             })
           }
-          values.map = { componentMode: values.componentMode, branchCount: +values.branchCount, connectedBranches: values.connectedBranches };
+          values.map = { componentMode: +values.componentMode, branchCount: +values.branchCount, connectedBranches: values.connectedBranches };
         }
         if (deviceTypeCode === '304') {
           values.map = { belongMatrix: values.belongMatrix }
         } else if (deviceTypeCode === '101') {
           values.map = {
-
+            altitude: values.altitude,
             assemblyTime: moment(values.assemblyTime).format('YYYY-MM-DD'),
             ongridTime: moment(values.ongridTime).format('YYYY-MM-DD'),
             warrantyBegintime: moment(values.warrantyBegintime).format('YYYY-MM-DD'),
