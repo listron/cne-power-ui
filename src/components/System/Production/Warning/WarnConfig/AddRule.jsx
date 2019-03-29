@@ -110,7 +110,7 @@ class AddRule extends Component {
       if (!error) {
         const { stations, deviceTypeCode, warningCheckDesc, deviceModeCode, devicePointUnit, pointCode, warnRules, warningLevel, warningEnabled } = values;
         const params = {
-          warningType: 201,
+          warningTypeCode: 201,
           stationCode: stations[0].stationCode,
           deviceModeCode,
           deviceTypeCode,
