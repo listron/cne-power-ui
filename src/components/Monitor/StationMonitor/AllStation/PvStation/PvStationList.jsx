@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import CommonPagination from '../../../../Common/CommonPagination';
-import { Progress, Table,message } from "antd";
+import { Progress, Table, message } from "antd";
 import { unitDataFormat } from '../../../../../utils/utilFunc';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../../utils/utilFunc';
@@ -45,18 +45,18 @@ class PvStationList extends React.Component {
       duration: 200,
       maxCount: 1,
     });
-    message.warning('电站未接入,无法查看详情',2);
+    message.warning('电站未接入,无法查看详情', 2);
   }
 
   initColumn = () => {
-    const { realTimePowerUnit,realCapacityUnit,powerUnit,pvMonitorStation } = this.props;
-    const  planStatus = pvMonitorStation && pvMonitorStation.stationDataSummary && pvMonitorStation.stationDataSummary.planStatus;
+    const { realTimePowerUnit, realCapacityUnit, powerUnit, pvMonitorStation } = this.props;
+    const planStatus = pvMonitorStation && pvMonitorStation.stationDataSummary && pvMonitorStation.stationDataSummary.planStatus;
     const planPower = planStatus === 0 ? [{
       title: () => <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
       defaultSortOrder: "descend",
       sorter: true,
-      render(text){ return numWithComma(text); },
+      render(text) { return numWithComma(text); },
     }] : [{
       title: () => <TableColumnTitle title="年累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
       dataIndex: "yearOutput",
@@ -114,8 +114,8 @@ class PvStationList extends React.Component {
                 </a>
               )
             }
-          }else{
-            return  <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ?this.showTip:null}>{record.stationName}</div>
+          } else {
+            return <div title={record.stationName} className={styles.stationName} onClick={record.currentStation === '900' ? this.showTip : null}>{record.stationName}</div>
           }
 
         }
@@ -146,7 +146,7 @@ class PvStationList extends React.Component {
                       <div>{numWithComma(record.stationPower)}</div>
                       <div className={styles.planOutput}>{numWithComma(record.stationCapacity)}</div>
                     </div>
-                    <Progress strokeWidth={3} percent={+(record.stationCapacity)?(record.stationPower / record.stationCapacity * 100):0} showInfo={false} />
+                    <Progress strokeWidth={3} percent={+(record.stationCapacity) ? (record.stationPower / record.stationCapacity * 100) : 0} showInfo={false} />
                   </div>
                 </div>
               </div>
@@ -175,31 +175,31 @@ class PvStationList extends React.Component {
         title: () => <TableColumnTitle title="瞬时辐照" unit="W/m²" className="nonePadding" />,
         dataIndex: "windSpeed",
         sorter: true,
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
       },
       {
         title: () => <TableColumnTitle title="日发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "dayOutput",
         sorter: true,
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
       },
       {
         title: () => <TableColumnTitle title="月累计发电量" unit={`${powerUnit}`} className="nonePadding" />,
         dataIndex: "monthOutput",
         sorter: true,
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
       },
       ...planPower,
       {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: "equipmentNum",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
         dataIndex: "alarmNum",
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
@@ -250,7 +250,7 @@ class PvStationList extends React.Component {
     return tableSource
   }
   render() {
-    const { stationDataList, pageSize, currentPage, onPaginationChange,realTimePowerUnit,realCapacityUnit,powerUnit,powerPoint,realCapacityPoint,realTimePowerPoint } = this.props;
+    const { stationDataList, pageSize, currentPage, onPaginationChange, realTimePowerUnit, realCapacityUnit, powerUnit, powerPoint, realCapacityPoint, realTimePowerPoint } = this.props;
     const dataSort = this.createTableSource(stationDataList);
     const columns = this.initColumn()
     const totalNum = stationDataList.length;
@@ -266,8 +266,8 @@ class PvStationList extends React.Component {
           key: `${item.stationCode}`,
           stationName: `${item.stationName || '--'}`,
           stationrovince: `${item.provinceName || '--'}`,
-          stationPower: `${(realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint) || '--'}`,
-          stationCapacity: `${(realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint) || '--'}`,
+          stationPower: `${(realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint) || '--'}`,
+          stationCapacity: `${(realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint) || '--'}`,
           windSpeed: `${item.instantaneous || '--'}`,
           dayOutput: unitDataFormat(item.dayPower, '--', powerPoint, powerUnit),
           monthOutput: unitDataFormat(item.monthPower, '--', powerPoint, powerUnit),
@@ -285,7 +285,12 @@ class PvStationList extends React.Component {
         <div className={styles.pagination}>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} total={totalNum} onPaginationChange={onPaginationChange} />
         </div>
-        <Table columns={columns} dataSource={data} onChange={this.ontableSort} pagination={false} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          onChange={this.ontableSort}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          pagination={false} />
       </div>
     )
   }

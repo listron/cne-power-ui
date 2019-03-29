@@ -179,12 +179,16 @@ class PerformanceCharts extends React.Component {
 
       seriesData.push(json);
     }
+    (data && data.xData.length > 0) ? targetChart.hideLoading() : targetChart.showLoading('default', { color: '#199475' });
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
-        axisPointer: { type: 'cross' },
+        axisPointer: {
+          type: 'cross',
+          label: { color: fontColor },
+        },
         backgroundColor: '#fff',
         padding: 10,
         textStyle: {

@@ -101,6 +101,7 @@ class PvStation extends React.Component {
     })
     return newStationDataList
   }
+
   mapData = () => {
     const { pvMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
     const stationDataList = pvMonitorStation.stationDataList || [];
@@ -140,8 +141,9 @@ class PvStation extends React.Component {
     })
     return data
   }
+  
   render() {
-    const { currentPage, pageSize, } = this.state;
+    const { currentPage, pageSize,stationType,checked } = this.state;
     const { pvMonitorStation } = this.props;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
@@ -149,12 +151,13 @@ class PvStation extends React.Component {
     //状态 筛选
     const operations = (
       <div>
-        <Switch onChange={this.onHandleAlarm} />告警
+        <Switch onChange={this.onHandleAlarm} checked={checked}/>告警
         <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
           onChange={this.onHandleStation}
           style={{ margin: '0 30px 0 15px' }}
+          value={stationType}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="normal">通讯正常  {this.statisticStatusNum().normalNum}<span></span></Radio.Button>
