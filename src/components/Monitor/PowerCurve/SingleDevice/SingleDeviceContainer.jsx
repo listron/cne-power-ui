@@ -72,11 +72,11 @@ class SingleDeviceContainer extends Component {
   }
   onSwitchChange = (checked) => {
     const tableFullCode=this.props.match.params.deviceFullCode;
-    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
-    const params = { stationCode,deviceFullCode, startTime, endTime };
+    const { stationCode, deviceFullCode, startTime, endTime,  pageNum, pageSize,} = this.props;
+    const params = { stationCode,deviceFullCode, startTime, endTime, pageNum, pageSize, };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
 
-    this.props.getSingleDeviceCurveList({ ...params,deviceFullCode:tableFullCode, correct: checked ? 1 : 0 })
+    this.props.getSingleDeviceCurveList({ ...params,deviceFullCode:tableFullCode, pageNum, pageSize, correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
@@ -86,7 +86,7 @@ class SingleDeviceContainer extends Component {
   queryGraphData = (value) => {
     const tabledeviceFullCode = this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime, correct, pageNum, pageSize } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
+    const params = { stationCode, deviceFullCode, startTime, endTime ,};
     this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
     this.props.getsequencechart({ ...params, ...value });
 

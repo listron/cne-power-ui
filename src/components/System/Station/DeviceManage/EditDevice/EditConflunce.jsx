@@ -64,8 +64,8 @@ class EditConflunce extends Component {
     return (
       <div className={styles.rightStyles}>
         <FormItem label="组件型号" colon={false} className={styles.formItemStyle}>
-          {getFieldDecorator('componentMode', { initialValue: stationDeviceDetail.map.componentMode, })(
-            <Select className={styles.modelSelect} placeholder="请选择组件型号" disabled={pvDeviceModels.length === 0} >
+          {getFieldDecorator('componentMode', { initialValue: stationDeviceDetail.map.componentMode,rules:[{required: true,message: '请选择组件型号',}] })(
+            <Select className={styles.modelSelect} placeholder="请选择组件型号"  >
             <Option key={'all'} value={''}>请选择组件型号</Option>
               {pvDeviceModels.map(e => {
                 if (!e) { return null; }

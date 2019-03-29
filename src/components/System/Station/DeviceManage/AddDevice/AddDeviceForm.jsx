@@ -42,7 +42,7 @@ class AddDeviceForm extends Component {
             values.map = {
               componentMode: addPvDeviceModeData.deviceModeCode ? addPvDeviceModeData.deviceModeCode : values.componentMode,
               branchCount: +values.branchCount,
-              connectedBranches: values.connectedBranches
+              connectedBranches: +values.connectedBranches
             };
           }
           if (values.deviceTypeCode === 304) {

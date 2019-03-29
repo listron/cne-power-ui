@@ -51,6 +51,10 @@ class DeviceManageList extends Component {
       stationCode:this.props.stationCode ,
       deviceTypeCode: record.deviceTypeCode,
     })
+    this.props.getPvDevice({
+      deviceTypeCode: '509',
+    })
+
   }
 
   render() {

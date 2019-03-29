@@ -61,14 +61,6 @@ class SequenceChart extends Component {
         enterable: true,
         show: true,
         formatter: (params) => {
-
-          const windSpeed = params.map((e, i) => {
-            return (`<div class=${styles.lineStyle}>
-            <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
-            
-             ${e.seriesName}风速: ${dataFormat(e.value, '--', 2)}
-             </div>`)
-          })
           return (
             `<div class=${styles.formatStyle}>
               <div class=${styles.topStyle}>
@@ -79,7 +71,7 @@ class SequenceChart extends Component {
                 ${params.map((e,i)=>{
                   return `<div class=${styles.lineStyle}>
                   <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
-                   ${e.seriesName}风速: ${dataFormat(e.value, '--', 2)}m/s
+                   ${e.seriesName}风速: ${dataFormat(e.value, '--', 2)}
                    </div>`
                 }).join('')}
               </div>`)

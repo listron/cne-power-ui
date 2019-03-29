@@ -112,12 +112,13 @@ class PowerSpeedChart extends Component {
           const info = params.data;
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-              <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div>${params.seriesName}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}${chartId === "powerSpeedChart" ? "rpm" : "m/s"}</div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--')}${chartId === "powerSpeedChart" ? "kW" : "°"}</div>
+            <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--',2)}</div>
           </div>`
         },
         backgroundColor: '#fff',
