@@ -47,8 +47,8 @@ class HistorySearch extends Component {
     } else if (
       prevDevices.length > 0
         && filterDevices.length > 0
-        && prevDevices[0].deviceTypeCode !== filterDevices[0].deviceTypeCode
-    ) { // 设备类型切换
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+    ) { // 设备数据切换
       changeHistoryStore({
         queryParam: {
           ...queryParam,
@@ -187,6 +187,7 @@ class HistorySearch extends Component {
       changeHistoryStore({
         queryParam: {
           ...queryParam,
+          deviceFullCodes: deviceFullCodes.slice(0, 2),
           timeInterval: interval,
           devicePoints: [],
           startTime: interval === 10 ? moment().startOf('day').subtract(1, 'M') :  moment().startOf('day').subtract(1, 'd'),
@@ -196,7 +197,7 @@ class HistorySearch extends Component {
         partHistory: {},
       });
       getPointInfo({
-        deviceFullCodes,
+        deviceFullCodes: deviceFullCodes.slice(0, 2),
         timeInterval: interval,
       });
     } else { // 1 -> 5或5 -> 1 的转化，不用刷新测点树。

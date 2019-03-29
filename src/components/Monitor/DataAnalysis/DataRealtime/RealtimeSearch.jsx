@@ -40,7 +40,7 @@ class RealtimeSearch extends Component {
     } else if (
       prevDevices.length > 0
         && filterDevices.length > 0
-        && prevDevices[0].deviceTypeCode !== filterDevices[0].deviceTypeCode
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
     ) { // 设备类型切换
       changeRealtimeStore({
         queryParam: {

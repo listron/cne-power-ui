@@ -211,6 +211,7 @@
 
 .realtimeList{
   flex: 1;
+  padding: 0 16px;
   border-left: 1px solid $promptColor;
   .pagination {
     display: flex;
@@ -249,7 +250,7 @@
         flex: 1 0 140px;
       }
       .deviceName, .points{
-        flex: 1 0 120px;
+        flex: 1 0 100px;
       }
     }
   }
