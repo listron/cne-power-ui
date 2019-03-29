@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon, DatePicker, Select, Tabs } from 'antd';
+import { Icon, DatePicker, Select, Tabs, Table } from 'antd';
 import styles from './alarmCount.scss';
-import FilterCondition from '../../../Common/FilterCondition/FilterCondition'
+import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import { AllStationTableColumn } from './AlarmCountTable';
+import CommonPagination from '../../../Common/CommonPagination';
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
 const TabPane = Tabs.TabPane;
@@ -16,7 +18,7 @@ class AllAlarmCount extends React.Component {
     super(props);
     this.state = {
       showStationSelect: false,
-      key: 'graph',
+      tabSelect: 'graph',
     };
   }
 
@@ -30,16 +32,42 @@ class AllAlarmCount extends React.Component {
     getAlarmStatistic({ ...queryPramas, stationType: value })
   }
 
-  onChangeTab = () => {
-
+  onChangeTab = (value) => {
+    this.setState({ tabSelect: value })
   }
+
+  onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变 
+    const { queryPramas } = this.props;
+    this.props.changeAlarmCountStore({ queryPramas: { ...queryPramas, pageNum: currentPage, pageSize, } })
+  }
+
+  tableChange = (pagination, filter, sorter) => {// 点击表头 排序
+    const field = sorter.field;
+    const arr = ['stationName', 'alarmNum', 'oneWarningNum', 'twoWarningNum', 'threeWarningNum', 'fourWarningNum', 'handleAvgTime', 'oneHandleAvgTime', 'twoHandleAvgTime', 'threeWarningNum', 'fourHandleAvgTime'];
+    const { queryPramas, getAlarmStatistic } = this.props;
+    getAlarmStatistic({
+      ...queryPramas,
+      orderField: (arr.findIndex(e => e === field) + 1).toString(),
+      orderCommand: sorter.order === 'ascend' ? '1' : '2'
+    })
+  };
+
 
 
   render() {
-    const { stationTypeCount, stations, queryPramas = {} } = this.props;
+    const { stationTypeCount, stations, queryPramas = {}, alarmStatistic, } = this.props;
+    const { pageNum, pageSize } = queryPramas;
+    const totalNum = alarmStatistic.length;
+    let startRow = (pageNum - 1) * pageSize;
+    let endRow = pageNum * pageSize;
+    endRow = (endRow > totalNum) ? totalNum : endRow;
+    let alarmData = alarmStatistic.slice(startRow, endRow).map(item => ({
+      ...item,
+      key: item.stationCode,
+    }));
     const { stationType } = queryPramas;
     const filterStation = stations.filter(e => e.stationType === +stationType);
-    const { showFilter, key } = this.state;
+    const { showFilter, tabSelect } = this.state;
     const operations = (
       <div className={styles.exportData}>
         <button className={styles.exportBtn} onClick={this.exportAlarm}>数据导出</button>
@@ -70,16 +98,25 @@ class AllAlarmCount extends React.Component {
             animated={false}
             tabBarGutter={0}
             className={styles.tabContainer}
-            activeKey={key}
+            activeKey={tabSelect}
             tabBarExtraContent={operations}
             onChange={this.onChangeTab}>
             <TabPane tab={<i className="iconfont icon-drawing"></i>} key="graph" >
               图表
               {/* <AlarmStatisticGraph  {...this.props} /> */}
+              <div className={styles.explanation}>  平均处理时间:所选时间内，电站消除的、且已转工单告警的持续时间平均值。 </div>
             </TabPane>
             <TabPane tab={<i className="iconfont icon-table"></i>} key="table" >
-              表格
-              {/* <AlarmStatisticTable {...this.props} onTableChange={this.props.onTableChange} /> */}
+              <div className={styles.pagination}>
+                <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
+              </div>
+              <Table
+                columns={AllStationTableColumn()}
+                dataSource={alarmData}
+                onChange={this.tableChange}
+                pagination={false}
+                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+              />
             </TabPane>
           </Tabs>
         </div>

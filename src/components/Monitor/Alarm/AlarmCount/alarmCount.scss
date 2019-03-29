@@ -71,5 +71,43 @@
                 color: #fff;
             }
         }
+        .explanation{
+            height: 32px;
+            line-height: 32px;
+            margin: 29px 31px;
+            background:#f8f8f8; 
+            color: #999;
+            padding-left: 24px;
+        }
+        .pagination {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            height: 45px;
+            line-height: 45px;
+            margin-bottom: 10px;
+        }
+        :global {
+            .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-sorters {
+                padding-right: 16px !important;
+            }
+            .ant-tabs-bar {
+                background-color: #fff;
+                border-bottom: 1px dashed #dfdfdf;
+                border-top: 1px dashed #dfdfdf;
+            }
+            .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
+                background: $themeColor;
+                border-color: $themeColor;
+                color: #fff;
+                margin: 0;
+            }
+            .ant-tabs-bar .ant-tabs-tab {
+                background-color: #f1f1f1;
+            }
+            .ant-table-placeholder {
+                border: none
+            }
+        }
     }
 }

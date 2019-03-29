@@ -1,6 +1,6 @@
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
-
+import moment from 'moment';
 
 const getDuration = (seconds) => {
     const milliseconds = seconds * 1000;

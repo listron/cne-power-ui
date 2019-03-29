@@ -27,6 +27,8 @@ import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStatio
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
 import { watchStationMonitor } from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
 
+import {watchAlarmMonitor}  from './Monitor/Alarm/AlarmStatic/alarmSaga';
+import {watchAlarmCount} from './Monitor/Alarm/AlarmCount/alarmCountSaga';
 import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
@@ -42,6 +44,7 @@ import { watchMonitorPowerReport } from './Monitor/Report/PowerReport/powerRepor
 import { watchMonitorDeviceStatus } from './Monitor/Report/DeviceStatus/deviceStatusSaga'; // 报表
 import { watchMonitorMalfunction } from './Monitor/Report/Malfunction/malfunctionSaga'; // 报表
 import { watchMonitorPowerLost } from './Monitor/Report/PowerLost/powerLostSaga'; // 报表
+
 
 
 import { watchOtherSaga } from './alphaRedux/otherSaga';
@@ -104,6 +107,8 @@ export default function* rootSaga() {
     watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
+    watchAlarmMonitor(),
+    watchAlarmCount(),
     watchMonitorRealtimeWarning(),
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
