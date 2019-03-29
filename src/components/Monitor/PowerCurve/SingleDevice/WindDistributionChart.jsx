@@ -51,7 +51,8 @@ class WindDistributionChart extends Component {
       color: '#c7ceb2',
       title: {
         text: '风频分布',
-        x: 'left',
+        padding: [0, 20],
+
         textStyle: {
           fontSize: 14
         }
@@ -69,8 +70,9 @@ class WindDistributionChart extends Component {
         }
       },
       grid: {
-        right: '10%',
-        height: '170px',
+       bottom:90,
+       left:"15%",
+        // height: '170px',
       },
       tooltip: {
         trigger: 'item',
@@ -107,10 +109,12 @@ class WindDistributionChart extends Component {
         // type: 'category',
         // data: [5, 10, 15, 20, 25],
         data: params.map((e, i) => (e.windSpeedCenter)),
-
+        nameGap:-40,
         nameTextStyle: {
           color: lineColor,
+          padding: [60, 0, 0, 0]
         },
+       
         axisTick: {
           show: false,
         },
@@ -145,6 +149,7 @@ class WindDistributionChart extends Component {
           },
           axisLabel: {
             color: lineColor,
+            formatter: '{value}%'
           },
           axisTick: {
             show: false,
@@ -158,31 +163,31 @@ class WindDistributionChart extends Component {
           },
         }
       ],
-      // dataZoom:[{
-      //     show: true,
-      //     type: 'slider',
-      //     realtime: true,
-      //     filterMode: 'filter',
-      //     startValue: 0,
-      //     endValue: 19,
-      //     bottom: 20,
-      //     handleSize: '80%',
-      //     handleIcon: 'none',
-      //     backgroundColor: 'rgba(213,219,228,.8)',
-      //     height: '20px',
-      //     zoomLock: true,
-      //     handleStyle: {
-      //       width: '16px',
-      //       height: '16px',
-      //       borderRadius: '100%',
-      //       color: '#fff',
-      //       shadowBlur: 3,
-      //       shadowColor: 'rgba(0, 0, 0, 0.6)',
-      //       shadowOffsetX: 2,
-      //       shadowOffsetY: 2
-      //     }
-      //   },
-      //   ],
+      dataZoom:[{
+          show: true,
+          type: 'slider',
+          realtime: true,
+          filterMode: 'filter',
+          startValue: 0,
+          endValue: 19,
+          bottom: 20,
+          handleSize: '80%',
+          backgroundColor: 'rgba(213,219,228,.8)',
+          height: '20px',
+          zoomLock: true,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleStyle: {
+            width: '16px',
+            height: '16px',
+            borderRadius: '100%',
+            color: '#fff',
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+          }
+        },
+        ],
       series: [{
         name: '频次占比',
         type: 'bar',
