@@ -63,6 +63,10 @@ class PointTree extends Component {
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
     const { pointInfo } = this.props;
+    const PointsNodes = [];
+    const sortNames = [
+      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '其他'
+    ];
     if (pointInfo.length === 0) {
       return null;
     }
@@ -71,30 +75,42 @@ class PointTree extends Component {
     const groupInfo = codeGroupArr.map(e => {
       const innerGroupedInfo = pointInfo.filter(point => point.devicePointIecCode === e);
       const { devicePointIecCode, devicePointIecName } = innerGroupedInfo[0];
-      return {
-        devicePointIecCode,
-        devicePointIecName,
+      return { // 无分组信息测点： 其他组。
+        devicePointIecCode: devicePointIecCode ? `group_${devicePointIecCode}` : 'group_others',
+        devicePointIecName: devicePointIecCode ? devicePointIecName: '其他',
         points: innerGroupedInfo.map(point => ({
           devicePointId: point.devicePointId,
           devicePointName: point.devicePointName,
         }))
       }
-    })
-    const PointsNodes = [], tmpNoneGroupNodes = [];
-    groupInfo.forEach(e => { // 无分组的测点，应放末尾。
-      if (e.devicePointIecCode) { // 有分组信息
-        PointsNodes.push(
-          <TreeNode title={e.devicePointIecName} key={`group_${e.devicePointIecCode}`} >
-            {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)}
-          </TreeNode>
-        )
-      } else { // 无分组信息
-        tmpNoneGroupNodes.push(
-          ...e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)
-        )
-      }
     });
-    return PointsNodes.concat(tmpNoneGroupNodes);
+
+    groupInfo.sort((a, b) => {
+      const sortIndexA = sortNames.indexOf(a.devicePointIecName);
+      const sortIndexB = sortNames.indexOf(b.devicePointIecName);
+      if (sortIndexA === sortNames.length - 1) { // '其他'
+        return 1;
+      }
+      if (sortIndexB === sortNames.length - 1) {
+        return -1;
+      }
+      if (sortIndexA === -1) {
+        return 1;
+      }
+      if (sortIndexB === -1) {
+        return -1
+      }
+      return (sortIndexA - sortIndexB)
+    })
+
+    groupInfo.forEach(e => {
+      PointsNodes.push(
+        <TreeNode title={e.devicePointIecName} key={e.devicePointIecCode} >
+          {e.points.map(inner => <TreeNode title={inner.devicePointName} key={inner.devicePointId} />)}
+        </TreeNode>
+      )
+    });
+    return PointsNodes;
   }
 
   render(){

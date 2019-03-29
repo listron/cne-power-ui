@@ -6,6 +6,7 @@ import WindRoseChart from './WindRoseChart';
 import PowerSpeedChart from './PowerSpeedChart';
 import WindDistributionChart from './WindDistributionChart';
 import SequenceChart from './SequenceChart';
+import moment from 'moment';
 
 
 class SingleWindDeviceCharts extends Component {
@@ -34,9 +35,10 @@ class SingleWindDeviceCharts extends Component {
 
   render() {
     const { powerspeedchartData, pitchanglespeedchartData, sequencechartData, roseChartData } = this.props;
-    let sortrosedata = roseChartData.length > 0 ? roseChartData.sort(this.compare('rangeId')) : [];
+    let sortrosedata = (roseChartData && roseChartData.length > 0) ? roseChartData.sort(this.compare('rangeId')) : [];
     let rosedata = sortrosedata.length > 0 ? sortrosedata.concat([sortrosedata[0]]) : [];
-    const xAxisDate = sequencechartData.length > 0 ? sequencechartData[0].sequenceChartData.map(e => e.time) : [];
+    const firstXAxisAllDate = sequencechartData.length > 0 ? sequencechartData[0] : {};
+    const xAxisDate = (firstXAxisAllDate.sequenceChartData && (firstXAxisAllDate.sequenceChartData).length > 0) ? firstXAxisAllDate.sequenceChartData.map(e => moment(e.time).format('YYYY-MM-DD HH:mm:ss')) : [];
     return (
       <div className={styles.chartsLayout}>
         <div className={styles.topBox}>
@@ -49,10 +51,14 @@ class SingleWindDeviceCharts extends Component {
           </div>
           <div className={styles.right}>
             <div className={styles.rightTop}><WindRoseChart {...this.props} rosedata={rosedata} /></div>
-            <div className={styles.rightBottom}><WindDistributionChart {...this.props} /></div>
+            <div className={styles.rightBottom}>
+             <WindDistributionChart {...this.props} /> 
+            </div>
           </div>
         </div>
-        <div className={styles.bottomBox}><SequenceChart {...this.props} xAxisDate={xAxisDate} /></div>
+        <div className={styles.bottomBox}>
+        <SequenceChart {...this.props} xAxisDate={xAxisDate} /> 
+        </div>
 
       </div>
     )

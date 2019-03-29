@@ -35,9 +35,7 @@ class AllDeviceCurve extends Component {
     changeAllDeviceStore(params)
     // getAllDeviceCurveData({...params, })
   }
-  componentWillUnmount() {
-    this.props.resetAllDeviceCurve()
-  }
+  
   queryTargetData = (activeKey) => {
     this.props.changeAllDeviceStore({ stationTypeTabs: activeKey, deviceShowType: 'graph', });
 

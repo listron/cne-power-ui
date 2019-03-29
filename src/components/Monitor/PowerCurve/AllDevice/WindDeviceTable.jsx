@@ -79,28 +79,28 @@ class WindDeviceTable extends Component {
         key: 'deviceModeName',
        
       }, {
-        title: <TableColumnTitle title="中心风速" unit="m/s" />,
+        title: () => <TableColumnTitle title="中心风速" unit="m/s" />,
         dataIndex: 'windSpeedCenter',
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="平均风速" unit="m/s" />, 
+        title: () => <TableColumnTitle title="平均风速" unit="m/s" />, 
         dataIndex: 'windSpeedAvg',
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title:<TableColumnTitle title="平均功率" unit="kW" />,
+        title: () => <TableColumnTitle title="平均功率" unit="kW" />,
         dataIndex: 'powerAvg',
         render(text){ return numWithComma(text); },
 
         sorter: true,
       }, {
-        title:<TableColumnTitle title="理论功率" unit="kW" />, 
+        title: () => <TableColumnTitle title="理论功率" unit="kW" />, 
         dataIndex: 'powerTheory',
         render(text){ return numWithComma(text); },
         sorter: true,
       },{
-        title:<TableColumnTitle title="频次" unit="次" />, 
+        title: () => <TableColumnTitle title="频次" unit="次" />, 
         dataIndex: 'frequency',
         render(text){ return numWithComma(text); },
 

@@ -86,7 +86,7 @@ class DeviceManageList extends Component {
         key: 'connectDeviceName',
         sorter: true,
       },{
-        title: <TableColumnTitle title="装机容量" unit="kW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         render(text){ return numWithComma(text); },

@@ -119,7 +119,7 @@ class LimitGenTable extends Component {
                   placeholder="开始时间"
                   allowClear={false}
                   disabledDate = {this.disabledDate}
-                  style={{width: '100%'}}
+                  style={{width: '100%', minWidth: 'auto'}}
                   showTime={{format: 'HH:mm'}}
                   format="YYYY-MM-DD HH:mm"
                 />
@@ -166,17 +166,16 @@ class LimitGenTable extends Component {
             })(
               <DatePicker
                 placeholder="结束时间"
-                style={{width: '100%'}}
+                style={{width: '100%', minWidth: 'auto'}}
                 showTime={{format: 'HH:mm'}}
                 disabledDate = {this.disabledDate}
                 format="YYYY-MM-DD HH:mm"
-                onChange={(endMoment) => this.onEndChange(`${record.id}`, endMoment)}
               />
             )}
           </Form.Item>)
         }
       },{
-        title: <TableColumnTitle title="日损失电量" unit="kWh" />,
+        title: () => <TableColumnTitle title="日损失电量" unit="kWh" />,
         dataIndex: 'lostPower',
         className: 'lostPower',
         render : (text, record) => {

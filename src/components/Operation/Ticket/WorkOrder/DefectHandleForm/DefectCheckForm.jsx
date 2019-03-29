@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import { Form, Button, Radio } from 'antd';
@@ -18,6 +18,17 @@ class DefectCheckForm extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defectId !== this.props.defectId) {
+      nextProps.form.resetFields();
+      nextProps.changeWorkOrderStore({ modify: false })
+    }
+  }
+  
+  componentWillUnmount() {
+    this.props.changeWorkOrderStore({ modify: false })
   }
 
   onSubmit = (e) => {
@@ -68,4 +79,8 @@ class DefectCheckForm extends Component {
   }
 }
 
-export default Form.create()(DefectCheckForm);
+export default Form.create({
+  onFieldsChange(props) {
+    props.changeWorkOrderStore({ modify: true })
+  },
+})(DefectCheckForm);

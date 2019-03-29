@@ -43,27 +43,31 @@ class RealtimeList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',
+        render: (text) => <span title={text}>{text}</span>
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         className: 'stationName',
+        render: (text) => <span title={text}>{text}</span>
       }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         className: 'deviceTypeName',
+        render: (text) => <span title={text}>{text}</span>
       }, {
         title: '型号',
         dataIndex: 'deviceModeName',
         className: 'deviceModeName',
+        render: (text) => <span title={text}>{text}</span>
       }
     ];
     
     const pointColumn = pointData.map(e => ({
-      title: e.pointUnit ? <TableColumnTitle
+      title: e.pointUnit ? () => (<TableColumnTitle
         title={e.pointName}
         unit={e.pointUnit}
         style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
-      /> : e.pointName,
+      />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
       render: value => numWithComma(parseFloat(value).toFixed(2)),

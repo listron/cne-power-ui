@@ -78,15 +78,15 @@ class ConfluenceBoxList extends Component {
 
   getDeviceStatus = (value) => {
     switch (value) {
-      case 1:
+      case 100:
         return '正常';
-      case 2:
+      case 200:
         return '离散率>10%';
-      case 3:
+      case 300:
         return '离散率>20%';
-      case 4:
+      case 500:
         return '无通讯';
-      case 5:
+      case 900:
         return '未接入';
       default:
         return '';
@@ -95,20 +95,32 @@ class ConfluenceBoxList extends Component {
 
   getStatusColor = (value) => {
     switch (value) {
-      case 1:
+      case 100:
         return '#199475';
-      case 2:
+      case 200:
         return '#f5a623';
-      case 3:
+      case 300:
         return '#a42b2c';
-      case 4:
+      case 500:
         return '#999999';
-      case 5:
+      case 900:
         return '#c7ceb2';
       default:
         return '#c7ceb2';
     }
   }
+
+  getStatus = (value) => {
+    switch (value) {
+      case 200:
+        return 'orange';
+      case 300:
+        return 'red';
+      default:
+        return 'common';
+    }
+  }
+
 
   tableColumn = () => {
     const baseLinkPath = "/hidden/monitorDevice";
@@ -121,7 +133,7 @@ class ConfluenceBoxList extends Component {
         key: 'deviceName',
         render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link></div>)
       }, {
-        title: <TableColumnTitle title="实时功率" unit="kW" />,
+        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -146,7 +158,7 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: <TableColumnTitle title="装机容量" unit="kW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -161,33 +173,33 @@ class ConfluenceBoxList extends Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: <TableColumnTitle title="电压" unit="V" />,
+        title: () => <TableColumnTitle title="电压" unit="V" />,
         dataIndex: 'voltage',
         key: 'voltage',
         render: value => numWithComma(value),
         sorter: (a, b) => a.voltage - b.voltage,
       }, {
-        title: <TableColumnTitle title="电流" unit="A" />,
+        title: () => <TableColumnTitle title="电流" unit="A" />,
         dataIndex: 'electricity',
         key: 'electricity',
         render: value => numWithComma(value),
         sorter: (a, b) => a.electricity - b.electricity,
       }, {
-        title: <TableColumnTitle title="离散率" unit="%" />,
+        title: () => <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
         render: value => value,
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
-        title: <TableColumnTitle title="温度" unit="℃" />,
+        title: () => <TableColumnTitle title="温度" unit="℃" />,
         dataIndex: 'temp',
         key: 'temp',
         render: value => numWithComma(value),
         sorter: (a, b) => a.temp - b.temp,
       }, {
         title: '设备状态',
-        dataIndex: 'dispRateStatus',
-        key: 'dispRateStatus',
+        dataIndex: 'deviceStatus',
+        key: 'deviceStatus',
         render: text => (<span><i className={styles.statusColor} style={{ backgroundColor: this.getStatusColor(text) }} ></i>{this.getDeviceStatus(text)}</span>),
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
       },
@@ -237,7 +249,7 @@ class ConfluenceBoxList extends Component {
     const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
     // const initDeviceList = confluenceBoxList && confluenceBoxList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
-      return (currentStatus === 0 || e.dispRateStatus === currentStatus);
+      return (currentStatus === 0 || e.deviceStatus === currentStatus);
     }) // 根据筛选条件处理数据源。
     const sortedParentList = filteredDeviceList.sort((a, b) => {
       return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
@@ -250,16 +262,16 @@ class ConfluenceBoxList extends Component {
     });
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
     const deviceStatus = confluenceBoxList.deviceStatusSummary || [];
-    const { dispRateStatusSummary = {} } = confluenceBoxList;
+    const { deviceStatusSummary = {} } = confluenceBoxList;
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={1} >正常 {dataFormat(dispRateStatusSummary.normalNum)}</Radio.Button>
-        <Radio.Button value={2} >离散率>10% {dataFormat(dispRateStatusSummary.biggerThanTenNum)}</Radio.Button>
-        <Radio.Button value={3} >离散率>20% {dataFormat(dispRateStatusSummary.biggerThanTwentyNum)}</Radio.Button>
-        <Radio.Button value={4} >无通讯 {dataFormat(dispRateStatusSummary.unConnectNum)}</Radio.Button>
-        <Radio.Button value={5} >未接入 {dataFormat(dispRateStatusSummary.unJoinNum)}</Radio.Button>
+        <Radio.Button value={100} >正常 {dataFormat(deviceStatusSummary.normalNum)}</Radio.Button>
+        <Radio.Button value={200} >离散率>10% {dataFormat(deviceStatusSummary.biggerThanTenNum)}</Radio.Button>
+        <Radio.Button value={300} >离散率>20% {dataFormat(deviceStatusSummary.biggerThanTwentyNum)}</Radio.Button>
+        <Radio.Button value={500} >无通讯 {dataFormat(deviceStatusSummary.unConnectNum)}</Radio.Button>
+        <Radio.Button value={900} >未接入 {dataFormat(deviceStatusSummary.unJoinNum)}</Radio.Button>
       </Radio.Group>
     </div>);
 
@@ -290,7 +302,7 @@ class ConfluenceBoxList extends Component {
                     const showVoltage = transData(voltage);
                     const showElectricity = transData(electricity);
                     const showTemp = transData(temp);
-                    const status = ['orange', 'red'][item.dispRateStatus - 2] || 'common'
+                    const status =this.getStatus(item.deviceStatus)
                     let percent, progressPercent;
                     if (!deviceCapacity || isNaN(deviceCapacity)) {
                       percent = '--';
@@ -303,7 +315,7 @@ class ConfluenceBoxList extends Component {
                       <div className={styles.inverterItemIcon} >
                         <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}
                           className={styles[status]} >
-                          {item.dispRateStatus === 4 && <i className="iconfont icon-outage" ></i> || null}
+                          {item.deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
                           <i className="iconfont icon-hl" ></i>
                         </Link>
                         <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >

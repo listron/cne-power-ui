@@ -20,7 +20,7 @@ function *getAllDeviceCurveData(action) {
         type:allDeviceCurveAction.GET_ALLDEVICECURVE_SUCCESS,
         payload: {
           allDeviceCurveData:response.data.data||[],
-          ...payload
+          // ...payload
         }
       })
     } else {
