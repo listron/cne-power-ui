@@ -37,6 +37,20 @@ class PowerSpeedChart extends Component {
     }
     return result;
   };
+  getColor = (title) => {
+    let color = "";
+    switch (title) {
+      case "powerSpeedChart":
+        color = ['#199475', '#e08031', '#a42b2c']
+        break;
+      case "pitchange":
+        color = ['#3e97d1', '#bd10e0', '#199475'];
+        break;
+      default:
+        color = " ";
+    }
+    return color;
+  }
   drawChart = (params) => {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
@@ -56,10 +70,11 @@ class PowerSpeedChart extends Component {
     })
     const inverterTenMinGraphic = (filterData.length === 0 || filterDeviceName.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    let color = ['#199475', '#e08031', '#a42b2c'];
+    // let color = ['#199475', '#e08031', '#a42b2c'];
+    // let color2 = ['#3e97d1', '#bd10e0', '#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
-      color: color,
+      color: this.getColor(chartId),
       title: {
         text: this.getYaxisName(chartId)[0],
         x: 'left',
@@ -67,22 +82,20 @@ class PowerSpeedChart extends Component {
           fontSize: 14
         }
       },
-      // legend: {
-      //   left: '10%',
-      //   // right:'30%',
-      //   // top: 'bottom',
-      //   width: '80%',
-      //   bottom: '80%',
-      //   itemWidth: 14,
-      //   itemHeight: 6,
-      //   x: 'center',
-      //   y: 'bottom',
-      //   padding: [100, 0],
-      //   textStyle: {
-      //     color: lineColor,
-      //     fontSize: 12,
-      //   }
-      // },
+      legend: {
+
+        right: '8%',
+        top: '8%',
+        width: '80%',
+
+        itemWidth: 14,
+        itemHeight: 6,
+
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        }
+      },
       grid: {
         right: '10%',
         height: '200px',
@@ -100,8 +113,8 @@ class PowerSpeedChart extends Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}</div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--')}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}${chartId === "powerSpeedChart" ? "rpm" : "m/s"}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--')}${chartId === "powerSpeedChart" ? "kW" : "°"}</div>
           </div>`
         },
         backgroundColor: '#fff',

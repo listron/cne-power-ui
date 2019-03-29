@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import echarts from 'echarts';
 import { Switch } from 'antd';
 import styles from './allDeviceCurve.scss';
-import { dataFormat } from '../../../../utils/utilFunc';
+import { dataFormat,dataFormats } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import moment from 'moment';
 
@@ -125,21 +125,21 @@ class WindDeviceGraph extends Component {
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
-            <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}</div>
-            <div class=${styles.lineStyle}>风速:  ${dataFormat(info.windSpeedCenter)}</div>
-            <div class=${styles.lineStyle}>功率: ${dataFormat(info.powerAvg)}</div>
+            <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}m/s</div>
+            <div class=${styles.lineStyle}>风速:  ${dataFormats(+info.windSpeedCenter,'--',2,true)}m/s</div>
+            <div class=${styles.lineStyle}>功率: ${dataFormats(+info.powerAvg,'--',2,true)}kW</div>
           </div>`
           }
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
               <div>${params.seriesName}</div>
-              <div>风速区间:${windSpeedInterval}</div>
+              <div>风速区间:${windSpeedInterval}m/s</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
             <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
-            <div class=${styles.lineStyle}>平均风速:  ${dataFormat(info.windSpeedAvg)}</div>
-            <div class=${styles.lineStyle}>平均功率: ${dataFormat(info.powerAvg)}</div>
+            <div class=${styles.lineStyle}>平均风速:  ${dataFormats(+info.windSpeedAvg,'--',2,true)}m/s</div>
+            <div class=${styles.lineStyle}>平均功率: ${dataFormats(+info.powerAvg,'--',2,true)}kW</div>
           </div>`
         },
         backgroundColor: '#fff',

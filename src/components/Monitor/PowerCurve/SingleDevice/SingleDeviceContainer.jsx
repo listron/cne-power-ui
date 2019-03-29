@@ -71,11 +71,12 @@ class SingleDeviceContainer extends Component {
     })
   }
   onSwitchChange = (checked) => {
+    const tableFullCode=this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
+    const params = { stationCode,deviceFullCode, startTime, endTime };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
 
-    this.props.getSingleDeviceCurveList({ ...params, correct: checked ? 1 : 0 })
+    this.props.getSingleDeviceCurveList({ ...params,deviceFullCode:tableFullCode, correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
@@ -107,7 +108,8 @@ class SingleDeviceContainer extends Component {
   }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
-    let { startTime, endTime, stationCode, deviceFullCode, stations, downLoadFile } = this.props;
+    const deviceFullCode = this.props.match.params.deviceFullCode;
+    let { startTime, endTime, stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
     let timeZone = moment().zone();
@@ -148,6 +150,7 @@ class SingleDeviceContainer extends Component {
                 deviceTypeCode={deviceTypeCode}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
+                max={3}
                 multiple={true}
                 deviceShowNumber={true}
                 value={selectDeviceFullCode}

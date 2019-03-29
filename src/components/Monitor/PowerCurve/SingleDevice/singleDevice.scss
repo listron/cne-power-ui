@@ -1,27 +1,25 @@
-@import '../../../../theme/theme.scss';
-.singleDevice{
+@import "../../../../theme/theme.scss";
+.singleDevice {
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
   background: #fff;
-  .headerStyle{
+  .headerStyle {
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content: space-between;
     line-height: 60px;
     border-bottom: 1px solid #dfdfdf;
-    .left{
+    .left {
       display: flex;
-      justify-content:center;
-      .singleInfo{
+      justify-content: center;
+      .singleInfo {
         padding: 12px 12px;
         display: flex;
-       line-height: 42px;
-        
-        
+        line-height: 42px;
       }
     }
-    .right{
+    .right {
       .backIcon {
         border-left: 1px solid #dfdfdf;
         width: 60px;
@@ -31,21 +29,21 @@
         cursor: pointer;
         font-size: 18px;
         display: block;
+      }
     }
-    }
-   
   }
-  .showType{
+  .showType {
     margin-top: 20px;
     display: flex;
     border-top: 1px dotted $promptColor;
     border-bottom: 1px dotted $promptColor;
     align-items: center;
     justify-content: space-between;
-    .tabIcons{
+    .tabIcons {
       font-size: 24px;
       display: flex;
-      .active, .normal{
+      .active,
+      .normal {
         cursor: pointer;
         flex: 0 0 50px;
         height: 50px;
@@ -53,140 +51,180 @@
         align-items: center;
         justify-content: center;
       }
-      .active{
+      .active {
         color: #fff;
         background-color: $themeColor;
       }
-      .normal{
+      .normal {
         color: #999;
         background-color: #f1f1f1;
       }
     }
-    .exportStyle,.rightInfo{
+    .exportStyle,
+    .rightInfo {
       margin-right: 20px;
     }
-   
   }
-  .chartsLayout{
+  .chartsLayout {
     display: flex;
-    flex:1;
+    flex: 1;
     flex-direction: column;
-    .topBox{
+    .topBox {
       display: flex;
-      flex:1;
-     .left{
-      height: 600px;
-      display: flex;
-      flex:2;
-      border-right:1px solid #666;
-      flex-direction: column;
-      .leftTop{
+      flex: 1;
+      .left {
+        height: 600px;
         display: flex;
-        flex:1;
-        position: relative;
-        .graphStyle{
+        flex: 2;
+        border-right: 1px solid #666;
+        flex-direction: column;
+        .leftTop {
           display: flex;
-          flex:1;
-          // position: absolute;
-          .singlePowerCurveChart{
+          flex: 1;
+          position: relative;
+          .graphStyle {
+            display: flex;
+            flex: 1;
+            // position: absolute;
+            .singlePowerCurveChart {
+              width: 100%;
+            }
+            .switchStyle {
+              position: absolute;
+              top: 6%;
+              left: 82%;
+            }
+            .formatStyle {
+              // width: 150px;
+              // height: 120px;
+              display: flex;
+              flex-direction: column;
+              .topStyle {
+                display: flex;
+                justify-content: space-between;
+                line-height: 20px;
+                height: 20px;
+              }
+              .lineStyle {
+                line-height: 28px;
+                height: 28px;
+                .itemStyle {
+                  margin: 0 8px;
+                  position: relative;
+                  &::before,
+                  &::after {
+                    color: inherit;
+                    content: "-";
+                    position: absolute;
+                  }
+                  &::before {
+                    left: 5px;
+                  }
+                  &::after {
+                    right: 5px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .leftBottom {
+          display: flex;
+          flex: 1;
+          .leftScatter {
+            display: flex;
+            flex: 1;
+            .powerSpeedChart {
+              width: 100%;
+            }
+          }
+          .rightScatter {
+            display: flex;
+            flex: 1;
+            .powerSpeedChart {
+              width: 100%;
+            }
+          }
+        }
+      }
+      .right {
+        height: 600px;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        .rightTop {
+          display: flex;
+          flex: 1;
+          .windrosechart {
+            width: 100%;
+            .itemStyle {
+              margin: 0 4px;
+              position: relative;
+              &::before,
+              &::after {
+                color: inherit;
+                content: "-";
+                position: absolute;
+              }
+              &::before {
+                left: 5px;
+              }
+              &::after {
+                right: 5px;
+              }
+            }
+            .formatStyle {
+              // width: 150px;
+              // height: 100px;
+              display: flex;
+              flex-direction: column;
+              .topStyle {
+                display: flex;
+                justify-content: space-between;
+                line-height: 20px;
+                height: 20px;
+              }
+              .lineStyle {
+                line-height: 20px;
+                height: 20px;
+              }
+            }
+          }
+        }
+        .rightBottom {
+          display: flex;
+          flex: 1;
+          .windDistribution {
             width: 100%;
           }
-          .switchStyle{
-            position: absolute;
-            top:6%;
-            left:82%;
-          }
-          .formatStyle{
-            // width: 150px;
-            // height: 120px;
-            display: flex;
-            flex-direction: column;
-            .topStyle{
-              display: flex;
-              justify-content: space-between;
-              line-height: 20px;
-              height: 20px;
-            }
-            .lineStyle{
-              line-height: 28px;
-              height: 28px;
-            }
-          }
-        
         }
       }
-      .leftBottom{
-        display: flex;
-        flex:1;
-        .leftScatter{
-          display: flex;
-          flex:1;
-         .powerSpeedChart{
-           width: 100%;
-         }
-
-        }
-        .rightScatter{
-          display: flex;
-          flex:1;
-          .powerSpeedChart{
-            width: 100%;
-          }
-         
-        }
-      }
-
-     } 
-     .right{
-      height: 600px;
-      display: flex;
-      flex:1;
-      flex-direction: column;
-      .rightTop{
-        display: flex;
-        flex:1;
-        .windrosechart{
-          width: 100%;
-          .formatStyle{
-            // width: 150px;
-            // height: 100px;
-            display: flex;
-            flex-direction: column;
-            .topStyle{
-              display: flex;
-              justify-content: space-between;
-              line-height: 20px;
-              height: 20px;
-            }
-            .lineStyle{
-              line-height: 20px;
-              height: 20px;
-            }
-          }
-        }
-      
-      }
-      .rightBottom{
-        display: flex;
-        flex:1;
-        .windDistribution{
-          width: 100%;
-        }
-
-      }
-
-     }
     }
-    .bottomBox{
+    .bottomBox {
       display: flex;
       height: 320px;
-      .sequenceChart{
+      .sequenceChart {
         width: 100%;
       }
+      .itemStyle {
+        margin: 0 4px;
+        position: relative;
+        &::before,
+        &::after {
+          color: inherit;
+          content: "-";
+          position: absolute;
+        }
+        &::before {
+          left: 5px;
+        }
+        &::after {
+          right: 5px;
+        }
+      }
     }
-
   }
-  .windDeviceList{
+  .windDeviceList {
     .tableHeader {
       display: flex;
       flex-direction: row;

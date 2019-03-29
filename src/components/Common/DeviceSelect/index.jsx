@@ -81,7 +81,18 @@ class DeviceSelect extends Component {
       deviceModalShow: false,
       checkedDevice: props.value || [], // 存储当前选中设备。
       autoCompleteDevice: [], // 自动搜索框的提示内容
-      autoCompleteText: props.value &&  props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
+      autoCompleteText: props.value && props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
+    }
+  }
+  componentDidMount() {
+    const { stationCode, deviceTypeCode, } = this.props;
+
+    const { getDevices, getPartition, getMatrixDevices } = this.props;
+    if (stationCode && deviceTypeCode) {
+      getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
+      getDevices({ stationCode, deviceTypeCode }, 'devices');
+      getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
+      getPartition({ stationCode, deviceTypeCode });
     }
   }
 
@@ -176,10 +187,10 @@ class DeviceSelect extends Component {
   }
 
   render() {
-    const { multiple, holderText, disabled, style, devices,deviceShowNumber } = this.props;
+    const { multiple, holderText, disabled, style, devices, deviceShowNumber } = this.props;
     const { deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
-    const deviceShow = checkedDeviceCodes.length>0 && deviceShowNumber && {
+    const deviceShow = checkedDeviceCodes.length > 0 && deviceShowNumber && {
       maxTagCount: 0,
       maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`
     } || {};
