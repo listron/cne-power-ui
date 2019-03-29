@@ -99,6 +99,8 @@ class PowercurveChart extends Component {
       title: {
         text: '功率曲线',
         // x:'left',
+        top:'5%',
+        left:'5%',
         textStyle: {
           fontSize: 14
         }
@@ -106,13 +108,11 @@ class PowercurveChart extends Component {
       legend: {
         show: true,
         left: '10%',
-        // right:'30%',
         top: 'bottom',
         width: '80%',
-        bottom: '80%',
+        // bottom: '75%',
         itemWidth: 14,
         itemHeight: 6,
-
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -120,7 +120,8 @@ class PowercurveChart extends Component {
       },
       grid: {
         right: '10%',
-        height: '180px',
+        top: '70px',
+        bottom:'60px'
       },
       tooltip: {
         trigger: 'item',

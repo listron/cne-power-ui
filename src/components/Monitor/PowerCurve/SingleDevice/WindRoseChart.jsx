@@ -36,7 +36,7 @@ class WindRoseChart extends Component {
       graphic: hasData,
       title: {
         text: '风向玫瑰图',
-        padding: [10, 10],
+        padding: [20, 20],
         textStyle: {
           fontSize: 14,
           fontWeight: 'bolder',

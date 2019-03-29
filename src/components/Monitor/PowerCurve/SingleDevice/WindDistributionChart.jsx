@@ -51,7 +51,8 @@ class WindDistributionChart extends Component {
       color: '#c7ceb2',
       title: {
         text: '风频分布',
-        x: 'left',
+        padding: [0, 20],
+
         textStyle: {
           fontSize: 14
         }
@@ -70,6 +71,7 @@ class WindDistributionChart extends Component {
       },
       grid: {
        bottom:90,
+       left:"15%",
         // height: '170px',
       },
       tooltip: {

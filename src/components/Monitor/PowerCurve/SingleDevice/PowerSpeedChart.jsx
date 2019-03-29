@@ -77,7 +77,9 @@ class PowerSpeedChart extends Component {
       color: this.getColor(chartId),
       title: {
         text: this.getYaxisName(chartId)[0],
-        x: 'left',
+        // x: 'left',
+        // top:'5%',
+        left: '5%',
         textStyle: {
           fontSize: 14
         }
@@ -97,8 +99,9 @@ class PowerSpeedChart extends Component {
         }
       },
       grid: {
-        right: '10%',
-        height: '200px',
+        right: "10%",
+        top: '70px',
+        left: "20%",
 
       },
       tooltip: {
