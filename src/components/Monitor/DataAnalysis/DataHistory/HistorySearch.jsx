@@ -30,6 +30,7 @@ class HistorySearch extends Component {
   };
 
   state = {
+    rangeOpen: false,
     disableDateFun: (current) => current > moment(),
   }
 
@@ -147,14 +148,25 @@ class HistorySearch extends Component {
         }
       })
     } else {
-      this.setState({
-        disableDateFun: (current) => current > moment(),
-      })
+      const [startTime, endTime] = rangeMoments;
+      const preStartTime = queryParam.startTime;
+      const preEndTime = queryParam.endTime;
+      if (startTime.isSame(preStartTime, 'd') && endTime.isSame(preEndTime, 'd')) { // 正在进行时间选择
+        this.setState({
+          disableDateFun: (current) => current > moment(),
+        })      
+      } else { // 进行的是日期选择
+        this.setState({
+          rangeOpen: false,
+          disableDateFun: (current) => current > moment(),
+        })
+      }
     }
   }
 
-  openChange = (status) => {
-    !status && this.setState({ // 重置不可选日期为今日以前。
+  openChange = (rangeOpen) => {
+    this.setState({
+      rangeOpen,
       disableDateFun: (current) => current > moment(),
     })
   } 
@@ -233,7 +245,7 @@ class HistorySearch extends Component {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
     } = this.props;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
-    const { disableDateFun } = this.state;
+    const { disableDateFun, rangeOpen } = this.state;
     return (
       <div className={styles.historySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
@@ -283,6 +295,7 @@ class HistorySearch extends Component {
             <span className={styles.text}>时间选择</span>
             <RangePicker
               allowClear={false}
+              open={rangeOpen}
               format="YYYY-MM-DD HH:mm:ss"
               onChange={this.dateChange}
               onCalendarChange={this.calendarChange}
