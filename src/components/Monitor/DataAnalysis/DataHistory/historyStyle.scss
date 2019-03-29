@@ -213,6 +213,7 @@
 .historyList{
   flex: 1;
   border-left: 1px solid $promptColor;
+  padding: 0 16px;
   .pagination {
     display: flex;
     align-items: center;
@@ -256,13 +257,13 @@
         white-space: nowrap;
       }
       .stationName {
-        flex: 0 0 118px;
+        flex: 0 0 100px;
       }
       .deviceTypeName{
-        flex: 0 0 108px;
+        flex: 0 0 100px;
       }
       .deviceModeName{
-        flex: 1 0 120px;
+        flex: 1 0 114px;
       }
       .time{
         flex: 0 0 150px;

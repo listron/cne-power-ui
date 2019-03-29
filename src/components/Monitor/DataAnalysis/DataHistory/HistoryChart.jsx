@@ -96,7 +96,7 @@ class HistoryChart extends Component {
       right: 40,
       show: true,
       borderColor: '#eee',
-      backgroundColor: i % 2 === 0 ? '#eee' : 'transparent'
+      backgroundColor: i % 2 === 1 ? '#eee' : 'transparent'
     }
     if (i === pointData.length - 1) { // 最后一个grid
       return {
