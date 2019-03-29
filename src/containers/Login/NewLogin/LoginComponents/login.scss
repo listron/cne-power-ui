@@ -1,42 +1,42 @@
-@import '../../theme/theme.scss';
+@import '../../../../theme/theme.scss';
 
 .login{
-
+  height: 426px;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.85;
   .joinTop {
     height: 20px;
-    width: 430px;
-    margin-bottom: 12px;
+    padding: 24px;
     display: flex;
     justify-content: space-between;
-    // .fontIcon {
-    //   float: left;
-    //   width: 21px;
-    //   height: 21px;
-    //   border-radius: 3px 0 0 3px;
-    //   text-align: center;
-    //   margin-right: 8px;
-    //   i {
-    //     font-size: 14px;
-    //     text-align: center;
-    //     width: 22px;
-    //     height: 22px;
-    //   }
-    // }
     .join {
       font-size: 14px;
       height: 20px;
       width: 86px;
-      margin-left: 8px;
       font-weight: 500;
-      color: $darkColor;
-      text-align: left;
+      color: $themeColor;
+      cursor: pointer;
+      i {
+        margin-right: 12px;
+        font-size: 14px;
+      }
     }
-    
+    .toLogin{
+      color: $themeColor;
+      cursor: pointer;
+    }
+  }
+  .mainTitle{
+    height: 66px;
+    color: $themeColor;
+    font-size: 18px;
+    line-height: 66px;
+    text-align: center;
+    margin-bottom: 16px;
   }
   .loginAbnormal, .waitExamine{
     width: 220px;
     text-align: center;
-    margin-top: 60px;
     color:$darkColor;
     .abnormalIcon{
       display: block;
@@ -59,43 +59,42 @@
       }
     }
   }
-}
-.loginForm{
-  :global{
-    .ant-input:focus {
-      border-color: $themeColor;
-      -webkit-box-shadow: 0 0 0 0;
-      box-shadow: 0 0 0 0;
+  .loginForm{
+    width: 220px;
+    margin: 0 auto;
+    .loginChange{
+      display: flex;
+      justify-content: space-between;
+      color:#199475;
+      cursor: pointer;
+      .changeText{
+        height: 40px;
+        line-height: 40px;
+        font-size: 12px;
+        color:#199475;
+        cursor: pointer;
+      }
     }
-    .ant-input-group-addon{
-      background-color: #f1f1f1;
-      padding: 0 7px;
-    }
-    .ant-input{
-      padding: 4px;
-    }
-    .ant-input:focus {
-      border-color: $themeColor;
-      box-shadow: 0 0 0 0;
-    }
-    .ant-btn:hover, .ant-btn:focus, .ant-btn::selection{
-      color: #fff;
-    }
-    .ant-btn-primary:focus {
-      background-color: $themeColor;
-    }
-    .ant-form {
-      width: 220px;
-      .ant-form-item {
-        .ant-btn {
-          width: 220px;
-        }
+    :global{
+      .ant-input-group-addon{
+        background-color: #f1f1f1;
+        padding: 0 7px;
+      }
+      .ant-form-item{
+        margin-bottom: 21px;
+      }
+      .ant-input{
+        padding: 4px;
+      }
+      .ant-btn {
+        background-color: $themeColor;
+        color: #fff;
+        width: 220px;
       }
     }
   }
-  .usernameInput{
-    margin-top: 24px;
-  }
+}
+.loginForm{
   .verificationCode{
     margin-top: 24px;
     .checkCodeBox{
@@ -140,34 +139,6 @@
         border:1px solid #dfdfdf;
         color: #dfdfdf;
       }
-    }
-  }
-  .loginChange{
-    width: 220px;
-    display: flex;
-    justify-content: space-between;
-  
-    span{
-      font-size: 12px;
-      color:#199475;
-      cursor: pointer;
-    }
-  
-  }
-  .loginBtn{
-    display: flex;
-    flex-direction: column;
-    width: 220px;
-    :global{
-      .ant-btn-primary {
-        width: 220px;
-      }
-    }
-    .yiLogin{
-      font-size:14px;
-      color:#199475;
-      text-align: right;
-      cursor: pointer;
     }
   }
   

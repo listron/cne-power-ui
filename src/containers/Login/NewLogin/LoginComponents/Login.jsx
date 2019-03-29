@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Tabs, message, Form, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
-import styles from '../loginLayout.scss';
+import styles from './login.scss';
 // import RegisterForm from '../../components/Login/RegisterForm';
 
 const FormItem = Form.Item;
@@ -68,16 +68,17 @@ class Login extends Component {
             <i className="iconfont icon-join" />
             <span>加入企业</span>
           </span>
-          {userEnterpriseStatus !== 3 && <span className={styles.toLogin} onClick={this.onLogin}> 登录 </span>}
+          {userEnterpriseStatus === 3 && <span className={styles.toLogin} onClick={this.onLogin}>登录</span>}
         </div>
+        {userEnterpriseStatus === 3 && <h3 className={styles.mainTitle}>登录</h3>}
         {userEnterpriseStatus !== 3 &&
           <div className={userEnterpriseStatus === 5 ? styles.waitExamine : styles.loginAbnormal}>
             <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
             <div>{statusDetail[userEnterpriseStatus]}</div>
           </div>
         }
-        {<div className={styles.loginTab}>
-          <Form onSubmit={this.onHandleSubmit}>
+        {<div className={styles.loginForm}>
+          <Form>
             {loginType === 'username' && <FormItem className={styles.usernameInput}>
               {getFieldDecorator('username', {
                 rules: [{required: true, message: '请输入手机号/用户名'}]
@@ -113,14 +114,13 @@ class Login extends Component {
             </div>}
           </Form>
           <div className={styles.loginChange}>
-            <span onClick={() => console.log('login type change')}>
+            <span onClick={() => console.log('login type change')} className={styles.changeText}>
               {loginType === 'username' ? '手机验证码登录' : '密码登录(用户名/密码)'}
             </span>
-            <span onClick={() => changeLoginStore({ pageTab: 'forget' })}>忘记密码</span>
+            <span onClick={() => changeLoginStore({ pageTab: 'forget' })} className={styles.changeText}>忘记密码</span>
           </div>
           <div className={styles.loginBtn}>
             <Button onClick={this.onUserLogin} disabled={false}>登录</Button>
-            {/* <div className={styles.yiLogin}>易巡登录</div> */}
           </div>
           {loginError && <div className={styles.checkLoginPhone} >
               {/* <p>如未注册企业，请<span onClick={() => changeLoginStore({pageTab: 'register'})}>注册</span>！</p> */}

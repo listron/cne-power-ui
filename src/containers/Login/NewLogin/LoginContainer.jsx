@@ -46,24 +46,18 @@ class LoginContainer extends Component {
           width="auto"
           height="auto" 
         />
-        <div className={styles.right}>
-          <div className={styles.rightContent}>
-            <div className={styles.mainBox}>
-              {pageTab === 'login' && <Login {...this.props} />}
-              {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
-              {/* {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />} */}
-              {/* {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />} */}
-              {/* <div className={styles.contactUs}>
-                <Link to="/userAgreement" >用户协议</Link>
-                <Link to="/contactUs" >联系我们</Link>
-              </div> */}
-              <div className={styles.footerTitle}>
-                京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
-              </div>
-              <div className={styles.versionTitle}>
-                V3.4.0.20190111        
-              </div>
-            </div>
+        <div className={styles.center}>
+          {pageTab === 'login' && <Login {...this.props} />}
+          {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
+          {/* {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />} */}
+          {/* {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />} */}
+          <div className={styles.contactUs}>
+            <Link to="/userAgreement">用户协议</Link>
+            <Link to="/contactUs">联系我们</Link>
+          </div>
+          <div className={styles.footerTitle}>
+            <p>京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司</p>
+            <p>V3.4.0.20190111</p>
           </div>
         </div>
       </div>
