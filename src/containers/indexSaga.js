@@ -41,7 +41,8 @@ import { watchMonitorMalfunction } from './Monitor/Report/Malfunction/malfunctio
 import { watchMonitorPowerLost } from './Monitor/Report/PowerLost/powerLostSaga'; // 报表
 
 
-import { watchOtherSaga } from './alphaRedux/otherSaga';
+import { watchOthersSaga } from './alphaRedux/othersSaga';
+// import { watchOtherSaga } from './alphaRedux/otherSaga';
 import { watchAllStationSaga } from './StatisticalAnalysis/StationAnalysis/AllStationAnalysis/allStationAnalysisSaga';
 import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysis/ProductionAnalysis/productionAnalysisSaga';
 import { watchStationResourceStationSaga } from './StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/stationResourceAnalysisSaga';
@@ -114,7 +115,8 @@ export default function* rootSaga() {
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     
     // 无逻辑关系隐藏页面
-    watchOtherSaga(),
+    watchOthersSaga(),
+    // watchOtherSaga(),
     //统计分析的全部电站
     watchAllStationSaga(),
     watchProductionStationSaga(),
