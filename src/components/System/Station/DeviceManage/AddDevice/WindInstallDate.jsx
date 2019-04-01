@@ -70,7 +70,7 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
           initialValue:hubHeight,
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}], })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
       <FormItem
         label="海拔"
@@ -82,7 +82,7 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
         })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
 
     </div>
