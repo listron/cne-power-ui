@@ -112,7 +112,7 @@ class DetailDevice extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <Button className={styles.title} onClick={this.onShowSideChange}>编辑</Button>
+            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode==='509'}>编辑</Button>
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />

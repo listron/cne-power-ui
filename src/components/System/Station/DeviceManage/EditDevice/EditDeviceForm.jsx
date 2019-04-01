@@ -64,6 +64,31 @@ class EditDeviceForm extends Component {
     });
     this.props.changeDeviceManageStore({ showPage: 'detail', })
   }
+  preConnectDevice = (deviceTypeCode) => {
+    let preDeviceName='';
+    switch (deviceTypeCode) {
+      case '101':
+      preDeviceName= '集电线路'
+      break;
+      case '202':
+      preDeviceName= '逆变器'
+      break;
+      case '304':
+      preDeviceName= '集电线路'
+      break;
+      case '207':
+      preDeviceName= '箱变'
+      break;
+      case '206':
+      preDeviceName= '交流汇流箱'
+      break;
+      case '201':
+      preDeviceName= '箱变'
+      break;
+    }
+    return preDeviceName
+
+  }
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -128,6 +153,7 @@ class EditDeviceForm extends Component {
                     })}
                   </Select>
                 )}
+                <span> {this.preConnectDevice(deviceTypeCode+'')}</span>
               </FormItem>}
               {isTemplateMachine && <FormItem label="是否为样板机" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('templateMachine', { initialValue: ((stationDeviceDetail.templateMachine||+stationDeviceDetail.templateMachine===0)?stationDeviceDetail.templateMachine:''), })(
@@ -177,7 +203,7 @@ class EditDeviceForm extends Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="创建日期" colon={false} className={styles.formItemStyle} >
+              <FormItem label="创建时间" colon={false} className={styles.formItemStyle} >
                 {getFieldDecorator('connectTime', { initialValue: stationDeviceDetail.connectTime, })(
                   <span>{connectTime}</span>
                 )}

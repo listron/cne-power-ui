@@ -139,7 +139,7 @@ class AddDevice extends Component {
                 disabled={typeSelectDisable}>
                 <Option key={null} value={null}>{'全部设备类型'}</Option>
                 {stationDevices.map((e, i) => {
-                  if (!e) { return null; } else {
+                  if (!e||e.deviceTypeCode==='509') { return null; } else {
                     return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   }
                 })}
