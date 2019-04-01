@@ -170,7 +170,7 @@ class ReportEdit extends Component {
     })
     limitList.forEach(e => {
       e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
-      (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间');
+      e.endTime && (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间');
       let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
       let decimalLength = decimal && decimal.length;
       if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }

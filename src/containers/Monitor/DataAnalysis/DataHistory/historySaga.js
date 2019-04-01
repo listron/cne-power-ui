@@ -191,7 +191,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
-          intervalInfo: hasSecond === 1 ? [1, 5 ,10] : [5 ,10],
+          intervalInfo: hasSecond === 1 ? [10, 5, 1] : [10 ,5],
           queryParam: {
             ...queryParam,
             startTime: moment().startOf('day').subtract(1, 'day'),
