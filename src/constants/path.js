@@ -272,6 +272,7 @@ export default {
     other: {
       editPassword: '/v3/user/password', // 更变密码
       editUserName: '/v3/user', // 更变姓名
+      editPhone: '/v3/user/phone', // 更变电话
     },
     statisticalAnalysis: {
       getAllStationAvaliba: '/v3/performance/comprehensive/dataavaliba',

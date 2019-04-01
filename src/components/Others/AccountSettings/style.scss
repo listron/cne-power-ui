@@ -1,13 +1,18 @@
 
-.editUserName,.editPasswordForm,.ediPhone{
+.editUserName,.editPasswordForm,.editPhone{
   margin-top: 24px;
   .account{
-    // text-align: center;
+    text-align: center;
     :global{
       .ant-form-item {
         display: flex;
-        .ant-form-item-control-wrapper input{
-          width: 200px;
+        align-items: center;
+        justify-content: center;
+        .ant-form-item-children{
+          display: flex;
+          .ant-input-group-wrapper input{
+            width: 200px;
+          }
         }
       }
     }

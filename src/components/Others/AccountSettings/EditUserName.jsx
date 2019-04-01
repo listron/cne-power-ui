@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Input } from 'antd';
 import styles from './style.scss';
+import Cookie from 'js-cookie';
 
 const FormItem = Form.Item;
 
@@ -24,10 +25,7 @@ class EditUserName extends Component {
     const { form, editUserName, history } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if(!err){
-        editUserName({
-          userFullName: values.userFullName,
-          history,
-        })
+        editUserName({ userFullName: values.userFullName, history })
       }
     })
   }
@@ -43,6 +41,16 @@ class EditUserName extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.props;
+    // const formItemLayout = {
+    //   labelCol:{
+    //     xs: { span: 24 },
+    //     sm: { span: 8 },
+    //   },
+    //   wrapperCol: {
+    //     xs: { span: 24 },
+    //     sm: { span: 8 },
+    //   },
+    // }
 
     return (
       <div className={styles.editUserName}>
@@ -53,14 +61,15 @@ class EditUserName extends Component {
                     rules: [{
                       required: true, message: '请输入姓名!',
                     },{
-                      pattern: /^[A-Za-z_\u4e00-\u9fa5\s*]{0,30}$/,
+                      pattern: /^[A-Za-z_\u4e00-\u9fa5\u0020]{0,30}$/,
+                      message: '中文/英文/空格 长度小于30个字'
                     },{
                       validator: this.validateToNewName,
                     }],
                   })(
-                    <Input type="userFullName" />
+                    <Input type="userFullName" addonBefore={<i className="iconfont icon-user"></i>} />
                   )}
-                  <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
+                  <span className={styles.instructionText} style={{width: 380}}>中文/英文/空格 长度小于30个字</span>
                 </FormItem>
                 <Button onClick={this.saveName} loading={loading} className={styles.saveName} >保存</Button>
               </Form>

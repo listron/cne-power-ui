@@ -56,45 +56,47 @@ class EditPasswordForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.props;
-    const formItemLayout = {
-      labelCol:{
-        xs: { span: 24 },
-        sm: { span: 8 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    }
+    // const formItemLayout = {
+    //   labelCol:{
+    //     xs: { span: 24 },
+    //     sm: { span: 8 },
+    //   },
+    //   wrapperCol: {
+    //     xs: { span: 24 },
+    //     sm: { span: 8 },
+    //   },
+    // }
 
     return (
       <div className={styles.editPasswordForm}>
         <div className={styles.account}>
               <Form>
-                <FormItem {...formItemLayout} label="旧密码">
+                <FormItem label="旧密码">
                   {getFieldDecorator('oldPassword',{
                     rules: [{
                       required: true, message: '请输入旧密码!',
                     }],
                   })(
-                    <Input type="password" />
+                    <Input type="password" addonBefore={<i className="iconfont icon-password"></i>} />
                   )}
+                  <span className={styles.instructionText}>请输入旧密码</span>
                 </FormItem>
-                <FormItem {...formItemLayout} label="新密码">
+                <FormItem label="新密码">
                   {getFieldDecorator('newPassword',{
                     rules: [{
                       required: true, message: '请输入新密码!',
                     },{
-                      pattern: /^[A-Za-z0-9~!@#$%^&*()_+.]{6,25}$/,
-                      message: '请输入字符长度为6-25的密码'
+                      pattern: /^[A-Za-z0-9]{6,8}$/,
+                      message: '请输入字符长度为6-8的密码'
                     },{
                       validator: this.validateToNextPassword,
                     }]
                   })(
-                    <Input type="password" />
+                    <Input type="password" addonBefore={<i className="iconfont icon-password"></i>} />
                   )}
+                  <span className={styles.instructionText}>6-8位数字或英文</span>
                 </FormItem>
-                <FormItem {...formItemLayout} label="新密码确认">
+                <FormItem label="新密码确认">
                   {getFieldDecorator('confirm',{
                     rules: [{
                       required: true, message: '请确认密码!',
@@ -102,8 +104,9 @@ class EditPasswordForm extends Component {
                       validator: this.compareToFirstPassword,
                     }]
                   })(
-                    <Input type="password" />
+                    <Input type="password" addonBefore={<i className="iconfont icon-password"></i>} />
                   )}
+                  <span className={styles.instructionText}>6-8位数字或英文</span>
                 </FormItem>
                 <Button onClick={this.savePassword} loading={loading} className={styles.savePassword} >保存</Button>
               </Form>

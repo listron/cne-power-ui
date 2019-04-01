@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { Tabs } from 'antd';
+import PropTypes from 'prop-types';
 import styles from './accountSettings.scss';
 import { othersAction } from '../alphaRedux/othersAction';
 import { connect } from 'react-redux';
 import EditUserName from '../../components/Others/AccountSettings/EditUserName';
 import EditPasswordForm from '../../components/Others/AccountSettings/EditPasswordForm';
-import EdiPhone from '../../components/Others/AccountSettings/EdiPhone';
+import EditPhone from '../../components/Others/AccountSettings/EditPhone';
 
 const TabPane = Tabs.TabPane;
 
 class AccountSettings extends Component {
+  static propTypes = {
+  }
+
   constructor(props) {
     super(props);
   }
@@ -26,7 +30,7 @@ class AccountSettings extends Component {
             <EditPasswordForm {...this.props} />
           </TabPane>
           <TabPane tab="修改手机" key="3">
-            <EdiPhone {...this.props} />
+            <EditPhone {...this.props} />
           </TabPane>
         </Tabs>
       </div>
@@ -35,13 +39,14 @@ class AccountSettings extends Component {
   }
   
   const mapStateToProps = (state) => ({
-    loading: state.othersReducer.get('loading')
+    loading: state.othersReducer.get('loading'),
   });
   
   const mapDispatchToProps = (dispatch) => ({
     editUserName: payload => dispatch({ type: othersAction.editUserName, payload, }),
     editPassword: payload => dispatch({ type: othersAction.editPassword, payload, }),
     editPhone: payload => dispatch({ type: othersAction.editPhone, payload, }),
+    sendCode: payload => dispatch({ type: othersAction.SEND_CODE_SAGA, payload, }),
   })
   
   export default connect(mapStateToProps,mapDispatchToProps)(AccountSettings);
