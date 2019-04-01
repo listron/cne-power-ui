@@ -12,6 +12,7 @@ const { APIBasePath } = Path.basePaths;
 const { login } = Path.APISubPaths;
 
 function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据存储。
+  console.log(payload)
   localStorage.setItem('authData', payload.access_token); // token
   localStorage.setItem('refresh_token', payload.refresh_token); // refresh token
   localStorage.setItem('userInfo', JSON.stringify({ // 用户个人信息存储。
@@ -28,11 +29,13 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
   localStorage.setItem('rightHandler', payload.right); // 权限信息存储
 }
 
-function *userNameLogin(action){ //账号密码登录
+function *userNameLogin({ payload }){ //账号密码登录
   const url = `${APIBasePath}${login.userNameLogin}`;
-  const { params } = action;
-  yield put({ type: loginAction.LOGIN_FETCH });
   try {
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { loginLoading: true },
+    })
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -41,25 +44,32 @@ function *userNameLogin(action){ //账号密码登录
       data: stringify({
         'grant_type': "password",
         'deviceType': '0',
-        username: params.username,
-        password: Base64.encode(params.password),
+        username: payload.username,
+        password: Base64.encode(payload.password),
       }),
     });
     if (response.data.code === '10000') { // 账户密码正确，但用户状态不确定。需根据用户状态确定是否能够进行登录。
-      const { loginResponse = {} } = response.data || {};
-      const { userEnterpriseStatus } = loginResponse || {};
+      const loginResponse = response.data.data || {};
+      const { userEnterpriseStatus, auto, username } = loginResponse;
       // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
-      if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
+      if (userEnterpriseStatus === 3 && auto === '0' && username) {
+        // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
         yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: { loginResponse }, // 返回信息暂存， 用于判定异常登录状态
+        payload: {
+          loginResponse,
+          loginLoading: false
+        }, // 返回信息暂存， 用于判定异常登录状态
       })
     } else { // 账户或密码错误 response.data.code === '20009'
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: { loginError: true }
+        payload: {
+          loginError: true,
+          loginLoading: false
+        }
       }); 
     }
     /*
@@ -96,7 +106,7 @@ function *userNameLogin(action){ //账号密码登录
             yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
           }
         }
-      } else{
+      } else {
         yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
         // message.error(response.data.message);    
       }
@@ -106,26 +116,27 @@ function *userNameLogin(action){ //账号密码登录
   }
 }
 
-function *getVerificationCode(action){ // 获取短信验证码
-  const { params } = action;
-  const url = `${APIBasePath}${login.getVerificationCode}/${params.phoneNum}`;
+function *getVerificationCode({ payload }){ // 获取短信验证码
+  console.log(payload)
+  const url = `${APIBasePath}${login.getVerificationCode}/${payload.phoneNum}`;
   try{
     const response = yield call(axios.get, url);
-    if(response.data.code === "10000"){
-      yield put({ type: loginAction.SEND_CODE_SUCCESS, params });
-    } else {
-      message.error(response.data.message);
+    if(response.data.code !== '10000'){
+      message.error('验证码获取失败,请重试!');
+      console.log(response.data.message);
     }
   }catch(e){
     console.log(e);
   }
 }
 
-function *phoneCodeLogin(action){ // 手机+验证码登录
-  const { params } = action;
+function *phoneCodeLogin({ payload }){ // 手机+验证码登录
   const url = `${APIBasePath}${login.phoneCodeLogin}`;
-  yield put({ type: loginAction.LOGIN_FETCH});
   try{
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { loginLoading: true },
+    })
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -133,20 +144,23 @@ function *phoneCodeLogin(action){ // 手机+验证码登录
       auth: {},
       data: stringify({
         'grant_type': "password",
-        phoneNum: params.phoneNum,
-        verificationCode: params.verificationCode,
+        phoneNum: payload.phoneNum,
+        verificationCode: payload.verificationCode,
       }),
     });
     if (response.data.code === '10000') {
-      const { loginResponse = {} } = response.data || {};
-      const { userEnterpriseStatus } = loginResponse || {};
+      const loginResponse = response.data.data || {};
+      const { userEnterpriseStatus } = loginResponse;
       // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
       if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
         yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: { loginResponse }, // 登录异常， 信息暂存，用于判定异常状态并给出相应提示
+        payload: {
+          loginResponse,
+          loginLoading: false
+        }, // 登录异常， 信息暂存，用于判定异常状态并给出相应提示
       })
       /*
         if(data.userEnterpriseStatus === 3) {
@@ -198,7 +212,10 @@ function *phoneCodeLogin(action){ // 手机+验证码登录
     } else { // 账户或密码错误 response.data.code === '20009'
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
-        payload: { loginError: true }
+        payload: {
+          loginError: true,
+          loginLoading: false
+        }
       }); 
     }
     // else{

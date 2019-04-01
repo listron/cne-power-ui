@@ -6,7 +6,7 @@ import { loginAction } from './loginReducer';
 import PropTypes from 'prop-types';
 import Login from './LoginComponents/Login';
 // import Register from './Register';
-// import JoinIn from './JoinIn';
+import JoinIn from './LoginComponents/JoinIn';
 // import Forget from './Forget';
 import ReactPlayer from 'react-player';
 
@@ -30,8 +30,7 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { pageTab } = this.props;
-    // pageTab: PropTypes.string, // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
+    const { pageTab } = this.props; // login登录, register注册, joinIn加入企业, forget忘记密码,
     return (
       <div className={styles.loginLayout}>
         <ReactPlayer
@@ -49,7 +48,7 @@ class LoginContainer extends Component {
         <div className={styles.center}>
           {pageTab === 'login' && <Login {...this.props} />}
           {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
-          {/* {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />} */}
+          {pageTab === 'joinIn' && <JoinIn {...this.props} />}
           {/* {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />} */}
           <div className={styles.contactUs}>
             <Link to="/userAgreement">用户协议</Link>

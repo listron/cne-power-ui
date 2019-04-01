@@ -19,7 +19,31 @@ import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
 import Loadable from 'react-loadable';
 
+const Loading = ({ pastDelay, timedOut, error }) => {
+  if (pastDelay) {
+    return (<div className={styles.preComponent}>
+     <Spin size="large" tip="Loading..." />
+  </div>);
+  } else if (timedOut) {
+    return <div>Taking a long time...</div>;
+  } else if (error) {
+    return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
+  }
+  return null;
+};
 
+const  Login = Loadable({
+  loader: () => import('../Login/NewLogin/LoginContainer'),
+  loading: Loading
+})
+const Agreement=Loadable({
+  loader: () => import('../../components/Login/Agreement'),
+  loading: Loading
+})
+const Contact=Loadable({
+  loader: () => import('../../components/Login/Contact'),
+  loading: Loading
+})
 
 class Main extends Component {
   static propTypes = {
@@ -70,11 +94,11 @@ class Main extends Component {
       //   refresh_token:refreshToken
       // })
     }
-    if (nextProps.login.size > 0 && this.props.login.size === 0) {
-      this.props.getStations();
-      this.props.getDeviceTypes();
-      this.props.getMonitorDataUnit();
-    }
+    // if (nextProps.login.size > 0 && this.props.login.size === 0) {
+    //   this.props.getStations();
+    //   this.props.getDeviceTypes();
+    //   this.props.getMonitorDataUnit();
+    // }
   }
   componentWillUnmount() {
     this.props.resetMonitorData()
@@ -100,19 +124,6 @@ class Main extends Component {
     this.props.history.push('/login');
   }
 
-   Loading = ({ pastDelay, timedOut, error }) => {
-    if (pastDelay) {
-      return (<div className={styles.preComponent}>
-       <Spin size="large" tip="Loading..."/>
-    </div>);
-    } else if (timedOut) {
-      return <div>Taking a long time...</div>;
-    } else if (error) {
-      return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
-    }
-    return null;
-  };
-
   render() {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     // const authData = Cookie.get('authData') || null;
@@ -123,22 +134,8 @@ class Main extends Component {
     const authData = localStorage.getItem('authData');
     const { expireData } = userInfo;
     const isTokenValid = moment().isBefore(expireData, 's');
-    
-    const  Login=Loadable({
-      loader: () => import('../Login/NewLogin/LoginContainer'),
-      loading: this.Loading
-    })
-    const Agreement=Loadable({
-      loader: () => import('../../components/Login/Agreement'),
-      loading: this.Loading
-    })
-    const Contact=Loadable({
-      loader: () => import('../../components/Login/Contact'),
-      loading: this.Loading
-    })
-
     if (authData && isTokenValid) {
-      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+      axios.defaults.headers.common['Authorization'] = `bearer ${authData}`;
     }
     if (isTokenValid && authData) {
       // if(true){
