@@ -108,11 +108,11 @@ const menuData = [
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
           },
-          {
-            name: '告警统计',
-            path: 'statistics',
-            rightKey: 'monitor_alarm_statistics',
-          }
+          // {
+          //   name: '告警统计',
+          //   path: 'statistics',
+          //   rightKey: 'monitor_alarm_statistics',
+          // }
         ],
       }
     ],
