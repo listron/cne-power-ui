@@ -5,7 +5,7 @@ import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import styles from './userInfo.scss';
 
-class UserInfo extends Component{
+class UserInfo extends Component {
   static propTypes = {
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
@@ -13,7 +13,7 @@ class UserInfo extends Component{
     resetMonitorData: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
@@ -36,29 +36,32 @@ class UserInfo extends Component{
     Cookie.remove('auto');
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
-    this.props.changeLoginStore({pageTab: 'login'});
+    this.props.changeLoginStore({ pageTab: 'login' });
     this.props.resetMonitorData();
     this.props.history.push('/login');
   }
 
-  render(){
+  render() {
     const username = Cookie.get('username');
     const userFullName = Cookie.get('userFullName');
     const userLogo = Cookie.get('userLogo');
+    const enterpriseId = Cookie.get('enterpriseId');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
-        <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
-          <span className="iconfont icon-password1"></span>
-          <span className={styles.text}>账户设置</span>
-        </Menu.Item>
+        {enterpriseId !== '316696409677824' &&
+          <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
+            <span className="iconfont icon-password1"></span>
+            <span className={styles.text}>账户设置</span>
+          </Menu.Item>
+        }
         <Menu.Item className={styles.innerItem} onClick={this.logout}>
           <span className="iconfont icon-quit"></span>
           <span className={styles.text}>退出登录</span>
         </Menu.Item>
       </Menu>
     );
-    const nameStyle = this.props.inHomepage?{color:'#a6e8ff'}:null;
+    const nameStyle = this.props.inHomepage ? { color: '#a6e8ff' } : null;
     return (
       <div className={styles.layoutUser}>
         <Dropdown overlay={DropdowMenu} placement="bottomRight">
