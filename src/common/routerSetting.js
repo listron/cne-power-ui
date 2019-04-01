@@ -123,10 +123,15 @@ const routers = [
     component: () => import('../components/Common/Building/Building'),
     // component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
   },
-  { // 隐藏页： 修改密码
-    path: '/hidden/user/editPassword',
-    component: () => import('../containers/Others/EditPassword'),
-  }, { // 系统管理-电站管理-电站;
+  // { // 隐藏页： 修改密码
+  //   path: '/hidden/user/editPassword',
+  //   component: () => import('../containers/Others/EditPassword'),
+  // }, 
+  { // 隐藏页： 修改账户
+    path: '/hidden/user/accountSettings',
+    component: () => import('../containers/Others/AccountSettings'),
+  },
+  { // 系统管理-电站管理-电站;
     path: '/system/station/stationManage',
     component: () => import('../containers/System/Station/StationManage/StationManage'),
   }, { // 系统管理-电站管理-设备

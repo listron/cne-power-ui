@@ -1,0 +1,36 @@
+@import '../../theme/theme.scss';
+
+.accountSettings{
+
+  .accountSettingsTitle{
+    width: 180px;
+    margin-left: 63px;
+    color: $themeColor;
+  }
+  :global{
+    .ant-tabs{
+      .ant-tabs-bar{
+        width: 180px;
+        display: flex;
+        flex: 1;
+        align-items: center;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #fbfbfb;
+        border-right: solid 1px #dfdfdf;
+        .ant-tabs-nav-container{
+          .ant-tabs-nav-wrap{
+            .ant-tabs-nav-scroll{
+              .ant-tabs-nav{
+                .ant-tabs{
+                  padding: 10px 61px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
