@@ -177,7 +177,7 @@ class EditDeviceForm extends Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem label="创建日期" colon={false} className={styles.formItemStyle} >
+              <FormItem label="创建时间" colon={false} className={styles.formItemStyle} >
                 {getFieldDecorator('connectTime', { initialValue: stationDeviceDetail.connectTime, })(
                   <span>{connectTime}</span>
                 )}
