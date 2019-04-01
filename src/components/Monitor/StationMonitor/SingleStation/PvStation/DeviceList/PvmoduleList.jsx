@@ -19,7 +19,7 @@ class PvmoduleList extends Component {
     super(props);
     this.state = {
       firstLoad: true,
-      pvLevelStatus:'', // 为空的时候
+      pvLevelStatus: '', // 为空的时候
     }
   }
   componentDidMount() {
@@ -57,33 +57,32 @@ class PvmoduleList extends Component {
     }
   }
 
-  buttonClick=(e)=>{
-    const {pvLevelStatus}=this.state;
-    this.setState({pvLevelStatus:e===pvLevelStatus?'':e})
+  buttonClick = (e) => {
+    const { pvLevelStatus } = this.state;
+    this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
   }
   render() {
     const { pvmoduleList, loading, pvLevelNums } = this.props;
-    const {pvLevelStatus}=this.state;
+    const { pvLevelStatus } = this.state;
     const pvmoduleListSet = Array.from(new Set(pvmoduleList));
-    let statusArray=['big', 'normal', 'small','abnormal']
-    const tmpPvmoduleList= pvLevelStatus ? pvmoduleListSet.filter(e=>e.pvAllLevel.includes((statusArray.findIndex(item=>item===pvLevelStatus))+1)):pvmoduleListSet;
-    // const pvLevelNums = {
-    //   pvNormalNum: '101',
-    //   pvSmallerNum: '201',
-    //   pvBiggerNum: '302',
-    //   pvAbnormalNum: '403',
-    // }
-    // console.log('pvmoduleList', pvmoduleList)
+    let statusArray = ['big', 'normal', 'small', 'abnormal']
+    const tmpPvmoduleList = pvLevelStatus ? pvmoduleListSet.filter(e => e.pvAllLevel.includes((statusArray.findIndex(item => item === pvLevelStatus)) + 1)) : pvmoduleListSet;
     // 评价等级(1-蓝色、2-绿色、3-橙色、4-红色)
-    
+    const pvStatus = [
+      { name: 'normal', value: '正常', useName: 'pvNormalNum' },
+      { name: 'small', value: '偏小', useName: 'pvSmallerNum' },
+      { name: 'abnormal', value: '异常', useName: 'pvAbnormalNum' },
+      { name: 'big', value: '偏大', useName: 'pvBiggerNum' },
+    ]
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
           <div className={styles.pvmoduleListTop}>
-            <p className={`${styles.normal} ${pvLevelStatus==='normal' && styles.active}` } onClick={()=>{this.buttonClick('normal')}}>正常 {pvLevelNums.pvNormalNum || '--'}</p>
-            <p className={`${styles.small} ${pvLevelStatus==='small' && styles.active}`} onClick={()=>{this.buttonClick('small')}}>偏小 {pvLevelNums.pvSmallerNum || '--'}</p>
-            <p className={`${styles.abnormal} ${pvLevelStatus==='abnormal' && styles.active}`} onClick={()=>{this.buttonClick('abnormal')}}>异常 {pvLevelNums.pvBiggerNum || '--'}</p>
-            <p className={`${styles.big} ${pvLevelStatus==='big' && styles.active}`} onClick={()=>{this.buttonClick('big')}}>偏大 {pvLevelNums.pvAbnormalNum || '--'}</p>
+            {pvStatus.map(item => {
+              return (
+              <p className={`${styles[item.name]} ${pvLevelStatus === item.name && styles.active}`} key={item.name}
+               onClick={() => { this.buttonClick(item.name) }}>{item.value} {pvLevelNums[item.useName] || '--'}</p>)
+            })}
           </div>
           <div className={styles.pvmoduleCont}>
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
@@ -92,7 +91,7 @@ class PvmoduleList extends Component {
                   <div key={index} className={styles.pvmoduleItem} >
                     <div className={styles.deviceName} ><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
                     {item.electricityList.map((e, i) => {
-                      let pointLevelName = ['big', 'normal', 'small','abnormal',][e.pointLevel - 1];
+                      let pointLevelName = ['big', 'normal', 'small', 'abnormal',][e.pointLevel - 1];
                       return (<span className={classnames({
                         normalValue: !!e.pointStatus,
                         commonStyle: true,
