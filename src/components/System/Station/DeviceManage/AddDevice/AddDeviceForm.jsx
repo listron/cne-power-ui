@@ -39,10 +39,11 @@ class AddDeviceForm extends Component {
                 return values.connectedBranches.includes(e) ? 1 : 0
               })
             }
+            
             values.map = {
               componentMode: addPvDeviceModeData.deviceModeCode ? addPvDeviceModeData.deviceModeCode : values.componentMode,
               branchCount: +values.branchCount,
-              connectedBranches: +values.connectedBranches
+              connectedBranches: values.connectedBranches
             };
           }
           if (values.deviceTypeCode === 304) {
