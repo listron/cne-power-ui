@@ -69,7 +69,7 @@ class EditConflunce extends Component {
             <Option key={'all'} value={''}>请选择组件型号</Option>
               {pvDeviceModels.map(e => {
                 if (!e) { return null; }
-                return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                return <Option key={e.deviceModeCode} value={e.deviceModeId}>{e.deviceModeName}</Option>
               })}
             </Select>
           )}

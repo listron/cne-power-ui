@@ -133,13 +133,13 @@ class PowercurveChart extends Component {
           if (params.seriesType === "scatter") {
             return ` <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0], '--', 2)}m/s</div>
-            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1], '--')}kW</div>
-            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3], '--')}</div>`
+            <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1], '--',2)}kW</div>
+            <div class=${styles.lineStyle}>风向: ${dataFormat(info[3], '--',2)}</div>`
           }
           if (params.seriesName.search('理论') !== -1) {
             return `<div class=${styles.lineStyle}>${params.seriesName}</div>
             <div class=${styles.lineStyle}>风速区间: ${info[2]}m/s</div>
-            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info[1], '--')}kW</div>`
+            <div class=${styles.lineStyle}>理论功率: ${dataFormat(info[1], '--',2)}kW</div>`
           }
           return `<div class=${styles.formatStyle}>
           <div class=${styles.topStyle}>
@@ -150,7 +150,7 @@ class PowercurveChart extends Component {
           width:100%;' ></div>
           <div class=${styles.lineStyle}>风速区间: ${info[2]}m/s</div>
           <div class=${styles.lineStyle}>平均风速: ${dataFormat(+info[0], '--', 2)}m/s</div>
-          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info[1], '--')}kW</div>
+          <div class=${styles.lineStyle}>平均功率: ${dataFormat(+info[1], '--',2)}kW</div>
         </div>`
         },
         backgroundColor: '#fff',

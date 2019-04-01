@@ -47,7 +47,11 @@ class SingleDeviceContainer extends Component {
     const startTime = time ? time.split('~')[0] : '';
     const endTime = time ? time.split('~')[1] : '';
     const singleDeviceFullCode = deviceFullCode ? [deviceFullCode] : [];
-    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime, endTime }
+    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime:moment(startTime).utc().format(), endTime:moment(endTime).utc().format() }
+    if(endTime===moment().format('YYYY-MM-DD')){
+      const curDay=moment().format('YYYY-MM-DD HH:mm:ss');
+      params.endTime=moment(curDay).utc().format()
+    }
     changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
     this.props.getRoseChart({ ...params, deviceFullCode });
     this.props.getwinddistributionchart({ ...params, deviceFullCode });
@@ -119,7 +123,7 @@ class SingleDeviceContainer extends Component {
       fileName: `${stationInfo.stationName}-${startTime}-${endTime}功率曲线.xlsx`,
       params: {
         stationCode,
-        deviceFullCode,
+        deviceFullCode:[deviceFullCode],
         startTime,
         endTime,
         timeZone: timeZone / -60
