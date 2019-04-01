@@ -1,5 +1,46 @@
 @import '../../../../theme/theme.scss';
 
-.login{
-  
+.joinIn{
+  height: 426px;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.85;
+  .joinTop {
+    padding: 28px;
+    display: flex;
+    justify-content: flex-end;
+    .toLogin{
+      color: $themeColor;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+  }
+  .stepOne{
+    margin: 12px 32px 12px;
+    .nameInput{
+      width: 220px;
+    }
+    .checkName{
+      margin-left: 33.33%;
+      width: 220px;
+    }
+    .enterpriseInfo{
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+      text-align: center;
+      .enterpriseBtn{
+        margin-top: 40px;
+        width: 139px;
+        height: 36px;
+        border:1px solid #199475;
+        color: #199475;
+        border-radius: 0;
+      }
+      .enterpriseBack{
+        margin-top: 50px;
+        cursor: pointer;
+        &:hover{
+          color: $themeColor;
+        }
+      }
+    }
+  }
 }

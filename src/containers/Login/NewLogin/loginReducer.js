@@ -12,7 +12,7 @@ const loginAction = {
   checkEnterpriseDomain: Symbol('checkEnterpriseDomain'), // 检查域名是否有效
   checkEnterpriseName: Symbol('checkEnterpriseName'), // 检查企业名是否已注册
   registerEnterprise: Symbol('registerEnterprise'), // 注册企业 完善个人信息
-  getEnterPriseInfo: Symbol('getEnterPriseInfo'), // 获取企业信息
+  getEnterpriseInfo: Symbol('getEnterpriseInfo'), // 获取企业信息
   joinEnterprise: Symbol('joinEnterprise'), // 加入企业
   resetPassword: Symbol('resetPassword'), // 设置新密码
   inviteUserLink: Symbol('inviteUserLink'), // 邀请用户加入企业(获取邀请企业信息)
@@ -20,6 +20,7 @@ const loginAction = {
 
 const initState = Immutable.fromJS({
   loginLoading: false, // 登录的loading状态。
+  enterpriseLoading: false, // 加入企业检查loading
   pageTab: 'login', // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
 
   loginType: 'username', // 记录用户登录方式 username || phoneNumber
@@ -28,7 +29,8 @@ const initState = Immutable.fromJS({
   // loginResponse.userAuto: null, // 0 正常用户， 1导入/生成用户 => 需完善密码
   loginErrorInfo: false, // 提示用户名或密码错误
 
-  enterpriseInfo: {}, // 企业基本信息 
+  enterpriseInfo: {}, // 企业基本信息含enterpriseDomain,enterpriseId,enterpriseLogo,enterpriseName四信息。
+  showEnterpriseInfo: false, // 企业查询信息框是否展示
   joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
   // loading: false,
   // registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息

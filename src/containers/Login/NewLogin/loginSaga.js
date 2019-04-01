@@ -150,9 +150,9 @@ function *phoneCodeLogin({ payload }){ // 手机+验证码登录
     });
     if (response.data.code === '10000') {
       const loginResponse = response.data.data || {};
-      const { userEnterpriseStatus } = loginResponse;
+      const { userEnterpriseStatus, auto, username } = loginResponse;
       // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
-      if (userEnterpriseStatus === 3) { // 用户状态 = 启用。
+      if (userEnterpriseStatus === 3 && auto === '0' && username) { // 用户状态 = 启用。
         yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
       }
       yield put({
@@ -348,23 +348,36 @@ function *registerEnterprise(action){ // 注册企业 完善个人信息
   }
 }
 
-function *getEnterPriseInfo(action){ // 获取企业信息
-  const { params } = action;
-  const url = `${APIBasePath}${login.getEnterpriseInfo}/${params.enterpriseName}`;
-  try{
-    yield put({ type: loginAction.LOGIN_FETCH});
+function *getEnterpriseInfo({ payload }){ // 获取企业信息
+  const url = `${APIBasePath}${login.getEnterpriseInfo}/${payload.enterpriseName}`;
+  try {
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { enterpriseLoading: true }
+    })
     const response = yield call(axios.get, url);
-    if(response.data.code === "10000"){
+    if (response.data.code === '10000') {
       yield put({
-        type: loginAction.GET_ENTERPRISE_INFO_SUCCESS,
-        params,
-        data: response.data.data || {},
+        type: loginAction.FETCH_LOGIN_SUCCESS,
+        payload: {
+          enterpriseLoading: false,
+          showEnterpriseInfo: true,
+          enterpriseInfo: response.data.data || {},
+        }
       })
-    }else{
-      yield put({type: loginAction.GET_ENTERPRISE_INFO_FAIL, data: response.data})
+    } else {
+      throw response.data
     }
-  }catch(e){
-    console.log(e);
+  } catch(err) {
+    console.log(err);
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: {
+        enterpriseLoading: false,
+        showEnterpriseInfo: true,
+        enterpriseInfo: {},
+      }
+    })
   }
 }
 
@@ -517,7 +530,7 @@ export function* watchLogin() {
   // yield takeLatest(loginAction.checkEnterpriseDomain, checkEnterpriseDomain);
   // yield takeLatest(loginAction.checkEnterpriseName, checkEnterpriseName);
   // yield takeLatest(loginAction.registerEnterprise, registerEnterprise);
-  // yield takeLatest(loginAction.getEnterPriseInfo, getEnterPriseInfo);
+  yield takeLatest(loginAction.getEnterpriseInfo, getEnterpriseInfo);
   // yield takeLatest(loginAction.joinEnterprise, joinEnterprise);
   // yield takeLatest(loginAction.resetPassword, resetPassword);
   // yield takeLatest(loginAction.inviteUserLink, inviteUserLink);

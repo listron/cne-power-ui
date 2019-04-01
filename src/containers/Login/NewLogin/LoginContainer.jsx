@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch) => ({
   // checkEnterpriseDomain: payload => dispatch({ type: loginAction.checkEnterpriseDomain, payload }), // 检查域名是否有效
   // checkEnterpriseName: payload => dispatch({ type: loginAction.checkEnterpriseName, payload }), // 检查企业名是否已注册
   // registerEnterprise: payload => dispatch({ type: loginAction.registerEnterprise, payload }), // 注册企业 完善个人信息
-  // getEnterPriseInfo: payload => dispatch({ type: loginAction.getEnterPriseInfo, payload }), // 获取企业信息
+  getEnterpriseInfo: payload => dispatch({ type: loginAction.getEnterpriseInfo, payload }), // 获取企业信息
   // joinEnterprise: payload => dispatch({ type: loginAction.joinEnterprise, payload }), // 加入企业
   // resetPassword: payload => dispatch({ type: loginAction.resetPassword, payload }), // 设置新密码
   // inviteUserLink: payload => dispatch({ type: loginAction.inviteUserLink, payload }), // 邀请用户加入企业(获取邀请企业信息)
