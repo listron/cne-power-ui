@@ -11,7 +11,8 @@ const initState = immutable.fromJS({
   startTime: '',
   endTime: '',
   checkedAll:true,
-
+  allData:{},
+  theoryDataList:[],//多设备图标数据中的理论功率曲线
   allDeviceCurveData:[],//多设备图表数据
   powerCurveListData:[],//table列表数据
   windDeviceMode: [], // 电站下风电机组可选设备型号

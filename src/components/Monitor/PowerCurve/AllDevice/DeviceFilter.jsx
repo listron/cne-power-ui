@@ -77,6 +77,8 @@ class DeviceFilter extends Component {
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeAllDeviceStore } = this.props;
     changeAllDeviceStore({ deviceShowType: type })
+    this.props.onChangeFilter()
+
   }
 
   showChart = () => {
@@ -120,6 +122,7 @@ class DeviceFilter extends Component {
               data={stations.filter(e => e.stationType === 0)}
               onOK={this.selectStation}
               style={{ width: '200px' }}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
               value={stations.filter(e => e.stationCode === stationCode)}
             />
           </div>

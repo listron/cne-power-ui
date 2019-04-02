@@ -22,7 +22,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
         })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
       
       <FormItem
@@ -44,7 +44,7 @@ const WindMeasurement =({form,stationDeviceDetail})=>{
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
         })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
       <FormItem
         label="测风设备"

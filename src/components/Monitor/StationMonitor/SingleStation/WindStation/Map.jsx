@@ -167,9 +167,9 @@ class Map extends Component {
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
             <div class='stationCardValue'}>
-              <span class='stationMark'>${stationPower}MW</span>
+              <span class='stationMark'>${stationPower}kW</span>
               &nbsp;&nbsp;
-              <span>${stationCapacity}MW</span>
+              <span>${stationCapacity}kW</span>
             </div>            
             <div class='stationCardWindSpeed'>
             <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
