@@ -137,8 +137,8 @@ class DetailDevice extends Component {
               </div>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>支路个数</div>
-                <div className={styles.infoValue} title={stationDeviceDetail.branchCount}>
-                  {(deviceDetailMap && (deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
+                <div className={styles.infoValue} title={stationDeviceDetail.componentCount}>
+                  {(deviceDetailMap && (deviceDetailMap.componentCount || deviceDetailMap.componentCount === 0)) ? deviceDetailMap.componentCount : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
