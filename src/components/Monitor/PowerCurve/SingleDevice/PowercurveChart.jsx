@@ -69,7 +69,7 @@ class PowercurveChart extends Component {
 
       scatter[e.deviceName] = []; actual[e.deviceName] = []; theory[e.deviceName] = [];
       sortscatterPointData.forEach((item, i) => {
-        scatter[e.deviceName].push([item.windSpeedAvg, item.powerActual, item.time, item.windDirection])
+        scatter[e.deviceName].push([item.windSpeedAvg, item.powerActual, item.time, item.windDirection,e.deviceName])
       })
       sortactualPowerData.forEach((item, i) => {
         actual[e.deviceName].push([item.windSpeedAvg, item.powerAvg, item.windSpeedInterval, e.deviceName], ...item, ...e)
@@ -131,7 +131,14 @@ class PowercurveChart extends Component {
 
           const info = params.data;
           if (params.seriesType === "scatter") {
-            return ` <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            return ` 
+            <div style='display:flex;'>
+            <div style='margin-right:10px'>${params.seriesName}</div>
+            <div>型号:${info[4]}</div>
+          </div>
+          <div  style='background:#dfdfdf;height:1px;
+          width:100%;' ></div>
+            <div class=${styles.lineStyle}>时间:  ${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormat(info[0], '--', 2)}m/s</div>
             <div class=${styles.lineStyle}>实际功率: ${dataFormat(info[1], '--',2)}kW</div>
             <div class=${styles.lineStyle}>风向: ${dataFormat(info[3], '--',2)}</div>`
