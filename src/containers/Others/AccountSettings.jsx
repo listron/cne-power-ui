@@ -58,12 +58,12 @@ class AccountSettings extends Component {
             mode="inline"
             inlineCollapsed={collapsed}
             className={styles.menuList}
-            selectedKeys={[pathname]}
+            selectedKeys={[selectMenu]}
             openKeys={openKeys}
             onSelect={this.selectMenu}
             onOpenChange={this.onOpenChange}>
-            <SubMenu key={'/hidden/user/accountSettings'} title={
-              <span> <i className={'iconfont icon-usermanage'}></i><span>{collapsed ? null : '账户管理'}</span></span>}>
+            <SubMenu key={'/hidden/user/accountSettings'}
+             title={<span> <i className={'iconfont icon-usermanage'}></i><span>{collapsed ? null : '账户管理'}</span></span>}>
               <Item key="editUserName"><a>账户信息</a></Item>
               <Item key="editPassword">修改密码</Item>
               <Item key="editPhone">修改手机</Item>
