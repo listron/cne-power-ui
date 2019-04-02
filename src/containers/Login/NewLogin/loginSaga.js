@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../constants/path';
 import moment from 'moment';
@@ -12,7 +12,6 @@ const { APIBasePath } = Path.basePaths;
 const { login } = Path.APISubPaths;
 
 function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据存储。
-  console.log(payload)
   localStorage.setItem('authData', payload.access_token); // token
   localStorage.setItem('refresh_token', payload.refresh_token); // refresh token
   localStorage.setItem('userInfo', JSON.stringify({ // 用户个人信息存储。
@@ -29,7 +28,7 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
   localStorage.setItem('rightHandler', payload.right); // 权限信息存储
 }
 
-function *userNameLogin({ payload }){ //账号密码登录
+function *userNameLogin({ payload = {} }){ //账号密码登录
   const url = `${APIBasePath}${login.userNameLogin}`;
   try {
     yield put({
@@ -50,11 +49,14 @@ function *userNameLogin({ payload }){ //账号密码登录
     });
     if (response.data.code === '10000') { // 账户密码正确，但用户状态不确定。需根据用户状态确定是否能够进行登录。
       const loginResponse = response.data.data || {};
-      const { userEnterpriseStatus, auto, username } = loginResponse;
-      // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
-      if (userEnterpriseStatus === 3 && auto === '0' && username) {
-        // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
-        yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
+      const { immediatelyLogin } = payload;
+      if (immediatelyLogin) {
+        const { userEnterpriseStatus, auto, username } = loginResponse;
+        // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
+        if (userEnterpriseStatus === 3 && auto === '0' && username) {
+          // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
+          yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
+        }
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
@@ -116,8 +118,7 @@ function *userNameLogin({ payload }){ //账号密码登录
   }
 }
 
-function *getVerificationCode({ payload }){ // 获取短信验证码
-  console.log(payload)
+function *getVerificationCode({ payload = {} }){ // 获取短信验证码
   const url = `${APIBasePath}${login.getVerificationCode}/${payload.phoneNum}`;
   try{
     const response = yield call(axios.get, url);
@@ -130,7 +131,7 @@ function *getVerificationCode({ payload }){ // 获取短信验证码
   }
 }
 
-function *phoneCodeLogin({ payload }){ // 手机+验证码登录
+function *phoneCodeLogin({ payload = {} }){ // 手机+验证码登录
   const url = `${APIBasePath}${login.phoneCodeLogin}`;
   try{
     yield put({
@@ -150,18 +151,24 @@ function *phoneCodeLogin({ payload }){ // 手机+验证码登录
     });
     if (response.data.code === '10000') {
       const loginResponse = response.data.data || {};
-      const { userEnterpriseStatus, auto, username } = loginResponse;
-      // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
-      if (userEnterpriseStatus === 3 && auto === '0' && username) { // 用户状态 = 启用。
-        yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
+      const tmpJoin = {};
+      const { immediatelyLogin } = payload; // 是否请求成功自动存储数据并登录。
+      if (immediatelyLogin) {
+        const { userEnterpriseStatus, auto, username } = loginResponse;
+        // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
+        if (userEnterpriseStatus === 3 && auto === '0' && username) {
+          // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
+          yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
+        }
       }
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
         payload: {
           loginResponse,
-          loginLoading: false
+          loginLoading: false,
+          ...tmpJoin
         }, // 登录异常， 信息暂存，用于判定异常状态并给出相应提示
-      })
+      });
       /*
         if(data.userEnterpriseStatus === 3) {
           if(params.isNotLogin === 1 || (data.auto==='0' && data.enterpriseId!==null)) {//非登录/正常用户
@@ -233,24 +240,32 @@ function *phoneCodeLogin({ payload }){ // 手机+验证码登录
   }
 }
 
-function *phoneCodeRegister(action) { // 验证手机号和验证码是否正确 加入企业/注册企业，手机验证码正确会调用手机号验证码登录获取token）
-  const { params } = action;
+function *phoneCodeRegister({ payload = {} }) { // 验证手机号和验证码是否正确 (注册企业)
   let url = `${APIBasePath}${login.phoneCodeRegister}`;
   try{
-    const response = yield call(axios.post, url, {
-      phoneNum: params.phoneNum, 
-      verificationCode: params.verificationCode,
-    });
+    const { phoneNum, verificationCode, ...restParams } = payload;
+    const response = yield call(axios.post, url, { phoneNum, verificationCode });
     if (response.data.code === '00000') { // 验证码错误
       yield put({
-        type: loginAction.PHONE_CODE_REGISTER_FAIL,
-        data: response.data
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: { phoneCodeErrorInfo: response.data.message }
+      })
+    } else { // 验证码正确 => 根据传入变量进行状态控制，并请求登录接口得到信息并保存
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: {
+          phoneNum, // 手机号需暂存
+          ...restParams
+        },
+      })
+      yield put({
+        type: loginAction.phoneCodeLogin,
+        payload: { phoneNum, verificationCode },
       });
-    } else { // todo => 应暂存数据，不应去登录。
-      yield put({ type: loginAction.PHONE_CODE_LOGIN_SAGA, params });
     }
-  }catch(e){
-    console.log(e);
+  } catch(err) {
+    message.error('验证失败, 请重试!')
+    console.log(err);
   }
 }
 
@@ -348,7 +363,7 @@ function *registerEnterprise(action){ // 注册企业 完善个人信息
   }
 }
 
-function *getEnterpriseInfo({ payload }){ // 获取企业信息
+function *getEnterpriseInfo({ payload = {} }){ // 获取企业信息
   const url = `${APIBasePath}${login.getEnterpriseInfo}/${payload.enterpriseName}`;
   try {
     yield put({
@@ -381,52 +396,51 @@ function *getEnterpriseInfo({ payload }){ // 获取企业信息
   }
 }
 
-function *joinEnterprise(action){ // 加入企业
-  const { params } = action;
+function *joinEnterprise({ payload = {} }){ // 加入企业
   const url = `${APIBasePath}${login.joinEnterprise}`;
   try{
-    yield put({ type: loginAction.LOGIN_FETCH });
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { joinLoading: true }
+    })
     const response = yield call(axios, {
       method: 'post',
       url,
       headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
       data: stringify({
         'grant_type': "password",
-        confirmPwd: params.confirmPwd,
-        enterpriseId: params.enterpriseId,
-        password: params.password,
-        phoneNum: params.phoneNum,
-        username: params.username,
+        ...payload,
       }),
     });
-    if(response.data.code === '10000'){
-      yield put({
-        type: loginAction.USER_NAME_LOGIN_SAGA,
-        params:{
-          username: params.username,
-          password: params.password,
-          history: params.history,
-        }
-      });
+    if (response.data.code === '10000') {
       message.success(response.data.message);
-    } else{
-      yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
-      if(response.data.code !== '20015') {
-        message.error(response.data.message);
-      }
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: { joinLoading: false }
+      })
+      const loginResponseInfo = yield select(state => state.login.loginResponse);
+      yield call(loginInfoSave, { payload: loginResponseInfo }); // 正常登录，信息存储
+    } else {
+      throw response.data.message
     }
-  }catch(e){
-    console.log(e);
+  } catch(err) {
+    message.error(err);
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { joinLoading: false }
+    })
   }
 }
 
-function *resetPassword(action){ // 设置新密码
-  const { params } = action;
+function *resetPassword({ payload = {} }){ // 设置新密码
   const url = `${APIBasePath}${login.resetPassword}`;
-  yield put({type: loginAction.LOGIN_FETCH});
   try{
-    const tmpAuthData = params.tmpAuthData || '';
-    const tmpAuthorization = `bearer ${tmpAuthData}`;
+    const { authData, ...restParams } = payload;
+    const tmpAuthorization = `bearer ${authData || ''}`;
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { joinLoading: true }
+    })
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -436,57 +450,57 @@ function *resetPassword(action){ // 设置新密码
       },
       data: stringify({
         'grant_type': "password",
-        confirmPwd: params.confirmPwd,
-        password: params.password,
-        phoneNum: params.phoneNum,
+        ...restParams
       }),
     });
-    if(response.data.code === "10000"){
+    if (response.data.code === "10000") {
       message.success('密码设置成功，请重新登录！');
-      yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
-      
-    }else{
-      yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
-      message.error('设置失败！');
-    }
+      yield put({
+        type: loginAction.CHANGE_LOGIN_STORE,
+        payload: {
+          pageTab: 'login',
+          joinLoading: false
+        }
+      });
+    } else { throw response.data }
   }catch(e){
+    message.error('设置失败,请重试！');
+    yield put({
+      type: loginAction.CHANGE_LOGIN_STORE,
+      payload: { joinLoading: false }
+    })
     console.log(e);
   }
 }
 
-function *inviteUserLink(action){ // 邀请用户加入企业(获取邀请企业信息)
-  const { params } = action;
-  console.log(params)
-  const url = `${APIBasePath}${login.inviteUserLink}/${params.linkId}`;
-  yield put({type: loginAction.LOGIN_FETCH});
+function *inviteUserLink({ payload = {} }){ // 邀请用户加入企业(获取邀请企业信息)
+  const url = `${APIBasePath}${login.inviteUserLink}/${payload.linkId}`;
   try{
-    const response = yield call(axios.post, url,params);
-    if(response.data.code === '10000'){//邀请链接成功
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') { //邀请链接成功
       yield put({
-        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
-        params:{
+        type: loginAction.FETCH_LOGIN_SUCCESS, 
+        payload:{
           pageTab: 'joinIn',
-          joinStep: 2,
+          joinStep: 2, // 直接进入企业信息
+          enterpriseInfo: response.data.data || {},
+          inviteValid: true,
         }
       });
-      yield put({type: loginAction.INVITE_USER_LINK_SUCCESS,
-        data: response.data.data || {},
-      });
-
-    }else if(response.data.code === '20021'){//邀请链接已失效
+    } else if (response.data.code === '20021') { // 邀请链接已失效
       yield put({
-        type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
+        type: loginAction.CHANGE_LOGIN_STORE, 
         params:{
           pageTab: 'joinIn',
           joinStep: 2,
           inviteValid: false,
+          enterpriseInfo: {},
         }
       });
-    }else{
-      console.log(response.data);
-    }
-  }catch(e){
-    console.log(e);
+    } else { throw response.data }
+  } catch(err) { // 错误链接信息 不做处理和跳转
+    message.error('信息出错,请确认链接正确或刷新页面重试!')
+    console.log(err);
   }
 }
 
@@ -526,12 +540,12 @@ export function* watchLogin() {
   yield takeLatest(loginAction.userNameLogin, userNameLogin);
   yield takeLatest(loginAction.getVerificationCode, getVerificationCode);
   yield takeLatest(loginAction.phoneCodeLogin, phoneCodeLogin);
-  // yield takeLatest(loginAction.phoneCodeRegister, phoneCodeRegister);
+  yield takeLatest(loginAction.phoneCodeRegister, phoneCodeRegister);
   // yield takeLatest(loginAction.checkEnterpriseDomain, checkEnterpriseDomain);
   // yield takeLatest(loginAction.checkEnterpriseName, checkEnterpriseName);
   // yield takeLatest(loginAction.registerEnterprise, registerEnterprise);
   yield takeLatest(loginAction.getEnterpriseInfo, getEnterpriseInfo);
-  // yield takeLatest(loginAction.joinEnterprise, joinEnterprise);
-  // yield takeLatest(loginAction.resetPassword, resetPassword);
-  // yield takeLatest(loginAction.inviteUserLink, inviteUserLink);
+  yield takeLatest(loginAction.joinEnterprise, joinEnterprise);
+  yield takeLatest(loginAction.resetPassword, resetPassword);
+  yield takeLatest(loginAction.inviteUserLink, inviteUserLink);
 }

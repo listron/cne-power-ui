@@ -35,7 +35,8 @@
     margin-bottom: 16px;
   }
   .loginAbnormal, .waitExamine{
-    width: 220px;
+    width: 100%;
+    margin-top: 60px;
     text-align: center;
     color:$darkColor;
     .abnormalIcon{

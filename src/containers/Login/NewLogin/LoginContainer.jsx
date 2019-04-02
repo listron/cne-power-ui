@@ -7,13 +7,25 @@ import PropTypes from 'prop-types';
 import Login from './LoginComponents/Login';
 // import Register from './Register';
 import JoinIn from './LoginComponents/JoinIn';
-// import Forget from './Forget';
+import Forget from './LoginComponents/Forget';
 import ReactPlayer from 'react-player';
 
 class LoginContainer extends Component {
   static propTypes = {
     pageTab: PropTypes.string, // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
+    history: PropTypes.object,
+    inviteUserLink: PropTypes.func,
     resetLoginState: PropTypes.func,
+  }
+
+  componentDidMount(){ // 被邀请的用户直接进入企业
+    const { history } = this.props;
+    const { search = '' } = history.location;
+    if (search && search.split('=')[1]) {
+      this.props.inviteUserLink({ // 获取邀请id直接进行加入企业
+        linkId: search.split('=')[1]
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -49,7 +61,7 @@ class LoginContainer extends Component {
           {pageTab === 'login' && <Login {...this.props} />}
           {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
           {pageTab === 'joinIn' && <JoinIn {...this.props} />}
-          {/* {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />} */}
+          {pageTab === 'forget' && <Forget {...this.props} />}
           <div className={styles.contactUs}>
             <Link to="/userAgreement">用户协议</Link>
             <Link to="/contactUs">联系我们</Link>
@@ -75,14 +87,14 @@ const mapDispatchToProps = (dispatch) => ({
   userNameLogin: payload => dispatch({ type: loginAction.userNameLogin, payload }), //  用户名+密码登录
   getVerificationCode: payload => dispatch({ type: loginAction.getVerificationCode, payload }), // 获取短信验证码
   phoneCodeLogin: payload => dispatch({ type: loginAction.phoneCodeLogin, payload }), // 手机号+密码登录
-  // phoneCodeRegister: payload => dispatch({ type: loginAction.phoneCodeRegister, payload }), // 检查手机号+验证码是否正确
+  phoneCodeRegister: payload => dispatch({ type: loginAction.phoneCodeRegister, payload }), // 检查手机号+验证码是否正确
   // checkEnterpriseDomain: payload => dispatch({ type: loginAction.checkEnterpriseDomain, payload }), // 检查域名是否有效
   // checkEnterpriseName: payload => dispatch({ type: loginAction.checkEnterpriseName, payload }), // 检查企业名是否已注册
   // registerEnterprise: payload => dispatch({ type: loginAction.registerEnterprise, payload }), // 注册企业 完善个人信息
   getEnterpriseInfo: payload => dispatch({ type: loginAction.getEnterpriseInfo, payload }), // 获取企业信息
-  // joinEnterprise: payload => dispatch({ type: loginAction.joinEnterprise, payload }), // 加入企业
-  // resetPassword: payload => dispatch({ type: loginAction.resetPassword, payload }), // 设置新密码
-  // inviteUserLink: payload => dispatch({ type: loginAction.inviteUserLink, payload }), // 邀请用户加入企业(获取邀请企业信息)
+  joinEnterprise: payload => dispatch({ type: loginAction.joinEnterprise, payload }), // 加入企业
+  resetPassword: payload => dispatch({ type: loginAction.resetPassword, payload }), // 设置新密码
+  inviteUserLink: payload => dispatch({ type: loginAction.inviteUserLink, payload }), // 邀请用户加入企业(获取邀请企业信息)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

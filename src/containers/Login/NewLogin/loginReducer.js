@@ -5,6 +5,7 @@ const loginAction = {
   FETCH_LOGIN_SUCCESS: Symbol('FETCH_LOGIN_SUCCESS'), // api请求成功
   LOGIN_STORE_RESET: Symbol('LOGIN_STORE_RESET'), // 重置数据
 
+  loginInfoSave: Symbol('loginInfoSave'), // 登录信息存储 => 完成登录功能
   userNameLogin: Symbol('userNameLogin'), //  用户名+密码登录
   getVerificationCode: Symbol('getVerificationCode'), // 获取短信验证码
   phoneCodeLogin: Symbol('phoneCodeLogin'), // 手机号+密码登录
@@ -21,6 +22,7 @@ const loginAction = {
 const initState = Immutable.fromJS({
   loginLoading: false, // 登录的loading状态。
   enterpriseLoading: false, // 加入企业检查loading
+  joinLoading: false, // 加入企业按钮的loading
   pageTab: 'login', // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
 
   loginType: 'username', // 记录用户登录方式 username || phoneNumber
@@ -29,9 +31,16 @@ const initState = Immutable.fromJS({
   // loginResponse.userAuto: null, // 0 正常用户， 1导入/生成用户 => 需完善密码
   loginErrorInfo: false, // 提示用户名或密码错误
 
+  phoneNum: '', // 缓存用户手机号
   enterpriseInfo: {}, // 企业基本信息含enterpriseDomain,enterpriseId,enterpriseLogo,enterpriseName四信息。
   showEnterpriseInfo: false, // 企业查询信息框是否展示
-  joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
+  joinStep: 1, // 加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息
+  inviteValid: true, // 邀请的用户，邀请链接是否有效。
+  joinErrorText: '', // 完善个人用户密码加入企业 返回的错误信息
+  phoneCodeErrorInfo: '', // 手机号/验证码验证失败的错误信息
+
+  forgetStep: 1, // 忘记密码步骤 1: 手机号码验证; 2: 密码重置
+
   // loading: false,
   // registerStep: 1,//注册企业步骤，1-账户验证，2-企业信息，3-完善个人信息
   // joinStep: 1,//加入企业步骤，1-输入企业，2-手机号验证，3-完善个人信息

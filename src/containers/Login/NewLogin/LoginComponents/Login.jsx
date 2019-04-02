@@ -74,7 +74,11 @@ class Login extends Component {
     const { form, loginType, userNameLogin, phoneCodeLogin } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        loginType === 'username' ? userNameLogin(values) : phoneCodeLogin(values);
+        const param = {
+          ...values,
+          immediatelyLogin: true // 登录参数，登录成功后立刻自动跳转。false: 暂存数据不跳转。
+        }
+        loginType === 'username' ? userNameLogin(param) : phoneCodeLogin(param);
       }
     })
   }
@@ -112,18 +116,27 @@ class Login extends Component {
     }
   }
 
-  toJoin = () => {
+  toJoin = () => { // 跳转去加入企业
     const { changeLoginStore } = this.props;
     changeLoginStore({ pageTab: 'joinIn', joinStep: 1 });
   }
 
-  toForget = () => {
-    console.log('去忘记密码页面')
-    
+  backLogin = () => { // 返回登录页
+    const { changeLoginStore } = this.props;
+    changeLoginStore({ loginResponse: {} });
   }
 
-  toFillInfo = () => {
-    console.log('个人信息完善')
+  toForget = () => { // 去忘记密码页
+    const { changeLoginStore } = this.props;
+    changeLoginStore({ pageTab: 'forget' });
+  }
+
+  toFillInfo = () => { // 未完善信息的用户
+    const { changeLoginStore } = this.props;
+    changeLoginStore({
+      pageTab:'joinIn', 
+      joinStep: 3,
+    })
   }
 
   render() {
@@ -144,15 +157,16 @@ class Login extends Component {
             <i className="iconfont icon-join" />
             <span>加入企业</span>
           </span>
+          {userEnterpriseStatus !== 3 && <span className={styles.toLogin} onClick={this.backLogin}>登录</span>}
         </div>
-        {userEnterpriseStatus === 3 && <h3 className={styles.mainTitle}>登录</h3>}
+        <h3 className={styles.mainTitle}>登录</h3>
         {userEnterpriseStatus !== 3 &&
           <div className={userEnterpriseStatus === 5 ? styles.waitExamine : styles.loginAbnormal}>
-            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
+            <div className={styles.abnormalIcon}><i className="iconfont icon-ha" /></div>
             <div>{statusDetail[userEnterpriseStatus]}</div>
           </div>
         }
-        {<div className={styles.loginForm}>
+        {userEnterpriseStatus === 3 && <div className={styles.loginForm}>
           <Form>
             {loginType === 'username' && <FormItem className={styles.usernameInput}>
               {getFieldDecorator('username', {
