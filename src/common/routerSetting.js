@@ -73,7 +73,12 @@ const routers = [
   }, { // 实时监控-告警-告警统计
     path: '/monitor/alarm/statistic',
     component: () => import('../containers/Monitor/Alarm/AlarmStatic/AlarmStatistic'),
-  }, { // 实时监控-电站监控-全部电站
+  },
+  // { // 实时监控-告警-告警统计
+  //   path: '/monitor/alarm/statistics',
+  //   component: () => import('../containers/Monitor/Alarm/AlarmCount/AlarmCount'),
+  // }, 
+  { // 实时监控-电站监控-全部电站
     path: '/monitor/station',
     component: () => import('../containers/Monitor/StationMonitor/AllStation/AllStation'),
   }, { // 菜单栏中不展示的--单设备实时监控
@@ -118,10 +123,15 @@ const routers = [
     component: () => import('../components/Common/Building/Building'),
     // component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
   },
-  { // 隐藏页： 修改密码
-    path: '/hidden/user/editPassword',
-    component: () => import('../containers/Others/EditPassword'),
-  }, { // 系统管理-电站管理-电站;
+  // { // 隐藏页： 修改密码
+  //   path: '/hidden/user/editPassword',
+  //   component: () => import('../containers/Others/EditPassword'),
+  // }, 
+  { // 隐藏页： 修改账户
+    path: '/hidden/user/accountSettings',
+    component: () => import('../containers/Others/AccountSettings'),
+  },
+  { // 系统管理-电站管理-电站;
     path: '/system/station/stationManage',
     component: () => import('../containers/System/Station/StationManage/StationManage'),
   }, { // 系统管理-电站管理-设备
