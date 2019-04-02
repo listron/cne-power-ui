@@ -45,11 +45,10 @@ class UserInfo extends Component {
     const username = Cookie.get('username');
     const userFullName = Cookie.get('userFullName');
     const userLogo = Cookie.get('userLogo');
-    const enterpriseId = Cookie.get('enterpriseId');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
-        {enterpriseId !== '316696409677824' &&
+        {username !== 'default' &&
           <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
             <span className="iconfont icon-password1"></span>
             <span className={styles.text}>账户设置</span>

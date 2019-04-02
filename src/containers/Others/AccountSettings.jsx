@@ -22,17 +22,28 @@ class AccountSettings extends Component {
     this.state = {
       collapsed: false,
       selectedKeys: [],
-      openKeys: [],
+      openKeys: ['/hidden/user/accountSettings'],
+      selectMenu: 'editUserName',
     }
   }
 
   toggleCollapsed = () => {
     const { collapsed } = this.state;
-    this.setState({ collapsed: !collapsed  })
+    this.setState({ collapsed: !collapsed })
+  }
+
+  onOpenChange = (openKeys) => {
+    this.setState({
+      openKeys
+    });
+  }
+
+  selectMenu = (item) => {
+    this.setState({selectMenu: item.key })
   }
 
   render() {
-    const { collapsed, openKeys } = this.state;
+    const { collapsed, openKeys, selectMenu } = this.state;
     const { pathname } = this.props.location;
     return (
       <div className={styles.accountSettings}>
@@ -49,27 +60,22 @@ class AccountSettings extends Component {
             className={styles.menuList}
             selectedKeys={[pathname]}
             openKeys={openKeys}
+            onSelect={this.selectMenu}
             onOpenChange={this.onOpenChange}>
-            <Item key={'/hidden/user/accountSettings'}>
-              <i className={'iconfont icon-usermanage'}></i>
-              <span>{collapsed ? null : '账户管理'}</span>
-            </Item>
+            <SubMenu key={'/hidden/user/accountSettings'} title={
+              <span> <i className={'iconfont icon-usermanage'}></i><span>{collapsed ? null : '账户管理'}</span></span>}>
+              <Item key="editUserName"><a>账户信息</a></Item>
+              <Item key="editPassword">修改密码</Item>
+              <Item key="editPhone">修改手机</Item>
+            </SubMenu>
           </Menu>
         </h3>
         <div className={styles.accoutCont}>
-          <CommonBreadcrumb breadData={[{ name: '账户信息' }]} style={{ paddingLeft: '38px',background:'#fff' }} />
+          <CommonBreadcrumb breadData={[{ name: '账户信息' }]} style={{ paddingLeft: '38px', background: '#fff' }} />
           <div className={styles.accoutContainer}>
-            <Tabs type="card">
-              <TabPane tab="账户信息" key="editUserName">
-                <EditUserName {...this.props} />
-              </TabPane>
-              <TabPane tab="修改密码" key="editPassword">
-                <EditPasswordForm {...this.props} />
-              </TabPane>
-              <TabPane tab="修改手机" key="editPhone">
-                <EditPhone {...this.props} />
-              </TabPane>
-            </Tabs>
+            {selectMenu === "editUserName" && <EditUserName {...this.props} />}
+            {selectMenu === "editPassword" && <EditPasswordForm {...this.props} />}
+            {selectMenu === "editPhone" && <EditPhone {...this.props} />}
           </div>
           <Footer />
         </div>

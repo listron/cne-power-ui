@@ -96,7 +96,6 @@
 
                 .ant-menu-submenu-active,
                 .ant-menu-submenu-selected {
-
                     .ant-menu-item-selected,
                     .ant-menu-item-active,
                     .ant-menu-submenu-title {
@@ -136,35 +135,6 @@
             align-content: space-around;
             margin: 24px 24px 0;
             background: #fff;
-        }
-
-        :global {
-            .ant-tabs-bar {
-                border: none
-            }
-            .ant-tabs-card-bar {
-                background-color: #f8f8f8;
-
-                .ant-tabs-tab {
-                    margin-right: 0;
-                    min-width: 120px;
-                    min-height: 42px;
-                    text-align: center;
-                    border: none;
-                    border-radius: 0;
-                }
-                .ant-tabs-tab-active {
-                    position: relative;
-                }
-                .ant-tabs-tab-active::before{
-                    content: '';
-                    width: 120px;
-                    height: 2px;
-                    background: $themeColor;
-                    position: absolute;
-                    left: 0;
-                }
-            }
         }
     }
 }
