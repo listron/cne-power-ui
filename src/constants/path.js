@@ -276,14 +276,16 @@ export default {
       getRealtimeChart: '/v3/wind/analysis/devicechart', // 实时数据 - 图表
       getRealtimeList: '/v3/wind/analysis/devicedata', // 实时数据 - 表格
       exportRealtime: '/v3/wind/analysis/export', // 导出实时数据
-      getAllScatterDiagram: 'v3/wind/scatterpoint/fan/chart', // 散点图 - 图标数据
-      getListScatterDiagram: 'v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
-      exportScatterDiagram: 'v3/wind/scatterpoint/fan/export', // 导出散点图数据
-      getPoints: 'v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+      getAllScatterDiagram: '/v3/wind/scatterpoint/fan/chart', // 散点图 - 图标数据
+      getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
+      exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
+      getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
                   
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
+      editUserName: '/v3/user', // 更变姓名
+      editPhone: '/v3/user/phone', // 更变电话
     },
     statisticalAnalysis: {
       getAllStationAvaliba: '/v3/performance/comprehensive/dataavaliba',
