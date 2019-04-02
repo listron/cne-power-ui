@@ -48,26 +48,26 @@ class DeviceFilter extends Component {
     })
   }
   seekDeviceData = () => {//查询按钮
-    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList,changeAllDeviceStore } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, changeAllDeviceStore } = this.props;
     const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format(), };
-    if(startTime===moment().subtract(1, "days").format('YYYY-MM-DD')&&endTime===moment().format('YYYY-MM-DD')){
-      const preDay=moment().startOf('day').subtract(1, "days");
-      const curDay=moment().format('YYYY-MM-DD HH:mm:ss');
-      params.startTime=moment(preDay).utc().format()
-      params.endTime=moment(curDay).utc().format()
+    if (startTime === moment().subtract(1, "days").format('YYYY-MM-DD') && endTime === moment().format('YYYY-MM-DD')) {
+      const preDay = moment().startOf('day').subtract(1, "days");
+      const curDay = moment().format('YYYY-MM-DD HH:mm:ss');
+      params.startTime = moment(preDay).utc().format()
+      params.endTime = moment(curDay).utc().format()
     }
     getAllDeviceCurveData({ ...params, })
     getPowerdeviceList({ ...params, })
-    changeAllDeviceStore({checkedAll:true})
+    changeAllDeviceStore({ checkedAll: true })
   }
   timeChange = (time) => {//时间选择
-   
+
     const startTime = moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss');
-    
-    let endTime=moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss');
-    
-    const isToday  = moment(endTime).isSame(moment(), 'd');
-    
+
+    let endTime = moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+
+    const isToday = moment(endTime).isSame(moment(), 'd');
+
     isToday ? endTime = moment().format('YYYY-MM-DD HH:mm:ss') : endTime;
     this.props.changeAllDeviceStore({
       startTime,
