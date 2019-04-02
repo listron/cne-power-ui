@@ -134,7 +134,11 @@ function* getVerification(action) { // 获取新手机号验证码
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
-      yield put({ type: othersAction.SEND_CODE_SUCCESS, payload });
+      yield put({ 
+        type: othersAction.SEND_CODE_SUCCESS, 
+        payload:{
+          sendCode:true
+        }});
     } else {
       message.error(response.data.message);
     }
@@ -142,6 +146,7 @@ function* getVerification(action) { // 获取新手机号验证码
     console.log(e);
   }
 }
+
 
 function* phoneCodeRegister(action) { // 验证手机号和验证码是否正确
   const { payload } = action;

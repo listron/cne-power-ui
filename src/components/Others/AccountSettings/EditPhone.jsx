@@ -26,9 +26,8 @@ class EditPhone extends Component {
   }
 
   componentWillUnmount = () => {
-    this.setState({
-      timeValue: 0,
-    })
+    clearInterval(this.timeCount);
+    this.setState({ timeValue: 0, })
   }
 
 
@@ -44,10 +43,10 @@ class EditPhone extends Component {
   }
 
   timeDecline = () => { // 验证码倒数计时
-    let timeCount = setInterval(() => {
+    this.timeCount = setInterval(() => {
       this.setState({ timeValue: this.state.timeValue - 1 })
       if (this.state.timeValue < 0) {
-        clearInterval(timeCount);
+        clearInterval(this.timeCount);
         this.setState({ timeValue: 0 })
       }
     }, 1000);
@@ -65,9 +64,10 @@ class EditPhone extends Component {
     })
   }
 
+
   render() {
-    const { getFieldDecorator,getFieldValue } = this.props.form;
-    const { loading } = this.props;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { loading, sendCode } = this.props;
     const { timeValue } = this.state;
     const currentPhone = getFieldValue('newPhoneNum');
     const formItemLayout = {
@@ -77,7 +77,7 @@ class EditPhone extends Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 10 },
+        sm: { span: 16 },
       },
     }
     return (
@@ -123,9 +123,9 @@ class EditPhone extends Component {
                   </Button>
                 </div>
               )}
-              {/* { timeValue !== 0 &&
-               <span className={styles.instructionText} style={{ width: 380 }}>验证码已经发送到 {currentPhone}</span>
-              } */}
+              {timeValue !== 0 && sendCode &&
+                <span className={styles.instructionText} style={{ width: 380, color: '#666' }}>验证码已经发送到 {currentPhone}</span>
+              }
             </FormItem>
             <Row type={'flex'} className={styles.saveButton}>
               <Col span={8} offset={8}> <Button onClick={this.phoneCodeRegister} loading={loading} className={styles.savePhone} >保存</Button></Col>
