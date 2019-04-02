@@ -137,7 +137,7 @@ class Main extends Component {
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = `bearer ${authData}`;
     }
-    if (isTokenValid && authData) {
+    if (authData && isTokenValid) {
       // if(true){
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则

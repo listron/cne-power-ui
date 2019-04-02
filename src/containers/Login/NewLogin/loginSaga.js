@@ -57,14 +57,15 @@ function *userNameLogin({ payload = {} }){ //账号密码登录
           // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
           yield call(loginInfoSave, { payload: loginResponse }); // 正常登录，信息存储
         }
+      } else {
+        yield put({
+          type: loginAction.CHANGE_LOGIN_STORE,
+          payload: {
+            loginResponse,
+            loginLoading: false
+          }, // 返回信息暂存， 用于判定异常登录状态
+        })
       }
-      yield put({
-        type: loginAction.CHANGE_LOGIN_STORE,
-        payload: {
-          loginResponse,
-          loginLoading: false
-        }, // 返回信息暂存， 用于判定异常登录状态
-      })
     } else { // 账户或密码错误 response.data.code === '20009'
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE,
