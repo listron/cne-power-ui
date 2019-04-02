@@ -27,6 +27,7 @@ import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStatio
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
 import { watchStationMonitor } from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
 
+import {watchAlarmMonitor}  from './Monitor/Alarm/AlarmStatic//alarmSaga';
 import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
@@ -105,6 +106,7 @@ export default function* rootSaga() {
     watchStationMonitor(),
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
+    watchAlarmMonitor(),
     watchMonitorRealtimeWarning(),
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),
@@ -117,9 +119,10 @@ export default function* rootSaga() {
     watchMonitorDeviceStatus(),//报表-设备状态
     watchMonitorMalfunction(),//报表-故障
     watchMonitorPowerLost(),//报表--电量损失
+
+ 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     
-    // 无逻辑关系隐藏页面
     watchOthersSaga(),
     // watchOtherSaga(),
     //统计分析的全部电站

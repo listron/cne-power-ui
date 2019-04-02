@@ -67,7 +67,7 @@ class TimeSelectReport extends React.Component {
     }
   }
 
-  onModeChange = (e) => {
+  onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
     const params = { modeStyle, list: [] };
     this.setState({ ...params });

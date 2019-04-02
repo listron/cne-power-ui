@@ -36,30 +36,30 @@ const menuData = [
         name: '功率曲线',
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
-        rightKey: 'monitor_station',
+        rightKey: 'monitor_powerCurve',
       },{
         name: '数据分析',
-        iconStyle: 'icon-monitoring',
+        iconStyle: 'icon-da',
         path: 'data',
         rightKey: 'monitor_dataAnalysis',
         children: [
           {
             name: '散点图',
             path: 'scatterDiagram',
-            rightKey: 'monitor_alarm_realTime', // dataAnalysis_scatterDiagram
+            rightKey: 'dataAnalysis_scatterPlot', 
           },{
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
           }, {
-            name: '实时监控',
+            name: '实时数据',
             path: 'realtime',
             rightKey: 'dataAnalysis_realTime',
           }
         ]
       }, {
         name: '报表查询',
-        iconStyle: 'icon-monitoring',
+        iconStyle: 'icon-trends',
         path: 'report',
         rightKey: 'monitor_reportQuery',
         children: [

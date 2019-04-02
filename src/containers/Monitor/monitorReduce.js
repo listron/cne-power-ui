@@ -33,12 +33,10 @@ const monitorReducer = combineReducers({
   historyWarningReducer, 
   allDeviceCurveReducer,
   singleDeviceCurveReducer,
-  historyWarningReducer,
   powerReportReducer,
   deviceStatusReducer,
   malfunctionReducer,
   powerLostReducer,
-
   dataHistory,
   dataRealtime,
   dataScatterDiagram

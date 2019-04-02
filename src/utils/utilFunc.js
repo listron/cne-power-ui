@@ -12,7 +12,6 @@ export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据
     showData = parseFloat(showData);
   }
   return showData
-
 }
 
 

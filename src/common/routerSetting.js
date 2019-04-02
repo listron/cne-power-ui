@@ -2,6 +2,8 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import styles from './loading.scss'
+import { Spin } from 'antd';
+
 /*
   注： path变量中，以/hidden开头的路径，将不展示在菜单中；
 */
@@ -101,8 +103,8 @@ const routers = [
   },
   { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
-    component: () => import('../components/Common/Building/Building'),
-    // component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
+    // component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     component: () => import('../components/Common/Building/Building'),
@@ -230,9 +232,8 @@ const routers = [
 const Loading = ({ pastDelay, timedOut, error }) => {
   if (pastDelay) {
     return (<div className={styles.preComponent}>
-      <i className={`${styles.rotate}`}></i>
-      <p>loading....</p>
-    </div>);
+     <Spin size="large" tip="Loading..."/>
+  </div>);
   } else if (timedOut) {
     return <div>Taking a long time...</div>;
   } else if (error) {

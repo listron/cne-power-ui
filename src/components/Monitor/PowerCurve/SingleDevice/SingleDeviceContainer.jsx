@@ -13,72 +13,101 @@ const { monitor } = path.APISubPaths;
 
 class SingleDeviceContainer extends Component {
   static propTypes = {
+    getSingleDeviceCurveList: PropTypes.func,
+    downLoadFile: PropTypes.func,
+    getDeviceInfo: PropTypes.func,
+    getwinddistributionchart: PropTypes.func,
+    getSingleDeviceCurveData: PropTypes.func,
+    getsequencechart: PropTypes.func,
+    getpowerspeedchart: PropTypes.func,
+    changeSingleDeviceStore: PropTypes.func,
+    getpitchanglespeedchart: PropTypes.func,
+    getRoseChart: PropTypes.func,
+    correct: PropTypes.number,
+    stationCode: PropTypes.string,
+    match: PropTypes.object,
+    deviceFullCode: PropTypes.array,
+    stations: PropTypes.array,
+    deviceShowType: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    airDensity: PropTypes.string,
+    selectDeviceFullCode: PropTypes.array,
+    deviceInfo: PropTypes.object,
   }
-  constructor(props, context) {
-    super(props, context)
-  }
+
   componentDidMount() {
     const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const {  changeSingleDeviceStore, } = this.props;
+    const { changeSingleDeviceStore, } = this.props;
     this.props.getDeviceInfo({ // 风电设备类型下的设备编号
-      deviceFullcode:deviceFullCode
+      deviceFullcode: deviceFullCode
     });
-    const startTime = time.split('~')[0];
-    const endTime = time.split('~')[1];
-    const params = { stationCode, deviceFullCode: [deviceFullCode], startTime, endTime }
-    changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
-    this.props.getRoseChart({ ...params,deviceFullCode });
-    this.props.getwinddistributionchart({ ...params,deviceFullCode  });
-    this.queryGraphData({...params}) 
+    const startTime = time ? time.split('~')[0] : '';
+    const endTime = time ? time.split('~')[1] : '';
+    const singleDeviceFullCode = deviceFullCode ? [deviceFullCode] : [];
+    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime:moment(startTime).utc().format(), endTime:moment(endTime).utc().format() }
+    if(endTime===moment().format('YYYY-MM-DD')){
+      const curDay=moment().format('YYYY-MM-DD HH:mm:ss');
+      params.endTime=moment(curDay).utc().format()
+    }
+    changeSingleDeviceStore({ 
+      ...params,
+      //  selectDeviceFullCode: [{ deviceCode: deviceFullCode }]
+       })
+    this.props.getRoseChart({ ...params, deviceFullCode });
+    this.props.getwinddistributionchart({ ...params, deviceFullCode });
+    this.queryGraphData({ ...params })
   }
   componentWillReceiveProps(nextProp) {
-    const {  deviceFullCode,endTime ,startTime,stationCode} = nextProp;
+    const { deviceFullCode, endTime, startTime, stationCode } = nextProp;
     const params = { stationCode, deviceFullCode, startTime, endTime }
-    if (deviceFullCode.length !== this.props.deviceFullCode.length) {
-      this.queryGraphData(params)
-    }
-    for (let i = 0; i < deviceFullCode.length; i++) {
-      if (deviceFullCode[i] !== this.props.deviceFullCode[i]) {
-        return this.queryGraphData(params)
-      }
+    if (deviceFullCode && deviceFullCode.length) {
+      const preLength = (this.props.deviceFullCode && this.props.deviceFullCode.length) ? this.props.deviceFullCode.length : 0;
+      const curLength = deviceFullCode && deviceFullCode.length;
+      (preLength !== curLength) && this.queryGraphData(params);
+      deviceFullCode.find(e => !this.props.deviceFullCode.includes(e)) && this.queryGraphData(params);
     }
   }
   onOk = (selectdevice) => {
-    const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
+    let deviceFullCode = [this.props.match.params.deviceFullCode].concat(selectdevice.map((e, i) => (e.deviceCode)));
+    console.log('deviceFullCode: ', deviceFullCode);
     this.props.changeSingleDeviceStore({
       deviceFullCode,
       selectDeviceFullCode: selectdevice
     })
   }
+
   onSwitchChange = (checked) => {
-    const { stationCode, deviceFullCode, startTime, endTime, correct, } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
+    const tableFullCode=this.props.match.params.deviceFullCode;
+    const { stationCode, deviceFullCode, startTime, endTime,  pageNum, pageSize,} = this.props;
+    const params = { stationCode,deviceFullCode, startTime, endTime, pageNum, pageSize, };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
-   
-    this.props.getSingleDeviceCurveList({ ...params,correct: checked ? 1 : 0 })
+
+    this.props.getSingleDeviceCurveList({ ...params,deviceFullCode:tableFullCode, pageNum, pageSize, correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
-    const { stationCode, deviceFullCode, startTime, endTime, deviceShowType, getSingleDeviceCurveList } = this.props;
+    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
     const params = { stationCode, deviceFullCode, startTime, endTime };
-   this.queryGraphData({...params,...value});
- 
+    this.queryGraphData({ ...params, ...value });
   }
   queryGraphData = (value) => {
-    const tabledeviceFullCode= this.props.match.params.deviceFullCode;
-    const { stationCode, deviceFullCode, startTime, endTime, correct,pageNum,pageSize } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
-     this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
-     this.props.getsequencechart({ ...params, ...value });
-   
+    const tabledeviceFullCode = this.props.match.params.deviceFullCode;
+    const { stationCode, deviceFullCode, startTime, endTime, correct, pageNum, pageSize } = this.props;
+    const params = { stationCode, deviceFullCode, startTime, endTime ,};
+    this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
+    this.props.getsequencechart({ ...params, ...value });
+
     this.props.getpowerspeedchart({ ...params, ...value });
-  
+
     this.props.getpitchanglespeedchart({ ...params, ...value });
-    this.props.getSingleDeviceCurveList({ ...params,...value,deviceFullCode:tabledeviceFullCode,pageNum,pageSize,correct })
+    this.props.getSingleDeviceCurveList({ ...params, ...value, deviceFullCode: tabledeviceFullCode, pageNum, pageSize, correct })
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeSingleDeviceStore } = this.props;
     changeSingleDeviceStore({ deviceShowType: type })
-   
+
   }
   showChart = () => {
     this.selectShowType('graph');
@@ -88,9 +117,10 @@ class SingleDeviceContainer extends Component {
   }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
-    let { startTime, endTime, stationCode, deviceFullCode, stations,downLoadFile } = this.props;
+    const deviceFullCode = this.props.match.params.deviceFullCode;
+    let { startTime, endTime, stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
-    endTime =  moment(endTime).utc().format();
+    endTime = moment(endTime).utc().format();
     let timeZone = moment().zone();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
@@ -98,18 +128,22 @@ class SingleDeviceContainer extends Component {
       fileName: `${stationInfo.stationName}-${startTime}-${endTime}功率曲线.xlsx`,
       params: {
         stationCode,
-        deviceFullCode,
+        deviceFullCode:[deviceFullCode],
         startTime,
         endTime,
-        timeZone
+        timeZone: timeZone / -60
       },
     })
   }
   render() {
-    // const { stationCode, deviceFullCode, time } = this.props.match.params;
-    const { stations, deviceShowType, stationCode, deviceFullCode, startTime, endTime, airDensity, selectDeviceFullCode,deviceInfo } = this.props;
+    const singleStation = this.props.match.params.stationCode;
+    const disabledDevice = this.props.match.params.deviceFullCode;
+    const time = this.props.match.params.time;
+    const beginTime = time ? time.split('~')[0] : '';
+    const overTime = time ? time.split('~')[1] : '';
+    const { stations, deviceShowType, stationCode, airDensity, selectDeviceFullCode, deviceInfo } = this.props;
     const deviceTypeCode = 101;
-    const stationInfo = stations.filter(e => (e.stationCode === +stationCode))[0];
+    const stationInfo = stations ? stations.filter(e => (e.stationCode === +singleStation))[0] : {};
     const pathAllDevice = `#/monitor/powercurve`;
     return (
       <div className={styles.singleDevice}>
@@ -117,7 +151,7 @@ class SingleDeviceContainer extends Component {
           <div className={styles.left}>
             <div className={styles.singleInfo}>电站名称:{stationInfo && stationInfo.regionName}-{stationInfo && stationInfo.stationName}</div>
             <div className={styles.singleInfo}>设备名称:{deviceInfo.deviceName}</div>
-            <div className={styles.singleInfo}>时间:{startTime}~{endTime}</div>
+            <div className={styles.singleInfo}>时间:{moment(beginTime).format('YYYY/MM/DD')}~{moment(overTime).format('YYYY/MM/DD')}</div>
             {deviceShowType === 'graph' && <div className={styles.singleInfo}>增加对比设备:
             <DeviceSelect
                 disabled={stationInfo ? false : true}
@@ -125,6 +159,8 @@ class SingleDeviceContainer extends Component {
                 deviceTypeCode={deviceTypeCode}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
+                max={2}
+                disabledDevice={[disabledDevice]}
                 multiple={true}
                 deviceShowNumber={true}
                 value={selectDeviceFullCode}

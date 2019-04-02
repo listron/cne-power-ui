@@ -1,4 +1,5 @@
 import immutable from 'immutable';
+import moment from 'moment';
 import { allDeviceCurveAction } from './allDeviceCurveAction';
 const initState = immutable.fromJS({
   stationTypeTabs:'0',//默认风
@@ -7,9 +8,11 @@ const initState = immutable.fromJS({
   deviceTypeCode:101,
   deviceFullCode:[],
   selectdeviceCode:[],
-  startTime:'',
-  endTime:'',
-
+  startTime: '',
+  endTime: '',
+  checkedAll:true,
+  allData:{},
+  theoryDataList:[],//多设备图标数据中的理论功率曲线
   allDeviceCurveData:[],//多设备图表数据
   powerCurveListData:[],//table列表数据
   windDeviceMode: [], // 电站下风电机组可选设备型号

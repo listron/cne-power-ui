@@ -139,7 +139,7 @@ class AddDevice extends Component {
                 disabled={typeSelectDisable}>
                 <Option key={null} value={null}>{'全部设备类型'}</Option>
                 {stationDevices.map((e, i) => {
-                  if (!e) { return null; } else {
+                  if (!e||e.deviceTypeCode==='509') { return null; } else {
                     return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   }
                 })}
@@ -150,6 +150,7 @@ class AddDevice extends Component {
        
 
           {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
+       
         </Form>}
         {showStep === 'next' && <AddDeviceForm {...this.props} selectStation={selectStation} selectdeviceType={selectdeviceType || selectdeviceTypeName} gobackPre={this.gobackPre} />}
         {showAddDeviceModal && <ShowAddDeviceModal {...this.props} showAddDeviceModal={showAddDeviceModal} cancleAddDeviceModal={this.cancleAddDeviceModal} saveFormState={this.saveFormState} selectStation={selectStation[0].stationCode} />}

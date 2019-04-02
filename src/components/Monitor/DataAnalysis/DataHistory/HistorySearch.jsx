@@ -12,6 +12,7 @@ const { RangePicker } = DatePicker;
 class HistorySearch extends Component {
   static propTypes = {
     stations: PropTypes.array,
+    filterDevices: PropTypes.array,
     stationTypeCount: PropTypes.string,
 
     selectStationType: PropTypes.number, // 选中的电站类型
@@ -28,11 +29,43 @@ class HistorySearch extends Component {
     getListHistory: PropTypes.func,
   };
 
+  state = {
+    rangeOpen: false,
+    disableDateFun: (current) => current > moment(),
+  }
+
+  componentDidUpdate(prevProps){
+    const { queryParam, changeHistoryStore, filterDevices } = this.props;
+    const prevDevices = prevProps.filterDevices;
+    if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    } else if (
+      prevDevices.length > 0
+        && filterDevices.length > 0
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+    ) { // 设备数据切换
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]])
+    }
+  }
+
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
     const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({
       selectStationType,
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode: null,
@@ -55,6 +88,7 @@ class HistorySearch extends Component {
     getAvailableDeviceType({ stationCode });
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode: null,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         stationCode,
@@ -71,11 +105,13 @@ class HistorySearch extends Component {
     const { changeHistoryStore, queryParam } = this.props;
     changeHistoryStore({ // 清空选中的设备类型，测点，图表数据
       deviceTypeCode,
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: [], // 选中的设备
         devicePoints: [], // 选中的测点
       },
+      pointInfo: [], // 清空测点信息
       allHistory: {}, // chart图 - 所有历史数据
       partHistory: {}, // 表格内 - 分页后的历史数据
     });
@@ -85,6 +121,7 @@ class HistorySearch extends Component {
     const { getPointInfo, changeHistoryStore, queryParam } = this.props;
     const { timeInterval } = queryParam;
     changeHistoryStore({
+      chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
@@ -99,11 +136,59 @@ class HistorySearch extends Component {
     });
   }
 
-  timeChange = (timeMoment) => { // 时间选择
-    this.historyDataFetch({
-      startTime: timeMoment[0],
-      endTime: timeMoment[1]
+  calendarChange = (rangeMoments) => {
+    const { queryParam } = this.props;
+    const { timeInterval } = queryParam;
+    if (rangeMoments.length === 1) {
+      this.setState({ // 10min时间跨度不超过1个月 秒级时间跨度不超过2天
+        disableDateFun: (current) => {
+          const maxTime = timeInterval === 10 ? moment(rangeMoments[0]).add(1, 'M') : moment(rangeMoments[0]).add(1, 'd');
+          const minTime = timeInterval === 10 ? moment(rangeMoments[0]).subtract(1, 'M') : moment(rangeMoments[0]).subtract(1, 'd');
+          return current > moment() || current > maxTime || current < minTime;
+        }
+      })
+    } else {
+      const [startTime, endTime] = rangeMoments;
+      const preStartTime = queryParam.startTime;
+      const preEndTime = queryParam.endTime;
+      if (startTime.isSame(preStartTime, 'd') && endTime.isSame(preEndTime, 'd')) { // 正在进行时间选择
+        this.setState({
+          disableDateFun: (current) => current > moment(),
+        })      
+      } else { // 进行的是日期选择
+        this.setState({
+          rangeOpen: false,
+          disableDateFun: (current) => current > moment(),
+        })
+      }
+    }
+  }
+
+  openChange = (rangeOpen) => {
+    this.setState({
+      rangeOpen,
+      disableDateFun: (current) => current > moment(),
     })
+  } 
+
+  dateChange = (timeMoment, timeStr) => { // 日期跨度选择
+    const [startTime, endTime] = timeMoment;
+    const { queryParam } = this.props;
+    const preStartTime = queryParam.startTime;
+    const preEndTime = queryParam.endTime;
+    if (startTime - preStartTime === 0 && endTime - preEndTime === 0) { // 未进行时间改变
+      return;
+    }
+
+    if (startTime.isSame(preStartTime, 'd') && endTime.isSame(preEndTime, 'd')) { // 正在进行时间选择
+      this.historyDataFetch({ startTime, endTime });      
+    } else { // 进行的是日期选择
+      const isToday  = endTime.isSame(moment(), 'd'); // 今天则用当前时间
+      this.historyDataFetch({
+        startTime: startTime.startOf('d'),
+        endTime: isToday ? moment() : endTime.endOf('d'),
+      })
+    }
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
@@ -114,14 +199,17 @@ class HistorySearch extends Component {
       changeHistoryStore({
         queryParam: {
           ...queryParam,
+          deviceFullCodes: deviceFullCodes.slice(0, 2),
           timeInterval: interval,
           devicePoints: [],
+          startTime: interval === 10 ? moment().startOf('day').subtract(1, 'M') :  moment().startOf('day').subtract(1, 'd'),
+          endTime: moment(),
         },
         allHistory: {},
         partHistory: {},
       });
       getPointInfo({
-        deviceFullCodes,
+        deviceFullCodes: deviceFullCodes.slice(0, 2),
         timeInterval: interval,
       });
     } else { // 1 -> 5或5 -> 1 的转化，不用刷新测点树。
@@ -133,11 +221,11 @@ class HistorySearch extends Component {
   historyDataFetch = (params) => {
     const { changeHistoryStore, queryParam, listParam, getChartHistory, getListHistory } = this.props;
     const { devicePoints } = queryParam;
+    const newQueryParam = {
+      ...queryParam,
+      ...params
+    }
     if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据
-      const newQueryParam = {
-        ...queryParam,
-        ...params
-      }
       getChartHistory({
         queryParam: newQueryParam
       })
@@ -146,7 +234,9 @@ class HistorySearch extends Component {
         listParam,
       })
     } else { // 未选时间-暂存信息。
-      changeHistoryStore({ ...params })
+      changeHistoryStore({
+        queryParam: newQueryParam
+      })
     }
   }
 
@@ -155,7 +245,7 @@ class HistorySearch extends Component {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo
     } = this.props;
     const { stationCode, startTime, endTime, timeInterval, deviceFullCodes } = queryParam;
-  
+    const { disableDateFun, rangeOpen } = this.state;
     return (
       <div className={styles.historySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
@@ -170,6 +260,7 @@ class HistorySearch extends Component {
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>
           <div className={styles.typeSelect}>
@@ -194,6 +285,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              max={timeInterval === 10 ? 5 : 2}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
@@ -203,9 +295,20 @@ class HistorySearch extends Component {
             <span className={styles.text}>时间选择</span>
             <RangePicker
               allowClear={false}
+              open={rangeOpen}
               format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.timeChange}
+              onChange={this.dateChange}
+              onCalendarChange={this.calendarChange}
+              onOpenChange={this.openChange}
               value={[startTime, endTime]}
+              disabledDate={disableDateFun}
+              dropdownClassName={styles.historyRangeDropdown}
+              renderExtraFooter={() => (
+                <span className={styles.infoTip}>
+                  {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过2天'}
+                </span>
+              )}
+              showTime
             />
           </div>
           <div className={styles.intervalSelect}>
@@ -216,11 +319,10 @@ class HistorySearch extends Component {
               placeholder="数据间隔时间"
             >
               {intervalInfo.map(e => (
-                <Option key={e} value={e}>{e === 10 ? '10分' : `${e}秒`}</Option>
+                <Option key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
               ))}
             </Select>
           </div>
-          
         </div>
       </div>
     )

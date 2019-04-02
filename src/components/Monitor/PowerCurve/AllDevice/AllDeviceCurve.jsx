@@ -9,6 +9,7 @@ import moment from 'moment';
 class AllDeviceCurve extends Component {
   static propTypes = {
     startTime:PropTypes.string,
+    deviceFullCode:PropTypes.array,
     deviceShowType:PropTypes.string,
     endTime:PropTypes.string,
     stationCode:PropTypes.number,

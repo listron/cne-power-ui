@@ -35,7 +35,7 @@ class DefectDetailForm extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-      warningTipText: '退出后信息无法保存!'
+      warningTipText: '退出后信息无法保存!',
     }
   }
 
@@ -46,12 +46,11 @@ class DefectDetailForm extends Component {
 
   onCancelEdit = () => {
     const data = this.props;
-    if(data.defectDetail.defectStatus === '4'){//已完成的状态
+    const { pageName, onChange, modify } = this.props;
+    modify && this.setState({ showWarningTip: true, });
+    if (!modify || data.defectDetail.defectStatus === '4') {//已完成的状态
       this.setState({ showWarningTip: false, });
-      const { pageName, onChange } = this.props;
       onChange({ pageName });  //  退回到之前的页面
-    }else{
-      this.setState({ showWarningTip: true, });
     }
   }
 
@@ -110,6 +109,7 @@ class DefectDetailForm extends Component {
 
   renderTitle(status) { // 渲染标题 根据状态
     let result = '';
+    // 0 待提交 1 审核缺陷 2 处理缺陷 3 验收缺陷  4 已完成
     switch (status) {
       case '1': result = '审核缺陷'; break;
       case '2': result = '处理缺陷'; break;
@@ -124,11 +124,11 @@ class DefectDetailForm extends Component {
 
 
   render() {
-    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom } = this.props;
+    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom, modify } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const processData = defectDetail.processData;
     const status = defectDetail.defectStatus;
-    const handleData = defectDetail.handleData
+    const handleData = defectDetail.handleData;
     return (
       <React.Fragment>
         {showWarningTip && <WarningTip onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}

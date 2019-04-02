@@ -45,8 +45,8 @@ class PvScoreAnalysis extends Component {
         const { startTime, timeStyle } = value;
         let dataType = timeStyle === 'month' ? 'year' : 'month';
         this.getScoreList({ dataType, time: startTime })
-        let currentMoth=moment(startTime).add(1, 'months').isBefore(moment(), 'month');
-        let isBefore=!currentMoth && moment().date()<3
+        let currentMoth = moment(startTime).add(1, 'months').isBefore(moment(), 'month');
+        let isBefore = !currentMoth && moment().date() < 3
         dataType === 'month' && this.setState({ showWarningTip: isBefore, })
     }
 
@@ -57,7 +57,7 @@ class PvScoreAnalysis extends Component {
 
     PvStationSelect = (e) => {
         const reportType = e.target.value;
-        this.getScoreList({ reportType,stationCodes:[] })
+        this.getScoreList({ reportType, stationCodes: [] })
         this.setState({ reportStation: [] })
     }
 
@@ -74,7 +74,7 @@ class PvScoreAnalysis extends Component {
     }
 
     scoreSort = () => { // 分数排序切换
-        const unit=!this.state.highToLow
+        const unit = !this.state.highToLow
         this.setState({ highToLow: unit })
         const sortMethod = unit ? 'desc' : 'asc';
         this.getScoreList({ sortMethod })
@@ -85,12 +85,13 @@ class PvScoreAnalysis extends Component {
     }
 
     render() {
-        const { pvStationType, scoreList,  singleScoreData, stations } = this.props;
-        const {reportType}=this.props.pvParams;
+        const { pvStationType, scoreList, singleScoreData, stations } = this.props;
+        const { reportType } = this.props.pvParams;
         const { reportStation, highToLow } = this.state;
         const PvStations = stations.filter(e => e.stationType === 1);
         const PVSelectStations = reportType === '' ? PvStations : PvStations.filter(e => e.reportType === reportType);
         const { showWarningTip, warningTipText } = this.state;
+        const noReportTypeData = scoreList.filter(e => !e.reportType);
         return (
             <div className={styles.PvScore}>
                 {showWarningTip &&
@@ -146,8 +147,8 @@ class PvScoreAnalysis extends Component {
                     (<div>
                         <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} />
                         <div>
-                            <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>
-                            <StationScoreList dataList={scoreList.filter(e => !e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} hasReportType={false} />
+                            {noReportTypeData.length > 0 && <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>}
+                            <StationScoreList dataList={noReportTypeData} onChange={this.singleDetail} singleData={singleScoreData} hasReportType={false} />
                         </div>
                     </div>)
                     || <StationScoreList dataList={scoreList} onChange={this.singleDetail} singleData={singleScoreData} />

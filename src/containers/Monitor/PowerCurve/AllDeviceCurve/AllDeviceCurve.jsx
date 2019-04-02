@@ -22,6 +22,7 @@ class AllDeviceCurve extends Component {
     getDeviceModel: PropTypes.func,
     getAllDeviceCurveData: PropTypes.func,
     getPowerdeviceList: PropTypes.func,
+    resetAllDeviceCurve: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -34,9 +35,7 @@ class AllDeviceCurve extends Component {
     changeAllDeviceStore(params)
     // getAllDeviceCurveData({...params, })
   }
-  componentWillUnmount() {
-    this.props.resetAllDeviceCurve()
-  }
+  
   queryTargetData = (activeKey) => {
     this.props.changeAllDeviceStore({ stationTypeTabs: activeKey, deviceShowType: 'graph', });
 
@@ -54,14 +53,9 @@ class AllDeviceCurve extends Component {
       <div className={styles.allDeviceCurve} >
         <Header {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.allDeviceCurveBox}>
-          {stationTypeCount === 'multiple' &&
-            <Tabs type="card" activeKey={stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
-              <TabPane tab="风电" key="0"><AllDeviceCurveBox {...this.props} /></TabPane>
-              <TabPane tab="光伏" key="1"><AllDeviceCurveBox {...this.props} /></TabPane>
-            </Tabs>
-          }
+         
           {stationTypeCount === 'wind' && <AllDeviceCurveBox {...this.props} />}
-          {stationTypeCount === 'pv' && <AllDeviceCurveBox {...this.props} />}
+           <AllDeviceCurveBox {...this.props} />
           {stationTypeCount === 'none' && ""}
 
         </div>
@@ -91,6 +85,14 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerdeviceList: payload => dispatch({ type: allDeviceCurveAction.getPowerdeviceList, payload }),
   exportPowerdevice: payload => dispatch({ type: allDeviceCurveAction.exportPowerdevice, payload }),
   resetAllDeviceCurve: payload => dispatch({ type: allDeviceCurveAction.RESET_ALLDEVICECURVE, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: allDeviceCurveAction.changeAllDeviceStore
+  }})
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AllDeviceCurve)
+ {/*  {stationTypeCount === 'multiple' &&
+            <Tabs type="card" activeKey={stationTypeTabs} onChange={this.queryTargetData} tabBarGutter={0} >
+              <TabPane tab="风电" key="0"><AllDeviceCurveBox {...this.props} /></TabPane>
+              <TabPane tab="光伏" key="1"><AllDeviceCurveBox {...this.props} /></TabPane>
+            </Tabs> } */}

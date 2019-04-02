@@ -127,7 +127,8 @@ class StationSelect extends Component {
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data, oneStyleOnly } = this.props;
-    const checkedStations = data.filter(e=>stations.includes(e.stationName))
+    let checkedStations=[];
+    stations.forEach(item => { data.forEach(e => e.stationName === item && checkedStations.push(e))})
     if(oneStyleOnly){ // 只能选择一种类型电站
       const stationTypeSet = new Set();
       checkedStations.forEach(e=>{stationTypeSet.add(e.stationType)});
