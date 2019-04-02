@@ -182,6 +182,7 @@ function* getOtherPageDeviceDetail(action) { // 设备详情页面翻页时请�
 function* editDeviceDetail(action) { // 编辑设备详情；
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.editDeviceInfo}`
+  console.log('payload',payload)
   try {
     const response = yield call(axios.put, url, { ...payload });
     // if(response.data.code === "10000"){
