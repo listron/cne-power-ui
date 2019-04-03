@@ -120,6 +120,9 @@ class ScatterDiagramChart extends Component{
         data: scatterData
       }]
     });
+    window.onresize = function () {
+      monitorScatter.resize();
+    };
   }   
 
   render(){

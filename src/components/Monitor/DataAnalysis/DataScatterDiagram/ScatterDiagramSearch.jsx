@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import styles from './scatterDiagram.scss';
-import { Select, DatePicker, Button, message } from 'antd';
+import { Select, DatePicker, Button } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
 import StationSelect from '../../../Common/StationSelect';
@@ -72,10 +72,10 @@ class ScatterDiagramSearch extends Component{
 
   calendarChange = (rangeMoments) => {
     if (rangeMoments.length === 1) {
-      this.setState({ // 10min时间跨度不超过2个月 秒级时间跨度不超过2天
+      this.setState({ // 时间跨度不超过3个月
         disableDateFun: (current) => {
-          const maxTime = moment(rangeMoments[0]).add(24, 'H');
-          const minTime = moment(rangeMoments[0]).subtract(24, 'H');
+          const maxTime = moment(rangeMoments[0]).add(3, 'months');
+          const minTime = moment(rangeMoments[0]).subtract(3, 'months');
           return current > moment() || current > maxTime || current < minTime;
         }
       })
@@ -199,7 +199,7 @@ class ScatterDiagramSearch extends Component{
               disabledDate={disableDateFun}
               value={[startTime, endTime]}
               renderExtraFooter={() => (
-                <span className={styles.infoTip}>选择时间段需小于24小时</span>
+                <span className={styles.infoTip}>选择时间段须3个月内</span>
               )}
             />
           </div>
