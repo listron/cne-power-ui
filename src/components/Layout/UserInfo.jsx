@@ -5,7 +5,7 @@ import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import styles from './userInfo.scss';
 
-class UserInfo extends Component{
+class UserInfo extends Component {
   static propTypes = {
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
@@ -13,12 +13,12 @@ class UserInfo extends Component{
     resetMonitorData: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props)
   }
 
-  editPassword = () => {
-    this.props.history.push('/hidden/user/editPassword');
+  accountSettings = () => {
+    this.props.history.push('/hidden/user/accountSettings');
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -42,24 +42,26 @@ class UserInfo extends Component{
     this.props.history.push('/login');
   }
 
-  render(){
+  render() {
     const username = Cookie.get('username');
     const userFullName = Cookie.get('userFullName');
     const userLogo = Cookie.get('userLogo');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
-        <Menu.Item className={styles.innerItem} onClick={this.editPassword}>
-          <span className="iconfont icon-password1"></span>
-          <span className={styles.text}>修改密码</span>
-        </Menu.Item>
+        {username !== 'default' &&
+          <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
+            <span className="iconfont icon-password1"></span>
+            <span className={styles.text}>账户设置</span>
+          </Menu.Item>
+        }
         <Menu.Item className={styles.innerItem} onClick={this.logout}>
           <span className="iconfont icon-quit"></span>
           <span className={styles.text}>退出登录</span>
         </Menu.Item>
       </Menu>
     );
-    const nameStyle = this.props.inHomepage?{color:'#a6e8ff'}:null;
+    const nameStyle = this.props.inHomepage ? { color: '#a6e8ff' } : null;
     return (
       <div className={styles.layoutUser}>
         <Dropdown overlay={DropdowMenu} placement="bottomRight">
