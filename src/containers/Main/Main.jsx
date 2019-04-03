@@ -21,14 +21,6 @@ import Loadable from 'react-loadable';
 
 // import Monitor from '../Monitor/StationMonitor/AllStation/AllStation';
 
-// axios.interceptors.request.use(config => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     config.headers['Authorization'] = `bearer ${token}`;
-//   }
-//   return config;
-// })
-
 // const Loading = ({ pastDelay, timedOut, error }) => {
 //   if (pastDelay) {
 //     return (<div className={styles.preComponent}>
@@ -65,7 +57,7 @@ class Main extends Component {
   };
 
   componentDidMount() {
-    console.log('did mount get')
+    console.log('did mount get');
     const { history } = this.props;
     const { pathname } = history.location;
     if (pathname !== '/login') { // 非登录页，检查登录凭证是否存在
@@ -141,11 +133,7 @@ class Main extends Component {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     const userRight = localStorage.getItem('userRight');
     const rightMenu = localStorage.getItem('rightMenu');
-    const { loginSuccess, token } = this.checkLoginSuccess();
-    console.log('main render')
-    if (loginSuccess) {
-      axios.defaults.headers.common['Authorization'] = 'bearer ' + JSON.parse(token);
-    }
+    const { loginSuccess } = this.checkLoginSuccess();
     if (loginSuccess) {
       // if(true){
       const homePageArr = ['/homepage'];

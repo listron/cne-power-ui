@@ -8,6 +8,7 @@ import Login from './LoginComponents/Login';
 // import Register from './Register';
 import JoinIn from './LoginComponents/JoinIn';
 import Forget from './LoginComponents/Forget';
+import InfoModal from './LoginComponents/InfoModal';
 import ReactPlayer from 'react-player';
 
 class LoginContainer extends Component {
@@ -16,6 +17,11 @@ class LoginContainer extends Component {
     history: PropTypes.object,
     inviteUserLink: PropTypes.func,
     resetLoginState: PropTypes.func,
+  }
+
+  state = {
+    modalName: 'agreement', // agreement  contact
+    showModal: false
   }
 
   componentDidMount(){ // 被邀请的用户直接进入企业
@@ -41,8 +47,30 @@ class LoginContainer extends Component {
     videoPlayer.style.height = '100%';
   }
 
+  toShowAgreement = () => {
+    this.setState({
+      modalName: 'agreement',
+      showModal: true
+    })
+  }
+
+  toContact = () => {
+    this.setState({
+      modalName: 'contact',
+      showModal: true
+    })
+  }
+
+  hideInfoModal = (modalName) => {
+    this.setState({
+      modalName: 'agreement',
+      showModal: false
+    })
+  }
+
   render() {
     const { pageTab } = this.props; // login登录, register注册, joinIn加入企业, forget忘记密码,
+    const { modalName, showModal } = this.state;
     return (
       <div className={styles.loginLayout}>
         <ReactPlayer
@@ -62,14 +90,18 @@ class LoginContainer extends Component {
           {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
           {pageTab === 'joinIn' && <JoinIn {...this.props} />}
           {pageTab === 'forget' && <Forget {...this.props} />}
-          <div className={styles.contactUs}>
-            <Link to="/userAgreement">用户协议</Link>
-            <Link to="/contactUs">联系我们</Link>
+          <div className={styles.bottomInfo}>
+            <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
+            <span className={styles.contact} onClick={this.toContact}>联系我们</span>
           </div>
           <div className={styles.footerTitle}>
             <p>京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司</p>
             <p>V3.4.0.20190111</p>
           </div>
+          {showModal && <InfoModal
+            hideInfoModal={this.hideInfoModal}
+            modalName={modalName}
+          />}
         </div>
       </div>
     );
