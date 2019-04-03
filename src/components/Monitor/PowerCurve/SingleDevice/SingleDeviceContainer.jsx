@@ -47,8 +47,15 @@ class SingleDeviceContainer extends Component {
     const startTime = time ? time.split('~')[0] : '';
     const endTime = time ? time.split('~')[1] : '';
     const singleDeviceFullCode = deviceFullCode ? [deviceFullCode] : [];
-    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime, endTime }
-    changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
+    const params = { stationCode, deviceFullCode: singleDeviceFullCode, startTime:moment(startTime).utc().format(), endTime:moment(endTime).utc().format() }
+    if(endTime===moment().format('YYYY-MM-DD')){
+      const curDay=moment().format('YYYY-MM-DD HH:mm:ss');
+      params.endTime=moment(curDay).utc().format()
+    }
+    changeSingleDeviceStore({ 
+      ...params,
+      //  selectDeviceFullCode: [{ deviceCode: deviceFullCode }]
+       })
     this.props.getRoseChart({ ...params, deviceFullCode });
     this.props.getwinddistributionchart({ ...params, deviceFullCode });
     this.queryGraphData({ ...params })
@@ -64,18 +71,21 @@ class SingleDeviceContainer extends Component {
     }
   }
   onOk = (selectdevice) => {
-    const deviceFullCode = selectdevice.map((e, i) => (e.deviceCode));
+    let deviceFullCode = [this.props.match.params.deviceFullCode].concat(selectdevice.map((e, i) => (e.deviceCode)));
+    console.log('deviceFullCode: ', deviceFullCode);
     this.props.changeSingleDeviceStore({
       deviceFullCode,
       selectDeviceFullCode: selectdevice
     })
   }
+
   onSwitchChange = (checked) => {
-    const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
+    const tableFullCode=this.props.match.params.deviceFullCode;
+    const { stationCode, deviceFullCode, startTime, endTime,  pageNum, pageSize,} = this.props;
+    const params = { stationCode,deviceFullCode, startTime, endTime, pageNum, pageSize, };
     this.props.changeSingleDeviceStore({ correct: checked ? 1 : 0 })
 
-    this.props.getSingleDeviceCurveList({ ...params, correct: checked ? 1 : 0 })
+    this.props.getSingleDeviceCurveList({ ...params,deviceFullCode:tableFullCode, pageNum, pageSize, correct: checked ? 1 : 0 })
   }
   onChangeFilter = (value) => {
     const { stationCode, deviceFullCode, startTime, endTime, } = this.props;
@@ -85,7 +95,7 @@ class SingleDeviceContainer extends Component {
   queryGraphData = (value) => {
     const tabledeviceFullCode = this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime, correct, pageNum, pageSize } = this.props;
-    const params = { stationCode, deviceFullCode, startTime, endTime };
+    const params = { stationCode, deviceFullCode, startTime, endTime ,};
     this.props.getSingleDeviceCurveData({ ...params, correct, ...value });
     this.props.getsequencechart({ ...params, ...value });
 
@@ -107,7 +117,8 @@ class SingleDeviceContainer extends Component {
   }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
-    let { startTime, endTime, stationCode, deviceFullCode, stations, downLoadFile } = this.props;
+    const deviceFullCode = this.props.match.params.deviceFullCode;
+    let { startTime, endTime, stationCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
     let timeZone = moment().zone();
@@ -117,7 +128,7 @@ class SingleDeviceContainer extends Component {
       fileName: `${stationInfo.stationName}-${startTime}-${endTime}功率曲线.xlsx`,
       params: {
         stationCode,
-        deviceFullCode,
+        deviceFullCode:[deviceFullCode],
         startTime,
         endTime,
         timeZone: timeZone / -60
@@ -125,8 +136,8 @@ class SingleDeviceContainer extends Component {
     })
   }
   render() {
-
     const singleStation = this.props.match.params.stationCode;
+    const disabledDevice = this.props.match.params.deviceFullCode;
     const time = this.props.match.params.time;
     const beginTime = time ? time.split('~')[0] : '';
     const overTime = time ? time.split('~')[1] : '';
@@ -148,6 +159,8 @@ class SingleDeviceContainer extends Component {
                 deviceTypeCode={deviceTypeCode}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
+                max={2}
+                disabledDevice={[disabledDevice]}
                 multiple={true}
                 deviceShowNumber={true}
                 value={selectDeviceFullCode}

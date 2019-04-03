@@ -37,6 +37,20 @@ class PowerSpeedChart extends Component {
     }
     return result;
   };
+  getColor = (title) => {
+    let color = "";
+    switch (title) {
+      case "powerSpeedChart":
+        color = ['#199475', '#e08031', '#a42b2c']
+        break;
+      case "pitchange":
+        color = ['#3e97d1', '#bd10e0', '#199475'];
+        break;
+      default:
+        color = " ";
+    }
+    return color;
+  }
   drawChart = (params) => {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
@@ -56,36 +70,38 @@ class PowerSpeedChart extends Component {
     })
     const inverterTenMinGraphic = (filterData.length === 0 || filterDeviceName.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    let color = ['#199475', '#e08031', '#a42b2c'];
+    // let color = ['#199475', '#e08031', '#a42b2c'];
+    // let color2 = ['#3e97d1', '#bd10e0', '#199475'];
     const option = {
       graphic: inverterTenMinGraphic,
-      color: color,
+      color: this.getColor(chartId),
       title: {
         text: this.getYaxisName(chartId)[0],
-        x: 'left',
+        // x: 'left',
+        // top:'5%',
+        left: '5%',
         textStyle: {
           fontSize: 14
         }
       },
-      // legend: {
-      //   left: '10%',
-      //   // right:'30%',
-      //   // top: 'bottom',
-      //   width: '80%',
-      //   bottom: '80%',
-      //   itemWidth: 14,
-      //   itemHeight: 6,
-      //   x: 'center',
-      //   y: 'bottom',
-      //   padding: [100, 0],
-      //   textStyle: {
-      //     color: lineColor,
-      //     fontSize: 12,
-      //   }
-      // },
+      legend: {
+
+        right: '8%',
+        top: '8%',
+        width: '80%',
+
+        itemWidth: 14,
+        itemHeight: 6,
+
+        textStyle: {
+          color: lineColor,
+          fontSize: 12,
+        }
+      },
       grid: {
-        right: '10%',
-        height: '200px',
+        right: "10%",
+        top: '70px',
+        left: "20%",
 
       },
       tooltip: {
@@ -96,12 +112,13 @@ class PowerSpeedChart extends Component {
           const info = params.data;
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-              <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
+            <div>${params.seriesName}</div>
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
+            <div>${moment(info[2]).format('YYYY-MM-DD HH:mm:ss')}</div>
             <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "转速" : "风速"}: ${dataFormat(info[0], '--', 2)}</div>
-            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--')}</div>
+            <div class=${styles.lineStyle}>${chartId === "powerSpeedChart" ? "功率" : "桨距角"}: ${dataFormat(info[1], '--',2)}</div>
           </div>`
         },
         backgroundColor: '#fff',

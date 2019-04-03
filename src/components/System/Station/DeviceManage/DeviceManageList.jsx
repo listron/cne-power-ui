@@ -15,11 +15,11 @@ class DeviceManageList extends Component {
     changeDeviceManageStore: PropTypes.func,
     getStationDeviceDetail: PropTypes.func,
   }
-  
+
   onSelectChange = (keys, record) => {
     this.props.changeDeviceManageStore({
-      selectedRowData:record,
-      selectedRowKeys:keys,
+      selectedRowData: record,
+      selectedRowKeys: keys,
     })
   }
 
@@ -28,29 +28,33 @@ class DeviceManageList extends Component {
     const { field, order } = sorter;
     getDeviceList({
       ...queryParams,
-      sortField: field?field:'',
-      sortMethod: order?(sorter.order==='ascend'?'1':'2'):'',
+      sortField: field ? field : '',
+      sortMethod: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
     })
   }
 
-  showDeviceDetail=(record)=>{
+  showDeviceDetail = (record) => {
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
-      selectedStationIndex:record.key,
+      selectedStationIndex: record.key,
     })
-    this.props.changeDeviceManageStore({showPage:'detail'})
+    this.props.changeDeviceManageStore({ showPage: 'detail' })
   }
-  showDeviceEdit=(record)=>{
-    
-    this.props.changeDeviceManageStore({showPage:'edit'})
+  showDeviceEdit = (record) => {
+
+    this.props.changeDeviceManageStore({ showPage: 'edit' })
     this.props.getStationDeviceDetail({
       deviceFullCode: record.deviceFullCode,
-      selectedStationIndex:record.key,
+      selectedStationIndex: record.key,
     })
     this.props.getConnectDevice({
-      stationCode:this.props.stationCode ,
+      stationCode: this.props.stationCode,
       deviceTypeCode: record.deviceTypeCode,
     })
+    this.props.getPvDevice({
+      deviceTypeCode: '509',
+    })
+
   }
 
   render() {
@@ -65,59 +69,65 @@ class DeviceManageList extends Component {
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
-      render: (text, record) =>(<span className={styles.deviceNameStyle} onClick={()=>this.showDeviceDetail(record)} >{text}</span>)
-      },{
+        render: (text, record) => (<span className={styles.deviceNameStyle} onClick={() => this.showDeviceDetail(record)} >{text}</span>)
+      }, {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
         key: 'deviceTypeName',
         sorter: true,
-      },{
+      }, {
         title: '设备型号',
         dataIndex: 'deviceModeName',
         key: 'deviceModeName',
         sorter: true,
-      },{
+      }, {
         title: '生产厂商',
         dataIndex: 'producerName',
         key: 'producerName',
-      },{
+      }, {
         title: '关联设备',
         dataIndex: 'connectDeviceName',
         key: 'connectDeviceName',
         sorter: true,
-      },{
+      }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
         sorter: true,
-      },{
+      }, {
         title: '是否显示',
         dataIndex: 'enableDisplay',
         key: 'enableDisplay',
         sorter: true,
-        render: (text, record) => record.enableDisplay?'是':'否'
-      },{
+        render: (text, record) => record.enableDisplay ? '是' : '否'
+      }, {
         title: '编辑',
         dataIndex: 'edit',
         key: 'edit',
-        render: (text, record) =>  (<span style={{ marginRight: '4px' }} title="编辑" className="iconfont icon-edit" onClick={()=>this.showDeviceEdit(record)}></span>)
+        render: (text, record) => {
+          if (record.deviceTypeCode === '509') {
+            return (<span style={{ marginRight: '4px',cursor:'not-allowed' }} title="编辑" className="iconfont icon-edit"></span>)
+          }else{
+            return (<span style={{ marginRight: '4px', color: '#199475',cursor: 'pointer' }} title="编辑" className="iconfont icon-edit" onClick={() => this.showDeviceEdit(record)}></span>)
+          }
+        }
       }
     ];
     const { loading, deviceList } = this.props;
-    return (
-      <div className={styles.deviceManageList}>
-        <Table
-          loading={loading}
-          onChange={this.tableChange}
-          rowSelection={rowSelection}
-          columns={deviceListColumn}
-          dataSource={deviceList.map((e,i)=>({key: i,...e}))}
-          pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
-        />
-      </div>
-    );
+return (
+  <div className={styles.deviceManageList}>
+    <Table
+      loading={loading}
+      onChange={this.tableChange}
+      rowSelection={rowSelection}
+      columns={deviceListColumn}
+      dataSource={deviceList.map((e, i) => ({ key: i, ...e }))}
+      pagination={false}
+      locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+    />
+  </div>
+);
   }
 }
 

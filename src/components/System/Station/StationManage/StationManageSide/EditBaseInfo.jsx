@@ -250,7 +250,7 @@ const EditBaseInfo = ({ stationDetail, form, stationBelongInfo, ...restProps }) 
         })(
           <Input />
         )}
-        <span className={styles.unit}>m/s</span>
+        <span className={styles.unit}>m</span>
       </FormItem>
       <FormItem label="可研报告轮毂高度年平均风速" className={styles.windSpeedQuota}>
         {getFieldDecorator('hubAnnualAverageSpeed', {

@@ -19,7 +19,9 @@ function *getAllDeviceCurveData(action) {
       yield put({
         type:allDeviceCurveAction.GET_ALLDEVICECURVE_SUCCESS,
         payload: {
-          allDeviceCurveData:response.data.data||[],
+          allData:response.data.data||{},
+          allDeviceCurveData:response.data.data.actualDataList||[],
+          theoryDataList:response.data.data.actualDataList||[],
           // ...payload
         }
       })

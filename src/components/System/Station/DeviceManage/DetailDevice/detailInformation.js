@@ -14,7 +14,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
       { name: '生产厂家', value: detailData.manufacturer, },
       { name: '批次号', value: detailData.lotNumber,  },
       { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
-      { name: '创建日期', value: detailData.connectTime },
+      { name: '创建时间', value: detailData.connectTime },
     ];
     return baseArray;
   }
@@ -51,7 +51,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
       { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
-      { name: '创建日期', value: detailData.connectTime },
+      { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
   }
@@ -61,7 +61,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
       { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
-      { name: '创建日期', value: detailData.connectTime },
+      { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
    }
@@ -75,7 +75,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
       { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
-      { name: '创建日期', value: detailData.connectTime },
+      { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
    }

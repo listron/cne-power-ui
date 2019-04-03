@@ -7,7 +7,7 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class WindRoseChart extends Component {
   static propTypes = {
-    rosedata:PropTypes.array,
+    rosedata: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -19,45 +19,40 @@ class WindRoseChart extends Component {
     const rosedata = nextProps.rosedata || [];
     this.drawChart(rosedata)
   }
- 
+
   drawChart = (params) => {
     const windrosechart = echarts.init(document.getElementById('windrosechart'));
     let windDirection = [], avgWindSpeed = [], percent = [], XData = [];
-    params&&params.length>0&&params.forEach((e, i) => {
+    params && params.length > 0 && params.forEach((e, i) => {
       XData.push(i),
         windDirection.push(e.windDirection),
-        avgWindSpeed.push([e.avgWindSpeed, i, e.windDirection]),
-        percent.push([e.percent, i, e.windDirection])
+        avgWindSpeed.push([dataFormat(e.avgWindSpeed,0), i, e.windDirection]),
+        percent.push([dataFormat(e.percent,0), i, e.windDirection])
     })
-    
-
-   const hasData=(windDirection.length===0||avgWindSpeed.length===0)?showNoData:hiddenNoData;
-
-
+    const hasData = (windDirection.length === 0 || avgWindSpeed.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     let color = ['#199475', 'orange'];
     const option = {
-      graphic:hasData,
+      graphic: hasData,
       title: {
         text: '风向玫瑰图',
-        padding: [10, 10],
+        padding: [20, 20],
         textStyle: {
           fontSize: 14,
           fontWeight: 'bolder',
           // color: '#666'          // 主标题文字颜色
         },
       },
-    
       color: color,
       legend: {
         show: true,
         top: '5%',
-        right:'5%',
+        right: '5%',
         width: '80%',
         itemWidth: 14,
         itemHeight: 6,
         x: 'right',
-        selectedMode:false,
+        selectedMode: false,
         textStyle: {
           color: lineColor,
           fontSize: 12,
@@ -66,11 +61,11 @@ class WindRoseChart extends Component {
       },
       polar: [{
         center: ['50%', '54%'],
-        radius:'60%',
+        radius: '60%',
       },
       {
         center: ['50%', '54%'],
-        radius:'60%',
+        radius: '60%',
       }],
       tooltip: {
         trigger: 'axis',
@@ -85,22 +80,22 @@ class WindRoseChart extends Component {
           fontSize: 12,
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-
         formatter: (params) => {
-
+          const speed=params[0].value[0]?params[0].value[0]:'--';
+          const percent=params[1].value[0]?params[1].value[0]:'--';
           return `<div class=${styles.formatStyle} >
           <div class=${styles.topStyle}>
             <div>风向:${params[0].value[2]}</div>
           </div>
           <div  style='background:#dfdfdf;height:1px;
           width:100%;' ></div>
-          <div class=${styles.lineStyle}>${params[0].marker}平均风速:  ${dataFormat(params[0].value[0],'--',2)}</div>
-          <div class=${styles.lineStyle}>${params[1].marker}风向占比: ${dataFormat(params[1].value[0],'--',2)}%</div>
+          <div class=${styles.lineStyle}>  <span class=${styles.itemStyle} style='color: ${color[0]}'>○</span>平均风速:  ${dataFormat(speed, '--', 2)}m/s</div>
+          <div class=${styles.lineStyle}> <span class=${styles.itemStyle} style='color: ${color[1]}'>○</span>风向占比: ${dataFormat(percent, '--', 2)}%</div>
         </div>`
         },
       },
       angleAxis: [{
-        clockwise:false,
+        clockwise: false,
         boundaryGap: false,
         startAngle: 90,
         polarIndex: 0,
@@ -109,9 +104,11 @@ class WindRoseChart extends Component {
           formatter: (e) => {
             return windDirection[e]
           }
-        }
-      },
-      {
+        },
+        axisTick: {
+          show: false
+        },
+      },{
         boundaryGap: false,
         startAngle: 90,
         polarIndex: 1,

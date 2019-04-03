@@ -6,13 +6,14 @@ const FormItem = Form.Item;
 const WindInstallDate = ({ form, stationDeviceDetail }) => {
   const { getFieldDecorator } = form;
   const mapData=stationDeviceDetail.map;
-  const assemblyTime=mapData?(mapData.assemblyTime?moment(mapData.assemblyTime):''):'';
-  const ongridTime=mapData?(mapData.ongridTime?moment(mapData.ongridTime):''):'';
-  const warrantyBegintime=mapData?(mapData.warrantyBegintime?moment(mapData.warrantyBegintime):''):'';
-  const warrantyEndtime=mapData?(mapData.warrantyEndtime?moment(mapData.warrantyEndtime):''):'';
-  const scrapTime=mapData?(mapData.scrapTime?moment(mapData.scrapTime):''):'';
-  const hubHeight=mapData?(mapData.hubHeight?mapData.hubHeight:''):'';
-  const altitude=mapData?(mapData.altitude?mapData.altitude:''):'';
+  const assemblyTime=mapData?(mapData.assemblyTime?moment(mapData.assemblyTime):null):null;
+  console.log('assemblyTime: ', assemblyTime);
+  const ongridTime=mapData?(mapData.ongridTime?moment(mapData.ongridTime):null):null;
+  const warrantyBegintime=mapData?(mapData.warrantyBegintime?moment(mapData.warrantyBegintime):null):null;
+  const warrantyEndtime=mapData?(mapData.warrantyEndtime?moment(mapData.warrantyEndtime):null):null;
+  const scrapTime=mapData?(mapData.scrapTime?moment(mapData.scrapTime):null):null;
+  const hubHeight=mapData?(mapData.hubHeight?mapData.hubHeight:null):null;
+  const altitude=mapData?(mapData.altitude?mapData.altitude:null):null;
   
   return (
     <div className={styles.rightStyles}>
@@ -70,7 +71,7 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
           initialValue:hubHeight,
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}], })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
       <FormItem
         label="海拔"
@@ -82,7 +83,7 @@ const WindInstallDate = ({ form, stationDeviceDetail }) => {
           rules:[{pattern:/^\d+([.]\d{1,2})?$/,message: '保留小数点后两位'}],
         })(
           <Input placeholder="保留小数点后两位" />
-        )}<span className={styles.unitStyle}>米</span>
+        )}<span className={styles.unitStyle}>m</span>
       </FormItem>
 
     </div>
