@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button,Spin } from 'antd';
+import { message, Modal, Button, Spin } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -19,30 +19,21 @@ import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
 import Loadable from 'react-loadable';
 
-// import Monitor from '../Monitor/StationMonitor/AllStation/AllStation';
-
-// const Loading = ({ pastDelay, timedOut, error }) => {
-//   if (pastDelay) {
-//     return (<div className={styles.preComponent}>
-//      <Spin size="large" tip="Loading..." />
-//   </div>);
-//   } else if (timedOut) {
-//     return <div>Taking a long time...</div>;
-//   } else if (error) {
-//     return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
-//   }
-//   return null;
-// };
-
-import Login from '../Login/NewLogin/LoginContainer';
-// const Agreement=Loadable({
-//   loader: () => import('../../components/Login/Agreement'),
-//   loading: Loading
-// })
-// const Contact=Loadable({
-//   loader: () => import('../../components/Login/Contact'),
-//   loading: Loading
-// })
+const Login = Loadable({
+  loader: () => import('../Login/NewLogin/LoginContainer'),
+  loading: ({ pastDelay, timedOut, error }) => {
+    if (pastDelay) {
+      return (<div className={styles.preComponent}>
+       <Spin size="large" tip="Loading..." />
+    </div>);
+    } else if (timedOut) {
+      return <div>Taking a long time...</div>;
+    } else if (error) {
+      return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
+    }
+    return null;
+  }
+})
 
 class Main extends Component {
   static propTypes = {
@@ -56,8 +47,19 @@ class Main extends Component {
     resetLoginState: PropTypes.func,
   };
 
+  // constructor(props){
+  //   super(props);
+  //   const { loginSuccess, token } = this.checkLoginSuccess();
+  //   if (loginSuccess) {
+  //     axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
+  //   }
+  // }
+
   componentDidMount() {
     console.log('did mount get');
+    window.onhashchange = () => {
+      console.log('hash change')
+    }
     const { history } = this.props;
     const { pathname } = history.location;
     if (pathname !== '/login') { // 非登录页，检查登录凭证是否存在
@@ -76,21 +78,21 @@ class Main extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-  //   const { history, loginInfoSaved } = this.props;
-  //   const { pathname } = history.location;
-  //   if (pathname === '/login' && !loginInfoSaved && nextProps.loginInfoSaved) { // 登录成功
-  //     this.props.getStations();
-  //     this.props.getDeviceTypes();
-  //     this.props.getMonitorDataUnit();
-  //   }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps)
+  // //   const { history, loginInfoSaved } = this.props;
+  // //   const { pathname } = history.location;
+  // //   if (pathname === '/login' && !loginInfoSaved && nextProps.loginInfoSaved) { // 登录成功
+  // //     this.props.getStations();
+  // //     this.props.getDeviceTypes();
+  // //     this.props.getMonitorDataUnit();
+  // //   }
+  // }
 
-  componentWillUnmount() {
-    console.log('main page unmount')
-    this.props.resetMonitorData();
-  }
+  // componentWillUnmount() {
+  //   console.log('main page unmount')
+  //   this.props.resetMonitorData();
+  // }
 
   checkLoginSuccess = () => { // 基于本地存储信息判定是否登录成功
     try {
@@ -133,8 +135,9 @@ class Main extends Component {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     const userRight = localStorage.getItem('userRight');
     const rightMenu = localStorage.getItem('rightMenu');
-    const { loginSuccess } = this.checkLoginSuccess();
+    const { loginSuccess, token } = this.checkLoginSuccess();
     if (loginSuccess) {
+      // axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
       // if(true){
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
@@ -177,8 +180,6 @@ class Main extends Component {
       return (
         <Switch>
           <Route path="/login" exact component={Login} />
-          {/* <Route path="/userAgreement" exact component={Agreement} />
-          <Route path="/contactUs" exact component={Contact} /> */}
           <Redirect to="/login" />
         </Switch>
       );

@@ -65,6 +65,7 @@ function *userNameLogin({ payload = {} }){ //账号密码登录
       const { immediatelyLogin } = payload;
       if (immediatelyLogin) {
         const { userEnterpriseStatus, auto, username } = loginResponse;
+        // axios.defaults.headers.common['Authorization'] = `bearer ${loginResponse.access_token}`;
         // userEnterpriseStatus => 0:全部，1：激活，2：未激活，3：启用，4：禁用，5：待审核，6：审核不通过，7：移除
         if (userEnterpriseStatus === 3 && auto === '0' && username) {
           // 用户状态 3 => 启用。auto === '1' => 导入用户/生成用户 需走完善密码步骤; username不存在需要先完善个人信息
