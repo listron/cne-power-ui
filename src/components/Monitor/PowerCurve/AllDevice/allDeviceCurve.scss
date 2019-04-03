@@ -1,77 +1,78 @@
-
-@import '../../../../theme/theme.scss';
-.allDeviceBox{
+@import "../../../../theme/theme.scss";
+.allDeviceBox {
   display: flex;
-  flex:1;
- 
+  flex: 1;
+
   flex-direction: column;
   background: #fff;
-  .graphStyle{
+  .graphStyle {
     display: flex;
-    flex:1;
-     position: relative;
-    .powerCurveChart{
+    // flex: 1;
+    height: 600px;
+    position: relative;
+    .powerCurveChart {
       // height:70%;
       width: 100%;
     }
-    .switchStyle{
+    .switchStyle {
       position: absolute;
-      top:68%;
-      right:10%;
-
+      top: 68%;
+      right: 10%;
     }
-    .formatStyle{
+    .formatStyle {
       // width: 150px;
       // height: 120px;
       display: flex;
       flex-direction: column;
-      .topStyle{
+      .topStyle {
         display: flex;
         justify-content: space-between;
         line-height: 20px;
         height: 20px;
       }
-      .lineStyle{
+      .lineStyle {
         line-height: 28px;
         height: 28px;
       }
     }
-  
   }
-  .filterStyle{
+  .filterStyle {
     display: flex;
     flex-direction: column;
-    .searchPart{
+    .searchPart {
       padding: 20px 0;
       display: flex;
-      flex:1;
-      .stationSelect, .typeSelect, .timeSelect{
+      flex: 1;
+      .stationSelect,
+      .typeSelect,
+      .timeSelect {
         display: flex;
         line-height: 40px;
         height: 40px;
         align-items: center;
-        .text{
+        .text {
           flex: 0 0 80px;
           text-align: right;
           margin-right: 8px;
         }
       }
-      .buttonStyle{
+      .buttonStyle {
         margin-left: 56px;
         line-height: 32px;
         height: 32px;
         margin-top: 3px;
       }
     }
-    .showType{
+    .showType {
       display: flex;
       border-top: 1px dotted $promptColor;
       border-bottom: 1px dotted $promptColor;
       align-items: center;
-      .tabIcons{
+      .tabIcons {
         font-size: 24px;
         display: flex;
-        .active, .normal{
+        .active,
+        .normal {
           cursor: pointer;
           flex: 0 0 50px;
           height: 50px;
@@ -79,19 +80,18 @@
           align-items: center;
           justify-content: center;
         }
-        .active{
+        .active {
           color: #fff;
           background-color: $themeColor;
         }
-        .normal{
+        .normal {
           color: #999;
           background-color: #f1f1f1;
         }
       }
     }
-   
   }
-  .windDeviceList{
+  .windDeviceList {
     .tableHeader {
       display: flex;
       flex-direction: row;
@@ -103,5 +103,4 @@
       background-color: #fff;
     }
   }
-  
 }
