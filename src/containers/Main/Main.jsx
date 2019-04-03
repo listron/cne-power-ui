@@ -65,42 +65,38 @@ class Main extends Component {
   };
 
   componentDidMount() {
+    console.log('did mount get')
     const { history } = this.props;
     const { pathname } = history.location;
     if (pathname !== '/login') { // 非登录页，检查登录凭证是否存在
-      // const { token, loginSuccess } = this.checkLoginSuccess();
-      if (true) {
-        console.log('did mount')
-        const token = localStorage.getItem('token')
-        const refreshToken = localStorage.getItem('refreshToken')
-        const expireData = localStorage.getItem('expireData')
-        const isTokenValid = moment().isBefore(expireData, 'second');
-        if ( token && isTokenValid) {
-          console.log('token is ok')
-          axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
-          this.props.getStations();
-          this.props.getDeviceTypes();
-          this.props.getMonitorDataUnit(); // 请求企业的数据单位
-        }
-      } else {
-        history.push('/login');
+      const token = localStorage.getItem('token');
+      const expireData = localStorage.getItem('expireData');
+      const isTokenValid = moment().isBefore(expireData, 'second');
+      if ( token && isTokenValid) {
+        axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
+        this.props.getStations();
+        this.props.getDeviceTypes();
+        this.props.getMonitorDataUnit(); // 请求企业的数据单位
       }
+      // else {
+      //   history.push('/login')
+      // }
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
   //   const { history, loginInfoSaved } = this.props;
   //   const { pathname } = history.location;
   //   if (pathname === '/login' && !loginInfoSaved && nextProps.loginInfoSaved) { // 登录成功
-  //     history.push('/monitor/station');
   //     this.props.getStations();
   //     this.props.getDeviceTypes();
   //     this.props.getMonitorDataUnit();
   //   }
-  // }
+  }
 
   componentWillUnmount() {
-    console.log('unmount')
+    console.log('main page unmount')
     this.props.resetMonitorData();
   }
 
@@ -123,33 +119,33 @@ class Main extends Component {
     };
   }
 
-  logout = () => { // 删除登录凭证并退出。
-  //   Cookie.remove('authData');
-  //   Cookie.remove('enterpriseName');
-  //   Cookie.remove('enterpriseLogo');
-  //   Cookie.remove('userId');
-  //   Cookie.remove('userFullName');
-  //   Cookie.remove('userLogo');
-  //   Cookie.remove('expireData');
-  //   Cookie.remove('refresh_token');
-  //   Cookie.remove('isNotLogin');
-  //   Cookie.remove('auto');
-  //   Cookie.remove('userRight');
-  //   Cookie.remove('rightMenu');
-    this.props.resetMonitorData();
-    this.props.resetLoginState();
-    localStorage.clear();
-    this.props.history.push('/login');
-  }
+  // logout = () => { // 删除登录凭证并退出。
+  // //   Cookie.remove('authData');
+  // //   Cookie.remove('enterpriseName');
+  // //   Cookie.remove('enterpriseLogo');
+  // //   Cookie.remove('userId');
+  // //   Cookie.remove('userFullName');
+  // //   Cookie.remove('userLogo');
+  // //   Cookie.remove('expireData');
+  // //   Cookie.remove('refresh_token');
+  // //   Cookie.remove('isNotLogin');
+  // //   Cookie.remove('auto');
+  // //   Cookie.remove('userRight');
+  // //   Cookie.remove('rightMenu');
+  //   this.props.resetMonitorData();
+  //   this.props.resetLoginState();
+  //   localStorage.clear();
+  // }
 
   render() {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     const userRight = localStorage.getItem('userRight');
     const rightMenu = localStorage.getItem('rightMenu');
-    const { loginSuccess } = this.checkLoginSuccess();
+    const { loginSuccess, token } = this.checkLoginSuccess();
     console.log('main render')
-    console.log(loginSuccess)
-    console.log(history.location.pathname)
+    if (loginSuccess) {
+      axios.defaults.headers.common['Authorization'] = 'bearer ' + JSON.parse(token);
+    }
     if (loginSuccess) {
       // if(true){
       const homePageArr = ['/homepage'];
@@ -172,10 +168,7 @@ class Main extends Component {
             <main className={styles.content} style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }} id="main" >
               <Switch>
                 {routerConfig}
-                {/* <Route path="/monitor/station" exact component={Monitor} />
-                <Route path="/userAgreement" exact component={Agreement} />
-                <Route path="/contactUs" exact component={Contact} />
-                <Redirect to="/monitor/station" /> */}
+                <Redirect to="/monitor/station" />
               </Switch>
             </main>
           </div>
@@ -218,5 +211,6 @@ const mapDispatchToProps = (dispatch) => ({
   resetLoginState: params => dispatch({ type: loginAction.RESET_LOGIN_STORE_SAGA, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
+
 
 export default hot(withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)));
