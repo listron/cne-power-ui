@@ -87,7 +87,7 @@ class EditPhone extends Component {
             <FormItem label="旧手机号码">
               {getFieldDecorator('oldPhoneNum', {
                 rules: [{
-                  message: '请输入正确的手机号',
+                  message: '请输入旧的手机号码',
                   pattern: /^1\d{10}$/,
                   required: true,
                 }]
@@ -98,10 +98,12 @@ class EditPhone extends Component {
             <FormItem label="新手机号码">
               {getFieldDecorator('newPhoneNum', {
                 rules: [{
-                  message: '请输入正确的手机号',
-                  pattern: /^1\d{10}$/,
                   required: true,
-                }],
+                  message: '请输入新的手机号码'},
+                {
+                  pattern: /(^1\d{10}$)/,
+                  message: '新的手机号码输入错误'}
+                 ],
               })(
                 <Input type="phone" placeholder={'请输入新手机号'} addonBefore={<i className="iconfont icon-phone"></i>} />
               )}
@@ -110,7 +112,7 @@ class EditPhone extends Component {
               {getFieldDecorator('verificationCode', {
                 rules: [{
                   required: true,
-                  message: '请输入验证码'
+                  message: '请输入手机验证码'
                 }]
               })(
                 <div>

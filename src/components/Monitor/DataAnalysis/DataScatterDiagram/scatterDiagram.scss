@@ -91,19 +91,19 @@
         word-break: break-all;
       }
       .deviceName,.xData,.yData{
-        flex: 1 0 100px;
+        flex: 1 0 80px;
       }
       .stationName{
-        flex: 1 0 118px;
+        flex: 1 0 117px;
       }
       .deviceTypeName{
-        flex: 0 0 108px; 
+        flex: 0 0 148px;
       }
       .deviceModeName{
         flex: 1 0 120px;
       }
       .time{
-        flex: 0 0 150px;
+        flex: 0 0 220px;
       }
     }
   }
@@ -111,7 +111,7 @@
 
 .scatterDiagramChart{ //chart
   display: flex;
-  flex: 1;
+  flex:1;
   .chartTool{
     .title,.value{
       font-size: 12px;
@@ -138,6 +138,21 @@
     font-size: 24px;
     display: flex;
     align-items: center;
+    .tabContainer{
+      :global{
+        .ant-tabs-bar{
+          margin-bottom: -1px;
+          .ant-tabs-tab{
+            width: 55px;
+            height: 53px;
+          }
+        }
+        .ant-tabs-tab-active{
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+    }
     .active, .normal{
       cursor: pointer;
       flex: 0 0 50px;
