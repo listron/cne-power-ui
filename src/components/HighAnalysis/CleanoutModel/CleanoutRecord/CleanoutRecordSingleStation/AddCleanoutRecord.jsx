@@ -120,7 +120,7 @@ class AddCleanoutRecord extends Component {
               label="清洗方阵"
             >
               {getFieldDecorator('matrix', {
-                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix.split(',') : '',
+                initialValue: cleanRecorddetail.matrix ? cleanRecorddetail.matrix.split(',') : null,
                 rules: [{ required: true, message: '请选择方阵' }],
               })(
                 <TreeSelect {...treeProps} dropdownClassName={styles.treeDeviceTypes} />
