@@ -24,6 +24,7 @@ const initState = Immutable.fromJS({
   enterpriseLoading: false, // 加入企业检查loading
   joinLoading: false, // 加入企业按钮的loading
   pageTab: 'login', // 四页面关键字：login登录, register注册, joinIn加入企业, forget忘记密码,
+  loginInfoSaved: false, // 登录成功后，信息存储的标识
 
   loginType: 'username', // 记录用户登录方式 username || phoneNumber
   loginResponse: {}, // 调用登录后后台返回数据的信息, => 正常登录存储localStorage信息, 异常的登录根据内部信息进行判定。 

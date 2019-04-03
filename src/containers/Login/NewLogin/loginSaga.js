@@ -12,8 +12,17 @@ const { APIBasePath } = Path.basePaths;
 const { login } = Path.APISubPaths;
 
 function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据存储。
-  localStorage.setItem('authData', payload.access_token); // token
-  localStorage.setItem('refresh_token', payload.refresh_token); // refresh token
+  // localStorage.setItem('authData', JSON.stringify({
+  //   token: payload.access_token,
+  //   refreshToken: payload.refresh_token,
+  //   expireData: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
+  // }))
+  localStorage.setItem('token', payload.access_token);
+  Cookie.set('token', payload.access_token)
+  localStorage.setItem('refreshToken', payload.refresh_token);
+  Cookie.set('refreshToken', payload.refresh_token)
+  localStorage.setItem('expireData', moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss'));
+  Cookie.set('expireData', moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss'));
   localStorage.setItem('userInfo', JSON.stringify({ // 用户个人信息存储。
     enterpriseId: payload.enterpriseId,
     enterpriseName: payload.enterpriseName,
@@ -22,10 +31,14 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
     username: payload.username,
     userFullName: payload.userFullName,
     userLogo: payload.userLogo,
-    expireData: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
   }))
   localStorage.setItem('rightMenu', payload.rightMenu); // 权限信息存储
   localStorage.setItem('rightHandler', payload.right); // 权限信息存储
+  // axios.defaults.headers.common['Authorization'] = `bearer ${payload.access_token}`;
+  yield put({
+    type: loginAction.CHANGE_LOGIN_STORE,
+    payload: { loginInfoSaved: true }
+  })
 }
 
 function *userNameLogin({ payload = {} }){ //账号密码登录
