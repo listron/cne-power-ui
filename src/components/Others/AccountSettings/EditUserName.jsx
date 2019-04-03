@@ -28,6 +28,7 @@ class EditUserName extends Component {
   }
 
   render() {
+    const userFullName = Cookie.get('userFullName');
     const { getFieldDecorator } = this.props.form;
     const { loading } = this.props;
     const formItemLayout = {
@@ -51,7 +52,7 @@ class EditUserName extends Component {
                   required: true, message: '请输入姓名!',
                 }, {
                   pattern: /^[A-Za-z_\u4e00-\u9fa5\u0020]{0,30}$/,
-                  message: '中文/英文/空格 长度小于30个字'
+                  message: '长度小于等于30个字'
                 }],
               })(
                 <Input type="userFullName" addonBefore={<i className="iconfont icon-user"></i>} />
