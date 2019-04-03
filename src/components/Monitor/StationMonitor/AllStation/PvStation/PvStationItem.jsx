@@ -27,8 +27,6 @@ class PvStationItem extends React.Component {
       maxCount: 1,
     });
     message.warning('电站未接入,无法查看详情',2);
-    
-
   }
  
   render() {
@@ -36,8 +34,7 @@ class PvStationItem extends React.Component {
     return (
       <div className={styles.stationCardContainer}>
        
-        {
-          stationDataList.map((item, index) => {
+        {stationDataList.map((item, index) => {
             const stationStatus = item.stationStatus || {};
             const stationName = item.stationName || '--';
             const progressStationPower=item.stationPower|| '--';

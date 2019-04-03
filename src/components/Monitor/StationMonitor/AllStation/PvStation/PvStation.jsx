@@ -5,7 +5,7 @@ import styles from './pvStation.scss';
 import Map from '../Map.jsx';
 import PvStationHeader from './PvStationHeader.jsx';
 import PvStationItem from './PvStationItem.jsx';
-import { Tabs, Radio, Switch } from "antd";
+import { Tabs, Radio, Switch,Spin } from "antd";
 import PvStationList from "./PvStationList";
 class PvStation extends React.Component {
   static propTypes = {
@@ -18,6 +18,7 @@ class PvStation extends React.Component {
     realTimePowerPoint: PropTypes.any,
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
+    loading: PropTypes.bool,
   }
   constructor(props, context) {
 
@@ -32,7 +33,7 @@ class PvStation extends React.Component {
   }
 
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getRealtimeData({ stationType: '1' })
   }
 
@@ -146,17 +147,17 @@ class PvStation extends React.Component {
     })
     return data
   }
-  
+
   render() {
-    const { currentPage, pageSize,stationType,checked } = this.state;
-    const { pvMonitorStation } = this.props;
+    const { currentPage, pageSize, stationType, checked } = this.state;
+    const { pvMonitorStation,loading} = this.props;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const TabPane = Tabs.TabPane;
     //状态 筛选
     const operations = (
       <div>
-        <Switch onChange={this.onHandleAlarm} checked={checked}/>告警
+        <Switch onChange={this.onHandleAlarm} checked={checked} />告警
         <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
@@ -192,7 +193,8 @@ class PvStation extends React.Component {
             tab={<span><i className="iconfont icon-grid"></i> </span>}
             key="stationBlock"
           >
-            <PvStationItem {...this.props} stationDataList={this.statusDataList()} />
+            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+              <PvStationItem {...this.props} stationDataList={this.statusDataList()} />}
           </TabPane>
           <TabPane
             tab={<span><i className="iconfont icon-table"></i> </span>}

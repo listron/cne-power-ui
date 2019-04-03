@@ -5,7 +5,7 @@ import Map from '../Map.jsx';
 import WindStationHeader from './WindStationHeader.jsx';
 import WindStationItem from './WindStationItem.jsx';
 import WindStationList from './WindStationList.jsx';
-import { Tabs, Radio, Switch } from "antd";
+import { Tabs, Radio, Switch,Spin } from "antd";
 
 class WindStation extends React.Component {
   static propTypes = {
@@ -19,6 +19,7 @@ class WindStation extends React.Component {
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
     getRealtimeData: PropTypes.func,
+    loading: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);
@@ -36,7 +37,7 @@ class WindStation extends React.Component {
   }
 
   componentWillUnmount() {
-     console.log(222)
+    console.log(222)
   }
 
   onHandleAlarm = (checked) => {
@@ -155,7 +156,7 @@ class WindStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
-    const { windMonitorStation } = this.props;
+    const { windMonitorStation,loading } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];
     const TabPane = Tabs.TabPane;
@@ -198,7 +199,9 @@ class WindStation extends React.Component {
           tabBarExtraContent={this.props.stationShowType !== 'stationMap' ? operations : province}
           onChange={this.setkey} animated={false}>
           <TabPane tab={<span> <i className="iconfont icon-grid"></i></span>} key="stationBlock" >
-            <WindStationItem {...this.props} stationDataList={this.statusDataList()} />
+            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+              <WindStationItem {...this.props} stationDataList={this.statusDataList()} />}
+
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table"></i></span>} key="stationList" >
             <WindStationList

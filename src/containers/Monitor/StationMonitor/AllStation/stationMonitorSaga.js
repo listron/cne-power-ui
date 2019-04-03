@@ -17,19 +17,19 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
       if (payload.stationType === '2') { // 全部的数据
         yield put({
           type: allStationAction.changeMonitorstationStore,
-          payload: { allMonitorStation: response.data.data || {}, },
+          payload: { allMonitorStation: response.data.data || {}, loading: false },
         });
       }
       if (payload.stationType === '0') { // 风电的数据
         yield put({
           type: allStationAction.changeMonitorstationStore,
-          payload: { windMonitorStation: response.data.data || {} }
+          payload: { windMonitorStation: response.data.data || {}, loading: false }
         });
       }
       if (payload.stationType === '1') { // 光伏的数据
         yield put({
           type: allStationAction.changeMonitorstationStore,
-          payload: { pvMonitorStation: response.data.data || {} }
+          payload: { pvMonitorStation: response.data.data || {}, loading: false }
         });
       }
     } else { throw response.data }
@@ -37,7 +37,7 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
     console.log(e);
     message.error('获取数据失败，请刷新');
     let nameArr = ["windMonitorStation", "pvMonitorStation", "allMonitorStation"][payload.stationType];
-    payload[nameArr]={};
+    payload[nameArr] = {};
     yield put({
       type: allStationAction.changeMonitorstationStore,
       payload,
