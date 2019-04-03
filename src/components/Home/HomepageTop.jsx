@@ -65,7 +65,7 @@ class HomepageTop extends Component{
   render(){
     const weekDay = ['日','一','二','三','四','五','六'];
     const { timeText, weekIndex, fullScreen } = this.state;
-    const { changeLoginStore, realTimeInfo, energySaving, resetMonitorData } = this.props;
+    const { changeLoginStore, realTimeInfo, energySaving, resetMonitorData,resetCommonStore } = this.props;
     let { enterpriseName } = realTimeInfo;
     const dioxide = dataFormat(energySaving.dioxide);
     const coal = dataFormat(energySaving.coal);
@@ -79,7 +79,7 @@ class HomepageTop extends Component{
             </Link>
           </div>
           <div className={styles.userShow}>
-            <UserInfo changeLoginStore={changeLoginStore} inHomepage resetMonitorData={resetMonitorData} />
+            <UserInfo changeLoginStore={changeLoginStore} inHomepage resetMonitorData={resetMonitorData} resetCommonStore={resetCommonStore} />
             <img className={styles.logo} width="105px" height="26px" src="/img/powerLogo.png" />
           </div>
         </div>

@@ -1,12 +1,9 @@
 
 export const allStationAction = {
-  GET_MONITORSTATION_SAGA: Symbol('GET_MONITORSTATION_SAGA'),//	获取多电站实时数据列表
-  MONITORSTATION_FETCH: Symbol('MONITORSTATION_FETCH'),//loading
-  GET_MONITORSTATION_FETCH_SUCCESS: Symbol('GET_MONITORSTATION_FETCH_SUCCESS'),//请求成功
-  
-  CHANGE_MONITORSTATION_STORE_SAGA: Symbol('CHANGE_MONITORSTATION_STORE_SAGA'),
-  CHANGE_MONITORSTATION_STORE: Symbol('CHANGE_MONITORSTATION_STORE'),
+  changeMonitorstationStore: Symbol('changeMonitorstationStore'),
   resetMonitorData: Symbol('resetMonitorData'),
-
+  getMonitorStation: Symbol('getMonitorStation'),
+  stopRealtimeData: Symbol('stopRealtimeData'),
+  getRealtimeData: Symbol('getRealtimeData'),
 }
 

@@ -29,5 +29,7 @@ export const commonAction = {
 
   getWeather: Symbol('getWeather'), // 获取天气列表数据
   downLoadFile: Symbol('downLoadFile'), // 下载文件
+
+  resetCommonStore: Symbol('resetCommonStore'), // 重制公共文件
 }
 

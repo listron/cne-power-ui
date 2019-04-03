@@ -1,75 +1,103 @@
-.stationMonitor{
-
-  min-height: 100%;
-  display: flex;
-  flex:1;
-  flex-direction: column;
- } 
-
-
-
-  .stationContainer{
+@import '../../../../theme/theme.scss';
+.stationMonitor {
+    min-height: 100%;
     display: flex;
-    flex:1;
+    flex: 1;
     flex-direction: column;
-    padding:24px 24px 0;
-    background: #ececec;
-    :global{
-      .ant-switch-checked {
-        background-color: #199475;
-      }
-      .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-        background: #199475;
-        border-color: #199475;
-        color: #fff;
-      }
-      .ant-progress-bg {
-        border-radius: 100px;
-        background-color: #199475;
-      }
-      .ant-tabs-nav-scroll{
-        background: #f8f8f8;
-      }
-      .ant-tabs.ant-tabs-card  .ant-tabs-bar .ant-tabs-tab-active {
-        background: #fff;
-        border-color: #e8e8e8;
-        color: #199475;
-        margin: 0;
-      }
-      .ant-tabs-nav .ant-tabs-tab {
-        display: inline-block;
-        text-align: center;
-        height: 100%;
-        padding: 12px 16px;
-        margin: 0;
-        box-sizing: border-box;
-        position: relative;
-        transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-        cursor: pointer;
-        text-decoration: none;
-        width: 120px;
-      }
-      .ant-tabs-bar{
-        margin-bottom: 0;
-      }
+}
 
-      .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation{
-        display: flex;
-        flex:1;
-        flex-direction: column;
-      }
-      .ant-tabs-content{
-        display: flex;
-        flex:1;
-        flex-direction: column;
-        .ant-tabs-tabpane-active{
-          display: flex;
-          flex:1;
-        }
-        .ant-tabs-tabpane-inactive{
-          max-height: 0;
-        }  
+.stationContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 24px 24px 0;
+    background: $pageBackground;
+    .noData{
+      background: $pageGround;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      img{
+        width: 223px;
+        height: 164px;
       }
     }
-      
-  } 
+    :global {
+        .ant-switch-checked {
+            background-color: $themeColor;
+        }
+
+        .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+            background: $themeColor;
+            border-color: $themeColor;
+            color: #fff;
+        }
+
+        .ant-progress-bg {
+            border-radius: 100px;
+            background-color: $themeColor;
+        }
+
+        .ant-tabs-nav-scroll {
+            background: #f8f8f8;
+        }
+
+        .ant-tabs-tab {
+            display: inline-block;
+            text-align: center;
+            height: 100%;
+            padding: 12px 16px;
+            margin: 0;
+            box-sizing: border-box;
+            position: relative;
+            transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+            text-decoration: none;
+            width: 120px;
+        }
+
+        .ant-tabs-tab-active {
+            background: $pageGround;
+            color: $themeColor;
+            margin: 0;
+            position: relative;
+        }
+
+        .ant-tabs-tab-active::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 2px;
+            top: 0;
+            left: -1px;
+            background: $themeColor;
+        }
+
+        .ant-tabs-bar {
+            margin-bottom: 0;
+        }
+
+        .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+        }
+
+        .ant-tabs-content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+
+            .ant-tabs-tabpane-active {
+                display: flex;
+                flex: 1;
+            }
+
+            .ant-tabs-tabpane-inactive {
+                max-height: 0;
+            }
+        }
+    }
+
+}

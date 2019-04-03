@@ -18,6 +18,7 @@ class WindStation extends React.Component {
     realTimePowerPoint: PropTypes.any,
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
+    getRealtimeData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -29,6 +30,15 @@ class WindStation extends React.Component {
       pageSize: 10,
     }
   }
+
+  componentDidMount() {
+    this.props.getRealtimeData({ stationType: '0' })
+  }
+
+  componentWillUnmount() {
+     console.log(222)
+  }
+
   onHandleAlarm = (checked) => {
     this.setState({
       checked,
@@ -144,7 +154,7 @@ class WindStation extends React.Component {
   }
 
   render() {
-    const { currentPage, pageSize, checked,stationType } = this.state;
+    const { currentPage, pageSize, checked, stationType } = this.state;
     const { windMonitorStation } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationProvinceSummary = stationDataSummary.stationProvinceSummary || [];

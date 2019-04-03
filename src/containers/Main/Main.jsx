@@ -101,7 +101,8 @@ class Main extends Component {
     }
   }
   componentWillUnmount() {
-    this.props.resetMonitorData()
+    this.props.resetMonitorData();
+    this.props.resetCommonStore();
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -120,12 +121,13 @@ class Main extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
     this.props.history.push('/login');
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData } = this.props;
+    const { changeLoginStore, history, resetMonitorData,resetCommonStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -148,7 +150,7 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              <UserInfo changeLoginStore={changeLoginStore} resetMonitorData={resetMonitorData} />
+              <UserInfo changeLoginStore={changeLoginStore} resetMonitorData={resetMonitorData} resetCommonStore={resetCommonStore} />
             </div>
           </div>}
           <div className={styles.appMain}>
@@ -200,6 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
   getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 

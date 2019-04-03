@@ -31,6 +31,11 @@ class PvStation extends React.Component {
     }
   }
 
+
+  componentDidMount(){
+    this.props.getRealtimeData({ stationType: '1' })
+  }
+
   onHandleAlarm = (checked) => {
     this.setState({
       checked,

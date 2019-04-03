@@ -17,13 +17,12 @@ class Allstation extends React.Component {
     super(props, context)
   }
   componentDidMount() {
+    this.props.getRealtimeData({ stationType: '2' })
   }
 
   render() {
-    const { allMonitorStation,realTimePowerUnit,realCapacityUnit,realTimePowerPoint,realCapacityPoint } = this.props;
+    const { allMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
     const stationDataList = allMonitorStation.stationDataList || [];
-  
-
     let iconArray = [
       {
         "400": ['image:///img/wind01.png', 'image:///img/wind02.png'],
@@ -47,10 +46,10 @@ class Allstation extends React.Component {
         name: item.stationName,
         value: [item.longitude, item.latitude, stationType, stationStatus],
         symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
-        symbolSize: stationType > 0 ? [30, 20]: [31, 36],
+        symbolSize: stationType > 0 ? [30, 20] : [31, 36],
         alarmNum: item.alarmNum,
-        stationPower: (realTimePowerUnit==='MW'?(+item.stationPower):(+item.stationPower*1000)).toFixed(realTimePowerPoint),
-        stationCapacity: (realCapacityUnit==='MW'?(+item.stationCapacity):(+item.stationCapacity*1000)).toFixed(realCapacityPoint),
+        stationPower: (realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint),
+        stationCapacity: (realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint),
         instantaneous: item.instantaneous,
         stationCode: item.stationCode,
         realTimePowerUnit,
@@ -59,7 +58,7 @@ class Allstation extends React.Component {
     })
     return (
       <div className={styles.allStationContainer}>
-        <AllStationHeader {...this.props} />      
+        <AllStationHeader {...this.props} />
         <Map testId="allstation_bmap_station" {...this.props} stationDataList={data} />
       </div>
     )
