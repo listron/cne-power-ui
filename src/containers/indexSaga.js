@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './alphaRedux/commonSaga';
-// import { watchLogin } from './Login/loginSaga';
-import { watchLogin } from './Login/NewLogin/loginSaga';
+import { watchLogin } from './Login/loginSaga';
+// import { watchLogin } from './Login/NewLogin/loginSaga';
 import { watchHomepage } from './Home/homepageSaga';
 
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';

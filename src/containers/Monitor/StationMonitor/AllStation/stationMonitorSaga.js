@@ -3,6 +3,8 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { allStationAction } from './allStationAction.js';
 import moment from 'moment';
+
+const token = localStorage.getItem('token');
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime=moment.utc().format();
@@ -10,7 +12,11 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
   //const url = '/mock/v3/monitor/stations/stationType';
   try {
     yield put({ type: allStationAction.MONITORSTATION_FETCH });
-    const response = yield call(axios.get, url);
+    const response = yield call(axios,{
+      method: 'get',
+      url,
+      // headers: {'Authorization': `bearer ${token}`},
+    });
     if(response.data.code === '10000') {
       if(payload.stationType === '2') {
         const params = {
