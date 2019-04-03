@@ -52,7 +52,10 @@ class SingleDeviceContainer extends Component {
       const curDay=moment().format('YYYY-MM-DD HH:mm:ss');
       params.endTime=moment(curDay).utc().format()
     }
-    changeSingleDeviceStore({ ...params, selectDeviceFullCode: [{ deviceCode: deviceFullCode }] })
+    changeSingleDeviceStore({ 
+      ...params,
+      //  selectDeviceFullCode: [{ deviceCode: deviceFullCode }]
+       })
     this.props.getRoseChart({ ...params, deviceFullCode });
     this.props.getwinddistributionchart({ ...params, deviceFullCode });
     this.queryGraphData({ ...params })
@@ -68,12 +71,14 @@ class SingleDeviceContainer extends Component {
     }
   }
   onOk = (selectdevice) => {
-    const deviceFullCode = selectdevice.map((e, i) => (e.deviceCode));
+    let deviceFullCode = [this.props.match.params.deviceFullCode].concat(selectdevice.map((e, i) => (e.deviceCode)));
+    console.log('deviceFullCode: ', deviceFullCode);
     this.props.changeSingleDeviceStore({
       deviceFullCode,
       selectDeviceFullCode: selectdevice
     })
   }
+
   onSwitchChange = (checked) => {
     const tableFullCode=this.props.match.params.deviceFullCode;
     const { stationCode, deviceFullCode, startTime, endTime,  pageNum, pageSize,} = this.props;
@@ -131,8 +136,8 @@ class SingleDeviceContainer extends Component {
     })
   }
   render() {
-
     const singleStation = this.props.match.params.stationCode;
+    const disabledDevice = this.props.match.params.deviceFullCode;
     const time = this.props.match.params.time;
     const beginTime = time ? time.split('~')[0] : '';
     const overTime = time ? time.split('~')[1] : '';
@@ -154,7 +159,8 @@ class SingleDeviceContainer extends Component {
                 deviceTypeCode={deviceTypeCode}
                 style={{ width: 'auto', minWidth: '198px' }}
                 onOK={this.onOk}
-                max={3}
+                max={2}
+                disabledDevice={[disabledDevice]}
                 multiple={true}
                 deviceShowNumber={true}
                 value={selectDeviceFullCode}
