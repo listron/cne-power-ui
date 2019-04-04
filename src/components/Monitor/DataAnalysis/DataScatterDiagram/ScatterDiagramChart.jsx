@@ -126,7 +126,6 @@ class ScatterDiagramChart extends Component{
   }   
 
   render(){
-    console.log('test')
     return(
       <div className={styles.scatterDiagramChart}>
         <div id="monitorScatterDiagram" style={{ width: '100%' }}></div>
