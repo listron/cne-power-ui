@@ -43,8 +43,8 @@ class TimeSelect extends React.Component {
     defaultLast: false,
     value: {
       timeStyle: 'month',
-      startTime: moment().format('YYYY-MM-DD'), // 默认今年
-      endTime: moment().format('YYYY-MM-DD'),
+      // startTime: moment().format('YYYY-MM-DD'), // 默认今年
+      // endTime: moment().format('YYYY-MM-DD'),
     },
   }
 
@@ -139,7 +139,9 @@ class TimeSelect extends React.Component {
           allowClear={false}
           disabledDate={this.disabledDate}
         />}
-        {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}
+        {timeStyle === 'month' && <YearSelect 
+        yearValue={startTime}
+         onYearSelect={this.onYearSelect} />}
         {timeStyle === 'year' && <span>
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
           <span>—</span>

@@ -1,0 +1,29 @@
+@import '../../../../theme/theme.scss';
+
+.intelligentAnalysis{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .contentBox{
+    @include contentBoxStyle();
+    .intelligentAnalysisContent{
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      :global{
+        .ant-tabs-tab{
+          margin-right: 0;
+          border-radius: 0;
+          border-top: 2px solid #fafafa;
+        }
+        .ant-tabs-tab-active{
+          color: #000;
+          font-weight: bold;
+          margin: 0;
+          border-top: 2px #199475 solid;
+        }
+      }
+    }
+  }
+}
