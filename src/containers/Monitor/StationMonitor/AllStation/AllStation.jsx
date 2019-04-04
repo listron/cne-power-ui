@@ -7,6 +7,7 @@ import { Tabs } from 'antd';
 import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
+import NewWindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -53,11 +54,11 @@ class AllStation extends Component {
           {stationTypeCount === 'multiple' &&
             <Tabs type="card" activeKey={stationType} onChange={this.queryTargetData} tabBarGutter={0} >
               <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
-              <TabPane tab="风电" key="0"><WindStation {...this.props} /></TabPane>
+              <TabPane tab="风电" key="0"><NewWindStation {...this.props} /></TabPane>
               <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
             </Tabs>
           }
-          {stationTypeCount === 'wind' && <WindStation {...this.props} />}
+          {stationTypeCount === 'wind' && <NewWindStation {...this.props} />}
           {stationTypeCount === 'pv' && <PvStation {...this.props} />}
           {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
         </div>
