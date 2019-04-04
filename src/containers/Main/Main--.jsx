@@ -56,10 +56,6 @@ class Main extends Component {
   // }
 
   componentDidMount() {
-    console.log('did mount get');
-    window.onhashchange = () => {
-      console.log('hash change')
-    }
     const { history } = this.props;
     const { pathname } = history.location;
     if (pathname !== '/login') { // 非登录页，检查登录凭证是否存在
@@ -78,16 +74,15 @@ class Main extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps)
-  // //   const { history, loginInfoSaved } = this.props;
-  // //   const { pathname } = history.location;
-  // //   if (pathname === '/login' && !loginInfoSaved && nextProps.loginInfoSaved) { // 登录成功
-  // //     this.props.getStations();
-  // //     this.props.getDeviceTypes();
-  // //     this.props.getMonitorDataUnit();
-  // //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    const { history, loginInfoSaved } = this.props;
+    const { pathname } = history.location;
+    if (pathname === '/login' && !loginInfoSaved && nextProps.loginInfoSaved) { // 登录成功
+      this.props.getStations();
+      this.props.getDeviceTypes();
+      this.props.getMonitorDataUnit();
+    }
+  }
 
   // componentWillUnmount() {
   //   console.log('main page unmount')
@@ -113,23 +108,11 @@ class Main extends Component {
     };
   }
 
-  // logout = () => { // 删除登录凭证并退出。
-  // //   Cookie.remove('authData');
-  // //   Cookie.remove('enterpriseName');
-  // //   Cookie.remove('enterpriseLogo');
-  // //   Cookie.remove('userId');
-  // //   Cookie.remove('userFullName');
-  // //   Cookie.remove('userLogo');
-  // //   Cookie.remove('expireData');
-  // //   Cookie.remove('refresh_token');
-  // //   Cookie.remove('isNotLogin');
-  // //   Cookie.remove('auto');
-  // //   Cookie.remove('userRight');
-  // //   Cookie.remove('rightMenu');
-  //   this.props.resetMonitorData();
-  //   this.props.resetLoginState();
-  //   localStorage.clear();
-  // }
+  logout = () => { // 删除登录凭证并退出。
+    this.props.resetMonitorData();
+    this.props.resetLoginState();
+    localStorage.clear();
+  }
 
   render() {
     const { changeLoginStore, history, resetMonitorData, loginInfoSaved } = this.props;
@@ -138,9 +121,8 @@ class Main extends Component {
     const { loginSuccess, token } = this.checkLoginSuccess();
     console.log(loginInfoSaved)
     console.log(!!token)
-    // axios.defaults.headers.common['Authorization'] = 'bearer ' + JSON.parse(Cookie.get('token'));
     if (loginSuccess) {
-      // if(true){
+      axios.defaults.headers.common['Authorization'] = 'bearer ' + JSON.parse(Cookie.get('token'));
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
@@ -177,6 +159,13 @@ class Main extends Component {
             <Button onClick={this.logout} className={styles.exitSystem} >退出系统</Button>
           </Modal>
         </div>
+      );
+    } else {
+      return (
+        <Switch>
+          <Route path="/login" exact component={Login} />
+          <Redirect to="/login" />
+        </Switch>
       );
     }
   }
