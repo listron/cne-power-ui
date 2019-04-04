@@ -56,59 +56,47 @@ class TableList extends Component {
   initMonthColumn = () => {
     const columns = [
       {
+        title: "区域",
+        dataIndex: "regionName",
+        sorter: true,
+      },
+      {
         title: "电站名称",
         dataIndex: "stationName",
-
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
-
-
       },
       {
-        title: "区域",
-        dataIndex: "region",
+        title: "设备名称",
+        dataIndex: "deviceName",
         sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div className={styles.region}>{record.region}</div>
-            )
-          }
-        }
       },
       {
-        title: "月实际发电量(万kWh)",
-        dataIndex: "genValid",
+        title: "风机型号",
+        dataIndex: "deviceModeName",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+       
       },
       {
-        title: "月计划发电量(万kWh)",
-        dataIndex: "planGen",
-        sorter: true,
-        render: text => (text || text === 0) ? text : '--'
-      },
-      {
-        title: "计划完成率",
-        dataIndex: "planGenRate",
+        title: "统计时段",
+        dataIndex: "time",
         sorter: true,
         defaultSortOrder: 'ascend'
       },
       {
-        title: "发电量同比",
-        dataIndex: "powerRate",
+        title: "平均风速",
+        dataIndex: "windSpeedAvg",
         sorter: true,
 
       },
       {
-        title: "辐射总量(MJ/m²)",
-        dataIndex: "resourceValue",
+        title: "发电量",
+        dataIndex: "genValid",
         sorter: true,
       },
 
       {
-        title: "资源同比",
-        dataIndex: "resourceRate",
+        title: "发电时间",
+        dataIndex: "genTime",
         sorter: true,
       },
       {
@@ -117,20 +105,26 @@ class TableList extends Component {
         sorter: true,
       },
       {
-        title: "PR",
-        dataIndex: "pr",
+        title: "限电损失电量",
+        dataIndex: "limitGen",
         sorter: true,
       }, {
-        title: "损失电量(万kWh)",
-        dataIndex: "lostPower",
+        title: "限电时长",
+        dataIndex: "limitTime",
         sorter: true,
       },
       {
-        title: "损失电量等效时",
-        dataIndex: "limitPowerHours",
+        title: "故障损失电量",
+        dataIndex: "faultGen",
         sorter: true,
 
-      }
+      },
+      {
+        title: "故障时长",
+        dataIndex: "faultTime",
+        sorter: true,
+
+      },
     ];
     return columns
   }

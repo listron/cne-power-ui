@@ -1,10 +1,13 @@
 
 import React from "react";
+import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import { Radio, Button, Select, Icon } from 'antd';
 import styles from './styles.scss';
 import SelectModal from './Modal'
 import { stationsByArea } from '../../../utils/utilFunc';
+import { commonAction } from '../../../containers/alphaRedux/commonAction';
+
 
 const Option = Select.Option;
 /* 
@@ -66,6 +69,12 @@ class TimeSelectReport extends React.Component {
       // optionList: props[defaultObj[props.modeStyle]]
     }
   }
+  componentDidMount(){
+    this.props.getRegionStationDevice()
+    this.props.getStationDevicemode()
+    this.props.getRegionStation()
+    this.props.getRegion()
+  }
 
   onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
@@ -116,8 +125,9 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: v });
   }
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault } = this.props;
-    console.log('stations: ', stations);
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault,regionStationDeviceData,stationDevicemodeData,regionStationData,regionData } = this.props;
+    console.log('regionStationDeviceData,stationDevicemodeData,regionStationData,regionData : ', regionStationDeviceData,stationDevicemodeData,regionStationData,regionData );
+    // console.log('stations: ', stations);
     const { modeStyle, list, visiableModal, areaList } = this.state;
     console.log('areaList: ', areaList);
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -268,6 +278,50 @@ class TimeSelectReport extends React.Component {
       </div >
     )
   }
+
 }
-export default TimeSelectReport
+const mapStateToProps = (state) => ({
+  regionData: state.common.get('regionData').toJS(),
+  regionStationData: state.common.get('regionStationData').toJS(),
+  stationDevicemodeData: state.common.get('stationDevicemodeData').toJS(),
+  regionStationDeviceData: state.common.get('regionStationDeviceData').toJS(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload }),
+  getRegion: params => dispatch({ //获取用户权限的电站区域
+    type: commonAction.getRegion,
+    payload: {
+      params,
+      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
+      resultName: 'regionData',
+    }
+  }),
+  getRegionStation: params => dispatch({ // //获取用户权限的电站区域下的电站
+    type: commonAction.getRegionStation,
+    payload: {
+      params,
+      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
+      resultName: 'regionStationData',
+    }
+  }),
+  getStationDevicemode: params => dispatch({ //获取用户权限的电站区域下的电站下的对应型号
+    type: commonAction.getStationDevicemode,
+    payload: {
+      params,
+      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
+      resultName: 'stationDevicemodeData',
+    }
+  }),
+  getRegionStationDevice: params => dispatch({ //获取用户权限的电站区域下电站下的对应设备
+    type: commonAction.getRegionStationDevice,
+    payload: {
+      params,
+      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
+      resultName: 'regionStationDeviceData',
+    }
+  }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeSelectReport) 
 
