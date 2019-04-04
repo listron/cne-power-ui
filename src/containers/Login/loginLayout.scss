@@ -137,13 +137,13 @@
         }
       }
       //下面的联系我们
-      .contactUs {
+      .bottomInfo {
         position: absolute;
         left: 170px;
         width: 170px;
         height: 30px;
         top: 424px;
-        a {
+        .agreement, .contact {
           width: 55px;
           margin-right: 30px;
           font-size: 14px;
