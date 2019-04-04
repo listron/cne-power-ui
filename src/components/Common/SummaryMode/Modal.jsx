@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Tree } from 'antd';
+import { Modal, Tree,Checkbox } from 'antd';
 import styles from './styles.scss';
 import PropTypes from 'prop-types';
 const { TreeNode } = Tree;
@@ -32,6 +32,7 @@ class SelectModal extends Component {
     super(props);
     this.state = {
       checkedKeys: [...props.list],
+      children: props.sourceData,
       tree: [
         {
           title: '全部',
@@ -74,6 +75,28 @@ class SelectModal extends Component {
     this.props.hideModal();
   }
 
+  
+  checkAllStation=(e)=>{
+    if(!e.target.checked){ // 取消全选时清空。
+      this.setState({ checkedKeys: [] });
+      return
+    }
+    const { sourceData } = this.props;
+    const getAllStationCode = (data) => {
+      let selectArray = [];
+      data && data.length > 0 && data.forEach(e=>{
+        if(e && e.children && e.children.length > 0){
+          selectArray.push(...getAllStationCode(e.children));//递归
+        }
+        if(e && e.stationCode){//拿到电站code
+          selectArray.push(e.stationCode)
+        }
+      })
+      return selectArray;
+    }
+    const selectDepartment = getAllStationCode(sourceData);
+    this.setState({ checkedKeys: selectDepartment });
+  }
   renderTreeNodes = data => data.map((item) => {
     if (item.children) {
       return (
@@ -103,14 +126,16 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
+          <Checkbox onChange={this.checkAllStation}>全选</Checkbox>
             <Tree
               checkable
               autoExpandParent={true}
+              defaultExpandAll={true}
               onCheck={this.onCheck}
               checkedKeys={this.state.checkedKeys}
               blockNode={false}
             >
-              {this.renderTreeNodes(this.state.tree)}
+              {this.renderTreeNodes(this.state.children)}
             </Tree>
           </div>
         </Modal>
