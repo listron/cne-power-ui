@@ -51,7 +51,7 @@ class EditUserName extends Component {
                 rules: [{
                   required: true, message: '请输入姓名!',
                 }, {
-                  pattern: /^[A-Za-z\u4e00-\u9fa5]{0,30}$/,
+                  pattern: /^[A-Za-z\u4e00-\u9fa5\u0020]{0,30}$/,
                   message: '长度小于等于30个字'
                 }],
               })(
