@@ -350,6 +350,7 @@ function *joinEnterprise(action){
         confirmPwd: params.confirmPwd,
         enterpriseId: params.enterpriseId,
         password: params.password,
+        userFullname: params.userFullname,
         phoneNum: params.phoneNum,
         username: params.username,
       }),
@@ -361,9 +362,11 @@ function *joinEnterprise(action){
           username: params.username,
           password: params.password,
           history: params.history,
+          isNotLogin: '0'
         }
       });
       message.success(response.data.message);
+
     } else{
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
