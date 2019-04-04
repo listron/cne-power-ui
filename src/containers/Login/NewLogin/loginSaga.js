@@ -17,13 +17,9 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
   //   refreshToken: payload.refresh_token,
   //   expireData: moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss') // token过期时间
   // }))
-  console.log('end less login info save ')
   localStorage.setItem('token', payload.access_token);
-  Cookie.set('token', JSON.stringify(payload.access_token))
   localStorage.setItem('refreshToken', payload.refresh_token);
-  Cookie.set('refreshToken', payload.refresh_token)
   localStorage.setItem('expireData', moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss'));
-  Cookie.set('expireData', moment().add(payload.expires_in, 's').format('YYYY-MM-DD HH:mm:ss'));
   localStorage.setItem('userInfo', JSON.stringify({ // 用户个人信息存储。
     enterpriseId: payload.enterpriseId,
     enterpriseName: payload.enterpriseName,
@@ -44,7 +40,6 @@ function *loginInfoSave({ payload = {} }) { // 用户登录后需进行的数据
 
 function *userNameLogin({ payload = {} }){ //账号密码登录
   const url = `${APIBasePath}${login.userNameLogin}`;
-  console.log('end less userNameLogin')
   try {
     yield put({
       type: loginAction.CHANGE_LOGIN_STORE,
@@ -136,7 +131,6 @@ function *userNameLogin({ payload = {} }){ //账号密码登录
 }
 
 function *getVerificationCode({ payload = {} }){ // 获取短信验证码
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.getVerificationCode}/${payload.phoneNum}`;
   try{
     const response = yield call(axios.get, url);
@@ -150,7 +144,6 @@ function *getVerificationCode({ payload = {} }){ // 获取短信验证码
 }
 
 function *phoneCodeLogin({ payload = {} }){ // 手机+验证码登录
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.phoneCodeLogin}`;
   try{
     yield put({
@@ -260,7 +253,6 @@ function *phoneCodeLogin({ payload = {} }){ // 手机+验证码登录
 }
 
 function *phoneCodeRegister({ payload = {} }) { // 验证手机号和验证码是否正确 (注册企业)
-  console.log('end less userNameLogin')
   let url = `${APIBasePath}${login.phoneCodeRegister}`;
   try{
     const { phoneNum, verificationCode, ...restParams } = payload;
@@ -384,7 +376,6 @@ function *registerEnterprise(action){ // 注册企业 完善个人信息
 }
 
 function *getEnterpriseInfo({ payload = {} }){ // 获取企业信息
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.getEnterpriseInfo}/${payload.enterpriseName}`;
   try {
     yield put({
@@ -418,7 +409,6 @@ function *getEnterpriseInfo({ payload = {} }){ // 获取企业信息
 }
 
 function *joinEnterprise({ payload = {} }){ // 加入企业
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.joinEnterprise}`;
   try{
     yield put({
@@ -455,7 +445,6 @@ function *joinEnterprise({ payload = {} }){ // 加入企业
 }
 
 function *resetPassword({ payload = {} }){ // 设置新密码
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.resetPassword}`;
   try{
     const { authData, ...restParams } = payload;
@@ -497,7 +486,6 @@ function *resetPassword({ payload = {} }){ // 设置新密码
 }
 
 function *inviteUserLink({ payload = {} }){ // 邀请用户加入企业(获取邀请企业信息)
-  console.log('end less userNameLogin')
   const url = `${APIBasePath}${login.inviteUserLink}/${payload.linkId}`;
   try{
     const response = yield call(axios.post, url, payload);
