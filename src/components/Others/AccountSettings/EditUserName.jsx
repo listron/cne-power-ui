@@ -48,12 +48,19 @@ class EditUserName extends Component {
           <Form {...formItemLayout}>
             <FormItem label="修改姓名" >
               {getFieldDecorator('userFullName', {
-                rules: [{
-                  required: true, message: '请输入姓名!',
-                }, {
-                  pattern: /^[A-Za-z\u4e00-\u9fa5\u0020]{0,30}$/,
-                  message: '长度小于等于30个字'
-                }],
+                rules: [
+                  { validator: (rule, value, callback) => { 
+                    const exactStr = value.trim();
+                    if (!exactStr) {
+                      callback('请输入姓名!');
+                    }
+                    const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
+                    if (!patternRule.test(exactStr)) {
+                      callback('长度小于等于30个字');
+                    }
+                    callback();
+                  }}
+                ]
               })(
                 <Input type="userFullName" placeholder={userFullName} addonBefore={<i className="iconfont icon-user"></i>} />
               )}
