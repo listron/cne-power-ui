@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
 import { message, Modal, Button, Spin } from 'antd';
@@ -17,33 +17,9 @@ import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
 
-const Loading = ({ pastDelay, timedOut, error }) => {
-  if (pastDelay) {
-    return (<div className={styles.preComponent}>
-      <Spin size="large" tip="Loading..." />
-    </div>);
-  } else if (timedOut) {
-    return <div>Taking a long time...</div>;
-  } else if (error) {
-    return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
-  }
-  return null;
-};
-
-const Login = Loadable({
-  loader: () => import('../Login/LoginLayout'),
-  loading: Loading
-})
-const Agreement = Loadable({
-  loader: () => import('../../components/Login/Agreement'),
-  loading: Loading
-})
-const Contact = Loadable({
-  loader: () => import('../../components/Login/Contact'),
-  loading: Loading
-})
+const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
@@ -176,9 +152,15 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/userAgreement" exact component={Agreement} />
-          <Route path="/contactUs" exact component={Contact} />
+          <Route path="/login" exact render={() => (
+            <Suspense fallback={
+              <div className={styles.preComponent}>
+                  <Spin size="large" tip="Loading..." />
+              </div>}
+            >
+              <Login {...this.props} />
+            </Suspense>)}
+          />
           <Redirect to="/login" />
         </Switch>
       );
