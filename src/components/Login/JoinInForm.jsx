@@ -311,7 +311,6 @@ class JoinInForm extends Component{
               })(
                 <Input
                   addonBefore={<i className="iconfont icon-user" />}
-                  disabled={username ? true : false}
                   placeholder="请输入用户名"
                 />
               )}
