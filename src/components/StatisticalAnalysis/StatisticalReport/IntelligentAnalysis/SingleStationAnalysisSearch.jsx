@@ -13,6 +13,7 @@ class SingleStationAnalysisSearch extends Component{
     stations: PropTypes.array,
     stationCode: PropTypes.string,
     changeIntelligentAnalysisStore: PropTypes.func,
+    getReportData: PropTypes.func,
   };
 
   constructor(props){
@@ -20,19 +21,15 @@ class SingleStationAnalysisSearch extends Component{
   }
 
   onTimeChange = (value) => { // 选择时间
-    const { getReportData } = this.props;
     const { startTime, timeStyle } = value;
     let dataType = timeStyle === 'month' ? 'year' : 'month';
-    getReportData({
-      dataType, time: startTime
-    })
+
   }
 
   selectStation = (selectedStationInfo) => { // 选择电站
-    const { changeIntelligentAnalysisStore, stationCode } = this.props;
-    changeIntelligentAnalysisStore({
-      stationCode: selectedStationInfo,
-    })
+    const { stationCode } = this.props;
+
+    console.log(selectedStationInfo)
   }
 
   searchInfo = () => { // 查询
@@ -45,6 +42,7 @@ class SingleStationAnalysisSearch extends Component{
 
   render(){
     const { stationCode, stations } = this.props;
+    console.log(stationCode)
 
     return(
       <div className={styles.SingleStationAnalysisSearch}>
@@ -67,9 +65,8 @@ class SingleStationAnalysisSearch extends Component{
                 onChange={this.onTimeChange}
                 timerText={''}
                 value={{
-                 timeStyle: 'month',
-                 startTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-                 endTime: moment().subtract(1, 'day').format('YYYY-MM-DD')
+                 timeStyle: 'day',
+                 startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
                 }}
               />
             </div>
