@@ -12,18 +12,27 @@ class SingleStationAnalysisSearch extends Component{
   static propTypes = {
     stations: PropTypes.array,
     stationCode: PropTypes.string,
+    changeIntelligentAnalysisStore: PropTypes.func,
   };
 
   constructor(props){
     super(props);
   }
 
-  onTimeChange = () => { // 选择时间
-
+  onTimeChange = (value) => { // 选择时间
+    const { getReportData } = this.props;
+    const { startTime, timeStyle } = value;
+    let dataType = timeStyle === 'month' ? 'year' : 'month';
+    getReportData({
+      dataType, time: startTime
+    })
   }
 
-  selectStation = () => { // 选择电站
-
+  selectStation = (selectedStationInfo) => { // 选择电站
+    const { changeIntelligentAnalysisStore, stationCode } = this.props;
+    changeIntelligentAnalysisStore({
+      stationCode: selectedStationInfo,
+    })
   }
 
   searchInfo = () => { // 查询

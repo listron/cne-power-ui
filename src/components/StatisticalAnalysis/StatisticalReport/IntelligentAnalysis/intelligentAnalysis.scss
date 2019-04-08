@@ -45,10 +45,15 @@
   .reportContent{
     display: flex;
     flex-direction: column;
-    border:1px solid #000;
+    align-items: center;
+    border:1px solid #999;
     margin-top:30px;
-  }
-  .contentText{
-    
+    .titleText{
+      font-size: 20px;
+      margin-top: 30px;
+    }
+    .contentText{
+      margin: 20px 30px;
+    }
   }
 }
