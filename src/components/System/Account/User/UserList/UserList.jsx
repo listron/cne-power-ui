@@ -317,7 +317,6 @@ class UserList extends Component {
 
   _createUserOperate = (rightHandler) => {
     let selectedUser = this.props.selectedUser.toJS();
-    console.log(selectedUser)
     const userDeleteRight = rightHandler && rightHandler.split(',').includes('account_user_delete');
     const userEnableRight = rightHandler && rightHandler.split(',').includes('account_user_enable');
     const userDisableRight = rightHandler && rightHandler.split(',').includes('account_user_disable');
@@ -346,7 +345,6 @@ class UserList extends Component {
     // if (selectedUser.length > 0) {
     //   editable = selectedUser.length === 1;
     //   let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
-    //   console.log(newArray);
     //   [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [false, false, false, false];
     //   if (selectedUser[0].enterpriseStatus === 3) {//启用
     //     usable = false;
