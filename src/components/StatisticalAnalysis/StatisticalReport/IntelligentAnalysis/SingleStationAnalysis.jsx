@@ -2,12 +2,11 @@ import React,{ Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import SingleStationAnalysisSearch from './SingleStationAnalysisSearch';
-
+import SingleStationAnalysisReport from './SingleStationAnalysisReport';
 
 class SingleStationAnalysis extends Component{
 
   static propTypes = {
-    stationCode: PropTypes.array,
   };
 
   constructor(props){
@@ -19,6 +18,7 @@ class SingleStationAnalysis extends Component{
     return(
       <div className={styles.SingleStationAnalysis}>
         <SingleStationAnalysisSearch {...this.props} />
+        <SingleStationAnalysisReport {...this.props} />
       </div>
     )
   }

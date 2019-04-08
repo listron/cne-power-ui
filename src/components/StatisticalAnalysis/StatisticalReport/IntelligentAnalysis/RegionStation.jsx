@@ -1,17 +1,16 @@
 import React,{ Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
-import StationSelect from '../../../Common/StationSelect';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import moment from 'moment';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 
+const Option = Select.Option;
 
-class SingleStationAnalysisSearch extends Component{
+class RegionStation extends Component{
 
   static propTypes = {
-    stations: PropTypes.array,
-    stationCode: PropTypes.string,
+    
   };
 
   constructor(props){
@@ -22,7 +21,7 @@ class SingleStationAnalysisSearch extends Component{
 
   }
 
-  selectStation = () => { // 选择电站
+  onRegionChange = () => { // 选择区域
 
   }
 
@@ -35,21 +34,21 @@ class SingleStationAnalysisSearch extends Component{
   }
 
   render(){
-    const { stationCode, stations } = this.props;
+    const {  } = this.props;
+    console.log()
 
     return(
-      <div className={styles.SingleStationAnalysisSearch}>
+      <div className={styles.regionStation}>
         <div className={styles.searchPart}>
           <div className={styles.leftLayout}>
-            <div className={styles.stationSelect}>
-              <span className={styles.text}>电站选择</span>
-              <StationSelect 
-                holderText={'请输入关键字快速查询'}
-                data={stations}
-                onOK={this.selectStation}
-                value={stationCode}
-                // disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)} // 未接入电站不可选
-              />
+            <div className={styles.regionStationSelect}>
+              <span className={styles.text}>区域选择</span>
+              {/* <Select 
+              className={styles.searchInput} 
+              placeholder="请输入..." 
+              onChange={this.onRegionChange}>
+                <Option>123</Option>
+              </Select> */}
             </div>
             <div className={styles.dateSelect}>
               <span className={styles.text}>统计时间</span>
@@ -73,4 +72,4 @@ class SingleStationAnalysisSearch extends Component{
   }
 }
 
-export default SingleStationAnalysisSearch;
+export default RegionStation;

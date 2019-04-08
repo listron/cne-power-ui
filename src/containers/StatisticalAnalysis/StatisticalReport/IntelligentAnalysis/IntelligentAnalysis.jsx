@@ -8,6 +8,8 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 import SingleStationAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/SingleStationAnalysis';
+import RegionStation from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/RegionStation';
+import RegionAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/RegionAnalysis';
 
 const TabPane = Tabs.TabPane;
 
@@ -38,8 +40,12 @@ class IntelligentAnalysis extends Component {
             <TabPane tab="单电站分析" key="singleStation">
               <SingleStationAnalysis {...this.props} />
             </TabPane>
-            <TabPane tab="同区域电站对比" key="sameRegional"></TabPane>
-            <TabPane tab="区域对比分析" key="regionalComparative"></TabPane>
+            <TabPane tab="同区域电站对比" key="sameRegional">
+              <RegionStation {...this.props} />
+            </TabPane>
+            <TabPane tab="区域对比分析" key="regionalComparative">
+              <RegionAnalysis {...this.props} />
+            </TabPane>
           </Tabs>
           </div>
           <Footer />

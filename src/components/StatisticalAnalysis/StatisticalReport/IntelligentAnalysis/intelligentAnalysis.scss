@@ -1,6 +1,6 @@
 @import '../../../../theme/theme.scss';
 
-.searchPart{
+.searchPart{ // 搜索框
   display: flex;
   align-items: center;
   height: 71px;
@@ -10,7 +10,7 @@
   .leftLayout{
     display: flex;
     align-items: center;
-    .stationSelect{
+    .stationSelect,.regionStationSelect{
       display: flex;
       .text{
         color: $darkColor;
@@ -34,5 +34,21 @@
   }
   .exportReport{
     margin-right: 24px;
+  }
+}
+
+.analysisReport{ // 文档
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .reportContent{
+    display: flex;
+    flex-direction: column;
+    border:1px solid #000;
+    margin-top:30px;
+  }
+  .contentText{
+    
   }
 }
