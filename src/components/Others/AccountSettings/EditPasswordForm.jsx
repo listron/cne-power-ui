@@ -91,15 +91,15 @@ class EditPasswordForm extends Component {
                 rules: [{
                   required: true, message: '请输入新密码!',
                 }, {
-                  pattern: /^[A-Za-z0-9]{6,8}$/,
-                  message: '请输入字符长度为6-8的密码'
+                  pattern: /^[A-Za-z0-9~!@#$%^&*()_+.]{6,25}$/,
+                  message: '请输入字符长度为6-25的密码'
                 }, {
                   validator: this.validateToNextPassword,
                 }]
               })(
                 <Input type="password" addonBefore={<i className="iconfont icon-password"></i>} />
               )}
-              <span className={styles.instructionText}>6-8位数字或英文</span>
+              <span className={styles.instructionText}>6-25位数字或英文</span>
             </FormItem>
             <FormItem label="新密码确认">
               {getFieldDecorator('confirm', {
@@ -111,7 +111,7 @@ class EditPasswordForm extends Component {
               })(
                 <Input type="password" addonBefore={<i className="iconfont icon-password"></i>} onBlur={this.handleConfirmBlur} />
               )}
-              <span className={styles.instructionText}>6-8位数字或英文</span>
+              <span className={styles.instructionText}>6-25位数字或英文</span>
             </FormItem>
             <Row type={'flex'} className={styles.saveButton}>
               <Col span={8} offset={8}> <Button onClick={this.savePassword} loading={loading} className={styles.savePassword} >保存</Button></Col>
