@@ -212,7 +212,7 @@ class UserList extends Component {
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
-        title: '用户姓名',
+        title: '姓名',
         width:'200px',
         dataIndex: 'userFullName',
         key: 'userFullName',
