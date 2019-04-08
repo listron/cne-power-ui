@@ -8,7 +8,6 @@ import moment from 'moment';
 import styles from './historyStyle.scss';
 import { message } from 'antd';
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 class HistorySearch extends Component {
   static propTypes = {
@@ -268,9 +267,7 @@ class HistorySearch extends Component {
       tmpPayload.recordedMinuteStart = startTime;
       tmpPayload.recordedMinuteEnd = endTime;
     }
-    console.log(endTime.format('YYYY-MM-DD HH:mm:ss'))
     const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    console.log(tmpAllowedEnd.format('YYYY-MM-DD HH:mm:ss'))
 
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);

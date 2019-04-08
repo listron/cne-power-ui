@@ -270,10 +270,13 @@
 
 .historyRangeDropdown{
   .infoTip{
-    padding-left: 160px;
     color: $themeColor;
   }
   :global{
+    .ant-calendar-footer-btn{
+      display: flex;
+      justify-content: space-between;
+    }
     .ant-calendar-input{
       pointer-events: none;
     }
