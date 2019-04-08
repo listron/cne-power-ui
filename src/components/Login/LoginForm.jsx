@@ -197,10 +197,16 @@ class LoginForm extends Component {
             <div className={styles.abnormalTip}>未通过审核，如有问题，请联系管理员！</div>
           </div>
         }
-        {(userEnterpriseStatus===4 || userEnterpriseStatus===7) && 
+        {userEnterpriseStatus===4 && 
           <div className={styles.loginAbnormal}>
             <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
             <div className={styles.abnormalTip}>账号异常，请联系管理员！</div>
+          </div>
+        }
+        {userEnterpriseStatus===7 && 
+          <div className={styles.loginAbnormal}>
+            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
+            <div className={styles.abnormalTip}>您已被移出企业，无法登陆</div>
           </div>
         }
         {userEnterpriseStatus===3 &&
