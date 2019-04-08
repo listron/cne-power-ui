@@ -1,0 +1,53 @@
+@import '../../../theme/theme.scss';
+
+.loginLayout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  min-height: 100%;
+  flex: 1;
+  .backgroundVideo{
+    position: fixed; 
+    left: 0; 
+    top: 0;
+    z-index: 1;      
+  }
+  .center{
+    margin-top: 136px;
+    width: 480px;
+    height: 620px;
+    z-index: 99;
+    .bottomInfo {
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      justify-content: center;
+      .agreement, .contact {
+        font-size: 14px;
+        color: $darkColor;
+        cursor: pointer;
+        &:last-child{
+          margin-left: 30px;
+        }
+      }
+    } 
+    .footerTitle{
+      margin-top: 56px;
+      text-align: center;
+      color:#fff;
+      opacity: 0.85;
+    }
+  }
+  :global{
+    .ant-tabs{
+      overflow: visible;
+    }
+    //form表单Input下的提示语定位
+    .ant-form-item-control-wrapper{
+      .ant-form-explain{
+        position: absolute;
+        white-space: nowrap;
+      }
+    }
+  }
+}
