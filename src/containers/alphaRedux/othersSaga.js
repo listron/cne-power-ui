@@ -48,7 +48,7 @@ function* editPassword(action) { // 修改密码
         type: othersAction.changeOthersStore,
         payload: { loading: false },
       });
-      message.error(`旧密码修改失败，请重试`);
+      message.error(`修改失败，旧密码输入错误`);
     }
   } catch (e) {
     console.log(e);
