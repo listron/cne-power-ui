@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 class JoinInForm extends Component{
   static propTypes = {
     form: PropTypes.object,
-    userFullname: PropTypes.string,
+    userFullName: PropTypes.string,
     enterpriseName: PropTypes.string,
     getEnterpriseInfo: PropTypes.func,
     sendCode: PropTypes.func,
@@ -258,7 +258,7 @@ class JoinInForm extends Component{
   }
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
-    const { userEnterpriseStatus, userFullname, enterpriseName, enterpriseLogo,username,importUser,importEnterpriseName,importEnterpriseLogo } = this.props;
+    const { userEnterpriseStatus, userFullName, enterpriseName, enterpriseLogo,username,importUser,importEnterpriseName,importEnterpriseLogo } = this.props;
     const defaultLogo = "/img/nopic.png";
     if(userEnterpriseStatus === 5) {
       return (
@@ -307,7 +307,7 @@ class JoinInForm extends Component{
                   }}
                 ],
                 // 中文/英文/空格，小于等于30字符
-                initialValue: userFullname || '',
+                initialValue: userFullName || '',
               })(
                 <Input
                   addonBefore={<i className="iconfont icon-user" />}
