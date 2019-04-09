@@ -18,14 +18,10 @@ class LostGenTable extends Component {
 
   removeFaultInfo = (id) => {
     const { faultGenList, changeFaultList, rememberHandle } = this.props;
-    console.log(rememberHandle)
-    console.log(faultGenList)
     const newFaultGenList = faultGenList.filter(e => {
       rememberHandle && id === e.id && id > 0 && rememberHandle({ faultId: id }); // 要删除的id需暂存
       return id !== e.id
     });
-    console.log(id)
-    console.log(newFaultGenList)
     changeFaultList(newFaultGenList);
   }
 
