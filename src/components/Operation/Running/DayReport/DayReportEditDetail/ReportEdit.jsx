@@ -243,15 +243,15 @@ class ReportEdit extends Component {
   faultListInfoChange = (faultList, closeAddForm = false) => { // 损失电量信息编辑
     let { updateDayReportDetail } = this.state;
     updateDayReportDetail.faultList = faultList;
-    let newState = {...updateDayReportDetail};
+    let newState = {updateDayReportDetail : {...updateDayReportDetail}};
     closeAddForm && (newState.addLostFormShow = false);
-    this.setState({...newState})
+    this.setState({ ...newState })
   }
 
   limitListInfoChange = (limitList, closeLimitForm = false) => { // 限电信息编辑
     let { updateDayReportDetail } = this.state;
     updateDayReportDetail.limitList = limitList;
-    let newState = {...updateDayReportDetail};
+    let newState = {updateDayReportDetail: { ...updateDayReportDetail }};
     closeLimitForm && (newState.addLimitFormShow = false);
     this.setState({ ...newState });
   }
@@ -273,6 +273,7 @@ class ReportEdit extends Component {
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
     const {faultList, limitList, stationCode, errorInfo, stationType, reportDate} = updateDayReportDetail;
+    console.log(faultList)
     return (
       <div className={styles.reportEdit}>
         <div className={styles.reportDetailTitle} >
