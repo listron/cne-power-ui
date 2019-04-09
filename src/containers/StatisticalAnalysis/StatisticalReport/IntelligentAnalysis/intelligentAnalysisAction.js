@@ -1,6 +1,5 @@
 export const intelligentAnalysisAction = {
-  CHANGE_INTELLIGENT_ANALYSIS_STORE_SAGA: Symbol('CHANGE_INTELLIGENT_ANALYSIS_STORE_SAGA'), // 改变reducer参数
-  CHANGE_INTELLIGENT_ANALYSIS_STORE: Symbol('CHANGE_INTELLIGENT_ANALYSIS_STORE'), // 替换reducer参数
-  GET_INTELLIGENT_ANALYSIS_FETCH_SUCCESS: Symbol('GET_INTELLIGENT_ANALYSIS_FETCH_SUCCESS'), // 获取api请求成功
-  resetStore: Symbol('resetStore'), // 发起重置数据请求
+  changeIntelligentAnalysisStore:Symbol('changeIntelligentAnalysisStore'),
+   resetStore: Symbol('resetStore'), // 发起重置数据请求
+  // GET_SINGLE_STATION_ANALYSIS: Symbol('GET_SINGLE_STATION_ANALYSIS'), // 获取单电站报告信息
 }

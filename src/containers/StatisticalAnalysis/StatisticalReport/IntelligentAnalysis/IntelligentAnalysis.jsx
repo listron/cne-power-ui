@@ -62,9 +62,9 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeIntelligentAnalysisStore: payload => dispatch({type: intelligentAnalysisAction.CHANGE_INTELLIGENT_ANALYSIS_STORE_SAGA, payload}),
-  resetStore: payload => dispatch({ type: intelligentAnalysisAction.resetStore, payload  }),
-  getSingleStationAnalysis: payload => dispatch({typs: intelligentAnalysisAction.GET_SINGLE_STATION_ANALYSIS, payload}),
+  changeIntelligentAnalysisStore: payload => dispatch({type: intelligentAnalysisAction.changeIntelligentAnalysisStore, payload}),
+  resetStore: payload => dispatch({type: intelligentAnalysisAction.resetStore, payload}),
+  // getSingleStationAnalysis: payload => dispatch({type: intelligentAnalysisAction.GET_SINGLE_STATION_ANALYSIS, payload}),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntelligentAnalysis);

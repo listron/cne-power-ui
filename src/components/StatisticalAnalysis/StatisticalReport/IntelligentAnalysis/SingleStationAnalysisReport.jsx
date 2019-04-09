@@ -5,7 +5,9 @@ import styles from './intelligentAnalysis.scss';
 class SingleStationAnalysisReport extends Component{
 
   static propTypes = {
-    
+    stationName: PropTypes.string,
+    monthTime: PropTypes.string,
+    dataType: PropTypes.string,
   };
 
   constructor(props){
@@ -13,13 +15,14 @@ class SingleStationAnalysisReport extends Component{
   }
 
   render(){
-    const {  } = this.props;
-
+    const { stationName, monthTime, dataType } = this.props;
+    console.log(dataType);
+    
     return(
       <div className={styles.analysisReport}>
-        <div className={styles.reportContent}>
+        <div className={styles.MonthReportContent}>
           <div className={styles.titleText}>
-            <h3>{}电站{}月分析</h3>
+            <h3>{ stationName }电站分析报告({ monthTime }月)</h3>
           </div>
           <div className={styles.contentText}>
             <p>1、今年————月份的发电量为_____万kWh，同比降低/提高_____%。</p>
