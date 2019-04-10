@@ -90,7 +90,7 @@ const routers = [
   },{//实时监控-功率曲线-多设备
     path:'/monitor/powercurve',
     exact:true,
-    component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')
+    component:lazy(() => import('../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')),
   },{//实时监控-功率曲线-单设备
     path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
     // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
