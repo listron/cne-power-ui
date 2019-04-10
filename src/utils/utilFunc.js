@@ -60,16 +60,14 @@ export const stationsByArea = (stations = []) => {
     e.title = e.stationName;
     e.key = e.stationCode
   })
-  let areaList = []
+  let areaList = [];
   uniqBy(stations, 'provinceCode').forEach((e) => {
     areaList.push({ key: e.provinceCode, title: e.provinceName })
   })
-  console.log('areaList: ', areaList);
   let stationsGroup = groupBy(stations, 'provinceCode')
   areaList.forEach((e) => {
     e.children = stationsGroup[e.key]
   })
-  console.log('areaList: ', areaList);
   return areaList
 }
 
