@@ -117,9 +117,7 @@ class TimeSelectReport extends React.Component {
   }
   render() {
     const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault } = this.props;
-    console.log('stations: ', stations);
     const { modeStyle, list, visiableModal, areaList } = this.state;
-    console.log('areaList: ', areaList);
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
