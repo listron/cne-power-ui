@@ -8,7 +8,6 @@ import SelectModal from './Modal'
 import { stationsByArea } from '../../../utils/utilFunc';
 import { commonAction } from '../../../containers/alphaRedux/commonAction';
 
-
 const Option = Select.Option;
 /* 
 汇总方式选择共用控件。
@@ -29,6 +28,9 @@ const Option = Select.Option;
 //   wind: 'stations',
 // }
 
+
+
+
 class TimeSelectReport extends React.Component {
 
   static propTypes = {
@@ -45,6 +47,11 @@ class TimeSelectReport extends React.Component {
     list: PropTypes.array,
     stations: PropTypes.array,
     deviceTypes: PropTypes.array,
+    regionStationDevice: PropTypes.array,
+    stationDevicemode: PropTypes.array,
+    regionStation: PropTypes.array,
+    region: PropTypes.array,
+
   }
 
   static defaultProps = {
@@ -55,9 +62,14 @@ class TimeSelectReport extends React.Component {
     showModal: true,
     showWind: true,
     showFault: true,
-    modeStyle: 'wind',
+    modeStyle: 'area',
     list: [],
     visiableModal: false,
+    // regionStationDevice: [],
+    // stationDevicemode: [],
+    // regionStation: [],
+    // region: [],
+
   }
 
   constructor(props) {
@@ -65,16 +77,15 @@ class TimeSelectReport extends React.Component {
     this.state = {
       modeStyle: props.modeStyle,
       list: props.list,
-      areaList: stationsByArea(props.stations)
+      // areaList: stationsByArea(props.stations),
       // optionList: props[defaultObj[props.modeStyle]]
+      regionStationDevice: props.regionStationDevice,
+      stationDevicemode: props.stationDevicemode,
+      regionStation: props.regionStation,
+      region: props.region,
     }
   }
-  componentDidMount(){
-    this.props.getRegionStationDevice()
-    this.props.getStationDevicemode()
-    this.props.getRegionStation()
-    this.props.getRegion()
-  }
+ 
 
   onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
@@ -88,11 +99,13 @@ class TimeSelectReport extends React.Component {
     this.props.onChange({ ...params });
   }
   onModalHandelOK = (v) => {
-    console.log(v)
+    console.log(v);
     this.setState({
       visiableModal: false,
       list: v
     })
+    this.props.onChange({ modeStyle: this.state.modeStyle, list: v });
+
   }
   hideModal = () => {
     this.setState({ visiableModal: false })
@@ -106,13 +119,13 @@ class TimeSelectReport extends React.Component {
     if (this.state.modeStyle === 'status') {
       count = this.state.areaList.length
     } else if (this.state.modeStyle === 'station') {
-      count = this.props.stations.length
+      count = 10000;
     } else if (this.state.modeStyle === 'modal') {
-      count = this.props.deviceTypes.length
+      count = 10000;
     } else if (this.state.modeStyle === 'area') {
-      count = this.state.areaList.length
+      count = this.props.region.length
     } else if (this.state.modeStyle === 'wind') {
-      count = this.props.stations.length
+      count = 10000;
     } else if (this.state.modeStyle === 'fault') {
       count = this.state.areaList.length
     }
@@ -123,13 +136,68 @@ class TimeSelectReport extends React.Component {
   }
   handleChange = (v) => {
     this.setState({ list: v });
+    this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
+  }
+  dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
+    let test2 = [];
+    let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData',
+      selectCode = deviceDataType === 'mode' ? 'deviceModeCode' : 'deviceCode',
+      selectName = deviceDataType === 'mode' ? 'deviceModeName' : 'deviceName';
+    data.forEach((e, i) => {
+      let test3 = [];
+      e.stationData.forEach((item, index) => {
+        let test4 = [];
+        item[deviceDataName].forEach((value, key) => {
+          test4.push({
+            ...value,
+            key: value[selectCode],
+            title: value[selectName],
+          })
+        })
+        test3.push({
+          ...item,
+          key: item.stationCode,
+          title: item.stationName,
+          children: test4,
+        })
+      })
+      test2.push({
+        ...e,
+        key: e.regionName,
+        title: e.regionName,
+        children: test3
+      })
+    })
+    return test2
   }
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault,regionStationDeviceData,stationDevicemodeData,regionStationData,regionData } = this.props;
-    console.log('regionStationDeviceData,stationDevicemodeData,regionStationData,regionData : ', regionStationDeviceData,stationDevicemodeData,regionStationData,regionData );
-    // console.log('stations: ', stations);
-    const { modeStyle, list, visiableModal, areaList } = this.state;
-    console.log('areaList: ', areaList);
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice, stationDevicemode, regionStation, region } = this.props;
+    const { modeStyle, list, visiableModal, areaList, } = this.state;
+    let modeData = this.dataFormater(stationDevicemode, 'mode');
+    let windDeviceData = this.dataFormater(regionStationDevice, 'device');
+    let stationData=[];
+    regionStation.forEach((e,i)=>{
+      let stationChild=[];
+      e.stationData.forEach((item,index)=>{
+        stationChild.push({
+          ...item,
+          key: item.stationCode,
+          title: item.stationName,
+        })
+      })
+      stationData.push({
+        ...e,
+        key: e.regionName,
+        title: e.regionName,
+        children: stationChild
+      })
+    })
+    let stationArr=regionStation.map((e,i)=>e.stationData);
+    let stationList=stationArr.length&&stationArr.reduce((p,c)=>(p.concat(c)));
+
+
+
+    // console.log('areaList: ', areaList);
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -150,7 +218,7 @@ class TimeSelectReport extends React.Component {
             placeholder="选择设备状态"
             value={list}
             onChange={this.handleChange}
-            style={{ width: '200px' }}
+            style={{ width: '160px' }}
             maxTagCount={0}
             maxTagPlaceholder={this.maxTagPlaceholder}
             filterOption={filterOption}
@@ -166,14 +234,21 @@ class TimeSelectReport extends React.Component {
             placeholder="选择区域"
             value={list}
             onChange={this.handleChange}
-            style={{ width: '200px' }}
+            style={{ width: '160px' }}
             maxTagCount={0}
             maxTagPlaceholder={this.maxTagPlaceholder}
             filterOption={filterOption}
           >
+            {/* 
             {areaList && areaList.map((e) => {
               return <Option key={e.key}>{e.title}</Option>
-            })}
+            })} 
+          */}
+            {
+              region && region.map((e, i) => {
+                return <Option key={e}>{e}</Option>
+              })
+            }
           </Select>
         }
         {
@@ -183,19 +258,19 @@ class TimeSelectReport extends React.Component {
               placeholder="选择电站"
               value={list}
               onChange={this.handleChange}
-              style={{ width: '200px' }}
+              style={{ width: '160px' }}
               maxTagCount={0}
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
             >
-              {stations && stations.map((e) => {
+              {stationList && stationList.map((e) => {
                 return <Option key={e.stationCode}>{e.stationName}</Option>
               })}
             </Select>
             <SelectModal
               {...this.props}
               list={list}
-              sourceData={areaList}
+              sourceData={stationData}
               handleOK={this.onModalHandelOK}
               visiable={visiableModal}
               hideModal={this.hideModal}
@@ -205,24 +280,30 @@ class TimeSelectReport extends React.Component {
         }
         {
           modeStyle === 'modal' && <div style={{ position: 'relative' }}>
+
             <Select
               mode="multiple"
               placeholder="选择型号"
               value={list}
               onChange={this.handleChange}
-              style={{ width: '200px' }}
+              style={{ width: '160px' }}
               maxTagCount={0}
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
+              open={false}
+
             >
+              {/*
               {deviceTypes && deviceTypes.map((e) => {
                 return <Option key={e.deviceTypeCode}>{e.deviceTypeName}</Option>
               })}
+                */}
             </Select>
+
             <SelectModal
               {...this.props}
               list={list}
-              sourceData={areaList}
+              sourceData={modeData}
               handleOK={this.onModalHandelOK}
               visiable={visiableModal}
               hideModal={this.hideModal}
@@ -232,24 +313,31 @@ class TimeSelectReport extends React.Component {
         }
         {
           modeStyle === 'wind' && <div style={{ position: 'relative' }}>
+
             <Select
               mode="multiple"
               placeholder="选择风机"
               value={list}
               onChange={this.handleChange}
-              style={{ width: '200px' }}
+              style={{ width: '160px' }}
               maxTagCount={0}
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
+              open={false}
             >
+              {/*
               {stations && stations.map((e) => {
                 return <Option key={e.stationCode}>{e.stationName}</Option>
               })}
+               */}
             </Select>
+
+
+
             <SelectModal
               {...this.props}
               list={list}
-              sourceData={areaList}
+              sourceData={windDeviceData}
               handleOK={this.onModalHandelOK}
               visiable={visiableModal}
               hideModal={this.hideModal}
@@ -273,55 +361,16 @@ class TimeSelectReport extends React.Component {
             })}
           </Select>
         }
+        {/*  
         <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
         <Button onClick={this.onSearch}>导出</Button>
+       */}
       </div >
     )
   }
 
 }
-const mapStateToProps = (state) => ({
-  regionData: state.common.get('regionData').toJS(),
-  regionStationData: state.common.get('regionStationData').toJS(),
-  stationDevicemodeData: state.common.get('stationDevicemodeData').toJS(),
-  regionStationDeviceData: state.common.get('regionStationDeviceData').toJS(),
-});
 
-const mapDispatchToProps = (dispatch) => ({
-  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload }),
-  getRegion: params => dispatch({ //获取用户权限的电站区域
-    type: commonAction.getRegion,
-    payload: {
-      params,
-      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
-      resultName: 'regionData',
-    }
-  }),
-  getRegionStation: params => dispatch({ // //获取用户权限的电站区域下的电站
-    type: commonAction.getRegionStation,
-    payload: {
-      params,
-      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
-      resultName: 'regionStationData',
-    }
-  }),
-  getStationDevicemode: params => dispatch({ //获取用户权限的电站区域下的电站下的对应型号
-    type: commonAction.getStationDevicemode,
-    payload: {
-      params,
-      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
-      resultName: 'stationDevicemodeData',
-    }
-  }),
-  getRegionStationDevice: params => dispatch({ //获取用户权限的电站区域下电站下的对应设备
-    type: commonAction.getRegionStationDevice,
-    payload: {
-      params,
-      actionName: commonAction.GET_COMMON_FETCH_SUCCESS,
-      resultName: 'regionStationDeviceData',
-    }
-  }),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(TimeSelectReport) 
+export default (TimeSelectReport)
 

@@ -85,7 +85,7 @@ const routers = [
   },{//实时监控-功率曲线-多设备
     path:'/monitor/powercurve',
     exact:true,
-    component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve//AllDeviceCurve')
+    component:() => import('../containers/Monitor/PowerCurve/AllDeviceCurve/AllDeviceCurve')
   },{//实时监控-功率曲线-单设备
     path:'/monitor/powercurve/:stationCode/:deviceFullCode/:time',
     // path:'/hidden/monitor/powercurve/:stationCode/:deviceCode/:time',
@@ -103,8 +103,8 @@ const routers = [
   },
   { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
-    component: () => import('../components/Common/Building/Building'),
-    // component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
+    // component: () => import('../components/Common/Building/Building'),
+    component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     component: () => import('../components/Common/Building/Building'),
