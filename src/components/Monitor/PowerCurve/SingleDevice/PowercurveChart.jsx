@@ -88,7 +88,7 @@ class PowercurveChart extends Component {
           },
         },
         { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName], },
-        { type: 'line', name: `${e.deviceName}理论功率曲线`, data: theory[e.deviceName] }
+        { type: 'line', name: `${e.deviceModelName}理论功率曲线`, data: theory[e.deviceName] }
       )
     })
     const lineColor = '#666';
