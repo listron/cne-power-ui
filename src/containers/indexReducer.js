@@ -5,7 +5,6 @@ import homepage from './Home/homepageReducer';
 import operation from './Operation/operationReducer';
 import system from './System/systemReducer';
 import login from './Login/loginReducer';
-// import { login } from './Login/NewLogin/loginReducer';
 import monitor from './Monitor/monitorReduce';
 import othersReducer from './alphaRedux/othersReducer';
 // import otherReducer from './alphaRedux/otherReducer';

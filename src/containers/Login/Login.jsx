@@ -41,14 +41,6 @@ class Login extends Component {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''});
   }
 
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
-  }
-
-  toContactUs = () => {
-    this.props.changeLoginStore({pageTab: 'contact'})
-  }
-
   render() {
     const {pageTab,history, userEnterpriseStatus} = this.props;
     return (
