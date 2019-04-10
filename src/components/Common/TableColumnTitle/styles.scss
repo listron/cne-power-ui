@@ -1,0 +1,16 @@
+
+.tableCommonTitle{
+  height: 60px;
+  display: inline-block;
+  padding: 9px 0;
+  .text, .unit{
+    line-height: 21px;
+    text-align: center;
+  }
+  .text{
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './defectHandleForm.scss';
 import DefectReviewForm from './DefectReviewForm';
@@ -23,15 +23,15 @@ class DefectHandleForm extends Component {
     super(props);
   }
 
+  componentWillUnmount(){
+    this.props.changeWorkOrderStore({modify:false})
+  }
 
   onSubmit = (data) => { // 点击提交的时候
-    console.log(data)
     let params = {};
     const { defectDetail, sendDefect, rejectDefect, closeDefect, handleDefect, checkDefect } = this.props;
-    console.log(defectDetail)
     const defectId = defectDetail.defectId; //缺陷ID
     const status = defectDetail.defectStatus; // 缺陷状态
-    console.log('status',status)
     if (status === '1') { // 审核缺陷
       switch (data.dealResult) {
         case 'send':
@@ -100,25 +100,25 @@ class DefectHandleForm extends Component {
   }
 
 
-  getDefaultTitle=(status)=>{ // 标题
-    let result='';
-    switch(status){
-      case '1':result='审核';break;
-      case '2':result='处理结果';break;
-      case '3':result='消缺验收';break;
-      default:result='';break;
+  getDefaultTitle = (status) => { // 标题
+    let result = '';
+    switch (status) {
+      case '1': result = '审核'; break;
+      case '2': result = '处理结果'; break;
+      case '3': result = '消缺验收'; break;
+      default: result = ''; break;
     }
     return result;
   }
 
 
- 
-  
+
+
   render() {
     const rightHandler = localStorage.getItem('rightHandler');
     const reviewDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_review');
     const checkDefectRight = rightHandler && rightHandler.split(',').includes('workExamine_defect_check');
-    const { status } = this.props;
+    const { status, changeWorkOrderStore,defectId } = this.props;
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>
@@ -126,12 +126,27 @@ class DefectHandleForm extends Component {
           <div className={styles.text}>{this.getDefaultTitle(status)}</div>
           <div className={styles.border}></div>
         </div>
-        {status === '1' && reviewDefectRight && <DefectReviewForm  onSubmit={this.onSubmit} /> }
-        {status === '2' &&  <DefectProcessForm commonList={this.props.commonList} onSubmit={this.onSubmit} />}
-        {status === '3' && checkDefectRight &&  <DefectCheckForm  onSubmit={this.onSubmit} />}
+        {status === '1' && reviewDefectRight &&
+          <DefectReviewForm 
+          onSubmit={this.onSubmit} 
+          changeWorkOrderStore={changeWorkOrderStore} 
+          defectId={defectId}
+          />}
+        {status === '2' &&
+          <DefectProcessForm
+            commonList={this.props.commonList}
+            onSubmit={this.onSubmit}
+            defectId={defectId}
+            changeWorkOrderStore={changeWorkOrderStore} />}
+        {status === '3' && checkDefectRight &&
+          <DefectCheckForm 
+          onSubmit={this.onSubmit} 
+          changeWorkOrderStore={changeWorkOrderStore} 
+          defectId={defectId}
+          />}
       </div>
     );
-  }  
+  }
 }
 
 export default DefectHandleForm;

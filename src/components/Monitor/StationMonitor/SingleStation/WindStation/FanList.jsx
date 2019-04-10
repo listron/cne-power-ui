@@ -6,6 +6,8 @@ import styles from './windStation.scss';
 import { Tabs, Switch, Radio, Table, Progress, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../Common/CommonPagination/index';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 import Map from './Map';
 
 const TabPane = Tabs.TabPane;
@@ -123,21 +125,19 @@ class FanList extends React.Component {
         sorter: (a, b) => a.deviceName.length - b.deviceName.length,
       },
       {
-        title: '风速(m/s)',
+        title: () => <TableColumnTitle title="风速" unit="m/s" />,
         dataIndex: 'windSpeed',
         key: 'windSpeed',
-        render: (text, record, index) => (<span>{text || '--'}</span>),
+        render(value){ return numWithComma(value); },
         sorter: (a, b) => a.windSpeed - b.windSpeed,
-      },
-      {
-        title: '风向(°)',
+      }, {
+        title: () => <TableColumnTitle title="风向" unit="°" />,
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
-        render: (text, record, index) => (<span>{text || '--'}</span>),
+        render(value){ return numWithComma(value); },
         sorter: (a, b) => a.angleOfYaw - b.angleOfYaw,
-      },
-      {
-        title: '实时功率(kW)',
+      }, {
+        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
         render: (value, record, index) => {
@@ -147,8 +147,8 @@ class FanList extends React.Component {
                 <div className={styles.devicePower}>
                   <div className={styles.progressPower}>
                     <div className={styles.deviceValue}>
-                      <div>{record.devicePower}</div>
-                      <div>{record.deviceCapacity}</div>
+                      <div>{numWithComma(record.devicePower)}</div>
+                      <div>{numWithComma(record.deviceCapacity)}</div>
                     </div>
                     <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
                   </div>
@@ -162,7 +162,7 @@ class FanList extends React.Component {
         },
         sorter: (a, b) => a.devicePower - b.devicePower,
       }, {
-        title: '装机容量(kW)',
+        title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
@@ -177,10 +177,10 @@ class FanList extends React.Component {
         },
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
-        title: '告警(个)',
+        title: () => <TableColumnTitle title="告警" unit="个" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
-        render: (text, record) => (<span>{text || 0}</span>),
+        render(value){ return numWithComma(value); },
         sorter: (a, b) => a.alarmNum - b.alarmNum,
       }, {
         title: '设备状态',

@@ -19,7 +19,10 @@ const Option = Select.Option;
   5. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，未选设备时的占位文字。 
   7. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
-
+  8. 选填- deviceShowNumber:bool; 默认是false，展示具体的设备名称  传入为true时，显示的时已选设备 已选设备数量/所有设备数量
+  9. 选填 - max: number; 传入时，限定最多展示设备个数, 否则提示：'所选设备不得超过max个'。
+  10. 选填 - needAllCheck: bool; 默认false, 是否需要开启弹框内的全选功能。
+  11. 选填- disabledDevice:array['设备全编码'],;不可选设备,默认是[],禁选设备数组里是设备deviceCode的值，其余任意['73M101M34M1']
 其余参数：组件内部自动挂载数据:
 1. devices // 依据父组件stationCode, deviceTypeCode请求得的所有设备array[object];
   格式如: {
@@ -47,12 +50,14 @@ class DeviceSelect extends Component {
     deviceTypeCode: PropTypes.number,
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
+    deviceShowNumber: PropTypes.bool,
     holderText: PropTypes.string,
     value: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
     style: PropTypes.object,
-
+    max: PropTypes.number,
+    disabledDevice: PropTypes.array,
     devices: PropTypes.array, // 自带props
     partitions: PropTypes.array,
     filterDevices: PropTypes.array,
@@ -68,6 +73,8 @@ class DeviceSelect extends Component {
     multiple: false,
     holderText: '输入关键字快速查询',
     disabled: false,
+    deviceShowNumber: false,
+    disabledDevice: [],
   }
 
   constructor(props) {
@@ -76,7 +83,18 @@ class DeviceSelect extends Component {
       deviceModalShow: false,
       checkedDevice: props.value || [], // 存储当前选中设备。
       autoCompleteDevice: [], // 自动搜索框的提示内容
-      autoCompleteText: props.value &&  props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
+      autoCompleteText: props.value && props.value[0] && props.value[0].deviceName || '', // 自动补全框展示内容
+    }
+  }
+  componentDidMount() {
+    const { stationCode, deviceTypeCode, } = this.props;
+
+    const { getDevices, getPartition, getMatrixDevices } = this.props;
+    if (stationCode && deviceTypeCode) {
+      getMatrixDevices({ stationCode, deviceTypeCode });  // 分区数据
+      getDevices({ stationCode, deviceTypeCode }, 'devices');
+      getDevices({ stationCode, deviceTypeCode }, 'filterDevices');
+      getPartition({ stationCode, deviceTypeCode });
     }
   }
 
@@ -132,8 +150,10 @@ class DeviceSelect extends Component {
   }
 
   handleSearch = autoCompleteText => { // 自动完成框接收到搜索变化。
-    const { devices } = this.props;
-    const autoCompleteDevice = devices.filter(e => e.deviceName.indexOf(autoCompleteText) >= 0);
+    const { devices, disabledDevice } = this.props;
+    const autoCompleteDevice = devices.filter(
+      e => !disabledDevice.includes(e.deviceCode)// 剔除禁选设备
+      ).filter(e => e.deviceName.indexOf(autoCompleteText) >= 0);
     this.setState({
       autoCompleteDevice,
       autoCompleteText
@@ -141,8 +161,12 @@ class DeviceSelect extends Component {
   }
 
   selectDevice = checkedDevices => { // 设备多选下拉框
-    const { devices } = this.props;
-    const outputDevices = devices.filter(e => checkedDevices.includes(e.deviceCode))
+    const { devices, max } = this.props;
+    if (max > 0 && checkedDevices.length > max) {
+      message.error(`所选设备不得超过${max}个`);
+      return;
+    }
+    const outputDevices = devices.filter(e => checkedDevices.includes(e.deviceCode));
     this.onOK(outputDevices)
   }
 
@@ -167,9 +191,13 @@ class DeviceSelect extends Component {
   }
 
   render() {
-    const { multiple, holderText, disabled, style, devices } = this.props;
+    const { multiple, holderText, disabled, style, devices, deviceShowNumber,disabledDevice } = this.props;
     const { deviceModalShow, autoCompleteDevice, checkedDevice, autoCompleteText } = this.state;
     const checkedDeviceCodes = checkedDevice.map(e => e.deviceCode);
+    const deviceShow = checkedDeviceCodes.length > 0 && deviceShowNumber && {
+      maxTagCount: 0,
+      maxTagPlaceholder: `已选设备${checkedDeviceCodes.length}/${devices.length}`
+    } || {};
     return (
       <div className={styles.deviceSelect} style={style}>
         {multiple ? <Select
@@ -180,8 +208,12 @@ class DeviceSelect extends Component {
           onChange={this.selectDevice}
           value={checkedDeviceCodes}
           className={styles.stationSelectMainInput}
+          filterOption={(input, option) => option.props.children.indexOf(input) >= 0}
+          {...deviceShow}
         >
-          {devices.map((e, i) => (
+          {devices.filter(
+            e => !disabledDevice.includes(e.deviceCode)
+            ).map((e, i) => (
             <Option key={e.deviceCode} style={{ display: (i > 19 ? 'none' : 'block') }}>{e.deviceName}</Option>
           ))}
           {devices.length > 20 && <Option disabled key="showAll" className={styles.showAll}>点击图标查看所有设备</Option>}
@@ -205,6 +237,7 @@ class DeviceSelect extends Component {
           deviceModalShow={deviceModalShow}
           hideModal={this.hideModal}
           showModal={this.showModal}
+          disabledDevice={disabledDevice}
         />
       </div>
     )

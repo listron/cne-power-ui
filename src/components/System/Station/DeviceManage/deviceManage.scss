@@ -85,11 +85,23 @@
 }
 
 .deviceManageList{ // 设备表格区
+  .deviceNameStyle{
+    cursor: pointer;
+    text-decoration: underline;
+  }
   border-top: 1px solid $promptColor;
   :global{
     .ant-table{
       .ant-table-placeholder{
         border-bottom: none;
+      }
+      .ant-table-thead{
+        th>div{
+          height: 60px;
+        }
+      }
+      .ant-table-column-sorter{
+        top: 18px;
       }
     }
   }

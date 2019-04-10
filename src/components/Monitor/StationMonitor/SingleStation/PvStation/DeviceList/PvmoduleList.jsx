@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './deviceList.scss';
 import classnames from 'classnames';
 import { Spin } from 'antd';
+import { dataFormats } from '../../../../../../utils/utilFunc';
 
 class PvmoduleList extends Component {
   static propTypes = {
@@ -14,88 +15,97 @@ class PvmoduleList extends Component {
     loading: PropTypes.bool,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      firstLoad : true,
+    this.state = {
+      firstLoad: true,
+      pvLevelStatus: '', // 为空的时候
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
     const nextParams = nextProps.match.params;
     const nextStation = nextParams.stationCode;
-    if( nextStation !== stationCode ){
+    if (nextStation !== stationCode) {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearTimeout(this.timeOutId);
   }
 
   getData = (stationCode) => {
     const { firstLoad } = this.state;
-    this.props.getPvmoduleList({stationCode, firstLoad});
-    this.timeOutId = setTimeout(()=>{
-      if(firstLoad){
-        this.setState({firstLoad: false});
+    this.props.getPvmoduleList({ stationCode, firstLoad });
+    this.timeOutId = setTimeout(() => {
+      if (firstLoad) {
+        this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
     }, 10000);
   }
-  compareName = (a,b) => {
-    if(a['deviceName'] && b['deviceName']){
+  compareName = (a, b) => {
+    if (a['deviceName'] && b['deviceName']) {
       return a['deviceName'].localeCompare(b['deviceName']);
     }
   }
-  render(){
-    const { pvmoduleList,loading } = this.props;
-    const pvmoduleListSet = new Set(pvmoduleList);
-    const tmpPvmoduleList = [...pvmoduleListSet];
-    let tmpNBList = new Array();
-    for(let i=0;i<16;i++){
-      tmpNBList.push(i);
-    }
+
+  buttonClick = (e) => {
+    const { pvLevelStatus } = this.state;
+    this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
+  }
+  render() {
+    const { pvmoduleList, loading, pvLevelNums } = this.props;
+    const { pvLevelStatus } = this.state;
+    const pvmoduleListSet = Array.from(new Set(pvmoduleList));
+    let statusArray = ['big', 'normal', 'small', 'abnormal']
+    const tmpPvmoduleList = pvLevelStatus ? pvmoduleListSet.filter(e => e.pvAllLevel.includes((statusArray.findIndex(item => item === pvLevelStatus)) + 1)) : pvmoduleListSet;
+    // 评价等级(1-蓝色、2-绿色、3-橙色、4-红色)
+    const pvStatus = [
+      { name: 'normal', value: '正常', useName: 'pvNormalNum' },
+      { name: 'small', value: '偏小', useName: 'pvSmallerNum' },
+      { name: 'abnormal', value: '异常', useName: 'pvAbnormalNum' },
+      { name: 'big', value: '偏大', useName: 'pvBiggerNum' },
+    ]
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
-        {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> : 
-              ((tmpPvmoduleList&&tmpPvmoduleList.length>0) ? tmpPvmoduleList.sort(this.compareName).map((item,index)=>{
+          <div className={styles.pvmoduleListTop}>
+            {pvStatus.map(item => {
+              return (
+              <p className={`${styles[item.name]} ${pvLevelStatus === item.name && styles.active}`} key={item.name}
+               onClick={() => { this.buttonClick(item.name) }}>{item.value} {pvLevelNums[item.useName] || '--'}</p>)
+            })}
+          </div>
+          <div className={styles.pvmoduleCont}>
+            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+              (tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
                 return (
                   <div key={index} className={styles.pvmoduleItem} >
                     <div className={styles.deviceName} ><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
-                    {item.electricityList && tmpNBList.map((e,i)=>{
-                      let num;
-                      let obj = item.electricityList[i];
-                      if(obj){
-                        for(let key in obj){
-                          if(key.indexOf('pointValue') === 0){
-                            num = obj[key];
-                          }
-                        }
-                        return (<span className={classnames({
-                          normalValue: !!num,
-                          // stopValue: obj.pointStatus === 200,
-                          // breakValue: obj.pointStatus === 300,
-                          // noValue: obj.pointStatus === 900,
-                          commonStyle: true,
-                        })} key={i} >{num || ''}</span>);
-                      }else{
-                        return (<span className={classnames({
-                          commonStyle: true,
-                        })}  key={i} >{num || ''}</span>)
-                      }
+                    {item.electricityList.map((e, i) => {
+                      let pointLevelName = ['big', 'normal', 'small', 'abnormal',][e.pointLevel - 1];
+                      return (<span className={classnames({
+                        normalValue: !!e.pointStatus,
+                        commonStyle: true,
+                        [pointLevelName]: !!e.pointStatus,
+                      })} key={i}>
+                        {!!e.pointStatus && dataFormats(e.pointValue, '--', 1, false)}
+                      </span>)
                     })}
                   </div>
                 );
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
-          }
+            }
+          </div>
+
         </div>
       </div>
     )

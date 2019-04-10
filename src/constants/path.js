@@ -249,9 +249,38 @@ export default {
       relieveAlarm: '/v3/alarm/relievealarm',//屏蔽告警
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
-      getFanList: '/v3/monitor/windturbine/datalist', // 风机实时数据列表
-      windturbine: '/v3/monitor/windturbine',  //风机实时数据
-      sequencechart: '/v3/monitor/windturbine/sequencechart'
+      getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      windturbine:'/v3/monitor/windturbine',  //风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart',
+      //功率曲线
+      getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',//功率曲线图表-多风机
+      getPowerdeviceList:'/v3/wind/powercurve/fans/list',//..功率曲线列表-多风机
+      exportPowerdevice:'/v3/wind/powercurve/fans/export',//功率曲线导出-多风机/单风机
+      getSingleDeviceCurveData:'/v3/wind/powercurve/fan/powercurvechart',//功率曲线图表-功率曲线-单风机
+      getSingleDeviceCurveList:'/v3/wind/powercurve/fan/list',//功率曲线列表-单风机
+      getRoseChart:'/v3/wind/powercurve/fan/windrosechart',//功率曲线图表-风向玫瑰图-单风机
+      getpowerspeedchart:'/v3/wind/powercurve/fan/powerspeedchart',//功率曲线图表-功率&转速-单风机
+      getpitchanglespeedchart:'/v3/wind/powercurve/fan/pitchanglespeedchart',//功率曲线图表-桨距角&风速-单风机
+      getwinddistributionchart:'/v3/wind/powercurve/fan/winddistributionchart',//功率曲线图表-风频分布-单风机
+      getsequencechart:'/v3/wind/powercurve/fan/sequencechart',//功率曲线图表-时序图-单风机
+      getDeviceInfo: '/v3/management/device', // 设备详情信息表
+
+
+      // 数据分析 
+      getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
+      getAvailableDeviceType: '/v3/wind/analysis/devicetypelist', // 获取有测点的设备类型
+      getListHistory: '/v3/wind/analysis/history/devicedata', // 历史数据 - 列表数据
+      getAllHistory: '/v3/wind/analysis/history/devicechart', // 历史趋势 - 图表数据
+      exportHistory: '/v3/wind/analysis/history/export', // 导出历史数据
+      getSecendInteral: '/v3/wind/analysis/second', // 可用时间间隔
+      getRealtimeChart: '/v3/wind/analysis/devicechart', // 实时数据 - 图表
+      getRealtimeList: '/v3/wind/analysis/devicedata', // 实时数据 - 表格
+      exportRealtime: '/v3/wind/analysis/export', // 导出实时数据
+      getAllScatterDiagram: '/v3/wind/scatterpoint/fan/chart', // 散点图 - 图标数据
+      getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
+      exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
+      getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+                  
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

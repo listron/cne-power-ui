@@ -6,7 +6,8 @@ import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination';
 import { SequenceChart } from '../CommonChart/SequenceChart';
 import moment from 'moment';
-
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class HistoryWarnCon extends Component {
   static propTypes = {
@@ -113,7 +114,6 @@ class HistoryWarnCon extends Component {
     return current && current > moment().endOf('day');
   }
 
-
   render() {
     const { stations, matrixList, loading, historyWarnList, pageSize, totalNum, pageNum, sequenceChartList, nowSequenceChartList } = this.props;
     const { record } = this.state;
@@ -123,39 +123,34 @@ class HistoryWarnCon extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-      },
-      {
+      }, {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '发生时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
         defaultSortOrder: 'descend',
-      },
-      {
-        title: '电量损失比',
+      }, {
+        title: () => <TableColumnTitle title="电量损失比" unit="%" />,
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
+        render(text){ return numWithComma(text); },
         sorter: true,
-      },
-      {
+      }, {
         title: '查看',
         className: styles.iconDetail,
         render: (text, record) => (
@@ -168,7 +163,11 @@ class HistoryWarnCon extends Component {
         )
       }
     ]
-    const dataSource = historyWarnList.map((item, index) => ({ ...item, key: index, happenTime: moment(item.happenTime).format('YYYY-MM-DD'),lostGenPercent:item.lostGenPercent +'%' }));
+    const dataSource = historyWarnList.map((item, index) => ({
+      ...item,
+      key: index,
+      happenTime: moment(item.happenTime).format('YYYY-MM-DD')
+    }));
 
     return (
       <div className={styles.historyWarnMain}>

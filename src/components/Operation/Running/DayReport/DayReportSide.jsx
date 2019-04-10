@@ -12,10 +12,6 @@ class DayReportSide extends Component {
     sidePage: PropTypes.string,
   }
 
-  constructor(props){
-    super(props);
-  }
-
   render(){
     const { sidePage } = this.props;
     return (

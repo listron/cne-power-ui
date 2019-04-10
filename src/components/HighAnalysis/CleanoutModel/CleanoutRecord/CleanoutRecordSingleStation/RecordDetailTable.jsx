@@ -5,6 +5,8 @@ import AddCleanoutRecord from './AddCleanoutRecord';
 import InputLimit from '../../../../Common/InputLimit';
 import moment from 'moment';
 import { Table, Icon, Modal, Form, DatePicker, Input, Button, TreeSelect } from 'antd';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../../utils/utilFunc';
 const FormItem = Form.Item;
 
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
@@ -198,7 +200,6 @@ class RecordDetailTable extends Component {
         title: '计划清洗时间',
         dataIndex: 'estimateStartTime',
         key: 'estimateStartTime',
-
         render: (text, record, index) => {
           return (
             <span className={styles.estimateStartTime} title={record.estimateStartTime+'-'+record.estimateEndTime}>{record.estimateStartTime?record.estimateStartTime:'-'}-{record.estimateEndTime}</span>
@@ -214,11 +215,10 @@ class RecordDetailTable extends Component {
           )
         }
       }, {
-        title: '实际清洗用时(天)',
+        title: () => <TableColumnTitle title="实际清洗用时" unit="天" />,
         dataIndex: 'actualCleanTime',
         key: 'actualCleanTime',
-        render: text => (<span>{parseInt(text) >= 0 ? `${text}` : '--'}</span>),
-
+        render(text){ return numWithComma(text); },
       }, {
         title: '清洗方式',
         dataIndex: 'cleanType',
@@ -231,23 +231,22 @@ class RecordDetailTable extends Component {
             </div>
           )
         }
-
       }, {
         title: '清洗公司',
         dataIndex: 'company',
         key: 'company',
         render: text => (<span>{text? `${text}` : '- -'}</span>),
-
       }, {
-        title: '清洗费用(元)',
+        title: () => <TableColumnTitle title="清洗费用" unit="元" />,
         dataIndex: 'cleanCost',
         key: '',
-        render: text => (<span>{text? `${text}` : '- -'}</span>),
+        render(text){ return numWithComma(text); },
 
       }, {
-        title: '清洗收益(万kWh)',
+        title: () => <TableColumnTitle title="清洗收益" unit="万kWh" />,
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
+        render(text){ return numWithComma(text); },
       }, {
         title: '添加/查看清洗记录',
         key: 'addRecord',

@@ -66,7 +66,7 @@ class HandleRemoveModal extends Component {
   HandleRemoveWarning = () => {
     const {  endTime } = this.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
-      const recordValue = values.endTime ? values.endTime : endTime
+      const recordValue = values.endTime ? moment(values.endTime).utc().format('') : endTime;
       if (!err) {
         this.props.HandleRemoveWarning({
           endTime: recordValue,

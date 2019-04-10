@@ -3,63 +3,137 @@
 // 光伏组件
 .pvmodule{
   .pvmoduleList{
-    padding: 16px 25px;
     .nodata{
       text-align: center;
       margin: 89px auto;
     }
-    .pvmoduleItem{
-      width: 272px;
-      margin: 0 12px;
-      display: inline-block;
-      margin-bottom: 20px;
-      .deviceName{
-        font-size: 14px;
-        color: $darkColor;
+    .pvmoduleListTop{
+      height: 49px;
+      border-top: 1px dashed #dfdfdf;
+      border-bottom: 1px dashed #dfdfdf;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding-right: 30px;
+      p{
+        height: 24px;
+        line-height: 24px;
+        padding: 0 4px;
+        border:1px solid #3e97d1;
+        border-radius:4px;
+        margin-left: 8px;
+        cursor: pointer;
       }
-      :global{
-        .iconfont{
-          width: 23px;
-          height: 30px;
-          margin-right: 5px;
-          font-size: 23px;
-        }
-        .commonStyle{
-          background: #f1f1f1;
-          width: 32px;
-          height: 18px;
-          display: block;
-          float: left;
-          font-size: 11px;
-          color: $themeColor;
-          margin: 1px;
-          border-radius: 2px;
-          text-align: center;
-        }
-        .normalValue{
-          background: #ceebe0;
-        }
-        .stopValue{
-          background: #f9b600;
-        }
-        .breakValue{
-          background: #a42b2c;
-        }
-        .noValue{
-          background: #f1f1f1;
-        }
+      .normal{
+        color: #199475;
+        border:1px solid #199475;
       }
-      .sightValue{
-        background: #ceebe0;
-        width: 21px;
-        height: 18px;
-        display: inline-block;
-        font-size: 11px;
-        color: #fff;
-        margin: 0 2px;
-        border-radius: 2px;
+      .small{
+        color: #f9b600;
+        border:1px solid #f9b600;
+      }
+      .abnormal{
+        color: #a42b2c;
+        border:1px solid #a42b2c;
+      }
+      .big{
+        color: #3e97d1;
+        border:1px solid #3e97d1;
+      }
+      .abnormal.active{
+        background: #a42b2c;
+        border:1px solid #a42b2c;
+        color:#fff;
+      }
+      .normal.active{
+        background: #199475;
+        border:1px solid #199475;
+        color:#fff;
+      }
+      .small.active{
+        background: #f9b600;
+        border:1px solid #f9b600;
+        color:#fff;
+      }
+      .big.active{
+        background: #3e97d1;
+        border:1px solid #3e97d1;
+        color:#fff;
       }
     }
+    .pvmoduleCont{
+      padding: 16px 25px;
+      .pvmoduleItem{
+        width: 272px;
+        margin: 0 12px;
+        display: inline-block;
+        margin-bottom: 20px;
+        .deviceName{
+          font-size: 14px;
+          color: $darkColor;
+        }
+        :global{
+          .iconfont{
+            width: 23px;
+            height: 30px;
+            margin-right: 5px;
+            font-size: 23px;
+          }
+          .commonStyle{
+            background: #f1f1f1;
+            width: 32px;
+            height: 18px;
+            display: block;
+            float: left;
+            font-size: 11px;
+            color: $themeColor;
+            margin: 1px;
+            border-radius: 2px;
+            text-align: center;
+          }
+          .normalValue{
+            background: #ceebe0;
+          }
+          .stopValue{
+            background: #f9b600;
+          }
+          .breakValue{
+            background: #a42b2c;
+          }
+          .noValue{
+            background: #f1f1f1;
+          }
+          .abnormal{
+            color: #fff;
+            background: #a42b2c;
+          }
+          .normal{
+            color: #199475;
+            background: #ceebe0;
+          }
+          .small{
+            color: #fff;
+            background: #f9b600;
+          }
+          .big{
+            color: #fff;
+            background:#3e97d1;
+          }
+        }
+        .sightValue{
+          background: #ceebe0;
+          width: 21px;
+          height: 18px;
+          display: inline-block;
+          font-size: 11px;
+          color: #fff;
+          margin: 0 2px;
+          border-radius: 2px;
+        }
+      }
+  
+    }
+    
   }
 }
 //逆变器 
@@ -100,7 +174,6 @@
           :global{
             .iconfont{
               font-size: 22px;
-              color: #dfdfdf;
             }
             .icon-alarm{
               position: absolute;
@@ -110,10 +183,29 @@
               height: 10px;
               color: #a42b2c;
               font-size: 14px;
+              background: #fff;
             }
             a{
               color: $darkColor;
             }
+            .icon-outage{
+              position: absolute;
+              bottom: 9px;
+              left: -5px;
+              width: 10px;
+              height: 10px;
+              color: #e08031;
+              font-size: 14px;
+            }
+          }
+          .orange{
+            color: #f9b600;
+          }
+          .red{
+            color: #a42b2c;
+          }
+          .common{
+            color: #dfdfdf;
           }
         }
         .inverterItemR{
@@ -148,6 +240,12 @@
             display: inline-block;
             width: 50%;
             text-align: left;
+          }
+          .orange{
+            color: #f9b600;
+          }
+          .red{
+            color: #a62e2f;
           }
         }
         .hlBlockLink:hover{
@@ -302,6 +400,14 @@
   }
   
   :global{
+    .ant-table .ant-table-thead{
+      th>div{
+        height: 60px;
+      }
+    }
+    .ant-table .ant-table-thead .ant-table-column-sorter{
+      top: 18px;
+    }
     .ant-spin-dot i {
       background-color: #199475;
     }

@@ -9,6 +9,9 @@ import WarningTip from '../../../../Common/WarningTip';
 import AssignUserModal from '../AssignUserModal/AssignUserModal';
 import AssignStationModal from '../AssignStationModal/AssignStationModal';
 
+// to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
+// 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
+
 const { Option } = Select;
 
 class DepartmentTable extends Component {
@@ -47,15 +50,20 @@ class DepartmentTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showWarningTip: false,
+      showWarningTip: false, // 行选择后多个部门的编辑与删除
       warningTipText: '',
-      hiddenWarningTipCancelText: false
+
+      handleWarningTip: false, // 直接操作列
+      handleTipText: '',
+      handlRemove: false, // 用于区分删除操作来源于哪个动作的关键字=> 列直接操作：true， 选中行下拉框操作: false,
+      handlRemoveInfo: {}, // 直接删除的部门信息。
     }
   }
 
   onDepartmentAdd = () => {//进入添加部门页
     this.props.changeDepartmentStore({ showPage: 'add' });
   }
+
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.props.getDepartmentList({
       enterpriseId: this.props.enterpriseId,
@@ -68,34 +76,57 @@ class DepartmentTable extends Component {
       pageSize,
     })
   }
+
   onRowSelect = (selectedRowKeys, selectedRows) => {//行选择
     this.props.changeDepartmentStore({
       selectedDepartment: selectedRows
     })
   }
-  onWarningTipOK = () => {//删除部门，拒绝编辑部门提示框
-    const { selectedDepartment, deleteDepartment } = this.props;
-    const selectedDepartmentHasChild = selectedDepartment.map(e => e.hasChildren).some(e => !!e);//有子部门不得删除
-    const forbiddenDelete = selectedDepartment.some(e => e.departmentSource === 0); //预设电站不得删除
+
+  onWarningTipOK = () => {// 删除部门
+    const { selectedDepartment, deleteDepartment, enterpriseId } = this.props;
+    const { handlRemove, handlRemoveInfo } = this.state;
     this.setState({
+      showWarningTip: false
+    });
+    if (handlRemove) { // 直接操作删除。
+      deleteDepartment({
+        departmentId: `${handlRemoveInfo.departmentId}`,
+        enterpriseId: enterpriseId
+      });
+    } else { // 选中行/多行后，删除选中的部门。
+      deleteDepartment({
+        departmentId: selectedDepartment.map(e => e.departmentId).join(','),
+        enterpriseId: enterpriseId
+      });
+    }
+    this.setState({ // 操作完成后，重置提示框状态。
       showWarningTip: false,
-      hiddenWarningTipCancelText: false
-    })
-    forbiddenDelete || selectedDepartmentHasChild || deleteDepartment({
-      departmentId: selectedDepartment.map(e => e.departmentId).join(','),
-      enterpriseId: this.props.enterpriseId
+      warningTipText: '',
+      handlRemove: false,
+      handlRemoveInfo: {},
     });
   }
+
+  handleWarningOK = () => { // 被禁止的操作提示框 确认
+    this.setState({
+      handleWarningTip: false, // 直接操作列
+      handleTipText: '',
+    });
+  }
+
   cancelRowSelect = () => {//取消行选择
     this.props.changeDepartmentStore({
       selectedDepartment: []
     })
   }
+
   cancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
       showWarningTip: false
     })
   }
+
   tableChange = (pagination, filter, sorter) => {//部门排序
     const sort = sorter.field;
     const ascend = sorter.order === 'ascend' ? '0' : '1';
@@ -110,6 +141,7 @@ class DepartmentTable extends Component {
       pageSize: this.props.pageSize,
     })
   }
+
   showDepartmentDetail = (record) => {//点击跳转至详情
     const { departmentId } = record;
     this.props.changeDepartmentStore({
@@ -119,15 +151,15 @@ class DepartmentTable extends Component {
       departmentId
     })
   }
+
   departmentHandle = (value) => {//编辑，删除，分配用户/电站
     const { selectedDepartment } = this.props;
     if (value === 'edit') {
       const forbiddenEdit = selectedDepartment.some(e => e.departmentSource === 0);
       if (forbiddenEdit) {
         this.setState({
-          showWarningTip: true,
-          warningTipText: '不得编辑预设部门!',
-          hiddenWarningTipCancelText: true
+          handleWarningTip: true,
+          handleTipText: '不得编辑预设部门!',
         })
       } else {
         this.props.changeDepartmentStore({
@@ -137,35 +169,24 @@ class DepartmentTable extends Component {
       }
     } else if (value === 'delete') {
       const selectedDepartmentHasChild = selectedDepartment.map(e => e.hasChildren).some(e => !!e);
-      const selectedDepartmentHasMember = selectedDepartment.map(e => e.hasMember).some(e => !!e);
-      // const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
-      // if(forbiddenDelete){
-      //   this.setState({
-      //     showWarningTip: true,
-      //     warningTipText: '不得删除预设部门!',
-      //     hiddenWarningTipCancelText: true
-      //   })
-      // }else 
-      if (selectedDepartmentHasChild) {
+      // const selectedDepartmentHasMember = selectedDepartment.map(e => e.hasMember).some(e => !!e);
+      const forbiddenDelete = selectedDepartment.some(e=>e.departmentSource === 0)
+      if(forbiddenDelete){
         this.setState({
-          showWarningTip: true,
-          warningTipText: '请先删除子部门!',
-          hiddenWarningTipCancelText: true
+          handleWarningTip: true,
+          handleTipText: '不得删除预设部门!',
         })
-      } else if (selectedDepartmentHasMember) {
+      } else if (selectedDepartmentHasChild) {
         this.setState({
-          showWarningTip: true,
-          warningTipText: '删除后,将取消成员关联!',
-          hiddenWarningTipCancelText: false
+          handleWarningTip: true,
+          handleTipText: '请先删除子部门!',
         })
       } else {
         this.setState({
           showWarningTip: true,
-          warningTipText: '删除后,将取消成员关联!',
-          hiddenWarningTipCancelText: false
+          warningTipText: '删除后,将取消成员关联!'
         })
       }
-
     } else if (value === 'assignUser') {
       this.props.changeDepartmentStore({
         showAssignUserModal: true,
@@ -176,6 +197,42 @@ class DepartmentTable extends Component {
       })
     }
   }
+
+  editDepartment = (record) => { // 直接操作编辑部门
+    if (record.departmentSource === 0) { // 预设部门
+      this.setState({
+        handleWarningTip: true,
+        handleTipText: '不得编辑预设部门!',
+      })
+    } else {
+      this.props.changeDepartmentStore({
+        showPage: 'edit',
+        departmentDetail: record,
+      });
+    }
+  }
+
+  deleteDepartment = (record) => { // 直接操作删除部门
+    if (record.departmentSource === 0) {
+      this.setState({
+        handleWarningTip: true,
+        handleTipText: '不得删除预设部门!',
+      })
+    } else if (record.hasChildren) {
+      this.setState({
+        handleWarningTip: true,
+        handleTipText: '请先删除子部门!',
+      })
+    } else {
+      this.setState({
+        handlRemove: true,
+        handlRemoveInfo: record,
+        showWarningTip: true,
+        warningTipText: '删除后,将取消成员关联!',
+      })
+    }
+  }
+
   _createHandleOption = (rightHandler) => {//部门操作下拉框生成
     const departmentDeleteRight = rightHandler && rightHandler.split(',').includes('account_department_delete');
     const departmentUpdateRight = rightHandler && rightHandler.split(',').includes('account_department_update');
@@ -198,6 +255,7 @@ class DepartmentTable extends Component {
       {departmentStationRight && <Option value="assignStation" disabled={!staionAssignable} ><span className="iconfont icon-powerstation"></span>设置电站</Option>}
     </Select>)
   }
+
   _createTableColumn = () => {//生成表头
     const columns = [
       {
@@ -216,7 +274,6 @@ class DepartmentTable extends Component {
         // render: (text,record,index) => (        
         //  <div className={styles.parentDepartmentName}>{text}</div>
         // )
-
       }, {
         title: '预设',
         width:'200px',
@@ -251,6 +308,27 @@ class DepartmentTable extends Component {
         }
       }
     ];
+    const rightHandler = localStorage.getItem('rightHandler');
+    const departmentDeleteRight = rightHandler && rightHandler.split(',').includes('account_department_delete');
+    const departmentUpdateRight = rightHandler && rightHandler.split(',').includes('account_department_update');
+    if (departmentDeleteRight || departmentUpdateRight) { // 至少有编辑或删除权限时。
+      return columns.concat({
+        title: '操作',
+        width:'100px',
+        dataIndex: 'handler',
+        render: (text, record) => (<span>
+            {departmentDeleteRight && <i
+              className={`${styles.editDepartment} iconfont icon-edit`}
+              onClick={() => this.editDepartment(record)}
+            />}
+            {departmentUpdateRight && <i
+              className={`${styles.deleteDepartment} iconfont icon-del`}
+              onClick={() => this.deleteDepartment(record)}
+            />}
+          </span>
+        )
+      })
+    }
     return columns
   }
 
@@ -289,12 +367,21 @@ class DepartmentTable extends Component {
 
   render() {
     const { pageSize, pageNum, departmentData, selectedDepartment, totalNum, loading, showAssignUserModal, showAssignStationModal } = this.props;
-    const { showWarningTip, warningTipText, hiddenWarningTipCancelText } = this.state;
+    const { showWarningTip, warningTipText, handleWarningTip, handleTipText, } = this.state;
     const rightHandler = localStorage.getItem('rightHandler');
     const departmentCreateRight = rightHandler && rightHandler.split(',').includes('account_department_create');
     return (
       <div className={styles.departmentList}>
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.onWarningTipOK} value={warningTipText} hiddenCancel={hiddenWarningTipCancelText} />}
+        {showWarningTip && <WarningTip
+          onCancel={this.cancelWarningTip}
+          onOK={this.onWarningTipOK}
+          value={warningTipText}
+        />}
+        {handleWarningTip && <WarningTip
+          onOK={this.handleWarningOK}
+          value={handleTipText}
+          hiddenCancel={true}
+        />}
         <div className={styles.departmentListTop} >
           <div>
             {departmentCreateRight && <Button className={styles.addDepartment} onClick={this.onDepartmentAdd}>

@@ -4,6 +4,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
+const HappyPack = require('happypack');
+const os = require('os');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 module.exports = {
   mode:'production',
@@ -16,63 +22,45 @@ module.exports = {
   module: {
     rules: [{
       test: /\.(js|jsx)$/,
-      use: 'babel-loader',
+      use: 'happypack/loader?id=happyBabel',
       exclude: /node_modules/
     }, {
       test: /\.css$/,
       exclude: /node_modules/,
-      use: [{
-        loader:'style-loader'
-      },{
-        loader:'css-loader',
-        options: {
-          modules: true,
-          localIdentName: '[local]__[hash:base64:5]'
-        }
-      }]
-    }, {//antd样式处理
-      test:/\.css$/,
-      exclude:/src/,
-      use:[
-        { loader: "style-loader"},
-        {
-          loader: "css-loader",
-          options:{
-            importLoaders: 1
-          }
-        }
-      ]
-    }, {
-      test: /\.less$/,
-      exclude: /src/,
-      use: [{
-        loader: "style-loader" 
-      }, {
-          loader: "css-loader",
-      }, {
-        loader: "less-loader",
-        options: {
-          importLoaders: 1,
-          modifyVars: {
-            'primary-color': '#199475',
-            'link-color': '#199475',
-          },
-          javascriptEnabled: true,
-        },
-      }]
-    }, {
-      test: /\.scss$/,
-      use: [{
-        loader: "style-loader" 
-      }, {
-          loader: "css-loader",
+      use: ExtractTextPlugin.extract({
+        fallback: [{
+          loader:'style-loader'
+        }, {
+          loader:'css-loader',
           options: {
             modules: true,
             localIdentName: '[local]__[hash:base64:5]'
           }
-      }, {
-          loader: "sass-loader" 
-      }]
+        }],
+        use: 'happypack/loader?id=cssBabel',
+      })
+    }, {//antd样式处理
+      test:/\.css$/,
+      exclude:/src/,
+      use: ExtractTextPlugin.extract({
+        fallback: [
+          { loader: "style-loader" },
+          {
+            loader: "css-loader",
+            options:{
+              importLoaders: 1
+            }
+          }
+        ],
+        use: 'happypack/loader?id=antdBabel',
+      })
+    }, {
+      test: /\.less$/,
+      exclude: /src/,
+      use: 'happypack/loader?id=lessBabel',
+    }, {
+      test: /\.scss$/,
+      use: 'happypack/loader?id=scssBabel',
     }, {
       test: /\.(png|jpg|gif)$/,
       use: 'file-loader?name=[name].[ext]'
@@ -99,6 +87,87 @@ module.exports = {
       from: __dirname + '/assets',
       to:__dirname + '/dist'
     }]),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin(),
+    ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
+      return new webpack.DllReferencePlugin({
+        context: __dirname,
+        manifest: require(`./assets/vendors/${name}-manifest.json`),
+      })
+    }),
+    new HappyPack({
+      id: 'happyBabel',
+      use: [{
+        loader: 'babel-loader',
+      }],
+      threadPool: happyThreadPool,
+      verbose: true,
+    }),
+    new HappyPack({
+      id: 'cssBabel',
+      use: [
+        {
+          loader: 'babel-loader', 
+        }, {
+          loader:'css-loader',
+          options: {
+            modules: true,
+            localIdentName: '[local]__[hash:base64:5]'
+          }
+        }
+      ],
+      threadPool: happyThreadPool,
+      verbose: true,
+    }),
+    new HappyPack({
+      id: 'antdBabel',
+      use: [
+        {
+          loader: 'babel-loader?cacheDirectory=true', 
+        }, {
+          loader:'css-loader?cacheDirectory=true',
+          options:{
+            importLoaders: 1
+          }
+        }
+      ],
+      threadPool: happyThreadPool,
+      verbose: true,
+    }),
+    new HappyPack({
+      id: 'lessBabel',
+      use: [{
+        loader: "style-loader" 
+      }, {
+          loader: "css-loader",
+      }, {
+        loader: "less-loader",
+        options: {
+          importLoaders: 1,
+          modifyVars: {
+            'primary-color': '#199475',
+            'link-color': '#199475',
+          },
+          javascriptEnabled: true,
+        },
+      }],
+      threadPool: happyThreadPool,
+      verbose: true,
+    }),
+    new HappyPack({
+      id: 'scssBabel',
+      use: [{
+        loader: "style-loader" 
+      }, {
+          loader: "css-loader",
+          options: {
+            modules: true,
+            localIdentName: '[local]__[hash:base64:5]'
+          }
+      }, {
+          loader: "sass-loader" 
+      }],
+      threadPool: happyThreadPool,
+      verbose: true,
+    }),
   ]
 };

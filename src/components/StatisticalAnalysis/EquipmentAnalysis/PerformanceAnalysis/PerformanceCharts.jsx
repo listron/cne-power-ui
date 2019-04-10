@@ -114,7 +114,7 @@ class PerformanceCharts extends React.Component {
     return name;
   }
 
-  getUnit=(title)=>{ 
+  getUnit = (title) => {
     let result = '';
     switch (title) {
       case '转换效率':
@@ -130,7 +130,7 @@ class PerformanceCharts extends React.Component {
         result = 'kWh';
         break;
       case "设备故障次数":
-        result ='次';
+        result = '次';
         break;
       case "设备故障时长":
         result = 'h';
@@ -139,7 +139,7 @@ class PerformanceCharts extends React.Component {
         result = '';
     }
     return result;
-}
+  }
 
   getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
     const length = data.length;
@@ -155,7 +155,9 @@ class PerformanceCharts extends React.Component {
     let seriesData = [];
     const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
-    const unit=this.getUnit(title)
+    const unit = this.getUnit(title);
+    const lineColor = '#f1f1f1';
+    const fontColor = '#999';
     for (var bar in barData) {
       var json = {
         name: this.getName(bar),
@@ -177,12 +179,16 @@ class PerformanceCharts extends React.Component {
 
       seriesData.push(json);
     }
+    (data && data.xData.length > 0) ? targetChart.hideLoading() : targetChart.showLoading('default', { color: '#199475' });
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
-        axisPointer: { type: 'cross' },
+        axisPointer: {
+          type: 'cross',
+          label: { color: fontColor },
+        },
         backgroundColor: '#fff',
         padding: 10,
         textStyle: {
@@ -193,7 +199,7 @@ class PerformanceCharts extends React.Component {
         formatter: function (params) {
           let paramsItem = '';
           params.map((item, index) => {
-            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${dataFormats(item.value,'--', 2, true)}${unit}
+            return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :${dataFormats(item.value, '--', 2, true)}${unit}
             </div>`
           });
           return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:180px;overflow:hidden;"> <span style="float: left">${params[0].name} </span></div>
@@ -205,7 +211,7 @@ class PerformanceCharts extends React.Component {
         left: '23',
         top: 'top',
         textStyle: {
-          color: '#666',
+          color: '#333',
           fontSize: 14,
           fontWeight: 'normal',
         }
@@ -233,6 +239,7 @@ class PerformanceCharts extends React.Component {
           bottom: 40,
           handleSize: '80%',
           handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          // handleIcon:'none',
           backgroundColor: 'rgba(213,219,228,.8)',
           height: '20px',
           zoomLock: true,
@@ -254,26 +261,40 @@ class PerformanceCharts extends React.Component {
         axisPointer: {
           type: 'shadow'
         },
+        axisPointer: {
+          type: 'line',
+          snap: true,
+          lineStyle: {
+            width: 38,
+            color: 'rgba(150,150,150,0.3)'
+          }
+        },
         axisLine: {
           show: true,
           lineStyle: {
-            color: '#dfdfdf',
+            color: lineColor,
           }
         },
         axisLabel: {
-          color: '#666',
+          color: fontColor,
           rotate: -30,
           formatter: (value) => {
             const special = deviceNames.includes(value);
+            const hasChinese = /[\u4e00-\u9fa5]+/.test(value) // 展示文字是否有汉字
+            let maxText = hasChinese ? 6 : 10;// 中文最多展示4字, 英文12,超出展示...
+            let showText = value;
+            if (value.length > maxText) {
+              showText = `${showText.substring(0, maxText)}...`;
+            }
             if (special) {
-              return '{special|' + value + '}';
+              return '{special|' + showText + '}';
             } else {
-              return '{common|' + value + '}';
+              return '{common|' + showText + '}';
             }
           },
           rich: {
             special: {
-              height: 35,
+              height: 28,
               padding: [0, 10, 0, 10],
               align: 'center',
               color: 'red',
@@ -290,11 +311,13 @@ class PerformanceCharts extends React.Component {
           type: 'value',
           name: this.getYaxisName(title),
           position: 'left',
-          axisLabel: {
-            formatter: '{value} '
-          },
+          axisLabel: { formatter: '{value}', color: fontColor },
+          nameTextStyle: { color: fontColor },
           axisLine: {
             show: false,
+            lineStyle: {
+              color: lineColor,
+            }
           },
           axisTick: {
             show: false,
@@ -302,7 +325,7 @@ class PerformanceCharts extends React.Component {
           splitLine: {
             // show:false,
             lineStyle: {
-              color: '#666',
+              color: lineColor,
               type: 'dashed'
             }
           },

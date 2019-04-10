@@ -10,9 +10,10 @@ import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
 import {apiUrlReal} from '../../../../../config/apiConfig';
 
+// to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
+// 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
+
 const RadioGroup = Radio.Group;
-
-
 const { Option } = Select;
 
 class UserList extends Component {
@@ -43,12 +44,15 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedUserColumns: new Set(['用户名', '电话', '角色', '特殊权限', '负责电站', '状态']),//选中列
+      columnsHandleArr: ['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
+      selectedUserColumns: new Set(['用户名', '用户姓名','电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
       pageNum: 1,
-      examineStatus: 3,//审核状态 默认通过审核变为启用状态
+      examineStatus: 3,//审核状态 默认通过审核变为启用状态, 
+      deleteHanlde: false, // 记录删除操作来源 true => 直接列操作删除, false => 勾选行后，下拉删除。
+      deleteUserInfo: {}, // 直接进行列操作时,暂存的用户信息
     }
   }
 
@@ -102,11 +106,11 @@ class UserList extends Component {
   }
 
   onSelectColumns = (value) => {
-    const { selectedUserColumns } = this.state;
+    const { selectedUserColumns, columnsHandleArr } = this.state;
     let tmpUserColumns = selectedUserColumns;
     if (value === '全选') {
-      tmpUserColumns = new Set(['用户名', '真实姓名', '电话', '角色', '特殊权限', '负责电站', '状态']);
-      // tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
+      tmpUserColumns = new Set(columnsHandleArr);
+      // tmpUserColumns = new Set(['用户名','用户姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
     } else {
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -200,7 +204,7 @@ class UserList extends Component {
 
   tableColumn = () => {
     const { selectedUserColumns } = this.state;
-    const columns = [
+    let columns = [
       {
         title: '用户名',
         width:'200px',
@@ -208,7 +212,7 @@ class UserList extends Component {
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
-        title: '真实姓名',
+        title: '用户姓名',
         width:'200px',
         dataIndex: 'userFullName',
         key: 'userFullName',
@@ -278,14 +282,30 @@ class UserList extends Component {
         render: (text, record, index) => {
           return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
-      }
+      }, 
     ];
-    if (selectedUserColumns && selectedUserColumns.size !== 0) {
-      return columns.filter(e => selectedUserColumns.has(e.title));
-    } else {
-      return columns;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const userDeleteRight = rightHandler && rightHandler.split(',').includes('account_user_delete');
+    const userEditRight = rightHandler && rightHandler.split(',').includes('account_user_edit');
+    if (userDeleteRight || userEditRight) { // 至少拥有一个编辑/ 删除权限
+      return columns.filter(e => selectedUserColumns.has(e.title)).concat({
+        title: '操作',
+        width:'100px',
+        dataIndex: 'handler',
+        render: (text, record) => (<span>
+            {userEditRight && <i
+              className={`${styles.editUser} iconfont icon-edit`}
+              onClick={() => this.editUser(record)}
+            />}
+            {userDeleteRight && <i
+              className={`${styles.deleteUser} iconfont icon-remove`}
+              onClick={() => this.deleteUser(record)}
+            />}
+          </span>
+        )
+      })
     }
-
+    return columns.filter(e => selectedUserColumns.has(e.title))
   }
 
   cancelRowSelect = () => {
@@ -359,6 +379,20 @@ class UserList extends Component {
     }
   }
 
+  editUser = (record) => { // 列操作 => 编辑用户
+    this.props.getUserDetail({ userId: record.userId });
+    this.props.changeUserStore({ showPage: 'edit', });
+  }
+
+  deleteUser = (record) => { // 列操作 => 删除用户
+    this.setState({
+      showDeleteTip: true,
+      warningText: '',
+      deleteHanlde: true,
+      deleteUserInfo: record,
+    });
+  }
+
   beforeUpload = (file) => {
     const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel';
     if (!isExcel) {
@@ -372,136 +406,68 @@ class UserList extends Component {
       showDeleteTip: false,
     })
   }
-  confirmDeleteTip = () => {
+  confirmDeleteTip = () => { // 用户确认删除。
     const { selectedUser, enterpriseId, } = this.props;
-    this.props.changeUserStatus({
-      enterpriseId,
-      userId: selectedUser.toJS().map(e => e.userId).toString(),
-      enterpriseUserStatus: 7,
-    });
+    const { deleteHanlde, deleteUserInfo } = this.state;
+    if (deleteHanlde) { // 删除操作来源于直接列中点击删除
+      this.props.changeUserStatus({
+        enterpriseId,
+        userId: deleteUserInfo.userId,
+        enterpriseUserStatus: 7,
+      });
+    } else { // 删除操作来源于点击选中行 => 删除
+      this.props.changeUserStatus({
+        enterpriseId,
+        userId: selectedUser.toJS().map(e => e.userId).toString(),
+        enterpriseUserStatus: 7,
+      });
+      this.props.changeUserStore({
+        selectedUser: [],
+      });
+    }
     this.setState({
+      deleteHanlde: false,
+      deleteUserInfo: {},
       showDeleteTip: false,
-    });
-    this.props.changeUserStore({
-      selectedUser: [],
     });
   }
 
-  examineModal = () => {
-    return (
-      <Modal
-        onOk={this.cancelExamineTip}
-        onCancel={this.confirmExamineTip}
-        visible={true}
-        footer={null}
-        closable={false}
-        maskClosable={false}
-        maskStyle={{ backgroundColor: 'rgba(153,153,153,0.2)' }}
-        wrapClassName={styles.warningTipWrapBox}
-        width="560px"
-        height="250px"
-      >
-        <div className={styles.warningTip} >
-          <div className={styles.textArea}>
-            <Icon type="exclamation-circle-o" className={styles.icon} />
-            <span className={styles.text}>是否通过审核？</span>
-          </div>
-          <div className={styles.handleRadio}>
-            <RadioGroup name="radiogroup" defaultValue={3} onChange={this.onExamineChange} >
-              <Radio value={3}>通过</Radio>
-              <Radio value={6}>不通过</Radio>
-            </RadioGroup>
-          </div>
-          <div className={styles.handle}>
-            <span onClick={this.cancelExamineTip} >取消</span>
-            <span onClick={this.confirmExamineTip} className={styles.confirmExamine} >确认</span>
-          </div>
+  examineModal = () => (
+    <Modal
+      onOk={this.cancelExamineTip}
+      onCancel={this.confirmExamineTip}
+      visible={true}
+      footer={null}
+      closable={false}
+      maskClosable={false}
+      maskStyle={{ backgroundColor: 'rgba(153,153,153,0.2)' }}
+      wrapClassName={styles.warningTipWrapBox}
+      width="560px"
+      height="250px"
+    >
+      <div className={styles.warningTip} >
+        <div className={styles.textArea}>
+          <Icon type="exclamation-circle-o" className={styles.icon} />
+          <span className={styles.text}>是否通过审核？</span>
         </div>
-      </Modal>
-    );
-  }
+        <div className={styles.handleRadio}>
+          <RadioGroup name="radiogroup" defaultValue={3} onChange={this.onExamineChange} >
+            <Radio value={3}>通过</Radio>
+            <Radio value={6}>不通过</Radio>
+          </RadioGroup>
+        </div>
+        <div className={styles.handle}>
+          <span onClick={this.cancelExamineTip} >取消</span>
+          <span onClick={this.confirmExamineTip} className={styles.confirmExamine} >确认</span>
+        </div>
+      </div>
+    </Modal>
+  );
 
   render() {
     const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey } = this.props;
-    const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, } = this.state;
+    const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, columnsHandleArr } = this.state;
     const authData = getCookie('authData');
-    const columns = [
-      {
-        title: '用户名',
-        dataIndex: 'username',
-        key: 'username',
-        render: (text, record, index) => (<a href={'javascript:void(0)'} onClick={() => this.showUserDetail(record)} >{text}</a>)
-      }, {
-        title: '真实姓名',
-        dataIndex: 'userFullName',
-        key: 'userFullName',
-        render: (text, record, index) => (<span>{text}</span>)
-      }, {
-        title: '电话',
-        dataIndex: 'phoneNum',
-        key: 'phoneNum',
-        render: (text, record) => (<span>{text}</span>),
-      }, {
-        title: '角色',
-        dataIndex: 'roleName',
-        key: 'roleName',
-        render: (text, record) => (<span>{text}</span>),
-        sorter: true
-      }, {
-        title: '特殊权限',
-        dataIndex: 'spcialRoleName',
-        key: 'spcialRoleName',
-        render: (text, record) => (<span>{text}</span>),
-        sorter: true
-      },
-      // {
-      //   title: '所在部门',
-      //   dataIndex: 'departmentName',
-      //   key: 'departmentName',
-      //   render: (text,record) => (<span>{text}</span>),
-      //   sorter: true
-      // }, 
-      {
-        title: '负责电站',
-        dataIndex: 'stationName',
-        key: 'stationName',
-        render: (text, record, index) => {
-          let stations = record.stationName.split(',').filter(e => !!e);
-          const { username } = record;
-          if (stations.length > 1) {
-            const content = (<ul>
-              {stations.map(e => (<li key={e} className={styles.eachStation} >
-                <span className={styles.square} ></span><span>{e}</span>
-              </li>))}
-            </ul>)
-            return (
-              <div>
-                <span>{stations[0]}</span>
-                <Popover
-                  content={content}
-                  title={username + '负责电站'}
-                  placement="right"
-                  trigger="hover"
-                  overlayClassName={styles.responsibleDetails}
-                >
-                  <Icon type="ellipsis" />
-                </Popover>
-              </div>
-            )
-          } else {
-            return <span>{stations[0] ? stations[0] : ''}</span>
-          }
-        }
-      }, {
-        title: '状态',
-        dataIndex: 'userStatus',
-        key: 'userStatus',
-        render: (text, record, index) => {
-          // console.log(record.enterpriseStatus);
-          return (<span className={record.enterpriseStatus === 5 && styles.waitExamine} >{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
-        },
-      }
-    ];
     const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
     const uploadProps = {
       name: 'file',
@@ -535,10 +501,19 @@ class UserList extends Component {
     const userCreateRight = rightHandler && rightHandler.split(',').includes('account_user_create');
     const userImportRight = rightHandler && rightHandler.split(',').includes('account_user_batchImport');
     const userInvite = rightHandler && rightHandler.split(',').includes('account_user_invite');
-
+    const userDeleteRight = rightHandler && rightHandler.split(',').includes('account_user_delete');
+    const userEditRight = rightHandler && rightHandler.split(',').includes('account_user_edit');
+    let requiredColumn = ['用户名', '电话', '负责电站', '状态'];
+    if (userDeleteRight || userEditRight) { // 至少拥有一个编辑/ 删除权限
+      requiredColumn = requiredColumn.concat('操作');
+    }
     return (
       <div className={styles.userList}>
-        {showDeleteTip && <WarningTip onCancel={this.cancelDeleteTip} onOK={this.confirmDeleteTip} value={deleteWarningTip} />}
+        {showDeleteTip && <WarningTip
+          onCancel={this.cancelDeleteTip}
+          onOK={this.confirmDeleteTip}
+          value={deleteWarningTip}
+        />}
         {showExamineTip && this.examineModal()}
         <div className={styles.userHelper} >
           <div className={styles.userHelperLeft} >
@@ -560,20 +535,21 @@ class UserList extends Component {
                 dropdownMatchSelectWidth={false}
                 onSelect={this.onSelectColumns}
               >
-                <Option key="全选" value="全选" ><Checkbox checked={selectedUserColumns.size === 7} >全选</Checkbox></Option>
-                {columns.map(item => {
-                  return (<Option
-                    key={item.title}
-                    value={item.title}
-                    disabled={item.title === '用户名' || item.title === '电话' || item.title === '负责电站' || item.title === '状态'}
-                  ><Checkbox
-                    value={item.title}
-                    checked={selectedUserColumns.has(item.title)}
-                    disabled={item.title === '用户名' || item.title === '电话' || item.title === '负责电站' || item.title === '状态'}
-                  >{item.title}
-                    </Checkbox>
-                  </Option>);
-                })}
+                <Option key="全选" value="全选" >
+                  <Checkbox checked={selectedUserColumns.size === columnsHandleArr.length} >全选</Checkbox>
+                </Option>
+                {columnsHandleArr.map(item => (<Option
+                    key={item}
+                    value={item}
+                    disabled={requiredColumn.includes(item)}
+                  >
+                    <Checkbox
+                      value={item}
+                      checked={selectedUserColumns.has(item)}
+                      disabled={requiredColumn.includes(item)}
+                    >{item}</Checkbox>
+                  </Option>)
+                )}
               </Select>
             </div>
           </div>

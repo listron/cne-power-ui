@@ -54,11 +54,9 @@ class AddDevice extends Component {
     const { getDeviceModel, getDeviceList, getConnectDevice, getPvDevice, queryParams } = this.props;
     const selectStation = this.props.form.getFieldValue('stationCode')[0];
     getDeviceModel({
-      stationCode: selectStation.stationCode,
       deviceTypeCode: value,
     });
     getPvDevice({
-      stationCode: selectStation.stationCode,
       deviceTypeCode: '509',
     })
     getConnectDevice({
@@ -104,8 +102,8 @@ class AddDevice extends Component {
     const selectStation = getFieldValue('stationCode')
     const selectdeviceType = getFieldValue('deviceTypeCode')
     const selectdeviceTypeName = deviceTypeName
-    const initi = addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : null;
-    console.log('initi: ', initi);
+    const initi = addDeviceTypeData.data ? addDeviceTypeData.data : null;
+     
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -141,7 +139,7 @@ class AddDevice extends Component {
                 disabled={typeSelectDisable}>
                 <Option key={null} value={null}>{'全部设备类型'}</Option>
                 {stationDevices.map((e, i) => {
-                  if (!e) { return null; } else {
+                  if (!e||e.deviceTypeCode==='509') { return null; } else {
                     return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
                   }
                 })}
@@ -152,6 +150,7 @@ class AddDevice extends Component {
        
 
           {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
+       
         </Form>}
         {showStep === 'next' && <AddDeviceForm {...this.props} selectStation={selectStation} selectdeviceType={selectdeviceType || selectdeviceTypeName} gobackPre={this.gobackPre} />}
         {showAddDeviceModal && <ShowAddDeviceModal {...this.props} showAddDeviceModal={showAddDeviceModal} cancleAddDeviceModal={this.cancleAddDeviceModal} saveFormState={this.saveFormState} selectStation={selectStation[0].stationCode} />}

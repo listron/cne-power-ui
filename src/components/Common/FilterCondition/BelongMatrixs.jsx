@@ -4,7 +4,7 @@ import { Checkbox } from 'antd';
 import styles from './filterCondition.scss';
 const CheckboxGroup = Checkbox.Group;
 
-class AlarmLevelFilter extends Component {
+class BelongMatrixs extends Component {
   static propTypes = {
     matrixList: PropTypes.array,
     belongMatrixs: PropTypes.array,
@@ -43,4 +43,4 @@ class AlarmLevelFilter extends Component {
   }
 }
 
-export default AlarmLevelFilter;
+export default BelongMatrixs;

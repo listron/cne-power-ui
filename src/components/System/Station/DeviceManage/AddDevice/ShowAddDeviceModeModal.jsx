@@ -21,10 +21,10 @@ class ShowAddDeviceModeModal extends Component {
             deviceModeName:values.addDeviceModeCodeName,
             manufacturer:values.addManufacturer,
           })
-          this.props.getDeviceModel({
-            // stationCode:selectStation?selectStation[0].stationCode:null,
-            deviceTypeCode:this.props.selectdeviceType,
-          })
+          // this.props.getDeviceModel({
+          //   // stationCode:selectStation?selectStation[0].stationCode:null,
+          //   deviceTypeCode:this.props.selectdeviceType,
+          // })
             this.props.saveFormState(values)
            this.props.cancleDeviceModeModal()
         }

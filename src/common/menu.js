@@ -33,6 +33,55 @@ const menuData = [
         defaultPath: true,
         rightKey: 'monitor_station',
       }, {
+        name: '功率曲线',
+        iconStyle: 'icon-monitoring',
+        path: 'powercurve',
+        rightKey: 'monitor_powerCurve',
+      },{
+        name: '数据分析',
+        iconStyle: 'icon-da',
+        path: 'data',
+        rightKey: 'monitor_dataAnalysis',
+        children: [
+          {
+            name: '散点图',
+            path: 'scatterDiagram',
+            rightKey: 'dataAnalysis_scatterPlot', 
+          },{
+            name: '历史趋势',
+            path: 'history',
+            rightKey: 'dataAnalysis_historyTrend',
+          }, {
+            name: '实时数据',
+            path: 'realtime',
+            rightKey: 'dataAnalysis_realTime',
+          }
+        ]
+      }, {
+        name: '报表查询',
+        iconStyle: 'icon-trends',
+        path: 'report',
+        rightKey: 'monitor_reportQuery',
+        children: [
+          {
+            name: '电量报表',
+            path: 'powerReport',
+            rightKey: 'reportQuery_powerReport',
+          }, {
+            name: '设备状态',
+            path: 'deviceStatus',
+            rightKey: 'reportQuery_deviceStatus',
+          }, {
+            name: '故障报表',
+            path: 'malfunction',
+            rightKey: 'reportQuery_malfunction',
+          }, {
+            name: '损失电量',
+            path: 'powerLost',
+            rightKey: 'reportQuery_powerLost',
+          }
+        ]
+      }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
         path: 'alarm',

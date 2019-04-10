@@ -8,7 +8,7 @@ const { monitor } = Path.APISubPaths;
 import moment from 'moment';
 
 //改变单电站实时数据store
-function *changeSingleStationStore(action){
+function* changeSingleStationStore(action) {
   const { payload } = action;
   yield put({
     type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
@@ -22,13 +22,13 @@ function* resetSingleStationStore(action) {
   });
 }
 //获取单电站实时数据
-function *getSingleStation(action){
+function* getSingleStation(action) {
   const { payload } = action;
-  const utcTime=moment.utc().format();
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode+'/'+utcTime;
-  try{
+  const utcTime = moment.utc().format();
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode + '/' + utcTime;
+  try {
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -36,213 +36,213 @@ function *getSingleStation(action){
           stationType: response.data.data.stationType || null,
         }
       });
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           singleStationData: {},
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 
 //获取出力图数据
-function *getCapabilityDiagram(action){
+function* getCapabilityDiagram(action) {
   const { payload } = action;
-  const {stationCode,stationType,startTime,endTime}=payload
+  const { stationCode, stationType, startTime, endTime } = payload
   // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
-  const url=`${Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + stationCode}/${stationType}/${startTime}/${endTime}`
-  try{
+  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + stationCode}/${stationType}/${startTime}/${endTime}`
+  try {
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           capabilityData: response.data.data || [],
         }
       });
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           capabilityData: [],
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 
 //获取理论发电量 实际发电量数据
-function *getMonitorPower(action){
+function* getMonitorPower(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime+ '/' + payload.intervalTime;
-  try{
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
+  try {
     const response = yield call(axios.get, url);
-    if(response.data.code==="10000"){
+    if (response.data.code === "10000") {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           powerData: response.data.data || [],
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           powerData: [],
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取电站列表
-function *getStationList(action){
+function* getStationList(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           stationList: response.data.data || [],
         }
       });
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           stationList: [],
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 
 // 获取单电站运维人员列表
-function *getOperatorList(action){
+function* getOperatorList(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           operatorList: response.data.data || [],
         }
       });
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           operatorList: [],
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取单电站未来天气数据
-function *getWeatherList(action){
+function* getWeatherList(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code==='10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           weatherList: response.data.data || [],
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           weatherList: [],
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取单电站活动告警数统计
-function *getAlarmList(action){
+function* getAlarmList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode+'/事件告警';
-  try{
+  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode + '/事件告警';
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           alarmList: response.data.data || {},
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           alarmList: {},
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取单电站工单数统计
-function *getWorkList(action){
+function* getWorkList(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           workList: response.data.data || {},
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           workList: {},
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取单电站设备类型流程图(设备示意图)
-function *getDeviceTypeFlow(action){
+function* getDeviceTypeFlow(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
     let deviceTypeCode = 206; // 默认组串式逆变器
-    if(payload.deviceTypeCode){
+    if (payload.deviceTypeCode) {
       deviceTypeCode = payload.deviceTypeCode;
-    }else{
+    } else {
       const defaulDeviceType = [201, 206, 101]; // 默认组串式逆变器 / 集中逆变器/ 风电机组
       const inverterResult = defaulDeviceType.filter(e => response.data.data.deviceFlowTypes.find(
         item => {
@@ -260,7 +260,7 @@ function *getDeviceTypeFlow(action){
       );
       deviceTypeCode = inverterResult[0];
     }
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -268,141 +268,145 @@ function *getDeviceTypeFlow(action){
           deviceTypeCode,
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           deviceTypeFlow: {},
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取光伏组件列表
-function *getPvmoduleList(action){
+function* getPvmoduleList(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
-  try{
-    if(payload.firstLoad){
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
-          pvmoduleList: response.data.data || [],
+          pvmoduleList: response.data.data.dataList || [],
+          pvAvgValue: response.data.data.pvAvgValue || '',
+          pvLevelNums:response.data.data.pvLevelNums || {}
         }
       });
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           pvmoduleList: [],
+          pvAvgValue:'',
+          pvLevelNums:{}
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取逆变器实时数据列表
-function *getInverterList(action){
+function* getInverterList(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getInverterList}${payload.stationCode}/${payload.deviceTypeCode}`;
-  try{
-    if(payload.firstLoad){
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           inverterList: response.data.data || {},
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           inverterList: {},
         }
       });
     }
-    
-  }catch(e){
+
+  } catch (e) {
     console.log(e);
   }
 }
 // 获取箱变列表
-function *getBoxTransformerList(action){
+function* getBoxTransformerList(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
-  try{
-    if(payload.firstLoad){
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           boxTransformerList: response.data.data || {},
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           boxTransformerList: {},
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
-function *getConfluenceBoxList(action){ // 获取汇流箱列表
+function* getConfluenceBoxList(action) { // 获取汇流箱列表
   const { payload } = action;
   const url = `${APIBasePath}${monitor.getConfluenceBoxList}${payload.stationCode}`;
-  try{
-    if(payload.firstLoad){
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           confluenceBoxList: response.data.data || {},
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           confluenceBoxList: {},
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getCollectorLine(action) { // 获取集电线路列表
+function* getCollectorLine(action) { // 获取集电线路列表
   const { payload } = action;
   try {
     const { stationCode, firstLoad } = payload;
     const url = `${APIBasePath}${monitor.getCollectorLine}${stationCode}`;
     // const url = '/mock/api/v3/monitor/collectorline/datalist';
     if (firstLoad) {
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -410,25 +414,25 @@ function *getCollectorLine(action) { // 获取集电线路列表
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           collectorList: response.data.data || [],
-        }                                                        
+        }
       })
     }
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getBoosterstation(action) { // 获取升压站列表
+function* getBoosterstation(action) { // 获取升压站列表
   const { payload } = action;
-  try{
+  try {
     const { stationCode, firstLoad } = payload;
     const url = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
     // const url = '/mock/api/v3/monitor/boosterstation/datalist';
-    if(firstLoad) {
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+    if (firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -436,14 +440,14 @@ function *getBoosterstation(action) { // 获取升压站列表
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 
-function *getPowerNet(action) { // 获取电网列表
+function* getPowerNet(action) { // 获取电网列表
   const { payload } = action;
-  try{
+  try {
     const { stationCode, firstLoad } = payload;
     const url = `${APIBasePath}${monitor.getPowerNet}${stationCode}`;
     // const url = '/mock/api/v3/monitor/powercollection/datalist';
@@ -451,7 +455,7 @@ function *getPowerNet(action) { // 获取电网列表
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -459,44 +463,44 @@ function *getPowerNet(action) { // 获取电网列表
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 
 // 获取单电站设备列表
-function *getStationDeviceList(action){
+function* getStationDeviceList(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getStationDeviceList}${payload.stationCode}/${payload.deviceTypeCode}`;
-  try{
+  try {
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
           stationDeviceList: response.data.data || [],
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           stationDeviceList: [],
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
 //编辑月，年的累计发电量
-function *editData(action){
+function* editData(action) {
   const { payload } = action;
-  const url =`${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.editData}`;
-  try{
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.editData}`;
+  try {
     const response = yield call(axios.post, url, payload);
-    console.log(response,'编辑');
-    if(response.data.code==="10000"){
+    console.log(response, '编辑');
+    if (response.data.code === "10000") {
       message.config({
         top: 120,
         duration: 2,
@@ -509,30 +513,30 @@ function *editData(action){
           editAllData: response.data.data || [],
         }
       })
-    }else{
-      yield put({ 
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE, 
+    } else {
+      yield put({
+        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           editAllData: [],
         }
       });
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 
 }
 
 // 获取风机实时数据列表
-function *getFanList(action){
+function* getFanList(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}/${payload.stationCode}`;
-  try{
-    if(payload.firstLoad){
-      yield put({type: singleStationAction.SINGLE_STATION_FETCH});
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
     }
     const response = yield call(axios.get, url, payload);
-    if(response.data.code === '10000'){
+    if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
         payload: {
@@ -540,7 +544,7 @@ function *getFanList(action){
         }
       })
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
   }
 }
@@ -563,8 +567,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, editData);//编辑月，年的累计发电量
   yield takeLatest(singleStationAction.getCollectorLine, getCollectorLine); // 获取集电线路列表信息
   yield takeLatest(singleStationAction.getFanList, getFanList);//风机实时数据列表
-  yield takeLatest(singleStationAction.getBoosterstation,getBoosterstation); // 升压站列表信息
-  yield takeLatest(singleStationAction.getPowerNet,getPowerNet); // 获取电网信息列表
+  yield takeLatest(singleStationAction.getBoosterstation, getBoosterstation); // 升压站列表信息
+  yield takeLatest(singleStationAction.getPowerNet, getPowerNet); // 获取电网信息列表
   yield takeLatest(singleStationAction.RESET_SINGLE_STATION_STORE, resetSingleStationStore);
 }
 

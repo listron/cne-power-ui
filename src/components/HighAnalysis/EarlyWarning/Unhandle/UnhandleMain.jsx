@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Select, Table, Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import styles from "./newUnhandle.scss";
@@ -8,6 +7,8 @@ import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
 import moment from 'moment';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 const Option = Select.Option;
 class Unhandle extends Component {
@@ -44,11 +45,6 @@ class Unhandle extends Component {
       detailVisiable: false,
       ingoreVisible: false,// 忽略列表
     }
-
-  }
-
-  componentDidMount() { // 初始请求数据
-
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
@@ -116,8 +112,6 @@ class Unhandle extends Component {
     }
   }
 
-
-
   cancelWarningTip = () => { // 点击取消
     this.setState({ showWarningTip: false, selectedRowKeys: [] })
   }
@@ -148,39 +142,34 @@ class Unhandle extends Component {
         key: 'stationName',
         sorter: true,
         // render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '所属方阵',
         dataIndex: 'belongMatrix',
         key: 'belongMatrix',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '设备名称',
         dataIndex: 'parentDeviceName',
         key: 'parentDeviceName',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '电流偏低支路',
         dataIndex: 'deviceName',
         key: 'deviceName',
         render: text => (text || text === 0) ? text : '--'
-      },
-      {
+      }, {
         title: '发生时间',
         dataIndex: 'happenTime',
         key: 'happenTime',
         sorter: true,
-      },
-      {
-        title: '电量损失比',
+      }, {
+        title: () => <TableColumnTitle title="电量损失比" unit="%" />,
         dataIndex: 'lostGenPercent',
         key: 'lostGenPercent',
+        render(text){ return numWithComma(text); },
         defaultSortOrder: 'descend',
         sorter: true,
-      },
-      {
+      }, {
         title: '详情及处理',
         className: styles.iconDetail,
         render: (text, record) => (
@@ -194,7 +183,7 @@ class Unhandle extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId, lostGenPercent: item.lostGenPercent + '%' }));
+    const dataSource = unhandleList.map((item, index) => ({ ...item, key: item.inefficiencyId }));
     return (
       <div className={styles.unhandleMain}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}

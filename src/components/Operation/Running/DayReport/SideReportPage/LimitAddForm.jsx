@@ -118,10 +118,15 @@ class LimitAddForm extends Component {
     changeLimitList(limitGenList, true);
   }
 
+  disabledDate = (start) => {
+    return start && start > moment();
+  }
+
   render(){
     const { form, defaultLimitLost, stationDeviceTypes, stationCode } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { deviceNameErroShow, deviceNameErroInfo, deviceTypeCode } = this.state;
+    const reasonLength = getFieldValue('reason') ? getFieldValue('reason').length : 0;
     const formItemLayout1 = {
       labelCol: {
         xs: { span: 24 },
@@ -197,7 +202,7 @@ class LimitAddForm extends Component {
             </Form.Item> 
           </Col>
         </Row>
-        <Row className={styles.deviceSelect} >
+        <Row className={styles.deviceSelect}>
           <Col span={24}>
             <Form.Item label="设备名称" className={styles.deviceSelect} >
               {getFieldDecorator('deviceName', {
@@ -222,17 +227,56 @@ class LimitAddForm extends Component {
           <Col span={8}>
             <Form.Item label="发生时间" {...formItemLayout1} >
               {getFieldDecorator('startTime', {
-                rules: [{ required: true, message: '请选择发生时间' }],
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    const endTime = form.getFieldValue('endTime');
+                    const entTimeError = form.getFieldError('endTime');
+                    if (!value) {
+                      callback('请选择发生时间');
+                    } else if (value && endTime) {
+                      const timeUnable = value > endTime;
+                      const timeEnable = entTimeError && value <= endTime; // 结束时间报错，但开始时间更正可用
+                      timeEnable && form.setFields({
+                        endTime: {
+                          value: endTime,
+                          errors: null
+                        }
+                      });
+                      timeUnable && callback('结束时间必须大于开始时间');
+
+                    }
+                    callback();
+                  } 
+                }],
               })(
-                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
+                <DatePicker disabledDate={this.disabledDate} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm"  />
               )}
             </Form.Item>
           </Col>
           <Col span={16}>
             <Form.Item label="结束时间" {...formItemLayout2} >
               {getFieldDecorator('endTime', {
+                rules: [{
+                  validator: (rule, value, callback) => {
+                    const startTime = form.getFieldValue('startTime');
+                    const startTimeError = form.getFieldError('startTime');
+                    if (value && startTime) {
+                      const timeUnable = startTime > value;
+                      const timeEnable = startTimeError && value >= startTime; // 开始时间报错，但结束时间更正为可用
+                      timeEnable && form.setFields({
+                        startTime: {
+                          value: startTime,
+                          errors: null
+                        }
+                      });
+                      timeUnable && callback('结束时间必须大于开始时间');
+                    }
+                    callback();
+                  } 
+                }],
               })(
-                <DatePicker showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker disabledDate={this.disabledDate} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
               )}
               <span className={styles.lostInputTip}>未结束不填写</span>
             </Form.Item>
@@ -262,21 +306,26 @@ class LimitAddForm extends Component {
           </Col>
         </Row>
         <Row className={styles.reasonBox} >
-          <Col span={8}>
-            <Form.Item label="原因说明" {...formItemLayout1} >
+          <Col span={24}>
+            <Form.Item label = {
+              <div className={styles.reasonText}>
+                <div>原因说明</div>
+                <div>({reasonLength}/999)</div>
+              </div>
+            } {...formItemLayout1} >
               {getFieldDecorator('reason', {
                 rules: [{ required: true, message: '请填写原因说明' }],
               })(
                 <InputLimit
                   placeholder="填写样例: 8:00至10:00调度下令负荷控制在10MW以内"
-                  size={80}
+                  size={999}
                   className={styles.reasonArea}
                   numberIsShow={false}
                   width={520}
                   height={60}
                 />
               )}
-              <span className={styles.lostInputTip}>({getFieldValue('reason')?getFieldValue('reason').length:0}/80)</span>
+              {reasonLength >= 999 && <span className={styles.lostInputTip}>字数已超出限制</span>}
             </Form.Item>
           </Col>
         </Row>

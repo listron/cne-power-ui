@@ -14,7 +14,7 @@ import WeatherRate from './Charts/WeatherRate';
 import WeatherDayStatus from './Charts/WeatherDayChart'
 import moment from 'moment';
 
-class ProductionAnalysis extends React.Component {
+class StationResourceAnalysis extends React.Component {
   static propTypes = {
     changeResourceStore: PropTypes.func,
     dateType: PropTypes.string,
@@ -23,7 +23,7 @@ class ProductionAnalysis extends React.Component {
     endTime: PropTypes.string,
     selectYear: PropTypes.any,
     year: PropTypes.any,
-    stationCode: PropTypes.number,
+    stationCode: PropTypes.any,
     getResourcePlan: PropTypes.func,
     resetStore: PropTypes.func,
     resourceAvalibaData: PropTypes.array, //计划完成是否有数据
@@ -304,11 +304,7 @@ class ProductionAnalysis extends React.Component {
                 <span className={styles.stationIcon}>
                   <i className="iconfont icon-pvlogo" />
                 </span>
-                {`${station.length > 0 && station[0].stationName}-${station.length > 0 && station[0].regionName || "--"}`}
-                <span className={styles.plan}>计划完成情况
-                {dateType === "day" && '(' + year + '年' + month + '月' + ')'}
-                  {dateType === "month" && '(' + year + '年)'}
-                </span>
+                {`${station.length > 0 && station[0].stationName}-${station.length > 0 && station[0].provinceName || "--"}`}
                 <div className={styles.choiceYear}>{
                   dateType === "year" && resourceAvalibaData && resourceAvalibaData.map((item, index) => {
                     if (item.isTrue === false) {
@@ -467,4 +463,4 @@ class ProductionAnalysis extends React.Component {
     );
   }
 }
-export default (ProductionAnalysis);
+export default (StationResourceAnalysis);

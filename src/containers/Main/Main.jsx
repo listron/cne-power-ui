@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
+import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button } from 'antd';
-import { Route,Redirect, Switch,withRouter} from 'react-router-dom';
-import {routerConfig} from '../../common/routerSetting';
+import { message, Modal, Button, Spin } from 'antd';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
 import { connect } from 'react-redux';
-import Login from '../Login/LoginLayout';
-import Contact from '../../components/Login/Contact';
-import Agreement from '../../components/Login/Agreement';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 // import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
@@ -19,6 +17,33 @@ import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
+import Loadable from 'react-loadable';
+
+const Loading = ({ pastDelay, timedOut, error }) => {
+  if (pastDelay) {
+    return (<div className={styles.preComponent}>
+      <Spin size="large" tip="Loading..." />
+    </div>);
+  } else if (timedOut) {
+    return <div>Taking a long time...</div>;
+  } else if (error) {
+    return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
+  }
+  return null;
+};
+
+const Login = Loadable({
+  loader: () => import('../Login/LoginLayout'),
+  loading: Loading
+})
+const Agreement = Loadable({
+  loader: () => import('../../components/Login/Agreement'),
+  loading: Loading
+})
+const Contact = Loadable({
+  loader: () => import('../../components/Login/Contact'),
+  loading: Loading
+})
 
 class Main extends Component {
   static propTypes = {
@@ -41,11 +66,11 @@ class Main extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { pathname } = this.props.history.location;
-    if(pathname !== '/login') {
+    if (pathname !== '/login') {
       const authData = Cookie.get('authData');
-      if(authData) {
+      if (authData) {
         this.props.getStations();
         this.props.getDeviceTypes();
         //请求企业的数据单位
@@ -58,24 +83,24 @@ class Main extends Component {
     const authData = Cookie.get('authData');
     const refreshToken = Cookie.get('refresh_token');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
-    if(isTokenValid && authData && this.props.history.location.pathname === '/login'
-    && Cookie.get('isNotLogin') === '0') {
+    if (isTokenValid && authData && this.props.history.location.pathname === '/login'
+      && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/monitor/station');
     }
-    if(authData && !isTokenValid && refreshToken){
+    if (authData && !isTokenValid && refreshToken) {
       message.error('token已过期，请刷新页面重新登录后使用');
       // this.props.refreshToken({ 
       //   grant_type: 'refresh_token',
       //   refresh_token:refreshToken
       // })
     }
-    if(nextProps.login.size > 0 && this.props.login.size === 0) {    
+    if (nextProps.login.size > 0 && this.props.login.size === 0) {
       this.props.getStations();
       this.props.getDeviceTypes();
       this.props.getMonitorDataUnit();
     }
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetMonitorData()
   }
 
@@ -95,22 +120,22 @@ class Main extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.resetMonitorData();
-    this.props.changeLoginStore({pageTab: 'login'});
+    this.props.changeLoginStore({ pageTab: 'login' });
     this.props.history.push('/login');
   }
 
   render() {
-    const { changeLoginStore, history,resetMonitorData } = this.props;
+    const { changeLoginStore, history, resetMonitorData } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
-    if(authData && isTokenValid){
+    if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
-    if(isTokenValid && authData && (isNotLogin === '0')){
-    // if(true){
+    if (isTokenValid && authData && (isNotLogin === '0')) {
+      // if(true){
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
@@ -128,7 +153,7 @@ class Main extends Component {
           </div>}
           <div className={styles.appMain}>
             {!isHomePage && <SideMenu />}
-            <main className={styles.content} style={{height: isHomePage?'100vh':'calc(100vh - 59px)'}} id="main" >
+            <main className={styles.content} style={{ height: isHomePage ? '100vh' : 'calc(100vh - 59px)' }} id="main" >
               <Switch>
                 {routerConfig}
                 <Redirect to="/monitor/station" />
@@ -148,26 +173,26 @@ class Main extends Component {
           </Modal>
         </div>
       );
-    }else{
+    } else {
       return (
         <Switch>
-          <Route path="/login" excat component={Login} />
-          <Route path="/userAgreement" excat component={Agreement} />
-          <Route path="/contactUs" excat component={Contact} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/userAgreement" exact component={Agreement} />
+          <Route path="/contactUs" exact component={Contact} />
           <Redirect to="/login" />
-        </Switch>  
+        </Switch>
       );
     }
   }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return ({
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
     username: state.login.get('username'),
   });
-} 
+}
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
@@ -178,4 +203,4 @@ const mapDispatchToProps = (dispatch) => ({
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default hot(withRouter(connect(mapStateToProps, mapDispatchToProps)(Main)));

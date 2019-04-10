@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './stationStatisticList.scss';
-import CommonPagination from '../../../../components/Common/CommonPagination';
+import CommonPagination from '../../../Common/CommonPagination';
 import { Table, Radio } from "antd";
-import Cookie from 'js-cookie';
-import moment from 'moment'
+import moment from 'moment';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
+
 class StationStatisticList extends React.Component {
   static propTypes = {
     allStationAvalibaData: PropTypes.array,
@@ -20,10 +22,6 @@ class StationStatisticList extends React.Component {
     totalNum: PropTypes.number,
     allStationAvalibaData: PropTypes.array,
     history: PropTypes.object,
-
-  }
-  constructor(props, context) {
-    super(props, context)
   }
 
   ontableSort = (pagination, filter, sorter) => {
@@ -60,7 +58,6 @@ class StationStatisticList extends React.Component {
     this.props.changeAllStationStore({ sort, sortType })
   }
 
-
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
     const { getAllStationStatisticTableData, dateType, sortType, stationType, month, year, sort, powerSelectYear } = this.props;
     getAllStationStatisticTableData({
@@ -75,7 +72,6 @@ class StationStatisticList extends React.Component {
     })
     this.props.changeAllStationStore({ pageNum: currentPage, pageSize, })
   }
-
 
   handleTime = (e) => {  // 选择月
     const changeMonth = Number(e.target.value);
@@ -142,7 +138,6 @@ class StationStatisticList extends React.Component {
     }
   }
 
-
   selectStation = (record) => {
     const stationCode = record.stationCode
     this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
@@ -151,14 +146,13 @@ class StationStatisticList extends React.Component {
       singleStationCode: `${stationCode}`
     });
   }
-
-  //月table表
-  initMonthColumn = () => {
+  
+  initMonthColumn = () => { // 月table表
     const columns = [
       {
         title: "电站名称",
         dataIndex: "stationName",
-
+        className: styles.stationName,
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         render: (value, record, index) => {
@@ -170,9 +164,7 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-
-      },
-      {
+      }, {
         title: "区域",
         dataIndex: "region",
         sorter: true,
@@ -183,61 +175,57 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-      },
-      {
-        title: "月实际发电量(万kWh)",
+      }, {
+        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
         dataIndex: "genValid",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
-      },
-      {
-        title: "月计划发电量(万kWh)",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
         dataIndex: "planGen",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
-      },
-      {
-        title: "计划完成率",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
         dataIndex: "planGenRate",
         sorter: true,
+        render(text){ return numWithComma(text); },
         defaultSortOrder: 'ascend'
-      },
-      {
-        title: "发电量同比",
+      }, {
+        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
         dataIndex: "powerRate",
         sorter: true,
-
-      },
-      {
-        title: "辐射总量(MJ/m²)",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
         dataIndex: "resourceValue",
         sorter: true,
-      },
-
-      {
-        title: "资源同比",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="资源同比" unit="%" />,
         dataIndex: "resourceRate",
         sorter: true,
-      },
-      {
-        title: "等效利用小时数 (h)",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
         sorter: true,
-      },
-      {
-        title: "PR",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="PR" unit="%" />,
         dataIndex: "pr",
         sorter: true,
+        render(text){ return numWithComma(text); },
       }, {
-        title: "损失电量(万kWh)",
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
         dataIndex: "lostPower",
         sorter: true,
-      },
-      {
-        title: "损失电量等效时",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
         dataIndex: "limitPowerHours",
         sorter: true,
-
+        render(text){ return numWithComma(text); },
       }
     ];
     return columns
@@ -248,7 +236,7 @@ class StationStatisticList extends React.Component {
       {
         title: "电站名称",
         dataIndex: "stationName",
-
+        className: styles.stationName,
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
         render: (value, record, index) => {
@@ -260,8 +248,7 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-      },
-      {
+      }, {
         title: "区域",
         dataIndex: "region",
         sorter: true,
@@ -272,61 +259,57 @@ class StationStatisticList extends React.Component {
             )
           }
         }
-      },
-      {
-        title: "年实际发电量(万kWh)",
+      }, {
+        title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
         dataIndex: "genValid",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
-      },
-      {
-        title: "年计划发电量(万kWh)",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
         dataIndex: "planGen",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
-      },
-      {
-        title: "计划完成率",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
         dataIndex: "planGenRate",
         sorter: true,
+        render(text){ return numWithComma(text); },
         defaultSortOrder: 'ascend'
-      },
-      {
-        title: "发电量环比",
+      }, {
+        title: () => <TableColumnTitle title="发电量环比" unit="%" />,
         dataIndex: "powerRate",
-        sorter: true,
-
-      },
-      {
-        title: "辐射总量(MJ/m²)",
-        dataIndex: "resourceValue",
-        sorter: true,
-      },
-
-      {
-        title: "资源环比",
-        dataIndex: "resourceRate",
-        sorter: true,
-      },
-      {
-        title: "等效利用小时数 (h)",
-        dataIndex: "equivalentHours",
-        sorter: true,
-      },
-      {
-        title: "PR",
-        dataIndex: "pr",
+        render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: "损失电量(万kWh)",
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        dataIndex: "resourceValue",
+        render(text){ return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="资源环比" unit="%" />,
+        dataIndex: "resourceRate",
+        render(text){ return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
+        dataIndex: "equivalentHours",
+        render(text){ return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="PR" unit="%" />,
+        dataIndex: "pr",
+        render(text){ return numWithComma(text); },
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
         dataIndex: "lostPower",
         sorter: true,
-      },
-      {
-        title: "损失电量等效时",
+        render(text){ return numWithComma(text); },
+      }, {
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
         dataIndex: "limitPowerHours",
+        render(text){ return numWithComma(text); },
         sorter: true,
-
       }
     ];
     return columns
@@ -335,13 +318,7 @@ class StationStatisticList extends React.Component {
   render() {
     const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
-    const dataSource = allStationStatisticTableData.map((e, i) => ({
-      ...e, key: i,
-      pr: `${e.pr ? e.pr : '--'}%`,
-      resourceRate: `${e.resourceRate ? e.resourceRate : '--'}%`,
-      planGenRate: `${e.planGenRate ? e.planGenRate : '--'}%`,
-      powerRate: `${e.powerRate ? e.powerRate : '--'}%`
-    }))
+    const dataSource = allStationStatisticTableData.map((e, i) => ({ ...e, key: i }));
     return (
       <div className={styles.stationStatisticList}>
         <div className={styles.stationStatisticFilter}>

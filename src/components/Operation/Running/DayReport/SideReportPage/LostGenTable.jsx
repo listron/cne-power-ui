@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './sideReportPage.scss';
-import { Table, Form, Input, DatePicker } from 'antd';
+import { Table, Form, Input, DatePicker, message } from 'antd';
 import moment from 'moment';
+import TableColumnTitle from '../../../../Common/TableColumnTitle';
 
 class LostGenTable extends Component {
   static propTypes = {
-    rememberRemove: PropTypes.func,
+    rememberHandle: PropTypes.func, // 需记录交互的手动操作父组件数据函数: 记录删除id，记录编辑的时间。
     form: PropTypes.object,
     reportDate: PropTypes.string,
     faultGenList: PropTypes.array,
@@ -15,21 +16,22 @@ class LostGenTable extends Component {
     changeFaultList: PropTypes.func,
   }
 
-  constructor(props){
-    super(props);
-  }
-
   removeFaultInfo = (id) => {
-    const { faultGenList, changeFaultList, rememberRemove } = this.props;
-    const newFaultGenList = faultGenList.filter(e=>{
-      rememberRemove && id === e.id && id > 0 && rememberRemove({faultId: id}); // 要删除的id需暂存
+    const { faultGenList, changeFaultList, rememberHandle } = this.props;
+    const newFaultGenList = faultGenList.filter(e => {
+      rememberHandle && id === e.id && id > 0 && rememberHandle({ faultId: id }); // 要删除的id需暂存
       return id !== e.id
     });
     changeFaultList(newFaultGenList);
   }
 
+  disabledDate = (start) => {
+    return start && start > moment();
+  }
+
   _loseColumn = () => {
-    const { getFieldDecorator } = this.props.form;
+    const { form, rememberHandle, faultGenList } = this.props;
+    const { getFieldDecorator } = form;
     const column = [
       {
         title: '设备类型',
@@ -80,8 +82,47 @@ class LostGenTable extends Component {
             <Form.Item>
               {getFieldDecorator(`${id}_startTime`, {
                 initialValue: startTime,
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    const endTime = form.getFieldValue(`${id}_endTime`);
+                    const entTimeError = form.getFieldError(`${id}_endTime`);
+                    if (rememberHandle) { // 需将底层改变映射至父组件
+                      const newFaultGenList = faultGenList.map(e => {
+                        if(`${e.id}` === `${id}`){
+                          e.startTime = value;
+                        }
+                        return e
+                      });
+                      rememberHandle({ faultList: newFaultGenList }); // 时间变化映射到父组件。
+                    }
+                    if (!value) { // 开始时间必填
+                      callback('请选择发生时间');
+                    } else if (value && endTime) { // 同时有开始时间和结束时间
+                      const timeUnable = value > endTime; // 开始时间大于结束时间 => error
+                      const timeEnable = entTimeError && value <= endTime; // 结束时间报错，但开始时间更正可用
+                      timeEnable && form.setFields({
+                        [`${id}_endTime`]: {
+                          value: endTime,
+                          errors: null
+                        }
+                      });
+                      timeUnable && message.error('结束时间必须大于开始时间');
+                      timeUnable && callback('结束时间必须大于开始时间');
+                    }
+                    callback();
+                  } 
+                }],
               })(
-                <DatePicker placeholder="开始时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+                <DatePicker
+                  placeholder="开始时间"
+                  style={{width: '100%', minWidth: 'auto'}}
+                  disabledDate = {this.disabledDate}
+                  showTime={{format: 'HH:mm'}}
+                  format="YYYY-MM-DD HH:mm"
+                  allowClear={false}
+                  // onChange={(startMoment) => this.onStartChange(`${id}`, startMoment)}
+                />
               )}
             </Form.Item>
           )
@@ -94,8 +135,42 @@ class LostGenTable extends Component {
           return (<Form.Item>
             {getFieldDecorator(`${record.id}_endTime`, {
               initialValue: record.endTime,
+              rules: [{
+                validator: (rule, value, callback) => {
+                  const startTime = form.getFieldValue(`${record.id}_startTime`);
+                  const startTimeError = form.getFieldError(`${record.id}_startTime`);
+                  if (rememberHandle) { // 需将底层改变映射至父组件
+                    const newFaultGenList = faultGenList.map(e => {
+                      if(`${e.id}` === `${record.id}`){
+                        e.endTime = value;
+                      }
+                      return e
+                    });
+                    rememberHandle({ faultList: newFaultGenList }); // 时间变化映射到父组件。
+                  }
+                  if (value && startTime) {
+                    const timeUnable = startTime > value; // 开始时间 > 结束时间 => error
+                    const timeEnable = startTimeError && value >= startTime; // 开始时间报错，但结束时间更正为可用
+                    timeEnable && form.setFields({
+                      [`${record.id}_startTime`]: {
+                        value: startTime,
+                        errors: null
+                      }
+                    });
+                    timeUnable && message.error('结束时间必须大于开始时间');
+                    timeUnable && callback('结束时间必须大于开始时间');
+                  }
+                  callback();
+                } 
+              }],
             })(
-              <DatePicker placeholder="结束时间" style={{width: '100%'}} showTime={{format: 'HH:mm'}} format="YYYY-MM-DD HH:mm" />
+              <DatePicker
+                placeholder="结束时间"
+                disabledDate = {this.disabledDate}
+                style={{width: '100%', minWidth: 'auto'}}
+                showTime={{format: 'HH:mm'}}
+                format="YYYY-MM-DD HH:mm"
+              />
             )}
           </Form.Item>)
         }
@@ -113,7 +188,7 @@ class LostGenTable extends Component {
           </Form.Item>)
         }
       },{
-        title: '日损失电量(kWh)',
+        title: () => <TableColumnTitle title="日损失电量" unit="kWh" />,
         dataIndex: 'lostPower',
         className: 'lostPower',
         render : (text, record) => {
@@ -158,7 +233,7 @@ class LostGenTable extends Component {
 }
 
 export default Form.create({ // 上述form值变化调整对应数据并保存对应数据。
-  onValuesChange:(props, changedValues, allValues)=>{
+  onValuesChange: (props, changedValues, allValues) => {
     const { faultGenList, changeFaultList } = props;
     const changeArr = Object.entries(changedValues)[0] || [];
     const recordBase = changeArr[0] || '';

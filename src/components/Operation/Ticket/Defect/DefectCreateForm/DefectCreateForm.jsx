@@ -203,6 +203,7 @@ class TmpForm extends Component {
       }
     })
     const canSelectDefectType = currentStations && deviceTypeCode;
+    const {handleData={}}=defectDetail;
     return (
       <Form className={styles.defectCreateForm}>
         <div className={styles.basicInfo}>
@@ -232,7 +233,7 @@ class TmpForm extends Component {
           <FormItem label="设备名称" colon={false}>
             {getFieldDecorator('deviceCode', {
               rules: [{ required: true, message: '请选择设备名称' }],
-              initialValue: defectDetail && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || [],
+              initialValue: defectDetail.deviceName && [{ deviceCode: defectDetail.deviceCode, deviceName: defectDetail.deviceName }] || null,
             })(
               <DeviceSelect
                 disabled={deviceTypeCode ? false : true}
@@ -301,7 +302,7 @@ class TmpForm extends Component {
           <FormItem label="处理结果" colon={false}>
             {getFieldDecorator('defectSolveResult', {
               rules: [{ required: true, message: '选择处理结果' }],
-              initialValue: editDefect && defectDetail.handleData.defectSolveResult || '1',
+              initialValue: editDefect && handleData.defectSolveResult || '1',
             })(
               <RadioGroup>
                 <RadioButton value="1">未解决</RadioButton>
@@ -311,7 +312,7 @@ class TmpForm extends Component {
           </FormItem>
           {!defectFinished && <FormItem label="处理建议" colon={false}>
             {getFieldDecorator('defectSolveInfo', {
-              initialValue: editDefect && defectDetail.handleData.defectProposal || '',
+              initialValue: editDefect && handleData.defectProposal || '',
             })(
               <InputLimit placeholder="请描述，不超过80个汉字" />
             )}
@@ -330,7 +331,7 @@ class TmpForm extends Component {
               <FormItem label="处理过程" colon={false}>
                 {getFieldDecorator('defectSolveInfo', {
                   rules: [{ required: true, message: '请输入处理过程' }],
-                  initialValue: editDefect && defectDetail.handleData.defectSolveInfo || ''
+                  initialValue: editDefect && handleData.defectSolveInfo || ''
                 })(
                   <CommonInput commonList={commonList} placeholder="请描述，不超过80个汉字" />
                 )}
