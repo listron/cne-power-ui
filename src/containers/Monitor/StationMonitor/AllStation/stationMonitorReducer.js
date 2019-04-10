@@ -9,6 +9,7 @@ var initState = Immutable.fromJS({
    pvMonitorStation:{},
    stationType: '0', // 2-有风和光，默认显示全部，0-只有风，只显示风，1-只有光，只显示光
    stationShowType:'stationBlock',
+   capabilityData:[],// 出力图
 });
 
 const stationMonitorReducer = (state = initState, action) => {

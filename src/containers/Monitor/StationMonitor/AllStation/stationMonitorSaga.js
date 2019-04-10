@@ -72,6 +72,34 @@ function* stopRealtimeData() { // 停止数据定时请求并清空数据
   }
 }
 
+//获取出力图数据
+function* getCapabilityDiagram(action) {
+  const { payload } = action;
+  const { startTime, endTime } = payload
+  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + 350}/1/${startTime}/${endTime}`
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          capabilityData: response.data.data || [],
+        }
+      });
+    } else {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          capabilityData: [],
+        }
+      });
+    }
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchStationMonitor() {
   yield takeLatest(allStationAction.getMonitorStation, getMonitorStation);
   yield takeLatest(allStationAction.stopRealtimeData, stopRealtimeData);

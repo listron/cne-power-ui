@@ -33,7 +33,7 @@ class AllStation extends Component {
   componentWillUnmount() {
     this.props.changeMonitorStationStore({
       stationShowType: 'stationBlock',
-      stationType:'2',
+      stationType: '2',
     });
     this.props.stopRealtimeData()
   }
@@ -46,18 +46,19 @@ class AllStation extends Component {
   }
 
   render() {
-    const { stationTypeCount,stationType } = this.props;
+    const { stationTypeCount, stationType } = this.props;
     return (
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
-          {stationTypeCount === 'multiple' &&
-            <Tabs type="card" activeKey={stationType} onChange={this.queryTargetData} tabBarGutter={0} >
-              <TabPane tab="全部" key="2" ><Allstation {...this.props} /></TabPane>
-              <TabPane tab="风电" key="0"><NewWindStation {...this.props} /></TabPane>
-              <TabPane tab="光伏" key="1"><PvStation {...this.props} /></TabPane>
-            </Tabs>
-          }
+          <div className={styles.allStationTitle} >
+            <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
+            <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
+            <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
+          </div>
+          {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
+          {stationTypeCount === 'multiple' && stationType === '0' && <NewWindStation {...this.props} />}
+          {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
           {stationTypeCount === 'wind' && <NewWindStation {...this.props} />}
           {stationTypeCount === 'pv' && <PvStation {...this.props} />}
           {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
@@ -68,7 +69,7 @@ class AllStation extends Component {
   }
 }
 const mapStateToProps = (state) => {
-   return ({
+  return ({
     ...state.monitor.stationMonitor.toJS(),
     realTimePowerUnit: state.common.get('realTimePowerUnit'),
     realTimePowerPoint: state.common.get('realTimePowerPoint'),

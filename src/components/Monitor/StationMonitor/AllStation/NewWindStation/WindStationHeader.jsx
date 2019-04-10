@@ -1,105 +1,84 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-import CommonProgress from '../../../../Common/CommonProgress';
-import { Tooltip } from 'antd';
-import { ValueFormat, DeviceValueFormat } from '../../../../Common/UtilComponent';
-import { monitordataFormat } from '../../../../../utils/utilFunc';
+import { monitordataFormat, dataFormats, numWithComma } from '../../../../../utils/utilFunc';
+import OwnProgress from '../../../../Common/OwnProgress/index';
 
 class windStationHeader extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
-    realTimePowerUnit: PropTypes.string,
-    realCapacityUnit: PropTypes.string,
-    powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.any,
-    realCapacityPoint: PropTypes.any,
-    powerPoint: PropTypes.any,
   }
   constructor(props, context) {
     super(props, context)
   }
+
+  DeviceValueFormat = (data, placeholder = '--', pointLength, special = false) => {
+    let point = pointLength;
+    if (special) { // 特殊的设置 只针对风电
+      if (data > 100) point = 0;
+      if (data > 0.01 && data <= 100) point = 2;
+      if (data <= 0.01) point = 4;
+    }
+    let showData = dataFormats(data, placeholder, point, true)
+    if(showData!=='--'){
+      const valueArr = showData.split('.');
+      const intNum = valueArr[0];
+      const pointNum = valueArr[1];
+      return (
+        <span className={styles.valueFormat}>
+          <span className={styles.int} style={{ fontSize: 24 }}>{numWithComma(intNum)}</span>
+          {pointNum && <span className={styles.decimal} style={{ fontSize: 18 }}>.{pointNum}</span>}
+        </span>
+      )
+    }else{
+      return showData
+    }
+  }
+
   render() {
-    const { windMonitorStation, realTimePowerUnit, realCapacityUnit, powerUnit, realTimePowerPoint, realCapacityPoint, powerPoint } = this.props;
-
-
+    const { windMonitorStation,} = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower;
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;
-    const instantaneous = stationDataSummary.instantaneous ;
+    const instantaneous = stationDataSummary.instantaneous;
     const dayPower = stationDataSummary.dayPower;
     const monthPower = stationDataSummary.monthPower;
+    const monthRate = stationDataSummary.monthRate;
     const yearPower = stationDataSummary.yearPower;
-    const yearPlanPower = stationDataSummary.yearPlanPower;
-    const yearPlanRate = stationDataSummary.yearPlanRate;
-    const planStatus = stationDataSummary.planStatus || 0;
+    const equivalentHours = stationDataSummary.equivalentHours;
+    const yearRate = stationDataSummary.yearRate;
     return (
       <div className={styles.headStation}>
-        <div className={styles.typeIcon}>
+        <div className={styles.capacity}>
           <div className={styles.leftIcon}>
           </div>
         </div>
-        <CommonProgress value={stationPower} total={stationCapacity} realTimePoint={realTimePowerPoint} realTimeUnit={realTimePowerUnit} points={realCapacityPoint} valueunit={realCapacityUnit} valueText={`实时功率 (${realTimePowerUnit})`} totalText={`装机容量 (${realCapacityUnit})`} />
-        <div className={styles.stationCollect}>
-          <div className={styles.equipmentNum}>
-            <div className={styles.dataValue}>{stationUnitCount}</div>
-            <div className={styles.dataName}>装机台数 (台)</div>
+        <div className={styles.dataColumn}>
+          <div className={styles.stationPower}>
+            <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
+            <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
           </div>
-          <div className={styles.windSpeed}>
-            <div className={styles.dataWindValue}>
-              <DeviceValueFormat value={monitordataFormat(instantaneous, '--')} /></div>
-            <div className={styles.dataName}>平均风速 (m/s)</div>
-          </div>
-          <div className={styles.dayStation}>
-            <div className={styles.dataValue}>
-              <ValueFormat value={monitordataFormat(dayPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-            </div>
-            <div className={styles.dataName}>日发电量 ({powerUnit})</div>
-          </div>
-          <div className={styles.monthStation}>
-            <div className={styles.dataValue}>
-              <ValueFormat value={monitordataFormat(monthPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-            </div>
-            <div className={styles.dataName}>月累计发电量 ({powerUnit})</div>
-          </div>
-          {
-            planStatus === 2 && <CommonProgress value={yearPower} total={yearPlanPower} points={powerPoint} realTimePoint={powerPoint} realTimeUnit={powerUnit} valueunit={powerUnit} valueText={`年累计发电量 (${powerUnit})`} totalText={`计划 (${powerUnit})`} percent={yearPlanRate ? yearPlanRate : ''} />
-          }
-          {
-            planStatus === 1 &&
-            <React.Fragment>
-              <div className={styles.yearStation}>
-                <div className={styles.dataValue}>
-                  <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-                </div>
-                <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
-              </div>
-              <div className={styles.yearStationRate}>
-                <div className={styles.dataValue}>
-                  <DeviceValueFormat value={monitordataFormat(yearPlanRate.split('%')[0], '--')} />{'%'}
-                </div>
-                <div className={styles.dataName}>计划完成率</div>
-                <div className={styles.tooltipName}>
-                  <Tooltip placement="bottom" overlayStyle={{ maxWidth: 500, fontSize: '12px' }} title={'不含未填写计划发电量的电站'}> <i className="iconfont icon-help"></i>
-                  </Tooltip>
-                </div>
-              </div>
-            </React.Fragment>
-          }
-          {
-            planStatus === 0 &&
-            <div className={styles.yearStation}>
-              <div className={styles.dataValue}>
-                <ValueFormat value={monitordataFormat(yearPower, '--', powerPoint)} points={powerPoint} valueunit={powerUnit} />
-              </div>
-              <div className={styles.dataName}>年累计发电量 ({powerUnit})</div>
-            </div>
-          }
-
+          <OwnProgress percent={stationPower / stationCapacity * 100} successPercent={50} />
+          <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
-
-      </div>
+        <div className={styles.dataColumn}>
+          <div> 平均风速  <span className={`${styles.dataValue} ${styles.speed}`}>{this.DeviceValueFormat(instantaneous, '--', 1)}</span> m/s </div>
+          <div >  装机台数 <span className={styles.dataValue}>{this.DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
+        </div>
+        <div className={styles.dataColumn}>
+          <div>日发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(dayPower, '--', 2, true)}</span> 万kWh  </div>
+          <div> 月完成率 <span className={styles.dataValue}>{this.DeviceValueFormat(monthRate, '--', 2)} </span> %  </div>
+        </div>
+        <div className={styles.dataColumn}>
+          <div> 月发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(monthPower, '--', 2, true)}</span> 万kWh  </div>
+          <div> 年完成率 <span className={styles.dataValue}>{this.DeviceValueFormat(yearRate, '--', 2)} </span> % </div>
+        </div>
+        <div className={styles.dataColumn}>
+          <div>年发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(yearPower, '--', 2, true)}</span> 万kWh </div>
+          <div> 年利用小时 <span className={styles.dataValue}>{this.DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
+        </div>
+      </div >
     )
   }
 }

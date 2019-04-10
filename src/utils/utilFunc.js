@@ -46,10 +46,10 @@ export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = fal
     return placeholder;
   }
   if (!hideZero) { // 保留精度内的末尾0
-    resultString = pointLenth > 0 ? parseFloat(data).toFixed(pointLenth) : `${data}`;
+    resultString = (pointLenth > 0 || pointLenth===0) ? parseFloat(data).toFixed(pointLenth) : `${data}`;
   } else { // 需去掉末尾0
     const numData = parseFloat(data);
-    const tmpResult = pointLenth > 0 ? parseFloat(numData.toFixed(pointLenth)) : numData;
+    const tmpResult = (pointLenth > 0 || pointLenth===0) ? parseFloat(numData.toFixed(pointLenth)) : numData;
     resultString = `${tmpResult}`;
   }
   return resultString;

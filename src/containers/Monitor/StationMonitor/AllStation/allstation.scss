@@ -23,6 +23,37 @@
         height: 164px;
       }
     }
+    .allStationTitle{
+        display: flex;
+        line-height: 40px;
+        background:#f8f8f8;
+        border-bottom:  1px solid #dfdfdf;
+        p{
+            width:120px;
+            border-right: 1px solid #dfdfdf;
+            color:#999999;
+            margin-bottom: 0;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: -2px;
+        }
+        .activeStation{
+            background: #fff;
+            position: relative;
+            color:#000000;
+            &::before{
+                content: "";
+                position: absolute;
+                width: 120px;
+                height: 2px;
+                top: 0;
+                left: -1px;
+                background: $themeColor;
+            }
+        }
+
+    }
+    
     :global {
         .ant-switch-checked {
             background-color: $themeColor;
@@ -57,14 +88,14 @@
             width: 120px;
         }
 
-        .ant-tabs-tab-active {
+        .ant-tabs-tab-active .allStationParents {
             background: $pageGround;
             color: $themeColor;
             margin: 0;
             position: relative;
         }
 
-        .ant-tabs-tab-active::before {
+        .ant-tabs-tab-active .allStationParents ::before {
             content: "";
             position: absolute;
             width: 120px;

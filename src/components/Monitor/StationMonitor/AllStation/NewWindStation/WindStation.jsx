@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-import Map from '../Map.jsx';
+// import Map from '../Map.jsx';
 import WindStationHeader from './WindStationHeader.jsx';
 import WindStationItem from './WindStationItem.jsx';
 import WindStationList from './WindStationList.jsx';
 import { Tabs, Radio, Switch, Spin } from "antd";
+import { MapChart } from './MapChart.jsx';
+import OutputTenMin from '../../SingleStation/SingleStationCommon/OutputTenMin';
 const TabPane = Tabs.TabPane;
-const { Button } = Radio;
 const RadioButton = Radio.Button
 
 class WindStation extends React.Component {
@@ -35,11 +37,8 @@ class WindStation extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getRealtimeData({ stationType: '0' })
-  }
-
-  componentWillUnmount() {
   }
 
   onHandleAlarm = (checked) => {
@@ -48,6 +47,7 @@ class WindStation extends React.Component {
       currentPage: 1,
     })
   }
+
   onHandleStation = (e) => {
     this.setState({
       stationType: e.target.value,
@@ -64,7 +64,7 @@ class WindStation extends React.Component {
 
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
-    this.setState({ stationType: 'all', currentPage: 1, })
+    this.setState({ currentPage: 1, })
   }
 
 
@@ -88,56 +88,22 @@ class WindStation extends React.Component {
     return newStationDataList
   }
 
-  mapData = () => {
-    const { windMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
-    const stationDataList = windMonitorStation.stationDataList || [];
-    let iconArray = [
-      {
-        "400": ['image:///img/wind01.png', 'image:///img/wind02.png'],
-        "500": 'image:///img/cutdown.png',
-        "900": 'image:///img/wind04.png'
-      },
-      {
-        "400": ['image:///img/pv01.png', 'image:///img/pv02.png'],
-        "500": 'image:///img/pv03.png',
-        "900": 'image:///img/pv04.png'
-      },
-    ]
-    let data = [];
-    stationDataList.forEach((item, index) => {
-      let stationStatusAll = item.stationStatus || {};
-      let stationStatus = stationStatusAll.stationStatus || "";
-      const stationType = item.stationType || "";
-      const currentStationType = iconArray[item.stationType] || {};
-      const currentStationStatus = currentStationType[stationStatus] || '';
-      data.push({
-        name: item.stationName,
-        value: [item.longitude, item.latitude, stationType, stationStatus],
-        symbol: stationStatus === "400" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
-        symbolSize: stationType > 0 ? [30, 20] : [31, 36],
-        alarmNum: item.alarmNum,
-        stationPower: (realTimePowerUnit === 'MW' ? (+item.stationPower) : (+item.stationPower * 1000)).toFixed(realTimePowerPoint),
-        stationCapacity: (realCapacityUnit === 'MW' ? (+item.stationCapacity) : (+item.stationCapacity * 1000)).toFixed(realCapacityPoint),
-        instantaneous: item.instantaneous,
-        stationCode: item.stationCode,
-        stationStatus: stationStatus,
-        realTimePowerUnit,
-        realCapacityUnit
-      })
-    })
-    return data
-
-  }
-
-
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
     const { windMonitorStation, loading, stationShowType } = this.props;
-    const { stationDataSummary = {} } = windMonitorStation;
-    const { stationProvinceSummary = [] } = stationDataSummary;
+    const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
+    const alarmNum = stationDataSummary.alarmNum || '--';
+    const deviceStatus = [
+      { name: '运行', value: 'normalNum' },
+      { name: '待机', value: 'standbyNum' },
+      { name: '停机', value: 'standbyNums' },
+      { name: '维护', value: 'maintainNum' },
+      { name: '故障', value: 'errorNum' },
+      { name: '通讯中断', value: 'interruptNum' },
+    ]
     const operations = ( // 状态筛选部分样式
       <div style={{ border: 'none' }}>
-        <Switch onChange={this.onHandleAlarm} checked={checked} />告警
+        <Switch onChange={this.onHandleAlarm} checked={checked} />  只看告警
         <Radio.Group
           defaultValue="all"
           buttonStyle="solid"
@@ -153,27 +119,14 @@ class WindStation extends React.Component {
       </div>
     );
 
-    const province = (
-      <div className={styles.provinceStationTotal}>
-        {stationProvinceSummary.map((item, index) => {
-          return (
-            <div key={index} className={styles.provinceBox}>
-              <span>{item.provinceName}</span>
-              <span className={styles.fontColor}> {item.windStationNum} </span>
-            </div>
-          )
-        })}
-      </div>
-    )
-
     return (
       <div className={styles.WindStation}>
-        <WindStationHeader {...this.props} />
+        <WindStationHeader windMonitorStation={windMonitorStation} />
         <div className={styles.windContainer}>
           <Tabs
             className={styles.containerTabs}
             activeKey={stationShowType}
-            tabBarExtraContent={stationShowType !== 'stationMap' ? operations : province}
+            tabBarExtraContent={operations}
             onChange={this.setkey}
             animated={false}>
             <TabPane tab={<span> <i className="iconfont icon-grid"></i></span>} key="stationBlock" >
@@ -190,15 +143,36 @@ class WindStation extends React.Component {
               />
             </TabPane>
             <TabPane tab={<span> <i className="iconfont icon-map"></i>  </span>} key="stationMap"  >
-              <Map {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" />
+              <MapChart stationDataList={this.statusDataList()} />
+              {/* <MapChart {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" /> */}
             </TabPane>
           </Tabs>
-          {stationShowType !== 'stationList' && <div className={styles.windStionChart}></div>}
+          {stationShowType !== 'stationList' &&
+            <div className={styles.windStationChart}>
+              <div className={styles.tags}>
+                <Link to={`javascript:void(0)`}> 查看告警 {alarmNum} </Link>
+                <Link to={`javascript:void(0)`}> 统计分析  </Link>
+                <Link to={`javascript:void(0)`}> 报表查询  </Link>
+              </div>
+              <div className={styles.deviceStatus}>
+                <div className={styles.deviceStaTitle}> <span>设备状态</span> <i className="iconfont icon-more"></i> </div>
+                <div className={styles.deviceStaCont}>
+                  {deviceStatus.map(e => {
+                    return <span key={e.value}>{e.name} {stationDataList[e.value] || '--'}</span>
+                  })}
+                </div>
+                <div>
+                  <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} yAxisUnit={'MW'} />
+                </div>
+              </div>
+            </div>}
         </div>
       </div>
     )
   }
 }
+
+
 export default WindStation
 
 

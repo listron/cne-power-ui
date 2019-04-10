@@ -21,13 +21,9 @@
             padding: 0 8px;
         }
 
-        // .ant-progress-bg {
-        //   border-radius: 100px;
-        //   background-color: #199475;
-        // }
         .ant-radio-button-wrapper:hover,
         .ant-radio-button-wrapper-focused {
-            color: #199475;
+            color: $themeColor;
         }
 
         .ant-tabs-nav-container {
@@ -66,7 +62,7 @@
         }
 
         .ant-tabs-nav-active {
-            background: #199475
+            background: $themeColor;
         }
 
         .ant-tabs-ink-bar .ant-tabs-ink-bar-animated {
@@ -77,7 +73,7 @@
         //tableList的头部宽高
         .ant-table .ant-table-thead>tr>th,
         .ant-table .ant-table-tbody>tr>td {
-            padding: 0px 12px;
+            padding: 0px 7px;
             height: 40px;
             line-height: 30px;
         }
@@ -91,8 +87,8 @@
             }
 
             .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
-                background: #199475;
-                border-color: #199475;
+                background: $themeColor;
+                border-color: $themeColor;
                 color: #fff;
                 margin: 0;
             }
@@ -114,26 +110,53 @@
         }
     }
 
-    .provinceStationTotal {
-        margin-right: 30px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-
-        .provinceBox {
-            margin-right: 5px;
-        }
-
-        .fontColor {
-            color: #199475;
-        }
-    }
-
     .headStation {
         border-bottom: 1px dashed #dfdfdf;
-        height: 100px;
+        height: 108px;
         display: flex;
         color: $darkColor;
+        flex-direction: row;
+        padding: 20px;
+
+        .leftIcon {
+            width: 60px;
+            height: 60px;
+            background: url('/img/wind01.png') no-repeat center;
+        }
+
+        .dataColumn {
+            display: flex;
+            flex-direction: column;
+            line-height: 36px;
+            padding: 0 12px;
+            border-right: 1px solid #dfdfdf;
+
+            &:last-child {
+                border: none
+            }
+
+            .dataValue {
+                color: $themeColor;
+                font-size: 24px;
+                text-align: left;
+                padding: 0 4px;
+                line-height: 30px;
+            }
+
+            .speed {
+                color: #3e97d1;
+            }
+
+            .stationPower {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                >div {
+                    margin-right: 10
+                }
+            }
+        }
 
         .typeIcon {
             width: 120px;
@@ -141,151 +164,92 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-
-            .leftIcon {
-                width: 60px;
-                height: 60px;
-                background: url('/img/wind01.png') no-repeat center;
-            }
         }
+    }
 
-        .progressInfo {
+    @mixin propContainer() {
+
+        // 卡片样式
+        .popover {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
 
-            .progressData {
-                width: 220px;
-                height: 100px;
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                margin-left: 25px;
-
-                .stationValue {
-                    flex: 1;
-                    display: flex;
-                    justify-content: space-between;
-                    padding-top: 20px;
-
-                    .planOutput {
-                        margin-left: 10px;
-                    }
-                }
-
-                .progressBar {
-                    flex: 1;
-                    width: 220px;
-                }
-
-                .stationType {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    padding-bottom: 20px;
-                }
-            }
-
-            .showInfo {
-                background: #ffffff;
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-                border-radius: 25px;
-                width: 80px;
-                height: 25px;
+            .name {
                 text-align: center;
-                line-height: 25px;
-                color: #199475;
-            }
-        }
-
-        .stationCollect {
-            height: 100px;
-            display: flex;
-            flex-direction: row;
-            margin: 0 25px;
-
-            .dayStation,
-            .monthStation,
-            .equipmentNum,
-            .windSpeed,
-            .yearStation,
-            .yearStationRate {
-                height: 100px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center; //align-items: center;     
-
-                .dataValue {
-                    color: #199475;
-                    font-size: 24px;
-                    flex: 1;
-                    text-align: left;
-                    padding-top: 20px;
-                    font-family: STHeitiSC-Light;
-                }
-
-                .dataWindValue {
-                    color: #3e97d1;
-                    font-size: 24px;
-                    flex: 1; //text-align: center;
-                    padding-top: 20px;
-                    font-family: STHeitiSC-Light;
-                }
-
-                .dataName {
-                    flex: 1;
-                    padding-bottom: 1px;
-                }
+                color: #000;
             }
 
-            .dayStation,
-            .equipmentNum,
-            .windSpeed,
-            .yearStation,
-            .yearStationRate,
-            .monthStation {
-                margin-right: 12px;
+            .poNomal,
+            .poInterrupt {
+                color: $themeColor;
+                text-align: center;
+                line-height: 33px;
             }
 
-            .yearStationRate {
-                position: relative;
-            }
-
-            .tooltipName {
-                position: absolute;
-                right: -16px;
-                top: 12px;
-                color: $promptColor;
-                cursor: pointer;
-            }
-
-            .tooltipName:hover {
+            .poInterrupt {
                 color: #f9b600;
+            }
+
+            .value {
+                color: $themeColor;
+            }
+
+            & .popColumn:nth-child(2n-1) {
+                background: #fff;
+            }
+
+            & .popColumn:nth-child(2n) {
+                background: #f8f8f8;
+            }
+
+            .popContainer {
+                background: pink
+            }
+
+            .popColumn {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 16px;
+            }
+
+            .unit {
+                width: 27px;
+                display: inline-block;
+                margin-left: 6px;
             }
         }
     }
 
     //卡片
     .stationCardContainer {
-        :global {
-            .ant-progress-outer {
-                height: 28px;
-            }
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-bottom: 20px;
 
-            .ant-progress-inner {
-                background: #dfdfdf;
+        .regionStation {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+
+            .regionName {
+                margin: 20px 0 0 20px;
             }
         }
 
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-self: flex-start;
-        margin-bottom: 20px;
+        .staionsList {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-self: flex-start;
+        }
 
-        .stationCard {
+        .normal,
+        .interrupt,
+        .notConnected {
             margin: 20px 0 0 24px;
             padding: 8px;
             width: 215px;
@@ -293,7 +257,7 @@
             border-radius: 4px;
             color: $darkColor;
             background: #ffffff;
-            box-shadow: 0 1px 4px 0;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             cursor: pointer;
@@ -309,23 +273,20 @@
             }
 
             .stationMark {
-                color: #199475;
+                color: $themeColor;
             }
         }
 
-        .stationTest {
-            margin: 20px 0 0 24px;
-            padding: 8px;
-            width: 215px;
-            height: 132px;
-            border-radius: 4px;
-            color: $darkColor;
-            display: flex;
-            flex-direction: column;
+        .interrupt {
+            border: 1px solid #f9b600;
+            box-shadow: 0 1px 4px 0#f9b600;
+        }
+
+        .notConnected {
             background: #f8f8f8;
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
             cursor: default;
             opacity: 0.6;
+            pointer-events: none;
 
             a {
                 pointer-events: none;
@@ -351,12 +312,8 @@
         }
 
         .stationCardProgress {
-            //flex: 1;
             height: 10px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
         }
 
         .stationCardValue,
@@ -364,7 +321,6 @@
             flex: 1;
             height: 26px;
             display: flex;
-            flex-direction: row;
             justify-content: space-between;
         }
 
@@ -381,6 +337,20 @@
 
             color:#a42b2c;
         }
+
+        .stationCard {
+            width: 235px;
+            height: 393px;
+            cursor: pointer;
+            @include propContainer();
+
+            :global {
+                .ant-popover-inner-content {
+                    background: #f8f8f8;
+                    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+                }
+            }
+        }
     }
 
     //列表
@@ -394,7 +364,7 @@
             color: rgba(0, 0, 0, 0.65);
 
             &:hover {
-                color: #199475;
+                color: $themeColor;
             }
         }
 
@@ -416,7 +386,7 @@
             text-overflow: ellipsis;
 
             &:hover {
-                color: #199475;
+                color: $themeColor;
             }
         }
 
@@ -443,7 +413,7 @@
             }
 
             .normalColor {
-                background: #199475;
+                background: $themeColor;
                 width: 5px;
                 height: 20px;
                 border-radius: 2px;
@@ -510,17 +480,75 @@
             .ant-table-placeholder {
                 border: none;
             }
+
+            .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-sorters {
+                padding-right: 24px !important;
+            }
+        }
+
+        .numberStyle {
+            text-align: right
         }
     }
-
+    // 地图
+    .mapChart {
+        display: 'flex';
+        flex: 1;
+        @include propContainer();
+        .popover {
+            width: 235px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+    }
     .windContainer {
         display: flex;
         flex-direction: row;
         flex: 1;
     }
-
-    .windStionChart {
+    .windStationChart {
+        display: flex;
         width: 464px;
         background: #f8f8f8;
+        padding: 0 12px 20px;
+        flex-direction: column;
+        .tags {
+            display: flex;
+            justify-content: space-around;
+            margin: 8px 30px;
+            a {
+                padding: 0 12px;
+                background: #ffffff;
+                border: 1px solid #dfdfdf;
+                border-radius: 4px;
+                height: 30px;
+                line-height: 30px;
+                color: #666;
+            }
+        }
+        .deviceStatus {
+            background: #ffffff;
+            border-radius: 4px;
+            line-height: 40px;
+            padding: 0 12px;
+            .deviceStaTitle{
+                display: flex;
+                justify-content: space-between;
+                color: #000;
+            }
+            .deviceStaCont{
+                span{
+                    margin-right: 12px;
+                    display: inline-block;
+                }
+                
+            }
+        }
+    }
+
+    .noData {
+        flex: 1;
+        display: flex;
+        justify-content: center;
     }
 }
