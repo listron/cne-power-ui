@@ -3,12 +3,13 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { powerReportAction } from './powerReportAction';
+import moment from 'moment';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
 
 function *getPowerReportList(action) {  // 请求报表列表
   const { payload } = action;
-  const{stationCodes,rangTime,}=payload;
+  const{startTime,endTime,}=payload;
   // const url =`${APIBasePath}${monitor.getPowerReportList}`
   const url =`/mock/v3/wind/report/fan/gen`;
 
@@ -21,6 +22,10 @@ function *getPowerReportList(action) {  // 请求报表列表
     });  
     const response = yield call(axios.post,url,{
       ...payload,
+      startTime:moment( startTime).utc().format(''),
+      endTime:moment( endTime).utc().format(''),
+      timeZone:moment().zone() / (-60),
+
     });
     if(response.data.code === '10000') {
       const total = response.data.data.pageCount || 0;

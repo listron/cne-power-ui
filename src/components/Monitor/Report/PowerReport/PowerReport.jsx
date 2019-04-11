@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './powerReport.scss';
 import TimeSelectReport from '../../../Common/TimeSelect/TimeSelectReport';
 import SummaryMode from '../../../Common/SummaryMode';
-import TableList from './table';
+import TableList from './TableList';
 import moment from 'moment';
 import { Button } from 'antd';
 
@@ -11,7 +11,7 @@ class PowerReport extends Component {
   static propTypes = {
     getPowerReportList: PropTypes.func,
     changePowerReportStore: PropTypes.func,
-    dataType: PropTypes.number,
+    dateType: PropTypes.number,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     summaryType: PropTypes.number,
@@ -28,13 +28,13 @@ class PowerReport extends Component {
 
   onTimeChange = (value) => {
     console.log(value)
-    const dataTypes = {
+    const dateTypes = {
       "day": 1,
       "month": 2,
       "year": 3,
       "custom": 4,
     };
-    this.props.changePowerReportStore({ dataType: dataTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
+    this.props.changePowerReportStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
     console.log(value)
@@ -53,9 +53,9 @@ class PowerReport extends Component {
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {
-    const { dataType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
+    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
     console.log('startTime: ', startTime);
-    const params = { dataType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
+    const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     this.props.getPowerReportList({ ...params, ...value })
   }
 

@@ -109,7 +109,7 @@ const routers = [
   { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
     // component: lazy(() => import('../components/Common/Building/Building')),
-    component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
+    component:  lazy(() => import('../containers/Monitor/Report/PowerReport/PowerReport')),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     // component: lazy(() => import('../components/Common/Building/Building')),
