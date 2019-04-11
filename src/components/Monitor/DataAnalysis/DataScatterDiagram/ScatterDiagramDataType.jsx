@@ -1,34 +1,45 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styles from './scatterDiagram.scss';
-import { Icon } from 'antd';
+import { Tabs } from 'antd';
+
+const TabPane = Tabs.TabPane;
 
 class ScatterDiagramDataType extends Component{
   static propTypes = {
     changeScatterDiagramStore: PropTypes.func,
     scatterDiagramType: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    changeScatterDiagramStore: PropTypes.func,
   }
 
-  selectScatterDiagramType = (scatterDiagramType) => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      key: 'chart',
+    }
+  }
+
+  
+  onChangeTab = (key) => { // 切换chart和list页面
     const { changeScatterDiagramStore } = this.props;
-    changeScatterDiagramStore({ scatterDiagramType })
+      changeScatterDiagramStore({
+        scatterDiagramType: key
+      });
+    this.setState({ key });
   }
 
-  showChart = () => {
-    this.selectScatterDiagramType('chart');
-  }
-
-  showList = () => {
-    this.selectScatterDiagramType('list');
-  }
-
+  
   render(){
-    const { scatterDiagramType } = this.props;
+    const { key } = this.state;
     return(
       <div className={styles.scatterDiagramDataType}>
         <div className={styles.tabIcon}>
-          <Icon onClick={this.showChart} type="bar-chart" className={scatterDiagramType === 'chart'? styles.active : styles.normal} />
-          <Icon onClick={this.showList} type="bars" className={scatterDiagramType === 'list'? styles.active : styles.normal} />
+          <Tabs animated={false} tabBarGutter={0} className={styles.tabContainer} activeKey={key} onChange={this.onChangeTab}>
+            <TabPane tab={<i className="iconfont icon-drawing"></i>} key="chart"></TabPane>
+            <TabPane tab={<i className="iconfont icon-table"></i>} key="list"></TabPane>
+          </Tabs>
         </div>
       </div>
       )

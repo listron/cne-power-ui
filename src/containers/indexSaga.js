@@ -27,7 +27,8 @@ import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStatio
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
 import { watchStationMonitor } from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
 
-import {watchAlarmMonitor}  from './Monitor/Alarm/AlarmStatic//alarmSaga';
+import {watchAlarmMonitor}  from './Monitor/Alarm/AlarmStatic/alarmSaga';
+import {watchAlarmCount} from './Monitor/Alarm/AlarmCount/alarmCountSaga';
 import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
@@ -107,6 +108,7 @@ export default function* rootSaga() {
     watchDeviceMonitor(),
     watchSingleStationMonitor(),
     watchAlarmMonitor(),
+    watchAlarmCount(),
     watchMonitorRealtimeWarning(),
     watchMonitorTransferForm(),
     watchMonitorHandleWarning(),

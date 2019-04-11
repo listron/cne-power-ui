@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import  InfoModal from '../../components/Login/InfoModal';
 import { Link } from 'react-router-dom';
 import styles from './loginLayout.scss';
 import { loginAction } from './loginAction';
@@ -17,8 +18,9 @@ class LoginLayout extends Component {
     resetLoginState: PropTypes.func,
   }
 
-  constructor(props) {
-    super(props);
+  state = {
+    modalName: 'agreement', // agreement  contact
+    showModal: false
   }
 
   componentWillUnmount() {
@@ -40,8 +42,30 @@ class LoginLayout extends Component {
     videoPlayer.style.height = '100%';
   }
 
+  toShowAgreement = () => {
+    this.setState({
+      modalName: 'agreement',
+      showModal: true
+    })
+  }
+
+  toContact = () => {
+    this.setState({
+      modalName: 'contact',
+      showModal: true
+    })
+  }
+
+  hideInfoModal = (modalName) => {
+    this.setState({
+      modalName: 'agreement',
+      showModal: false
+    })
+  }
+
   render() {
     const { pageTab, changeLoginStore } = this.props;
+    const { modalName, showModal } = this.state;
     return (
       <div className={styles.loginLayout}>
           <ReactPlayer 
@@ -61,12 +85,16 @@ class LoginLayout extends Component {
             <div className={styles.mainBox}>
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
-              {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} />}
-              {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore} />}
-              <div className={styles.contactUs}>
+              {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} toShowAgreement={this.toShowAgreement} />}
+              {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore}/>}
+              <div className={styles.bottomInfo}>
+                <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
+                <span className={styles.contact} onClick={this.toContact}>联系我们</span>
+              </div>
+              {/* <div className={styles.contactUs}>
                 <Link to="/userAgreement" >用户协议</Link>
                 <Link to="/contactUs" >联系我们</Link>
-              </div>
+              </div> */}
               <div className={styles.footerTitle}>
               京ICP备12030847号-2 © 2017-2019 北京动力协合科技有限公司        
               </div>
@@ -74,7 +102,10 @@ class LoginLayout extends Component {
               V3.4.0.20190111        
               </div>
             </div>
-
+            {showModal && <InfoModal
+              hideInfoModal={this.hideInfoModal}
+              modalName={modalName}
+            />}
           </div>
         </div>
       </div>

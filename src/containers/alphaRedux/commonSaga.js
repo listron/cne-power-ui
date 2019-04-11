@@ -478,6 +478,86 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
     console.log(error)
   }
 }
+function* getRegion(action) { // //获取用户权限的电站区域
+  // const url = `${APIBasePath}${commonPaths.getRegion}`;
+  const url = `/mock/v3/wind/report/fan/region`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getRegionStation(action) { // //获取用户权限的电站区域
+  // const url = `${APIBasePath}${commonPaths.getRegionStation}`;
+  const url = `/mock/v3/wind/report/fan/station`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getStationDevicemode(action) { // //获取用户权限的电站区域
+  // const url = `${APIBasePath}${commonPaths.getStationDevicemode}`;
+  const url = `/mock/v3/wind/report/fan/devicemode`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getRegionStationDevice(action) { // //获取用户权限的电站区域
+  // const url = `${APIBasePath}${commonPaths.getRegionStationDevice}`;
+  const url = `/mock/v3/wind/report/fan/device`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 /*  --- todo 待后台开发refreshtoken接口后，解开注释并进行refresh token的替换。
   export function* refreshToken(action){ //根据当前的refresh token获取刷新token并替换
@@ -533,4 +613,8 @@ export function* watchCommon() {
   yield takeEvery(commonAction.getWeather, getWeather);
 
   yield takeLatest(commonAction.downLoadFile, downLoadFile);
+  yield takeLatest(commonAction.getRegion, getRegion);
+  yield takeLatest(commonAction.getRegionStation, getRegionStation);
+  yield takeLatest(commonAction.getStationDevicemode, getStationDevicemode);
+  yield takeLatest(commonAction.getRegionStationDevice, getRegionStationDevice);
 }

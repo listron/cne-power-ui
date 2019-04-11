@@ -121,7 +121,7 @@ class HandleRemoveTable extends Component {
         <div className={styles.content}>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除人：</span>
-            <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
+            <span className={styles.value}>{relieveInfo.userFullname ? relieveInfo.userFullname : relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>截至时间：</span>

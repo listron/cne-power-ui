@@ -34,13 +34,13 @@
     padding: 20px 32px;
     display: flex;
     flex-wrap: wrap;
-    .stationSelect, .typeSelect{
+    .stationSelect, .typeSelect, .startSelect, .endSelect{
       flex: 0 0 25%;
     }
-    .deviceSelect, .timeSelect, .intervalSelect{
+    .deviceSelect, .intervalSelect{
       flex: 0 0 50%;
     }
-    .stationSelect, .typeSelect, .deviceSelect, .timeSelect, .intervalSelect{
+    .stationSelect, .typeSelect, .deviceSelect, .startSelect, .endSelect, .intervalSelect{
       display: flex;
       line-height: 40px;
       height: 40px;
@@ -49,13 +49,6 @@
         flex: 0 0 96px;
         text-align: right;
         margin-right: 8px;
-      }
-    }
-    .timeSelect{
-      :global{
-        .ant-input{
-          width: 400px;
-        }
       }
     }
     .intervalSelect{
@@ -277,10 +270,13 @@
 
 .historyRangeDropdown{
   .infoTip{
-    padding-left: 160px;
     color: $themeColor;
   }
   :global{
+    .ant-calendar-footer-btn{
+      display: flex;
+      justify-content: space-between;
+    }
     .ant-calendar-input{
       pointer-events: none;
     }

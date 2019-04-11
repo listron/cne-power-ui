@@ -4,7 +4,7 @@ import { othersAction } from './othersAction';
 const initState = Immutable.fromJS({
   loading: false,
   newPhoneNum: '',//新手机号
-  verificationCode: '',//验证码
+  sendCode: false,//验证码
   error: {},
 })
 

@@ -185,7 +185,7 @@ class SingleDeviceContainer extends Component {
             <Icon onClick={this.showList} type="bars" className={deviceShowType === 'list' ? styles.active : styles.normal} />
           </div>
           {deviceShowType === 'list' && <Button onClick={this.exportList} className={styles.exportStyle}>导出</Button>}
-          {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:{airDensity}kg/m³</div>}
+          {deviceShowType === 'graph' && <div className={styles.rightInfo}>现场空气密度:{(airDensity||airDensity===0)?airDensity:'--'}kg/m³</div>}
         </div>
         {deviceShowType === 'graph' ? <SingleWindDeviceCharts {...this.props} onChangeFilter={this.onChangeFilter} /> : <WindSingleDeviceTable {...this.props} onChangeFilter={this.onChangeFilter} />}
 

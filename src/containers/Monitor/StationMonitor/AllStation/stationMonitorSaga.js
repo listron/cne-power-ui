@@ -3,6 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { allStationAction } from './allStationAction.js';
 import moment from 'moment';
+
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime=moment.utc().format();

@@ -74,6 +74,7 @@ const mapStateToProps = (state) => ({
   inviteValid: state.login.get('inviteValid'),
   userEnterpriseStatus: state.login.get('userEnterpriseStatus'),
   username: state.login.getIn(['loginData', 'username']),
+  userFullName: state.login.getIn(['loginData', 'userFullName']),
   importEnterpriseName: state.login.getIn(['loginData', 'enterpriseName']),
   importEnterpriseLogo: state.login.getIn(['loginData', 'enterpriseLogo']),
   importEnterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
