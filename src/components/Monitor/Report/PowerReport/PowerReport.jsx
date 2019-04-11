@@ -20,6 +20,10 @@ class PowerReport extends Component {
     sortMethod: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    regionStationDeviceData: PropTypes.array,
+    stationDevicemodeData: PropTypes.array,
+    regionStationData: PropTypes.array,
+    regionData: PropTypes.array,
   }
 
   onTimeChange = (value) => {
