@@ -34,6 +34,7 @@ class YearSelect extends React.Component {
     const { panelOpen } = this.state;
     return (
       <DatePicker
+        className={styles.yearSelectStyle}
         placeholder="选择年"
         format="YYYY年"
         mode="year"

@@ -3,62 +3,62 @@ import PropTypes from 'prop-types';
 import styles from './powerReport.scss';
 import { Table } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
 
 class TableList extends Component {
   static propTypes = {
     getPowerReportList: PropTypes.func,
     changePowerReportStore: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    total: PropTypes.number,
+    dataType: PropTypes.number,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    summaryType: PropTypes.number,
+    summaryData: PropTypes.array,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+
   }
-  componentDidMount() {
-    const { getPowerReportList, pageNum, pageSize } = this.props;
-    getPowerReportList({ stationCodes: '', pageNum, pageSize })
-  }
+ 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    const { getPowerReportList } = this.props;
-    getPowerReportList({ pageNum: currentPage, pageSize })
     this.props.changePowerReportStore({ pageNum: currentPage, pageSize, })
+    this.props.onChangeFilter({ pageNum: currentPage, pageSize})
   }
   ontableSort = (pagination, filter, sorter) => {
-    const { getPowerReportList, stationType, year, month, powerSelectYear, dateType, pageSize, pageNum } = this.props;
+    const { onChangeFilter,} = this.props;
     const { field, order } = sorter;
     const sortInfo = {
-      stationName: 'stationName',
-      region: 'region',
-      planGen: 'planGen',
-      genValid: 'genValid',
-      planGenRate: 'planGenRate',
-      powerRate: 'powerRate',
-      resourceValue: 'resourceValue',
-      resourceRate: 'resourceRate',
-      equivalentHours: 'equivalentHours',
-      pr: 'pr',
-      lostPower: 'lostPower',
-      limitPowerHours: 'limitPowerHours'
+      regionName: '0',
+      stationName: '1',
+      deviceName: '2',
+      deviceModeName: '3',
+      time: '4',
+      windSpeedAvg: '5',
+      genValid: '6',
+      genTime: '7',
+      equivalentHours: '8',
+      limitGen: '9',
+      limitTime: '10',
+      faultGen: '11',
+      faultTime: '12'
     };
-    const sort = sortInfo[field] ? sortInfo[field] : '';
-    const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    let prams = {
-      pageNum,
-      pageSize,
-      year: dateType === 'month' ? year[0] : powerSelectYear,
-      stationType,
-      month,
-      dateType,
-      sort,
-      sortType,
-      stationType
-    }
-    getPowerReportList(prams)
-    this.props.changePowerReportStore({ sort, sortType })
+    const sortField = sortInfo[field] ? sortInfo[field] : '';
+    const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
+    this.props.changePowerReportStore({ sortField, sortMethod })
+    onChangeFilter({sortField,sortMethod})
   }
-
-
   initMonthColumn = () => {
     const columns = [
       {
         title: "区域",
         dataIndex: "regionName",
         sorter: true,
+        // width:40,
       },
       {
         title: "电站名称",
@@ -74,7 +74,7 @@ class TableList extends Component {
         title: "风机型号",
         dataIndex: "deviceModeName",
         sorter: true,
-       
+
       },
       {
         title: "统计时段",
@@ -83,44 +83,45 @@ class TableList extends Component {
         defaultSortOrder: 'ascend'
       },
       {
-        title: "平均风速",
+        title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
         dataIndex: "windSpeedAvg",
         sorter: true,
 
       },
       {
-        title: "发电量",
+        title: () => <TableColumnTitle title="发电量" unit="kWh" />,
         dataIndex: "genValid",
         sorter: true,
       },
 
       {
-        title: "发电时间",
+        title: () => <TableColumnTitle title="发电时间" unit="h" />,
         dataIndex: "genTime",
         sorter: true,
       },
       {
-        title: "等效利用小时数 (h)",
+        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
         sorter: true,
       },
       {
-        title: "限电损失电量",
+        title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
         dataIndex: "limitGen",
         sorter: true,
-      }, {
-        title: "限电时长",
+      },
+      {
+        title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: "limitTime",
         sorter: true,
       },
       {
-        title: "故障损失电量",
+        title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
         dataIndex: "faultGen",
         sorter: true,
 
       },
       {
-        title: "故障时长",
+        title: () => <TableColumnTitle title="故障时长" unit="h" />,
         dataIndex: "faultTime",
         sorter: true,
 
@@ -148,6 +149,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
+          scroll={{x:1440}}
           pagination={false} />
       </React.Fragment>
     )

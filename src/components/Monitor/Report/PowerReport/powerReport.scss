@@ -1,7 +1,15 @@
+@import "../../../../theme/theme.scss";
 
-@import '../../../../theme/theme.scss';
-
-.container{
+.topStyles {
+  display: flex;
+  align-content: center;
+  .btn{
+    display: flex;
+    align-self: center;
+    margin-left: 16px;
+  }
+}
+.container {
   margin: 0 auto;
 }
 .tableHeader {

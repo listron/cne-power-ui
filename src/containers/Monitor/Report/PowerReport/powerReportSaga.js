@@ -21,8 +21,6 @@ function *getPowerReportList(action) {  // 请求报表列表
     });  
     const response = yield call(axios.post,url,{
       ...payload,
-      stationCode:stationCodes,
-      startTime:rangTime,
     });
     if(response.data.code === '10000') {
       const total = response.data.data.pageCount || 0;
