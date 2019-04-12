@@ -75,9 +75,10 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
     const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
+    const tmpPayload = { queryParam, chartLoading: true };
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
-      payload: { queryParam, chartLoading: true }
+      payload: tmpPayload
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -175,15 +176,14 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
     const { enterpriseId } = payload;
     const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}` // '/mock/monitor/dataAnalysisSecendInteral';
     const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
+    const tmpQueryParam = { // 时间重置。
+      ...queryParam,
+      startTime: moment().subtract(1, 'day').startOf('day'),
+      endTime: moment().subtract(1, 'day').endOf('day'),
+    }
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
-      payload: {
-        queryParam: {
-          ...queryParam,
-          startTime: moment().startOf('day').subtract(1, 'day'),
-          endTime: moment(),
-        }
-      }
+      payload: tmpQueryParam,
     })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -192,11 +192,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
           intervalInfo: hasSecond === 1 ? [10, 5, 1] : [10 ,5],
-          queryParam: {
-            ...queryParam,
-            startTime: moment().startOf('day').subtract(1, 'day'),
-            endTime: moment(),
-          }
+          queryParam: tmpQueryParam,
         }
       })
     } else {

@@ -1,49 +1,58 @@
-@import '../../../theme/theme.scss';
-.timeSelect{
+@import "../../../theme/theme.scss";
+.timeSelect {
   // height: 100px;
   line-height: 50px;
   display: flex;
-  background: #f9f9f9;
+  // background: #f9f9f9;
   align-items: center;
   // border-bottom: 1px solid #ececec;
-  .textStyle{
+  :global{
+    .ant-radio-button-wrapper{
+      padding: 0 10px;
+    }
+  }
+  .textStyle {
     letter-spacing: 1px;
     margin-left: 24px;
     margin-right: 8px;
-    color:$lightColor;
+    color: $lightColor;
   }
-  .buttonStyle{
+  .buttonStyle {
     margin-right: 7px;
   }
-  .btn{
+  .btn {
     margin: 0 16px;
   }
 }
 
-.deviceModal{
-  :global{
-    .ant-modal-body{
+.deviceModal {
+  :global {
+    .ant-modal-body {
       padding: 12px 20px 0;
       overflow: auto;
+      
     }
   }
 }
-.deviceSelect{
+.deviceSelect {
   position: relative;
-  width: 198px;
+  width: 160px;
   :global {
     .ant-select:not(.ant-select-disabled) {
-      &:active, &:focus, &:hover {
+      &:active,
+      &:focus,
+      &:hover {
         box-shadow: none;
       }
-      .ant-select-selection:focus, .ant-select-selection:active, .ant.ant-select-selection:hover {
+      .ant-select-selection:focus,
+      .ant-select-selection:active,
+      .ant.ant-select-selection:hover {
         box-shadow: none;
       }
     }
   }
-
 }
-.deviceSelectModal{
+.deviceSelectModal {
   position: absolute;
   z-index: 10;
   cursor: pointer;
@@ -60,10 +69,21 @@
   }
 }
 
-.deviceContent{
+.deviceContent {
   display: flex;
   flex-direction: column;
   height: 470px;
+ 
+    :global{
+     .ant-tree-child-tree-open {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .ant-tree-child-tree > li{
+        padding-top: 8px;
+      }
+    }
+  
   .header {
     display: flex;
     flex: 0 0 44px;
@@ -80,13 +100,14 @@
       width: 112px;
       margin: 0 24px 0 8px;
     }
-    :global{
-      .ant-select{
+    :global {
+      .ant-select {
         margin-left: 8px;
       }
     }
   }
-  .deviceList, .checkedList{
+  .deviceList,
+  .checkedList {
     display: flex;
     flex-wrap: wrap;
     flex: 0 0 320px;
@@ -95,11 +116,11 @@
     &::-webkit-scrollbar {
       width: 6px;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background:rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
     }
-    .eachDevice{
+    .eachDevice {
       cursor: pointer;
       background-color: #f1f1f1;
       border-radius: 4px;
@@ -117,28 +138,28 @@
       white-space: nowrap;
     }
   }
-  .checkedList{
+  .checkedList {
     flex: 1;
     border-top: 1px solid $promptColor;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    .top{
+    .top {
       display: flex;
       padding: 0 12px;
       width: 100%;
       justify-content: space-between;
       height: 30px;
       align-items: center;
-      .clear{
+      .clear {
         cursor: pointer;
         padding: 4px 8px;
-        &:hover{
+        &:hover {
           background-color: #f1f1f1;
         }
       }
     }
-    .checkedInfo{
+    .checkedInfo {
       flex: 1;
       display: flex;
       flex-wrap: wrap;
@@ -146,21 +167,21 @@
       &::-webkit-scrollbar {
         width: 6px;
       }
-      &::-webkit-scrollbar-thumb{
+      &::-webkit-scrollbar-thumb {
         border-radius: 3px;
-        background:rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
       }
     }
-    .eachDevice{
+    .eachDevice {
       display: flex;
       justify-content: space-between;
       margin-bottom: 4px;
-      .cancel{
+      .cancel {
         cursor: pointer;
         padding-right: 4px;
         padding-left: 4px;
         border-radius: 4px;
-        &:hover{
+        &:hover {
           color: #f9b600;
         }
       }

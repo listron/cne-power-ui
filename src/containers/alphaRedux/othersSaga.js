@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 import Path from '../../constants/path';
 import { message } from 'antd';
 import { othersAction } from './othersAction';
+import Cookie from 'js-cookie';
 
 const { APIBasePath } = Path.basePaths;
 const { login } = Path.APISubPaths;
@@ -47,7 +48,7 @@ function* editPassword(action) { // 修改密码
         type: othersAction.changeOthersStore,
         payload: { loading: false },
       });
-      message.error(`密码修改失败，请重试:${response.data.message}`);
+      message.error(`修改失败，旧密码输入错误`);
     }
   } catch (e) {
     console.log(e);
@@ -68,6 +69,7 @@ function* editUserName(action) { // 修改姓名
         payload: {}
       });
       message.success('账户信息更改成功，2s后将返回首页', 2);
+      Cookie.set('userFullName', userFullName);
       setTimeout(() => {
         history.push('/monitor/station');
       }, 2000)
@@ -76,7 +78,7 @@ function* editUserName(action) { // 修改姓名
         type: othersAction.changeOthersStore,
         payload: { loading: false },
       });
-      message.error(`账户信息修改失败，请重试:${response.data.message}`);
+      message.error(`账户信息修改失败，请重试`);
     }
   } catch (e) {
     console.log(e);
@@ -86,7 +88,7 @@ function* editUserName(action) { // 修改姓名
 const errorCode=(code)=>{ // 修改手机号的错误提示
   let result='';
   switch(code){
-     case '20028':result='程序错误';break;
+     case '20028':result='旧的手机号码输入错误';break;
      case '20029':result='新手机号和旧手机号不能一样';break;
      case '20030':result='新手机号已存在';break;
      case '20031':result='验证码错误';break;

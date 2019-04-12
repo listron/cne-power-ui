@@ -3,14 +3,23 @@ import { powerReportAction } from './powerReportAction';
 
 var initState = Immutable.fromJS({
   loading: false,
-  dateTypa: 'day',//day/month/year/custom
-  summaryType: 'wind',//area/station/modal/wind
+  dateTypa: 0,//day/month/year/custom
+  summaryType: 1,//area/station/modal/wind
+  summaryData:[],
+  startTime:'',
+  endTime:'',
+  sortField:'0',
+  sortMethod:'asc',
   pageSize: 10,
   pageNum: 1,
   total: 0,
   powerReportList: [],
   orderField: '',
   orderCommand: '',
+  regionData: [],
+  regionStationData: [],
+  stationDevicemodeData: [],
+  regionStationDeviceData: [],
 });
 const powerReportReducer = (state = initState, action) => {
   switch (action.type) {
