@@ -8,8 +8,8 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
 import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 import SingleStationAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/SingleStationAnalysis';
-import RegionStation from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/RegionStation';
-import RegionAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/RegionAnalysis';
+import AreaStation from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/AreaStation';
+import AreaAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/AreaAnalysis';
 
 const TabPane = Tabs.TabPane;
 
@@ -41,10 +41,10 @@ class IntelligentAnalysis extends Component {
               <SingleStationAnalysis {...this.props} />
             </TabPane>
             <TabPane tab="同区域电站对比" key="sameRegional">
-              <RegionStation {...this.props} />
+              <AreaStation {...this.props} />
             </TabPane>
             <TabPane tab="区域对比分析" key="regionalComparative">
-              <RegionAnalysis {...this.props} />
+              <AreaAnalysis {...this.props} />
             </TabPane>
           </Tabs>
           </div>
@@ -58,13 +58,13 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.intelligentAnalysisReducer.toJS(),
     stations: state.common.get('stations').toJS()
-
   }
 }
 const mapDispatchToProps = (dispatch) => ({
   changeIntelligentAnalysisStore: payload => dispatch({type: intelligentAnalysisAction.changeIntelligentAnalysisStore, payload}),
   resetStore: payload => dispatch({type: intelligentAnalysisAction.resetStore, payload}),
-  // getSingleStationAnalysis: payload => dispatch({type: intelligentAnalysisAction.GET_SINGLE_STATION_ANALYSIS, payload}),
+  getSingleStationAnalysis: payload => dispatch({type: intelligentAnalysisAction.getSingleStationAnalysis, payload}),
+  getAreaStation: payload => dispatch({type: intelligentAnalysisAction.getAreaStation, payload}),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntelligentAnalysis);

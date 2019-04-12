@@ -7,10 +7,12 @@ import { Button, Select } from 'antd';
 
 const Option = Select.Option;
 
-class RegionStation extends Component{
+class AreaStationSearch extends Component{
 
   static propTypes = {
-    
+    stations: PropTypes.array,
+    regionName: PropTypes.string,
+    startTime: PropTypes.string,
   };
 
   constructor(props){
@@ -21,12 +23,22 @@ class RegionStation extends Component{
 
   }
 
-  onRegionChange = () => { // 选择区域
-
+  onAreaChange = ( value ) => { // 选择区域
+    const { changeIntelligentAnalysisStore, regionName } = this.props;
+    changeIntelligentAnalysisStore({
+      regionName: value,
+    })
+    console.log(value)
   }
 
   searchInfo = () => { // 查询
-
+    const { getAreaStation, regionName, startTime, areaPartABean, areaPartBBean, areaPartCBean, areaPartDBean } = this.props;
+    getAreaStation({
+      areaPartABean,
+      areaPartBBean,
+      areaPartCBean,
+      areaPartDBean,
+    })
   }
 
   exportReport = () => { // 下载
@@ -34,21 +46,29 @@ class RegionStation extends Component{
   }
 
   render(){
-    const {  } = this.props;
-    console.log()
-
+    const { startTime, stations, regionName } = this.props;
+    let regionSet = new Set();
+    stations.forEach(e=>{
+      e.regionName && regionSet.add(e.regionName);
+    });
+    // console.log(regionSet)
+    // console.log(regionName)
     return(
-      <div className={styles.regionStation}>
+      <div className={styles.areaStationSearch}>
         <div className={styles.searchPart}>
           <div className={styles.leftLayout}>
             <div className={styles.regionStationSelect}>
               <span className={styles.text}>区域选择</span>
-              {/* <Select 
+              <Select 
               className={styles.searchInput} 
-              placeholder="请输入..." 
-              onChange={this.onRegionChange}>
-                <Option>123</Option>
-              </Select> */}
+              placeholder="请选择" 
+              value={ regionName }
+              onChange={this.onAreaChange}>
+                <Option value={null}>全部</Option>
+                  {[...regionSet].map(e=>(
+                    <Option value={e} key={e}>{e}</Option>
+                  ))}
+              </Select>
             </div>
             <div className={styles.dateSelect}>
               <span className={styles.text}>统计时间</span>
@@ -57,8 +77,8 @@ class RegionStation extends Component{
                 onChange={this.onTimeChange}
                 timerText={''}
                 value={{
-                 timeStyle: 'month',
-                 startTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+                 timeStyle: 'day',
+                 startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
                  endTime: moment().subtract(1, 'day').format('YYYY-MM-DD')
                 }}
               />
@@ -72,4 +92,4 @@ class RegionStation extends Component{
   }
 }
 
-export default RegionStation;
+export default AreaStationSearch;

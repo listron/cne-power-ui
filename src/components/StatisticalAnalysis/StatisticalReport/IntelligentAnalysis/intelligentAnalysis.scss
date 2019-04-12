@@ -37,23 +37,38 @@
   }
 }
 
-.analysisReport{ // 文档
+.analysisReport,.areaStationReport{ // 文档
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .MonthReportContent{
+  .monthReportContent,.yearReportContent{
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 828px;
+    margin:30px 0;
     border:1px solid #999;
-    margin-top:30px;
     .titleText{
       font-size: 20px;
       margin-top: 30px;
     }
     .contentText{
       margin: 20px 30px;
+      .time{
+        margin: 0 4px;
+      }
+      .text{
+        margin: 0 4px;
+        color: $themeColor;
+      }
+      .paragraph{
+        text-indent:1.5em;
+      }
+      .dotted{
+        border-bottom: 1px dashed #999;
+        text-decoration: none; 
+      }
     }
   }
 }

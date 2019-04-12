@@ -14,25 +14,65 @@ class SingleStationAnalysisSearch extends Component{
     stationName:PropTypes.string,
     stationCode: PropTypes.number,
     changeIntelligentAnalysisStore: PropTypes.func,
-    getReportData: PropTypes.func,
-    stationName: PropTypes.string,
+    getSingleStationAnalysis: PropTypes.func,
     dataType: PropTypes.string,
+    monthTime: PropTypes.string,
+    yearTime: PropTypes.string,
+    genValid: PropTypes.string,
+    generatinCapacity: PropTypes.object,
+    systematicStatistics: PropTypes.object,
+    completionRate: PropTypes.object,
+    lossOfElectricity: PropTypes.object,
+    month: PropTypes.string,
+    year: PropTypes.string,
   };
 
   constructor(props){
     super(props);
+    this.state = {
+      isShow: false ,
+      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+      dataType: 'day',
+      month: '',
+      year: '',
+      stationCode: null,
+      stationName: null,
+    }
   }
 
   onTimeChange = (value) => { // 选择时间
     const { changeIntelligentAnalysisStore } = this.props;
     const { startTime, timeStyle } = value;
-    const monthTime = startTime.substring(5,7) // 截取月份字符
-    let dataType = timeStyle === 'month' ? 'year' : 'month';
-    changeIntelligentAnalysisStore({
-      startTime,
-      dataType,
-      monthTime: monthTime
-    })
+    // console.log("111111",startTime,value);
+
+    let dateType = timeStyle === 'month' ? 2 : 1;
+    if(timeStyle === 'month'){
+      let year=startTime;
+      changeIntelligentAnalysisStore({dateType,year})
+    }
+    if(timeStyle === 'day'){
+      let year=moment(startTime).format('YYYY');
+      let month=moment(startTime).format('MM');
+    
+      changeIntelligentAnalysisStore({
+        dateType,
+        month,
+        year,
+      })
+    }
+  
+    // this.setState({
+    //   startTime: '',
+    //   dataType: '',
+    //   month: '',
+    //   year: '',
+    // })
+    // changeIntelligentAnalysisStore({
+    //   startTime,
+    //   dataType,
+    //   month: startTime.format('MM'),
+    //   year: startTime.format('YYYY')
+    // })
   }
 
   selectStation = (selectedStationInfo) => { // 选择电站
@@ -40,12 +80,21 @@ class SingleStationAnalysisSearch extends Component{
     const { stationName, stationCode } = selectedStationInfo[0];
     changeIntelligentAnalysisStore({
       stationCode,
-      stationName,
+      stationName
     })
+    // this.setState({
+    //   stationCode,
+    //   stationName
+    // })
   }
-
+  
   searchInfo = () => { // 查询
-
+    const {  dateType, month, year,stationCode } = this.props;
+    const params = { dateType, month, year, stationCode};
+    const { getSingleStationAnalysis } = this.props;
+    getSingleStationAnalysis({
+      ...params
+    });
   }
 
   exportReport = () => { // 下载
@@ -53,8 +102,8 @@ class SingleStationAnalysisSearch extends Component{
   }
 
   render(){
-    const { stationCode, stations } = this.props;
-
+    const { stations } = this.props;
+    const { startTime, dataType, stationCode } = this.state;
     return(
       <div className={styles.SingleStationAnalysisSearch}>
         <div className={styles.searchPart}>
@@ -72,12 +121,12 @@ class SingleStationAnalysisSearch extends Component{
             <div className={styles.dateSelect}>
               <span className={styles.text}>统计时间</span>
               <TimeSelect
-                showYearPick={false} // 不包括'多年'选项
+                showYearPick={false}
                 onChange={this.onTimeChange}
                 timerText={''}
                 value={{
-                 timeStyle: 'day',
-                 startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+                 timeStyle: dataType,
+                 startTime,
                 }}
               />
             </div>

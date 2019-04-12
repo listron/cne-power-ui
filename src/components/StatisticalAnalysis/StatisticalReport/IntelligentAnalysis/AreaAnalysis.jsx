@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Button } from 'antd';
 
 
-class RegionAnalysis extends Component{
+class AreaAnalysis extends Component{
 
   static propTypes = {
     
@@ -33,7 +33,7 @@ class RegionAnalysis extends Component{
     console.log()
 
     return(
-      <div className={styles.regionAnalysis}>
+      <div className={styles.areaAnalysis}>
         <div className={styles.searchPart}>
           <div className={styles.leftLayout}>
             <div className={styles.dateSelect}>
@@ -58,4 +58,4 @@ class RegionAnalysis extends Component{
   }
 }
 
-export default RegionAnalysis;
+export default AreaAnalysis;
