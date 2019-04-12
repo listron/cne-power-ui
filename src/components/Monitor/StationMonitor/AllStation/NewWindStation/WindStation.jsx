@@ -8,10 +8,11 @@ import WindStationItem from './WindStationItem.jsx';
 import WindStationList from './WindStationList.jsx';
 import { Tabs, Radio, Switch, Spin } from "antd";
 import { MapChart } from './MapChart.jsx';
-import OutputTenMin from '../../SingleStation/SingleStationCommon/OutputTenMin';
+import { OutputChart } from '../../WindCommon/OutputChart';
+import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button
-
+import moment from 'moment';
 class WindStation extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
@@ -23,8 +24,12 @@ class WindStation extends React.Component {
     realTimePowerPoint: PropTypes.any,
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
-    getRealtimeData: PropTypes.func,
+    getRealMonitorData: PropTypes.func,
     loading: PropTypes.bool,
+    getRealChartsData: PropTypes.func,
+    getRealMonitorPower: PropTypes.func,
+    capabilityData: PropTypes.array,
+    powerData: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
@@ -38,7 +43,11 @@ class WindStation extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getRealtimeData({ stationType: '0' })
+    const { getRealMonitorData, getRealChartsData } = this.props;
+    getRealMonitorData({ stationType: '0' });
+    const startTime = moment().subtract(24, 'hours').utc().format();
+    const endTime = moment().utc().format();
+    getRealChartsData({ capability: { startTime, endTime } })
   }
 
   onHandleAlarm = (checked) => {
@@ -90,7 +99,7 @@ class WindStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
-    const { windMonitorStation, loading, stationShowType } = this.props;
+    const { windMonitorStation, loading, stationShowType, capabilityData, powerData,getRealMonitorPower } = this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
     const alarmNum = stationDataSummary.alarmNum || '--';
     const deviceStatus = [
@@ -144,7 +153,6 @@ class WindStation extends React.Component {
             </TabPane>
             <TabPane tab={<span> <i className="iconfont icon-map"></i>  </span>} key="stationMap"  >
               <MapChart stationDataList={this.statusDataList()} />
-              {/* <MapChart {...this.props} stationDataList={this.mapData()} testId="wind_bmap_station" /> */}
             </TabPane>
           </Tabs>
           {stationShowType !== 'stationList' &&
@@ -161,11 +169,15 @@ class WindStation extends React.Component {
                     return <span key={e.value}>{e.name} {stationDataList[e.value] || '--'}</span>
                   })}
                 </div>
-                <div>
-                  <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} yAxisUnit={'MW'} />
-                </div>
+              </div>
+              <div className={styles.outputTenMin}>
+                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
+              </div>
+              <div className={styles.outputTenMin}>
+                <PowerDiagram powerData={powerData} getRealMonitorPower={getRealMonitorPower} />
               </div>
             </div>}
+
         </div>
       </div>
     )

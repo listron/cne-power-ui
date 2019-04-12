@@ -6,23 +6,22 @@ import PropTypes from "prop-types";
 import { Tabs } from 'antd';
 import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
-import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
-import NewWindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
+// import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
+import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 const TabPane = Tabs.TabPane;
 class AllStation extends Component {
   static propTypes = {
-    getMonitorStation: PropTypes.func,
     loading: PropTypes.bool,
     allMonitorStation: PropTypes.object,
     windMonitorStation: PropTypes.object,
     pvMonitorStation: PropTypes.object,
     stationTypes: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
-    stopRealtimeData: PropTypes.func,
-    getRealtimeData: PropTypes.func,
+    stopRealMonitorData: PropTypes.func,
+    getRealMonitorData: PropTypes.func,
     stationTypeCount: PropTypes.string,
     stationType: PropTypes.string,
   }
@@ -35,14 +34,14 @@ class AllStation extends Component {
       stationShowType: 'stationBlock',
       stationType: '2',
     });
-    this.props.stopRealtimeData()
+    this.props.stopRealMonitorData()
   }
 
   queryTargetData = (activeKey) => { //切换电站
-    const { changeMonitorStationStore, stopRealtimeData, getRealtimeData } = this.props;
+    const { changeMonitorStationStore, stopRealMonitorData, getRealMonitorData } = this.props;
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
-    stopRealtimeData();
-    getRealtimeData({ stationType: activeKey })
+    stopRealMonitorData();
+    getRealMonitorData({ stationType: activeKey })
   }
 
   render() {
@@ -57,9 +56,9 @@ class AllStation extends Component {
             <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
           </div>
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
-          {stationTypeCount === 'multiple' && stationType === '0' && <NewWindStation {...this.props} />}
+          {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
-          {stationTypeCount === 'wind' && <NewWindStation {...this.props} />}
+          {stationTypeCount === 'wind' && <WindStation {...this.props} />}
           {stationTypeCount === 'pv' && <PvStation {...this.props} />}
           {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
         </div>
@@ -81,11 +80,13 @@ const mapStateToProps = (state) => {
   })
 }
 const mapDispatchToProps = (dispatch) => ({
-  getMonitorStation: payload => dispatch({ type: allStationAction.getMonitorStation, payload }),
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.changeMonitorstationStore, payload }),
-  getRealtimeData: payload => dispatch({ type: allStationAction.getRealtimeData, payload }),
-  stopRealtimeData: payload => dispatch({ type: allStationAction.stopRealtimeData, payload }),
   resetMonitorData: payload => dispatch({ type: allStationAction.resetMonitorData, payload }),
+  getRealMonitorData: payload => dispatch({ type: allStationAction.getRealMonitorData, payload }),
+  stopRealMonitorData: payload => dispatch({ type: allStationAction.stopRealMonitorData, payload }),
+  getRealChartsData: payload => dispatch({ type: allStationAction.getRealChartsData, payload }),
+  stopRealCharstData: payload => dispatch({ type: allStationAction.stopRealCharstData, payload }),
+  getRealMonitorPower: payload => dispatch({ type: allStationAction.getRealMonitorPower, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);

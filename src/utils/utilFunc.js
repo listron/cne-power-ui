@@ -90,3 +90,11 @@ export const numWithComma = (data, placeholder = '--', joinText = ',', divisionN
     return outputArr.join(joinText);
   }
 };
+
+export const getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示 针对图表的数据
+const length = data.length;
+let replaceData = [];
+for (let i = 0; i < length; i++) { replaceData.push('--') }
+let realData = data.some(e => e || e === 0) ? data : replaceData;
+return realData
+}

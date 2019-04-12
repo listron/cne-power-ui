@@ -1,0 +1,75 @@
+@import '../../../../theme/theme';
+.capabilityBox{
+    display: flex;
+    flex: 1;
+    .capabilityDiagram {
+        display: flex;
+        flex: 1;
+    }
+}
+
+
+.tooltipBox {
+    width:150px;
+    .axisValue {
+        border-bottom: 1px solid #dfdfdf;
+        padding: 0 30px 0 10px;
+        line-height: 26px;
+    }
+    .tooltipContainer{
+        padding: 20px 0;
+    }
+    .tooltipCont{
+        span{
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            vertical-align: 2px;
+            margin: 0 4px;
+        }
+    }
+}
+
+
+.powerDiagramBox{
+    display: flex;
+    flex: 1;
+    position: relative;
+    .powerRadio{
+      position: absolute;
+      top: 11px;
+      right: 18px;
+      color: $darkColor;
+      :global{
+        .ant-radio-button-wrapper-checked:first-child {
+          border-color: $themeColor;
+        }
+        
+        .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+          color: $darkColor;
+        }
+        .ant-radio-button-wrapper-checked {
+          border-color: $themeColor;
+          -webkit-box-shadow: -1px 0 0 0 $themeColor;
+          box-shadow: -1px 0 0 0 $themeColor;
+          color: #fff;
+          background: $themeColor;
+        }
+        .ant-radio-button-wrapper-checked:hover{
+          color: #fff;
+        }
+      }
+    }
+    :global{
+      .iconfont{
+        position: absolute;
+        top: 20px;
+        right: 5px;
+        cursor: pointer;
+      }
+      .iconfont:hover{
+        color: $themeColor;
+      }
+    }
+  }

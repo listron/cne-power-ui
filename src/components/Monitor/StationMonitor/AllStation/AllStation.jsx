@@ -12,12 +12,13 @@ class Allstation extends React.Component {
     realTimePowerPoint: PropTypes.any,
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
+    getRealMonitorData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
   }
   componentDidMount() {
-    this.props.getRealtimeData({ stationType: '2' })
+    this.props.getRealMonitorData({ stationType: '2' })
   }
 
   render() {
@@ -56,6 +57,7 @@ class Allstation extends React.Component {
         realCapacityUnit
       })
     })
+
     return (
       <div className={styles.allStationContainer}>
         <AllStationHeader {...this.props} />

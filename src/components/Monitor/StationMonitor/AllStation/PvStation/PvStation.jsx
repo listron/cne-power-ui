@@ -19,6 +19,7 @@ class PvStation extends React.Component {
     realCapacityPoint: PropTypes.any,
     powerPoint: PropTypes.any,
     loading: PropTypes.bool,
+    getRealMonitorData: PropTypes.func,
   }
   constructor(props, context) {
 
@@ -34,7 +35,7 @@ class PvStation extends React.Component {
 
 
   componentDidMount() {
-    this.props.getRealtimeData({ stationType: '1' })
+    this.props.getRealMonitorData({ stationType: '1' })
   }
 
   onHandleAlarm = (checked) => {

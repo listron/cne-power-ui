@@ -281,6 +281,7 @@ export default {
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
                   
+      getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
