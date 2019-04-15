@@ -367,6 +367,20 @@ const menuData = [
             rightKey: 'analysis_yaw',
           }
         ]
+      },
+      {
+        name: '风机故障检测与诊断',
+        iconStyle: 'icon-windlogo',
+        path: 'faultDiagnose',
+        rightKey: 'analysis_intelligentWarning',
+        children: [
+          {
+            name: '故障预警',
+            path: 'faultWarn',
+            defaultPath: true,
+            rightKey: 'analysis_intelligentWarning',
+          },
+        ]
       }
     ]
   }, {

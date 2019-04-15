@@ -1,0 +1,13 @@
+@import '../../../../theme/theme.scss';
+.faultSingleFan{
+  width: 100%;
+  .title{
+    padding-left: 48px;
+    @include lineheight(20px);
+    background-color: $pageBackground;
+  }
+  .singleFanContent{
+    width: 1390px;
+    margin: 0 auto;
+  }
+}

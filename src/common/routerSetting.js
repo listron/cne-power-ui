@@ -110,7 +110,7 @@ const routers = [
   // { // 隐藏页： 修改密码
   //   path: '/hidden/user/editPassword',
   //   component: () => import('../containers/Others/EditPassword'),
-  // }, 
+  // },
   { // 隐藏页： 修改账户
     path: '/hidden/user/accountSettings',
     component: () => import('../containers/Others/AccountSettings'),
@@ -208,7 +208,16 @@ const routers = [
   }, { // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     component: () => import('../containers/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarn'),
-  }, { // 偏航对风分析
+  }, { // 高级分析-风机故障检测与诊断-故障预警
+    path: '/analysis/faultDiagnose/faultWarn',
+    component: () => import('../containers/HighAnalysis/FaultDiagnose/FaultWarn/FaultWarn'),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-单风场故障预警
+    path: '/analysis/faultDiagnose/fanWarn/:fanWarnId',
+    component: () => import('../containers/HighAnalysis/FaultDiagnose/FaultWarnList/FaultWarnList'),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-单风机详情图表展示
+    path: '/hidden/analysis/single/fan',
+    component: () => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan'),
+  },{ // 偏航对风分析
     path: '/analysis/yaw/wind',
     component: () => import('../components/Common/Building/Building'),
   }, { // 预警事件配置
