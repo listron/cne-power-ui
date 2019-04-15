@@ -34,13 +34,13 @@
     padding: 20px 32px;
     display: flex;
     flex-wrap: wrap;
-    .stationSelect, .typeSelect{
+    .stationSelect, .typeSelect, .startSelect, .endSelect{
       flex: 0 0 25%;
     }
-    .deviceSelect, .timeSelect, .intervalSelect{
+    .deviceSelect, .intervalSelect{
       flex: 0 0 50%;
     }
-    .stationSelect, .typeSelect, .deviceSelect, .timeSelect, .intervalSelect{
+    .stationSelect, .typeSelect, .deviceSelect, .startSelect, .endSelect, .intervalSelect{
       display: flex;
       line-height: 40px;
       height: 40px;
@@ -51,17 +51,10 @@
         margin-right: 8px;
       }
     }
-    .timeSelect{
-      :global{
-        .ant-input{
-          width: 400px;
-        }
-      }
-    }
     .intervalSelect{
       :global{
         .ant-select-selection__rendered{
-          width: 50px;
+          width: 70px;
         }
       }
     }
@@ -101,9 +94,7 @@
 }
 
 .pointTree{
-  flex: 0 0 150px;
-  overflow-x: auto;
-  border-right: 1px solid $promptColor;
+  flex: 0 0 196px;
   h3{
     height: 40px;
     line-height: 40px;
@@ -111,11 +102,42 @@
     border-bottom: 1px solid $promptColor;
     text-align: center;
   }
-  // :global{
-  //   .ant-tree{
-  //     border-top: 1px solid $promptColor;
-  //   }
-  // }
+  :global{
+    .ant-tree{
+      max-height: 780px;
+      width: 196px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      li .ant-tree-node-content-wrapper{
+        height: auto;
+        line-height: 21px;
+      }
+      .ant-tree-title{
+        display: inline-block;
+        white-space: normal;
+      }
+      .ant-tree-treenode-switcher-close{
+        .ant-tree-title{
+          width: 134px;
+        }
+      }
+      .ant-tree-node-content-wrapper .ant-tree-node-content-wrapper-normal{
+        .ant-tree-treenode-switcher-close{
+          .ant-tree-title{
+            width: 120px;
+          }
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+  }
 }
 
 .historyChart{
@@ -123,6 +145,7 @@
   flex-wrap: wrap;
   flex: 1;
   align-content: flex-start;
+  border-left: 1px solid $promptColor;
   h4{
     flex-basis: 100%;
     height: 60px;
@@ -182,11 +205,13 @@
 
 .historyList{
   flex: 1;
+  border-left: 1px solid $promptColor;
+  padding: 0 16px;
   .pagination {
     display: flex;
     align-items: center;
     height: 50px;
-    justify-content: space-between;
+    justify-content: flex-end;
     .text{
       margin-left: 36px;
     }
@@ -219,37 +244,44 @@
       }
       
       .stationName, .deviceTypeName, .deviceModeName, .time, .deviceName, .points{
-        text-align: center;
         word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
       .stationName {
-        flex: 0 0 118px;
+        flex: 0 0 100px;
       }
       .deviceTypeName{
-        flex: 0 0 108px;
+        flex: 0 0 100px;
       }
       .deviceModeName{
-        flex: 1 0 124px;
+        flex: 1 0 114px;
       }
       .time{
-        flex: 0 0 156px;
+        flex: 0 0 150px;
       }
       .deviceName, .points{
         flex: 1 0 100px;
       }
-      // .points{
-      //   text-align: right;
-      // }
     }
   }
-  
-  .listTitle{
-    .text, .unit{
-      line-height: 21px;
-      text-align: center;
+}
+
+.historyRangeDropdown{
+  .infoTip{
+    color: $themeColor;
+  }
+  :global{
+    .ant-calendar-footer-btn{
+      display: flex;
+      justify-content: space-between;
+    }
+    .ant-calendar-input{
+      pointer-events: none;
+    }
+    .ant-calendar-ok-btn{
+      display: none;   
     }
   }
 }

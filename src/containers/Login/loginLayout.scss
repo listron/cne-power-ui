@@ -43,6 +43,7 @@
             .ant-tabs-nav .ant-tabs-tab{
               margin: 0;
               width: 100%;
+              cursor: default;
               text-align: center;
               font-size: 18px;
             }
@@ -52,7 +53,6 @@
             width: 430px;
             margin-bottom: 12px;
             margin-left: -108px;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             .fontIcon {
@@ -70,6 +70,7 @@
               }
             }
             .join {
+              cursor: pointer;
               font-size: 14px;
               height: 20px;
               width: 86px;
@@ -137,13 +138,13 @@
         }
       }
       //下面的联系我们
-      .contactUs {
+      .bottomInfo {
         position: absolute;
         left: 170px;
         width: 170px;
         height: 30px;
         top: 424px;
-        a {
+        .agreement, .contact {
           width: 55px;
           margin-right: 30px;
           font-size: 14px;

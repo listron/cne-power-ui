@@ -105,12 +105,12 @@ class CleanWarningMain extends Component { // 电站管理列表页
                 dataIndex: 'stationName',
                 sorter: true,
               }, {
-                title: <TableColumnTitle title="灰尘影响占比" unit="%" />,
+                title: () => <TableColumnTitle title="灰尘影响占比" unit="%" />,
                 dataIndex: 'influencePercent',
                 render(text){ return numWithComma(text); },
                 sorter: true,
               }, {
-                title: <TableColumnTitle title="距离上次清洗" unit="天" />,
+                title: () => <TableColumnTitle title="距离上次清洗" unit="天" />,
                 dataIndex: 'cleanDays',
                 render(text){ return numWithComma(text); },
                 sorter: true,

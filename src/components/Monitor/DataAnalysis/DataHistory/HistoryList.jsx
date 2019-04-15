@@ -4,6 +4,8 @@ import styles from './historyStyle.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
 import moment from 'moment';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 class HistoryList extends Component {
   static propTypes = {
@@ -61,52 +63,62 @@ class HistoryList extends Component {
 
   render() {
     const { partHistory, listParam, queryParam, tableLoading } = this.props;
-    const { totalCount, dataList = [] } = partHistory;
+    const { totalCount = 0, dataList = [] } = partHistory;
     const { timeInterval } = queryParam;
     const { pageNum, pageSize } = listParam; // orderField
     const { pointData = [] } = dataList[0] || {};
     const columns = [
       {
-        title: this.getTitle('设备名称'),
+        title: '设备名称',
         dataIndex: 'deviceName',
         className: 'deviceName',
+        render: (text) => <span title={text}>{text}</span>
         // sorter: true,
         // className: orderField === 'deviceName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceName')
       }, {
-        title: this.getTitle('电站名称'),
+        title: '电站名称',
         dataIndex: 'stationName',
         className: 'stationName',
+        render: (text) => <span title={text}>{text}</span>
         // sorter: true,
         // className: orderField === 'stationName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('stationName')
       }, {
-        title: this.getTitle('设备类型'),
+        title: '设备类型',
         dataIndex: 'deviceTypeName',
         className: 'deviceTypeName',
+        render: (text) => <span title={text}>{text}</span>
         // sorter: true,
         // className: orderField === 'deviceTypeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceTypeName')
       }, {
-        title: this.getTitle('型号'),
+        title: '型号',
         dataIndex: 'deviceModeName',
         className: 'deviceModeName',
+        render: (text) => <span title={text}>{text}</span>
         // sorter: true,
         // className: orderField === 'deviceModeName' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('deviceModeName')
       }, {
-        title: this.getTitle('时间'),
+        title: '时间',
         dataIndex: 'time',
         className: 'time',
+        render: (text) => <span title={text}>{text}</span>
         // sorter: true,
         // className: orderField === 'time' ? null : styles.sorterType,
         // sortOrder: this.getSortOrder('time')
       }
     ];
     const pointColumn = pointData.map(e => ({
-      title: this.getTitle(e.pointName, e.pointUnit),
+      title: e.pointUnit ? () => (<TableColumnTitle
+        title={e.pointName}
+        unit={e.pointUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      />) : e.pointName,
       dataIndex: e.devicePointCode,
       className: 'points',
+      render: value => numWithComma(parseFloat(value).toFixed(2)),
       // align: 'right'
       // sorter: true,
       // className: orderField === e.e.devicePointCode ? null : styles.sorterType,
@@ -127,8 +139,12 @@ class HistoryList extends Component {
     return (
       <div className={styles.historyList}>
         <div className={styles.pagination}>
-          <span className={styles.text}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
-          <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalCount} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination
+            currentPage={pageNum}
+            pageSize={pageSize}
+            total={parseInt(totalCount)}
+            onPaginationChange={this.onPaginationChange}
+          />
         </div>
         <Table
           loading={tableLoading}

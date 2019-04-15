@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './historyStyle.scss';
+import moment from 'moment';
 import path from '../../../../constants/path';
 
 const { APIBasePath } = path.basePaths;
@@ -10,12 +11,13 @@ const { monitor } = path.APISubPaths;
 class HistoryDataType extends Component {
 
   static propTypes = {
+    downloading: PropTypes.bool,
     stationCode: PropTypes.number,
     enterpriseId: PropTypes.string,
     deviceTypeCode: PropTypes.number,
     deviceCodes: PropTypes.array,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    startTime: PropTypes.object,
+    endTime: PropTypes.object,
     pointCodes: PropTypes.array, // 选中的测点
     timeSpace:  PropTypes.string,
     historyType:  PropTypes.string,
@@ -44,16 +46,18 @@ class HistoryDataType extends Component {
     const { downLoadFile, queryParam, enterpriseId } = this.props;
     const url = `${APIBasePath}${monitor.exportHistory}`;
     let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
-    startTime = startTime.utc().format();
-    endTime = endTime.utc().format();
+    startTime = moment(startTime).utc().format();
+    endTime = moment(endTime).utc().format();
+    const timeZone = moment().zone() / (-60); // utc时区获取
     downLoadFile({ // 
       url,
-      fileName: `${startTime}至${endTime}历史数据`,
+      fileName: `${startTime}至${endTime}历史数据.xlsx`,
       params: {
         ...queryParam,
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         enterpriseId,
+        timeZone,
         startTime,
         endTime,
       },
@@ -61,7 +65,7 @@ class HistoryDataType extends Component {
   }
 
   render(){
-    const { historyType, partHistory = {} } = this.props;
+    const { historyType, downloading, partHistory = {} } = this.props;
     const { dataList = [] } = partHistory;
     return (
       <div className={styles.historyDataType}>
@@ -71,6 +75,7 @@ class HistoryDataType extends Component {
         </div>
         {historyType === 'list' && <Button
           className={styles.export}
+          loading={downloading}
           onClick={this.exportHistory}
           disabled={dataList.length === 0}
         >导出</Button>}

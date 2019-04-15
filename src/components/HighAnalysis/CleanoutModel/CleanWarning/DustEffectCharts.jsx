@@ -188,10 +188,6 @@ class DustEffectCharts extends Component {
       endDay: moment(),
     }
   }
-  rangeChange = (a,b,c,d,e,f,g) => {
-    console.log('rangeChange')
-    console.log(a,b,c,d,e,f,g)
-  }
 
   timeSelect = (timeMoment,timeString) => {
     const { dustEffectInfo, getTotalDustEffect, getMatrixDustEffect } = this.props;
@@ -213,7 +209,6 @@ class DustEffectCharts extends Component {
           defaultValue={[ startDay, endDay ]}
           onChange={this.timeSelect}
           disabledDate={()=>false}
-          onCalendarChange={this.rangeChange}
         />
         <Tabs defaultActiveKey="1">
           <TabPane tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>} key="1" forceRender={true}>

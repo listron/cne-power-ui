@@ -21,9 +21,18 @@ class DefectReviewForm extends Component {
       dealResult: 'send'
     };
   }
-  componentDidMount(){
-    
+ 
+  componentWillUnmount(){
+    this.props.changeWorkOrderStore({modify:false})
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.defectId!==this.props.defectId){
+      nextProps.form.resetFields();
+      nextProps.changeWorkOrderStore({modify:false})
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -137,4 +146,8 @@ class DefectReviewForm extends Component {
   }  
 }
 
-export default Form.create()(DefectReviewForm);
+export default Form.create({
+  onFieldsChange(props){
+    props.changeWorkOrderStore({modify:true})
+  },
+})(DefectReviewForm);

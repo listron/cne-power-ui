@@ -176,53 +176,53 @@ class StationStatisticList extends React.Component {
           }
         }
       }, {
-        title: <TableColumnTitle title="月发电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
         dataIndex: "genValid",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="月计划" unit="万kWh" />,
+        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
         dataIndex: "planGen",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="计划完成率" unit="%" />,
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
         dataIndex: "planGenRate",
         sorter: true,
         render(text){ return numWithComma(text); },
         defaultSortOrder: 'ascend'
       }, {
-        title: <TableColumnTitle title="发电量同比" unit="%" />,
+        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
         dataIndex: "powerRate",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
         dataIndex: "resourceValue",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="资源同比" unit="%" />,
+        title: () => <TableColumnTitle title="资源同比" unit="%" />,
         dataIndex: "resourceRate",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="等效利用小时数" unit="h" />,
+        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="PR" unit="%" />,
+        title: () => <TableColumnTitle title="PR" unit="%" />,
         dataIndex: "pr",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="损失电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
         dataIndex: "lostPower",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="损失电量等效时" unit="h" />,
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
         dataIndex: "limitPowerHours",
         sorter: true,
         render(text){ return numWithComma(text); },
@@ -260,53 +260,53 @@ class StationStatisticList extends React.Component {
           }
         }
       }, {
-        title: <TableColumnTitle title="年发电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
         dataIndex: "genValid",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="年计划" unit="万kWh" />,
+        title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
         dataIndex: "planGen",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="计划完成率" unit="%" />,
+        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
         dataIndex: "planGenRate",
         sorter: true,
         render(text){ return numWithComma(text); },
         defaultSortOrder: 'ascend'
       }, {
-        title: <TableColumnTitle title="发电量环比" unit="%" />,
+        title: () => <TableColumnTitle title="发电量环比" unit="%" />,
         dataIndex: "powerRate",
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
         dataIndex: "resourceValue",
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="资源环比" unit="%" />,
+        title: () => <TableColumnTitle title="资源环比" unit="%" />,
         dataIndex: "resourceRate",
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="等效利用小时数" unit="h" />,
+        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="PR" unit="%" />,
+        title: () => <TableColumnTitle title="PR" unit="%" />,
         dataIndex: "pr",
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="损失电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
         dataIndex: "lostPower",
         sorter: true,
         render(text){ return numWithComma(text); },
       }, {
-        title: <TableColumnTitle title="损失电量等效时" unit="h" />,
+        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
         dataIndex: "limitPowerHours",
         render(text){ return numWithComma(text); },
         sorter: true,

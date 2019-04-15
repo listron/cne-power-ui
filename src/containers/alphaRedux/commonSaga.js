@@ -424,17 +424,24 @@ function* getWeather(action) { // 获取电站天气
   }
 }
 
-function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求)
-  const { url, fileName, method='post', params } = payload;
-  console.log(payload)
+function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求), resultName会指定action去标识download的loading状态。
+  const { url, fileName, method='post', params, actionName } = payload;
   let newFileName = fileName;
   try {
+    yield put({
+      type: actionName,
+      payload: { downloading: true }
+    })
     const response = yield call(axios, {
       method,
       url,
       data: params,
       responseType: 'blob',
     });
+    yield put({
+      type: actionName,
+      payload: { downloading: false }
+    })
     if (response.data) {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
@@ -463,8 +470,92 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
       throw response;
     }
   } catch (error) {
+    yield put({
+      type: actionName,
+      payload: { downloading: false }
+    })
     message.warning(`下载失败！请重新尝试`)
     console.log(error)
+  }
+}
+function* getRegion(action) { // //获取用户权限的电站区域
+  const url = `${APIBasePath}${commonPaths.getRegion}`;
+  // const url = `/mock/v3/wind/report/fan/region`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getRegionStation(action) { // //获取用户权限的电站
+  const url = `${APIBasePath}${commonPaths.getRegionStation}`;
+  // const url = `/mock/v3/wind/report/fan/station`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getStationDevicemode(action) { // //获取用户权限的型号
+  const url = `${APIBasePath}${commonPaths.getStationDevicemode}`;
+  // const url = `/mock/v3/wind/report/fan/devicemode`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getRegionStationDevice(action) { // //获取用户权限的风机
+  const url = `${APIBasePath}${commonPaths.getRegionStationDevice}`;
+  // const url = `/mock/v3/wind/report/fan/device`;
+  const { payload } = action;
+  try {
+    const { params, actionName, resultName } = payload;
+
+    const response = yield call(axios.get, url, { params });
+    if (response.data.code === '10000') {
+      yield put({
+        type: actionName,
+        payload: {
+          [resultName]: response.data.data || [],
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
@@ -522,4 +613,8 @@ export function* watchCommon() {
   yield takeEvery(commonAction.getWeather, getWeather);
 
   yield takeLatest(commonAction.downLoadFile, downLoadFile);
+  yield takeLatest(commonAction.getRegion, getRegion);
+  yield takeLatest(commonAction.getRegionStation, getRegionStation);
+  yield takeLatest(commonAction.getStationDevicemode, getStationDevicemode);
+  yield takeLatest(commonAction.getRegionStationDevice, getRegionStationDevice);
 }

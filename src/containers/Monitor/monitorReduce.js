@@ -3,6 +3,11 @@ import { combineReducers } from 'redux';
 import stationMonitor from './StationMonitor/AllStation/stationMonitorReducer';
 import deviceMonitor from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
 import singleStation from './StationMonitor/SingleStation/singleStationReducer';
+
+import allDeviceCurveReducer from './PowerCurve/AllDeviceCurve/allDeviceCurveReducer';
+import singleDeviceCurveReducer from './PowerCurve/SingleDeviceCurve/singleDeviceCurveReducer';
+
+
 import realtimeWarningReducer from './Alarm/RealTimeWarning/realtimeWarningReducer';
 import transferFormReducer from './Alarm/Transfer/transferFormReducer';
 import handleRemoveReducer from './Alarm/HandleRemove/handleRemoveReducer';
@@ -12,6 +17,7 @@ import deviceStatusReducer from './Report/DeviceStatus/deviceStatusReducer';
 import malfunctionReducer from './Report/Malfunction/malfunctionReducer';
 import powerLostReducer from './Report/PowerLost/powerLostReducer';
 import alarmStatistic from './Alarm/AlarmStatic/alarmStatisticReducer';
+import alarmCount from './Alarm/AlarmCount/alarmCountReducer';
 
 import { dataHistory } from './DataAnalysis/DataHistory/historyReducer'; // 数据分析 - 历史趋势
 import { dataRealtime } from './DataAnalysis/DataRealtime/realtimeReducer'; // 数据分析 - 实时数据
@@ -25,15 +31,17 @@ const monitorReducer = combineReducers({
   transferFormReducer,
   alarmStatistic,
   handleRemoveReducer,
-  historyWarningReducer,
+  historyWarningReducer, 
+  allDeviceCurveReducer,
+  singleDeviceCurveReducer,
   powerReportReducer,
   deviceStatusReducer,
   malfunctionReducer,
   powerLostReducer,
-
   dataHistory,
   dataRealtime,
-  dataScatterDiagram
+  dataScatterDiagram,
+  alarmCount,
 });
 
 export default monitorReducer;

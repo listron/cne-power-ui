@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import path from '../../../../constants/path';
 import { scatterDiagramAction } from './scatterDiagramReducer';
@@ -11,13 +11,39 @@ function *getPoints({ payload = {} }) { // 获取设备测点
   const { deviceFullCode = [] } = payload;
   try {
     const deviceInfo = deviceFullCode[0] || {};
-    const url = `${APIBasePath}${monitor.getPoints}/${deviceInfo.deviceCode}`; 
+    const url = `${APIBasePath}${monitor.getPoints}/${deviceInfo.deviceCode}`;
+    const { logPointX, logPointY, queryParam } = yield select(state => state.monitor.dataScatterDiagram.toJS());
+    yield put({ // 相关请求参数缓存，并保留选中的测点信息。
+      type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
+      payload: {
+        queryParam: {
+          ...queryParam,
+          deviceFullCode
+        },
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      let xPoint, yPoint;
+      const pointsInfo = response.data.data || [];
+      if (logPointX) { // 上次请求的x优先进行选择
+        const tmpPointX = pointsInfo.find(e => e.devicePointCode === logPointX) || {};
+        xPoint = tmpPointX.devicePointCode || null;
+      }
+      if (logPointY) { // 上次请求的x优先进行选择
+        const tmpPointY = pointsInfo.find(e => e.devicePointCode === logPointY) || {};
+        yPoint = tmpPointY.devicePointCode || null;
+      }
       yield put({
         type: scatterDiagramAction.GET_SCATTERDIAGRAM_SUCCESS,
         payload: {
-          pointsInfo: response.data.data || [],
+          queryParam: {
+            ...queryParam,
+            deviceFullCode,
+            xPoint,
+            yPoint,
+          },
+          pointsInfo,
         }
       })
     } else {
@@ -33,12 +59,18 @@ function *getListScatterDiagram({ payload = {} }) { // 获取表格数据
   const { queryParam, listParam } = payload;
   const url = `${APIBasePath}${monitor.getListScatterDiagram}`;
   try{
-    const { startTime, endTime, stationCode, deviceFullCode } = queryParam;
+    const { startTime, endTime, stationCode, deviceFullCode, xPoint, yPoint } = queryParam;
     const stationInfo = stationCode[0] || {};
     const deviceInfo = deviceFullCode[0] || {};
-    yield put({
+    yield put({ // 相关请求参数缓存，并保留选中的测点信息。
       type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { queryParam, listParam, tableLoading: true }
+      payload: {
+        queryParam,
+        listParam,
+        logPointX: xPoint,
+        logPointY: yPoint,
+        tableLoading: true
+      }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -91,7 +123,7 @@ function *getChartScatterDiagram({ payload = {} }){ // 获取散点图echarts数
     const deviceInfo = deviceFullCode[0] || {};
     yield put({
       type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { queryParam, chartLoading: true }
+      payload: { chartLoading: true }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,

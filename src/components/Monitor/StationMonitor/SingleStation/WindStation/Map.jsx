@@ -16,9 +16,6 @@ class Map extends Component {
   }
   constructor(props) {
     super(props)
-    // this.state = {
-    //   barData: []
-    // }
   }
 
   componentDidMount() {
@@ -29,16 +26,14 @@ class Map extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
-    if (this.props.stationDataList.length !== nextProps.stationDataList.length) {
-      const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
-    }
+    const testChart = echarts.init(document.getElementById(testId));
+    this.setMapChart(testChart, stationDataList);
   }
 
   setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
-        center: stationDataList.length>0 && stationDataList[0].center,//中心点
+        center: stationDataList.length > 0 && stationDataList[0].center,//中心点
         zoom: 13,
         roam: true,//可放大缩小
         mapStyle: {
@@ -172,19 +167,17 @@ class Map extends Component {
             <div class='stationCardProgress' style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
             <div class='stationCardValue'}>
-              <span class='stationMark'>${stationPower}MW</span>
+              <span class='stationMark'>${stationPower}kW</span>
               &nbsp;&nbsp;
-              <span>${stationCapacity}MW</span>
+              <span>${stationCapacity}kW</span>
             </div>            
             <div class='stationCardWindSpeed'>
             <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
             &nbsp;&nbsp;
-            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` :''} 
+            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` : ''} 
             </div>             
           </div>`
           },
-          // width:'128px',
-          // height:'68px',
           backgroundColor: '#fff',
           textStyle: {
             color: '#666',
@@ -192,7 +185,6 @@ class Map extends Component {
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);',
         },
         name: '电站状态',
-        // symbol:'image//../../../../../theme/img/wind-normal.png',
         coordinateSystem: 'bmap',
         data: stationDataList,
         symbolSize: [30, 32],
@@ -213,10 +205,10 @@ class Map extends Component {
       }]
     };
     testChart.setOption(option)
-    
+
     testChart.on('click', (params) => {
       const baseLinkPath = "/hidden/monitorDevice";
-      const {stationCode,deviceTypeCode,deviceCode}=params.data
+      const { stationCode, deviceTypeCode, deviceCode } = params.data
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`)
       } else {
@@ -236,11 +228,8 @@ class Map extends Component {
   }
 
   render() {
-    // const { barData } = this.state;
     const { testId } = this.props;
-    return (
-      <div id={testId} style={{ width: "100%", flex: 1 }} ></div>
-    )
+    return ( <div id={testId} style={{ width: "100%", flex: 1 }} ></div>   )
   }
 }
 export default withRouter(Map);

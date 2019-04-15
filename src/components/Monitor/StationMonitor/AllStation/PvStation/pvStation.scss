@@ -382,16 +382,16 @@
         }
         .progressInfo {
             .progressData {
-                :global {
-                    .ant-progress-inner {
-                        margin-top: 8px;
+                :global{
+                    .ant-progress-line{
+                        margin-top: -13px;
                     }
-                } //width: 220px;
+                }
                 padding-right: 16px;
                 height: 40px;
                 display: flex;
                 flex-direction: column;
-                flex-wrap: wrap;
+                // flex-wrap: wrap;
                 .stationValue {
                     margin-top: 5px;
                     flex: 1;
@@ -427,6 +427,9 @@
             }
             .ant-table .ant-table-thead .ant-table-column-sorter{
                 top: 18px;
+            }
+            .ant-table-placeholder{
+               border: none;
             }
         }
     }

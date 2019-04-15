@@ -260,6 +260,7 @@ class LostAddForm extends Component {
             <Form.Item label="发生时间" {...formItemLayout1} >
               {getFieldDecorator('startTime', {
                 rules: [{
+                  required: true,
                   validator: (rule, value, callback) => {
                     const endTime = form.getFieldValue('endTime');
                     const entTimeError = form.getFieldError('endTime');
