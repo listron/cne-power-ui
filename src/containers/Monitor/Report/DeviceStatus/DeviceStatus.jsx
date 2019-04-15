@@ -33,7 +33,7 @@ class DeviceStatus extends Component {
     const breadCrumbData = {
       breadData: [
         {
-          name: '报告查询-电量报表',
+          name: '报告查询-设备状态',
         }
       ],
     };
@@ -61,6 +61,13 @@ const mapDispatchToProps = (dispatch) => ({
   changeDeviceStatusStore: payload => dispatch({ type: deviceStatusAction.changeDeviceStatusStore, payload }),
   resetDeviceStatusStore: payload => dispatch({ type: deviceStatusAction.resetDeviceStatusStore, payload }),
   getDeviceStatusList: payload => dispatch({ type: deviceStatusAction.getDeviceStatusList, payload }),
+  getDeviceStatusDetail: payload => dispatch({ type: deviceStatusAction.getDeviceStatusDetail, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile, payload: {
+      ...payload,
+      actionName: deviceStatusAction.changeDeviceStatusStore
+    }
+  }),
   getRegion: params => dispatch({ //获取用户权限的电站区域
     type: commonAction.getRegion,
     payload: {

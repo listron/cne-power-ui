@@ -6,10 +6,14 @@ import SummaryMode from '../../../Common/SummaryMode';
 import TableList from './TableList';
 import moment from 'moment';
 import { Button } from 'antd';
+import path from '../../../../constants/path';
+const { APIBasePath } = path.basePaths;
+const { monitor } = path.APISubPaths;
 
 class PowerReport extends Component {
   static propTypes = {
     getPowerReportList: PropTypes.func,
+    downLoadFile: PropTypes.func,
     changePowerReportStore: PropTypes.func,
     dateType: PropTypes.number,
     startTime: PropTypes.string,
@@ -27,7 +31,6 @@ class PowerReport extends Component {
   }
 
   onTimeChange = (value) => {
-    console.log(value)
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -47,9 +50,7 @@ class PowerReport extends Component {
     this.props.changePowerReportStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
   }
   onSearch = () => {
-    // const {dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize,}=this.props;
-    // const params={dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize};
-    // this.props.getPowerReportList({...params})
+  
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {
@@ -59,8 +60,26 @@ class PowerReport extends Component {
     this.props.getPowerReportList({ ...params, ...value })
   }
 
-  export = () => {
-
+  exportList = () => {
+    const url = `${APIBasePath}${monitor.exportGen}`;
+    let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    let timeZone = moment().zone();
+    const modeType = ['状态', '区域', '电站', '型号', '风机'];
+    const dateTypes = ['日', '日', '月', '年', '自定义'];
+    downLoadFile({
+      url,
+      fileName: `${modeType[summaryType]}-${dateTypes[dateType]}电量报表-${startTime}-${endTime}.xlsx`,
+      params: {
+        dateType,
+        startTime: moment(startTime).utc().format(),
+        endTime: moment(endTime).utc().format(),
+        summaryType,
+        summaryData,
+        sortField,
+        sortMethod,
+        timeZone: timeZone / -60
+      },
+    })
   }
 
 
@@ -78,7 +97,7 @@ class PowerReport extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.export}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>

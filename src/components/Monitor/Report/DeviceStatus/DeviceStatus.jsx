@@ -6,13 +6,17 @@ import SummaryMode from '../../../Common/SummaryMode';
 import TableList from './TableList';
 import moment from 'moment';
 import { Button } from 'antd';
-
+import path from '../../../../constants/path';
+const { APIBasePath } = path.basePaths;
+const { monitor } = path.APISubPaths;
 
 class DeviceStatus extends Component {
   static propTypes = {
     getDeviceStatusList: PropTypes.func,
-    changeDeviceStatusStore: PropTypes.func,
+    downLoadFile: PropTypes.func,
+    getDeviceStatusDetail: PropTypes.func,
     dateType: PropTypes.number,
+    changeDeviceStatusStore: PropTypes.func,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     summaryType: PropTypes.number,
@@ -59,11 +63,31 @@ class DeviceStatus extends Component {
     console.log('startTime: ', startTime);
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     this.props.getDeviceStatusList({ ...params, ...value })
+    this.props.getDeviceStatusDetail({ ...params, ...value })
   }
 
-  export = () => {
-
+  exportList = () => {
+    const url = `${APIBasePath}${monitor.exportDeviceStatus}`;
+    let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    let timeZone = moment().zone();
+    // const modeType = ['状态', '区域', '电站', '型号', '风机','设备状态'];
+    // const dateTypes = ['日', '日', '月', '年', '自定义'];
+    downLoadFile({
+      url,
+      fileName: `设备状态报表-${startTime}-${endTime}.xlsx`,
+      params: {
+        dateType,
+        startTime: moment(startTime).utc().format(),
+        endTime: moment(endTime).utc().format(),
+        summaryType,
+        summaryData,
+        sortField,
+        sortMethod,
+        timeZone: timeZone / -60
+      },
+    })
   }
+
   render() {
     const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
     return (
@@ -77,7 +101,7 @@ class DeviceStatus extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.export}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>

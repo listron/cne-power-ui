@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './powerReport.scss';
+import styles from './powerLost.scss';
 import { Table } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 
+
 class TableList extends Component {
   static propTypes = {
-    getPowerReportList: PropTypes.func,
-    changePowerReportStore: PropTypes.func,
+    getPowerLostList: PropTypes.func,
+    changePowerLostStore: PropTypes.func,
     onChangeFilter: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
@@ -17,18 +18,17 @@ class TableList extends Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
     summaryType: PropTypes.number,
+    filterTable: PropTypes.number,
     summaryData: PropTypes.array,
-    powerReportList: PropTypes.array,
+    powerLostList: PropTypes.array,
+    tableType: PropTypes.string,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
-    filterTable: PropTypes.number,
-
   }
-
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    this.props.changePowerReportStore({ pageNum: currentPage, pageSize, })
+    this.props.changePowerLostStore({ pageNum: currentPage, pageSize, })
     this.props.onChangeFilter({ pageNum: currentPage, pageSize })
   }
   ontableSort = (pagination, filter, sorter) => {
@@ -51,11 +51,13 @@ class TableList extends Component {
     };
     const sortField = sortInfo[field] ? sortInfo[field] : '';
     const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    this.props.changePowerReportStore({ sortField, sortMethod })
+    this.props.changePowerLostStore({ sortField, sortMethod })
     onChangeFilter({ sortField, sortMethod })
   }
+
   initMonthColumn = () => {
     const { filterTable } = this.props;
+
     const filterShow = [
       {
         title: "区域",
@@ -77,76 +79,98 @@ class TableList extends Component {
         title: "风机型号",
         dataIndex: "deviceModeName",
         sorter: true,
-
       },
     ];
     const show = filterShow.slice(0, filterTable);
     const columns = [
-
       {
         title: "统计时段",
-        dataIndex: "time",
-        sorter: true,
-        defaultSortOrder: 'ascend'
-      },
-      {
-        title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
-        dataIndex: "windSpeedAvg",
-        sorter: true,
-
-      },
-      {
-        title: () => <TableColumnTitle title="发电量" unit="kWh" />,
-        dataIndex: "genValid",
-        sorter: true,
-      },
-
-      {
-        title: () => <TableColumnTitle title="发电时间" unit="h" />,
-        dataIndex: "genTime",
-        sorter: true,
-      },
-      {
-        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-        dataIndex: "equivalentHours",
-        sorter: true,
-      },
-      {
-        title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
-        dataIndex: "limitGen",
+        dataIndex: "date",
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
-        dataIndex: "limitTime",
+        dataIndex: "limitHour",
+        sorter: true,
+        render: text => (text || text === 0) ? text : '--'
+      },
+      {
+        title: () => <TableColumnTitle title="限电损失电量" unit="万kWh" />,
+        dataIndex: "limitpower",
+        sorter: true,
+        render: text => (text || text === 0) ? text : '--'
+      },
+      {
+        title: () => <TableColumnTitle title="维护时长" unit="h" />,
+        dataIndex: "weihuHour",
+        sorter: true,
+        defaultSortOrder: 'ascend'
+      },
+      {
+        title: () => <TableColumnTitle title="风电维护损失电量" unit="万kWh" />,
+        dataIndex: "weihupower",
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
-        dataIndex: "faultGen",
+        title: () => <TableColumnTitle title="技术待命时长" unit="h" />,
+        dataIndex: "resourceValue",
+        sorter: true,
+      },
+      {
+        title: () => <TableColumnTitle title="技术待命损失电量" unit="万kWh" />,
+        dataIndex: "resourceRate",
+        sorter: true,
+      },
+      {
+        title: () => <TableColumnTitle title="远程停机时长" unit="h" />,
+        dataIndex: "equivalentHours",
+        sorter: true,
+      },
+      {
+        title: () => <TableColumnTitle title="远程停机损失电量" unit="万kWh" />,
+        dataIndex: "pr",
+        sorter: true,
+      }, {
+        title: () => <TableColumnTitle title="电网故障时长" unit="h" />,
+        dataIndex: "lostPower",
+        sorter: true,
+      },{
+        title: () => <TableColumnTitle title="电网故障损失电量" unit="万kWh" />,
+        dataIndex: "limitPowerHours",
         sorter: true,
 
-      },
-      {
-        title: () => <TableColumnTitle title="故障时长" unit="h" />,
-        dataIndex: "faultTime",
+      },{
+        title: () => <TableColumnTitle title="故障停机时长" unit="h" />,
+        dataIndex: "guzhangHours",
+        sorter: true,
+
+      },{
+        title: () => <TableColumnTitle title="故障停机损失电量" unit="万kWh" />,
+        dataIndex: "guazhangpower",
+        sorter: true,
+
+      },{
+        title: () => <TableColumnTitle title="就地停机时长" unit="h" />,
+        dataIndex: "jiudihour",
+        sorter: true,
+
+      },{
+        title: () => <TableColumnTitle title="就地停机损失电量" unit="万kWh" />,
+        dataIndex: "jiudipower",
         sorter: true,
       },
     ];
-    columns.unshift(...show)
+    columns.unshift(...show);
     return columns
   }
 
 
   render() {
-    const { total, pageSize, pageNum, powerReportList } = this.props;
+    const { total, pageSize, pageNum, powerLostList } = this.props;
     const columns = this.initMonthColumn();
-    const dataSource = powerReportList.map((e, i) => ({
+    const dataSource = powerLostList.map((e, i) => ({
       ...e, key: i,
-      pr: `${e.pr ? e.pr : '--'}%`,
-      resourceRate: `${e.resourceRate ? e.resourceRate : '--'}%`,
-      planGenRate: `${e.planGenRate ? e.planGenRate : '--'}%`,
-      powerRate: `${e.powerRate ? e.powerRate : '--'}%`
+      
     }))
     return (
       <React.Fragment>

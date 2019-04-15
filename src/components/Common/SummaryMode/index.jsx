@@ -131,6 +131,7 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
+    console.log('v: ', v);
     this.setState({ list: v });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
   }

@@ -10,8 +10,8 @@ const monitor=Path.APISubPaths.monitor
 function *getPowerReportList(action) {  // 请求报表列表
   const { payload } = action;
   const{startTime,endTime,}=payload;
-  // const url =`${APIBasePath}${monitor.getPowerReportList}`
-  const url =`/mock/v3/wind/report/fan/gen`;
+  const url =`${APIBasePath}${monitor.getPowerReportList}`;
+  // const url =`/mock/v3/wind/report/fan/gen`;
 
   try{
     yield put({
@@ -39,6 +39,7 @@ function *getPowerReportList(action) {  // 请求报表列表
       yield put({
         type:powerReportAction.changePowerReportStore,
         payload: {
+          filterTable:payload.summaryType,
           total:response.data.data.pageCount||0,
           powerReportList: response.data.data.dataList||[],
           loading:false,
