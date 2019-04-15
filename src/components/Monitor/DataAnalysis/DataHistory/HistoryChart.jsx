@@ -7,6 +7,7 @@ import { dataFormat } from '../../../../utils/utilFunc';
 
 class HistoryChart extends Component {
   static propTypes = {
+    timeInterval: PropTypes.number,
     chartLoading: PropTypes.bool,
     queryParam: PropTypes.object,
     chartTime: PropTypes.number,
@@ -18,14 +19,18 @@ class HistoryChart extends Component {
     if (chartTime) {
       this.renderChart(allHistory);
     }
-    console.log(chartTime);
-    
   }
 
   componentDidUpdate(prevProps) {
-    const { allHistory, chartTime } = this.props;
+    const { allHistory, chartTime, chartLoading } = this.props;
     const preTime = prevProps.chartTime;
-    if (chartTime !== preTime) { // 数据重新请求后重绘。
+    const preLoading = prevProps.chartLoading;
+    const preHistory = prevProps.allHistory;
+    if (
+      chartTime !== preTime // 数据更新
+      || preLoading !== chartLoading // loading状态更新
+      || (Object.keys(preHistory).length > 0 && Object.keys(allHistory).length === 0) // 手动清除数据。
+    ) { // 数据重新请求后重绘。
       this.renderChart(allHistory);
     }
   }
@@ -34,8 +39,9 @@ class HistoryChart extends Component {
     type : 'category',
     gridIndex: i,
     axisLine: {
+      show: false,
       lineStyle: {
-          color: '#666'
+        color: '#666'
       },
     },
     axisTick: { 
@@ -63,7 +69,7 @@ class HistoryChart extends Component {
     },
     axisLabel: {
       color: '#666',
-      showMinLabel: false
+      showMaxLabel: i === 0 ? true : false,
     },
     axisTick: {
       show: false
@@ -76,7 +82,7 @@ class HistoryChart extends Component {
     },
     name: `${e.pointName}\n${e.pointUnit ? `(${e.pointUnit})` : ''}`,
     nameLocation: 'middle',
-    nameGap: 48,
+    nameGap: 72,
     nameTextStyle: {
       color: '#666',
     }
@@ -86,8 +92,11 @@ class HistoryChart extends Component {
     const baseGridOption = {
       top: 10 + 160 * i,
       height: 160,
-      left: 90,
-      right: 40
+      left: 108,
+      right: 40,
+      show: true,
+      borderColor: '#eee',
+      backgroundColor: i % 2 === 1 ? '#eee' : 'transparent'
     }
     if (i === pointData.length - 1) { // 最后一个grid
       return {
@@ -106,7 +115,7 @@ class HistoryChart extends Component {
     pointData.forEach((point, index) => {
       deviceInfo.forEach((device, deviceIndex) => {
         const mapNumber = index * deviceNum + deviceIndex; // 属于所有数据中的顺序
-        const lengendName = `${point.pointName}${device.deviceName}`;
+        const lengendName = `${point.pointName}-${device.deviceName}`;
         legend.push({
           top: 72 + 160 * pointNum + 24 * parseInt(mapNumber / 4),
           left: `${4 + (mapNumber % 4) * 23}%`,
@@ -135,12 +144,15 @@ class HistoryChart extends Component {
     echarts.dispose(chartDOM); // 重绘图形前需销毁实例。否则重绘失败。
     const historyChart = echarts.init(chartDOM);
     if (chartLoading) { // loading态控制。
-      historyChart.showLoading()
+      historyChart.showLoading();
+      return;
     } else {
-      historyChart.hideLoading()
+      historyChart.hideLoading();
+    }
+    if (Object.keys(allHistory).length === 0) { // 空数据销毁后，不进行处理
+      return;
     }
     const { pointTime = [], deviceInfo = [], pointData = [] } = allHistory;
-    console.log(allHistory)
     const xAxisData = pointTime.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const option = {
       tooltip: {
@@ -154,7 +166,7 @@ class HistoryChart extends Component {
               ${params.map(e => `<div class=${styles.content}>
                 <span class=${styles.itemStyle} style='color: ${e.color}'>○</span>
                 <span class=${styles.text}>${e.seriesName}: </span>
-                <span class=${styles.value}>${dataFormat(e.value)}</span>
+                <span class=${styles.value}>${dataFormat(e.value, '--', 2)}</span>
               </div>`).join('')}
             </div>`
           )
@@ -203,7 +215,8 @@ class HistoryChart extends Component {
         <h4>
           <span className={styles.eachTitle} />
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '平均值' : '瞬时值'}</span>
+          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '均值或累计' : '瞬时'}值</span>
+
         </h4>
         <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />
       </section>

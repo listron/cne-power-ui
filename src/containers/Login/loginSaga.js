@@ -350,6 +350,7 @@ function *joinEnterprise(action){
         confirmPwd: params.confirmPwd,
         enterpriseId: params.enterpriseId,
         password: params.password,
+        userFullname: params.userFullname,
         phoneNum: params.phoneNum,
         username: params.username,
       }),
@@ -364,6 +365,7 @@ function *joinEnterprise(action){
         }
       });
       message.success(response.data.message);
+
     } else{
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
@@ -398,9 +400,9 @@ function *resetPassword(action){
       }),
     });
     if(response.data.code === "10000"){
-      message.success('密码设置成功，请重新登录！');
-      yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
-      
+      message.success('密码设置成功！');
+      Cookie.set('isNotLogin', 0); // 直接登录。
+      // yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
     }else{
       yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
       message.error('设置失败！');
@@ -436,7 +438,6 @@ function* resetLoginStore(action) {
 // 邀请用户加入企业(获取邀请企业信息)
 function *inviteUserLink(action){
   const { params } = action;
-  console.log(params)
   const url = `${APIBasePath}${login.inviteUserLink}/${params.linkId}`;
   yield put({type: loginAction.LOGIN_FETCH});
   try{

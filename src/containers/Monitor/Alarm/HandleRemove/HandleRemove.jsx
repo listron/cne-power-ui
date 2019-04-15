@@ -18,7 +18,7 @@ class HandleRemove extends Component {
     super(props, context)
   }
   componentDidMount() {
-    this.props.getLostGenType({ objectType: 1 })
+    // this.props.getLostGenType({ objectType: 1 })
   }
   componentWillUnmount(){
     this.props.resetHandleRemoveStore()

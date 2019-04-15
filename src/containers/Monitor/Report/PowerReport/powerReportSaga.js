@@ -3,13 +3,16 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { powerReportAction } from './powerReportAction';
+import moment from 'moment';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
 
 function *getPowerReportList(action) {  // 请求报表列表
   const { payload } = action;
-  const{stationCodes,rangTime,}=payload;
-  const url =`${APIBasePath}${monitor.getHistoryAlarm}`
+  const{startTime,endTime,}=payload;
+  const url =`${APIBasePath}${monitor.getPowerReportList}`;
+  // const url =`/mock/v3/wind/report/fan/gen`;
+
   try{
     yield put({
       type:powerReportAction.changePowerReportStore,
@@ -19,11 +22,13 @@ function *getPowerReportList(action) {  // 请求报表列表
     });  
     const response = yield call(axios.post,url,{
       ...payload,
-      stationCode:stationCodes,
-      startTime:rangTime,
+      startTime:moment( startTime).utc().format(''),
+      endTime:moment( endTime).utc().format(''),
+      timeZone:moment().zone() / (-60),
+
     });
     if(response.data.code === '10000') {
-      const total = response.data.data.total || 0;
+      const total = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
@@ -34,8 +39,9 @@ function *getPowerReportList(action) {  // 请求报表列表
       yield put({
         type:powerReportAction.changePowerReportStore,
         payload: {
-          total:response.data.data.total||0,
-          powerReportList: response.data.data.list||[],
+          filterTable:payload.summaryType,
+          total:response.data.data.pageCount||0,
+          powerReportList: response.data.data.dataList||[],
           loading:false,
           ...payload,
         },

@@ -162,7 +162,7 @@ class ReportEdit extends Component {
     })
     faultList.forEach(e => {
       !e.process && (errorText = '损失电量进展未填写!');
-      (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间')
+      e.endTime && (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间')
       e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
       let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
       let decimalLength = decimal && decimal.length;
@@ -170,7 +170,7 @@ class ReportEdit extends Component {
     })
     limitList.forEach(e => {
       e.lostPower && isNaN(e.lostPower) && (errorText = '损失电量需为数字!');
-      (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间')
+      e.endTime && (e.startTime > e.endTime) && (errorText = '结束时间必须大于开始时间');
       let decimal = e.lostPower && `${e.lostPower}`.split('.')[1];
       let decimalLength = decimal && decimal.length;
       if(decimalLength > 2){ errorText = '损失电量最多2位小数!' }
@@ -243,24 +243,29 @@ class ReportEdit extends Component {
   faultListInfoChange = (faultList, closeAddForm = false) => { // 损失电量信息编辑
     let { updateDayReportDetail } = this.state;
     updateDayReportDetail.faultList = faultList;
-    let newState = {...updateDayReportDetail};
+    let newState = {updateDayReportDetail : {...updateDayReportDetail}};
     closeAddForm && (newState.addLostFormShow = false);
-    this.setState({...newState})
+    this.setState({ ...newState })
   }
 
   limitListInfoChange = (limitList, closeLimitForm = false) => { // 限电信息编辑
     let { updateDayReportDetail } = this.state;
     updateDayReportDetail.limitList = limitList;
-    let newState = {...updateDayReportDetail};
+    let newState = {updateDayReportDetail: { ...updateDayReportDetail }};
     closeLimitForm && (newState.addLimitFormShow = false);
     this.setState({ ...newState });
   }
 
-  rememberRemove = ({faultId, limitId}) => { // 记录要移除的损失记录
-    let { removeFaultArr, removeLimitArr } = this.state;
-    this.setState({ 
+  rememberHandle = ({ faultId, limitId, limitList, faultList }) => { // 记录要移除的损失记录 或改变的时间
+    let { removeFaultArr, removeLimitArr, updateDayReportDetail } = this.state;
+    this.setState({
       removeFaultArr: faultId?[...removeFaultArr, {id: faultId}]: removeFaultArr,
       removeLimitArr: limitId?[...removeLimitArr, {id: limitId}]: removeLimitArr,
+      updateDayReportDetail: {
+        ...updateDayReportDetail,
+        limitList: limitList ? limitList : updateDayReportDetail.limitList,
+        faultList: faultList ? faultList : updateDayReportDetail.faultList,
+      },
     })
   }
 
@@ -268,8 +273,9 @@ class ReportEdit extends Component {
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
     const {faultList, limitList, stationCode, errorInfo, stationType, reportDate} = updateDayReportDetail;
+    console.log(faultList)
     return (
-      <div className={styles.reportEdit} >
+      <div className={styles.reportEdit}>
         <div className={styles.reportDetailTitle} >
           <span className={styles.reportDetailTitleTip}>
             <span className={styles.mainTitle}>日报详情</span>
@@ -314,7 +320,7 @@ class ReportEdit extends Component {
             )}
             stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
-            rememberRemove={this.rememberRemove}
+            rememberHandle={this.rememberHandle}
             changeFaultList={this.faultListInfoChange} 
           />
         </div>: null}
@@ -344,7 +350,7 @@ class ReportEdit extends Component {
             )}
             stationDeviceTypes={stationDeviceTypes}
             reportDate={reportDate}
-            rememberRemove={this.rememberRemove}
+            rememberHandle={this.rememberHandle}
             changeLimitList={this.limitListInfoChange}
           />
         </div>:null}

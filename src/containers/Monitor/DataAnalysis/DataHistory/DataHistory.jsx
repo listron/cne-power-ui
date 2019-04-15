@@ -22,13 +22,13 @@ class DataHistory extends Component {
   };
 
   componentDidMount(){ // 获取数据时间间隔
-    const { enterpriseId } = this.props;
-    this.props.getSecendInterval({ enterpriseId });
+    const { enterpriseId, getSecendInterval } = this.props;
+    getSecendInterval({ enterpriseId });
   }
 
-  // componentWillUnmount() {
-  //   this.props.resetHistoryStore();
-  // }
+  componentWillUnmount() {
+    this.props.resetHistoryStore();
+  }
 
   render() {
     const { historyType } = this.props;
@@ -55,6 +55,7 @@ class DataHistory extends Component {
 const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
   stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  filterDevices: state.common.get('filterDevices').toJS(),
   stationTypeCount: 'wind', // state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
@@ -67,7 +68,13 @@ const mapDispatchToProps = (dispatch) => ({
   getListHistory: payload => dispatch({ type: historyAction.getListHistory, payload }),
   getSecendInterval: payload => dispatch({ type: historyAction.getSecendInterval, payload }),
   getAvailableDeviceType: payload => dispatch({ type: historyAction.getAvailableDeviceType, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload })
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: historyAction.CHANGE_HISTORY_STORE
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataHistory);

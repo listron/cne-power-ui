@@ -58,7 +58,7 @@ class AlarmSingleStationTable extends React.Component {
         render: value => numWithComma(value),
       },
       {
-        title: <TableColumnTitle title="转工单率" unit="%" />,
+        title: () => <TableColumnTitle title="转工单率" unit="%" />,
         dataIndex: 'transferWorkRate',
         render: value => numWithComma(value),
         sorter: true,

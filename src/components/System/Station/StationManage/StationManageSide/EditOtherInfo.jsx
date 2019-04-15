@@ -28,7 +28,7 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
       zoneValue: i,
     })
   }
-  const { createTime, createUser } = stationDetail;
+  const { createTime, createUser, userFullname } = stationDetail;
   let createTimeText = createTime?moment(createTime).format('YYYY-MM-DD'): '--';
   let createUserText = createUser || '--';
   return (<section className={styles.otherInfo}>
@@ -53,7 +53,7 @@ const EditOtherInfo = ({stationDetail, form, ...restProps}) => {
     </FormItem>
     <span className={styles.textInfo}>
       <span className={styles.name}>创建人</span>
-      <span className={styles.value}>{createUserText}</span>
+      <span className={styles.value}>{userFullname || createUserText || '--'}</span>
     </span>
     <FormItem label="无功控制能力" >
       {getFieldDecorator('automaticAeactiveContro',{

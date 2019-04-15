@@ -10,14 +10,31 @@ const { monitor } = Path.APISubPaths;
 
 function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
   const { stationCode } = payload;
+  const sortTypes = [ // 默认排序顺序
+    '风电机组', '集电线路', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '功率预测系统', '能量管理平台'
+  ];
   try {
     const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const stationDeviceTypes = response.data.data || [];
+      stationDeviceTypes.sort((a, b) => {
+        const tmpIndexA = sortTypes.indexOf(a.deviceTypeName);
+        const tmpIndexB = sortTypes.indexOf(b.deviceTypeName);
+        if (tmpIndexA === -1) {
+          return 1;
+        }
+        if (tmpIndexB === -1) {
+          return -1;
+        }
+        return (tmpIndexA - tmpIndexB);
+      })
+      const defaultTypes = stationDeviceTypes.find(e => e.deviceTypeCode === 101); // 默认风电机组
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
-          stationDeviceTypes: response.data.data || [],
+          stationDeviceTypes,
+          deviceTypeCode: defaultTypes ? defaultTypes.deviceTypeCode : null,
         }
       })
     } else { throw response }
@@ -39,6 +56,7 @@ function *getPointInfo(action) { // 获取可选测点
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
+          reRenderTree: moment().unix(), // 记录时间
           pointInfo: response.data.data || [],
         }
       })
@@ -57,9 +75,10 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
     const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
+    const tmpPayload = { queryParam, chartLoading: true };
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
-      payload: { queryParam, chartLoading: true }
+      payload: tmpPayload
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -94,7 +113,6 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
 function *getListHistory(action) { // 表格数据获取
   const { payload } = action;
   const { queryParam, listParam } = payload;
-  console.log(payload)
   const url = `${APIBasePath}${monitor.getListHistory}`; // /mock/monitor/dataAnalysis/listHistory;
   // const orderText = ['deviceName', 'stationName', 'deviceTypeName', 'deviceModeName', 'time', 'speed'];
   try{
@@ -156,19 +174,25 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
   const { payload } = action;
   try {
     const { enterpriseId } = payload;
-    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
     const url = `${APIBasePath}${monitor.getSecendInteral}/${enterpriseId}` // '/mock/monitor/dataAnalysisSecendInteral';
+    const { queryParam } = yield select(state => state.monitor.dataHistory.toJS());
+    const tmpQueryParam = { // 时间重置。
+      ...queryParam,
+      startTime: moment().subtract(1, 'day').startOf('day'),
+      endTime: moment().subtract(1, 'day').endOf('day'),
+    }
+    yield put({
+      type: historyAction.CHANGE_HISTORY_STORE,
+      payload: tmpQueryParam,
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       const { hasSecond } = response.data.data;
       yield put({
         type: historyAction.GET_HISTORY_SUCCESS,
         payload: {
-          intervalInfo: hasSecond === 1 ? [1, 5 ,10] : [5 ,10],
-          queryParam: {
-            ...queryParam,
-            timeInterval: hasSecond === 1 ? 1 : 5,
-          }
+          intervalInfo: hasSecond === 1 ? [10, 5, 1] : [10 ,5],
+          queryParam: tmpQueryParam,
         }
       })
     } else {

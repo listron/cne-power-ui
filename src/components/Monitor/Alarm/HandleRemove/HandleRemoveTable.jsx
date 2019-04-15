@@ -121,7 +121,7 @@ class HandleRemoveTable extends Component {
         <div className={styles.content}>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除人：</span>
-            <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
+            <span className={styles.value}>{relieveInfo.userFullname ? relieveInfo.userFullname : relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>截至时间：</span>
@@ -138,6 +138,13 @@ class HandleRemoveTable extends Component {
         </div>
       </div>
     );
+  }
+
+  onShowDetail=(record)=>{
+    this.setState({
+      showTransferTicketModal: true,
+    });
+    this.props.changeHandleRemoveStore({selectedTransfer:[record]})
   }
 
 
@@ -218,9 +225,19 @@ class HandleRemoveTable extends Component {
             </Popover>
           );
         }
+      },{
+        title: '操作',
+        className: styles.iconDetail,
+        render: (text, record) => (
+          <div>
+            <span>
+              <i className="iconfont icon-tranlist" onClick={() => {this.onShowDetail (record)}} />
+            </span>
+          </div>
+        )
       }
     ]
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum,total, loading } = this.props;
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum,total, loading,selectedTransfer,getLostGenType } = this.props;
     const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -237,7 +254,7 @@ class HandleRemoveTable extends Component {
           value={warningTipText} />}
         <div className={styles.tableHeader}>
           <Select onChange={this.onHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown}>
-            <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option>
+            {/* <Option value="ticket" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-tranlist"></i>转工单</Option> */}
             <Option value="cancleRemove" disabled={selectedRowKeys.length === 0}><i className="iconfont icon-manual"></i>取消手动解除</Option>
           </Select>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
@@ -261,7 +278,8 @@ class HandleRemoveTable extends Component {
             onCancel={() => this.setState({ showTransferTicketModal: false })}
             onTransferAlarm={this.props.getHandleRemoveTransfer}
             defectTypes={this.props.defectTypes}
-            selectedRowKeys={this.props.selectedRowKeys}
+            selectedTransfer={selectedTransfer}
+            getLostGenType={getLostGenType}
           />
         }
 

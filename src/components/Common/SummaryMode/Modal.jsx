@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Tree } from 'antd';
+import { Modal, Tree, Checkbox } from 'antd';
 import styles from './styles.scss';
 import PropTypes from 'prop-types';
 const { TreeNode } = Tree;
@@ -32,6 +32,7 @@ class SelectModal extends Component {
     super(props);
     this.state = {
       checkedKeys: [...props.list],
+      children: props.sourceData,
       tree: [
         {
           title: '全部',
@@ -46,6 +47,7 @@ class SelectModal extends Component {
     this.setState({ checkedKeys: nextProps.list });
   }
   onCheck = (checkedKeys) => {
+    console.log('checkedKeys: ', checkedKeys);
     this.setState({ checkedKeys });
   }
   showModal = () => {
@@ -56,17 +58,22 @@ class SelectModal extends Component {
   }
   handleOK = () => {
     let keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
+    console.log('keys: ', keys);
     this.props.handleOK(keys);
   }
   //去除选中节点中的父节点 需要递归
   delParentNode = (data, keys) => {
+    console.log('data, keys: ', data, keys);
     data.forEach(e => {
       if (e.children) {
+        this.delParentNode(e.children, keys)
         if (keys.indexOf(String(e.key)) !== -1) {
           keys.splice(keys.indexOf(String(e.key)), 1)
         }
-        this.delParentNode(e.children, keys)
+       
+        
       }
+     
     })
     return keys
   }
@@ -74,6 +81,35 @@ class SelectModal extends Component {
     this.props.hideModal();
   }
 
+
+  checkAllStation = (e) => {
+    if (!e.target.checked) { // 取消全选时清空。
+      this.setState({ checkedKeys: [] });
+      return
+    }
+    const { sourceData } = this.props;
+    const getSelectCode = (data) => {
+      let selectArray = [];let selectStation=[];
+      data && data.length > 0 && data.forEach(e => {
+        if (e && e.children && e.children.length > 0) {
+          selectArray.push(...getSelectCode(e.children));//递归
+        }
+        if (e && e.stationCode) {//拿到电站code
+          selectStation.push(e.stationCode)
+        }
+        if (e && e.deviceCode) {
+          selectArray.push(e.deviceCode)
+        } else if (e && e.deviceModeCode) {
+          selectArray.push(e.deviceModeCode)
+        } 
+
+        console.log('selectArray: ', selectArray);
+      })
+      return selectArray.length>0?selectArray:selectStation;
+    }
+    const selectDepartment = getSelectCode(sourceData);
+    this.setState({ checkedKeys: selectDepartment });
+  }
   renderTreeNodes = data => data.map((item) => {
     if (item.children) {
       return (
@@ -103,14 +139,16 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
+            <Checkbox onChange={this.checkAllStation}>全选</Checkbox>
             <Tree
               checkable
               autoExpandParent={true}
+              defaultExpandAll={true}
               onCheck={this.onCheck}
               checkedKeys={this.state.checkedKeys}
               blockNode={false}
             >
-              {this.renderTreeNodes(this.state.tree)}
+              {this.renderTreeNodes(this.state.children)}
             </Tree>
           </div>
         </Modal>

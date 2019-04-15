@@ -1,5 +1,5 @@
 
-let arr1 = Array(300).fill(1);
+let arr1 = Array(100).fill(1);
 
 
 module.exports = [
@@ -101,103 +101,95 @@ module.exports = [
                 windSpeedCenter: 17,
                 "powerTheory": parseFloat(Math.random() * 500).toFixed(2),
               },],
-            sctualPowerData: [
+            actualPowerData: [
               {
                 windSpeedInterval: '5.25-12.25',
-                windSpeedCenter: 3,
+                windSpeedAvg: 3,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '12.25-14.25',
-                windSpeedCenter: 5,
+                windSpeedAvg: 5,
                 "powerAvg": 64.0,
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '14.25-16.15',
-                windSpeedCenter: 7,
+                windSpeedAvg: 7,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '16.25-18.25',
-                windSpeedCenter: 9,
+                windSpeedAvg: 9,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '18.25-10.25',
-                windSpeedCenter: 11,
+                windSpeedAvg: 11,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '20.25-22.25',
-                windSpeedCenter: 13,
+                windSpeedAvg: 13,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '22.25-24.25',
-                windSpeedCenter: 15,
+                windSpeedAvg: 15,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },
               {
                 windSpeedInterval: '24.25-25.25',
-                windSpeedCenter: 17,
+                windSpeedAvg: 17,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
               },],
             scatterPointData: [
               {
                 time: new Date(),
                 windSpeedAvg: '2',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '5'
+                windDirection: '5'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '5',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '10'
+                windDirection: '10'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '10',
                 powerActual: '16',
-                windSpeedCenter: '12'
+                windDirection: '12'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '12',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '15'
+                windDirection: '15'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '14',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '17'
+                windDirection: '17'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '16',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '18'
+                windDirection: '18'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '18',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '20'
+                windDirection: '20'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '20',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '25'
+                windDirection: '25'
               },
             ]
           },
@@ -245,103 +237,95 @@ module.exports = [
                 windSpeedCenter: 17,
                 "powerTheory": parseFloat(Math.random() * 500).toFixed(2),
               },],
-            sctualPowerData: [
+            actualPowerData: [
               {
                 windSpeedInterval: '5.25-12.25',
-                windSpeedCenter: 3,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 3,
               },
               {
                 windSpeedInterval: '12.25-14.25',
-                windSpeedCenter: 5,
                 "powerAvg": 64.0,
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 5,
               },
               {
                 windSpeedInterval: '14.25-16.15',
-                windSpeedCenter: 7,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 7,
               },
               {
                 windSpeedInterval: '16.25-18.25',
-                windSpeedCenter: 9,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 9,
               },
               {
                 windSpeedInterval: '18.25-10.25',
-                windSpeedCenter: 11,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 11,
               },
               {
                 windSpeedInterval: '20.25-22.25',
-                windSpeedCenter: 13,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 13,
               },
               {
                 windSpeedInterval: '22.25-24.25',
-                windSpeedCenter: 15,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 15,
               },
               {
                 windSpeedInterval: '24.25-25.25',
-                windSpeedCenter: 17,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+                  windSpeedAvg: 17,
               },],
             scatterPointData: [
               {
                 time: new Date(),
                 windSpeedAvg: '2',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '5'
+                windDirection: '5'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '5',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '10'
+                windDirection: '10'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '10',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '12'
+                windDirection: '12'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '12',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '15'
+                windDirection: '15'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '14',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '17'
+                windDirection: '17'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '16',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '18'
+                windDirection: '18'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '18',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '20'
+                windDirection: '20'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '20',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '25'
+                windDirection: '25'
               },
             ]
           },
@@ -389,103 +373,103 @@ module.exports = [
                 windSpeedCenter: 17,
                 "powerTheory": parseFloat(Math.random() * 500).toFixed(2),
               },],
-            sctualPowerData: [
+            actualPowerData: [
               {
                 windSpeedInterval: '5.25-12.25',
-                windSpeedCenter: 3,
+                windSpeedAvg: 3,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '12.25-14.25',
-                windSpeedCenter: 5,
+                windSpeedAvg: 5,
                 "powerAvg": 64.0,
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '14.25-16.15',
-                windSpeedCenter: 7,
+                windSpeedAvg: 7,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '16.25-18.25',
-                windSpeedCenter: 9,
+                windSpeedAvg: 9,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '18.25-10.25',
-                windSpeedCenter: 11,
+                windSpeedAvg: 11,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '20.25-22.25',
-                windSpeedCenter: 13,
+                windSpeedAvg: 13,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '22.25-24.25',
-                windSpeedCenter: 15,
+                windSpeedAvg: 15,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },
               {
                 windSpeedInterval: '24.25-25.25',
-                windSpeedCenter: 17,
+                windSpeedAvg: 17,
                 "powerAvg": parseFloat(Math.random() * 500).toFixed(2),
-                "windSpeedAvg": parseFloat(Math.random() * 25).toFixed(2),
+               
               },],
             scatterPointData: [
               {
                 time: new Date(),
                 windSpeedAvg: '2',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '5'
+                windDirection: '5'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '5',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '10'
+                windDirection: '10'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '10',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '12'
+                windDirection: '12'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '12',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '15'
+                windDirection: '15'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '14',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '17'
+                windDirection: '17'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '16',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '18'
+                windDirection: '18'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '18',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '20'
+                windDirection: '20'
               },
               {
                 time: new Date(),
                 windSpeedAvg: '20',
                 powerActual: parseFloat(Math.random() * 500).toFixed(2),
-                windSpeedCenter: '25'
+                windDirection: '25'
               },
             ]
           },
@@ -630,7 +614,7 @@ module.exports = [
 
   },
   { // 功率曲线图表-桨距角&风速-单风机
-    api: '/mock//wind/powercurve/fan/powerspeedchart',
+    api: '/mock/wind/powercurve/fan/pitchanglespeedchart',
     method: 'post',
     response: {
       code: '10000',
@@ -650,7 +634,7 @@ module.exports = [
         {
           deviceName: 'test2',
           deviceFullCode: '设备名称2',
-          powerSpeedData: arr1.map((i, index) => {
+          pitChangleSpeedData: arr1.map((i, index) => {
             return {
               windSpeed: parseFloat(Math.random() * 25 + 1).toFixed(2),
               pitchangle: parseFloat(Math.random() * 1000 + 1).toFixed(2),
@@ -661,7 +645,7 @@ module.exports = [
         {
           deviceName: 'test3',
           deviceFullCode: '设备名称3',
-          powerSpeedData: arr1.map((i, index) => {
+          pitChangleSpeedData: arr1.map((i, index) => {
             return {
               windSpeed: parseFloat(Math.random() * 25 + 1).toFixed(2),
               pitchangle: parseFloat(Math.random() * 1000 + 1).toFixed(2),
@@ -675,7 +659,7 @@ module.exports = [
 
   },
   { // 功率曲线图表-风频分布-单风机
-    api: '/mock//wind/powercurve/fan/powerspeedchart',
+    api: '/mock/wind/powercurve/fan/winddistributionchart',
     method: 'post',
     response: {
       code: '10000',
@@ -689,7 +673,7 @@ module.exports = [
     }
   },
   { // 	功率曲线图表-时序图-单风机
-    api: '/mock/v3/wind/powercurve/fan/sequencechart',
+    api: '/mock/wind/powercurve/fan/sequencechart',
     method: 'post',
     response: {
       code: '10000',
@@ -827,374 +811,8 @@ module.exports = [
               "windSpeed": "10.38"
             },]
         },
-        {
-          deviceName: 'test2',
-          deviceFullCode: ' 设备编码2',
-          sequenceChartData: [
-            {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "12.85",
-              "stationPower": "1850.72",
-              "time": "2019-03-13T13:10:00Z",
-              "windSpeed": "9.69"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "12.69",
-              "stationPower": "1787.55",
-              "time": "2019-03-13T13:20:00Z",
-              "windSpeed": "9.13"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "13.57",
-              "stationPower": "2517.43",
-              "time": "2019-03-13T13:30:00Z",
-              "windSpeed": "10.38"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "11.85",
-              "stationPower": "1467.43",
-              "time": "2019-03-13T13:40:00Z",
-              "windSpeed": "8.59"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "13.52",
-              "stationPower": "2311.7",
-              "time": "2019-03-13T13:50:00Z",
-              "windSpeed": "10.06"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "13.56",
-              "stationPower": "2342.43",
-              "time": "2019-03-13T14:00:00Z",
-              "windSpeed": "9.32"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "10.56",
-              "stationPower": "1049.99",
-              "time": "2019-03-13T14:10:00Z",
-              "windSpeed": "7.54"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "10.41",
-              "stationPower": "999.63",
-              "time": "2019-03-13T14:20:00Z",
-              "windSpeed": "7.16"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.32",
-              "stationPower": "498.53",
-              "time": "2019-03-13T14:30:00Z",
-              "windSpeed": "5.75"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.58",
-              "stationPower": "349.14",
-              "time": "2019-03-13T14:40:00Z",
-              "windSpeed": "5.47"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.58",
-              "stationPower": "204.88",
-              "time": "2019-03-13T14:50:00Z",
-              "windSpeed": "4.42"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.62",
-              "stationPower": "148.54",
-              "time": "2019-03-13T15:00:00Z",
-              "windSpeed": "4.33"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.59",
-              "stationPower": "111.83",
-              "time": "2019-03-13T15:10:00Z",
-              "windSpeed": "3.55"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.55",
-              "stationPower": "34.15",
-              "time": "2019-03-13T15:20:00Z",
-              "windSpeed": "3.9"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.62",
-              "stationPower": "148.54",
-              "time": "2019-03-13T15:30:00Z",
-              "windSpeed": "4.33"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.53",
-              "stationPower": "94.76",
-              "time": "2019-03-13T15:40:00Z",
-              "windSpeed": "3.35"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.28",
-              "stationPower": "0.0",
-              "time": "2019-03-13T15:50:00Z",
-              "windSpeed": "3.38"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.64",
-              "stationPower": "279.14",
-              "time": "2019-03-13T16:00:00Z",
-              "windSpeed": "4.77"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.64",
-              "stationPower": "116.1",
-              "time": "2019-03-13T16:10:00Z",
-              "windSpeed": "3.94"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.56",
-              "stationPower": "179.27",
-              "time": "2019-03-13T16:20:00Z",
-              "windSpeed": "4.05"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.57",
-              "stationPower": "239.88",
-              "time": "2019-03-13T16:30:00Z",
-              "windSpeed": "4.53"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.54",
-              "stationPower": "279.14",
-              "time": "2019-03-13T16:40:00Z",
-              "windSpeed": "4.77"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.64",
-              "stationPower": "222.8",
-              "time": "2019-03-13T16:50:00Z",
-              "windSpeed": "4.61"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.01",
-              "stationPower": "643.66",
-              "time": "2019-03-13T17:00:00Z",
-              "windSpeed": "6.88"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.76",
-              "stationPower": "398.66",
-              "time": "2019-03-13T17:10:00Z",
-              "windSpeed": "5.53"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.02",
-              "stationPower": "444.75",
-              "time": "2019-03-13T17:20:00Z",
-              "windSpeed": "6.24"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.82",
-              "stationPower": "600.12",
-              "time": "2019-03-13T17:30:00Z",
-              "windSpeed": "6.64"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.84",
-              "stationPower": "602.68",
-              "time": "2019-03-13T17:40:00Z",
-              "windSpeed": "6.88"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.01",
-              "stationPower": "643.66",
-              "time": "2019-03-13T17:50:00Z",
-              "windSpeed": "6.73"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.8",
-              "stationPower": "834.87",
-              "time": "2019-03-13T18:00:00Z",
-              "windSpeed": "7.17"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.03",
-              "stationPower": "653.04",
-              "time": "2019-03-13T18:10:00Z",
-              "windSpeed": "6.05"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.8",
-              "stationPower": "834.87",
-              "time": "2019-03-13T18:20:00Z",
-              "windSpeed": "7.17"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.44",
-              "stationPower": "525.85",
-              "time": "2019-03-13T18:30:00Z",
-              "windSpeed": "6.05"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.49",
-              "stationPower": "532.68",
-              "time": "2019-03-13T18:40:00Z",
-              "windSpeed": "5.93"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.31",
-              "stationPower": "504.51",
-              "time": "2019-03-13T18:50:00Z",
-              "windSpeed": "5.17"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "10.42",
-              "stationPower": "991.09",
-              "time": "2019-03-13T19:00:00Z",
-              "windSpeed": "7.9"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "10.42",
-              "stationPower": "991.09",
-              "time": "2019-03-13T19:10:00Z",
-              "windSpeed": "7.9"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "9.48",
-              "stationPower": "746.95",
-              "time": "2019-03-13T19:20:00Z",
-              "windSpeed": "7.42"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.84",
-              "stationPower": "596.7",
-              "time": "2019-03-13T19:30:00Z",
-              "windSpeed": "6.58"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "8.02",
-              "stationPower": "432.8",
-              "time": "2019-03-13T19:40:00Z",
-              "windSpeed": "6.81"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.6",
-              "stationPower": "181.83",
-              "time": "2019-03-13T19:50:00Z",
-              "windSpeed": "4.07"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.59",
-              "stationPower": "317.56",
-              "time": "2019-03-13T20:00:00Z",
-              "windSpeed": "5.08"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.58",
-              "stationPower": "185.24",
-              "time": "2019-03-13T20:10:00Z",
-              "windSpeed": "4.74"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.55",
-              "stationPower": "119.51",
-              "time": "2019-03-13T20:20:00Z",
-              "windSpeed": "4.06"
-            }, {
-              "pitchAngle1": null,
-              "pitchAngle2": null,
-              "pitchAngle3": null,
-              "speed": "7.54",
-              "stationPower": "31.58",
-              "time": "2019-03-13T20:30:00Z",
-              "windSpeed": "3.13"
-            },]
-        },
-        {
-          deviceName: 'test3',
+        
+        { deviceName: 'test3',
           deviceFullCode: ' 设备编码3',
           sequenceChartData: [
             {

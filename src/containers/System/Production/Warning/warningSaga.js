@@ -121,7 +121,10 @@ function* getWarnList(action) { // 请求预警事件列表
     yield put({
       type: warningAction.changeWarnStore,
       payload: {
-        loading: true
+        loading: true,
+        listQueryParams: {
+          ...payload,
+        },
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -300,12 +303,11 @@ function* getOtherPageDetail(action) {//预警规则 第一条查看前一条详
 
 
 
-function* getPoints(action) { // 新-获取电站下测点数据
+function* getFilterPoints(action) { // 新-获取电站下测点数据
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getStationPoints}`;
   const { payload } = action;
-  const params=payload;
   try {
-    const response = yield call(axios.get, url, { params });
+    const response = yield call(axios.get, url, {params:payload});
     if (response.data.code === '10000') {
       yield put({
         type: warningAction.changeWarnStore,
@@ -333,6 +335,6 @@ export function* watchWarning() {
   yield takeLatest(warningAction.getDetail, getDetail);
   yield takeLatest(warningAction.warnDelete, warnDelete);
   yield takeLatest(warningAction.getOtherPageDetail, getOtherPageDetail);
-  yield takeLatest(warningAction.getPoints, getPoints);
+  yield takeLatest(warningAction.getFilterPoints, getFilterPoints);
 
 }

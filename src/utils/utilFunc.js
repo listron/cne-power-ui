@@ -12,7 +12,6 @@ export const dataFormat = (data, placeholder = '--', pointLength) => { // 数据
     showData = parseFloat(showData);
   }
   return showData
-
 }
 
 
@@ -61,7 +60,7 @@ export const stationsByArea = (stations = []) => {
     e.title = e.stationName;
     e.key = e.stationCode
   })
-  let areaList = []
+  let areaList = [];
   uniqBy(stations, 'provinceCode').forEach((e) => {
     areaList.push({ key: e.provinceCode, title: e.provinceName })
   })

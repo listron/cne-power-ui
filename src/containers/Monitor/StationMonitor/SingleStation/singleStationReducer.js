@@ -15,6 +15,8 @@ var initState = Immutable.fromJS({
   deviceTypeFlow: {},//设备类型示意图
   deviceTypeCode: 206,//当前显示设备列表code值 默认显示逆变器
   pvmoduleList: [],//光伏组件列表
+  pvAvgValue:'', //光伏组件列表 正常电流
+  pvLevelNums:{},//光伏组件 电流等级
   inverterList: {},//逆变器列表
   confluenceBoxList: {}, // 汇流箱列表详细信息。
   boxTransformerList: {},//箱变列表

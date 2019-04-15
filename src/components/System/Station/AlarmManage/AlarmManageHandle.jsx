@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './alarmManage.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
+import WarningTip from '../../../Common/WarningTip/index'
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import path from '../../../../constants/path';
@@ -26,10 +27,12 @@ class AlarmManageHandle extends Component {
     super(props);
     this.state = {
       alarmModal: false,
+      showWarningTip: false,
+      warningTipText: '确定要清除该告警的配置？'
     }
   }
 
-  onPaginationChange = ({pageSize, currentPage}) => {
+  onPaginationChange = ({ pageSize, currentPage }) => {
     const { queryParams, getAlarmList } = this.props;
     getAlarmList({
       ...queryParams,
@@ -40,7 +43,7 @@ class AlarmManageHandle extends Component {
 
   getUpdateAlarmList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
     const { queryParams, getAlarmList, getStationDeviceTypes, changeAlarmManageStore } = this.props;
-    getAlarmList({ 
+    getAlarmList({
       ...queryParams,
       stationCode: selectedStation.stationCode,
       deviceTypeCode: null,
@@ -52,33 +55,48 @@ class AlarmManageHandle extends Component {
       stationCodes: selectedStation.stationCode,
     });
     changeAlarmManageStore({
-      deviceModels: [], 
+      deviceModels: [],
       devicePoints: [],
     })
   }
 
   deleteAlarmList = () => {
-    const { deleteAlarmList, stationCode } = this.props;
-    deleteAlarmList({ stationCode });
+    const { stationCode, allStationBaseInfo } = this.props;
+    const stationName = allStationBaseInfo.find(e => e.stationCode === stationCode).stationName;
+    this.setState({ showWarningTip: true, warningTipText: `确定要清除${stationName}电站告警事件配置？` })
   }
 
   downloadAlarmExcel = () => {
     const { stationCode, allStationBaseInfo } = this.props;
-    const stationName = allStationBaseInfo.find(e=>e.stationCode === stationCode).stationName;
+    const stationName = allStationBaseInfo.find(e => e.stationCode === stationCode).stationName;
     this.props.downloadAlarmExcel({ stationCode, stationName })
   }
 
+  cancelWarningTip = () => {
+    this.setState({ showWarningTip: false })
+  }
+
+  confirmWarningTip = () => {
+    const { deleteAlarmList, stationCode, } = this.props;
+
+    deleteAlarmList({ stationCode });
+    this.setState({ showWarningTip: false, })
+  }
+
   render() {
-    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo } = this.props;
+    const { pageSize, pageNum, totalNum, alarmList, allStationBaseInfo, stations } = this.props;
+    const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.alarmManageHandle}>
+        {showWarningTip &&
+          <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} style={{width: '210px',height:'100px',marginTop:'50px'}}/>}
         <div className={styles.leftHandler}>
-          <SingleStationImportFileModel 
-            data={allStationBaseInfo} 
-            uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importAlarmInfo}`} 
-            uploaderName={'告警'} 
+          <SingleStationImportFileModel
+            data={allStationBaseInfo}
+            uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importAlarmInfo}`}
+            uploaderName={'告警'}
             disableStation={[]}
-            uploadExtraData={['stationCode','stationType']}
+            uploadExtraData={['stationCode', 'stationType']}
             loadedCallback={this.getUpdateAlarmList}
           />
           {/* <Button disabled={alarmList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出告警事件信息表</Button> */}

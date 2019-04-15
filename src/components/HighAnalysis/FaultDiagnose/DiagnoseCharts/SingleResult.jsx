@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { AfterTemperatureOptions } from "../../../../utils/chartsConfig/diagnoseConfig";
+import { singleTemperatureOptions } from "../../../../utils/chartsConfig/diagnoseConfig";
 import styles from "./singleResult.scss";
 
 
@@ -19,7 +19,7 @@ export default class SingleResult extends React.Component {
   componentDidMount() {
     const  { singleChart } = this;
     const myChart = eCharts.init(singleChart);
-    myChart.setOption(AfterTemperatureOptions());
+    myChart.setOption(singleTemperatureOptions());
   }
 
 

@@ -15,17 +15,30 @@ export default class PreTemperature extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      allFlag: false
+    };
   }
 
   componentDidMount() {
     const  { preChart } = this;
+    const { allFlag } = this.state;
     const myChart = eCharts.init(preChart);
-    myChart.setOption(PreTemperatureOptions());
+    myChart.setOption(PreTemperatureOptions(allFlag));
+  }
+
+  componentDidUpdate() {
+    const  { preChart } = this;
+    const { allFlag } = this.state;
+    const myChart = eCharts.init(preChart);
+    myChart.setOption(PreTemperatureOptions(allFlag));
   }
 
   onChangeSwitch = (checked) => {
     console.log(`switch to ${checked}`);
+    this.setState({
+      allFlag: checked
+    });
   };
 
 

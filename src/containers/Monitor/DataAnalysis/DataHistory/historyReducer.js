@@ -18,14 +18,16 @@ const initState = Immutable.fromJS({
   deviceTypeCode: null, // 选中的设备类型
   tableLoading: false, // 列表请求的loading
   chartLoading: false, // chart图表的loading
+  downloading: false, // 文件下载状态
   chartTime: null, // 记录chart表的数据时间
+  reRenderTree: null, // 记录属性控件生成时间
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备
-    startTime: moment().startOf('day').subtract(1, 'day'),
-    endTime: moment(),
+    startTime: moment().subtract(1, 'day').startOf('day'),
+    endTime: moment().subtract(1, 'day').endOf('day'),
     devicePoints: [], // 选中的测点
-    timeInterval: null, // 数据时间间隔:1-1s, 5-5s, 10-10min;
+    timeInterval: 10, // 数据时间间隔:1-1s, 5-5s, 10-10min;
   },
   listParam: { // 表格排序额外参数
     orderField: 'deviceName', // 排序字段(默认时间倒序（最新的时间在最上方）
@@ -34,6 +36,8 @@ const initState = Immutable.fromJS({
     pageSize: 10 // 每页条数
   },
   historyType: 'chart', // 数据展示方式，'chart'图 / 'list'表格
+  recordedMinuteStart: moment().subtract(1, 'day').startOf('day'), // 记录10min起始时间
+  recordedMinuteEnd: moment().subtract(1, 'day').endOf('day'), // 记录10min终止时间
   
   stationDeviceTypes: [], // 电站下可选设备类型
   intervalInfo: [10, 5], // 默认支持的时间间隔 5s, 10min
