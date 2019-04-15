@@ -8,7 +8,7 @@ import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
 
 
 const MapChart = ({ ...data }) => {
-  const { stationDataList = [] } = data;
+  const { stationDataList = [],history={} } = data;
   const normalData = stationDataList.filter(e => e.stationStatus.stationStatus === '400');
   const interrupt = stationDataList.filter(e => e.stationStatus.stationStatus === '500');
   const notConnected = stationDataList.filter(e => e.stationStatus.stationStatus === '900');
@@ -24,10 +24,6 @@ const MapChart = ({ ...data }) => {
       const countryChart = echarts.init(countryBox);
       echarts.registerMap('china', response.data);
       const option = {
-        tooltip: {
-          trigger: 'item',
-          enterable: true,
-        },
         legend: {
           show: true,
           left: 'left',
@@ -38,31 +34,33 @@ const MapChart = ({ ...data }) => {
         geo: {
           map: 'china',
           layoutCenter: ['50%', '47%'],
-          layoutSize: '120%',
+          layoutSize: '110%',
           itemStyle: {
             normal: {
               areaColor: '#d8eef6',
               borderColor: '#fff',
-              // opacity: 0.5
             },
             emphasis: {
               areaColor: '#b2e8fa',
-              label: { show: false }
             }
           },
         },
         tooltip: {
+          trigger: 'item',
           enterable: true,
           backgroundColor: '#fff',
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
           confine:true,
-          formatter: (params, ticket, callback) => {
+          formatter: (params) => {
             const item = params.data;
             const stationStatus = item.stationStatus || {};
             const currentStatus = stationStatus.stationStatus;
+            if(currentStatus==='900'){
+              return null
+            }
             let needData = [
               { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW' },
-              { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
+              { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
               { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
               { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
               { name: '应发功率', value: 'useCapacity', point: 2, unit: '%' },
@@ -147,14 +145,16 @@ const MapChart = ({ ...data }) => {
         }],
 
       }
-      countryChart.setOption(option);
-      // countryBox.on('click', (params) => {
-      //   if (params.data.stationStatus !== '900') {
-      //     return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
-      //   } else {
-      //     showTip();
-      //   }
-      // })
+      countryChart.resize();
+      countryChart.setOption(option,'notMerge');
+      countryChart.on('click', (params) => {
+        if(!params.seriesType){return false}
+        if (params.data.stationStatus.stationStatus !== '900') {
+          return history.push(`/monitor/singleStation/${params.data.stationCode}`)
+        } else {
+          showTip();
+        }
+      })
     }
   })
 

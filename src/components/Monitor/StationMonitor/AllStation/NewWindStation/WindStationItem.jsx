@@ -133,7 +133,7 @@ class WindStationItem extends React.Component {
                           <div className={styles.stationMark}>{dataFormats(item.stationPower, '--', 2, true)} MW</div>
                           <div>{dataFormats(item.stationCapacity, '--', 2, true)} MW</div>
                         </div>
-                        <div className={styles.stationCardWindSpeed}>{dataFormats(item.instantaneous, '--', 1, true)}m/s</div>
+                        <div className={styles.stationCardWindSpeed}>{dataFormats(item.instantaneous, '--', 2, true)}m/s</div>
                       </Link>
                       <div className={styles.stationCardEquipmentNum}>
                         <Link to={`/monitor/singleStation/${item.stationCode}`} key={index}>

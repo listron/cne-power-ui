@@ -17,7 +17,7 @@ import { Progress } from "antd";
 class OwnProgress extends React.Component {
     static propTypes = {
         percent: PropTypes.number,
-        successPercent: PropTypes.number,
+        successPercent: PropTypes.number || PropTypes.String,
         fromRight: PropTypes.bool,
         active: PropTypes.bool,
     }
@@ -35,14 +35,21 @@ class OwnProgress extends React.Component {
 
 
     render() {
-
         const { percent, successPercent, fromRight, active } = this.props;
-        const status = fromRight && percent<0 ? { right: 0 } : { left: 0 };
+        const status = fromRight && percent < 0 ? { right: 0 } : { left: 0 };
+        const overcolor = '#3e97d1';
+        const normalColor = '#199475';
+        let lineColor = successPercent > 100 ? overcolor : normalColor;
+        let currentSuccessPercent = successPercent > 100 ? 100 : successPercent;
+        let progressColor = percent > 100 ? overcolor : normalColor;
         return (
             <div className={`${styles.progressOuter}`}>
                 <div className={styles.progressInner}>
-                    <div className={`${styles.progressBg} ${active && styles.active}`} style={{ width: Math.abs(percent) + '%', ...status }} ></div>
-                    {successPercent && <div className={styles.line} style={{ left: successPercent + '%' }}></div> || null}
+                    <div className={`${styles.progressBg} ${active && styles.active}`}
+                        style={{ width: Math.abs(percent) + '%', ...status, background: progressColor }} >
+                    </div>
+                    {(successPercent || successPercent === '0') &&
+                        <div className={styles.line} style={{ left: currentSuccessPercent + '%', background: lineColor }}></div> || null}
                 </div>
             </div >
         )

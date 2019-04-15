@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
-import { dataFormats, numWithComma,getDefaultData } from '../../../../utils/utilFunc';
+import { dataFormats, numWithComma, getDefaultData } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData.js';
 import moment from 'moment';
 import styles from './windCommon.scss';
@@ -11,7 +11,7 @@ const RadioButton = Radio.Button;
 
 
 const PowerDiagram = ({ ...rest }) => {
-    const { powerData, getRealMonitorPower } = rest;
+    const { powerData, getRealMonitorPower,stopRealCharstData } = rest;
     const [intervalTime, setIntervalTime] = useState(0);
     useEffect(() => {
         let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
@@ -23,9 +23,9 @@ const PowerDiagram = ({ ...rest }) => {
         let endTime = moment().format('YYYY-MM-DD')
         getRealMonitorPower({ intervalTime, startTime, endTime })
         return () => {
-            getRealMonitorPower({ intervalTime, startTime, endTime })
+            stopRealCharstData('power');
         }
-    },[intervalTime]);
+    }, [intervalTime]);
 
     const onChangeTimePower = (e) => { // 改变 日／月／年
         const intervalTime = e.target.value;
@@ -33,13 +33,13 @@ const PowerDiagram = ({ ...rest }) => {
     }
 
 
-    const actualPower = powerData.map(e => e.actualPower);  // 实际发电量
+    const actualPower = powerData.map(e =>dataFormats(e.actualPower,'--',2,true) );  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
-    const theoryPower = powerData.map(e => e.theoryPower); // 计划发电量
+    const theoryPower = powerData.map(e =>dataFormats( e.theoryPower,'--',2,true)); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
-    const instantaneous = powerData.map(e => e.instantaneous); // 风速／累计曝幅值
+    const instantaneous = powerData.map(e =>dataFormats(e.instantaneous,'--',2,true)); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2));  // 完成率
+    const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2,true));  // 完成率
     const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
     ) ? showNoData : hiddenNoData;
     const chartsBox = document.getElementById('powerDiagram');
@@ -62,7 +62,7 @@ const PowerDiagram = ({ ...rest }) => {
             },
             grid: {
                 right: 90,
-                top:70,
+                top: 70,
             },
             legend: {
                 left: 'center',
@@ -81,16 +81,20 @@ const PowerDiagram = ({ ...rest }) => {
                     fontSize: 12,
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-                // formatter: (params) => {
-                //     let paramsItem = '';
-                //     params.forEach((item, index) => {
-                //         return paramsItem += `<div> <span style="display: inline-block;width: 5px;height: 5px;border-radius: 50%;background:${item.color};vertical-align: 3px;margin-right: 3px;"> </span> ${item.seriesName} :
-                // ${this.dealValue(item.seriesName, item.value, this.getDefaultPoint(item.seriesName))}</div>`
-                //     });
-                //     return `<div  style="border-bottom: 1px solid #ccc;padding-bottom: 7px;margin-bottom: 7px;width:150px;overflow:hidden;"> <span style="float: left">${params[0].name} </span>
-                // </div>${paramsItem}`
-                // },
-
+                padding:0,
+                formatter: (params) => {
+                    let paramsItem = '';
+                    params.forEach(item => {
+                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+                        ${item.seriesName} :  ${item.value}</div>`
+                    });
+                    return (
+                        `<div class=${styles.tooltipBox}>
+                            <div class=${styles.axisValue}>${params[0].name}</div>
+                            <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+                        </div>`
+                    )
+                }
             },
             axisPointer: {
                 type: 'line',
@@ -230,11 +234,7 @@ const PowerDiagram = ({ ...rest }) => {
         powerDiagram.resize();
     }
 
-
-
-
-    const { stationCode } = rest;
-    const productionAnalysis = `/statistical/stationaccount/production#${stationCode}`;
+    const productionAnalysis = `#/statistical/stationaccount/production`;
     return (
         <div className={styles.powerDiagramBox} >
             <div id="powerDiagram" style={{ display: 'flex', flex: 1 }}></div>
@@ -245,7 +245,7 @@ const PowerDiagram = ({ ...rest }) => {
                     <RadioButton value={2}>年</RadioButton>
                 </RadioGroup>
             </div>
-            {/* <Link to={productionAnalysis} ><i className="iconfont icon-more"></i></Link> */}
+            {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
         </div>
     )
 }

@@ -62,14 +62,17 @@ class WindStationList extends React.Component {
         defaultSortOrder: "ascend",
         sorter: true,
         render: (value, record) => {
-          if (record.stationStatus === '900') {
+          const stationStatus=record.stationStatus.stationStatus || '';
+          if (stationStatus === '900') {
             return <div title={value} className={styles.stationName} onClick={this.showTip}>{value}</div>
+          } else {
+            return (
+              <a href={`#/monitor/singleStation/${record.stationCode}`}>
+                <div title={value} className={styles.stationName}>{value}</div>
+              </a>
+            )
           }
-          return (
-            <a href={`#/monitor/singleStation/${record.stationCode}`}>
-              <div title={value} className={styles.stationName}>{value}</div>
-            </a>
-          )
+
         }
       },
       {
@@ -177,7 +180,7 @@ class WindStationList extends React.Component {
     const { sortName, descend } = this.state;
     const tableSource = data.sort((a, b) => { // 手动排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['provinceName', 'regionName'];
+      const arraySort = ['stationName', 'regionName'];
       const arrayNumSort = [
         "stationCapacity",
         "stationUnitCount",
@@ -208,7 +211,7 @@ class WindStationList extends React.Component {
     let startRow = (currentPage - 1) * pageSize;
     let endRow = currentPage * pageSize;
     endRow = (endRow > totalNum) ? totalNum : endRow;
-    let datalist = dataSort.slice(startRow, endRow).map((e, index) => { return { key: e.stationCode,...e } })
+    let datalist = dataSort.slice(startRow, endRow).map((e, index) => { return { key: e.stationCode, ...e } })
     const totalNum = stationDataList.length;
 
     return (

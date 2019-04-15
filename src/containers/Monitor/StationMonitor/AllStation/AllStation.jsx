@@ -32,7 +32,6 @@ class AllStation extends Component {
   componentWillUnmount() {
     this.props.changeMonitorStationStore({
       stationShowType: 'stationBlock',
-      stationType: '2',
     });
     this.props.stopRealMonitorData()
   }
@@ -50,11 +49,13 @@ class AllStation extends Component {
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
-          <div className={styles.allStationTitle} >
-            <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
-            <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
-            <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
-          </div>
+          {stationTypeCount === 'multiple' &&
+            <div className={styles.allStationTitle} >
+              <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
+              <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
+              <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
+            </div>
+          }
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}

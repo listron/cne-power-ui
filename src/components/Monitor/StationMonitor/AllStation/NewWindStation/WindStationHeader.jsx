@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-import { monitordataFormat, dataFormats, numWithComma } from '../../../../../utils/utilFunc';
+import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-
+import { Popover } from 'antd';
 class windStationHeader extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
@@ -20,7 +20,7 @@ class windStationHeader extends React.Component {
       if (data <= 0.01) point = 4;
     }
     let showData = dataFormats(data, placeholder, point, true)
-    if(showData!=='--'){
+    if (showData !== '--') {
       const valueArr = showData.split('.');
       const intNum = valueArr[0];
       const pointNum = valueArr[1];
@@ -30,13 +30,13 @@ class windStationHeader extends React.Component {
           {pointNum && <span className={styles.decimal} style={{ fontSize: 18 }}>.{pointNum}</span>}
         </span>
       )
-    }else{
+    } else {
       return showData
     }
   }
 
   render() {
-    const { windMonitorStation,} = this.props;
+    const { windMonitorStation, } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
     const stationPower = stationDataSummary.stationPower;
     const stationCapacity = stationDataSummary.stationCapacity;
@@ -48,22 +48,45 @@ class windStationHeader extends React.Component {
     const yearPower = stationDataSummary.yearPower;
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
+    const capabilityRate = stationDataSummary.yearRate;
+    const stationPlanPower = stationDataSummary.stationPlanPower;
+    const content = (
+      <div>
+        <div className={styles.poverItem}>
+          <i>实时功率</i>
+          <p><span>{dataFormats(stationPower, '--', 2, true)}</span><span className={styles.unit}>MW</span> </p>
+        </div>
+        <div className={styles.poverItem}>
+          <i>应发功率</i>
+          <p><span>{dataFormats(stationPlanPower, '--', 2, true)}</span> <span className={styles.unit}>MW</span> </p>
+        </div>
+        <div className={styles.poverItem}>
+          <i>出力比</i>
+          <p><span>{dataFormats(capabilityRate, '--', 2, true)}</span> <span className={styles.unit}>%</span> </p>
+        </div>
+      </div>)
     return (
       <div className={styles.headStation}>
-        <div className={styles.capacity}>
-          <div className={styles.leftIcon}>
-          </div>
+        <div className={styles.leftIcon}></div>
+        <div ref={'allStaionStatic'} className={styles.allStaionStatic}></div>
+        <div className={styles.dataColumn}>
+          <Popover
+            content={content}
+            placement="bottom"
+            overlayClassName={styles.stationCard}
+            trigger="hover"
+            getPopupContainer={() => this.refs.allStaionStatic}
+          >
+            <div className={styles.stationPower}>
+              <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
+              <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
+            </div>
+            <OwnProgress percent={stationPower / stationCapacity * 100} successPercent={capabilityRate} />
+            <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
+          </Popover>
         </div>
         <div className={styles.dataColumn}>
-          <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
-            <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
-          </div>
-          <OwnProgress percent={stationPower / stationCapacity * 100} successPercent={50} />
-          <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
-        </div>
-        <div className={styles.dataColumn}>
-          <div> 平均风速  <span className={`${styles.dataValue} ${styles.speed}`}>{this.DeviceValueFormat(instantaneous, '--', 1)}</span> m/s </div>
+          <div> 平均风速  <span className={`${styles.dataValue} ${styles.speed}`}>{this.DeviceValueFormat(instantaneous, '--', 2)}</span> m/s </div>
           <div >  装机台数 <span className={styles.dataValue}>{this.DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>

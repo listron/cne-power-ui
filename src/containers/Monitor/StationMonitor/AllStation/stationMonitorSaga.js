@@ -9,7 +9,7 @@ let realtimeInterval = null;
 let realChartsInterval = null;
 let realPowerInterval = null;
 
-const baseurl=Path.basePaths.APIBasePath;
+const baseurl = Path.basePaths.APIBasePath;
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime = moment.utc().format();
@@ -48,15 +48,45 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
   }
 }
 
+function* getWindMonitorStation(action) {//获取所有/风/光电站信息
+  const { payload } = action;
+  const utcTime = moment.utc().format();
+  const url = baseurl + Path.APISubPaths.monitor.getWindStation + '/' + utcTime;
+  // const stationType = 0;
+  // const url = baseurl + Path.APISubPaths.monitor.getStationType + stationType + '/' + utcTime;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: { windMonitorStation: response.data.data || {}, loading: false }
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    message.error('获取数据失败，请刷新');
+    let nameArr = ["windMonitorStation", "pvMonitorStation", "allMonitorStation"][payload.stationType];
+    payload[nameArr] = {};
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: { windMonitorStation: {}, loading: false }
+    });
+  }
+}
+
 function* getRealMonitorData(action) {
-  const { firtQuery = true } = action;
+  const { firtQuery = true, payload } = action;
   if (firtQuery) {
     yield put({
       type: allStationAction.changeMonitorstationStore,
       payload: { loading: true }
     })
   }
-  yield fork(getMonitorStation, action);
+  if (payload.stationType === '0') {
+    yield fork(getWindMonitorStation, action);
+  } else {
+    yield fork(getMonitorStation, action);
+  }
   yield delay(10000); // 阻塞10秒
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false });
 }
@@ -75,7 +105,7 @@ function* stopRealMonitorData() { // 停止数据定时请求并清空数据
 //获取出力图数据
 function* getCapabilityDiagram(action) {
   const { startTime, endTime } = action;
-  const url = `${baseurl + Path.APISubPaths.monitor.getCapabilityDiagram + 350}/1/${startTime}/${endTime}`
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}`
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -101,8 +131,8 @@ function* getCapabilityDiagram(action) {
 function* getMonitorPower(action) {
   const { payload } = action;
   const { intervalTime, startTime, endTime } = payload;
-  // const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}`;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + 350 + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}`;
+  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + 350 + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -124,20 +154,46 @@ function* getMonitorPower(action) {
   }
 }
 
+// 等效小时数
+function* getMonitorScatter(action) {
+  const localDate = moment().format('YYYY-MM-DD');
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindScatter}/${localDate}}`
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          scatterData: response.data.data || {},
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        powerData: [],
+      }
+    });
+  }
+}
 
-function* getRealChartsData(action) {
+
+function* getRealChartsData(action) { // 获取出力图和日等效利用小时散点数
   const { payload } = action;
-  const { capability, scatter } = payload;
+  const { capability} = payload;
   yield fork(getCapabilityDiagram, { ...capability });
-  // yield delay(3600000); // 阻塞1小时
-  yield delay(10000); // 阻塞10秒
+  yield fork(getMonitorScatter);
+  yield delay(3600000); // 阻塞1小时
+  // yield delay(10000); // 阻塞10秒
   realChartsInterval = yield fork(getRealChartsData, action);
 }
 
 function* getRealMonitorPower(action) {
   yield fork(getMonitorPower, action);
-  // yield delay(3600000); // 阻塞1小时
-  yield delay(10000); // 阻塞10秒
+  yield delay(3600000); // 阻塞1小时
+  // yield delay(10000); // 阻塞10秒
   realPowerInterval = yield fork(getRealMonitorPower, action);
 }
 

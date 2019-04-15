@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { Tabs, Radio, Switch, Spin } from "antd";
+import moment from 'moment';
 import PropTypes from "prop-types";
 import styles from './windStation.scss';
-// import Map from '../Map.jsx';
 import WindStationHeader from './WindStationHeader.jsx';
 import WindStationItem from './WindStationItem.jsx';
 import WindStationList from './WindStationList.jsx';
-import { Tabs, Radio, Switch, Spin } from "antd";
 import { MapChart } from './MapChart.jsx';
 import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
+import { SpeedScatter } from '../../WindCommon/SpeedScatter';
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button
-import moment from 'moment';
+
 class WindStation extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
     stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
-    realTimePowerUnit: PropTypes.string,
-    realCapacityUnit: PropTypes.string,
-    powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.any,
-    realCapacityPoint: PropTypes.any,
-    powerPoint: PropTypes.any,
     getRealMonitorData: PropTypes.func,
     loading: PropTypes.bool,
     getRealChartsData: PropTypes.func,
     getRealMonitorPower: PropTypes.func,
+    stopRealCharstData: PropTypes.func,
     capabilityData: PropTypes.array,
     powerData: PropTypes.array,
+    history: PropTypes.object,
+    scatterData: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context);
@@ -48,6 +46,12 @@ class WindStation extends React.Component {
     const startTime = moment().subtract(24, 'hours').utc().format();
     const endTime = moment().utc().format();
     getRealChartsData({ capability: { startTime, endTime } })
+  }
+
+  componentWillUnmount() {
+    const { stopRealCharstData } = this.props;
+    stopRealCharstData();
+    stopRealCharstData('power');
   }
 
   onHandleAlarm = (checked) => {
@@ -99,7 +103,7 @@ class WindStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
-    const { windMonitorStation, loading, stationShowType, capabilityData, powerData,getRealMonitorPower } = this.props;
+    const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData,scatterData } = this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
     const alarmNum = stationDataSummary.alarmNum || '--';
     const deviceStatus = [
@@ -152,15 +156,15 @@ class WindStation extends React.Component {
               />
             </TabPane>
             <TabPane tab={<span> <i className="iconfont icon-map"></i>  </span>} key="stationMap"  >
-              <MapChart stationDataList={this.statusDataList()} />
+              <MapChart stationDataList={this.statusDataList()} history={history} />
             </TabPane>
           </Tabs>
           {stationShowType !== 'stationList' &&
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
-                <Link to={`javascript:void(0)`}> 查看告警 {alarmNum} </Link>
-                <Link to={`javascript:void(0)`}> 统计分析  </Link>
-                <Link to={`javascript:void(0)`}> 报表查询  </Link>
+                <Link to={`/monitor/alarm/realtime`}> 查看告警 {alarmNum} </Link>
+                <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
+                <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
               </div>
               <div className={styles.deviceStatus}>
                 <div className={styles.deviceStaTitle}> <span>设备状态</span> <i className="iconfont icon-more"></i> </div>
@@ -170,14 +174,16 @@ class WindStation extends React.Component {
                   })}
                 </div>
               </div>
-              <div className={styles.outputTenMin}>
+              <div className={styles.chartsBox}>
                 <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
               </div>
-              <div className={styles.outputTenMin}>
-                <PowerDiagram powerData={powerData} getRealMonitorPower={getRealMonitorPower} />
+              <div className={styles.chartsBox}>
+                <PowerDiagram powerData={powerData} getRealMonitorPower={getRealMonitorPower} stopRealCharstData={stopRealCharstData} />
+              </div>
+              <div className={styles.chartsBox}>
+                <SpeedScatter scatterData={scatterData} />
               </div>
             </div>}
-
         </div>
       </div>
     )

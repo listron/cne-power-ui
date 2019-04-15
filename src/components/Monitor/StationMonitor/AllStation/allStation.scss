@@ -143,4 +143,14 @@
             }
         }
     }
+    .Map{
+        :global{
+            .ec-extension-bmap{
+                display: flex;
+                flex: 1;
+                height: auto !important;
+            }
+        }
+    }
+    
 }

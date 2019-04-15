@@ -11,6 +11,7 @@ var initState = Immutable.fromJS({
    stationShowType:'stationBlock',
    capabilityData:[],// 出力图
    powerData:[], // 发电量图
+   scatterData:{},// 等效小时
 });
 
 const stationMonitorReducer = (state = initState, action) => {

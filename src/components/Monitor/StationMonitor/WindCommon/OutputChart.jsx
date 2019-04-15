@@ -61,6 +61,7 @@ const OutputChart = ({ ...rest }) => {
                     color: 'rgba(0, 0, 0, 0.65)',
                     fontSize: 12,
                 },
+                // alwaysShowContent:true,
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 padding: 0,
                 formatter: param => {
@@ -179,12 +180,11 @@ const OutputChart = ({ ...rest }) => {
         capabilityDiagram.resize();
     }
 
-    const { stationCode } = rest; // 暂时不做的功能
-    const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
+    const resourceAnalysis = `#/statistical/stationaccount/resource`;
     return (
         <div className={styles.capabilityBox}>
             <div id="capabilityDiagram" className={styles.capabilityDiagram}></div>
-            {/* {stationCode && <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>} */}
+            {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
         </div>
     )
 }
