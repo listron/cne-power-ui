@@ -6,8 +6,14 @@
     @include lineheight(20px);
     background-color: $pageBackground;
   }
+  .singleFanWrap{
+    width: 100%;
+    background-color: $pageBackground;
+  }
   .singleFanContent{
     width: 1390px;
+    padding: 0 20px 20px;
+    background-color: $pageGround;
     margin: 0 auto;
   }
 }
