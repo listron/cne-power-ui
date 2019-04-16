@@ -29,4 +29,8 @@ export const singleStationAction = {
   getFanList:Symbol('getFanList'),//风机实时数据列表
   RESET_SINGLE_STATION_STORE:Symbol('RESET_SINGLE_STATION_STORE'),//重置store状态
   RESET_SINGLE_STATION_SUCCESS:Symbol('RESET_SINGLE_STATION_SUCCESS'),//重置store状态成功
+
+
+  getRealSingleData:Symbol('getRealSingleData'), //  获取单电站的数据
+  stopRealData:Symbol('stopRealData'), // 停止实时数据
 }

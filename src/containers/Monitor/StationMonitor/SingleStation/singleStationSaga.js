@@ -1,12 +1,13 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest,fork, cancel, takeEvery} from 'redux-saga/effects';
 import axios from 'axios';
+import { delay } from 'redux-saga';
 import Path from '../../../../constants/path';
 import { singleStationAction } from './singleStationAction';
 import { message } from 'antd';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 import moment from 'moment';
-
+let singleStationInterval=null;
 // 改变单电站实时数据store
 function* changeSingleStationStore(action) {
   const { payload } = action;
@@ -21,11 +22,16 @@ function* resetSingleStationStore(action) {
     type: singleStationAction.RESET_SINGLE_STATION_SUCCESS,
   });
 }
+
 // 获取单电站实时数据
 function* getSingleStation(action) {
-  const { payload } = action;
+  console.log('test',action)
+  const { payload,stationType } = action;
   const utcTime = moment.utc().format();
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getSingleStation + payload.stationCode + '/' + utcTime;
+  const pvUrl = `${APIBasePath}${Path.APISubPaths.monitor.getSingleStation}${payload.stationCode}/${utcTime}`;
+  const windUrl = `${APIBasePath}${Path.APISubPaths.monitor.getSingleWindleStation}${payload.stationCode}/${utcTime}`;
+  const url=stationType==='wind'?windUrl:pvUrl;
+  console.log(stationType,url)
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -48,12 +54,12 @@ function* getSingleStation(action) {
     console.log(e);
   }
 }
+
 // 获取出力图数据
 function* getCapabilityDiagram(action) {
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + payload.stationCode+ '/' + payload.startTime+ '/' + payload.endTime;
-  const url = `${Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + stationCode}/${stationType}/${startTime}/${endTime}`
+  const url = `${APIBasePath + Path.APISubPaths.monitor.getCapabilityDiagram + stationCode}/${stationType}/${startTime}/${endTime}`
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -76,10 +82,11 @@ function* getCapabilityDiagram(action) {
     console.log(e);
   }
 }
+
 // 获取理论发电量 实际发电量数据
 function* getMonitorPower(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
+  const url = APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -105,7 +112,7 @@ function* getMonitorPower(action) {
 // 获取单电站运维人员列表
 function* getOperatorList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
+  const url = APIBasePath + Path.APISubPaths.monitor.getOperatorList + payload.stationCode + '/' + payload.roleId;
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -131,7 +138,7 @@ function* getOperatorList(action) {
 // 获取单电站未来天气数据
 function* getWeatherList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
+  const url = `${APIBasePath}${Path.APISubPaths.monitor.getWeatherList}?stationCode=${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -156,7 +163,7 @@ function* getWeatherList(action) {
 // 获取单电站活动告警数统计
 function* getAlarmList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode + '/事件告警';
+  const url = APIBasePath + Path.APISubPaths.monitor.getAlarmList + payload.stationCode + '/事件告警';
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -182,7 +189,7 @@ function* getAlarmList(action) {
 // 获取单电站工单数统计
 function* getWorkList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
+  const url = APIBasePath + Path.APISubPaths.monitor.getWorkList + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime;
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -207,7 +214,7 @@ function* getWorkList(action) {
 // 获取单电站设备类型流程图(设备示意图)
 function* getDeviceTypeFlow(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
+  const url = APIBasePath + Path.APISubPaths.monitor.getDeviceTypeFlow + payload.stationCode;
   try {
     const response = yield call(axios.get, url, payload);
     let deviceTypeCode = 206; // 默认组串式逆变器
@@ -255,7 +262,7 @@ function* getDeviceTypeFlow(action) {
 // 获取光伏组件列表
 function* getPvmoduleList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
+  const url = APIBasePath + Path.APISubPaths.monitor.getPvmoduleList + payload.stationCode;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
@@ -288,7 +295,7 @@ function* getPvmoduleList(action) {
 // 获取逆变器实时数据列表
 function* getInverterList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getInverterList}${payload.stationCode}/${payload.deviceTypeCode}`;
+  const url = `${APIBasePath}${Path.APISubPaths.monitor.getInverterList}${payload.stationCode}/${payload.deviceTypeCode}`;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
@@ -317,7 +324,7 @@ function* getInverterList(action) {
 // 获取箱变列表
 function* getBoxTransformerList(action) {
   const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
+  const url = APIBasePath + Path.APISubPaths.monitor.getBoxTransformerList + payload.stationCode;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
@@ -442,7 +449,7 @@ function* getPowerNet(action) { // 获取电网列表
 // 获取单电站设备列表
 function* getStationDeviceList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getStationDeviceList}${payload.stationCode}/${payload.deviceTypeCode}`;
+  const url = `${APIBasePath}${Path.APISubPaths.monitor.getStationDeviceList}${payload.stationCode}/${payload.deviceTypeCode}`;
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -467,7 +474,7 @@ function* getStationDeviceList(action) {
 //编辑月，年的累计发电量
 function* editData(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.editData}`;
+  const url = `${APIBasePath}${Path.APISubPaths.monitor.editData}`;
   try {
     const response = yield call(axios.post, url, payload);
     console.log(response, '编辑');
@@ -501,7 +508,7 @@ function* editData(action) {
 // 获取风机实时数据列表
 function* getFanList(action) {
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.monitor.getFanList}/${payload.stationCode}`;
+  const url = `${APIBasePath}${Path.APISubPaths.monitor.getFanList}/${payload.stationCode}`;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.SINGLE_STATION_FETCH });
@@ -520,10 +527,18 @@ function* getFanList(action) {
   }
 }
 
-function getRealSingleData(){
-  
+
+function* getRealSingleData(action) {
+  yield fork(getSingleStation,{...action,stationType:'wind'});
+  delay(10000);
+  singleStationInterval = yield fork(getRealSingleData, action);
 }
 
+function* stopRealData(type){
+  if(type==='wind' && singleStationInterval){
+    yield cancel(singleStationInterval);
+  }
+}
 
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
@@ -547,5 +562,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getBoosterstation, getBoosterstation); // 升压站列表信息
   yield takeLatest(singleStationAction.getPowerNet, getPowerNet); // 获取电网信息列表
   yield takeLatest(singleStationAction.RESET_SINGLE_STATION_STORE, resetSingleStationStore);
+
+  yield takeLatest(singleStationAction.getRealSingleData, getRealSingleData); // 单电站分电站的数据
+  yield takeEvery(singleStationAction.stopRealData, stopRealData); 
 }
 

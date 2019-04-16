@@ -149,7 +149,6 @@ const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
     stationList: state.common.get('stations').toJS(),
-    // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
     realTimePowerUnit: state.common.get('realTimePowerUnit'),
     realTimePowerPoint: state.common.get('realTimePowerPoint'),
     realCapacityUnit: state.common.get('realCapacityUnit'),
@@ -181,6 +180,11 @@ const mapDispatchToProps = (dispatch) => ({
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
   resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
+
+  
+  getRealSingleData: payload => dispatch({ type: singleStationAction.getRealSingleData }),
+
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

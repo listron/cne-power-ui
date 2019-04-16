@@ -29,16 +29,13 @@ class WindStation extends Component {
     stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     resetSingleStationStore: PropTypes.func,
-    realTimePowerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.any,
-    powerUnit: PropTypes.string,
-    powerPoint: PropTypes.any,
     fanList: PropTypes.object,
     collectorList: PropTypes.array,
     boosterList: PropTypes.array,
     powerNetList: PropTypes.array,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
+    getRealSingleData: PropTypes.array,
   }
 
   constructor(props) {
@@ -46,6 +43,10 @@ class WindStation extends Component {
     this.state = {
       hiddenStationList: false,
     }
+  }
+
+  componentDidMount(){
+    this.props.getRealSingleData()
   }
 
   onSelectedDeviceType = (deviceTypeCode) => {
