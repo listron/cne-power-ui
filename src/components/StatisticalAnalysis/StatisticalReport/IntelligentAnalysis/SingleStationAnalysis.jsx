@@ -7,6 +7,7 @@ import SingleStationAnalysisReport from './SingleStationAnalysisReport';
 class SingleStationAnalysis extends Component{
   static propTypes = {
     reportShow: PropTypes.bool,
+    completionRate: PropTypes.object,
   }
   constructor(props){
     super(props);
@@ -15,7 +16,7 @@ class SingleStationAnalysis extends Component{
   render(){
     const { reportShow } = this.props;
     return(
-      <div className={styles.SingleStationAnalysis}>
+      <div className={styles.singleStationAnalysis}>
         <SingleStationAnalysisSearch {...this.props} />
         { reportShow && <SingleStationAnalysisReport {...this.props} /> }
       </div>

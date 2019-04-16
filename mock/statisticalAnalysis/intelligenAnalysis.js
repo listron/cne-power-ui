@@ -27,7 +27,7 @@ module.exports = [
           "monthPlanComplateRate": '3',
           "resourceValueCompared": '3',
           "lostPowerCompared": '4',
-          "limitPowerRate": '5',
+          "limitPowerRate": '0',
           "limitPowerCompared": '6'
         },
         "lossOfElectricity": {
@@ -231,5 +231,45 @@ module.exports = [
         }
       }
     }
+  },
+  {
+  api: '/mock/statisticalAnalysis/intelligence/analysis/areacompare',
+  method: 'post',
+  response: {
+    code: "10000",
+    message: "请求成功",
+    "data": {
+      "avgComplateRate":"123",
+      "areaPartABeanList": {
+          "areaName":"区域一" ,
+          "hightStationInfoList":[{
+            "stationName": "电站1",
+            "lostValue": "123",
+            "sunnyDays": "456",
+            "per":"789"
+          },{
+            "stationName": "电站2",
+            "lostValue": "123",
+            "sunnyDays": "456",
+            "per":"789"
+          },{
+            "stationName": "电站3",
+            "lostValue": "123",
+            "sunnyDays": "456",
+            "per":"789"
+          },
+        ]
+      },
+      "lostEquientHours": "123",
+      "areaPartBBeanList": [{
+        "areaName": "区域1",
+        "areaFaultLostPowerList": [{
+          "faultType": "1",
+          "lostPower": "2",
+          "lostPowerYearOnYear":"3"
+        }]
+      }]
+    }
   }
+}
 ]

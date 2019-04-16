@@ -6,7 +6,12 @@ const initState = immutable.fromJS({
   reportLoading: false, // 报告请求的loading
   stationCode: null, // 选中的电站code
   stationName:'', // 选中的电站名称
+
+  checkedRegionName: '',
   regionName: null, // 选中的区域
+
+  areaName: null, // 选中的区域
+
   dateType: 1, // 时间类型
   startTime: null, 
   test:null,
@@ -21,6 +26,8 @@ const initState = immutable.fromJS({
   areaPartBBean: {}, // 区域电站计划完成率信息及原因
   areaPartCBean: {}, // 区域电站损失电量信息及原因
   areaPartDBean: {}, // 区域电站得分信息及原因
+  selectStationCode:null,
+  checkedStationName:'',
 })
 
   const dataintelligentAnalysis = (state = initState, action) => {

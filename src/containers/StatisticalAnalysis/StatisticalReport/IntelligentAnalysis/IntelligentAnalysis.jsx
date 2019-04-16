@@ -1,9 +1,9 @@
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tabs } from 'antd';
 import PropTypes from "prop-types";
 import styles from './intelligentAnalysis.scss';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';  
 import Footer from '../../../../components/Common/Footer/index';
 import { intelligentAnalysisAction } from './intelligentAnalysisAction';
@@ -22,10 +22,6 @@ class IntelligentAnalysis extends Component {
     super(props);
   }
 
-  componentDidMount(){
-   
-  }
-
   componentWillUnmount() {
     this.props.resetStore()
   }
@@ -38,7 +34,7 @@ class IntelligentAnalysis extends Component {
           <div className={styles.intelligentAnalysisContent}>
           <Tabs type="card" defaultActiveKey="singleStation">
             <TabPane tab="单电站分析" key="singleStation">
-              <SingleStationAnalysis {...this.props} />
+            {<SingleStationAnalysis {...this.props} />}
             </TabPane>
             <TabPane tab="同区域电站对比" key="sameRegional">
               <AreaStation {...this.props} />
@@ -65,6 +61,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: payload => dispatch({type: intelligentAnalysisAction.resetStore, payload}),
   getSingleStationAnalysis: payload => dispatch({type: intelligentAnalysisAction.getSingleStationAnalysis, payload}),
   getAreaStation: payload => dispatch({type: intelligentAnalysisAction.getAreaStation, payload}),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(IntelligentAnalysis);
