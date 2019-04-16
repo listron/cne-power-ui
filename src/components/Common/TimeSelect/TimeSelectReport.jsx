@@ -7,14 +7,13 @@ import styles from './styles.scss';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
-
-const defaultStartTime = {
+const defaultStartTime = {//默认展示起始时间
   day: moment().format('DD') === '01' ? moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') : moment().startOf('month').format('YYYY-MM-DD'),
-  year: moment().subtract(5, 'year').format('YYYY'),
-  month: moment().subtract(5, 'month').format('YYYY-MM'),
-  custom: moment().format('DD') === '1' ? moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') : moment().startOf('month').format('YYYY-MM-DD'),
+  year: moment().format('YYYY'),
+  month: moment().format('YYYY-MM'),
+  custom: moment().format('DD') === '01' ? moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') : moment().startOf('month').format('YYYY-MM-DD'),
 };
-const defaultEndTime = {
+const defaultEndTime = {//默认展示结束时间
   day: moment().subtract(1, 'day').format('YYYY-MM-DD'),
   year: moment().format('YYYY'),
   month: moment().format('YYYY-MM'),
@@ -108,16 +107,18 @@ class TimeSelectReport extends React.Component {
       ],
     }
     this.setState({ ...params });
+    
   }
 
   handleOpenChange = (visiable) => {
     if (!visiable) {
       this.props.onChange({ ...this.state });
     }
+   
   }
 
-  disabledDate = (current) => { // 不可以选择的时间
-    return current > moment().endOf('day');
+  disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天以后的不可选
+    return current > moment().endOf('day')||current<moment().subtract(365,'day');
   }
 
   render() {
@@ -150,7 +151,7 @@ class TimeSelectReport extends React.Component {
           onOpenChange={this.handleOpenChange}
           onPanelChange={this.handlePanelChange}
         />}
-        {timeStyle === 'year' && <span>
+        {timeStyle === 'year' && <span className={styles.yearStyle}>
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
           <span > - </span>
           <YearSelect yearValue={endTime} onYearSelect={this.onEndYearSelect} />

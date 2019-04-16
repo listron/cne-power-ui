@@ -92,15 +92,26 @@ class AddForm extends Component {
         </FormItem>
         <FormItem label="真实姓名" >
           {getFieldDecorator('userFullName',{
-            rules: [{
-              message: '请输入10字以内的真实姓名',
-              max: 10,
-            }],
+            rules: [
+              { required: true, message: '请输入用户名' },
+              { validator: (rule, value, callback) => {
+                const exactStr = value.trim();
+                const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
+                if (!patternRule.test(exactStr)) {
+                  callback('请输入小于30字符的真实姓名');
+                }
+                callback();
+              }}
+            ],
+            // rules: [{
+            //   message: '请输入10字以内的真实姓名',
+            //   max: 10,
+            // }],
             initialValue: userDetail && (userDetail.userFullName || '')
           })(
             <Input placeholder="请输入真实姓名" />
           )}
-          <span className={styles.instructionText}>(10字以内)</span>
+          <span className={styles.instructionText}>(30字以内)</span>
         </FormItem>
         <FormItem label="电话" >
           {getFieldDecorator('phoneNum',{

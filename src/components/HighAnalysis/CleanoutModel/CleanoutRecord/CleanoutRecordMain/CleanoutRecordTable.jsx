@@ -115,19 +115,19 @@ class CleanoutRecordTable extends Component {
           )
         }
       }, {
-        title: <TableColumnTitle title="清洗计划" unit="个" />,
+        title: () => <TableColumnTitle title="清洗计划" unit="个" />,
         dataIndex: 'cleanPlanNum',
         key: 'cleanPlanNum',
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="平均清洗周期" unit="天" />,
+        title: () => <TableColumnTitle title="平均清洗周期" unit="天" />,
         dataIndex: 'cleanCycle',
         key: 'cleanCycle',
         render(text){ return numWithComma(text); },
         sorter: true,
       }, {
-        title: <TableColumnTitle title="累计清洗收益" unit="万kWh" />,
+        title: () => <TableColumnTitle title="累计清洗收益" unit="万kWh" />,
         dataIndex: 'cleanProfit',
         key: 'cleanProfit',
         sorter: true,

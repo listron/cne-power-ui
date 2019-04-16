@@ -72,7 +72,7 @@ class PlanAddTable extends React.Component {
     }
     const MonthColumn = _MonthColumns();
     const PRColumn = stationType !== 0 ? {
-      title: <TableColumnTitle title="PR年计划" unit="%" />,
+      title: () => <TableColumnTitle title="PR年计划" unit="%" />,
       dataIndex: 'yearPR',
       key: 'yearPR',
       className: 'yearPR',
@@ -100,7 +100,7 @@ class PlanAddTable extends React.Component {
           return text ? text : '--';
         }
       }, {
-        title: <TableColumnTitle title="装机容量" unit="MW" />,
+        title: () => <TableColumnTitle title="装机容量" unit="MW" />,
         dataIndex: 'stationCapacity',
         key: 'stationCapacity',
         className: styles.stationCapacity,
@@ -116,7 +116,7 @@ class PlanAddTable extends React.Component {
           return text ? text : '--';
         }
       }, {
-        title: <TableColumnTitle title="年计划发电量" unit="万kWh" />,
+        title: () => <TableColumnTitle title="年计划发电量" unit="万kWh" />,
         dataIndex: 'planPower',
         key: 'planPower',
         editable: true,

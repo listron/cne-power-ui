@@ -44,8 +44,8 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnsHandleArr: ['用户名', '真实姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
-      selectedUserColumns: new Set(['用户名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
+      columnsHandleArr: ['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
+      selectedUserColumns: new Set(['用户名', '用户姓名','电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
@@ -110,7 +110,7 @@ class UserList extends Component {
     let tmpUserColumns = selectedUserColumns;
     if (value === '全选') {
       tmpUserColumns = new Set(columnsHandleArr);
-      // tmpUserColumns = new Set(['用户名','真实姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
+      // tmpUserColumns = new Set(['用户名','用户姓名','电话','角色','特殊权限','所在部门','负责电站','状态']);
     } else {
       tmpUserColumns.has(value) ? tmpUserColumns.delete(value) : tmpUserColumns.add(value);
     }
@@ -212,7 +212,7 @@ class UserList extends Component {
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
-        title: '真实姓名',
+        title: '用户姓名',
         width:'200px',
         dataIndex: 'userFullName',
         key: 'userFullName',
@@ -324,23 +324,40 @@ class UserList extends Component {
     const userAuditRight = rightHandler && rightHandler.split(',').includes('account_user_audit');
     const showAllHandler = userDeleteRight || userEnableRight || userDisableRight || userEditRight || userAuditRight;
     if (!showAllHandler) { return null; }
-    let [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
+    let [editable, deletable, usable, unallowable, examinable] = [true, true, true, true, true];
     if (selectedUser.length > 0) {
-      editable = selectedUser.length === 1;
-      let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
-      [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [false, false, false, false];
-      if (selectedUser[0].enterpriseStatus === 3) {//启用
-        [usable] = [false];
-      } else if (selectedUser[0].enterpriseStatus === 5 || selectedUser[0].enterpriseStatus === 6) {//待审核//未通过审核
-        [usable, unallowable] = [false, false];
-      } else if (selectedUser[0].enterpriseStatus === 4) {//禁用
-        [unallowable] = [false];
-      } else if (selectedUser[0].enterpriseStatus === 7) {//移除
-        [unallowable] = [false];
-      }
+      editable = false;
+      selectedUser.forEach(e => {
+        if ([3, 5, 6].includes(e.enterpriseStatus)) { // 已启用、待审核、未通过 不可启用
+          usable = false;
+        }
+        if ([4, 5, 6, 7].includes(e.enterpriseStatus)) { // 待审核、未通过、禁用、移除 不可禁用
+          unallowable = false;
+        }
+        if ([3].includes(e.enterpriseStatus)) { // 启用用户 不可审核
+          examinable = false;
+        }
+      })
     } else {
       [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
     }
+    
+    // if (selectedUser.length > 0) {
+    //   editable = selectedUser.length === 1;
+    //   let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
+    //   [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [false, false, false, false];
+    //   if (selectedUser[0].enterpriseStatus === 3) {//启用
+    //     usable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 5 || selectedUser[0].enterpriseStatus === 6) {//待审核//未通过审核
+    //     usable = false, unallowable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 4) {//禁用
+    //     unallowable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 7) {//移除
+    //     unallowable = false;
+    //   }
+    // } else {
+    //   [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
+    // }
     return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       {userEditRight && <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>}
       {userDeleteRight && <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>}

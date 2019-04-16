@@ -33,7 +33,7 @@ class TransferWarningModal extends Component {
     const deviceTypeCode = Array.from((selectedTransfer.map(e => e.deviceTypeCode)))
     this.props.getLostGenType({
       objectType: 1,
-      stationType: stationType.length > 0 && stationType[0] || null,
+      stationType: stationType.length > 0 && `${stationType[0]}` || null,
       deviceTypeCode: deviceTypeCode.length > 0 && deviceTypeCode[0] || null
     })
   }

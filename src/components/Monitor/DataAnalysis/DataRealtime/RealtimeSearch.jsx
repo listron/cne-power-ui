@@ -11,6 +11,7 @@ const { Option } = Select;
 class RealtimeSearch extends Component {
   static propTypes = {
     stations: PropTypes.array,
+    filterDevices: PropTypes.array,
     stationTypeCount: PropTypes.string,
 
     selectStationType: PropTypes.number, // 选中的电站类型
@@ -24,6 +25,32 @@ class RealtimeSearch extends Component {
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
   };
+
+  componentDidUpdate(prevProps){
+    const { queryParam, changeRealtimeStore, filterDevices } = this.props;
+    const prevDevices = prevProps.filterDevices;
+    if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      changeRealtimeStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    } else if (
+      prevDevices.length > 0
+        && filterDevices.length > 0
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+    ) { // 设备类型切换
+      changeRealtimeStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    }
+  }
 
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
     const { changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;
@@ -79,6 +106,7 @@ class RealtimeSearch extends Component {
         deviceFullCodes: [], // 选中的设备
         devicePoints: [], // 选中的测点
       },
+      pointInfo: [], // 清空测点信息
       chartRealtime: {}, // chart图 - 所有历史数据
       listRealtime: {}, // 表格内 - 分页后的历史数据
     });
@@ -122,6 +150,7 @@ class RealtimeSearch extends Component {
             <StationSelect
               data={typeof(selectStationType) === 'number' ? stations.filter(e => e.stationType === selectStationType) : stations}
               onOK={this.selectStation}
+              disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
               value={stations.filter(e => e.stationCode === stationCode)}
             />
           </div>
@@ -147,6 +176,7 @@ class RealtimeSearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
+              max={5}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}

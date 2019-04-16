@@ -9,6 +9,9 @@ class ScatterDiagramChart extends Component{
 
   static propTypes = {
     chartTime: PropTypes.number,
+    pointsInfo: PropTypes.array,
+    logPointX: PropTypes.string,
+    logPointY: PropTypes.string,
     scatterDiagramCharts: PropTypes.array,
     chartLoading: PropTypes.bool,
   }
@@ -27,15 +30,14 @@ class ScatterDiagramChart extends Component{
     }
   }
 
-  renderScatterChart = (scatterDiagramCharts) => {
-    const { chartLoading, pointsInfo, queryParam } = this.props;
-    const { xPoint, yPoint } = queryParam;
+  renderScatterChart = (scatterDiagramCharts) => {  
+    const { chartLoading, pointsInfo, logPointX, logPointY } = this.props;
     const xCurrentPoint = pointsInfo.find(e =>{ // 选中x轴devicePointName
-      return e.devicePointCode === xPoint;
+      return e.devicePointCode === logPointX;
     }) || {};
 
     const yCurrentPoint = pointsInfo.find(e =>{ // 选中y轴devicePointName
-      return e.devicePointCode === yPoint;
+      return e.devicePointCode === logPointY;
     }) || {};
     const monitorScatter = echarts.init(document.getElementById('monitorScatterDiagram'));
     if (chartLoading) { // loading态控制。
@@ -43,15 +45,14 @@ class ScatterDiagramChart extends Component{
     } else {
       monitorScatter.hideLoading()
     }
-
-    const scatterData = scatterDiagramCharts.map(e => [e.xData, e.yData]);
-    
-    const lineColor = '#666';
+    const scatterData = scatterDiagramCharts.map(e => [e.xData, e.yData,moment(e.time).format('YYYY-MM-DD HH:mm:ss'),e.xUnit,e.yUnit]);
     let color = ['#199475'];
+    const lineColor = '#f1f1f1';
+    const fontColor = '#333';
     monitorScatter.setOption({
       color: color,
       tooltip: {
-        trigger: 'axis',
+        trigger: 'item',
         width: 192,
         height: 86,
         padding:16,
@@ -61,53 +62,57 @@ class ScatterDiagramChart extends Component{
           fontSize: 12,
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-        axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: lineColor,
-            }
-        },
         formatter: params => {
-          return (
+          const xName = xCurrentPoint.devicePointName || 'X轴';
+          const yName = yCurrentPoint.devicePointName || 'Y轴';
+          const [xValue,yValue,time,xUnit,yUnit]=params.value;
+          return(
             `<div class=${styles.chartTool}>
-              ${params.map(e => {
-                const { value = [], dataIndex } = e;
-                const scatterTime = scatterDiagramCharts[dataIndex] || {};
-                const xName = xCurrentPoint.devicePointName || 'X轴';
-                const yName = yCurrentPoint.devicePointName || 'Y轴';
-                return `<div>
-                  <h3>${scatterTime.time ? moment(scatterTime.time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
-                  <p>${xName}：${dataFormat(value[0], '--', 2)}</p>
-                  <p>${yName}：${dataFormat(value[1], '--', 2)}</p>
-                </div>`
-              })}
+              <h3 class=${styles.title}>${time ? moment(time).format('YYYY-MM-DD HH:mm:ss') : ''}</h3>
+              <p class=${styles.value}>${xName}：${dataFormat(xValue, '--', 2)}${xUnit || ''}</p>
+              <p class=${styles.value}>${yName}：${dataFormat(yValue, '--', 2)}${yUnit || ''}</p>
             </div>`
           )
         }
       },
+      grid:{
+        bottom:100,
+        right:'15%',
+        left:"8%"
+      },
       xAxis: {
-        name: xCurrentPoint.devicePointName || '',
+        name: `${xCurrentPoint.devicePointName || ''}${xCurrentPoint.devicePointUnit ? `(${xCurrentPoint.devicePointUnit})` : ''}`,
         type: 'value',
+        scale: true,
         splitNumber: 20,
+        nameTextStyle:{color:fontColor},
         splitLine: { 
-          show:false
+          show:false,
         },
         axisTick: { 
           show: false
         },
         axisLine: { 
-          show: false
-        }
+          onZero:false,
+          lineStyle: {
+            color: lineColor,
+          },
+        },
+        axisLabel: {
+          color: fontColor,
+        },
       },
       yAxis: {
-        name: yCurrentPoint.devicePointName || '',
+        name: `${yCurrentPoint.devicePointName || ''}${yCurrentPoint.devicePointUnit ? `(${yCurrentPoint.devicePointUnit})` : ''}`,
         type: 'value',
+        scale: true,
         axisTick: {
           show: false
         },
         axisLine: {
           show: false
         },
+        splitLine: { lineStyle: { color: lineColor } },
       },
       series: [{
         name: 'scatter',
@@ -115,12 +120,15 @@ class ScatterDiagramChart extends Component{
         data: scatterData
       }]
     });
+    window.onresize = function () {
+      monitorScatter.resize();
+    };
   }   
 
   render(){
     return(
       <div className={styles.scatterDiagramChart}>
-        <div id="monitorScatterDiagram" style={{ width: '100%', height: 400 }}></div>
+        <div id="monitorScatterDiagram" style={{ width: '100%' }}></div>
       </div>
     )
   }

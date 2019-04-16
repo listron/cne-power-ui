@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
-import { baseFun, windTowerFun, windTimeFun } from './detailInformation';
+import { baseFun, windTowerFun, windTimeFun, selcetbaseFun } from './detailInformation';
 import DetailInfoPart from './DetailInfoPart';
 import moment from 'moment';
 import { Icon, Button, Checkbox, Row, Col } from 'antd';
@@ -63,10 +63,10 @@ class DetailDevice extends Component {
   nextStation = () => { // 下一个电站详情
     const { queryParams, selectedStationIndex, pageNum, pageSize, getOtherPageDeviceDetail, totalNum, getStationDeviceDetail, deviceList } = this.props;
 
-    const deviceFullCode = deviceList[selectedStationIndex]['deviceFullCode'];
+    // const deviceFullCode = deviceList[selectedStationIndex+1]['deviceFullCode'];
     const maxPage = Math.ceil(totalNum / pageSize); // 最后一页页码
-    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize - 1;
-    if (selectedStationIndex === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
+    const lastPageMaxIndex = totalNum - (maxPage - 1) * pageSize;
+    if (selectedStationIndex + 1 === lastPageMaxIndex && pageNum === maxPage) { // 最后一页最后一条
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
@@ -81,7 +81,7 @@ class DetailDevice extends Component {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
-        deviceFullCode: deviceFullCode,
+        deviceFullCode: deviceList[selectedStationIndex + 1]['deviceFullCode'],
       })
     }
   }
@@ -99,22 +99,20 @@ class DetailDevice extends Component {
   }
   render() {
     const { stationDeviceDetail } = this.props;
-    const { deviceTypeCode, } = stationDeviceDetail;
-    const deviceDetailMap=stationDeviceDetail.map;
-    const connectedBranches=deviceDetailMap?deviceDetailMap.connectedBranches:[]
-   
-      const baseInfo = baseFun(stationDeviceDetail);
-      const windTower = windTowerFun(stationDeviceDetail);
-      const windTime = windTimeFun(stationDeviceDetail);
-    
-   
+    const deviceTypeCode = stationDeviceDetail.deviceTypeCode;
+    const deviceDetailMap = stationDeviceDetail.map;
+    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : []
+    const baseInfo = baseFun(stationDeviceDetail);
+    const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
+    const windTower = windTowerFun(stationDeviceDetail);
+    const windTime = windTimeFun(stationDeviceDetail);
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.detailDevice}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <Button className={styles.title} onClick={this.onShowSideChange}>编辑</Button>
+            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode==='509'}>编辑</Button>
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
@@ -123,7 +121,10 @@ class DetailDevice extends Component {
           </span>
         </div>
         <div className={styles.detailPart}>
-          <DetailInfoPart infoArray={baseInfo} />
+          <div>
+            <DetailInfoPart infoArray={baseInfo} />
+            <DetailInfoPart infoArray={selcetbaseInfo} />
+          </div>
           <div className={styles.rightPart}>
             {deviceTypeCode === '501' && <DetailInfoPart infoArray={windTower} />}
             {deviceTypeCode === '101' && <DetailInfoPart infoArray={windTime} />}
@@ -131,27 +132,28 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>组件型号</div>
                 <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
-                  {(deviceDetailMap&&(deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
+                  {(deviceDetailMap && (deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
-                <div className={styles.infoName}>组件个数</div>
-                <div className={styles.infoValue} title={stationDeviceDetail.branchCount}>
-                  {(deviceDetailMap&&(deviceDetailMap.branchCount || deviceDetailMap.branchCount === 0)) ? deviceDetailMap.branchCount : '--'}
+                <div className={styles.infoName}>支路个数</div>
+                <div className={styles.infoValue} title={stationDeviceDetail.componentCount}>
+                  {(deviceDetailMap && (deviceDetailMap.componentCount || deviceDetailMap.componentCount === 0)) ? deviceDetailMap.componentCount : '--'}
                 </div>
               </div>
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
-                  <Row>
-                    {connectedBranches.map((e, i) => {
-                      return (
-                        <Col span={3}>
-                          <div>第{i + 1}支路</div>
-                          <Checkbox checked={!!e} key={i}></Checkbox>
-                        </Col>)
-                    })}
-                  </Row>
+                  <div className={styles.checkItem}>
+                  {connectedBranches.map((e, i) => {
+                    return (
+                      <div className={styles.itemStyle} key={i}>
+                        <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
+                        <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
+                      </div>
+                    )
+                  })}
+                  </div>
                   <div className={styles.linestyle}>
                     <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
                 </div>
@@ -164,7 +166,7 @@ class DetailDevice extends Component {
               <div className={styles.eachInfo}>
                 <div className={styles.infoName}>所属方阵</div>
                 <div className={styles.infoValue} title={deviceDetailMap.belongMatrix}>
-                  {(deviceDetailMap&&(deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
+                  {(deviceDetailMap && (deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
                 </div>
               </div>
             </div>}
@@ -176,3 +178,7 @@ class DetailDevice extends Component {
 }
 export default (DetailDevice)
 //(deviceTypeCode === 202||deviceTypeCode === 206)
+// <Col span={3}>
+// <div>第{i + 1}支路</div>
+// <Checkbox checked={!!e} key={i}></Checkbox>
+// </Col>

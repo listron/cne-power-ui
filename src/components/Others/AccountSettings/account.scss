@@ -1,0 +1,61 @@
+@import '../../../theme/theme.scss';
+
+.editUserName,
+.editPasswordForm,
+.editPhone {
+    margin-top: 48px;
+    .account {
+        :global {
+            .ant-form-item-children {
+                display: flex;
+                flex-direction: row;
+                justify-content: start;
+                //  line-height: 40px;
+            }
+            .ant-input {
+                width: 189px;
+            }
+            .ant-input-group-wrapper {
+                width: auto;
+            }
+           
+        }
+
+        .instructionText {
+            color: #dfdfdf;
+            margin-left: 8px;
+        }
+
+        .saveButton {
+            .saveName,
+            .savePassword,.savePhone {
+                width: 229px;
+                background: $themeColor;
+                color: #fff;
+            }
+        }
+        .testCode{
+          :global{
+            .ant-input {
+              width: 92px;
+          }
+          }
+        }
+        .getCode{
+           background: #fff;
+           border: 1px solid $themeColor;
+           border-radius: 4px;
+           color: $themeColor;
+           padding: 0 10px;
+           margin-left: 10px;
+           width:88px;
+        }
+        .sendCode{
+          background:#dfdfdf;
+          border-radius:4px;
+          width:88px;
+          color:#999999;
+          margin-left: 10px;
+        }
+    }
+}

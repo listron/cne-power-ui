@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button } from 'antd';
+import { message, Modal, Button, Spin } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -17,10 +17,9 @@ import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
 
-
-
+const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
@@ -101,22 +100,6 @@ class Main extends Component {
     this.props.history.push('/login');
   }
 
-   Loading = ({ pastDelay, timedOut, error }) => {
-    if (pastDelay) {
-      return (<div className={styles.preComponent}>
-      <i className={`${styles.rotate}`}></i>
-       <p>loading....</p>
-    </div>);
-    } else if (timedOut) {
-      return <div>Taking a long time...</div>;
-    } else if (error) {
-      return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
-    }
-    return null;
-  };
-
- 
-
   render() {
     const { changeLoginStore, history, resetMonitorData } = this.props;
     const authData = Cookie.get('authData') || null;
@@ -124,20 +107,6 @@ class Main extends Component {
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
-    
-    const  Login=Loadable({
-      loader: () => import('../Login/LoginLayout'),
-      loading: this.Loading
-    })
-    const Agreement=Loadable({
-      loader: () => import('../../components/Login/Agreement'),
-      loading: this.Loading
-    })
-    const Contact=Loadable({
-      loader: () => import('../../components/Login/Contact'),
-      loading: this.Loading
-    })
-
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
     }
@@ -183,9 +152,15 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/userAgreement" exact component={Agreement} />
-          <Route path="/contactUs" exact component={Contact} />
+          <Route path="/login" exact render={() => (
+            <Suspense fallback={
+              <div className={styles.preComponent}>
+                  <Spin size="large" tip="Loading..." />
+              </div>}
+            >
+              <Login {...this.props} />
+            </Suspense>)}
+          />
           <Redirect to="/login" />
         </Switch>
       );

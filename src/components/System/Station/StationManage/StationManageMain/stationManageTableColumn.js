@@ -14,7 +14,7 @@ const stationManageTableColumn = [{
     dataIndex: 'coverType',
     key: 'coverType',
   },{
-    title: <TableColumnTitle title="装机容量" unit="MW" />,
+    title: () => <TableColumnTitle title="装机容量" unit="MW" />,
     dataIndex: 'stationCapacity',
     key: 'stationCapacity',
     render(text){ return numWithComma(text); },

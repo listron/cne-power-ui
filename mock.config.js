@@ -9,11 +9,12 @@ const getVerificationCode = require('./mock/login/getVerificationCode');
 const user = require('./mock/system/user');
 const stationManage = require('./mock/system/stationManage');
 
-const monitor =require('./mock/monitor/stationMonitor')
+const monitor =require('./mock/monitor/stationMonitor');
 const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
 const monitorDevice = require('./mock/monitor/deviceMonitor');
+const monitorpowerCurve = require('./mock/monitor/powerCurve');
 const others = require('./mock/others/other');
 const MockStationContrast = require('./mock/statisticalAnalysis/MockStationContrast');
 const plan = require('./mock/system/plan');
@@ -22,6 +23,7 @@ const stationContrast = require('./mock/statisticalAnalysis/stationContrast');
 const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
 const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
+const reportSeacher = require('./mock/monitor/report');
 
 
 // as
@@ -42,6 +44,7 @@ exports.mockConfig = [
 
   ...monitor,
   ...dataAnalysis,
+  ...monitorpowerCurve,//监控功率曲线
 
   ...singleStationMonitor,
   ...monitorDevice, //监控-单设备详情
@@ -52,4 +55,5 @@ exports.mockConfig = [
   ...cleanWarning, // 高级分析-清洗预警
   ...score,//电站评分
   ...intelligentAnalysis, // 智能分析报告
+  ...reportSeacher,//报表查询
 ]

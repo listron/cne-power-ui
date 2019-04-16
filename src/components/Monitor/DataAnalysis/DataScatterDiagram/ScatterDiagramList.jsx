@@ -1,18 +1,24 @@
 import React, {Component} from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import styles from './scatterDiagram.scss';
 import PropTypes from 'prop-types';
 import CommonPagination from '../../../Common/CommonPagination'
 import moment from 'moment';
 import { dataFormat } from '../../../../utils/utilFunc';
+import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma } from '../../../../utils/utilFunc';
 
 
 class ScatterDiagramList extends Component{
   static propTypes = {
     tableLoading: PropTypes.bool,
     listParam: PropTypes.object,
+    logPointX: PropTypes.string,
+    logPointY: PropTypes.string,
     getListScatterDiagram: PropTypes.func,
+    pointsInfo: PropTypes.array,
     queryParam: PropTypes.object,
+    scatterDiagramList: PropTypes.object,
     partScatterDiagram: PropTypes.object,
     changeScatterDiagramStore: PropTypes.func,
   }
@@ -34,25 +40,24 @@ class ScatterDiagramList extends Component{
   }
   
   render(){
-    const { listParam, scatterDiagramList, tableLoading, pointsInfo, queryParam } = this.props;
-    const { xPoint, yPoint } = queryParam;
-
-    const xCurrentPoint = pointsInfo.find(e =>{ 
-      return e.devicePointCode === xPoint;
-    }) || {};
-
-    const yCurrentPoint = pointsInfo.find(e =>{ 
-      return e.devicePointCode === yPoint;
-    }) || {};
-
-    const { totalSize, dataList = [] } = scatterDiagramList;
+    const { listParam, scatterDiagramList, tableLoading, pointsInfo, logPointX, logPointY } = this.props;
+    const { totalSize, dataList = [], xUnit, yUnit } = scatterDiagramList;
     const { pageNum, pageSize, } = listParam;
-    const dataSource = dataList.map((e,i) =>{
+    
+    
+    const xCurrentPoint = pointsInfo.find(e => {
+      return e.devicePointCode === logPointX;
+    }) || {};
+    
+    const yCurrentPoint = pointsInfo.find(e => {
+      return e.devicePointCode === logPointY;
+    }) || {};
+    const dataSource = dataList.map((e,i) => {
       return  ({
         key: i,
         ...e,
-        xData: dataFormat(e.xData,'--',2),
-        yData: dataFormat(e.yData,'--',2),
+        xData: numWithComma(dataFormat(e.xData,'--',2)),
+        yData: numWithComma(dataFormat(e.yData,'--',2)),
         time: e.time ? moment(e.time).format('YYYY-MM-DD HH:mm:ss') : '--'
       })
     })
@@ -60,24 +65,39 @@ class ScatterDiagramList extends Component{
     const columns = [{
       title: '设备名称',
       dataIndex: 'deviceName',
+      className: 'deviceName',
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
+      className: 'stationName',
     }, {
       title: '设备类型',
       dataIndex: 'deviceTypeName',
-    },{
+      className: 'deviceTypeName',
+    }, {
       title: '型号',
       dataIndex: 'deviceModeName',
+      className: 'deviceModeName',
     }, {
       title: '时间',
       dataIndex: 'time',
+      className: 'time',
     }, {
-      title: xCurrentPoint.devicePointName || 'X轴',
+      title: () => (<TableColumnTitle
+        title={xCurrentPoint.devicePointName}
+        unit={xUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      />),
       dataIndex: 'xData',
-    },{
-      title: yCurrentPoint.devicePointName || 'X轴',
+      className: 'xData',
+    }, {
+      title: () => (<TableColumnTitle
+        title={yCurrentPoint.devicePointName}
+        unit={yUnit}
+        style={{ paddingTop: 0, maxWidth: '100%', height: '52px' }}
+      />),
       dataIndex: 'yData',
+      className: 'yData',
     }];
 
     return(
