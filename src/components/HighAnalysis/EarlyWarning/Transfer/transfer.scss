@@ -19,22 +19,16 @@
         }
     }
     .iconDetail {
-        div {
-            display: block;
-            color: $themeColor;
+        .iconBox {
+            display: flex;
+            height: 30px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            width: 30px;
+            background: #d1d1d1;
             cursor: pointer;
-            span {
-                display: flex;
-                height: 30px;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                width: 30px;
-                background: #d1d1d1;
-            }
-        }
-        div:hover {
-            span {
+            &:hover {
                 display: flex;
                 height: 30px;
                 justify-content: center;
@@ -42,10 +36,10 @@
                 border-radius: 50%;
                 width: 30px;
                 background: $themeColor;
-            }
-            :global {
-                .icon-action {
-                    color: #fff;
+                :global {
+                    .icon-action {
+                        color: #fff;
+                    }
                 }
             }
         }
