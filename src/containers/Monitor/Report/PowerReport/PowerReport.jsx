@@ -62,6 +62,10 @@ const mapDispatchToProps = (dispatch) => ({
   changePowerReportStore: payload => dispatch({ type: powerReportAction.changePowerReportStore, payload }),
   resetPowerReportStore: payload => dispatch({ type: powerReportAction.resetPowerReportStore, payload }),
   getPowerReportList: payload => dispatch({ type: powerReportAction.getPowerReportList, payload }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: powerReportAction.changePowerReportStore,
+  }}),
   getRegion: params => dispatch({ //获取用户权限的电站区域
     type: commonAction.getRegion,
     payload: {

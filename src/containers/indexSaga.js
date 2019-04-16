@@ -115,15 +115,16 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
+    watchAllDeviceCurve(),//功率曲线
+    watchSingleDeviceCurve(),//单风机功率曲线
     watchMonitorPowerReport(),//报表--电量
     watchMonitorDeviceStatus(),//报表-设备状态
     watchMonitorMalfunction(),//报表-故障
     watchMonitorPowerLost(),//报表--电量损失
-    watchAllDeviceCurve(),//功率曲线
-    watchSingleDeviceCurve(),//单风机功率曲线
+
+ 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     
-    // 无逻辑关系隐藏页面
     watchOthersSaga(),
     // watchOtherSaga(),
     //统计分析的全部电站

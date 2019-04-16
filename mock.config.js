@@ -9,7 +9,7 @@ const getVerificationCode = require('./mock/login/getVerificationCode');
 const user = require('./mock/system/user');
 const stationManage = require('./mock/system/stationManage');
 
-const monitor =require('./mock/monitor/stationMonitor')
+const monitor =require('./mock/monitor/stationMonitor');
 const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');

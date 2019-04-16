@@ -479,8 +479,8 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
   }
 }
 function* getRegion(action) { // //获取用户权限的电站区域
-  // const url = `${APIBasePath}${commonPaths.getRegion}`;
-  const url = `/mock/v3/wind/report/fan/region`;
+  const url = `${APIBasePath}${commonPaths.getRegion}`;
+  // const url = `/mock/v3/wind/report/fan/region`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
@@ -498,9 +498,9 @@ function* getRegion(action) { // //获取用户权限的电站区域
     console.log(e);
   }
 }
-function* getRegionStation(action) { // //获取用户权限的电站区域
-  // const url = `${APIBasePath}${commonPaths.getRegionStation}`;
-  const url = `/mock/v3/wind/report/fan/station`;
+function* getRegionStation(action) { // //获取用户权限的电站
+  const url = `${APIBasePath}${commonPaths.getRegionStation}`;
+  // const url = `/mock/v3/wind/report/fan/station`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
@@ -518,9 +518,9 @@ function* getRegionStation(action) { // //获取用户权限的电站区域
     console.log(e);
   }
 }
-function* getStationDevicemode(action) { // //获取用户权限的电站区域
-  // const url = `${APIBasePath}${commonPaths.getStationDevicemode}`;
-  const url = `/mock/v3/wind/report/fan/devicemode`;
+function* getStationDevicemode(action) { // //获取用户权限的型号
+  const url = `${APIBasePath}${commonPaths.getStationDevicemode}`;
+  // const url = `/mock/v3/wind/report/fan/devicemode`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
@@ -538,9 +538,9 @@ function* getStationDevicemode(action) { // //获取用户权限的电站区域
     console.log(e);
   }
 }
-function* getRegionStationDevice(action) { // //获取用户权限的电站区域
-  // const url = `${APIBasePath}${commonPaths.getRegionStationDevice}`;
-  const url = `/mock/v3/wind/report/fan/device`;
+function* getRegionStationDevice(action) { // //获取用户权限的风机
+  const url = `${APIBasePath}${commonPaths.getRegionStationDevice}`;
+  // const url = `/mock/v3/wind/report/fan/device`;
   const { payload } = action;
   try {
     const { params, actionName, resultName } = payload;
