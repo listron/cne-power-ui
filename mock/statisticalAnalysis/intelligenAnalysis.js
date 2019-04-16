@@ -65,13 +65,97 @@ module.exports = [
       code: "10000",
       message: "请求成功",
       "data": {
+        "aveEquUsehours": "123",
+        "highEquUsehourStations": [{
+            "stationName": "电站1",
+            "hours": "12",
+            "sunnyDays": "3",
+          },{
+            "stationName": "电站1",
+            "hours": "12",
+            "sunnyDays": "3",
+          },{
+            "stationName": "电站1",
+            "hours": "12",
+            "sunnyDays": "3",
+          }],
+        "lowEquUsehourStations": [{
+          "stationName": "电站1",
+          "hours": "12",
+          "sunnyDays": "3",
+        },{
+          "stationName": "电站1",
+          "hours": "12",
+          "sunnyDays": "3",
+        },{
+          "stationName": "电站1",
+          "hours": "12",
+          "sunnyDays": "3",
+        }],
+        "aveEquLossPowerhours":"111",
+        "aveComplateRate": "123",
+        "highComplateRateStations": [{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        },{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        },{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        }],
+        "lowComplateRateStations": [{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        },{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        },{
+          "stationName": "电站2",
+          "lossRate": "2",
+          "sunnyDays": "3",
+          "proportion": "4"
+        }],
+        "totalLossPower":"123",
+        "totalLossPowerDesc": [{
+          "externalFaultLostPower":"123",
+          "externalFaultProportion":"123",
+          "highExternalFaultName":"占比最高",
+          "highPxternalFaultProportion":"R体分类",
+          "lowVoltageDCFaultLostPower": "12",
+          "lowVoltageDCFaultProportion":"12",
+          "substationSystemFaultLostPower":"12",
+          "substationSystemFaultProportion":"12",
+          "transmissionSystemFaultLostPower":"12",
+          "transmissionSystemFaultProportion" :"12",
+          "secondaryAndHaveNotPowerFaultLostPower":"12",
+          "secondaryAndHaveNotPowerFaultProportion":"12",
+          "otherFaultLostPower":"12",
+          "otherFaultProportion":"12",
+        }],
+        "maxFaultName":"123",
+        "aveScore":"123",
+        "scoreStations":[{
+
+        }],
+
+
         "areaPartABean": {
           "avgEquiventHours": '1',
           "avgLostPowerEquiventHours": '2',
           "hightStationInfoList": [{
             "stationName": "电站1",
             "lostValue": "2",
-            "sunnyDays": "3",
             "per": "4"
           },{
             "stationName": "电站2",

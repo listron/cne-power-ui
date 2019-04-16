@@ -70,6 +70,7 @@ class AreaAnalysisSearch extends Component{
   }
 
   render(){
+    const { reportShow } = this.props;
     return(
       <div className={styles.areaAnalysisSearch}>
         <div className={styles.searchPart}>
@@ -88,7 +89,7 @@ class AreaAnalysisSearch extends Component{
             </div>
             <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
           </div>
-            <Button className={styles.exportReport} onClick={this.exportReport} icon="download">下载报告</Button>
+            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={reportShow === false}>下载报告</Button>
         </div>
       </div>
     )

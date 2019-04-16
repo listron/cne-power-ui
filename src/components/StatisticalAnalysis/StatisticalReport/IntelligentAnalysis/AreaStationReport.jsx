@@ -15,16 +15,10 @@ class AreaStationReport extends Component{
   }
 
   render(){
-    const { stations, monthTime, regionName, yearTime, dateType, areaPartABean, areaPartBBean, areaPartCBean, areaPartDBean,} = this.props;
-
-    const { avgEquiventHours, avgLostPowerEquiventHours, hightStationInfoList = [], lowStationInfoList = [] } = areaPartABean;
-
-    const { avgPlanComplateRate,  } = areaPartBBean;
+    const { stations, monthTime, regionName, yearTime, dateType, } = this.props;
     const tmpHightStationInfoList = areaPartBBean.hightStationInfoList || []; // 电站损失等效小时最高的三个电站信息
-    const tmpLowStationInfoList = areaPartBBean.lowStationInfoList || []; // 电站损失等效小时最低的三个电站信息
 
-    const { lostPowers, faultName, faultLostPowerList = [] } = areaPartCBean;
-    const { avgScore, lowScoreStationList = [] } = areaPartDBean;
+    const tmpLowStationInfoList = areaPartBBean.lowStationInfoList || []; // 电站损失等效小时最低的三个电站信息
 
     return(
       <div className={styles.areaStationReport}>
@@ -37,7 +31,7 @@ class AreaStationReport extends Component{
 
             <p>
               <span>1、区域内电站平均等效利用小时数为</span>
-              <span className={styles.text}>{avgEquiventHours || '--'}</span>
+              <span className={styles.text}>{aveEquUsehours || '--'}</span>
               <span>h，平均损失电量等效小时数</span>
               <span className={styles.text}>{avgLostPowerEquiventHours || '--'}</span>
               <span>h。</span>

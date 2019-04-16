@@ -16,6 +16,7 @@ class AreaStationSearch extends Component{
     changeIntelligentAnalysisStore: PropTypes.func,
     getAreaStation: PropTypes.func,
     downLoadFile: PropTypes.func,
+    reportShow: PropTypes.bool,
   };
 
   constructor(props){
@@ -72,7 +73,7 @@ class AreaStationSearch extends Component{
   }
 
   render(){
-    const { stations, regionName } = this.props;
+    const { stations, regionName, reportShow } = this.props;
     let regionSet = new Set();
     stations.forEach(e => {
       e.regionName && regionSet.add(e.regionName);
@@ -108,7 +109,7 @@ class AreaStationSearch extends Component{
             </div>
             <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
           </div>
-            <Button className={styles.exportReport} onClick={this.exportReport} icon="download">下载报告</Button>
+            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={reportShow === false}>下载报告</Button>
         </div>
       </div>
     )

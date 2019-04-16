@@ -22,6 +22,7 @@ class SingleStationAnalysisSearch extends Component{
     month: PropTypes.string,
     year: PropTypes.string,
     downLoadFile: PropTypes.func,
+    reportShow: PropTypes.bool,
   };
 
   constructor(props){

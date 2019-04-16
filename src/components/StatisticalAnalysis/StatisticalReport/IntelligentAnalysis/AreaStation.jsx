@@ -2,11 +2,11 @@ import React,{ Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import AreaStationSearch from './AreaStationSearch';
-import AreaStationReport from './AreaStationReport';
+// import AreaStationReport from './AreaStationReport';
 
 class AreaStation extends Component{
   static propTypes = {
-    reportShow: PropTypes.bool,
+    // reportShow: PropTypes.bool,
   }
 
   constructor(props){
@@ -14,11 +14,11 @@ class AreaStation extends Component{
   }
 
   render(){
-    const { reportShow } = this.props;
+    // const { reportShow } = this.props;
     return(
       <div className={styles.areaStation}>
         <AreaStationSearch {...this.props} />
-        { reportShow && <AreaStationReport {...this.props} /> }
+        {/* { reportShow && <AreaStationReport {...this.props} /> } */}
       </div>
     )
   }
