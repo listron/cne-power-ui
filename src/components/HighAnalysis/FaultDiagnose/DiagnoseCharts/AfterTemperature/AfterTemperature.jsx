@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { DatePicker, Switch } from 'antd';
+import { DatePicker } from 'antd';
 import eCharts from "echarts";
-import { AfterTemperatureOptions } from "../../../../utils/chartsConfig/diagnoseConfig";
+import { AfterTemperatureOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
 import styles from "./afterTemperature.scss";
 
 const { RangePicker } =  DatePicker;
@@ -24,11 +24,6 @@ export default class AfterTemperature extends React.Component {
     myChart.setOption(AfterTemperatureOptions());
   }
 
-  onChangeSwitch = (checked) => {
-    console.log(`switch to ${checked}`);
-  };
-
-
   render() {
     return (
       <div className={styles.afterChartsBox}>
@@ -43,10 +38,6 @@ export default class AfterTemperature extends React.Component {
         <div ref={(ref) => {
           this.afterChart = ref;
         }} className={styles.afterCharts} />
-        <div className={styles.afterSwitch}>
-          <Switch defaultChecked onChange={this.onChangeSwitch} />
-          <span>全部显示</span>
-        </div>
       </div>
     );
   }

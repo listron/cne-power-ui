@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { DatePicker, Switch } from 'antd';
+import { DatePicker } from 'antd';
 import eCharts from "echarts";
-import { PreTemperatureOptions } from "../../../../utils/chartsConfig/diagnoseConfig";
+import { PreTemperatureOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
 import styles from "./preTemperature.scss";
 
 const { RangePicker } =  DatePicker;
@@ -34,13 +34,6 @@ export default class PreTemperature extends React.Component {
     myChart.setOption(PreTemperatureOptions(allFlag));
   }
 
-  onChangeSwitch = (checked) => {
-    console.log(`switch to ${checked}`);
-    this.setState({
-      allFlag: checked
-    });
-  };
-
 
   render() {
     return (
@@ -60,10 +53,6 @@ export default class PreTemperature extends React.Component {
         <div ref={(ref) => {
           this.preChart = ref;
         }} className={styles.preCharts} />
-        <div className={styles.preSwitch}>
-          <Switch defaultChecked onChange={this.onChangeSwitch} />
-          <span>全部显示</span>
-        </div>
       </div>
     );
   }

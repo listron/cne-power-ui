@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "./faultSingleFan.scss";
+import styles from "./faultAllFan.scss";
 import PreTemperature from "../DiagnoseCharts/PreTemperature/PreTemperature";
 import AfterTemperature from "../DiagnoseCharts/AfterTemperature/AfterTemperature";
 import DifferenceTemperature from "../DiagnoseCharts/DifferenceTemperature/DifferenceTemperature";
@@ -8,15 +8,15 @@ import SingleResult from "../DiagnoseCharts/SingleResult/SingleResult";
 import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
 import FaultNavList from "../FaultNavList/FaultNavList";
+import FaultAllFanTop from "./FaultAllFanTop/FaultAllFanTop";
 
 
-export default class FaultSingleFan extends React.Component {
+export default class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object,
     stations: PropTypes.object,
     singleStationCode: PropTypes.string,
-    data: PropTypes.Array
   };
 
   constructor(props) {
@@ -27,14 +27,15 @@ export default class FaultSingleFan extends React.Component {
 
   render() {
     return (
-      <div className={styles.faultSingleFan}>
+      <div className={styles.faultAllFan}>
         <div className={styles.title}>
-          <span>肥西风场</span><span>WTG05</span>
+          <span>肥西风场</span><span>变桨电机温度异常识别</span>
         </div>
-        <div className={styles.singleFanWrap}>
-          <div className={styles.singleFanContent}>
+        <div className={styles.allFanWrap}>
+          <div className={styles.allFanContent}>
+            <FaultAllFanTop {...this.props} />
             <FaultNavList {...this.props} />
-            <div className={styles.singleFanContentCharts}>
+            <div className={styles.allFanContentCharts}>
               <PreTemperature {...this.props} />
               <AfterTemperature {...this.props} />
               <DifferenceTemperature {...this.props} />

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { heatTemperatureOptions } from "../../../../utils/chartsConfig/diagnoseConfig";
+import { heatTemperatureOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
 import styles from "./heatMap.scss";
 
 

@@ -1,20 +1,20 @@
 @import '../../../../theme/theme.scss';
-.faultSingleFan{
+.faultAllFan{
   width: 100%;
   .title{
     padding-left: 48px;
     @include lineheight(20px);
     background-color: $pageBackground;
   }
-  .singleFanWrap{
+  .allFanWrap{
     width: 100%;
     background-color: $pageBackground;
   }
-  .singleFanContent{
+  .allFanContent{
     width: 1390px;
     background-color: $pageGround;
     margin: 0 auto;
-    .singleFanContentCharts{
+    .allFanContentCharts{
       width: 100%;
       padding: 0 20px 20px;
     }
