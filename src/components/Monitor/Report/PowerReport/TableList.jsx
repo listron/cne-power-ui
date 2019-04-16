@@ -85,9 +85,9 @@ class TableList extends Component {
 
       {
         title: "统计时段",
-        dataIndex: "time",
+        dataIndex: "date",
         sorter: true,
-        defaultSortOrder: 'ascend'
+      
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
@@ -129,7 +129,7 @@ class TableList extends Component {
       },
       {
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
-        dataIndex: "faultTime",
+        dataIndex: "faultHours",
         sorter: true,
       },
     ];
