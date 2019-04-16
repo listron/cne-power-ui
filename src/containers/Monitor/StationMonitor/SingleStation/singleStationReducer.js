@@ -3,7 +3,7 @@ import { singleStationAction } from './singleStationAction';
 
 var initState = Immutable.fromJS({
   loading: false,//加载状态
-  stationList: [],//所有电站列表
+  // stationList: [],//所有电站列表
   singleStationData: {},//单电站数据
   stationType: null,//电站类型  0：风 1：光
   capabilityData: [],//出力图数据

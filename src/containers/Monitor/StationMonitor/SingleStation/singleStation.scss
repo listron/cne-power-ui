@@ -7,10 +7,10 @@
   flex-direction: column;
 }
 .singleStationContainer{
-  // min-height: 100%;
-  background: #dfdfdf;
-  width: 100%;
+  background: $pageBackground;
   padding: 24px 24px 0;
+  display: flex;
+  flex: 1;
   :global{
     a {
       color: $darkColor;

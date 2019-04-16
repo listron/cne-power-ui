@@ -7,7 +7,7 @@ const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 import moment from 'moment';
 
-//改变单电站实时数据store
+// 改变单电站实时数据store
 function* changeSingleStationStore(action) {
   const { payload } = action;
   yield put({
@@ -21,7 +21,7 @@ function* resetSingleStationStore(action) {
     type: singleStationAction.RESET_SINGLE_STATION_SUCCESS,
   });
 }
-//获取单电站实时数据
+// 获取单电站实时数据
 function* getSingleStation(action) {
   const { payload } = action;
   const utcTime = moment.utc().format();
@@ -48,8 +48,7 @@ function* getSingleStation(action) {
     console.log(e);
   }
 }
-
-//获取出力图数据
+// 获取出力图数据
 function* getCapabilityDiagram(action) {
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
@@ -77,8 +76,7 @@ function* getCapabilityDiagram(action) {
     console.log(e);
   }
 }
-
-//获取理论发电量 实际发电量数据
+// 获取理论发电量 实际发电量数据
 function* getMonitorPower(action) {
   const { payload } = action;
   const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + payload.stationCode + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
@@ -104,33 +102,6 @@ function* getMonitorPower(action) {
     console.log(e);
   }
 }
-// 获取电站列表
-function* getStationList(action) {
-  const { payload } = action;
-  const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getStationList;
-  try {
-    const response = yield call(axios.get, url, payload);
-    if (response.data.code === '10000') {
-      yield put({
-        type: singleStationAction.GET_SINGLE_STATION_SUCCESS,
-        payload: {
-          stationList: response.data.data || [],
-        }
-      });
-    } else {
-      yield put({
-        type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
-        payload: {
-          stationList: [],
-        }
-      });
-    }
-
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 // 获取单电站运维人员列表
 function* getOperatorList(action) {
   const { payload } = action;
@@ -296,7 +267,7 @@ function* getPvmoduleList(action) {
         payload: {
           pvmoduleList: response.data.data.dataList || [],
           pvAvgValue: response.data.data.pvAvgValue || '',
-          pvLevelNums:response.data.data.pvLevelNums || {}
+          pvLevelNums: response.data.data.pvLevelNums || {}
         }
       });
     } else {
@@ -304,8 +275,8 @@ function* getPvmoduleList(action) {
         type: singleStationAction.CHANGE_SINGLE_STATION_STORE,
         payload: {
           pvmoduleList: [],
-          pvAvgValue:'',
-          pvLevelNums:{}
+          pvAvgValue: '',
+          pvLevelNums: {}
         }
       });
     }
@@ -551,7 +522,7 @@ function* getFanList(action) {
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
-  yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
+  // yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
   yield takeLatest(singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, getCapabilityDiagram);
   yield takeLatest(singleStationAction.GET_MONITOR_POWER_SAGA, getMonitorPower);
   yield takeLatest(singleStationAction.GET_OPERATOR_LIST_SAGA, getOperatorList);

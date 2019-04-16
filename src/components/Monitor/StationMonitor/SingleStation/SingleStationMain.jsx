@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './singleStationMain.scss';
 import PvStation from './PvStation/PvStation';
-import WindStation from './WindStation/WindStation';
+// import WindStation from './WindStation/WindStation';
+import WindStation from './NewWindStation/WindStation';
 
 class SingleStationMain extends Component {
   static propTypes = {

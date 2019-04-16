@@ -8,15 +8,15 @@ import { Popover } from 'antd';
 
 class windStationHeader extends React.Component {
   static propTypes = {
-    windMonitorStation: PropTypes.object,
+    singleStationData: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
 
   render() {
-    const { windMonitorStation, } = this.props;
-    const stationDataSummary = windMonitorStation.stationDataSummary || {};
+    const { singleStationData, } = this.props;
+    const stationDataSummary = singleStationData || {};
     const stationPower = stationDataSummary.stationPower;
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;

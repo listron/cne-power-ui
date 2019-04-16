@@ -59,7 +59,7 @@ class SingleStation extends Component {
       this.props.getDeviceTypeFlow({ stationCode });//获取设备类型流程图
     }
     this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
-    this.props.getStationList({});//获取电站列表
+    // this.props.getStationList({});//获取电站列表
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,7 +74,7 @@ class SingleStation extends Component {
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
       this.props.resetSingleStationStore();
-      this.props.getStationList({})
+      // this.props.getStationList({})
       this.getTenSeconds(nextStationCode);
       this.getOutputDataTenMin(nextStationCode,nextStationType);
       this.getPowerDataTenMin(nextStationCode);
@@ -138,8 +138,8 @@ class SingleStation extends Component {
         <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.singleStationContainer} >
           <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} stationType={stationType} />
-          <Footer />
         </div>
+        <Footer />
       </div>
     );
   }
@@ -148,6 +148,7 @@ class SingleStation extends Component {
 const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
+    stationList: state.common.get('stations').toJS(),
     // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
     realTimePowerUnit: state.common.get('realTimePowerUnit'),
     realTimePowerPoint: state.common.get('realTimePowerPoint'),
