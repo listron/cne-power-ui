@@ -188,6 +188,9 @@ const routers = [
   }, { // 统计报表
     path: '/statistical/statement/currency',
     component: lazy(() => import('../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport')),
+  }, { // 统计报表-智能分析报告
+    path: '/statistical/statement/intelligentAnalysis',
+    component: lazy(() => import('../containers/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/IntelligentAnalysis')),
   }, { // 高级分析 实时告警
     path: '/analysis/intelligentWarning/realtime',
     component: lazy(() => import('../containers/HighAnalysis/IntelligentWarning/RealTimeWarning/RealTimeWarning')),

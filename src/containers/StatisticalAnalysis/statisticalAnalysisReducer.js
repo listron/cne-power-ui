@@ -9,6 +9,7 @@ import performanceAnalysisReducer from "./EquipmentAnalysis/PerformanceAnalysis/
 import manufacturers from "./EquipmentAnalysis/Manufacturers/manufacturersReducer";
 import customize from "./EquipmentAnalysis/Customize/customizeReducer";
 import scoreAnalysis from "./StationAnalysis/ScoreAnalysis/scoreAnalysisReducer";
+import intelligentAnalysisReducer from "./StatisticalReport/IntelligentAnalysis/intelligentAnalysisReducer";
 
 const statisticalAnalysisReducer = combineReducers({ 
   allStationAnalysis,
@@ -19,7 +20,8 @@ const statisticalAnalysisReducer = combineReducers({
   performanceAnalysisReducer,
   manufacturers,
   customize,
-  scoreAnalysis
+  scoreAnalysis,
+  intelligentAnalysisReducer
 });
 
 export default statisticalAnalysisReducer;
