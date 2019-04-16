@@ -222,7 +222,7 @@ class EditDeviceForm extends Component {
                 )}
               </FormItem>
               {!isShowComponent && <div className={styles.submitStyle}>
-                <Button onClick={this.leftsubmitForm} >保存</Button>
+                <Button onClick={this.submitForm} >保存</Button>
               </div>}
             </div>
           </div>
