@@ -53,9 +53,6 @@ class DeviceStatus extends Component {
     this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
   }
   onSearch = () => {
-    // const {dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize,}=this.props;
-    // const params={dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize};
-    // this.props.getPowerReportList({...params})
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {

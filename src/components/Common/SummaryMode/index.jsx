@@ -95,7 +95,6 @@ class TimeSelectReport extends React.Component {
     this.props.onChange({ ...params });
   }
   onModalHandelOK = (v) => {
-    console.log(v);
     this.setState({
       visiableModal: false,
       list: v
@@ -123,7 +122,7 @@ class TimeSelectReport extends React.Component {
     } else if (this.state.modeStyle === 'wind') {
       count = 10000;
     } else if (this.state.modeStyle === 'fault') {
-      count = this.state.areaList.length
+      count = 10000;
     }
     return <div>已选{this.state.list.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
   }

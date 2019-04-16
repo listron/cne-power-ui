@@ -85,9 +85,9 @@ class TableList extends Component {
 
       {
         title: "统计时段",
-        dataIndex: "time",
+        dataIndex: "date",
         sorter: true,
-        defaultSortOrder: 'ascend'
+      
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
@@ -129,7 +129,7 @@ class TableList extends Component {
       },
       {
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
-        dataIndex: "faultTime",
+        dataIndex: "faultHours",
         sorter: true,
       },
     ];
@@ -143,10 +143,7 @@ class TableList extends Component {
     const columns = this.initMonthColumn();
     const dataSource = powerReportList.map((e, i) => ({
       ...e, key: i,
-      pr: `${e.pr ? e.pr : '--'}%`,
-      resourceRate: `${e.resourceRate ? e.resourceRate : '--'}%`,
-      planGenRate: `${e.planGenRate ? e.planGenRate : '--'}%`,
-      powerRate: `${e.powerRate ? e.powerRate : '--'}%`
+     
     }))
     return (
       <React.Fragment>
@@ -156,7 +153,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 1440 }}
+          // scroll={{ x: 1440 }}
           pagination={false} />
       </React.Fragment>
     )

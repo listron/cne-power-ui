@@ -143,7 +143,7 @@ class SelectModal extends Component {
             <Tree
               checkable
               autoExpandParent={true}
-              defaultExpandAll={true}
+              // defaultExpandAll={true}
               onCheck={this.onCheck}
               checkedKeys={this.state.checkedKeys}
               blockNode={false}
