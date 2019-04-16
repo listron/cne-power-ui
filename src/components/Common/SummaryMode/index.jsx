@@ -65,11 +65,7 @@ class TimeSelectReport extends React.Component {
     modeStyle: 'area',
     list: [],
     visiableModal: false,
-    // regionStationDevice: [],
-    // stationDevicemode: [],
-    // regionStation: [],
-    // region: [],
-
+   
   }
 
   constructor(props) {
@@ -85,7 +81,7 @@ class TimeSelectReport extends React.Component {
       region: props.region,
     }
   }
- 
+
 
   onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
@@ -117,7 +113,7 @@ class TimeSelectReport extends React.Component {
   maxTagPlaceholder = () => {
     let count = 0;
     if (this.state.modeStyle === 'status') {
-      count = this.state.areaList.length
+      count = 10000;
     } else if (this.state.modeStyle === 'station') {
       count = 10000;
     } else if (this.state.modeStyle === 'modal') {
@@ -135,10 +131,11 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
+    console.log('v: ', v);
     this.setState({ list: v });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
   }
-  dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
+  dataFormater = (data=[], deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
     let test2 = [];
     let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData',
       selectCode = deviceDataType === 'mode' ? 'deviceModeCode' : 'deviceCode',
@@ -171,14 +168,14 @@ class TimeSelectReport extends React.Component {
     return test2
   }
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice, stationDevicemode, regionStation, region } = this.props;
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
     const { modeStyle, list, visiableModal, areaList, } = this.state;
     let modeData = this.dataFormater(stationDevicemode, 'mode');
     let windDeviceData = this.dataFormater(regionStationDevice, 'device');
-    let stationData=[];
-    regionStation.forEach((e,i)=>{
-      let stationChild=[];
-      e.stationData.forEach((item,index)=>{
+    let stationData = [];
+    regionStation.forEach((e, i) => {
+      let stationChild = [];
+      e.stationData.forEach((item, index) => {
         stationChild.push({
           ...item,
           key: item.stationCode,
@@ -192,8 +189,8 @@ class TimeSelectReport extends React.Component {
         children: stationChild
       })
     })
-    let stationArr=regionStation.map((e,i)=>e.stationData);
-    let stationList=stationArr.length&&stationArr.reduce((p,c)=>(p.concat(c)));
+    let stationArr = regionStation.map((e, i) => e.stationData);
+    let stationList = stationArr.length && stationArr.reduce((p, c) => (p.concat(c)));
 
 
 
@@ -213,7 +210,8 @@ class TimeSelectReport extends React.Component {
           </Radio.Group>
         </div>
         {
-          modeStyle === 'status' && <Select
+          modeStyle === 'status' &&  <div style={{ position: 'relative' }}>
+          <Select
             mode="multiple"
             placeholder="选择设备状态"
             value={list}
@@ -222,11 +220,24 @@ class TimeSelectReport extends React.Component {
             maxTagCount={0}
             maxTagPlaceholder={this.maxTagPlaceholder}
             filterOption={filterOption}
+            open={false}
           >
-            {areaList && areaList.map((e) => {
+           {/*
+           {areaList && areaList.map((e) => {
               return <Option key={e.key}>{e.title}</Option>
             })}
+          */}
           </Select>
+          <SelectModal
+            {...this.props}
+            list={list}
+            sourceData={modeData}
+            handleOK={this.onModalHandelOK}
+            visiable={visiableModal}
+            hideModal={this.hideModal}
+            showModal={this.showModal}
+            />
+          </div>
         }
         {
           modeStyle === 'area' && <Select
@@ -346,7 +357,8 @@ class TimeSelectReport extends React.Component {
           </div>
         }
         {
-          modeStyle === 'fault' && <Select
+          modeStyle === 'fault' && <div style={{ position: 'relative' }}>
+          <Select
             mode="multiple"
             placeholder="选择故障"
             value={list}
@@ -355,11 +367,22 @@ class TimeSelectReport extends React.Component {
             maxTagCount={0}
             maxTagPlaceholder={this.maxTagPlaceholder}
             filterOption={filterOption}
+            open={false}
           >
             {areaList && areaList.map((e) => {
               return <Option key={e.key}>{e.title}</Option>
             })}
           </Select>
+          <SelectModal
+          {...this.props}
+          list={list}
+          sourceData={windDeviceData}
+          handleOK={this.onModalHandelOK}
+          visiable={visiableModal}
+          hideModal={this.hideModal}
+          showModal={this.showModal}
+        />
+        </div>
         }
         {/*  
         <Button className={styles.btn} onClick={this.onSearch}>查询</Button>

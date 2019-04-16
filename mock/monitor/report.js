@@ -2,9 +2,7 @@
 let arr1 = Array(10).fill(1);
 let arr2 = Array(12).fill(1);
 
-
 module.exports = [
-
   { // 区域
     api: '/mock/v3/wind/report/fan/region',
     method: 'get',
