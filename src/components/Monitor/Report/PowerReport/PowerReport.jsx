@@ -40,7 +40,6 @@ class PowerReport extends Component {
     this.props.changePowerReportStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
-    console.log(value)
     const modeType = {
       "area": 1,
       "station": 2,

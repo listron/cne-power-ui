@@ -143,10 +143,7 @@ class TableList extends Component {
     const columns = this.initMonthColumn();
     const dataSource = powerReportList.map((e, i) => ({
       ...e, key: i,
-      pr: `${e.pr ? e.pr : '--'}%`,
-      resourceRate: `${e.resourceRate ? e.resourceRate : '--'}%`,
-      planGenRate: `${e.planGenRate ? e.planGenRate : '--'}%`,
-      powerRate: `${e.powerRate ? e.powerRate : '--'}%`
+     
     }))
     return (
       <React.Fragment>
@@ -156,7 +153,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 1440 }}
+          // scroll={{ x: 1440 }}
           pagination={false} />
       </React.Fragment>
     )
