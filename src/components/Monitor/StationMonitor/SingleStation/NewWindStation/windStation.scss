@@ -174,83 +174,9 @@
                 }
             }
         }
-        .trueTimeData {
-            height: 100px;
-            display: flex;
-            padding: 18px 25px;
-            color: $darkColor;
-            .valueFormat{
-                .int{
-                    font-size: 24px;
-                }
-                .decimal{
-                    font-size: 18px;
-                }
-            }
-            >div { // div不准写样式，垃圾代码。to remove
-                margin: 0 4px;
-            }
-            .powerScale {
-                width: 215px;
-                margin-right: 20px;
-            }
-            .stationYearPlan {
-                display: flex;
-                align-items: center;
-                flex-basis: 328px;
-            }
-            .annualEnergyScale {
-                // width: 230px;
-            }
-            div { // div不准写样式，谁写的这个代码，我打死他。
-                .trueTimeValue {
-                    font-size: 24px;
-                    color: $themeColor;
-                    display: flex;
-                    justify-content: space-between;
-                    line-height: 24px;
-                    height: 24px;
-                    >div {
-                        display: flex;
-                        justify-content: space-between;
-                    }
-                    .editYearPower{
-                        display: flex;
-                        justify-content: space-between;
-                        margin-right: 10px;
-                    }
-                    .iconStyle {
-                        cursor: pointer;
-                        height: 24px;
-                        :global {
-                            .iconfont {
-                                font-size: 16px;
-                            }
-                        }
-                    }
-                }
-                .trueTimeUnit {
-                    margin-top: 21px;
-                }
-                .trueTimeDesc {
-                    color: $darkColor;
-                    display: flex;
-                    justify-content: space-between;
-                }
-            }
-            .yearPlanRate {
-                width: 80px;
-                height: 25px;
-                border-radius: 25px;
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
-                color: $themeColor;
-                font-size: 18px;
-                text-align: center; //margin-top: 20px;
-            }
-        }
     }
     .headStation {
-        border-bottom: 1px dashed #dfdfdf;
+        // border-bottom: 1px dashed #dfdfdf;
         height: 108px;
         display: flex;
         color: $darkColor;
@@ -296,7 +222,6 @@
                 }
             }
         }
-
         .dataColumn {
             display: flex;
             flex-direction: column;
@@ -335,13 +260,139 @@
                 }
             }
         }
-
         .typeIcon {
             width: 120px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
+        }
+    }
+    .windContainer{
+        display: flex;
+        flex: 1;
+        .windList{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .threadAndDevice {
+                display: flex;
+                flex:1;
+                flex-direction: row;
+                // background:#f8f8f8;
+                background:pink;
+                height: 50px;
+                align-items: center;
+                .deviceTypeFlow {
+                    display: flex;
+                    text-align: center;
+                    justify-content: space-between;
+                    color: #dfdfdf;
+                    .deviceTypeItem,
+                    .elecnettingItem {
+                        .deviceTypeIcon {
+                           
+                        }
+                    }
+                }
+                :global {
+                    .ant-radio-group {
+                        display: flex;
+                        align-items: center;
+                    }
+                    .ant-radio-button-wrapper {
+                        background: #f8f8f8;
+                        height: 50px;
+                        line-height: 50px;
+                        border: none;
+                        &:first-child{
+                            border-radius:0
+                        }
+                        &:last-child{
+                            border-radius:0
+                        }
+                        &:hover{
+                            border: none;
+                            border-top:1px solid $themeColor;
+                            color: $themeColor;
+                            background: #fff;
+                        }
+                        
+                    }
+                   
+                    .ant-radio-button-wrapper-focused {
+                        color: $themeColor;
+                        background: #fff;
+                        box-shadow: none;
+                        &:after{
+                            border: none;
+                        }
+                    }
+                   
+                    .ant-radio-button-wrapper-checked {
+                        background: #fff;
+                        border: none;
+                        border-top:1px solid $themeColor;
+                        color: $themeColor;
+                        box-shadow: none;
+                        z-index: 1;
+                    }
+                    .ant-radio-button-wrapper:not(:first-child)::before {
+                        width: 0px;
+                    }
+                    .iconfont {
+                        font-size: 22px;
+                        cursor: pointer;
+                    }
+                    .alarmIcon{
+                        font-size: 14px;
+                        color: #a42b2c;
+                        margin-left: -8px;
+                    }
+                    .iconfont:hover {
+                        color: $themeColor;
+                    }
+
+                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
+                    //     height: 33px;
+                    // }
+                    // .ant-tabs-bar {
+                    //     border-top: 1px dashed #dfdfdf;
+                    //     border-bottom: 1px dashed #dfdfdf;
+                    //     margin: 0;
+                    // }
+                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar {
+                    //     border-color: #fff;
+                    // }
+                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
+                    //     border: 1px solid #fff;
+                    //     border-bottom: 0;
+                    //     border-radius: 4px 4px 0 0;
+                    //     background: #fff;
+                    // }
+                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
+                    //     width: 80px;
+                    //     height: 33px;
+                    //     text-align: center;
+                    //     color: $darkColor;
+                    // }
+                    // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
+                    //     background: #f8f8f8;
+                    //     border-radius: 4px 4px 0 0;
+                    //     width: 80px;
+                    //     height: 33px;
+                    //     text-align: center;
+                    //     color: $darkColor;
+                    // }
+                }
+            } 
+        }
+        .charts{
+            display: flex;
+            width: 464px;
+            background: #f8f8f8;
+            padding: 0 12px 20px;
+            flex-direction: column;
         }
     }
     .outputPowerDiagram {
@@ -378,111 +429,8 @@
             border-top: none
         }
     }
-    .threadAndDevice {
-        .deviceTypeFlow {
-            display: flex;
-            text-align: center;
-            justify-content: space-between;
-            color: #dfdfdf;
-            background: #f8f8f8;
-            padding: 16px 25px 0;
-            .deviceTypeItem,
-            .elecnettingItem {
-                // 正常单线流程
-                margin-top: 0px;
-                width: 110px;
-                height: 90px;
-                padding: 10px;
-                border: 0;
-                color: #dfdfdf;
-                .deviceTypeIcon {
-                    margin: 10px 10px 0;
-                    position: relative;
-                    .arrowgo {
-                        position: absolute;
-                        z-index: 999;
-                        right: -44px;
-                        top: 12px;
-                        pointer-events: none;
-                    }
-                }
-            }
-        }
-        :global {
-            .ant-radio-group {
-                display: flex;
-                align-items: center;
-                .ant-radio-button-wrapper-checked {
-                    background: #fff;
-                    border-color: $themeColor;
-                    color: $themeColor;
-                }
-            }
-            .ant-radio-button-wrapper:hover,
-            .ant-radio-button-wrapper-focused {
-                color: $themeColor;
-                position: relative;
-                background: #fff;
-            }
-            .ant-radio-button-wrapper {
-                background: #f8f8f8;
-            }
-            .ant-radio-button-wrapper-checked {
-                background: #fff;
-                border-color: $themeColor;
-                color: $themeColor;
-                -webkit-box-shadow: none;
-                box-shadow: none;
-                z-index: 1;
-            }
-            .ant-radio-button-wrapper:not(:first-child)::before {
-                width: 0px;
-            }
-            .iconfont {
-                font-size: 27px;
-                cursor: pointer;
-            }
-            .alarmIcon{
-                font-size: 14px;
-                color: #a42b2c;
-                margin-left: -8px;
-            }
-            .iconfont:hover {
-                color: $themeColor;
-            }
-            .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
-                height: 33px;
-            }
-            .ant-tabs-bar {
-                border-top: 1px dashed #dfdfdf;
-                border-bottom: 1px dashed #dfdfdf;
-                margin: 0;
-            }
-            .ant-tabs.ant-tabs-card>.ant-tabs-bar {
-                border-color: #fff;
-            }
-            .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-                border: 1px solid #fff;
-                border-bottom: 0;
-                border-radius: 4px 4px 0 0;
-                background: #fff;
-            }
-            .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-                width: 80px;
-                height: 33px;
-                text-align: center;
-                color: $darkColor;
-            }
-            .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
-                background: #f8f8f8;
-                border-radius: 4px 4px 0 0;
-                width: 80px;
-                height: 33px;
-                text-align: center;
-                color: $darkColor;
-            }
-        }
-    } // 列表
+   
+    // 列表
     .fanList {
         .inverterTab {
             .inverterRight {

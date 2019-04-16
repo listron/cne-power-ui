@@ -519,6 +519,12 @@ function* getFanList(action) {
     console.log(e);
   }
 }
+
+function getRealSingleData(){
+  
+}
+
+
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   yield takeLatest(singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, changeSingleStationStore);
