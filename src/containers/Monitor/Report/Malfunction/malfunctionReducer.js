@@ -3,6 +3,7 @@ import { malfunctionAction } from './malfunctionAction';
 import moment from 'moment';
 
 var initState = Immutable.fromJS({
+  selectStationType:'0',
   loading: false,
   dateType: 1,//day/month/year/custom
   summaryType: 1,//area/station/modal/wind
