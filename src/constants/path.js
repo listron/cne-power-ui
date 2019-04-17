@@ -287,6 +287,11 @@ export default {
       getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+                  
+      getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
+      getWindStation:'/v3/wind/monitor/stations', // 全部风电站
+      getWindCapability:'/v3/wind/monitor/stations/capabilitydiagram',// 风电站出力图
+      getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 风电站出力图
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总  
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表
