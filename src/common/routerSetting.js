@@ -108,20 +108,20 @@ const routers = [
   },
   { //实时监控-报表查询-电量报表
     path: '/monitor/report/powerReport',
-    component: lazy(() => import('../components/Common/Building/Building')),
-    // component: () => import('../containers/Monitor/Report/PowerReport/PowerReport'),
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component:  lazy(() => import('../containers/Monitor/Report/PowerReport/PowerReport')),
   }, { //实时监控-报表查询-设备状态
     path: '/monitor/report/deviceStatus',
     component: lazy(() => import('../components/Common/Building/Building')),
-    // component: () => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus'),
+    // component: lazy(() => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
   }, { //实时监控-报表查询-故障报表
     path: '/monitor/report/malfunction',
     component: lazy(() => import('../components/Common/Building/Building')),
-    // component: () => import('../containers/Monitor/Report/Malfunction/Malfunction'),
+    // component: lazy(() => import('../containers/Monitor/Report/Malfunction/Malfunction')),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
     component: lazy(() => import('../components/Common/Building/Building')),
-    // component: () => import('../containers/Monitor/Report/PowerLost/PowerLost'),
+    // component:lazy(() => import('../containers/Monitor/Report/PowerLost/PowerLost')),
   },
   // { // 隐藏页： 修改密码
   //   path: '/hidden/user/editPassword',
@@ -188,6 +188,9 @@ const routers = [
   }, { // 统计报表
     path: '/statistical/statement/currency',
     component: lazy(() => import('../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport')),
+  }, { // 统计报表-智能分析报告
+    path: '/statistical/statement/intelligentAnalysis',
+    component: lazy(() => import('../containers/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/IntelligentAnalysis')),
   }, { // 高级分析 实时告警
     path: '/analysis/intelligentWarning/realtime',
     component: lazy(() => import('../containers/HighAnalysis/IntelligentWarning/RealTimeWarning/RealTimeWarning')),
