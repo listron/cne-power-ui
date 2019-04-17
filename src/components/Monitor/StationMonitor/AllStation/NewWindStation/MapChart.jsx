@@ -33,8 +33,8 @@ const MapChart = ({ ...data }) => {
         },
         geo: {
           map: 'china',
-          layoutCenter: ['50%', '47%'],
-          layoutSize: '110%',
+          layoutCenter: ['50%', '50%'],
+          layoutSize: '100%',
           itemStyle: {
             normal: {
               areaColor: '#d8eef6',
@@ -106,7 +106,8 @@ const MapChart = ({ ...data }) => {
               ...dataItem,
               key: index,
               name: dataItem.stationName,
-              value: [dataItem.longitude, dataItem.latitude, 10]
+              value: [dataItem.longitude, dataItem.latitude, 10],
+              symbol:dataItem.alarmNum>0?`image:///img/wind02.png`:`image:///img/wind01.png`
             }
           }),
           symbol: `image:///img/wind01.png`,
@@ -121,10 +122,11 @@ const MapChart = ({ ...data }) => {
               ...dataItem,
               key: index,
               name: dataItem.stationName,
-              value: [dataItem.longitude, dataItem.latitude, 10]
+              value: [dataItem.longitude, dataItem.latitude, 10],
+              symbol: dataItem.alarmNum>0?`image:///img/windcutdown2.png`:`image:///img/cutdown.png`,
             }
           }),
-          symbol: `image:///img/cutdown.png`,
+         symbol: `image:///img/cutdown.png`,
           rotation: () => { let rotation = 0; (rotation += Math.PI / 360) % (Math.PI * 2) },
           symbolSize: [21, 28],
         },

@@ -53,7 +53,7 @@ const PowerDiagram = ({ ...rest }) => {
     const chartsBox = document.getElementById('powerDiagram');
     if (chartsBox) {
         const powerDiagram = echarts.init(chartsBox);
-        powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
+        // powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
         const lineColor = '#666';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = { //实际发电量 计划发电量
@@ -96,7 +96,7 @@ const PowerDiagram = ({ ...rest }) => {
                     let paramsItem = '';
                     params.forEach(item => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-                        ${item.seriesName} :  ${item.value}${item.seriesName==='完成率' && '%'}</div>`
+                        ${item.seriesName} :  ${item.value}${item.seriesName==='完成率' && '%' || ''}</div>`
                     });
                     return (
                         `<div class=${styles.tooltipBox}>

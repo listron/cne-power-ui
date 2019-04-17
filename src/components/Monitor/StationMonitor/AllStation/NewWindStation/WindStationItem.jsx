@@ -84,19 +84,19 @@ class WindStationItem extends React.Component {
 
   render() {
     const { stationDataList } = this.props;
-    const temType = stationDataList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
+    const temType = stationDataList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']) });
     let filteredStation = [];
     temType.forEach(e => {
       let findExactStation = false;
       filteredStation.forEach(m => {
-        if (m.regionName === e.provinceName) {
+        if (m.regionName === e.regionName) {
           findExactStation = true;
           m.stations.push(e);
         }
       })
       if (!findExactStation) {
         filteredStation.push({
-          regionName: e.provinceName,
+          regionName: e.regionName,
           stations: [e]
         })
       }

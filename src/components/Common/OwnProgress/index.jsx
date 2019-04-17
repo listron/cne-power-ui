@@ -17,7 +17,7 @@ import { Progress } from "antd";
 class OwnProgress extends React.Component {
     static propTypes = {
         percent: PropTypes.number,
-        successPercent: PropTypes.number || PropTypes.String,
+        successPercent: PropTypes.any,
         fromRight: PropTypes.bool,
         active: PropTypes.bool,
     }
