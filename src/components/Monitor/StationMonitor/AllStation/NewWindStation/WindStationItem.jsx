@@ -48,7 +48,7 @@ class WindStationItem extends React.Component {
       { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
       { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
-      { name: '应发功率', value: 'useCapacity', point: 2, unit: '%' },
+      { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW' },
       { name: '装机台数', value: 'stationUnitCount', point: 0, unit: '台' },
       { name: '正常运行台数', value: 'normalNum', point: 0, unit: '台' },
       { name: '待机台数', value: 'standbyNum', point: 0, unit: '台' },

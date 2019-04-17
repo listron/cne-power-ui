@@ -42,6 +42,7 @@ const SpeedScatter = ({ ...rest }) => {
             },
             grid: {
                 top: 70,
+                left:70,
             },
             tooltip: {
                 trigger: 'item',

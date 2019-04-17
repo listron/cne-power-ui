@@ -11,7 +11,7 @@ const RadioButton = Radio.Button;
 
 
 const PowerDiagram = ({ ...rest }) => {
-    const { powerData, getRealMonitorPower,stopRealCharstData } = rest;
+    const { powerData, getRealMonitorPower, stopRealCharstData } = rest;
     const [intervalTime, setIntervalTime] = useState(0);
     useEffect(() => {
         let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
@@ -20,7 +20,8 @@ const PowerDiagram = ({ ...rest }) => {
         } else if (intervalTime === 2) {
             startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
         }
-        let endTime = moment().format('YYYY-MM-DD')
+        let endTime = moment().format('YYYY-MM-DD');
+        stopRealCharstData('power');
         getRealMonitorPower({ intervalTime, startTime, endTime })
         return () => {
             stopRealCharstData('power');
@@ -32,19 +33,27 @@ const PowerDiagram = ({ ...rest }) => {
         setIntervalTime(intervalTime);
     }
 
+    const unitFormarts = (data, quantity) => {
+        if (isNaN(data) || (!data && data !== 0)) {
+            return '--';
+        }
+        return data / quantity
+    }
 
-    const actualPower = powerData.map(e =>dataFormats(e.actualPower,'--',2,true) );  // 实际发电量
+   
+    const actualPower = powerData.map(e => dataFormats(unitFormarts(e.actualPower,10000), '--', 2, true));  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
-    const theoryPower = powerData.map(e =>dataFormats( e.theoryPower,'--',2,true)); // 计划发电量
+    const theoryPower = powerData.map(e => dataFormats(unitFormarts(e.theoryPower,10000), '--', 2, true)); // 计划发电量
     const filterTheoryPower = powerData.filter(e => e.theoryPower);
-    const instantaneous = powerData.map(e =>dataFormats(e.instantaneous,'--',2,true)); // 风速／累计曝幅值
+    const instantaneous = powerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 风速／累计曝幅值
     const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2,true));  // 完成率
+    const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
     const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
     ) ? showNoData : hiddenNoData;
     const chartsBox = document.getElementById('powerDiagram');
     if (chartsBox) {
         const powerDiagram = echarts.init(chartsBox);
+        powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
         const lineColor = '#666';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = { //实际发电量 计划发电量
@@ -63,6 +72,7 @@ const PowerDiagram = ({ ...rest }) => {
             grid: {
                 right: 90,
                 top: 70,
+                left:70,
             },
             legend: {
                 left: 'center',
@@ -81,12 +91,12 @@ const PowerDiagram = ({ ...rest }) => {
                     fontSize: 12,
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-                padding:0,
+                padding: 0,
                 formatter: (params) => {
                     let paramsItem = '';
                     params.forEach(item => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-                        ${item.seriesName} :  ${item.value}</div>`
+                        ${item.seriesName} :  ${item.value}${item.seriesName==='完成率' && '%'}</div>`
                     });
                     return (
                         `<div class=${styles.tooltipBox}>
@@ -117,6 +127,7 @@ const PowerDiagram = ({ ...rest }) => {
                     },
                     axisLabel: {
                         color: lineColor,
+                        interval: 0
                     },
                     axisTick: { show: false },
                     boundaryGap: [true, true],
@@ -124,7 +135,7 @@ const PowerDiagram = ({ ...rest }) => {
             ],
             yAxis: [
                 {
-                    name: '功率(MW)',
+                    name: '电量(万kWh)',
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
