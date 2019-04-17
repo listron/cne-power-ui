@@ -2,11 +2,10 @@
 
 export const singleStationAction = {
   GET_SINGLE_STATION_SAGA: Symbol('GET_SINGLE_STATION_SAGA'),//	获取单电站实时数据
-  SINGLE_STATION_FETCH: Symbol('SINGLE_STATION_FETCH'),//loading
-  GET_SINGLE_STATION_SUCCESS:Symbol('GET_SINGLE_STATION_SUCCESS'),//请求成功
+
+ 
   GET_SINGLE_STATION_FAIL: Symbol('GET_SINGLE_STATION_FAIL'),//请求失败
-  CHANGE_SINGLE_STATION_STORE_SAGA: Symbol('CHANGE_SINGLE_STATION_STORE_SAGA'),//请求改变单电站store数据
-  CHANGE_SINGLE_STATION_STORE: Symbol('CHANGE_SINGLE_STATION_STORE'),//改变单电站store数据成功
+  
   GET_STATION_LIST_SAGA: Symbol('GET_STATION_LIST_SAGA'),//获取电站列表
   GET_CAPABILITY_DIAGRAM_SAGA: Symbol('GET_CAPABILITY_DIAGRAM_SAGA'),//获取出力图数据
   GET_MONITOR_POWER_SAGA: Symbol('GET_MONITOR_POWER_SAGA'),//获取理论发电量 实际发电量数据
@@ -27,9 +26,11 @@ export const singleStationAction = {
   GET_STATION_DEVICELIST_SAGA: Symbol('GET_STATION_DEVICELIST_SAGA'),//获取单电站设备列表
   EDIT_MONTH_YEAR_DATA_SAGA:Symbol('EDIT_MONTH_YEAR_DATA_SAGA'),//编辑月/年累计发电量
   getFanList:Symbol('getFanList'),//风机实时数据列表
-  RESET_SINGLE_STATION_STORE:Symbol('RESET_SINGLE_STATION_STORE'),//重置store状态
-  RESET_SINGLE_STATION_SUCCESS:Symbol('RESET_SINGLE_STATION_SUCCESS'),//重置store状态成功
 
+  resetStore:Symbol('resetStore'),//重置store状态
+  changeSingleStationStore: Symbol('changeSingleStationStore'),//改变单电站store数据成功
+  getSingleStationSuccess:Symbol('getSingleStationSuccess'),//请求成功 
+  singleStationFetch: Symbol('singleStationFetch'),//loading
 
   getRealSingleData:Symbol('getRealSingleData'), //  获取单电站的数据
   stopRealData:Symbol('stopRealData'), // 停止实时数据

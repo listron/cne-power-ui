@@ -159,7 +159,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeSingleStationStore: payload => dispatch({ type: singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, payload }),
+  changeSingleStationStore: payload => dispatch({ type: singleStationAction.changeSingleStationStore, payload }),
   getSingleStation: payload => dispatch({ type: singleStationAction.GET_SINGLE_STATION_SAGA, payload }),
   getCapabilityDiagram: payload => dispatch({ type: singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload }),
   getMonitorPower: payload => dispatch({ type: singleStationAction.GET_MONITOR_POWER_SAGA, payload }),
@@ -179,9 +179,9 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerNet: payload => dispatch({ type: singleStationAction.getPowerNet, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
-  resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
 
-  
+
+  resetSingleStationStore: payload => dispatch({ type: singleStationAction.resetStore }),
   getRealSingleData: payload => dispatch({ type: singleStationAction.getRealSingleData }),
 
 

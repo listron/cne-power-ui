@@ -30,16 +30,13 @@ var initState = Immutable.fromJS({
 
 const singleStationReducer = (state = initState, action) => {
   switch (action.type) {
-    case singleStationAction.SINGLE_STATION_FETCH:
+    case singleStationAction.singleStationFetch:
       return state.set('loading',true);
-    case singleStationAction.GET_SINGLE_STATION_SUCCESS :
+    case singleStationAction.getSingleStationSuccess :
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
-    case singleStationAction.CHANGE_SINGLE_STATION_STORE:
+    case singleStationAction.changeSingleStationStore:
       return state.merge(Immutable.fromJS(action.payload));
-    case singleStationAction.GET_SINGLE_STATION_FAIL:
-      return state.set('loading', false)
-                  .set('error', Immutable.fromJS(action.data));
-    case singleStationAction.RESET_SINGLE_STATION_SUCCESS:
+    case singleStationAction.resetStore:
       return initState;
   }
   return state;
