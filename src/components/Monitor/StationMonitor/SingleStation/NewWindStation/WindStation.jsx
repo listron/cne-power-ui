@@ -35,7 +35,8 @@ class WindStation extends Component {
     powerNetList: PropTypes.array,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
-    getRealSingleData: PropTypes.array,
+    weatherList: PropTypes.array,
+    operatorList: PropTypes.array,
   }
 
   constructor(props) {
@@ -45,8 +46,7 @@ class WindStation extends Component {
     }
   }
 
-  componentDidMount(){
-    this.props.getRealSingleData()
+  componentDidMount() {
   }
 
   onSelectedDeviceType = (deviceTypeCode) => {
@@ -73,15 +73,19 @@ class WindStation extends Component {
 
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList } = this.props;
-    console.log('test',this.props)
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList} = this.props;
+    // console.log('test', this.props)
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => { return e.deviceTypes && e.deviceTypes[0] });
     const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
     let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
     return (
       <div className={styles.windStation} >
-        <WindStationTop singleStationData={singleStationData} stationList={stationList} />
+        <WindStationTop
+          singleStationData={singleStationData}
+          stationList={stationList}
+          weatherList={weatherList}
+          operatorList={operatorList} />
         <WindStationHeader singleStationData={singleStationData} />
         <div className={styles.windContainer}>
           <div className={styles.windList}>
@@ -99,8 +103,8 @@ class WindStation extends Component {
                   </RadioButton>
                 </RadioGroup>
               </div>
-              {deviceTypeCode===101 &&
-               <div> tets</div>
+              {deviceTypeCode === 101 &&
+                <div> tets</div>
               }
             </div>
             {deviceTypeCode === 101 && <FanList {...this.props} />}

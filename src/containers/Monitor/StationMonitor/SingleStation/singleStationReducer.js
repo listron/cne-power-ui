@@ -26,6 +26,7 @@ var initState = Immutable.fromJS({
   error: {},//请求错误返回信息
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表
+  singleStationScatter:[],// 等效小时散点图
 });
 
 const singleStationReducer = (state = initState, action) => {

@@ -16,6 +16,8 @@ class WindStationTop extends Component {
     match: PropTypes.object,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
+    weatherList: PropTypes.array,
+    operatorList: PropTypes.array,
 
   }
 
@@ -50,14 +52,15 @@ class WindStationTop extends Component {
   }
 
   render() {
-    const { singleStationData = {}, stationList } = this.props;
+    const { singleStationData = {}, stationList,weatherList,operatorList } = this.props;
     const { showStationList } = this.state;
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
     const currentStationName = singleStationData.stationName;
     const { stationStatus = {} } = singleStationData;
     const { stationStatusName, stationStatusTime } = stationStatus;
-    const weatherList = [
+    /**  * 
+     const weatherList = [
       {
         "id": "382047488395303",
         "stationCode": 74,
@@ -150,7 +153,7 @@ class WindStationTop extends Component {
         "userName": "houqiang",
         "userId": "324224850599938"
       }
-    ]
+    ] **/
     const todayWeather = weatherList.length > 0 && weatherList[0] || {}
     return (
       <div className={styles.stationTop} >

@@ -7,15 +7,15 @@ import { message } from 'antd';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 import moment from 'moment';
-let singleStationInterval = null;
 message.config({ top: 120,  duration: 2, maxCount: 2});
 
 function* getSingleStation(action) { //获取单电站实时数据
-  const { payload, stationType } = action;
+  const { payload } = action;
+  const {stationCode,stationType}=payload;
   const utcTime = moment.utc().format();
-  const pvUrl = `${APIBasePath}${monitor.getSingleStation}${payload.stationCode}/${utcTime}`;
-  const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${payload.stationCode}/${utcTime}`;
-  const url = stationType === 'wind' ? windUrl : pvUrl;
+  const pvUrl = `${APIBasePath}${monitor.getSingleStation}${stationCode}/${utcTime}`;
+  const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
+  const url = stationType === '0' ? windUrl : pvUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -502,17 +502,36 @@ function* getFanList(action) { // 获取风机实时数据列表
   }
 }
 
-function* getRealSingleData(action) {
-  yield fork(getSingleStation, { ...action, stationType: 'wind' });
-  delay(10000);
-  singleStationInterval = yield fork(getRealSingleData, action);
-}
-
-function* stopRealData(type) {
-  if (type === 'wind' && singleStationInterval) {
-    yield cancel(singleStationInterval);
+function* getSingleScatter(action){
+  const { payload } = action;
+  const {stationCode}=payload;
+  const localDate=moment().format('YYYY-MM-DD');
+  const url = `${APIBasePath}${monitor.getSingleWindScatter}/${stationCode}/${localDate}`;
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.singleStationFetch });
+    }
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.getSingleStationSuccess,
+        payload: {
+          singleStationScatter: response.data.data || [],
+        }
+      })
+    }else {throw response.data}
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.getSingleStationSuccess,
+      payload: {
+        singleStationScatter: [],
+      }
+    })
   }
 }
+
+
 
 export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
@@ -534,8 +553,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getFanList, getFanList);//风机实时数据列表
   yield takeLatest(singleStationAction.getBoosterstation, getBoosterstation); // 升压站列表信息
   yield takeLatest(singleStationAction.getPowerNet, getPowerNet); // 获取电网信息列表
+  yield takeLatest(singleStationAction.getSingleScatter, getSingleScatter); // 获取电网信息列表
 
-  yield takeLatest(singleStationAction.getRealSingleData, getRealSingleData); // 单电站分电站的数据
-  yield takeEvery(singleStationAction.stopRealData, stopRealData);
 }
 

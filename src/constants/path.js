@@ -245,6 +245,7 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
+      getSingleStationDeviceList: '/v3/wind/monitor/station/devices/',//风单电站设备列表
       editData: '/v3/management/stationgen',//编辑月，年的累计发电量
 
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
@@ -292,7 +293,8 @@ export default {
       getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
       getWindStation:'/v3/wind/monitor/stations', // 全部风电站
       getWindCapability:'/v3/wind/monitor/stations/capabilitydiagram',// 风电站出力图
-      getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 风电站出力图
+      getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
+      getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总  
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表

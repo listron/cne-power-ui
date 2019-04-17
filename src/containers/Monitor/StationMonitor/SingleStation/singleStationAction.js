@@ -31,7 +31,5 @@ export const singleStationAction = {
   changeSingleStationStore: Symbol('changeSingleStationStore'),//改变单电站store数据成功
   getSingleStationSuccess:Symbol('getSingleStationSuccess'),//请求成功 
   singleStationFetch: Symbol('singleStationFetch'),//loading
-
-  getRealSingleData:Symbol('getRealSingleData'), //  获取单电站的数据
-  stopRealData:Symbol('stopRealData'), // 停止实时数据
+  getSingleScatter: Symbol('getSingleScatter'),// 等效散点图数据
 }
