@@ -14,6 +14,36 @@ class windStationHeader extends React.Component {
     super(props, context)
   }
 
+  DeviceValueFormat = (data, placeholder = '--', pointLength, special = false) => {
+    let point = pointLength;
+    if (special) { // 特殊的设置 只针对风电
+      if (data > 100) point = 0;
+      if (data > 0.01 && data <= 100) point = 2;
+      if (data <= 0.01) point = 4;
+    }
+    let showData = dataFormats(data, placeholder, point, true)
+    if (showData !== '--') {
+      const valueArr = showData.split('.');
+      const intNum = valueArr[0];
+      const pointNum = valueArr[1];
+      return (
+        <span className={styles.valueFormat}>
+          <span className={styles.int} style={{ fontSize: 24 }}>{numWithComma(intNum)}</span>
+          {pointNum && <span className={styles.decimal} style={{ fontSize: 18 }}>.{pointNum}</span>}
+        </span>
+      )
+    } else {
+      return showData
+    }
+  }
+
+  unitFormarts = (data, quantity) => {
+    if (isNaN(data) || (!data && data !== 0)) {
+      return '--';
+    }
+    return data / quantity
+  }
+
   render() {
     const { windMonitorStation, } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
@@ -21,10 +51,10 @@ class windStationHeader extends React.Component {
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
-    const dayPower = stationDataSummary.dayPower;
-    const monthPower = stationDataSummary.monthPower;
+    const dayPower = this.unitFormarts(stationDataSummary.dayPower, 10000);
+    const monthPower = this.unitFormarts(stationDataSummary.monthPower, 10000);
     const monthRate = stationDataSummary.monthRate;
-    const yearPower = stationDataSummary.yearPower;
+    const yearPower = this.unitFormarts(stationDataSummary.yearPower, 10000);
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
     const capabilityRate = stationDataSummary.yearRate;

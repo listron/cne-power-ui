@@ -11,6 +11,7 @@ import { MapChart } from './MapChart.jsx';
 import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { SpeedScatter } from '../../WindCommon/SpeedScatter';
+import { dataFormats } from '../../../../../utils/utilFunc';
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button
 
@@ -103,13 +104,12 @@ class WindStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
-    const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData,scatterData } = this.props;
+    const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData, scatterData } = this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
-    const alarmNum = stationDataSummary.alarmNum || '--';
     const deviceStatus = [
       { name: '运行', value: 'normalNum' },
       { name: '待机', value: 'standbyNum' },
-      { name: '停机', value: 'standbyNums' },
+      { name: '停机', value: 'shutdownNum' },
       { name: '维护', value: 'maintainNum' },
       { name: '故障', value: 'errorNum' },
       { name: '通讯中断', value: 'interruptNum' },
@@ -162,7 +162,7 @@ class WindStation extends React.Component {
           {stationShowType !== 'stationList' &&
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
-                <Link to={`/monitor/alarm/realtime`}> 查看告警 {alarmNum} </Link>
+                <Link to={`/monitor/alarm/realtime`}> 查看告警 {dataFormats(stationDataSummary.alarmNum,'--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
               </div>
@@ -170,7 +170,7 @@ class WindStation extends React.Component {
                 <div className={styles.deviceStaTitle}> <span>设备状态</span> <i className="iconfont icon-more"></i> </div>
                 <div className={styles.deviceStaCont}>
                   {deviceStatus.map(e => {
-                    return <span key={e.value}>{e.name} {stationDataList[e.value] || '--'}</span>
+                    return <span key={e.value}>{e.name} {dataFormats(stationDataSummary[e.value],'--')}</span>
                   })}
                 </div>
               </div>

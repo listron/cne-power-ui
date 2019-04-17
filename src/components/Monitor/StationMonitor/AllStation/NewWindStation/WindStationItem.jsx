@@ -48,7 +48,7 @@ class WindStationItem extends React.Component {
       { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
       { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
-      { name: '应发功率', value: 'useCapacity', point: 2, unit: '%' },
+      { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW' },
       { name: '装机台数', value: 'stationUnitCount', point: 0, unit: '台' },
       { name: '正常运行台数', value: 'normalNum', point: 0, unit: '台' },
       { name: '待机台数', value: 'standbyNum', point: 0, unit: '台' },
@@ -65,11 +65,12 @@ class WindStationItem extends React.Component {
         <div className={currentStatus === '400' && styles.poNomal || styles.poInterrupt}>{currentStatus === '400' ? '通讯正常' : '通讯中断'}</div>
         <div className={styles.popCont}>
           {needData.map((e, index) => {
+             console.log()
             return (
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
                 <div>
-                  <span className={styles.value}>{dataFormats(item[e.stationPower], '--', e.point, true)}</span>
+                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true)}</span>
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>
@@ -83,19 +84,19 @@ class WindStationItem extends React.Component {
 
   render() {
     const { stationDataList } = this.props;
-    const temType = stationDataList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
+    const temType = stationDataList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']) });
     let filteredStation = [];
     temType.forEach(e => {
       let findExactStation = false;
       filteredStation.forEach(m => {
-        if (m.regionName === e.provinceName) {
+        if (m.regionName === e.regionName) {
           findExactStation = true;
           m.stations.push(e);
         }
       })
       if (!findExactStation) {
         filteredStation.push({
-          regionName: e.provinceName,
+          regionName: e.regionName,
           stations: [e]
         })
       }

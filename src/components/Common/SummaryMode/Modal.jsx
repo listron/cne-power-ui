@@ -47,6 +47,7 @@ class SelectModal extends Component {
     this.setState({ checkedKeys: nextProps.list });
   }
   onCheck = (checkedKeys) => {
+    console.log('checkedKeys: ', checkedKeys);
     this.setState({ checkedKeys });
   }
   showModal = () => {
@@ -57,10 +58,12 @@ class SelectModal extends Component {
   }
   handleOK = () => {
     let keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
+    console.log('keys: ', keys);
     this.props.handleOK(keys);
   }
   //去除选中节点中的父节点 需要递归
   delParentNode = (data, keys) => {
+    console.log('data, keys: ', data, keys);
     data.forEach(e => {
       if (e.children) {
         this.delParentNode(e.children, keys)
@@ -140,7 +143,7 @@ class SelectModal extends Component {
             <Tree
               checkable
               autoExpandParent={true}
-              defaultExpandAll={true}
+              // defaultExpandAll={true}
               onCheck={this.onCheck}
               checkedKeys={this.state.checkedKeys}
               blockNode={false}

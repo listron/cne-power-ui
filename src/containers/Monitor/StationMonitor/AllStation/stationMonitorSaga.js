@@ -131,7 +131,7 @@ function* getCapabilityDiagram(action) {
 function* getMonitorPower(action) {
   const { payload } = action;
   const { intervalTime, startTime, endTime } = payload;
-  const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${-1}`;
   // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + 350 + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
   try {
     const response = yield call(axios.get, url);
@@ -182,7 +182,7 @@ function* getMonitorScatter(action) {
 
 function* getRealChartsData(action) { // 获取出力图和日等效利用小时散点数
   const { payload } = action;
-  const { capability} = payload;
+  const { capability } = payload;
   yield fork(getCapabilityDiagram, { ...capability });
   yield fork(getMonitorScatter);
   yield delay(3600000); // 阻塞1小时
@@ -191,17 +191,24 @@ function* getRealChartsData(action) { // 获取出力图和日等效利用小时
 }
 
 function* getRealMonitorPower(action) {
-  yield fork(getMonitorPower, action);
+  realPowerInterval = yield fork(getMonitorPower, action);
   yield delay(3600000); // 阻塞1小时
   // yield delay(10000); // 阻塞10秒
   realPowerInterval = yield fork(getRealMonitorPower, action);
 }
 
-function* stopRealCharstData(type) {
+function* stopRealCharstData(action) {
+  const { payload } = action;
   if (realChartsInterval) {
     yield cancel(realChartsInterval);
   }
-  if (type === 'power' && realPowerInterval) {
+  if (payload === 'power' && realPowerInterval) {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        powerData: []
+      }
+    })
     yield cancel(realPowerInterval);
   }
 }
