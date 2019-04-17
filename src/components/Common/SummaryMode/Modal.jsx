@@ -47,7 +47,7 @@ class SelectModal extends Component {
     this.setState({ checkedKeys: nextProps.list });
   }
   onCheck = (checkedKeys) => {
-    console.log('checkedKeys: ', checkedKeys);
+    
     this.setState({ checkedKeys });
   }
   showModal = () => {
@@ -58,12 +58,12 @@ class SelectModal extends Component {
   }
   handleOK = () => {
     let keys = this.delParentNode(this.props.sourceData, [...this.state.checkedKeys]);
-    console.log('keys: ', keys);
+    
     this.props.handleOK(keys);
   }
   //去除选中节点中的父节点 需要递归
   delParentNode = (data, keys) => {
-    console.log('data, keys: ', data, keys);
+    
     data.forEach(e => {
       if (e.children) {
         this.delParentNode(e.children, keys)
@@ -99,11 +99,13 @@ class SelectModal extends Component {
         }
         if (e && e.deviceCode) {
           selectArray.push(e.deviceCode)
+            // selectArray.push(`${e.deviceCode}_${e.deviceCode}`)
         } else if (e && e.deviceModeCode) {
-          selectArray.push(e.deviceModeCode)
+           selectArray.push(`${e.key}`)
+          //  selectArray.push(e.deviceModeCode)
         } 
 
-        console.log('selectArray: ', selectArray);
+        
       })
       return selectArray.length>0?selectArray:selectStation;
     }
