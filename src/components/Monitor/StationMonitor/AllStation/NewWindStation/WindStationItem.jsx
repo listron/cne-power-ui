@@ -40,19 +40,20 @@ class WindStationItem extends React.Component {
     }
   }
 
+
   renderPopover = (item) => {
     const stationStatus = item.stationStatus || {};
     const currentStatus = stationStatus.stationStatus;
     let needData = [
-      { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW' },
+      { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW',quantity:1000 },
       { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
       { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
-      { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW' },
+      { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW',quantity:1000 },
       { name: '装机台数', value: 'stationUnitCount', point: 0, unit: '台' },
       { name: '正常运行台数', value: 'normalNum', point: 0, unit: '台' },
       { name: '待机台数', value: 'standbyNum', point: 0, unit: '台' },
-      { name: '停机台数', value: 'stationPower', point: 0, unit: '台' },
+      { name: '停机台数', value: 'shutdownNum', point: 0, unit: '台' },
       { name: '维护台数', value: 'maintainNum', point: 0, unit: '台' },
       { name: '故障台数', value: 'errorNum', point: 0, unit: '台' },
       { name: '通讯中断台数', value: 'interruptNum', point: 0, unit: '台' },
@@ -70,7 +71,7 @@ class WindStationItem extends React.Component {
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
                 <div>
-                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true)}</span>
+                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true,e.quantity)}</span>
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>
@@ -112,7 +113,7 @@ class WindStationItem extends React.Component {
                 {e.stations.sort((a,b)=>{return a.stationStatus.stationStatus-b.stationStatus.stationStatus}).map((item, index) => {
                   const stationStatus = item.stationStatus || {};
                   const currentStatus = stationStatus.stationStatus;
-                  const percent = (item.stationPower && item.stationCapacity) ? item.stationPower / item.stationCapacity * 100 : 0;
+                  const percent = (item.stationPlanPower && item.stationCapacity) ? item.stationPower / item.stationCapacity * 100 : 0;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
@@ -128,7 +129,7 @@ class WindStationItem extends React.Component {
                           {currentStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
                         </div>
                         <div className={styles.stationCardProgress}>
-                          <OwnProgress percent={percent} successPercent={item.capabilityRate} />
+                          <OwnProgress percent={item.capabilityRate} successPercent={percent} />
                         </div>
                         <div className={styles.stationCardValue}>
                           <div className={styles.stationMark}>{dataFormats(item.stationPower, '--', 2, true)} MW</div>
