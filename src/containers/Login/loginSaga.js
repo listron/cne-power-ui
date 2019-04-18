@@ -4,6 +4,7 @@ import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from './loginAction';
+import { commonAction } from '../alphaRedux/commonAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
 import { Base64 } from 'js-base64';
@@ -358,9 +359,7 @@ function *joinEnterprise(action){
           password: params.password,
         }
       });
-      Cookie.set('userFullName', params.userFullname);
       message.success(response.data.message);
-
     } else{
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
@@ -396,11 +395,14 @@ function *resetPassword(action){
       }),
     });
     if(response.data.code === "10000"){
-      message.success('密码设置成功！');
+      Cookie.set('isNotLogin', 0);
       Cookie.set('userFullName', params.userFullname);
-      Cookie.set('isNotLogin', 0); // 直接登录。
-      // yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
-    }else{
+      message.success('密码设置成功！');
+      yield put({ // 触发render 让cookie生效。
+        type: commonAction.changeCommonStore,
+        params: { userFullName: params.userFullname }
+      })
+    } else {
       yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
       message.error('设置失败！');
     }

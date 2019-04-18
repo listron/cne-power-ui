@@ -5,6 +5,7 @@ import { commonAction } from './commonAction';
 var initState = Immutable.fromJS({
   enterpriseId:'',
   enterpriseName: '',
+  userFullName: '',
   loading: false,
   stations: [], // 所有电站
   stationTypeCount:'none', //电站类型  multiple(两种)  pv wind none 

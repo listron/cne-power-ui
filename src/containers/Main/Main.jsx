@@ -173,6 +173,7 @@ const mapStateToProps = (state) => {
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
     username: state.login.get('username'),
+    userFullName: state.common.get('userFullName'),
   });
 }
 
