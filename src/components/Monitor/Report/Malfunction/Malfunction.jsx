@@ -32,7 +32,7 @@ class Malfunction extends Component {
   }
 
   onTimeChange = (value) => {
-    console.log(value)
+
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -42,18 +42,19 @@ class Malfunction extends Component {
     this.props.changeMalfunctionStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
-    console.log(value)
+
     const modeType = {
       "area": 1,
       "station": 2,
       "modal": 3,
       "wind": 4,
       "fault": 5,
-    }
-    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    };
+    const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
+    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list })
   }
   onSearch = () => {
-    
+
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {
@@ -66,6 +67,7 @@ class Malfunction extends Component {
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportDevicefault}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod };
     let timeZone = moment().zone();
     // const modeType = ['状态', '区域', '电站', '型号', '风机','设备状态'];
     // const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -73,13 +75,9 @@ class Malfunction extends Component {
       url,
       fileName: `故障报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })

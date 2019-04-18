@@ -109,20 +109,37 @@ class TimeSelectReport extends React.Component {
   showModal = () => {
     this.setState({ visiableModal: true });
   }
+  datanum = (data=[], deviceDataType) => {//必传，三级总数据，用于计算型号和风机设备的总个数
+    let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData';
+    let num=0;
+    data.forEach((e, i) => {
+      e.stationData.forEach((item, index) => {
+         num+=item[deviceDataName].length;
+      })
+    })
+    return num
+  }
   maxTagPlaceholder = () => {
+    const { regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
+    const modeNum=this.datanum(stationDevicemode,'mode');
+    const deviceNum=this.datanum(regionStationDevice,'device');
+    let stationNum=0;
+    regionStation.forEach((e,i)=>{
+      stationNum+=e.stationData.length;
+    })
     let count = 0;
     if (this.state.modeStyle === 'status') {
-      count = 10000;
+      count = modeNum;
     } else if (this.state.modeStyle === 'station') {
-      count = 10000;
+      count = stationNum;
     } else if (this.state.modeStyle === 'modal') {
-      count = 10000;
+      count = modeNum;
     } else if (this.state.modeStyle === 'area') {
       count = this.props.region.length
     } else if (this.state.modeStyle === 'wind') {
-      count = 10000;
+      count = deviceNum;
     } else if (this.state.modeStyle === 'fault') {
-      count = 10000;
+      count = deviceNum;
     }
     return <div>已选{this.state.list.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
   }
@@ -130,7 +147,6 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
-    console.log('v: ', v);
     this.setState({ list: v });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
   }
@@ -142,11 +158,11 @@ class TimeSelectReport extends React.Component {
     data.forEach((e, i) => {
       let test3 = [];
       e.stationData.forEach((item, index) => {
-        let test4 = [];
+        let test4 = []; 
         item[deviceDataName].forEach((value, key) => {
           test4.push({
             ...value,
-            key: value[selectCode],
+            key: `${value[selectCode]}_${item.stationCode}`,
             title: value[selectName],
           })
         })
@@ -193,7 +209,7 @@ class TimeSelectReport extends React.Component {
 
 
 
-    // console.log('areaList: ', areaList);
+    // 
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -256,7 +272,7 @@ class TimeSelectReport extends React.Component {
           */}
             {
               region && region.map((e, i) => {
-                return <Option key={e}>{e}</Option>
+                return <Option key={e.regionName}>{e.regionName}</Option>
               })
             }
           </Select>

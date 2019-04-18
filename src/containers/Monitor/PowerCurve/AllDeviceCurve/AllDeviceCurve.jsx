@@ -53,8 +53,9 @@ class AllDeviceCurve extends Component {
       <div className={styles.allDeviceCurve} >
         <Header {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.allDeviceCurveBox}>
-         
-          {stationTypeCount === 'wind' && <AllDeviceCurveBox {...this.props} />}
+         {/*
+         {stationTypeCount === 'wind' && <AllDeviceCurveBox {...this.props} />}
+          */}
            <AllDeviceCurveBox {...this.props} />
           {stationTypeCount === 'none' && ""}
 
