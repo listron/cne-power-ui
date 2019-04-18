@@ -108,24 +108,21 @@ class TimeSelectReport extends React.Component {
       ],
     }
     this.setState({ ...params });
-    
   }
 
   handleOpenChange = (visiable) => {
     if (!visiable) {
       this.props.onChange({ ...this.state });
     }
-   
   }
 
   disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天以后的不可选
-    return current > moment().endOf('day')||current<moment().subtract(365,'day');
+    return current > moment().endOf('day') || current < moment().subtract(365, 'day');
   }
-  monthStartSelect=({selectedMonth})=>{//按月选择起始时间
-    console.log('selectedMonth: ', selectedMonth);
+  monthStartSelect = ({ selectedMonth }) => {//按月选择起始时间
     this.setState({ startTime: selectedMonth });
   }
-  monthEndTimeSelect=({selectedMonth})=>{//按月选择结束时间
+  monthEndTimeSelect = ({ selectedMonth }) => {//按月选择结束时间
     const { timeStyle, startTime } = this.state;
     const params = {
       timeStyle,
@@ -157,7 +154,7 @@ class TimeSelectReport extends React.Component {
           allowClear={false}
           disabledDate={this.disabledDate}
         />}
-       {/*
+        {/*
        {timeStyle === 'month' && <RangePicker
           value={[moment(startTime), moment(endTime)]}
           placeholder={['Start month', 'End month']}
@@ -168,10 +165,10 @@ class TimeSelectReport extends React.Component {
           onPanelChange={this.handlePanelChange}
         />}
       */}
-       {timeStyle === 'month' && <span className={styles.yearStyle}>
-          <MonthSelect monthValue={moment(startTime)} onMonthSelect={this.monthStartSelect} />
+        {timeStyle === 'month' && <span className={styles.yearStyle}>
+          <MonthSelect monthValue={startTime} onMonthSelect={this.monthStartSelect} />
           <span > - </span>
-          <MonthSelect monthValue={moment(endTime)} onMonthSelect={this.monthEndTimeSelect} />
+          <MonthSelect monthValue={endTime} onMonthSelect={this.monthEndTimeSelect} />
         </span>}
         {timeStyle === 'year' && <span className={styles.yearStyle}>
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
