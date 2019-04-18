@@ -86,6 +86,7 @@ class TableList extends Component {
         title: "统计时段",
         dataIndex: "date",
         sorter: true,
+        render(text){return text.replace(',','-')}
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,

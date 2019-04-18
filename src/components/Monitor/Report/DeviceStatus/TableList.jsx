@@ -96,6 +96,7 @@ class TableList extends Component {
       title: "统计时段",
       dataIndex: "date",
       sorter: true,
+      render(text){return text.replace(',','-')}
     };
     const columns = [
 
