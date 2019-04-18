@@ -109,20 +109,37 @@ class TimeSelectReport extends React.Component {
   showModal = () => {
     this.setState({ visiableModal: true });
   }
+  datanum = (data=[], deviceDataType) => {//必传，三级总数据，用于计算型号和风机设备的总个数
+    let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData';
+    let num=0;
+    data.forEach((e, i) => {
+      e.stationData.forEach((item, index) => {
+         num+=item[deviceDataName].length;
+      })
+    })
+    return num
+  }
   maxTagPlaceholder = () => {
+    const { regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
+    const modeNum=this.datanum(stationDevicemode,'mode');
+    const deviceNum=this.datanum(regionStationDevice,'device');
+    let stationNum=0;
+    regionStation.forEach((e,i)=>{
+      stationNum+=e.stationData.length;
+    })
     let count = 0;
     if (this.state.modeStyle === 'status') {
-      count = 10000;
+      count = modeNum;
     } else if (this.state.modeStyle === 'station') {
-      count = 10000;
+      count = stationNum;
     } else if (this.state.modeStyle === 'modal') {
-      count = 10000;
+      count = modeNum;
     } else if (this.state.modeStyle === 'area') {
       count = this.props.region.length
     } else if (this.state.modeStyle === 'wind') {
-      count = 10000;
+      count = deviceNum;
     } else if (this.state.modeStyle === 'fault') {
-      count = 10000;
+      count = deviceNum;
     }
     return <div>已选{this.state.list.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
   }
@@ -141,7 +158,7 @@ class TimeSelectReport extends React.Component {
     data.forEach((e, i) => {
       let test3 = [];
       e.stationData.forEach((item, index) => {
-        let test4 = [];
+        let test4 = []; 
         item[deviceDataName].forEach((value, key) => {
           test4.push({
             ...value,
@@ -169,7 +186,6 @@ class TimeSelectReport extends React.Component {
     const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
     const { modeStyle, list, visiableModal, areaList, } = this.state;
     let modeData = this.dataFormater(stationDevicemode, 'mode');
-    
     let windDeviceData = this.dataFormater(regionStationDevice, 'device');
     let stationData = [];
     regionStation.forEach((e, i) => {
