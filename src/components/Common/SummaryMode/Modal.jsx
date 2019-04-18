@@ -98,14 +98,12 @@ class SelectModal extends Component {
           selectStation.push(e.stationCode)
         }
         if (e && e.deviceCode) {
-          selectArray.push(e.deviceCode)
+          selectArray.push(e.key)
             // selectArray.push(`${e.deviceCode}_${e.deviceCode}`)
         } else if (e && e.deviceModeCode) {
            selectArray.push(`${e.key}`)
           //  selectArray.push(e.deviceModeCode)
         } 
-
-        
       })
       return selectArray.length>0?selectArray:selectStation;
     }
