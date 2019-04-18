@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { homepageAction } from './homepageAction';
-
+console.log('test')
 const initState = Immutable.fromJS({
   loading: false,
   realTimeInfo: {}, // 实时监控10s数据组
