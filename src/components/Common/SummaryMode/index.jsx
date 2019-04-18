@@ -130,7 +130,6 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
-    console.log('v: ', v);
     this.setState({ list: v });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
   }
@@ -146,7 +145,7 @@ class TimeSelectReport extends React.Component {
         item[deviceDataName].forEach((value, key) => {
           test4.push({
             ...value,
-            key: value[selectCode],
+            key: `${value[selectCode]}_${item.stationCode}`,
             title: value[selectName],
           })
         })
@@ -170,6 +169,7 @@ class TimeSelectReport extends React.Component {
     const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
     const { modeStyle, list, visiableModal, areaList, } = this.state;
     let modeData = this.dataFormater(stationDevicemode, 'mode');
+    
     let windDeviceData = this.dataFormater(regionStationDevice, 'device');
     let stationData = [];
     regionStation.forEach((e, i) => {
@@ -193,7 +193,7 @@ class TimeSelectReport extends React.Component {
 
 
 
-    // console.log('areaList: ', areaList);
+    // 
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -256,7 +256,7 @@ class TimeSelectReport extends React.Component {
           */}
             {
               region && region.map((e, i) => {
-                return <Option key={e}>{e}</Option>
+                return <Option key={e.regionName}>{e.regionName}</Option>
               })
             }
           </Select>

@@ -57,6 +57,7 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
 import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
+import { watchIntelligentAnalysis } from "./StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga";
 
 
 
@@ -138,6 +139,8 @@ export default function* rootSaga() {
     watchPerformanceAnalysisSaga(),
     watchManufacturers(),
     watchCustomize(),
+    // 统计报表
+    watchIntelligentAnalysis(), // 智能分析报告
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),

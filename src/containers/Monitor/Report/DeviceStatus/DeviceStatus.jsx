@@ -16,6 +16,9 @@ class DeviceStatus extends Component {
     getStationDevicemode: PropTypes.func,
     getRegionStation: PropTypes.func,
     getRegion: PropTypes.func,
+    changeDeviceStatusStore: PropTypes.func,
+    stationTypeCount: PropTypes.string,
+    selectStationType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -29,7 +32,11 @@ class DeviceStatus extends Component {
   componentWillUnmount() {
     this.props.resetDeviceStatusStore()
   }
+  checkWind = () => this.props.changeDeviceStatusStore({selectStationType:'0'}) // 选中风电站
+
+  checkPv = () => this.props.changeDeviceStatusStore({selectStationType:'1'}) // 选中光伏电站
   render() {
+    const { stationTypeCount, selectStationType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -42,7 +49,22 @@ class DeviceStatus extends Component {
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
-            <DeviceStatusContainer {...this.props} />
+          
+            {/*
+            {stationTypeCount === 'multiple' &&
+              <div className={styles.typeCheck}>
+                <div className={selectStationType === '0' ? styles.typeActive : styles.typeNormal} onClick={this.checkWind}>风电</div>
+                <div className={selectStationType === '1' ? styles.typeActive : styles.typeNormal} onClick={this.checkPv}>光伏</div>
+                <div className={styles.holder} />
+              </div>
+            }
+           {selectStationType === '0' && <DeviceStatusContainer {...this.props} />}
+           {selectStationType === '1' && <DeviceStatusContainer {...this.props} />}
+           
+          */}
+           
+           <DeviceStatusContainer {...this.props} />
+           
           </div>
         </div>
         <Footer />
@@ -55,6 +77,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.deviceStatusReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

@@ -4,6 +4,7 @@ import styles from './malfunction.scss';
 import { Table, Radio } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
 
 
 class TableList extends Component {
@@ -33,7 +34,7 @@ class TableList extends Component {
     this.props.onChangeFilter({ pageNum: currentPage, pageSize })
   }
   ontableSort = (pagination, filter, sorter) => {
-    const { onChangeFilter,tableType } = this.props;
+    const { onChangeFilter, tableType } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       regionName: '0',
@@ -46,9 +47,9 @@ class TableList extends Component {
       faultHours: '7',
       faultGen: '8',
       faultDescribe: '9',
-     
+
     };
-    const detailSortInfo={
+    const detailSortInfo = {
       regionName: '0',
       stationName: '1',
       deviceName: '2',
@@ -61,7 +62,7 @@ class TableList extends Component {
       faultTime: '9',
       faultHours: '10',
     }
-    const sortField =tableType==='all'? (sortInfo[field] ? sortInfo[field] : ''):(detailSortInfo[field] ? detailSortInfo[field] : '');
+    const sortField = tableType === 'all' ? (sortInfo[field] ? sortInfo[field] : '') : (detailSortInfo[field] ? detailSortInfo[field] : '');
     const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
     this.props.changeMalfunctionStore({ sortField, sortMethod })
     onChangeFilter({ sortField, sortMethod })
@@ -120,24 +121,27 @@ class TableList extends Component {
         title: "次数",
         dataIndex: "num",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
 
       {
         title: () => <TableColumnTitle title="故障时长" unit="s" />,
         dataIndex: "faultTime",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="故障小时数" unit="h" />,
         dataIndex: "faultHours",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
 
       {
         title: "损失电量",
         dataIndex: "faultGen",
         sorter: true,
-
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
     filterTable > 4 ? columns.unshift(...showFault) : columns.unshift(...show);
@@ -157,14 +161,12 @@ class TableList extends Component {
         dataIndex: "stationName",
         sorter: true,
         fixed: 'left',
-      },
-      {
+      }, {
         title: "设备名称",
         dataIndex: "deviceName",
         sorter: true,
         fixed: 'left',
-      },
-      {
+      }, {
         title: "风机型号",
         dataIndex: "deviceModeName",
         sorter: true,
@@ -190,31 +192,40 @@ class TableList extends Component {
         title: "故障代码",
         dataIndex: "faultCode",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: () => <TableColumnTitle title="故障时长" unit="s" />,
         dataIndex: "faultTime",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="故障小时数" unit="h" />,
         dataIndex: "faultHours",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+
       }, {
         title: "损失电量",
         dataIndex: "faultGen",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: "风速",
         dataIndex: "windSpeedAvg",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: "有功功率",
         dataIndex: "usePower",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+
       }, {
         title: "发电机转速",
         dataIndex: "speed",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
     return columns
@@ -227,7 +238,6 @@ class TableList extends Component {
 
   render() {
     const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList } = this.props;
-    
     const columns = tableType === 'all' ? this.initMonthColumn() : this.detailColumn();
     const dataSource = tableType === 'all' ? malfunctionList.map((e, i) => ({ ...e, key: i, })) : malfunctionDetailList.map((e, i) => ({ ...e, key: i, }));
     return (
