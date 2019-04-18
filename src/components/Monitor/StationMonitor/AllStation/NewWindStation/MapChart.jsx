@@ -59,15 +59,15 @@ const MapChart = ({ ...data }) => {
               return null
             }
             let needData = [
-              { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW' },
-              { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
+              { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW',quantity:1000 },
+              { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
               { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
               { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
-              { name: '应发功率', value: 'useCapacity', point: 2, unit: '%' },
+              { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW',quantity:1000 },
               { name: '装机台数', value: 'stationUnitCount', point: 0, unit: '台' },
               { name: '正常运行台数', value: 'normalNum', point: 0, unit: '台' },
               { name: '待机台数', value: 'standbyNum', point: 0, unit: '台' },
-              { name: '停机台数', value: 'stationPower', point: 0, unit: '台' },
+              { name: '停机台数', value: 'shutdownNum', point: 0, unit: '台' },
               { name: '维护台数', value: 'maintainNum', point: 0, unit: '台' },
               { name: '故障台数', value: 'errorNum', point: 0, unit: '台' },
               { name: '通讯中断台数', value: 'interruptNum', point: 0, unit: '台' },
@@ -80,7 +80,7 @@ const MapChart = ({ ...data }) => {
                 `<div class=${styles.popColumn} key=${index}>
                   <div>${e.name}</div>
                   <div>
-                    <span class=${styles.value}>${dataFormats(item[e.stationPower], '--', e.point, true)}</span>
+                    <span class=${styles.value}>${dataFormats(item[e.value], '--', e.point, true,e.quantity)}</span>
                     <span class=${styles.unit}>${e.unit}</span>
                   </div>
                 </div>`

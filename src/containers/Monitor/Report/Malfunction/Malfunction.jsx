@@ -16,6 +16,9 @@ class Malfunction extends Component {
     getStationDevicemode: PropTypes.func,
     getRegionStation: PropTypes.func,
     getRegion: PropTypes.func,
+    changeMalfunctionStore: PropTypes.func,
+    stationTypeCount: PropTypes.string,
+    selectStationType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -29,7 +32,11 @@ class Malfunction extends Component {
   componentWillUnmount() {
     this.props.resetMalfunctionStore()
   }
+  checkWind = () => this.props.changeMalfunctionStore({selectStationType:'0'}) // 选中风电站
+
+  checkPv = () => this.props.changeMalfunctionStore({selectStationType:'1'}) // 选中光伏电站
   render() {
+    const { stationTypeCount, selectStationType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -42,6 +49,18 @@ class Malfunction extends Component {
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
+           {/*
+             {stationTypeCount === 'multiple' &&
+              <div className={styles.typeCheck}>
+                <div className={selectStationType === '0' ? styles.typeActive : styles.typeNormal} onClick={this.checkWind}>风电</div>
+                <div className={selectStationType === '1' ? styles.typeActive : styles.typeNormal} onClick={this.checkPv}>光伏</div>
+                <div className={styles.holder} />
+              </div>
+            }
+         {selectStationType === '0' && <MalfunctionContainer {...this.props} />}
+           {selectStationType === '1' && <MalfunctionContainer {...this.props} />}
+           
+          */}
             <MalfunctionContainer {...this.props} />
           </div>
         </div>
@@ -55,6 +74,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.malfunctionReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

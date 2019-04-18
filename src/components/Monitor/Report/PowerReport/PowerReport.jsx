@@ -45,8 +45,9 @@ class PowerReport extends Component {
       "station": 2,
       "modal": 3,
       "wind": 4,
-    }
-    this.props.changePowerReportStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    };
+    const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
+    this.props.changePowerReportStore({ summaryType: modeType[value.modeStyle], summaryData: list })
   }
   onSearch = () => {
   
@@ -54,7 +55,7 @@ class PowerReport extends Component {
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
-    console.log('startTime: ', startTime);
+    
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     this.props.getPowerReportList({ ...params, ...value })
   }
@@ -62,6 +63,7 @@ class PowerReport extends Component {
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportGen}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    const params={dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod};
     let timeZone = moment().zone();
     const modeType = ['状态', '区域', '电站', '型号', '风机'];
     const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -69,13 +71,9 @@ class PowerReport extends Component {
       url,
       fileName: `${modeType[summaryType]}-${dateTypes[dateType]}电量报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })

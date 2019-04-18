@@ -21,8 +21,8 @@ function* getMalfunctionList(action) {  // 请求报表列表
     });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:moment( startTime).utc().format(''),
-      endTime:moment( endTime).utc().format(''),
+      // startTime:moment( startTime).utc().format(''),
+      // endTime:moment( endTime).utc().format(''),
       timeZone:moment().zone() / (-60),
      
     });

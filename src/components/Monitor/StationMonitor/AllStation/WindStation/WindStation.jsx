@@ -33,7 +33,7 @@ class WindStation extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getRealtimeData({ stationType: '0' })
+    this.props.getRealMonitorData({ stationType: '0' })
   }
 
   componentWillUnmount() {

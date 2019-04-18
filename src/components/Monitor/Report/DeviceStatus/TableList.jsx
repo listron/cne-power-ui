@@ -4,7 +4,8 @@ import styles from './deviceStatus.scss';
 import { Table, Radio } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { numWithComma,dataFormats } from '../../../../utils/utilFunc';
+
 
 class TableList extends Component {
   static propTypes = {
@@ -95,7 +96,7 @@ class TableList extends Component {
       title: "统计时段",
       dataIndex: "date",
       sorter: true,
-      defaultSortOrder: 'ascend'
+      render(text){return text.replace(',','-')}
     };
     const columns = [
 
@@ -109,17 +110,20 @@ class TableList extends Component {
         title: "次数",
         dataIndex: "num",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
 
       {
         title: () => <TableColumnTitle title="状态时长" unit="s" />,
         dataIndex: "statusTime",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
       {
         title: () => <TableColumnTitle title="状态小时数" unit="h" />,
         dataIndex: "statusHours",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
 
       {
@@ -171,11 +175,15 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="状态时长" unit="s" />,
         dataIndex: "statusTime",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+
       },
       {
         title: () => <TableColumnTitle title="状态小时数" unit="h" />,
         dataIndex: "statusHours",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+
       },
 
       {
@@ -188,7 +196,7 @@ class TableList extends Component {
     return columns
   }
   changeTable = (e) => {
-    console.log(e)
+    
     const tableType=e.target.value;
     this.props.changeDeviceStatusStore({tableType})
   }
