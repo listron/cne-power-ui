@@ -14,17 +14,25 @@ class windStationHeader extends React.Component {
     super(props, context)
   }
 
+  unitFormarts = (data, quantity) => {
+    if (isNaN(data) || (!data && data !== 0)) {
+      return '--';
+    }
+    return data / quantity
+  }
+
   render() {
     const { singleStationData, } = this.props;
+    console.log('hahh',singleStationData)
     const stationDataSummary = singleStationData || {};
     const stationPower = stationDataSummary.stationPower;
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
-    const dayPower = stationDataSummary.dayPower;
-    const monthPower = stationDataSummary.monthPower;
+    const dayPower = this.unitFormarts(stationDataSummary.dayPower, 10000);
+    const monthPower = this.unitFormarts(stationDataSummary.monthPower, 10000);
     const monthRate = stationDataSummary.monthRate;
-    const yearPower = stationDataSummary.yearPower;
+    const yearPower = this.unitFormarts(stationDataSummary.yearPower, 10000);
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
     const capabilityRate = stationDataSummary.yearRate;

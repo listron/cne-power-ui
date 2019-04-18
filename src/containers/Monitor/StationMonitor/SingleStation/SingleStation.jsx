@@ -34,6 +34,7 @@ class SingleStation extends Component {
     getFanList: PropTypes.func,
     getSingleScatter: PropTypes.func,
     singleStationData: PropTypes.object,
+    stationList: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -41,6 +42,11 @@ class SingleStation extends Component {
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
+    const { stationList } = this.props;
+    const staions = stationList.filter(e => e.stationCode === +stationCode);
+    const stationType = staions.length > 0 && `${staions[0].stationType}`;
+    this.props.changeSingleStationStore({ stationType })
+
     const { search } = this.props.location;
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
     const searchData = tmpSearchData.map(e => {
@@ -58,28 +64,22 @@ class SingleStation extends Component {
     } else {
       this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
     }
-
-    this.getTenSeconds(stationCode); // 10s数据集
-    this.getOneHourData(stationCode, this.props.stationType); // 1小时数据集
+    this.getOneHourData(stationCode, stationType);
+    this.getTenSeconds(stationCode, stationType);
     this.getPowerDataTenMin(stationCode); // 发电量
     this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
   }
 
   componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
-    const nextParams = nextProps.match.params;
-    const nextStationCode = nextParams.stationCode;
-    const nextStationType = nextProps.stationType;
-    const stationType = this.props.stationType;
-    if (nextStationType && nextStationType !== stationType) {
-      console.log('stationType',nextStationType)
-      this.getOneHourData(nextStationCode,nextStationType);
-      this.getTenSeconds(nextStationCode,nextStationType);
-    }
+    const nextStationCode = nextProps.match.params.stationCode;
+    const { stationList } = nextProps;
+    const staions = stationList.filter(e => e.stationCode === +nextStationCode);
+    const nextStationType = staions.length > 0 && `${staions[0].stationType}`;
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
       this.props.resetSingleStationStore();
-      this.getTenSeconds(nextStationCode,nextStationType);
+      this.getTenSeconds(nextStationCode, nextStationType);
       this.getOneHourData(nextStationCode, nextStationType);
       this.getPowerDataTenMin(nextStationCode);
       this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
@@ -93,13 +93,13 @@ class SingleStation extends Component {
     this.props.resetSingleStationStore();
   }
 
-  getTenSeconds = (stationCode,stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  运维人员 天气情况 
-    this.props.getSingleStation({ stationCode,stationType});
+  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  运维人员 天气情况 
+    this.props.getSingleStation({ stationCode, stationType });
     this.props.getAlarmList({ stationCode });
-    let endTime=moment().utc().format();
-    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime,  });
+    let endTime = moment().utc().format();
+    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
     this.timeOutId = setTimeout(() => {
-      this.getTenSeconds(stationCode);
+      this.getTenSeconds(stationCode,stationType);
     }, 10000);
   }
 
@@ -111,8 +111,8 @@ class SingleStation extends Component {
       startTime: moment().subtract(24, 'hours').utc().format(),
       endTime: moment().utc().format()
     });
-    this.props.getWeatherList({stationCode}); // 天气
-    this.props.getSingleScatter({stationCode}); // 散点
+    this.props.getWeatherList({ stationCode }); // 天气
+    this.props.getSingleScatter({ stationCode }); // 散点
     this.timeOutOutputData = setTimeout(() => {
       this.getOneHourData(stationCode, stationType);
     }, 3600000); //600000
@@ -145,6 +145,7 @@ class SingleStation extends Component {
         <div className={styles.singleStationContainer} >
           {stationType === '1' && <PvStation {...this.props} />}
           {stationType === '0' && <WindStation {...this.props} />}
+          {!stationType && <div styles={{ display: 'flex', flex: 1, backgroundColor: '#fff' }}></div>}
         </div>
         <Footer />
       </div>
@@ -189,6 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList, payload }),
   getSingleScatter: payload => dispatch({ type: singleStationAction.getSingleScatter, payload }),
+  pointparams: payload => dispatch({ type: singleStationAction.pointparams, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

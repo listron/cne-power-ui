@@ -1,6 +1,9 @@
 @import '../../../../../theme/theme.scss';
 .windStation {
     background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     :global {
         .ant-progress-inner {
             background-color: #dfdfdf;
@@ -279,10 +282,10 @@
                 display: flex;
                 flex:1;
                 flex-direction: row;
-                // background:#f8f8f8;
-                background:pink;
+                background:#f8f8f8;
                 height: 50px;
                 align-items: center;
+                justify-content: space-between;
                 .deviceTypeFlow {
                     display: flex;
                     text-align: center;
@@ -385,7 +388,27 @@
                     //     color: $darkColor;
                     // }
                 }
+                .singleDeviceTypeBox{
+                    border:1px solid #d9d9d9;
+                    height:22px;
+                    background:#ffffff;
+                    line-height: 22px;
+                    border-radius: 4px;
+                    margin-right: 12px;
+                    .spanNormal,.spanActive{
+                        padding: 0 8px;
+                        color:#666666;
+                        display: inline-block;
+                        cursor: pointer;
+                        border-right:1px solid #d9d9d9;
+                    }
+                    .spanActive{
+                        background: $themeColor;
+                        color: #fff;
+                    }
+                }
             } 
+           
         }
         .charts{
             display: flex;
@@ -438,6 +461,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                
             }
             .inverterBlockBox {
                 padding: 20px 20px 60px;

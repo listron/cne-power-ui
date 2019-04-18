@@ -15,7 +15,7 @@ function* getSingleStation(action) { //获取单电站实时数据
   const utcTime = moment.utc().format();
   const pvUrl = `${APIBasePath}${monitor.getSingleStation}${stationCode}/${utcTime}`;
   const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
-  const url = stationType === '0' ? windUrl : pvUrl;
+  const url =stationType === '0' ? windUrl : pvUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -23,9 +23,10 @@ function* getSingleStation(action) { //获取单电站实时数据
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           singleStationData: response.data.data || {},
-          stationType: response.data.data.stationType || null,
+          stationType: response.data.data.stationType  || '0'
         }
       });
+      console.log('stationType',stationType)
     } else { throw response.data }
   } catch (e) {
     console.log(e);
@@ -531,6 +532,56 @@ function* getSingleScatter(action){
   }
 }
 
+function* pointparams(){ // 单电站测点参数名称列表
+  const url = `${APIBasePath}${monitor.getPointparams}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          pointparams: response.data.data || [],
+        }
+      })
+    }else {throw response.data}
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        pointparams: [],
+      }
+    })
+  }
+}
+
+function* getNewFanList(action){
+  const { payload } = action;
+  const url = `${APIBasePath}${monitor.getFanList}/${payload.stationCode}`;
+  try {
+    if (payload.firstLoad) {
+      yield put({ type: singleStationAction.singleStationFetch });
+    }
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.getSingleStationSuccess,
+        payload: {
+          fanList: response.data.data || {},
+        }
+      })
+    }else {throw response.data}
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.getSingleStationSuccess,
+      payload: {
+        fanList: {},
+      }
+    })
+  }
+}
+
 
 
 export function* watchSingleStationMonitor() {
@@ -554,6 +605,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getBoosterstation, getBoosterstation); // 升压站列表信息
   yield takeLatest(singleStationAction.getPowerNet, getPowerNet); // 获取电网信息列表
   yield takeLatest(singleStationAction.getSingleScatter, getSingleScatter); // 获取电网信息列表
+  yield takeLatest(singleStationAction.pointparams, pointparams); // 单电站测点参数名称列表 风机
 
 }
 

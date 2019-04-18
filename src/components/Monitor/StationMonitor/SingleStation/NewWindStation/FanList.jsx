@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './windStation.scss';
-import { Tabs, Switch, Radio, Table, Progress, Spin } from 'antd';
+import { Tabs, Switch, Radio, Table, Progress, Spin, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
@@ -11,6 +11,7 @@ import { numWithComma } from '../../../../../utils/utilFunc';
 import Map from './Map';
 
 const TabPane = Tabs.TabPane;
+const Option = Select.Option;
 
 class FanList extends React.Component {
   static propTypes = {
@@ -52,18 +53,13 @@ class FanList extends React.Component {
     clearTimeout(this.timeOutId);
   }
 
-  onChangeStatus = (e) => { // 切换状态
-    this.setState({
-      currentStatus: e.target.value,
-      currentPage: 1,
-    })
-  }
   onSwitchAlarm = (e) => { // 切换告警
     this.setState({
       alarmSwitch: e,
       currentPage: 1,
     });
   }
+
   getData = (stationCode) => {// 获取数据
     const { getFanList } = this.props;
     const { firstLoad } = this.state;
@@ -75,6 +71,7 @@ class FanList extends React.Component {
       this.getData(stationCode);
     }, 10000);
   }
+
   getDeviceStatus = (value) => { //查看状态
     switch (value) {
       case 100:
@@ -89,6 +86,7 @@ class FanList extends React.Component {
         return '';
     }
   }
+
   getStatusColor = (value) => {
     switch (value) {
       case 100:
@@ -103,6 +101,7 @@ class FanList extends React.Component {
         return '#c7ceb2';
     }
   }
+
   tableColumn = () => {
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
@@ -128,13 +127,13 @@ class FanList extends React.Component {
         title: () => <TableColumnTitle title="风速" unit="m/s" />,
         dataIndex: 'windSpeed',
         key: 'windSpeed',
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: (a, b) => a.windSpeed - b.windSpeed,
       }, {
         title: () => <TableColumnTitle title="风向" unit="°" />,
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: (a, b) => a.angleOfYaw - b.angleOfYaw,
       }, {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
@@ -180,7 +179,7 @@ class FanList extends React.Component {
         title: () => <TableColumnTitle title="告警" unit="个" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
-        render(value){ return numWithComma(value); },
+        render(value) { return numWithComma(value); },
         sorter: (a, b) => a.alarmNum - b.alarmNum,
       }, {
         title: '设备状态',
@@ -192,15 +191,18 @@ class FanList extends React.Component {
     ];
     return columns;
   }
+
   changePagination = ({ pageSize, currentPage }) => {
     this.setState({ pageSize, currentPage })
   }
+
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
       descend: sorter.order === 'descend'
     })
   }
+
   createTableSource = (data) => {
     const { sortName, descend, currentPage, pageSize } = this.state;
     const tableSource = [...data].map((e, i) => ({
@@ -282,8 +284,7 @@ class FanList extends React.Component {
     return tmpBackData;
   }
 
-
-  mapData = (deviceList,deviceTypeCode) => { // 地图
+  mapData = (deviceList, deviceTypeCode) => { // 地图
     let iconArray = [
       {
         "100": ['image:///img/wind-normal.png', 'image:///img/wind-alert.png'],  // 正常
@@ -293,7 +294,7 @@ class FanList extends React.Component {
       },
       {
         "100": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
-        "200":  ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
+        "200": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
         "300": ['image:///img/solar01.png', 'image:///img/pv-alert.png'],
         "900": 'image:///img/pv-unconnected.png'
       },
@@ -310,36 +311,60 @@ class FanList extends React.Component {
         value: [item.longitude, item.latitude, stationType, deviceStatus],
         symbol: stationType !== "900" ? currentStationStatus[item.alarmNum ? 1 : 0] : currentStationStatus,
         alarmNum: item.alarmNum,
-        center:[item.longitude,item.latitude],
+        center: [item.longitude, item.latitude],
         stationPower: item.devicePower,
         stationCapacity: item.deviceCapacity,
         instantaneous: item.windSpeed,
         deviceCode: item.deviceCode,
-        deviceTypeCode:deviceTypeCode,
-        stationCode:stationCode,
+        deviceTypeCode: deviceTypeCode,
+        stationCode: stationCode,
         angleOfYaw: item.angleOfYaw
       })
     })
     return data;
   }
 
-  render() {
-    const { fanList, loading, deviceTypeCode } = this.props;
-    
-    const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
-    // 初始化数据
-    const initDeviceList = fanList.deviceList && fanList.deviceList.map((e, i) => ({ ...e, key: i })) || [];
+  pointparamsChange=(e)=>{
+    console.log('11',e)
+  }
 
-    // 根据筛选条件处理数据源。
+  operations = () => {
+    const pointparams= {
+      "Default": "整机状态",
+      "NC001": "风速",
+      "TM101": "齿轮箱油温",
+      "TM105": "齿轮箱轴承温度",
+      "GN010": "发电机驱动端轴承温度",
+      "NC005": "机舱温度",
+      "NC004": "环境温度",
+      "GN001": "发电机转速",
+      "RT001": "叶轮转速"
+  }
+    let optionList = [];
+    for (let key in pointparams) {
+      optionList.push(<Option value={key}>{pointparams[key]}</Option>)
+    }
+    const operations = (<div className={styles.inverterRight} >
+     <Select defaultValue="Default" style={{ width: 190,marginRight:24 }} onChange={this.pointparamsChange}>
+        {optionList}
+      </Select>
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
+    </div>);
+    return operations
+  }
+
+
+  render() {
+    const { fanList, loading, deviceTypeCode,currentStatus } = this.props;
+    const { alarmSwitch, currentPage, pageSize } = this.state;
+    const initDeviceList = fanList.deviceList && fanList.deviceList.map((e, i) => ({ ...e, key: i })) || [];
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
     })
-
     const sortedParentList = filteredDeviceList.sort((a, b) => {
       return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
     })
 
-    // 设置所属电站设备
     const parentDeviceNameSet = new Set(sortedParentList.map(e => e.parentDeviceName));
     const parentDeviceName = [...parentDeviceNameSet];
     const deviceGroupedList = parentDeviceName.map(e => {
@@ -348,23 +373,10 @@ class FanList extends React.Component {
     });
 
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-
-    // 筛选按钮
     const deviceStatus = fanList.deviceStatusSummary || [];
-    const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
-      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
-        <Radio.Button value={0} >全部</Radio.Button>
-        {deviceStatus.map(e =>
-          (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
-        )}
-      </Radio.Group>
-    </div>);
-
-
     return (
       <div className={styles.fanList} >
-        <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
+        <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={this.operations()}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {
               loading && <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} />
@@ -387,7 +399,7 @@ class FanList extends React.Component {
             </div>
           </TabPane>
           <TabPane tab={<span> <i className="iconfont icon-map"></i></span>} key="stationMap" className={styles.inverterMapBox} >
-            <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList,deviceTypeCode)} />
+            <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList, deviceTypeCode)} />
           </TabPane>
         </Tabs>
       </div>

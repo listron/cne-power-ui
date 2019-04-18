@@ -43,6 +43,7 @@ class WindStation extends Component {
     super(props);
     this.state = {
       hiddenStationList: false,
+      singleDeviceType: 'all',
     }
   }
 
@@ -60,6 +61,12 @@ class WindStation extends Component {
   }
 
 
+  onHandleStation = (e) => {
+    this.setState({
+      singleDeviceType: e,
+    })
+  }
+
   createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
     <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={typeCode}>
       <div className={styles.deviceTypeIcon} >
@@ -71,14 +78,26 @@ class WindStation extends Component {
     </RadioButton>
   )
 
+
+
   render() {
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList} = this.props;
-    // console.log('test', this.props)
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList } = this.props;
+    const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => { return e.deviceTypes && e.deviceTypes[0] });
     const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
-    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
+    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false;
+    console.log('singleStationData', singleStationData)
+    const stautus = [
+      { text: '运行', name: 'normalNum' },
+      { text: '待机', name: 'standbyNum' },
+      { text: '停机', name: 'shutdownNum' },
+      { text: '维护', name: 'maintainNum' },
+      { text: '故障', name: 'errorNum' },
+      { text: '通讯中断', name: 'interruptNum' },
+      { text: '未接入', name: 'noAccessNum' },
+    ]
     return (
       <div className={styles.windStation} >
         <WindStationTop
@@ -104,10 +123,16 @@ class WindStation extends Component {
                 </RadioGroup>
               </div>
               {deviceTypeCode === 101 &&
-                <div> tets</div>
+                <div className={styles.singleDeviceTypeBox}>
+                  <span onClick={() => { this.onHandleStation('all') }}
+                    className={singleDeviceType === 'all' ? styles.spanActive : styles.spanNormal} > 全部</span>
+                  {stautus.map(e => {
+                    return <span key={e.name} onClick={() => { this.onHandleStation(e.name) }} className={singleDeviceType === e.name ? styles.spanActive : styles.spanNormal}>{e.text} {singleStationData[e.name]}</span>
+                  })}
+                </div>
               }
             </div>
-            {deviceTypeCode === 101 && <FanList {...this.props} />}
+            {deviceTypeCode === 101 && <FanList {...this.props} currentStatus={singleDeviceType} />}
             {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
             {deviceTypeCode === 301 && <Boosterstation {...this.props} />}
             {deviceTypeCode === 0 && <PowerNet {...this.props} />}
