@@ -236,6 +236,9 @@ const routers = [
   },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
     path: '/hidden/analysis/all/fan',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan')),
+  },{ // 高级分析-风机故障检测与诊断-算法控制台
+    path: '/analysis/faultDiagnose/algorithmControl',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/AlgorithmControl/AlgorithmControl')),
   },{ // 偏航对风分析
     path: '/analysis/yaw/wind',
     component: lazy(() => import('../components/Common/Building/Building')),

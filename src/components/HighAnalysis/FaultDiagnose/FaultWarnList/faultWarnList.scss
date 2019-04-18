@@ -38,6 +38,7 @@
       margin-right: 24px;
       >div{
         display: flex;
+        user-select: none;
         justify-content: space-evenly;
         width: 110px;
         @include lineheight(24px);

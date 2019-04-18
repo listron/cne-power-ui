@@ -46,7 +46,7 @@ const menuData = [
           {
             name: '散点图',
             path: 'scatterDiagram',
-            rightKey: 'dataAnalysis_scatterPlot', 
+            rightKey: 'dataAnalysis_scatterPlot',
           },{
             name: '历史趋势',
             path: 'history',
@@ -389,7 +389,11 @@ const menuData = [
             path: 'faultWarn',
             defaultPath: true,
             rightKey: 'analysis_intelligentWarning',
-          },
+          },{
+            name: '算法控制台',
+            path: 'algorithmControl',
+            rightKey: 'analysis_intelligentWarning',
+          }
         ]
       }
     ]

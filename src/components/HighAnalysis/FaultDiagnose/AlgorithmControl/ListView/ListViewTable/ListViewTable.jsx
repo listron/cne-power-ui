@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
-import CommonPagination from '../../../../Common/CommonPagination';
-import styles from "./faultWarnTable.scss";
+import styles from "./listViewTable.scss";
 
-const pageSize = 10, pageNum = 1, total = 100;
-export default class FaultWarnTable extends React.Component {
+export default class ListViewTable extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     onChangeFilter: PropTypes.func,
@@ -26,32 +24,44 @@ export default class FaultWarnTable extends React.Component {
   render() {
     const { loading } = this.props;
     const columns = [{
-      title: '风机名称',
+      title: '算法模型',
       dataIndex: 'defectLevel',
       key: 'defectLevel',
       sorter: true,
     }, {
-      title: '预警日期',
+      title: '电站名称',
       dataIndex: 'stationName',
       key: 'stationName',
       sorter: true,
     }, {
-      title: '检测开始日期',
+      title: '检测开始时间',
       dataIndex: 'deviceName',
       key: 'deviceName',
     }, {
-      title: '检测结束日期',
+      title: '检测结束时间',
+      dataIndex: '检测结束时间',
+      key: '检测结束时间',
+    }, {
+      title: '计划执行时间',
+      dataIndex: '计划执行时间',
+      key: '计划执行时间',
+    }, {
+      title: '执行开始时间',
+      dataIndex: '执行开始时间',
+      key: '执行开始时间',
+    }, {
+      title: '执行结束时间',
       dataIndex: 'defectTypeName',
       key: 'defectTypeName',
     }, {
-      title: '算法模型',
+      title: '状态',
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
-      sorter: true,
     }, {
-      title: '预警结果',
+      title: '预警台数',
       dataIndex: 'result',
       key: 'result',
+      sorter: true,
       render: (text, record) => (
         <span>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
@@ -59,10 +69,7 @@ export default class FaultWarnTable extends React.Component {
       )
     }];
     return (
-      <div className={styles.faultWarnTable}>
-        <div className={styles.warnTablePagination}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
-        </div>
+      <div className={styles.listViewTable}>
         <Table
           pagination={false}
           loading={loading}

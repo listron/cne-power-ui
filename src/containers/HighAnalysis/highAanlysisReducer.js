@@ -15,6 +15,7 @@ import transFer from './EarlyWarning/Transfer/transferReducer'
 import historyWarn from './EarlyWarning/HistoryWarn/historyWarnReducer'
 
 import faultWarn from './FaultDiagnose/FaultWarn/faultWarnReducer';
+import watchAlgorithm from './FaultDiagnose/AlgorithmControl/algorithmControlReducer';
 
 
 const highAnalysisReducer = combineReducers({
@@ -31,7 +32,8 @@ const highAnalysisReducer = combineReducers({
   transFer,
   historyWarn,
 
-  faultWarn
+  faultWarn,
+  watchAlgorithm
 
 });
 
