@@ -71,7 +71,6 @@ function *userNameLogin(action){
           })
         }else if(data.auto === '0'){//正常用户，直接登录
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
-          // action.params.history.push('/monitor/station');
         }
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
@@ -185,20 +184,17 @@ function *phoneCodeLogin(action){
 function *phoneCodeRegister(action){
   const { params } = action;
   let url = `${APIBasePath}${login.phoneCodeRegister}`;
-  console.log(params);
   try{
     const response = yield call(axios.post, url, {
       phoneNum: params.phoneNum, 
       verificationCode: params.verificationCode,
     });
-    console.log(response.data);
-    if(response.data.code === '00000'){
-      yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-    }else if(response.data.code === '20001'){
+    if (response.data.code === '10000' || response.data.code === '20014') { // 成功 或 用户重新加入企业
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-    }
-    else{
-      yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
+    } else if(response.data.code === '00000'){ // 验证码校验异常 => 尚未发送验证码/验证码错误/验证码失效
+      message.error(response.data.message);
+    } else { // 用户已注册且未关联企业/ 注册失败
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -299,7 +295,6 @@ function *registerEnterprise(action){
         params:{
           username: params.username,
           password: params.password,
-          history: params.history,
         }
       });
     }else{
@@ -361,9 +356,9 @@ function *joinEnterprise(action){
         params:{
           username: params.username,
           password: params.password,
-          history: params.history,
         }
       });
+      Cookie.set('userFullName', params.userFullname);
       message.success(response.data.message);
 
     } else{
@@ -397,10 +392,12 @@ function *resetPassword(action){
         confirmPwd: params.confirmPwd,
         password: params.password,
         phoneNum: params.phoneNum,
+        userFullname: params.userFullname,
       }),
     });
     if(response.data.code === "10000"){
       message.success('密码设置成功！');
+      Cookie.set('userFullName', params.userFullname);
       Cookie.set('isNotLogin', 0); // 直接登录。
       // yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
     }else{
