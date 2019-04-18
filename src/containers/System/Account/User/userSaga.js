@@ -211,7 +211,11 @@ function* editUserInfo(action) {
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
-      const { userLogo } = payload;
+      const { userLogo, userId, userFullName } = payload;
+      const savedUserId = Cookie.get('userId');
+      if (savedUserId === userId) {
+        Cookie.set('userFullName', userFullName);
+      }
       userLogo && Cookie.set('userLogo', userLogo);
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS });
       const params = yield select(state => ({//继续请求用户列表
