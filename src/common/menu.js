@@ -46,7 +46,7 @@ const menuData = [
           {
             name: '散点图',
             path: 'scatterDiagram',
-            rightKey: 'dataAnalysis_scatterPlot', 
+            rightKey: 'dataAnalysis_scatterPlot',
           },{
             name: '历史趋势',
             path: 'history',
@@ -381,6 +381,28 @@ const menuData = [
             name: '预测事件配置',
             path: 'config',
             rightKey: 'analysis_yaw',
+          }
+        ]
+      },
+      {
+        name: '风机故障检测与诊断',
+        iconStyle: 'icon-windlogo',
+        path: 'faultDiagnose',
+        rightKey: 'analysis_intelligentWarning',
+        children: [
+          {
+            name: '故障预警',
+            path: 'faultWarn',
+            defaultPath: true,
+            rightKey: 'analysis_intelligentWarning',
+          },{
+            name: '历史预警',
+            path: 'historyWarn',
+            rightKey: 'analysis_intelligentWarning',
+          },{
+            name: '算法控制台',
+            path: 'algorithmControl',
+            rightKey: 'analysis_intelligentWarning',
           }
         ]
       }

@@ -65,7 +65,7 @@ class SideMenu extends Component {
       collapsed:  !collapsed
     })
   }
-  
+
   _createSideMenu = (sideMenuData) => {
     const { collapsed, openKeys } = this.state;
     const { pathname } = this.props.location;
@@ -78,11 +78,11 @@ class SideMenu extends Component {
               <Icon style={{marginTop:10}} onClick={this.toggleCollapsed} type={collapsed ? 'menu-unfold' : 'menu-fold'} />
             </div>
           </div>
-          <Menu 
-            mode="inline" 
-            inlineCollapsed={collapsed} 
-            className={styles.menuList} 
-            selectedKeys={[pathname]} 
+          <Menu
+            mode="inline"
+            inlineCollapsed={collapsed}
+            className={styles.menuList}
+            selectedKeys={[pathname]}
             openKeys={openKeys}
             onOpenChange={this.onOpenChange}>
             {this.renderSideMenu(sideMenuData)}
@@ -99,7 +99,7 @@ class SideMenu extends Component {
     const rightMenu = localStorage.getItem('rightMenu');
     return sideMenuData.map(e=>{
       const hasNoSubMenu = e && (!e.children || e.children.length === 0) && rightMenu && rightMenu.split(',').includes(e.rightKey);
-      if(hasNoSubMenu){//只有二级目录  
+      if(hasNoSubMenu){//只有二级目录
         return (
           <Item key={e.path}>
             <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
@@ -128,9 +128,9 @@ class SideMenu extends Component {
   render() {
     const { sideMenuData, collapsed } = this.state;
     const sideStyle = {
-      width: collapsed ? 80 : 180,
+      width: collapsed ? 80 : "auto",
       display: sideMenuData.length > 0?'flex':'none',
-    }
+    };
     return (
       <div className={styles.sideMenu} style={sideStyle}>
         {this._createSideMenu(sideMenuData)}
