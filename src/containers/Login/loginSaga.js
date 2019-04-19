@@ -61,6 +61,14 @@ function *userNameLogin(action){
 
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
+        yield put({ // 存入reducer
+          type: commonAction.changeCommonStore,
+          params: {
+            username: data.username,
+            userFullName: data.userFullName,
+            userLogo: data.userLogo || ''
+          }
+        })
         if(data.auto === '1'){//导入用户/生成用户 需走完善密码步骤
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
@@ -141,7 +149,14 @@ function *phoneCodeLogin(action){
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
-        
+        yield put({ // 存入reducer
+          type: commonAction.changeCommonStore,
+          params: {
+            username: data.username,
+            userFullName: data.userFullName,
+            userLogo: data.userLogo || ''
+          }
+        })
         if(data.auto==='1'){//auto为1导入用户/生成用户 需走完善密码步骤
           message.error('请完善密码！');
           yield put({ 
@@ -398,7 +413,7 @@ function *resetPassword(action){
       Cookie.set('isNotLogin', 0);
       Cookie.set('userFullName', params.userFullname);
       message.success('密码设置成功！');
-      yield put({ // 触发render 让cookie生效。
+      yield put({ // userFullName存入common ，同时触发render 让cookie生效。
         type: commonAction.changeCommonStore,
         params: { userFullName: params.userFullname }
       })

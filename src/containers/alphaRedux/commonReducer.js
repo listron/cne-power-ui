@@ -1,11 +1,14 @@
 import Immutable from 'immutable';
 
 import { commonAction } from './commonAction';
+import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
   enterpriseId:'',
   enterpriseName: '',
-  userFullName: '',
+  username: Cookie.get('username'),
+  userFullName: Cookie.get('userFullName'),
+  userLogo: Cookie.get('userLogo'),
   loading: false,
   stations: [], // 所有电站
   stationTypeCount:'none', //电站类型  multiple(两种)  pv wind none 
