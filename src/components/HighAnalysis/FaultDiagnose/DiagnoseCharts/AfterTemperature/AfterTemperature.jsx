@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DatePicker } from 'antd';
 import eCharts from "echarts";
-import { AfterTemperatureOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
+import { AfterTemperatureOptions } from "../chartsConfig/chartsConfig";
 import styles from "./afterTemperature.scss";
 
 const { RangePicker } =  DatePicker;

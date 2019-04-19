@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from 'antd';
-import styles from './../defectfilter.scss';
+import styles from './modalFilter.scss';
 
 const CheckboxGroup = Checkbox.Group;
 

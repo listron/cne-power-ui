@@ -6,7 +6,7 @@ const initState = Immutable.fromJS({
 });
 
 
-const HistoryWarnReducer = (state = initState, action) => {
+const faultWarnReducer = (state = initState, action) => {
   switch (action.type) {
     case faultWarnAction.changeHistoryWarnStore:
       return state.merge(Immutable.fromJS(action.payload));
@@ -16,4 +16,4 @@ const HistoryWarnReducer = (state = initState, action) => {
   return state;
 };
 
-export default HistoryWarnReducer;
+export default faultWarnReducer;

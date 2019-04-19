@@ -127,7 +127,7 @@ export default class FaultWarn extends React.Component {
               </div>
             </div>
           </div>
-          <Link to="">
+          <Link to="/analysis/faultDiagnose/faultWarn">
             <Icon type="arrow-left" className={styles.backIcon} />
           </Link>
         </div>

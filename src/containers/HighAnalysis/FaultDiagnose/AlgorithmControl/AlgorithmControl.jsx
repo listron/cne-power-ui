@@ -9,35 +9,24 @@ import AlgorithmModal from '../../../../components/HighAnalysis/FaultDiagnose/Al
 import ListView from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/ListView/ListView';
 import AddAlgorithm from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/AddAlgorithm/AddAlgorithm';
 import Footer from '../../../../components/Common/Footer';
-import { siblings } from "../../../../utils/utilFunc.js";
 
 class AlgorithmControl extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
     getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
-    changeAlgorithmControlStore: PropTypes.func
+    changeAlgorithmControlStore: PropTypes.func,
+    viewType: PropTypes.string
   };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showType: "list", // 展示算法或列表algorithm/list
       pageFlag: true // 展示新建页/table页
     };
   }
-  componentDidMount() {
-    const { pageFlag } = this.state;
-    if (pageFlag) {
-      this.addEvent();
-    }
-  }
 
-  componentDidUpdate() {
-    const { pageFlag } = this.state;
-    if (pageFlag) {
-      this.addEvent();
-    }
+  componentDidMount() {
   }
 
   componentWillUnmount(){
@@ -55,60 +44,65 @@ class AlgorithmControl extends Component {
     changeAlgorithmControlStore({...params});
   };
 
-  typeFunc = (type) => {
-    this.setState({
-      showType: type
+  showAlgorithmFunc = () => {
+    // 展示算法
+    this.onChangeFilter({
+      viewType: "algorithm"
     });
   };
 
-  addEvent() {
-    const { typeBox } = this;
-    const arr = typeBox.children;
-    const ways = [];
-    for (let i = 0; i < arr.length; i+=1) {
-      ways.push(arr[i]);
-    }
-    Array.prototype.forEach.call(ways, (item) => {
-      item.addEventListener("click", this.checkType);
+  showListViewFunc = () => {
+    // 展示列表视图
+    this.onChangeFilter({
+      viewType: "list"
     });
-  }
-
-  checkType() {
-    /* eslint-disable no-param-reassign */
-    siblings(this).forEach((item, index, arr) => {
-      arr[index].style.color = "#666666";
-      arr[index].style.backgroundColor = "#ffffff";
-    });
-    this.style.color = "#ffffff";
-    this.style.backgroundColor = "#199475";
-  }
+  };
 
   render() {
-    const { showType, pageFlag } = this.state;
+    const { pageFlag } = this.state;
+    const { viewType } = this.props;
+    const checkStyle = {
+      color: "#ffffff",
+      backgroundColor: "#199475"
+    };
+    const UnCheckStyle = {
+      color: "#666666",
+      backgroundColor: "#ffffff"
+    };
     return (
       <div className={styles.controlBox}>
         <CommonBreadcrumb breadData={[{name:'算法控制台'}]} style={{marginLeft:'38px'}} />
         {pageFlag ? [
-          <div className={styles.controlType} ref={ref => {this.typeBox = ref}} key="controlType">
-            <div onClick={() => {return this.typeFunc("algorithm")}}>
+          <div className={styles.controlType} key="controlType">
+            <div
+              style={viewType === "algorithm" ? checkStyle : UnCheckStyle}
+              onClick={this.showAlgorithmFunc}
+            >
               <Icon type="swap" />
               <span>算法模型</span>
             </div>
-            <div onClick={() => {return this.typeFunc("list")}}>
+            <div
+              style={viewType === "list" ? checkStyle : UnCheckStyle}
+              onClick={this.showListViewFunc}
+            >
               <Icon type="swap" />
               <span>列表视图</span>
             </div>
           </div>,
           <div className={styles.controlContainer} key="controlContainer">
             <div className={styles.controlBox}>
-            {(showType === "algorithm") && (
+            {(viewType === "algorithm") && (
               <Button className={styles.addControl} onClick={() => {return this.onAddControlFunc(false)}}>
                 <Icon type="plus" />
                 <span className={styles.text}>添加</span>
               </Button>
             )}
           <div>
-          {showType === "algorithm" ? <AlgorithmModal {...this.props} /> : <ListView onAddControlFunc={this.onAddControlFunc} onChangeFilter={this.onChangeFilter} {...this.props} />}
+          {
+            viewType === "algorithm" ?
+            <AlgorithmModal onChangeFilter={this.onChangeFilter} {...this.props} />
+            : <ListView onAddControlFunc={this.onAddControlFunc} onChangeFilter={this.onChangeFilter} {...this.props} />
+          }
           </div>
           </div>
           </div>
@@ -125,6 +119,7 @@ const mapStateToProps = (state) => {
     deviceTypeCode: state.highAanlysisReducer.algorithm.get('deviceTypeCode'),
     createTimeStart: state.highAanlysisReducer.algorithm.get('createTimeStart'),
     createTimeEnd: state.highAanlysisReducer.algorithm.get('createTimeEnd'),
+    viewType: state.highAanlysisReducer.algorithm.get('viewType'),
     algorithmModalName: state.highAanlysisReducer.algorithm.get('algorithmModalName').toJS(),
     algorithmModalId: state.highAanlysisReducer.algorithm.get('algorithmModalId').toJS(),
     deviceTypes: state.common.get('deviceTypes'),

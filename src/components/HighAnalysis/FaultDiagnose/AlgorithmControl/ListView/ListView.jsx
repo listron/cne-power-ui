@@ -5,7 +5,7 @@ import {Button, Icon} from "antd";
 import DateFilter from '../../Filter/Date/DateFilter';
 import StationFilter from '../../Filter/Station/StationFilter';
 import ModalFilter from '../../Filter/Modal/ModalFilter';
-import FilteredItems from '../../Filter/FilteredItems/FilteredItems';
+import FilteredItems from '../../Filter/FilterItems/FilteredItems';
 import CommonPagination from "../../../../Common/CommonPagination";
 import ListViewTable from "./ListViewTable/ListViewTable";
 

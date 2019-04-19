@@ -44,6 +44,7 @@ const data = [
 export default class AlgorithmModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    onChangeFilter: PropTypes.func
   };
 
   constructor(props) {
@@ -53,6 +54,10 @@ export default class AlgorithmModal extends React.Component {
 
   detailsFunc = () => {
     // 点击带着参数跳转到列表视图
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      viewType: "list"
+    });
   };
 
   render() {
