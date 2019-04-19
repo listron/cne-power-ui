@@ -63,7 +63,7 @@ function *userNameLogin(action){
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         yield put({ // 存入reducer
           type: commonAction.changeCommonStore,
-          params: {
+          payload: {
             username: data.username,
             userFullName: data.userFullName,
             userLogo: data.userLogo || ''
@@ -151,7 +151,7 @@ function *phoneCodeLogin(action){
         }
         yield put({ // 存入reducer
           type: commonAction.changeCommonStore,
-          params: {
+          payload: {
             username: data.username,
             userFullName: data.userFullName,
             userLogo: data.userLogo || ''
