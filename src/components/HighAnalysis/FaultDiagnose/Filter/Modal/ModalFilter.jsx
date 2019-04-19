@@ -17,7 +17,6 @@ class ModalFilter extends Component {
   }
 
   onLevelSelect = (algorithmModalId) => {
-    console.log(algorithmModalId, "algorithmModalId");
     this.props.onChangeFilter({ algorithmModalId });
   };
 

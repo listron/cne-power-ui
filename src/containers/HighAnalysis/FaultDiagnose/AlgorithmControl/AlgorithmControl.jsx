@@ -50,9 +50,9 @@ class AlgorithmControl extends Component {
     });
   };
 
-  onChangeFilter = (obj) => {
+  onChangeFilter = (params) => {
     const { changeAlgorithmControlStore } = this.props;
-    changeAlgorithmControlStore({...obj});
+    changeAlgorithmControlStore({...params});
   };
 
   typeFunc = (type) => {
@@ -121,12 +121,12 @@ class AlgorithmControl extends Component {
 const mapStateToProps = (state) => {
   return ({
     stations: state.common.get('stations'),
-    stationCodes: state.highAanlysisReducer.watchAlgorithm.get('stationCodes'),
-    deviceTypeCode: state.highAanlysisReducer.watchAlgorithm.get('deviceTypeCode'),
-    createTimeStart: state.highAanlysisReducer.watchAlgorithm.get('createTimeStart'),
-    createTimeEnd: state.highAanlysisReducer.watchAlgorithm.get('createTimeEnd'),
-    algorithmModalName: state.highAanlysisReducer.watchAlgorithm.get('algorithmModalName').toJS(),
-    algorithmModalId: state.highAanlysisReducer.watchAlgorithm.get('algorithmModalId').toJS(),
+    stationCodes: state.highAanlysisReducer.algorithm.get('stationCodes'),
+    deviceTypeCode: state.highAanlysisReducer.algorithm.get('deviceTypeCode'),
+    createTimeStart: state.highAanlysisReducer.algorithm.get('createTimeStart'),
+    createTimeEnd: state.highAanlysisReducer.algorithm.get('createTimeEnd'),
+    algorithmModalName: state.highAanlysisReducer.algorithm.get('algorithmModalName').toJS(),
+    algorithmModalId: state.highAanlysisReducer.algorithm.get('algorithmModalId').toJS(),
     deviceTypes: state.common.get('deviceTypes'),
   })
 };

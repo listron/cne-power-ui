@@ -390,6 +390,10 @@ const menuData = [
             defaultPath: true,
             rightKey: 'analysis_intelligentWarning',
           },{
+            name: '历史预警',
+            path: 'historyWarn',
+            rightKey: 'analysis_intelligentWarning',
+          },{
             name: '算法控制台',
             path: 'algorithmControl',
             rightKey: 'analysis_intelligentWarning',

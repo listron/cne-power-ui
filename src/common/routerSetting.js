@@ -239,6 +239,9 @@ const routers = [
   },{ // 高级分析-风机故障检测与诊断-算法控制台
     path: '/analysis/faultDiagnose/algorithmControl',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/AlgorithmControl/AlgorithmControl')),
+  },{ // 高级分析-风机故障检测与诊断-历史预警
+    path: '/analysis/faultDiagnose/historyWarn',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn')),
   },{ // 偏航对风分析
     path: '/analysis/yaw/wind',
     component: lazy(() => import('../components/Common/Building/Building')),
