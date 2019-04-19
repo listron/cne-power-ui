@@ -272,6 +272,12 @@ const menuData = [
             defaultPath: true,
             rightKey: 'statistics_report_general',
           },
+          {
+            name: '智能分析报告',
+            path: 'intelligentAnalysis',
+            defaultPath: true,
+            rightKey: 'statistics_report_report',
+          },
         ]
       }
     ]

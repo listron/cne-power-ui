@@ -22,6 +22,7 @@ const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysi
 const stationContrast = require('./mock/statisticalAnalysis/stationContrast');
 const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
+const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
 const reportSeacher = require('./mock/monitor/report');
 
 
@@ -53,5 +54,6 @@ exports.mockConfig = [
   ...stationContrast,
   ...cleanWarning, // 高级分析-清洗预警
   ...score,//电站评分
+  ...intelligentAnalysis, // 智能分析报告
   ...reportSeacher,//报表查询
 ]

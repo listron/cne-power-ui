@@ -1,0 +1,74 @@
+@import '../../../../theme/theme.scss';
+
+.searchPart{ // 搜索框
+  display: flex;
+  align-items: center;
+  height: 71px;
+  line-height: 40px;
+  border-bottom: solid 1px $promptColor;
+  justify-content: space-between;
+  .leftLayout{
+    display: flex;
+    align-items: center;
+    .stationSelect,.regionStationSelect{
+      display: flex;
+      .text{
+        color: $darkColor;
+        margin-left: 28px;
+        margin-right: 12px;
+      }
+    }
+    .dateSelect{
+      display: flex;
+      align-items: center;
+      .text{
+        margin-left: 24px;
+        margin-right: -20px;
+      }
+    }
+    .searchInfo{
+      margin-left: 14px;
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+  .exportReport{
+    margin-right: 24px;
+  }
+}
+
+.analysisReport,.areaStationReport{ // 文档
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .monthReportContent,.yearReportContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 828px;
+    margin:30px 0;
+    border:1px solid #999;
+    .titleText{
+      font-size: 20px;
+      margin-top: 30px;
+    }
+    .contentText{
+      margin: 20px 30px;
+      .time{
+        margin: 0 4px;
+      }
+      .text{
+        margin: 0 4px;
+        color: $themeColor;
+      }
+      .paragraph{
+        text-indent:1.5em;
+      }
+      .dotted{
+        border-bottom: 1px dashed #999;
+        text-decoration: none; 
+      }
+    }
+  }
+}
