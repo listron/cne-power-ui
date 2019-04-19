@@ -33,6 +33,7 @@ class Main extends Component {
     enterpriseId: PropTypes.string,
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -105,7 +106,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -134,6 +135,7 @@ class Main extends Component {
                 userLogo={userLogo}
                 changeLoginStore={changeLoginStore}
                 resetMonitorData={resetMonitorData}
+                resetCommonStore={resetCommonStore}
               />
             </div>
           </div>}
