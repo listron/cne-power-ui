@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
-import { Tabs, Menu, Icon } from 'antd';
-import PropTypes from 'prop-types';
+import { Menu, Icon } from 'antd';
 import styles from './accountSettings.scss';
 import { othersAction } from '../alphaRedux/othersAction';
 import { connect } from 'react-redux';
-const { SubMenu, Item } = Menu;
 import EditUserName from '../../components/Others/AccountSettings/EditUserName';
 import EditPasswordForm from '../../components/Others/AccountSettings/EditPasswordForm';
 import EditPhone from '../../components/Others/AccountSettings/EditPhone';
 import CommonBreadcrumb from '../../components/Common/CommonBreadcrumb';
 import Footer from '../../components/Common/Footer';
 
-const TabPane = Tabs.TabPane;
+const { SubMenu, Item } = Menu;
 
 class AccountSettings extends Component {
-  static propTypes = {
-  }
 
   constructor(props) {
     super(props);
@@ -27,15 +23,17 @@ class AccountSettings extends Component {
     }
   }
 
-  toggleCollapsed = () => {
-    const { collapsed } = this.state;
-    this.setState({ collapsed: !collapsed })
-  }
+  
 
   onOpenChange = (openKeys) => {
     this.setState({
       openKeys
     });
+  }
+
+  toggleCollapsed = () => {
+    const { collapsed } = this.state;
+    this.setState({ collapsed: !collapsed })
   }
 
   selectMenu = (item) => {
@@ -44,7 +42,6 @@ class AccountSettings extends Component {
 
   render() {
     const { collapsed, openKeys, selectMenu } = this.state;
-    const { pathname } = this.props.location;
     return (
       <div className={styles.accountSettings}>
         <h3 className={styles.sideLayout} style={{ width: collapsed ? 80 : 180 }}>
@@ -86,6 +83,7 @@ class AccountSettings extends Component {
 
 const mapStateToProps = (state) => ({
   loading: state.othersReducer.get('loading'),
+  userFullName: state.common.get('userFullName'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

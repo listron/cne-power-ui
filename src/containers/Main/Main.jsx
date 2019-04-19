@@ -23,14 +23,17 @@ const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
+    username: PropTypes.string,
     getStations: PropTypes.func,
     getDeviceTypes: PropTypes.func,
     login: PropTypes.object,
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
-    username: PropTypes.string,
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -103,7 +106,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData,resetCommonStore } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -126,7 +129,14 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              <UserInfo changeLoginStore={changeLoginStore} resetMonitorData={resetMonitorData} resetCommonStore={resetCommonStore} />
+              <UserInfo
+                username={username}
+                userFullName={userFullName}
+                userLogo={userLogo}
+                changeLoginStore={changeLoginStore}
+                resetMonitorData={resetMonitorData}
+                resetCommonStore={resetCommonStore}
+              />
             </div>
           </div>}
           <div className={styles.appMain}>
@@ -174,7 +184,9 @@ const mapStateToProps = (state) => {
   return ({
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
-    username: state.login.get('username'),
+    username: state.common.get('username'),
+    userFullName: state.common.get('userFullName'),
+    userLogo: state.common.get('userLogo'),
   });
 }
 
