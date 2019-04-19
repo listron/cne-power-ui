@@ -14,6 +14,7 @@ class UserInfo extends Component {
     inHomepage: PropTypes.bool,
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -42,6 +43,7 @@ class UserInfo extends Component {
     localStorage.clear();
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.history.push('/login');
   }
 

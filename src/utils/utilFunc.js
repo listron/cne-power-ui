@@ -40,16 +40,19 @@ export const unitDataFormat = (data, placeholder = '--', pointLength, unit) => {
   return showData
 }
 
-export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = false) => { // 数值处理(生成指定小数位的字符串)=>string
+export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = false,quantity) => { // 数值处理(生成指定小数位的字符串)=>string
   let resultString = '';
   if ((!data && data !== 0) || isNaN(data)) { // 输入数据不存在或非数据。
     return placeholder;
   }
+  if(quantity &&  quantity!=='0'){ // 单位转换 例如KW-》MW
+    data=resultString/quantity
+  }
   if (!hideZero) { // 保留精度内的末尾0
-    resultString = pointLenth > 0 ? parseFloat(data).toFixed(pointLenth) : `${data}`;
+    resultString = (pointLenth > 0 || pointLenth===0) ? parseFloat(data).toFixed(pointLenth) : `${data}`;
   } else { // 需去掉末尾0
     const numData = parseFloat(data);
-    const tmpResult = pointLenth > 0 ? parseFloat(numData.toFixed(pointLenth)) : numData;
+    const tmpResult = (pointLenth > 0 || pointLenth===0) ? parseFloat(numData.toFixed(pointLenth)) : numData;
     resultString = `${tmpResult}`;
   }
   return resultString;
@@ -90,3 +93,11 @@ export const numWithComma = (data, placeholder = '--', joinText = ',', divisionN
     return outputArr.join(joinText);
   }
 };
+
+export const getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示 针对图表的数据
+const length = data.length;
+let replaceData = [];
+for (let i = 0; i < length; i++) { replaceData.push('--') }
+let realData = data.some(e => e || e === 0) ? data : replaceData;
+return realData
+}

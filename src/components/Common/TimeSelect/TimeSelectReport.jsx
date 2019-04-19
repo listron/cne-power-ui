@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DatePicker, Radio } from 'antd';
 import YearSelect from './YearSelect';
+import MonthSelect from './MonthSelect';
 import styles from './styles.scss';
 import moment from 'moment';
 
@@ -107,18 +108,29 @@ class TimeSelectReport extends React.Component {
       ],
     }
     this.setState({ ...params });
-    
   }
 
   handleOpenChange = (visiable) => {
     if (!visiable) {
       this.props.onChange({ ...this.state });
     }
-   
   }
 
   disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天以后的不可选
-    return current > moment().endOf('day')||current<moment().subtract(365,'day');
+    return current > moment().endOf('day') || current < moment().subtract(365, 'day');
+  }
+  monthStartSelect = ({ selectedMonth }) => {//按月选择起始时间
+    this.setState({ startTime: selectedMonth });
+  }
+  monthEndTimeSelect = ({ selectedMonth }) => {//按月选择结束时间
+    const { timeStyle, startTime } = this.state;
+    const params = {
+      timeStyle,
+      startTime,
+      endTime: selectedMonth,
+    }
+    this.setState({ ...params });
+    this.props.onChange({ ...params });
   }
 
   render() {
@@ -142,7 +154,8 @@ class TimeSelectReport extends React.Component {
           allowClear={false}
           disabledDate={this.disabledDate}
         />}
-        {timeStyle === 'month' && <RangePicker
+        {/*
+       {timeStyle === 'month' && <RangePicker
           value={[moment(startTime), moment(endTime)]}
           placeholder={['Start month', 'End month']}
           format="YYYY-MM"
@@ -151,6 +164,12 @@ class TimeSelectReport extends React.Component {
           onOpenChange={this.handleOpenChange}
           onPanelChange={this.handlePanelChange}
         />}
+      */}
+        {timeStyle === 'month' && <span className={styles.yearStyle}>
+          <MonthSelect monthValue={startTime} onMonthSelect={this.monthStartSelect} />
+          <span > - </span>
+          <MonthSelect monthValue={endTime} onMonthSelect={this.monthEndTimeSelect} />
+        </span>}
         {timeStyle === 'year' && <span className={styles.yearStyle}>
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
           <span > - </span>

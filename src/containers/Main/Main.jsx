@@ -79,7 +79,8 @@ class Main extends Component {
     }
   }
   componentWillUnmount() {
-    this.props.resetMonitorData()
+    this.props.resetMonitorData();
+    this.props.resetCommonStore();
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -98,6 +99,7 @@ class Main extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
     this.props.history.push('/login');
   }
@@ -192,6 +194,7 @@ const mapDispatchToProps = (dispatch) => ({
   getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 
