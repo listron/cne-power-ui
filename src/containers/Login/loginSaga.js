@@ -411,7 +411,7 @@ function *resetPassword(action){
     });
     if(response.data.code === "10000"){
       message.success('密码设置成功！');
-      yield put({ // 进行默认登录
+      yield put({ // 直接登录
         type: loginAction.USER_NAME_LOGIN_SAGA,
         params:{
           username: params.phoneNum,
