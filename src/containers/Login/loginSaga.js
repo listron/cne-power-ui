@@ -410,13 +410,14 @@ function *resetPassword(action){
       }),
     });
     if(response.data.code === "10000"){
-      Cookie.set('isNotLogin', 0);
-      Cookie.set('userFullName', params.userFullname);
       message.success('密码设置成功！');
-      yield put({ // userFullName存入common ，同时触发render 让cookie生效。
-        type: commonAction.changeCommonStore,
-        params: { userFullName: params.userFullname }
-      })
+      yield put({ // 进行默认登录
+        type: loginAction.USER_NAME_LOGIN_SAGA,
+        params:{
+          username: params.phoneNum,
+          password: params.password,
+        }
+      });
     } else {
       yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
       message.error('设置失败！');
