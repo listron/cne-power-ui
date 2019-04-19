@@ -335,7 +335,7 @@ class JoinInForm extends Component{
                 <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
               )}
             </FormItem>
-            <FormItem {...tailFormItemLayout} >
+            <FormItem {...tailFormItemLayout} className={styles.agreementItem}>
               {getFieldDecorator('userAgreement', {
               })(
                 <Checkbox className={styles.userArgee}  >
