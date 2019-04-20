@@ -189,8 +189,9 @@ const mapDispatchToProps = (dispatch) => ({
   getPowerNet: payload => dispatch({ type: singleStationAction.getPowerNet, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
   getFanList: payload => dispatch({ type: singleStationAction.getFanList, payload }),
+  getNewFanList: payload => dispatch({ type: singleStationAction.getNewFanList, payload }),
   getSingleScatter: payload => dispatch({ type: singleStationAction.getSingleScatter, payload }),
-  pointparams: payload => dispatch({ type: singleStationAction.pointparams, payload }),
+  getPointparams: payload => dispatch({ type: singleStationAction.pointparams, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

@@ -10,11 +10,13 @@ import WindStationHeader from './WindStationHeader';
 import OutputTenMin from '../SingleStationCommon/OutputTenMin';
 import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
 import CardSection from '../SingleStationCommon/CardSection';
-import FanList from './FanList';
+import FanListCont from './FanList/FanListCont';
 import IntegrateList from '../SingleStationCommon/DeviceList/IntegrateList';
 import Boosterstation from '../SingleStationCommon/DeviceList/Boosterstation';
 import PowerNet from '../SingleStationCommon/DeviceList/PowerNet';
-import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
+import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon';
+import { OutputChart } from '../../WindCommon/OutputChart';
+import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 const { TabPane } = Tabs;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -43,7 +45,7 @@ class WindStation extends Component {
     super(props);
     this.state = {
       hiddenStationList: false,
-      singleDeviceType: 'all',
+      singleDeviceType: 0,
     }
   }
 
@@ -67,6 +69,13 @@ class WindStation extends Component {
     })
   }
 
+  getStatusNum = (status) => { // 获取状态的数量
+    const { deviceStatusSummary = [] } = this.props.fanList;
+    const statusList = deviceStatusSummary.filter(e => e.stationStatus === status)
+    return statusList.length > 0 && statusList[0].stationNum || 0
+  }
+
+
   createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
     <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={typeCode}>
       <div className={styles.deviceTypeIcon} >
@@ -80,24 +89,24 @@ class WindStation extends Component {
 
 
 
+
   render() {
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList, fanDisplay } = this.props;
     const { stationCode } = this.props.match.params;
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList } = this.props;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
     const deviceTypeType = deviceFlowTypes.map(e => { return e.deviceTypes && e.deviceTypes[0] });
     const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
     let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false;
-    console.log('singleStationData', singleStationData)
     const stautus = [
-      { text: '运行', name: 'normalNum' },
-      { text: '待机', name: 'standbyNum' },
-      { text: '停机', name: 'shutdownNum' },
-      { text: '维护', name: 'maintainNum' },
-      { text: '故障', name: 'errorNum' },
-      { text: '通讯中断', name: 'interruptNum' },
-      { text: '未接入', name: 'noAccessNum' },
-    ]
+      { text: '运行', deviceStatusCode: 400, },
+      { text: '待机', deviceStatusCode: 700 },
+      { text: '停机', deviceStatusCode: 200 },
+      { text: '维护', deviceStatusCode: 600 },
+      { text: '故障', deviceStatusCode: 300 },
+      { text: '通讯中断', deviceStatusCode: 500 },
+      { text: '未接入', deviceStatusCode: 900 },
+    ];
     return (
       <div className={styles.windStation} >
         <WindStationTop
@@ -124,28 +133,35 @@ class WindStation extends Component {
               </div>
               {deviceTypeCode === 101 &&
                 <div className={styles.singleDeviceTypeBox}>
-                  <span onClick={() => { this.onHandleStation('all') }}
-                    className={singleDeviceType === 'all' ? styles.spanActive : styles.spanNormal} > 全部</span>
+                  <span onClick={() => { this.onHandleStation(0) }}
+                    className={singleDeviceType === 0 ? styles.spanActive : styles.spanNormal} > 全部</span>
                   {stautus.map(e => {
-                    return <span key={e.name} onClick={() => { this.onHandleStation(e.name) }} className={singleDeviceType === e.name ? styles.spanActive : styles.spanNormal}>{e.text} {singleStationData[e.name]}</span>
+                    return (<span key={e.deviceStatusCode}
+                      onClick={() => { this.onHandleStation(e.deviceStatusCode) }}
+                      className={singleDeviceType === e.deviceStatusCode ? styles.spanActive : styles.spanNormal}>
+                      {e.text} {this.getStatusNum(e.deviceStatusCode)}
+                    </span>)
                   })}
                 </div>
               }
             </div>
-            {deviceTypeCode === 101 && <FanList {...this.props} currentStatus={singleDeviceType} />}
+            {deviceTypeCode === 101 && <FanListCont {...this.props} currentStatus={singleDeviceType} />}
             {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
             {deviceTypeCode === 301 && <Boosterstation {...this.props} />}
             {deviceTypeCode === 0 && <PowerNet {...this.props} />}
           </div>
-          <div className={styles.charts}>
-            图表数据
-          </div>
+          {fanDisplay !== 'deviceTable' &&
+            <div className={styles.charts}>
+              <div className={styles.chartsBox}>
+                <OutputChart {...this.props} yAxisUnit={'kW'} />
+              </div>
+              <div className={styles.chartsBox}>
+                {/* <PowerDiagram {...this.props} /> */}
+              </div>
+            </div>
+          }
+
         </div>
-        {/* <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'风速(m/s)'} chartType={'wind'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} yAxisValuePoint={realTimePowerPoint} />
-          <PowerDiagramTenMin {...this.props} chartType={'wind'} stationCode={stationCode} yAxisUnit={powerUnit} yAxisValuePoint={powerPoint} />
-        </div> */}
-        {/* <CardSection {...this.props} stationCode={stationCode} /> */}
       </div>
     )
   }

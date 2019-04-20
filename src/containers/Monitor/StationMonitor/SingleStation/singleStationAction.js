@@ -26,6 +26,7 @@ export const singleStationAction = {
   GET_STATION_DEVICELIST_SAGA: Symbol('GET_STATION_DEVICELIST_SAGA'),//获取单电站设备列表
   EDIT_MONTH_YEAR_DATA_SAGA:Symbol('EDIT_MONTH_YEAR_DATA_SAGA'),//编辑月/年累计发电量
   getFanList:Symbol('getFanList'),//风机实时数据列表
+  getNewFanList:Symbol('getNewFanList'),//新的风机实时数据列表
 
   resetStore:Symbol('resetStore'),//重置store状态
   changeSingleStationStore: Symbol('changeSingleStationStore'),//改变单电站store数据成功

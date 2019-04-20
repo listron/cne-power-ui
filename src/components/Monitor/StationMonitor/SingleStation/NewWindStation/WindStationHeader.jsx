@@ -23,7 +23,6 @@ class windStationHeader extends React.Component {
 
   render() {
     const { singleStationData, } = this.props;
-    console.log('hahh',singleStationData)
     const stationDataSummary = singleStationData || {};
     const stationPower = stationDataSummary.stationPower;
     const stationCapacity = stationDataSummary.stationCapacity;

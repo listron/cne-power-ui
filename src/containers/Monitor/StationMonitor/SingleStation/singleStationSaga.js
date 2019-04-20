@@ -23,10 +23,9 @@ function* getSingleStation(action) { //获取单电站实时数据
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           singleStationData: response.data.data || {},
-          stationType: response.data.data.stationType  || '0'
+          stationType: response.data.data.stationType || '',
         }
       });
-      console.log('stationType',stationType)
     } else { throw response.data }
   } catch (e) {
     console.log(e);
@@ -557,7 +556,7 @@ function* pointparams(){ // 单电站测点参数名称列表
 
 function* getNewFanList(action){
   const { payload } = action;
-  const url = `${APIBasePath}${monitor.getFanList}/${payload.stationCode}`;
+  const url = `${APIBasePath}${monitor.getNewFanList}/${payload.stationCode}`;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.singleStationFetch });
@@ -606,6 +605,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getPowerNet, getPowerNet); // 获取电网信息列表
   yield takeLatest(singleStationAction.getSingleScatter, getSingleScatter); // 获取电网信息列表
   yield takeLatest(singleStationAction.pointparams, pointparams); // 单电站测点参数名称列表 风机
+  yield takeLatest(singleStationAction.getNewFanList, getNewFanList); // 单电站测点参数名称列表 风机
 
 }
 
