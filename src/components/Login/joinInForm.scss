@@ -21,6 +21,15 @@
         }
       } 
     }
+    .agreementItem{
+      margin-bottom: 0;
+      :global{
+        .ant-form-item-control{
+          line-height: 21px;
+          height: 21px;
+        }
+      }
+    }
     .userAgreeTip{
       color: #449ad3;
       margin-left: -12px;

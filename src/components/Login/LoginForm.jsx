@@ -217,7 +217,7 @@ class LoginForm extends Component {
                 <p>如需加入企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</span>！</p>
               </div>
             }
-            {!username && <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> }
+            {username === null && <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> }
           </FormItem>
         </Form>}
       </div>

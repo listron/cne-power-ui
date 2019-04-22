@@ -4,6 +4,7 @@ import Path from '../../constants/path';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from './loginAction';
+import { commonAction } from '../alphaRedux/commonAction';
 import { message } from 'antd';
 import Cookie from 'js-cookie';
 import { Base64 } from 'js-base64';
@@ -60,6 +61,14 @@ function *userNameLogin(action){
 
         data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
         data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
+        yield put({ // 存入reducer
+          type: commonAction.changeCommonStore,
+          payload: {
+            username: data.username,
+            userFullName: data.userFullName,
+            userLogo: data.userLogo || ''
+          }
+        })
         if(data.auto === '1'){//导入用户/生成用户 需走完善密码步骤
           yield put({ 
             type: loginAction.CHANGE_LOGIN_STORE_SAGA, 
@@ -71,7 +80,6 @@ function *userNameLogin(action){
           })
         }else if(data.auto === '0'){//正常用户，直接登录
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
-          // action.params.history.push('/monitor/station');
         }
       } else {
         yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
@@ -141,7 +149,14 @@ function *phoneCodeLogin(action){
           data.rightMenu && localStorage.setItem('rightMenu', data.rightMenu); // 权限信息存储
           data.right && localStorage.setItem('rightHandler', data.right); // 权限信息存储
         }
-        
+        yield put({ // 存入reducer
+          type: commonAction.changeCommonStore,
+          payload: {
+            username: data.username,
+            userFullName: data.userFullName,
+            userLogo: data.userLogo || ''
+          }
+        })
         if(data.auto==='1'){//auto为1导入用户/生成用户 需走完善密码步骤
           message.error('请完善密码！');
           yield put({ 
@@ -185,20 +200,17 @@ function *phoneCodeLogin(action){
 function *phoneCodeRegister(action){
   const { params } = action;
   let url = `${APIBasePath}${login.phoneCodeRegister}`;
-  console.log(params);
   try{
     const response = yield call(axios.post, url, {
       phoneNum: params.phoneNum, 
       verificationCode: params.verificationCode,
     });
-    console.log(response.data);
-    if(response.data.code === '00000'){
-      yield put({type: loginAction.PHONE_CODE_REGISTER_FAIL, data: response.data});
-    }else if(response.data.code === '20001'){
+    if (response.data.code === '10000' || response.data.code === '20014') { // 成功 或 用户重新加入企业
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
-    }
-    else{
-      yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
+    } else if(response.data.code === '00000'){ // 验证码校验异常 => 尚未发送验证码/验证码错误/验证码失效
+      message.error(response.data.message);
+    } else { // 用户已注册且未关联企业/ 注册失败
+      message.error(response.data.message);
     }
   }catch(e){
     console.log(e);
@@ -299,7 +311,6 @@ function *registerEnterprise(action){
         params:{
           username: params.username,
           password: params.password,
-          history: params.history,
         }
       });
     }else{
@@ -361,11 +372,9 @@ function *joinEnterprise(action){
         params:{
           username: params.username,
           password: params.password,
-          history: params.history,
         }
       });
       message.success(response.data.message);
-
     } else{
       yield put({type: loginAction.JOIN_ENTERPRISE_FAIL, data: response.data })
       if(response.data.code !== '20015') {
@@ -397,13 +406,19 @@ function *resetPassword(action){
         confirmPwd: params.confirmPwd,
         password: params.password,
         phoneNum: params.phoneNum,
+        userFullname: params.userFullname,
       }),
     });
     if(response.data.code === "10000"){
       message.success('密码设置成功！');
-      Cookie.set('isNotLogin', 0); // 直接登录。
-      // yield put({type: loginAction.CHANGE_LOGIN_STORE_SAGA, params:{pageTab: 'login'}});
-    }else{
+      yield put({ // 直接登录
+        type: loginAction.USER_NAME_LOGIN_SAGA,
+        params:{
+          username: params.phoneNum,
+          password: params.password,
+        }
+      });
+    } else {
       yield put({ type: loginAction.RESET_PASSWORD_FAIL, data: response.data });
       message.error('设置失败！');
     }
