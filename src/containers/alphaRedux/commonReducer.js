@@ -1,10 +1,14 @@
 import Immutable from 'immutable';
 
 import { commonAction } from './commonAction';
+import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
   enterpriseId:'',
   enterpriseName: '',
+  username: Cookie.get('username'),
+  userFullName: Cookie.get('userFullName'),
+  userLogo: Cookie.get('userLogo'),
   loading: false,
   stations: [], // 所有电站
   stationTypeCount:'none', //电站类型  multiple(两种)  pv wind none 
@@ -30,6 +34,7 @@ var initState = Immutable.fromJS({
   partitions: [], // 2018-12-22新增: 设备选择专用组件数据。 组件卸载时会自动清空。
   filterDevices: [], // 2018-12-22新增: 设备选择专用组件数据。默认与device相同，设备过多性能有问题时，启用该项进行分区筛选
   filterKey: [509], // 2018-12-22新增: 启用的用于指定分区筛选的设备类型-当前默认组件需分区。
+
 });
 
 const defectReducer = (state = initState, action) => {

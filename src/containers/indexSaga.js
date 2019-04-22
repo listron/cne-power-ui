@@ -1,7 +1,6 @@
 import { all } from 'redux-saga/effects';
 import { watchCommon } from './alphaRedux/commonSaga';
 import { watchLogin } from './Login/loginSaga';
-// import { watchLogin } from './Login/NewLogin/loginSaga';
 import { watchHomepage } from './Home/homepageSaga';
 
 import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
@@ -58,6 +57,7 @@ import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAna
 import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
 import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
 import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
+import { watchIntelligentAnalysis } from "./StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga";
 
 
 
@@ -116,15 +116,16 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
+    watchAllDeviceCurve(),//功率曲线
+    watchSingleDeviceCurve(),//单风机功率曲线
     watchMonitorPowerReport(),//报表--电量
     watchMonitorDeviceStatus(),//报表-设备状态
     watchMonitorMalfunction(),//报表-故障
     watchMonitorPowerLost(),//报表--电量损失
-    watchAllDeviceCurve(),//功率曲线
-    watchSingleDeviceCurve(),//单风机功率曲线
+
+ 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     
-    // 无逻辑关系隐藏页面
     watchOthersSaga(),
     // watchOtherSaga(),
     //统计分析的全部电站
@@ -138,6 +139,8 @@ export default function* rootSaga() {
     watchPerformanceAnalysisSaga(),
     watchManufacturers(),
     watchCustomize(),
+    // 统计报表
+    watchIntelligentAnalysis(), // 智能分析报告
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),

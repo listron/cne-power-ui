@@ -24,7 +24,14 @@ export default {
     getStationTargetInfo: '/v3/management', // 获取电站指定指标分类： 省市县等。
     getWeather: '/v3/monitor/weather', // 单电站未来天气
     // getRefreshToken: '/v3/oauth/token' --todo 根据过期token中携带的refreshToken获取新token接口。
-    getDictionaryInfo: '/v3/management/dictionary'  //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+    getDictionaryInfo: '/v3/management/dictionary' , //获取覆盖类型、并网电压等级、所属电网（区域）忽略原因列表
+    getRegion:'/v3/wind/report/fan/region',
+    getRegionStation:'/v3/wind/report/fan/station',
+    getStationDevicemode:'/v3/wind/report/fan/devicemode',
+    getRegionStationDevice:'/v3/wind/report/fan/device',
+
+
+
 
   },
   APISubPaths: {
@@ -280,7 +287,16 @@ export default {
       getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
-                  
+      //报表
+      getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总  
+      exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表
+      getDeviceStatusList:'/v3/wind/report/fan/devicestatus' ,     //电设备状态报表汇总
+      getDeviceStatusDetail:'/v3/wind/report/fan/devicestatus/detail' ,     //电设备状态报表明细
+      exportDeviceStatus:'/v3/wind/report/fan/devicestatus/export',//导出设备状态
+      getMalfunctionList:'/v3/wind/report/fan/devicefault' ,     //故障报表汇总  
+      getMalfunctionDetail:'/v3/wind/report/fan/devicefault/detail' ,     //故障报表明细
+      exportDevicefault:'/v3/wind/report/fan/devicefault/export',//导出设备故障报表
+      getPowerLostList:'/v3/wind/report/fan/lostpower' ,     //损失电量报表汇总  
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
@@ -347,6 +363,11 @@ export default {
       singleStaionScore:'/v3/performance/score',
       getScoreList:'/v3/performance/score/list',
       getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
+      // 智能分析报告
+      getIntelligent:'/v3/intelligence/analysis/station', // 单电站分析
+      exportIntelligent:'/v3/intelligence/analysis/station/export', // 单电站分析导出
+      getArea:'/v3/ intelligence/analysis/area', // 同区域电站对比 
+      getAreacompare:'/v3/ intelligence/analysis/areacompare', // 区域对比分析报告
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

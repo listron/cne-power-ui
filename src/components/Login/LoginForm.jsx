@@ -21,27 +21,48 @@ class LoginForm extends Component {
     checkLoginPhone: PropTypes.bool,
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showPasswordLogin: true,
-      timeValue: 0,
-    }
+  state = {
+    showPasswordLogin: true,
+    timeValue: 0,
   }
 
-  componentWillMount(){
+  componentWillMount(){ // 邀请用户
     const locationSearch = this.props.history.location.search;
     if(locationSearch){
       const linkId = locationSearch.substr(locationSearch.indexOf('=')+1);
       this.props.inviteUserLink({linkId});
     }
-    
+  }
+
+  componentDidUpdate(preProps){
+    const { error, form } = this.props;
+    const preError = preProps.error;
+    if (preError.get('code') !== '20009' && error.get('code') === '20009') {
+      const { showPasswordLogin } = this.state;
+      if (showPasswordLogin) {
+        const username = form.getFieldValue('username');
+        form.setFields({
+          username: {
+            value: username,
+            errors: [new Error('用户名或密码错误，请重新尝试！')],
+          },
+        });
+      } else {
+        const phoneNum = form.getFieldValue('phoneNum');
+        form.setFields({
+          phoneNum: {
+            value: phoneNum,
+            errors: [new Error('手机号或验证码错误，请重新尝试！')],
+          },
+        });
+      }
+    }
   }
 
   componentWillUnmount = () => {
-    this.setState({
-      timeValue: 0,
-    })
+    if (this.timeCount) {
+      clearInterval(this.timeCount);
+    }
     this.props.changeLoginStore({
       userEnterpriseStatus: 3,
       checkLoginPhone: true,
@@ -53,35 +74,11 @@ class LoginForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (this.state.showPasswordLogin) {
-          setTimeout(() => {
-            if(this.props.error && this.props.error.get('code') === '20009') {
-              this.props.form.setFields({
-                username: {
-                  value: '',
-                  errors: [new Error('用户名或密码错误，请重新尝试！')],
-                },
-                password: {
-                  value: '',
-                  errors: [new Error('')],
-                },
-              });
-            }
-          }, 500);
           this.props.fetchLogin({
             ...values,
             history: this.props.history,
           });
-        }else{
-          setTimeout(() => {
-            if(this.props.error && this.props.error.get('code') === '20009') {
-              this.props.form.setFields({
-                phoneNum: {
-                  value: values.phoneNum,
-                  errors: [new Error('手机号错误，请重新尝试！')],
-                },
-              });
-            }
-          }, 500);
+        } else {
           this.props.checkCodeLogin({
             ...values,
             history: this.props.history,
@@ -93,11 +90,11 @@ class LoginForm extends Component {
   }
 
   timeDecline = () => {
-    let timeCount = setInterval(() => {
+    this.timeCount = setInterval(() => {
       this.setState({timeValue: this.state.timeValue - 1})
       if (this.state.timeValue < 0) {
-        clearInterval(timeCount);
-        this.setState({timeValue: 0})
+        clearInterval(this.timeCount);
+        this.setState({ timeValue: 0 });
       }
     }, 1000);
   }
@@ -106,8 +103,7 @@ class LoginForm extends Component {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
   }
 
-  // 点击获取验证码
-  sendCode = () => {
+  sendCode = () => { // 点击获取验证码
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if (!err) {
         this.props.sendCode(values);
@@ -116,6 +112,7 @@ class LoginForm extends Component {
       }
     })
   }
+
   jumpPersonalInfo = () => {
     this.props.form.validateFields(['phoneNum', 'verificationCode'], (err, values) => {
       if(!err){
@@ -179,30 +176,25 @@ class LoginForm extends Component {
     );
   }
 
-  render(){
+  render(){ // userEnterpriseStatus 3: 正常；4：异常；5：待审核；6：未通过审核；7：被移除。
     const { getFieldDecorator, getFieldsError } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
-    let { username, checkLoginPhone, userEnterpriseStatus } = this.props;
+    let { username, checkLoginPhone, userEnterpriseStatus = 3 } = this.props;
+    const abnormalTip = {
+      4: '账号异常，请联系管理员！',
+      5: '等待管理员审核',
+      6: '未通过审核，如有问题，请联系管理员！',
+      7: '您已被移出企业，无法登陆',
+    }
     return (
       <div className={styles.loginForm}>
-        {userEnterpriseStatus===5 && 
-          <div className={styles.waitExamine}>
-            <div className={styles.waitExamineIcon}><i className="iconfont icon-ha"></i></div>
-            <div className={styles.waitExamineTip}>等待管理员审核</div>
-          </div>
-        }
-        {userEnterpriseStatus===6 && 
-          <div className={styles.loginAbnormal}>
-            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
-            <div className={styles.abnormalTip}>未通过审核，如有问题，请联系管理员！</div>
-          </div>
-        }
-        {(userEnterpriseStatus===4 || userEnterpriseStatus===7) && 
-          <div className={styles.loginAbnormal}>
-            <div className={styles.abnormalIcon}><i className="iconfont icon-ha"></i></div>
-            <div className={styles.abnormalTip}>账号异常，请联系管理员！</div>
-          </div>
-        }
+        {[4,5,6,7].includes(userEnterpriseStatus) && <div
+          className={styles.loginAbnormal}
+          style={userEnterpriseStatus === 5 ? { color: '#e08031' }: { color: '#199475' }}
+        >
+          <div className={styles.abnormalIcon}><i className="iconfont icon-ha" /></div>
+          <div>{abnormalTip[userEnterpriseStatus]}</div>
+        </div>}
         {userEnterpriseStatus===3 &&
         <Form onSubmit={this.onHandleSubmit}>
           {showPasswordLogin && this.renderUsernameLogin(getFieldDecorator)}
@@ -225,7 +217,7 @@ class LoginForm extends Component {
                 <p>如需加入企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</span>！</p>
               </div>
             }
-            {username === null ? <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> : null }
+            {username === null && <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> }
           </FormItem>
         </Form>}
       </div>

@@ -4,6 +4,7 @@ import { stringify } from 'qs';
 import Path from '../../constants/path';
 import { message } from 'antd';
 import { othersAction } from './othersAction';
+import { commonAction } from './commonAction';
 import Cookie from 'js-cookie';
 
 const { APIBasePath } = Path.basePaths;
@@ -48,7 +49,7 @@ function* editPassword(action) { // 修改密码
         type: othersAction.changeOthersStore,
         payload: { loading: false },
       });
-      message.error(`旧密码修改失败，请重试`);
+      message.error(`修改失败，旧密码输入错误`);
     }
   } catch (e) {
     console.log(e);
@@ -68,8 +69,13 @@ function* editUserName(action) { // 修改姓名
         type: othersAction.GET_OTHERS_FETCH_SUCCESS,
         payload: {}
       });
+      yield put({
+        type: commonAction.CHANGE_COMMON_STORE,
+        payload: { userFullName }
+      })
       message.success('账户信息更改成功，2s后将返回首页', 2);
       Cookie.set('userFullName', userFullName);
+      
       setTimeout(() => {
         history.push('/monitor/station');
       }, 2000)

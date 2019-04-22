@@ -21,6 +21,15 @@
         }
       } 
     }
+    .agreementItem{
+      margin-bottom: 0;
+      :global{
+        .ant-form-item-control{
+          line-height: 21px;
+          height: 21px;
+        }
+      }
+    }
     .userAgreeTip{
       color: #449ad3;
       margin-left: -12px;
@@ -148,7 +157,7 @@
       }
     }
     .queryCode{
-      width: 114px;
+      width: 96px;
       margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
@@ -163,7 +172,7 @@
       color: #199475;
     }
     .queryCodeClick{
-      width: 114px;
+      width: 96px;
       margin-top: 6px;
       margin-right: 0;
       padding: 0 5px;
@@ -224,9 +233,11 @@
     .ant-btn-primary {
       width: 220px;
     }
+    .ant-form-item{
+      margin-bottom: 21px;
+    }
     .ant-form-item .ant-btn-primary:focus {
       background-color: $themeColor;
     }
-    
   }
 }
