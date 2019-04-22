@@ -58,7 +58,7 @@ class Transfer extends Component {
 
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const initSorterField ='create_time';
+    const initSorterField = 'create_time';
     let ascend = "";
     const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
@@ -93,7 +93,7 @@ class Transfer extends Component {
         dataIndex: 'stationName',
         key: 'stationName',
         sorter: true,
-        
+
         // render: text => (text || text === 0) ? text : '--'
       },
       {
@@ -133,14 +133,10 @@ class Transfer extends Component {
         title: '查看工单',
         className: styles.iconDetail,
         render: (text, record) => (
-          <div>
-            <span>
-              <i className="iconfont icon-tranlist icon-action" onClick={() => {
-                this.onShowDetail
-                  (record)
-              }} />
-            </span>
-          </div>
+          <span className={styles.iconBox}>
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record) }} />
+          </span>
+
         )
       }
     ]
