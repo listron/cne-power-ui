@@ -38,20 +38,27 @@ class WindStationList extends React.Component {
   }
 
 
-  powerPoint = (data) => { // 根据风电站特殊的需求
+  powerPoint = (data,quality) => { // 根据风电站特殊的需求
     let point = 2;
     if (data > 100) point = 0;
     if (data > 0.01 && data <= 100) point = 2;
     if (data <= 0.01) point = 4;
-    let showData = dataFormats(data, '--', point, true)
+    let showData = dataFormats(data, '--', point, true);
     if (showData !== '--') {
-      const valueArr = showData.split('.');
+      const valueArr = `${showData}`.split('.');
       const intNum = valueArr[0];
       const pointNum = valueArr[1];
       return pointNum && numWithComma(intNum) + '.' + pointNum || numWithComma(intNum)
     } else {
       return showData
     }
+  }
+
+  unitFormarts = (data, quantity) => {
+    if (isNaN(data) || (!data && data !== 0)) {
+      return '--';
+    }
+    return data / quantity
   }
 
   initColumn = () => {
@@ -100,7 +107,7 @@ class WindStationList extends React.Component {
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(value, '--', 2, true)
+        render: value => dataFormats(value, '--', 2, true,1000)
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
@@ -121,19 +128,19 @@ class WindStationList extends React.Component {
         dataIndex: "dayPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => this.powerPoint(value),
+        render: value => this.powerPoint(this.unitFormarts(value,10000)),
       },
       {
         title: () => <TableColumnTitle title="月发电量" unit={'万kWh'} className="nonePadding" />,
         dataIndex: "monthPower",
-        render: value => this.powerPoint(value),
+        render: value => this.powerPoint(this.unitFormarts(value,10000)),
         sorter: true,
         className: styles.numberStyle,
       },
       {
         title: () => <TableColumnTitle title="年发电量" unit={'万kWh'} className="nonePadding" />,
         dataIndex: "yearPower",
-        render: value => this.powerPoint(value),
+        render: value => this.powerPoint(this.unitFormarts(value,10000)),
         sorter: true,
         className: styles.numberStyle,
       },

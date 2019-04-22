@@ -45,7 +45,7 @@ class windStationHeader extends React.Component {
   render() {
     const { windMonitorStation, } = this.props;
     const stationDataSummary = windMonitorStation.stationDataSummary || {};
-    const stationPower = stationDataSummary.stationPower;
+    const stationPower = this.unitFormarts(stationDataSummary.stationPower, 1000);
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
@@ -56,7 +56,8 @@ class windStationHeader extends React.Component {
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
     const capabilityRate = stationDataSummary.yearRate;
-    const stationPlanPower = stationDataSummary.stationPlanPower;
+    const stationPlanPower = this.unitFormarts(stationDataSummary.stationPlanPower, 1000);
+    const percent = (stationPlanPower && stationCapacity) ? stationPower / stationCapacity * 100 : 0;
     const content = (
       <div>
         <div className={styles.poverItem}>
@@ -88,7 +89,7 @@ class windStationHeader extends React.Component {
               <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
               <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
             </div>
-            <OwnProgress percent={stationPower / stationCapacity * 100} successPercent={capabilityRate} />
+            <OwnProgress percent={capabilityRate} successPercent={percent} />
             <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
           </Popover>
         </div>
