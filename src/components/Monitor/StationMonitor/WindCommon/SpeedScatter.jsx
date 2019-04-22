@@ -8,7 +8,36 @@ import styles from './windCommon.scss';
 
 
 const SpeedScatter = ({ ...rest }) => {
-    const { scatterData = {} } = rest;
+    const { scatterData = {}, type } = rest;
+    let needData = [];
+    if (type === 'singleStation') {
+        needData = [
+            { name: '全部电站', value: 'stationsMonthsData' },
+            { name: '本电站', value: 'stationMonthsData' },
+            { name: '本电站昨日', value: 'yesterdayData' },
+        ]
+    }
+    if (type === 'allStation') {
+        needData = [
+            { name: '近三个月', value: 'stationsMonthsData' },
+            { name: '昨日', value: 'yesterdayData' },
+        ]
+    }
+    let series = needData.map((item) => {
+        const data=scatterData[item.value] || [];
+        return ({
+            name: item.name,
+            type: 'scatter',
+            symbolSize: 5,
+            emphasis: {
+                symbolSize: 8,
+            },
+            data:data.map((item) => {
+                const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
+                return [windSpeed, equipmentHours, date, stationName, stationCode]
+            })
+        })
+    })
     const { stationsMonthsData = [], yesterdayData = [] } = scatterData;
     const chartsBox = document.getElementById('SpeedScatterGraph');
     const Graphic = (stationsMonthsData.length === 0 && yesterdayData.length === 0) ? showNoData : hiddenNoData;
@@ -19,7 +48,7 @@ const SpeedScatter = ({ ...rest }) => {
         stationsMonthsData.length > 0 ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
         const scatterOption = {
             graphic: Graphic,
-            color: ['#c7ceb2', '#199475'],
+            color: ['#c7ceb2', '#199475','#e08031'],
             title: {
                 text: '日等效利用小时数散点图（近三个月）',
                 textStyle: {
@@ -42,7 +71,7 @@ const SpeedScatter = ({ ...rest }) => {
             },
             grid: {
                 top: 70,
-                left:70,
+                left: 70,
             },
             tooltip: {
                 trigger: 'item',
@@ -130,34 +159,9 @@ const SpeedScatter = ({ ...rest }) => {
                     },
                 }
             ],
-            series: [
-                {
-                    name: '近三个月',
-                    type: 'scatter',
-                    symbolSize: 5,
-                    emphasis: {
-                        symbolSize: 8,
-                    },
-                    data: stationsMonthsData.map((item) => {
-                        const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
-                        return [windSpeed, equipmentHours, date, stationName, stationCode]
-                    })
-                },
-                {
-                    name: '昨日',
-                    type: 'scatter',
-                    symbolSize: 5,
-                    emphasis: {
-                        symbolSize: 8,
-                    },
-                    data: yesterdayData.map((item) => {
-                        const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
-                        return [windSpeed, equipmentHours, date, stationName, stationCode]
-                    })
-                }
-            ]
+            series: series
         };
-        SpeedScatterGraph.setOption(scatterOption, 'notMerge');
+        SpeedScatterGraph.setOption(scatterOption);
         SpeedScatterGraph.resize();
     }
 

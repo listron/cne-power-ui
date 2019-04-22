@@ -11,26 +11,12 @@ const RadioButton = Radio.Button;
 
 
 const PowerDiagram = ({ ...rest }) => {
-    const { powerData, getRealMonitorPower, stopRealCharstData } = rest;
+    const { powerData, onChange } = rest;
     const [intervalTime, setIntervalTime] = useState(0);
-    useEffect(() => {
-        let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
-        if (intervalTime === 1) {
-            startTime = moment().subtract(5, 'month').format('YYYY-MM-DD')
-        } else if (intervalTime === 2) {
-            startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
-        }
-        let endTime = moment().format('YYYY-MM-DD');
-        stopRealCharstData('power');
-        getRealMonitorPower({ intervalTime, startTime, endTime })
-        return () => {
-            stopRealCharstData('power');
-        }
-    }, [intervalTime]);
-
     const onChangeTimePower = (e) => { // 改变 日／月／年
         const intervalTime = e.target.value;
         setIntervalTime(intervalTime);
+        onChange({intervalTime})
     }
 
     const unitFormarts = (data, quantity) => {
@@ -40,7 +26,6 @@ const PowerDiagram = ({ ...rest }) => {
         return data / quantity
     }
 
-   
     const actualPower = powerData.map(e => dataFormats(unitFormarts(e.actualPower,10000), '--', 2, true));  // 实际发电量
     const filterActualPower = powerData.filter(e => e.actualPower);
     const theoryPower = powerData.map(e => dataFormats(unitFormarts(e.theoryPower,10000), '--', 2, true)); // 计划发电量
@@ -72,7 +57,7 @@ const PowerDiagram = ({ ...rest }) => {
             grid: {
                 right: 90,
                 top: 70,
-                left:70,
+                left:68,
             },
             legend: {
                 left: 'center',
