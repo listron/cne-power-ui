@@ -205,13 +205,13 @@ function *phoneCodeRegister(action){
       phoneNum: params.phoneNum, 
       verificationCode: params.verificationCode,
     });
-    const { code, message } = response.data || {};
+    const { code } = response.data || {};
     if (code === '10000' || code === '20014' || code === '20013') { // 成功10000, 用户重新加入企业20014, 新用户默认注册登录20013 
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
     } else if(code === '00000'){ // 验证码校验异常 => 尚未发送验证码/验证码错误/验证码失效
-      message.error(message);
+      message.error(response.data.message);
     } else { 
-      message.error(message);
+      message.error(response.data.message);
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
     }
   }catch(e){
