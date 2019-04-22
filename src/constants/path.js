@@ -376,9 +376,11 @@ export default {
       getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
       // 智能分析报告
       getIntelligent:'/v3/intelligence/analysis/station', // 单电站分析
-      exportIntelligent:'/v3/intelligence/analysis/station/export', // 单电站分析导出
-      getArea:'/v3/ intelligence/analysis/area', // 同区域电站对比 
-      getAreacompare:'/v3/ intelligence/analysis/areacompare', // 区域对比分析报告
+      exportIntelligent:'/v3/intelligence/analysis/station/export', // 导出单电站分析导出
+      getArea:'/v3/intelligence/analysis/area', // 同区域电站对比 
+      exportAreaStation:'/v3/intelligence/analysis/area/export', // 导出同区域电站对比
+      getAreaCompare:'/v3/intelligence/analysis/areacompare', // 区域对比分析报告
+      exportAreaCompare:'/v3/intelligence/analysis/areacompare/export', // 区域对比分析报告导出
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

@@ -133,7 +133,7 @@ class TimeSelect extends React.Component {
         </div>
         {timeStyle === 'day' && <MonthPicker
           // format="YYYY年MM月"
-          value={moment(startTime)}
+          value={startTime === null ? startTime : moment(startTime)}
           onChange={this.onMonthSelect}
           placeholder="选择月份"
           allowClear={false}

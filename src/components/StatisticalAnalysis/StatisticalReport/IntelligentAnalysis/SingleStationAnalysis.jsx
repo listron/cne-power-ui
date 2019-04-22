@@ -9,16 +9,13 @@ class SingleStationAnalysis extends Component{
     reportShow: PropTypes.bool,
     completionRate: PropTypes.object,
   }
-  constructor(props){
-    super(props);
-  }
 
   render(){
     const { reportShow } = this.props;
     return(
       <div className={styles.singleStationAnalysis}>
         <SingleStationAnalysisSearch {...this.props} />
-        { reportShow && <SingleStationAnalysisReport {...this.props} /> }
+        { reportShow ? <SingleStationAnalysisReport {...this.props} /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div> }
       </div>
     )
   }
