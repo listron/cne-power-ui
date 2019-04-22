@@ -69,6 +69,7 @@ function SequenceChart({ idName, title, sequenceChartList, currentDeviceName, })
         trigger: 'axis',
         show: true,
         backgroundColor: '#fff',
+        confine:true,
         axisPointer: {
           type: 'cross',
           label: {
