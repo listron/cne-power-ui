@@ -58,8 +58,9 @@ class Transfer extends Component {
 
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const sortField = this.sortField(sorter.field);
+    const initSorterField ='create_time';
     let ascend = "";
+    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
     this.getTransferList({ sortField, sortMethod: ascend });
   };
