@@ -270,6 +270,9 @@
             align-items: center;
             justify-content: center;
         }
+        .iconStyle{
+            color: $themeColor;
+        }
     }
     .windContainer{
         display: flex;
@@ -408,14 +411,31 @@
                 }
             } 
         }
-        .charts{
+        .windStationChart {
             display: flex;
-            flex:0 0 464px;
+            width: 464px;
             background: #f8f8f8;
             padding: 0 12px 20px;
             flex-direction: column;
+            .tags {
+                display: flex;
+                justify-content: space-around;
+                margin: 8px 30px;
+                a {
+                    padding: 0 12px;
+                    background: #ffffff;
+                    border: 1px solid #dfdfdf;
+                    border-radius: 4px;
+                    height: 30px;
+                    line-height: 30px;
+                    color: #666;
+                }
+                .noLink{
+                    pointer-events: none;
+                }
+            }
             .chartsBox{
-                margin-top: 20px;
+                margin-bottom: 20px;
                 display: flex;
                 height: 260px;
                 width:100%;

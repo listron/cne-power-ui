@@ -112,6 +112,7 @@ class SingleStation extends Component {
       endTime: moment().utc().format()
     });
     this.props.getWeatherList({ stationCode }); // 天气
+    this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
     this.props.getSingleScatter({ stationCode }); // 散点
     this.timeOutOutputData = setTimeout(() => {
       this.getOneHourData(stationCode, stationType);

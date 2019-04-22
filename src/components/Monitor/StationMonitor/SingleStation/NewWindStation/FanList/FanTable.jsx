@@ -5,7 +5,7 @@ import styles from './fanList.scss';
 import CommonPagination from '../../../../../Common/CommonPagination';
 import { Table, message } from "antd";
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
-import { dataFormats,numWithComma } from '../../../../../../utils/utilFunc';
+import { dataFormats, numWithComma } from '../../../../../../utils/utilFunc';
 
 class WindStationList extends React.Component {
   static propTypes = {
@@ -55,7 +55,7 @@ class WindStationList extends React.Component {
   showTip = (e) => {
     message.destroy();
     message.config({ top: 225, maxCount: 1, });
-    message.warning('电站未接入,无法查看详情', 2);
+    message.warning('设备未接入,无法查看详情', 2);
   }
 
   powerPoint = (data, quality) => { // 根据风电站特殊的需求
@@ -90,46 +90,56 @@ class WindStationList extends React.Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => (
-          <div className={record.deviceStatus === 900 ? styles.deviceCode : ""} >
-            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
-          </div>
-        ),
         defaultSortOrder: "ascend",
         sorter: true,
+        render: (text, record) => {
+          if (record.deviceStatus === 900) {
+            return <div title={text} className={styles.stationName} onClick={this.showTip}>{text}</div>
+          } else {
+            return (
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+            )
+          }
+        },
       }, {
         title: '所属线路',
         dataIndex: 'lineName',
         key: 'lineName',
-        render:text=>text || '--',
         sorter: true,
+        render: text => {
+          return <div title={text} className={styles.lineName}>{text}</div>
+        }
       },
       {
         title: '型号',
         dataIndex: 'deviceModeName',
         key: 'deviceModeName',
-        render:text=>text || '--',
         sorter: true,
+        render: text => {
+          return <div title={text} className={styles.deviceModeName}>{text}</div>
+        }
       },
       {
         title: () => <TableColumnTitle title="装机容量" unit={'KW'} className="nonePadding" />,
         dataIndex: "deviceCapacity",
-        key:'deviceCapacity',
+        key: 'deviceCapacity',
         className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="实时功率" unit="kW" />,
+        title: () => <TableColumnTitle title="实时功率" unit="kW" className="nonePadding" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
-      }, 
+      },
       {
-        title: () => <TableColumnTitle title="风速" unit="m/s" />,
+        title: () => <TableColumnTitle title="风速" unit="m/s" className="nonePadding" />,
         dataIndex: 'windSpeed',
         key: 'windSpeed',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
@@ -137,49 +147,54 @@ class WindStationList extends React.Component {
         title: '出力比',
         dataIndex: 'capabilityRate',
         key: 'capabilityRate',
+        className: styles.numberStyle,
         render(value) { return numWithComma(value); },
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="发电机转速" unit="RPM" />,
+        title: () => <TableColumnTitle title="发电机转速" unit="RPM" className="nonePadding" />,
         dataIndex: 'alternatorSpeed',
         key: 'alternatorSpeed',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="叶轮转速" unit="RPM" />,
+        title: () => <TableColumnTitle title="叶轮转速" unit="RPM" className="nonePadding" />,
         dataIndex: 'impellerSpeed',
         key: 'impellerSpeed',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="风向角" unit="°" />,
+        title: () => <TableColumnTitle title="风向角" unit="°" className="nonePadding" />,
         dataIndex: 'windAngle',
         key: 'windAngle',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="偏航角度" unit="°" />,
+        title: () => <TableColumnTitle title="偏航角度" unit="°" className="nonePadding" />,
         dataIndex: 'angleOfYaw',
         key: 'angleOfYaw',
+        className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {
-        title: () => <TableColumnTitle title="告警" unit="个" />,
+        title: () => <TableColumnTitle title="告警" unit="个" className="nonePadding" />,
         dataIndex: 'alarmNum',
         key: 'alarmNum',
+        className: styles.numberStyle,
         render(value) { return numWithComma(value); },
         sorter: true,
       }, {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
-        render: (text, record) => (
-        <span className={styles[this.getStatusName(text).name]}>{this.getStatusName(text).text}</span>),
+        render: (text, record) => (<span className={styles[this.getStatusName(text).name]}>{this.getStatusName(text).text}</span>),
         sorter: true,
       },
     ];
@@ -190,7 +205,7 @@ class WindStationList extends React.Component {
     const { sortName, descend } = this.state;
     const tableSource = data.sort((a, b) => { // 手动排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['deviceName', 'lineName','deviceModeName'];
+      const arraySort = ['deviceName', 'lineName', 'deviceModeName'];
       const arrayNumSort = [
         "deviceCapacity",
         "devicePower",
@@ -211,11 +226,11 @@ class WindStationList extends React.Component {
     })
     return tableSource
   }
-  
+
 
   render() {
-    const { fanList, pageSize, currentPage, onPaginationChange,alarmSwitch,currentStatus } = this.props;
-    const {deviceList=[]}=fanList;
+    const { fanList, pageSize, currentPage, onPaginationChange, alarmSwitch, currentStatus } = this.props;
+    const { deviceList = [] } = fanList;
     const initDeviceList = deviceList.map((e, i) => ({ ...e, key: i }));
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
       return (currentStatus === 0 || e.deviceStatus === currentStatus);

@@ -15,6 +15,7 @@ class FanItem extends React.Component {
     deviceTypeCode: PropTypes.number,
     cardPointParams: PropTypes.string,
     stationCode: PropTypes.string,
+    deviceList: PropTypes.array,
 
   }
   constructor(props, context) {
@@ -25,9 +26,9 @@ class FanItem extends React.Component {
     let result = {};
     switch (status) {
       case 400: result = { text: '运行', name: 'normalNum', icon: '' }; break;
-      case 700: result = { text: '待机', name: 'standbyNum', icon: '' }; break;
-      case 200: result = { text: '停机', name: 'shutdownNum', icon: 'icon-alarm' }; break;
-      case 600: result = { text: '维护', name: 'maintainNum', icon: 'icon-alarm' }; break;
+      case 700: result = { text: '待机', name: 'standbyNum', icon: 'icon-await' }; break;
+      case 200: result = { text: '停机', name: 'shutdownNum', icon: 'icon-suspend' }; break;
+      case 600: result = { text: '维护', name: 'maintainNum', icon: 'icon-repair' }; break;
       case 300: result = { text: '故障', name: 'errorNum', icon: 'icon-alarm' }; break;
       case 500: result = { text: '通讯中断', name: 'interruptNum', icon: 'icon-outage' }; break;
       case 900: result = { text: '未接入', name: 'noAccessNum', icon: '' }; break;
@@ -88,8 +89,7 @@ class FanItem extends React.Component {
   }
 
   temperature = (item) => { // 有关温度
-    const { fanList } = this.props;
-    const { deviceList = [] } = fanList;
+    const { deviceList } = this.props;
     const currentValue = item[this.getCardCont().value];
     const currentPoint = deviceList.map(e => e[this.getCardCont().value]);
     const max = Math.max.apply(null, currentPoint);
@@ -120,8 +120,7 @@ class FanItem extends React.Component {
   }
 
   rotatingSpeed = (item) => { // 有关转速的
-    const { fanList } = this.props;
-    const { deviceList = [] } = fanList;
+    const { deviceList } = this.props;
     const currentValue = item[this.getCardCont().value];
     const currentPoint = deviceList.map(e => e[this.getCardCont().value]);
     const max = Math.max.apply(null, currentPoint);
@@ -182,8 +181,7 @@ class FanItem extends React.Component {
   }
 
   render() {
-    const { fanList, deviceTypeCode } = this.props;
-    const { deviceList = [] } = fanList;
+    const { deviceList = [], deviceTypeCode } = this.props;
     const temType = deviceList.sort((a, b) => { return a['parentDeviceName'].localeCompare(b['parentDeviceName']) });
     let filteredDevice = [];
     temType.forEach(e => {
@@ -219,18 +217,18 @@ class FanItem extends React.Component {
                     key={index}
                     placement="right"
                     overlayClassName={styles.deviceCard}
-                    trigger="click"
+                    trigger="hover"
                     getPopupContainer={() => this.refs.popver}
                   >
-                    <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  >
-                      <div className={`${styles[this.getStatusName(currentStatus).name]} ${styles.fanBlock}`} onClick={() => { this.showTip(currentStatus) }}>
+                    <div className={`${styles[this.getStatusName(currentStatus).name]} ${styles.fanBlock}`} onClick={() => { this.showTip(currentStatus) }}>
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  className={styles.linkBox}>
                         <div className={styles.inverterItemIcon} >
                           <i className="iconfont icon-windlogo" ></i>
                           <i className={`${'iconfont'} ${this.getStatusName(currentStatus).icon} ${styles.deviceIcon}`}></i>
                         </div>
                         {this[this.getCardCont().module](item)}
-                      </div>
-                    </Link>
+                      </Link>
+                    </div>
                   </Popover>)
                 })}
               </div>

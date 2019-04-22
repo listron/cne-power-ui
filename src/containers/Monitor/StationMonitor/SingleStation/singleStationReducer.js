@@ -26,7 +26,7 @@ var initState = Immutable.fromJS({
   error: {},//请求错误返回信息
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表
-  singleStationScatter:[],// 等效小时散点图
+  singleStationScatter:{},// 等效小时散点图
   pointparams:{},//单电站测点参数(风机)
   fanDisplay:'deviceCard', // 单电站风机展示形式  deviceCard deviceTable deviceMap
 });

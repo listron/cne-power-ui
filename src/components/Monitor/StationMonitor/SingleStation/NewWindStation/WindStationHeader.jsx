@@ -3,15 +3,55 @@ import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-import {DeviceValueFormat} from '../../WindCommon/WindDataformat';
-import { Popover } from 'antd';
-
+import { DeviceValueFormat } from '../../WindCommon/WindDataformat';
+import { Popover, Modal, InputNumber } from 'antd';
+import moment from 'moment';
 class windStationHeader extends React.Component {
   static propTypes = {
     singleStationData: PropTypes.object,
+    editData: PropTypes.func,
+    stationCode: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
+    this.state = {
+      editType: '',
+      modalVisiable:false,
+      editValue:null
+    }
+  }
+
+
+  onChange = (e) => {
+    this.setState({ editValue:e });
+  }
+
+  onOk = () => {
+    const { editData, stationCode } = this.props
+    const {editType, editValue } = this.state;
+    if (!editValue || isNaN(editValue)) {
+      return;
+    }
+    const editTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    let editName=editType==='month'?{monthGen:editValue} :{yearGen:editValue};
+    editData({
+      ...editName,
+      date: editTime,
+      stationCode: stationCode
+    });
+    this.setState({ modalVisiable:false, editValue: null });
+  }
+
+  onCancel = () => {
+    this.setState({
+      modalVisiable:false,
+      editValue: null,
+      editInfoError: false,
+    });
+  }
+
+  setModal = (e) => {
+    this.setState({ editType: e,modalVisiable:true });
   }
 
   unitFormarts = (data, quantity) => {
@@ -21,10 +61,12 @@ class windStationHeader extends React.Component {
     return data / quantity
   }
 
+
   render() {
     const { singleStationData, } = this.props;
+    const { editInfoError, editType,modalVisiable,editValue} = this.state;
     const stationDataSummary = singleStationData || {};
-    const stationPower = stationDataSummary.stationPower;
+    const stationPower = this.unitFormarts(stationDataSummary.stationPower, 1000);
     const stationCapacity = stationDataSummary.stationCapacity;
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
@@ -35,7 +77,10 @@ class windStationHeader extends React.Component {
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
     const capabilityRate = stationDataSummary.yearRate;
-    const stationPlanPower = stationDataSummary.stationPlanPower;
+    const stationPlanPower = this.unitFormarts(stationDataSummary.stationPlanPower, 10000);
+    const percent = (stationPlanPower && stationCapacity) ? stationPlanPower / stationCapacity * 100 : 0;
+    const rightHandler = localStorage.getItem('rightHandler');
+    const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     const content = (
       <div>
         <div className={styles.poverItem}>
@@ -67,7 +112,7 @@ class windStationHeader extends React.Component {
               <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
               <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
             </div>
-            <OwnProgress percent={stationPower / stationCapacity * 100} successPercent={capabilityRate} />
+            <OwnProgress percent={+capabilityRate} successPercent={percent} />
             <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
           </Popover>
         </div>
@@ -80,13 +125,33 @@ class windStationHeader extends React.Component {
           <div> 月完成率 <span className={styles.dataValue}>{DeviceValueFormat(monthRate, '--', 2)} </span> %  </div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span> 万kWh  </div>
+          <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span>
+            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('month') }} ><i className="iconfont icon-edit"></i></span> : ''}
+            万kWh</div>
           <div> 年完成率 <span className={styles.dataValue}>{DeviceValueFormat(yearRate, '--', 2)} </span> % </div>
         </div>
         <div className={styles.dataColumn}>
-          <div>年发电量  <span className={styles.dataValue}>{DeviceValueFormat(yearPower, '--', 2, true)}</span> 万kWh </div>
+          <div>年发电量  <span className={styles.dataValue}>{DeviceValueFormat(yearPower, '--', 2, true)}</span>
+            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('yer') }} ><i className="iconfont icon-edit"></i></span> : ''}
+            万kWh</div>
           <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
         </div>
+        <Modal
+          title="请填写"
+          style={{ top: 300 }}
+          visible={modalVisiable}
+          onOk={this.onOk}
+          onCancel={this.onCancel}
+          mask={false}
+          closable={false}
+          maskClosable={false}
+        >
+          <div >
+            {<span>截止到昨日，{editType === 'month' && '本月' || '本年'}累计发电量  </span>}
+            <InputNumber placeholder="请输入" onChange={this.onChange} style={{width:100}} min={0} value={editValue}/>  万kWh
+            {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
+          </div>
+        </Modal>
       </div >
     )
   }

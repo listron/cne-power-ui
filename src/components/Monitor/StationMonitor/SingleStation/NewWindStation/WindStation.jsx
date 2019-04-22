@@ -7,9 +7,6 @@ import { Tabs, Radio } from 'antd';
 import { Link } from 'react-router-dom';
 import WindStationTop from './WindStationTop';
 import WindStationHeader from './WindStationHeader';
-import OutputTenMin from '../SingleStationCommon/OutputTenMin';
-import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
-import CardSection from '../SingleStationCommon/CardSection';
 import FanListCont from './FanList/FanListCont';
 import IntegrateList from '../SingleStationCommon/DeviceList/IntegrateList';
 import Boosterstation from '../SingleStationCommon/DeviceList/Boosterstation';
@@ -17,7 +14,10 @@ import PowerNet from '../SingleStationCommon/DeviceList/PowerNet';
 import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon';
 import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
+import { SpeedScatter } from '../../WindCommon/SpeedScatter';
+import { dataFormats } from '../../../../../utils/utilFunc';
 const { TabPane } = Tabs;
+import moment from 'moment';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -39,6 +39,11 @@ class WindStation extends Component {
     stationList: PropTypes.array,
     weatherList: PropTypes.array,
     operatorList: PropTypes.array,
+    capabilityData: PropTypes.array,
+    fanDisplay: PropTypes.string,
+    getMonitorPower: PropTypes.func,
+    powerData: PropTypes.array,
+    singleStationScatter: PropTypes.object,
   }
 
   constructor(props) {
@@ -87,11 +92,30 @@ class WindStation extends Component {
     </RadioButton>
   )
 
-
-
+  powerDiagramChange = (value) => {
+    const { stationCode } = this.props.match.params;
+    clearTimeout(this.timeOutPowerData);
+    const { intervalTime } = value;
+    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    if (intervalTime === 1) {
+      startTime = moment().subtract(5, 'month').format('YYYY-MM-DD')
+    } else if (intervalTime === 2) {
+      startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
+    }
+    let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    this.props.getMonitorPower({
+      stationCode,
+      intervalTime,
+      startTime,
+      endTime: endTime
+    });
+    this.timeOutPowerData = setTimeout(() => {
+      this.getPowerDataTenMin(stationCode, intervalTime);
+    }, 600000);
+  }
 
   render() {
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, stationList, weatherList, operatorList, fanDisplay } = this.props;
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData ,editData} = this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
@@ -111,10 +135,10 @@ class WindStation extends Component {
       <div className={styles.windStation} >
         <WindStationTop
           singleStationData={singleStationData}
-          stationList={stationList}
-          weatherList={weatherList}
-          operatorList={operatorList} />
-        <WindStationHeader singleStationData={singleStationData} />
+          stationList={this.props.stationList}
+          weatherList={this.props.weatherList}
+          operatorList={this.props.operatorList} />
+        <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
         <div className={styles.windContainer}>
           <div className={styles.windList}>
             <div className={styles.threadAndDevice} id="deviceType" >
@@ -145,22 +169,31 @@ class WindStation extends Component {
                 </div>
               }
             </div>
-            {deviceTypeCode === 101 && <FanListCont {...this.props} currentStatus={singleDeviceType} />}
-            {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
-            {deviceTypeCode === 301 && <Boosterstation {...this.props} />}
-            {deviceTypeCode === 0 && <PowerNet {...this.props} />}
+            <div>
+              {deviceTypeCode === 101 && <FanListCont {...this.props} currentStatus={singleDeviceType} />}
+              {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
+              {deviceTypeCode === 301 && <Boosterstation {...this.props} />}
+              {deviceTypeCode === 0 && <PowerNet {...this.props} />}
+            </div>
           </div>
           {fanDisplay !== 'deviceTable' &&
-            <div className={styles.charts}>
-              <div className={styles.chartsBox}>
-                <OutputChart {...this.props} yAxisUnit={'kW'} />
+            <div className={styles.windStationChart}>
+              <div className={styles.tags}>
+                <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(singleStationData.alarmNum, '--')} </Link>
+                <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
+                <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                {/* <PowerDiagram {...this.props} /> */}
+                <OutputChart capabilityData={capabilityData} yAxisUnit={'kW'} />
+              </div>
+              <div className={styles.chartsBox}>
+                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
+              </div>
+              <div className={styles.chartsBox}>
+                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} />
               </div>
             </div>
           }
-
         </div>
       </div>
     )

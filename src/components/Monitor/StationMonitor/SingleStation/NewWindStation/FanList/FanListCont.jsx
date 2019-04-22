@@ -6,6 +6,7 @@ import styles from './fanList.scss';
 import { Tabs, Switch, Radio, Table, Progress, Spin, Select } from 'antd';
 import FanItem from './FanItem';
 import FanTable from './FanTable';
+import { Building } from '../../../../../Common/Building/Building';
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
@@ -16,6 +17,8 @@ class FanListCont extends React.Component {
     getPointparams: PropTypes.func,
     getNewFanList: PropTypes.func,
     changeSingleStationStore: PropTypes.func,
+    fanList: PropTypes.object,
+    fanDisplay: PropTypes.string,
   }
 
   constructor(props) {
@@ -83,19 +86,19 @@ class FanListCont extends React.Component {
 
 
   operations = () => { // 下拉筛选框
-    const { pointparams,fanDisplay } = this.props;
-    const { alarmSwitch } = this.state;
+    const { pointparams, fanDisplay } = this.props;
+    const { alarmSwitch, cardPointParams } = this.state;
     let optionList = [];
     for (let key in pointparams) {
       optionList.push(<Option value={key} key={key}>{pointparams[key]}</Option>)
     }
     const operations = (<div className={styles.inverterRight} >
       {fanDisplay === 'deviceCard' &&
-        <Select defaultValue="整机系统" style={{ width: 190, marginRight: 24 }} onChange={this.pointparamsChange}>
+        <Select style={{ width: 190, marginRight: 24 }} onChange={this.pointparamsChange} value={cardPointParams}>
           {optionList}
         </Select>
       }
-      <Switch onChange={this.onSwitchAlarm} value={alarmSwitch} style={{marginRight:8}} /> 告警
+      <Switch onChange={this.onSwitchAlarm} value={alarmSwitch} style={{ marginRight: 8 }} /> 告警
     </div>);
     return operations
   }
@@ -104,30 +107,51 @@ class FanListCont extends React.Component {
     this.props.changeSingleStationStore({ fanDisplay: e })
   }
 
+  filterStatusDataList = () => { // 删选数据
+    let { alarmSwitch } = this.state;
+    const { fanList, currentStatus } = this.props;
+    const { deviceList = [] } = fanList;
+    const newStationDataList = deviceList.filter(e => { return !alarmSwitch || (alarmSwitch && e.alarmNum > 0) }).filter(e => {
+      if (currentStatus === 0) {
+        return true
+      } else { return e.deviceStatus === currentStatus }
+    })
+    return newStationDataList
+  }
+
 
 
   render() {
-    const { loading, deviceTypeCode, currentStatus } = this.props;
-    const { alarmSwitch, currentPage, pageSize, cardPointParams } = this.state;
+    const { currentPage, pageSize, cardPointParams } = this.state;
+    const { fanDisplay } = this.props;
     return (
       <div className={styles.fanListCont}>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={this.operations()} onChange={this.fanDisplay}>
-          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="deviceCard" className={styles.inverterBlockBox} >
-            <FanItem  {...this.props} cardPointParams={cardPointParams} alarmSwitch={alarmSwitch} />
-          </TabPane>
-          <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="deviceTable" className={styles.inverterTableBox} >
-            <FanTable
-              {...this.props}
-              alarmSwitch={alarmSwitch}
-              currentPage={currentPage}
-              pageSize={pageSize}
-              onPaginationChange={this.onPaginationChange}
-            />
-          </TabPane>
-          <TabPane tab={<span> <i className="iconfont icon-map"></i></span>} key="deviceMap" className={styles.inverterMapBox} >
-            {/* <Map testId="wind_bmap_station" {...this.props} stationDataList={this.mapData(filteredDeviceList, deviceTypeCode)} /> */}
-          </TabPane>
-        </Tabs>
+        <div className={styles.StationTitle} >
+          <div className={styles.tabs}>
+            <i className={`${"iconfont icon-grid iconTab"} ${fanDisplay === 'deviceCard' && styles.activeCard}`}
+              onClick={() => { this.fanDisplay('deviceCard') }}> </i>
+            <i className={`${"iconfont icon-table iconTab"} ${fanDisplay === 'deviceTable' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceTable') }}></i>
+            <i className={`${"iconfont icon-map iconTab"} ${fanDisplay === 'deviceMap' && styles.activeCard}`} onClick={() => { this.fanDisplay('deviceMap') }}></i>
+          </div>
+          <div>
+            {this.operations()}
+          </div>
+        </div>
+        {fanDisplay === 'deviceCard' &&
+          <FanItem
+            {...this.props}
+            cardPointParams={cardPointParams}
+            deviceList={this.filterStatusDataList()}
+          />}
+        {fanDisplay === 'deviceTable' &&
+          <FanTable
+            {...this.props}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPaginationChange={this.onPaginationChange}
+            deviceList={this.filterStatusDataList()}
+          />}
+        {fanDisplay === 'deviceMap' && <div className={styles.building}></div>}
       </div>
     )
   }
