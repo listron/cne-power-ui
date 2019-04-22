@@ -116,8 +116,8 @@ const routers = [
     component: lazy(() => import('../containers/Monitor/Report/DeviceStatus/DeviceStatus')),
   }, { //实时监控-报表查询-故障报表
     path: '/monitor/report/malfunction',
-    component: lazy(() => import('../components/Common/Building/Building')),
-    // component: lazy(() => import('../containers/Monitor/Report/Malfunction/Malfunction')),
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component: lazy(() => import('../containers/Monitor/Report/Malfunction/Malfunction')),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
     component: lazy(() => import('../components/Common/Building/Building')),
