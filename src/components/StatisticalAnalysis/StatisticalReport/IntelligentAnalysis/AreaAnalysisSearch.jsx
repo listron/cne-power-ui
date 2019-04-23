@@ -4,7 +4,7 @@ import path from '../../../../constants/path';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import moment from 'moment';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
 const { APIBasePath } = path.basePaths;
 const { statisticalAnalysis } = path.APISubPaths;
@@ -14,7 +14,7 @@ class AreaAnalysisSearch extends Component{
   static propTypes = {
     stations: PropTypes.array,
     changeIntelligentAnalysisStore: PropTypes.func,
-    getSingleStationAnalysis: PropTypes.func,
+    getArea: PropTypes.func,
     dateType: PropTypes.number,
     month: PropTypes.string,
     year: PropTypes.string,
@@ -24,42 +24,52 @@ class AreaAnalysisSearch extends Component{
 
   constructor(props){
     super(props);
+    this.state = {
+      year:'',
+      month:'', 
+      dateType:'',
+      startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+    }
   }
 
   onTimeChange = (value) => { // 选择时间
     const { startTime, timeStyle } = value;
-    const { changeIntelligentAnalysisStore } = this.props;
-
     let dateType = timeStyle === 'month' ? 2 : 1;
     if(timeStyle === 'month'){
-      let year = startTime;
-      changeIntelligentAnalysisStore({
-        dateType,
-        year
+      this.setState({
+        dateType: 2,
+        year : moment(startTime).format('YYYY'),
       })
     }else if(timeStyle === 'day'){
-      let year = moment(startTime).format('YYYY');
-      let month = moment(startTime).format('MM');
-      changeIntelligentAnalysisStore({
-        dateType,
-        month,
-        year,
+      this.setState({
+        dateType: 1,
+        year: moment(startTime).format('YYYY'),
+        month: moment(startTime).format('MM'),
       })
     }
   }
   
   searchInfo = () => { // 查询
-    const { getSingleStationAnalysis, dateType, month, year } = this.props;
-    const params = { dateType, month, year };
+    const { getArea, changeIntelligentAnalysisStore } = this.props;
+    const { year, month, dateType } = this.state;
+    const params = { year, month, dateType };
 
-    getSingleStationAnalysis({
+    getArea({
       ...params
     });
+
+    changeIntelligentAnalysisStore({
+      ...params
+    });
+    
+    if (!month && !year) {
+      message.error("请选择统计时间！")
+    }
   }
 
   exportReport = () => { // 下载
     const { downLoadFile, dateType, year, month } = this.props;
-    const url = `${APIBasePath}${statisticalAnalysis.exportIntelligent}`;
+    const url = `${APIBasePath}${statisticalAnalysis.exportAreaCompare}`;
     downLoadFile({ 
       url,
       fileName: `区域对比分析报告`,
@@ -83,13 +93,13 @@ class AreaAnalysisSearch extends Component{
                 timerText={''}
                 value={{
                  timeStyle: 'day',
-                 startTime: moment().subtract(0, 'months').format('YYYY-MM-DD'),
+                 startTime: null,
                 }}
               />
             </div>
             <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
           </div>
-            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={reportShow === false}>下载报告</Button>
+            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={!reportShow}>下载报告</Button>
         </div>
       </div>
     )
