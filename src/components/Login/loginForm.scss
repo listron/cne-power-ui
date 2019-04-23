@@ -28,6 +28,7 @@
     .ant-form {
       width: 220px;
       .ant-form-item {
+        margin-bottom: 21px;
         .ant-btn {
           width: 220px;
         }
@@ -52,7 +53,7 @@
         }
       }
       .queryCode{
-        width: 114px;
+        width: 96px;
         margin-top: 6px;
         margin-right: 0;
         padding: 0 5px;
@@ -67,7 +68,7 @@
         color: #199475;
       }
       .queryCodeClick{
-        width: 114px;
+        width: 96px;
         margin-top: 6px;
         margin-right: 0;
         padding: 0 5px;
@@ -115,30 +116,12 @@
     width: 220px;
     text-align: center;
     margin-top: 60px;
-    color:$darkColor;
     .abnormalIcon{
       display: block;
       margin: 0 auto;
       :global{
         .iconfont{
           font-size: 62px;
-          color: $darkColor;
-        }
-      }
-    }
-  }
-  .waitExamine{
-    width: 220px;
-    text-align: center;
-    margin-top: 60px;
-    color: #e08031;
-    .waitExamineIcon{
-      display: block;
-      margin: 0 auto;
-      :global{
-        .iconfont{
-          font-size: 62px;
-          color: #e08031;
         }
       }
     }

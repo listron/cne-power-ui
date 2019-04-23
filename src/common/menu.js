@@ -107,7 +107,12 @@ const menuData = [
             name: '告警统计',
             path: 'statistic',
             rightKey: 'monitor_alarm_statistics',
-          }
+          },
+          // {
+          //   name: '告警统计',
+          //   path: 'statistics',
+          //   rightKey: 'monitor_alarm_statistics',
+          // }
         ],
       }
     ],
@@ -266,6 +271,12 @@ const menuData = [
             path: 'currency',
             defaultPath: true,
             rightKey: 'statistics_report_general',
+          },
+          {
+            name: '智能分析报告',
+            path: 'intelligentAnalysis',
+            defaultPath: true,
+            rightKey: 'statistics_report_report',
           },
         ]
       }

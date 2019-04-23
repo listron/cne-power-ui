@@ -3,14 +3,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DatePicker, Radio } from 'antd';
 import YearSelect from './YearSelect';
+import MonthSelect from './MonthSelect';
 import styles from './styles.scss';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 const defaultStartTime = {//默认展示起始时间
   day: moment().format('DD') === '01' ? moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') : moment().startOf('month').format('YYYY-MM-DD'),
-  year: moment().subtract(5, 'year').format('YYYY'),
-  month: moment().subtract(5, 'month').format('YYYY-MM'),
+  year: moment().format('YYYY'),
+  month: moment().format('YYYY-MM'),
   custom: moment().format('DD') === '01' ? moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD') : moment().startOf('month').format('YYYY-MM-DD'),
 };
 const defaultEndTime = {//默认展示结束时间
@@ -115,8 +116,21 @@ class TimeSelectReport extends React.Component {
     }
   }
 
-  disabledDate = (current) => { // 不可以选择的时间
-    return current > moment().endOf('day');
+  disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天以后的不可选
+    return current > moment().endOf('day') || current < moment().subtract(365, 'day');
+  }
+  monthStartSelect = ({ selectedMonth }) => {//按月选择起始时间
+    this.setState({ startTime: selectedMonth });
+  }
+  monthEndTimeSelect = ({ selectedMonth }) => {//按月选择结束时间
+    const { timeStyle, startTime } = this.state;
+    const params = {
+      timeStyle,
+      startTime,
+      endTime: selectedMonth,
+    }
+    this.setState({ ...params });
+    this.props.onChange({ ...params });
   }
 
   render() {
@@ -140,7 +154,8 @@ class TimeSelectReport extends React.Component {
           allowClear={false}
           disabledDate={this.disabledDate}
         />}
-        {timeStyle === 'month' && <RangePicker
+        {/*
+       {timeStyle === 'month' && <RangePicker
           value={[moment(startTime), moment(endTime)]}
           placeholder={['Start month', 'End month']}
           format="YYYY-MM"
@@ -149,7 +164,13 @@ class TimeSelectReport extends React.Component {
           onOpenChange={this.handleOpenChange}
           onPanelChange={this.handlePanelChange}
         />}
-        {timeStyle === 'year' && <span>
+      */}
+        {timeStyle === 'month' && <span className={styles.yearStyle}>
+          <MonthSelect monthValue={startTime} onMonthSelect={this.monthStartSelect} />
+          <span > - </span>
+          <MonthSelect monthValue={endTime} onMonthSelect={this.monthEndTimeSelect} />
+        </span>}
+        {timeStyle === 'year' && <span className={styles.yearStyle}>
           <YearSelect yearValue={startTime} onYearSelect={this.onStartYearSelect} />
           <span > - </span>
           <YearSelect yearValue={endTime} onYearSelect={this.onEndYearSelect} />

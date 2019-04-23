@@ -46,7 +46,6 @@ class HandleRemoveModal extends Component {
     })
   }
   onChangeDuration = (value) => {
-    console.log(value);
     this.setState({
       timeType: value,
     })
@@ -55,7 +54,7 @@ class HandleRemoveModal extends Component {
     if (value === 'sevenDay') {
       endTime = moment().add(7, 'days').utc().format('');
     } else if (value === 'oneDay') {
-      endTime = moment().add(1, 'days').utc().format();
+      endTime = moment().add(1, 'days').utc().format('');
     } else if (value = 'threeDay') {
       endTime = moment().add(3, 'days').utc().format('');
     }
@@ -68,7 +67,7 @@ class HandleRemoveModal extends Component {
   HandleRemoveWarning = () => {
     const {  endTime } = this.state;
     this.props.form.validateFieldsAndScroll((err, values) => {
-      const recordValue = values.endTime ? values.endTime : endTime
+      const recordValue = values.endTime ? moment(values.endTime).utc().format('') : endTime;
       if (!err) {
         this.props.HandleRemoveWarning({
           endTime: recordValue,

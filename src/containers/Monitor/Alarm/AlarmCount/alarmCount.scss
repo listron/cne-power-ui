@@ -1,0 +1,11 @@
+
+@import '../../../../theme/theme.scss';
+.alarmCountBox{
+    display: flex;
+    flex: 1;
+    min-height: 100%;
+    flex-direction: column;
+    .alarmStatistic{
+        @include contentBoxStyle;
+    }
+}

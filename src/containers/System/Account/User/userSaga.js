@@ -3,6 +3,7 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { message } from 'antd';
 import { userAction } from './userAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import Cookie from 'js-cookie';
 
 // 切换页面 -> 列表页 详情页 编辑页
@@ -211,8 +212,16 @@ function* editUserInfo(action) {
     yield put({ type: userAction.USER_FETCH });
     const response = yield call(axios.put, url, payload);
     if (response.data.code === '10000') {
-      const { userLogo } = payload;
-      userLogo && Cookie.set('userLogo', userLogo);
+      const { userLogo, userId, userFullName } = payload;
+      const savedUserId = Cookie.get('userId');
+      if (savedUserId === userId) { // 正在编辑的是使用者本人。
+        userFullName && Cookie.set('userFullName', userFullName);
+        userLogo && Cookie.set('userLogo', userLogo)
+        yield put({
+          type: commonAction.changeCommonStore,
+          payload: { userFullName, userLogo }
+        })
+      }
       yield put({ type: userAction.GET_USER_FETCH_SUCCESS });
       const params = yield select(state => ({//继续请求用户列表
         enterpriseId: Cookie.get('enterpriseId'),

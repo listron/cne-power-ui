@@ -110,7 +110,6 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime = `/monitor/alarm/realtime?stationCode=${stationCode}`;
-
     return (
       <div className={styles.cardSection}>
         <Row gutter={16} type="flex" justify="space-around" >

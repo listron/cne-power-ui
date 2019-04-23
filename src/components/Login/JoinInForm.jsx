@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 class JoinInForm extends Component{
   static propTypes = {
     form: PropTypes.object,
+    userFullName: PropTypes.string,
     enterpriseName: PropTypes.string,
     getEnterpriseInfo: PropTypes.func,
     sendCode: PropTypes.func,
@@ -36,6 +37,7 @@ class JoinInForm extends Component{
     importEnterpriseId: PropTypes.string,
     resetPassword: PropTypes.func,
     tmpAuthData: PropTypes.string,
+    toShowAgreement: PropTypes.func,
   }
 
   constructor(props){
@@ -57,7 +59,7 @@ class JoinInForm extends Component{
   }
 
   onJoinEnterprise = () => {
-    this.props.form.validateFields(['username','password','confirmPwd','userAgreement',],(err,values) => {
+    this.props.form.validateFields(['username', 'userFullname', 'password','confirmPwd','userAgreement',],(err,values) => {
       if(!err){
         if(values.userAgreement){
           setTimeout(() => {
@@ -256,7 +258,7 @@ class JoinInForm extends Component{
   }
   renderStepThree(formItemLayout, tailFormItemLayout) {
     const { getFieldDecorator } = this.props.form;
-    const { userEnterpriseStatus,enterpriseName, enterpriseLogo,username,importUser,importEnterpriseName,importEnterpriseLogo } = this.props;
+    const { userEnterpriseStatus, userFullName, enterpriseName, enterpriseLogo,username,importUser,importEnterpriseName,importEnterpriseLogo } = this.props;
     const defaultLogo = "/img/nopic.png";
     if(userEnterpriseStatus === 5) {
       return (
@@ -291,6 +293,28 @@ class JoinInForm extends Component{
                 <Input addonBefore={<i className="iconfont icon-user"></i>} disabled={importUser ? true : false} placeholder="请输入用户名" />
               )}
             </FormItem>
+            <FormItem label="姓名"  labelCol={{sm: 8}} wrapperCol={{sm: 16}}>
+              {getFieldDecorator('userFullname', {
+                rules: [
+                  {required: true, message: '请输入用户名'},
+                  { validator: (rule, value, callback) => {
+                    const exactStr = value.trim();
+                    const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
+                    if (!patternRule.test(exactStr)) {
+                      callback('请输入小于30字符的真实姓名');
+                    }
+                    callback();
+                  }}
+                ],
+                // 中文/英文/空格，小于等于30字符
+                initialValue: userFullName || '',
+              })(
+                <Input
+                  addonBefore={<i className="iconfont icon-user" />}
+                  placeholder="请输入用户名"
+                />
+              )}
+            </FormItem>
             <FormItem label="创建密码" {...formItemLayout}>
               {getFieldDecorator('password',{
                 rules: [
@@ -311,14 +335,14 @@ class JoinInForm extends Component{
                 <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
               )}
             </FormItem>
-            <FormItem {...tailFormItemLayout} >
+            <FormItem {...tailFormItemLayout} className={styles.agreementItem}>
               {getFieldDecorator('userAgreement', {
               })(
                 <Checkbox className={styles.userArgee}  >
                   同意
-                  <Link className={styles.userAgreeTip} to="/userAgreement" >用户协议</Link>
                 </Checkbox>
               )}
+              <span className={styles.userAgreeTip} onClick={this.props.toShowAgreement} >用户协议</span>
             </FormItem>
             <FormItem {...tailFormItemLayout} >
               <Button type="primary" onClick={this.onJoinEnterprise} className="login-form-button"  >加入企业</Button>
