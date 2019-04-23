@@ -82,10 +82,9 @@ function *userNameLogin(action){
           yield put({ type: loginAction.USER_NAME_LOGIN_SUCCESS, data});
         }
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params});
-        if(data.userEnterpriseStatus){
-          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
-        }
+        const newParams = { ...params };
+        data.userEnterpriseStatus && (newParams.userEnterpriseStatus = data.userEnterpriseStatus);
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: newParams });
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
@@ -175,11 +174,9 @@ function *phoneCodeLogin(action){
           data, //data为API返回的值
         });
       } else {
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params });
-        if(data.userEnterpriseStatus){
-          yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: {userEnterpriseStatus: data.userEnterpriseStatus}})
-        }
-        // message.error(data.userEnterpriseStatus);
+        const newParams = { ...params };
+        data.userEnterpriseStatus && (newParams.userEnterpriseStatus = data.userEnterpriseStatus);
+        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: newParams });
       }
     }else{
       message.error(response.data.message);
