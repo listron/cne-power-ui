@@ -112,7 +112,8 @@ const PowerDiagram = ({ ...rest }) => {
                     },
                     axisLabel: {
                         color: lineColor,
-                        interval: 0
+                        interval: 0,
+                        rotate:20,
                     },
                     axisTick: { show: false },
                     boundaryGap: [true, true],

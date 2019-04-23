@@ -46,7 +46,7 @@ class WindStationItem extends React.Component {
     const currentStatus = stationStatus.stationStatus;
     let needData = [
       { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW',quantity:1000 },
-      { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
+      { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
       { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
       { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW',quantity:1000 },
@@ -67,11 +67,12 @@ class WindStationItem extends React.Component {
         <div className={currentStatus === '400' && styles.poNomal || styles.poInterrupt}>{currentStatus === '400' ? '通讯正常' : '通讯中断'}</div>
         <div className={styles.popCont}>
           {needData.map((e, index) => {
+            const value=e.quantity?item[e['value']]/e.quantity:item[e['value']];
             return (
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
                 <div>
-                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true,e.quantity)}</span>
+                  <span className={styles.value}>{dataFormats(value, '--', e.point, true)}</span>
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>
@@ -113,7 +114,8 @@ class WindStationItem extends React.Component {
                 {e.stations.sort((a,b)=>{return a.stationStatus.stationStatus-b.stationStatus.stationStatus}).map((item, index) => {
                   const stationStatus = item.stationStatus || {};
                   const currentStatus = stationStatus.stationStatus;
-                  const percent = (item.stationPlanPower && item.stationCapacity) ? item.stationPlanPower / item.stationCapacity * 100 : 0;
+                  const stationPlanPower=item.stationPlanPower/1000;
+                  const percent = (stationPlanPower && item.stationCapacity) ? stationPlanPower / item.stationCapacity * 100 : 0;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
