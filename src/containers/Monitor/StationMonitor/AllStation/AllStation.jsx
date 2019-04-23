@@ -24,6 +24,7 @@ class AllStation extends Component {
     getRealMonitorData: PropTypes.func,
     stationTypeCount: PropTypes.string,
     stationType: PropTypes.string,
+    stopRealCharstData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -33,7 +34,9 @@ class AllStation extends Component {
     this.props.changeMonitorStationStore({
       stationShowType: 'stationBlock',
     });
-    this.props.stopRealMonitorData()
+    this.props.stopRealMonitorData();
+    this.props.stopRealCharstData();
+    this.props.stopRealCharstData('power');
   }
 
   queryTargetData = (activeKey) => { //切换电站

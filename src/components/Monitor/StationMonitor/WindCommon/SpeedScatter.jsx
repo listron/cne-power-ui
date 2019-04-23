@@ -34,7 +34,8 @@ const SpeedScatter = ({ ...rest }) => {
             },
             data:data.map((item) => {
                 const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
-                return [windSpeed, equipmentHours, date, stationName, stationCode]
+                const NowEquipmentHours=equipmentHours && +equipmentHours || equipmentHours;
+                return [windSpeed, dataFormats(+NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
             })
         })
     })
@@ -71,7 +72,7 @@ const SpeedScatter = ({ ...rest }) => {
             },
             grid: {
                 top: 70,
-                left: 70,
+                // left: 70,
             },
             tooltip: {
                 trigger: 'item',
@@ -79,7 +80,7 @@ const SpeedScatter = ({ ...rest }) => {
                 show: true,
                 backgroundColor: '#fff',
                 axisPointer: {
-                    // type: 'cross',
+                    type: 'cross',
                     label: {
                         backgroundColor: lineColor,
                     }

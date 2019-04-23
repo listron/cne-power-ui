@@ -107,7 +107,7 @@ class WindStationList extends React.Component {
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(value, '--', 2, true,1000)
+        render: value => dataFormats(value/1000, '--', 2, true)
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,

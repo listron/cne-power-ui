@@ -12,7 +12,7 @@ const OutputChart = ({ ...rest }) => {
     let yAxisType = `功率(${yAxisUnit})`
     const chartsBox = document.getElementById('capabilityDiagram');
     const capabilityPower = capabilityData.map(e => dataFormats(e.stationPower, '--', 2, true));
-    const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 1, true));
+    const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;

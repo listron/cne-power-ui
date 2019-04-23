@@ -40,13 +40,10 @@ export const unitDataFormat = (data, placeholder = '--', pointLength, unit) => {
   return showData
 }
 
-export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = false,quantity) => { // 数值处理(生成指定小数位的字符串)=>string
+export const dataFormats = (data, placeholder = '--', pointLenth, hideZero = false) => { // 数值处理(生成指定小数位的字符串)=>string
   let resultString = '';
   if ((!data && data !== 0) || isNaN(data)) { // 输入数据不存在或非数据。
     return placeholder;
-  }
-  if(quantity &&  quantity!=='0'){ // 单位转换 例如KW-》MW
-    data=resultString/quantity
   }
   if (!hideZero) { // 保留精度内的末尾0
     resultString = (pointLenth > 0 || pointLenth===0) ? parseFloat(data).toFixed(pointLenth) : `${data}`;

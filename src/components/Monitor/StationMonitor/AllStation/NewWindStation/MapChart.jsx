@@ -60,7 +60,7 @@ const MapChart = ({ ...data }) => {
             }
             let needData = [
               { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW',quantity:1000 },
-              { name: '平均风速', value: 'instantaneous', point: 1, unit: 'm/s' },
+              { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
               { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
               { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
               { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW',quantity:1000 },
@@ -76,11 +76,12 @@ const MapChart = ({ ...data }) => {
             ]
             let paramsItem = '';
             needData.forEach((e, index) => {
+              const value=e.quantity?item[e['value']]/e.quantity:item[e['value']];
               return paramsItem += (
                 `<div class=${styles.popColumn} key=${index}>
                   <div>${e.name}</div>
                   <div>
-                    <span class=${styles.value}>${dataFormats(item[e.value], '--', e.point, true,e.quantity)}</span>
+                    <span class=${styles.value}>${dataFormats(value, '--', e.point, true)}</span>
                     <span class=${styles.unit}>${e.unit}</span>
                   </div>
                 </div>`
@@ -101,6 +102,7 @@ const MapChart = ({ ...data }) => {
           name: '通讯正常',
           type: 'scatter',
           coordinateSystem: 'geo',
+          z:3,
           data: normalData.map((dataItem, index) => {
             return {
               ...dataItem,
@@ -117,6 +119,7 @@ const MapChart = ({ ...data }) => {
           name: '通讯中断',
           type: 'scatter',
           coordinateSystem: 'geo',
+          z:2,
           data: interrupt.map((dataItem, index) => {
             return {
               ...dataItem,
@@ -134,6 +137,7 @@ const MapChart = ({ ...data }) => {
           name: '未接入',
           type: 'scatter',
           coordinateSystem: 'geo',
+          z:1,
           data: notConnected.map((dataItem, index) => {
             return {
               ...dataItem,

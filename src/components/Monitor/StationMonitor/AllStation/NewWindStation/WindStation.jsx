@@ -42,11 +42,16 @@ class WindStation extends React.Component {
   }
 
   componentWillMount() {
-    const { getRealMonitorData, getRealChartsData } = this.props;
+    const { getRealMonitorData, getRealChartsData, getRealMonitorPower } = this.props;
     getRealMonitorData({ stationType: '0' });
     const startTime = moment().subtract(24, 'hours').utc().format();
     const endTime = moment().utc().format();
     getRealChartsData({ capability: { startTime, endTime } })
+    getRealMonitorPower({
+      intervalTime: 0,
+      startTime: moment().subtract(6, 'day').format('YYYY-MM-DD'),// 默认是6天前;
+      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    })
   }
 
   componentWillUnmount() {
@@ -104,15 +109,15 @@ class WindStation extends React.Component {
 
 
   powerDiagramChange = (value) => {
-    const {stopRealCharstData,getRealMonitorPower}=this.props;
+    const { stopRealCharstData, getRealMonitorPower } = this.props;
     const { intervalTime } = value;
-    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
     }
-    let endTime = moment().format('YYYY-MM-DD');
+    let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
     stopRealCharstData('power');
     getRealMonitorPower({ intervalTime, startTime, endTime })
   }
@@ -183,7 +188,8 @@ class WindStation extends React.Component {
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
               </div>
               <div className={styles.deviceStatus}>
-                <div className={styles.deviceStaTitle}> <span>设备状态</span> <i className="iconfont icon-more"></i> </div>
+                <div className={styles.deviceStaTitle}> <span>设备状态</span> {/* <i className="iconfont icon-more"></i>  */}
+                </div>
                 <div className={styles.deviceStaCont}>
                   {deviceStatus.map(e => {
                     return <span key={e.value}>{e.name} {dataFormats(stationDataSummary[e.value], '--')}</span>
