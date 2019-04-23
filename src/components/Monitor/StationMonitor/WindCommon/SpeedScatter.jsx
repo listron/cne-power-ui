@@ -99,7 +99,7 @@ const SpeedScatter = ({ ...rest }) => {
                             <div class=${styles.tooltipContainer}> 
                                 <div class=${styles.tooltipCont}> <span style="background:${params.color}"> </span> ${params.data[2]}</div>
                                 <div class=${styles.tooltipCont}> <span></span> 平均风速 ${params.data[0]}</div>
-                                <div class=${styles.tooltipCont}> <span></span> 等效时${dataFormats(params.data[1], '--', 2, true)}</div>
+                                <div class=${styles.tooltipCont}> <span></span> 等效时 ${dataFormats(params.data[1], '--', 2, true)}</div>
                             </div>
                         </div>`
                     )
