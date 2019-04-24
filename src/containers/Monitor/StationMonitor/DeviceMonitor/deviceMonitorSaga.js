@@ -1,9 +1,13 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, takeLatest, all,fork,cancel } from 'redux-saga/effects';
 import axios from 'axios';
+import { delay } from 'redux-saga';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceAction';
+import { throwError } from 'rxjs';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
+let realChartsInterval=null;
+let WindDeviceRealData=null;
 
 const monitorPath = {
   '206': {  // 组串式逆变器：206
@@ -66,17 +70,10 @@ function *getDeviceMonitorData(action) {  // 请求单设备数据(统计信息�
 function *getNormalDeviceData(action){ // 请求单设备汇流箱，逆变器，箱变-除气象站数据信息
   const { payload } = action;
   const {stationCode, deviceTypeCode, deviceCode } = payload;
-  // const hours = 72;
   try{
-    // const devicesUrl = '/mock/monitor/deviceList';
     const devicesUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
-    // const detailUrl = monitorPath[deviceTypeCode].detail;
     const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${deviceCode}`;
-    // const tenMinUrl = monitorPath[deviceTypeCode].tenMin;
-    // const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${hours}`;
-    // const pointUrl = '/mock/monitor/monitorPointData';
     const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`
-    // const alarmUrl = '/mock/monitor/deviceAlarm';
     const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`
 
     yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
@@ -97,10 +94,7 @@ function *getNormalDeviceData(action){ // 请求单设备汇流箱，逆变器�
         },
       })
     }else{
-      console.log(tmpDevices.data.data)
-      console.log(tmpDetail.data.data)
-      console.log(tmpPoint.data.data)
-      console.log(tmpAlarm.data.data)
+      throw tmpDevices.data
     }
   }catch(e){
     console.log(e);
@@ -185,83 +179,6 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
   }
 }
 
-
-function *getwindturbineData(action){ // 获取风机实时数据
-  const { payload } = action;
-  const {deviceCode,stationCode}=payload;
-  try{
-    const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.windturbine}/${deviceCode}`; // 实时数据
-    const detailUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.getFanList}/${stationCode}`; // 设备列表
-    const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`; // 测点数据
-    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警` //告警数据
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
-
-    const [windturbine, fanPoint,fanDetail, fanAlarm] = yield all([
-      call(axios.get, windturbineUrl),
-      call(axios.get, pointUrl),
-      call(axios.get, detailUrl),
-      call(axios.get, alarmUrl),
-    ])
-
-    if(windturbine.data.code === '10000'){
-      yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: {
-          deviceDetail: windturbine.data.data || {}, // 单风机详细数据
-        }
-      })
-    }
-    if(fanPoint.data.code === '10000'){
-      yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: {
-          devicePointData: fanPoint.data.data || [],
-        }
-      })
-    }
-    if(fanAlarm.data.code === '10000'){
-      yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: {
-          deviceAlarmList: fanAlarm.data.data || [],
-        }
-      })
-    }
-    if(fanDetail.data.code === '10000'){
-      yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: {
-          devices: fanDetail.data.data.deviceList || [], // 同一个风机组下的数据
-        }
-      })
-    }
-
-  }catch(e){
-    console.log(e)
-  }
-}
-
-
-function *getSequencechartData(action){ // 获取风机图表数据
-  const { payload } = action;
-  const { deviceCode, timeParam,}=payload;
-  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencechart}/${deviceCode}/${timeParam}`;
-  try{
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
-    const response = yield call(axios.get, windturbineUrl);
-    if(response.data.code === '10000'){
-      yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: {
-          sequencechart: response.data.data || {},
-        }
-      })
-    }
-  }catch(e){
-    console.log(e)
-  }
-}
-
 function *getIntegrateData(action) { // 集电线路信息
   const { payload } = action;
   try {
@@ -318,7 +235,158 @@ function *getBoosterData(action) { // 升压站信息
   }
 }
 
+function *getwindturbineData(action){ // 获取风机实时数据 (由于暂时还需要保持之前的地址，不要删)
+  const { payload } = action;
+  const {deviceCode,stationCode}=payload;
+  try{
+    // const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.windturbine}/${deviceCode}`; // 实时数据
+    const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.newWindturbine}/${deviceCode}`; // 新的实时数据
+    const detailUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.getFanList}/${stationCode}`; // 设备列表
+    const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`; // 测点数据
+    const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警` //告警数据
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
 
+    const [windturbine, fanPoint,fanDetail, fanAlarm] = yield all([
+      call(axios.get, windturbineUrl),
+      call(axios.get, pointUrl),
+      call(axios.get, detailUrl),
+      call(axios.get, alarmUrl),
+    ])
+
+    if(windturbine.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceDetail: windturbine.data.data || {}, // 单风机详细数据
+        }
+      })
+    }
+    if(fanPoint.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devicePointData: fanPoint.data.data || [],
+        }
+      })
+    }
+    if(fanAlarm.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          deviceAlarmList: fanAlarm.data.data || [],
+        }
+      })
+    }
+    if(fanDetail.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          devices: fanDetail.data.data.deviceList || [], // 同一个风机组下的数据
+        }
+      })
+    }
+
+  }catch(e){
+    console.log(e)
+  }
+}
+
+
+function *getSequencechartData(action){ // 获取风机图表数据(新功能中已经没有)
+  const { payload } = action;
+  const { deviceCode, timeParam,}=payload;
+  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencechart}/${deviceCode}/${timeParam}`;
+  try{
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    const response = yield call(axios.get, windturbineUrl);
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          sequencechart: response.data.data || {},
+        }
+      })
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+
+function *getScatterpoint(action){ // 单风机散点图
+  const { payload } = action;
+  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.scatterpoint}`;
+  try{
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    const response = yield call(axios.post, windturbineUrl,payload);
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          scatterpoint: response.data.data || {},
+        }
+      })
+    }else{throw response.data}
+  }catch(e){
+    console.log(e)
+    yield put({
+      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+      payload: {
+        scatterpoint: {},
+      }
+    })
+  }
+}
+function *getSequencediagram(action){ // 单风机时序图
+  const { payload } = action;
+  const { deviceFullCode, startTime,endTime,}=payload;
+  const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencediagram}/${deviceFullCode}/${startTime}/${endTime}`;
+  try{
+    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    const response = yield call(axios.get, windturbineUrl,payload);
+    if(response.data.code === '10000'){
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          sequencediagram: response.data.data || {},
+        }
+      })
+    }else{throw response.data}
+  }catch(e){
+    console.log(e)
+    yield put({
+      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+      payload: {
+        sequencediagram: {},
+      }
+    })
+  }
+}
+
+function *getWindDeviceCharts(action){ // 单风机散点图  单风机时序图
+  yield fork(getScatterpoint,action);
+  yield fork(getSequencediagram,action);
+  yield delay(3600000); // 阻塞1小时
+  realChartsInterval = yield fork(getWindDeviceCharts, action);
+}
+
+function *getWindDeviceRealData(action){ // 单风机散点图  单风机时序图
+  const {waiting}=action;
+  if(waiting){
+    yield delay(10000); // 阻塞10秒
+  }
+  yield fork(getwindturbineData,action);
+  WindDeviceRealData = yield fork(getWindDeviceRealData,{...action, waiting: true} );
+}
+
+function *stopWindDeviceCharts(action){ // 停止进程
+  const { payload } = action;
+  if (realChartsInterval) {
+    yield cancel(realChartsInterval);
+  }
+  if(payload==='tenSecond' && WindDeviceRealData){
+    yield cancel(WindDeviceRealData);
+  }
+}
 
 export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.CHANGE_DEVICE_MONITOR_STORE_SAGA, changeDeviceStore);
@@ -331,6 +399,9 @@ export function* watchDeviceMonitor() {
   yield takeLatest(deviceAction.getIntegrateData, getIntegrateData);
   yield takeLatest(deviceAction.getBoosterData, getBoosterData);
   yield takeLatest(deviceAction.RESET_DEVICE_MONITOR_STORE,resetDeviceStore);
+  yield takeLatest(deviceAction.getWindDeviceCharts,getWindDeviceCharts);
+  yield takeLatest(deviceAction.stopWindDeviceCharts,stopWindDeviceCharts);
+  yield takeLatest(deviceAction.getWindDeviceRealData,getWindDeviceRealData);
 }
 
 

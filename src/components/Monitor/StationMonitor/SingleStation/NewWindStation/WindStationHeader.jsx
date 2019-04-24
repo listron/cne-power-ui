@@ -136,6 +136,7 @@ class windStationHeader extends React.Component {
             万kWh</div>
           <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
         </div>
+       
         <Modal
           title="请填写"
           style={{ top: 300 }}
