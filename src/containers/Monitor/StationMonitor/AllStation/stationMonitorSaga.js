@@ -1,4 +1,4 @@
-import { call, put, takeLatest, fork, cancel, race } from 'redux-saga/effects';
+import { call, put, takeLatest, fork, cancel, cancelled } from 'redux-saga/effects';
 import axios from 'axios';
 import { delay } from 'redux-saga';
 import Path from '../../../../constants/path';
@@ -13,7 +13,9 @@ const baseurl = Path.basePaths.APIBasePath;
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime = moment.utc().format();
-  const url = baseurl + Path.APISubPaths.monitor.getStationType + payload.stationType + '/' + utcTime;
+  const anotherUrl = baseurl + Path.APISubPaths.monitor.getStationType + payload.stationType + '/' + utcTime;
+  const windUrl = baseurl + Path.APISubPaths.monitor.getWindStation + '/' + utcTime;
+  const url = payload.stationType === '0' ? windUrl : anotherUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -48,47 +50,19 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
   }
 }
 
-function* getWindMonitorStation(action) {//获取所有/风/光电站信息
-  const { payload } = action;
-  const utcTime = moment.utc().format();
-  const url = baseurl + Path.APISubPaths.monitor.getWindStation + '/' + utcTime;
-  // const stationType = 0;
-  // const url = baseurl + Path.APISubPaths.monitor.getStationType + stationType + '/' + utcTime;
-  try {
-    const response = yield call(axios.get, url);
-    if (response.data.code === '10000') {
-      yield put({
-        type: allStationAction.changeMonitorstationStore,
-        payload: { windMonitorStation: response.data.data || {}, loading: false }
-      });
-    } else { throw response.data }
-  } catch (e) {
-    console.log(e);
-    message.error('获取数据失败，请刷新');
-    let nameArr = ["windMonitorStation", "pvMonitorStation", "allMonitorStation"][payload.stationType];
-    payload[nameArr] = {};
-    yield put({
-      type: allStationAction.changeMonitorstationStore,
-      payload: { windMonitorStation: {}, loading: false }
-    });
-  }
-}
-
 function* getRealMonitorData(action) {
-  const { firtQuery = true, payload } = action;
+  const { firtQuery = true, waiting } = action;
+  if (waiting) { // 进程刚进来就付值，防止关不掉这个进程
+    yield delay(10000);
+  }
   if (firtQuery) {
     yield put({
       type: allStationAction.changeMonitorstationStore,
       payload: { loading: true }
     })
   }
-  if (payload.stationType === '0') {
-    yield fork(getWindMonitorStation, action);
-  } else {
-    yield fork(getMonitorStation, action);
-  }
-  yield delay(10000); // 阻塞10秒
-  realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false });
+  yield fork(getMonitorStation, action);
+  realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
 }
 
 function* stopRealMonitorData() { // 停止数据定时请求并清空数据
@@ -191,7 +165,7 @@ function* getRealChartsData(action) { // 获取出力图和日等效利用小时
 }
 
 function* getRealMonitorPower(action) {
-  realPowerInterval = yield fork(getMonitorPower, action);
+  yield fork(getMonitorPower, action);
   yield delay(3600000); // 阻塞1小时
   // yield delay(10000); // 阻塞10秒
   realPowerInterval = yield fork(getRealMonitorPower, action);

@@ -1,0 +1,23 @@
+.faultWarnBox{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .faultWarnContainer{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 24px 24px 0 24px;
+    background-color: #ececec;
+    overflow: hidden;
+  }
+  .faultWarnContent{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #fff;
+    overflow: hidden;
+  }
+}

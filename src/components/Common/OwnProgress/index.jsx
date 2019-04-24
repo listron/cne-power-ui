@@ -16,7 +16,7 @@ import { Progress } from "antd";
 
 class OwnProgress extends React.Component {
     static propTypes = {
-        percent: PropTypes.number,
+        percent: PropTypes.any,
         successPercent: PropTypes.any,
         fromRight: PropTypes.bool,
         active: PropTypes.bool,
@@ -36,7 +36,7 @@ class OwnProgress extends React.Component {
 
     render() {
         const { percent, successPercent, fromRight, active } = this.props;
-        const status = fromRight && percent < 0 ? { right: 0 } : { left: 0 };
+        const status = fromRight ? { right: 0 } : { left: 0 };
         const overcolor = '#3e97d1';
         const normalColor = '#199475';
         let lineColor = successPercent > 100 ? overcolor : normalColor;

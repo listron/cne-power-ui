@@ -17,6 +17,7 @@ $themeColor: #199475;
 $tableSelectedBackground: rgba(206,235,224,0.3);//表格高亮背景色
 $pageBackground: #ececec;
 $pageGround:#fff;
+$warnColor:#a42b2c; // 故障color
 
 //常复用代码块：
 @mixin lineheight($height){//创建高度==行高元素

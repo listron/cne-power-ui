@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import styles from './windStation.scss';
 import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
 import OwnProgress from '../../../../Common/OwnProgress/index';
+import {DeviceValueFormat} from '../../WindCommon/WindDataformat';
 import { Popover } from 'antd';
+
 class windStationHeader extends React.Component {
   static propTypes = {
     windMonitorStation: PropTypes.object,
@@ -86,28 +88,28 @@ class windStationHeader extends React.Component {
             getPopupContainer={() => this.refs.allStaionStatic}
           >
             <div className={styles.stationPower}>
-              <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
-              <div> <span className={styles.dataValue}>{this.DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
+              <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span> MW </div>
+              <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>MW</div>
             </div>
             <OwnProgress percent={capabilityRate} successPercent={percent} />
             <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
           </Popover>
         </div>
         <div className={styles.dataColumn}>
-          <div> 平均风速  <span className={`${styles.dataValue} ${styles.speed}`}>{this.DeviceValueFormat(instantaneous, '--', 2)}</span> m/s </div>
-          <div >  装机台数 <span className={styles.dataValue}>{this.DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
+          <div> 平均风速  <span className={`${styles.dataValue} ${styles.speed}`}>{DeviceValueFormat(instantaneous, '--', 2)}</span> m/s </div>
+          <div >  装机台数 <span className={styles.dataValue}>{DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
-          <div>日发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(dayPower, '--', 2, true)}</span> 万kWh  </div>
-          <div> 月完成率 <span className={styles.dataValue}>{this.DeviceValueFormat(monthRate, '--', 2)} </span> %  </div>
+          <div>日发电量  <span className={styles.dataValue}>{DeviceValueFormat(dayPower, '--', 2, true)}</span> 万kWh  </div>
+          <div> 月完成率 <span className={styles.dataValue}>{DeviceValueFormat(monthRate, '--', 2)} </span> %  </div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 月发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(monthPower, '--', 2, true)}</span> 万kWh  </div>
-          <div> 年完成率 <span className={styles.dataValue}>{this.DeviceValueFormat(yearRate, '--', 2)} </span> % </div>
+          <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span> 万kWh  </div>
+          <div> 年完成率 <span className={styles.dataValue}>{DeviceValueFormat(yearRate, '--', 2)} </span> % </div>
         </div>
         <div className={styles.dataColumn}>
-          <div>年发电量  <span className={styles.dataValue}>{this.DeviceValueFormat(yearPower, '--', 2, true)}</span> 万kWh </div>
-          <div> 年利用小时 <span className={styles.dataValue}>{this.DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
+          <div>年发电量  <span className={styles.dataValue}>{DeviceValueFormat(yearPower, '--', 2, true)}</span> 万kWh </div>
+          <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
         </div>
       </div >
     )

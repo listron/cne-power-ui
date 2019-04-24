@@ -49,8 +49,6 @@ class UserInfo extends Component {
 
   render() {
     const { userFullName, username, userLogo } = this.props;
-    // const username = Cookie.get('username');
-    // const userFullName = Cookie.get('userFullName');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>
