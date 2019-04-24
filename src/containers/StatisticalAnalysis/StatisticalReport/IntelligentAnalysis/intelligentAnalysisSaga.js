@@ -18,8 +18,8 @@ function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告�
           }
         })
         return message.error("暂无数据")
-      }
-      return yield put({
+      }else{
+       yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           stationCode,
@@ -28,7 +28,7 @@ function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告�
           month,
           singleStationInfo: response.data.data || {}
         },
-      });
+      })}
     } else { throw response.data }
   } catch (e) {
     yield put({
@@ -56,8 +56,8 @@ function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信�
           }
         })
         return message.error("暂无数据");
-      }
-      return yield put({
+      }else{
+       yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           areaName,
@@ -66,7 +66,7 @@ function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信�
           reportShow: true,
           areaStationInfo:response.data.data || {},
         },
-      });
+      })}
     } else { throw response.data }
   } catch (e) {
     yield put({
@@ -94,8 +94,8 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
           }
         })
         return message.error("暂无数据");
-      }
-      return yield put({
+      }else{
+       yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           year,
@@ -103,7 +103,7 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
           reportShow: true,
           areaInfo: response.data.data || {},
         },
-      });
+      })}
     } else { throw response.data }
   } catch (e) {
     yield put({

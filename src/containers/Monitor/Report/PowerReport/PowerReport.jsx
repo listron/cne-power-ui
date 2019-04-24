@@ -5,9 +5,9 @@ import styles from "./powerReport.scss";
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { powerReportAction } from './powerReportAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
-
 import Footer from '../../../../components/Common/Footer';
 import PowerReportContainer from '../../../../components/Monitor/Report/PowerReport/PowerReport';
+
 
 class PowerReport extends Component {
   static propTypes = {
@@ -16,6 +16,9 @@ class PowerReport extends Component {
     getStationDevicemode: PropTypes.func,
     getRegionStation: PropTypes.func,
     getRegion: PropTypes.func,
+    changePowerReportStore: PropTypes.func,
+    stationTypeCount: PropTypes.string,
+    selectStationType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -29,7 +32,11 @@ class PowerReport extends Component {
   componentWillUnmount() {
     this.props.resetPowerReportStore()
   }
+  checkWind = () => this.props.changePowerReportStore({selectStationType:'0'}) // 选中风电站
+
+  checkPv = () => this.props.changePowerReportStore({selectStationType:'1'}) // 选中光伏电站
   render() {
+    const { stationTypeCount, selectStationType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -42,7 +49,24 @@ class PowerReport extends Component {
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
-            <PowerReportContainer {...this.props} />
+           
+            {/*
+             {stationTypeCount === 'multiple' &&
+              <div className={styles.typeCheck}>
+                <div className={selectStationType === '0' ? styles.typeActive : styles.typeNormal} onClick={this.checkWind}>风电</div>
+                <div className={selectStationType === '1' ? styles.typeActive : styles.typeNormal} onClick={this.checkPv}>光伏</div>
+                <div className={styles.holder} />
+              </div>
+            }
+         {selectStationType === '0' && <PowerReportContainer {...this.props} />}
+           {selectStationType === '1' && <PowerReportContainer {...this.props} />}
+           
+          */}
+          
+           <PowerReportContainer {...this.props} />
+             
+          
+
           </div>
         </div>
         <Footer />
@@ -55,6 +79,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.powerReportReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
 
   }
 }
@@ -62,10 +87,12 @@ const mapDispatchToProps = (dispatch) => ({
   changePowerReportStore: payload => dispatch({ type: powerReportAction.changePowerReportStore, payload }),
   resetPowerReportStore: payload => dispatch({ type: powerReportAction.resetPowerReportStore, payload }),
   getPowerReportList: payload => dispatch({ type: powerReportAction.getPowerReportList, payload }),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
-    ...payload,
-    actionName: powerReportAction.changePowerReportStore,
-  }}),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile, payload: {
+      ...payload,
+      actionName: powerReportAction.changePowerReportStore,
+    }
+  }),
   getRegion: params => dispatch({ //获取用户权限的电站区域
     type: commonAction.getRegion,
     payload: {

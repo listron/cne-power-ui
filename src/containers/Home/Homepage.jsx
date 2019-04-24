@@ -12,6 +12,7 @@ import AlarmList from '../../components/Home/HomeParts/AlarmList';
 import CenterMap from '../../components/Home/CenterMap';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
+import { commonAction } from '../alphaRedux/commonAction';
 import { homepageAction } from './homepageAction';
 import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import PropTypes from 'prop-types';
@@ -20,6 +21,9 @@ import Cookie from 'js-cookie';
 class Homepage extends Component {
 
   static propTypes = {
+    username: PropTypes.string,
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
     enterpriseId: PropTypes.string,
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
@@ -42,6 +46,7 @@ class Homepage extends Component {
     getOutputDiagram: PropTypes.func,
     getOperationInfo: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   }
 
   constructor(props){
@@ -93,7 +98,7 @@ class Homepage extends Component {
 
   render() {
     const { 
-      changeLoginStore, enterpriseId, 
+      changeLoginStore, enterpriseId, username, userFullName, userLogo, resetCommonStore,
       realTimeInfo, // 10s实时数据 
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
@@ -108,6 +113,10 @@ class Homepage extends Component {
           realTimeInfo={realTimeInfo}
           energySaving={energySaving}
           resetMonitorData={resetMonitorData}
+          resetCommonStore={resetCommonStore}
+          username={username}
+          userFullName={userFullName}
+          userLogo={userLogo}
         />
         <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
@@ -144,6 +153,9 @@ class Homepage extends Component {
 const mapStateToProps = (state) => ({
   ...state.homepage.toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
+  username: state.common.get('username'),
+  userFullName: state.common.get('userFullName'),
+  userLogo: state.common.get('userLogo'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -164,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
 
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
 });
 
 
