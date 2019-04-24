@@ -27,7 +27,7 @@ function *changeLoginStore(action){
 function *userNameLogin(action){
   const url = `${APIBasePath}${login.userNameLogin}`;
   const {params} = action;
-  yield put({ type: loginAction.LOGIN_FETCH });
+  yield put({ type: loginAction.CHANGE_LOGIN_STORE, params: {loginLoading: true}});
   try {
     const response = yield call(axios, {
       method: 'post',
@@ -41,7 +41,8 @@ function *userNameLogin(action){
         password: Base64.encode(params.password),
       }),
     });
-    if(response.data.code === '10000' && response.data.data.userEnterpriseStatus){
+    yield put({ type: loginAction.CHANGE_LOGIN_STORE, params: {loginLoading: false}});
+    if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {//3启用状态
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
@@ -88,7 +89,7 @@ function *userNameLogin(action){
       }
     } else{
       yield put({ type: loginAction.USER_NAME_LOGIN_FAIL, data: response.data }); 
-      // message.error(response.data.message);    
+      message.error(response.data.message);
     }
   } catch (e) {
     console.log(e);
@@ -98,8 +99,11 @@ function *userNameLogin(action){
 function *getVerificationCode(action){
   const { params } = action;
   const url = `${APIBasePath}${login.getVerificationCode}/${params.phoneNum}`;
+  const { entranceType } = params;
   try{
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url, {
+      params: entranceType ? { entranceType } : {}
+    }); // todo 不同来源需是否验证该手机号是否有权限。
     if(response.data.code === "10000"){
       yield put({ type: loginAction.SEND_CODE_SUCCESS, params });
     } else {
@@ -111,9 +115,9 @@ function *getVerificationCode(action){
 }
 //手机+验证码登录
 function *phoneCodeLogin(action){
-  const { params } = action;
+  const { params, needFillDetail } = action;
   const url = `${APIBasePath}${login.phoneCodeLogin}`;
-  yield put({ type: loginAction.LOGIN_FETCH});
+  yield put({ type: loginAction.CHANGE_LOGIN_STORE, params: {loginLoading: true}});
   try{
     const response = yield call(axios, {
       method: 'post',
@@ -126,6 +130,7 @@ function *phoneCodeLogin(action){
         verificationCode: params.verificationCode,
       }),
     });
+    yield put({ type: loginAction.CHANGE_LOGIN_STORE, params: {loginLoading: false}});
     if(response.data.code === '10000'){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {
@@ -173,18 +178,31 @@ function *phoneCodeLogin(action){
           params, //params为请求传入的值
           data, //data为API返回的值
         });
-      } else {
-        const newParams = { ...params };
-        data.userEnterpriseStatus && (newParams.userEnterpriseStatus = data.userEnterpriseStatus);
-        yield put({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params: newParams });
+      } else { // 用户登录状态非可用。
+        if (needFillDetail) { // 被移除用户，数据暂存，去重新完善信息(密码)
+          yield put({
+            type: loginAction.CHANGE_LOGIN_STORE_SAGA,
+            params: {
+              userEnterpriseStatus: null, // 状态临时改为null => 方便去完善信息重新提交.
+              loginData: data, // 信息暂存
+              joinStep: 3,
+              phoneNum: params.phoneNum,
+            }
+          });
+        } else {
+          yield put({
+            type: loginAction.CHANGE_LOGIN_STORE_SAGA,
+            params: { ...params, userEnterpriseStatus: data.userEnterpriseStatus }
+          });
+        }
       }
     }else{
       message.error(response.data.message);
-      yield put({ type: loginAction.PHONE_CODE_LOGIN_FAIL, data: response.data });
       yield put({
         type: loginAction.CHANGE_LOGIN_STORE_SAGA,
         params: {
           checkLoginPhone: false,
+          error: response.data
         }
       });
     }
@@ -203,7 +221,9 @@ function *phoneCodeRegister(action){
       verificationCode: params.verificationCode,
     });
     const { code } = response.data || {};
-    if (code === '10000' || code === '20014' || code === '20013') { // 成功10000, 用户重新加入企业20014, 新用户默认注册登录20013 
+    if (code === '20034') { // 用户重新加入企业20014 => 添加需暂存信息。
+      yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params, needFillDetail: true});
+    } else if (code === '10000' || code === '20013') { // 成功10000, , 新用户默认注册登录20013 
       yield put({type: loginAction.PHONE_CODE_LOGIN_SAGA, params});
     } else if(code === '00000'){ // 验证码校验异常 => 尚未发送验证码/验证码错误/验证码失效
       message.error(response.data.message);
