@@ -11,7 +11,13 @@ function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告�
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       if(!response.data.data){
-        return message.error("暂无数据");
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
+        return message.error("暂无数据")
       }
       return yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
@@ -43,6 +49,12 @@ function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信�
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       if(!response.data.data){
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
         return message.error("暂无数据");
       }
       return yield put({
@@ -75,6 +87,12 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       if(!response.data.data){
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
         return message.error("暂无数据");
       }
       return yield put({
