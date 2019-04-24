@@ -1,0 +1,57 @@
+@import '../../../../theme/theme.scss';
+.faultWarnMain{
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  padding-bottom: 20px;
+  .faultWarnCenter{
+    width:278px;
+    height:92px;
+    cursor: pointer;
+    margin: 20px 0 0 28px;
+    display: flex;
+    flex-direction: column;
+    border:1px solid $promptColor;
+    padding: 0 8px 8px 12px;
+    &:hover{
+      box-shadow: 0 0 6px 0 rgba(0,0,0,0.30);
+    }
+    &:hover>div:nth-of-type(1){
+      color: $themeColor;
+    }
+    .faultWarnCenterTop{
+      @include lineheight(32px);
+    }
+    .faultWarnCenterIcon{
+      text-align: center;
+      i, span:nth-of-type(2){
+        color: $themeColor;
+      }
+      span:nth-of-type(1){
+        font-size: 18px;
+        margin-right: 2px;
+        color: $warnColor;
+      }
+    }
+    .faultWarnCenterBottom{
+      color: $warnColor;
+      display: flex;
+      justify-content: flex-end;
+      >div{
+        background-color: $warnColor;
+        padding: 0 5px;
+        margin-left: 4px;
+        border-radius: 9px;
+        margin-top: 6px;
+        font-family: "PingFangSC-Regular", serif;
+        color: $pageGround;
+        text-align: center;
+        font-size: 14px;
+        @include lineheight(18px);
+      }
+    }
+  }
+}

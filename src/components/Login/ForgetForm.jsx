@@ -40,7 +40,6 @@ class ForgetForm extends Component{
   onResetPassword = () => {
     this.props.form.validateFields(['password','confirmPwd'], (err,values) => {
       if(!err){
-
         this.props.resetPassword({
           phoneNum: this.props.phoneNum,
           password: values.password,
@@ -55,7 +54,7 @@ class ForgetForm extends Component{
   sendCode = () => {
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if(!err){
-        this.props.sendCode(values);
+        this.props.sendCode({ ...values, entranceType: 1 });
         this.setState({ timeValue: 60 })
         this.timeDecline();
       }

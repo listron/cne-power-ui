@@ -4,7 +4,6 @@ import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 
 const initState = immutable.fromJS({
   tabsType: 'singleStation',
-  reportLoading: false, // 报告请求的loading
   dateType: 1, // 时间类型
   reportShow: false, // 显示报告
   stationCode: null, // 选中的电站code
@@ -16,7 +15,6 @@ const initState = immutable.fromJS({
   singleStationInfo: {}, // 单电站分析数据
   areaStationInfo: {}, // 同区域电站对比分析数据
   areaInfo: {}, // 区域对比分析数据
-  // pageName:'singleStation',
 })
 
   const dataintelligentAnalysis = (state = initState, action) => {

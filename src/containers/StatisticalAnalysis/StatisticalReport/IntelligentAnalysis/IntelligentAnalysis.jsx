@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Radio } from 'antd';
-// import { Tabs } from 'antd';
 import PropTypes from "prop-types";
 import styles from './intelligentAnalysis.scss';
 import { commonAction } from '../../../alphaRedux/commonAction';
@@ -11,8 +10,6 @@ import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 import SingleStationAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/SingleStationAnalysis';
 import AreaStation from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/AreaStation';
 import AreaAnalysis from '../../../../components/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/AreaAnalysis';
-
-// const TabPane = Tabs.TabPane;
 
 class IntelligentAnalysis extends Component {
   static propTypes = {
@@ -27,17 +24,6 @@ class IntelligentAnalysis extends Component {
     this.props.resetStore()
   }
 
-  // refresh = (e) => { // 切换tabs页时刷新页面
-  //   const { changeIntelligentAnalysisStore } = this.props;
-  //   changeIntelligentAnalysisStore({
-  //     reportShow: false,
-  //     singleStationInfo: {},
-  //     areaStationInfo: {},
-  //     areaInfo: {},
-  //     startTime: null,
-  //     pageName: e
-  //   });
-  // }
   testfunc=(e)=>{
     const tabsValue = e.target.value;
     const { changeIntelligentAnalysisStore } = this.props;

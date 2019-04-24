@@ -34,6 +34,7 @@ class Main extends Component {
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
     resetCommonStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   };
 
   constructor(props) {

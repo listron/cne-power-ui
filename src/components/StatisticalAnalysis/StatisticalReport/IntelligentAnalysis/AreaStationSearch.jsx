@@ -24,7 +24,6 @@ class AreaStationSearch extends Component{
     month: PropTypes.string,
     year: PropTypes.string,
     dateType: PropTypes.number,
-    stationCode: PropTypes.number,
     areaName: PropTypes.string,
   };
 
@@ -65,6 +64,14 @@ class AreaStationSearch extends Component{
   searchInfo = () => { // 查询
     const { getAreaStation, changeIntelligentAnalysisStore } = this.props;
     const { year, month, dateType, regionName } = this.state;
+    if (!regionName) {
+      message.error("请选择区域名称！");
+      return;
+    }
+    if (!month && !year) {
+      message.error("请选择统计时间！");
+      return;
+    }
     const params = { regionName, year, month, dateType };
     getAreaStation({
       ...params,
@@ -73,12 +80,6 @@ class AreaStationSearch extends Component{
     changeIntelligentAnalysisStore({
       ...params
     })
-    if (!month && !year) {
-      message.error("请选择统计时间！")
-    }
-    if (!regionName) {
-      message.error("请选择区域名称！")
-    }
   }
 
   exportReport = () => { // 下载
