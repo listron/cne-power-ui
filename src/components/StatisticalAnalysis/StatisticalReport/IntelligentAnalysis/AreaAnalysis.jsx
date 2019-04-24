@@ -4,7 +4,6 @@ import styles from './intelligentAnalysis.scss';
 import AreaAnalysisSearch from'./AreaAnalysisSearch';
 import AreaAnalysisReport from'./AreaAnalysisReport';
 
-
 class AreaAnalysis extends Component{
 
   static propTypes = {

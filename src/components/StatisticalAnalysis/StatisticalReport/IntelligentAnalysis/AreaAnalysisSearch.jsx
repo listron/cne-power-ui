@@ -12,7 +12,6 @@ const { statisticalAnalysis } = path.APISubPaths;
 class AreaAnalysisSearch extends Component{
 
   static propTypes = {
-    stations: PropTypes.array,
     changeIntelligentAnalysisStore: PropTypes.func,
     getArea: PropTypes.func,
     dateType: PropTypes.number,
@@ -52,19 +51,17 @@ class AreaAnalysisSearch extends Component{
   searchInfo = () => { // 查询
     const { getArea, changeIntelligentAnalysisStore } = this.props;
     const { year, month, dateType } = this.state;
+    if (!month && !year) {
+      message.error("请选择统计时间！");
+      return;
+    }
     const params = { year, month, dateType };
-
     getArea({
       ...params
     });
-
     changeIntelligentAnalysisStore({
       ...params
     });
-    
-    if (!month && !year) {
-      message.error("请选择统计时间！")
-    }
   }
 
   exportReport = () => { // 下载

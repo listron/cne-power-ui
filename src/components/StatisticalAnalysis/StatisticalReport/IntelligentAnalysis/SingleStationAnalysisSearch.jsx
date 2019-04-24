@@ -66,6 +66,14 @@ class SingleStationAnalysisSearch extends Component{
   searchInfo = () => { // 查询
     const { getSingleStationAnalysis, changeIntelligentAnalysisStore } = this.props;
     const { dateType, month, year, stationCode, stationName } = this.state;
+    if (!stationCode) {
+      message.error("请选择电站名称！");
+      return;
+    }
+    if (!month && !year) {
+      message.error("请选择统计时间！");
+      return;
+    }
     const params = { dateType, month, year, stationCode, stationName };
     getSingleStationAnalysis({
       ...params
@@ -73,14 +81,6 @@ class SingleStationAnalysisSearch extends Component{
     changeIntelligentAnalysisStore({
       ...params
     })
-
-    if (!month && !year) {
-      message.error("请选择统计时间！")
-    }
-    if (!stationCode) {
-      message.error("请选择电站名称！")
-    }
-
   }
 
   exportReport = () => { // 下载

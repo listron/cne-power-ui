@@ -1,8 +1,8 @@
-import {put,takeLatest,call} from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
-import {message} from 'antd';
-import {intelligentAnalysisAction} from './intelligentAnalysisAction';
+import { message } from 'antd';
+import { intelligentAnalysisAction } from './intelligentAnalysisAction';
 
 function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告信息
   const { month, year, stationCode } = payload;
@@ -10,8 +10,17 @@ function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告�
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      yield put({
-        type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+      if(!response.data.data){
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
+        return message.error("暂无数据")
+      }else{
+       yield put({
+        type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           stationCode,
           reportShow: true,
@@ -19,27 +28,19 @@ function* getSingleStationAnalysis({ payload = {} }) { // 获取单电站报告�
           month,
           singleStationInfo: response.data.data || {}
         },
-      });
-    } else { 
-      yield put({
-        type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
-        payload: {
-          reportShow: false,
-        }
-      })
-    }
+      })}
+    } else { throw response.data }
   } catch (e) {
-    message.error('请求数据失败！');
-    console.log(e);
     yield put({
       type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
       payload: {
         reportShow: false,
       }
     })
+    message.error('请求数据失败！');
+    console.log(e);
   }
 }
-
 
 function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信息
   const { month, year, areaName } = payload;
@@ -47,7 +48,16 @@ function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信�
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      yield put({
+      if(!response.data.data){
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
+        return message.error("暂无数据");
+      }else{
+       yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           areaName,
@@ -56,15 +66,8 @@ function* getAreaStation({ payload = {} }) { // 获取同区域电站报告信�
           reportShow: true,
           areaStationInfo:response.data.data || {},
         },
-      });
-    } else {
-      yield put({
-        type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
-        payload: {
-          reportShow: false,
-        }
-      })
-    }
+      })}
+    } else { throw response.data }
   } catch (e) {
     yield put({
       type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
@@ -83,7 +86,16 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      yield put({
+      if(!response.data.data){
+        yield put({
+          type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
+          payload: {
+            reportShow: false,
+          }
+        })
+        return message.error("暂无数据");
+      }else{
+       yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,
         payload: {
           year,
@@ -91,15 +103,8 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
           reportShow: true,
           areaInfo: response.data.data || {},
         },
-      });
-    } else {
-      yield put({
-        type: intelligentAnalysisAction.changeIntelligentAnalysisStore,
-        payload: {
-          reportShow: false,
-        }
-      })
-    }
+      })}
+    } else { throw response.data }
   } catch (e) {
     yield put({
       type: intelligentAnalysisAction.changeIntelligentAnalysisStore,

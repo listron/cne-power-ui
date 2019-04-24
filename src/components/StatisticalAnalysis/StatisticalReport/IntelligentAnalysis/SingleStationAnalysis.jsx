@@ -7,15 +7,15 @@ import SingleStationAnalysisReport from './SingleStationAnalysisReport';
 class SingleStationAnalysis extends Component{
   static propTypes = {
     reportShow: PropTypes.bool,
-    completionRate: PropTypes.object,
   }
 
   render(){
     const { reportShow } = this.props;
+    
     return(
       <div className={styles.singleStationAnalysis}>
         <SingleStationAnalysisSearch {...this.props} />
-        { reportShow ? <SingleStationAnalysisReport {...this.props} /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div> }
+          { reportShow ? <SingleStationAnalysisReport {...this.props} /> : <div className={styles.nodata} ><img src="/img/nodata.png" /></div> }
       </div>
     )
   }

@@ -1,0 +1,17 @@
+@import '../../../../../theme/theme.scss';
+.faultWarnTable{
+  width: 100%;
+  .warnTablePagination{
+    padding: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid $promptColor;
+  }
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
+}

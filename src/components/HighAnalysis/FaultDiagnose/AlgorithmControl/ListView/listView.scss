@@ -1,0 +1,75 @@
+@import '../../../../../theme/theme.scss';
+.listView{
+  width: 100%;
+  padding-top: 18px;
+  .filterBox{
+    display: flex;
+    flex-shrink: 0;
+  }
+  .filterWrap{
+    padding-left: 30px;
+  }
+  .addAndPage{
+    display: flex;
+    line-height: 52px;
+    padding: 0 20px 0 30px;
+    justify-content: space-between;
+    .addControl{
+      width: 70px;
+      padding: 0;
+      font-size: 0;
+      border: 1px solid $themeColor;
+      i {
+        background-color: $themeColor;
+        color: #fff;
+        font-size: 14px;
+        vertical-align: top;
+        width: 28px;
+        line-height: 30px;
+        border-radius: 2px 0 0 2px;
+      }
+      .text {
+        border-radius: 0 2px 2px 0;
+        font-size: 14px;
+        color: $themeColor;
+        display: inline-block;
+        width: 40px;
+        line-height: 30px;
+        margin: 0;
+        text-align: center;
+      }
+      @include highLight($themeColor);
+      &:hover {
+        .text {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+  }
+  .listViewSelect{
+    width: 100%;
+    display: flex;
+    padding: 0 20px 0 30px;
+    .topSearch{
+      button{
+        margin-left: 5px;
+      }
+    }
+    .statusGroup{
+      display: flex;
+      line-height: 32px;
+      margin-left: 35px;
+      .text{
+        margin-right: 5px;
+      }
+      button{
+        &:active,
+        &:focus{
+          background-color: $themeColor;
+          color: $pageGround;
+        }
+      }
+    }
+  }
+}
