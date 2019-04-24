@@ -211,7 +211,8 @@ class FanItem extends React.Component {
               <div className={styles.parentDeviceName}>{e.parentDeviceName}</div>
               <div className={styles.fanCard}>
                 {e.device.sort((a, b) => { return a.deviceStatus - b.deviceStatus }).map((item, index) => {
-                  const currentStatus = item.deviceStatus;
+                  // const currentStatus = item.deviceStatus;
+                  const currentStatus = 700;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
@@ -219,6 +220,7 @@ class FanItem extends React.Component {
                     overlayClassName={styles.deviceCard}
                     trigger="hover"
                     getPopupContainer={() => this.refs.popver}
+                    width={1000}
                   >
                     <div className={`${styles[this.getStatusName(currentStatus).name]} ${styles.fanBlock}`} onClick={() => { this.showTip(currentStatus) }}>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  className={styles.linkBox}>

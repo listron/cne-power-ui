@@ -261,7 +261,11 @@ export default {
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
       getNewFanList:'/v3/wind/monitor/station/devices', // 新的风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
-      sequencechart:'/v3/monitor/windturbine/sequencechart',
+      newWindturbine:'/v3/wind/monitor/windturbine',  //新的风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart',// 风机图表数据
+      sequencediagram:'/v3/wind/monitor/windturbine/sequencediagram',// 单风机时序图
+      scatterpoint:'/v3/wind/monitor/windturbine/scatterpoint',// 单风机散点图
+
       //功率曲线
       getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',//功率曲线图表-多风机
       getPowerdeviceList:'/v3/wind/powercurve/fans/list',//..功率曲线列表-多风机
