@@ -87,9 +87,8 @@ const PointScatter = ({ ...rest }) => {
                 formatter: (params) => {
                     return (
                         `<div class=${styles.tooltipBox}>
-                            <div class=${styles.axisValue}>${params.data[3]}</div>
+                            <div class=${styles.axisValue}>${params.data[2]}</div>
                             <div class=${styles.tooltipContainer}> 
-                                <div class=${styles.tooltipCont}> <span style="background:${params.color}"> </span> ${params.data[2]}</div>
                                 <div class=${styles.tooltipCont}> <span></span> 平均风速 ${params.data[0]}</div>
                                 <div class=${styles.tooltipCont}> <span></span> 平均功率 ${dataFormats(params.data[1], '--', 2, true)}</div>
                             </div>
