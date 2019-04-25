@@ -51,7 +51,7 @@ class AreaAnalysisSearch extends Component{
   searchInfo = () => { // 查询
     const { getArea, changeIntelligentAnalysisStore } = this.props;
     const { year, month, dateType } = this.state;
-    if (!month && !year) {
+    if (!moment(month).isValid() && !moment(year).isValid()) {
       message.error("请选择统计时间！");
       return;
     }
