@@ -70,11 +70,12 @@ class SingleStationAnalysisSearch extends Component{
       message.error("请选择电站名称！");
       return;
     }
-    if (!month && !year) {
+    if (!moment(month).isValid() && !moment(year).isValid()) {
       message.error("请选择统计时间！");
       return;
     }
-    const params = { dateType, month, year, stationCode, stationName };
+    const params = { dateType, year, stationCode, stationName };
+    dateType === 1 && (params.month = month);
     getSingleStationAnalysis({
       ...params
     });
@@ -101,7 +102,6 @@ class SingleStationAnalysisSearch extends Component{
   render(){
     const { stations, reportShow} = this.props;
     const { stationCode } = this.state;
-    
     return(
       <div className={styles.singleStationAnalysisSearch}>
         <div className={styles.searchPart}>
@@ -121,6 +121,7 @@ class SingleStationAnalysisSearch extends Component{
                showYearPick={false}
                onChange={this.onTimeChange}
                timerText={''}
+               needDefault={false}
                value={{
                 timeStyle: 'day',
                 startTime: null,

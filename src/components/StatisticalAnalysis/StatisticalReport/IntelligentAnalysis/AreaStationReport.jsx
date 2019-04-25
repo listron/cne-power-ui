@@ -117,7 +117,7 @@ class AreaStationReport extends Component{
               {lowComplateRateStations.map((e) => (
                 <p className={styles.paragraph}>
                   <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较低，损失率为</span>
+                  <span>电站损失电量较高，损失率为</span>
                   <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
                   <span>%;晴天天数</span>
                   <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
@@ -143,7 +143,7 @@ class AreaStationReport extends Component{
                 <span>%，其中</span>
                 <span className={styles.text}>{totalLossPowerDesc.highExternalFaultName || '--'}</span>
                 <span>占比最高，为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highPxternalFaultProportion,'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highExternalFaultLossPower,'--',2,true) || '--'}</span>
                 <span>%；</span>
               </p>  
               
@@ -167,7 +167,7 @@ class AreaStationReport extends Component{
                 <span>4）输电系统故障损失电量为</span>
                 <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultLostPower,'--',4,true) || '--'}</span>
                 <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.substationSystemFaultProportion,'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultProportion,'--',2,true) || '--'}</span>
                 <span>%；</span>
               </p>  
               
@@ -343,7 +343,7 @@ class AreaStationReport extends Component{
                 <span>4）输电系统故障损失电量为</span>
                 <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultLostPower,'--',4,true) || '--'}</span>
                 <span>万kWh，占比</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.substationSystemFaultProportion,'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(totalLossPowerDesc.transmissionSystemFaultProportion,'--',2,true) || '--'}</span>
                 <span>%；</span>
               </p>  
               
