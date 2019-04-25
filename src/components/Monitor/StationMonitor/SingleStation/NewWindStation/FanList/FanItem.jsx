@@ -212,8 +212,8 @@ class FanItem extends React.Component {
               <div className={styles.parentDeviceName}>{e.parentDeviceName}</div>
               <div className={styles.fanCard}>
                 {e.device.sort((a, b) => { return a.deviceStatus - b.deviceStatus }).map((item, index) => {
-                  // const currentStatus = item.deviceStatus;
-                  const currentStatus = 700;
+                  const currentStatus = item.deviceStatus;
+                  // const currentStatus = 700;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
