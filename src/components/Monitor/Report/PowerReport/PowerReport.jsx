@@ -89,6 +89,7 @@ class PowerReport extends Component {
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
             showFault={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}

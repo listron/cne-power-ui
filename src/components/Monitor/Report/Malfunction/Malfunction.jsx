@@ -23,6 +23,7 @@ class Malfunction extends Component {
     summaryData: PropTypes.array,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
+    tableType: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     regionStationDeviceData: PropTypes.array,
@@ -58,10 +59,10 @@ class Malfunction extends Component {
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {
-    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
+    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
-    this.props.getMalfunctionList({ ...params, ...value })
-    this.props.getMalfunctionDetail({ ...params, ...value })
+    tableType==='all'&& this.props.getMalfunctionList({ ...params, ...value });
+    tableType==='detail'&&this.props.getMalfunctionDetail({ ...params, ...value });
   }
 
   exportList = () => {
@@ -85,12 +86,15 @@ class Malfunction extends Component {
 
   render() {
     const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
+    const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
@@ -98,7 +102,7 @@ class Malfunction extends Component {
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
           <Button className={styles.btn} onClick={this.exportList}>导出</Button>
         </div>
-        <TableList {...this.props} />
+        <TableList {...this.props} params={params} />
       </div>
     )
   }
