@@ -55,7 +55,8 @@ class AreaAnalysisSearch extends Component{
       message.error("请选择统计时间！");
       return;
     }
-    const params = { year, month, dateType };
+    const params = { year, dateType };
+    dateType === 1 && (params.month = month);
     getArea({
       ...params
     });
@@ -78,6 +79,8 @@ class AreaAnalysisSearch extends Component{
 
   render(){
     const { reportShow } = this.props;
+    const { month, year } = this.state;
+
     return(
       <div className={styles.areaAnalysisSearch}>
         <div className={styles.searchPart}>
@@ -88,6 +91,7 @@ class AreaAnalysisSearch extends Component{
                 showYearPick={false}
                 onChange={this.onTimeChange}
                 timerText={''}
+                needDefault={false}
                 value={{
                  timeStyle: 'day',
                  startTime: null,

@@ -74,7 +74,8 @@ class SingleStationAnalysisSearch extends Component{
       message.error("请选择统计时间！");
       return;
     }
-    const params = { dateType, month, year, stationCode, stationName };
+    const params = { dateType, year, stationCode, stationName };
+    dateType === 1 && (params.month = month);
     getSingleStationAnalysis({
       ...params
     });
@@ -121,6 +122,7 @@ class SingleStationAnalysisSearch extends Component{
                showYearPick={false}
                onChange={this.onTimeChange}
                timerText={''}
+               needDefault={false}
                value={{
                 timeStyle: 'day',
                 startTime: null,
