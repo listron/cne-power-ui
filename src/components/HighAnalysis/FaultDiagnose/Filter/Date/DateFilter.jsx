@@ -16,19 +16,22 @@ class DateFilter extends Component {
   }
 
   onStartChange = (date, dateString) => {
-    this.props.onChangeFilter({
-      createTimeStart: dateString,
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      createTimeStart: dateString
     });
   };
 
   onEndChange = (date, dateString) => {
-    this.props.onChangeFilter({
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
       createTimeEnd: dateString
     });
   };
 
   resetTime = () => {
-    this.props.onChangeFilter({
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
       createTimeEnd: '',
       createTimeStart: '',
     });

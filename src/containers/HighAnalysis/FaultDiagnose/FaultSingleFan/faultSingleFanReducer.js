@@ -3,6 +3,7 @@ import { faultSingleFanAction } from './faultSingleFanAction.js';
 
 const initState = Immutable.fromJS({
   loading: false,
+  showFlag: false // 控制展开关闭按钮
 });
 
 

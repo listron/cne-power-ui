@@ -15,7 +15,9 @@ export default class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object,
+    match: PropTypes.object,
     stations: PropTypes.object,
+    stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
   };
 
@@ -24,12 +26,27 @@ export default class FaultAllFan extends React.Component {
     this.state = {};
   }
 
+  stationName = () => {
+    const {
+      stations,
+      match:{
+        params: {
+          stationCode
+        }
+      },
+    } = this.props;
+    const stationItems = stations && stations.toJS();
+    const stationItem = stationItems.filter(e => (e.stationCode === +stationCode))[0];
+    return stationItem.stationName;
+  };
+
 
   render() {
+    const algorithmName = localStorage.getItem("algorithmName");
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.title}>
-          <span>肥西风场</span><span>变桨电机温度异常识别</span>
+          <span>{`${this.stationName()}：`}</span><span>{algorithmName}</span>
         </div>
         <div className={styles.allFanWrap}>
           <div className={styles.allFanContent}>

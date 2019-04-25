@@ -13,7 +13,6 @@ import Footer from '../../../../components/Common/Footer';
 class AlgorithmControl extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
-    getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
     changeAlgorithmControlStore: PropTypes.func,
     viewType: PropTypes.string
@@ -30,7 +29,8 @@ class AlgorithmControl extends Component {
   }
 
   componentWillUnmount(){
-    this.props.resetStore();
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onAddControlFunc = (flag) => {
@@ -114,20 +114,16 @@ class AlgorithmControl extends Component {
 }
 const mapStateToProps = (state) => {
   return ({
-    stations: state.common.get('stations'),
-    stationCodes: state.highAanlysisReducer.algorithm.get('stationCodes'),
-    deviceTypeCode: state.highAanlysisReducer.algorithm.get('deviceTypeCode'),
-    createTimeStart: state.highAanlysisReducer.algorithm.get('createTimeStart'),
-    createTimeEnd: state.highAanlysisReducer.algorithm.get('createTimeEnd'),
-    viewType: state.highAanlysisReducer.algorithm.get('viewType'),
-    algorithmModalName: state.highAanlysisReducer.algorithm.get('algorithmModalName').toJS(),
-    algorithmModalId: state.highAanlysisReducer.algorithm.get('algorithmModalId').toJS(),
+    ...state.highAanlysisReducer.algorithm.toJS(),
     deviceTypes: state.common.get('deviceTypes'),
+    stations: state.common.get('stations'),
   })
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: algorithmControlAction.resetStore }),
+  getAlgoList: () => dispatch({ type: algorithmControlAction.getAlgoList }),
+  getAlgoOptionList: () => dispatch({ type: algorithmControlAction.getAlgoOptionList }),
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
-  getInspectList: payload => dispatch({ type: algorithmControlAction.GET_INSPECT_LIST_SAGA, payload }),
+  getAddWarnTask: payload => dispatch({ type: algorithmControlAction.getAddWarnTask, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)

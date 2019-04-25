@@ -55,7 +55,7 @@ class FilteredItems extends Component {
 
   render() {
     const {createTimeStart, createTimeEnd, algorithmModalId } = this.props;
-    if(createTimeStart === '' && createTimeEnd === '' && algorithmModalId.length === 0) {
+    if(createTimeStart === '' && createTimeEnd === '' && (!algorithmModalId || algorithmModalId.length === 0)) {
       return null;
     }
     const style = {

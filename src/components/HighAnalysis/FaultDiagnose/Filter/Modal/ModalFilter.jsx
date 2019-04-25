@@ -8,8 +8,8 @@ const CheckboxGroup = Checkbox.Group;
 class ModalFilter extends Component {
   static propTypes = {
     algorithmModalId: PropTypes.array,
+    algoOptionList: PropTypes.array,
     onChangeFilter: PropTypes.func,
-    algorithmModalName: PropTypes.array,
   };
 
   constructor(props) {
@@ -17,26 +17,28 @@ class ModalFilter extends Component {
   }
 
   onLevelSelect = (algorithmModalId) => {
-    this.props.onChangeFilter({ algorithmModalId });
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      algorithmModalId
+    });
   };
 
   resetLevel = () => {
-    this.props.onChangeFilter({
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
       algorithmModalId: []
     });
   };
 
   render() {
-    const { algorithmModalId, algorithmModalName } = this.props;
-    const levels = algorithmModalName.length > 0 ? algorithmModalName : ['一级','二级','三级','四级'];
-    const levelOptions = levels.map((e,i)=>({
-      label: e,
-      // value: `${i+1}`
-      value: `${e}`
+    const { algorithmModalId, algoOptionList } = this.props;
+    const levelOptions = algoOptionList.map(cur => ({
+      label: cur.algorithmName,
+      value: `${cur.algorithmId}`
     }));
     return (
       <div className={styles.filterItem}>
-        <span onClick={this.resetLevel} className={algorithmModalId.length === 0 ? styles.selected : styles.all}>不限</span>
+        <span onClick={this.resetLevel} className={algoOptionList.length === 0 ? styles.selected : styles.all}>不限</span>
         <CheckboxGroup options={levelOptions} value={algorithmModalId} onChange={this.onLevelSelect} />
       </div>
     );

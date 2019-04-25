@@ -90,24 +90,3 @@ export const numWithComma = (data, placeholder = '--', joinText = ',', divisionN
     return outputArr.join(joinText);
   }
 };
-
-// 其他元素
-export function siblings(elem) {
-  const nodes = [];
-  let prev = elem.previousSibling;
-  while (prev) {
-    if (prev.nodeType === 1) {
-      nodes.push(prev);
-    }
-    prev = prev.previousSibling;
-  }
-  nodes.reverse();
-  let next = elem.nextSibling;
-  while (next) {
-    if (next.nodeType === 1) {
-      nodes.push(next);
-    }
-    next = next.nextSibling;
-  }
-  return nodes;
-}

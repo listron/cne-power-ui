@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./faultSingleFan.scss";
 import Footer from '../../../../components/Common/Footer';
 import FaultSingleFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan';
-import {faultWarnAction} from "../FaultWarn/faultWarnAction";
+import {faultSingleFanAction} from "./faultSingleFanAction";
 import {connect} from "react-redux";
 
 
@@ -66,6 +66,7 @@ class FaultSingleFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
+    changeSingleFanStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -76,6 +77,13 @@ class FaultSingleFan extends React.Component {
   componentDidMount() {
   }
 
+  onChangeFilter = (params) => {
+    const { changeSingleFanStore } = this.props;
+    changeSingleFanStore({
+      ...params
+    });
+  };
+
   render() {
     return (
       <div className={styles.faultSingleFan}>
@@ -85,7 +93,7 @@ class FaultSingleFan extends React.Component {
             <div>返回列表视图</div>
           </div>
         </div>
-        <FaultSingleFanMain data={data} {...this.props} />
+        <FaultSingleFanMain onChangeFilter={this.onChangeFilter} data={data} {...this.props} />
         <Footer />
       </div>
     );
@@ -93,11 +101,12 @@ class FaultSingleFan extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.highAanlysisReducer.faultWarn.toJS(),
+    ...state.highAanlysisReducer.faultSingleFan.toJS(),
     stations: state.common.get('stations'),
   }
 };
 const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
+  resetStore: () => dispatch({ type: faultSingleFanAction.resetStore }),
+  changeSingleFanStore: payload => dispatch({ type: faultSingleFanAction.changeSingleFanStore, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan)

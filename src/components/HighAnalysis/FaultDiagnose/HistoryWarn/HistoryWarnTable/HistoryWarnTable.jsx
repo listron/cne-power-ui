@@ -6,6 +6,18 @@ import {Table} from "antd";
 export default class HistoryWarnTable extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    faultWarnHistoryData: PropTypes.object,
+    getFaultWarnHistory: PropTypes.func,
+    onChangeFilter: PropTypes.func,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    stationCode: PropTypes.number,
+    selectDeviceCode: PropTypes.array,
+    algorithmModalId: PropTypes.array,
   };
 
   constructor(props) {
@@ -16,41 +28,45 @@ export default class HistoryWarnTable extends React.Component {
   componentDidMount() {
   }
 
+  tableChange = (pagination, filter, sorter) => {// 点击表头 排序
+    const { field, order } = sorter;
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      sortField: field ? field : "",
+      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+    });
+  };
 
   render() {
-    const { loading } = this.props;
-    const columns = [ {
+    const { loading, faultWarnHistoryData: {
+      dataList,
+    }} = this.props;
+    const columns = [{
       title: '电站名称',
       dataIndex: 'stationName',
-      key: 'stationName',
       sorter: true,
     },{
       title: '风机名称',
-      dataIndex: 'defectLevel',
-      key: 'defectLevel',
+      dataIndex: 'deviceName',
       sorter: true,
     }, {
       title: '预期日期',
-      dataIndex: 'deviceName',
-      key: 'deviceName',
+      dataIndex: 'predictionDate',
       sorter: true,
     }, {
       title: '算法模型',
-      dataIndex: '检测结束时间',
-      key: '检测结束时间',
+      dataIndex: 'algorithmName',
       sorter: true,
     }, {
       title: '检测开始日期',
-      dataIndex: '计划执行时间',
-      key: '计划执行时间',
+      dataIndex: 'startTime',
     }, {
       title: '检测结束日期',
-      dataIndex: '执行开始时间',
-      key: '执行开始时间',
+      dataIndex: 'endTime',
     }, {
       title: '预期结果',
       dataIndex: 'result',
-      key: 'result',
+      align:"center",
       render: (text, record) => (
         <span>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
@@ -61,7 +77,10 @@ export default class HistoryWarnTable extends React.Component {
       <div className={styles.historyWarnTable}>
         <Table
           pagination={false}
+          dataSource={dataList}
           loading={loading}
+          onChange={this.tableChange}
+          rowKey={(record, index) => (record.taskId + index) || 'key'}
           columns={columns}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />

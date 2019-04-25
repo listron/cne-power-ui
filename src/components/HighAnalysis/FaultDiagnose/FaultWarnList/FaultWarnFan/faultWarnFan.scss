@@ -6,12 +6,13 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-self: flex-start;
+  padding-left: 8px;
   .fanItem{
     border:1px solid $promptColor;
     width:278px;
     height:92px;
     cursor: pointer;
-    margin: 20px 0 0 20px;
+    margin: 20px 0 0 12px;
     .fanItemTop{
       padding-left: 12px;
       display: flex;
@@ -41,6 +42,12 @@
         height: 16px;
         margin-top: 8px;
         background-color: $promptColor;
+      }
+      .warnColor{
+        color: $warnColor;
+      }
+      .grayColor{
+        color: $lightColor;
       }
       div{
         text-align: center;

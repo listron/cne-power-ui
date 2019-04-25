@@ -74,6 +74,10 @@ import { watchTransfer } from "./HighAnalysis/EarlyWarning/Transfer/transferSaga
 import { watchHistory } from "./HighAnalysis/EarlyWarning/HistoryWarn/historyWarnSaga";
 
 import { watchAlgorithmControl } from "./HighAnalysis/FaultDiagnose/AlgorithmControl/algorithmControlSaga";
+import { watchFaultWarn } from "./HighAnalysis/FaultDiagnose/FaultWarn/faultWarnSaga";
+import { watchFaultWarnList } from "./HighAnalysis/FaultDiagnose/FaultWarnList/faultWarnListSaga";
+import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/faultAllFanSaga";
+import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 
@@ -157,6 +161,10 @@ export default function* rootSaga() {
     watchHistory(),
     // 高级分析-风机故障检测与诊断
     watchAlgorithmControl(),
+    watchFaultWarn(),
+    watchFaultWarnList(),
+    watchFaultAllFan(),
+    watchFaultWarnHistory(),
     // 工单
     watchWorkOrder(),
 
