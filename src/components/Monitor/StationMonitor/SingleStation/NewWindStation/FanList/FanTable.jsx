@@ -148,7 +148,7 @@ class WindStationList extends React.Component {
         dataIndex: 'capabilityRate',
         key: 'capabilityRate',
         className: styles.numberStyle,
-        render(value) { return numWithComma(value); },
+        render: value => dataFormats(value, '--', 2, true),
         sorter: true,
       },
       {

@@ -93,10 +93,11 @@ class WindStation extends Component {
     </RadioButton>
   )
 
-  powerDiagramChange = (value) => {
+  powerDiagramChange = (value) => { // 点击切换发电量的 年月日
     const { stationCode } = this.props.match.params;
     clearTimeout(this.timeOutPowerData);
     const { intervalTime } = value;
+    const stationType='0';
     let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').format('YYYY-MM-DD')
@@ -109,10 +110,11 @@ class WindStation extends Component {
       stationCode,
       intervalTime,
       startTime,
-      endTime: endTime
+      endTime: endTime,
+      stationType,
     });
     this.timeOutPowerData = setTimeout(() => {
-      this.getPowerDataTenMin(stationCode, intervalTime);
+      this.powerDiagramChange(value);
     }, 600000);
   }
 
@@ -183,7 +185,7 @@ class WindStation extends Component {
               <div className={styles.tags}>
                 <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(singleStationData.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
+                <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />

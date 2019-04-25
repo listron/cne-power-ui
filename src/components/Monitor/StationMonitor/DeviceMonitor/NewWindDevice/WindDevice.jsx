@@ -149,7 +149,7 @@ class WindDevice extends Component {
               <div className={styles.tags}>
                 <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
+                <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart capabilityData={sequenceChartList} yAxisUnit={'kW'} />
