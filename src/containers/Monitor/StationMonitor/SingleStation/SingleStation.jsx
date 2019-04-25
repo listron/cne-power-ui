@@ -121,17 +121,18 @@ class SingleStation extends Component {
 
   getPowerDataTenMin = (stationCode, intervalTime = 0) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
     clearTimeout(this.timeOutPowerData);
-    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
+    this.props.changeSingleStationStore({powerData:[]})
     this.props.getMonitorPower({
       stationCode,
       intervalTime,
       startTime,
-      endTime: moment().format('YYYY-MM-DD')
+      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD')
     });
     this.timeOutPowerData = setTimeout(() => {
       this.getPowerDataTenMin(stationCode, intervalTime);

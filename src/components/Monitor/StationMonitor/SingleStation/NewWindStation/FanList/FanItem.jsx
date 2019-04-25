@@ -55,14 +55,15 @@ class FanItem extends React.Component {
 
   default = (item) => { // 整机状态
     const currentStatus = item.deviceStatus;
-    const percent = (item.devicePlanPower && item.deviceCapacity) ? item.devicePlanPower / item.deviceCapacity * 100 : 0;
+    const successPercent = (item.devicePlanPower && item.deviceCapacity) ? item.devicePlanPower / item.deviceCapacity * 100 : 0;
+    const percent = (item.devicePower && item.deviceCapacity) ? item.devicePower / item.deviceCapacity * 100 : 0;
     return (
       <div className={styles.inverterItemR} >
         <div className={styles.column}>
           <div>{item.deviceName}</div>
           <div>{this.getStatusName(currentStatus).text}</div>
         </div>
-        <OwnProgress percent={item.capabilityRate} successPercent={percent} />
+        <OwnProgress percent={percent} successPercent={successPercent} />
         <div className={styles.column}>
           <div> <span className={styles.changeNum}> {dataFormats(item.devicePower, '--', 2, true)}</span> kW</div>
           <div>{dataFormats(item.deviceCapacity, '--', 2, true)} kW</div>
@@ -212,6 +213,7 @@ class FanItem extends React.Component {
               <div className={styles.fanCard}>
                 {e.device.sort((a, b) => { return a.deviceStatus - b.deviceStatus }).map((item, index) => {
                   const currentStatus = item.deviceStatus;
+                  // const currentStatus = 700;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
@@ -219,6 +221,7 @@ class FanItem extends React.Component {
                     overlayClassName={styles.deviceCard}
                     trigger="hover"
                     getPopupContainer={() => this.refs.popver}
+                    width={1000}
                   >
                     <div className={`${styles[this.getStatusName(currentStatus).name]} ${styles.fanBlock}`} onClick={() => { this.showTip(currentStatus) }}>
                       <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}  className={styles.linkBox}>

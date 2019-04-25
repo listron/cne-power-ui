@@ -7,24 +7,17 @@ import moment from 'moment';
 import styles from './windCommon.scss';
 
 
-const SpeedScatter = ({ ...rest }) => {
+const PointScatter = ({ ...rest }) => {
     const { scatterData = {}, type } = rest;
     let needData = [];
-    if (type === 'singleStation') {
+    if (type === 'windDevice') {
         needData = [
-            { name: '全部电站', value: 'stationsMonthsData' },
-            { name: '本电站', value: 'stationMonthsData' },
-            { name: '本电站昨日', value: 'yesterdayData' },
-        ]
-    }
-    if (type === 'allStation') {
-        needData = [
-            { name: '近三个月', value: 'stationsMonthsData' },
-            { name: '昨日', value: 'yesterdayData' },
+            { name: '近三个月', value: 'monthsChart' },
+            { name: '24小时', value: 'dayChart' },
         ]
     }
     let series = needData.map((item) => {
-        const data=scatterData[item.value] || [];
+        const data = scatterData[item.value] || [];
         return ({
             name: item.name,
             type: 'scatter',
@@ -32,10 +25,10 @@ const SpeedScatter = ({ ...rest }) => {
             emphasis: {
                 symbolSize: 8,
             },
-            data:data.map((item) => {
-                const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
-                const NowEquipmentHours=equipmentHours && +equipmentHours || equipmentHours;
-                return [windSpeed, dataFormats(+NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
+            data: data.map((item) => {
+                const { xData, yData, time, deviceName } = item;
+                const formatTime = moment(time).format('YYYY-MM-DD HH:MM:SS')
+                return [dataFormats(xData, '--', 2, true), dataFormats(yData, '--', 2, true), formatTime, deviceName]
             })
         })
     })
@@ -48,9 +41,9 @@ const SpeedScatter = ({ ...rest }) => {
         needData.length > 0 ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
         const scatterOption = {
             graphic: Graphic,
-            color: ['#c7ceb2', '#199475','#e08031'],
+            color: ['#c7ceb2', '#199475', '#e08031'],
             title: {
-                text: '日等效利用小时数散点图（近三个月）',
+                text: '24h风功率散点图',
                 textStyle: {
                     color: fontColor,
                     fontSize: 14,
@@ -94,11 +87,10 @@ const SpeedScatter = ({ ...rest }) => {
                 formatter: (params) => {
                     return (
                         `<div class=${styles.tooltipBox}>
-                            <div class=${styles.axisValue}>${params.data[3]}</div>
+                            <div class=${styles.axisValue}>${params.data[2]}</div>
                             <div class=${styles.tooltipContainer}> 
-                                <div class=${styles.tooltipCont}> <span style="background:${params.color}"> </span> ${params.data[2]}</div>
                                 <div class=${styles.tooltipCont}> <span></span> 平均风速 ${params.data[0]}</div>
-                                <div class=${styles.tooltipCont}> <span></span> 等效时 ${dataFormats(params.data[1], '--', 2, true)}</div>
+                                <div class=${styles.tooltipCont}> <span></span> 平均功率 ${dataFormats(params.data[1], '--', 2, true)}</div>
                             </div>
                         </div>`
                     )
@@ -107,7 +99,7 @@ const SpeedScatter = ({ ...rest }) => {
             xAxis: {
                 type: 'value',
                 nameGap: -40,
-                name: '平均风速(m/s)',
+                name: '风速(m/s)',
                 nameTextStyle: {
                     color: lineColor,
                     verticalAlign: 'bottom',
@@ -123,6 +115,7 @@ const SpeedScatter = ({ ...rest }) => {
                         color: '#dfdfdf',
                     },
                 },
+                min:0,
                 axisLabel: {
                     color: lineColor,
                 },
@@ -137,7 +130,7 @@ const SpeedScatter = ({ ...rest }) => {
             },
             yAxis: [
                 {
-                    name: '等效时(h)',
+                    name: '功率(kW)',
                     type: 'value',
                     nameTextStyle: {
                         color: lineColor,
@@ -160,7 +153,7 @@ const SpeedScatter = ({ ...rest }) => {
             ],
             series: series
         };
-        SpeedScatterGraph.setOption(scatterOption);
+        SpeedScatterGraph.setOption(scatterOption,'notMerge');
         SpeedScatterGraph.resize();
     }
 
@@ -173,4 +166,4 @@ const SpeedScatter = ({ ...rest }) => {
 
 
 
-export { SpeedScatter }
+export { PointScatter }

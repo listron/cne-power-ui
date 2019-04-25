@@ -7,15 +7,15 @@ import { message } from 'antd';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 import moment from 'moment';
-message.config({ top: 120,  duration: 2, maxCount: 2});
+message.config({ top: 120, duration: 2, maxCount: 2 });
 
 function* getSingleStation(action) { //获取单电站实时数据
   const { payload } = action;
-  const {stationCode,stationType}=payload;
+  const { stationCode, stationType } = payload;
   const utcTime = moment.utc().format();
   const pvUrl = `${APIBasePath}${monitor.getSingleStation}${stationCode}/${utcTime}`;
   const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
-  const url =stationType === '0' ? windUrl : pvUrl;
+  const url = stationType === '0' ? windUrl : pvUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -41,7 +41,9 @@ function* getSingleStation(action) { //获取单电站实时数据
 function* getCapabilityDiagram(action) { // 获取出力图数据
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
-  const url = `${APIBasePath}${monitor.getCapabilityDiagram}${stationCode}/${stationType}/${startTime}/${endTime}`
+  const pvUrl = `${APIBasePath}${monitor.getCapabilityDiagram}${stationCode}/${stationType}/${startTime}/${endTime}`
+  const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
+  const url = stationType === '0' ? windUrl : pvUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -229,8 +231,8 @@ function* getDeviceTypeFlow(action) { // 获取单电站设备类型流程图(�
 
 function* getPvmoduleList(action) { // 获取光伏组件列表
   const { payload } = action;
-  const {stationCode,firstLoad}=payload;
-  const url=`${APIBasePath}${monitor.getPvmoduleList}${stationCode}`;
+  const { stationCode, firstLoad } = payload;
+  const url = `${APIBasePath}${monitor.getPvmoduleList}${stationCode}`;
   try {
     if (firstLoad) {
       yield put({ type: singleStationAction.singleStationFetch });
@@ -245,7 +247,7 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
           pvLevelNums: response.data.data.pvLevelNums || {}
         }
       });
-    } else { throw 'error'  }
+    } else { throw 'error' }
   } catch (e) {
     console.log(e);
     yield put({
@@ -261,7 +263,7 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
 
 function* getInverterList(action) { // 获取逆变器实时数据列表(光伏)
   const { payload } = action;
-  const {stationCode,deviceTypeCode}=payload;
+  const { stationCode, deviceTypeCode } = payload;
   const url = `${APIBasePath}${monitor.getInverterList}${stationCode}/${deviceTypeCode}`;
   try {
     if (payload.firstLoad) {
@@ -275,7 +277,7 @@ function* getInverterList(action) { // 获取逆变器实时数据列表(光伏)
           inverterList: response.data.data || {},
         }
       })
-    } else { throw 'error'  } 
+    } else { throw 'error' }
   } catch (e) {
     console.log(e);
     yield put({
@@ -289,8 +291,8 @@ function* getInverterList(action) { // 获取逆变器实时数据列表(光伏)
 
 function* getBoxTransformerList(action) { // 获取箱变列表(光伏)
   const { payload } = action;
-  const {stationCode}=payload;
-  const url=`${APIBasePath}${monitor.getBoxTransformerList}${stationCode}`;
+  const { stationCode } = payload;
+  const url = `${APIBasePath}${monitor.getBoxTransformerList}${stationCode}`;
   try {
     if (payload.firstLoad) {
       yield put({ type: singleStationAction.singleStationFetch });
@@ -303,7 +305,7 @@ function* getBoxTransformerList(action) { // 获取箱变列表(光伏)
           boxTransformerList: response.data.data || {},
         }
       })
-    } else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -330,7 +332,7 @@ function* getConfluenceBoxList(action) { // 获取汇流箱列表(光伏)
           confluenceBoxList: response.data.data || {},
         }
       })
-    } else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -359,13 +361,13 @@ function* getCollectorLine(action) { // 获取集电线路列表(共有)
           collectorList: response.data.data || [],
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
       type: singleStationAction.getSingleStationSuccess,
       payload: {
-        collectorList:  [],
+        collectorList: [],
       }
     })
   }
@@ -388,13 +390,13 @@ function* getBoosterstation(action) { // 获取升压站列表(共有)
           boosterList: response.data.data || [],
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
       type: singleStationAction.getSingleStationSuccess,
       payload: {
-        boosterList:  [],
+        boosterList: [],
       }
     })
   }
@@ -417,7 +419,7 @@ function* getPowerNet(action) { // 获取电网列表(共有)
           powerNetList: response.data.data || [],
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -442,7 +444,7 @@ function* getStationDeviceList(action) { // 获取单电站设备列表
           stationDeviceList: response.data.data || [],
         }
       })
-    } else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -460,16 +462,16 @@ function* editData(action) { // 编辑月，年的累计发电量
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
-      message.success('数据编辑成功，请稍等',2);
+      message.success('数据编辑成功，请稍等', 2);
       yield put({
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           editAllData: response.data.data || [],
         }
       })
-    } else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
-    message.warn('数据编辑失败',2);
+    message.warn('数据编辑失败', 2);
     console.log(e);
   }
 
@@ -490,7 +492,7 @@ function* getFanList(action) { // 获取风机实时数据列表
           fanList: response.data.data || {},
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -502,10 +504,10 @@ function* getFanList(action) { // 获取风机实时数据列表
   }
 }
 
-function* getSingleScatter(action){
+function* getSingleScatter(action) {
   const { payload } = action;
-  const {stationCode}=payload;
-  const localDate=moment().format('YYYY-MM-DD');
+  const { stationCode } = payload;
+  const localDate = moment().format('YYYY-MM-DD');
   const url = `${APIBasePath}${monitor.getSingleWindScatter}/${stationCode}/${localDate}`;
   try {
     if (payload.firstLoad) {
@@ -519,7 +521,7 @@ function* getSingleScatter(action){
           singleStationScatter: response.data.data || [],
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -531,7 +533,7 @@ function* getSingleScatter(action){
   }
 }
 
-function* pointparams(){ // 单电站测点参数名称列表
+function* pointparams() { // 单电站测点参数名称列表
   const url = `${APIBasePath}${monitor.getPointparams}`;
   try {
     const response = yield call(axios.get, url);
@@ -542,7 +544,7 @@ function* pointparams(){ // 单电站测点参数名称列表
           pointparams: response.data.data || [],
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
@@ -554,7 +556,7 @@ function* pointparams(){ // 单电站测点参数名称列表
   }
 }
 
-function* getNewFanList(action){
+function* getNewFanList(action) {
   const { payload } = action;
   const url = `${APIBasePath}${monitor.getNewFanList}/${payload.stationCode}`;
   try {
@@ -569,7 +571,7 @@ function* getNewFanList(action){
           fanList: response.data.data || {},
         }
       })
-    }else {throw response.data}
+    } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({

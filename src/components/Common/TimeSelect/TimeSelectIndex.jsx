@@ -20,6 +20,7 @@ const { MonthPicker } = DatePicker;
 3.可选参数输入showYearPick(默认true) , showMonthPick(默认true), showDayPick(默认true); 均为bool
 4.可选展示参数timerText: string; 默认'统计时间选择'
 5 defaultLast:true 默认是去年
+6 needDefault(bool: 默认true)代表日期组件是否需要默认值进行展示，若false，切换日期组件/style保持无默认值。
 */
 
 class TimeSelect extends React.Component {
@@ -28,6 +29,7 @@ class TimeSelect extends React.Component {
     timerText: PropTypes.string,
     value: PropTypes.object,
     showYearPick: PropTypes.bool,
+    needDefault: PropTypes.bool,
     showMonthPick: PropTypes.bool,
     showDayPick: PropTypes.bool,
     defaultLast: PropTypes.bool,
@@ -60,8 +62,10 @@ class TimeSelect extends React.Component {
   onTimeStyleChange = (e) => { // 时间模式选择
     const timeStyle = e.target.value;
     const params = { timeStyle };
-    const { defaultLast } = this.props;
-    if (timeStyle === 'year') { // 默认近五年
+    const { defaultLast, needDefault } = this.props;
+    if (!needDefault) { // 切换时不需要默认值
+      params.startTime = params.endTime = null;
+    } else if (timeStyle === 'year') { // 默认近五年
       params.startTime = moment().subtract(5, 'year').format('YYYY');
       params.endTime = moment().format('YYYY');
     } else if (timeStyle === 'month') { // 默认今年
@@ -133,7 +137,7 @@ class TimeSelect extends React.Component {
         </div>
         {timeStyle === 'day' && <MonthPicker
           // format="YYYY年MM月"
-          value={startTime === null ? startTime : moment(startTime)}
+          value={!startTime ? null : moment(startTime)}
           onChange={this.onMonthSelect}
           placeholder="选择月份"
           allowClear={false}

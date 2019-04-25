@@ -8,7 +8,8 @@ import Seriesinverter from '../../../../components/Monitor/StationMonitor/Device
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
 import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
-import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/WindDevice/WindDevice';
+// import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/WindDevice/WindDevice';
+import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/NewWindDevice/WindDevice';
 import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine';
 import BoosterStation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/BoosterDevice/BoosterStation';
 import Footer from '../../../../components/Common/Footer';
@@ -66,6 +67,9 @@ const mapDispatchToProps = (dispatch) => ({
   getSequencechartData: payload => dispatch({type: deviceAction.getSequencechartData, payload}),
   getIntegrateData: payload => dispatch({type: deviceAction.getIntegrateData, payload}),
   getBoosterData: payload => dispatch({type: deviceAction.getBoosterData, payload}),
+  getWindDeviceCharts: payload => dispatch({type: deviceAction.getWindDeviceCharts, payload}),
+  stopWindDeviceCharts: payload => dispatch({type: deviceAction.stopWindDeviceCharts, payload}),
+  getWindDeviceRealData: payload => dispatch({type: deviceAction.getWindDeviceRealData, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceMonitor);

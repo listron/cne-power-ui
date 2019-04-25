@@ -114,8 +114,10 @@ class WindStationItem extends React.Component {
                 {e.stations.sort((a,b)=>{return a.stationStatus.stationStatus-b.stationStatus.stationStatus}).map((item, index) => {
                   const stationStatus = item.stationStatus || {};
                   const currentStatus = stationStatus.stationStatus;
-                  const stationPlanPower=item.stationPlanPower/1000;
-                  const percent = (stationPlanPower && item.stationCapacity) ? stationPlanPower / item.stationCapacity * 100 : 0;
+                  const stationPlanPower=dataFormats(item.stationPlanPower,'--')/1000;
+                  const stationPower=item.stationPower/1000;
+                  const successPercent = (stationPlanPower && item.stationCapacity) ? stationPlanPower / item.stationCapacity * 100 : 0;
+                  const percent = (stationPower && item.stationCapacity) ? stationPower / item.stationCapacity * 100 : 0;
                   return (<Popover
                     content={this.renderPopover(item)}
                     key={index}
@@ -131,10 +133,10 @@ class WindStationItem extends React.Component {
                           {currentStatus === '500' ? <i className="iconfont icon-outage"></i> : ''}
                         </div>
                         <div className={styles.stationCardProgress}>
-                          <OwnProgress percent={item.capabilityRate} successPercent={percent} />
+                          <OwnProgress percent={percent} successPercent={successPercent} />
                         </div>
                         <div className={styles.stationCardValue}>
-                          <div className={styles.stationMark}>{dataFormats(item.stationPower/1000, '--', 2, true)} MW</div>
+                          <div className={styles.stationMark}>{dataFormats(dataFormats(item.stationPower)/1000, '--', 2, true)} MW</div>
                           <div>{dataFormats(item.stationCapacity, '--', 2, true)} MW</div>
                         </div>
                         <div className={styles.stationCardWindSpeed}>{dataFormats(item.instantaneous, '--', 2, true)}m/s</div>

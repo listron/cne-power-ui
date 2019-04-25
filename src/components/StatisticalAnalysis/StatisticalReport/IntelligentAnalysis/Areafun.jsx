@@ -30,10 +30,10 @@ export const ScoreStations = ({...props}) => { // 同区域电站分析报告-�
                       <span className={styles.text}>{dataFormats(e.lowPrFinishRate,'--',2,true) || '--'}</span>
                       <span>%；</span>
                     </span>}
-                  {(e.highLostPpwerEquivalentHours || e.highLostPpwerEquivalentHours === 0) && 
+                  {(e.highLostPowerEquivalentHours || e.highLostPowerEquivalentHours === 0) && 
                     <span>
                       <span>损失电量等效时较高，为</span>
-                      <span className={styles.text}>{dataFormats(e.highLostPpwerEquivalentHours,'--',2,true) || '--'}</span>
+                      <span className={styles.text}>{dataFormats(e.highLostPowerEquivalentHours,'--',2,true) || '--'}</span>
                       <span>h。</span>
                     </span>}
                   {(e.highComPlantPowerRate) && 
@@ -49,7 +49,7 @@ export const ScoreStations = ({...props}) => { // 同区域电站分析报告-�
                       <span>%；</span>
                     </span>}
                   {
-                    (e.aLevelDefectFinishRate && e.bLevelDefectFinishRate && e.cLevelDefectFinishRate) && <span>消缺及时性较差，</span>
+                    (e.aLevelDefectFinishRate || e.bLevelDefectFinishRate || e.cLevelDefectFinishRate) && <span>消缺及时性较差，</span>
                   }
                   {(e.aLevelDefectFinishRate) && 
                     <span>
@@ -144,31 +144,36 @@ export const LostRegionDataList = ({...props}) => {
               <span>2）低压直流故障损失电量等效时为</span>
               <span className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHours,'--',2,true) || '--'}</span>
               <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHoursRate,'--',2,true) || '--'}；</span>
+              <span className={styles.text}>{dataFormats(e.faultData.lowVoltageLostHoursRate,'--',2,true) || '--'}</span>
+              <span>%；</span>
             </p>
             <p>
               <span>3）变电系统故障损失电量等效时为</span>
               <span className={styles.text}>{dataFormats(e.faultData.substationLostHours,'--',2,true) || '--'}</span>
               <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.substationLostHoursRate,'--',2,true) || '--'}；</span>
+              <span className={styles.text}>{dataFormats(e.faultData.substationLostHoursRate,'--',2,true) || '--'}</span>
+              <span>%；</span>
             </p>
             <p>
               <span>4）输电系统故障损失电量等效时为</span>
               <span className={styles.text}>{dataFormats(e.faultData.outPutLostHours,'--',2,true) || '--'}</span>
               <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.outPutLostHoursRate,'--',2,true) || '--'}；</span>
+              <span className={styles.text}>{dataFormats(e.faultData.outPutLostHoursRate,'--',2,true) || '--'}</span>
+              <span>%；</span>
             </p>
             <p>
               <span>5）二次及有功无功控制系统故障损失电量等效时为</span>
               <span className={styles.text}>{dataFormats(e.faultData.twiceLostHours,'--',2,true) || '--'}</span>
               <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.twiceLostHoursRate,'--',2,true) || '--'}；</span>
+              <span className={styles.text}>{dataFormats(e.faultData.twiceLostHoursRate,'--',2,true) || '--'}</span>
+              <span>%；</span>
             </p>
             <p>
               <span>6）其他故障损失电量等效时为</span>
               <span className={styles.text}>{dataFormats(e.faultData.otherLostHours,'--',2,true) || '--'}</span>
               <span>h，占比</span>
-              <span className={styles.text}>{dataFormats(e.faultData.otherLostHoursRate,'--',2,true) || '--'}；</span>
+              <span className={styles.text}>{dataFormats(e.faultData.otherLostHoursRate,'--',2,true) || '--'}</span>
+              <span>%。</span>
             </p>
           </p>
         </p>

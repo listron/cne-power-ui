@@ -62,17 +62,18 @@ class AreaStationSearch extends Component{
   }
 
   searchInfo = () => { // 查询
-    const { getAreaStation, changeIntelligentAnalysisStore } = this.props;
+    const { getAreaStation, changeIntelligentAnalysisStore, areaName } = this.props;
     const { year, month, dateType, regionName } = this.state;
     if (!regionName) {
       message.error("请选择区域名称！");
       return;
     }
-    if (!month && !year) {
+    if (!moment(month).isValid() && !moment(year).isValid()) {
       message.error("请选择统计时间！");
       return;
     }
-    const params = { regionName, year, month, dateType };
+    const params = { areaName, year, dateType };
+    dateType === 1 && (params.month = month);
     getAreaStation({
       ...params,
       areaName: regionName
@@ -129,6 +130,7 @@ class AreaStationSearch extends Component{
                 showYearPick={false}
                 onChange={this.onTimeChange}
                 timerText={''}
+                needDefault={false}
                 value={{
                  timeStyle: 'day',
                  startTime: null
