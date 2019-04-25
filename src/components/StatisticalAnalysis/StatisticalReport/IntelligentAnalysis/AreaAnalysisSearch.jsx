@@ -79,7 +79,6 @@ class AreaAnalysisSearch extends Component{
 
   render(){
     const { reportShow } = this.props;
-    const { month, year } = this.state;
 
     return(
       <div className={styles.areaAnalysisSearch}>

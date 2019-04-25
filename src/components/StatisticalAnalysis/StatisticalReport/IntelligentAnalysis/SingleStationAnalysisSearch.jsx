@@ -101,7 +101,7 @@ class SingleStationAnalysisSearch extends Component{
 
   render(){
     const { stations, reportShow} = this.props;
-    const { stationCode, month, year, } = this.state;
+    const { stationCode } = this.state;
     return(
       <div className={styles.singleStationAnalysisSearch}>
         <div className={styles.searchPart}>
