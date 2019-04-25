@@ -62,10 +62,10 @@ class TimeSelectReport extends React.Component {
     showModal: true,
     showWind: true,
     showFault: true,
-    modeStyle: 'area',
+    modeStyle: 'wind',
     list: [],
     visiableModal: false,
-   
+
   }
 
   constructor(props) {
@@ -81,16 +81,9 @@ class TimeSelectReport extends React.Component {
       region: props.region,
     }
   }
-
-
   onModeChange = (e) => {//选择查询类型
     const modeStyle = e.target.value;
     const params = { modeStyle, list: [] };
-    this.setState({ ...params });
-    this.props.onChange({ ...params });
-  }
-  onSearch = () => {
-    const params = { modeStyle: this.state.modeStyle, list: this.state.list };
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
@@ -109,23 +102,23 @@ class TimeSelectReport extends React.Component {
   showModal = () => {
     this.setState({ visiableModal: true });
   }
-  datanum = (data=[], deviceDataType) => {//必传，三级总数据，用于计算型号和风机设备的总个数
+  datanum = (data, deviceDataType) => {//必传，三级总数据，用于计算型号和风机设备的总个数
     let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData';
-    let num=0;
+    let num = 0;
     data.forEach((e, i) => {
       e.stationData.forEach((item, index) => {
-         num+=item[deviceDataName].length;
+        num += item[deviceDataName].length;
       })
     })
     return num
   }
   maxTagPlaceholder = () => {
-    const { regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
-    const modeNum=this.datanum(stationDevicemode,'mode');
-    const deviceNum=this.datanum(regionStationDevice,'device');
-    let stationNum=0;
-    regionStation.forEach((e,i)=>{
-      stationNum+=e.stationData.length;
+    const { regionStationDevice = [], stationDevicemode = [], regionStation = [], region = [], } = this.props;
+    const modeNum = this.datanum(stationDevicemode, 'mode');
+    const deviceNum = this.datanum(regionStationDevice, 'device');
+    let stationNum = 0;
+    regionStation.forEach((e, i) => {
+      stationNum += e.stationData.length;
     })
     let count = 0;
     if (this.state.modeStyle === 'status') {
@@ -150,7 +143,7 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: v });
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
   }
-  dataFormater = (data=[], deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
+  dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
     let test2 = [];
     let deviceDataName = deviceDataType === 'mode' ? 'deviceModeData' : 'deviceData',
       selectCode = deviceDataType === 'mode' ? 'deviceModeCode' : 'deviceCode',
@@ -158,7 +151,7 @@ class TimeSelectReport extends React.Component {
     data.forEach((e, i) => {
       let test3 = [];
       e.stationData.forEach((item, index) => {
-        let test4 = []; 
+        let test4 = [];
         item[deviceDataName].forEach((value, key) => {
           test4.push({
             ...value,
@@ -183,7 +176,7 @@ class TimeSelectReport extends React.Component {
     return test2
   }
   render() {
-    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice=[], stationDevicemode=[], regionStation=[], region=[], } = this.props;
+    const { modeText, showArea, showStation, showModal, showWind, style, stations, deviceTypes, showStatus, showFault, regionStationDevice, stationDevicemode, regionStation, region, } = this.props;
     const { modeStyle, list, visiableModal, areaList, } = this.state;
     let modeData = this.dataFormater(stationDevicemode, 'mode');
     let windDeviceData = this.dataFormater(regionStationDevice, 'device');
@@ -206,10 +199,6 @@ class TimeSelectReport extends React.Component {
     })
     let stationArr = regionStation.map((e, i) => e.stationData);
     let stationList = stationArr.length && stationArr.reduce((p, c) => (p.concat(c)));
-
-
-
-    // 
     const filterOption = (input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     return (
       <div className={styles.timeSelect} style={style}>
@@ -225,32 +214,32 @@ class TimeSelectReport extends React.Component {
           </Radio.Group>
         </div>
         {
-          modeStyle === 'status' &&  <div style={{ position: 'relative' }}>
-          <Select
-            mode="multiple"
-            placeholder="选择设备状态"
-            value={list}
-            onChange={this.handleChange}
-            style={{ width: '160px' }}
-            maxTagCount={0}
-            maxTagPlaceholder={this.maxTagPlaceholder}
-            filterOption={filterOption}
-            open={false}
-          >
-           {/*
+          modeStyle === 'status' && <div style={{ position: 'relative' }}>
+            <Select
+              mode="multiple"
+              placeholder="选择设备状态"
+              value={list}
+              onChange={this.handleChange}
+              style={{ width: '160px' }}
+              maxTagCount={0}
+              maxTagPlaceholder={this.maxTagPlaceholder}
+              filterOption={filterOption}
+              open={false}
+            >
+              {/*
            {areaList && areaList.map((e) => {
               return <Option key={e.key}>{e.title}</Option>
             })}
           */}
-          </Select>
-          <SelectModal
-            {...this.props}
-            list={list}
-            sourceData={modeData}
-            handleOK={this.onModalHandelOK}
-            visiable={visiableModal}
-            hideModal={this.hideModal}
-            showModal={this.showModal}
+            </Select>
+            <SelectModal
+              {...this.props}
+              list={list}
+              sourceData={modeData}
+              handleOK={this.onModalHandelOK}
+              visiable={visiableModal}
+              hideModal={this.hideModal}
+              showModal={this.showModal}
             />
           </div>
         }
@@ -345,7 +334,7 @@ class TimeSelectReport extends React.Component {
               placeholder="选择风机"
               value={list}
               onChange={this.handleChange}
-              style={{ width: '160px' }}
+              style={{ width: '165px' }}
               maxTagCount={0}
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
@@ -357,9 +346,6 @@ class TimeSelectReport extends React.Component {
               })}
                */}
             </Select>
-
-
-
             <SelectModal
               {...this.props}
               list={list}
@@ -373,36 +359,32 @@ class TimeSelectReport extends React.Component {
         }
         {
           modeStyle === 'fault' && <div style={{ position: 'relative' }}>
-          <Select
-            mode="multiple"
-            placeholder="选择故障"
-            value={list}
-            onChange={this.handleChange}
-            style={{ width: '200px' }}
-            maxTagCount={0}
-            maxTagPlaceholder={this.maxTagPlaceholder}
-            filterOption={filterOption}
-            open={false}
-          >
-            {areaList && areaList.map((e) => {
-              return <Option key={e.key}>{e.title}</Option>
-            })}
-          </Select>
-          <SelectModal
-          {...this.props}
-          list={list}
-          sourceData={windDeviceData}
-          handleOK={this.onModalHandelOK}
-          visiable={visiableModal}
-          hideModal={this.hideModal}
-          showModal={this.showModal}
-        />
-        </div>
+            <Select
+              mode="multiple"
+              placeholder="选择故障"
+              value={list}
+              onChange={this.handleChange}
+              style={{ width: '160px' }}
+              maxTagCount={0}
+              maxTagPlaceholder={this.maxTagPlaceholder}
+              filterOption={filterOption}
+              open={false}
+            >
+              {areaList && areaList.map((e) => {
+                return <Option key={e.key}>{e.title}</Option>
+              })}
+            </Select>
+            <SelectModal
+              {...this.props}
+              list={list}
+              sourceData={windDeviceData}
+              handleOK={this.onModalHandelOK}
+              visiable={visiableModal}
+              hideModal={this.hideModal}
+              showModal={this.showModal}
+            />
+          </div>
         }
-        {/*  
-        <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-        <Button onClick={this.onSearch}>导出</Button>
-       */}
       </div >
     )
   }
