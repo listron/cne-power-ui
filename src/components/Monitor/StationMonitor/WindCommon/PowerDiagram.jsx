@@ -11,12 +11,14 @@ const RadioButton = Radio.Button;
 
 
 const PowerDiagram = ({ ...rest }) => {
-    const { powerData, onChange } = rest;
+    let { powerData, onChange } = rest;
     const [intervalTime, setIntervalTime] = useState(0);
     const onChangeTimePower = (e) => { // 改变 日／月／年
         const intervalTime = e.target.value;
         setIntervalTime(intervalTime);
         onChange({intervalTime})
+        powerData=[];
+        // powerOption.grid.right = 30;
     }
 
     const unitFormarts = (data, quantity) => {
@@ -38,7 +40,7 @@ const PowerDiagram = ({ ...rest }) => {
     const chartsBox = document.getElementById('powerDiagram');
     if (chartsBox) {
         const powerDiagram = echarts.init(chartsBox);
-        // powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
+        powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
         const lineColor = '#666';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = { //实际发电量 计划发电量
@@ -55,7 +57,12 @@ const PowerDiagram = ({ ...rest }) => {
                 left: 10,
             },
             grid: {
-                right: 90,
+                // right: 15,
+                // top: 70,
+                // left:15,
+                // bottom:45,
+                // containLabel:true,
+                right: 60,
                 top: 70,
                 left:68,
             },
@@ -113,7 +120,7 @@ const PowerDiagram = ({ ...rest }) => {
                     axisLabel: {
                         color: lineColor,
                         interval: 0,
-                        rotate:20,
+                        // rotate:20,
                     },
                     axisTick: { show: false },
                     boundaryGap: [true, true],
@@ -126,6 +133,7 @@ const PowerDiagram = ({ ...rest }) => {
                     axisLabel: {
                         formatter: '{value}',
                         color: lineColor,
+                        margin:4,
                     },
                     nameTextStyle: {
                         color: lineColor,
@@ -149,10 +157,11 @@ const PowerDiagram = ({ ...rest }) => {
                     axisLabel: {
                         formatter: '{value}',
                         color: lineColor,
+                        margin:4,
                     },
                     nameTextStyle: {
                         color: lineColor,
-                        padding: [0, 30, 0, 0],
+                        padding: [0, 80, 0, 0],
                     },
                     axisLine: {
                         show: false,
@@ -169,7 +178,7 @@ const PowerDiagram = ({ ...rest }) => {
                 }, {
                     name: '完成率',
                     type: 'value',
-                    offset: 40,
+                    offset: 17,
                     axisLabel: {
                         formatter: '{value}%',
                         color: lineColor,
@@ -222,7 +231,7 @@ const PowerDiagram = ({ ...rest }) => {
             ]
         }
         if (intervalTime === 0) { // 日 不显示部分坐标轴与数据。
-            powerOption.grid.right = '10%';
+            
             powerOption.yAxis[1].nameTextStyle.padding = 0;
             powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
             powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');

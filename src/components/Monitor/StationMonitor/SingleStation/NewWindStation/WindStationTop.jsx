@@ -97,12 +97,12 @@ class WindStationTop extends Component {
             </div>
           </div>
           <div className={styles.stationRight}>
-            <div className={styles.operatorList}>
-              <marquee className={styles.marquee} >
-                {operatorList.map(item => {
-                  return <span key={item.userId}>{item.roleDesc} {item.userFullName} {item.phoneNum}   </span>
+            <div className={styles.newOperatorList}>
+              {/* <marquee className={styles.marquee} >
+                {operatorList.map((item,index) => {
+                  return <span key={index}>{item.roleDesc} {item.userFullName} {item.phoneNum}   </span>
                 })}
-              </marquee>
+              </marquee> */}
             </div>
             <div className={styles.weather}>天气:{todayWeather.weatherSummary} {todayWeather.temperature}</div>
             <Link to={pathAllStation}  >

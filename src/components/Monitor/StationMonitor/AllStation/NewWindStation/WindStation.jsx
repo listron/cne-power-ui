@@ -118,6 +118,7 @@ class WindStation extends React.Component {
       startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
     }
     let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    this.props.changeMonitorStationStore({powerData:[]})
     stopRealCharstData('power');
     getRealMonitorPower({ intervalTime, startTime, endTime })
   }
@@ -147,7 +148,7 @@ class WindStation extends React.Component {
         >
           <RadioButton value="all">全部</RadioButton>
           <RadioButton value="400">通讯正常  {this.getStatusNum(400)}</RadioButton>
-          <RadioButton value="500">信息中断  {this.getStatusNum(500)}</RadioButton>
+          <RadioButton value="500">通讯中断  {this.getStatusNum(500)}</RadioButton>
           <RadioButton value="900">未接入  {this.getStatusNum(900)}</RadioButton>
         </Radio.Group>
       </div>

@@ -79,7 +79,7 @@ function* stopRealMonitorData() { // 停止数据定时请求并清空数据
 //获取出力图数据
 function* getCapabilityDiagram(action) {
   const { startTime, endTime } = action;
-  const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}`
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {

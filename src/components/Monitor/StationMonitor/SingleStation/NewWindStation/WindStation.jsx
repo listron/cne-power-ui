@@ -44,6 +44,7 @@ class WindStation extends Component {
     getMonitorPower: PropTypes.func,
     powerData: PropTypes.array,
     singleStationScatter: PropTypes.object,
+    fanList: PropTypes.object,
   }
 
   constructor(props) {
@@ -76,8 +77,8 @@ class WindStation extends Component {
 
   getStatusNum = (status) => { // 获取状态的数量
     const { deviceStatusSummary = [] } = this.props.fanList;
-    const statusList = deviceStatusSummary.filter(e => e.stationStatus === status)
-    return statusList.length > 0 && statusList[0].stationNum || 0
+    const statusList = deviceStatusSummary.filter(e => e.deviceStatusCode === status)
+    return statusList.length > 0 && statusList[0].deviceStatusNum || 0
   }
 
 
@@ -96,13 +97,14 @@ class WindStation extends Component {
     const { stationCode } = this.props.match.params;
     clearTimeout(this.timeOutPowerData);
     const { intervalTime } = value;
-    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
     }
     let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    this.props.changeSingleStationStore({powerData:[]})
     this.props.getMonitorPower({
       stationCode,
       intervalTime,
@@ -115,7 +117,7 @@ class WindStation extends Component {
   }
 
   render() {
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData ,editData} = this.props;
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData ,editData,} = this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
@@ -184,7 +186,7 @@ class WindStation extends Component {
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={capabilityData} yAxisUnit={'kW'} />
+                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
               </div>
               <div className={styles.chartsBox}>
                 <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
