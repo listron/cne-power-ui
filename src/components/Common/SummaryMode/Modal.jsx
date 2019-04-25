@@ -148,7 +148,7 @@ class SelectModal extends Component {
               checkedKeys={this.state.checkedKeys}
               blockNode={false}
             >
-              {this.renderTreeNodes(this.state.children)}
+              {this.renderTreeNodes(this.props.sourceData)}
             </Tree>
           </div>
         </Modal>
