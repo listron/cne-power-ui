@@ -3,69 +3,17 @@ import PropTypes from "prop-types";
 import styles from "./faultAllFan.scss";
 import Footer from '../../../../components/Common/Footer';
 import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan';
-import {faultWarnAction} from "../FaultWarn/faultWarnAction";
+import {faultAllFanAction} from "./faultAllFanAction";
 import {connect} from "react-redux";
-
-const data = [{
-  id: 1,
-  name: "WGT012"
-},{
-  id: 2,
-  name: "WGT012"
-},{
-  id: 3,
-  name: "WGT012"
-},{
-  id: 4,
-  name: "WGT012"
-},{
-  id: 5,
-  name: "WGT012"
-},{
-  id: 6,
-  name: "WGT012"
-},{
-  id: 7,
-  name: "WGT012"
-},{
-  id: 8,
-  name: "WGT012"
-},{
-  id: 9,
-  name: "WGT012"
-},{
-  id: 10,
-  name: "WGT012"
-},{
-  id: 11,
-  name: "WGT012"
-},{
-  id: 12,
-  name: "WGT012"
-},{
-  id: 13,
-  name: "WGT012"
-},{
-  id: 14,
-  name: "WGT012"
-},{
-  id: 15,
-  name: "WGT012"
-},{
-  id: 16,
-  name: "WGT012"
-},{
-  id: 17,
-  name: "WGT012"
-},{
-  id: 18,
-  name: "WGT012"
-}];
+import {commonAction} from "../../../alphaRedux/commonAction";
 
 class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    changeFaultAllFanStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -76,16 +24,33 @@ class FaultAllFan extends React.Component {
   componentDidMount() {
   }
 
+  onChangeFilter = (params) => {
+    const { changeFaultAllFanStore } = this.props;
+    changeFaultAllFanStore({...params});
+  };
+
+  callBackList = () => {
+    // const {
+    //   history,
+    //   location: {
+    //     state: {
+    //     }
+    //   }
+    // } = this.props;
+    console.log(this.props, "this...props");
+    // history.push("");
+  };
+
   render() {
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.AllFanContent}>
           <div className={styles.title}>
             <div>故障预警</div>
-            <div>返回算法模型视图</div>
+            <div onClick={this.callBackList}>返回算法模型视图</div>
           </div>
         </div>
-        <FaultAllFanMain data={data} {...this.props} />
+        <FaultAllFanMain onChangeFilter={this.onChangeFilter} {...this.props} />
         <Footer />
       </div>
     );
@@ -93,11 +58,26 @@ class FaultAllFan extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.highAanlysisReducer.faultWarn.toJS(),
+    ...state.highAanlysisReducer.faultAllFan.toJS(),
     stations: state.common.get('stations'),
   }
 };
 const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
+  resetStore: () => dispatch({ type: faultAllFanAction.resetStore }),
+  changeFaultAllFanStore: payload => dispatch({ type: faultAllFanAction.changeFaultAllFanStore, payload }),
+  getStationDeviceList: payload => dispatch({ type: faultAllFanAction.getStationDeviceList, payload }),
+  getResetTask: payload => dispatch({ type: faultAllFanAction.getResetTask, payload }),
+  getFaultInfo: payload => dispatch({ type: faultAllFanAction.getFaultInfo, payload }),
+  getFaultReport: payload => dispatch({ type: faultAllFanAction.getFaultReport, payload }),
+  getStandAloneList: payload => dispatch({ type: faultAllFanAction.getStandAloneList, payload }),
+  getSimilarityList: payload => dispatch({ type: faultAllFanAction.getSimilarityList, payload }),
+  getAllFanResultList: payload => dispatch({ type: faultAllFanAction.getAllFanResultList, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: faultAllFanAction.changeFaultAllFanStore
+    }
+  })
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultAllFan)

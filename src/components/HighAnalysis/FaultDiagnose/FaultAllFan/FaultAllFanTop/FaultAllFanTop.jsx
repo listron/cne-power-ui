@@ -2,22 +2,72 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from 'antd';
 import FaultAllFanHistory from "./../FaultAllFanHistory/FaultAllFanHistory";
+import FaultResetTask from "./../FaultResetTask/FaualtResetTask";
 import styles from "./faultAllFanTop.scss";
+import Path from "../../../../../constants/path";
+
+
+const {
+  basePaths: {
+    APIBasePath,
+  },
+  APISubPaths: {
+    highAnalysis: {
+      downloadFile
+    }
+  }} = Path;
 
 export default class FaultAllFanTop extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    deviceName: PropTypes.string,
+    taskId: PropTypes.string,
+    stations: PropTypes.object,
+    stationCode: PropTypes.string,
+    deviceFullcode: PropTypes.string,
+    downLoadFile: PropTypes.func,
+    getResetTask: PropTypes.func,
+    getFaultInfo: PropTypes.func,
+    faultInfo: PropTypes.object,
+    match: PropTypes.object
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      visibleFlag: false //控制历史预警报告
+      visibleFlag: false, //控制历史预警报告
+      taskFlag: false, //控制重新执行
     };
   }
 
   componentDidMount() {
-
+    const {
+      getFaultInfo,
+      match:{
+        params: {
+          stationCode
+        }
+      },
+    } = this.props;
+    // 读取localStorage
+    const windFault = JSON.parse(localStorage.getItem("windFault"));
+    let arr = []; //保存设备id
+    windFault && windFault.map(cur => {
+      arr.push(cur.deviceCode);
+    });
+    console.log(windFault, "winasddadsdFault");
+    const params = {
+      stationCode,
+      deviceFullCode: "",
+      algorithmIds: arr,
+      startTime: "",
+      endTime: "",
+      pageSize: null,
+      pageNum: null,
+      sortField: "",
+      sortMethod: ""
+    };
+    getFaultInfo(params);
   }
 
   onVisible = (flag) => {
@@ -26,13 +76,42 @@ export default class FaultAllFanTop extends React.Component {
     })
   };
 
+  onTaskVisible = (flag) => {
+    this.setState({
+      taskFlag: flag
+    });
+  };
+
   historyFunc = () => {
     this.onVisible(true);
   };
 
+  resetTaskFunc = () => {
+    this.onTaskVisible(true);
+  };
+
+  downloadFunc = () => {
+    const { taskId, deviceFullcode, deviceName, downLoadFile } = this.props;
+    const url  = `${APIBasePath}${downloadFile}/${taskId}/${deviceFullcode}`;
+    downLoadFile({
+      url,
+      method: "get",
+      fileName: `【${deviceName}】_【2018】_【2019】.csv`
+    });
+  };
+
+  stationName = () => {
+    const { stations, stationCode } = this.props;
+    const stationItems = stations && stations.toJS();
+    const stationItem = stationItems.filter(e => (e.stationCode === +stationCode))[0];
+    return stationItem.stationName;
+  };
+
 
   render() {
-    const { visibleFlag } = this.state;
+    const { visibleFlag, taskFlag } = this.state;
+    const { deviceName, faultInfo } = this.props;
+    console.log(faultInfo, "-=-=-faultInfo");
     return (
       <div className={styles.faultAllFanTop}>
         <div className={styles.allFanTopCenter}>
@@ -71,12 +150,12 @@ export default class FaultAllFanTop extends React.Component {
             </div>
             <div className={styles.allFanTimeRight}>
               <div>
-                <Button block>重新执行</Button>
+                <Button block onClick={this.resetTaskFunc}>重新执行</Button>
                 <Button block onClick={this.historyFunc}>历史预警报告</Button>
               </div>
               <div>
-                <span>【电站名称】_【检测日期】_【下发日期】.csv</span>
-                <span>下载</span>
+                <span>{`${this.stationName()}_检测日期_下发日期.csv`}</span>
+                <span className={styles.download} onClick={this.downloadFunc}>下载</span>
               </div>
             </div>
           </div>
@@ -86,6 +165,7 @@ export default class FaultAllFanTop extends React.Component {
           </div>
         </div>
         <FaultAllFanHistory onVisible={this.onVisible} visibleFlag={visibleFlag} {...this.props} />
+        <FaultResetTask onTaskVisible={this.onTaskVisible} taskFlag={taskFlag} {...this.props} />
       </div>
     );
   }

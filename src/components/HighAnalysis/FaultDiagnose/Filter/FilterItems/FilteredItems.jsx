@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import styles from './inspectFilter.scss';
+import styles from './filteredItems.scss';
 
 class FilteredItems extends Component {
   static propTypes = {

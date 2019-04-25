@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { allFansOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
+import { allFansOptions } from "../chartsConfig/chartsConfig";
 import styles from "./allFans.scss";
 
 export default class AllFans extends React.Component {

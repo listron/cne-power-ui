@@ -44,6 +44,9 @@ const data = [
 export default class AlgorithmModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    onChangeFilter: PropTypes.func,
+    getAlgoList: PropTypes.func,
+    algoModelList: PropTypes.object
   };
 
   constructor(props) {
@@ -51,50 +54,96 @@ export default class AlgorithmModal extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const { getAlgoList } = this.props;
+    getAlgoList();
+  }
+
   detailsFunc = () => {
     // 点击带着参数跳转到列表视图
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      viewType: "list"
+    });
   };
 
   render() {
-    const item = data && data.map(cur => {
+    const { algoModelList: {
+      healthList,
+      largeSizeList,
+      natureList
+    } } = this.props;
+    const largeSizeItem = largeSizeList && largeSizeList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.id} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
           <div>
-            {cur.name}
+            {cur.algorithmName}
           </div>
           <div>
             <span>运行风场</span>
-            <span>{cur.num}</span>
+            <span>{cur.stationCount}</span>
+          </div>
+        </div>
+      );
+    });
+    const natureItem = natureList && natureList.map(cur => {
+      return (
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
+          <div>
+            {cur.algorithmName}
+          </div>
+          <div>
+            <span>运行风场</span>
+            <span>{cur.stationCount}</span>
+          </div>
+        </div>
+      );
+    });
+    const healthItem = healthList && healthList.map(cur => {
+      return (
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
+          <div>
+            {cur.algorithmName}
+          </div>
+          <div>
+            <span>运行风场</span>
+            <span>{cur.stationCount}</span>
           </div>
         </div>
       );
     });
     return (
       <div className={styles.algorithmControl}>
-        <div>
-          <div className={styles.title}>
-            大部件
+        {(largeSizeItem.length !== 0) && (
+          <div>
+            <div className={styles.title}>
+              大部件
+            </div>
+            <div className={styles.algorithmBox}>
+              {largeSizeItem}
+            </div>
           </div>
-          <div className={styles.algorithmBox}>
-            {item}
+        )}
+        {(natureItem.length !== 0) && (
+          <div>
+            <div className={styles.title}>
+              性能预警
+            </div>
+            <div className={styles.algorithmBox}>
+              {natureItem}
+            </div>
           </div>
-        </div>
-        <div>
-          <div className={styles.title}>
-            性能预警
+        )}
+        {(healthItem.length !== 0) && (
+          <div>
+            <div className={styles.title}>
+              设备健康
+            </div>
+            <div className={styles.algorithmBox}>
+              {healthItem}
+            </div>
           </div>
-          <div className={styles.algorithmBox}>
-            {item}
-          </div>
-        </div>
-        <div>
-          <div className={styles.title}>
-            设备健康
-          </div>
-          <div className={styles.algorithmBox}>
-            {item}
-          </div>
-        </div>
+        )}
       </div>
     );
   }

@@ -8,8 +8,9 @@ export default class SureModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     sureFlag: PropTypes.bool,
-    onAddControlFunc: PropTypes.func,
-    sureModalFunc: PropTypes.func
+    sureModalFunc: PropTypes.func,
+    getAddWarnTask: PropTypes.func,
+    downLink: PropTypes.object
   };
 
   constructor(props) {
@@ -23,12 +24,35 @@ export default class SureModal extends React.Component {
   };
 
   okModal = () => {
-    const { onAddControlFunc } = this.props;
-    onAddControlFunc(true);
+    const {
+      getAddWarnTask,
+      downLink: {
+        modal,
+        selectStationName,
+        actionTime,
+        startTime,
+        endTime
+      }
+    } = this.props;
+    const params = {
+      algorithmId: modal,
+      stationCode: selectStationName,
+      startTime,
+      trainingStartTime: actionTime,
+      endTime,
+      nowTime: new Date()
+    };
+    getAddWarnTask(params);
   };
 
   render() {
-    const { sureFlag } = this.props;
+    const { sureFlag, downLink: {
+      modal,
+      selectStationName,
+      actionTime,
+      startTime,
+      endTime
+    } } = this.props;
     return (
       <Modal
         visible={sureFlag}
@@ -43,24 +67,24 @@ export default class SureModal extends React.Component {
           <div className={styles.sureBox}>
             <div>
               <span>算法模型：</span>
-              <span>发发电机轴承检测和诊断</span>
+              <span>{modal}</span>
             </div>
             <div>
               <span>电站名称：</span>
-              <span>肥西</span>
+              <span>{selectStationName}</span>
             </div>
             <div>
               <span>检测开始日期：</span>
-              <span>2019-01-20</span>
+              <span>{startTime}</span>
             </div>
             <div>
               <span>训练开始日期：</span>
-              <span>2018-11-20</span>
+              <span>{actionTime}</span>
               <span>（训练时长90天）</span>
             </div>
             <div>
               <span>检测结束日期：</span>
-              <span>2019-01-27</span>
+              <span>{endTime}</span>
               <span>（检测时长7天）</span>
             </div>
           </div>

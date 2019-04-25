@@ -1,6 +1,5 @@
-@import '../../../../../../theme/theme.scss';
-
-.cancelContent {
+@import '../../../../../theme/theme.scss';
+.faultResetTask{
   width: 100%;
   i{
     color: #f9b600;
@@ -8,6 +7,6 @@
   }
   span{
     padding-left: 10px;
+    color: $darkColor;
   }
 }
-

@@ -9,6 +9,13 @@ const initState = Immutable.fromJS({
   createTimeEnd: '',	 // 结束时间
   algorithmModalName: [], // 算法模型名称
   algorithmModalId: [], // 算法模型id
+  viewType: "algorithm", // 判断展示算法模型algorithm/列表视图list
+  algoModelList: { // 获取预警任务列表-算法模型视图
+    largeSizeList: [],
+    natureList: [],
+    healthList: []
+  },
+  algoOptionList: [] // 获取算法列表
 });
 
 

@@ -10,7 +10,6 @@ import DeviceSelect from "../../../Common/DeviceSelect/index";
 import {Button, Icon} from "antd";
 import CommonPagination from "../../../Common/CommonPagination/index";
 
-const pageSize = 10, pageNum = 1, total = 100;
 export default class HistoryWarn extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -20,6 +19,16 @@ export default class HistoryWarn extends React.Component {
     queryParam: PropTypes.object,
     onChangeFilter: PropTypes.func,
     selectDeviceCode: PropTypes.array,
+    getFaultWarnHistory: PropTypes.func,
+    faultWarnHistoryData: PropTypes.object,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    algorithmModalId: PropTypes.array,
+    getAlgoOptionList: PropTypes.func
   };
 
   constructor(props) {
@@ -30,6 +39,22 @@ export default class HistoryWarn extends React.Component {
   }
 
   componentDidMount() {
+    const { getFaultWarnHistory, getAlgoOptionList } = this.props;
+    const params = {
+      stationCode: null,
+      deviceFullCodes: [],
+      algorithmIds: [],
+      startTime: "",
+      endTime: "",
+      pageSize: 10,
+      pageNum: 1,
+      sortField: "",
+      sortMethod: ""
+    };
+    // 算法列表
+    getAlgoOptionList();
+    // 历史列表
+    getFaultWarnHistory(params);
   }
 
   onFilterShowChange = (filterText) => {
@@ -48,26 +73,67 @@ export default class HistoryWarn extends React.Component {
   onOk = (selectDevice) => {
     const deviceFullCode = selectDevice.map(e => e.deviceCode);
     const { onChangeFilter } = this.props;
+    console.log(selectDevice, "selectDevice");
     onChangeFilter({
       deviceFullCode,
       selectDeviceCode: selectDevice
     })
   };
 
-  selectStation = (value) => {
-    const { onChangeFilter } = this.props;
-    const { stationCode } = value[0];
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    const {
+      onChangeFilter,
+    } = this.props;
     onChangeFilter({
-      stationCode: stationCode
+      pageSize,
+      pageNum: currentPage
     });
   };
+
+  selectStation = (value) => {
+    const {
+      onChangeFilter,
+    } = this.props;
+    const { stationCode } = value[0];
+    onChangeFilter({
+      stationCode,
+    });
+  };
+
+  resetSelectFunc = () => {
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      selectDeviceCode: [],
+      stationCode: null,
+    });
+  };
+
+  //查询
+  searchFunc = () => {
+    const {
+      onChangeFilter,
+      stationCode,
+      selectDeviceCode
+    } = this.props;
+
+    onChangeFilter({
+      stationCode,
+      selectDeviceCode
+    });
+  };
+
 
   render() {
     const { showFilter } = this.state;
     const {
       stations,
       stationCode,
-      selectDeviceCode
+      selectDeviceCode,
+      faultWarnHistoryData: {
+        count
+      },
+      pageSize,
+      pageNum,
     } = this.props;
     return (
       <div className={styles.historyWarn}>
@@ -113,12 +179,12 @@ export default class HistoryWarn extends React.Component {
             />
           </div>
           <div className={styles.check}>
-            <Button>查询</Button>
-            <span>重置</span>
+            <Button onClick={this.searchFunc}>查询</Button>
+            {(!!+stationCode) && (<span onClick={this.resetSelectFunc}>重置</span>)}
           </div>
         </div>
         <div className={styles.topPage}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} />
         </div>
         <HistoryWarnTable {...this.props} />
       </div>

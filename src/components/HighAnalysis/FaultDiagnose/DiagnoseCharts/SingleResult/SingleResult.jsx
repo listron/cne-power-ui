@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { singleTemperatureOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
+import { singleTemperatureOptions } from "../chartsConfig/chartsConfig";
 import styles from "./singleResult.scss";
 
 
@@ -9,6 +9,8 @@ import styles from "./singleResult.scss";
 export default class SingleResult extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    getStandAloneList: PropTypes.func,
+    standAloneList: PropTypes.array
   };
 
   constructor(props) {
@@ -17,9 +19,36 @@ export default class SingleResult extends React.Component {
   }
 
   componentDidMount() {
-    const  { singleChart } = this;
+    const  {
+      singleChart,
+      props: {
+        getStandAloneList,
+        standAloneList
+      }
+    } = this;
+    const params = {
+      taskId: "387338641160192",
+      deviceFullCode: "82M101M39M1"
+    };
     const myChart = eCharts.init(singleChart);
-    myChart.setOption(singleTemperatureOptions());
+    // 接口
+    getStandAloneList(params);
+    myChart.setOption(singleTemperatureOptions(standAloneList, params.deviceFullCode));
+  }
+
+  componentDidUpdate() {
+    const  {
+      singleChart,
+      props: {
+        standAloneList
+      }
+    } = this;
+    const params = {
+      taskId: "387338641160192",
+      deviceFullCode: "82M101M39M1"
+    };
+    const myChart = eCharts.init(singleChart);
+    myChart.setOption(singleTemperatureOptions(standAloneList, params.deviceFullCode));
   }
 
 
