@@ -29,7 +29,7 @@ class AreaStationReport extends Component{
         {dateType === 1 ? 
           <div className={styles.monthReportContent}>
             <div className={styles.titleText}>
-              <h3>{areaName}区域电站分析报告({month}月)</h3>
+              <h3>{areaName}-区域电站分析报告({month}月)</h3>
             </div>  
             <div className={styles.contentText}>
               <p>
@@ -205,7 +205,7 @@ class AreaStationReport extends Component{
         : 
           <div className={styles.yearReportContent}>
             <div className={styles.titleText}>
-              <h3>{areaName}区域电站分析报告({year}年)</h3>
+              <h3>{areaName}-区域电站分析报告({year}年)</h3>
             </div>  
             <div className={styles.contentText}>
               <p>

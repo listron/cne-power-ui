@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import { dataFormats } from '../../../../utils/utilFunc';
 
-export const ScoreStations = ({...props}) => { // 同区域电站分析报告-平均得分
-  const { scoreStations } = props;
+export const ScoreStations = ({scoreStations}) => { // 同区域电站分析报告-平均得分
   return(
     <div>
         <p className={styles.paragraph}>
@@ -82,8 +81,7 @@ ScoreStations.propTypes = {
   scoreStations:PropTypes.array
 }
 
-export const GenRegionDataList = ({...props}) => {
-  const { genRegionDataList } = props;
+export const GenRegionDataList = ({genRegionDataList}) => {
   
   return(
     <div>
@@ -117,8 +115,7 @@ GenRegionDataList.propTypes = {
   genRegionDataList:PropTypes.array
 }
 
-export const LostRegionDataList = ({...props}) => {
-  const { lostRegionDataList } = props;
+export const LostRegionDataList = ({lostRegionDataList}) => {
   return(
     <div>
       {lostRegionDataList.map(e => (
