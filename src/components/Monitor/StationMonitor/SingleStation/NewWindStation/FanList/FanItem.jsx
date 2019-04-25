@@ -55,14 +55,15 @@ class FanItem extends React.Component {
 
   default = (item) => { // 整机状态
     const currentStatus = item.deviceStatus;
-    const percent = (item.devicePlanPower && item.deviceCapacity) ? item.devicePlanPower / item.deviceCapacity * 100 : 0;
+    const successPercent = (item.devicePlanPower && item.deviceCapacity) ? item.devicePlanPower / item.deviceCapacity * 100 : 0;
+    const percent = (item.devicePower && item.deviceCapacity) ? item.devicePower / item.deviceCapacity * 100 : 0;
     return (
       <div className={styles.inverterItemR} >
         <div className={styles.column}>
           <div>{item.deviceName}</div>
           <div>{this.getStatusName(currentStatus).text}</div>
         </div>
-        <OwnProgress percent={item.capabilityRate} successPercent={percent} />
+        <OwnProgress percent={percent} successPercent={successPercent} />
         <div className={styles.column}>
           <div> <span className={styles.changeNum}> {dataFormats(item.devicePower, '--', 2, true)}</span> kW</div>
           <div>{dataFormats(item.deviceCapacity, '--', 2, true)} kW</div>

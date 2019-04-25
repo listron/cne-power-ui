@@ -127,6 +127,7 @@ class SingleStation extends Component {
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
+    this.props.changeSingleStationStore({powerData:[]})
     this.props.getMonitorPower({
       stationCode,
       intervalTime,

@@ -7,11 +7,21 @@ import moment from 'moment';
 import styles from './windCommon.scss';
 
 
+const unitFormarts = (data,yAxisUnit) => {
+    if (isNaN(data) || (!data && data !== 0)) {
+        return '--';
+    }
+    if(yAxisUnit==='MW'){
+        return data / 1000
+    }
+    return data
+}
+
 const OutputChart = ({ ...rest }) => {
     const { capabilityData, yAxisUnit } = rest;
     let yAxisType = `功率(${yAxisUnit})`
     const chartsBox = document.getElementById('capabilityDiagram');
-    const capabilityPower = capabilityData.map(e => dataFormats(e.stationPower, '--', 2, true));
+    const capabilityPower = capabilityData.map(e => dataFormats(unitFormarts(e.stationPower,yAxisUnit), '--', 2, true));
     const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous || e.windSpeed, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous || e.windSpeed);
