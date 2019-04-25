@@ -29,7 +29,7 @@ class AreaAnalysisReport extends Component{
         {dateType === 1 ? 
           <div className={styles.monthReportContent}>
             <div className={styles.titleText}>
-              <h3>区域对比分析({month}月)</h3>
+              <h3>集团区域对比分析({month}月)</h3>
             </div>
             <div className={styles.contentText}>
               <p>
@@ -64,7 +64,7 @@ class AreaAnalysisReport extends Component{
           : 
           <div className={styles.yearReportContent}>
             <div className={styles.titleText}>
-              <h3>区域对比分析({year}年)</h3>
+              <h3>集团区域对比分析({year}年)</h3>
             </div>
             <div className={styles.contentText}>
               <p>
