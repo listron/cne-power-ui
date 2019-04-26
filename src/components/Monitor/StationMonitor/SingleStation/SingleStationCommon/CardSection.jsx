@@ -117,18 +117,17 @@ class CardSection extends Component {
           <Carousel autoplay={true} dots={true} arrow={true} >
             {tmpOperatorList.length > 0 ?
               tmpOperatorList.map((item, index) => {
-                // return <div>{'test'}</div>
-                // return (<div key={index} className={styles.operatorContent} >
-                //   {item.map((e, i) => {
-                //     return (
-                //       <div key={i} className={styles.userInfo} >
-                //         <span title={e.userFullName || e.userName} style={{ width: '55px', }} className={styles.userMes}>{e.userFullName || e.userName}</span>
-                //         <span title={e.roleDesc} style={{ width: '104px' }} className={styles.userMes}>{e.roleDesc}</span>
-                //         <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userPhone}>{e.phoneNum}</span>
-                //       </div>
-                //     )
-                //   })}
-                // </div>)
+                return (<div key={index} className={styles.operatorContent} >
+                  {item.map((e, i) => {
+                    return (
+                      <div key={i} className={styles.userInfo} >
+                        <span title={e.userFullName || e.userName} style={{ width: '55px', }} className={styles.userMes}>{e.userFullName || e.userName}</span>
+                        <span title={e.roleDesc} style={{ width: '104px' }} className={styles.userMes}>{e.roleDesc}</span>
+                        <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userPhone}>{e.phoneNum}</span>
+                      </div>
+                    )
+                  })}
+                </div>)
               }) : <div className={styles.nopeople} ><div>暂未设置</div><img src="/img/nopeople.png" /></div>
             }
           </Carousel>
