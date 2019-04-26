@@ -75,7 +75,7 @@ class SingleStationAnalysisReport extends Component{
                 {(lostPowerCompared < 0) && <span>降低</span>}
                 <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared),'--',2,true) || '--'}</span>
                 <span>%。</span>
-                {(limitPowerRate || limitPowerRate !== 0) && 
+                {(limitPowerRate || limitPowerRate === 0) && 
                   <span>
                     <span>限电率</span>
                     <span className={styles.text}>{dataFormats(limitPowerRate,'--',2,true) || '--'}</span>
@@ -110,7 +110,7 @@ class SingleStationAnalysisReport extends Component{
                   {(cLostPowerCompared < 0) && <span>降低</span>}
                   <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared),'--',2,true) || '--'}</span>
                   <span>%；</span>
-                  {(limitPowerRate || limitPowerRate !== 0) &&
+                  {(limitPowerRate || limitPowerRate === 0) &&
                     <span>
                       <span>限电损失电量同比</span>
                       {(cLimitPowerRate >= 0) && <span>提高</span>}
@@ -231,11 +231,16 @@ class SingleStationAnalysisReport extends Component{
                 {(lostPowerCompared >= 0) && <span>提高</span>}
                 {(lostPowerCompared < 0) && <span>降低</span>}
                 {!lostPowerCompared ? <span className={styles.text}>{dataFormats(lostPowerCompared,'--',2,true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared),'--',2,true) || '--'}</span>}
-                <span>%；限电率环比</span>
-                {(limitPowerRateCompared >= 0) && <span>提高</span>}
-                {(limitPowerRateCompared < 0) && <span>降低</span>}
-                {!limitPowerRateCompared ? <span className={styles.text}>{dataFormats(limitPowerRateCompared,'--',2,true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared),'--',2,true) || '--'}</span>}
-                <span>%。</span>
+                <span>%；</span>
+                {(limitPowerRateCompared || limitPowerRateCompared === 0) && 
+                <span>
+                  <span>限电率环比</span> 
+                  {(limitPowerRateCompared >= 0) && <span>提高</span>}
+                  {(limitPowerRateCompared < 0) && <span>降低</span>}
+                  {!limitPowerRateCompared ? <span className={styles.text}>{dataFormats(limitPowerRateCompared,'--',2,true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared),'--',2,true) || '--'}</span>}
+                  <span>%。</span>
+                </span>
+                }
               </p>
 
               <p className={styles.distanceTop}>
