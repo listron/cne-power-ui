@@ -108,7 +108,7 @@ class TableList extends Component {
         sorter: true,
       }, {
         title: "故障描述",
-        dataIndex: "faultDescribe",
+        dataIndex: "deviceFaultName",
         sorter: true,
         defaultSortOrder: 'ascend'
       }];
@@ -157,77 +157,92 @@ class TableList extends Component {
         dataIndex: "regionName",
         sorter: true,
         fixed: 'left',
-        // width:40,
+         width:108,
       },
       {
         title: "电站名称",
         dataIndex: "stationName",
         sorter: true,
         fixed: 'left',
+        width:108,
       }, {
         title: "设备名称",
         dataIndex: "deviceName",
         sorter: true,
         fixed: 'left',
+        width:108,
       }, {
         title: "风机型号",
         dataIndex: "deviceModeName",
         sorter: true,
         fixed: 'left',
+        width:108,
       }, {
         title: "所属部件",
         dataIndex: "belongComponent",
         sorter: true,
-        width: 80,
+        width:112,
+        render(text){ return(text?text:'--')},
       }, {
         title: "故障描述",
         dataIndex: "faultDescribe",
         sorter: true,
+        width:112,
+        render(text){ return(text?text:'--')},
       }, {
         title: "故障开始时间",
         dataIndex: "faultStartTime",
         sorter: true,
+        width:140,
       }, {
         title: "故障结束时间",
         dataIndex: "faultEndTime",
         sorter: true,
+        width:140,
       }, {
         title: "故障代码",
         dataIndex: "faultCode",
         sorter: true,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: () => <TableColumnTitle title="故障时长" unit="s" />,
         dataIndex: "faultTime",
         sorter: true,
+        width:108,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="故障小时数" unit="h" />,
         dataIndex: "faultHours",
         sorter: true,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       }, {
         title: "损失电量",
         dataIndex: "faultGen",
         sorter: true,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: "风速",
         dataIndex: "windSpeedAvg",
         sorter: true,
+        width:108,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: "有功功率",
         dataIndex: "usePower",
         sorter: true,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       }, {
         title: "发电机转速",
         dataIndex: "speed",
         sorter: true,
+        width:128,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
@@ -259,7 +274,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === "detail" ? {x:1600} : {x:0}}
+          scroll={tableType === "detail" ? {x:1680} : {x:0}}
           pagination={false} />
       </React.Fragment>
     )
