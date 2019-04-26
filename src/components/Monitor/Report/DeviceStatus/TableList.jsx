@@ -12,6 +12,7 @@ class TableList extends Component {
     getDeviceStatusList: PropTypes.func,
     changeDeviceStatusStore: PropTypes.func,
     onChangeFilter: PropTypes.func,
+    getDeviceStatusDetail: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
@@ -28,6 +29,7 @@ class TableList extends Component {
     sortMethod: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    params: PropTypes.object,
 
   }
 
@@ -195,10 +197,11 @@ class TableList extends Component {
     ];
     return columns
   }
-  changeTable = (e) => {
-    
+   changeTable=(e)=> {
     const tableType=e.target.value;
     this.props.changeDeviceStatusStore({tableType})
+    tableType==='all'&&this.props.getDeviceStatusList({ ...this.props.params })
+    tableType==='detail'&&this.props.getDeviceStatusDetail({ ...this.props.params })
   }
   render() {
     const { total, pageSize, pageNum, deviceStatusList,tableType,statusDetailList } = this.props;
@@ -208,7 +211,7 @@ class TableList extends Component {
       <React.Fragment>
         <div className={styles.tableHeader}>
           <div>
-            <Radio.Group defaultValue="all" buttonStyle="solid" onChange={this.changeTable}>
+            <Radio.Group value={tableType} buttonStyle="solid" onChange={this.changeTable}>
               <Radio.Button value="all">汇总</Radio.Button>
               <Radio.Button value="detail">明细</Radio.Button>
 

@@ -11,6 +11,7 @@ class TableList extends Component {
   static propTypes = {
     getMalfunctionList: PropTypes.func,
     changeMalfunctionStore: PropTypes.func,
+    getMalfunctionDetail: PropTypes.func,
     onChangeFilter: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
@@ -28,6 +29,7 @@ class TableList extends Component {
     sortMethod: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    params: PropTypes.object,
   }
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
     this.props.changeMalfunctionStore({ pageNum: currentPage, pageSize, })
@@ -233,7 +235,9 @@ class TableList extends Component {
   }
   changeTable = (e) => {
     const tableType = e.target.value;
-    this.props.changeMalfunctionStore({ tableType })
+    this.props.changeMalfunctionStore({ tableType });
+    tableType==='all'&&this.props.getMalfunctionList({ ...this.props.params })
+    tableType==='detail'&&this.props.getMalfunctionDetail({ ...this.props.params })
   }
 
 
@@ -245,7 +249,7 @@ class TableList extends Component {
       <React.Fragment>
         <div className={styles.tableHeader}>
           <div>
-            <Radio.Group defaultValue="all" buttonStyle="solid" onChange={this.changeTable}>
+            <Radio.Group value={tableType} buttonStyle="solid" onChange={this.changeTable}>
               <Radio.Button value="all">汇总</Radio.Button>
               <Radio.Button value="detail">明细</Radio.Button>
             </Radio.Group>
@@ -255,7 +259,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === "detail" ? { x: 1440 } : false}
+          scroll={tableType === "detail" ? {x:1600} : {x:0}}
           pagination={false} />
       </React.Fragment>
     )

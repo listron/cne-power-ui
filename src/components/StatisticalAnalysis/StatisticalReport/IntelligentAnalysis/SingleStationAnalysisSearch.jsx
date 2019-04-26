@@ -51,7 +51,7 @@ class SingleStationAnalysisSearch extends Component{
       this.setState({
         dateType: 1,
         year: moment(startTime).format('YYYY'),
-        month: moment(startTime).format('MM'),
+        month: moment(startTime).format('M'),
       })
     }
   }
