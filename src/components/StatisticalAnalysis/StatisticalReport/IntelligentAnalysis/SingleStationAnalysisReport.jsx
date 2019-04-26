@@ -79,7 +79,7 @@ class SingleStationAnalysisReport extends Component{
                   <span>
                     <span>限电率</span>
                     <span className={styles.text}>{dataFormats(limitPowerRate,'--',2,true) || '--'}</span>
-                    <span>,同比</span>
+                    <span>%，同比</span>
                     {(limitPowerRateCompared >= 0) && <span>提高</span>}
                     {(limitPowerRateCompared < 0) && <span>降低</span>}
                     <span className={styles.text}>{dataFormats(Math.abs(limitPowerRateCompared),'--',2,true) || '--'}</span>
@@ -288,7 +288,8 @@ class SingleStationAnalysisReport extends Component{
                 <span>4、年总损失电量环比</span>
                 {(dLostPowerCompared >= 0) && <span>提高</span>}
                 {(dLostPowerCompared < 0) && <span>降低</span>}
-                <span className={styles.text}>{Math.abs(dataFormats(dLostPowerCompared),'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(Math.abs(dLostPowerCompared),'--',2,true) || '--'}</span>
+                <span>%</span>
               </p>
 
               <p className={styles.paragraph}>详细情况说明：</p>

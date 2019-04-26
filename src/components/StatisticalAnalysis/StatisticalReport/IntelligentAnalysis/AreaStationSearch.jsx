@@ -68,7 +68,7 @@ class AreaStationSearch extends Component{
       message.error("请选择区域名称！");
       return;
     }
-    if (!moment(month).isValid() && !moment(year).isValid()) {
+    if (!moment(year).isValid()) {
       message.error("请选择统计时间！");
       return;
     }

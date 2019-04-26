@@ -71,7 +71,7 @@ class AreaStationReport extends Component{
               {lowEquUsehourStations.map((e) => (
                 <p className={styles.paragraph}>
                   <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失等效小时数较低，为</span>
+                  <span>电站损失等效小时数较高，为</span>
                   <span className={styles.text}>{dataFormats(e.hours,'--',2,true) || '--'}</span>
                   <span>h;晴天天数</span>
                   <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
@@ -143,10 +143,9 @@ class AreaStationReport extends Component{
                 <span>%，其中</span>
                 <span className={styles.text}>{totalLossPowerDesc.highExternalFaultName || '--'}</span>
                 <span>占比最高，为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highExternalFaultLossPower,'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highExternalFaultProportion,'--',2,true) || '--'}</span>
                 <span>%；</span>
-              </p>  
-              
+              </p>
               <p className={styles.paragraph}>
                 <span>2）低压直流故障损失电量为</span>
                 <span className={styles.text}>{dataFormats(totalLossPowerDesc.lowVoltageDCFaultLostPower,'--',4,true) || '--'}</span>
@@ -293,7 +292,7 @@ class AreaStationReport extends Component{
               {lowComplateRateStations.map((e) => (
                 <p className={styles.paragraph}>
                   <span className={styles.text}>{e.stationName || '--'}</span>
-                  <span>电站损失电量较低，损失率为</span>
+                  <span>电站损失电量较高，损失率为</span>
                   <span className={styles.text}>{dataFormats(e.lossRate,'--',2,true) || '--'}</span>
                   <span>%;晴天天数</span>
                   <span className={styles.text}>{dataFormats(e.sunnyDays,'--',2,true) || '--'}</span>
@@ -319,7 +318,7 @@ class AreaStationReport extends Component{
                 <span>%，其中</span>
                 <span className={styles.text}>{totalLossPowerDesc.highExternalFaultName || '--'}</span>
                 <span>占比最高，为</span>
-                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highPxternalFaultProportion,'--',2,true) || '--'}</span>
+                <span className={styles.text}>{dataFormats(totalLossPowerDesc.highExternalFaultProportion,'--',2,true) || '--'}</span>
                 <span>%；</span>
               </p>  
               
