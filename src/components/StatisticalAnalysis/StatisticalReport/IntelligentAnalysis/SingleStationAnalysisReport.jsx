@@ -232,7 +232,7 @@ class SingleStationAnalysisReport extends Component{
                 {(lostPowerCompared < 0) && <span>降低</span>}
                 {!lostPowerCompared ? <span className={styles.text}>{dataFormats(lostPowerCompared,'--',2,true) || '--'}</span> : <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared),'--',2,true) || '--'}</span>}
                 <span>%；</span>
-                {(limitPowerRateCompared || limitPowerRateCompared === 0) && 
+                {(limitPowerRateCompared || (limitPowerRateCompared === 0)) && 
                 <span>
                   <span>限电率环比</span> 
                   {(limitPowerRateCompared >= 0) && <span>提高</span>}
@@ -281,7 +281,7 @@ class SingleStationAnalysisReport extends Component{
                   <span className={styles.text}>{dataFormats(cLostPowerCompared,'--',2,true) || '--'}</span>
                   <span>%；</span>
                 </span>}
-                {(limitPowerCompared > 0) && 
+                {(limitPowerCompared || (limitPowerCompared > 0)) && 
                 <span>
                   <span>年限电率环比提高</span>
                   <span className={styles.text}>{dataFormats(limitPowerCompared,'--',2,true) || '--'}</span>
