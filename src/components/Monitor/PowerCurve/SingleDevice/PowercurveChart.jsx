@@ -62,6 +62,9 @@ class PowercurveChart extends Component {
     //各种数据
     let scatter = [], actual = [], theory = [];
     let series = [];
+    let test1=[];
+    let test=[];
+
     (params && params.length > 0) && params.forEach((e, i) => {
       const sortscatterPointData = e.scatterPointData.sort(this.compare('windSpeedAvg'));
       const sortactualPowerData = e.actualPowerData.sort(this.compare('windSpeedAvg'));
@@ -77,7 +80,7 @@ class PowercurveChart extends Component {
       sorttheoryPowerData.forEach((item, i) => {
         theory[e.deviceName].push([item.windSpeedCenter, item.powerTheory, item.windSpeedInterval,], ...item)
       })
-      series.push(
+      test1.push(
         {
           type: 'scatter',
           name: `${e.deviceName}散点`,
@@ -88,8 +91,11 @@ class PowercurveChart extends Component {
           },
         },
         { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName], },
-        { type: 'line', name: `${e.deviceModelName}理论功率曲线`, data: theory[e.deviceName] }
-      )
+       
+      );
+      test.push( { type: 'line', name: `${e.deviceModelName}理论功率曲线`, data: theory[e.deviceName] });
+      series=[...test1,...test]
+
     })
     const lineColor = '#666';
     let color = ['#e08031', '#a42b2c', '#199475', '#f9b600'];
