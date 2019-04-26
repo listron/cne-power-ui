@@ -98,25 +98,25 @@ class SingleStationAnalysisReport extends Component{
 
               {(!(95 < planComplateRate && 105 > planComplateRate)) &&  
                 <p className={styles.paragraph}>
-                  <span className={styles.dotted}>该电站
+                  <span>该电站
                     {(95 > planComplateRate) && <span>未完成计划</span>}
                     {(105 < planComplateRate) && <span>超出计划</span>}
                   的主要原因在于：实际辐照度比历史辐照度</span>
                   {(cResourceValueCompared >= 0) && <span>高</span>}
                   {(cResourceValueCompared < 0) && <span>低</span>}
-                  <span className={styles.text + ' ' + styles.dotted}>{dataFormats(Math.abs(cResourceValueCompared),'--',2,true) || '--'}</span>
-                  <span className={styles.dotted}>%，损失电量同比</span>
+                  <span className={styles.text}>{dataFormats(Math.abs(cResourceValueCompared),'--',2,true) || '--'}</span>
+                  <span>%，损失电量同比</span>
                   {(cLostPowerCompared >= 0) && <span>提高</span>}
                   {(cLostPowerCompared < 0) && <span>降低</span>}
-                  <span className={styles.text + ' ' + styles.dotted}>{dataFormats(Math.abs(cLostPowerCompared),'--',2,true) || '--'}</span>
-                  <span className={styles.dotted}>%；</span>
+                  <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared),'--',2,true) || '--'}</span>
+                  <span>%；</span>
                   {(limitPowerRate) &&
                     <span>
                       <span>限电损失电量同比</span>
                       {(cLimitPowerRate >= 0) && <span>提高</span>}
                       {(cLimitPowerRate < 0) && <span>降低</span>}
-                      <span className={styles.text + ' ' + styles.dotted}>{dataFormats(Math.abs(cLimitPowerRate),'--',2,true) || '--'}</span>
-                      <span className={styles.dotted}>%。</span>
+                      <span className={styles.text}>{dataFormats(Math.abs(cLimitPowerRate),'--',2,true) || '--'}</span>
+                      <span>%。</span>
                     </span>
                   }
                 </p> 
@@ -238,7 +238,7 @@ class SingleStationAnalysisReport extends Component{
                 <span>%。</span>
               </p>
 
-              <p>
+              <p className={styles.distanceTop}>
                 2、年系统效率为
                 <span className={styles.text}>{dataFormats(prs,'--',2,true) || '--'}</span>
                 <span> %，其中</span>
@@ -253,7 +253,7 @@ class SingleStationAnalysisReport extends Component{
                 <span>万kWh。</span>
               </p>
 
-              <p>
+              <p className={styles.distanceTop}>
                 <span>3、年发电计划完成率为</span>
                 <span className={styles.text}>{dataFormats(planComplateRate,'--',2,true) || '--'}</span>
                 <span>%。其中</span>
@@ -284,7 +284,7 @@ class SingleStationAnalysisReport extends Component{
                 </span>}
               </p>
 
-              <p>
+              <p className={styles.distanceTop}>
                 <span>4、年总损失电量环比</span>
                 {(dLostPowerCompared >= 0) && <span>提高</span>}
                 {(dLostPowerCompared < 0) && <span>降低</span>}
