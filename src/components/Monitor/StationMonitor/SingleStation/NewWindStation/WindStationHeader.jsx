@@ -76,7 +76,7 @@ class windStationHeader extends React.Component {
     const yearPower = this.unitFormarts(stationDataSummary.yearPower, 10000);
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
-    const capabilityRate = stationDataSummary.yearRate;
+    const capabilityRate = stationDataSummary.capabilityRate;
     const stationPlanPower = this.unitFormarts(stationDataSummary.stationPlanPower, 1000);
     const successPercent = (stationPlanPower && stationCapacity) ? stationPlanPower / stationCapacity * 100 : 0;
     const percent = (stationPower && stationCapacity) ? stationPower / stationCapacity * 100 : 0;

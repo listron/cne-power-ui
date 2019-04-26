@@ -59,11 +59,11 @@ class InverterStatistics extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div> 风速 <span className={`${styles.dataValue} ${styles.speed}`}>{DeviceValueFormat(windSpeed, '--', 2)}</span> m/s </div>
-          <div> 风向 <span className={styles.dataValue}>{DeviceValueFormat(windAngle, '--', 0)} </span> 台</div>
+          <div> 风向 <span className={styles.dataValue}>{DeviceValueFormat(windAngle, '--', 0)} </span> °</div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 日发电量  <span className={styles.dataValue}>{DeviceValueFormat(powerDay / 10000, '--', 2, true)}</span> 万kWh  </div>
-          <div> 年发电量 <span className={styles.dataValue}>{DeviceValueFormat(powerYear / 10000, '--', 2)} </span> %  </div>
+          <div> 日发电量  <span className={styles.dataValue}>{DeviceValueFormat(powerDay / 10000, '--', 2, true)}</span> 万kWh</div>
+          <div> 年发电量 <span className={styles.dataValue}>{DeviceValueFormat(powerYear / 10000, '--', 2,true)} </span> 万kWh</div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(powerMonth / 10000, '--', 2, true)}</span> 万kWh</div>

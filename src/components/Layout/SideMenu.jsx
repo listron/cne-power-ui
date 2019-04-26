@@ -128,7 +128,7 @@ class SideMenu extends Component {
   render() {
     const { sideMenuData, collapsed } = this.state;
     const sideStyle = {
-      width: collapsed ? 80 : "auto",
+      width: collapsed ? 80 : 180,
       display: sideMenuData.length > 0?'flex':'none',
     };
     return (
