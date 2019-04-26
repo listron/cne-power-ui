@@ -27,49 +27,49 @@ class TransferFormTable extends Component {
       showTransferPopover: [],
     }
   }
- 
+
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
-    const { changeTransferFormStore,onChangeFilter,   } = this.props;
-    changeTransferFormStore({ pageNum:currentPage, pageSize })
-    onChangeFilter({pageNum:currentPage, pageSize})
+    const { changeTransferFormStore, onChangeFilter, } = this.props;
+    changeTransferFormStore({ pageNum: currentPage, pageSize })
+    onChangeFilter({ pageNum: currentPage, pageSize })
   }
-  
-  onTransferChange(visible,workOrderId,index) { // 切换需求
+
+  onTransferChange(visible, workOrderId, index) { // 切换需求
     this.setState((state) => {
       return state.showTransferPopover[index] = visible
     })
-    this.props.getTransferInfo({workOrderId})//请求工单的详细信息
+    this.props.getTransferInfo({ workOrderId })//请求工单的详细信息
   }
- 
 
-  getDetail = (defectId,index) => { // 查看工单详情
-    this.props.changeTransferFormStore({pageName:'detail',defectId})
+
+  getDetail = (defectId, index) => { // 查看工单详情
+    this.props.changeTransferFormStore({ pageName: 'detail', defectId })
     this.setState((state) => {
       return state.showTransferPopover[index] = false
     })
   }
-  
+
   tableChange = (pagination, filters, sorter) => {
-    const { changeTransferFormStore,onChangeFilter, } = this.props;
+    const { changeTransferFormStore, onChangeFilter, } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       warningLevel: '1',
       stationName: '2',
       deviceName: '8',
-      deviceTypeName:'3',
+      deviceTypeName: '3',
       timeOn: '5',
       durationTime: '9',
     };
-     const orderField = sortInfo[field] ? sortInfo[field] : '';
+    const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? '1' : '2') : '';
     changeTransferFormStore({ orderField, orderCommand })
     onChangeFilter({
-        orderField, orderCommand
+      orderField, orderCommand
     })
   }
- 
-  renderTransferPopover(index,record) { // 转到工单页面的气泡
-    const {ticketInfo}=this.props;
+
+  renderTransferPopover(index, record) { // 转到工单页面的气泡
+    const { ticketInfo } = this.props;
     return (
       <div className={styles.detailInfo}>
         <div className={styles.header}>
@@ -101,7 +101,7 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton} onClick={()=>{this.getDetail(record.workOrderId,index)}}>
+        <Button className={styles.ticketButton} onClick={() => { this.getDetail(record.workOrderId, index) }}>
           查看工单详情
         </Button>
       </div>
@@ -130,13 +130,9 @@ class TransferFormTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          if (record.deviceTypeCode === 206) {
-            return (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
-              </div>
-            );
-          } else if (record.deviceTypeCode === 304) {
+          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
+          if (isClick) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
@@ -169,28 +165,28 @@ class TransferFormTable extends Component {
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
-      },{
+      }, {
         title: '告警处理',
         key: 'warningRemove',
         render: (text, record, index) => {
           // if (record.isTransferWork === 0) {
-            return (
-              <Popover
-                content={this.renderTransferPopover(index, record)}
-                trigger="click"
-                visible={this.state.showTransferPopover[index]}
-                onVisibleChange={(visible) => this.onTransferChange(visible,record.workOrderId, index)}
-                arrowPointAtCenter
-              >
-                <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
-              </Popover>
-            );
-          }
+          return (
+            <Popover
+              content={this.renderTransferPopover(index, record)}
+              trigger="click"
+              visible={this.state.showTransferPopover[index]}
+              onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
+              arrowPointAtCenter
+            >
+              <div className={this.state.showTransferPopover[index] ? styles.selected : null}><i className="iconfont icon-tranlist icon-action"></i></div>
+            </Popover>
+          );
+        }
         // }
       }
     ]
-    const { transferFormList,  pageSize, pageNum,total } = this.props;
-   
+    const { transferFormList, pageSize, pageNum, total } = this.props;
+
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>

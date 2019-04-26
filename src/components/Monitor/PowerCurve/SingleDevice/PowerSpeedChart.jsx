@@ -55,20 +55,24 @@ class PowerSpeedChart extends Component {
     const { chartId } = this.props;
     const powercurveChart = echarts.init(document.getElementById(chartId));
     const filterDeviceName = params.map(e => e.deviceName);
-    let filterData = [];
+    let filterYaxisData = [];
+    let filterXaxisData = [];
+
     (params && params.length > 0) && params.forEach((e, i) => {
       if (e.powerSpeedData) {
         e.powerSpeedData.forEach((item, i) => {
-          item.power ? filterData.push(item.power) : null
+          item.power ? filterYaxisData.push(item.power) : null;
+          item.speed ? filterXaxisData.push(item.speed) : null;
         })
       }
       if (e.pitChangleSpeedData) {
         e.pitChangleSpeedData.forEach((item, i) => {
-          item.pitchangle ? filterData.push(item.pitchangle) : null;
+          item.pitchangle ? filterYaxisData.push(item.pitchangle) : null;
+          item.windSpeed ? filterXaxisData.push(item.windSpeed) : null;
         })
       }
     })
-    const inverterTenMinGraphic = (filterData.length === 0 || filterDeviceName.length === 0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (filterYaxisData.length === 0 ||filterXaxisData.length===0|| filterDeviceName.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     // let color = ['#199475', '#e08031', '#a42b2c'];
     // let color2 = ['#3e97d1', '#bd10e0', '#199475'];
