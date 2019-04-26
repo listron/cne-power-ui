@@ -75,7 +75,7 @@ class SingleStationAnalysisReport extends Component{
                 {(lostPowerCompared < 0) && <span>降低</span>}
                 <span className={styles.text}>{dataFormats(Math.abs(lostPowerCompared),'--',2,true) || '--'}</span>
                 <span>%。</span>
-                {(limitPowerRate) && 
+                {(limitPowerRate || limitPowerRate !== 0) && 
                   <span>
                     <span>限电率</span>
                     <span className={styles.text}>{dataFormats(limitPowerRate,'--',2,true) || '--'}</span>
@@ -110,7 +110,7 @@ class SingleStationAnalysisReport extends Component{
                   {(cLostPowerCompared < 0) && <span>降低</span>}
                   <span className={styles.text}>{dataFormats(Math.abs(cLostPowerCompared),'--',2,true) || '--'}</span>
                   <span>%；</span>
-                  {(limitPowerRate) &&
+                  {(limitPowerRate || limitPowerRate !== 0) &&
                     <span>
                       <span>限电损失电量同比</span>
                       {(cLimitPowerRate >= 0) && <span>提高</span>}
@@ -263,7 +263,7 @@ class SingleStationAnalysisReport extends Component{
                 <span>%。</span>
               </p>
               <p>
-                {(cResourceValueCompared || cLostPowerCompared || limitPowerCompared) && <span>原因为：</span>}
+                {((cResourceValueCompared > 0) || (cLostPowerCompared > 0) || (limitPowerCompared > 0)) && <span>原因为：</span>}
                 {(cResourceValueCompared > 0) && 
                 <span>
                   <span>年实际辐照度比历史辐照度低</span>
