@@ -66,7 +66,7 @@ class SingleStation extends Component {
     }
     this.getOneHourData(stationCode, stationType);
     this.getTenSeconds(stationCode, stationType);
-    this.getPowerDataTenMin(stationCode,stationType); // 发电量
+    this.getPowerDataTenMin({stationCode,stationType}); // 发电量
     this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
   }
 
@@ -81,7 +81,7 @@ class SingleStation extends Component {
       this.props.resetSingleStationStore();
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOneHourData(nextStationCode, nextStationType);
-      this.getPowerDataTenMin(nextStationCode,nextStationType);
+      this.getPowerDataTenMin({stationCode:nextStationCode,stationType:nextStationType});
       this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
     }
   }
@@ -105,7 +105,7 @@ class SingleStation extends Component {
     }, 10000);
   }
 
-  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 天气
+  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 
     clearTimeout(this.timeOutOutputData);
     this.props.getCapabilityDiagram({
       stationCode,
@@ -119,8 +119,9 @@ class SingleStation extends Component {
     }, 3600000); //600000
   }
 
-  getPowerDataTenMin = (stationCode, stationType,intervalTime = 0,) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
+  getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
     clearTimeout(this.timeOutPowerData);
+    const {stationCode, stationType,intervalTime = 0}=value;
     let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
@@ -128,7 +129,7 @@ class SingleStation extends Component {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.changeSingleStationStore({powerData:[]})
-    this.props.getMonitorPower({
+    this.props.getMonitorPower({ // 出力图数据
       stationCode,
       intervalTime,
       startTime,
@@ -136,7 +137,7 @@ class SingleStation extends Component {
       stationType,
     });
     this.timeOutPowerData = setTimeout(() => {
-      this.getPowerDataTenMin(stationCode,stationType,intervalTime);
+      this.getPowerDataTenMin({stationCode,stationType,intervalTime});
     }, 600000);
   }
 
@@ -146,8 +147,8 @@ class SingleStation extends Component {
       <div className={styles.singleStation}>
         <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.singleStationContainer} >
-          {stationType === '1' && <PvStation {...this.props} />}
-          {stationType === '0' && <WindStation {...this.props} />}
+          {stationType === '1' && <PvStation {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} />}
+          {stationType === '0' && <WindStation {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} />}
           {!stationType && <div styles={{ display: 'flex', flex: 1, backgroundColor: '#fff' }}></div>}
         </div>
         <Footer />
