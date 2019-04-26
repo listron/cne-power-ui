@@ -91,7 +91,7 @@ class HandleRemoveTable extends Component {
       warningLevel: '1',
       stationName: '2',
       deviceName: '8',
-      deviceTypeName:'3',
+      deviceTypeName: '3',
       timeOn: '5',
       durationTime: '9',
     };
@@ -140,11 +140,11 @@ class HandleRemoveTable extends Component {
     );
   }
 
-  onShowDetail=(record)=>{
+  onShowDetail = (record) => {
     this.setState({
       showTransferTicketModal: true,
     });
-    this.props.changeHandleRemoveStore({selectedTransfer:[record]})
+    this.props.changeHandleRemoveStore({ selectedTransfer: [record] })
   }
 
 
@@ -170,19 +170,15 @@ class HandleRemoveTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          if (record.deviceTypeCode === 206) {
+          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
+          if (isClick) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
               </div>
             );
-          } else if (record.deviceTypeCode === 304) {
-            return (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
-              </div>
-            );
-          } else {
+          }  else {
             return text;
           }
         }
@@ -225,19 +221,19 @@ class HandleRemoveTable extends Component {
             </Popover>
           );
         }
-      },{
+      }, {
         title: '操作',
         className: styles.iconDetail,
         render: (text, record) => (
           <div>
             <span>
-              <i className="iconfont icon-tranlist" onClick={() => {this.onShowDetail (record)}} />
+              <i className="iconfont icon-tranlist" onClick={() => { this.onShowDetail(record) }} />
             </span>
           </div>
         )
       }
     ]
-    const { handleRemoveList, selectedRowKeys, pageSize, pageNum,total, loading,selectedTransfer,getLostGenType } = this.props;
+    const { handleRemoveList, selectedRowKeys, pageSize, pageNum, total, loading, selectedTransfer, getLostGenType } = this.props;
     const { showTransferTicketModal, showWarningTip, warningTipText } = this.state;
     const rowSelection = {
       selectedRowKeys,
