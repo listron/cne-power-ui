@@ -67,8 +67,10 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
 
 function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据
   const { payload } = action;
-  const { stationCode, startTime, endTime, intervalTime } = payload;
-  const url = `${APIBasePath}${monitor.getMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`
+  const { stationCode, startTime, endTime, intervalTime,stationType } = payload;
+  const pvUrl = `${APIBasePath}${monitor.getMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`;
+  const windUrl = `${APIBasePath}${monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${stationCode}`;
+  const url = stationType === '0' ? windUrl : pvUrl;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {

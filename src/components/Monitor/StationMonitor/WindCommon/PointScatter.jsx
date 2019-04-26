@@ -9,6 +9,7 @@ import styles from './windCommon.scss';
 
 const PointScatter = ({ ...rest }) => {
     const { scatterData = {}, type } = rest;
+    console.log('rest',rest)
     let needData = [];
     if (type === 'windDevice') {
         needData = [
@@ -153,8 +154,7 @@ const PointScatter = ({ ...rest }) => {
             ],
             series: series
         };
-        SpeedScatterGraph.setOption(scatterOption,'notMerge');
-        SpeedScatterGraph.resize();
+        SpeedScatterGraph.setOption(scatterOption,);
     }
 
 

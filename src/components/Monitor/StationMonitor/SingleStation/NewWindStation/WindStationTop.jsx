@@ -104,7 +104,7 @@ class WindStationTop extends Component {
                 })}
               </marquee> */}
             </div>
-            <div className={styles.weather}>天气:{todayWeather.weatherSummary} {todayWeather.temperature}</div>
+            <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature}</div>
             <Link to={pathAllStation}  >
               <Icon type="arrow-left" className={styles.backIcon} />
             </Link>

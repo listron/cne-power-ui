@@ -35,7 +35,7 @@ const SpeedScatter = ({ ...rest }) => {
             data:data.map((item) => {
                 const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
                 const NowEquipmentHours=equipmentHours && +equipmentHours || equipmentHours;
-                return [windSpeed, dataFormats(+NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
+                return [dataFormats(windSpeed,'--',2,true), dataFormats(+NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
             })
         })
     })
