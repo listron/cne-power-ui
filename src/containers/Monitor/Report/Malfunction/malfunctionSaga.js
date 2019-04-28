@@ -42,6 +42,7 @@ function* getMalfunctionList(action) {  // 请求报表列表
           malfunctionList: response.data.data.dataList || [],
           loading: false,
           ...payload,
+          filterTable:payload.summaryType
         },
       });
     } else {
