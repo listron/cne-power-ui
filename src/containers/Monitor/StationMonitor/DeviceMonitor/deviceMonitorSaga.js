@@ -316,6 +316,12 @@ function *getScatterpoint(action){ // 单风机散点图
   const { payload } = action;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.scatterpoint}`;
   try{
+    yield put({
+      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+      payload: {
+        scatterpoint: {},
+      }
+    })
     yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
     const response = yield call(axios.post, windturbineUrl,payload);
     if(response.data.code === '10000'){
@@ -343,6 +349,12 @@ function *getSequencediagram(action){ // 单风机时序图
   try{
     yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
     const response = yield call(axios.get, windturbineUrl,payload);
+    yield put({
+      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+      payload: {
+        sequencediagram:{}
+      }
+    })
     if(response.data.code === '10000'){
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
@@ -363,13 +375,16 @@ function *getSequencediagram(action){ // 单风机时序图
 }
 
 function *getWindDeviceCharts(action){ // 单风机散点图  单风机时序图
+  const {waiting}=action;
+  if(waiting){
+    yield delay(3600000); // 阻塞1小时
+  }
   yield fork(getScatterpoint,action);
   yield fork(getSequencediagram,action);
-  yield delay(3600000); // 阻塞1小时
-  realChartsInterval = yield fork(getWindDeviceCharts, action);
+  realChartsInterval = yield fork(getWindDeviceCharts, {...action,waiting: true});
 }
 
-function *getWindDeviceRealData(action){ // 单风机散点图  单风机时序图
+function *getWindDeviceRealData(action){ // 单风机实时数据
   const {waiting}=action;
   if(waiting){
     yield delay(10000); // 阻塞10秒

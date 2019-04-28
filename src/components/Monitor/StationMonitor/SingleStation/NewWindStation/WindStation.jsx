@@ -97,12 +97,12 @@ class WindStation extends Component {
   powerDiagramChange = (value) => { // 点击切换发电量的 年月日
     const { stationCode } = this.props.match.params;
     const { intervalTime } = value;
-    const stationType='0';
-    this.props.getPowerDataTenMin({stationCode,stationType,intervalTime})
+    const stationType = '0';
+    this.props.getPowerDataTenMin({ stationCode, stationType, intervalTime })
   }
 
   render() {
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData ,editData,} = this.props;
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData, editData, } = this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];

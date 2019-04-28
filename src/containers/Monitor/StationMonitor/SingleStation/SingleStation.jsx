@@ -97,7 +97,6 @@ class SingleStation extends Component {
     this.props.getSingleStation({ stationCode, stationType });
     this.props.getAlarmList({ stationCode });
     this.props.getWeatherList({ stationCode }); // 天气
-    this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
     let endTime = moment().utc().format();
     this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
     this.timeOutId = setTimeout(() => {
@@ -113,6 +112,7 @@ class SingleStation extends Component {
       startTime: moment().subtract(24, 'hours').utc().format(),
       endTime: moment().utc().format()
     });
+    this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
     this.props.getSingleScatter({ stationCode }); // 散点
     this.timeOutOutputData = setTimeout(() => {
       this.getOneHourData(stationCode, stationType);
