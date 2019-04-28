@@ -93,7 +93,7 @@ class SingleStation extends Component {
     this.props.resetSingleStationStore();
   }
 
-  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  运维人员 天气情况 
+  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  天气情况 
     this.props.getSingleStation({ stationCode, stationType });
     this.props.getAlarmList({ stationCode });
     this.props.getWeatherList({ stationCode }); // 天气
@@ -104,7 +104,7 @@ class SingleStation extends Component {
     }, 10000);
   }
 
-  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 
+  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 运维人员
     clearTimeout(this.timeOutOutputData);
     this.props.getCapabilityDiagram({
       stationCode,
