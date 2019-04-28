@@ -132,11 +132,10 @@ class DeviceAlarmTable extends Component {
 
   render() {
     const { deviceAlarmList, deviceDetail, stationCode, deviceTypeCode, deviceCode, style, titleName } = this.props;
-    // console.log(stationCode,deviceTypeCode,deviceCode);
-
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
+    const {deviceName}=deviceDetail
     return (
       <div className={styles.alarmTable} style={style}>
         <div className={styles.alarmTip}>
@@ -145,7 +144,8 @@ class DeviceAlarmTable extends Component {
         </div>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-            <Link to={`/monitor/alarm/history?stationCode=${stationCode}&deviceTypeCode=${deviceTypeCode}&deviceCode=${deviceCode}`} >查看历史告警</Link>
+             <Link to={{pathname:`/monitor/alarm/history`,
+                search:`?stationCode=${stationCode}`,state:{deviceName}}}> 查看历史告警  </Link>
           </Button>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
