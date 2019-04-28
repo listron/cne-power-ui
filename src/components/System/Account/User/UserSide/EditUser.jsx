@@ -21,7 +21,7 @@ class EditUser extends Component {
   constructor(props){
     super(props);
     this.state={
-      userLogo: props.userDetail && props.userDetail.toJS().userLogo,
+      userLogo: props.userDetail && props.userDetail.toJS().userLogo, // 这句话有屁用？用props到render不行？渣渣代码乱写。
     
       showWarningTip: false,
       warningTipText: '退出后信息无法保存!',

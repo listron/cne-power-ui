@@ -4,8 +4,7 @@ import styles from './powerLost.scss';
 import { Table } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-
-
+import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
 class TableList extends Component {
   static propTypes = {
     getPowerLostList: PropTypes.func,
@@ -87,77 +86,89 @@ class TableList extends Component {
         title: "统计时段",
         dataIndex: "date",
         sorter: true,
+        render(text){return text.replace(',','-')}
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: "limitHour",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="限电损失电量" unit="万kWh" />,
         dataIndex: "limitpower",
         sorter: true,
-        render: text => (text || text === 0) ? text : '--'
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="维护时长" unit="h" />,
         dataIndex: "weihuHour",
         sorter: true,
-        defaultSortOrder: 'ascend'
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="风电维护损失电量" unit="万kWh" />,
         dataIndex: "weihupower",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="技术待命时长" unit="h" />,
         dataIndex: "resourceValue",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="技术待命损失电量" unit="万kWh" />,
         dataIndex: "resourceRate",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="远程停机时长" unit="h" />,
         dataIndex: "equivalentHours",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
       {
         title: () => <TableColumnTitle title="远程停机损失电量" unit="万kWh" />,
         dataIndex: "pr",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       }, {
         title: () => <TableColumnTitle title="电网故障时长" unit="h" />,
         dataIndex: "lostPower",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },{
         title: () => <TableColumnTitle title="电网故障损失电量" unit="万kWh" />,
         dataIndex: "limitPowerHours",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       },{
         title: () => <TableColumnTitle title="故障停机时长" unit="h" />,
         dataIndex: "guzhangHours",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       },{
         title: () => <TableColumnTitle title="故障停机损失电量" unit="万kWh" />,
         dataIndex: "guazhangpower",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       },{
         title: () => <TableColumnTitle title="就地停机时长" unit="h" />,
         dataIndex: "jiudihour",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
 
       },{
         title: () => <TableColumnTitle title="就地停机损失电量" unit="万kWh" />,
         dataIndex: "jiudipower",
         sorter: true,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
     columns.unshift(...show);

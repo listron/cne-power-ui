@@ -7,10 +7,14 @@ import styles from './userInfo.scss';
 
 class UserInfo extends Component {
   static propTypes = {
+    username: PropTypes.string,
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -39,13 +43,12 @@ class UserInfo extends Component {
     localStorage.clear();
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.history.push('/login');
   }
 
   render() {
-    const username = Cookie.get('username');
-    const userFullName = Cookie.get('userFullName');
-    const userLogo = Cookie.get('userLogo');
+    const { userFullName, username, userLogo } = this.props;
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>

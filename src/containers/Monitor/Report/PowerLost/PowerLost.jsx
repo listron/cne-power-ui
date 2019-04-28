@@ -15,6 +15,9 @@ class PowerLost extends Component {
     getStationDevicemode: PropTypes.func,
     getRegionStation: PropTypes.func,
     getRegion: PropTypes.func,
+    changePowerLostStore: PropTypes.func,
+    stationTypeCount: PropTypes.string,
+    selectStationType: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -28,7 +31,11 @@ class PowerLost extends Component {
   componentWillUnmount() {
     this.props.resetPowerLostStore()
   }
+  checkWind = () => this.props.changePowerLostStore({selectStationType:'0'}) // 选中风电站
+
+  checkPv = () => this.props.changePowerLostStore({selectStationType:'1'}) // 选中光伏电站
   render() {
+    const { stationTypeCount, selectStationType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
@@ -41,6 +48,18 @@ class PowerLost extends Component {
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
+          {/*
+             {stationTypeCount === 'multiple' &&
+              <div className={styles.typeCheck}>
+                <div className={selectStationType === '0' ? styles.typeActive : styles.typeNormal} onClick={this.checkWind}>风电</div>
+                <div className={selectStationType === '1' ? styles.typeActive : styles.typeNormal} onClick={this.checkPv}>光伏</div>
+                <div className={styles.holder} />
+              </div>
+            }
+         {selectStationType === '0' && <PowerLostContainer {...this.props} />}
+           {selectStationType === '1' && <PowerLostContainer {...this.props} />}
+           
+          */}
             <PowerLostContainer {...this.props} />
           </div>
         </div>
@@ -54,6 +73,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.powerLostReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

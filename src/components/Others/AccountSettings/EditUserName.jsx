@@ -9,13 +9,10 @@ const FormItem = Form.Item;
 class EditUserName extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    userFullName: PropTypes.string,
     form: PropTypes.object,
     editUserName: PropTypes.func,
     history: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   saveName = () => { // 保存
@@ -28,9 +25,8 @@ class EditUserName extends Component {
   }
 
   render() {
-    const userFullName = Cookie.get('userFullName');
     const { getFieldDecorator } = this.props.form;
-    const { loading } = this.props;
+    const { loading, userFullName } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 12 },

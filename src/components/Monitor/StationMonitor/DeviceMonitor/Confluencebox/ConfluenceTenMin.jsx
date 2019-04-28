@@ -31,7 +31,6 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
         type: 'line',
         lineStyle: {
           type: 'solid',
-          color: HLColors[i],
           width: 1,
         },
         label: {
@@ -54,6 +53,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     const confluenceTenMinGraphic = filterDispersionRatio.length===0  ? showNoData : hiddenNoData;
     const option = {
       graphic: confluenceTenMinGraphic,
+      color: ['#3e97d1', ...HLColors],
       title: {
         text: '时序图',
         textStyle: {
@@ -171,7 +171,6 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
           type: 'line',
           lineStyle: {
             type: 'dotted',
-            color: '#3e97d1',
             width: 1,
           },
           label: {

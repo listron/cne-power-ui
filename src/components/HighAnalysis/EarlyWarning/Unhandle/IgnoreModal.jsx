@@ -46,16 +46,19 @@ class IgnoreModal extends Component {
     handleIngoreOk = () => { // 忽略原因点击确定
         const { ignoreReasonCode, otherReason, timeType, deadline,otherData } = this.state;
         const { ignoreReason } = this.props;
-        if (ignoreReasonCode === 1407 && otherReason.length === 0) {
+        message.config({top:188,duration: 2, maxCount: 1,});
+        if (ignoreReasonCode === 1407 && otherReason.trim().length === 0) {
+            message.warning('请填写其他忽略原因');
+        } else if(!ignoreReasonCode){
             message.warning('请填写忽略原因');
-        } else if (timeType === 'other' && otherData) {
+        } else if (timeType === 'other' && !otherData) {
             message.warning('请填写截止时间');
         } else {
             this.props.onChange({
                 ignoreReasonCode: ignoreReasonCode,
                 ignoreReason: ignoreReasonCode !== 1407 ? ignoreReason.filter(e => e.id === ignoreReasonCode)[0].name : otherReason,
                 buttonStatus: 'sure',
-                deadline,
+                deadline:timeType==='other'? otherData:deadline,
                 ignoreTime:moment().utc().format()
             })
             this.setState({ // 恢复初始值

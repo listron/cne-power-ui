@@ -288,15 +288,15 @@ class JoinInForm extends Component{
                   {required: true, message: '请输入用户名'},
                   {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi,message: '请输入字符长度为3-25的用户名'},
                 ],
-                initialValue: importUser ? username : '',
+                initialValue: username || '',
               })(
-                <Input addonBefore={<i className="iconfont icon-user"></i>} disabled={importUser ? true : false} placeholder="请输入用户名" />
+                <Input addonBefore={<i className="iconfont icon-user"></i>} disabled={username ? true : false} placeholder="请输入用户名" />
               )}
             </FormItem>
             <FormItem label="姓名"  labelCol={{sm: 8}} wrapperCol={{sm: 16}}>
               {getFieldDecorator('userFullname', {
                 rules: [
-                  {required: true, message: '请输入用户名'},
+                  {required: true, message: '请输入真实姓名'},
                   { validator: (rule, value, callback) => {
                     const exactStr = value.trim();
                     const patternRule = /^[A-Za-z \u4e00-\u9fa5]{0,30}$/;
@@ -311,7 +311,8 @@ class JoinInForm extends Component{
               })(
                 <Input
                   addonBefore={<i className="iconfont icon-user" />}
-                  placeholder="请输入用户名"
+                  disabled={userFullName ? true : false}
+                  placeholder="请输入真实姓名"
                 />
               )}
             </FormItem>
@@ -335,7 +336,7 @@ class JoinInForm extends Component{
                 <Input addonBefore={<i className="iconfont icon-password"></i>} type="password" placeholder="请再次输入" />
               )}
             </FormItem>
-            <FormItem {...tailFormItemLayout} >
+            <FormItem {...tailFormItemLayout} className={styles.agreementItem}>
               {getFieldDecorator('userAgreement', {
               })(
                 <Checkbox className={styles.userArgee}  >

@@ -26,7 +26,7 @@ class ConfluenceBoxList extends Component {
       alarmSwitch: false,
       pageSize: 10,
       currentPage: 1,
-      sortName: '',
+      sortName: 'devicePower',
       descend: false,
       firstLoad: true,
     }
@@ -156,7 +156,7 @@ class ConfluenceBoxList extends Component {
             }
           };
         },
-        sorter: (a, b) => a.devicePower - b.devicePower,
+        sorter: true,
       }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
@@ -188,7 +188,7 @@ class ConfluenceBoxList extends Component {
         title: () => <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
-        render: value => value,
+        render: value => value && value+'%' || '--',
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
         title: () => <TableColumnTitle title="温度" unit="℃" />,
@@ -222,8 +222,8 @@ class ConfluenceBoxList extends Component {
       key: i,
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['parentDeviceName', 'deviceStatus'];
-      const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp'];
+      const arraySort = ['deviceName'];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp','deviceStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
@@ -336,7 +336,7 @@ class ConfluenceBoxList extends Component {
                         <div className={styles.hlBlockFooter} >
                           <div>电压：{showVoltage}V</div>
                           <div>电流：{showElectricity}A</div>
-                          <div className={styles[status]}>离散率：{dispersionRatio || '--'}</div>
+                          <div className={styles[status]}>离散率：{dispersionRatio || '--'} %</div>
                           <div>温度：{showTemp}℃</div>
                         </div>
                       </Link>

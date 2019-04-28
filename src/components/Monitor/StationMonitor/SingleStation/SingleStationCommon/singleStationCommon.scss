@@ -132,6 +132,18 @@
 .cardSection{ 
   text-align: center;
   margin: 20px;
+  display: flex;
+  // flex: 1;
+  // width:1212px;
+  flex-direction: row;
+  justify-content: space-around;
+  overflow: hidden;
+  .operatorList,.weatherList,.alarmList,.workList{
+    width:23%;
+    display: flex;
+    // flex: 1;
+    flex-direction: column;
+  }
   .weatherList{
     border: 1px solid #dfdfdf;
     border-radius:4px;
@@ -189,9 +201,7 @@
     height: 140px;
     padding: 0 14px;
     position: relative;
-    background-image: url(/img/blurbg.png);
-    background-position: center 140px;
-    background-repeat:no-repeat;
+    background: url(/img/blurbg.png)  center 140px no-repeat;
     .blurbg{
       position: absolute;
       left: 23px;

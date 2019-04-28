@@ -1,5 +1,6 @@
 @import '../../../../theme/theme.scss';
 
+.singleStationAnalysisSearch,.areaStationSearch,.areaAnalysisSearch{
 .searchPart{ // 搜索框
   display: flex;
   align-items: center;
@@ -12,10 +13,18 @@
     align-items: center;
     .stationSelect,.regionStationSelect{
       display: flex;
+      align-items: center;
       .text{
         color: $darkColor;
         margin-left: 28px;
         margin-right: 12px;
+      }
+    }
+    .regionStationSelect{
+      :global{
+        .ant-select{
+          width: 100px;
+        }
       }
     }
     .dateSelect{
@@ -36,12 +45,14 @@
     margin-right: 24px;
   }
 }
+}
 
-.analysisReport,.areaStationReport{ // 文档
+.analysisReport{ // 文档
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #000;
   .monthReportContent,.yearReportContent{
     display: flex;
     flex-direction: column;
@@ -51,24 +62,36 @@
     border:1px solid #999;
     .titleText{
       font-size: 20px;
-      margin-top: 30px;
+      margin: 30px 0;
     }
     .contentText{
       margin: 20px 30px;
       .time{
-        margin: 0 4px;
+        margin: 0 2px;
       }
       .text{
-        margin: 0 4px;
+        margin: 0 2px;
         color: $themeColor;
       }
       .paragraph{
         text-indent:1.5em;
       }
-      .dotted{
-        border-bottom: 1px dashed #999;
-        text-decoration: none; 
+      .distanceTop{
+        margin-top:30px;
+      }
+      .distanceBottom{
+        margin-bottom:30px;
       }
     }
+  }
+}
+
+.nodata{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 400px;
+  img{
+    margin: 0 auto;
   }
 }

@@ -23,6 +23,7 @@ class DeviceStatus extends Component {
     summaryData: PropTypes.array,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
+    tableType: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     regionStationDeviceData: PropTypes.array,
@@ -31,8 +32,12 @@ class DeviceStatus extends Component {
     regionData: PropTypes.array,
   }
 
+  componentWillReceiveProps(){
+
+  }
+
   onTimeChange = (value) => {
-    console.log(value)
+    
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -42,7 +47,7 @@ class DeviceStatus extends Component {
     this.props.changeDeviceStatusStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
-    console.log(value)
+    
     const modeType = {
       "area": 1,
       "station": 2,
@@ -50,25 +55,23 @@ class DeviceStatus extends Component {
       "wind": 4,
       "status": 5,
     }
-    this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
+    this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: list })
   }
   onSearch = () => {
-    // const {dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize,}=this.props;
-    // const params={dataType,startTime,endTime,summaryType,summaryData,sortField,sortMethod,pageNum,pageSize};
-    // this.props.getPowerReportList({...params})
     this.onChangeFilter()
   }
   onChangeFilter = (value) => {
-    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
-    console.log('startTime: ', startTime);
+    const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
-    this.props.getDeviceStatusList({ ...params, ...value })
-    this.props.getDeviceStatusDetail({ ...params, ...value })
+    tableType==='all'&&this.props.getDeviceStatusList({ ...params, ...value })
+    tableType==='detail'&&this.props.getDeviceStatusDetail({ ...params, ...value })
   }
 
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportDeviceStatus}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    const params={dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod};
     let timeZone = moment().zone();
     // const modeType = ['状态', '区域', '电站', '型号', '风机','设备状态'];
     // const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -76,26 +79,24 @@ class DeviceStatus extends Component {
       url,
       fileName: `设备状态报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })
   }
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData ,dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize } = this.props;
+    const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}
             showFault={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
@@ -103,7 +104,7 @@ class DeviceStatus extends Component {
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
           <Button className={styles.btn} onClick={this.exportList}>导出</Button>
         </div>
-        <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
+        <TableList {...this.props} onChangeFilter={this.onChangeFilter} params={params} />
       </div>
     )
   }

@@ -110,106 +110,96 @@ class CardSection extends Component {
     }
     const ticketList = `/operation/ticket/list?stationCode=${stationCode}`;
     const alarmRealtime = `/monitor/alarm/realtime?stationCode=${stationCode}`;
-
     return (
       <div className={styles.cardSection}>
-        <Row gutter={16} type="flex" justify="space-around" >
-          <Col span={6}>
-            <div className={styles.operatorList} >
-              <div className={styles.cardTitle}>电站运维人员</div>
-              <Carousel autoplay dots={true} arrow={true} >
-                {tmpOperatorList.length > 0 ?
-                  tmpOperatorList.map((item, index) => {
-                    return (<div key={index} className={styles.operatorContent} >
-                      {item.map((e, i) => {
-                        return (
-                          <div key={i} className={styles.userInfo} >
-                            <span title={e.userFullName || e.userName} style={{ width: '55px', }} className={styles.userMes}>{e.userFullName || e.userName}</span>
-                            <span title={e.roleDesc} style={{ width: '104px' }} className={styles.userMes}>{e.roleDesc}</span>
-                            <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userPhone}>{e.phoneNum}</span>
-                          </div>
-                        )
-                      })}
-                    </div>)
-                  }) : <div className={styles.nopeople} ><div>暂未设置</div><img src="/img/nopeople.png" /></div>
-                }
-              </Carousel>
-              {/* <img src="/img/blurbg.png" className={styles.blurbg} /> */}
+        <div className={styles.operatorList} >
+          <div className={styles.cardTitle}>电站运维人员</div>
+          <Carousel autoplay={true} dots={true} arrow={true} >
+            {tmpOperatorList.length > 0 ?
+              tmpOperatorList.map((item, index) => {
+                // return <div>{'test'}</div>
+                // return (<div key={index} className={styles.operatorContent} >
+                //   {item.map((e, i) => {
+                //     return (
+                //       <div key={i} className={styles.userInfo} >
+                //         <span title={e.userFullName || e.userName} style={{ width: '55px', }} className={styles.userMes}>{e.userFullName || e.userName}</span>
+                //         <span title={e.roleDesc} style={{ width: '104px' }} className={styles.userMes}>{e.roleDesc}</span>
+                //         <span title={e.phoneNum} style={{ width: '98px', }} className={styles.userPhone}>{e.phoneNum}</span>
+                //       </div>
+                //     )
+                //   })}
+                // </div>)
+              }) : <div className={styles.nopeople} ><div>暂未设置</div><img src="/img/nopeople.png" /></div>
+            }
+          </Carousel>
+          <img src="/img/blurbg.png" className={styles.blurbg} />
+        </div>
+        <div className={styles.weatherList}>
+          {weatherList && weatherList.length > 0 &&
+            <div>
+              <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
+                <Icon type="left" />
+              </Button>
+              <Button type="primary" onClick={this.next} disabled={weatherList.length === 2 ? true : disabled2} className={styles.next} className={styles.weatherRight} >
+                <Icon type="right" />
+              </Button>
             </div>
-          </Col>
-          <Col span={6}>
-            <div className={styles.weatherList}>
-              {weatherList && weatherList.length > 0 &&
-                <div>
-                  <Button type="primary" onClick={this.prev} disabled={disabled1} className={styles.weatherLeft} >
-                    <Icon type="left" />
-                  </Button>
-                  <Button type="primary" onClick={this.next} disabled={weatherList.length === 2 ? true : disabled2} className={styles.next} className={styles.weatherRight} >
-                    <Icon type="right" />
-                  </Button>
-                </div>
+          }
+          {weatherList && weatherList.length > 0 ?
+            weatherList && weatherList.map((e, i) => {
+              if (i < 2) {
+                return (
+                  <div style={{ display: 'inline-block', margin: '0 5px', }} key={i} className="weather" id={Number(i)} >
+                    <div className={i === 0 ? styles.today : ''} >{i === 0 ? '今天' : (i === 1 ? '明天' : e.weatherDate)}</div>
+                    <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
+                    <div>{e.temperature || ''}</div>
+                    <div>{e.weather || ''}</div>
+                    <div>{e.wind || ''}</div>
+                  </div>
+                );
+              } else {
+                let tmpDate = e.weatherDate.substr(5);
+                // tmpDate.splice(2,0,"-");
+                return (<div style={{ display: 'none', margin: '0 5px', }} key={i} className="weather" id={Number(i)} >
+                  <div>{tmpDate}</div>
+                  <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
+                  <div>{e.temperature || ''}</div>
+                  <div>{e.weather || ''}</div>
+                  <div>{e.wind || ''}</div>
+                </div>);
               }
-              {weatherList && weatherList.length > 0 ?
-                weatherList && weatherList.map((e, i) => {
-                  if (i < 2) {
-                    return (
-                      <div style={{ display: 'inline-block', margin: '0 5px', }} key={i} className="weather" id={Number(i)} >
-                        <div className={i === 0 ? styles.today : ''} >{i === 0 ? '今天' : (i === 1 ? '明天' : e.weatherDate)}</div>
-                        <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
-                        <div>{e.temperature || ''}</div>
-                        <div>{e.weather || ''}</div>
-                        <div>{e.wind || ''}</div>
-                      </div>
-                    );
-                  } else {
-                    let tmpDate = e.weatherDate.substr(5);
-                    // tmpDate.splice(2,0,"-");
-                    return (<div style={{ display: 'none', margin: '0 5px', }} key={i} className="weather" id={Number(i)} >
-                      <div>{tmpDate}</div>
-                      <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
-                      <div>{e.temperature || ''}</div>
-                      <div>{e.weather || ''}</div>
-                      <div>{e.wind || ''}</div>
-                    </div>);
-                  }
-                }) : <div className={styles.noweather} >暂无天气数据</div>
-              }
+            }) : <div className={styles.noweather} >暂无天气数据</div>
+          }
+        </div>
+        <div title="活动告警" className={styles.alarmList} >
+          <div className={styles.cardTitle}>
+            <span>活动告警</span>
+            <Link to={alarmRealtime} ><i className="iconfont icon-more"></i></Link>
+          </div>
+          {alarmList &&
+            <div className={styles.alarmContent} >
+              <div><div>{alarmList.oneWarningNum === null ? '--' : alarmList.oneWarningNum}</div><div className={styles.oneWarning}>一级</div></div>
+              <div><div>{alarmList.twoWarningNum === null ? '--' : alarmList.twoWarningNum}</div><div className={styles.twoWarning}>二级</div></div>
+              <div><div>{alarmList.threeWarningNum === null ? '--' : alarmList.threeWarningNum}</div><div className={styles.threeWarning}>三级</div></div>
+              <div><div>{alarmList.fourWarningNum === null ? '--' : alarmList.fourWarningNum}</div><div className={styles.fourWarning}>四级</div></div>
             </div>
-          </Col>
-          <Col span={6}>
-            <div title="活动告警" className={styles.alarmList} >
-              <div className={styles.cardTitle}>
-                <span>活动告警</span>
-                <Link to={alarmRealtime} ><i className="iconfont icon-more"></i></Link>
-              </div>
-              {alarmList &&
-                <div className={styles.alarmContent} >
-                  <div><div>{alarmList.oneWarningNum === null ? '--' : alarmList.oneWarningNum}</div><div className={styles.oneWarning}>一级</div></div>
-                  <div><div>{alarmList.twoWarningNum === null ? '--' : alarmList.twoWarningNum}</div><div className={styles.twoWarning}>二级</div></div>
-                  <div><div>{alarmList.threeWarningNum === null ? '--' : alarmList.threeWarningNum}</div><div className={styles.threeWarning}>三级</div></div>
-                  <div><div>{alarmList.fourWarningNum === null ? '--' : alarmList.fourWarningNum}</div><div className={styles.fourWarning}>四级</div></div>
-                </div>
-              }
+          }
+        </div>
+        <div title="电站工单" className={styles.workList} >
+          <div className={styles.cardTitle}>
+            <span>电站工单</span>
+            <Link to={ticketList} >
+              <i className="iconfont icon-more" ></i>
+            </Link>
+          </div>
+          {workList &&
+            <div className={styles.workContent} >
+              <div><div>{workList.worklistNewNum === null ? '--' : workList.worklistNewNum}</div><div className={styles.workListRate} >今日新增</div></div>
+              <div><div>{workList.worklistHandleNum === null ? '--' : workList.worklistHandleNum}</div><div className={styles.workListRate}>处理中</div></div>
+              <div><div>{workList.worklistCompleteNum === null ? '--' : workList.worklistCompleteNum}</div><div className={styles.workListRate}>今日完成</div></div>
             </div>
-          </Col>
-          <Col span={6}>
-            <div title="电站工单" className={styles.workList} >
-              <div className={styles.cardTitle}>
-                <span>电站工单</span>
-                <Link to={ticketList} >
-                  <i className="iconfont icon-more" ></i>
-                </Link>
-              </div>
-              {workList &&
-                <div className={styles.workContent} >
-                  <div><div>{workList.worklistNewNum === null ? '--' : workList.worklistNewNum}</div><div className={styles.workListRate} >今日新增</div></div>
-                  <div><div>{workList.worklistHandleNum === null ? '--' : workList.worklistHandleNum}</div><div className={styles.workListRate}>处理中</div></div>
-                  <div><div>{workList.worklistCompleteNum === null ? '--' : workList.worklistCompleteNum}</div><div className={styles.workListRate}>今日完成</div></div>
-                </div>
-              }
-            </div>
-          </Col>
-        </Row>
+          }
+        </div>
       </div>
     )
   }
