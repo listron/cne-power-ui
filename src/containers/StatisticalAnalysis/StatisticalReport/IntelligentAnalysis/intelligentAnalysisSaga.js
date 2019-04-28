@@ -93,7 +93,7 @@ function* getArea({ payload = {} }) { // 获取区域对比报告信息
             reportShow: false,
           }
         })
-        return message.error("暂无数据");
+        return message.error("暂无数据")
       }else{
        yield put({
         type: intelligentAnalysisAction.GET_INTELLIGENTANALYSIS_SUCCESS,

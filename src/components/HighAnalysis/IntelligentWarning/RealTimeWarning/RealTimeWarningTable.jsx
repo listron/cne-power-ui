@@ -11,16 +11,16 @@ const Option = Select.Option;
 
 class RealTimeWarningTable extends Component {
   static propTypes = {
-    selectedTransfer:PropTypes.array,
-    defectTypes:PropTypes.array,
-    changeRealtimeWarningStore:PropTypes.func,
-    transferWarning:PropTypes.func,
-    HandleRemoveWarning:PropTypes.func,
-    realtimeWarning:PropTypes.array,
-    selectedRowKeys:PropTypes.array,
-    getLostGenType:PropTypes.func,
-    pageSize:PropTypes.number,
-    currentPage:PropTypes.number,
+    selectedTransfer: PropTypes.array,
+    defectTypes: PropTypes.array,
+    changeRealtimeWarningStore: PropTypes.func,
+    transferWarning: PropTypes.func,
+    HandleRemoveWarning: PropTypes.func,
+    realtimeWarning: PropTypes.array,
+    selectedRowKeys: PropTypes.array,
+    getLostGenType: PropTypes.func,
+    pageSize: PropTypes.number,
+    currentPage: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context)
@@ -49,18 +49,18 @@ class RealTimeWarningTable extends Component {
     this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
 
-  onShowDetail=(record)=>{
+  onShowDetail = (record) => {
     this.setState({
       showTransferTicketModal: true,
     });
-    this.props.changeRealtimeWarningStore({selectedTransfer:[record]})
+    this.props.changeRealtimeWarningStore({ selectedTransfer: [record] })
   }
 
   cancelRowSelect = () => {//取消选中
     this.props.changeRealtimeWarningStore({ selectedRowKeys: [] });
   }
-  
- 
+
+
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
@@ -95,13 +95,9 @@ class RealTimeWarningTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          if (record.deviceTypeCode === 206) {
-            return (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
-              </div>
-            );
-          } else if (record.deviceTypeCode === 304) {
+          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
+          if (isClick) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
@@ -140,15 +136,15 @@ class RealTimeWarningTable extends Component {
         render: (text, record) => (
           <div>
             <span>
-              <i className="iconfont icon-tranlist icon-action" onClick={() => {this.onShowDetail (record)}} />
+              <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record) }} />
             </span>
           </div>
         )
       }
     ]
-    const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading,selectedTransfer,getLostGenType,defectTypes,transferWarning} = this.props;
+    const { realtimeWarning, selectedRowKeys, pageSize, currentPage, loading, selectedTransfer, getLostGenType, defectTypes, transferWarning } = this.props;
     const { sortName, descend } = this.state;
-    const { showTransferTicketModal, showHandleRemoveModal,  } = this.state;
+    const { showTransferTicketModal, showHandleRemoveModal, } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -199,7 +195,7 @@ class RealTimeWarningTable extends Component {
         </div>}
 
         {showTransferTicketModal &&
-            <TransferWarningModal
+          <TransferWarningModal
             onCancel={() => this.setState({ showTransferTicketModal: false })}
             onTransferAlarm={transferWarning}
             defectTypes={defectTypes}
