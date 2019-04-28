@@ -33,16 +33,22 @@ class FilteredItems extends Component {
   };
 
   onCancelAlgorithm = (e) => { //取消算法模型
-    const { onChangeFilter, algorithmModalId } = this.props;
-    Array.prototype.remove = function(val) {
-      const index = this.indexOf(val);
-      if (index > -1) {
-        this.splice(index, 1);
+    const { onChangeFilter, algorithmModalName, algorithmModalId } = this.props;
+    // 删除多选数组
+    for (let i = 0; i < algorithmModalId.length; i++) {
+      if(`${e}` === algorithmModalId[i]) {
+        algorithmModalId.splice(i, 1);
       }
-    };
-    algorithmModalId.remove(e);
+    }
+    // 删除显示的tag数组
+    for (let i = 0; i < algorithmModalName.length; i++) {
+      if(e === algorithmModalName[i].algorithmId) {
+        algorithmModalName.splice(i, 1);
+      }
+    }
     onChangeFilter({
-      algorithmModalId: algorithmModalId,
+      algorithmModalId,
+      algorithmModalName
     })
   };
 
@@ -62,18 +68,19 @@ class FilteredItems extends Component {
       createTimeStart: '',
       createTimeEnd: '',
       stationCodes: '',
-      algorithmModalId: []
+      algorithmModalId: [],
+      algorithmModalName: []
     });
   };
 
   render() {
-    const {createTimeStart, createTimeEnd, stationCodes, stations, algorithmModalId } = this.props;
+    const {createTimeStart, createTimeEnd, stationCodes, stations, algorithmModalName } = this.props;
     const tmpSelectedStation = stationCodes.split(',');//选中电站的数组
     const selectedStation = stations.filter(e=>
       tmpSelectedStation.some(m=>
         m === e.get('stationCode').toString()
       )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
-    if(createTimeStart === '' && createTimeEnd === '' && stationCodes === '' && algorithmModalId.length === 0) {
+    if(createTimeStart === '' && createTimeEnd === '' && stationCodes === '' && algorithmModalName.length === 0) {
       return null;
     }
     const style = {
@@ -98,9 +105,9 @@ class FilteredItems extends Component {
             {`${e.getIn([0, 'provinceName'])} ${e.size}`}
           </Tag>
         ))}
-        {algorithmModalId.length > 0 && algorithmModalId.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelAlgorithm(e)} key={e} >
-            {`${e}`}
+        {algorithmModalName.length > 0 && algorithmModalName.map(e=>(
+          <Tag style={style} closable onClose={()=>this.onCancelAlgorithm(e.algorithmId)} key={e.algorithmId} >
+            {`${e.algorithmName}`}
           </Tag>
         ))}
         <span className={styles.filterDeleteAll} onClick={this.resetAll}>清空条件</span>

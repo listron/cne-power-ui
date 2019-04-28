@@ -426,7 +426,8 @@ export default {
       faultTaskList: "/v3/wtfdd/task/list", // 获取预警任务列表-列表视图
       standAlone: "/v3/wtfdd/result/residual", // 获取单风机自适应模块检测结果
       similarityList: "/v3/wtfdd/result/similarity", // 获取风机相似性结果
-      allFanResult: "/v3/wtfdd/result/similarity", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
+      allFanResult: "/v3/wtfdd/result/std", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
+      tenMinutesLine: "/v3/wtfdd/pt10m", // 获取风机10分钟数据
     }
   }
 }

@@ -15,7 +15,12 @@ const initState = Immutable.fromJS({
     natureList: [],
     healthList: []
   },
-  algoOptionList: [] // 获取算法列表
+  algoOptionList: [{// 获取算法列表
+    algorithmModalId: ""
+  }],
+  pageSize: 10,
+  pageNum: 1,
+  algoListView: [] // 获取预警任务列表-算法列表视图
 });
 
 

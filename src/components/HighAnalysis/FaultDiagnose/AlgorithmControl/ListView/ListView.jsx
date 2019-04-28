@@ -10,12 +10,16 @@ import CommonPagination from "../../../../Common/CommonPagination";
 import ListViewTable from "./ListViewTable/ListViewTable";
 
 const ButtonGroup = Button.Group;
-const pageSize = 10, pageNum = 1, total = 100;
 
 export default class ListView extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    onAddControlFunc: PropTypes.func
+    onAddControlFunc: PropTypes.func,
+    getAlgoOptionList: PropTypes.func,
+    getListView: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    algoListView: PropTypes.array,
   };
 
   constructor(props) {
@@ -23,6 +27,21 @@ export default class ListView extends React.Component {
     this.state = {
       showFilter: '', // 筛选条件判断
     };
+  }
+  componentDidMount() {
+    const { getListView } = this.props;
+    const params = {
+      stationCode:null,
+      algorithmIds:[1,2],
+      startTime:"",
+      endTime:"",
+      status:null,
+      pageSize:null,
+      pageNum:null,
+      sortField:"",
+      sortMethod:""
+    };
+    getListView(params);
   }
 
   onAddControl = () => {
@@ -45,7 +64,7 @@ export default class ListView extends React.Component {
 
   render() {
     const { showFilter } = this.state;
-    // const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
+    const { pageSize, pageNum, algoListView } = this.props;
     return (
       <div className={styles.listView}>
         <div className={styles.listViewSelect}>
@@ -88,7 +107,7 @@ export default class ListView extends React.Component {
             </Button>
           </div>
           <div>
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={algoListView.length} onPaginationChange={this.onPaginationChange} />
           </div>
         </div>
         <ListViewTable {...this.props} />

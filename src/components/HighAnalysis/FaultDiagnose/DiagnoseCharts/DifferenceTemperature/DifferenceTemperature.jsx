@@ -11,6 +11,9 @@ const { RangePicker } =  DatePicker;
 export default class DifferenceTemperature extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    tenMinutesDiffList: PropTypes.array,
+    match: PropTypes.object,
+    getTenMinutesDiff: PropTypes.func,
   };
 
   constructor(props) {
@@ -19,9 +22,42 @@ export default class DifferenceTemperature extends React.Component {
   }
 
   componentDidMount() {
-    const  { diffChart } = this;
+    const  {
+      diffChart,
+      props: {
+        getTenMinutesDiff,
+        match:{
+          params: {
+            stationCode
+          }
+        },
+        tenMinutesDiffList
+      }
+    } = this;
     const myChart = eCharts.init(diffChart);
-    myChart.setOption(diffTemperatureOptions());
+    const params = {
+      stationCode,
+      pointCode: "GN010-GN011", //温度差-固定字段
+      deviceFullCodes: ["82M101M39M1","82M101M39M2"],
+      startTime: "2019-04-22T01:00:00Z",
+      endTime: "2019-04-22T02:37:05Z"
+    };
+    const name = "F02";
+    // 接口
+    getTenMinutesDiff(params);
+    myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name));
+  }
+
+  componentDidUpdate() {
+    const  {
+      diffChart,
+      props: {
+        tenMinutesDiffList
+      }
+    } = this;
+    const myChart = eCharts.init(diffChart);
+    const name = "F02";
+    myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name));
   }
 
   render() {

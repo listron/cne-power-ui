@@ -6,13 +6,14 @@ import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/F
 import {faultAllFanAction} from "./faultAllFanAction";
 import {connect} from "react-redux";
 import {commonAction} from "../../../alphaRedux/commonAction";
+import { dateArrFormat } from "../../../../utils/utilFunc";
 
 class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
-    location: PropTypes.object,
     history: PropTypes.object,
+    match: PropTypes.object,
     changeFaultAllFanStore: PropTypes.func,
   };
 
@@ -30,15 +31,15 @@ class FaultAllFan extends React.Component {
   };
 
   callBackList = () => {
-    // const {
-    //   history,
-    //   location: {
-    //     state: {
-    //     }
-    //   }
-    // } = this.props;
-    console.log(this.props, "this...props");
-    // history.push("");
+    const {
+      history,
+      match:{
+        params: {
+          stationCode
+        }
+      },
+    } = this.props;
+    history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
   };
 
   render() {
@@ -72,6 +73,9 @@ const mapDispatchToProps = (dispatch) => ({
   getStandAloneList: payload => dispatch({ type: faultAllFanAction.getStandAloneList, payload }),
   getSimilarityList: payload => dispatch({ type: faultAllFanAction.getSimilarityList, payload }),
   getAllFanResultList: payload => dispatch({ type: faultAllFanAction.getAllFanResultList, payload }),
+  getTenMinutesBefore: payload => dispatch({ type: faultAllFanAction.getTenMinutesBefore, payload }),
+  getTenMinutesAfter: payload => dispatch({ type: faultAllFanAction.getTenMinutesAfter, payload }),
+  getTenMinutesDiff: payload => dispatch({ type: faultAllFanAction.getTenMinutesDiff, payload }),
   downLoadFile: payload => dispatch({
     type: commonAction.downLoadFile,
     payload: {

@@ -3,23 +3,50 @@ import moment from "moment"
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (flag) => {
-  var base = +new Date(1968, 9, 3);
-  var oneDay = 24 * 3600 * 1000;
-  var date = [];
-
-  for (var i = 1; i < 100; i++) {
-    var now = new Date(base += oneDay);
-    date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+export const PreTemperatureOptions = (data, name) => {
+  // 处理设备名称
+  function itemFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.deviceName);
+    });
+    return newArr;
   }
-  /**
-   * series判断显示不一样的颜色，每条数据判断和一个参数对比
-   * 然后返回每条数据itemStyle : {
-          normal : {
-            color:'yellow',
-          }
-        },
-   * */
+  // 处理线条的value
+  function valueFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.value);
+    });
+    return newArr;
+  }
+  // 处理data
+  function dataFunc (arr) {
+    let newArr = [];
+    arr.map(cur => {
+      let obj = {}; // 保存对象
+      obj.name = cur.deviceName;
+      obj.type = "line";
+      obj.symbol = "none";
+      obj.itemStyle = {
+        normal : {
+          color: cur.deviceName === name ? '#91d2d3' : themeColor,
+        }
+      };
+      obj.stack = cur.deviceFullcode;
+      obj.data = valueFunc(cur.dataList);
+      newArr.push(obj);
+    });
+    return newArr;
+  }
+  //处理时间
+  function dateFunc(arr) {
+    let newArr = [];
+    arr[0].dataList && arr[0].dataList.map(cur => {
+      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
+    });
+    return newArr;
+  }
   return {
     tooltip: {
       trigger: 'axis',
@@ -38,7 +65,7 @@ export const PreTemperatureOptions = (flag) => {
       //   color: "red",
       //   fontSize: 12,
       // },
-      data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+      data: itemFunc(data)
     },
     grid: {
       height: '140px',
@@ -54,7 +81,7 @@ export const PreTemperatureOptions = (flag) => {
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: date,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -96,70 +123,77 @@ export const PreTemperatureOptions = (flag) => {
         shadowOffsetY: 2
       }
     }],
-    series: [
-      {
-        name:'邮件营销',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name:'联盟广告',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name:'视频广告',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name:'直接访问',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name:'搜索引擎',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[820, 932, 901, 934, 1290, 1330, 1320]
-      }
-    ]
+    series: dataFunc(data)
   };
 };
 
 // 故障图表-发电机后驱温度
-export const AfterTemperatureOptions = () => {
-  var base = +new Date(1968, 9, 3);
-  var oneDay = 24 * 3600 * 1000;
-  var date = [];
-
-  for (var i = 1; i < 100; i++) {
-    var now = new Date(base += oneDay);
-    date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+export const AfterTemperatureOptions = (data, name) => {
+  // 处理设备名称
+  function itemFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.deviceName);
+    });
+    return newArr;
   }
-  /**
-   * series判断显示不一样的颜色，每条数据判断和一个参数对比
-   * 然后返回每条数据itemStyle : {
-          normal : {
-            color:'yellow',
-          }
-        },
-   * */
+  // 处理线条的value
+  function valueFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.value);
+    });
+    return newArr;
+  }
+  // 处理data
+  function dataFunc (arr) {
+    let newArr = [];
+    arr.map(cur => {
+      let obj = {}; // 保存对象
+      obj.name = cur.deviceName;
+      obj.type = "line";
+      obj.symbol = "none";
+      obj.itemStyle = {
+        normal : {
+          color: cur.deviceName === name ? '#199475' : themeColor,
+        }
+      };
+      obj.stack = cur.deviceFullcode;
+      obj.data = valueFunc(cur.dataList);
+      newArr.push(obj);
+    });
+    return newArr;
+  }
+  //处理时间
+  function dateFunc(arr) {
+    let newArr = [];
+    arr[0].dataList && arr[0].dataList.map(cur => {
+      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
+    });
+    return newArr;
+  }
   return {
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
         return [pt[0], '10%'];
       }
+    },
+    legend: {
+      top: "250px",
+      width: '100%',
+      itemWidth: 14,
+      itemHeight: 6,
+      x: 'center',
+      y: 'bottom',
+      // textStyle: {
+      //   color: "red",
+      //   fontSize: 12,
+      // },
+      data: itemFunc(data)
+    },
+    grid: {
+      height: '140px',
     },
     xAxis: {
       type: 'category',
@@ -172,7 +206,7 @@ export const AfterTemperatureOptions = () => {
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: date,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -199,10 +233,11 @@ export const AfterTemperatureOptions = () => {
     dataZoom: [{
       type: 'inside',
       start: 0,
-      end: 100
+      end: 100,
     }, {
       start: 0,
       end: 10,
+      top: "220px",
       handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
       handleSize: '80%',
       handleStyle: {
@@ -213,64 +248,55 @@ export const AfterTemperatureOptions = () => {
         shadowOffsetY: 2
       }
     }],
-    series: [
-      {
-        name:'邮件营销',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name:'联盟广告',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name:'视频广告',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name:'直接访问',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name:'搜索引擎',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[820, 932, 901, 934, 1290, 1330, 1320]
-      }
-    ]
+    series: dataFunc(data)
   };
 };
 
 // 故障图表-温度差
-export const diffTemperatureOptions = () => {
-  var base = +new Date(1968, 9, 3);
-  var oneDay = 24 * 3600 * 1000;
-  var date = [];
-
-  for (var i = 1; i < 100; i++) {
-    var now = new Date(base += oneDay);
-    date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+export const diffTemperatureOptions = (data, name) => {
+  // 处理设备名称
+  function itemFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.deviceName);
+    });
+    return newArr;
   }
-  /**
-   * series判断显示不一样的颜色，每条数据判断和一个参数对比
-   * 然后返回每条数据itemStyle : {
-          normal : {
-            color:'yellow',
-          }
-        },
-   * */
+  // 处理线条的value
+  function valueFunc(arr) {
+    let newArr = [];
+    arr.map(cur => {
+      newArr.push(cur.value);
+    });
+    return newArr;
+  }
+  // 处理data
+  function dataFunc (arr) {
+    let newArr = [];
+    arr.map(cur => {
+      let obj = {}; // 保存对象
+      obj.name = cur.deviceName;
+      obj.type = "line";
+      obj.symbol = "none";
+      obj.itemStyle = {
+        normal : {
+          color: cur.deviceName === name ? '#dc9c64' : themeColor,
+        }
+      };
+      obj.stack = cur.deviceFullcode;
+      obj.data = valueFunc(cur.dataList);
+      newArr.push(obj);
+    });
+    return newArr;
+  }
+  //处理时间
+  function dateFunc(arr) {
+    let newArr = [];
+    arr[0].dataList && arr[0].dataList.map(cur => {
+      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
+    });
+    return newArr;
+  }
   return {
     tooltip: {
       trigger: 'axis',
@@ -278,10 +304,24 @@ export const diffTemperatureOptions = () => {
         return [pt[0], '10%'];
       }
     },
+    legend: {
+      top: "250px",
+      width: '100%',
+      itemWidth: 14,
+      itemHeight: 6,
+      x: 'center',
+      y: 'bottom',
+      // textStyle: {
+      //   color: "red",
+      //   fontSize: 12,
+      // },
+      data: itemFunc(data)
+    },
+    grid: {
+      height: '140px',
+    },
     xAxis: {
       type: 'category',
-      boundaryGap: false,
-      data: date,
       axisLine:{
         lineStyle:{
           width: 0, //这里是为了突出显示加上的
@@ -290,6 +330,8 @@ export const diffTemperatureOptions = () => {
       axisTick:{
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
+      boundaryGap: false,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -316,10 +358,11 @@ export const diffTemperatureOptions = () => {
     dataZoom: [{
       type: 'inside',
       start: 0,
-      end: 100
+      end: 100,
     }, {
       start: 0,
       end: 10,
+      top: "220px",
       handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
       handleSize: '80%',
       handleStyle: {
@@ -330,43 +373,7 @@ export const diffTemperatureOptions = () => {
         shadowOffsetY: 2
       }
     }],
-    series: [
-      {
-        name:'邮件营销',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[120, 132, 101, 134, 90, 230, 210]
-      },
-      {
-        name:'联盟广告',
-        type:'line',
-        symbol: "none",
-        stack: '总量',
-        data:[220, 182, 191, 234, 290, 330, 310]
-      },
-      {
-        name:'视频广告',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[150, 232, 201, 154, 190, 330, 410]
-      },
-      {
-        name:'直接访问',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name:'搜索引擎',
-        symbol: "none",
-        type:'line',
-        stack: '总量',
-        data:[820, 932, 901, 934, 1290, 1330, 1320]
-      }
-    ]
+    series: dataFunc(data)
   };
 };
 
@@ -488,7 +495,6 @@ export const heatTemperatureOptions = (data, name) => {
     arr.map(cur => {
       newArr.push([cur.deviceName1, cur.deviceName2, cur.value]);
     });
-    console.log(newArr, "[[[[[");
     return newArr;
   }
   return {
@@ -552,9 +558,35 @@ export const heatTemperatureOptions = (data, name) => {
 };
 
 // 故障图表-严重程度及识别（所有风机）
-export const allFansOptions = () => {
+export const allFansOptions = (data, name) => {
+  const { cfResidual, cfStd } = data;
+  // 处理xAxis
+  function xAxisFunc(arr) {
+    let newArr = []; //保存value
+    arr.map(cur => {
+      newArr.push(cur.mean);
+    });
+    return newArr;
+  }
+
+  // 处理yAxis
+  function yAxisFunc(arr) {
+    let newArr = []; //保存value
+    arr.map(cur => {
+      newArr.push(cur.std);
+    });
+    return newArr;
+  }
   return {
-    color: ['#3398DB'],
+    title: {
+      text: name,
+      left: "46%",
+      textStyle: {
+        color: "#666666",
+        fontSize: 12
+      }
+    },
+    color: ["#3E97D1"],
     tooltip : {
       trigger: 'axis',
       axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -578,7 +610,7 @@ export const allFansOptions = () => {
             width: 0, //这里是为了突出显示加上的
           }
         },
-        data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        // data : xAxisFunc(cfStd),
         axisTick: {
           alignWithLabel: true,
           lineStyle:{ color: themeColor}    // 刻度的颜色
@@ -607,7 +639,7 @@ export const allFansOptions = () => {
         name:'直接访问',
         type:'bar',
         barWidth: '60%',
-        data:[10, 52, 200, 334, 390, 330, 220]
+        data: cfResidual
       },
       {
         name:'直接访问',
@@ -615,13 +647,14 @@ export const allFansOptions = () => {
         barWidth: '60%',
         itemStyle : {
           normal : {
-            color:'yellow',
+            color: '#a42b2c',
           }
         },
         lineStyle: {
           type: "dashed"
         },
-        data:[5, 14, 20, 104, 230, 110, 20]
+        symbol: 'none',  //取消折点圆圈
+        data: xAxisFunc(cfStd)
       }
     ]
   };

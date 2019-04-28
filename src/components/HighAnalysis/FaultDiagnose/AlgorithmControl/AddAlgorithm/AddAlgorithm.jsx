@@ -119,12 +119,16 @@ class AddAlgorithm extends React.Component {
 
   handlerResetForm = () => {
     const { form } = this.props;
-    form.setFieldsValue({
-      actionTime: null,
-      endTime: null,
-      startTime: null,
-      modal: 1,
-      selectStationName: [""]
+    this.setState({
+      actionAndEndTime: true,
+    }, () => {
+      form.setFieldsValue({
+        actionTime: null,
+        endTime: null,
+        startTime: null,
+        modal: 1,
+        selectStationName: [""]
+      });
     });
   };
 
@@ -133,7 +137,6 @@ class AddAlgorithm extends React.Component {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      this.sureModalFunc(true);
       const {
         modal,
         selectStationName,

@@ -11,6 +11,9 @@ const { RangePicker } =  DatePicker;
 export default class AfterTemperature extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    tenMinutesAfterList: PropTypes.array,
+    getTenMinutesAfter: PropTypes.func,
+    match: PropTypes.object,
   };
 
   constructor(props) {
@@ -19,9 +22,42 @@ export default class AfterTemperature extends React.Component {
   }
 
   componentDidMount() {
-    const  { afterChart } = this;
+    const  {
+      afterChart,
+      props: {
+        tenMinutesAfterList,
+        getTenMinutesAfter,
+        match:{
+          params: {
+            stationCode
+          }
+        },
+      }
+    } = this;
     const myChart = eCharts.init(afterChart);
-    myChart.setOption(AfterTemperatureOptions());
+    const params = {
+      stationCode,
+      pointCode: "GN011", //后驱测点-固定字段
+      deviceFullCodes: ["82M101M39M1","82M101M39M2"],
+      startTime: "2019-04-22T01:00:00Z",
+      endTime: "2019-04-22T02:37:05Z"
+    };
+    const name = "F02";
+    // 接口
+    getTenMinutesAfter(params);
+    myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name));
+  }
+
+  componentDidUpdate() {
+    const  {
+      afterChart,
+      props: {
+        tenMinutesAfterList,
+      }
+    } = this;
+    const name = "F02";
+    const myChart = eCharts.init(afterChart);
+    myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name));
   }
 
   render() {

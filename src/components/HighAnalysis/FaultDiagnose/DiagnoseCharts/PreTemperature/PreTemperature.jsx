@@ -11,27 +11,54 @@ const { RangePicker } =  DatePicker;
 export default class PreTemperature extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    getTenMinutesBefore: PropTypes.func,
+    match: PropTypes.object,
+    tenMinutesBeforeList: PropTypes.array
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      allFlag: false
     };
   }
 
   componentDidMount() {
-    const  { preChart } = this;
-    const { allFlag } = this.state;
+    const  {
+      preChart,
+      props: {
+        getTenMinutesBefore,
+        match:{
+          params: {
+            stationCode
+          }
+        },
+        tenMinutesBeforeList
+      },
+    } = this;
     const myChart = eCharts.init(preChart);
-    myChart.setOption(PreTemperatureOptions(allFlag));
+    const params = {
+      stationCode,
+      pointCode: "GN010", //前驱测点-固定字段
+      deviceFullCodes: ["82M101M39M1","82M101M39M2"],
+      startTime: "2019-04-22T01:00:00Z",
+      endTime: "2019-04-22T02:37:05Z"
+    };
+    const name = "F01";
+    // 接口
+    getTenMinutesBefore(params);
+    myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name));
   }
 
   componentDidUpdate() {
-    const  { preChart } = this;
-    const { allFlag } = this.state;
+    const  {
+      preChart,
+      props: {
+        tenMinutesBeforeList
+      }
+    } = this;
+    const name = "F01";
     const myChart = eCharts.init(preChart);
-    myChart.setOption(PreTemperatureOptions(allFlag));
+    myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name));
   }
 
 

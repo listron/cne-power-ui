@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./historyWarnTable.scss";
 import {Table} from "antd";
+import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
 
 export default class HistoryWarnTable extends React.Component {
   static propTypes = {
@@ -53,6 +54,9 @@ export default class HistoryWarnTable extends React.Component {
       title: '预期日期',
       dataIndex: 'predictionDate',
       sorter: true,
+      render: (predictionDate) => {
+        return <span>{dateArrFormat(predictionDate)}</span>
+      }
     }, {
       title: '算法模型',
       dataIndex: 'algorithmName',

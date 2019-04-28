@@ -20,13 +20,57 @@ const {
       faultTaskList,
       standAlone,
       similarityList,
-      allFanResult
+      allFanResult,
+      tenMinutesLine
     }
   }} = Path;
-
+// 处理数据
+// 查出两个数组相同的数据
+// 并且排在前面
+// warnList有故障风机，allList所有风机
+function getArrEqual(warnList, allList) {
+  let newSameArr = []; // 相同数据
+  let newDiffArr = []; // 相同数据
+  let newArr; // 拼接好的数据
+  // 取到相同的数据
+  for (let i = 0; i < allList.length; i++) {
+    for (let j = 0; j < warnList.length; j++) {
+      if(allList[i].deviceName === warnList[j].deviceName){
+        newSameArr.push(allList[j]);
+      }
+    }
+  }
+  // 取到不同的数据
+  for(var i = 0; i < allList.length; i++){
+    var obj = allList[i];
+    var num = obj.deviceName;
+    var isExist = false;
+    for(var j = 0; j < warnList.length; j++){
+      var aj = warnList[j];
+      var n = aj.deviceName;
+      if(n === num){
+        isExist = true;
+        break;
+      }
+    }
+    if(!isExist){
+      newDiffArr.push(obj);
+    }
+  }
+  // 为数据相同的添加属性 1，不同的数据添加属性 2
+  newArr = newSameArr.map(cur => {
+    // 代表有故障
+    return Object.assign(cur,{warnId: 1});
+  }).concat(newDiffArr.map(cur => {
+    // 代表无故障
+    return Object.assign(cur,{warnId: 2});
+  }));
+  return newArr;
+}
 function* getStationDeviceList(action) { // 获取单电站所有风机
   const { payload } = action;
   const url = `${APIBasePath}${stationDeviceList}`;
+  const warnFans = JSON.parse(localStorage.getItem("warnFans"));
   try {
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
@@ -39,7 +83,7 @@ function* getStationDeviceList(action) { // 获取单电站所有风机
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
-          stationDeviceList: response.data.data || {},
+          stationDeviceList: getArrEqual(warnFans, response.data.data.context) || [],
           loading: false,
         },
       });
@@ -89,7 +133,7 @@ function* getResetTask(action) { // 重新执行
 
 function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详情训练开始时间。。。
   const { payload } = action;
-  const url = `${APIBasePath}${warnHistory}`;
+  const url = `${APIBasePath}${faultTaskList}`;
   try {
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
@@ -102,7 +146,8 @@ function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
-          faultInfo: response.data.data || {},
+          faultInfo: response.data.data || [],
+          faultInfoMessage: response.data.message || "",
           loading: false,
         },
       });
@@ -120,7 +165,7 @@ function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详
 
 function* getFaultReport(action) { // 获取历史预警报告
   const {payload} = action;
-  const url = `${APIBasePath}${faultTaskList}`;
+  const url = `${APIBasePath}${warnHistory}`;
   try {
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
@@ -192,7 +237,6 @@ function* getSimilarityList(action) { // 获取风机相似性结果
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
-      console.log(response.data, "response.data");
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
@@ -224,11 +268,103 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
-      console.log(response.data, "response.data");
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
           allFanResultList: response.data.data || {},
+          loading: false,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温度
+  const { payload } = action;
+  const url = `${APIBasePath}${tenMinutesLine}`;
+  try {
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: true
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: faultAllFanAction.changeFaultAllFanStore,
+        payload: {
+          tenMinutesBeforeList: response.data.data || [],
+          loading: false,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温度
+  const { payload } = action;
+  const url = `${APIBasePath}${tenMinutesLine}`;
+  try {
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: true
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: faultAllFanAction.changeFaultAllFanStore,
+        payload: {
+          tenMinutesAfterList: response.data.data || [],
+          loading: false,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
+  const { payload } = action;
+  const url = `${APIBasePath}${tenMinutesLine}`;
+  try {
+    yield put({
+      type: faultAllFanAction.changeFaultAllFanStore,
+      payload: {
+        loading: true
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: faultAllFanAction.changeFaultAllFanStore,
+        payload: {
+          tenMinutesDiffList: response.data.data || [],
           loading: false,
         },
       });
@@ -252,6 +388,9 @@ export function* watchFaultAllFan() {
   yield takeEvery(faultAllFanAction.getStandAloneList, getStandAloneList);
   yield takeEvery(faultAllFanAction.getSimilarityList, getSimilarityList);
   yield takeEvery(faultAllFanAction.getAllFanResultList, getAllFanResultList);
+  yield takeEvery(faultAllFanAction.getTenMinutesBefore, getTenMinutesBefore);
+  yield takeEvery(faultAllFanAction.getTenMinutesAfter, getTenMinutesAfter);
+  yield takeEvery(faultAllFanAction.getTenMinutesDiff, getTenMinutesDiff);
 
 }
 //

@@ -14,7 +14,7 @@ export default class FaultAllFanHistory extends React.Component {
     match: PropTypes.object,
     onChangeFilter: PropTypes.func,
     getFaultReport: PropTypes.func,
-    faultReportInfo: PropTypes.array,
+    faultReportInfo: PropTypes.object,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
   };
@@ -123,7 +123,12 @@ export default class FaultAllFanHistory extends React.Component {
 
   render() {
     const { visibleFlag, pageSize, pageNum } = this.props;
-    const { loading, faultReportInfo } = this.props;
+    const {
+      loading,
+      faultReportInfo: {
+        dataList,
+        count
+      }} = this.props;
     const columns = [{
       title: '检测开始时间',
       dataIndex: 'startTime',
@@ -179,13 +184,13 @@ export default class FaultAllFanHistory extends React.Component {
       >
         <div className={styles.faultAllFanHistory}>
           <div className={styles.fanHistoryPagination}>
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={faultReportInfo.length} onPaginationChange={this.onPaginationChange} />
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} />
           </div>
           <Table
             pagination={false}
             loading={loading}
             rowKey={(record, index) => (record.taskId + index) || "key" }
-            dataSource={faultReportInfo}
+            dataSource={dataList}
             onChange={this.tableChange}
             columns={columns}
             locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}

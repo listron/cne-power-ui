@@ -26,8 +26,9 @@ export default class HeatMap extends React.Component {
         getSimilarityList
       }
     } = this;
+    const taskId = localStorage.getItem("taskId");
     const params = {
-      taskId: "387338641160192",
+      taskId,
       date: "2019-04-19"
     };
     const myChart = eCharts.init(heatChart);
@@ -43,8 +44,9 @@ export default class HeatMap extends React.Component {
         similarityList,
       }
     } = this;
+    const taskId = localStorage.getItem("taskId");
     const params = {
-      taskId: "387338641160192",
+      taskId,
       date: "2019-04-19"
     };
     const myChart = eCharts.init(heatChart);
@@ -52,8 +54,6 @@ export default class HeatMap extends React.Component {
   }
 
   render() {
-    const { similarityList } = this.props;
-    console.log(similarityList, "-=-=similarityList-=-");
     return (
       <div className={styles.heatChartsBox}>
         <div className={styles.heatChartsDiff}>

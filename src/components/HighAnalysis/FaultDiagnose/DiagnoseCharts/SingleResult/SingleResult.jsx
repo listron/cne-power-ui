@@ -26,8 +26,9 @@ export default class SingleResult extends React.Component {
         standAloneList
       }
     } = this;
+    const taskId = localStorage.getItem("taskId");
     const params = {
-      taskId: "387338641160192",
+      taskId,
       deviceFullCode: "82M101M39M1"
     };
     const myChart = eCharts.init(singleChart);
@@ -43,8 +44,9 @@ export default class SingleResult extends React.Component {
         standAloneList
       }
     } = this;
+    const taskId = localStorage.getItem("taskId");
     const params = {
-      taskId: "387338641160192",
+      taskId,
       deviceFullCode: "82M101M39M1"
     };
     const myChart = eCharts.init(singleChart);

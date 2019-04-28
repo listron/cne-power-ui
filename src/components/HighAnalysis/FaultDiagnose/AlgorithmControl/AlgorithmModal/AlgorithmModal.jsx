@@ -2,51 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./algorithmControl.scss";
 
-const data = [
-  {
-    id: 1,
-    name: "发电机转子不平衡检测与诊断",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-  {
-    id: 2,
-    name: "发电机转子不平衡检测与诊断",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456", "12333"]
-  },
-  {
-    id: 3,
-    name: "发电机转子不平衡检测与诊断",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-  {
-    id: 4,
-    name: "发电机转子不平衡检测与诊断",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456", "w145as", "w1asd", "w123", "w1456", "w145as", "w1asd"]
-  },
-  {
-    id: 5,
-    name: "发电机转子不平衡检测与诊断",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-];
-
-
 export default class AlgorithmModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     onChangeFilter: PropTypes.func,
     getAlgoList: PropTypes.func,
-    algoModelList: PropTypes.object
+    algoModelList: PropTypes.object,
+    algoOptionList: PropTypes.array,
   };
 
   constructor(props) {
@@ -59,11 +21,20 @@ export default class AlgorithmModal extends React.Component {
     getAlgoList();
   }
 
-  detailsFunc = () => {
-    // 点击带着参数跳转到列表视图
-    const { onChangeFilter } = this.props;
+  detailsFunc = (algorithmId) => {
+    // 参数跳转到列表视图
+    const { onChangeFilter, algoOptionList } = this.props;
+    let newSameArr = []; // 相同数据
+    // 取到相同的数据
+    for (let i = 0; i < algoOptionList.length; i++) {
+      if (`${algoOptionList[i].algorithmId}` === `${algorithmId}`) {
+        newSameArr.push(algoOptionList[i]);
+      }
+    }
     onChangeFilter({
-      viewType: "list"
+      viewType: "list",
+      algorithmModalId: [`${algorithmId}`],
+      algorithmModalName: newSameArr
     });
   };
 
@@ -75,7 +46,7 @@ export default class AlgorithmModal extends React.Component {
     } } = this.props;
     const largeSizeItem = largeSizeList && largeSizeList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
           <div>
             {cur.algorithmName}
           </div>
@@ -88,7 +59,7 @@ export default class AlgorithmModal extends React.Component {
     });
     const natureItem = natureList && natureList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
           <div>
             {cur.algorithmName}
           </div>
@@ -101,7 +72,7 @@ export default class AlgorithmModal extends React.Component {
     });
     const healthItem = healthList && healthList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
           <div>
             {cur.algorithmName}
           </div>

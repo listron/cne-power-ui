@@ -29,6 +29,7 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
     pageNum,
     sortField,
     sortMethod,
+    algorithmModalName
   } } = action;
   let deviceFullCodes = []; // 保存多个风机全编码
   selectDeviceCode && selectDeviceCode.map(cur => {
@@ -61,6 +62,7 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
         sortField: sortField,
         sortMethod: sortMethod,
         selectDeviceCode: selectDeviceCode,
+        algorithmModalName
       }
     });
     const response = yield call(axios.post, url, params);
