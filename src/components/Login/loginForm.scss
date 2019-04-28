@@ -128,12 +128,12 @@
   }
   .checkLoginPhone{
     width: 200px;
-    height: 60px;
-    margin: 20px auto;
+    height: 30px;
+    line-height: 30px;
+    margin: 8px auto;
     background: #f1f1f1;
     border-radius:2px;
     font-size: 12px;
-    padding-top: 6px;
     p{
       text-align: left;
       text-indent: 2em;
@@ -143,10 +143,11 @@
       span{
         color: $themeColor;
         cursor: pointer;
+        font-weight: 700;
       }
     }
   }
+  .loseInfo .userInfo{
+    cursor: pointer;
+  }
 }
-
-
-

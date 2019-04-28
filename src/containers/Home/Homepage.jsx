@@ -20,6 +20,9 @@ import Cookie from 'js-cookie';
 class Homepage extends Component {
 
   static propTypes = {
+    username: PropTypes.string,
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
     enterpriseId: PropTypes.string,
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
@@ -93,7 +96,7 @@ class Homepage extends Component {
 
   render() {
     const { 
-      changeLoginStore, enterpriseId, 
+      changeLoginStore, enterpriseId, username, userFullName, userLogo,
       realTimeInfo, // 10s实时数据 
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
@@ -108,6 +111,9 @@ class Homepage extends Component {
           realTimeInfo={realTimeInfo}
           energySaving={energySaving}
           resetMonitorData={resetMonitorData}
+          username={username}
+          userFullName={userFullName}
+          userLogo={userLogo}
         />
         <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
@@ -144,6 +150,9 @@ class Homepage extends Component {
 const mapStateToProps = (state) => ({
   ...state.homepage.toJS(),
   enterpriseId: Cookie.get('enterpriseId'),
+  username: state.common.get('username'),
+  userFullName: state.common.get('userFullName'),
+  userLogo: state.common.get('userLogo'),
 });
 
 const mapDispatchToProps = (dispatch) => ({

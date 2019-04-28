@@ -7,6 +7,7 @@ const FormItem = Form.Item;
 
 class LoginForm extends Component {
   static propTypes = {
+    loginLoading: PropTypes.bool,
     form: PropTypes.object,
     changeLoginStore: PropTypes.func,
     fetchLogin: PropTypes.func,
@@ -99,10 +100,6 @@ class LoginForm extends Component {
     }, 1000);
   }
 
-  hasErrors = (fieldsError) => {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
-
   sendCode = () => { // 点击获取验证码
     this.props.form.validateFields(['phoneNum'], (err, values) => {
       if (!err) {
@@ -177,16 +174,16 @@ class LoginForm extends Component {
   }
 
   render(){ // userEnterpriseStatus 3: 正常；4：异常；5：待审核；6：未通过审核；7：被移除。
-    const { getFieldDecorator, getFieldsError } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
     let { showPasswordLogin, timeValue } = this.state;
-    let { username, checkLoginPhone, userEnterpriseStatus = 3 } = this.props;
+    let { checkLoginPhone, userEnterpriseStatus = 3, loginLoading } = this.props;
     const abnormalTip = {
       4: '账号异常，请联系管理员！',
       5: '等待管理员审核',
       6: '未通过审核，如有问题，请联系管理员！',
       7: '您已被移出企业，无法登陆',
     }
-    return (
+    return ( // 老实说，写出如下dom还能正常跑的都特么是个神人。语义化标签懂不懂？一坨狗屎 todo,dom结构需重构。
       <div className={styles.loginForm}>
         {[4,5,6,7].includes(userEnterpriseStatus) && <div
           className={styles.loginAbnormal}
@@ -195,7 +192,7 @@ class LoginForm extends Component {
           <div className={styles.abnormalIcon}><i className="iconfont icon-ha" /></div>
           <div>{abnormalTip[userEnterpriseStatus]}</div>
         </div>}
-        {userEnterpriseStatus===3 &&
+        {(userEnterpriseStatus===3 || !userEnterpriseStatus) &&
         <Form onSubmit={this.onHandleSubmit}>
           {showPasswordLogin && this.renderUsernameLogin(getFieldDecorator)}
           {!showPasswordLogin && this.renderPhoneLogin(getFieldDecorator,timeValue)}
@@ -207,7 +204,7 @@ class LoginForm extends Component {
               <span onClick={() => this.props.changeLoginStore({pageTab: 'forget',showResetPassword: 0})}>忘记密码</span>
             </div>
             <div className={styles.loginBtn}>
-              <Button type="primary" htmlType="submit" disabled={this.hasErrors(getFieldsError())}>登录</Button>
+              <Button type="primary" htmlType="submit" loading={loginLoading}>登录</Button>
               {/* <div className={styles.yiLogin}>易巡登录</div> */}
             </div>
             {checkLoginPhone ? <div></div>
@@ -217,7 +214,10 @@ class LoginForm extends Component {
                 <p>如需加入企业，请<span onClick={()=>this.props.changeLoginStore({pageTab: 'joinIn'})}>加入企业</span>！</p>
               </div>
             }
-            {!username && <p>个人信息不完善，请完善<b onClick={this.jumpPersonalInfo} >个人信息</b></p> }
+            {!userEnterpriseStatus && <p className={styles.loseInfo}>
+              <span>个人信息不完善，请完善</span>
+              <span className={styles.userInfo} onClick={this.jumpPersonalInfo} >个人信息</span>
+            </p> }
           </FormItem>
         </Form>}
       </div>

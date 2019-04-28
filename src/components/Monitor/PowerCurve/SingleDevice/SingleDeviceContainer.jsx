@@ -72,7 +72,6 @@ class SingleDeviceContainer extends Component {
   }
   onOk = (selectdevice) => {
     let deviceFullCode = [this.props.match.params.deviceFullCode].concat(selectdevice.map((e, i) => (e.deviceCode)));
-    console.log('deviceFullCode: ', deviceFullCode);
     this.props.changeSingleDeviceStore({
       deviceFullCode,
       selectDeviceFullCode: selectdevice

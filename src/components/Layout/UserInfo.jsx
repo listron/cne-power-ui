@@ -7,6 +7,9 @@ import styles from './userInfo.scss';
 
 class UserInfo extends Component {
   static propTypes = {
+    username: PropTypes.string,
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
     history: PropTypes.object,
     inHomepage: PropTypes.bool,
     changeLoginStore: PropTypes.func,
@@ -43,9 +46,9 @@ class UserInfo extends Component {
   }
 
   render() {
-    const username = Cookie.get('username');
-    const userFullName = Cookie.get('userFullName');
-    const userLogo = Cookie.get('userLogo');
+    const { userFullName, username, userLogo } = this.props;
+    // const username = Cookie.get('username');
+    // const userFullName = Cookie.get('userFullName');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>

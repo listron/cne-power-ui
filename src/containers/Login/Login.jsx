@@ -76,6 +76,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  loginLoading: state.login.get('loginLoading'),
   username: state.login.getIn(['loginData', 'username']),
   enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
   userEnterpriseStatus: state.login.get('userEnterpriseStatus'),

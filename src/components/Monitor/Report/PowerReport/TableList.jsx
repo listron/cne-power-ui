@@ -4,6 +4,8 @@ import styles from './powerReport.scss';
 import { Table } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
+import { numWithComma,dataFormats } from '../../../../utils/utilFunc';
+
 
 class TableList extends Component {
   static propTypes = {
@@ -85,51 +87,57 @@ class TableList extends Component {
 
       {
         title: "统计时段",
-        dataIndex: "time",
+        dataIndex: "date",
         sorter: true,
-        defaultSortOrder: 'ascend'
+        render(text){return text.replace(/-/g,'/').replace(',','-')}
       },
       {
         title: () => <TableColumnTitle title="平均风速" unit="m/s" />,
         dataIndex: "windSpeedAvg",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
 
       },
       {
         title: () => <TableColumnTitle title="发电量" unit="kWh" />,
         dataIndex: "genValid",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
 
       {
         title: () => <TableColumnTitle title="发电时间" unit="h" />,
         dataIndex: "genTime",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
         dataIndex: "limitGen",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: "limitTime",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
       {
         title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
         dataIndex: "faultGen",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
-
-      },
-      {
+      },{
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
-        dataIndex: "faultTime",
+        dataIndex: "faultHours",
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
       },
     ];
@@ -143,7 +151,6 @@ class TableList extends Component {
     const columns = this.initMonthColumn();
     const dataSource = powerReportList.map((e, i) => ({
       ...e, key: i,
-     
     }))
     return (
       <React.Fragment>

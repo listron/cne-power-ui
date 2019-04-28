@@ -31,7 +31,7 @@ class PowerLost extends Component {
   }
 
   onTimeChange = (value) => {
-    console.log(value)
+    
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -46,8 +46,9 @@ class PowerLost extends Component {
       "station": 2,
       "modal": 3,
       "wind": 4,
-    }
-    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    };
+    const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
+    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list })
   }
   onSearch = () => {
     
@@ -63,6 +64,7 @@ class PowerLost extends Component {
     //地址未改，当前是电量报表得地址
     const url = `${APIBasePath}${monitor.exportGen}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+      const params={dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod};
     let timeZone = moment().zone();
     const modeType = ['状态', '区域', '电站', '型号', '风机'];
     const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -70,13 +72,9 @@ class PowerLost extends Component {
       url,
       fileName: `${modeType[summaryType]}-${dateTypes[dateType]}损失电量报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })
@@ -91,6 +89,7 @@ class PowerLost extends Component {
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
             showFault={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
