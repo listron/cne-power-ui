@@ -23,6 +23,7 @@ class HistoryWarn extends React.Component {
     sortMethod: PropTypes.string,
     algorithmModalId: PropTypes.array,
     selectDeviceCode: PropTypes.array,
+    algorithmModalName: PropTypes.array,
   };
 
   constructor(props) {
@@ -46,7 +47,8 @@ class HistoryWarn extends React.Component {
       pageNum,
       sortField,
       sortMethod,
-      stationCode
+      stationCode,
+      algorithmModalName
     } = this.props;
     const newParams = {
       stationCode,
@@ -58,6 +60,7 @@ class HistoryWarn extends React.Component {
       pageNum,
       sortField,
       sortMethod,
+      algorithmModalName,
       ...params
     };
     /**
@@ -71,6 +74,7 @@ class HistoryWarn extends React.Component {
       return getFaultWarnHistory(newParams);
     }
     if (params.stationCode || params.selectDeviceCode) {
+      console.log("-0-0-0-0-0-0");
       return changeHistoryWarnStore({
         ...params
       });

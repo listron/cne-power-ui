@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Tooltip } from 'antd';
 import styles from "./faultWarnFan.scss";
+import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
 
 export default class FaultWarnFan extends React.Component {
   static propTypes = {
@@ -21,35 +22,19 @@ export default class FaultWarnFan extends React.Component {
   };
 
   titleFunc = (data) => {
-    function strFormat(list) {
-      let arr = []; // 保存处理后的数组
-      let str = ""; // 保存处理后的时间
-      list && list.map(cur => {
-        // 保存切割数组
-        arr.push(cur.split("-"));
-      });
-      arr && arr.map((cur, index) => {
-        if(index === 0) {
-          str += `${cur[0]}/${cur[1]}/${cur[2]}、`
-        }
-        if (index !== 0) {
-          str += cur[2];
-        }
-      });
-      return str;
-    }
     return data && data.map((cur, index) => {
       return (
         <p
           style={{
             textDecoration: "underline",
             display: "flex",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            padding: "0 20px"
           }}
           key={`${cur.algorithmName}${index}`}
         >
           <span>{cur.algorithmName}</span>
-          <span>{strFormat(cur.predictionDate)}</span>
+          <span>{dateArrFormat(cur.predictionDate)}</span>
         </p>
       )
     });
@@ -64,8 +49,8 @@ export default class FaultWarnFan extends React.Component {
             <div>
               {cur.deviceName}
             </div>
-            <div>
-              {`预警${cur.warningCount}`}
+            <div className={cur.warningCount ? styles.warnItem : styles.successItem}>
+              {cur.warningCount ? `预警${cur.warningCount}` : "正常"}
             </div>
           </div>
           <div className={styles.fanItemBottom}>

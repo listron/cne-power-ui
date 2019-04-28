@@ -15,7 +15,8 @@ class AlgorithmControl extends Component {
     resetStore:PropTypes.func,
     getInspectIdList: PropTypes.func,
     changeAlgorithmControlStore: PropTypes.func,
-    viewType: PropTypes.string
+    viewType: PropTypes.string,
+    getAlgoOptionList: PropTypes.func,
   };
 
   constructor(props, context) {
@@ -26,6 +27,8 @@ class AlgorithmControl extends Component {
   }
 
   componentDidMount() {
+    const { getAlgoOptionList } = this.props;
+    getAlgoOptionList();
   }
 
   componentWillUnmount(){
@@ -125,5 +128,6 @@ const mapDispatchToProps = (dispatch) => ({
   getAlgoOptionList: () => dispatch({ type: algorithmControlAction.getAlgoOptionList }),
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
   getAddWarnTask: payload => dispatch({ type: algorithmControlAction.getAddWarnTask, payload }),
+  getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)

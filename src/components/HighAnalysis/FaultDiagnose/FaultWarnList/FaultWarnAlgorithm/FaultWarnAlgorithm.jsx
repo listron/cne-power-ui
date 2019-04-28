@@ -41,7 +41,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     return <span>{str + fan[fan.length-1].deviceName}</span>;
   };
 
-  detailsFunc = (data, name) => {
+  detailsFunc = (data, algorithmId, taskId) => {
     const {
       history,
       match: {
@@ -53,8 +53,9 @@ export default class FaultWarnAlgorithm extends React.Component {
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${fanWarnId}`);
     // localStore存储有故障的风机
-    localStorage.setItem("windFault", JSON.stringify(data));
-    localStorage.setItem("algorithmName", name);
+    localStorage.setItem("algorithmId", algorithmId);
+    localStorage.setItem("warnFans", JSON.stringify(data));
+    localStorage.setItem("taskId", taskId);
   };
 
   render() {
@@ -68,7 +69,7 @@ export default class FaultWarnAlgorithm extends React.Component {
         <div
           className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
           key={cur.taskId + index}
-          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmName)}}
+          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
@@ -89,7 +90,7 @@ export default class FaultWarnAlgorithm extends React.Component {
         <div
           className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
           key={cur.taskId}
-          onClick={() => {return this.detailsFunc()}}
+          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
@@ -110,7 +111,7 @@ export default class FaultWarnAlgorithm extends React.Component {
         <div
           className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
           key={cur.taskId}
-          onClick={() => {return this.detailsFunc()}}
+          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}

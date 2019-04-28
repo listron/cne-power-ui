@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Table } from "antd";
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from "./faultWarnTable.scss";
+import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
 
 export default class FaultWarnTable extends React.Component {
   static propTypes = {
@@ -77,11 +78,7 @@ export default class FaultWarnTable extends React.Component {
       dataIndex: 'predictionDate',
       sorter: true,
       render: (predictionDate) => {
-        let  str = "";
-        for(let i = 0;i< predictionDate.length-1; i++){
-          str+= predictionDate[i] + "、";
-        }
-        return <span>{str + predictionDate[predictionDate.length-1]}</span>;
+        return <span>{dateArrFormat(predictionDate)}</span>;
       },
     }, {
       title: '检测开始日期',

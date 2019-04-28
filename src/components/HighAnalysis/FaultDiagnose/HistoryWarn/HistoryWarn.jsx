@@ -104,7 +104,7 @@ export default class HistoryWarn extends React.Component {
     const { onChangeFilter } = this.props;
     onChangeFilter({
       selectDeviceCode: [],
-      stationCode: null,
+      stationCode: 0,
     });
   };
 
@@ -160,6 +160,7 @@ export default class HistoryWarn extends React.Component {
               data={stations.toJS().filter(e => e.stationType === 0)}
               style={{ width: '200px' }}
               onOK={this.selectStation}
+              value={stations.toJS().filter(e => e.stationCode === stationCode)}
               disabledStation={stations.toJS().filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>

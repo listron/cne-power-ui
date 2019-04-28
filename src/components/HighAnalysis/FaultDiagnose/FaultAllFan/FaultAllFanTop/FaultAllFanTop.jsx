@@ -5,6 +5,7 @@ import FaultAllFanHistory from "./../FaultAllFanHistory/FaultAllFanHistory";
 import FaultResetTask from "./../FaultResetTask/FaualtResetTask";
 import styles from "./faultAllFanTop.scss";
 import Path from "../../../../../constants/path";
+import moment from "moment";
 
 
 const {
@@ -16,11 +17,10 @@ const {
       downloadFile
     }
   }} = Path;
-
+const defaultFormat = "YYYY-MM-DD HH:mm:ss";
 export default class FaultAllFanTop extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    deviceName: PropTypes.string,
     taskId: PropTypes.string,
     stations: PropTypes.object,
     stationCode: PropTypes.string,
@@ -28,8 +28,9 @@ export default class FaultAllFanTop extends React.Component {
     downLoadFile: PropTypes.func,
     getResetTask: PropTypes.func,
     getFaultInfo: PropTypes.func,
-    faultInfo: PropTypes.object,
-    match: PropTypes.object
+    faultInfo: PropTypes.array,
+    match: PropTypes.object,
+    faultInfoMessage: PropTypes.string
   };
 
   constructor(props) {
@@ -50,16 +51,11 @@ export default class FaultAllFanTop extends React.Component {
       },
     } = this.props;
     // 读取localStorage
-    const windFault = JSON.parse(localStorage.getItem("windFault"));
-    let arr = []; //保存设备id
-    windFault && windFault.map(cur => {
-      arr.push(cur.deviceCode);
-    });
-    console.log(windFault, "winasddadsdFault");
+    const windFault = localStorage.getItem("algorithmId");
     const params = {
       stationCode,
       deviceFullCode: "",
-      algorithmIds: arr,
+      algorithmIds: [windFault],
       startTime: "",
       endTime: "",
       pageSize: null,
@@ -91,27 +87,23 @@ export default class FaultAllFanTop extends React.Component {
   };
 
   downloadFunc = () => {
-    const { taskId, deviceFullcode, deviceName, downLoadFile } = this.props;
+    const {
+      taskId,
+      deviceFullcode,
+      downLoadFile,
+      faultInfo
+    } = this.props;
     const url  = `${APIBasePath}${downloadFile}/${taskId}/${deviceFullcode}`;
     downLoadFile({
       url,
       method: "get",
-      fileName: `【${deviceName}】_【2018】_【2019】.csv`
+      fileName: `${faultInfo && faultInfo[0].stationName || ""}_${faultInfo && faultInfo[0].startTime || ""}_${faultInfo && faultInfo[0].endTime || ""}_${faultInfo && faultInfo[0].trainingStartTime || ""}.csv`
     });
   };
 
-  stationName = () => {
-    const { stations, stationCode } = this.props;
-    const stationItems = stations && stations.toJS();
-    const stationItem = stationItems.filter(e => (e.stationCode === +stationCode))[0];
-    return stationItem.stationName;
-  };
-
-
   render() {
     const { visibleFlag, taskFlag } = this.state;
-    const { deviceName, faultInfo } = this.props;
-    console.log(faultInfo, "-=-=-faultInfo");
+    const { faultInfo, faultInfoMessage } = this.props;
     return (
       <div className={styles.faultAllFanTop}>
         <div className={styles.allFanTopCenter}>
@@ -120,31 +112,31 @@ export default class FaultAllFanTop extends React.Component {
               <div>
                 <div>
                   <span>训练开始日期：</span>
-                  <span>2017-12-03</span>
+                  <span>{faultInfo && moment(faultInfo[0].createTime).format("YYYY-MM-DD") || ""}</span>
                 </div>
                 <div>
                   <span>任务计划执行时间：</span>
-                  <span>2018-02-03 12:30:20</span>
+                  <span>{faultInfo && moment(faultInfo[0].planExecuteTime).format(defaultFormat) || ""}</span>
                 </div>
               </div>
               <div>
                 <div>
                   <span>检测开始时间：</span>
-                  <span>2018-02-03</span>
+                  <span>{faultInfo && faultInfo[0].startTime || ""}</span>
                 </div>
                 <div>
                   <span>任务执行开始时间：</span>
-                  <span>2018-02-03 12:30:20</span>
+                  <span>{faultInfo && moment(faultInfo[0].executeStartTime).format(defaultFormat) || ""}</span>
                 </div>
               </div>
               <div>
                 <div>
                   <span>检测结束时间：</span>
-                  <span>2018-02-07</span>
+                  <span>{faultInfo && faultInfo[0].endTime || ""}</span>
                 </div>
                 <div>
                   <span>任务执行结束时间：</span>
-                  <span>2018-02-03 12:35:20</span>
+                  <span>{faultInfo && moment(faultInfo[0].executeEndTime).format(defaultFormat) || ""}</span>
                 </div>
               </div>
             </div>
@@ -153,16 +145,22 @@ export default class FaultAllFanTop extends React.Component {
                 <Button block onClick={this.resetTaskFunc}>重新执行</Button>
                 <Button block onClick={this.historyFunc}>历史预警报告</Button>
               </div>
-              <div>
-                <span>{`${this.stationName()}_检测日期_下发日期.csv`}</span>
-                <span className={styles.download} onClick={this.downloadFunc}>下载</span>
-              </div>
+              {(faultInfo && faultInfo[0].status !== 4) && (
+                <div>
+                  <span>{`${faultInfo && faultInfo[0].stationName || ""}_${faultInfo && faultInfo[0].startTime || ""}_${faultInfo && faultInfo[0].endTime || ""}_${faultInfo && faultInfo[0].trainingStartTime || ""}.csv`}</span>
+                  <span className={styles.download} onClick={this.downloadFunc}>
+                    下载
+                  </span>
+                </div>
+              )}
             </div>
           </div>
-          <div className={styles.allFanError}>
-            <span>任务执行失败失败：</span>
-            <span>log信息</span>
-          </div>
+          {(faultInfo && faultInfo[0].status === 4) && (
+            <div className={styles.allFanError}>
+              <span>任务执行失败失败：</span>
+              <span>{faultInfoMessage}</span>
+            </div>
+          )}
         </div>
         <FaultAllFanHistory onVisible={this.onVisible} visibleFlag={visibleFlag} {...this.props} />
         <FaultResetTask onTaskVisible={this.onTaskVisible} taskFlag={taskFlag} {...this.props} />

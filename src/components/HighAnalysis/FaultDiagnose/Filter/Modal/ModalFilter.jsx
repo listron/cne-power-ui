@@ -16,22 +16,37 @@ class ModalFilter extends Component {
     super(props);
   }
 
-  onLevelSelect = (algorithmModalId) => {
-    const { onChangeFilter } = this.props;
+  onLevelSelect = (value) => {
+    const {
+      onChangeFilter,
+      algoOptionList,
+    } = this.props;
+    let newSameArr = []; // 相同数据
+    // 取到相同的数据
+    for (let i = 0; i < value.length; i++) {
+      for (let j = 0; j < algoOptionList.length; j++) {
+        if(value[i] === `${algoOptionList[j].algorithmId}`){
+          newSameArr.push(algoOptionList[j]);
+        }
+      }
+    }
     onChangeFilter({
-      algorithmModalId
+      algorithmModalId: value,
+      algorithmModalName: newSameArr
     });
   };
 
   resetLevel = () => {
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      algorithmModalId: []
+      algorithmModalId: [],
+      algorithmModalName: []
     });
   };
 
   render() {
     const { algorithmModalId, algoOptionList } = this.props;
+
     const levelOptions = algoOptionList.map(cur => ({
       label: cur.algorithmName,
       value: `${cur.algorithmId}`

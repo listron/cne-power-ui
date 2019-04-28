@@ -105,6 +105,8 @@ export default class FaultWarn extends React.Component {
 
   render() {
     const { stations, singleStationCode, viewType } = this.props;
+    const warnCount = localStorage.getItem("warnCount");
+    const allCount = localStorage.getItem("count");
     const { showStationSelect } = this.state;
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
@@ -154,8 +156,8 @@ export default class FaultWarn extends React.Component {
                 风机
               </div>
               <div className={styles.num}>
-                <span>8</span>
-                <span>/13</span>
+                <span>{`${warnCount}`}</span>
+                <span>{`/${Number(allCount)}`}</span>
               </div>
             </div>
             <div

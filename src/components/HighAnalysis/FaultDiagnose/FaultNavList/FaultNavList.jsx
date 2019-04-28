@@ -10,7 +10,8 @@ export default class FaultNavList extends React.Component {
     onChangeFilter: PropTypes.func,
     getStationDeviceList: PropTypes.func,
     stationCode: PropTypes.string,
-    stationDeviceList: PropTypes.object,
+    stationDeviceList: PropTypes.array,
+    match: PropTypes.object,
   };
 
   constructor(props) {
@@ -26,7 +27,11 @@ export default class FaultNavList extends React.Component {
       props: {
         onChangeFilter,
         getStationDeviceList,
-        stationCode
+        match:{
+          params: {
+            stationCode
+          }
+        },
       }
     } = this;
     const params = {
@@ -70,14 +75,15 @@ export default class FaultNavList extends React.Component {
     const { openFlag } = this.state;
     const {
       showFlag,
-      stationDeviceList: {
-        context: deviceList
-      }
+      stationDeviceList
     } = this.props;
-    console.log(deviceList, "deviceList");
-    const item = deviceList && deviceList.map(cur => {
+    const item = stationDeviceList && stationDeviceList.map((cur, index) => {
       return (
-        <div key={cur.deviceCode}>
+        <div
+          key={cur.deviceCode}
+          style={{backgroundColor: index === 0 ?  "#ffffff" : "#199475"}}
+          className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
+        >
           {cur.deviceName}
         </div>
       );

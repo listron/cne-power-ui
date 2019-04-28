@@ -7,6 +7,8 @@ import styles from "./allFans.scss";
 export default class AllFans extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    getAllFanResultList: PropTypes.func,
+    allFanResultList: PropTypes.object,
   };
 
   constructor(props) {
@@ -15,9 +17,38 @@ export default class AllFans extends React.Component {
   }
 
   componentDidMount() {
-    const  { allFansCharts } = this;
+    const  {
+      allFansCharts,
+      props: {
+        getAllFanResultList,
+        allFanResultList
+      }
+    } = this;
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId,
+      date: "2019-04-19"
+    };
     const myChart = eCharts.init(allFansCharts);
-    myChart.setOption(allFansOptions());
+    // 接口
+    getAllFanResultList(params);
+    myChart.setOption(allFansOptions(allFanResultList, params.date));
+  }
+
+  componentDidUpdate() {
+    const  {
+      allFansCharts,
+      props: {
+        allFanResultList
+      }
+    } = this;
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId,
+      date: "2019-04-19"
+    };
+    const myChart = eCharts.init(allFansCharts);
+    myChart.setOption(allFansOptions(allFanResultList, params.date));
   }
 
 
