@@ -9,6 +9,7 @@ export default class FaultWarnFan extends React.Component {
     loading: PropTypes.bool,
     history: PropTypes.object,
     fanListData: PropTypes.array,
+    match: PropTypes.object
   };
 
   constructor(props) {
@@ -16,9 +17,16 @@ export default class FaultWarnFan extends React.Component {
   }
 
   detailsFunc = () => {
-    const { history } = this.props;
+    const {
+      history,
+      match: {
+        params:{
+          fanWarnId
+        }
+      },
+    } = this.props;
     // 跳到单风机详情图表展示
-    history.push("/hidden/analysis/single/fan");
+    history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
   };
 
   titleFunc = (data) => {

@@ -77,6 +77,7 @@ import { watchAlgorithmControl } from "./HighAnalysis/FaultDiagnose/AlgorithmCon
 import { watchFaultWarn } from "./HighAnalysis/FaultDiagnose/FaultWarn/faultWarnSaga";
 import { watchFaultWarnList } from "./HighAnalysis/FaultDiagnose/FaultWarnList/faultWarnListSaga";
 import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/faultAllFanSaga";
+import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga";
 import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
@@ -165,6 +166,7 @@ export default function* rootSaga() {
     watchFaultWarnList(),
     watchFaultAllFan(),
     watchFaultWarnHistory(),
+    watchFaultSingleFan(),
     // 工单
     watchWorkOrder(),
 

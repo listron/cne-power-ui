@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import {Table, Tag} from "antd";
 import styles from "./listViewTable.scss";
 import moment from "moment";
 
@@ -10,7 +10,7 @@ export default class ListViewTable extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     onChangeFilter: PropTypes.func,
-    algoListView: PropTypes.array,
+    algoListView: PropTypes.object,
   };
 
   constructor(props) {
@@ -25,8 +25,17 @@ export default class ListViewTable extends React.Component {
     });
   };
 
+  tableChange = (pagination, filter, sorter) => {// 点击表头 排序
+    const { field, order } = sorter;
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      sortField: field ? field : "",
+      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+    });
+  };
+
   render() {
-    const { loading, algoListView } = this.props;
+    const { loading, algoListView: {dataList} } = this.props;
     const columns = [{
       title: '算法模型',
       dataIndex: 'algorithmName',
@@ -62,16 +71,25 @@ export default class ListViewTable extends React.Component {
     }, {
       title: '状态',
       dataIndex: 'status',
+      render: (status, record) => {
+        if(status === 1) {
+          return <span>待执行</span>
+        }
+        if(status === 2) {
+          return <span>执行中</span>
+        }
+        if(status === 3) {
+          return <Tag color="#199475">已完成</Tag>
+        }
+        return <Tag color="#f9b600">执行失败</Tag>
+      }
     }, {
       title: '预警台数',
       dataIndex: 'warningUnitCount',
       sorter: true,
-      align: "center",
-      render: (text, record) => (
-        <span>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
-        </span>
-      )
+      render: (warningUnitCount) => {
+        return <span>{warningUnitCount || "- -"}</span>
+      }
     }];
     return (
       <div className={styles.listViewTable}>
@@ -79,8 +97,9 @@ export default class ListViewTable extends React.Component {
           pagination={false}
           loading={loading}
           columns={columns}
+          onChange={this.tableChange}
           rowKey={(record, index) => (record.taskId + index) || "key" }
-          dataSource={algoListView}
+          dataSource={dataList}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />
       </div>

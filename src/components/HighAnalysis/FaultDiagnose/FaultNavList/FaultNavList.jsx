@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Icon } from "antd";
 import styles from "./faultNavList.scss";
+import moment from "moment";
 
 export default class FaultNavList extends React.Component {
   static propTypes = {
@@ -12,12 +13,20 @@ export default class FaultNavList extends React.Component {
     stationCode: PropTypes.string,
     stationDeviceList: PropTypes.array,
     match: PropTypes.object,
+    faultInfo: PropTypes.object,
+    getTenMinutesBefore: PropTypes.func,
+    getTenMinutesAfter: PropTypes.func,
+    getTenMinutesDiff: PropTypes.func,
+    getStandAloneList: PropTypes.func,
+    getSimilarityList: PropTypes.func,
+    getAllFanResultList: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       openFlag: true, // 控制打开关闭
+      fansFlag: 0, // 选中风机
     };
   }
 
@@ -70,9 +79,74 @@ export default class FaultNavList extends React.Component {
     });
   };
 
+  handlerFansClick = (data, index) => {
+    const {
+      match:{
+        params: {
+          stationCode
+        }
+      },
+      faultInfo: {
+        endTime
+      },
+      getTenMinutesBefore,
+      getTenMinutesAfter,
+      getTenMinutesDiff,
+      getStandAloneList,
+      getSimilarityList,
+      getAllFanResultList
+    } = this.props;
+    const { connectDeviceFullCode } = data;
+    const taskId = localStorage.getItem("taskId");
+    // 发电机前驱温度
+    const preParams = {
+      stationCode,
+      pointCode: "GN010", //前驱测点-固定字段
+      deviceFullCodes: [`${connectDeviceFullCode}`],
+      startTime: moment(endTime).subtract(1,'months').utc().format(),
+      endTime: moment(endTime).utc().format()
+    };
+    // 发电机后驱温度
+    const afterParams = {
+      stationCode,
+      pointCode: "GN011", //后驱测点-固定字段
+      deviceFullCodes: [`${connectDeviceFullCode}`],
+      startTime: moment(endTime).subtract(1,'months').utc().format(),
+      endTime: moment(endTime).utc().format()
+    };
+    // 发电机后驱温度
+    const diffParams = {
+      stationCode,
+      pointCode: "GN010-GN011", //温度差-固定字段
+      deviceFullCodes: [`${connectDeviceFullCode}`],
+      startTime: moment(endTime).subtract(1,'months').utc().format(),
+      endTime: moment(endTime).utc().format()
+    };
+    // 单机自适应模块
+    const singleParams = {
+      taskId,
+      deviceFullCode: connectDeviceFullCode
+    };
+    // 相似性热图
+    const heatAndAllFansParams = {
+      taskId,
+      date: endTime
+    };
+    this.setState({
+      fansFlag: index
+    }, () => {
+      getTenMinutesBefore(preParams);
+      getTenMinutesAfter(afterParams);
+      getTenMinutesDiff(diffParams);
+      getStandAloneList(singleParams);
+      getSimilarityList(heatAndAllFansParams);
+      getAllFanResultList(heatAndAllFansParams);
+    })
+  };
+
 
   render() {
-    const { openFlag } = this.state;
+    const { openFlag, fansFlag } = this.state;
     const {
       showFlag,
       stationDeviceList
@@ -81,8 +155,9 @@ export default class FaultNavList extends React.Component {
       return (
         <div
           key={cur.deviceCode}
-          style={{backgroundColor: index === 0 ?  "#ffffff" : "#199475"}}
+          style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
           className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
+          onClick={() => {return this.handlerFansClick(cur, index)}}
         >
           {cur.deviceName}
         </div>

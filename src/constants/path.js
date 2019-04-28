@@ -428,6 +428,7 @@ export default {
       similarityList: "/v3/wtfdd/result/similarity", // 获取风机相似性结果
       allFanResult: "/v3/wtfdd/result/std", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
       tenMinutesLine: "/v3/wtfdd/pt10m", // 获取风机10分钟数据
+      faultInfo: "/v3/wtfdd/task", // 获取故障预警任务详情
     }
   }
 }

@@ -9,7 +9,6 @@ import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
 import FaultNavList from "../FaultNavList/FaultNavList";
 import FaultAllFanTop from "./FaultAllFanTop/FaultAllFanTop";
-import {dimValueGetter} from "echarts/src/component/marker/markerHelper";
 
 
 export default class FaultAllFan extends React.Component {
@@ -20,7 +19,7 @@ export default class FaultAllFan extends React.Component {
     stations: PropTypes.object,
     stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
-    faultInfo: PropTypes.array
+    faultInfo: PropTypes.object
   };
 
   constructor(props) {
@@ -29,17 +28,23 @@ export default class FaultAllFan extends React.Component {
   }
 
   render() {
-    const { faultInfo } = this.props;
+    const {
+      faultInfo: {
+        algorithmName,
+        status,
+        stationName
+      }
+    } = this.props;
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.title}>
-          <span>{`${faultInfo && faultInfo[0].stationName}：` || ""}</span>
-          <span>{faultInfo && faultInfo[0].algorithmName || ""}</span>
+          <span>{`${stationName || ""}`}</span>
+          <span>{`：${algorithmName || ""}`}</span>
         </div>
         <div className={styles.allFanWrap}>
           <div className={styles.allFanContent}>
             <FaultAllFanTop {...this.props} />
-            {faultInfo && faultInfo[0].status === 4 ?
+            {status && status === 4 ?
                 <div className={styles.noData}>
                   <img src="/img/nodata.png" style={{ width: 223, height: 164 }} />
                 </div> : [

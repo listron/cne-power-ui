@@ -72,21 +72,57 @@ function* getAlgoList() { // 获取预警任务列表-算法模型视图
 }
 
 function* getListView(action) { // 获取预警任务列表-算法列表视图
-  const { payload } = action;
+  const { payload: {
+    pageSize,
+    pageNum,
+    algorithmModalId,
+    createTimeStart,
+    createTimeEnd,
+    status,
+    sortField,
+    sortMethod,
+    stationCode,
+    algorithmModalName,
+  } } = action;
+  // 请求参数
+  const params = {
+    pageSize,
+    pageNum,
+    algorithmIds: algorithmModalId ? algorithmModalId : [],
+    startTime: createTimeStart ? createTimeStart : "",
+    endTime: createTimeEnd ? createTimeEnd : "",
+    status: status ? status : null,
+    sortField,
+    sortMethod,
+    stationCode: !stationCode ? null : stationCode,
+  };
   const url = `${APIBasePath}${faultTaskList}`;
+  console.log(algorithmModalName, "algorithmModalName123");
   try{
+    // 首先改变reducer
     yield put({
       type: algorithmControlAction.changeAlgorithmControlStore,
       payload: {
-        loading: true
+        loading: true,
+        pageSize: pageSize ? pageSize : 10,
+        pageNum : pageNum ? pageNum : 1,
+        algorithmModalId: algorithmModalId ? algorithmModalId : [],
+        createTimeStart: createTimeStart ? createTimeStart : "",
+        createTimeEnd: createTimeEnd ? createTimeEnd : "",
+        status: status ? status : null,
+        sortField,
+        sortMethod,
+        stationCode,
+        algorithmModalName: algorithmModalName ? algorithmModalName : []
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      console.log(response.data.data, "response.data.data");
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
-          algoListView: response.data.data || [],
+          algoListView: response.data.data || {},
           loading: false,
         },
       });

@@ -36,24 +36,19 @@ export default class FaultAllFanHistory extends React.Component {
       },
     } = this.props;
     // 读取localStorage
-    const windFault = JSON.parse(localStorage.getItem("windFault"));
-    let arr = []; //保存设备id
-    windFault && windFault.map(cur => {
-      arr.push(cur.deviceCode);
-    });
+    const algorithmId = localStorage.getItem("algorithmId");
     const params = {
       stationCode,
       deviceFullCode: "",
-      algorithmIds: [1,2],
+      algorithmIds: [`${algorithmId}`],
       startTime: "",
       endTime: "",
-      pageSize: null,
-      pageNum: null,
+      pageSize: 10,
+      pageNum: 1,
       sortField: "",
       sortMethod: ""
     };
     getFaultReport(params);
-    console.log("2312313");
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -65,15 +60,11 @@ export default class FaultAllFanHistory extends React.Component {
         }
       },} = this.props;
     // 读取localStorage
-    const windFault = JSON.parse(localStorage.getItem("windFault"));
-    let arr = []; //保存设备id
-    windFault && windFault.map(cur => {
-      arr.push(cur.deviceCode);
-    });
+    const algorithmId = localStorage.getItem("algorithmId");
     const params = {
       stationCode,
       deviceFullCode: "",
-      algorithmIds: arr,
+      algorithmIds: [`${algorithmId}`],
       startTime: "",
       endTime: "",
       pageSize: pageSize ? pageSize : 10,
@@ -101,15 +92,11 @@ export default class FaultAllFanHistory extends React.Component {
         }
       },} = this.props;
     // 读取localStorage
-    const windFault = JSON.parse(localStorage.getItem("windFault"));
-    let arr = []; //保存设备id
-    windFault && windFault.map(cur => {
-      arr.push(cur.deviceCode);
-    });
+    const algorithmId = localStorage.getItem("algorithmId");
     const params = {
       stationCode,
       deviceFullCode: "",
-      algorithmIds: arr,
+      algorithmIds: [`${algorithmId}`],
       startTime: "",
       endTime: "",
       pageSize,

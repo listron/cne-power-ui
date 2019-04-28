@@ -16,6 +16,7 @@ export default class FaultWarnTable extends React.Component {
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
     singleStationCode: PropTypes.string,
+    history: PropTypes.object,
   };
 
   constructor(props) {
@@ -52,6 +53,19 @@ export default class FaultWarnTable extends React.Component {
       sortMethod
     };
     getList(params);
+  };
+
+  onShowDetail = (data) => {
+    const {
+      history,
+      match: {
+        params:{
+          fanWarnId
+        }
+      },
+    } = this.props;
+    // 跳到单风机详情图表展示
+    history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序

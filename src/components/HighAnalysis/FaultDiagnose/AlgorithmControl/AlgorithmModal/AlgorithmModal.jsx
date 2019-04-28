@@ -5,10 +5,11 @@ import styles from "./algorithmControl.scss";
 export default class AlgorithmModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    onChangeFilter: PropTypes.func,
+    changeAlgorithmControlStore: PropTypes.func,
     getAlgoList: PropTypes.func,
     algoModelList: PropTypes.object,
     algoOptionList: PropTypes.array,
+    getListView: PropTypes.func,
   };
 
   constructor(props) {
@@ -23,7 +24,10 @@ export default class AlgorithmModal extends React.Component {
 
   detailsFunc = (algorithmId) => {
     // 参数跳转到列表视图
-    const { onChangeFilter, algoOptionList } = this.props;
+    const {
+      changeAlgorithmControlStore,
+      algoOptionList,
+    } = this.props;
     let newSameArr = []; // 相同数据
     // 取到相同的数据
     for (let i = 0; i < algoOptionList.length; i++) {
@@ -31,11 +35,23 @@ export default class AlgorithmModal extends React.Component {
         newSameArr.push(algoOptionList[i]);
       }
     }
-    onChangeFilter({
+    changeAlgorithmControlStore({
       viewType: "list",
-      algorithmModalId: [`${algorithmId}`],
-      algorithmModalName: newSameArr
     });
+    const { getListView } = this.props;
+    const params = {
+      stationCode:null,
+      algorithmModalId: [`${algorithmId}`],
+      startTime:"",
+      endTime:"",
+      status:null,
+      pageSize:null,
+      pageNum:null,
+      sortField:"",
+      sortMethod:"",
+      algorithmModalName: newSameArr
+    };
+    getListView(params);
   };
 
   render() {

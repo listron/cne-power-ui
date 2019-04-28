@@ -16,12 +16,12 @@ const {
     highAnalysis: {
       stationDeviceList,
       resetTask,
-      warnHistory,
       faultTaskList,
       standAlone,
       similarityList,
       allFanResult,
-      tenMinutesLine
+      tenMinutesLine,
+      faultInfo
     }
   }} = Path;
 // 处理数据
@@ -41,13 +41,13 @@ function getArrEqual(warnList, allList) {
     }
   }
   // 取到不同的数据
-  for(var i = 0; i < allList.length; i++){
-    var obj = allList[i];
-    var num = obj.deviceName;
-    var isExist = false;
-    for(var j = 0; j < warnList.length; j++){
-      var aj = warnList[j];
-      var n = aj.deviceName;
+  for(let i = 0; i < allList.length; i++){
+    let obj = allList[i];
+    let num = obj.deviceName;
+    let isExist = false;
+    for(let j = 0; j < warnList.length; j++){
+      let aj = warnList[j];
+      let n = aj.deviceName;
       if(n === num){
         isExist = true;
         break;
@@ -131,9 +131,9 @@ function* getResetTask(action) { // 重新执行
   }
 }
 
-function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详情训练开始时间。。。
+function* getFaultInfo(action) { // 获取故障预警任务详情
   const { payload } = action;
-  const url = `${APIBasePath}${faultTaskList}`;
+  const url = `${APIBasePath}${faultInfo}/${payload.taskId}`;
   try {
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
@@ -141,12 +141,12 @@ function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详
         loading: true
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
-          faultInfo: response.data.data || [],
+          faultInfo: response.data.data || {},
           faultInfoMessage: response.data.message || "",
           loading: false,
         },
@@ -164,13 +164,17 @@ function* getFaultInfo(action) { // 获取历史预警列表--这里是故障详
 }
 
 function* getFaultReport(action) { // 获取历史预警报告
-  const {payload} = action;
-  const url = `${APIBasePath}${warnHistory}`;
+  const { payload } = action;
+  const url = `${APIBasePath}${faultTaskList}`;
   try {
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: true
+        loading: true,
+        pageSize: payload.pageSize ? payload.pageSize : 10,
+        pageNum: payload.pageNum ? payload.pageNum : 1,
+        sortField: payload.sortField,
+        sortMethod: payload.sortMethod
       }
     });
     const response = yield call(axios.post, url, payload);

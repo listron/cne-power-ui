@@ -5,7 +5,7 @@ export const faultAllFanAction = {
   getStationDeviceList:Symbol('getStationDeviceList'), // 获取单电站所有风机
   getDownloadFile:Symbol('getDownloadFile'), // 获取单电站所有风机
   getResetTask:Symbol('getDownloadFile'), // 重新执行
-  getFaultInfo:Symbol('getFaultInfo'), // 故障日期。。。
+  getFaultInfo:Symbol('getFaultInfo'), // 获取故障预警任务详情
   getFaultReport:Symbol('getFaultReport'), // 历史预警报告。。。
   getStandAloneList:Symbol('getStandAloneList'), // 获取单风机自适应模块检测结果
   getSimilarityList:Symbol('getSimilarityList'), // 获取风机相似性结果

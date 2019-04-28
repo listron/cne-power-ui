@@ -6,7 +6,6 @@ import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/F
 import {faultAllFanAction} from "./faultAllFanAction";
 import {connect} from "react-redux";
 import {commonAction} from "../../../alphaRedux/commonAction";
-import { dateArrFormat } from "../../../../utils/utilFunc";
 
 class FaultAllFan extends React.Component {
   static propTypes = {
