@@ -120,7 +120,7 @@ class AddForm extends Component {
           })(
             <Input placeholder="请输入真实姓名" />
           )}
-          <span className={styles.instructionText}>(3-25位中文,英文,数字,特殊字符都可)</span>
+          <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
         </FormItem>
         <FormItem label="电话" >
           {getFieldDecorator('phoneNum',{
