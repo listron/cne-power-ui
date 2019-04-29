@@ -245,7 +245,7 @@ class TableList extends Component {
         width:128,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },{
-        title: "桨叶角1",
+        title: "桨叶角",
         dataIndex: "bladeAngle",
         sorter: true,
         width:112,
