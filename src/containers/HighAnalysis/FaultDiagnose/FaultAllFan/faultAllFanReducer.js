@@ -4,11 +4,27 @@ import { faultAllFanAction } from './faultAllFanAction.js';
 const initState = Immutable.fromJS({
   loading: false,
   showFlag: false, // 控制展开关闭按钮
-  stationDeviceList: [], // 获取单电站所有风机
+  stationDeviceList: [{
+    deviceName: "",
+    connectDeviceFullCode: "",
+    warnId: 1
+  }], // 获取单电站所有风机
   stationCode: "82", // 电站编码
-  faultInfo: {
-    endTime: null
-  }, // 获取故障预警任务详情
+  deviceName: "", //设备名称
+  faultInfo: {// 获取故障预警任务详情
+    endTime: null,
+  },
+  faultDate: "", // 故障详情页选择日期
+  preDate: [], // 前驱温度时间选择
+  afterDate: [], // 后驱温度时间选择
+  diffDate: [], // 后驱温度时间选择
+  preLoading: true, // 前驱温度loading
+  afterLoading: true, // 后驱温度loading
+  diffLoading: true, // 温度差loading
+  aloneLoading: true, // 单机自适应loading
+  heatLoading: true, // 相似性热图loading
+  allLoading: true, // 所有风机loading
+  warnId: 0, // 有无故障
   faultInfoMessage: "", //log信息
   faultReportInfo: {}, // 历史任务列表
   pageSize: 10,
@@ -19,15 +35,16 @@ const initState = Immutable.fromJS({
     cfResidual: [],
     cfStd: []
   },
+  deviceFullCode: "", // 设备全编码
   tenMinutesBeforeList: [{// 获取风机10分钟数据-前驱
-    dataList: []
+    dataList: [],
   }],
   tenMinutesAfterList: [{// 获取风机10分钟数据-后驱
-    dataList: []
+    dataList: [],
   }],
   tenMinutesDiffList: [{// 获取风机10分钟数据-温度差
-    dataList: []
-  }]
+    dataList: [],
+  }],
 });
 
 

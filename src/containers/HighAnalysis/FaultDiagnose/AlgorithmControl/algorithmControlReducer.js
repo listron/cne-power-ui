@@ -21,10 +21,11 @@ const initState = Immutable.fromJS({
   status: "0", // 状态
   pageSize: 10,
   pageNum: 1,
-  algoListView: {
+  algoListView: {// 获取预警任务列表-算法列表视图
     dataList: [],
     count: 0
-  } // 获取预警任务列表-算法列表视图
+  },
+  taskStatusStat: {} // 获取预警任务状态统计
 });
 
 

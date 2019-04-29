@@ -17,6 +17,7 @@ class AlgorithmControl extends Component {
     changeAlgorithmControlStore: PropTypes.func,
     viewType: PropTypes.string,
     getAlgoOptionList: PropTypes.func,
+    getTaskStatusStat: PropTypes.func,
     getListView: PropTypes.func,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
@@ -97,13 +98,14 @@ class AlgorithmControl extends Component {
     const {
       changeAlgorithmControlStore,
       getListView,
-      algorithmModalId
+      algorithmModalId,
+      getTaskStatusStat
     } = this.props;
     // 展示列表视图
     changeAlgorithmControlStore({
       viewType: "list"
     });
-    const params = {
+    const listParams = {
       stationCode:null,
       algorithmIds: algorithmModalId,
       startTime:"",
@@ -114,7 +116,16 @@ class AlgorithmControl extends Component {
       sortField:"",
       sortMethod:""
     };
-    getListView(params);
+    const statusParams = {
+      stationCode:null,
+      algorithmIds: algorithmModalId,
+      startTime:"",
+      endTime:""
+    };
+    // 列表
+    getListView(listParams);
+    // 状态统计
+    getTaskStatusStat(statusParams);
   };
 
   render() {
@@ -185,5 +196,6 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
   getAddWarnTask: payload => dispatch({ type: algorithmControlAction.getAddWarnTask, payload }),
   getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
+  getTaskStatusStat: payload => dispatch({ type: algorithmControlAction.getTaskStatusStat, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)

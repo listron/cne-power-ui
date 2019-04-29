@@ -7,7 +7,7 @@ import DifferenceTemperature from "../DiagnoseCharts/DifferenceTemperature/Diffe
 import SingleResult from "../DiagnoseCharts/SingleResult/SingleResult";
 import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
-import FaultNavList from "../FaultNavList/FaultNavList";
+import FaultNavList from "./FaultNavList/FaultNavList";
 
 
 export default class FaultSingleFan extends React.Component {
@@ -16,7 +16,9 @@ export default class FaultSingleFan extends React.Component {
     history: PropTypes.object,
     stations: PropTypes.object,
     singleStationCode: PropTypes.string,
-    data: PropTypes.array
+    data: PropTypes.array,
+    getFaultInfo: PropTypes.func,
+    faultInfo: PropTypes.object
   };
 
   constructor(props) {
@@ -24,12 +26,29 @@ export default class FaultSingleFan extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const { getFaultInfo } = this.props;
+    // 读取localStorage
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId
+    };
+    getFaultInfo(params);
+  }
+
 
   render() {
+    const {
+      faultInfo: {
+        stationName
+      },
+    } = this.props;
+    const deviceName = localStorage.getItem("deviceName");
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.title}>
-          <span>肥西风场</span><span>WTG05</span>
+          <span>{`${stationName || ""}`}</span>
+          <span>{`：${deviceName || ""}`}</span>
         </div>
         <div className={styles.singleFanWrap}>
           <div className={styles.singleFanContent}>

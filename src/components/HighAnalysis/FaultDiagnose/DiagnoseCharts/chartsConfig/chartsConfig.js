@@ -56,7 +56,7 @@ export const PreTemperatureOptions = (data, name) => {
     },
     legend: {
       top: "250px",
-      width: '100%',
+      width: '80%',
       itemWidth: 14,
       itemHeight: 6,
       x: 'center',
@@ -181,7 +181,7 @@ export const AfterTemperatureOptions = (data, name) => {
     },
     legend: {
       top: "250px",
-      width: '100%',
+      width: '80%',
       itemWidth: 14,
       itemHeight: 6,
       x: 'center',
@@ -306,7 +306,7 @@ export const diffTemperatureOptions = (data, name) => {
     },
     legend: {
       top: "250px",
-      width: '100%',
+      width: '80%',
       itemWidth: 14,
       itemHeight: 6,
       x: 'center',

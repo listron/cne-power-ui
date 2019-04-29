@@ -10,6 +10,7 @@ export default class AlgorithmModal extends React.Component {
     algoModelList: PropTypes.object,
     algoOptionList: PropTypes.array,
     getListView: PropTypes.func,
+    getTaskStatusStat: PropTypes.func,
   };
 
   constructor(props) {
@@ -27,6 +28,7 @@ export default class AlgorithmModal extends React.Component {
     const {
       changeAlgorithmControlStore,
       algoOptionList,
+      getTaskStatusStat
     } = this.props;
     let newSameArr = []; // 相同数据
     // 取到相同的数据
@@ -39,7 +41,7 @@ export default class AlgorithmModal extends React.Component {
       viewType: "list",
     });
     const { getListView } = this.props;
-    const params = {
+    const listParams = {
       stationCode:null,
       algorithmModalId: [`${algorithmId}`],
       startTime:"",
@@ -51,7 +53,16 @@ export default class AlgorithmModal extends React.Component {
       sortMethod:"",
       algorithmModalName: newSameArr
     };
-    getListView(params);
+    const statusParams = {
+      stationCode:null,
+      algorithmIds: [`${algorithmId}`],
+      startTime:"",
+      endTime:""
+    };
+    // 列表
+    getListView(listParams);
+    // 状态统计
+    getTaskStatusStat(statusParams);
   };
 
   render() {

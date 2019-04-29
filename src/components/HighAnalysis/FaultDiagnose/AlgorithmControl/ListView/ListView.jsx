@@ -19,7 +19,8 @@ export default class ListView extends React.Component {
     pageSize: PropTypes.number,
     algoListView: PropTypes.object,
     onChangeFilter: PropTypes.func,
-    status: PropTypes.string
+    status: PropTypes.string,
+    taskStatusStat: PropTypes.object,
   };
 
   constructor(props) {
@@ -67,7 +68,20 @@ export default class ListView extends React.Component {
 
   render() {
     const { showFilter } = this.state;
-    const { pageSize, pageNum, algoListView: {count}, status } = this.props;
+    const {
+      pageSize,
+      pageNum,
+      algoListView: {
+        count
+      },
+      status,
+      taskStatusStat: {
+        pending,
+        processing,
+        finished,
+        failed
+      }
+    } = this.props;
     return (
       <div className={styles.listView}>
         <div className={styles.listViewSelect}>
@@ -87,10 +101,10 @@ export default class ListView extends React.Component {
             <div className={styles.text}><span>状</span><span>态</span></div>
             <Radio.Group value={status} onChange={this.handleStatusChange}>
               <Radio.Button value="0">全部</Radio.Button>
-              <Radio.Button value="1">待执行</Radio.Button>
-              <Radio.Button value="2">执行中</Radio.Button>
-              <Radio.Button value="3">已完成</Radio.Button>
-              <Radio.Button value="4">执行失败</Radio.Button>
+              <Radio.Button value="1">{`待执行 ${pending || ""}`}</Radio.Button>
+              <Radio.Button value="2">{`执行中 ${processing || ""}`}</Radio.Button>
+              <Radio.Button value="3">{`已完成 ${finished || ""}`}</Radio.Button>
+              <Radio.Button value="4">{`执行失败 ${failed || ""}`}</Radio.Button>
             </Radio.Group>
           </div>
         </div>

@@ -7,7 +7,7 @@ import DifferenceTemperature from "../DiagnoseCharts/DifferenceTemperature/Diffe
 import SingleResult from "../DiagnoseCharts/SingleResult/SingleResult";
 import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
-import FaultNavList from "../FaultNavList/FaultNavList";
+import FaultNavList from "./FaultNavList/FaultNavList";
 import FaultAllFanTop from "./FaultAllFanTop/FaultAllFanTop";
 
 
@@ -19,7 +19,9 @@ export default class FaultAllFan extends React.Component {
     stations: PropTypes.object,
     stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
-    faultInfo: PropTypes.object
+    faultInfo: PropTypes.object,
+    warnId: PropTypes.number,
+    stationDeviceList:PropTypes.array
   };
 
   constructor(props) {
@@ -33,7 +35,9 @@ export default class FaultAllFan extends React.Component {
         algorithmName,
         status,
         stationName
-      }
+      },
+      stationDeviceList,
+      warnId
     } = this.props;
     return (
       <div className={styles.faultAllFan}>
@@ -53,9 +57,11 @@ export default class FaultAllFan extends React.Component {
                   <PreTemperature {...this.props} />
                   <AfterTemperature {...this.props} />
                   <DifferenceTemperature {...this.props} />
-                  <SingleResult {...this.props} />
-                  <HeatMap {...this.props} />
-                  <AllFans {...this.props} />
+                  {(warnId ? warnId : stationDeviceList[0].warnId) && ([
+                    <SingleResult key="singleResult" {...this.props} />,
+                    <HeatMap key="heatMap" {...this.props} />,
+                    <AllFans key="allFans" {...this.props} />
+                  ])}
                 </div>
               ]}
           </div>

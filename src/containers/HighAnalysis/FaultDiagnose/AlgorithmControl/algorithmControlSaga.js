@@ -14,7 +14,8 @@ const {
       algoList,
       algoOptionList,
       addWarnTask,
-      faultTaskList
+      faultTaskList,
+      statusInfo
     }
   }} = Path;
 
@@ -91,7 +92,7 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
     algorithmIds: algorithmModalId ? algorithmModalId : [],
     startTime: createTimeStart ? createTimeStart : "",
     endTime: createTimeEnd ? createTimeEnd : "",
-    status: status ? status : null,
+    status: !status || status === "0" ? null : status,
     sortField,
     sortMethod,
     stationCode: !stationCode ? null : stationCode,
@@ -109,7 +110,7 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
         algorithmModalId: algorithmModalId ? algorithmModalId : [],
         createTimeStart: createTimeStart ? createTimeStart : "",
         createTimeEnd: createTimeEnd ? createTimeEnd : "",
-        status: status ? status : null,
+        status: !status || status === "0" ? "0" : status,
         sortField,
         sortMethod,
         stationCode,
@@ -118,7 +119,6 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
-      console.log(response.data.data, "response.data.data");
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
@@ -149,11 +149,41 @@ function* getAlgoOptionList() { // 获取算法列表
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
-      console.log("0-0-0-mm");
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
           algoOptionList: response.data.data || [],
+          loading: false,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: algorithmControlAction.changeAlgorithmControlStore,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getTaskStatusStat(action) { // 获取预警任务状态统计
+  const { payload } = action;
+  const url = `${APIBasePath}${statusInfo}`;
+  try{
+    yield put({
+      type: algorithmControlAction.changeAlgorithmControlStore,
+      payload: {
+        loading: true
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: algorithmControlAction.changeAlgorithmControlStore,
+        payload: {
+          taskStatusStat: response.data.data || {},
           loading: false,
         },
       });
@@ -219,6 +249,7 @@ export function* watchAlgorithmControl() {
   yield takeEvery(algorithmControlAction.getAlgoOptionList, getAlgoOptionList);
   yield takeEvery(algorithmControlAction.getAddWarnTask, getAddWarnTask);
   yield takeEvery(algorithmControlAction.getListView, getListView);
+  yield takeEvery(algorithmControlAction.getTaskStatusStat, getTaskStatusStat);
 
 }
 

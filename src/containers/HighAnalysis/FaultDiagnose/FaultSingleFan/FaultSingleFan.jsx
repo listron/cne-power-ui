@@ -147,6 +147,7 @@ const mapDispatchToProps = (dispatch) => ({
   getTenMinutesDiff: payload => dispatch({ type: faultSingleFanAction.getTenMinutesDiff, payload }),
   changeSingleFanStore: payload => dispatch({ type: faultSingleFanAction.changeSingleFanStore, payload }),
   changeWarnListStore: payload => dispatch({ type: faultWarnListAction.changeWarnListStore, payload }),
+  getFaultInfo: payload => dispatch({ type: faultSingleFanAction.getFaultInfo, payload }),
   getList: payload => dispatch({ type: faultWarnListAction.getList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan)

@@ -14,11 +14,12 @@ const {
   },
   APISubPaths: {
     highAnalysis: {
-      stationDeviceList,
+      algoOptionList,
       standAlone,
       similarityList,
       allFanResult,
       tenMinutesLine,
+      faultInfo
     }
   }} = Path;
 // 处理数据
@@ -66,7 +67,7 @@ function getArrEqual(warnList, allList) {
 }
 function* getStationDeviceList(action) { // 获取单电站所有风机
   const { payload } = action;
-  const url = `${APIBasePath}${stationDeviceList}`;
+  const url = `${APIBasePath}${algoOptionList}`;
   const warnFans = JSON.parse(localStorage.getItem("warnFans"));
   try {
     yield put({
@@ -81,6 +82,38 @@ function* getStationDeviceList(action) { // 获取单电站所有风机
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           stationDeviceList: getArrEqual(warnFans, response.data.data.context) || [],
+          loading: false,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: faultSingleFanAction.changeSingleFanStore,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getFaultInfo(action) { // 获取故障预警任务详情
+  const { payload } = action;
+  const url = `${APIBasePath}${faultInfo}/${payload.taskId}`;
+  try {
+    yield put({
+      type: faultSingleFanAction.changeSingleFanStore,
+      payload: {
+        loading: true
+      }
+    });
+    const response = yield call(axios.post, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: faultSingleFanAction.changeSingleFanStore,
+        payload: {
+          faultInfo: response.data.data || {},
+          faultInfoMessage: response.data.message || "",
           loading: false,
         },
       });
@@ -291,6 +324,7 @@ export function* watchFaultSingleFan() {
   yield takeEvery(faultSingleFanAction.getTenMinutesBefore, getTenMinutesBefore);
   yield takeEvery(faultSingleFanAction.getTenMinutesAfter, getTenMinutesAfter);
   yield takeEvery(faultSingleFanAction.getTenMinutesDiff, getTenMinutesDiff);
+  yield takeEvery(faultSingleFanAction.getFaultInfo, getFaultInfo);
 
 }
 //
