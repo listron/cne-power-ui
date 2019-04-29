@@ -133,15 +133,12 @@
   text-align: center;
   margin: 20px;
   display: flex;
-  // flex: 1;
-  // width:1212px;
   flex-direction: row;
   justify-content: space-around;
   overflow: hidden;
   .operatorList,.weatherList,.alarmList,.workList{
     width:23%;
     display: flex;
-    // flex: 1;
     flex-direction: column;
   }
   .weatherList{
@@ -152,6 +149,8 @@
     position: relative;
     color: $darkColor;
     font-size: 12px;
+    flex-direction: row;
+    justify-content: center;
     :global{
       .ant-btn{
         padding: 0;

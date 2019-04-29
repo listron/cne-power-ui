@@ -10,6 +10,7 @@ import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 
 class HistoryWarningFilter extends Component {
   static propTypes = {
+    history: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -50,6 +51,11 @@ class HistoryWarningFilter extends Component {
 
   render() {
     const { stations, deviceTypes } = this.props;
+    const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
+    const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
+    const stationCodes = stationCode ? [+stationCode] : null;
+    const  pathParams=this.props.history.location.state || {};
+    const {stationType = '',deviceName=''}=pathParams;
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
@@ -57,6 +63,10 @@ class HistoryWarningFilter extends Component {
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}
+          defaultValue={{
+            stationCodes,
+            stationType
+          }}
         />
         <div className={styles.deviceNameSearch}>
           <span>设备名称</span>

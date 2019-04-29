@@ -185,7 +185,8 @@ class WindStation extends React.Component {
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
               {/* `/monitor/alarm/realtime?stationType=${0}` */}
-                <Link to={`/monitor/alarm/realtime`}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
+                {/* <Link to={`/monitor/alarm/realtime?stationType=${0}`}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link> */}
+                <Link to={{pathname:`/monitor/alarm/realtime`,state: { stationType: '0' }}}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
