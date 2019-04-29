@@ -239,6 +239,7 @@ class TimeSelectReport extends React.Component {
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
               open={false}
+              disabled={true}
             >
               {/*
            {areaList && areaList.map((e) => {
@@ -321,7 +322,7 @@ class TimeSelectReport extends React.Component {
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
               open={false}
-
+              disabled={true}
             >
               {/*
               {deviceTypes && deviceTypes.map((e) => {
@@ -354,6 +355,7 @@ class TimeSelectReport extends React.Component {
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
               open={false}
+              disabled={true}
             >
               {/*
               {stations && stations.map((e) => {
@@ -384,6 +386,7 @@ class TimeSelectReport extends React.Component {
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
               open={false}
+              disabled={true}
             >
               {areaList && areaList.map((e) => {
                 return <Option key={e.key}>{e.title}</Option>
