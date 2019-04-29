@@ -244,6 +244,12 @@ class TableList extends Component {
         sorter: true,
         width:128,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+      },{
+        title: "桨叶角1",
+        dataIndex: "bladeAngle",
+        sorter: true,
+        width:112,
+        render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
       },
     ];
     return columns
@@ -274,7 +280,7 @@ class TableList extends Component {
         <Table columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === "detail" ? {x:1680} : {x:0}}
+          scroll={tableType === "detail" ? {x:1792} : {x:0}}
           pagination={false} />
       </React.Fragment>
     )

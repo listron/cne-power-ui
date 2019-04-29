@@ -140,8 +140,22 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
-    this.setState({ list: v });
-    this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
+    const {region}=this.props;
+    const regionName=region.map((e,i)=>(e.regionName));
+    const isAll=v&&v.filter((e,i)=>(e==='all')).length;
+    const checkedLength=v.length<region.length+1;
+    if(isAll){
+      if(checkedLength){
+        this.setState({ list:regionName });
+        this.props.onChange({ modeStyle: this.state.modeStyle, list: regionName })
+      }else{
+        this.setState({ list:[] });
+        this.props.onChange({ modeStyle: this.state.modeStyle, list: [] })
+      }}else{
+      this.setState({ list: v });
+      this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
+    };
+   
   }
   dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
     let test2 = [];
@@ -259,7 +273,8 @@ class TimeSelectReport extends React.Component {
               return <Option key={e.key}>{e.title}</Option>
             })} 
           */}
-            {
+         <Option key={'all'}>全部区域</Option>
+            { 
               region && region.map((e, i) => {
                 return <Option key={e.regionName}>{e.regionName}</Option>
               })
