@@ -93,6 +93,7 @@ class WindDevice extends Component {
   render() {
     const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
+    const { deviceName } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const breadCrumbData = {
@@ -140,14 +141,15 @@ class WindDevice extends Component {
               <div className={styles.pointAlarm}>
                 <div className={styles.pointAlarmTitle}>
                   <span>实时告警</span>
-                  <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}>查看全部</Link>
+                  <Link to={{pathname:`/monitor/alarm/realtime`, search:`?stationCode=${stationCode}`,state:{stationType:'0',deviceName}}}> 查看全部 </Link>
                 </div>
                 <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} style={{ padding: `0px 32px 32px`, border: 'none' }} titleName={false} />
               </div>
             </div>
             <div className={styles.windDeviceChart}>
               <div className={styles.tags}>
-                <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
+                <Link to={{pathname:`/monitor/alarm/realtime`,
+                search:`?stationCode=${stationCode}`,state:{stationType:'0',deviceName}}}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>

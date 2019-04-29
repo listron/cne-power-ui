@@ -1,45 +1,61 @@
-import React from 'react';
+import React, { Component } from 'react';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
-import { dataFormats, numWithComma } from '../../../../utils/utilFunc';
+import { dataFormats } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData.js';
 import moment from 'moment';
 import styles from './windCommon.scss';
 
 
-const PointScatter = ({ ...rest }) => {
-    const { scatterData = {}, type } = rest;
-    console.log('rest',rest)
-    let needData = [];
-    if (type === 'windDevice') {
-        needData = [
-            { name: '近三个月', value: 'monthsChart' },
-            { name: '24小时', value: 'dayChart' },
-        ]
+class PointScatter extends Component {
+    constructor(){
+        super();
     }
-    let series = needData.map((item) => {
-        const data = scatterData[item.value] || [];
-        return ({
-            name: item.name,
-            type: 'scatter',
-            symbolSize: 5,
-            emphasis: {
-                symbolSize: 8,
-            },
-            data: data.map((item) => {
-                const { xData, yData, time, deviceName } = item;
-                const formatTime = moment(time).format('YYYY-MM-DD HH:MM:SS')
-                return [dataFormats(xData, '--', 2, true), dataFormats(yData, '--', 2, true), formatTime, deviceName]
+    componentDidMount() {
+        this.drawCharts(this.props)
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (Object.getOwnPropertyNames(this.props.scatterData).length===0 && 
+        Object.getOwnPropertyNames(nextProps.scatterData).length>0) {
+            this.drawCharts(nextProps)
+            return true
+        }
+        return false
+    }
+
+
+    drawCharts = (params) => {
+        const { scatterData = {}, type, } = params;
+        let needData = [];
+        if (type === 'windDevice') {
+            needData = [
+                { name: '近三个月', value: 'monthsChart' },
+                { name: '24小时', value: 'dayChart' },
+            ]
+        }
+        let series = needData.map((item) => {
+            const data = scatterData[item.value] || [];
+            return ({
+                name: item.name,
+                type: 'scatter',
+                symbolSize: 5,
+                emphasis: {
+                    symbolSize: 8,
+                },
+                data: data.map((item) => {
+                    const { xData, yData, time, deviceName } = item;
+                    const formatTime = moment(time).format('YYYY-MM-DD HH:MM:SS')
+                    return [dataFormats(xData, '--', 2, true), dataFormats(yData, '--', 2, true), formatTime, deviceName]
+                })
             })
         })
-    })
-    const chartsBox = document.getElementById('SpeedScatterGraph');
-    const Graphic = (needData.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
-    const fontColor = '#333';
-    if (chartsBox) {
+        const chartsBox = document.getElementById('SpeedScatterGraph');
+        const Graphic = (needData.length === 0) ? showNoData : hiddenNoData;
+        const lineColor = '#666';
+        const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
-        needData.length > 0 ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
+        scatterData.monthsChart ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
         const scatterOption = {
             graphic: Graphic,
             color: ['#c7ceb2', '#199475', '#e08031'],
@@ -116,7 +132,7 @@ const PointScatter = ({ ...rest }) => {
                         color: '#dfdfdf',
                     },
                 },
-                min:0,
+                min: 0,
                 axisLabel: {
                     color: lineColor,
                 },
@@ -154,15 +170,15 @@ const PointScatter = ({ ...rest }) => {
             ],
             series: series
         };
-        SpeedScatterGraph.setOption(scatterOption,);
+        SpeedScatterGraph.setOption(scatterOption, 'notMerge');
     }
 
-
-    return (
-        <div id="SpeedScatterGraph" className={styles.SpeedScatterGraph}></div>
-    )
+    render() {
+        return (
+            <div id="SpeedScatterGraph" className={styles.SpeedScatterGraph}></div>
+        )
+    }
 }
-
 
 
 

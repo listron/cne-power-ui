@@ -19,6 +19,11 @@ class FanListCont extends React.Component {
     changeSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
     fanDisplay: PropTypes.string,
+    loading: PropTypes.bool,
+  }
+
+  static defaultProps={
+     loading:true
   }
 
   constructor(props) {
@@ -28,6 +33,7 @@ class FanListCont extends React.Component {
       alarmSwitch: false,
       currentPage: 1,
       pageSize: 10,
+      firstLoad: true,
     }
   }
 
@@ -123,7 +129,7 @@ class FanListCont extends React.Component {
 
   render() {
     const { currentPage, pageSize, cardPointParams } = this.state;
-    const { fanDisplay } = this.props;
+    const { fanDisplay ,loading} = this.props;
     return (
       <div className={styles.fanListCont}>
         <div className={styles.StationTitle} >
@@ -138,11 +144,12 @@ class FanListCont extends React.Component {
           </div>
         </div>
         {fanDisplay === 'deviceCard' &&
-          <FanItem
-            {...this.props}
-            cardPointParams={cardPointParams}
-            deviceList={this.filterStatusDataList()}
-          />}
+          (loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+            <FanItem
+              {...this.props}
+              cardPointParams={cardPointParams}
+              deviceList={this.filterStatusDataList()}
+            />)}
         {fanDisplay === 'deviceTable' &&
           <FanTable
             {...this.props}

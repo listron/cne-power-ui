@@ -52,7 +52,7 @@ class WindStationTop extends Component {
   }
 
   render() {
-    const { singleStationData = {}, stationList,weatherList,operatorList } = this.props;
+    const { singleStationData = {}, stationList, weatherList, operatorList } = this.props;
     const { showStationList } = this.state;
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
@@ -97,13 +97,15 @@ class WindStationTop extends Component {
             </div>
           </div>
           <div className={styles.stationRight}>
-            <div className={styles.newOperatorList}>
-              {/* <marquee className={styles.marquee} >
-                {operatorList.map((item,index) => {
-                  return <span key={index}>{item.roleDesc} {item.userFullName} {item.phoneNum}   </span>
-                })}
-              </marquee> */}
-            </div>
+            {operatorList.length > 0 &&
+              <div className={styles.newOperatorList}>
+                <div className={styles.scrollAnmiate}>
+                  {operatorList.map((item, index) => {
+                    return <span key={index} className={styles.spanLine}>{item.roleDesc} {item.userFullName || item.userName} {item.phoneNum}   </span>
+                  })}
+                </div>
+              </div>
+            }
             <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature}</div>
             <Link to={pathAllStation}  >
               <Icon type="arrow-left" className={styles.backIcon} />
