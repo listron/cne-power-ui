@@ -9,6 +9,8 @@ export default class AllFans extends React.Component {
     loading: PropTypes.bool,
     getAllFanResultList: PropTypes.func,
     allFanResultList: PropTypes.object,
+    faultInfo: PropTypes.object,
+    allLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -21,33 +23,78 @@ export default class AllFans extends React.Component {
       allFansCharts,
       props: {
         getAllFanResultList,
-        allFanResultList
+        allFanResultList,
+        faultInfo: {
+          endTime
+        },
+        allLoading
       }
     } = this;
     const taskId = localStorage.getItem("taskId");
     const params = {
       taskId,
-      date: "2019-04-19"
+      date: endTime
     };
     const myChart = eCharts.init(allFansCharts);
+    if (allLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!allLoading) {
+      myChart.hideLoading();
+    }
     // 接口
     getAllFanResultList(params);
     myChart.setOption(allFansOptions(allFanResultList, params.date));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      faultInfo: {
+        endTime: currentEndTime
+      },
+      getAllFanResultList
+    } = this.props;
+    const {
+      faultInfo: {
+        endTime: nextEndTime
+      },
+    } = nextProps;
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId,
+      date: nextEndTime
+    };
+    if (currentEndTime !== nextEndTime) {
+      // 接口
+      getAllFanResultList(params);
+    }
   }
 
   componentDidUpdate() {
     const  {
       allFansCharts,
       props: {
-        allFanResultList
+        allFanResultList,
+        allLoading,
+        faultInfo: {
+          endTime
+        },
       }
     } = this;
     const taskId = localStorage.getItem("taskId");
     const params = {
       taskId,
-      date: "2019-04-19"
+      date: endTime
     };
     const myChart = eCharts.init(allFansCharts);
+    if (allLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!allLoading) {
+      myChart.hideLoading();
+    }
     myChart.setOption(allFansOptions(allFanResultList, params.date));
   }
 

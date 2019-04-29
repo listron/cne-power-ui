@@ -9,16 +9,26 @@ export default class FaultWarnFan extends React.Component {
     loading: PropTypes.bool,
     history: PropTypes.object,
     fanListData: PropTypes.array,
+    match: PropTypes.object
   };
 
   constructor(props) {
     super(props);
   }
 
-  detailsFunc = () => {
-    const { history } = this.props;
+  detailsFunc = (taskId, deviceName) => {
+    const {
+      history,
+      match: {
+        params:{
+          fanWarnId
+        }
+      },
+    } = this.props;
     // 跳到单风机详情图表展示
-    history.push("/hidden/analysis/single/fan");
+    history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
+    localStorage.setItem("taskId", taskId);
+    localStorage.setItem("deviceName", deviceName);
   };
 
   titleFunc = (data) => {
@@ -44,7 +54,7 @@ export default class FaultWarnFan extends React.Component {
     const { fanListData } = this.props;
     const item = fanListData && fanListData.map((cur, index) => {
       return (
-        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName)}}>
           <div className={styles.fanItemTop}>
             <div>
               {cur.deviceName}
