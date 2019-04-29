@@ -17,6 +17,18 @@ class AlgorithmControl extends Component {
     changeAlgorithmControlStore: PropTypes.func,
     viewType: PropTypes.string,
     getAlgoOptionList: PropTypes.func,
+    getTaskStatusStat: PropTypes.func,
+    getListView: PropTypes.func,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    algorithmModalId: PropTypes.array,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    status: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    stationCode: PropTypes.string,
+    algorithmModalName: PropTypes.array,
   };
 
   constructor(props, context) {
@@ -43,22 +55,77 @@ class AlgorithmControl extends Component {
   };
 
   onChangeFilter = (params) => {
-    const { changeAlgorithmControlStore } = this.props;
-    changeAlgorithmControlStore({...params});
+    const {
+      getListView,
+      pageSize,
+      pageNum,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      status,
+      sortField,
+      sortMethod,
+      stationCode,
+      algorithmModalName
+    } = this.props;
+    // 新的参数
+    const newParams = {
+      pageSize,
+      pageNum,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      status,
+      sortField,
+      sortMethod,
+      stationCode,
+      algorithmModalName,
+      ...params
+    };
+    getListView(newParams);
   };
 
   showAlgorithmFunc = () => {
     // 展示算法
-    this.onChangeFilter({
+    const { changeAlgorithmControlStore } = this.props;
+    // 展示算法
+    changeAlgorithmControlStore({
       viewType: "algorithm"
     });
   };
 
   showListViewFunc = () => {
+    const {
+      changeAlgorithmControlStore,
+      getListView,
+      algorithmModalId,
+      getTaskStatusStat
+    } = this.props;
     // 展示列表视图
-    this.onChangeFilter({
+    changeAlgorithmControlStore({
       viewType: "list"
     });
+    const listParams = {
+      stationCode:null,
+      algorithmIds: algorithmModalId,
+      startTime:"",
+      endTime:"",
+      status:null,
+      pageSize:null,
+      pageNum:null,
+      sortField:"",
+      sortMethod:""
+    };
+    const statusParams = {
+      stationCode:null,
+      algorithmIds: algorithmModalId,
+      startTime:"",
+      endTime:""
+    };
+    // 列表
+    getListView(listParams);
+    // 状态统计
+    getTaskStatusStat(statusParams);
   };
 
   render() {
@@ -81,14 +148,14 @@ class AlgorithmControl extends Component {
               style={viewType === "algorithm" ? checkStyle : UnCheckStyle}
               onClick={this.showAlgorithmFunc}
             >
-              <Icon type="swap" />
+              <i className="iconfont icon-grid" />
               <span>算法模型</span>
             </div>
             <div
               style={viewType === "list" ? checkStyle : UnCheckStyle}
               onClick={this.showListViewFunc}
             >
-              <Icon type="swap" />
+              <i className="iconfont icon-table" />
               <span>列表视图</span>
             </div>
           </div>,
@@ -129,5 +196,6 @@ const mapDispatchToProps = (dispatch) => ({
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
   getAddWarnTask: payload => dispatch({ type: algorithmControlAction.getAddWarnTask, payload }),
   getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
+  getTaskStatusStat: payload => dispatch({ type: algorithmControlAction.getTaskStatusStat, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)

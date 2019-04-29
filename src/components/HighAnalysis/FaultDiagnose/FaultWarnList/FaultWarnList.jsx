@@ -133,7 +133,7 @@ export default class FaultWarn extends React.Component {
                 className={styles.iconBgc}
                 style={viewType === 1 ? { color: "#ffffff" } : { color: "#595959" }}
               >
-                <Icon className={styles.icon} type="swap" />
+                <i className="iconfont icon-grid" />
               </div>
               <div style={viewType === 1 ? { color: "#ffffff" } : { color: "#595959" }}>
                 算法模型
@@ -168,7 +168,7 @@ export default class FaultWarn extends React.Component {
                 style={viewType === 3 ? { color: "#ffffff" } : { color: "#595959" }}
                 className={styles.iconBgc}
               >
-                <Icon className={styles.icon} type="swap" />
+                <i className="iconfont icon-table" />
               </div>
               <div style={viewType === 3 ? { color: "#ffffff" } : { color: "#595959" }}>
                 列表视图

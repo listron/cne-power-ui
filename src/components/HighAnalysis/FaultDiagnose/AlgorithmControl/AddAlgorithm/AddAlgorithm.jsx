@@ -21,6 +21,7 @@ class AddAlgorithm extends React.Component {
     stationCode: PropTypes.string,
     getAlgoOptionList: PropTypes.func,
     algoOptionList: PropTypes.array,
+    algorithmModalName: PropTypes.array,
   };
 
   constructor(props) {
@@ -46,7 +47,7 @@ class AddAlgorithm extends React.Component {
   }
 
   componentDidMount() {
-    const { getAlgoOptionList } = this.props;
+    const {getAlgoOptionList,} = this.props;
     getAlgoOptionList();
   }
 
