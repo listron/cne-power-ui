@@ -120,7 +120,7 @@ class WindStationList extends React.Component {
         }
       },
       {
-        title: () => <TableColumnTitle title="装机容量" unit={'KW'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="装机容量" unit={'kW'} className="nonePadding" />,
         dataIndex: "deviceCapacity",
         key: 'deviceCapacity',
         className: styles.numberStyle,
@@ -148,7 +148,7 @@ class WindStationList extends React.Component {
         dataIndex: 'capabilityRate',
         key: 'capabilityRate',
         className: styles.numberStyle,
-        render: value => dataFormats(value, '--', 2, true),
+        render: value => dataFormats(value, '--', 2, true)+'%',
         sorter: true,
       },
       {

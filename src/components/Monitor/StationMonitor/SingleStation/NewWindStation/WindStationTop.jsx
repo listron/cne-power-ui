@@ -59,28 +59,6 @@ class WindStationTop extends Component {
     const currentStationName = singleStationData.stationName;
     const { stationStatus = {} } = singleStationData;
     const { stationStatusName, stationStatusTime } = stationStatus;
-    // const operatorList = [
-    //   {
-    //     "roleDesc": "运维实施人员",
-    //     "userStatus": 2,
-    //     "roleId": "5",
-    //     "userFullName": null,
-    //     "roleName": "monitor_remove",
-    //     "phoneNum": "18500505505",
-    //     "userName": "#$@#@%@%@24#%#@#%",
-    //     "userId": "352769139983872"
-    //   },
-    //   {
-    //     "roleDesc": "运维实施人员",
-    //     "userStatus": 1,
-    //     "roleId": "5",
-    //     "userFullName": "侯强",
-    //     "roleName": "monitor_remove",
-    //     "phoneNum": "15600297700",
-    //     "userName": "houqiang",
-    //     "userId": "324224850599938"
-    //   }
-    // ] 
     const todayWeather = weatherList.length > 0 && weatherList[0] || {}
     return (
       <div className={styles.stationTop} >
