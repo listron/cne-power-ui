@@ -57,7 +57,7 @@ export default class FaultAllFan extends React.Component {
                   <PreTemperature {...this.props} />
                   <AfterTemperature {...this.props} />
                   <DifferenceTemperature {...this.props} />
-                  {(warnId ? warnId : stationDeviceList[0].warnId) && ([
+                  {(warnId ? warnId === 1 : stationDeviceList[0].warnId) && ([
                     <SingleResult key="singleResult" {...this.props} />,
                     <HeatMap key="heatMap" {...this.props} />,
                     <AllFans key="allFans" {...this.props} />

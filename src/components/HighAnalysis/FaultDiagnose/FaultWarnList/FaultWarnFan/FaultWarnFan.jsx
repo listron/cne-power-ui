@@ -16,7 +16,7 @@ export default class FaultWarnFan extends React.Component {
     super(props);
   }
 
-  detailsFunc = (taskId, deviceName) => {
+  detailsFunc = (taskId, deviceName, large, performance, health, deviceFullCode) => {
     const {
       history,
       match: {
@@ -25,10 +25,31 @@ export default class FaultWarnFan extends React.Component {
         }
       },
     } = this.props;
+    let newArr = []; // 保存故障
+    if (large.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(large[i]); // 保存大部件
+
+      }
+    }
+    if (performance.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(performance[i]); // 保存性能预警
+
+      }
+    }
+    if (health.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(health[i]); // 保存设备健康
+
+      }
+    }
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
     localStorage.setItem("taskId", taskId);
     localStorage.setItem("deviceName", deviceName);
+    localStorage.setItem("deviceFullCode", deviceFullCode);
+    localStorage.setItem("faultList", JSON.stringify(newArr))
   };
 
   titleFunc = (data) => {
@@ -54,7 +75,7 @@ export default class FaultWarnFan extends React.Component {
     const { fanListData } = this.props;
     const item = fanListData && fanListData.map((cur, index) => {
       return (
-        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName)}}>
+        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName, cur.largeWarnings, cur.performanceWarnings, cur.healthWarnings, cur.deviceFullcode)}}>
           <div className={styles.fanItemTop}>
             <div>
               {cur.deviceName}

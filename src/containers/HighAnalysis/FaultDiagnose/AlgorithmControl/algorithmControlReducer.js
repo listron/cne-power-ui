@@ -35,7 +35,7 @@ const AlgorithmControlReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case algorithmControlAction.fetchAlgorithmControlSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case algorithmControlAction.RESET_STORE:
+    case algorithmControlAction.resetStore:
       return initState
   }
   return state;

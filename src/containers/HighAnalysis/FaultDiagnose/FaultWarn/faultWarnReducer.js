@@ -13,7 +13,7 @@ const faultWarnReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case faultWarnAction.faultWarnFetchSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case faultWarnAction.RESET_STORE:
+    case faultWarnAction.resetStore:
       return initState
   }
   return state;

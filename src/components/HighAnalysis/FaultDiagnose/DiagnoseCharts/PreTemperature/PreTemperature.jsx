@@ -24,6 +24,7 @@ export default class PreTemperature extends React.Component {
     stationDeviceList: PropTypes.array,
     preDate: PropTypes.array,
     preLoading: PropTypes.bool,
+    preTimeCompare: PropTypes.number,
   };
 
   constructor(props) {
@@ -98,13 +99,15 @@ export default class PreTemperature extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const  {
       tenMinutesBeforeList,
       deviceName,
       stationDeviceList,
-      preLoading
+      preLoading,
+      preTimeCompare: currentPreTimeCompare
     } = this.props;
+    const { preTimeCompare } = prevProps;
     const { preChart } = this;
     const myChart = eCharts.init(preChart);
     if (preLoading) { // loading态控制。
@@ -114,10 +117,14 @@ export default class PreTemperature extends React.Component {
     if (!preLoading) {
       myChart.hideLoading();
     }
+    // 单风机的时候需要从这里获取
+    const defaultName = localStorage.getItem("deviceName");
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
-    myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name));
+    if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName));
 
+    }
   }
 
   changeFaultDate = (date, dateString) => {

@@ -64,8 +64,13 @@ export default class FaultWarnTable extends React.Component {
         }
       },
     } = this.props;
+    const { taskId, deviceName, deviceFullCode, algorithmName } = data;
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
+    localStorage.setItem("taskId", taskId);
+    localStorage.setItem("deviceName", deviceName);
+    localStorage.setItem("deviceFullCode", deviceFullCode);
+    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序

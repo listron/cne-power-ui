@@ -385,7 +385,7 @@ const menuData = [
         ]
       },
       {
-        name: '风机故障检测与诊断',
+        name: '风机预警',
         iconStyle: 'icon-windlogo',
         path: 'faultDiagnose',
         rightKey: 'analysis_intelligentWarning',

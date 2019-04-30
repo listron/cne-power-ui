@@ -19,15 +19,20 @@ export default class HistoryWarnTable extends React.Component {
     stationCode: PropTypes.number,
     selectDeviceCode: PropTypes.array,
     algorithmModalId: PropTypes.array,
+    history: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+  onShowDetail = (data) => {
+    const { history } = this.props;
+    const { taskId, deviceName, deviceFullCode, algorithmName, stationCode } = data;
+    // 跳到单风机详情图表展示
+    history.push(`/hidden/analysis/single/fan/${stationCode}`);
+    localStorage.setItem("taskId", taskId);
+    localStorage.setItem("deviceName", deviceName);
+    localStorage.setItem("deviceFullCode", deviceFullCode);
+    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
+  };
 
-  componentDidMount() {
-  }
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
     const { field, order } = sorter;
@@ -72,7 +77,7 @@ export default class HistoryWarnTable extends React.Component {
       dataIndex: 'result',
       align:"center",
       render: (text, record) => (
-        <span>
+        <span style={{cursor: "pointer"}}>
           <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
         </span>
       )
