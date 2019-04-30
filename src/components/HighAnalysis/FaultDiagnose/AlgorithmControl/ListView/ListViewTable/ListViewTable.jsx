@@ -28,13 +28,13 @@ export default class ListViewTable extends React.Component {
 
   onShowDetail = (data) => {
     const { history } = this.props;
-    const { taskId, deviceName, deviceFullCode, algorithmName, stationCode } = data;
-    // 跳到单风机详情图表展示
-    history.push(`/hidden/analysis/single/fan/${stationCode}`);
+    const { taskId, stationCode, algorithmId } = data;
+    // 跳到按模型单风机详情图表展示
+    history.push(`/hidden/analysis/all/fan/${stationCode}`);
+    // localStore存储有故障的风机
+    localStorage.setItem("algorithmId", algorithmId);
+    localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
-    localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
@@ -85,10 +85,10 @@ export default class ListViewTable extends React.Component {
       dataIndex: 'status',
       render: (status, record) => {
         if(status === 1) {
-          return <span onClick={() => {return this.onShowDetail(record)}}>待执行</span>
+          return <span>待执行</span>
         }
         if(status === 2) {
-          return <span onClick={() => {return this.onShowDetail(record)}}>执行中</span>
+          return <span>执行中</span>
         }
         if(status === 3) {
           return <Tag color="#199475" onClick={() => {return this.onShowDetail(record)}}>已完成</Tag>
