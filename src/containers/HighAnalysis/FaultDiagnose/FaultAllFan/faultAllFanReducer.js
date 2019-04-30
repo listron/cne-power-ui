@@ -57,7 +57,7 @@ const faultAllFanReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case faultAllFanAction.fetchFaultAllFanSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case faultAllFanAction.RESET_STORE:
+    case faultAllFanAction.resetStore:
       return initState
   }
   return state;
