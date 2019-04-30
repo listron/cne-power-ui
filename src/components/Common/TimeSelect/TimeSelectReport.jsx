@@ -116,8 +116,8 @@ class TimeSelectReport extends React.Component {
     }
   }
 
-  disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天以后的不可选
-    return current > moment().endOf('day') || current < moment().subtract(365, 'day');
+  disabledDate = (current) => { // 不可以选择的时间,一年之前的不可选，今天(包括今天)以后的不可选
+    return current > moment().subtract(1, 'day').endOf('day') || current < moment().subtract(365, 'day');
   }
   monthStartSelect = ({ selectedMonth }) => {//按月选择起始时间
     this.setState({ startTime: selectedMonth });

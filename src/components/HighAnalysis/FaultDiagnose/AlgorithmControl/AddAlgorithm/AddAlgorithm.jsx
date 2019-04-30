@@ -18,7 +18,10 @@ class AddAlgorithm extends React.Component {
     form: PropTypes.object,
     stations: PropTypes.object,
     onAddControlFunc: PropTypes.func,
-    stationCode: PropTypes.string
+    stationCode: PropTypes.string,
+    getAlgoOptionList: PropTypes.func,
+    algoOptionList: PropTypes.array,
+    algorithmModalName: PropTypes.array,
   };
 
   constructor(props) {
@@ -30,10 +33,22 @@ class AddAlgorithm extends React.Component {
       actionAndEndDisabledDate: new Date(), // 当前选中时间
       actionDiffTime: 90, // 训练时长
       endDiffTime: 7, // 检测时长
+      downLink: {
+        modal: "",
+        selectStationName: "",
+        actionTime: "",
+        startTime:"",
+        endTime:""
+      } //保存下发数据
     };
     this.actionTime = "";
     this.endTime = "";
     this.nowTime = "";
+  }
+
+  componentDidMount() {
+    const {getAlgoOptionList,} = this.props;
+    getAlgoOptionList();
   }
 
   onStartTimeChange = (date) => {
@@ -103,15 +118,43 @@ class AddAlgorithm extends React.Component {
     });
   };
 
+  handlerResetForm = () => {
+    const { form } = this.props;
+    this.setState({
+      actionAndEndTime: true,
+    }, () => {
+      form.setFieldsValue({
+        actionTime: null,
+        endTime: null,
+        startTime: null,
+        modal: 1,
+        selectStationName: [""]
+      });
+    });
+  };
+
   handleSend = event => {
     event.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      this.sureModalFunc(true);
-      const { fee, selectStationName } = fieldsValue;
-      console.log(fee);
-      console.log(selectStationName, "selectStationName");
+      const {
+        modal,
+        selectStationName,
+        actionTime,
+        startTime,
+        endTime
+      } = fieldsValue;
+      this.setState({
+        sureFlag: true,
+        downLink: {
+          modal,
+          selectStationName,
+          actionTime,
+          startTime,
+          endTime
+        }
+      });
     });
   };
 
@@ -122,10 +165,16 @@ class AddAlgorithm extends React.Component {
       actionAndEndTime,
       actionAndEndDisabledDate,
       actionDiffTime,
-      endDiffTime
+      endDiffTime,
+      downLink
     } = this.state;
-    const { form, stations } = this.props;
+    const { form, stations, algoOptionList } = this.props;
     const { getFieldDecorator } = form;
+    const optionItem = algoOptionList && algoOptionList.map(cur => {
+      return (
+        <Option key={cur.algorithmId} value={cur.algorithmId}>{cur.algorithmName}</Option>
+      );
+    });
     return (
       <div className={styles.addAlgorithm}>
         <div className={styles.addCenter}>
@@ -145,9 +194,9 @@ class AddAlgorithm extends React.Component {
                     <FormItem label="算法模型">
                       {getFieldDecorator('modal', {
                         rules: [{ required: true, message: '请输入算法模型'}],
-                        initialValue: "111"
+                        initialValue: 1
                       })(<Select style={{ width: 200 }}>
-                        <Option value="111">发电机轴承检测和诊断</Option>
+                          {optionItem}
                       </Select>
                       )}
                     </FormItem>
@@ -237,7 +286,7 @@ class AddAlgorithm extends React.Component {
           </div>
         </div>
         <CancelModal cancelModalFunc={this.cancelModalFunc} cancelFlag={cancelFlag} {...this.props} />
-        <SureModal sureModalFunc={this.sureModalFunc} sureFlag={sureFlag} {...this.props} />
+        <SureModal downLink={downLink} sureModalFunc={this.sureModalFunc} sureFlag={sureFlag} {...this.props} />
       </div>
     );
   }
