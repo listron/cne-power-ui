@@ -90,8 +90,8 @@ class WindDevice extends Component {
     this.setState({ modalVisible: false })
   }
 
-  pointList=()=>{
-    const {devicePointData}=this.props;
+  pointList = () => {
+    const { devicePointData } = this.props;
     const pointData = [
       { name: '风机状态', code: 'TR001' },
       { name: '限功率状态', code: 'TR005' },
@@ -121,23 +121,18 @@ class WindDevice extends Component {
       { name: '电缆扭转角度', code: 'YW003' },
     ]
     let list = [];
-    pointData.forEach((item, key) => {
+    pointData.forEach((item) => {
+      let code=item.weightCode && 'weightCode' || 'code';
       devicePointData.forEach(e => {
-        if(item.weightCode){
-          if (e.devicePointCode === item.weightCode) {
-            list.push(e)
-          }
-        }else{
-          if (e.devicePointCode === item.code) {
-            list.push(e)
-          }
+        if (e.devicePointCode === item[code]) {
+          list.push(e)
         }
       })
     })
     const groupList = [];
-    let step=list.length>15?5:4; // 数据太少 一列4行
-    let ListLength=list.length>20?20:list.length; // 只取前20个测点
-    for (var i = 0; i < ListLength ; i += step) {
+    let step = list.length > 15 ? 5 : 4; // 数据太少 一列4行
+    let ListLength = list.length > 20 ? 20 : list.length; // 只取前20个测点
+    for (var i = 0; i < ListLength; i += step) {
       groupList.push(list.slice(i, i + step));
     }
     return groupList
@@ -179,7 +174,7 @@ class WindDevice extends Component {
                 </div>
                 <div className={styles.pointDataContiner} ref={'windPoint'} >
                   {
-                    this.pointList().map((item,index) => {
+                    this.pointList().map((item, index) => {
                       return (
                         <div className={styles.group} key={index}>
                           {item.map(e => {
