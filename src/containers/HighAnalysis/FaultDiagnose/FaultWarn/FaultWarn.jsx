@@ -9,15 +9,22 @@ import Footer from '../../../../components/Common/Footer';
 
 class FaultWarn extends Component {
   static propTypes = {
-    resetStore:PropTypes.func
+    resetStore:PropTypes.func,
+    getFaultWarnList:PropTypes.func
   };
 
   constructor(props, context) {
     super(props, context);
   }
 
+  componentDidMount() {
+    const { getFaultWarnList } = this.props;
+    getFaultWarnList();
+  }
+
   componentWillUnmount(){
-    this.props.resetStore();
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   render() {
@@ -42,5 +49,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
+  getFaultWarnList: () => dispatch({ type: faultWarnAction.getFaultWarnList }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultWarn)

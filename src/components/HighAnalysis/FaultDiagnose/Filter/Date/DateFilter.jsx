@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {DatePicker} from 'antd';
 import moment from 'moment';
-import styles from '../defectfilter.scss';
+import styles from './dateFilter.scss';
 
 class DateFilter extends Component {
   static propTypes = {
@@ -16,19 +16,22 @@ class DateFilter extends Component {
   }
 
   onStartChange = (date, dateString) => {
-    this.props.onChangeFilter({
-      createTimeStart: dateString,
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      createTimeStart: dateString
     });
   };
 
   onEndChange = (date, dateString) => {
-    this.props.onChangeFilter({
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
       createTimeEnd: dateString
     });
   };
 
   resetTime = () => {
-    this.props.onChangeFilter({
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
       createTimeEnd: '',
       createTimeStart: '',
     });

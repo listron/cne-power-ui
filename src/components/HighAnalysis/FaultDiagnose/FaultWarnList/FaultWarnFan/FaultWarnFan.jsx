@@ -2,92 +2,115 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Tooltip } from 'antd';
 import styles from "./faultWarnFan.scss";
-
-const data = [
-  {
-    id: 1,
-    name: "预警",
-    title: "w123",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-  {
-    id: 2,
-    name: "预警",
-    title: "w123d",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456", "12333"]
-  },
-  {
-    id: 3,
-    name: "预警",
-    title: "w123a",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-  {
-    id: 4,
-    name: "预警",
-    title: "w123r",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456", "w145as", "w1asd", "w123", "w1456", "w145as", "w1asd"]
-  },
-  {
-    id: 5,
-    name: "预警",
-    title: "w12aaa",
-    num: 7,
-    date: "2019/04/01～2019/04-07",
-    fan: ["w123", "w1456"]
-  },
-];
+import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
 
 export default class FaultWarnFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    history: PropTypes.object
+    history: PropTypes.object,
+    fanListData: PropTypes.array,
+    match: PropTypes.object
   };
 
   constructor(props) {
     super(props);
   }
 
-  detailsFunc = () => {
-    const { history } = this.props;
+  detailsFunc = (taskId, deviceName, large, performance, health, deviceFullCode) => {
+    const {
+      history,
+      match: {
+        params:{
+          fanWarnId
+        }
+      },
+    } = this.props;
+    let newArr = []; // 保存故障
+    if (large.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(large[i]); // 保存大部件
+
+      }
+    }
+    if (performance.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(performance[i]); // 保存性能预警
+
+      }
+    }
+    if (health.length !== 0 ) {
+      for(let i = 0; i < large.length; i ++) {
+        newArr.push(health[i]); // 保存设备健康
+
+      }
+    }
     // 跳到单风机详情图表展示
-    history.push("/hidden/analysis/single/fan");
+    history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
+    localStorage.setItem("taskId", taskId);
+    localStorage.setItem("deviceName", deviceName);
+    localStorage.setItem("deviceFullCode", deviceFullCode);
+    localStorage.setItem("faultList", JSON.stringify(newArr))
+  };
+
+  titleFunc = (data) => {
+    return data && data.map((cur, index) => {
+      return (
+        <p
+          style={{
+            textDecoration: "underline",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 20px"
+          }}
+          key={`${cur.algorithmName}${index}`}
+        >
+          <span>{cur.algorithmName}</span>
+          <span>{dateArrFormat(cur.predictionDate)}</span>
+        </p>
+      )
+    });
   };
 
   render() {
-    const item = data && data.map(cur => {
+    const { fanListData } = this.props;
+    const item = fanListData && fanListData.map((cur, index) => {
       return (
-        <div className={styles.fanItem} key={cur.id} onClick={() => {return this.detailsFunc()}}>
+        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName, cur.largeWarnings, cur.performanceWarnings, cur.healthWarnings, cur.deviceFullcode)}}>
           <div className={styles.fanItemTop}>
             <div>
-              {cur.title}
+              {cur.deviceName}
             </div>
-            <div>
-              预警3
+            <div className={cur.warningCount ? styles.warnItem : styles.successItem}>
+              {cur.warningCount ? `预警${cur.warningCount}` : "正常"}
             </div>
           </div>
           <div className={styles.fanItemBottom}>
-            <div>
-              <Tooltip placement="bottom" title={<span>{cur.date}</span>}>
-                <span>大部件</span>
+            {cur.largeWarnings.length !== 0 ? <div>
+              <Tooltip
+                placement="bottomLeft"
+                title={this.titleFunc(cur.largeWarnings)}
+              >
+                <span className={styles.warnColor}>大部件</span>
               </Tooltip>
-            </div>
+            </div>: <div>
+                <span className={styles.grayColor}>大部件</span>
+            </div>}
             <b />
-            <div>
-              <span>性能预警</span>
-            </div>
+            {cur.performanceWarnings.length !== 0 ? <div>
+              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.performanceWarnings)}>
+                <span className={styles.warnColor}>性能预警</span>
+              </Tooltip>
+            </div>: <div>
+              <span className={styles.grayColor}>性能预警</span>
+            </div>}
             <b />
-            <div>
-              <span>设备健康</span>
-            </div>
+            {cur.healthWarnings.length !== 0 ? <div>
+              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.healthWarnings)}>
+                <span className={styles.warnColor}>设备健康</span>
+              </Tooltip>
+            </div>: <div>
+              <span className={styles.grayColor}>设备健康</span>
+            </div>}
           </div>
         </div>
       );
