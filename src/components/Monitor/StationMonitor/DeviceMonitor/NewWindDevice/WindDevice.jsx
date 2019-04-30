@@ -90,6 +90,59 @@ class WindDevice extends Component {
     this.setState({ modalVisible: false })
   }
 
+  pointList=()=>{
+    const {devicePointData}=this.props;
+    const pointData = [
+      { name: '风机状态', code: 'TR001' },
+      { name: '限功率状态', code: 'TR005' },
+      { name: '无功功率', code: 'TR003' },
+      { name: '电网频率', code: 'CV001' },
+      { name: '网测U相电压', code: 'CV007' },
+      { name: '网测U相电流', code: 'TR010' },
+      { name: '叶轮转速', code: 'RT001' },
+      { name: '发电机转速', code: 'CN001' },
+      { name: '实际转矩', code: 'CV002' },
+      { name: '主轴温度', code: 'TM001' },
+      { name: '齿轮箱油温', code: 'TM101' },
+      { name: '齿轮箱高速轴承温度', code: 'TM106', weightCode: 'TM105' },
+      { name: '发电机U相绕组温度', code: 'CN013' },
+      { name: '发电机绕组温度', code: 'CN033' },
+      { name: '发电机驱动端轴承温度', code: 'CN010' },
+      { name: '发电机非驱动端轴承温度', code: 'CN011' },
+      { name: '机舱温度', code: 'NC005' },
+      { name: '环境温度', code: 'NC004' },
+      { name: '偏航对风角', code: 'YW002' },
+      { name: '桨叶1角度', code: 'RT101' },
+      { name: '桨叶2角度', code: 'RT102' },
+      { name: '桨叶3角度', code: 'RT103' },
+      { name: '桨叶1变桨电机温度', code: 'RT104' },
+      { name: '桨叶2变桨电机温度', code: 'RT105' },
+      { name: '桨叶3变桨电机温度', code: 'RT106' },
+      { name: '电缆扭转角度', code: 'YW003' },
+    ]
+    let list = [];
+    pointData.forEach((item, key) => {
+      devicePointData.forEach(e => {
+        if(item.weightCode){
+          if (e.devicePointCode === item.weightCode) {
+            list.push(e)
+          }
+        }else{
+          if (e.devicePointCode === item.code) {
+            list.push(e)
+          }
+        }
+      })
+    })
+    const groupList = [];
+    let step=list.length>15?5:4; // 数据太少 一列4行
+    let ListLength=list.length>20?20:list.length; // 只取前20个测点
+    for (var i = 0; i < ListLength ; i += step) {
+      groupList.push(list.slice(i, i + step));
+    }
+    return groupList
+  }
+
   render() {
     const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
@@ -124,7 +177,22 @@ class WindDevice extends Component {
                   <span>实时测点数据</span>
                   <span className={styles.learnMore} onClick={this.learnMore}>查看全部</span>
                 </div>
-                <div className={styles.pointDataContiner} ref={'windPoint'} > </div>
+                <div className={styles.pointDataContiner} ref={'windPoint'} >
+                  {
+                    this.pointList().map((item,index) => {
+                      return (
+                        <div className={styles.group} key={index}>
+                          {item.map(e => {
+                            return (<div className={styles.eachData} key={e.devicePointCode}>
+                              <p className={styles.devicePointName}>{e.devicePointName}</p>
+                              <p className={styles.devicePointValue}>{e.devicePointValue} <span className={styles.unit}>{e.devicePointUnit}</span></p>
+                            </div>)
+                          })}
+                        </div>
+                      )
+                    })
+                  }
+                </div>
                 <Modal
                   visible={this.state.modalVisible}
                   onCancel={this.devicePointCancel}
@@ -141,15 +209,17 @@ class WindDevice extends Component {
               <div className={styles.pointAlarm}>
                 <div className={styles.pointAlarmTitle}>
                   <span>实时告警</span>
-                  <Link to={{pathname:`/monitor/alarm/realtime`, search:`?stationCode=${stationCode}`,state:{stationType:'0',deviceName}}}> 查看全部 </Link>
+                  <Link to={{ pathname: `/monitor/alarm/realtime`, search: `?stationCode=${stationCode}`, state: { stationType: '0', deviceName } }}> 查看全部 </Link>
                 </div>
                 <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} style={{ padding: `0px 32px 32px`, border: 'none' }} titleName={false} />
               </div>
             </div>
             <div className={styles.windDeviceChart}>
               <div className={styles.tags}>
-                <Link to={{pathname:`/monitor/alarm/realtime`,
-                search:`?stationCode=${stationCode}`,state:{stationType:'0',deviceName}}}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
+                <Link to={{
+                  pathname: `/monitor/alarm/realtime`,
+                  search: `?stationCode=${stationCode}`, state: { stationType: '0', deviceName }
+                }}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
