@@ -33,6 +33,8 @@ class WindDevice extends Component {
     sequencediagram: PropTypes.object,
     deviceDetail: PropTypes.object,
     getWindDeviceRealData: PropTypes.func,
+    scatterpointTime: PropTypes.number,
+    sequencediagramTime: PropTypes.number,
   }
 
   constructor(props) {
@@ -122,7 +124,7 @@ class WindDevice extends Component {
     ]
     let list = [];
     pointData.forEach((item) => {
-      let code=item.weightCode && 'weightCode' || 'code';
+      let code = item.weightCode && 'weightCode' || 'code';
       devicePointData.forEach(e => {
         if (e.devicePointCode === item[code]) {
           list.push(e)
@@ -139,7 +141,8 @@ class WindDevice extends Component {
   }
 
   render() {
-    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint } = this.props;
+    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint,  } = this.props;
+    const {scatterpointTime,sequencediagramTime}=this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { deviceName } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
@@ -219,10 +222,10 @@ class WindDevice extends Component {
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={sequenceChartList} yAxisUnit={'kW'} />
+                <OutputChart capabilityData={sequenceChartList} yAxisUnit={'kW'} capabilityDataTime={sequencediagramTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PointScatter scatterData={scatterpoint} type={'windDevice'} />
+                <PointScatter scatterData={scatterpoint} type={'windDevice'} scatterpointTime={scatterpointTime} />
               </div>
             </div>
           </div>

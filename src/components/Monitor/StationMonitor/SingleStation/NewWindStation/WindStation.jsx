@@ -46,6 +46,9 @@ class WindStation extends Component {
     singleStationScatter: PropTypes.object,
     fanList: PropTypes.object,
     getPowerDataTenMin: PropTypes.func,
+    capabilityDataTime: PropTypes.number,
+    singleStationScattertime: PropTypes.number,
+    powerTime: PropTypes.number,
   }
 
   constructor(props) {
@@ -103,6 +106,7 @@ class WindStation extends Component {
 
   render() {
     const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData, editData, } = this.props;
+    const {capabilityDataTime,singleStationScattertime,powerTime}=this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
@@ -171,13 +175,14 @@ class WindStation extends Component {
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
+                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} capabilityDataTime={capabilityDataTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
+                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} powerTime={powerTime} />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} />
+                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} 
+                scatterTime={singleStationScattertime} />
               </div>
             </div>
           }

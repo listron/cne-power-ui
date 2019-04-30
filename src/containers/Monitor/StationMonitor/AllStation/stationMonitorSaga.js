@@ -87,6 +87,7 @@ function* getCapabilityDiagram(action) {
         type: allStationAction.changeMonitorstationStore,
         payload: {
           capabilityData: response.data.data || [],
+          capabilityDataTime:moment().unix()
         }
       });
     } else { throw response.data }
@@ -114,6 +115,7 @@ function* getMonitorPower(action) {
         type: allStationAction.changeMonitorstationStore,
         payload: {
           powerData: response.data.data || [],
+          powerTime:moment().unix()
         }
       })
     } else { throw response.data }
@@ -139,6 +141,7 @@ function* getMonitorScatter(action) {
         type: allStationAction.changeMonitorstationStore,
         payload: {
           scatterData: response.data.data || {},
+          scatterTime:moment().unix(),
         }
       })
     } else { throw response.data }

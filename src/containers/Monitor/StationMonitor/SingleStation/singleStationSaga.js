@@ -51,6 +51,7 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           capabilityData: response.data.data || [],
+          capabilityDataTime:moment().unix()
         }
       });
     } else { throw response.data }
@@ -78,6 +79,7 @@ function* getMonitorPower(action) { // 获取理论发电量 实际发电量数�
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           powerData: response.data.data || [],
+          powerTime:moment().unix(),
         }
       })
     } else { throw response.data }
@@ -506,7 +508,7 @@ function* getFanList(action) { // 获取风机实时数据列表
   }
 }
 
-function* getSingleScatter(action) {
+function* getSingleScatter(action) { // 日等效利用小时散点数
   const { payload } = action;
   const { stationCode } = payload;
   const localDate = moment().format('YYYY-MM-DD');
@@ -521,6 +523,7 @@ function* getSingleScatter(action) {
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           singleStationScatter: response.data.data || [],
+          singleStationScattertime:moment().unix()
         }
       })
     } else { throw response.data }
@@ -530,6 +533,7 @@ function* getSingleScatter(action) {
       type: singleStationAction.getSingleStationSuccess,
       payload: {
         singleStationScatter: [],
+        singleStationScattertime:moment().unix()
       }
     })
   }
