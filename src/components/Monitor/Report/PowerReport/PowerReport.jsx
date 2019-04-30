@@ -28,6 +28,7 @@ class PowerReport extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    powerReportList: PropTypes.array,
   }
 
   onTimeChange = (value) => {
@@ -81,7 +82,7 @@ class PowerReport extends Component {
 
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData,powerReportList } = this.props;
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -95,7 +96,7 @@ class PowerReport extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={powerReportList.length === 0}  >导出</Button>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>
