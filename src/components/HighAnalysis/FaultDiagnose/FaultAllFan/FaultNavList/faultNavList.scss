@@ -1,4 +1,4 @@
-@import '../../../../theme/theme.scss';
+@import '../../../../../theme/theme';
 .faultNavList{
   width: 100%;
   display: flex;
@@ -16,9 +16,18 @@
     div{
       @include lineheight(20px);
       padding: 0 8px;
+      cursor: pointer;
       border-radius: 2px;
       margin: 6px 0 0 10px;
-      background-color: $pageGround;
+    }
+    .redWarn{
+      color: #f4667c;
+    }
+    .blueWarn{
+      color: #50e3c2;
+    }
+    .yellowWarn{
+      color: #f9b600;
     }
   }
   .navListLeft{

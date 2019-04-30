@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import styles from "./faultSingleFan.scss";
 import Footer from '../../../../components/Common/Footer';
 import FaultSingleFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan';
-import {faultWarnAction} from "../FaultWarn/faultWarnAction";
+import {faultSingleFanAction} from "./faultSingleFanAction";
 import {connect} from "react-redux";
+import {faultWarnListAction} from "../FaultWarnList/faultWarnListAction";
 
 
 const data = [{
@@ -66,6 +67,11 @@ class FaultSingleFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
+    history: PropTypes.object,
+    match: PropTypes.object,
+    changeSingleFanStore: PropTypes.func,
+    changeWarnListStore: PropTypes.func,
+    getList: PropTypes.func,
   };
 
   constructor(props) {
@@ -76,16 +82,49 @@ class FaultSingleFan extends React.Component {
   componentDidMount() {
   }
 
+  onChangeFilter = (params) => {
+    const { changeSingleFanStore } = this.props;
+    changeSingleFanStore({
+      ...params
+    });
+  };
+
+  callBackList = () => {
+    const {
+      history,
+      match:{
+        params: {
+          stationCode
+        }
+      },
+      getList,
+      changeWarnListStore
+    } = this.props;
+    // 返回列表需要的参数
+    const listParams = {
+      stationCode,
+      pageSize: 10,
+      pageNum: 1,
+      sortField: "",
+      sortMethod: "",
+    };
+    history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
+    changeWarnListStore({
+      viewType: 3 //展示列表
+    });
+    getList(listParams);
+  };
+
   render() {
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.singleFanContent}>
           <div className={styles.title}>
             <div>故障预警</div>
-            <div>返回列表视图</div>
+            <div onClick={this.callBackList}>返回列表视图</div>
           </div>
         </div>
-        <FaultSingleFanMain data={data} {...this.props} />
+        <FaultSingleFanMain onChangeFilter={this.onChangeFilter} data={data} {...this.props} />
         <Footer />
       </div>
     );
@@ -93,11 +132,22 @@ class FaultSingleFan extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.highAanlysisReducer.faultWarn.toJS(),
+    ...state.highAanlysisReducer.faultSingleFan.toJS(),
     stations: state.common.get('stations'),
   }
 };
 const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
+  resetStore: () => dispatch({ type: faultSingleFanAction.resetStore }),
+  getStationDeviceList: payload => dispatch({ type: faultSingleFanAction.getStationDeviceList, payload }),
+  getStandAloneList: payload => dispatch({ type: faultSingleFanAction.getStandAloneList, payload }),
+  getSimilarityList: payload => dispatch({ type: faultSingleFanAction.getSimilarityList, payload }),
+  getAllFanResultList: payload => dispatch({ type: faultSingleFanAction.getAllFanResultList, payload }),
+  getTenMinutesBefore: payload => dispatch({ type: faultSingleFanAction.getTenMinutesBefore, payload }),
+  getTenMinutesAfter: payload => dispatch({ type: faultSingleFanAction.getTenMinutesAfter, payload }),
+  getTenMinutesDiff: payload => dispatch({ type: faultSingleFanAction.getTenMinutesDiff, payload }),
+  changeSingleFanStore: payload => dispatch({ type: faultSingleFanAction.changeSingleFanStore, payload }),
+  changeWarnListStore: payload => dispatch({ type: faultWarnListAction.changeWarnListStore, payload }),
+  getFaultInfo: payload => dispatch({ type: faultSingleFanAction.getFaultInfo, payload }),
+  getList: payload => dispatch({ type: faultWarnListAction.getList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan)

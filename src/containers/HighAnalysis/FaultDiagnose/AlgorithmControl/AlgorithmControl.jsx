@@ -9,39 +9,43 @@ import AlgorithmModal from '../../../../components/HighAnalysis/FaultDiagnose/Al
 import ListView from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/ListView/ListView';
 import AddAlgorithm from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/AddAlgorithm/AddAlgorithm';
 import Footer from '../../../../components/Common/Footer';
-import { siblings } from "../../../../utils/utilFunc.js";
 
 class AlgorithmControl extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
-    getInspectList: PropTypes.func,
     getInspectIdList: PropTypes.func,
-    changeAlgorithmControlStore: PropTypes.func
+    changeAlgorithmControlStore: PropTypes.func,
+    viewType: PropTypes.string,
+    getAlgoOptionList: PropTypes.func,
+    getTaskStatusStat: PropTypes.func,
+    getListView: PropTypes.func,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    algorithmModalId: PropTypes.array,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    status: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    stationCode: PropTypes.string,
+    algorithmModalName: PropTypes.array,
   };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      showType: "list", // 展示算法或列表algorithm/list
       pageFlag: true // 展示新建页/table页
     };
   }
-  componentDidMount() {
-    const { pageFlag } = this.state;
-    if (pageFlag) {
-      this.addEvent();
-    }
-  }
 
-  componentDidUpdate() {
-    const { pageFlag } = this.state;
-    if (pageFlag) {
-      this.addEvent();
-    }
+  componentDidMount() {
+    const { getAlgoOptionList } = this.props;
+    getAlgoOptionList();
   }
 
   componentWillUnmount(){
-    this.props.resetStore();
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onAddControlFunc = (flag) => {
@@ -51,64 +55,124 @@ class AlgorithmControl extends Component {
   };
 
   onChangeFilter = (params) => {
+    const {
+      getListView,
+      pageSize,
+      pageNum,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      status,
+      sortField,
+      sortMethod,
+      stationCode,
+      algorithmModalName
+    } = this.props;
+    // 新的参数
+    const newParams = {
+      pageSize,
+      pageNum,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      status,
+      sortField,
+      sortMethod,
+      stationCode,
+      algorithmModalName,
+      ...params
+    };
+    getListView(newParams);
+  };
+
+  showAlgorithmFunc = () => {
+    // 展示算法
     const { changeAlgorithmControlStore } = this.props;
-    changeAlgorithmControlStore({...params});
-  };
-
-  typeFunc = (type) => {
-    this.setState({
-      showType: type
+    // 展示算法
+    changeAlgorithmControlStore({
+      viewType: "algorithm"
     });
   };
 
-  addEvent() {
-    const { typeBox } = this;
-    const arr = typeBox.children;
-    const ways = [];
-    for (let i = 0; i < arr.length; i+=1) {
-      ways.push(arr[i]);
-    }
-    Array.prototype.forEach.call(ways, (item) => {
-      item.addEventListener("click", this.checkType);
+  showListViewFunc = () => {
+    const {
+      changeAlgorithmControlStore,
+      getListView,
+      algorithmModalId,
+      getTaskStatusStat
+    } = this.props;
+    // 展示列表视图
+    changeAlgorithmControlStore({
+      viewType: "list"
     });
-  }
-
-  checkType() {
-    /* eslint-disable no-param-reassign */
-    siblings(this).forEach((item, index, arr) => {
-      arr[index].style.color = "#666666";
-      arr[index].style.backgroundColor = "#ffffff";
-    });
-    this.style.color = "#ffffff";
-    this.style.backgroundColor = "#199475";
-  }
+    const listParams = {
+      stationCode:null,
+      algorithmIds: algorithmModalId,
+      startTime:"",
+      endTime:"",
+      status:null,
+      pageSize:null,
+      pageNum:null,
+      sortField:"",
+      sortMethod:""
+    };
+    const statusParams = {
+      stationCode:null,
+      algorithmIds: algorithmModalId,
+      startTime:"",
+      endTime:""
+    };
+    // 列表
+    getListView(listParams);
+    // 状态统计
+    getTaskStatusStat(statusParams);
+  };
 
   render() {
-    const { showType, pageFlag } = this.state;
+    const { pageFlag } = this.state;
+    const { viewType } = this.props;
+    const checkStyle = {
+      color: "#ffffff",
+      backgroundColor: "#199475"
+    };
+    const UnCheckStyle = {
+      color: "#666666",
+      backgroundColor: "#ffffff"
+    };
     return (
       <div className={styles.controlBox}>
         <CommonBreadcrumb breadData={[{name:'算法控制台'}]} style={{marginLeft:'38px'}} />
         {pageFlag ? [
-          <div className={styles.controlType} ref={ref => {this.typeBox = ref}} key="controlType">
-            <div onClick={() => {return this.typeFunc("algorithm")}}>
-              <Icon type="swap" />
+          <div className={styles.controlType} key="controlType">
+            <div
+              style={viewType === "algorithm" ? checkStyle : UnCheckStyle}
+              onClick={this.showAlgorithmFunc}
+            >
+              <i className="iconfont icon-grid" />
               <span>算法模型</span>
             </div>
-            <div onClick={() => {return this.typeFunc("list")}}>
-              <Icon type="swap" />
+            <div
+              style={viewType === "list" ? checkStyle : UnCheckStyle}
+              onClick={this.showListViewFunc}
+            >
+              <i className="iconfont icon-table" />
               <span>列表视图</span>
             </div>
           </div>,
           <div className={styles.controlContainer} key="controlContainer">
             <div className={styles.controlBox}>
-            {(showType === "algorithm") && (
+            {(viewType === "algorithm") && (
               <Button className={styles.addControl} onClick={() => {return this.onAddControlFunc(false)}}>
                 <Icon type="plus" />
                 <span className={styles.text}>添加</span>
               </Button>
             )}
           <div>
-          {showType === "algorithm" ? <AlgorithmModal {...this.props} /> : <ListView onAddControlFunc={this.onAddControlFunc} onChangeFilter={this.onChangeFilter} {...this.props} />}
+          {
+            viewType === "algorithm" ?
+            <AlgorithmModal onChangeFilter={this.onChangeFilter} {...this.props} />
+            : <ListView onAddControlFunc={this.onAddControlFunc} onChangeFilter={this.onChangeFilter} {...this.props} />
+          }
           </div>
           </div>
           </div>
@@ -120,19 +184,18 @@ class AlgorithmControl extends Component {
 }
 const mapStateToProps = (state) => {
   return ({
-    stations: state.common.get('stations'),
-    stationCodes: state.highAanlysisReducer.algorithm.get('stationCodes'),
-    deviceTypeCode: state.highAanlysisReducer.algorithm.get('deviceTypeCode'),
-    createTimeStart: state.highAanlysisReducer.algorithm.get('createTimeStart'),
-    createTimeEnd: state.highAanlysisReducer.algorithm.get('createTimeEnd'),
-    algorithmModalName: state.highAanlysisReducer.algorithm.get('algorithmModalName').toJS(),
-    algorithmModalId: state.highAanlysisReducer.algorithm.get('algorithmModalId').toJS(),
+    ...state.highAanlysisReducer.algorithm.toJS(),
     deviceTypes: state.common.get('deviceTypes'),
+    stations: state.common.get('stations'),
   })
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: algorithmControlAction.resetStore }),
+  getAlgoList: () => dispatch({ type: algorithmControlAction.getAlgoList }),
+  getAlgoOptionList: () => dispatch({ type: algorithmControlAction.getAlgoOptionList }),
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
-  getInspectList: payload => dispatch({ type: algorithmControlAction.GET_INSPECT_LIST_SAGA, payload }),
+  getAddWarnTask: payload => dispatch({ type: algorithmControlAction.getAddWarnTask, payload }),
+  getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
+  getTaskStatusStat: payload => dispatch({ type: algorithmControlAction.getTaskStatusStat, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)
