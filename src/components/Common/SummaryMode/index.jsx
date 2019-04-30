@@ -1,12 +1,11 @@
 
 import React from "react";
-import { connect } from 'react-redux';
 import PropTypes from "prop-types";
-import { Radio, Button, Select, Icon } from 'antd';
+import { Radio, Select, Icon, } from 'antd';
 import styles from './styles.scss';
 import SelectModal from './Modal'
-import { stationsByArea } from '../../../utils/utilFunc';
-import { commonAction } from '../../../containers/alphaRedux/commonAction';
+// import { stationsByArea } from '../../../utils/utilFunc';
+// import { commonAction } from '../../../containers/alphaRedux/commonAction';
 
 const Option = Select.Option;
 /* 
@@ -27,9 +26,6 @@ const Option = Select.Option;
 //   modal: 'deviceTypes',
 //   wind: 'stations',
 // }
-
-
-
 
 class TimeSelectReport extends React.Component {
 
@@ -65,7 +61,6 @@ class TimeSelectReport extends React.Component {
     modeStyle: 'wind',
     list: [],
     visiableModal: false,
-
   }
 
   constructor(props) {
@@ -93,7 +88,6 @@ class TimeSelectReport extends React.Component {
       list: v
     })
     this.props.onChange({ modeStyle: this.state.modeStyle, list: v });
-
   }
   hideModal = () => {
     this.setState({ visiableModal: false })
@@ -140,22 +134,23 @@ class TimeSelectReport extends React.Component {
     this.setState({ list: [] });
   }
   handleChange = (v) => {
-    const {region}=this.props;
-    const regionName=region.map((e,i)=>(e.regionName));
-    const isAll=v&&v.filter((e,i)=>(e==='all')).length;
-    const checkedLength=v.length<region.length+1;
-    if(isAll){
-      if(checkedLength){
-        this.setState({ list:regionName });
+    const { region } = this.props;
+    const regionName = region.map((e, i) => (e.regionName));
+    const isAll = v && v.filter((e, i) => (e === 'all')).length;
+    const checkedLength = v.length < region.length + 1;
+    if (isAll) {
+      if (checkedLength) {
+        this.setState({ list: regionName });
         this.props.onChange({ modeStyle: this.state.modeStyle, list: regionName })
-      }else{
-        this.setState({ list:[] });
+      } else {
+        this.setState({ list: [] });
         this.props.onChange({ modeStyle: this.state.modeStyle, list: [] })
-      }}else{
+      }
+    } else {
       this.setState({ list: v });
       this.props.onChange({ modeStyle: this.state.modeStyle, list: v })
     };
-   
+
   }
   dataFormater = (data, deviceDataType) => {//必传，三级总数据，是要选择的最底层的code,name
     let test2 = [];
@@ -229,24 +224,25 @@ class TimeSelectReport extends React.Component {
         </div>
         {
           modeStyle === 'status' && <div style={{ position: 'relative' }}>
-            <Select
-              mode="multiple"
-              placeholder="选择设备状态"
-              value={list}
-              onChange={this.handleChange}
-              style={{ width: '160px' }}
-              maxTagCount={0}
-              maxTagPlaceholder={this.maxTagPlaceholder}
-              filterOption={filterOption}
-              open={false}
-              disabled={true}
-            >
-              {/*
+            <span onClick={this.showModal}>
+              <Select
+                mode="multiple"
+                placeholder="选择设备状态"
+                value={list}
+                onChange={this.handleChange}
+                style={{ width: '160px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholder}
+                filterOption={filterOption}
+                open={false}
+              >
+                {/*
            {areaList && areaList.map((e) => {
               return <Option key={e.key}>{e.title}</Option>
             })}
           */}
-            </Select>
+              </Select>
+            </span>
             <SelectModal
               {...this.props}
               list={list}
@@ -274,8 +270,8 @@ class TimeSelectReport extends React.Component {
               return <Option key={e.key}>{e.title}</Option>
             })} 
           */}
-         <Option key={'all'}>全部区域</Option>
-            { 
+            <Option key={'all'}>全部区域</Option>
+            {
               region && region.map((e, i) => {
                 return <Option key={e.regionName}>{e.regionName}</Option>
               })
@@ -310,26 +306,27 @@ class TimeSelectReport extends React.Component {
           </div>
         }
         {
-          modeStyle === 'modal' && <div style={{ position: 'relative' }}>
+          modeStyle === 'modal' && <div style={{ position: 'relative' }}  >
 
-            <Select
-              mode="multiple"
-              placeholder="选择型号"
-              value={list}
-              onChange={this.handleChange}
-              style={{ width: '160px' }}
-              maxTagCount={0}
-              maxTagPlaceholder={this.maxTagPlaceholder}
-              filterOption={filterOption}
-              open={false}
-              disabled={true}
-            >
-              {/*
+            <span onClick={this.showModal}>
+              <Select
+                mode="multiple"
+                placeholder="选择型号"
+                value={list}
+                onChange={this.handleChange}
+                style={{ width: '160px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholder}
+                filterOption={filterOption}
+                open={false}
+              >
+                {/*
               {deviceTypes && deviceTypes.map((e) => {
                 return <Option key={e.deviceTypeCode}>{e.deviceTypeName}</Option>
               })}
                 */}
-            </Select>
+              </Select>
+            </span>
 
             <SelectModal
               {...this.props}
@@ -344,25 +341,25 @@ class TimeSelectReport extends React.Component {
         }
         {
           modeStyle === 'wind' && <div style={{ position: 'relative' }}>
-
-            <Select
-              mode="multiple"
-              placeholder="选择风机"
-              value={list}
-              onChange={this.handleChange}
-              style={{ width: '165px' }}
-              maxTagCount={0}
-              maxTagPlaceholder={this.maxTagPlaceholder}
-              filterOption={filterOption}
-              open={false}
-              disabled={true}
-            >
-              {/*
+            <span onClick={this.showModal}>
+              <Select
+                mode="multiple"
+                placeholder="选择风机"
+                value={list}
+                onChange={this.handleChange}
+                style={{ width: '165px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholder}
+                filterOption={filterOption}
+                open={false}
+              >
+                {/*
               {stations && stations.map((e) => {
                 return <Option key={e.stationCode}>{e.stationName}</Option>
               })}
                */}
-            </Select>
+              </Select>
+            </span>
             <SelectModal
               {...this.props}
               list={list}
@@ -376,22 +373,23 @@ class TimeSelectReport extends React.Component {
         }
         {
           modeStyle === 'fault' && <div style={{ position: 'relative' }}>
-            <Select
-              mode="multiple"
-              placeholder="选择故障"
-              value={list}
-              onChange={this.handleChange}
-              style={{ width: '160px' }}
-              maxTagCount={0}
-              maxTagPlaceholder={this.maxTagPlaceholder}
-              filterOption={filterOption}
-              open={false}
-              disabled={true}
-            >
-              {areaList && areaList.map((e) => {
-                return <Option key={e.key}>{e.title}</Option>
-              })}
-            </Select>
+            <span onClick={this.showModal}>
+              <Select
+                mode="multiple"
+                placeholder="选择故障"
+                value={list}
+                onChange={this.handleChange}
+                style={{ width: '160px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholder}
+                filterOption={filterOption}
+                open={false}
+              >
+                {areaList && areaList.map((e) => {
+                  return <Option key={e.key}>{e.title}</Option>
+                })}
+              </Select>
+            </span>
             <SelectModal
               {...this.props}
               list={list}
