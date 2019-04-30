@@ -138,7 +138,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultSingleFanAction.resetStore }),
-  getStationDeviceList: payload => dispatch({ type: faultSingleFanAction.getStationDeviceList, payload }),
+  getStationDeviceList: () => dispatch({ type: faultSingleFanAction.getStationDeviceList }),
   getStandAloneList: payload => dispatch({ type: faultSingleFanAction.getStandAloneList, payload }),
   getSimilarityList: payload => dispatch({ type: faultSingleFanAction.getSimilarityList, payload }),
   getAllFanResultList: payload => dispatch({ type: faultSingleFanAction.getAllFanResultList, payload }),

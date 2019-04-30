@@ -21,6 +21,7 @@ export default class DifferenceTemperature extends React.Component {
     diffDate: PropTypes.array,
     onChangeFilter: PropTypes.func,
     diffLoading: PropTypes.bool,
+    diffTimeCompare: PropTypes.number,
   };
 
   constructor(props) {
@@ -96,16 +97,18 @@ export default class DifferenceTemperature extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const  {
       diffChart,
       props: {
         tenMinutesDiffList,
         deviceName,
         stationDeviceList,
-        diffLoading
+        diffLoading,
+        diffTimeCompare: currentDiffTimeCompare
       }
     } = this;
+    const { diffTimeCompare } = prevProps;
     const myChart = eCharts.init(diffChart);
     if (diffLoading) { // loading态控制。
       myChart.showLoading();
@@ -114,9 +117,13 @@ export default class DifferenceTemperature extends React.Component {
     if (!diffLoading) {
       myChart.hideLoading();
     }
+    // 单风机的时候需要从这里获取
+    const defaultName = localStorage.getItem("deviceName");
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
-    myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name));
+    if (currentDiffTimeCompare && diffTimeCompare !== currentDiffTimeCompare) {
+      myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name || defaultName));
+    }
   }
 
   changeAfterDate = (date) => {

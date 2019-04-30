@@ -21,6 +21,7 @@ export default class AfterTemperature extends React.Component {
     onChangeFilter: PropTypes.func,
     afterDate: PropTypes.array,
     afterLoading: PropTypes.bool,
+    afterTimeCompare: PropTypes.number,
   };
 
   constructor(props) {
@@ -96,16 +97,18 @@ export default class AfterTemperature extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const  {
       afterChart,
       props: {
         tenMinutesAfterList,
         stationDeviceList,
         deviceName,
-        afterLoading
+        afterLoading,
+        afterTimeCompare: currentAfterTimeCompare
       }
     } = this;
+    const { afterTimeCompare } = prevProps;
     const myChart = eCharts.init(afterChart);
     if (afterLoading) { // loading态控制。
       myChart.showLoading();
@@ -114,9 +117,13 @@ export default class AfterTemperature extends React.Component {
     if (!afterLoading) {
       myChart.hideLoading();
     }
+    // 单风机的时候需要从这里获取
+    const defaultName = localStorage.getItem("deviceName");
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
-    myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name));
+    if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
+      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name || defaultName));
+    }
   }
 
   changeAfterDate = (date) => {

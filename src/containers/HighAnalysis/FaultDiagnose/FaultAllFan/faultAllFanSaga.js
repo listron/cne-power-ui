@@ -3,7 +3,7 @@ import {faultAllFanAction} from './faultAllFanAction.js';
 import Path from "../../../../constants/path";
 import axios from "axios";
 import { message } from "antd";
-import moment from "../../../../components/HighAnalysis/FaultDiagnose/DiagnoseCharts/PreTemperature/PreTemperature";
+import moment from "moment";
 
 /***
  * 解析公共头APIBasePath
@@ -315,6 +315,7 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
+          preTimeCompare: moment().unix(),
           tenMinutesBeforeList: response.data.data || [],
           loading: false,
           preLoading: false
@@ -349,6 +350,7 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
+          afterTimeCompare: moment().unix(),
           tenMinutesAfterList: response.data.data || [],
           loading: false,
           afterLoading: false
@@ -383,6 +385,7 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
+          diffTimeCompare: moment().unix(),
           tenMinutesDiffList: response.data.data || [],
           loading: false,
           diffLoading: false

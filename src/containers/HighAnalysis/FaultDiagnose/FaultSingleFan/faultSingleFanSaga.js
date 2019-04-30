@@ -2,6 +2,7 @@ import {call, put, takeEvery} from 'redux-saga/effects';
 import { faultSingleFanAction } from './faultSingleFanAction';
 import Path from "../../../../constants/path";
 import axios from "axios";
+import moment from "moment";
 
 /***
  * 解析公共头APIBasePath
@@ -33,19 +34,19 @@ function getArrEqual(warnList, allList) {
   // 取到相同的数据
   for (let i = 0; i < allList.length; i++) {
     for (let j = 0; j < warnList.length; j++) {
-      if(allList[i].deviceName === warnList[j].deviceName){
-        newSameArr.push(allList[j]);
+      if(allList[i].algorithmName === warnList[j].algorithmName){
+        newSameArr.push(allList[i]);
       }
     }
   }
   // 取到不同的数据
   for(let i = 0; i < allList.length; i++){
     let obj = allList[i];
-    let num = obj.deviceName;
+    let num = obj.algorithmName;
     let isExist = false;
     for(let j = 0; j < warnList.length; j++){
       let aj = warnList[j];
-      let n = aj.deviceName;
+      let n = aj.algorithmName;
       if(n === num){
         isExist = true;
         break;
@@ -65,10 +66,10 @@ function getArrEqual(warnList, allList) {
   }));
   return newArr;
 }
-function* getStationDeviceList(action) { // 获取单电站所有风机
+function* getStationDeviceList(action) { // 获取单风机所有算法模型
   const { payload } = action;
   const url = `${APIBasePath}${algoOptionList}`;
-  const warnFans = JSON.parse(localStorage.getItem("warnFans"));
+  const faultList = JSON.parse(localStorage.getItem("faultList"));
   try {
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
@@ -81,7 +82,7 @@ function* getStationDeviceList(action) { // 获取单电站所有风机
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
-          stationDeviceList: getArrEqual(warnFans, response.data.data.context) || [],
+          stationDeviceList: getArrEqual(faultList, response.data.data) || [],
           loading: false,
         },
       });
@@ -137,7 +138,8 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        aloneLoading: true
       }
     });
     const response = yield call(axios.post, url);
@@ -147,6 +149,7 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
         payload: {
           standAloneList: response.data.data || [],
           loading: false,
+          aloneLoading: false
         },
       });
     }
@@ -155,7 +158,8 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        aloneLoading: false
       }
     });
   }
@@ -168,7 +172,8 @@ function* getSimilarityList(action) { // 获取风机相似性结果
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        heatLoading: true
       }
     });
     const response = yield call(axios.post, url);
@@ -178,6 +183,7 @@ function* getSimilarityList(action) { // 获取风机相似性结果
         payload: {
           similarityList: response.data.data || [],
           loading: false,
+          heatLoading: false
         },
       });
     }
@@ -186,7 +192,8 @@ function* getSimilarityList(action) { // 获取风机相似性结果
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        heatLoading: false
       }
     });
   }
@@ -199,7 +206,8 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        allLoading: true
       }
     });
     const response = yield call(axios.post, url);
@@ -209,6 +217,7 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
         payload: {
           allFanResultList: response.data.data || {},
           loading: false,
+          allLoading: false
         },
       });
     }
@@ -217,7 +226,8 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        allLoading: false
       }
     });
   }
@@ -230,7 +240,8 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        preLoading: true
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -239,7 +250,9 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           tenMinutesBeforeList: response.data.data || [],
+          preTimeCompare: moment().unix(),
           loading: false,
+          preLoading: false
         },
       });
     }
@@ -248,7 +261,8 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        preLoading: false
       }
     });
   }
@@ -261,7 +275,8 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        afterLoading: true
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -269,8 +284,10 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
+          afterTimeCompare: moment().unix(),
           tenMinutesAfterList: response.data.data || [],
           loading: false,
+          afterLoading: false
         },
       });
     }
@@ -279,7 +296,8 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        afterLoading: false
       }
     });
   }
@@ -292,7 +310,8 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: true
+        loading: true,
+        diffLoading: true
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -300,8 +319,10 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
+          diffTimeCompare: moment().unix(),
           tenMinutesDiffList: response.data.data || [],
           loading: false,
+          diffLoading: false
         },
       });
     }
@@ -310,7 +331,8 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
       payload: {
-        loading: false
+        loading: false,
+        diffLoading: false
       }
     });
   }
