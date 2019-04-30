@@ -1,28 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./listView.scss";
-import {Button, Icon} from "antd";
+import { Button, Icon, Radio } from "antd";
 import DateFilter from '../../Filter/Date/DateFilter';
 import StationFilter from '../../Filter/Station/StationFilter';
 import ModalFilter from '../../Filter/Modal/ModalFilter';
-import FilteredItems from '../../Filter/FilteredItems/FilteredItems';
+import FilteredItems from '../../Filter/FilterItems/FilteredItems';
 import CommonPagination from "../../../../Common/CommonPagination";
 import ListViewTable from "./ListViewTable/ListViewTable";
-
-const ButtonGroup = Button.Group;
-const pageSize = 10, pageNum = 1, total = 100;
 
 export default class ListView extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    onAddControlFunc: PropTypes.func
+    onAddControlFunc: PropTypes.func,
+    getAlgoOptionList: PropTypes.func,
+    getListView: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    algoListView: PropTypes.object,
+    onChangeFilter: PropTypes.func,
+    status: PropTypes.string,
+    taskStatusStat: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       showFilter: '', // 筛选条件判断
+      status: "0", // 状态
     };
+  }
+  componentDidMount() {
   }
 
   onAddControl = () => {
@@ -43,9 +51,37 @@ export default class ListView extends React.Component {
     }
   };
 
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      pageSize,
+      pageNum: currentPage
+    });
+  };
+
+  handleStatusChange = (e) => {
+    const { onChangeFilter } = this.props;
+    onChangeFilter({
+      status: e.target.value
+    });
+  };
+
   render() {
     const { showFilter } = this.state;
-    // const isOneType = stations.groupBy(item=>item.get('stationType')).size === 1;
+    const {
+      pageSize,
+      pageNum,
+      algoListView: {
+        count
+      },
+      status,
+      taskStatusStat: {
+        pending,
+        processing,
+        finished,
+        failed
+      }
+    } = this.props;
     return (
       <div className={styles.listView}>
         <div className={styles.listViewSelect}>
@@ -63,13 +99,13 @@ export default class ListView extends React.Component {
           </div>
           <div className={styles.statusGroup}>
             <div className={styles.text}><span>状</span><span>态</span></div>
-            <ButtonGroup>
-              <Button>全部</Button>
-              <Button>待执行</Button>
-              <Button>执行中</Button>
-              <Button>已完成</Button>
-              <Button>执行失败</Button>
-            </ButtonGroup>
+            <Radio.Group value={status} onChange={this.handleStatusChange}>
+              <Radio.Button value="0">全部</Radio.Button>
+              <Radio.Button value="1">{`待执行 ${pending || ""}`}</Radio.Button>
+              <Radio.Button value="2">{`执行中 ${processing || ""}`}</Radio.Button>
+              <Radio.Button value="3">{`已完成 ${finished || ""}`}</Radio.Button>
+              <Radio.Button value="4">{`执行失败 ${failed || ""}`}</Radio.Button>
+            </Radio.Group>
           </div>
         </div>
         <div className={styles.filterBox}>
@@ -88,7 +124,7 @@ export default class ListView extends React.Component {
             </Button>
           </div>
           <div>
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} />
           </div>
         </div>
         <ListViewTable {...this.props} />

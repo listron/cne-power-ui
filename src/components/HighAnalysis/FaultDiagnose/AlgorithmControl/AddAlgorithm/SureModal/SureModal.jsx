@@ -1,15 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Modal, Icon } from "antd";
+import moment from "moment";
 
 import styles from "./sureModal.scss"
+
+const defaultDate = "YYYY-MM-DD";
 
 export default class SureModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     sureFlag: PropTypes.bool,
+    sureModalFunc: PropTypes.func,
+    getAddWarnTask: PropTypes.func,
     onAddControlFunc: PropTypes.func,
-    sureModalFunc: PropTypes.func
+    downLink: PropTypes.object,
+    algoOptionList: PropTypes.array,
   };
 
   constructor(props) {
@@ -23,12 +29,62 @@ export default class SureModal extends React.Component {
   };
 
   okModal = () => {
-    const { onAddControlFunc } = this.props;
-    onAddControlFunc(true);
+    const {
+      getAddWarnTask,
+      sureModalFunc,
+      onAddControlFunc,
+      downLink: {
+        modal,
+        selectStationName,
+        actionTime,
+        startTime,
+        endTime
+      }
+    } = this.props;
+    const params = {
+      algorithmId: modal,
+      stationCode: selectStationName[0].stationCode,
+      startTime: moment(startTime).format(defaultDate),
+      trainingStartTime: moment(actionTime).format(defaultDate),
+      endTime: moment(endTime).format(defaultDate),
+      nowTime: moment.utc().format(),
+      func: () => {
+        // 关闭弹框
+        sureModalFunc(false);
+        // 返回原来界面
+        onAddControlFunc(true);
+      }
+    };
+    getAddWarnTask(params);
+  };
+
+  modalFunc = () => {
+    const {
+      downLink:{
+        modal
+      },
+      algoOptionList
+    } = this.props;
+    let name = "";
+    for (let i = 0; i < algoOptionList.length; i++) {
+      if (algoOptionList[i].algorithmId === modal) {
+        name = algoOptionList[i].algorithmName;
+      }
+    }
+    return name || "";
   };
 
   render() {
-    const { sureFlag } = this.props;
+    const {
+      sureFlag,
+      downLink: {
+        modal,
+        selectStationName,
+        actionTime,
+        startTime,
+        endTime
+      }
+    } = this.props;
     return (
       <Modal
         visible={sureFlag}
@@ -43,24 +99,24 @@ export default class SureModal extends React.Component {
           <div className={styles.sureBox}>
             <div>
               <span>算法模型：</span>
-              <span>发发电机轴承检测和诊断</span>
+              <span>{modal && this.modalFunc()}</span>
             </div>
             <div>
               <span>电站名称：</span>
-              <span>肥西</span>
+              <span>{selectStationName.length !== 0 ? selectStationName[0].stationName : ""}</span>
             </div>
             <div>
               <span>检测开始日期：</span>
-              <span>2019-01-20</span>
+              <span>{moment(startTime).format(defaultDate)}</span>
             </div>
             <div>
               <span>训练开始日期：</span>
-              <span>2018-11-20</span>
+              <span>{moment(actionTime).format(defaultDate)}</span>
               <span>（训练时长90天）</span>
             </div>
             <div>
               <span>检测结束日期：</span>
-              <span>2019-01-27</span>
+              <span>{moment(endTime).format(defaultDate)}</span>
               <span>（检测时长7天）</span>
             </div>
           </div>

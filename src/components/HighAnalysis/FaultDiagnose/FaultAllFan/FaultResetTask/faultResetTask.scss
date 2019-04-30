@@ -1,0 +1,12 @@
+@import '../../../../../theme/theme.scss';
+.faultResetTask{
+  width: 100%;
+  i{
+    color: #f9b600;
+    font-size: 16px;
+  }
+  span{
+    padding-left: 10px;
+    color: $darkColor;
+  }
+}
