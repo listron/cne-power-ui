@@ -9,8 +9,7 @@ import ChangeStation from '../SingleStationCommon/ChangeStation';
 import { Link } from 'react-router-dom';
 import { monitordataFormat } from '../../../../../utils/utilFunc';
 import { ValueFormat, DeviceValueFormat } from '../../../../Common/UtilComponent';
-
-
+import Operator from '../../WindCommon/Operator';
 class WindStationTop extends Component {
   static propTypes = {
     match: PropTypes.object,
@@ -18,6 +17,7 @@ class WindStationTop extends Component {
     stationList: PropTypes.array,
     weatherList: PropTypes.array,
     operatorList: PropTypes.array,
+    operatorTime: PropTypes.number,
 
   }
 
@@ -52,7 +52,7 @@ class WindStationTop extends Component {
   }
 
   render() {
-    const { singleStationData = {}, stationList, weatherList, operatorList } = this.props;
+    const { singleStationData = {}, stationList, weatherList, operatorList,operatorTime } = this.props;
     const { showStationList } = this.state;
     const baseLinkPath = `/monitor/singleStation`;
     const pathAllStation = "/monitor/station";
@@ -75,15 +75,7 @@ class WindStationTop extends Component {
             </div>
           </div>
           <div className={styles.stationRight}>
-            {operatorList.length > 0 &&
-              <div className={styles.newOperatorList}>
-                <div className={styles.scrollAnmiate}>
-                  {operatorList.map((item, index) => {
-                    return <span key={index} className={styles.spanLine}>{item.roleDesc} {item.userFullName || item.userName} {item.phoneNum}   </span>
-                  })}
-                </div>
-              </div>
-            }
+            <Operator operatorList={operatorList} operatorTime={operatorTime} />
             <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature}</div>
             <Link to={pathAllStation}  >
               <Icon type="arrow-left" className={styles.backIcon} />

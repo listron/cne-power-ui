@@ -105,6 +105,7 @@ function* getOperatorList(action) { // 获取单电站运维人员列表
         type: singleStationAction.changeSingleStationStore,
         payload: {
           operatorList: response.data.data || [],
+          operatorTime:moment().unix(),
         }
       });
     } else { throw response.data }

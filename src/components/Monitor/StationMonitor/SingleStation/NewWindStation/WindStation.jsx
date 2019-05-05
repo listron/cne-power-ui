@@ -49,6 +49,7 @@ class WindStation extends Component {
     capabilityDataTime: PropTypes.number,
     singleStationScattertime: PropTypes.number,
     powerTime: PropTypes.number,
+    operatorTime: PropTypes.number,
   }
 
   constructor(props) {
@@ -128,7 +129,9 @@ class WindStation extends Component {
           singleStationData={singleStationData}
           stationList={this.props.stationList}
           weatherList={this.props.weatherList}
-          operatorList={this.props.operatorList} />
+          operatorList={this.props.operatorList}
+          operatorTime={this.props.operatorTime} 
+          />
         <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
         <div className={styles.windContainer}>
           <div className={styles.windList}>
