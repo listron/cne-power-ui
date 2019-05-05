@@ -3,7 +3,7 @@ import axios from 'axios';
 import { delay } from 'redux-saga';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceAction';
-import { throwError } from 'rxjs';
+import moment from 'moment';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 let realChartsInterval=null;
@@ -316,12 +316,6 @@ function *getScatterpoint(action){ // 单风机散点图
   const { payload } = action;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.scatterpoint}`;
   try{
-    yield put({
-      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-      payload: {
-        scatterpoint: {},
-      }
-    })
     yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
     const response = yield call(axios.post, windturbineUrl,payload);
     if(response.data.code === '10000'){
@@ -329,6 +323,7 @@ function *getScatterpoint(action){ // 单风机散点图
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
           scatterpoint: response.data.data || {},
+          scatterpointTime:moment().unix(),
         }
       })
     }else{throw response.data}
@@ -349,17 +344,12 @@ function *getSequencediagram(action){ // 单风机时序图
   try{
     yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
     const response = yield call(axios.get, windturbineUrl,payload);
-    yield put({
-      type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-      payload: {
-        sequencediagram:{}
-      }
-    })
     if(response.data.code === '10000'){
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
           sequencediagram: response.data.data || {},
+          sequencediagramTime:moment().unix(),
         }
       })
     }else{throw response.data}

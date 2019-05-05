@@ -7,8 +7,11 @@ var initState = Immutable.fromJS({
   singleStationData: {},//单电站数据
   stationType: '',//电站类型  0：风 1：光
   capabilityData: [],//出力图数据
+  capabilityDataTime:null,// 出力图的时间
   powerData: [],//理论发电量 实际发电量数据
+  powerTime:null,//发电量时间
   operatorList: [],//企业运维人员列表
+  operatorTime:null,// 企业运维人员列表时间
   weatherList: [],//天气列表
   alarmList: {},//告警数统计
   workList: {},//工单数统计
@@ -27,6 +30,7 @@ var initState = Immutable.fromJS({
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表
   singleStationScatter:{},// 等效小时散点图
+  singleStationScattertime:null,// 等效小时散点图时间
   pointparams:{},//单电站测点参数(风机)
   fanDisplay:'deviceCard', // 单电站风机展示形式  deviceCard deviceTable deviceMap
 });
