@@ -14,6 +14,7 @@ export default class HeatMap extends React.Component {
     getSimilarityList: PropTypes.func,
     heatLoading: PropTypes.bool,
     faultInfo: PropTypes.object,
+    heatTimeCompare: PropTypes.number,
   };
 
   constructor(props) {
@@ -26,63 +27,10 @@ export default class HeatMap extends React.Component {
       heatChart,
       props: {
         similarityList,
-        getSimilarityList,
         heatLoading,
         faultInfo: {
           endTime
         },
-      }
-    } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: endTime
-    };
-    const myChart = eCharts.init(heatChart);
-    if (heatLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!heatLoading) {
-      myChart.hideLoading();
-    }
-    //接口
-    getSimilarityList(params);
-    myChart.setOption(heatTemperatureOptions(similarityList, params.date));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      getSimilarityList
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: nextEndTime
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getSimilarityList(params);
-    }
-  }
-
-  componentDidUpdate() {
-    const  {
-      heatChart,
-      props: {
-        similarityList,
-        faultInfo: {
-          endTime
-        },
-        heatLoading
       }
     } = this;
     const myChart = eCharts.init(heatChart);
@@ -94,6 +42,32 @@ export default class HeatMap extends React.Component {
       myChart.hideLoading();
     }
     myChart.setOption(heatTemperatureOptions(similarityList, endTime));
+  }
+
+  componentDidUpdate(prevProps) {
+    const  {
+      heatChart,
+      props: {
+        similarityList,
+        faultInfo: {
+          endTime
+        },
+        heatLoading,
+        heatTimeCompare: currentHeatTimeCompare
+      }
+    } = this;
+    const { heatTimeCompare } = prevProps;
+    const myChart = eCharts.init(heatChart);
+    if (heatLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!heatLoading) {
+      myChart.hideLoading();
+    }
+    if (currentHeatTimeCompare && heatTimeCompare !== currentHeatTimeCompare) {
+      myChart.setOption(heatTemperatureOptions(similarityList, endTime));
+    }
   }
 
   render() {

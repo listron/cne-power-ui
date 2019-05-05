@@ -35,15 +35,6 @@ export default class PreTemperature extends React.Component {
 
   componentDidMount() {
     const  {
-      getTenMinutesBefore,
-      match:{
-        params: {
-          stationCode,
-        }
-      },
-      faultInfo: {
-        endTime
-      },
       deviceName,
       tenMinutesBeforeList,
       preLoading
@@ -57,46 +48,7 @@ export default class PreTemperature extends React.Component {
     if (!preLoading) {
       myChart.hideLoading();
     }
-    const params = {
-      stationCode,
-      pointCode: "GN010", //前驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(endTime).subtract(1,'months').utc().format(),
-      endTime: moment(endTime).utc().format()
-    };
-    // 接口
-    getTenMinutesBefore(params);
     myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      match:{
-        params: {
-          stationCode,
-        }
-      },
-      getTenMinutesBefore
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const params = {
-      stationCode,
-      pointCode: "GN010", //前驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(nextEndTime).subtract(1,'months').utc().format(),
-      endTime: moment(nextEndTime).utc().format()
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getTenMinutesBefore(params);
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -123,7 +75,6 @@ export default class PreTemperature extends React.Component {
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
       myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName));
-
     }
   }
 
@@ -137,7 +88,7 @@ export default class PreTemperature extends React.Component {
       faultDate: dateString
     });
     const taskId = localStorage.getItem("taskId");
-    // 相似性热图
+    // 相似性热图和所有风机
     const heatAndAllFansParams = {
       taskId,
       date: dateString

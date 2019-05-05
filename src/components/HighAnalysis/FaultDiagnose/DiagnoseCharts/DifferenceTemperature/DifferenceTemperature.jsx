@@ -33,16 +33,7 @@ export default class DifferenceTemperature extends React.Component {
     const  {
       diffChart,
       props: {
-        getTenMinutesDiff,
-        match:{
-          params: {
-            stationCode
-          }
-        },
         tenMinutesDiffList,
-        faultInfo: {
-          endTime
-        },
         deviceName,
         diffLoading
       }
@@ -55,46 +46,7 @@ export default class DifferenceTemperature extends React.Component {
     if (!diffLoading) {
       myChart.hideLoading();
     }
-    const params = {
-      stationCode,
-      pointCode: "GN010-GN011", //温度差-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(endTime).subtract(1,'months').utc().format(),
-      endTime: moment(endTime).utc().format()
-    };
-    // 接口
-    getTenMinutesDiff(params);
     myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, deviceName));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      match:{
-        params: {
-          stationCode,
-        }
-      },
-      getTenMinutesDiff
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const params = {
-      stationCode,
-      pointCode: "GN010-GN011", //温度差-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(nextEndTime).subtract(1,'months').utc().format(),
-      endTime: moment(nextEndTime).utc().format()
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getTenMinutesDiff(params);
-    }
   }
 
   componentDidUpdate(prevProps) {

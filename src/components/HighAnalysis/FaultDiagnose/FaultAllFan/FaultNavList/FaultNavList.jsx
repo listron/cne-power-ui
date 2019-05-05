@@ -168,7 +168,7 @@ export default class FaultNavList extends React.Component {
     const item = stationDeviceList && stationDeviceList.map((cur, index) => {
       return (
         <div
-          key={cur.deviceName}
+          key={`${cur.deviceName}${index}`}
           style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
           className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
           onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}

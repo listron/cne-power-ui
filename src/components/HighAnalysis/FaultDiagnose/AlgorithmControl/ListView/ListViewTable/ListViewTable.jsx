@@ -100,7 +100,13 @@ export default class ListViewTable extends React.Component {
       dataIndex: 'warningUnitCount',
       sorter: true,
       render: (warningUnitCount) => {
-        return <span>{warningUnitCount || "- -"}</span>
+        if (warningUnitCount) {
+          return <span>{warningUnitCount}</span>
+        }
+        if (warningUnitCount === 0) {
+          return <span>{warningUnitCount}</span>
+        }
+        return <span>- -</span>
       }
     }];
     return (

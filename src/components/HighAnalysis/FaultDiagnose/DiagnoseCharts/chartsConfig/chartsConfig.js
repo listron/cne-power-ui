@@ -625,7 +625,7 @@ export const allFansOptions = (data, name) => {
             width: 0, //这里是为了突出显示加上的
           }
         },
-          splitLine: {
+        splitLine: {
           show: false,
           color: themeColor
         },
@@ -638,13 +638,12 @@ export const allFansOptions = (data, name) => {
       {
         name:'直接访问',
         type:'bar',
-        barWidth: '60%',
+        barWidth: '30',
         data: cfResidual
       },
       {
         name:'直接访问',
         type:'line',
-        barWidth: '60%',
         itemStyle : {
           normal : {
             color: '#a42b2c',

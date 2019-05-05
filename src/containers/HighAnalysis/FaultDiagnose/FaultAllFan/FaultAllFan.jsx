@@ -14,14 +14,12 @@ class FaultAllFan extends React.Component {
     history: PropTypes.object,
     match: PropTypes.object,
     changeFaultAllFanStore: PropTypes.func,
+    resetStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onChangeFilter = (params) => {
