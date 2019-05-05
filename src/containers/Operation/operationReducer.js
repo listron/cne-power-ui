@@ -8,6 +8,8 @@ import personnelGps from './PersonnelGps/personnelGpsReducer';
 import dayReport from './Running/DayReport/dayReportReducer';
 import workOrder from './Ticket/WorkOrder/workOrderReducer';
 
-const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder });
+import intelligentExpert from './IntelligentExpert/intelligentExpertReducer';
+
+const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder, intelligentExpert });
 
 export default operationReducer;

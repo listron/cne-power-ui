@@ -40,9 +40,9 @@ const routers = [
   }, { // 运维管理-电站运行-月报
     path: '/operation/running/monthReport',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, { // 运维管理-经验库
-    path: '/operation/experience',
-    component: lazy(() => import('../components/Common/Building/Building')),
+  }, { // 运维管理-智能专家库
+    path: '/operation/intelligentExpert',
+    component: lazy(() => import('../containers/Operation/IntelligentExpert/IntelligentExpert')),
   }, { // 系统管理-账户管理-企业
     path: '/system/account/enterprise',
     component: lazy(() => import('../containers/System/Account/Enterprise/Enterprise')),

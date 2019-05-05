@@ -8,6 +8,7 @@ import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
+import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
@@ -95,6 +96,7 @@ export default function* rootSaga() {
     watchInspect(),// 巡检
     watchPersonnelGps(),//员工定位
     watchDayReport(), // operation- 日报
+    watchIntelligentExper(), // 光伏智能专家库
 
     //system-enterprise
     watchEnterprise(),
