@@ -4,7 +4,6 @@ import { delay } from 'redux-saga';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceAction';
 import moment from 'moment';
-import { throwError } from 'rxjs';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 let realChartsInterval=null;
