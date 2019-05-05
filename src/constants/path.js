@@ -235,6 +235,7 @@ export default {
       getBoosterstation: '/v3/monitor/boosterstation/datalist/', // 升压站列表 实时
       getPowerNet: '/v3/monitor/powercollection/datalist/', // 电网列表 实时
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
+      getSingleWindleStation:'/v3/wind/monitor/station/', // 单电站风电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
@@ -244,6 +245,7 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
+      getSingleStationDeviceList: '/v3/wind/monitor/station/devices/',//风单电站设备列表
       editData: '/v3/management/stationgen',//编辑月，年的累计发电量
 
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
@@ -257,8 +259,13 @@ export default {
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      getNewFanList:'/v3/wind/monitor/station/devices', // 新的风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
-      sequencechart:'/v3/monitor/windturbine/sequencechart',
+      newWindturbine:'/v3/wind/monitor/windturbine',  //新的风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart',// 风机图表数据
+      sequencediagram:'/v3/wind/monitor/windturbine/sequencediagram',// 单风机时序图
+      scatterpoint:'/v3/wind/monitor/windturbine/scatterpoint',// 单风机散点图
+
       //功率曲线
       getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',//功率曲线图表-多风机
       getPowerdeviceList:'/v3/wind/powercurve/fans/list',//..功率曲线列表-多风机
@@ -287,6 +294,14 @@ export default {
       getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+                  
+      getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
+      getWindStation:'/v3/wind/monitor/stations', // 全部风电站
+      getWindCapability:'/v3/wind/monitor/stations/capabilitydiagram',// 风电站出力图
+      getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
+      getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
+      getPointparams:'/v3/wind/monitor/station/pointparams',// 单电站测点参数(风电站)
+
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总  
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表
@@ -365,9 +380,11 @@ export default {
       getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
       // 智能分析报告
       getIntelligent:'/v3/intelligence/analysis/station', // 单电站分析
-      exportIntelligent:'/v3/intelligence/analysis/station/export', // 单电站分析导出
-      getArea:'/v3/ intelligence/analysis/area', // 同区域电站对比 
-      getAreacompare:'/v3/ intelligence/analysis/areacompare', // 区域对比分析报告
+      exportIntelligent:'/v3/intelligence/analysis/station/export', // 导出单电站分析导出
+      getArea:'/v3/intelligence/analysis/area', // 同区域电站对比 
+      exportAreaStation:'/v3/intelligence/analysis/area/export', // 导出同区域电站对比
+      getAreaCompare:'/v3/intelligence/analysis/areacompare', // 区域对比分析报告
+      exportAreaCompare:'/v3/intelligence/analysis/areacompare/export', // 区域对比分析报告导出
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表

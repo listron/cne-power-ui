@@ -6,7 +6,7 @@ import styles from './singleStationCommon.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 class OutputTenMin extends Component {
   static propTypes = {
@@ -14,11 +14,11 @@ class OutputTenMin extends Component {
     powerData: PropTypes.array,
     match: PropTypes.object,
     getMonitorPower: PropTypes.func,
-    yXaisName:PropTypes.string,
-    chartType:PropTypes.string,
-    stationCode:PropTypes.string,
-    yAxisUnit:PropTypes.string,
-    yAxisValuePoint:PropTypes.any,
+    yXaisName: PropTypes.string,
+    chartType: PropTypes.string,
+    stationCode: PropTypes.string,
+    yAxisUnit: PropTypes.string,
+    yAxisValuePoint: PropTypes.any,
 
   }
 
@@ -27,11 +27,11 @@ class OutputTenMin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { capabilityData,yXaisName,chartType,yAxisUnit,yAxisValuePoint } = nextProps;
-    let yAxisType=`功率(${yAxisUnit})`
+    const { capabilityData, yXaisName, chartType, yAxisUnit, yAxisValuePoint } = nextProps;
+    let yAxisType = `功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById('capabilityDiagram'));
     const lineColor = '#666';
-    const capabilityPower = capabilityData.map(e => (yAxisUnit==='MW'?(+e.stationPower):(+e.stationPower*1000)).toFixed(yAxisValuePoint));
+    const capabilityPower = capabilityData.map(e => (yAxisUnit === 'MW' ? (+e.stationPower) : (+e.stationPower * 1000)).toFixed(yAxisValuePoint));
     const capabilityRadiation = capabilityData.map(e => e.instantaneous);
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
@@ -39,12 +39,12 @@ class OutputTenMin extends Component {
 
     let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
-    if(totalLength < 144 && totalLength > 0){ //假如返回数据不全
+    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
       labelInterval = parseInt(totalLength / 3) - 1;
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
-    const color=this.getColor(chartType);
+    const color = this.getColor(chartType);
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       title: {
@@ -87,40 +87,40 @@ class OutputTenMin extends Component {
             ${param.map(e => `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${e.seriesName}: ${e.value || '--'}</div>`).join('')}
           </div>`;
         },
-        extraCssText:'background: rgba(0,0,0,0);',
+        extraCssText: 'background: rgba(0,0,0,0);',
       },
-      color:color,
+      color: color,
       calculable: true,
       xAxis: {
-          type: 'category',
-          splitNumber: 4,
-          boundaryGap: false,
-          data: capabilityData && capabilityData.map(e=>{
-            return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
-          }),
-          axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
-          },
-          axisLabel: {
-            color: lineColor,
-            interval: labelInterval,
-          },
-          axisTick: {
-            show: false,
-          },
-          axisPointer:{
-            label: {
-              show: false,
-            }
+        type: 'category',
+        splitNumber: 4,
+        boundaryGap: false,
+        data: capabilityData && capabilityData.map(e => {
+          return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
+        }),
+        axisLine: {
+          lineStyle: {
+            color: '#dfdfdf',
           },
         },
+        axisLabel: {
+          color: lineColor,
+          interval: labelInterval,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisPointer: {
+          label: {
+            show: false,
+          }
+        },
+      },
       yAxis: [
         {
           name: yAxisType,
           type: 'value',
-          min: minPower < 0? minPower: 0,
+          min: minPower < 0 ? minPower : 0,
           axisLabel: {
             formatter: '{value}',
             color: lineColor,
@@ -139,9 +139,9 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name: chartType==='wind'?'风速(m/s)':'斜面辐射(W/m²)',
+          name: chartType === 'wind' ? '风速(m/s)' : '斜面辐射(W/m²)',
           type: 'value',
-          min: minRadiation < 0? minRadiation: 0,
+          min: minRadiation < 0 ? minRadiation : 0,
           axisLabel: {
             formatter: '{value}',
             color: lineColor,
@@ -162,7 +162,7 @@ class OutputTenMin extends Component {
       series: [
         {
           name: '功率',
-          type: 'line',  
+          type: 'line',
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
@@ -174,7 +174,7 @@ class OutputTenMin extends Component {
           },
         },
         {
-          name:chartType==='wind'?'风速':'斜面辐射',
+          name: chartType === 'wind' ? '风速' : '斜面辐射',
           type: 'line',
           data: capabilityRadiation,
           yAxisIndex: 1,
@@ -192,26 +192,26 @@ class OutputTenMin extends Component {
   }
 
 
-  getColor=(type)=>{
-    let result=[];
-    switch(type){
+  getColor = (type) => {
+    let result = [];
+    switch (type) {
       case 'wind':
-      result=['#c57576','#3e97d1'];
-      break;
+        result = ['#c57576', '#3e97d1'];
+        break;
       default:
-      result=['#c57576','#199475'];
-      break;
+        result = ['#c57576', '#199475'];
+        break;
     }
     return result;
   }
 
   render() {
-    const {stationCode}=this.props;
+    const { stationCode } = this.props;
     const resourceAnalysis = `/statistical/stationaccount/resource#${stationCode}`;
     return (
       <div className={styles.capabilityDiagramBox} >
         <div id="capabilityDiagram" style={{ width: "100%", height: "100%", borderRight: "2px solid #dfdfdf", color: '#666', paddingTop: "20px" }}><i className="iconfont icon-more"></i></div>
-        <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>
+        {stationCode && <Link to={resourceAnalysis} ><i className="iconfont icon-more"></i></Link>}
       </div>
     )
   }

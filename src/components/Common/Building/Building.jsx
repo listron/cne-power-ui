@@ -13,7 +13,6 @@ class Building extends React.Component{
             <div className={styles.building}>
              </div>             
                <Footer />
-
             </div>
         )
     }

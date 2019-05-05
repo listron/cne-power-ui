@@ -30,6 +30,8 @@ class DeviceStatus extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    deviceStatusList: PropTypes.array,
+    statusDetailList: PropTypes.array,
   }
 
   componentWillReceiveProps(){
@@ -88,8 +90,9 @@ class DeviceStatus extends Component {
   }
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData ,dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData ,dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,statusDetailList,deviceStatusList,tableType } = this.props;
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
+    const disabledStatus=(tableType==='all'&&deviceStatusList.length===0)||(tableType==='detail'&&statusDetailList.length===0);
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -102,7 +105,7 @@ class DeviceStatus extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={disabledStatus} >导出</Button>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} params={params} />
       </div>

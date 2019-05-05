@@ -39,6 +39,7 @@ class UserList extends Component {
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
     selectedKey: PropTypes.object,
+    downLoadUserTemplate: PropTypes.func,
   }
 
   constructor(props) {
@@ -449,6 +450,17 @@ class UserList extends Component {
     });
   }
 
+  downloadTemplate = () => {
+    const { downLoadUserTemplate } = this.props;
+    const url = `${apiUrlReal}/api/v3/user/template`;
+    downLoadUserTemplate({
+      url,
+      method: 'get',
+      fileName: '导入用户模板.xlsx',
+      params: {}
+    })
+  }
+
   examineModal = () => (
     <Modal
       onOk={this.cancelExamineTip}
@@ -482,7 +494,7 @@ class UserList extends Component {
   );
 
   render() {
-    const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey } = this.props;
+    const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey, downloading } = this.props;
     const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, columnsHandleArr } = this.state;
     const authData = getCookie('authData');
     const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
@@ -540,7 +552,7 @@ class UserList extends Component {
             {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>}
-            <Button className={styles.templateDown} href={`${apiUrlReal}/template/UserInfoTemplate.xlsx`} >导入模板下载</Button>
+            <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={downloading} >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
