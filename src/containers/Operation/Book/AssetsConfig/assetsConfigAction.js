@@ -1,5 +1,5 @@
-export const powerReportAction={
-  changePowerReportStore: Symbol('MonitorchangePowerReportStore'), // 改变reducer参数
-  resetPowerReportStore: Symbol('MonitorresetPowerReportStore'), // 发起重置数据请求
-  getPowerReportList: Symbol('MonitorgetPowerReportList'), // 请求报表列表
+export const assetConfigAction={
+  changeAssetConfigStore: Symbol('changeAssetConfigStore'), // 改变reducer参数
+  resetAssetConfigStore: Symbol('resetAssetConfigStore'), // 发起重置数据请求
+  getAssetConfigList: Symbol('getAssetConfigList'), // 请求报表列表
 }

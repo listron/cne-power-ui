@@ -3,44 +3,39 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./assetsConfig.scss";
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import { powerReportAction } from './assetsConfigAction';
+import { assetConfigAction } from './assetsConfigAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
-import PowerReportContainer from '../../../../components/Monitor/Report/PowerReport/PowerReport';
+import AssetStructure from '../../../../components/Operation/Book/AssetConfigBox/AssetStructure/AssetStructure';
+import DeviceFactory from '../../../../components/Operation/Book/AssetConfigBox/DeviceFactory/DeviceFactory';
+import DeviceMode from '../../../../components/Operation/Book/AssetConfigBox/DeviceMode/DeviceMode';
 
 
 class AssetsConfig extends Component {
   static propTypes = {
-    resetPowerReportStore: PropTypes.func,
-    getRegionStationDevice: PropTypes.func,
-    getStationDevicemode: PropTypes.func,
-    getRegionStation: PropTypes.func,
-    getRegion: PropTypes.func,
-    changePowerReportStore: PropTypes.func,
-    stationTypeCount: PropTypes.string,
-    selectStationType: PropTypes.string,
+    resetAssetConfigStore: PropTypes.func,
+    changeAssetConfigStore: PropTypes.func,
+    selectType: PropTypes.string,
+
   }
   constructor(props, context) {
     super(props, context)
   }
   componentDidMount() {
-    this.props.getRegionStationDevice()
-    this.props.getStationDevicemode()
-    this.props.getRegionStation()
-    this.props.getRegion()
-  }
-  componentWillUnmount() {
-    this.props.resetPowerReportStore()
-  }
-  checkWind = () => this.props.changePowerReportStore({selectStationType:'0'}) // 选中风电站
 
-  checkPv = () => this.props.changePowerReportStore({selectStationType:'1'}) // 选中光伏电站
+  }
+
+  queryTargetData = (activeKey) => { //头部tab切换
+    const { changeAssetConfigStore, } = this.props;
+    changeAssetConfigStore({ selectType: activeKey, });
+  }
+
   render() {
-    const { stationTypeCount, selectStationType } = this.props;
+    const { selectType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
-          name: '报告查询-电量报表',
+          name: '资产配置',
         }
       ],
     };
@@ -49,24 +44,14 @@ class AssetsConfig extends Component {
         <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
-           
-            {/*
-             {stationTypeCount === 'multiple' &&
-              <div className={styles.typeCheck}>
-                <div className={selectStationType === '0' ? styles.typeActive : styles.typeNormal} onClick={this.checkWind}>风电</div>
-                <div className={selectStationType === '1' ? styles.typeActive : styles.typeNormal} onClick={this.checkPv}>光伏</div>
-                <div className={styles.holder} />
-              </div>
-            }
-         {selectStationType === '0' && <PowerReportContainer {...this.props} />}
-           {selectStationType === '1' && <PowerReportContainer {...this.props} />}
-           
-          */}
-          
-           <PowerReportContainer {...this.props} />
-             
-          
-
+            <div className={styles.allStationTitle} >
+              <p className={selectType === 'assetStructure' && styles.activeStation} onClick={()=>{this.queryTargetData('assetStructure')}}>资产结构</p>
+              <p className={selectType === 'deviceFactory' && styles.activeStation} onClick={()=>{this.queryTargetData('deviceFactory')}}>设备厂家</p>
+              <p className={selectType === 'deviceMode' && styles.activeStation} onClick={()=>{this.queryTargetData('deviceMode')}}>设备型号</p>
+            </div>
+            {selectType === 'assetStructure' && <AssetStructure {...this.props} />}
+            {selectType === 'deviceFactory' && <DeviceFactory {...this.props} />}
+            {selectType === 'deviceMode' && <DeviceMode {...this.props} />}
           </div>
         </div>
         <Footer />
@@ -76,7 +61,7 @@ class AssetsConfig extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.monitor.powerReportReducer.toJS(),
+    ...state.operation.assetsConfig.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
     stationTypeCount: state.common.get('stationTypeCount'),
@@ -84,47 +69,10 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  changePowerReportStore: payload => dispatch({ type: powerReportAction.changePowerReportStore, payload }),
-  resetPowerReportStore: payload => dispatch({ type: powerReportAction.resetPowerReportStore, payload }),
-  getPowerReportList: payload => dispatch({ type: powerReportAction.getPowerReportList, payload }),
-  downLoadFile: payload => dispatch({
-    type: commonAction.downLoadFile, payload: {
-      ...payload,
-      actionName: powerReportAction.changePowerReportStore,
-    }
-  }),
-  getRegion: params => dispatch({ //获取用户权限的电站区域
-    type: commonAction.getRegion,
-    payload: {
-      params,
-      actionName: powerReportAction.changePowerReportStore,
-      resultName: 'regionData',
-    }
-  }),
-  getRegionStation: params => dispatch({ // //获取用户权限的电站区域下的电站
-    type: commonAction.getRegionStation,
-    payload: {
-      params,
-      actionName: powerReportAction.changePowerReportStore,
-      resultName: 'regionStationData',
-    }
-  }),
-  getStationDevicemode: params => dispatch({ //获取用户权限的电站区域下的电站下的对应型号
-    type: commonAction.getStationDevicemode,
-    payload: {
-      params,
-      actionName: powerReportAction.changePowerReportStore,
-      resultName: 'stationDevicemodeData',
-    }
-  }),
-  getRegionStationDevice: params => dispatch({ //获取用户权限的电站区域下电站下的对应设备
-    type: commonAction.getRegionStationDevice,
-    payload: {
-      params,
-      actionName: powerReportAction.changePowerReportStore,
-      resultName: 'regionStationDeviceData',
-    }
-  }),
+  changeAssetConfigStore: payload => dispatch({ type: assetConfigAction.changeAssetConfigStore, payload }),
+  resetAssetConfigStore: payload => dispatch({ type: assetConfigAction.resetAssetConfigStore, payload }),
+  getAssetConfigList: payload => dispatch({ type: assetConfigAction.getAssetConfigList, payload }),
+
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AssetsConfig)

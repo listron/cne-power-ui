@@ -2,46 +2,25 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
-import { powerReportAction } from './assetsConfigAction';
+import { assetConfigAction } from './assetsConfigAction';
 import moment from 'moment';
 const APIBasePath=Path.basePaths.APIBasePath;
 const monitor=Path.APISubPaths.monitor
 
-function *getPowerReportList(action) {  // 请求报表列表
+function *getAssetConfigList(action) {  // 请求报表列表
   const { payload } = action;
-  const{startTime,endTime,}=payload;
-  const url =`${APIBasePath}${monitor.getPowerReportList}`;
+  const url =`${APIBasePath}${monitor.getAssetConfigList}`;
   // const url =`/mock/v3/wind/report/fan/gen`;
 
   try{
-    yield put({
-      type:powerReportAction.changePowerReportStore,
-      payload: {
-        loading: true,
-      },
-    });  
-    const response = yield call(axios.post,url,{
-      ...payload,
-      // startTime:moment( startTime).utc().format(''),
-      // endTime:moment( endTime).utc().format(''),
-      timeZone:moment().zone() / (-60),
-
-    });
+    
+    const response = yield call(axios.post,url,{...payload,});
     if(response.data.code === '10000') {
-      const total = response.data.data.pageCount || 0;
-      let { pageNum, pageSize } = payload;
-      const maxPage = Math.ceil(total / pageSize);
-      if (total === 0) { // 总数为0时，展示0页
-        pageNum = 1;
-      } else if (maxPage < pageNum) { // 当前页已超出
-        pageNum = maxPage;
-      }
       yield put({
-        type:powerReportAction.changePowerReportStore,
+        type:assetConfigAction.changeAssetConfigStore,
         payload: {
           filterTable:payload.summaryType,
-          total:response.data.data.pageCount||0,
-          powerReportList: response.data.data.dataList||[],
+          assetList: response.data.data.dataList||[],
           loading:false,
           ...payload,
         },
@@ -52,13 +31,13 @@ function *getPowerReportList(action) {  // 请求报表列表
   }catch(e){
     console.log(e);
     yield put({
-      type:powerReportAction.changePowerReportStore,
-      payload: { ...payload, loading: false ,powerReportList:[]},
+      type:assetConfigAction.changeAssetConfigStore,
+      payload: { ...payload, loading: false ,assetList:[]},
     })
   }
 }
 
 
 export function* watchBookAssetsConfig() {
-  yield takeLatest(powerReportAction.getPowerReportList, getPowerReportList);
+  yield takeLatest(assetConfigAction.getAssetConfigList, getAssetConfigList);
 }

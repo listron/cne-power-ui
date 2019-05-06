@@ -23,7 +23,36 @@
   // justify-content: space-between;
   background: #fff;
   overflow: hidden;
+  .allStationTitle{
+    display: flex;
+    line-height: 40px;
+    background:#f8f8f8;
+    border-bottom:  1px solid #dfdfdf;
+    p{
+        width:120px;
+        border-right: 1px solid #dfdfdf;
+        color:#999999;
+        margin-bottom: 0;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: -2px;
+    }
+    .activeStation{
+        background: #fff;
+        position: relative;
+        color:#000000;
+        &::before{
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 2px;
+            top: 0;
+            left: -1px;
+            background: $themeColor;
+        }
+    }
 
+}
   .typeCheck {
     display: flex;
 
