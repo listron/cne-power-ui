@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './workOrder.scss';
-import { getLevel,getSource } from '../../../../constants/ticket';
+import { getLevel, getSource } from '../../../../constants/ticket';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
 
 class DefectBasicInfo extends Component {
@@ -13,10 +13,25 @@ class DefectBasicInfo extends Component {
   constructor(props) {
     super(props);
   }
+  
+  componentDidMount(){
+    // console.log('info',this.props.basicInfo)
+  }
+
+  componentDidUpdate(prevProps){
+    console.log(prevProps.basicInfo,this.props.basicInfo)
+    const prevDefectId=prevProps.basicInfo.defectId || '';
+    const defectId=this.props.basicInfo.defectId || '';
+    if(defectId !== prevDefectId){
+      console.log(3434343);
+      const {defectTypeCode,defectDescribe,deviceTypeCode}=this.props.basicInfo;
+    }
+  }
 
   render() {
     const info = this.props.basicInfo;
     let images = info.photoAddress ? info.photoAddress.split(',') : [];
+   
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
@@ -38,10 +53,12 @@ class DefectBasicInfo extends Component {
           </div>
           <div className={styles.basicItem}><div>设备类型</div><span>{info.deviceTypeName || '--'}</span></div>
           <div className={styles.basicItem}><div>设备名称</div><span>{info.deviceName || '--'}</span></div>
-          <div className={styles.basicItem}><div>缺陷类型</div><span>{`${info.defectParentTypeName}/${info.defectTypeName }`|| '--'}</span></div>
-          <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(`${info.defectLevel}`)|| '--'}</span></div>
-          <div className={styles.basicItem}><div>缺陷来源</div><span>{getSource(info.defectSource)|| '--'}</span></div>
-          <div className={styles.basicItem}><div>缺陷描述</div><span>{info.defectDescribe|| '--'}</span></div>
+          <div className={styles.basicItem}>
+            <div>缺陷类型</div><span>{`${info.defectParentTypeName}/${info.defectTypeName}` || '--'}</span>
+          </div>
+          <div className={styles.basicItem}><div>缺陷级别</div><span>{getLevel(`${info.defectLevel}`) || '--'}</span></div>
+          <div className={styles.basicItem}><div>缺陷来源</div><span>{getSource(info.defectSource) || '--'}</span></div>
+          <div className={styles.basicItem}><div>缺陷描述</div><span>{info.defectDescribe || '--'}</span></div>
           <div className={styles.viewImg}>
             <ImgUploader editable={false} data={images.map(item => ({
               uid: item,
