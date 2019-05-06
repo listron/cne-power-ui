@@ -79,6 +79,16 @@ function* getStationDeviceList(action) { // 获取单风机所有算法模型
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 调用任务详情
+      const taskId = localStorage.getItem("taskId");
+      const params = {
+        taskId,
+        deviceList: getArrEqual(faultList, response.data.data) || []
+      };
+      yield put({
+        type: faultSingleFanAction.getFaultInfo,
+        payload: params,
+      });
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
@@ -134,6 +144,14 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
         endTime: moment(response.data.data.endTime).utc().format()
       };
+      // 单机自适应
+      // 单风机设备全编码
+      const fullCode = localStorage.getItem("deviceFullCode");
+      const aloneParams = {
+        taskId: response.data.data.taskId,
+        //  默认本地，如果没有取数组的第一条
+        deviceFullCode: fullCode || payload.deviceList[0].connectDeviceFullCode
+      };
       // 相似性热图和所有风机
       const heatAndFansParams = {
         taskId: response.data.data.taskId,
@@ -142,6 +160,10 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       yield put({
         type: faultSingleFanAction.getAllFanResultList,
         payload: heatAndFansParams
+      });
+      yield put({
+        type: faultSingleFanAction.getStandAloneList,
+        payload: aloneParams
       });
       yield put({
         type: faultSingleFanAction.getSimilarityList,

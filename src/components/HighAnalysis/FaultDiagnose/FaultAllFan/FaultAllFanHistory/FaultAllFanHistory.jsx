@@ -4,6 +4,7 @@ import { Modal, Table, Tag } from 'antd';
 import moment from "moment";
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from "./faultAllFanHistory.scss";
+import {dataFormat} from "../../../../../utils/utilFunc";
 
 export default class FaultAllFanHistory extends React.Component {
   static propTypes = {
@@ -161,6 +162,7 @@ export default class FaultAllFanHistory extends React.Component {
       dataIndex: 'warningUnitCount',
       align:"center",
       sorter: true,
+      render: (warningUnitCount) => (<span>{dataFormat(warningUnitCount)}</span>)
     }];
     return (
       <Modal

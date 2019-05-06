@@ -27,7 +27,6 @@ export default class FaultAllFanTop extends React.Component {
     deviceFullcode: PropTypes.string,
     downLoadFile: PropTypes.func,
     getResetTask: PropTypes.func,
-    getFaultInfo: PropTypes.func,
     faultInfo: PropTypes.object,
     faultInfoMessage: PropTypes.string,
     stationDeviceList: PropTypes.array,
@@ -39,18 +38,6 @@ export default class FaultAllFanTop extends React.Component {
       visibleFlag: false, //控制历史预警报告
       taskFlag: false, //控制重新执行
     };
-  }
-
-  componentDidMount() {
-    const {
-      getFaultInfo,
-    } = this.props;
-    // 读取localStorage
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId
-    };
-    getFaultInfo(params);
   }
 
   onVisible = (flag) => {
