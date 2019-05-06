@@ -21,6 +21,9 @@ const initState = Immutable.fromJS({
   preTimeCompare: 0, // 用于前驱比较时间戳
   afterTimeCompare: 0, // 用于后驱比较时间戳
   diffTimeCompare: 0, // 用于温度差比较时间戳
+  allTimeCompare: 0, // 用于全部风机比较时间戳
+  heatTimeCompare: 0, // 用于相似性热图比较时间戳
+  aloneTimeCompare: 0, // 用于单机自适应比较时间戳
   preLoading: true, // 前驱温度loading
   afterLoading: true, // 后驱温度loading
   diffLoading: true, // 温度差loading

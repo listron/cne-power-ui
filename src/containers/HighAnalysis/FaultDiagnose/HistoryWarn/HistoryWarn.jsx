@@ -74,7 +74,6 @@ class HistoryWarn extends React.Component {
       return getFaultWarnHistory(newParams);
     }
     if (params.stationCode || params.selectDeviceCode) {
-      console.log("-0-0-0-0-0-0");
       return changeHistoryWarnStore({
         ...params
       });

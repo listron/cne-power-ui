@@ -7,79 +7,21 @@ import {faultSingleFanAction} from "./faultSingleFanAction";
 import {connect} from "react-redux";
 import {faultWarnListAction} from "../FaultWarnList/faultWarnListAction";
 
-
-const data = [{
-  id: 1,
-  name: "叶片结冰预测"
-},{
-  id: 2,
-  name: "叶片结冰预测"
-},{
-  id: 3,
-  name: "叶片结冰预测"
-},{
-  id: 4,
-  name: "叶片结冰预测"
-},{
-  id: 5,
-  name: "叶片结冰预测"
-},{
-  id: 6,
-  name: "叶片结冰预测"
-},{
-  id: 7,
-  name: "叶片结冰预测"
-},{
-  id: 8,
-  name: "叶片结冰预测"
-},{
-  id: 9,
-  name: "叶片结冰预测"
-},{
-  id: 10,
-  name: "叶片结冰预测"
-},{
-  id: 11,
-  name: "叶片结冰预测"
-},{
-  id: 12,
-  name: "叶片结冰预测"
-},{
-  id: 13,
-  name: "叶片结冰预测"
-},{
-  id: 14,
-  name: "叶片结冰预测"
-},{
-  id: 15,
-  name: "叶片结冰预测"
-},{
-  id: 16,
-  name: "叶片结冰预测"
-},{
-  id: 17,
-  name: "叶片结冰预测"
-},{
-  id: 18,
-  name: "叶片结冰预测"
-}];
 class FaultSingleFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
     history: PropTypes.object,
-    match: PropTypes.object,
     changeSingleFanStore: PropTypes.func,
     changeWarnListStore: PropTypes.func,
     getList: PropTypes.func,
+    resetStore: PropTypes.func,
+    faultInfo: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onChangeFilter = (params) => {
@@ -92,17 +34,15 @@ class FaultSingleFan extends React.Component {
   callBackList = () => {
     const {
       history,
-      match:{
-        params: {
-          stationCode
-        }
+      faultInfo:{
+        stationCode
       },
       getList,
       changeWarnListStore
     } = this.props;
     // 返回列表需要的参数
     const listParams = {
-      stationCode,
+      stationCode: `${stationCode}`,
       pageSize: 10,
       pageNum: 1,
       sortField: "",
@@ -124,7 +64,7 @@ class FaultSingleFan extends React.Component {
             <div onClick={this.callBackList}>返回列表视图</div>
           </div>
         </div>
-        <FaultSingleFanMain onChangeFilter={this.onChangeFilter} data={data} {...this.props} />
+        <FaultSingleFanMain onChangeFilter={this.onChangeFilter} {...this.props} />
         <Footer />
       </div>
     );

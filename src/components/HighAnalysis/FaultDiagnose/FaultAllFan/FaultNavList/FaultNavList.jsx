@@ -23,6 +23,7 @@ export default class FaultNavList extends React.Component {
     preDate: PropTypes.array,
     afterDate: PropTypes.array,
     diffDate: PropTypes.array,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -92,6 +93,7 @@ export default class FaultNavList extends React.Component {
       faultInfo: {
         endTime
       },
+      faultDate,
       getTenMinutesBefore,
       getTenMinutesAfter,
       getTenMinutesDiff,
@@ -137,7 +139,7 @@ export default class FaultNavList extends React.Component {
     // 相似性热图
     const heatAndAllFansParams = {
       taskId,
-      date: endTime
+      date: faultDate || endTime
     };
     this.setState({
       fansFlag: index
@@ -168,7 +170,7 @@ export default class FaultNavList extends React.Component {
     const item = stationDeviceList && stationDeviceList.map((cur, index) => {
       return (
         <div
-          key={cur.deviceName}
+          key={`${cur.deviceName}${index}`}
           style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
           className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
           onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}

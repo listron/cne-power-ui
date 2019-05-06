@@ -16,7 +16,6 @@ export default class FaultSingleFan extends React.Component {
     history: PropTypes.object,
     stations: PropTypes.object,
     singleStationCode: PropTypes.string,
-    data: PropTypes.array,
     getFaultInfo: PropTypes.func,
     faultInfo: PropTypes.object,
     warnId: PropTypes.number,

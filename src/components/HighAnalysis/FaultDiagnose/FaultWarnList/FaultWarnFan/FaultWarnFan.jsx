@@ -55,18 +55,18 @@ export default class FaultWarnFan extends React.Component {
   titleFunc = (data) => {
     return data && data.map((cur, index) => {
       return (
-        <p
+        <div
           style={{
             textDecoration: "underline",
             display: "flex",
-            justifyContent: "space-between",
-            padding: "0 20px"
+            minWidth: "280px",
+            justifyContent: "space-between"
           }}
           key={`${cur.algorithmName}${index}`}
         >
           <span>{cur.algorithmName}</span>
           <span>{dateArrFormat(cur.predictionDate)}</span>
-        </p>
+        </div>
       )
     });
   };
@@ -87,6 +87,7 @@ export default class FaultWarnFan extends React.Component {
           <div className={styles.fanItemBottom}>
             {cur.largeWarnings.length !== 0 ? <div>
               <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
                 title={this.titleFunc(cur.largeWarnings)}
               >
@@ -97,7 +98,11 @@ export default class FaultWarnFan extends React.Component {
             </div>}
             <b />
             {cur.performanceWarnings.length !== 0 ? <div>
-              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.performanceWarnings)}>
+              <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
+                placement="bottomLeft"
+                title={this.titleFunc(cur.performanceWarnings)}
+              >
                 <span className={styles.warnColor}>性能预警</span>
               </Tooltip>
             </div>: <div>
@@ -105,7 +110,11 @@ export default class FaultWarnFan extends React.Component {
             </div>}
             <b />
             {cur.healthWarnings.length !== 0 ? <div>
-              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.healthWarnings)}>
+              <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
+                placement="bottomLeft"
+                title={this.titleFunc(cur.healthWarnings)}
+              >
                 <span className={styles.warnColor}>设备健康</span>
               </Tooltip>
             </div>: <div>

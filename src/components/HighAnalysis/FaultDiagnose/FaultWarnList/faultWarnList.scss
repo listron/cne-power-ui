@@ -17,6 +17,9 @@
       flex-direction: row;
       flex:1;
       align-items: center;
+      div{
+        cursor: pointer;
+      }
       .stationName {
         &:hover{
           color: $themeColor;
