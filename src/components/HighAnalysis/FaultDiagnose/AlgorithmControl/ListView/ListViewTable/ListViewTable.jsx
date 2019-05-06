@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Table, Tag} from "antd";
 import styles from "./listViewTable.scss";
 import moment from "moment";
+import { dataFormat } from "../../../../../../utils/utilFunc";
 
 const defaultDate = "YYYY-MM-DD HH:mm:ss";
 
@@ -99,15 +100,7 @@ export default class ListViewTable extends React.Component {
       title: '预警台数',
       dataIndex: 'warningUnitCount',
       sorter: true,
-      render: (warningUnitCount) => {
-        if (warningUnitCount) {
-          return <span>{warningUnitCount}</span>
-        }
-        if (warningUnitCount === 0) {
-          return <span>{warningUnitCount}</span>
-        }
-        return <span>- -</span>
-      }
+      render: (warningUnitCount) => (<span>{dataFormat(warningUnitCount)}</span>)
     }];
     return (
       <div className={styles.listViewTable}>

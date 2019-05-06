@@ -28,18 +28,11 @@ export default class SingleResult extends React.Component {
     const  {
       singleChart,
       props: {
-        getStandAloneList,
         standAloneList,
         aloneLoading,
-        deviceFullCode,
         stationDeviceList
       }
     } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      deviceFullCode
-    };
     const myChart = eCharts.init(singleChart);
     if (aloneLoading) {// loading态控制。
       myChart.showLoading();
@@ -48,33 +41,7 @@ export default class SingleResult extends React.Component {
     if (!aloneLoading) {
       myChart.hideLoading();
     }
-    // 接口
-    getStandAloneList(params);
     myChart.setOption(singleTemperatureOptions(standAloneList, stationDeviceList[0].deviceName));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      getStandAloneList,
-      deviceFullCode: currentDeviceFullCode,
-      stationDeviceList: currentStationDeviceList
-    } = this.props;
-    const {
-      stationDeviceList: nextStationDeviceList,
-      deviceFullCode: nextDeviceFullCode
-    } = nextProps;
-    const taskId = localStorage.getItem("taskId");
-    // 单风机设备全编码
-    const fullCode = localStorage.getItem("deviceFullCode");
-    const params = {
-      taskId,
-      deviceFullCode: nextDeviceFullCode ? nextDeviceFullCode : (nextStationDeviceList[0].connectDeviceFullCode ? nextStationDeviceList[0].connectDeviceFullCode : fullCode)
-    };
-    console.log(params, "componentWillReceiveProps");
-    if (currentStationDeviceList[0].connectDeviceFullCode !== nextStationDeviceList[0].connectDeviceFullCode|| currentDeviceFullCode !== nextDeviceFullCode) {
-      // 接口
-      getStandAloneList(params);
-    }
   }
 
   componentDidUpdate(prevProps) {

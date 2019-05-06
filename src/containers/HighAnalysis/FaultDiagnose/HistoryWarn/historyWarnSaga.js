@@ -53,16 +53,16 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
       type: historyWarnAction.changeHistoryWarnStore,
       payload: {
         loading: true,
-        createTimeStart: createTimeStart ? createTimeStart : "",
-        createTimeEnd : createTimeEnd ? createTimeStart : "",
-        algorithmModalId: algorithmModalId ? algorithmModalId : [],
+        createTimeStart: createTimeStart || "",
+        createTimeEnd : createTimeEnd || "",
+        algorithmModalId: algorithmModalId || [],
         stationCode,
-        pageSize: pageSize ? pageSize : 10,
-        pageNum: pageNum ? pageNum : 1,
+        pageSize: pageSize || 10,
+        pageNum: pageNum || 1,
         sortField: sortField,
         sortMethod: sortMethod,
         selectDeviceCode: selectDeviceCode,
-        algorithmModalName
+        algorithmModalName : algorithmModalName || []
       }
     });
     const response = yield call(axios.post, url, params);
