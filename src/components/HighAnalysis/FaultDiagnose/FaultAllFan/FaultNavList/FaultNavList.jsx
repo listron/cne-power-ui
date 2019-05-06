@@ -23,6 +23,7 @@ export default class FaultNavList extends React.Component {
     preDate: PropTypes.array,
     afterDate: PropTypes.array,
     diffDate: PropTypes.array,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -92,6 +93,7 @@ export default class FaultNavList extends React.Component {
       faultInfo: {
         endTime
       },
+      faultDate,
       getTenMinutesBefore,
       getTenMinutesAfter,
       getTenMinutesDiff,
@@ -137,7 +139,7 @@ export default class FaultNavList extends React.Component {
     // 相似性热图
     const heatAndAllFansParams = {
       taskId,
-      date: endTime
+      date: faultDate || endTime
     };
     this.setState({
       fansFlag: index

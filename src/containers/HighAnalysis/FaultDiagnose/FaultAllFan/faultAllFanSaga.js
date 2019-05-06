@@ -362,6 +362,7 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      console.log(response.data.data, "前驱温度");
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {

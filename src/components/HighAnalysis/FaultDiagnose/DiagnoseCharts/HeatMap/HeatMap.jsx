@@ -15,6 +15,7 @@ export default class HeatMap extends React.Component {
     heatLoading: PropTypes.bool,
     faultInfo: PropTypes.object,
     heatTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -52,6 +53,7 @@ export default class HeatMap extends React.Component {
         faultInfo: {
           endTime
         },
+        faultDate,
         heatLoading,
         heatTimeCompare: currentHeatTimeCompare
       }
@@ -66,7 +68,7 @@ export default class HeatMap extends React.Component {
       myChart.hideLoading();
     }
     if (currentHeatTimeCompare && heatTimeCompare !== currentHeatTimeCompare) {
-      myChart.setOption(heatTemperatureOptions(similarityList, endTime));
+      myChart.setOption(heatTemperatureOptions(similarityList, faultDate || endTime));
     }
   }
 

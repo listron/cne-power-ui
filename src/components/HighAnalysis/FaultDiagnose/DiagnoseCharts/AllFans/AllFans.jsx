@@ -12,6 +12,7 @@ export default class AllFans extends React.Component {
     faultInfo: PropTypes.object,
     allLoading: PropTypes.bool,
     allTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -50,6 +51,7 @@ export default class AllFans extends React.Component {
         faultInfo: {
           endTime
         },
+        faultDate,
         allTimeCompare: currentAllTimeCompare
       }
     } = this;
@@ -63,7 +65,7 @@ export default class AllFans extends React.Component {
       myChart.hideLoading();
     }
     if (currentAllTimeCompare && allTimeCompare !== currentAllTimeCompare) {
-      myChart.setOption(allFansOptions(allFanResultList, endTime));
+      myChart.setOption(allFansOptions(allFanResultList, faultDate || endTime));
     }
   }
 

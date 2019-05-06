@@ -25,6 +25,7 @@ export default class PreTemperature extends React.Component {
     preDate: PropTypes.array,
     preLoading: PropTypes.bool,
     preTimeCompare: PropTypes.number,
+    warnId: PropTypes.number,
   };
 
   constructor(props) {
@@ -82,7 +83,8 @@ export default class PreTemperature extends React.Component {
     const {
       onChangeFilter,
       getSimilarityList,
-      getAllFanResultList
+      getAllFanResultList,
+      warnId
     } = this.props;
     onChangeFilter({
       faultDate: dateString
@@ -93,8 +95,11 @@ export default class PreTemperature extends React.Component {
       taskId,
       date: dateString
     };
-    getSimilarityList(heatAndAllFansParams);
-    getAllFanResultList(heatAndAllFansParams);
+    // 有故障
+    if (warnId === 1) {
+      getSimilarityList(heatAndAllFansParams);
+      getAllFanResultList(heatAndAllFansParams);
+    }
   };
 
   changePreDate = (date) => {
