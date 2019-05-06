@@ -16,6 +16,8 @@ var initState = Immutable.fromJS({
   sequencechart:{},  // 单风机图表数据
   scatterpoint:{},// 单风机散点图
   sequencediagram:{},// 单风机时序图
+  scatterpointTime:null,// 单风机散点图时间
+  sequencediagramTime:null//单风机时序图时间
 });
 
 const deviceMonitorReducer = (state = initState, action) => {

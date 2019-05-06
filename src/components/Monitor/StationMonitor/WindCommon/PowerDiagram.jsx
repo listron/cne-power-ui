@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,Component } from 'react';
+import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, numWithComma, getDefaultData } from '../../../../utils/utilFunc';
@@ -9,36 +10,57 @@ import { Radio } from 'antd';
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
-
-const PowerDiagram = ({ ...rest }) => {
-    let { powerData, onChange } = rest;
-    const [intervalTime, setIntervalTime] = useState(0);
-    const onChangeTimePower = (e) => { // 改变 日／月／年
-        const intervalTime = e.target.value;
-        setIntervalTime(intervalTime);
-        onChange({intervalTime})
-        powerData=[];
-        // powerOption.grid.right = 30;
+class PowerDiagram extends Component{
+    static propTypes = {
+        scatterData: PropTypes.object,
+        powerTime: PropTypes.number,
+        onChange:PropTypes.func,
+    }
+    constructor() {
+        super();
+        this.state={
+            intervalTime:0,
+        }
+    }
+    componentDidMount() {
+        this.drawCharts(this.props)
     }
 
-    const unitFormarts = (data, quantity) => {
+    componentDidUpdate(prevProps) {
+        const { powerTime } = this.props;
+        const preTime = prevProps.powerTime;
+        if (powerTime !== preTime) { // 数据重新请求后重绘。
+            this.drawCharts(this.props);
+        }
+    }
+
+     onChangeTimePower = (e) => { // 改变 日／月／年
+        const intervalTime = e.target.value;
+        this.setState({intervalTime});
+        this.props.onChange({intervalTime})
+        this.drawCharts({powerData:[]})
+    }
+
+     unitFormarts = (data, quantity) => {
         if (isNaN(data) || (!data && data !== 0)) {
             return '--';
         }
         return data / quantity
     }
 
-    const actualPower = powerData.map(e => dataFormats(unitFormarts(e.actualPower,10000), '--', 2, true));  // 实际发电量
-    const filterActualPower = powerData.filter(e => e.actualPower);
-    const theoryPower = powerData.map(e => dataFormats(unitFormarts(e.theoryPower,10000), '--', 2, true)); // 计划发电量
-    const filterTheoryPower = powerData.filter(e => e.theoryPower);
-    const instantaneous = powerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 风速／累计曝幅值
-    const filterInstantaneous = powerData.filter(e => e.instantaneous);
-    const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
-    const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
-    ) ? showNoData : hiddenNoData;
-    const chartsBox = document.getElementById('powerDiagram');
-    if (chartsBox) {
+    drawCharts=(params)=>{
+        let { powerData } = params;
+        const {intervalTime}=this.state;
+        const actualPower = powerData.map(e => dataFormats(this.unitFormarts(e.actualPower,10000), '--', 2, true));  // 实际发电量
+        const filterActualPower = powerData.filter(e => e.actualPower);
+        const theoryPower = powerData.map(e => dataFormats(this.unitFormarts(e.theoryPower,10000), '--', 2, true)); // 计划发电量
+        const filterTheoryPower = powerData.filter(e => e.theoryPower);
+        const instantaneous = powerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 风速／累计曝幅值
+        const filterInstantaneous = powerData.filter(e => e.instantaneous);
+        const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
+        const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
+        ) ? showNoData : hiddenNoData;
+        const chartsBox = document.getElementById('powerDiagram');
         const powerDiagram = echarts.init(chartsBox);
         powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
         const lineColor = '#666';
@@ -231,7 +253,6 @@ const PowerDiagram = ({ ...rest }) => {
             ]
         }
         if (intervalTime === 0) { // 日 不显示部分坐标轴与数据。
-            
             powerOption.yAxis[1].nameTextStyle.padding = 0;
             powerOption.yAxis = powerOption.yAxis.filter(e => e.name !== '完成率');
             powerOption.series = powerOption.series.filter(e => e.name !== '计划发电量' && e.name !== '完成率');
@@ -240,21 +261,25 @@ const PowerDiagram = ({ ...rest }) => {
         powerDiagram.resize();
     }
 
-    const productionAnalysis = `#/statistical/stationaccount/production`;
-    return (
-        <div className={styles.powerDiagramBox} >
-            <div id="powerDiagram" style={{ display: 'flex', flex: 1 }}></div>
-            <div className={styles.powerRadio}>
-                <RadioGroup defaultValue={0} size="small" onChange={onChangeTimePower} >
-                    <RadioButton value={0}>日</RadioButton>
-                    <RadioButton value={1}>月</RadioButton>
-                    <RadioButton value={2}>年</RadioButton>
-                </RadioGroup>
+    render(){
+        const productionAnalysis = `#/statistical/stationaccount/production`;
+        return (
+            <div className={styles.powerDiagramBox} >
+                <div id="powerDiagram" style={{ display: 'flex', flex: 1 }}></div>
+                <div className={styles.powerRadio}>
+                    <RadioGroup defaultValue={0} size="small" onChange={this.onChangeTimePower} >
+                        <RadioButton value={0}>日</RadioButton>
+                        <RadioButton value={1}>月</RadioButton>
+                        <RadioButton value={2}>年</RadioButton>
+                    </RadioGroup>
+                </div>
+                {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
             </div>
-            {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
-        </div>
-    )
+        )
+    }
+
 }
+
 
 
 

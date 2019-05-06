@@ -29,6 +29,9 @@ class WindStation extends React.Component {
     powerData: PropTypes.array,
     history: PropTypes.object,
     scatterData: PropTypes.object,
+    scatterTime: PropTypes.number,
+    capabilityDataTime: PropTypes.number,
+    powerTime: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context);
@@ -127,6 +130,7 @@ class WindStation extends React.Component {
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
     const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData, scatterData } = this.props;
+    const {capabilityDataTime,scatterTime,powerTime}=this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
     const deviceStatus = [
       { name: '运行', value: 'normalNum' },
@@ -200,13 +204,13 @@ class WindStation extends React.Component {
                 </div>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
+                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} capabilityDataTime={capabilityDataTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
+                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} powerTime={powerTime}/>
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={scatterData} type={'allStation'} />
+                <SpeedScatter scatterData={scatterData} type={'allStation'} scatterTime={scatterTime} />
               </div>
             </div>}
         </div>
