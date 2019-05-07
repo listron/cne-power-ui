@@ -721,7 +721,7 @@ function* getKnowledgebase(action) { // 获取智能专家列表
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: ticketAction.CHANGE_SHOW_CONTAINER_SAGA,
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
           knowledgebaseList: response.data.data.dataList || [],
         }

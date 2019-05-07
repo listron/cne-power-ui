@@ -26,11 +26,9 @@ class DefectBasicInfo extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps.basicInfo, this.props.basicInfo)
     const prevDefectId = prevProps.basicInfo.defectId || '';
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
-      console.log(3434343);
       const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
       this.props.getKnowledgebase({ deviceTypeCode, faultCode: defectTypeCode })
     }
@@ -53,7 +51,6 @@ class DefectBasicInfo extends Component {
     const info = this.props.basicInfo;
     let images = info.photoAddress ? info.photoAddress.split(',') : [];
     const { knowledgebaseList } = this.props;
-    console.log('tst', knowledgebaseList)
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>

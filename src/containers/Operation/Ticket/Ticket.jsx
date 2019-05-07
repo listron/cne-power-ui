@@ -44,7 +44,6 @@ class Ticket extends Component {
     this.props.clearDefectState();
     this.props.clearInspectState();
     this.props.onChangeShowContainer({ container: 'list' });
-    console.log('我卸载了')
   }
 
   onChangeTab = (tab) => {
@@ -97,7 +96,6 @@ class Ticket extends Component {
   render() {
     const { container, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList } = this.props;
     const { tab } = this.state;
-    console.log('hha',tab,this.props)
     return (
       <div className={styles.ticketBox}>
         <CommonBreadcrumb breadData={[{ name: '工单列表' }]} style={{ marginLeft: '38px' }} />
