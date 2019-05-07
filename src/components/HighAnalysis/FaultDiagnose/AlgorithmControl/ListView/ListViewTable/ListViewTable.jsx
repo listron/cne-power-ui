@@ -67,19 +67,19 @@ export default class ListViewTable extends React.Component {
       title: '计划执行时间',
       dataIndex: 'planExecuteTime',
       render: (planExecuteTime) => {
-        return <span>{moment(planExecuteTime).format(defaultDate)}</span>
+        return <span>{planExecuteTime ? moment(planExecuteTime).format(defaultDate) : "- -"}</span>
       }
     }, {
       title: '执行开始时间',
       dataIndex: 'executeStartTime',
       render: (executeStartTime) => {
-        return <span>{moment(executeStartTime).format(defaultDate)}</span>
+        return <span>{executeStartTime ? moment(executeStartTime).format(defaultDate) : "- -"}</span>
       }
     }, {
       title: '执行结束时间',
       dataIndex: 'executeEndTime',
       render: (executeEndTime) => {
-        return <span>{moment(executeEndTime).format(defaultDate)}</span>
+        return <span>{executeEndTime ? moment(executeEndTime).format(defaultDate) : " - -"}</span>
       }
     }, {
       title: '状态',
@@ -109,7 +109,7 @@ export default class ListViewTable extends React.Component {
           loading={loading}
           columns={columns}
           onChange={this.tableChange}
-          rowKey={(record, index) => (record.taskId + index) || "key" }
+          rowKey={(record, index) => index || "key" }
           dataSource={dataList}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />

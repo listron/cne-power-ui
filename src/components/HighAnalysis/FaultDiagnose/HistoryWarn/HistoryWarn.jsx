@@ -28,7 +28,8 @@ export default class HistoryWarn extends React.Component {
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     algorithmModalId: PropTypes.array,
-    getAlgoOptionList: PropTypes.func
+    getAlgoOptionList: PropTypes.func,
+    changeHistoryWarnStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -72,9 +73,8 @@ export default class HistoryWarn extends React.Component {
 
   onOk = (selectDevice) => {
     const deviceFullCode = selectDevice.map(e => e.deviceCode);
-    const { onChangeFilter } = this.props;
-    console.log(selectDevice, "selectDevice");
-    onChangeFilter({
+    const { changeHistoryWarnStore } = this.props;
+    changeHistoryWarnStore({
       deviceFullCode,
       selectDeviceCode: selectDevice
     })
@@ -92,11 +92,12 @@ export default class HistoryWarn extends React.Component {
 
   selectStation = (value) => {
     const {
-      onChangeFilter,
+      changeHistoryWarnStore,
     } = this.props;
     const { stationCode } = value[0];
-    onChangeFilter({
+    changeHistoryWarnStore({
       stationCode,
+      selectDeviceCode: [],
     });
   };
 

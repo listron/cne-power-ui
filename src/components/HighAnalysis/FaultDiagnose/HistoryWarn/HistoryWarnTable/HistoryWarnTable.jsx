@@ -28,6 +28,7 @@ export default class HistoryWarnTable extends React.Component {
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${stationCode}`);
     localStorage.setItem("taskId", taskId);
+    localStorage.setItem("faultHistory", "1");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
     localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
