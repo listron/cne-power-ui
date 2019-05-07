@@ -3,6 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { workOrderAction } from './workOrderAction';
+message.config({ top: 120,duration: 2, maxCount: 2,});
 
 
 function* changeWorkOrderStore(action) { // 存储payload指定参数，替换reducer-store属性。
@@ -31,11 +32,11 @@ function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  g
         payload: {
           ...payload,
           defectDetail: response.data.data,
-          stationType:response.data.data.stationType,
-          defectSource:response.data.data.defectSource,
+          stationType: response.data.data.stationType,
+          defectSource: response.data.data.defectSource,
         }
       });
-    }else{
+    } else {
       throw response.data
     }
   } catch (e) {
@@ -250,17 +251,17 @@ function* checkDefect(action) { // 验收工单
   }
 }
 
-function* getKnowledgebase(action){ // 获取智能专家列表
+function* getKnowledgebase(action) { // 获取智能专家列表
   const { payload } = action;
-  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.checkDefect;
+  // let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  let url = `/mock/operation/knowledgebase/list`;
   try {
     const response = yield call(axios.post, url, payload);
-    console.log(response)
     if (response.data.code === '10000') {
       yield put({
         type: workOrderAction.changeWorkOrderStore,
         payload: {
-          KnowledgebaseList: response.data.data || [],
+          knowledgebaseList: response.data.data.dataList || [],
         }
       })
     } else { throw response.data }
@@ -268,6 +269,37 @@ function* getKnowledgebase(action){ // 获取智能专家列表
     console.log(e);
   }
 }
+
+function* likeKnowledgebase(action) { // 点赞智能专家
+  const { payload } = action;
+  const { knowledgeBaseId } = payload;
+  // let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  let url = `/mock/operation/knowledgebase/like`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      message.config({ top: 230,duration: 2, maxCount: 2,});
+      message.success('点赞成功')
+      const params = yield select(state => {
+        const { defectDetail = {} } = state.operation.workOrder.toJS();
+        return ({
+          deviceTypeCode: defectDetail.deviceTypeCode,
+          faultCode: defectDetail.defectTypeCode,
+        })
+      }
+      );
+      yield put({ // 重新请求点赞列表
+        type: workOrderAction.getKnowledgebase,
+        payload: params,
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
+
 
 
 export function* watchWorkOrder() {
@@ -282,6 +314,8 @@ export function* watchWorkOrder() {
   yield takeLatest(workOrderAction.closeDefect, closeDefect);
   yield takeLatest(workOrderAction.handleDefect, handleDefect);
   yield takeLatest(workOrderAction.checkDefect, checkDefect);
+  yield takeLatest(workOrderAction.getKnowledgebase, getKnowledgebase);
+  yield takeLatest(workOrderAction.likeKnowledgebase, likeKnowledgebase);
 
 }
 

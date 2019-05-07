@@ -111,7 +111,8 @@ export default {
       getPersonnelGpsData: '/v3/location',//获取员工位置
       getInspectUsers: '/v3/user/getusers',//获取巡检人员
       getInspectOrbit: '/v3/inspect/track',//获取巡航轨迹
-
+      getKnowledgebase:'/v3/knowledgebase/list',// 获取智能专家库列表
+      likeKnowledgebase:'/v3/knowledgebase/like/' // 点赞智能专家
     },
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
