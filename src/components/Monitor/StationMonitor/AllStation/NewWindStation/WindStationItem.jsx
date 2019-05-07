@@ -86,7 +86,8 @@ class WindStationItem extends React.Component {
 
   render() {
     const { stationDataList } = this.props;
-    const temType = stationDataList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']) });
+    const newStationsList=stationDataList.sort((a, b) => { return a['stationName'].localeCompare(b['stationName']) });
+    const temType = newStationsList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']) });
     let filteredStation = [];
     temType.forEach(e => {
       let findExactStation = false;
@@ -106,12 +107,15 @@ class WindStationItem extends React.Component {
     return (
       <div className={styles.stationCardContainer} >
         <div ref={'popver'}></div>
-        {stationDataList.length > 0 && filteredStation.map((e, key) => {
+        {stationDataList.length > 0 && filteredStation.map((list, key) => {
+          const stationStatusList=list.stations.sort((a,b)=>{
+            return 900-b.stationStatus.stationStatus===0 ? -1 :1
+          })
           return (
             <div key={key} className={styles.regionStation}>
-              <div className={styles.regionName}>{e.regionName}</div>
+              <div className={styles.regionName}>{list.regionName}</div>
               <div className={styles.staionsList}>
-                {e.stations.sort((a,b)=>{return a.stationStatus.stationStatus-b.stationStatus.stationStatus}).map((item, index) => {
+                {stationStatusList.map((item, index) => {
                   const stationStatus = item.stationStatus || {};
                   const currentStatus = stationStatus.stationStatus;
                   const stationPlanPower=dataFormats(item.stationPlanPower,'--')/1000;
