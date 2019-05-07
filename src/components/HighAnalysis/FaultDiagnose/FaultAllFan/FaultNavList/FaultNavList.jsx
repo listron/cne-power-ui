@@ -105,7 +105,7 @@ export default class FaultNavList extends React.Component {
       afterDate,
       diffDate
     } = this.props;
-    const { connectDeviceFullCode, deviceName } = data;
+    const { deviceFullCode, deviceName } = data;
     const taskId = localStorage.getItem("taskId");
     // 发电机前驱温度
     const preParams = {
@@ -134,7 +134,7 @@ export default class FaultNavList extends React.Component {
     // 单机自适应模块
     const singleParams = {
       taskId,
-      deviceFullCode: connectDeviceFullCode
+      deviceFullCode
     };
     // 相似性热图
     const heatAndAllFansParams = {
@@ -147,7 +147,7 @@ export default class FaultNavList extends React.Component {
       // 改变设备选中
       onChangeFilter({
         deviceName,
-        deviceFullCode: connectDeviceFullCode,
+        deviceFullCode,
         warnId
       });
       // 请求接口

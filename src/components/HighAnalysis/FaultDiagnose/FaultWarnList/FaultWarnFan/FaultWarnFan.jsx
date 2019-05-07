@@ -33,13 +33,13 @@ export default class FaultWarnFan extends React.Component {
       }
     }
     if (performance.length !== 0 ) {
-      for(let i = 0; i < large.length; i ++) {
+      for(let i = 0; i < performance.length; i ++) {
         newArr.push(performance[i]); // 保存性能预警
 
       }
     }
     if (health.length !== 0 ) {
-      for(let i = 0; i < large.length; i ++) {
+      for(let i = 0; i < health.length; i ++) {
         newArr.push(health[i]); // 保存设备健康
 
       }
@@ -47,6 +47,7 @@ export default class FaultWarnFan extends React.Component {
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
     localStorage.setItem("taskId", taskId);
+    localStorage.setItem("faultHistory", "");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
     localStorage.setItem("faultList", JSON.stringify(newArr))

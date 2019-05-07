@@ -29,8 +29,9 @@ export default class FaultResetTask extends React.Component {
 
   handleOk = () => {
     const { getResetTask, onTaskVisible } = this.props;
+    const taskId = localStorage.getItem("taskId");
     const params = {
-      taskId: "387294252779520"
+      taskId
     };
     getResetTask(params);
     onTaskVisible(false);

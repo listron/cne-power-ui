@@ -84,7 +84,8 @@ export default class PreTemperature extends React.Component {
       onChangeFilter,
       getSimilarityList,
       getAllFanResultList,
-      warnId
+      warnId,
+      stationDeviceList
     } = this.props;
     onChangeFilter({
       faultDate: dateString
@@ -96,7 +97,7 @@ export default class PreTemperature extends React.Component {
       date: dateString
     };
     // 有故障
-    if (warnId === 1) {
+    if (warnId ? warnId === 1 : stationDeviceList[0].warnId) {
       getSimilarityList(heatAndAllFansParams);
       getAllFanResultList(heatAndAllFansParams);
     }

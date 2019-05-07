@@ -150,7 +150,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       const aloneParams = {
         taskId: response.data.data.taskId,
         //  默认本地，如果没有取数组的第一条
-        deviceFullCode: fullCode || payload.deviceList[0].connectDeviceFullCode
+        deviceFullCode: fullCode || payload.deviceList[0].deviceFullCode
       };
       // 相似性热图和所有风机
       const heatAndFansParams = {

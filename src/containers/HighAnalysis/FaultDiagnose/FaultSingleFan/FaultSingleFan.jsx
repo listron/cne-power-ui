@@ -55,14 +55,29 @@ class FaultSingleFan extends React.Component {
     getList(listParams);
   };
 
+  callBackHistory = () => {
+    const {
+      history
+    } = this.props;
+    history.push(`/analysis/faultDiagnose/historyWarn`);
+  };
+
   render() {
+    const faultHistory = localStorage.getItem("faultHistory");
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.singleFanContent}>
-          <div className={styles.title}>
-            <div>故障预警</div>
-            <div onClick={this.callBackList}>返回列表视图</div>
-          </div>
+          {faultHistory === "1" ? (
+            <div className={styles.title}>
+              <div>历史预警</div>
+              <div onClick={this.callBackHistory}>返回历史预警</div>
+            </div>
+          ): (
+            <div className={styles.title}>
+              <div>故障预警</div>
+              <div onClick={this.callBackList}>返回列表视图</div>
+            </div>
+          )}
         </div>
         <FaultSingleFanMain onChangeFilter={this.onChangeFilter} {...this.props} />
         <Footer />

@@ -24,21 +24,17 @@ class HistoryWarn extends React.Component {
     algorithmModalId: PropTypes.array,
     selectDeviceCode: PropTypes.array,
     algorithmModalName: PropTypes.array,
+    resetStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onChangeFilter = (params) => {
-    console.log(params, "params");
     const {
       getFaultWarnHistory,
-      changeHistoryWarnStore,
       selectDeviceCode,
       algorithmModalId,
       createTimeStart,
@@ -63,22 +59,7 @@ class HistoryWarn extends React.Component {
       algorithmModalName,
       ...params
     };
-    /**
-     * 因为用的都是用的一个onChangeFilter
-     * 电站选择和风机名称不需要改变之后就触发接口
-     * 所以要判断如果是这个两个参数都有值
-     * stationCode
-     * selectDeviceCode
-     * */
-    if (params.stationCode && params.selectDeviceCode) {
-      return getFaultWarnHistory(newParams);
-    }
-    if (params.stationCode || params.selectDeviceCode) {
-      return changeHistoryWarnStore({
-        ...params
-      });
-    }
-    return getFaultWarnHistory(newParams);
+    getFaultWarnHistory(newParams);
   };
 
   render() {

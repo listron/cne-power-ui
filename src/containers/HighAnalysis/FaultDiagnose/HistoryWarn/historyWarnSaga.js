@@ -36,11 +36,11 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
     deviceFullCodes.push(cur.deviceCode);
   });
   const params = {
-    stationCode: !stationCode ? null : stationCode,
+    stationCode: stationCode || null,
     deviceFullCodes,
-    algorithmIds: algorithmModalId ? algorithmModalId : [],
-    startTime: createTimeStart ? createTimeStart : "",
-    endTime: createTimeEnd ? createTimeEnd : "",
+    algorithmIds: algorithmModalId || [],
+    startTime: createTimeStart || "",
+    endTime: createTimeEnd || "",
     pageSize,
     pageNum,
     sortField,

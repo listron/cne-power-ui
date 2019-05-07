@@ -172,7 +172,7 @@ function* getAlgoOptionList() { // 获取算法列表
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
-          algoOptionList: response.data.data || [],
+          algoOptionList: response.data.data.sort(compare("algorithmSort")) || [],
           loading: false,
         },
       });
