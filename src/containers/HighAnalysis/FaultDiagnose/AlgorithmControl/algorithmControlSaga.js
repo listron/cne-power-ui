@@ -19,6 +19,14 @@ const {
     }
   }} = Path;
 
+// 根据algorithmSort进行排序
+function compare(property){
+  return function(a,b){
+    var value1 = a[property];
+    var value2 = b[property];
+    return value1 - value2;
+  }
+}
 // 格式化数据
 function dataFormat(data) {
   let largeSizeArr = []; // 大部件
@@ -36,9 +44,9 @@ function dataFormat(data) {
     }
   });
   return {
-    largeSizeList: largeSizeArr,
-    natureList: natureArr,
-    healthList: healthArr
+    largeSizeList: largeSizeArr.sort(compare("algorithmSort")),
+    natureList: natureArr.sort(compare("algorithmSort")),
+    healthList: healthArr.sort(compare("algorithmSort"))
   }
 }
 
@@ -83,22 +91,22 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
     sortField,
     sortMethod,
     stationCode,
+    stationCodes,
     algorithmModalName,
   } } = action;
   // 请求参数
   const params = {
-    pageSize,
-    pageNum,
+    pageSize: pageSize || 10,
+    pageNum: pageNum || 1,
     algorithmIds: algorithmModalId ? algorithmModalId : [],
     startTime: createTimeStart ? createTimeStart : "",
     endTime: createTimeEnd ? createTimeEnd : "",
     status: !status || status === "0" ? null : status,
     sortField,
     sortMethod,
-    stationCode: !stationCode ? null : stationCode,
+    stationCode: stationCodes || null
   };
   const url = `${APIBasePath}${faultTaskList}`;
-  console.log(algorithmModalName, "algorithmModalName123");
   try{
     // 首先改变reducer
     yield put({
@@ -114,11 +122,23 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
         sortField,
         sortMethod,
         stationCode,
+        stationCodes: stationCodes || "",
         algorithmModalName: algorithmModalName ? algorithmModalName : []
       }
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      // 每次操作之后查询状态对应的个数
+      const statusParams = {
+        stationCode: stationCodes || null,
+        algorithmIds: algorithmModalId ? algorithmModalId : [],
+        startTime: createTimeStart ? createTimeStart : "",
+        endTime: createTimeEnd ? createTimeEnd : "",
+      };
+      yield put({
+        type: algorithmControlAction.getTaskStatusStat,
+        payload: statusParams
+      });
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
@@ -152,7 +172,7 @@ function* getAlgoOptionList() { // 获取算法列表
       yield put({
         type: algorithmControlAction.changeAlgorithmControlStore,
         payload: {
-          algoOptionList: response.data.data || [],
+          algoOptionList: response.data.data.sort(compare("algorithmSort")) || [],
           loading: false,
         },
       });
@@ -202,6 +222,7 @@ function* getTaskStatusStat(action) { // 获取预警任务状态统计
 function* getAddWarnTask(action) { // 新增预警任务
   const { payload: {
     func,
+    viewType,
     algorithmId,
     stationCode,
     startTime,
@@ -227,6 +248,38 @@ function* getAddWarnTask(action) { // 新增预警任务
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
+      // 调用列表视图
+      const viewListParams = {
+        stationCode:null,
+        algorithmIds: [],
+        startTime:"",
+        endTime:"",
+        status:null,
+        pageSize:null,
+        pageNum:null,
+        sortField:"",
+        sortMethod:""
+      };
+      // 列表视图
+      if (viewType === "list") {
+        yield put({
+          type: algorithmControlAction.getListView,
+          payload: viewListParams
+        });
+      }
+      // 模型视图
+      if (viewType === "algorithm") {
+        yield put({
+          type: algorithmControlAction.getAlgoList,
+          payload: viewListParams
+        });
+      }
+      yield put({
+        type: algorithmControlAction.changeAlgorithmControlStore,
+        payload: {
+          loading: false
+        }
+      });
       message.success("下发成功");
       //成功关闭弹框
       func();

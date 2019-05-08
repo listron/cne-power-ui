@@ -19,6 +19,14 @@ const {
       fanList
     }
   }} = Path;
+// 根据algorithmSort进行排序
+function compare(property){
+  return function(a,b){
+    var value1 = a[property];
+    var value2 = b[property];
+    return value1 - value2;
+  }
+}
 // 格式化数据
 function dataFormat(data) {
   let largeSizeArr = []; // 大部件
@@ -36,9 +44,9 @@ function dataFormat(data) {
     }
   });
   return {
-    largeSizeList: largeSizeArr,
-    natureList: natureArr,
-    healthList: healthArr
+    largeSizeList: largeSizeArr.sort(compare("algorithmSort")),
+    natureList: natureArr.sort(compare("algorithmSort")),
+    healthList: healthArr.sort(compare("algorithmSort"))
   }
 }
 function* getAlgoModel(action) { // 获取单风场故障预警汇总-按模型

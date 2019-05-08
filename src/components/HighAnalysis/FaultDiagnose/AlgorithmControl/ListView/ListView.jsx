@@ -21,6 +21,7 @@ export default class ListView extends React.Component {
     onChangeFilter: PropTypes.func,
     status: PropTypes.string,
     taskStatusStat: PropTypes.object,
+    stationTypeCount: PropTypes.string,
   };
 
   constructor(props) {
@@ -60,6 +61,7 @@ export default class ListView extends React.Component {
   };
 
   handleStatusChange = (e) => {
+    console.log(e.target.value, "status");
     const { onChangeFilter } = this.props;
     onChangeFilter({
       status: e.target.value

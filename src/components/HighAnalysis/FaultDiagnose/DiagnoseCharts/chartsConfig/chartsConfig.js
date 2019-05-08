@@ -33,6 +33,7 @@ export const PreTemperatureOptions = (data, name) => {
           color: cur.deviceName === name ? '#91d2d3' : themeColor,
         }
       };
+      obj.z = cur.deviceName === name ? 1 : 0; // 控制显示前后顺序
       obj.stack = cur.deviceFullcode;
       obj.data = valueFunc(cur.dataList);
       newArr.push(obj);
@@ -158,6 +159,7 @@ export const AfterTemperatureOptions = (data, name) => {
           color: cur.deviceName === name ? '#199475' : themeColor,
         }
       };
+      obj.z = cur.deviceName === name ? 1 : 0; // 控制显示前后顺序
       obj.stack = cur.deviceFullcode;
       obj.data = valueFunc(cur.dataList);
       newArr.push(obj);
@@ -283,6 +285,7 @@ export const diffTemperatureOptions = (data, name) => {
           color: cur.deviceName === name ? '#dc9c64' : themeColor,
         }
       };
+      obj.z = cur.deviceName === name ? 1 : 0; // 控制显示前后顺序
       obj.stack = cur.deviceFullcode;
       obj.data = valueFunc(cur.dataList);
       newArr.push(obj);
@@ -625,7 +628,7 @@ export const allFansOptions = (data, name) => {
             width: 0, //这里是为了突出显示加上的
           }
         },
-          splitLine: {
+        splitLine: {
           show: false,
           color: themeColor
         },
@@ -636,15 +639,26 @@ export const allFansOptions = (data, name) => {
     ],
     series : [
       {
-        name:'直接访问',
-        type:'bar',
-        barWidth: '60%',
+        name: 'height',
+        type: 'custom',
+        barWidth: '30',
+        label: {
+          normal: {
+            show: true,
+            position: 'insideTop'
+          }
+        },
+        encode: {
+          x: [0, 1],
+          y: 2,
+          tooltip: 2,
+          label: 2
+        },
         data: cfResidual
       },
       {
         name:'直接访问',
         type:'line',
-        barWidth: '60%',
         itemStyle : {
           normal : {
             color: '#a42b2c',

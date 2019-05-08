@@ -16,6 +16,9 @@ export default class SureModal extends React.Component {
     onAddControlFunc: PropTypes.func,
     downLink: PropTypes.object,
     algoOptionList: PropTypes.array,
+    actionDiffTime: PropTypes.number,
+    endDiffTime: PropTypes.number,
+    viewType: PropTypes.string,
   };
 
   constructor(props) {
@@ -33,6 +36,7 @@ export default class SureModal extends React.Component {
       getAddWarnTask,
       sureModalFunc,
       onAddControlFunc,
+      viewType,
       downLink: {
         modal,
         selectStationName,
@@ -43,6 +47,7 @@ export default class SureModal extends React.Component {
     } = this.props;
     const params = {
       algorithmId: modal,
+      viewType,
       stationCode: selectStationName[0].stationCode,
       startTime: moment(startTime).format(defaultDate),
       trainingStartTime: moment(actionTime).format(defaultDate),
@@ -83,7 +88,9 @@ export default class SureModal extends React.Component {
         actionTime,
         startTime,
         endTime
-      }
+      },
+      actionDiffTime,
+      endDiffTime
     } = this.props;
     return (
       <Modal
@@ -112,12 +119,12 @@ export default class SureModal extends React.Component {
             <div>
               <span>训练开始日期：</span>
               <span>{moment(actionTime).format(defaultDate)}</span>
-              <span>（训练时长90天）</span>
+              <span>{`（训练时长${actionDiffTime}天）`}</span>
             </div>
             <div>
               <span>检测结束日期：</span>
               <span>{moment(endTime).format(defaultDate)}</span>
-              <span>（检测时长7天）</span>
+              <span>{`（检测时长${endDiffTime}天）`}</span>
             </div>
           </div>
         </div>

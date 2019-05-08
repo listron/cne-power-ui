@@ -33,13 +33,13 @@ export default class FaultWarnFan extends React.Component {
       }
     }
     if (performance.length !== 0 ) {
-      for(let i = 0; i < large.length; i ++) {
+      for(let i = 0; i < performance.length; i ++) {
         newArr.push(performance[i]); // 保存性能预警
 
       }
     }
     if (health.length !== 0 ) {
-      for(let i = 0; i < large.length; i ++) {
+      for(let i = 0; i < health.length; i ++) {
         newArr.push(health[i]); // 保存设备健康
 
       }
@@ -47,6 +47,7 @@ export default class FaultWarnFan extends React.Component {
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
     localStorage.setItem("taskId", taskId);
+    localStorage.setItem("faultHistory", "");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
     localStorage.setItem("faultList", JSON.stringify(newArr))
@@ -55,18 +56,18 @@ export default class FaultWarnFan extends React.Component {
   titleFunc = (data) => {
     return data && data.map((cur, index) => {
       return (
-        <p
+        <div
           style={{
             textDecoration: "underline",
             display: "flex",
-            justifyContent: "space-between",
-            padding: "0 20px"
+            minWidth: "280px",
+            justifyContent: "space-between"
           }}
           key={`${cur.algorithmName}${index}`}
         >
           <span>{cur.algorithmName}</span>
           <span>{dateArrFormat(cur.predictionDate)}</span>
-        </p>
+        </div>
       )
     });
   };
@@ -87,6 +88,7 @@ export default class FaultWarnFan extends React.Component {
           <div className={styles.fanItemBottom}>
             {cur.largeWarnings.length !== 0 ? <div>
               <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
                 title={this.titleFunc(cur.largeWarnings)}
               >
@@ -97,7 +99,11 @@ export default class FaultWarnFan extends React.Component {
             </div>}
             <b />
             {cur.performanceWarnings.length !== 0 ? <div>
-              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.performanceWarnings)}>
+              <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
+                placement="bottomLeft"
+                title={this.titleFunc(cur.performanceWarnings)}
+              >
                 <span className={styles.warnColor}>性能预警</span>
               </Tooltip>
             </div>: <div>
@@ -105,7 +111,11 @@ export default class FaultWarnFan extends React.Component {
             </div>}
             <b />
             {cur.healthWarnings.length !== 0 ? <div>
-              <Tooltip placement="bottomLeft" title={this.titleFunc(cur.healthWarnings)}>
+              <Tooltip
+                overlayStyle={{maxWidth: "500px"}}
+                placement="bottomLeft"
+                title={this.titleFunc(cur.healthWarnings)}
+              >
                 <span className={styles.warnColor}>设备健康</span>
               </Tooltip>
             </div>: <div>

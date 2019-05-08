@@ -22,6 +22,7 @@ export default class FaultNavList extends React.Component {
     preDate: PropTypes.array,
     afterDate: PropTypes.array,
     diffDate: PropTypes.array,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {

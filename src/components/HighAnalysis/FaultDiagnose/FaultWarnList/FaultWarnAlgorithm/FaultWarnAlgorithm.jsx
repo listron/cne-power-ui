@@ -53,6 +53,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${fanWarnId}`);
     // localStore存储有故障的风机
+    localStorage.setItem("deviceFullCode", "");
     localStorage.setItem("algorithmId", algorithmId);
     localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
