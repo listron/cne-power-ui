@@ -395,6 +395,11 @@
                 }
             }
         }
+        :global {
+            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
+                display: none
+            }
+        }
     }
 
     //列表
