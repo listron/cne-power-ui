@@ -33,6 +33,8 @@ var initState = Immutable.fromJS({
   singleStationScattertime:null,// 等效小时散点图时间
   pointparams:{},//单电站测点参数(风机)
   fanDisplay:'deviceCard', // 单电站风机展示形式  deviceCard deviceTable deviceMap
+  windCapabilityData:[],
+  windCapabilityDataTime:null,
 });
 
 const singleStationReducer = (state = initState, action) => {

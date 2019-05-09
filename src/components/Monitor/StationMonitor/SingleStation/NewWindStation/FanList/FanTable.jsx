@@ -234,7 +234,7 @@ class WindStationList extends React.Component {
     const initDeviceList = deviceList.map((e, i) => ({ ...e, key: i }));
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
       return (currentStatus === 0 || e.deviceStatus === currentStatus);
-    })
+    }).sort((a, b) => { return a['deviceName'].localeCompare(b['deviceName']) })
     const dataSort = this.createTableSource(filteredDeviceList);
     let startRow = (currentPage - 1) * pageSize;
     let endRow = currentPage * pageSize;

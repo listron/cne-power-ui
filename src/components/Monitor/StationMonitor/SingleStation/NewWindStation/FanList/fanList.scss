@@ -194,16 +194,26 @@
         }
        
     }
+    .stationCardContainer{
+        position: relative; 
+        :global {
+            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
+                display: none
+            }
+        }
+    }
     .deviceCard {
         width: 235px;
         height: 214px;
         cursor: pointer;
         @include propContainer();
-
         :global {
             .ant-popover-inner-content {
                 background: #f8f8f8;
                 box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+            }
+            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
+                display: none
             }
         }
     }

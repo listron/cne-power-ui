@@ -34,4 +34,6 @@ export const singleStationAction = {
   singleStationFetch: Symbol('singleStationFetch'),//loading
   getSingleScatter: Symbol('getSingleScatter'),// 等效散点图数据
   pointparams: Symbol('pointparams'),
+  getSingleRealChartsData: Symbol('getSingleRealChartsData'),
+  stopSingleRealData: Symbol('stopSingleRealData'),
 }
