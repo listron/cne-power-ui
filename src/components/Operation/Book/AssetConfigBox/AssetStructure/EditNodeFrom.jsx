@@ -1,34 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./assetStructure.scss";
-import WarningTip from '../../../../Common/WarningTip';
 
 import { Button, Input, Form, Icon, Select, InputLimit } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class AddNodeFrom extends React.Component {
+class EditNodeFrom extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {
-      showWarningTip: false,
-      warningTipText: '',
-    }
-  }
-  onConfirmWarningTip = () => {
-
-    this.setState({
-      showWarningTip: false,
-      warningTipText: ''
-    });
-    this.props.closeFrom();
-  }
-
-  onCancelWarningTip = () => {//信息提示栏隐藏
-    this.setState({
-      showWarningTip: false
-    });
   }
   submitForm = (e) => {
     // this.props.form.validateFieldsAndScroll((err, values) => {
@@ -38,26 +19,15 @@ class AddNodeFrom extends React.Component {
     // });
   }
   closeFrom = () => {
-    this.setState({
-      showWarningTip: true,
-      warningTipText: '确定关闭,关闭后数据不会被保存'
-    })
+    this.props.closeFrom();
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showWarningTip, warningTipText } = this.state;
     return (
-      <div className={styles.addNodeFrom}>
+      <div className={styles.editNodeFrom}>
         <div className={styles.title}>
-          <div className={styles.leftText}>添加子节点</div>
-          <div className={styles.iconstyles} onClick={this.closeFrom}><Icon type="close" /></div>
+          <div className={styles.leftText}>当前节点编辑</div>
         </div>
-        {showWarningTip && <WarningTip
-          style={{ marginTop: '350px', width: '240px', height: '88px' }}
-          onCancel={this.onCancelWarningTip}
-          hiddenCancel={false}
-          onOK={this.onConfirmWarningTip}
-          value={warningTipText} />}
         <div className={styles.contantBox}>
           <div className={styles.contant}>
             <Form className={styles.editPart}>
@@ -80,7 +50,7 @@ class AddNodeFrom extends React.Component {
                   <Input placeholder="30字以内" />
                 )}
               </FormItem>
-
+            
               <FormItem label="分类" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('nodeType', {
                   rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
@@ -94,11 +64,13 @@ class AddNodeFrom extends React.Component {
                 })(
                   <Input placeholder="6字以内" />
                 )}
-              </FormItem>
-              <Button className={styles.saveStyle} onClick={this.submitForm} >添加</Button>
-
+              </FormItem> 
+              <div className={styles.editSaveButton}>
+              <Button className={styles.restore} onClick={this.submitForm} >恢复</Button>
+              <Button className={styles.saveButton} onClick={this.submitForm} >保存</Button>
+              </div>
             </Form>
-
+           
           </div>
         </div>
 
@@ -107,4 +79,4 @@ class AddNodeFrom extends React.Component {
     )
   }
 }
-export default Form.create()(AddNodeFrom)
+export default Form.create()(EditNodeFrom)

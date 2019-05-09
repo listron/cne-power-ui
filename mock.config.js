@@ -24,6 +24,7 @@ const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
 const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
 const reportSeacher = require('./mock/monitor/report');
+const book=require('./mock/operation/book');
 
 
 // as
@@ -56,4 +57,5 @@ exports.mockConfig = [
   ...score,//电站评分
   ...intelligentAnalysis, // 智能分析报告
   ...reportSeacher,//报表查询
+  ...book,//台账
 ]

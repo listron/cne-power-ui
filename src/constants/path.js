@@ -121,6 +121,20 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+      getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
+      addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
+      deleteAssetNode:'/v3/ledger/assets/delete',//台账删除生产资产树
+      editAssetNode:'/v3/ledger/assets/update',//台账编辑生产资产节点
+      getDeviceFactorsList:'/v3/ledger/devicemanufactors/list',//获取设备厂家列表
+      addDeviceFactors:'/v3/ledger/devicemanufactors/add',//新建设备厂家
+      editDeviceFactors:'/v3/ledger/devicemanufactors/update',//编辑设备厂家
+      deleteDeviceFactors:'/v3/ledger/assets/update',//删除设备厂家
+      getDeviceModesList:'/v3/ledger/devicemodes/list',//获取设备型号列表
+      addDeviceModes:'/v3/ledger/devicemodes/add',//新建设备型号
+      editDeviceModes:'/v3/ledger/devicemodes/update',//编辑设备型号
+      deleteDeviceModes:'/v3/ledger/devicemodes/delete',//删除设备型号
+    
+
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表

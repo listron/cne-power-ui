@@ -131,17 +131,25 @@
 
     .addNodeFrom {
       background: #f0f2f5;
+    }
+
+    .addNodeFrom,
+    .editNodeFrom {
+
       border: 1px solid #dfdfdf;
       border-radius: 4px;
-      height: 300px;
+      height: 270px;
 
       .title {
         display: flex;
         flex: 1;
         align-items: center;
         justify-content: space-between;
+
         .leftText {
           margin-left: 20px;
+          height: 30px;
+          line-height: 30px;
         }
         .iconstyles {
           border: 1px solid #199475;
@@ -150,48 +158,67 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          i{
+          i {
             font-size: 20px;
           }
         }
       }
-      .contantBox{
+
+      .contantBox {
         display: flex;
-        flex:1;
+        flex: 1;
         justify-content: center;
-        .contant{
+
+        .contant {
           width: 300px;
-        
+
           .editPart {
             display: flex;
             flex-direction: column;
+
             .formItemStyle {
               display: flex;
             }
-            .saveStyle{
+            .saveStyle {
               width: 70px;
               height: 32px;
+              margin: 10px 0 0 100px;
+
             }
+            .editSaveButton {
+              display: flex;
+              margin: 10px 0 0 100px;
+             
+              .saveButton,.restore {
+                width: 70px;
+                height: 32px;
+                margin-right: 12px;
+              }
+            }
+
+           
           }
+
           :global {
+
             .ant-form-item,
             .ant-form-horizontal {
               margin-bottom: 4px;
             }
+
             .ant-form-item-label {
               width: 100px;
             }
-            .ant-btn{
-            
-            }
+
+            .ant-btn {}
           }
 
-  
+
         }
       }
-      
 
-     
+
+
     }
 
   }
