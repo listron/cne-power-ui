@@ -17,6 +17,7 @@ export default class FaultWarnFan extends React.Component {
   }
 
   detailsFunc = (taskId, deviceName, large, performance, health, deviceFullCode) => {
+    console.log("12312312312");
     const {
       history,
       match: {
@@ -53,14 +54,34 @@ export default class FaultWarnFan extends React.Component {
     localStorage.setItem("faultList", JSON.stringify(newArr))
   };
 
-  titleFunc = (data) => {
+  detailsFanFunc = (e, data, taskId, deviceName, deviceFullcode) => {
+    e.stopPropagation();
+    const {
+      history,
+      match: {
+        params:{
+          fanWarnId
+        }
+      },
+    } = this.props;
+    history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
+    localStorage.setItem("taskId", taskId);
+    localStorage.setItem("faultHistory", "2");
+    localStorage.setItem("deviceName", deviceName);
+    localStorage.setItem("deviceFullCode", deviceFullcode);
+    localStorage.setItem("faultList", JSON.stringify(data))
+  };
+
+  titleFunc = (data, taskId, deviceName, deviceFullcode) => {
     return data && data.map((cur, index) => {
       return (
         <div
+          onClick={(e) => {return this.detailsFanFunc(e, data, taskId, deviceName, deviceFullcode)}}
           style={{
             textDecoration: "underline",
             display: "flex",
             minWidth: "280px",
+            cursor: "pointer",
             justifyContent: "space-between"
           }}
           key={`${cur.algorithmName}${index}`}
@@ -90,7 +111,7 @@ export default class FaultWarnFan extends React.Component {
               <Tooltip
                 overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
-                title={this.titleFunc(cur.largeWarnings)}
+                title={this.titleFunc(cur.largeWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
                 <span className={styles.warnColor}>大部件</span>
               </Tooltip>
@@ -102,7 +123,7 @@ export default class FaultWarnFan extends React.Component {
               <Tooltip
                 overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
-                title={this.titleFunc(cur.performanceWarnings)}
+                title={this.titleFunc(cur.performanceWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
                 <span className={styles.warnColor}>性能预警</span>
               </Tooltip>
@@ -114,7 +135,7 @@ export default class FaultWarnFan extends React.Component {
               <Tooltip
                 overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
-                title={this.titleFunc(cur.healthWarnings)}
+                title={this.titleFunc(cur.healthWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
                 <span className={styles.warnColor}>设备健康</span>
               </Tooltip>

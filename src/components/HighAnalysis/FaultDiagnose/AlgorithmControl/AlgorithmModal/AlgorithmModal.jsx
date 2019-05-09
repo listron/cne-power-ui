@@ -54,7 +54,7 @@ export default class AlgorithmModal extends React.Component {
       algorithmModalName: newSameArr
     };
     const statusParams = {
-      stationCode:null,
+      stationCodes:null,
       algorithmIds: [`${algorithmId}`],
       startTime:"",
       endTime:""

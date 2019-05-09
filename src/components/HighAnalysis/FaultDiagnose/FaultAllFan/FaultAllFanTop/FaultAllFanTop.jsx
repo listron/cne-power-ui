@@ -24,12 +24,10 @@ export default class FaultAllFanTop extends React.Component {
     taskId: PropTypes.string,
     stations: PropTypes.object,
     stationCode: PropTypes.string,
-    deviceFullcode: PropTypes.string,
     downLoadFile: PropTypes.func,
     getResetTask: PropTypes.func,
     faultInfo: PropTypes.object,
     faultInfoMessage: PropTypes.string,
-    stationDeviceList: PropTypes.array,
   };
 
   constructor(props) {
@@ -64,7 +62,6 @@ export default class FaultAllFanTop extends React.Component {
     const {
       deviceFullcode,
       downLoadFile,
-      stationDeviceList,
       faultInfo:{
         stationName,
         startTime,
@@ -72,8 +69,7 @@ export default class FaultAllFanTop extends React.Component {
         taskId
       }
     } = this.props;
-    const fullCode = deviceFullcode || stationDeviceList[0].connectDeviceFullCode;
-    const url  = `${APIBasePath}${downloadFile}/${taskId}/${fullCode}`;
+    const url  = `${APIBasePath}${downloadFile}/${taskId}`;
     downLoadFile({
       url,
       method: "get",

@@ -154,7 +154,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       const  preParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
         endTime: moment(response.data.data.endTime).utc().format()
       };
@@ -162,7 +162,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       const  afterParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
         endTime: moment(response.data.data.endTime).utc().format()
       };
@@ -170,7 +170,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       const diffParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010-GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
         endTime: moment(response.data.data.endTime).utc().format()
       };
@@ -384,7 +384,6 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      console.log(response.data.data, "前驱温度");
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
