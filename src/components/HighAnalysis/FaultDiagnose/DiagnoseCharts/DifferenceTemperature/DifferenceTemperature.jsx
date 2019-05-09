@@ -91,7 +91,7 @@ export default class DifferenceTemperature extends React.Component {
     const params = {
       stationCode,
       pointCode: "GN010-GN011", //温度差-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
       endTime: moment(date[1]).utc().format()
     };

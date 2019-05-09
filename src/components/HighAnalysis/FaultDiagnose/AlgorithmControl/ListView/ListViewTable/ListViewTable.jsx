@@ -33,6 +33,7 @@ export default class ListViewTable extends React.Component {
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${stationCode}`);
     // localStore存储有故障的风机
+    localStorage.setItem("faultWarnNum", "1");
     localStorage.setItem("algorithmId", algorithmId);
     localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);

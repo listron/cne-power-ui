@@ -104,7 +104,7 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
     status: !status || status === "0" ? null : status,
     sortField,
     sortMethod,
-    stationCode: stationCodes || null
+    stationCodes: stationCodes && stationCodes.split(",") || null
   };
   const url = `${APIBasePath}${faultTaskList}`;
   try{
@@ -130,7 +130,7 @@ function* getListView(action) { // 获取预警任务列表-算法列表视图
     if (response.data.code === '10000') {
       // 每次操作之后查询状态对应的个数
       const statusParams = {
-        stationCode: stationCodes || null,
+        stationCodes: stationCodes && stationCodes.split(",") || null,
         algorithmIds: algorithmModalId ? algorithmModalId : [],
         startTime: createTimeStart ? createTimeStart : "",
         endTime: createTimeEnd ? createTimeEnd : "",

@@ -58,6 +58,9 @@ export default class PreTemperature extends React.Component {
       deviceName,
       stationDeviceList,
       preLoading,
+      faultInfo: {
+        endTime
+      },
       preTimeCompare: currentPreTimeCompare
     } = this.props;
     const { preTimeCompare } = prevProps;
@@ -75,7 +78,16 @@ export default class PreTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
-      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName));
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName, endTime));
+      myChart.on('datazoom', function (params){
+        var opt = myChart.getOption();
+        var dz = opt.dataZoom[0];
+        var s1 = opt.xAxis[0].data[dz.startValue];
+        var s2 = opt.xAxis[0].data[dz.endValue];
+        console.log(s1);
+        console.log(s2);
+        console.log(params, "----------");
+      })
     }
   }
 
@@ -116,7 +128,7 @@ export default class PreTemperature extends React.Component {
     const params = {
       stationCode,
       pointCode: "GN010", //前驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
       endTime: moment(date[1]).utc().format()
     };

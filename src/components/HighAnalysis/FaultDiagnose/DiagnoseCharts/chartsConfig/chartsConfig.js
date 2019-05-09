@@ -1,9 +1,13 @@
 import moment from "moment"
+import ecStat from "echarts-stat";
+import echarts from "echarts";
 
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (data, name) => {
+export const PreTemperatureOptions = (data, name, time) => {
+  console.log(time, "time");
+  console.log(moment(time).subtract('days',7).format('YYYY-MM-DD'), "days");
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -107,12 +111,10 @@ export const PreTemperatureOptions = (data, name) => {
       boundaryGap: [0, '100%']
     },
     dataZoom: [{
-      type: 'inside',
       start: 0,
-      end: 100,
-    }, {
-      start: 0,
-      end: 10,
+      end: 20,
+      moveOnMouseMove: false,
+      realtime: false, // 控制拖动连续触发
       top: "220px",
       handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
       handleSize: '80%',
@@ -544,7 +546,8 @@ export const heatTemperatureOptions = (data, name) => {
       calculable: true,
       orient: 'vertical',
       top: "5%",
-      right: "5%"
+      right: "5%",
+      precision: 1 //设置小数精度，默认0没有小数
     },
     series: [{
       name: 'Punch Card',
@@ -563,23 +566,130 @@ export const heatTemperatureOptions = (data, name) => {
 // 故障图表-严重程度及识别（所有风机）
 export const allFansOptions = (data, name) => {
   const { cfResidual, cfStd } = data;
-  // 处理xAxis
-  function xAxisFunc(arr) {
-    let newArr = []; //保存value
-    arr.map(cur => {
-      newArr.push(cur.mean);
+  if (!cfResidual || cfResidual.length === 0) {
+    return {}; //返回空对象
+  }
+  // 使用统计扩展处理过后的数据
+  const bins = ecStat.histogram(cfResidual);
+  let interval;
+  let min = Infinity;
+  let max = -Infinity;
+  const dataList = echarts.util.map(bins.data, function (item, index) {
+    var x0 = bins.bins[index].x0;
+    var x1 = bins.bins[index].x1;
+    interval = x1 - x0;
+    min = Math.min(min, x0);
+    max = Math.max(max, x1);
+    return [x0, x1, item[1]];
+  });
+  function renderItem(params, api) {
+    var yValue = api.value(2);
+    var start = api.coord([api.value(0), yValue]);
+    var size = api.size([api.value(1) - api.value(0), yValue]);
+    var style = api.style();
+
+    return {
+      type: 'rect',
+      shape: {
+        x: start[0] + 1,
+        y: start[1],
+        width: size[0] - 2,
+        height: size[1]
+      },
+      style: style
+    };
+  }
+  // 对数组就行排序取出最大值和最小值
+  function sortFunc() {
+    cfResidual.sort(function (a, b) {
+      return Number(a) - Number(b);
+    });
+    return [cfResidual[0], cfResidual[cfResidual.length - 1]]
+  }
+  // 根据最大值和最小值计算出组距(最大值-最小值)/风机个数
+  const distanceMax = Number(sortFunc()[1]); //最大值
+  const distanceMin = Number(sortFunc()[0]); //最小值
+  const distancePoor = distanceMax - distanceMin; // 计算最大值最小值的差
+  const distanceNum = (distancePoor/cfResidual.length); //组距
+  // 计算根据组距，计算最大值和最小值之间的x轴坐标点
+  function distanceXFunc() {
+    //可以相加的次数，取整数
+    const num = Math.floor(distancePoor/distanceNum);
+    let distanceX = []; //保存每次相加的值
+    for (let i = 0; i < num; i++) {
+      // 每次相加i次组距
+      distanceX.push(distanceMin + (distanceNum*i));
+    }
+    return distanceX;
+  }
+  /** 根据计算出来的x轴坐标点计算出y轴
+   *正态曲线公式https://baike.baidu.com/item/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E6%9B%B2%E7%BA%BF/12726695
+   * √(2π)≈2.507
+   * cfStd params { std:标准差, mean:均值 }
+   * */
+  function distanceYFunc() {
+    //x轴坐标
+    const xData = distanceXFunc();
+    let newArr = []; // 保存每次循环的数组
+    cfStd.forEach(item => {
+      let arr = []; // 保存每次循环出来的计算结果
+      //公式左边的值
+      const leftValue = 1/(Math.sqrt(2 * Math.PI) * item.std);
+      xData.forEach(cur => {
+        // 分子
+        const molecular = Math.pow((cur - item.mean), 2);
+        // 分母
+        const denominator = 2 * Math.pow(item.mean,2);
+        // 分子/分母
+        const division = -(molecular/denominator);
+        // 最后的计算结果
+        const result = leftValue * Math.exp(division);
+        // 保存计算结果
+        arr.push(result);
+      });
+      newArr.push(arr); // 保存每次数组
     });
     return newArr;
+  }
+  // 处理data参数，可能有多条线
+  function dataFunc() {
+    const xShaft = distanceXFunc();
+    const yShaft = distanceYFunc();
+    let arr = []; //保存数据 xShaft是固定的
+    // 格式化数组，x轴和y轴 [[x,y],[x,y]]的格式
+    function arrFunc() {
+      let newArr = []; //保存数据
+      for(let i = 0; i < yShaft.length; i++) {
+        for(let j = 0; j < yShaft[i].length; j++){
+          newArr.push([xShaft[j], yShaft[i][j]]);
+        }
+      }
+      return newArr;
+    }
+    /**
+     * cfStd array[] 里面有多少条就代表多少条正态曲线
+     * */
+    for (let i = 0; i < cfStd.length; i++) {
+      let obj = {};
+      obj.name = `line${i}`;
+      obj.type = "line";
+      obj.itemStyle = {
+        normal : {
+          color: '#a42b2c',
+        }
+      };
+      obj.yAxisIndex = 1;
+      obj.smooth = true;
+      obj.symbol = "none";
+      obj.lineStyle = {
+        type: "dashed"
+      };
+      obj.data = arrFunc();
+      arr.push(obj);
+    }
+    return arr;
   }
 
-  // 处理yAxis
-  function yAxisFunc(arr) {
-    let newArr = []; //保存value
-    arr.map(cur => {
-      newArr.push(cur.std);
-    });
-    return newArr;
-  }
   return {
     title: {
       text: name,
@@ -590,86 +700,70 @@ export const allFansOptions = (data, name) => {
       }
     },
     color: ["#3E97D1"],
-    tooltip : {
-      trigger: 'axis',
-      axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-      }
-    },
+    // tooltip : {
+    //   trigger: 'axis',
+    //   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+    //     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    //   }
+    // },
     grid: {
-      left: '3%',
-      right: '4%',
       bottom: '3%',
       borderColor: themeColor,
       borderWidth: 1,
       show: true,
       containLabel: true
     },
-    xAxis : [
-      {
-        type : 'category',
-        axisLine:{
-          lineStyle:{
-            width: 0, //这里是为了突出显示加上的
-          }
-        },
-        // data : xAxisFunc(cfStd),
-        axisTick: {
-          alignWithLabel: true,
-          lineStyle:{ color: themeColor}    // 刻度的颜色
-        }
-      }
-    ],
-    yAxis : [
-      {
-        type : 'value',
-        axisLine:{
-          lineStyle:{
-            width: 0, //这里是为了突出显示加上的
-          }
-        },
-        splitLine: {
-          show: false,
-          color: themeColor
-        },
-        axisTick: {
-          lineStyle:{ color: themeColor}    // 刻度的颜色
-        }
-      }
-    ],
-    series : [
-      {
-        name: 'height',
-        type: 'custom',
-        barWidth: '30',
-        label: {
-          normal: {
-            show: true,
-            position: 'insideTop'
-          }
-        },
-        encode: {
-          x: [0, 1],
-          y: 2,
-          tooltip: 2,
-          label: 2
-        },
-        data: cfResidual
-      },
-      {
-        name:'直接访问',
-        type:'line',
-        itemStyle : {
-          normal : {
-            color: '#a42b2c',
-          }
-        },
+    xAxis: {
+      min: min,
+      max: max,
+      interval: interval,
+      boundaryGap: false, // 坐标轴两边留白策略
+      axisLine: {
         lineStyle: {
-          type: "dashed"
-        },
-        symbol: 'none',  //取消折点圆圈
-        data: xAxisFunc(cfStd)
+          width: 0, //这里是为了突出显示加上的
+        }
+      },
+      axisTick: {
+        alignWithLabel: true,
+        lineStyle: {color: themeColor}    // 刻度的颜色
       }
-    ]
+    },
+    yAxis: [{
+      type: 'value',
+      axisLine:{
+        lineStyle:{
+          width: 0, //这里是为了突出显示加上的
+        }
+      },
+      splitLine: {
+        show: false,
+        color: themeColor
+      },
+      axisTick: {
+        lineStyle:{ color: themeColor}    // 刻度的颜色
+      }
+    },{
+      type: 'value',
+      show: false,
+      data: distanceXFunc()
+    }],
+    series : [{
+      name: 'height',
+      type: 'custom',
+      renderItem: renderItem,
+      label: {
+        normal: {
+          show: true,
+          position: 'insideTop'
+        }
+      },
+      encode: {
+        x: [0, 1],
+        y: 2,
+        tooltip: 2,
+        label: 2
+      },
+      data: dataList
+    }, ...dataFunc()]
   };
 };

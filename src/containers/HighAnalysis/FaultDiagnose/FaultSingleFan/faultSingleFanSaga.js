@@ -185,7 +185,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           faultInfo: response.data.data || {},
-          faultInfoMessage: response.data.message || "",
+          faultInfoMessage: response.data.executeMessage || "",
           loading: false,
         },
       });
