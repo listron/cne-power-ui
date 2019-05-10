@@ -15,33 +15,6 @@ export default class AllFans extends React.Component {
     faultDate: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      allFansCharts,
-      props: {
-        allFanResultList,
-        faultInfo: {
-          endTime
-        },
-        allLoading
-      }
-    } = this;
-    const myChart = eCharts.init(allFansCharts);
-    if (allLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!allLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(allFansOptions(allFanResultList, endTime));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       allFansCharts,
@@ -65,6 +38,8 @@ export default class AllFans extends React.Component {
       myChart.hideLoading();
     }
     if (currentAllTimeCompare && allTimeCompare !== currentAllTimeCompare) {
+      eCharts.init(allFansCharts).dispose();//销毁前一个实例
+      const myChart = eCharts.init(allFansCharts); //构建下一个实例
       myChart.setOption(allFansOptions(allFanResultList, faultDate || endTime));
     }
   }
