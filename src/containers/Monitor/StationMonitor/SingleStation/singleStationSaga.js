@@ -21,7 +21,7 @@ function* getSingleStation(action) { //获取单电站实时数据
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           singleStationData: response.data.data || {},
           stationType: response.data.data.stationType || '',
@@ -65,7 +65,7 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
   }
 }
 
-function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据
+function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据(风电 光伏)
   const { payload } = action;
   const { stationCode, startTime, endTime, intervalTime, stationType } = payload;
   const pvUrl = `${APIBasePath}${monitor.getMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`;
@@ -75,7 +75,7 @@ function* getMonitorPower(action) { // 获取理论发电量 实际发电量数�
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           powerData: response.data.data || [],
           powerTime: moment().unix(),
@@ -176,7 +176,7 @@ function* getWorkList(action) { // 获取单电站工单数统计
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           workList: response.data.data || {},
         }
@@ -569,7 +569,7 @@ function* getWindSingleStation(action) { // 获取单电站实时数据(风电�
     const response = yield call(axios.get, windUrl);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           singleStationData: response.data.data || {},
           stationType: response.data.data.stationType || '',
@@ -593,13 +593,10 @@ function* getSingleScatter(action) { // 日等效利用小时散点数(风电站
   const localDate = moment().format('YYYY-MM-DD');
   const url = `${APIBasePath}${monitor.getSingleWindScatter}/${stationCode}/${localDate}`;
   try {
-    if (payload.firstLoad) {
-      yield put({ type: singleStationAction.singleStationFetch });
-    }
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           singleStationScatter: response.data.data || [],
           singleStationScattertime: moment().unix()
@@ -609,7 +606,7 @@ function* getSingleScatter(action) { // 日等效利用小时散点数(风电站
   } catch (e) {
     console.log(e);
     yield put({
-      type: singleStationAction.getSingleStationSuccess,
+      type: singleStationAction.changeSingleStationStore,
       payload: {
         singleStationScatter: [],
         singleStationScattertime: moment().unix()
@@ -618,7 +615,7 @@ function* getSingleScatter(action) { // 日等效利用小时散点数(风电站
   }
 }
 
-function* getWindCapabilityDiagram(action) { // 获取出力图数据(风电站)
+function* getWindCapabilityDiagram(action) { // 获取出力图数据(❤风电站)
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
   const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
@@ -626,7 +623,7 @@ function* getWindCapabilityDiagram(action) { // 获取出力图数据(风电站)
     const response = yield call(axios.get, windUrl);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           windCapabilityData: response.data.data || [],
           windCapabilityDataTime: moment().unix()
