@@ -27,14 +27,9 @@ class WindStation extends Component {
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     deviceTypeFlow: PropTypes.object,
-    location: PropTypes.object,
-    stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     resetSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
-    collectorList: PropTypes.array,
-    boosterList: PropTypes.array,
-    powerNetList: PropTypes.array,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
     weatherList: PropTypes.array,
@@ -50,6 +45,13 @@ class WindStation extends Component {
     singleStationScattertime: PropTypes.number,
     powerTime: PropTypes.number,
     operatorTime: PropTypes.number,
+    getDeviceTypeFlow: PropTypes.func,
+    getSingleRealChartsData: PropTypes.func,
+    getSingleStation: PropTypes.func,
+    getAlarmList: PropTypes.func,
+    getWeatherList: PropTypes.func,
+    getWorkList: PropTypes.func,
+    editData: PropTypes.func,
   }
 
   constructor(props) {
@@ -155,6 +157,8 @@ class WindStation extends Component {
       this.getPowerDataTenMin({stationCode,stationType,intervalTime});
     }, 600000);
   }
+
+
 
   createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
     <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={typeCode}>
