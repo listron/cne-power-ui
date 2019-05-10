@@ -27,17 +27,6 @@ export default class FaultSingleFan extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    const { getFaultInfo } = this.props;
-    // 读取localStorage
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId
-    };
-    getFaultInfo(params);
-  }
-
-
   render() {
     const {
       faultInfo: {

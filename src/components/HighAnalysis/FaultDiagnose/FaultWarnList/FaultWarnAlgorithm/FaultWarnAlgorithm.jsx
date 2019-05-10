@@ -54,6 +54,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     history.push(`/hidden/analysis/all/fan/${fanWarnId}`);
     // localStore存储有故障的风机
     localStorage.setItem("deviceFullCode", "");
+    localStorage.setItem("faultWarnNum", "");
     localStorage.setItem("algorithmId", algorithmId);
     localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
