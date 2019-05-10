@@ -73,9 +73,12 @@
         //tableList的头部宽高
         .ant-table .ant-table-thead>tr>th,
         .ant-table .ant-table-tbody>tr>td {
-            padding: 0px 7px;
+            padding: 0px 6px;
             height: 40px;
             line-height: 30px;
+        }
+        .ant-table-placeholder {
+            border: none;
         }
     }
     
@@ -399,6 +402,9 @@
             .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
                 display: none
             }
+            .ant-popover-placement-left > .ant-popover-content > .ant-popover-arrow{
+                display: none
+            }
         }
     }
 
@@ -445,32 +451,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        :global {
-            .ant-table .ant-table-thead {
-                th>div {
-                    height: 60px;
-                    padding-top: 9px;
-                    line-height: 21px;
-                }
-
-                .nonePadding {
-                    padding-top: 0;
-                }
-            }
-
-            .ant-table .ant-table-thead .ant-table-column-sorter {
-                top: 18px;
-            }
-
-            .ant-table-placeholder {
-                border: none;
-            }
-
-            .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-sorters {
-                padding-right: 24px !important;
-            }
-        }
-
         .numberStyle {
             text-align: right
         }

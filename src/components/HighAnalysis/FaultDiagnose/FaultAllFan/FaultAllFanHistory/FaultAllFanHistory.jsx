@@ -16,6 +16,7 @@ export default class FaultAllFanHistory extends React.Component {
     onChangeFilter: PropTypes.func,
     getFaultReport: PropTypes.func,
     faultReportInfo: PropTypes.object,
+    history: PropTypes.object,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
   };
@@ -76,6 +77,20 @@ export default class FaultAllFanHistory extends React.Component {
     getFaultReport(params);
   };
 
+
+  onShowDetail = (data) => {
+    const { onVisible, history } = this.props;
+    const { taskId, stationCode, algorithmId } = data;
+    onVisible(false);
+    // 跳到按模型单风机详情图表展示
+    history.push(`/hidden/analysis/all/fan/${stationCode}`);
+    // localStore存储有故障的风机
+    window.location.reload();
+    localStorage.setItem("algorithmId", algorithmId);
+    localStorage.setItem("warnFans", JSON.stringify(data));
+    localStorage.setItem("taskId", taskId);
+  };
+
   handleCancel = () => {
     const { onVisible } = this.props;
     onVisible(false);
@@ -127,19 +142,19 @@ export default class FaultAllFanHistory extends React.Component {
       title: '计划执行时间',
       dataIndex: 'planExecuteTime',
       render: (planExecuteTime) => {
-        return <span>{moment(planExecuteTime).format("YYYY-MM-DD")}</span>
+        return <span>{planExecuteTime ? moment(planExecuteTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
       title: '执行开始时间',
       dataIndex: 'executeStartTime',
       render: (executeStartTime) => {
-        return <span>{moment(executeStartTime).format("YYYY-MM-DD")}</span>
+        return <span>{executeStartTime ? moment(executeStartTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
       title: '执行结束时间',
       dataIndex: 'executeEndTime',
       render: (executeEndTime) => {
-        return <span>{moment(executeEndTime).format("YYYY-MM-DD")}</span>
+        return <span>{executeEndTime ? moment(executeEndTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
       title: '状态',
@@ -153,9 +168,9 @@ export default class FaultAllFanHistory extends React.Component {
           return <span>执行中</span>
         }
         if(status === 3) {
-          return <Tag color="#199475">已完成</Tag>
+          return <Tag color="#199475" onClick={() => {return this.onShowDetail(record)}}>已完成</Tag>
         }
-        return <Tag color="#f9b600">执行失败</Tag>
+        return <Tag color="#f9b600" onClick={() => {return this.onShowDetail(record)}}>执行失败</Tag>
       }
     },{
       title: '预警台数',
@@ -178,6 +193,7 @@ export default class FaultAllFanHistory extends React.Component {
           <Table
             pagination={false}
             loading={loading}
+            scroll={{ y: 410 }}
             rowKey={(record, index) => (record.taskId + index) || "key" }
             dataSource={dataList}
             onChange={this.tableChange}

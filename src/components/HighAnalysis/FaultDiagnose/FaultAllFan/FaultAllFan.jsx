@@ -24,11 +24,6 @@ export default class FaultAllFan extends React.Component {
     stationDeviceList:PropTypes.array
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     const {
       faultInfo: {

@@ -18,7 +18,7 @@ class WindStationList extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      sortName: 'stationName',
+      sortName: 'regionName',
       descend: false,
     }
   }
@@ -66,7 +66,7 @@ class WindStationList extends React.Component {
       {
         title: "电站名称",
         dataIndex: "stationName",
-        defaultSortOrder: "ascend",
+        
         sorter: true,
         render: (value, record) => {
           const stationStatus=record.stationStatus.stationStatus || '';
@@ -85,32 +85,33 @@ class WindStationList extends React.Component {
       {
         title: "区域",
         dataIndex: "regionName",
+        defaultSortOrder: "ascend",
         sorter: true,
         render: (value) => <div className={styles.stationrovince}>{value}</div>
       },
       {
-        title: () => <TableColumnTitle title="装机容量" unit={'MW'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="装机容量" unit={'MW'}  />,
         dataIndex: "stationCapacity",
         sorter: true,
         className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true)
       },
       {
-        title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
+        title: () => <TableColumnTitle title="装机" unit="台"  />,
         dataIndex: "stationUnitCount",
         sorter: true,
         className: styles.numberStyle,
         render: (value) => { return numWithComma(value); },
       },
       {
-        title: () => <TableColumnTitle title="实时功率" unit={'MW'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="实时功率" unit={'MW'}  />,
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
         render: value => dataFormats(value/1000, '--', 2, true)
       },
       {
-        title: () => <TableColumnTitle title="平均风速" unit="m/s" className="nonePadding" />,
+        title: () => <TableColumnTitle title="平均风速" unit="m/s"  />,
         dataIndex: "instantaneous",
         className: styles.numberStyle,
         render: (value) => dataFormats(value, '--', 2, true),
@@ -124,21 +125,21 @@ class WindStationList extends React.Component {
         render: (value) => dataFormats(value, '--', 2, true) + '%',
       },
       {
-        title: () => <TableColumnTitle title="日发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日发电量" unit={'万kWh'}  />,
         dataIndex: "dayPower",
         sorter: true,
         className: styles.numberStyle,
         render: value => this.powerPoint(this.unitFormarts(value,10000)),
       },
       {
-        title: () => <TableColumnTitle title="月发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="月发电量" unit={'万kWh'}  />,
         dataIndex: "monthPower",
         render: value => this.powerPoint(this.unitFormarts(value,10000)),
         sorter: true,
         className: styles.numberStyle,
       },
       {
-        title: () => <TableColumnTitle title="年发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="年发电量" unit={'万kWh'}  />,
         dataIndex: "yearPower",
         render: value => this.powerPoint(this.unitFormarts(value,10000)),
         sorter: true,
@@ -152,28 +153,28 @@ class WindStationList extends React.Component {
         render: value => dataFormats(value, '--', 2, true) + '%',
       },
       {
-        title: () => <TableColumnTitle title="年利用小时" unit={'h'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="年利用小时" unit={'h'}  />,
         dataIndex: "equivalentHours",
         sorter: true,
         className: styles.numberStyle,
         render: value => this.powerPoint(value),
       },
       {
-        title: () => <TableColumnTitle title="故障" unit={'台'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="故障" unit={'台'}  />,
         dataIndex: "errorNum",
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0
       },
       {
-        title: () => <TableColumnTitle title="维护" unit={'台'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="维护" unit={'台'}  />,
         dataIndex: "maintainNum",
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0
       },
       {
-        title: () => <TableColumnTitle title="通讯中断" unit={'台'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="通讯中断" unit={'台'}  />,
         dataIndex: "interruptNum",
         sorter: true,
         className: styles.numberStyle,

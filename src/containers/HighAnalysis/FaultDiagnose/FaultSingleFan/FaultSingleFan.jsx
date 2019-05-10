@@ -15,6 +15,7 @@ class FaultSingleFan extends React.Component {
     changeSingleFanStore: PropTypes.func,
     changeWarnListStore: PropTypes.func,
     getList: PropTypes.func,
+    getFanList: PropTypes.func,
     resetStore: PropTypes.func,
     faultInfo: PropTypes.object,
   };
@@ -55,6 +56,26 @@ class FaultSingleFan extends React.Component {
     getList(listParams);
   };
 
+  callBackFans = () => {
+    const {
+      history,
+      faultInfo:{
+        stationCode
+      },
+      getFanList,
+      changeWarnListStore
+    } = this.props;
+    // 返回列表需要的参数
+    const fansParams = {
+      stationCode: `${stationCode}`,
+    };
+    history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
+    changeWarnListStore({
+      viewType: 2 //展示列表
+    });
+    getFanList(fansParams);
+  };
+
   callBackHistory = () => {
     const {
       history
@@ -67,15 +88,22 @@ class FaultSingleFan extends React.Component {
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.singleFanContent}>
-          {faultHistory === "1" ? (
+          {(!faultHistory || faultHistory === "") && (
+            <div className={styles.title}>
+              <div>故障预警</div>
+              <div onClick={this.callBackList}>返回列表视图</div>
+            </div>
+          )}
+          {faultHistory === "1" && (
             <div className={styles.title}>
               <div>历史预警</div>
               <div onClick={this.callBackHistory}>返回历史预警</div>
             </div>
-          ): (
+          )}
+          {faultHistory === "2" && (
             <div className={styles.title}>
               <div>故障预警</div>
-              <div onClick={this.callBackList}>返回列表视图</div>
+              <div onClick={this.callBackFans}>返回风机视图</div>
             </div>
           )}
         </div>
@@ -104,5 +132,6 @@ const mapDispatchToProps = (dispatch) => ({
   changeWarnListStore: payload => dispatch({ type: faultWarnListAction.changeWarnListStore, payload }),
   getFaultInfo: payload => dispatch({ type: faultSingleFanAction.getFaultInfo, payload }),
   getList: payload => dispatch({ type: faultWarnListAction.getList, payload }),
+  getFanList: payload => dispatch({ type: faultWarnListAction.getFanList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan)

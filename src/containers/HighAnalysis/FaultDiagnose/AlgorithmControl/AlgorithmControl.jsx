@@ -28,6 +28,7 @@ class AlgorithmControl extends Component {
     sortMethod: PropTypes.string,
     stationCode: PropTypes.string,
     algorithmModalName: PropTypes.array,
+    stationCodes: PropTypes.string,
   };
 
   constructor(props, context) {
@@ -65,6 +66,7 @@ class AlgorithmControl extends Component {
       sortField,
       sortMethod,
       stationCode,
+      stationCodes,
       algorithmModalName
     } = this.props;
     // 新的参数
@@ -78,6 +80,7 @@ class AlgorithmControl extends Component {
       sortField,
       sortMethod,
       stationCode,
+      stationCodes,
       algorithmModalName,
       ...params
     };
