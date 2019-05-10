@@ -72,6 +72,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeAssetConfigStore: payload => dispatch({ type: assetConfigAction.changeAssetConfigStore, payload }),
   resetAssetConfigStore: payload => dispatch({ type: assetConfigAction.resetAssetConfigStore, payload }),
   getAssetTree: payload => dispatch({ type: assetConfigAction.getAssetTree, payload }),// 台账生产资产树
+  getNodeDetail: payload => dispatch({ type: assetConfigAction.getNodeDetail, payload }),// 台账生产资产树节点详情
   addAssetNode: payload => dispatch({ type: assetConfigAction.addAssetNode, payload }),//台账增加生产资产节点
   deleteAssetNode: payload => dispatch({ type: assetConfigAction.deleteAssetNode, payload }),//台账删除生产资产树
   editAssetNode: payload => dispatch({ type: assetConfigAction.editAssetNode, payload }),//台账编辑生产资产节点

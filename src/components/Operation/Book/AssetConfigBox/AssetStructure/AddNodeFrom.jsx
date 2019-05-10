@@ -3,12 +3,24 @@ import PropTypes from "prop-types";
 import styles from "./assetStructure.scss";
 import WarningTip from '../../../../Common/WarningTip';
 
-import { Button, Input, Form, Icon, Select, InputLimit } from 'antd';
+import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+const TreeNode = TreeSelect.TreeNode;
 
 class AddNodeFrom extends React.Component {
+  static propTypes = {
+    changeAssetConfigStore: PropTypes.func,
+    closeFrom: PropTypes.func,
+    getNodeDetail: PropTypes.func,
+    deleteAssetNode: PropTypes.func,
+    stationType: PropTypes.number,
+    assetsParentId: PropTypes.string,
+    stationTypeCount: PropTypes.string,
+    assetsId: PropTypes.string,
+    assetList: PropTypes.array,
+  }
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -31,11 +43,14 @@ class AddNodeFrom extends React.Component {
     });
   }
   submitForm = (e) => {
-    // this.props.form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //   console.log('发送请求，并且刷新别的数据')
-    //   }
-    // });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log('values: ', values);
+      const {stationType}=this.props;
+      if (!err) {
+      this.props.addAssetNode({...values,stationType})
+      console.log('发送请求，并且刷新别的数据在saga里');
+      }
+    });
   }
   closeFrom = () => {
     this.setState({
@@ -43,8 +58,19 @@ class AddNodeFrom extends React.Component {
       warningTipText: '确定关闭,关闭后数据不会被保存'
     })
   }
+  renderTreeNodes = data => data.map((item) => {
+    if (item.childernNodes) {
+      return (
+        <TreeNode title={item.assetsName} key={item.assetName} value={item.assetsId} >
+          {this.renderTreeNodes(item.childernNodes)}
+        </TreeNode>
+      );
+    }
+    return <TreeNode title={item.assetsName} key={item.assetName} value={item.assetsId} />;
+  })
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { assetList,assetsId} = this.props;
     const { showWarningTip, warningTipText } = this.state;
     return (
       <div className={styles.addNodeFrom}>
@@ -62,19 +88,34 @@ class AddNodeFrom extends React.Component {
           <div className={styles.contant}>
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="父节点名称">
-                {getFieldDecorator('parentNodeName', {
+                {getFieldDecorator('assetsId', {
+                  initialValue:assetsId,
                   rules: [{
                     required: true,
                     message: '请输入缺陷描述'
                   }],
                 })(
-                  <Input placeholder="不超过30字" />
+
+                  <TreeSelect
+                    // showSearch
+                    style={{ width: 194 }}
+                    // value={this.state.value}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    placeholder="请输入父节点"
+                    // allowClear
+                    // treeDefaultExpandAll
+                    onChange={this.onChange}
+                  >
+                    <TreeNode title="生产资产" key="0" value={'0'} >
+                      {this.renderTreeNodes(assetList)}
+                    </TreeNode>
+                  </TreeSelect>
                 )}
               </FormItem>
 
 
               <FormItem label="节点名称" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('nameNode', {
+                {getFieldDecorator('assetsName', {
                   rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
                 })(
                   <Input placeholder="30字以内" />
@@ -82,14 +123,18 @@ class AddNodeFrom extends React.Component {
               </FormItem>
 
               <FormItem label="分类" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('nodeType', {
+                {getFieldDecorator('assetsType', {
                   rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
                 })(
-                  <Input placeholder="30字以内" />
+                  <Select  style={{ width: 194 }}>
+                   <Option value="1">系统</Option>
+                   <Option value="2">设备</Option>
+                   <Option value="3">部件</Option>
+                   </Select>
                 )}
               </FormItem>
               <FormItem label="计量单位" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('valueUnit', {
+                {getFieldDecorator('assetsUnit', {
                   rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 6, }],
                 })(
                   <Input placeholder="6字以内" />

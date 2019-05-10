@@ -1,56 +1,6 @@
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 
-// return {
-//   assetsCode: `${Math.random(0, 1) * 10000}`,
-//   assetsId: `${Math.random(0, 1) * 10000}`,
-//   assetsName: `一级${e}`,
-//   assetsType: `1`,
-//   assetsUnit: `一级单位`,
-//   isBuild: 0,
-//   createTime: `2019-01-0${Math.floor(Math.random(0, 1) * 10)}`,
-//   operatorUser: `一级操作人${e}`,
-//   twoLevelNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-//     assetsCode: `${Math.random(0, 1) * 10000}`,
-//     assetsId: `${Math.random(0, 1) * 10000}`,
-//     assetsName: `二级${e}`,
-//     assetsType: `2`,
-//     assetsUnit: `二级单位`,
-//     isBuild: 0,
-//     createTime: `2019-02-0${Math.floor(Math.random(0, 1) * 10)}`,
-//     operatorUser: `二级操作人${e}`,
-//     threeLevelNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-//       assetsCode: `${Math.random(0, 1) * 10000}`,
-//       assetsId: `${Math.random(0, 1) * 10000}`,
-//       assetsName: `三级${e}`,
-//       assetsType: `3`,
-//       assetsUnit: `三级单位`,
-//       isBuild: 1,
-//       createTime: `2019-03-0${Math.floor(Math.random(0, 1) * 10)}`,
-//       operatorUser: `三级操作人${e}`,
-//       fourLevelNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-//         assetsCode: `${Math.random(0, 1) * 10000}`,
-//         assetsId: `${Math.random(0, 1) * 10000}`,
-//         assetsName: `四级${e}`,
-//         assetsType: `3`,
-//         assetsUnit: `四级单位`,
-//         isBuild: 1,
-//         createTime: `2019-04-0${Math.floor(Math.random(0, 1) * 10)}`,
-//         operatorUser: `四级操作人${e}`,
-//         fiveLevelNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-//           assetsCode: `${Math.random(0, 1) * 10000}`,
-//           assetsId: `${Math.random(0, 1) * 10000}`,
-//           assetsName: `五级${e}`,
-//           assetsType: `3`,
-//           assetsUnit: `五级单位`,
-//           isBuild: 1,
-//           createTime: `2019-05-0${Math.floor(Math.random(0, 1) * 10)}`,
-//           operatorUser: `五级操作人${e}`,
-//         })),
-//       })),
-//     })),
-//   })),
-// }
 
 
 module.exports = [
@@ -60,29 +10,29 @@ module.exports = [
     response: {
       "code": "10000",
       "message": "请求成功",
-      "data": [1, 2, 3, 4, 5, 6].map((e, i) => {
+      "data": [1,].map((e, i) => {
         return {
-          assetsId: `0`,
+          assetsId: `0,1`,
           assetsName: `一级${e}`,
           assetsType: `1`,
           isBuild: 0,
-          childernNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-            assetsId: `0,1`,
+          childernNodes: [1,].map((e, i) => ({
+            assetsId: `0,1,2`,
             assetsName: `二级${e}`,
             assetsType: `2`,
             isBuild: 0,
-            childernNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-              assetsId: `0,1,2`,
+            childernNodes: [1,].map((e, i) => ({
+              assetsId: `0,1,2,3`,
               assetsName: `三级${e}`,
               assetsType: `3`,
               isBuild: 1,
-              childernNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-                assetsId: `0,1,2,3`,
+              childernNodes: [1,  ].map((e, i) => ({
+                assetsId: `0,1,2,3,4`,
                 assetsName: `四级${e}`,
                 assetsType: `3`,
                 isBuild: 1,
-                childernNodes: [1, 2, 3, 4, 5, 6].map((e, i) => ({
-                  assetsId: `0,1,2,3,4`,
+                childernNodes: [1,].map((e, i) => ({
+                  assetsId: `0,1,2,3,4,5`,
                   assetsName: `五级${e}`,
                   assetsType: `3`,
                   isBuild: 1,
@@ -107,7 +57,7 @@ module.exports = [
         return{
           "assetsId":`${Math.random(0, 1) * 10000}`,
           "assetsCode":`${Math.random(0, 1) * 10000}`,
-          "assetsName":`$test{i+1}`,
+          "assetsName":`test${i+1}`,
           "assetsType":`1`,
           "assetsUnit":`${Math.random(0, 1) * 10000}`,
           "createTime":`${Math.random(0, 1) * 10000}`,
@@ -128,7 +78,7 @@ module.exports = [
         return{
           "manufactorCode":`${Math.random(0, 1) * 10000}`,
           "manufactorId":`${Math.random(0, 1) * 10000}`,
-          "manufactorName":`$test{i+1}`,
+          "manufactorName":`test${i+1}`,
           "createTime":`${Math.random(0, 1) * 10000}`,
           "operateUser":`${Math.random(0, 1) * 10000}`,
 

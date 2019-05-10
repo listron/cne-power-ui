@@ -2,6 +2,7 @@ export const assetConfigAction = {
   changeAssetConfigStore: Symbol('changeAssetConfigStore'), // 改变reducer参数
   resetAssetConfigStore: Symbol('resetAssetConfigStore'), // 发起重置数据请求
   getAssetTree: Symbol('getAssetTree'), // 台账生产资产树
+  getNodeDetail: Symbol('getNodeDetail'), // 台账生产资产树节点详情
   addAssetNode: Symbol('addAssetNode'),//台账增加生产资产节点
   deleteAssetNode: Symbol('deleteAssetNode'),//台账删除生产资产树
   editAssetNode: Symbol('editAssetNode'),//台账编辑生产资产节点

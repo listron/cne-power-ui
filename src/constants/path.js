@@ -122,6 +122,7 @@ export default {
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
       getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
+      getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
       addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
       deleteAssetNode:'/v3/ledger/assets/delete',//台账删除生产资产树
       editAssetNode:'/v3/ledger/assets/update',//台账编辑生产资产节点

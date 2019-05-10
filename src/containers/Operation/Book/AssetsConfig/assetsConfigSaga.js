@@ -11,8 +11,9 @@ function *getAssetTree(action) {  // 生产资产树
   const { payload } = action;
   // const url =`${APIBasePath}${operation.getAssetTree}`;
   const url =`/mock/v3/ledger/assetslist`;
+  const nowTime=moment().utc();
   try{
-    const response = yield call(axios.post,url,{...payload,});
+    const response = yield call(axios.post,url,{...payload,assetsParentId:'0',nowTime});
     if(response.data.code === '10000') {
       yield put({
         type:assetConfigAction.changeAssetConfigStore,
@@ -32,19 +33,47 @@ function *getAssetTree(action) {  // 生产资产树
     })
   }
 }
+function *getNodeDetail(action) {  // 生产资产树
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getNodeDetail}`;
+  const url =`/mock/v3/ledger/detail`;
+  const nowTime=moment().utc();
+  try{
+    const response = yield call(axios.post,url,{...payload,nowTime});
+    if(response.data.code === '10000') {
+      yield put({
+        type:assetConfigAction.changeAssetConfigStore,
+        payload: {
+          ...payload,
+          childrenNodeDetail: response.data.data||[],
+        },
+      });     
+    }else{
+      throw response.data
+    }  
+  }catch(e){
+    console.log(e);
+    yield put({
+      type:assetConfigAction.changeAssetConfigStore,
+      payload: { ...payload, loading: false ,assetList:[]},
+    })
+  }
+}
 function *addAssetNode(action) { //台账增加生产资产节点
   const { payload } = action;
+  const nowTime=moment().utc();
   const url =`${APIBasePath}${operation.addAssetNode}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try{
-    const response = yield call(axios.post,url,{...payload,});
+    const response = yield call(axios.post,url,{...payload,nowTime});
     if(response.data.code === '10000') {
       yield put({
         type:assetConfigAction.changeAssetConfigStore,
         payload: {
           ...payload,
         },
-      });     
+      });
+      //发送请求树的数据和当前节点的table详情     
     }else{
       throw response.data
     }  
@@ -82,10 +111,12 @@ function *deleteAssetNode(action) { //台账删除生产资产树
 }
 function *editAssetNode(action) { //台账编辑生产资产节点
   const { payload } = action;
+  const nowTime=moment().utc();
+
   const url =`${APIBasePath}${operation.editAssetNode}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try{
-    const response = yield call(axios.post,url,{...payload,});
+    const response = yield call(axios.post,url,{...payload,nowTime});
     if(response.data.code === '10000') {
       yield put({
         type:assetConfigAction.changeAssetConfigStore,
@@ -106,8 +137,8 @@ function *editAssetNode(action) { //台账编辑生产资产节点
 }
 function *getDeviceFactorsList(action) { //获取设备厂家列表
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
-  // const url =`/mock/v3/ledger/assetslist`;
+  // const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  const url =`/mock/v3/ledger/devicemanufactors/list`;
   try{
     const response = yield call(axios.post,url,{...payload,});
     if(response.data.code === '10000') {
@@ -203,8 +234,8 @@ function *deleteDeviceFactors(action) { //删除设备厂家
 }
 function *getDeviceModesList(action) { //获取设备型号列表
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceModesList}`;
-  // const url =`/mock/v3/ledger/assetslist`;
+  // const url =`${APIBasePath}${operation.getDeviceModesList}`;
+  const url =`/mock/v3/ledger/devicemodes/list`;
   try{
     const response = yield call(axios.post,url,{...payload,});
     if(response.data.code === '10000') {
@@ -301,6 +332,7 @@ function *deleteDeviceModes(action) { //删除设备型号
 
 export function* watchBookAssetsConfig() {
   yield takeLatest(assetConfigAction.getAssetTree, getAssetTree);
+  yield takeLatest(assetConfigAction.getNodeDetail, getNodeDetail);
   yield takeLatest(assetConfigAction.addAssetNode, addAssetNode);
   yield takeLatest(assetConfigAction.deleteAssetNode, deleteAssetNode);
   yield takeLatest(assetConfigAction.editAssetNode, editAssetNode);
