@@ -4,6 +4,7 @@ import styles from './pvStation.scss';
 import { Progress, message, Select } from "antd";
 import { Link } from 'react-router-dom';
 import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
+import {divideFormarts,multiplyFormarts,powerPoint} from '../../PvCommon/PvDataformat';
 import OutputTenMin from './OutputTenMin';
 const Option = Select.Option;
 
@@ -14,6 +15,11 @@ class PvStationItem extends React.Component {
   }
   constructor(props, context) {
     super(props, context)
+    this.state = {
+      sortStatusName: 'equivalentHours',
+      ascend: true,
+      selectStation:null,
+    }
 
   }
 
@@ -27,68 +33,56 @@ class PvStationItem extends React.Component {
 
   conditionChange = (value) => {
     console.log(value)
+    this.setState({selectStation:value})
   }
 
   sortStatus = (value) => {
-    console.log('value', value)
+    const { sortStatusName, ascend } = this.state;
+    let currentAscend = true;
+    if (sortStatusName === value) {
+      currentAscend = !ascend
+    }
+    this.setState({
+      sortStatusName: value,
+      ascend: currentAscend
+    })
   }
 
-  divideFormarts = (data, unit) => { // 除
-    if (isNaN(data) || (!data && data !== 0)) {
-      return '--';
-    }
-    if (unit === "万kWh") {
-      return data / 10000
-    }
-    return data
-  }
 
-  multiplyFormarts = (data, quantity) => { // 乘
-    if (isNaN(data) || (!data && data !== 0)) {
-      return '--';
-    }
-    return data * quantity
-  }
 
-  powerPoint = (data) => { // 根据光伏电站特殊的需求
-    let point = 2;
-    if (data > 1) point = 2;
-    if (data <= 1) point = 4;
-    let showData = dataFormats(data, '--', point, true);
-    if (showData !== '--') {
-      const valueArr = `${showData}`.split('.');
-      const intNum = valueArr[0];
-      const pointNum = valueArr[1];
-      return pointNum && numWithComma(intNum) + '.' + pointNum || numWithComma(intNum)
-    } else {
-      return showData
+  dealData = (stationDataList) => { // 处理数据
+    const { sortStatusName, ascend } = this.state;
+    const sortType = ascend ? -1 : 1;
+    let filteredStation = [];
+    if (stationDataList.length > 0) {
+      const newStationsList = stationDataList.sort((a, b) => {
+        return sortType * (a[sortStatusName] - b[sortStatusName]);
+      });
+      const temType = newStationsList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
+      temType.forEach(e => {
+        let findExactStation = false;
+        filteredStation.forEach(m => {
+          if (m.regionName === e.provinceName) {
+            findExactStation = true;
+            m.stations.push(e);
+          }
+        })
+        if (!findExactStation) {
+          filteredStation.push({
+            regionName: e.provinceName,
+            stations: [e]
+          })
+        }
+      });
     }
+    return filteredStation
   }
-
 
 
   render() {
     const { stationDataList, monitorPvUnit } = this.props;
-    // console.log('stationDataList', stationDataList)
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
-    const newStationsList = stationDataList.sort((a, b) => { return a['stationName'].localeCompare(b['stationName']) });
-    const temType = newStationsList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
-    let filteredStation = [];
-    temType.forEach(e => {
-      let findExactStation = false;
-      filteredStation.forEach(m => {
-        if (m.regionName === e.provinceName) {
-          findExactStation = true;
-          m.stations.push(e);
-        }
-      })
-      if (!findExactStation) {
-        filteredStation.push({
-          regionName: e.provinceName,
-          stations: [e]
-        })
-      }
-    });
+    const { sortStatusName, ascend,selectStation } = this.state;
     const data = [
       {
         "utc": "2019-05-08T12:40:00Z",
@@ -943,8 +937,6 @@ class PvStationItem extends React.Component {
         "instantaneous": "0.00"
       }
     ]
-
-
     const sortName = [
       { text: '默认排序', id: 'default' },
       { text: '等效时', id: 'equivalentHours' },
@@ -960,6 +952,8 @@ class PvStationItem extends React.Component {
       '500': 'interrupt',
       '900': 'notConnected',
     };
+    const filterStationList=selectStation ? stationDataList.filter(e=>e.stationCode===selectStation):stationDataList
+    const filteredStation = this.dealData(filterStationList);
     return (
       <div className={styles.stationCardContainer}>
         <div className={styles.filterCondition}>
@@ -972,12 +966,17 @@ class PvStationItem extends React.Component {
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           >
             {stationDataList.map(list => {
-              return <Option key={list.stationCode} value={list.stationName}>{list.stationName}</Option>
+              return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>
             })}
           </Select>
           <div className={styles.sortCondition}>
             {sortName.map(list => {
-              return <div onClick={() => { this.sortStatus(list.id) }} key={list.id} className={styles.sortStatus}> {list.text}</div>
+              return (<div onClick={() => { this.sortStatus(list.id) }} key={list.id} className={`${styles.sortStatus}
+                ${sortStatusName === list.id && styles['activeSortStatus']}`}>
+                {list.text}
+                {sortStatusName === list.id && ascend && <i className="iconfont icon-upstream"></i>}
+                {sortStatusName === list.id && !ascend && <i className="iconfont icon-downstream"></i>}
+              </div>)
             })}
           </div>
         </div>
@@ -992,17 +991,17 @@ class PvStationItem extends React.Component {
                 {stationStatusList.map((item, index) => {
                   const stationStatus = item.stationStatus || {};
                   const currentStatus = stationStatus.stationStatus;
-                  const stationPower = realTimePowerUnit === 'kW' ? item.stationPower : this.multiplyFormarts(item.stationPower, 1000);
-                  const stationCapacity = realCapacityUnit === 'MW' ? item.stationCapacity : this.multiplyFormarts(item.stationCapacity, 1000);
+                  const stationPower = realTimePowerUnit === 'kW' ? item.stationPower : multiplyFormarts(item.stationPower, 1000);
+                  const stationCapacity = realCapacityUnit === 'MW' ? item.stationCapacity : multiplyFormarts(item.stationCapacity, 1000);
                   const instantaneous = item.instantaneous;
-                  const dayPower = this.divideFormarts(item.dayPower, powerUnit);
+                  const dayPower = divideFormarts(item.dayPower, powerUnit);
                   const equivalentHours = item.equivalentHours;
 
                   return (
-                    <div className={`${styles[getStatusName[currentStatus]]} ${styles.staionCard}`} onClick={() => { this.showTip(currentStatus) }}  >
-                      <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode} className={styles.linkBox}>
+                    <div className={`${styles[getStatusName[currentStatus]]} ${styles.staionCard}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
+                      <Link to={`/monitor/singleStation/${item.stationCode}`}  className={styles.linkBox}>
                         <div className={styles.stationTop}>
-                          <div className={styles.stationName}> {item.stationName}</div>
+                          <div className={styles.stationName} title={item.stationName}> {item.stationName}</div>
                           <div className={styles.staionCapacity}>
                             <div>
                               <span className={styles.changeNum}>
@@ -1028,7 +1027,7 @@ class PvStationItem extends React.Component {
                           <div className={styles.staionCenterRight}>
                             <div className={styles.column}>
                               <span className={styles.dataName}> 日发电量</span>
-                              <div> <span className={styles.changeNum}> {this.powerPoint(dayPower)}</span> {powerUnit} </div>
+                              <div> <span className={styles.changeNum}> {powerPoint(dayPower)}</span> {powerUnit} </div>
                             </div>
                             <div className={styles.column}>
                               <span className={styles.dataName}> 日等效时</span>
@@ -1036,13 +1035,15 @@ class PvStationItem extends React.Component {
                             </div>
                           </div>
                         </div>
-                        <div className={styles.chart}>
-                          <OutputTenMin {...this.props}
-                            yXaisName={'辐射(W/m²)'}
-                            stationCode={item.stationCode}
-                            yAxisUnit={realTimePowerUnit}
-                            capabilityData={data} />
-                        </div>
+                      </Link>
+                      <div className={styles.chart}>
+                        <OutputTenMin {...this.props}
+                          yXaisName={'辐射(W/m²)'}
+                          stationCode={item.stationCode}
+                          yAxisUnit={realTimePowerUnit}
+                          capabilityData={data} />
+                      </div>
+                      <Link  to={`/monitor/singleStation/${item.stationCode}`}  className={styles.linkBox}>
                         <div className={styles.bottom}>
                           <div className={styles.dataColumn}>
                             异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
@@ -1058,6 +1059,7 @@ class PvStationItem extends React.Component {
                             </Link>
                           </object>
                         </div>
+
                       </Link>
                     </div>
                   )
