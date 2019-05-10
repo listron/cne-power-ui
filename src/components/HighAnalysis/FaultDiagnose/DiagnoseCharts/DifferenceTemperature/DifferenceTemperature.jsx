@@ -7,7 +7,9 @@ import styles from "./differenceTemperature.scss";
 import moment from "moment";
 
 const { RangePicker } =  DatePicker;
-
+//默认保存echarts dataZoom滑块位置
+let paramsStart = 0;
+let paramsEnd = 100;
 
 export default class DifferenceTemperature extends React.Component {
   static propTypes = {
@@ -57,7 +59,12 @@ export default class DifferenceTemperature extends React.Component {
         deviceName,
         stationDeviceList,
         diffLoading,
-        diffTimeCompare: currentDiffTimeCompare
+        getTenMinutesDiff,
+        diffTimeCompare: currentDiffTimeCompare,
+        faultInfo: {
+          stationCode
+        },
+        onChangeFilter
       }
     } = this;
     const { diffTimeCompare } = prevProps;
@@ -74,16 +81,42 @@ export default class DifferenceTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentDiffTimeCompare && diffTimeCompare !== currentDiffTimeCompare) {
-      myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name || defaultName));
+      myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name || defaultName, paramsStart, paramsEnd));
+      myChart.on('datazoom', function (params){
+        const opt = myChart.getOption();
+        const dz = opt.dataZoom[0];
+        const start = opt.xAxis[0].data[dz.startValue];
+        const end = opt.xAxis[0].data[dz.endValue];
+        const preParams = {
+          stationCode,
+          pointCode: "GN010-GN011", //温度差-固定字段
+          deviceFullcodes: [], // 默认传空代表所有风机
+          startTime: moment(start).utc().format(),
+          endTime: moment(end).utc().format()
+        };
+        if (paramsStart !== params.start || paramsEnd !== params.end) {
+          // 每次保存变量
+          paramsStart = params.start;
+          paramsEnd = params.end;
+          onChangeFilter({
+            diffDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
+          });
+          // 接口
+          getTenMinutesDiff(preParams);
+        }
+      })
     }
+  }
+
+  componentWillUnmount() {
+    paramsStart = 0;
+    paramsEnd = 100;
   }
 
   changeAfterDate = (date) => {
     const {
-      match:{
-        params: {
-          stationCode,
-        }
+      faultInfo: {
+        stationCode
       },
       onChangeFilter,
       getTenMinutesDiff

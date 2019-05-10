@@ -5,9 +5,7 @@ import echarts from "echarts";
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (data, name, time) => {
-  console.log(time, "time");
-  console.log(moment(time).subtract('days',7).format('YYYY-MM-DD'), "days");
+export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -111,8 +109,10 @@ export const PreTemperatureOptions = (data, name, time) => {
       boundaryGap: [0, '100%']
     },
     dataZoom: [{
-      start: 0,
-      end: 20,
+      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
+      // endValue: `2019-05-01 00:00:00`,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -131,7 +131,7 @@ export const PreTemperatureOptions = (data, name, time) => {
 };
 
 // 故障图表-发电机后驱温度
-export const AfterTemperatureOptions = (data, name) => {
+export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -235,12 +235,12 @@ export const AfterTemperatureOptions = (data, name) => {
       boundaryGap: [0, '100%']
     },
     dataZoom: [{
-      type: 'inside',
-      start: 0,
-      end: 100,
-    }, {
-      start: 0,
-      end: 10,
+      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
+      // endValue: `2019-05-01 00:00:00`,
+      start: paramsStart,
+      end: paramsEnd,
+      moveOnMouseMove: false,
+      realtime: false, // 控制拖动连续触发
       top: "220px",
       handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
       handleSize: '80%',
@@ -257,7 +257,7 @@ export const AfterTemperatureOptions = (data, name) => {
 };
 
 // 故障图表-温度差
-export const diffTemperatureOptions = (data, name) => {
+export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -361,12 +361,12 @@ export const diffTemperatureOptions = (data, name) => {
       boundaryGap: [0, '100%']
     },
     dataZoom: [{
-      type: 'inside',
-      start: 0,
-      end: 100,
-    }, {
-      start: 0,
-      end: 10,
+      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
+      // endValue: `2019-05-01 00:00:00`,
+      start: paramsStart,
+      end: paramsEnd,
+      moveOnMouseMove: false,
+      realtime: false, // 控制拖动连续触发
       top: "220px",
       handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
       handleSize: '80%',
@@ -443,7 +443,6 @@ export const singleTemperatureOptions = (data ,name) => {
     },
     yAxis: {
       type: 'value',
-      name: '（。）',
       axisLine:{
         lineStyle:{
           width: 0, //这里是为了突出显示加上的
@@ -504,7 +503,10 @@ export const heatTemperatureOptions = (data, name) => {
   }
   return {
     tooltip: {
-      position: 'top'
+      position: 'top',
+      // formatter: (params) => {
+      //   console.log(params, "formatter");
+      // }
     },
     title: {
       text: name,
@@ -571,7 +573,7 @@ export const allFansOptions = (data, name) => {
   }
   // 使用统计扩展处理过后的数据
   const bins = ecStat.histogram(cfResidual);
-  let interval;
+  let interval = null;
   let min = Infinity;
   let max = -Infinity;
   const dataList = echarts.util.map(bins.data, function (item, index) {
@@ -657,14 +659,17 @@ export const allFansOptions = (data, name) => {
     const yShaft = distanceYFunc();
     let arr = []; //保存数据 xShaft是固定的
     // 格式化数组，x轴和y轴 [[x,y],[x,y]]的格式
-    function arrFunc() {
-      let newArr = []; //保存数据
+    function arrFunc(num) {
+      let allArr = []; // 保存总数据
       for(let i = 0; i < yShaft.length; i++) {
-        for(let j = 0; j < yShaft[i].length; j++){
-          newArr.push([xShaft[j], yShaft[i][j]]);
+        let newArr = []; //保存数据
+        for(let j = 0; j < yShaft[i].length; j++) {
+          newArr.push([xShaft[j], yShaft[i][j]])
         }
+        allArr.push(newArr);
       }
-      return newArr;
+      // 返回当前下标的data
+      return allArr[num];
     }
     /**
      * cfStd array[] 里面有多少条就代表多少条正态曲线
@@ -675,16 +680,16 @@ export const allFansOptions = (data, name) => {
       obj.type = "line";
       obj.itemStyle = {
         normal : {
-          color: '#a42b2c',
+          color: "#a42b2c",
         }
       };
-      obj.yAxisIndex = 1;
+      obj.yAxisIndex = i; // 在多个 y轴的时候有用
       obj.smooth = true;
       obj.symbol = "none";
       obj.lineStyle = {
         type: "dashed"
       };
-      obj.data = arrFunc();
+      obj.data = arrFunc(i);
       arr.push(obj);
     }
     return arr;

@@ -28,7 +28,7 @@ class AlgorithmControl extends Component {
     sortMethod: PropTypes.string,
     stationCode: PropTypes.string,
     algorithmModalName: PropTypes.array,
-    stationCodes: PropTypes.array,
+    stationCodes: PropTypes.string,
   };
 
   constructor(props, context) {

@@ -113,7 +113,7 @@ export default class FaultNavList extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: preDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(preDate[0]).utc().format(),
-      endTime: preDate.length === 0 ? moment(endTime).utc().format() : moment(preDate[0]).utc().format()
+      endTime: preDate.length === 0 ? moment(endTime).utc().format() : moment(preDate[1]).utc().format()
     };
     // 发电机后驱温度
     const afterParams = {
@@ -121,7 +121,7 @@ export default class FaultNavList extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: afterDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(afterDate[0]).utc().format(),
-      endTime: afterDate.length === 0 ? moment(endTime).utc().format() : moment(afterDate[0]).utc().format()
+      endTime: afterDate.length === 0 ? moment(endTime).utc().format() : moment(afterDate[1]).utc().format()
     };
     // 发电机后驱温度
     const diffParams = {
@@ -129,7 +129,7 @@ export default class FaultNavList extends React.Component {
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: diffDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(diffDate[0]).utc().format(),
-      endTime: diffDate.length === 0 ? moment(endTime).utc().format() : moment(diffDate[0]).utc().format()
+      endTime: diffDate.length === 0 ? moment(endTime).utc().format() : moment(diffDate[1]).utc().format()
     };
     // 单机自适应模块
     const singleParams = {
@@ -148,7 +148,7 @@ export default class FaultNavList extends React.Component {
       onChangeFilter({
         deviceName,
         deviceFullCode,
-        warnId
+        warnId,
       });
       // 请求接口
       getTenMinutesBefore(preParams);

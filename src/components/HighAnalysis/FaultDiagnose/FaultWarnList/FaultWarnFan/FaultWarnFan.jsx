@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Tooltip } from 'antd';
+import { Tooltip, Icon } from 'antd';
 import styles from "./faultWarnFan.scss";
 import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
 
@@ -17,7 +17,6 @@ export default class FaultWarnFan extends React.Component {
   }
 
   detailsFunc = (taskId, deviceName, large, performance, health, deviceFullCode) => {
-    console.log("12312312312");
     const {
       history,
       match: {
@@ -48,7 +47,7 @@ export default class FaultWarnFan extends React.Component {
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
     localStorage.setItem("taskId", taskId);
-    localStorage.setItem("faultHistory", "");
+    localStorage.setItem("faultHistory", "2");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
     localStorage.setItem("faultList", JSON.stringify(newArr))
@@ -113,7 +112,10 @@ export default class FaultWarnFan extends React.Component {
                 placement="bottomLeft"
                 title={this.titleFunc(cur.largeWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
-                <span className={styles.warnColor}>大部件</span>
+                <span className={styles.warnColor}>
+                  <span>大部件</span>
+                  <i className="iconfont icon-alarm" />
+                </span>
               </Tooltip>
             </div>: <div>
                 <span className={styles.grayColor}>大部件</span>
@@ -125,7 +127,10 @@ export default class FaultWarnFan extends React.Component {
                 placement="bottomLeft"
                 title={this.titleFunc(cur.performanceWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
-                <span className={styles.warnColor}>性能预警</span>
+                <span className={styles.warnColor}>
+                  <span>性能预警</span>
+                  <i className="iconfont icon-alarm" />
+                </span>
               </Tooltip>
             </div>: <div>
               <span className={styles.grayColor}>性能预警</span>
@@ -137,7 +142,10 @@ export default class FaultWarnFan extends React.Component {
                 placement="bottomLeft"
                 title={this.titleFunc(cur.healthWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
-                <span className={styles.warnColor}>设备健康</span>
+                <span className={styles.warnColor}>
+                  <span>设备健康</span>
+                  <i className="iconfont icon-alarm" />
+                </span>
               </Tooltip>
             </div>: <div>
               <span className={styles.grayColor}>设备健康</span>
