@@ -148,7 +148,7 @@ export default class FaultWarn extends React.Component {
       <div className={styles.faultWarnMain} ref={(ref) => {this.main = ref;}}>
         <div className={styles.title}>
           {showStationSelect &&
-          <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
+          <ChangeStation stations={stationItems.filter(e => e.stationType === 0)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
           }
           <div className={styles.titleLeft}>
             <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>

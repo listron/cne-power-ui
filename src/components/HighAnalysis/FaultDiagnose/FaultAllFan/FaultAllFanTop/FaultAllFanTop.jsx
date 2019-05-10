@@ -60,7 +60,6 @@ export default class FaultAllFanTop extends React.Component {
 
   downloadFunc = () => {
     const {
-      deviceFullcode,
       downLoadFile,
       faultInfo:{
         stationName,

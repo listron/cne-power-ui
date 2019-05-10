@@ -15,8 +15,8 @@ export default class FaultAllFanHistory extends React.Component {
     match: PropTypes.object,
     onChangeFilter: PropTypes.func,
     getFaultReport: PropTypes.func,
-    resetStore: PropTypes.func,
     faultReportInfo: PropTypes.object,
+    history: PropTypes.object,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
   };
@@ -79,13 +79,13 @@ export default class FaultAllFanHistory extends React.Component {
 
 
   onShowDetail = (data) => {
-    const { onVisible, resetStore } = this.props;
+    const { onVisible, history } = this.props;
     const { taskId, stationCode, algorithmId } = data;
     onVisible(false);
-    resetStore();
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${stationCode}`);
     // localStore存储有故障的风机
+    window.location.reload();
     localStorage.setItem("algorithmId", algorithmId);
     localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
