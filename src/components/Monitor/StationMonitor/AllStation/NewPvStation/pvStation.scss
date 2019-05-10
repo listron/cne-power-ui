@@ -1,0 +1,315 @@
+@import '../../../../../theme/theme.scss';
+.pvStation {
+    background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .headStation {
+        border-bottom: 1px dashed #dfdfdf;
+        height: 108px;
+        display: flex;
+        color: $darkColor;
+        flex-direction: row;
+        padding: 20px;
+        .leftIcon {
+            width: 31px;
+            height: 60px;
+            background: url('/img/pv01.png') no-repeat center;
+        }
+        .allStaionStatic{
+            :global {
+                .ant-popover-inner-content {
+                    background: #f8f8f8;
+                    box-shadow:0 0 6px 0 rgba(0,0,0,0.30);
+                }
+            }
+            .poverItem{
+                display: flex;
+                flex: 1;
+                justify-content: space-between;
+                color:#666666;
+                min-width: 180px;
+                padding-right: 20px;
+                i{
+                    font-style: normal;
+                    text-align: right;
+                    display: inline-block;
+                }
+                p{
+                    text-align: right;
+                    margin-bottom: 0;
+                }
+                span{
+                    color: $themeColor;
+                }
+                .unit{
+                    width: 27px;
+                    display: inline-block;
+                    margin-left: 4px;
+                    text-align: left;
+                    color:#666666;
+                }
+            }
+        }
+
+        .dataColumn {
+            display: flex;
+            flex-direction: column;
+            // line-height: 36px;
+            padding: 0 12px;
+            border-right: 1px solid #dfdfdf;
+            min-width: 175px;
+            >span{
+                display: flex;
+                flex-direction: column;
+            }
+            &:last-child {
+                border: none
+            }
+
+            .dataValue {
+                color: $themeColor;
+                font-size: 24px;
+                text-align: left;
+                padding: 0 4px;
+                line-height: 30px;
+            }
+
+            .radiation {
+                color: #f9b600;
+            }
+
+            .stationPower {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                min-width: 230px;
+                line-height: 30px;
+                >div {
+                    margin-right: 10
+                }
+            }
+        }
+
+        .typeIcon {
+            width: 120px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    .StationTitle{
+        display: flex;
+        // flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 51px;
+        border:1px dashed #dfdfdf;
+        :global{
+            .iconTab{
+               height: 54px;
+               width: 54px; 
+               background: #f1f1f1;
+               color: #666;
+               display:inline-block;
+               text-align: center;
+               font-size: 20px; 
+               cursor: pointer;
+               &:hover{
+                background:$themeColor;
+                color: #fff;
+               }
+            }
+            .ant-switch {
+                vertical-align: -5px;
+            }
+            .ant-radio-button-wrapper {
+                height: 24px;
+                line-height: 24px;
+                padding: 0 8px;
+            }
+            .ant-radio-button-wrapper:hover,
+            .ant-radio-button-wrapper-focused {
+                color: #199475;
+            }
+        }
+        .activeCard{
+            background:$themeColor;
+            color: #fff;
+        }
+    }
+    .stationCardContainer{
+        .filterCondition{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 17px 31px 0 21px;
+            border:1px solid #dfdfdf;
+            padding: 4px;
+            .sortCondition{
+                display: flex;
+                .sortStatus{
+                    line-height: 30px;
+                    padding: 0 12px;
+                }
+            }
+        }
+        .staionsListBox{
+            .staionsList{
+                display: flex;
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-self: flex-start;
+            }
+            .regionName{
+                margin: 20px 0 0 39px;
+                color:#000000;
+            }
+            .staionCard{
+                margin: 20px 0 0 39px;
+                width: 339px;
+                height: 319px;
+                border-radius: 4px;
+                color: $darkColor;
+                background: #ffffff;
+                border:1px solid #dfdfdf;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                a{
+                    text-decoration: none;
+                    color: $darkColor;
+                }
+                .linkBox{
+                    display: flex;
+                    flex: 1;
+                    flex-direction: column;
+                }
+                .stationTop{
+                    line-height: 34px;
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 0 12px;
+                    .stationName{
+                        width:140px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .staionCapacity{
+                        display: flex;
+                        justify-content: space-around;
+                    }
+                    .stationUnitCount{
+                        margin-left: 10px;
+                    }
+                }
+                .staionCenter{
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 4px 12px;
+                    line-height: 30px;
+                    border-bottom: 1px solid #dfdfdf;
+                    .column{
+                        display: flex;
+                    }
+                    .staionCenterLeft{
+                        .dataName{
+                            width:70px;
+                            margin-right: 6px;
+                        }
+                    }
+                    .staionCenterRight{
+                        .dataName{
+                            width:56px;
+                            margin-right: 6px;
+                        }
+                    }
+                }
+                .chart{
+                    height:176px;
+                    display: flex;
+                    // background: pink;                   
+                }
+                .bottom{
+                    display: flex;
+                    align-items: center;
+                    flex: 1;
+                    border-top: 1px solid #dfdfdf;
+                    margin: 0 12px;
+                    .dataColumn{
+                        flex: 1;
+                        justify-content: center;
+                        border-right: 1px solid #dfdfdf;
+                        display: flex;
+                        &:last-child{
+                            border: none;
+                        }
+                    }
+                    
+                    
+                }
+            }
+            .normal,.interrupt{
+                cursor: pointer;
+                .changeNum{
+                    color: $themeColor;
+                }
+                .stationTop{
+                    background:#f0f2f5;
+                }
+                .bottom{
+                    .red{
+                        color:#a42b2c;  
+                    }
+                    .grey{
+                        color:#666666;
+                    }
+                }
+            }
+           
+            .normal{ // 正常的状态
+                &:hover{
+                    box-shadow:0 0 6px 0 rgba(0,0,0,0.20);
+                    .stationTop{
+                        background:#ceebe0;
+                    }
+                }
+                .stationName{
+                    color: $themeColor;
+                }
+
+            }
+      
+            .interrupt { // 通讯中断
+                border: 1px solid #f9b600;
+                &:hover{
+                    box-shadow: 0 1px 6px 0#f9b600;
+                    .stationTop{
+                        background:#ceebe0;
+                    }
+                }
+                .stationName{
+                    color: #f9b600;
+                }
+                :global{
+                    .icon-outage{
+                        margin-left: 10px;
+                        color:#f9b600;
+                    }
+                }
+            }
+
+            .notConnected { //  通讯中断
+                background: #f8f8f8;
+                cursor: default;
+                opacity: 0.6;
+                pointer-events: none;
+                
+            }
+
+        }
+    }
+}

@@ -8,7 +8,8 @@ import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 // import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
-import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class AllStation extends Component {
@@ -80,7 +81,8 @@ const mapStateToProps = (state) => {
     realCapacityPoint: state.common.get('realCapacityPoint'),
     powerUnit: state.common.get('powerUnit'),
     powerPoint: state.common.get('powerPoint'),
-    stationTypeCount: state.common.get('stationTypeCount'),
+    stationTypeCount: state.common.get('stationTypeCount'), // 旧版本需要保留
+    monitorPvUnit:state.common.toJS().monitorPvUnit,
   })
 }
 
