@@ -47,11 +47,12 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "antd": "^3.9.3",
+    "antd": "^3.16.3",
     "axios": "^0.16.2",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.0.8",
     "echarts": "^4.0.4",
+    "echarts-stat": "^1.1.1",
     "immutable": "^3.8.2",
     "jquery": "^3.3.1",
     "js-base64": "^2.5.1",

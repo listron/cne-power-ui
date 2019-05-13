@@ -222,7 +222,7 @@ class SingleStationAnalysisReport extends Component{
                 <span className={styles.text}>{dataFormats(Math.abs(genValidCompared),'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
-              <p>
+              <p className={styles.paragraph}>
                 <span>其原因在于：该年辐照度环比</span>
                 {(resourceValueCompared >= 0) && <span>提高</span>}
                 {(resourceValueCompared < 0) && <span>降低</span>}
@@ -244,7 +244,7 @@ class SingleStationAnalysisReport extends Component{
               </p>
 
               <p className={styles.distanceTop}>
-                2、年系统效率为
+                <span>2、年系统效率为</span>
                 <span className={styles.text}>{dataFormats(prs,'--',2,true) || '--'}</span>
                 <span> %，其中</span>
                 <span className={styles.text}>{bMonth || '--' }</span>
@@ -252,7 +252,7 @@ class SingleStationAnalysisReport extends Component{
                 <span className={styles.text}>{dataFormats(pr,'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
-              <p>
+              <p className={styles.paragraph}>
                 <span>原因为：该月份故障损失电量和限电损失电量总和最高，为</span>
                 <span className={styles.text}>{dataFormats(lostPower,'--',4,true,) || '--'}</span>
                 <span>万kWh。</span>
@@ -267,7 +267,7 @@ class SingleStationAnalysisReport extends Component{
                 <span className={styles.text}>{dataFormats(monthPlanComplateRate,'--',2,true) || '--'}</span>
                 <span>%。</span>
               </p>
-              <p>
+              <p className={styles.paragraph}>
                 {((cResourceValueCompared > 0) || (cLostPowerCompared > 0) || (limitPowerCompared > 0)) && <span>原因为：</span>}
                 {(cResourceValueCompared > 0) && 
                 <span>
@@ -281,7 +281,7 @@ class SingleStationAnalysisReport extends Component{
                   <span className={styles.text}>{dataFormats(cLostPowerCompared,'--',2,true) || '--'}</span>
                   <span>%；</span>
                 </span>}
-                {(limitPowerCompared || (limitPowerCompared > 0)) && 
+                {(limitPowerCompared && (limitPowerCompared > 0)) && 
                 <span>
                   <span>年限电率环比提高</span>
                   <span className={styles.text}>{dataFormats(limitPowerCompared,'--',2,true) || '--'}</span>

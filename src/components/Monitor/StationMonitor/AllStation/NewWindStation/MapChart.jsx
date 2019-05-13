@@ -30,6 +30,7 @@ const MapChart = ({ ...data }) => {
           top: 20,
           itemWidth: 21,
           itemHeight: 28,
+          selectedMode:false,
         },
         geo: {
           map: 'china',

@@ -46,7 +46,7 @@ class AreaStationReport extends Component{
                 <span>。</span>   
               </p>  
 
-              <p className={styles.paragraph + ' ' + styles.distanceTop}>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p> 
 
               {highEquUsehourStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -60,13 +60,13 @@ class AreaStationReport extends Component{
                   <span>%；</span>
                 </p>
               ))} 
-              <p className={styles.paragraph}>
+              <p className={styles.paragraph + ' ' + styles.distanceTop}>
                 <span>该区域等效利用小时数最低的三个电站为</span>
                 <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。</span>
               </p>  
               
-              <p className={styles.paragraph + ' ' + styles.distanceTop}>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p> 
               
               {lowEquUsehourStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -221,7 +221,7 @@ class AreaStationReport extends Component{
                 <span>。</span>   
               </p>  
 
-              <p className={styles.paragraph + ' ' + styles.distanceTop}>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p> 
 
               {highEquUsehourStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -235,13 +235,13 @@ class AreaStationReport extends Component{
                   <span>%；</span>
                 </p>
               ))} 
-              <p className={styles.paragraph}>
+              <p className={styles.paragraph + ' ' + styles.distanceTop}>
                 <span>该区域等效利用小时数最低的三个电站为</span>
                 <span className={styles.text}>{lowEquUsehourStations.map(e=>e.stationName).join('、')}</span>
                 <span>。</span>
               </p>  
               
-              <p className={styles.paragraph + ' ' + styles.distanceTop}>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p> 
               
               {lowEquUsehourStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -267,7 +267,7 @@ class AreaStationReport extends Component{
                 <span>。</span>
               </p>  
               
-              <p>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p> 
               
               {highComplateRateStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -287,7 +287,7 @@ class AreaStationReport extends Component{
                 <span>。</span>
               </p>  
               
-              <p>原因说明：</p> 
+              <p className={styles.paragraph}>原因说明：</p>  
               
               {lowComplateRateStations.map((e) => (
                 <p className={styles.paragraph}>
@@ -309,7 +309,7 @@ class AreaStationReport extends Component{
                 <span>占比最高。</span>
               </p>  
               
-              <p>详细情况说明：</p>
+              <p className={styles.paragraph}>详细情况说明：</p>
               <p className={styles.paragraph}>
                 <span>1）外部故障损失电量为</span>
                 <span className={styles.text}>{dataFormats(totalLossPowerDesc.externalFaultLostPower,'--',4,true) || '--'}</span>

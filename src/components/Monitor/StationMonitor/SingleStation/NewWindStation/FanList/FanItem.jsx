@@ -183,7 +183,8 @@ class FanItem extends React.Component {
 
   render() {
     const { deviceList = [], deviceTypeCode } = this.props;
-    const temType = deviceList.sort((a, b) => { return a['parentDeviceName'].localeCompare(b['parentDeviceName']) });
+    const deviceNameList=deviceList.sort((a, b) => { return a['deviceName'].localeCompare(b['deviceName']) })
+    const temType = deviceNameList.sort((a, b) => { return a['parentDeviceName'].localeCompare(b['parentDeviceName']) });
     let filteredDevice = [];
     temType.forEach(e => {
       let findExactStation = false;
@@ -207,11 +208,12 @@ class FanItem extends React.Component {
       <div className={styles.stationCardContainer} >
         <div ref={'popver'}></div>
         {deviceList.length > 0 && filteredDevice.map((e, key) => {
+          const deviceStatusList=e.device.sort((a, b) => { return 900 - b.deviceStatus===0 ? -1 :1 })
           return (
             <div key={key} className={styles.deviceContent}>
               <div className={styles.parentDeviceName}>{e.parentDeviceName}</div>
               <div className={styles.fanCard}>
-                {e.device.sort((a, b) => { return a.deviceStatus - b.deviceStatus }).map((item, index) => {
+                {deviceStatusList.map((item, index) => {
                   const currentStatus = item.deviceStatus;
                   // const currentStatus = 700;
                   return (<Popover

@@ -6,26 +6,60 @@ import Footer from '../../../../components/Common/Footer';
 import HistoryWarnMain from '../../../../components/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn';
 import {connect} from "react-redux";
 import { historyWarnAction } from "./historyWarnAction";
+import {algorithmControlAction} from "../AlgorithmControl/algorithmControlAction";
 
 class HistoryWarn extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
-    changeHistoryWarnStore: PropTypes.func,
     stationCode: PropTypes.number,
     deviceTypeCode:PropTypes.number,
+    getFaultWarnHistory: PropTypes.func,
+    changeHistoryWarnStore: PropTypes.func,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    createTimeStart: PropTypes.string,
+    createTimeEnd: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    algorithmModalId: PropTypes.array,
+    selectDeviceCode: PropTypes.array,
+    algorithmModalName: PropTypes.array,
+    resetStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
   }
 
   onChangeFilter = (params) => {
-    const { changeHistoryWarnStore } = this.props;
-    changeHistoryWarnStore({...params});
+    const {
+      getFaultWarnHistory,
+      selectDeviceCode,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      pageSize,
+      pageNum,
+      sortField,
+      sortMethod,
+      stationCode,
+      algorithmModalName
+    } = this.props;
+    const newParams = {
+      stationCode,
+      selectDeviceCode,
+      algorithmModalId,
+      createTimeStart,
+      createTimeEnd,
+      pageSize,
+      pageNum,
+      sortField,
+      sortMethod,
+      algorithmModalName,
+      ...params
+    };
+    getFaultWarnHistory(newParams);
   };
 
   render() {
@@ -44,18 +78,15 @@ class HistoryWarn extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
+    ...state.highAanlysisReducer.historyWarnReducer.toJS(),
+    algoOptionList: state.highAanlysisReducer.algorithm.get('algoOptionList').toJS(),
     stations: state.common.get('stations'),
-    createTimeStart: state.highAanlysisReducer.historyWarnReducer.get('createTimeStart'),
-    createTimeEnd: state.highAanlysisReducer.historyWarnReducer.get('createTimeEnd'),
-    stationCode: state.highAanlysisReducer.historyWarnReducer.get('stationCode'),
-    deviceTypeCode: state.highAanlysisReducer.historyWarnReducer.get('deviceTypeCode'),
-    algorithmModalName: state.highAanlysisReducer.historyWarnReducer.get('algorithmModalName').toJS(),
-    algorithmModalId: state.highAanlysisReducer.historyWarnReducer.get('algorithmModalId').toJS(),
-    selectDeviceCode: state.highAanlysisReducer.historyWarnReducer.get('selectDeviceCode').toJS(),
   }
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: historyWarnAction.resetStore }),
   changeHistoryWarnStore: payload => dispatch({ type: historyWarnAction.changeHistoryWarnStore, payload }),
+  getFaultWarnHistory: payload => dispatch({ type: historyWarnAction.getFaultWarnHistory, payload }),
+  getAlgoOptionList: payload => dispatch({ type: algorithmControlAction.getAlgoOptionList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryWarn)

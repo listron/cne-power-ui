@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './../defectFilter.scss';
+import styles from './stationFilter.scss';
 import { Tabs, Checkbox } from 'antd';
 const TabPane = Tabs.TabPane;
 const CheckboxGroup = Checkbox.Group;
@@ -111,7 +111,7 @@ class StationFilter extends Component {
   render() {
     const { stations } = this.props;
     const { activeKey } = this.state;
-    const provinceStation = stations.groupBy(item=>item.get('provinceCode')).toList();
+    const provinceStation = stations.filter(e => e.get('stationType') === 0).groupBy(item=>item.get('provinceCode')).toList();
     return (
       <div className={styles.stationFilter}>
         <Tabs onChange={this.onChangeProvince} activeKey={activeKey}  animated={false}>

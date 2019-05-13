@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { allFansOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
+import { allFansOptions } from "../chartsConfig/chartsConfig";
 import styles from "./allFans.scss";
 
 export default class AllFans extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    getAllFanResultList: PropTypes.func,
+    allFanResultList: PropTypes.object,
+    faultInfo: PropTypes.object,
+    allLoading: PropTypes.bool,
+    allTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -15,9 +21,52 @@ export default class AllFans extends React.Component {
   }
 
   componentDidMount() {
-    const  { allFansCharts } = this;
+    const  {
+      allFansCharts,
+      props: {
+        allFanResultList,
+        faultInfo: {
+          endTime
+        },
+        allLoading
+      }
+    } = this;
     const myChart = eCharts.init(allFansCharts);
-    myChart.setOption(allFansOptions());
+    if (allLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!allLoading) {
+      myChart.hideLoading();
+    }
+    myChart.setOption(allFansOptions(allFanResultList, endTime));
+  }
+
+  componentDidUpdate(prevProps) {
+    const  {
+      allFansCharts,
+      props: {
+        allFanResultList,
+        allLoading,
+        faultInfo: {
+          endTime
+        },
+        faultDate,
+        allTimeCompare: currentAllTimeCompare
+      }
+    } = this;
+    const { allTimeCompare } = prevProps;
+    const myChart = eCharts.init(allFansCharts);
+    if (allLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!allLoading) {
+      myChart.hideLoading();
+    }
+    if (currentAllTimeCompare && allTimeCompare !== currentAllTimeCompare) {
+      myChart.setOption(allFansOptions(allFanResultList, faultDate || endTime));
+    }
   }
 
 
