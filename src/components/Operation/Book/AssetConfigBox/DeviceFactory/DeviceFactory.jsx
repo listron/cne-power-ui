@@ -84,6 +84,22 @@ class DeviceFactory extends React.Component {
   componentDidMount() {
     this.props.getDeviceFactorsList()
   }
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    this.changFilter({ pageNum: currentPage, pageSize })
+  }
+  onCancelWarningTip = () => {//信息提示栏隐藏
+    this.setState({
+      showWarningTip: false
+    });
+  }
+  onConfirmWarningTip = () => {
+    const { tableRecord } = this.state;
+    const manufactorId = tableRecord.manufactorId;
+    this.setState({
+      showWarningTip: false,
+    });
+    this.props.deleteDeviceFactors({ manufactorId });
+  }
   isEditing = record => record.manufactorId === this.state.editingKey;
   cancel = () => {
     this.setState({ editingKey: '' });
@@ -146,22 +162,8 @@ class DeviceFactory extends React.Component {
   }
 
 
-  onPaginationChange = ({ currentPage, pageSize }) => {
-    this.changFilter({ pageNum: currentPage, pageSize })
-  }
-  onCancelWarningTip = () => {//信息提示栏隐藏
-    this.setState({
-      showWarningTip: false
-    });
-  }
-  onConfirmWarningTip = () => {
-    const { tableRecord } = this.state;
-    const manufactorId = tableRecord.manufactorId;
-    this.setState({
-      showWarningTip: false,
-    });
-    this.props.deleteDeviceFactors({ manufactorId });
-  }
+  
+ 
   deleteFactory = (record) => {
     this.setState({
       showWarningTip: true,
