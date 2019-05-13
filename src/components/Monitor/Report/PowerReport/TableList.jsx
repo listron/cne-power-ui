@@ -49,7 +49,7 @@ class TableList extends Component {
       limitGen: '9',
       limitTime: '10',
       faultGen: '11',
-      faultTime: '12'
+      faultHours: '12'
     };
     const sortField = sortInfo[field] ? sortInfo[field] : '';
     const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
@@ -58,6 +58,22 @@ class TableList extends Component {
   }
   initMonthColumn = () => {
     const { filterTable } = this.props;
+     const filterDevice=[ {
+      title: "区域",
+      dataIndex: "regionName",
+      sorter: true,
+      // width:40,
+    },
+    {
+      title: "电站名称",
+      dataIndex: "stationName",
+      sorter: true,
+    },
+    {
+      title: "设备型号",
+      dataIndex: "deviceModeName",
+      sorter: true,
+    },]
     const filterShow = [
       {
         title: "区域",
@@ -82,7 +98,7 @@ class TableList extends Component {
 
       },
     ];
-    const show = filterShow.slice(0, filterTable);
+    let show = filterTable>3?filterShow.slice(0, filterTable):filterDevice.slice(0, filterTable);
     const columns = [
 
       {

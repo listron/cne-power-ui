@@ -54,7 +54,7 @@ class Malfunction extends Component {
       "fault": 5,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
 
