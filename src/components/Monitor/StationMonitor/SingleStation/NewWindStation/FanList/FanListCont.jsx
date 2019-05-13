@@ -71,13 +71,11 @@ class FanListCont extends React.Component {
   }
 
 
-
-  getData = (stationCode) => {// 获取数据
-    const { getNewFanList } = this.props;
+  getData = stationCode => { // 获取数据
     const { firstLoad } = this.state;
-    getNewFanList({ stationCode, firstLoad });
-    this.timeOutId = setTimeout(() => {
-      if (firstLoad) {
+    this.props.getNewFanList({ stationCode, firstLoad });
+    this.timeOutId = setTimeout(()=>{
+      if(firstLoad){
         this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
@@ -144,7 +142,7 @@ class FanListCont extends React.Component {
           </div>
         </div>
         {fanDisplay === 'deviceCard' &&
-          (loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+          (loading  ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
             <FanItem
               {...this.props}
               cardPointParams={cardPointParams}

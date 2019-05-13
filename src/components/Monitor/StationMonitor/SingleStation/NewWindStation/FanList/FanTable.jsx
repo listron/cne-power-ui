@@ -24,7 +24,7 @@ class WindStationList extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      sortName: 'stationName',
+      sortName: 'lineName',
       descend: false,
     }
   }
@@ -90,7 +90,6 @@ class WindStationList extends React.Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        defaultSortOrder: "ascend",
         sorter: true,
         render: (text, record) => {
           if (record.deviceStatus === 900) {
@@ -105,6 +104,7 @@ class WindStationList extends React.Component {
         title: '所属线路',
         dataIndex: 'lineName',
         key: 'lineName',
+        defaultSortOrder: "ascend",
         sorter: true,
         render: text => {
           return <div title={text} className={styles.lineName}>{text}</div>
