@@ -230,7 +230,7 @@ class TimeSelectReport extends React.Component {
                 placeholder="选择设备状态"
                 value={list}
                 onChange={this.handleChange}
-                style={{ width: '160px' }}
+                style={{ width: '164px' }}
                 maxTagCount={0}
                 maxTagPlaceholder={this.maxTagPlaceholder}
                 filterOption={filterOption}
@@ -260,7 +260,7 @@ class TimeSelectReport extends React.Component {
             placeholder="选择区域"
             value={list}
             onChange={this.handleChange}
-            style={{ width: '160px' }}
+            style={{ width: '164px' }}
             maxTagCount={0}
             maxTagPlaceholder={this.maxTagPlaceholder}
             filterOption={filterOption}
@@ -285,7 +285,7 @@ class TimeSelectReport extends React.Component {
               placeholder="选择电站"
               value={list}
               onChange={this.handleChange}
-              style={{ width: '160px' }}
+              style={{ width: '164px' }}
               maxTagCount={0}
               maxTagPlaceholder={this.maxTagPlaceholder}
               filterOption={filterOption}
@@ -314,7 +314,7 @@ class TimeSelectReport extends React.Component {
                 placeholder="选择型号"
                 value={list}
                 onChange={this.handleChange}
-                style={{ width: '160px' }}
+                style={{ width: '164px' }}
                 maxTagCount={0}
                 maxTagPlaceholder={this.maxTagPlaceholder}
                 filterOption={filterOption}
@@ -347,7 +347,7 @@ class TimeSelectReport extends React.Component {
                 placeholder="选择风机"
                 value={list}
                 onChange={this.handleChange}
-                style={{ width: '165px' }}
+                style={{ width: '164px' }}
                 maxTagCount={0}
                 maxTagPlaceholder={this.maxTagPlaceholder}
                 filterOption={filterOption}
@@ -379,7 +379,7 @@ class TimeSelectReport extends React.Component {
                 placeholder="选择故障"
                 value={list}
                 onChange={this.handleChange}
-                style={{ width: '160px' }}
+                style={{ width: '164px' }}
                 maxTagCount={0}
                 maxTagPlaceholder={this.maxTagPlaceholder}
                 filterOption={filterOption}
