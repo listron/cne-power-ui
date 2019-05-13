@@ -8,6 +8,7 @@ import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 class RealTimeWarningFilter extends Component {
   static propTypes = {
      history: PropTypes.object,
+     stationTypeCount: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -48,11 +49,12 @@ class RealTimeWarningFilter extends Component {
      const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
     const stationCodes=stationCode?[+stationCode]:null
-    const { stations, deviceTypes, } = this.props;
+    const { stations, deviceTypes,stationTypeCount } = this.props;
+    const option=stationTypeCount==='multiple'?['alarmLevel','stationType', 'stationName', 'deviceType', 'rangeTime']:['alarmLevel', 'stationName', 'deviceType', 'rangeTime'];
     return (
       <div className={styles.realTimeWarningFilter}>
         <FilterCondition
-          option={['alarmLevel','stationType', 'stationName', 'deviceType', 'rangeTime']}
+          option={option}
           stations={stations || []}
           deviceTypes={deviceTypes || []}
           onChange={this.onChangeFilter}

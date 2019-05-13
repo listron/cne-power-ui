@@ -58,6 +58,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.realtimeWarningReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({
