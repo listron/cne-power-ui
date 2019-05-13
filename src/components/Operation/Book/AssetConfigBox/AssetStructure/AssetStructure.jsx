@@ -90,11 +90,16 @@ class AssetStructure extends React.Component {
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
 
+    //当前节点所处第几级
+    const currentLeavel = assetsParentId.split(',').length - 1;
+    console.log('currentLeavel: ', currentLeavel);
+    //此节点下面有几级节点、()
+    const childrenNum=tableData.childNodeNum;
     console.log('assetsParentId: ', assetsParentId);
     //保留当前节点的id和name，供编辑节点和新建节点使用
 
-    this.props.changeAssetConfigStore({assetsId:assetsParentId,assetsName})
-    //请求改选中节点的详情
+    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName ,childrenNum})
+    //请求选中节点的详情
     this.getTreeData({ assetsParentId });
 
     //编辑节点from显示

@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./deviceMode.scss";
-import { Button, Table, Form, Input, Icon } from 'antd';
+import { Button, Table, Form, Input, Icon,Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 const FormItem = Form.Item;
+const { Option } = Select;
 class DeviceMode extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
+    getDeviceFactorsList: PropTypes.func,
     getDeviceModesList: PropTypes.func,
     deleteDeviceModes: PropTypes.func,
     deviceModesList: PropTypes.array,
@@ -18,6 +20,7 @@ class DeviceMode extends React.Component {
     orderMethod: PropTypes.string,
     deviceModeName: PropTypes.string,
     form: PropTypes.object,
+    deviceFactorsList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -27,6 +30,17 @@ class DeviceMode extends React.Component {
       tableRecord: {},
       isSaveStyle:false,
     }
+  }
+  componentDidMount(){
+    //获取设备厂家列表供select选择厂家
+    this.props.getDeviceFactorsList({
+      orderField:'2',
+      orderMethod:'asc'
+    })
+    this.props.getDeviceModesList({
+      orderField:'2',
+      orderMethod:'asc'
+    })
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
@@ -62,11 +76,13 @@ class DeviceMode extends React.Component {
     this.setState({isSaveStyle:!isSaveStyle})
   }
   submitForm = (e) => {
-    // this.props.form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //   console.log('发送请求，并且刷新别的数据')
-    //   }
-    // });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log('values: ', values);
+      if (!err) {
+        this.props.addDeviceModes({...values})
+      console.log('发送请求，并且刷新别的数据')
+      }
+    });
   }
   searchFactory = (value) => {
     console.log('value: ', value);
@@ -89,16 +105,20 @@ class DeviceMode extends React.Component {
     this.changFilter({ orderField, orderCommand })
 
   }
+  selectManufactor=(value,option)=>{
+    console.log('value: ', value);
+
+  }
   render() {
-    const { pageSize, pageNum, total, } = this.props;
-    const deviceModesList = [{
-      deviceModeCode: '编码',
-      deviceModeName: '设备型号名称',
-      manufactorName: '厂家名',
-      createTime: '时间',
-      operateUser: '操作人',
-      modeId: 'id',
-    }];
+    const { pageSize, pageNum, total,deviceFactorsList,deviceModesList } = this.props;
+    // const deviceModesList = [{
+    //   deviceModeCode: '编码',
+    //   deviceModeName: '设备型号名称',
+    //   manufactorName: '厂家名',
+    //   createTime: '时间',
+    //   operateUser: '操作人',
+    //   modeId: 'id',
+    // }];
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { showWarningTip, warningTipText ,isSaveStyle} = this.state;
     const columns = [
@@ -142,17 +162,25 @@ class DeviceMode extends React.Component {
           <div className={styles.leftAdd}>
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">
-                {getFieldDecorator('addFactory', {
+                {getFieldDecorator('manufactorId', {
                   rules: [{
                     required: true,
                     message: '请输入30字以内的设备厂家',
                   }],
                 })(
-                  <Input placeholder="不超过30字" />
+                  <Select 
+                  onSelect={this.selectManufactor}
+                  style={{width:194}}
+                  placeholder="请选择厂家" >
+                   {deviceFactorsList.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
+                  {e.manufactorName}
+                </Option>))}
+                  
+                  </Select>
                 )}
               </FormItem>
               <FormItem className={styles.formItemStyle} colon={false} label="设备型号">
-                {getFieldDecorator('deviceMode', {
+                {getFieldDecorator('deviceModeName', {
                   rules: [{
                     required: true,
                     message: '请输入30字以内的设备厂家',

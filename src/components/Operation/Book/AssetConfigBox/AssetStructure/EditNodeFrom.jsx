@@ -25,12 +25,27 @@ class EditNodeFrom extends React.Component {
     super(props, context)
   }
   submitForm = (e) => {
+    const{stationType,assetsId}=this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
+      //判断父节点的子节点数+当前节点+当前节点的子节点数<6,可以把选中的父节点还有其子节点数用字符串拼起来当作key值
       console.log('values: ', values);
       if (!err) {
-        console.log('发送请求，并且刷新别的数据')
+        this.props.editAssetNode({...values,stationType,assetsId})
+        console.log('判断条件，比如子节点相加不能大于6，发送请求，并且刷新别的数据')
       }
     });
+  }
+  recoveryForm=()=>{
+    const {assetsId,assetsName}=this.props;
+    let assetsIdArr=assetsId.split(',');
+    assetsIdArr.pop();
+    const assetsParentId=assetsIdArr.toString();
+    console.log('assetsParentId: ', assetsParentId);
+    this.props.form.setFieldsValue({
+      assetsParentId:assetsParentId,
+      assetsName
+
+    })
   }
   closeFrom = () => {
     this.props.closeFrom();
@@ -49,8 +64,13 @@ class EditNodeFrom extends React.Component {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { assetList ,assetsName,assetsId} = this.props;
     console.log('assetsId: ', assetsId);
-    const assetsParentId=assetsId.split(',')
+    let assetsIdArr=assetsId.split(',');
+    console.log('assetsIdArr: ', assetsIdArr);
+    assetsIdArr.pop();
+    console.log('assetsIdArr: ', assetsIdArr);
+    const assetsParentId=assetsIdArr.toString();
     console.log('assetsParentId: ', assetsParentId);
+   
     return (
       <div className={styles.editNodeFrom}>
         <div className={styles.title}>
@@ -60,7 +80,8 @@ class EditNodeFrom extends React.Component {
           <div className={styles.contant}>
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="父节点名称">
-                {getFieldDecorator('assetsParentId', {initialValue:'0,1',
+                {getFieldDecorator('assetsParentId', {
+                  initialValue:assetsParentId,
                   rules: [{
                     required: true,
                     message: '请输入缺陷描述'
@@ -112,7 +133,8 @@ class EditNodeFrom extends React.Component {
                 )}
               </FormItem>
               <div className={styles.editSaveButton}>
-                <Button className={styles.restore} onClick={this.submitForm} >恢复</Button>
+              {/*这里恢复是设置父节点和节点名为初始值，setFieldsValue */}
+                <Button className={styles.restore} onClick={this.recoveryForm} >恢复</Button>
                 <Button className={styles.saveButton} onClick={this.submitForm} >保存</Button>
               </div>
             </Form>

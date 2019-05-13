@@ -78,69 +78,49 @@ class DeviceFactory extends React.Component {
       isSaveStyle: false,
       editingKey: '',
     }
-    //  this.columns = [
-    //   {
-    //     title: '编码',
-    //     dataIndex: 'manufactorCode',
-    //     sorter:true,
-    //     render: (text) => <span title={text}>{text}</span>
-    //   }, {
-    //     title: '设备厂家',
-    //     dataIndex: 'manufactorName',
-    //     sorter: true,
-    //     editable: true,
-    //     render: (text) => <span title={text}>{text}</span>
-    //   }, {
-    //     title: '创建时间',
-    //     dataIndex: 'createTime',
-    //     sorter: true,
-    //     render: (text) => <span title={text}>{text}</span>
-    //   }, {
-    //     title: '操作人',
-    //     dataIndex: 'operateUser',
-    //     sorter: true,
-    //     render: (text) => <span title={text}>{text}</span>
-    //   }, {
-    //     title: '操作',
-    //     render: (text, record, index) =>
-    //       (<div>
-    //         <span style={{ marginRight: '4px' }} title="编辑" className={isSaveStyle?"iconfont icon-doned":"iconfont icon-edit"} onClick={() => this.showEditTable(record)}></span>
-    //         <span title="删除" className="iconfont icon-del" onClick={() => this.deleteFactory(record)}></span>
-    //       </div>)
-    //   },
-    // ]
 
+   
+  }
+  componentDidMount() {
+    this.props.getDeviceFactorsList()
   }
   isEditing = record => record.manufactorId === this.state.editingKey;
   cancel = () => {
     this.setState({ editingKey: '' });
   };
-  save(form, key) {
+  save(form, manufactorId) {
     console.log('form: ', form);
-    
-    console.log('key: ', key);
+
+    console.log('manufactorId: ', manufactorId);
+    const { deviceFactorsList } = this.props;
+    console.log('deviceFactorsList: ', deviceFactorsList);
     form.validateFields((error, row) => {
       console.log('row: ', row);
       if (error) {
         return;
       }
-      const deviceFactorsList = [
-        {
-          manufactorCode: '1',
-          manufactorName: 'test',
-          createTime: '1:00',
-          operateUser: 'name1',
-          manufactorId: '1',
-        }, {
-          manufactorCode: '2',
-          manufactorName: 'test2',
-          createTime: '2:00',
-          operateUser: 'name2',
-          manufactorId: '2',
-        }];
+      if (!error) {
+        console.log(1111111111111);
+        
+        this.props.editDeviceFactors({ manufactorId, ...row })
+      };
+      // const deviceFactorsList = [
+      //   {
+      //     manufactorCode: '1',
+      //     manufactorName: 'test',
+      //     createTime: '1:00',
+      //     operateUser: 'name1',
+      //     manufactorId: '1',
+      //   }, {
+      //     manufactorCode: '2',
+      //     manufactorName: 'test2',
+      //     createTime: '2:00',
+      //     operateUser: 'name2',
+      //     manufactorId: '2',
+      //   }];
       const newData = [...deviceFactorsList];
       console.log('newData: ', newData);
-      const index = newData.findIndex(item => key === item.manufactorId);
+      const index = newData.findIndex(item => manufactorId === item.manufactorId);
       console.log('index: ', index);
       if (index > -1) {
         const item = newData[index];
@@ -236,7 +216,7 @@ class DeviceFactory extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-           
+
               return <EditableCell form={form} {...rest[0]} />
             }}
           </EditableContext.Consumer>)
@@ -244,21 +224,21 @@ class DeviceFactory extends React.Component {
       },
     };
 
-    const { pageSize, pageNum, total, } = this.props;
-    const deviceFactorsList = [
-      {
-        manufactorCode: '1',
-        manufactorName: 'test',
-        createTime: '1:00',
-        operateUser: 'name1',
-        manufactorId: '1',
-      }, {
-        manufactorCode: '2',
-        manufactorName: 'test2',
-        createTime: '2:00',
-        operateUser: 'name2',
-        manufactorId: '2',
-      }];
+    const { pageSize, pageNum, total, deviceFactorsList } = this.props;
+    // const deviceFactorsList = [
+    //   {
+    //     manufactorCode: '1',
+    //     manufactorName: 'test',
+    //     createTime: '1:00',
+    //     operateUser: 'name1',
+    //     manufactorId: '1',
+    //   }, {
+    //     manufactorCode: '2',
+    //     manufactorName: 'test2',
+    //     createTime: '2:00',
+    //     operateUser: 'name2',
+    //     manufactorId: '2',
+    //   }];
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { showWarningTip, warningTipText, isSaveStyle } = this.state;
     const columns = [
@@ -294,9 +274,10 @@ class DeviceFactory extends React.Component {
                 {form => {
                   console.log('form: ', form);
                   return (<a
-                  onClick={() => this.save(form, record.manufactorId)}
-                  style={{ marginRight: 8 }}>
-                  <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)}}
+                    onClick={() => this.save(form, record.manufactorId)}
+                    style={{ marginRight: 8 }}>
+                    <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)
+                }}
               </EditableContext.Consumer>)
               : <a disabled={editingKey !== ''} onClick={() => this.edit(record.manufactorId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"}></span></a>
             }

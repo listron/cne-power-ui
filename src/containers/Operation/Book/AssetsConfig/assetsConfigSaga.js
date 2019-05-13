@@ -186,10 +186,11 @@ function *addDeviceFactors(action) { //新建设备厂家
 }
 function *editDeviceFactors(action) { //编辑设备厂家
   const { payload } = action;
+  const nowTime=moment().utc();
   const url =`${APIBasePath}${operation.editDeviceFactors}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try{
-    const response = yield call(axios.post,url,{...payload,});
+    const response = yield call(axios.post,url,{...payload,nowTime});
     if(response.data.code === '10000') {
       yield put({
         type:assetConfigAction.changeAssetConfigStore,
@@ -260,14 +261,15 @@ function *getDeviceModesList(action) { //获取设备型号列表
 function *addDeviceModes(action) { //新建设备型号
   const { payload } = action;
   const url =`${APIBasePath}${operation.addDeviceModes}`;
+  const nowTime=moment().utc();
   // const url =`/mock/v3/ledger/assetslist`;
   try{
-    const response = yield call(axios.post,url,{...payload,});
+    const response = yield call(axios.post,url,{...payload,nowTime});
     if(response.data.code === '10000') {
       yield put({
         type:assetConfigAction.changeAssetConfigStore,
         payload: {
-          ...payload,
+          // ...payload,
         },
       });     
     }else{

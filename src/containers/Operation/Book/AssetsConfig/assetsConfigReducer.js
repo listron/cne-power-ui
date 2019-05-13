@@ -15,6 +15,7 @@ var initState = Immutable.fromJS({
   assetsUnit:'',//计量单位
   nowTime:'',//当前时间（utc）
   assetsId:'',//节点Id
+  childrenNum:'',//当前节点的子节点数
   manufactorName:'',//设备厂家名称(模糊查询)
   orderField:'',//排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
   orderMethod:'',//排序方式（“asc”：升序，”desc“:降序）
