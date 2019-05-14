@@ -89,6 +89,7 @@ class PowercurveChart extends Component {
           emphasis: {
             symbolSize: 8,
           },
+          progressive:0,
         },
         { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName], },
        
