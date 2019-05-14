@@ -181,7 +181,7 @@ class TableList extends Component {
 
       {
         title: "设备状态",
-        dataIndex: "deviceStatusName",
+        dataIndex: "deviceStatus",
         sorter: true,
 
       },
