@@ -89,21 +89,26 @@ class AssetStructure extends React.Component {
     console.log('tableData: ', tableData);
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
+    console.log('assetsName: ', assetsName);
 
     //当前节点所处第几级
     const currentLeavel = assetsParentId.split(',').length - 1;
     console.log('currentLeavel: ', currentLeavel);
     //此节点下面有几级节点、()
-    const childrenNum=tableData.childNodeNum;
+    const childrenNum = tableData.childNodeNum;
     console.log('assetsParentId: ', assetsParentId);
     //保留当前节点的id和name，供编辑节点和新建节点使用
 
-    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName ,childrenNum})
+    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, childrenNum })
     //请求选中节点的详情
     this.getTreeData({ assetsParentId });
 
-    //编辑节点from显示
-    selectedKeys.length > 0 && this.setState({ editNode: true })
+    //编辑节点from显示,生产资产节点不可编辑
+    let editNode = (currentLeavel !== 0 && selectedKeys.length > 0) ? true : false;
+    this.setState({
+      editNode
+    })
+    currentLeavel===5&&this.setState({addNode:false})
   }
   deleteNode = (record) => {
     this.setState({
@@ -113,7 +118,7 @@ class AssetStructure extends React.Component {
     })
   }
   renderTreeNodes = data => data.map((item) => {
-    if (item.childernNodes) {//此处得key需要修改，当前是mock，assetName只是为了让值唯一，应该是Id
+    if (item.childernNodes) {
       return (
         <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item}>
           {this.renderTreeNodes(item.childernNodes)}
@@ -124,7 +129,7 @@ class AssetStructure extends React.Component {
   })
 
   render() {
-    const { stationType, stationTypeCount, assetList, childrenNodeDetail } = this.props;
+    const { stationType, stationTypeCount, assetList, childrenNodeDetail ,childrenNum} = this.props;
     // const formatAssetData = this.formatAsset(assetList);
     const { addNode, editNode, showWarningTip, warningTipText } = this.state;
     const columns = [
@@ -154,7 +159,9 @@ class AssetStructure extends React.Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作',
-        render: (text, record, index) => <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span>
+        render: (text, record, index) => {
+          return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : ''
+        }
       },
 
     ];
@@ -168,6 +175,8 @@ class AssetStructure extends React.Component {
           <div className={styles.leftTree}>
             <Tree
               autoExpandParent={true}
+              defaultExpandedKeys={["0"]}
+              defaultSelectedKeys={["0"]}
               onCheck={this.onCheck}
               blockNode={false}
               onSelect={this.selectNode}

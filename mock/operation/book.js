@@ -67,6 +67,7 @@ module.exports = [
           "assetsUnit":`${Math.random(0, 1) * 10000}`,
           "createTime":`${Math.random(0, 1) * 10000}`,
           "operateUser":`${Math.random(0, 1) * 10000}`,
+          'isBuild':`${i>2?1:0}`
         }
       }),
     },

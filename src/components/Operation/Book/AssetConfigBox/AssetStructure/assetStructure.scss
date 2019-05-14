@@ -60,6 +60,12 @@
       flex-direction: column;
       padding: 0 18px;
 
+      :global {
+        .icon-del {
+          color: #199475;
+        }
+      }
+
       .plusButton,
       .disabledStyle {
         width: 104px;
@@ -70,6 +76,7 @@
         i {
           vertical-align: top;
           font-size: 14px;
+
         }
 
         span {
@@ -151,6 +158,7 @@
           height: 30px;
           line-height: 30px;
         }
+
         .iconstyles {
           border: 1px solid #199475;
           width: 34px;
@@ -158,6 +166,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+
           i {
             font-size: 20px;
           }
@@ -179,24 +188,27 @@
             .formItemStyle {
               display: flex;
             }
+
             .saveStyle {
               width: 70px;
               height: 32px;
               margin: 10px 0 0 100px;
 
             }
+
             .editSaveButton {
               display: flex;
               margin: 10px 0 0 100px;
-             
-              .saveButton,.restore {
+
+              .saveButton,
+              .restore {
                 width: 70px;
                 height: 32px;
                 margin-right: 12px;
               }
             }
 
-           
+
           }
 
           :global {

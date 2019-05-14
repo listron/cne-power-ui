@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./assetStructure.scss";
 import WarningTip from '../../../../Common/WarningTip';
 
-import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect } from 'antd';
+import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect,message } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -43,11 +43,14 @@ class AddNodeFrom extends React.Component {
     });
   }
   submitForm = (e) => {
+    const{stationType,assetsId,childrenNum}=this.props;
     this.props.form.validateFieldsAndScroll((err, values) => {
       console.log('values: ', values);
-      const {stationType}=this.props;
+      const parentLeavel=values.assetsId.split('_')[0].split(',').length;
       if (!err) {
-      this.props.addAssetNode({...values,stationType})
+        parentLeavel+1<7? 
+      this.props.addAssetNode({...values,stationType}):message.error('超出6级，重新选择父节点')
+      this.props.closeFrom();
       console.log('发送请求，并且刷新别的数据在saga里');
       }
     });
@@ -57,6 +60,22 @@ class AddNodeFrom extends React.Component {
       showWarningTip: true,
       warningTipText: '确定关闭,关闭后数据不会被保存'
     })
+  }
+ 
+  childrenFunc=(rule,value,callback)=>{
+    console.log('callback: ', callback);
+    console.log('value: ', value);
+    console.log('rule: ', rule);
+    if (value==='父级名称') {
+      rule.message='不能父级名称相同'
+      callback(rule.message);
+      return;
+    }else if(value.length>30){
+      rule.message='不能超过30字';
+      callback(rule.message);
+    }
+    callback();
+
   }
   renderTreeNodes = data => data.map((item) => {
     if (item.childernNodes) {
@@ -92,7 +111,8 @@ class AddNodeFrom extends React.Component {
                   initialValue:assetsId,
                   rules: [{
                     required: true,
-                    message: '请输入缺陷描述'
+                    message: '请输入缺陷描述',
+                  
                   }],
                 })(
 
@@ -116,7 +136,7 @@ class AddNodeFrom extends React.Component {
 
               <FormItem label="节点名称" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsName', {
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30,  validator:this.childrenFunc }],
                 })(
                   <Input placeholder="30字以内" />
                 )}

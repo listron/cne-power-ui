@@ -15,47 +15,6 @@ const EditableRow = ({ form, index, ...props }) => {
   </EditableContext.Provider>)
 };
 const EditableFormRow = Form.create()(EditableRow);
-
-// class EditableCell extends React.Component {
-//   getInput = () => {
-
-//     return <Input />;
-//   };
-
-//   render() {
-//     const {
-//       editing,
-//       dataIndex,
-//       title,
-//       // inputType,
-//       record,
-//       index,
-//       ...restProps
-//     } = this.props;
-//     return (
-//       <EditableContext.Consumer>
-//         {(form) => {
-//           const { getFieldDecorator } = form;
-//           return (
-//             <td {...restProps}>
-//               {editing ? (
-//                 <FormItem style={{ margin: 0 }}>
-//                   {getFieldDecorator(dataIndex, {
-//                     rules: [{
-//                       required: true,
-//                       message: `Please Input ${title}!`,
-//                     }],
-//                     initialValue: record[dataIndex],
-//                   })(this.getInput())}
-//                 </FormItem>
-//               ) : restProps.children}
-//             </td>
-//           );
-//         }}
-//       </EditableContext.Consumer>
-//     );
-//   }
-// }
 class DeviceFactory extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
@@ -68,6 +27,7 @@ class DeviceFactory extends React.Component {
     orderMethod: PropTypes.string,
     manufactorName: PropTypes.string,
     total: PropTypes.number,
+    addDeviceFactors: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -78,8 +38,6 @@ class DeviceFactory extends React.Component {
       isSaveStyle: false,
       editingKey: '',
     }
-
-   
   }
   componentDidMount() {
     this.props.getDeviceFactorsList()
@@ -105,19 +63,17 @@ class DeviceFactory extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, manufactorId) {
-    console.log('form: ', form);
+    
 
-    console.log('manufactorId: ', manufactorId);
+    
     const { deviceFactorsList } = this.props;
-    console.log('deviceFactorsList: ', deviceFactorsList);
+    
     form.validateFields((error, row) => {
-      console.log('row: ', row);
+      
       if (error) {
         return;
       }
       if (!error) {
-        console.log(1111111111111);
-        
         this.props.editDeviceFactors({ manufactorId, ...row })
       };
       // const deviceFactorsList = [
@@ -135,17 +91,14 @@ class DeviceFactory extends React.Component {
       //     manufactorId: '2',
       //   }];
       const newData = [...deviceFactorsList];
-      console.log('newData: ', newData);
       const index = newData.findIndex(item => manufactorId === item.manufactorId);
-      console.log('index: ', index);
       if (index > -1) {
         const item = newData[index];
-        console.log('item: ', item);
+        
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
-        console.log('newData: ', newData);
         this.props.changeAssetConfigStore({ deviceFactorsList: newData })
         this.setState({ data: newData, editingKey: '' });
       } else {
@@ -155,15 +108,9 @@ class DeviceFactory extends React.Component {
       }
     });
   }
-
   edit(key) {
-    console.log('key: ', key);
     this.setState({ editingKey: key });
   }
-
-
-  
- 
   deleteFactory = (record) => {
     this.setState({
       showWarningTip: true,
@@ -172,19 +119,16 @@ class DeviceFactory extends React.Component {
     })
   }
   submitForm = (e) => {
-    // this.props.form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //   console.log('发送请求，并且刷新别的数据')
-    //   }
-    // });
+    this.props.form.validateFieldsAndScroll(['manufactorName'],(err, values) => {
+      if (!err) {
+      this.props.addDeviceFactors({manufactorName:values.manufactorName})
+      }
+    });
   }
-
   searchFactory = (value) => {
-    console.log('value: ', value);
     this.changFilter({
       manufactorName: value,
     })
-
   }
   tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
@@ -203,13 +147,6 @@ class DeviceFactory extends React.Component {
     const params = { orderField, orderMethod, pageNum, pageSize, manufactorName };
     getDeviceFactorsList({ ...params, ...value })
   }
-  // showEditTable = (record) => {
-  //   const { isSaveStyle } = this.state;
-  //   this.setState({
-  //     isSaveStyle: !isSaveStyle
-  //   })
-
-  // }
   render() {
     const components = {
       body: {
@@ -225,7 +162,6 @@ class DeviceFactory extends React.Component {
         },
       },
     };
-
     const { pageSize, pageNum, total, deviceFactorsList } = this.props;
     // const deviceFactorsList = [
     //   {
@@ -234,13 +170,7 @@ class DeviceFactory extends React.Component {
     //     createTime: '1:00',
     //     operateUser: 'name1',
     //     manufactorId: '1',
-    //   }, {
-    //     manufactorCode: '2',
-    //     manufactorName: 'test2',
-    //     createTime: '2:00',
-    //     operateUser: 'name2',
-    //     manufactorId: '2',
-    //   }];
+    //   }, ];
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { showWarningTip, warningTipText, isSaveStyle } = this.state;
     const columns = [
@@ -274,7 +204,7 @@ class DeviceFactory extends React.Component {
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                  console.log('form: ', form);
+                  
                   return (<a
                     onClick={() => this.save(form, record.manufactorId)}
                     style={{ marginRight: 8 }}>
@@ -306,9 +236,9 @@ class DeviceFactory extends React.Component {
       <div className={styles.deviceFactory}>
         <div className={styles.title}>
           <div className={styles.leftAdd}>
-            {/* <Form className={styles.editPart}>
+            <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="添加设备厂家">
-                {getFieldDecorator('addFactory', {
+                {getFieldDecorator('manufactorName', {
                   rules: [{
                     required: true,
                     message: '请输入30字以内的设备厂家',
@@ -320,11 +250,11 @@ class DeviceFactory extends React.Component {
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
-            </Form> */}
+            </Form>
           </div>
           <div className={styles.rightSeach}>
             <Input.Search
-              placeholder="不超过30字"
+              placeholder="请输入设备厂家名称"
               allowClear
               onSearch={this.searchFactory}
             />

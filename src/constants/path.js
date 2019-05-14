@@ -129,7 +129,7 @@ export default {
       getDeviceFactorsList:'/v3/ledger/devicemanufactors/list',//获取设备厂家列表
       addDeviceFactors:'/v3/ledger/devicemanufactors/add',//新建设备厂家
       editDeviceFactors:'/v3/ledger/devicemanufactors/update',//编辑设备厂家
-      deleteDeviceFactors:'/v3/ledger/assets/update',//删除设备厂家
+      deleteDeviceFactors:'/v3/ledger/devicemanufactors/delete',//删除设备厂家
       getDeviceModesList:'/v3/ledger/devicemodes/list',//获取设备型号列表
       addDeviceModes:'/v3/ledger/devicemodes/add',//新建设备型号
       editDeviceModes:'/v3/ledger/devicemodes/update',//编辑设备型号

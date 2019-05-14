@@ -18,6 +18,7 @@ class DeviceMode extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
     getDeviceFactorsList: PropTypes.func,
+    addDeviceModes: PropTypes.func,
     getDeviceModesList: PropTypes.func,
     deleteDeviceModes: PropTypes.func,
     deviceModesList: PropTypes.array,
@@ -120,7 +121,7 @@ class DeviceMode extends React.Component {
     this.setState({ isSaveStyle: !isSaveStyle })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll(['deviceModeName','manufactorId'],(err, values) => {
       if (!err) {
         this.props.addDeviceModes({ ...values })
       }
@@ -240,7 +241,7 @@ class DeviceMode extends React.Component {
       <div className={styles.deviceMode}>
         <div className={styles.title}>
           <div className={styles.leftAdd}>
-            {/* <Form className={styles.editPart}>
+            <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">
                 {getFieldDecorator('manufactorId', {
                   rules: [{
@@ -272,11 +273,11 @@ class DeviceMode extends React.Component {
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
-            </Form> */}
+            </Form>
           </div>
           <div className={styles.rightSeach}>
             <Input.Search
-              placeholder="不超过30字"
+              placeholder="请输入设备型号"
               allowClear
               onSearch={this.searchFactory}
             />
