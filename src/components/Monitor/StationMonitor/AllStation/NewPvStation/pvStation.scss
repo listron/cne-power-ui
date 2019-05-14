@@ -179,7 +179,7 @@
                 align-self: flex-start;
             }
             .regionName{
-                margin: 20px 0 0 39px;
+                margin: 12px 0 -8px 39px;
                 color:#000000;
             }
             .staionCard{
@@ -331,22 +331,27 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+
         a {
             text-decoration: underline;
             color: rgba(0, 0, 0, 0.65);
+
             &:hover {
                 color: $themeColor;
             }
         }
+
         .pagination {
             a {
                 text-decoration: none;
             }
+
             height: 45px;
             display: flex;
             justify-content: flex-end;
             line-height: 45px;
         }
+
         .stationName {
             width: 70px;
             white-space: nowrap;
@@ -357,40 +362,154 @@
                 color: $themeColor;
             }
         }
+
         .stationrovince {
             width: 50px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        :global {
-            .ant-table .ant-table-thead {
-                th>div {
-                    height: 60px;
-                    padding-top: 9px;
-                    line-height: 21px;
-                }
-
-                .nonePadding {
-                    padding-top: 0;
-                }
-            }
-
-            .ant-table .ant-table-thead .ant-table-column-sorter {
-                top: 18px;
-            }
-
-            .ant-table-placeholder {
-                border: none;
-            }
-
-            .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-sorters {
-                padding-right: 24px !important;
-            }
-        }
-
         .numberStyle {
             text-align: right
         }
+        @mixin statusBox {
+            width: 5px;
+            height: 20px;
+            border-radius: 2px;
+        }
+        .currentStation{
+            display: flex;
+            justify-content: center;
+        }
+        .normal{background: $themeColor;@include statusBox();}
+        .interrupt{background: #f9b600;@include statusBox()}
+        .notConnected{background: #f8f8f8;@include statusBox()}
     }
+    .pvStationCont{
+        position: relative;
+        flex: 1 0 auto;
+        width: 100%;
+        .detailShow{
+            position: absolute;
+            right: 0;
+            top: 90px;
+            background:#199475;
+            border-radius:4px;
+            width:40px;
+            height:158px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 12px 0;
+            cursor: pointer;
+            .detailShowfont{
+                color: #fff;
+                width: 14px;
+                line-height: 20px;
+                z-index: 66;
+            }
+            :global{
+                .iconfont{
+                    background:#ffffff;
+                    width:14px;
+                    height:14px; 
+                    border-radius: 50%;
+                    color: $themeColor;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    .pvContainer{
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        flex: 1;
+    }
+    
+    :global{
+        .ant-table .ant-table-thead>tr>th,
+        .ant-table .ant-table-tbody>tr>td {
+            padding: 0px 5px;
+            height: 40px;
+            line-height: 30px;
+        }
+        .ant-table-placeholder {
+            border: none;
+        }
+    }
+  
+    @mixin propContainer() {
+
+        // 卡片样式
+        .popover {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+
+            .name {
+                text-align: center;
+                color: #000;
+            }
+
+            .poNomal,
+            .poInterrupt {
+                color: $themeColor;
+                text-align: center;
+                line-height: 33px;
+            }
+
+            .poInterrupt {
+                color: #f9b600;
+            }
+
+            .value {
+                color: $themeColor;
+            }
+
+            & .popColumn:nth-child(2n-1) {
+                background: #fff;
+            }
+
+            & .popColumn:nth-child(2n) {
+                background: #f8f8f8;
+            }
+
+            .popContainer {
+                background: pink
+            }
+
+            .popColumn {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 16px;
+            }
+
+            .unit {
+                width: 27px;
+                display: inline-block;
+                margin-left: 6px;
+            }
+        }
+    }
+     // 地图
+    .pvStationMap{
+        
+        .mapChart {
+            display: flex;
+            flex: 1;
+            height: 855px;
+            @include propContainer();
+            z-index: 1;
+            .popover {
+                width: 235px;
+                margin-bottom: 20px;
+                color: #666;
+            }
+        }
+    }
+     
 }

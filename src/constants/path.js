@@ -302,7 +302,11 @@ export default {
       getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
       getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
       getPointparams:'/v3/wind/monitor/station/pointparams',// 单电站测点参数(风电站)
-
+      
+      getDayPower:'/v3/pv/monitor/stations/daypower/',// 多电站日发电量与等效时图(光伏电站)
+      getMonthPower :'/v3/pv/monitor/stations/monthpower/',// 多电站月发电量与等效时图(光伏电站)
+      getMonthPalnPower :'/v3/pv/monitor/stations/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
+      
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表

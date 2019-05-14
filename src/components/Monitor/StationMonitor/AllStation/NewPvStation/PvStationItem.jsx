@@ -981,11 +981,11 @@ class PvStationItem extends React.Component {
           </div>
         </div>
         <div className={styles.staionsListBox}>
-          {stationDataList.length > 0 && filteredStation.map(list => {
+          {stationDataList.length > 0 && filteredStation.map((list,key) => {
             const stationStatusList = list.stations.sort((a, b) => {
               return 900 - b.stationStatus.stationStatus === 0 ? -1 : 1
             })
-            return (<div className={styles.regionList} >
+            return (<div className={styles.regionList} key={key}>
               <div className={styles.regionName}>{list.regionName}</div>
               <div className={styles.staionsList}>
                 {stationStatusList.map((item, index) => {

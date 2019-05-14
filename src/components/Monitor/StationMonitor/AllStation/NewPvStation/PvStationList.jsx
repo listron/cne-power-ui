@@ -5,7 +5,7 @@ import CommonPagination from '../../../../Common/CommonPagination';
 import { Progress, Table, message } from "antd";
 import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../utils/utilFunc';
-import {divideFormarts,multiplyFormarts,powerPoint} from '../../PvCommon/PvDataformat';
+import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 class PvStationList extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
@@ -14,6 +14,7 @@ class PvStationList extends React.Component {
     onPaginationChange: PropTypes.func,
     windMonitorStation: PropTypes.object,
     pvMonitorStation: PropTypes.object,
+    monitorPvUnit: PropTypes.object,
   }
 
   constructor(props, context) {
@@ -39,6 +40,13 @@ class PvStationList extends React.Component {
 
 
   initColumn = () => {
+    const { monitorPvUnit = {} } = this.props;
+    const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
+    const getStatusName = {
+      '400': 'normal',
+      '500': 'interrupt',
+      '900': 'notConnected',
+    };
     const columns = [
       {
         title: "电站名称",
@@ -46,7 +54,7 @@ class PvStationList extends React.Component {
         defaultSortOrder: "ascend",
         sorter: true,
         render: (value, record) => {
-          const stationStatus=record.stationStatus.stationStatus || '';
+          const stationStatus = record.stationStatus.stationStatus || '';
           if (stationStatus === '900') {
             return <div title={value} className={styles.stationName} onClick={this.showTip}>{value}</div>
           } else {
@@ -56,7 +64,6 @@ class PvStationList extends React.Component {
               </a>
             )
           }
-
         }
       },
       {
@@ -66,11 +73,11 @@ class PvStationList extends React.Component {
         render: (value) => <div className={styles.stationrovince}>{value}</div>
       },
       {
-        title: () => <TableColumnTitle title="实时功率" unit={'MW'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="实时功率" unit={realCapacityUnit} className="nonePadding" />,
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(value/1000, '--', 2, true)
+        render: value => dataFormats(realTimePowerUnit === 'kW' ? value : multiplyFormarts(value, 1000), '--', 2, true)
       },
 
       {
@@ -81,88 +88,86 @@ class PvStationList extends React.Component {
         sorter: true,
       },
       {
-        title: "出力比",
-        dataIndex: "capabilityRate",
+        title: "负荷率",
+        dataIndex: "loadRate",
         sorter: true,
         className: styles.numberStyle,
         render: (value) => dataFormats(value, '--', 2, true) + '%',
       },
       {
-        title: () => <TableColumnTitle title="日发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="日发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: "dayPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => this.powerPoint(this.unitFormarts(value,10000)),
-      },
-      {
-        title: () => <TableColumnTitle title="年利用小时" unit={'h'} className="nonePadding" />,
-        dataIndex: "equivalentHours",
-        sorter: true,
-        className: styles.numberStyle,
-        render: value => this.powerPoint(value),
+        render: value => powerPoint(divideFormarts(value, powerUnit)),
       },
       {
         title: () => <TableColumnTitle title="日等效时" unit={'MW'} className="nonePadding" />,
-        dataIndex: "stationCapacity",
+        dataIndex: "equivalentHours",
         sorter: true,
         className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true)
       },
       {
-        title: () => <TableColumnTitle title="月发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="月发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: "monthPower",
-        render: value => this.powerPoint(this.unitFormarts(value,10000)),
+        render: value => powerPoint(divideFormarts(value, powerUnit)),
         sorter: true,
         className: styles.numberStyle,
       },
       {
-        title: () => <TableColumnTitle title="年发电量" unit={'万kWh'} className="nonePadding" />,
+        title: () => <TableColumnTitle title="年发电量" unit={powerUnit} className="nonePadding" />,
         dataIndex: "yearPower",
-        render: value => this.powerPoint(this.unitFormarts(value,10000)),
+        render: value => powerPoint(divideFormarts(value, powerUnit)),
         sorter: true,
         className: styles.numberStyle,
       },
       {
-        title: () => <TableColumnTitle title="装机容量" unit="台" className="nonePadding" />,
-        dataIndex: "stationUnitCount",
+        title: () => <TableColumnTitle title="装机容量" unit={realCapacityUnit} className="nonePadding" />,
+        dataIndex: "stationCapacity",
         sorter: true,
         className: styles.numberStyle,
-        render: (value) => { return numWithComma(value); },
-      }, 
+        render: (value) => realCapacityUnit === 'MW' ? value : multiplyFormarts(value, 1000),
+      },
       {
         title: () => <TableColumnTitle title="装机" unit="台" className="nonePadding" />,
         dataIndex: "stationUnitCount",
         sorter: true,
         className: styles.numberStyle,
         render: (value) => { return numWithComma(value); },
-      }, 
+      },
       {
-        title: () => <TableColumnTitle title="异常支路个数" unit={'个'} className="nonePadding" />,
-        dataIndex: "errorNum",
+        title: () => <TableColumnTitle title="异常支路数" unit={'个'} className="nonePadding" />,
+        dataIndex: "anomalousBranchNum",
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0
       },
       {
         title: () => <TableColumnTitle title="低效逆变器" unit={'台'} className="nonePadding" />,
-        dataIndex: "maintainNum",
+        dataIndex: "lowEfficiencyInverterNum",
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0
       },
       {
         title: () => <TableColumnTitle title="告警" unit={'个'} className="nonePadding" />,
-        dataIndex: "errorNum",
+        dataIndex: "alarmNum",
         sorter: true,
         className: styles.numberStyle,
         render: value => value ? value : 0
       },
       {
         title: "状态",
-        dataIndex: "regionName",
+        dataIndex: "stationStatus",
         sorter: true,
-        render: (value) => <div className={styles.stationrovince}>{value}</div>
-      },
+        render: (value) => {
+          return (
+            <div className={styles.currentStation}>
+              <div className={styles[getStatusName[value.stationStatus]]} ></div>
+            </div>)
+        }
+      }
     ];
     return columns
   }
@@ -173,19 +178,19 @@ class PvStationList extends React.Component {
       const sortType = descend ? -1 : 1;
       const arraySort = ['stationName', 'regionName'];
       const arrayNumSort = [
-        "stationCapacity",
-        "stationUnitCount",
         "stationPower",
         "instantaneous",
         "capabilityRate",
         "dayPower",
         "monthPower",
         "yearPower",
-        "yearPlanRate",
+        "stationCapacity",
+        "stationUnitCount",
         "equivalentHours",
-        "errorNum",
-        "maintainNum",
-        "interruptNum",];
+        "alarmNum",
+        "anomalousBranchNum",
+        "lowEfficiencyInverterNum",
+        "stationStatus",];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
