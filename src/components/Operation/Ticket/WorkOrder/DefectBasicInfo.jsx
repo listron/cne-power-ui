@@ -30,7 +30,7 @@ class DefectBasicInfo extends Component {
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
       const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
-      this.props.getKnowledgebase({ deviceTypeCode, faultCode: defectTypeCode })
+      this.props.getKnowledgebase({ deviceTypeCode, faultTypeId: defectTypeCode })
     }
   }
 
@@ -102,7 +102,7 @@ class DefectBasicInfo extends Component {
         >
           <div className={styles.modalbody}>
             {knowledgebaseList.map(list => {
-              return (<div key={list.faultCode} className={styles.dealBox}>
+              return (<div key={list.faultTypeId} className={styles.dealBox}>
                 <div className={styles.column}>
                   <div className={styles.text}>缺陷描述</div>  <div> {list.faultDescription}</div>
                 </div>
@@ -113,10 +113,10 @@ class DefectBasicInfo extends Component {
                   <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>所需工具</div>  <div> sjdlkjslkdfjslkdjfksjdsd很宽松的款式独家发售快点放假就开始打飞机合适的匡扶汉室看到繁花似锦看到飞机上的反馈sjdlkjslkdfjslkdjfksjdsd很宽松的款式独家发售快点放假就开始打飞机合适的匡扶汉室看到繁花似锦看到飞机上的反馈</div>
+                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools}</div>
                 </div>
                 <div className={styles.column}>
-                  <div className={styles.text}>备注</div>  <div> {list.faultDescription}</div>
+                  <div className={styles.text}>备注</div>  <div> {list.remark}</div>
                 </div>
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>

@@ -253,8 +253,8 @@ function* checkDefect(action) { // 验收工单
 
 function* getKnowledgebase(action) { // 获取智能专家列表
   const { payload } = action;
-  // let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
-  let url = `/mock/operation/knowledgebase/list`;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  // let url = `/mock/operation/knowledgebase/list`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -273,8 +273,8 @@ function* getKnowledgebase(action) { // 获取智能专家列表
 function* likeKnowledgebase(action) { // 点赞智能专家
   const { payload } = action;
   const { knowledgeBaseId } = payload;
-  // let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
-  let url = `/mock/operation/knowledgebase/like`;
+  let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  // let url = `/mock/operation/knowledgebase/like`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {

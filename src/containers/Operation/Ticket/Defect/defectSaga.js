@@ -715,14 +715,16 @@ function* clearDefect(action) {
 
 function* getKnowledgebase(action) { // 获取智能专家列表
   const { payload } = action;
-  // let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
-  let url = `/mock/operation/knowledgebase/list`;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  // let url = `/mock/operation/knowledgebase/list`;
+  console.log('url',url)
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
         payload: {
+          knowledgebasePramas:payload,
           knowledgebaseList: response.data.data.dataList || [],
         }
       })
@@ -735,21 +737,19 @@ function* getKnowledgebase(action) { // 获取智能专家列表
 function* likeKnowledgebase(action) { // 点赞智能专家
   const { payload } = action;
   const { knowledgeBaseId } = payload;
-  // let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
-  let url = `/mock/operation/knowledgebase/like`;
+  let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  // let url = `/mock/operation/knowledgebase/like`;
+  
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       message.config({ top: 230,duration: 2, maxCount: 2,});
       message.success('点赞成功')
       const params = yield select(state => {
-        const { defectDetail = {} } = state.operation.workOrder.toJS();
-        return ({
-          deviceTypeCode: defectDetail.deviceTypeCode,
-          faultCode: defectDetail.defectTypeCode,
-        })
-      }
-      );
+        const { knowledgebasePramas = {} } = state.operation.defect.toJS();
+        return knowledgebasePramas
+      });
+      console.log('params',params)
       yield put({ // 重新请求点赞列表
         type: ticketAction.getKnowledgebase,
         payload: params,
