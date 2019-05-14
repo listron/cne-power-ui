@@ -16,7 +16,8 @@ class PowercurveChart extends Component {
     startTime: PropTypes.string,
     endTime: PropTypes.string,
 
-  }
+ 
+ }
   constructor(props, context) {
     super(props, context)
   }
@@ -86,6 +87,7 @@ class PowercurveChart extends Component {
           emphasis: {
             symbolSize: 8,
           },
+          progressive:0,
         },
         { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName], },
         { type: 'line', name: `${e.deviceName}理论功率曲线`, data: theory[e.deviceName] }
