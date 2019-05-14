@@ -143,7 +143,7 @@ class EditNodeFrom extends React.Component {
                  initialValue:assetsName ,
                   rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30,validator:this.childrenFunc }],
                 })(
-                  <Input placeholder="30字以内" />
+                  <Input disabled={!this.props.isBuild} placeholder="30字以内" />
                 )}
               </FormItem>
 

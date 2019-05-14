@@ -9,6 +9,7 @@ var initState = Immutable.fromJS({
   stationType:1,//电站类型1是光，0风,
   assetsParentId:'0',//上一级父节点，默认是最顶级0
   assetList: [],//树列表
+  isBuild:null,
   childrenNodeDetail:[],//子节点详情
   assetsName:'',//生产资产节点名称
   assetsType:null,//分类(1：系统，2：设备，3：部件)
