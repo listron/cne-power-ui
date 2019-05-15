@@ -749,7 +749,6 @@ function* likeKnowledgebase(action) { // 点赞智能专家
         const { knowledgebasePramas = {} } = state.operation.defect.toJS();
         return knowledgebasePramas
       });
-      console.log('params',params)
       yield put({ // 重新请求点赞列表
         type: ticketAction.getKnowledgebase,
         payload: params,
