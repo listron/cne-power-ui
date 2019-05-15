@@ -28,6 +28,9 @@ class DefectDetailForm extends Component {
     defectId: PropTypes.string,
     resetStore: PropTypes.func,
     getDefectDetail: PropTypes.func,
+    getKnowledgebase: PropTypes.func,
+    knowledgebaseList: PropTypes.array,
+    likeKnowledgebase: PropTypes.func,
   }
 
   constructor(props) {
@@ -124,7 +127,7 @@ class DefectDetailForm extends Component {
 
 
   render() {
-    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom, modify } = this.props;
+    const { defectTypes, defectDetail, isFromAlarm, commonList, otherFrom, modify,getKnowledgebase,knowledgebaseList } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const processData = defectDetail.processData;
     const status = defectDetail.defectStatus;
@@ -145,7 +148,13 @@ class DefectDetailForm extends Component {
           </div>
           <div className={styles.content}>
             <div className={styles.basic}>
-              <DefectBasicInfo basicInfo={defectDetail} defectTypes={defectTypes} />
+              <DefectBasicInfo 
+              basicInfo={defectDetail} 
+              defectTypes={defectTypes} 
+              getKnowledgebase={getKnowledgebase} 
+              knowledgebaseList={knowledgebaseList}
+              likeKnowledgebase={this.props.likeKnowledgebase}
+              />
             </div>
             <div className={styles.right}>
               <div className={styles.timeLines}>

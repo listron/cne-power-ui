@@ -9,6 +9,7 @@ import Allstation from '../../../../components/Monitor/StationMonitor/AllStation
 // import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class AllStation extends Component {
@@ -80,7 +81,8 @@ const mapStateToProps = (state) => {
     realCapacityPoint: state.common.get('realCapacityPoint'),
     powerUnit: state.common.get('powerUnit'),
     powerPoint: state.common.get('powerPoint'),
-    stationTypeCount: state.common.get('stationTypeCount'),
+    stationTypeCount: state.common.get('stationTypeCount'), // 旧版本需要保留
+    monitorPvUnit:state.common.toJS().monitorPvUnit,
   })
 }
 
@@ -92,6 +94,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRealChartsData: payload => dispatch({ type: allStationAction.getRealChartsData, payload }),
   stopRealCharstData: payload => dispatch({ type: allStationAction.stopRealCharstData, payload }),
   getRealMonitorPower: payload => dispatch({ type: allStationAction.getRealMonitorPower, payload }),
+  getPvChartsData: payload => dispatch({ type: allStationAction.getPvChartsData, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);

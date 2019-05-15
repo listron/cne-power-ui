@@ -451,68 +451,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
-        .currentStation {
-            .dataInterruptionColor {
-                background: #e08031;
-                width: 6px;
-                height: 20px;
-                border-radius: 2px;
-            }
-
-            .unconnectionColor {
-                background: #c7ceb2;
-                width: 6px;
-                height: 20px;
-                border-radius: 2px;
-            }
-
-            .normalColor {
-                background: $themeColor;
-                width: 5px;
-                height: 20px;
-                border-radius: 2px;
-            }
-        }
-
-        .progressInfo {
-            .progressData {
-                padding-right: 16px;
-                height: 40px;
-                display: flex;
-                flex-direction: column;
-                .stationValue {
-                    margin-top: 5px;
-                    flex: 1;
-                    display: flex;
-                    justify-content: space-between;
-
-                    .planOutput {
-                        margin-left: 10px;
-                    }
-                }
-                .progressBar {
-                    flex: 1;
-                    width: 220px;
-                }
-                .stationType {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                }
-
-            }
-        }
-
-
         .numberStyle {
             text-align: right
         }
     }
     // 地图
     .mapChart {
-        display: 'flex';
+        display: flex;
         flex: 1;
         @include propContainer();
         .popover {
