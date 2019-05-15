@@ -81,13 +81,20 @@ function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload:{
+        capabilityLoading:true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
           capabilityData: response.data.data || [],
-          capabilityDataTime:moment().unix()
+          capabilityDataTime:moment().unix(),
+          capabilityLoading:false
         }
       });
     } else { throw response.data }
@@ -176,6 +183,13 @@ function* getRealMonitorPower(action) {
 function* stopRealCharstData(action) {
   const { payload } = action;
   if (realChartsInterval) {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        capabilityData: [],
+        scatterData:[],
+      }
+    });
     yield cancel(realChartsInterval);
   }
   if (payload === 'power' && realPowerInterval) {
@@ -184,7 +198,7 @@ function* stopRealCharstData(action) {
       payload: {
         powerData: []
       }
-    })
+    });
     yield cancel(realPowerInterval);
   }
 }
