@@ -1,0 +1,62 @@
+@import '../../../../../theme/theme';
+.deviceManageContainer{
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+}
+.deviceManage{
+  
+  background-color: $pageBackground;
+  display: flex;
+  // flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+
+  // padding: 24px 24px 0;
+  .deviceManageMain{
+    padding: 24px 24px 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+    
+    .allStationTitle{
+      display: flex;
+      line-height: 40px;
+      background:#f8f8f8;
+      border-bottom:  1px solid #dfdfdf;
+      p{
+          width:120px;
+          border-right: 1px solid #dfdfdf;
+          color:#999999;
+          margin-bottom: 0;
+          text-align: center;
+          cursor: pointer;
+          margin-bottom: -2px;
+      }
+      .activeStation{
+          background: #fff;
+          position: relative;
+          color:#000000;
+          &::before{
+              content: "";
+              position: absolute;
+              width: 120px;
+              height: 2px;
+              top: 0;
+              left: -1px;
+              background: $themeColor;
+          }
+      }
+  
+  }
+    .deviceManageContent{
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  }
+}

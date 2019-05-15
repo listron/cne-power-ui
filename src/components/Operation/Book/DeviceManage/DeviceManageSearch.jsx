@@ -20,18 +20,11 @@ class DeviceManageSearch extends Component {
     getStationDeviceTypes: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
-    getDeviceFactors: PropTypes.func,
-    manufactorId: PropTypes.string,
-    deviceFactorsList: PropTypes.array,
-
   }
   constructor(props) {
     super(props);
     this.state = {
     }
-  }
-  componentDidMount(){
-    this.props.getDeviceFactors()
   }
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
@@ -70,15 +63,8 @@ class DeviceManageSearch extends Component {
       pageNum: 1,
     })
   }
-  selectfactory=(value)=>{
-    const { getDeviceList, queryParams } = this.props;
-    getDeviceList({
-      ...queryParams,
-      manufactorId:value
-    })
-  }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode,deviceFactorsList,manufactorId } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     return (
@@ -103,14 +89,7 @@ class DeviceManageSearch extends Component {
             if(!e){ return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
-        </Select> 
-        <Select className={styles.modelSelect} onChange={this.selectfactory} value={manufactorId} placeholder="请选择设备厂家" disabled={false}>
-          <Option key={null} value={null}>{'全部厂家'}</Option>
-          {deviceFactorsList.map(e=>{
-            if(!e){ return null; }
-            return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>
-          })}
-        </Select> 
+        </Select>
       </div>
     );
   }
