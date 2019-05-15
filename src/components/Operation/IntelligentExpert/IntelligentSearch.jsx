@@ -121,7 +121,6 @@ class IntelligentSearch extends Component {
   render() {
     const { personValue, defectValue } = this.state;
     const { stations, deviceTypes, defectTypes, listParams, usernames = [] } = this.props;
-    // const { faultDescription, recorder } = listParams;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
     return (
       <div className={styles.intelligentSearch}>
@@ -142,10 +141,8 @@ class IntelligentSearch extends Component {
               className={styles.entryPerson}
               value={personValue}
               showArrow={false}
-              // personValue="children"
               onSearch={this.entryPerson}
               onChange={this.changePerson}
-              // filterOption={(text, option) => option.props.children.toLowerCase().indexOf(text.toLowerCase()) >= 0}
             >
               {usernames.map(e => {
                   return <Option key={e} value={e}>{e}</Option>

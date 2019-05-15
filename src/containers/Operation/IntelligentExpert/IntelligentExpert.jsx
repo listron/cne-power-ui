@@ -67,7 +67,7 @@ class IntelligentExpert extends Component {
             <IntelligentSearch {...this.props} />
             <IntelligentTable {...this.props} />
           </div>
-          <TransitionContainer 
+          {/* <TransitionContainer 
             show={showPage !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
@@ -75,7 +75,7 @@ class IntelligentExpert extends Component {
             effect="side"
           >
             <IntelligentSide {...this.props} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
-          </TransitionContainer>
+          </TransitionContainer> */}
         </div>
         <Footer />
       </div>

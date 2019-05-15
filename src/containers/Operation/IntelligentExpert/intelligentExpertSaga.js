@@ -184,7 +184,7 @@ function* getUserName({payload = {}}) { // 获取相关录入人
 function* addIntelligent({payload = {}}){ // 添加智能专家库
   const url= `${APIBasePath}${operation.operationIntelligent}`;
   // const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = payload;
-  // const params = { deviceTypeCode, faultTypeId: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark }; 
+  // const params = { deviceTypeCodes: deviceTypeCode, faultTypeIds: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark }; 
   try {
     const response = yield call(axios.post, url, { ...params });
     if (response.data.code === "10000") {
