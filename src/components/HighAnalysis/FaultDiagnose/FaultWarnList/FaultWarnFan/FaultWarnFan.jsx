@@ -26,22 +26,21 @@ export default class FaultWarnFan extends React.Component {
       },
     } = this.props;
     let newArr = []; // 保存故障
-    if (large.length !== 0 ) {
+    if (large && large.length !== 0 ) {
       for(let i = 0; i < large.length; i ++) {
         newArr.push(large[i]); // 保存大部件
 
       }
     }
-    if (performance.length !== 0 ) {
+    if (performance && performance.length !== 0 ) {
       for(let i = 0; i < performance.length; i ++) {
         newArr.push(performance[i]); // 保存性能预警
 
       }
     }
-    if (health.length !== 0 ) {
+    if (health && health.length !== 0 ) {
       for(let i = 0; i < health.length; i ++) {
         newArr.push(health[i]); // 保存设备健康
-
       }
     }
     // 跳到单风机详情图表展示
@@ -106,7 +105,9 @@ export default class FaultWarnFan extends React.Component {
             </div>
           </div>
           <div className={styles.fanItemBottom}>
-            {cur.largeWarnings.length !== 0 ? <div>
+            {(!cur.largeWarnings || cur.largeWarnings.length === 0) ? <div>
+                <span className={styles.grayColor}>大部件</span>
+              </div>: <div>
               <Tooltip
                 overlayStyle={{maxWidth: "500px"}}
                 placement="bottomLeft"
@@ -117,39 +118,37 @@ export default class FaultWarnFan extends React.Component {
                   <i className="iconfont icon-alarm" />
                 </span>
               </Tooltip>
-            </div>: <div>
-                <span className={styles.grayColor}>大部件</span>
             </div>}
             <b />
-            {cur.performanceWarnings.length !== 0 ? <div>
-              <Tooltip
-                overlayStyle={{maxWidth: "500px"}}
-                placement="bottomLeft"
-                title={this.titleFunc(cur.performanceWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
-              >
+            {(!cur.performanceWarnings || cur.performanceWarnings.length === 0 ) ? <div>
+              <span className={styles.grayColor}>性能预警</span>
+            </div> : <div>
+                <Tooltip
+                  overlayStyle={{maxWidth: "500px"}}
+                  placement="bottomLeft"
+                  title={this.titleFunc(cur.performanceWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
+                >
                 <span className={styles.warnColor}>
                   <span>性能预警</span>
                   <i className="iconfont icon-alarm" />
                 </span>
-              </Tooltip>
-            </div>: <div>
-              <span className={styles.grayColor}>性能预警</span>
-            </div>}
+                </Tooltip>
+              </div>}
             <b />
-            {cur.healthWarnings.length !== 0 ? <div>
-              <Tooltip
-                overlayStyle={{maxWidth: "500px"}}
-                placement="bottomLeft"
-                title={this.titleFunc(cur.healthWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
-              >
+            {(!cur.healthWarnings || cur.healthWarnings.length === 0) ? <div>
+              <span className={styles.grayColor}>设备健康</span>
+            </div> : <div>
+                <Tooltip
+                  overlayStyle={{maxWidth: "500px"}}
+                  placement="bottomLeft"
+                  title={this.titleFunc(cur.healthWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
+                >
                 <span className={styles.warnColor}>
                   <span>设备健康</span>
                   <i className="iconfont icon-alarm" />
                 </span>
-              </Tooltip>
-            </div>: <div>
-              <span className={styles.grayColor}>设备健康</span>
-            </div>}
+                </Tooltip>
+              </div>}
           </div>
         </div>
       );

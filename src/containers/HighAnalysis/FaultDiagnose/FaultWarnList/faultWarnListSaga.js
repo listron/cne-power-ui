@@ -96,7 +96,7 @@ function* getList(action) { // 获取单风场故障预警汇总-按列表
       yield put({
         type: faultWarnListAction.changeWarnListStore,
         payload: {
-          listViewData: response.data.data || [],
+          listViewData: response.data.data || {},
           loading: false,
           singleStationCode: payload.stationCode,
           pageNum: payload.pageNum,

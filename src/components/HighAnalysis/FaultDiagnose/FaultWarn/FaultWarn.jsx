@@ -44,7 +44,7 @@ export default class FaultWarn extends React.Component {
     });
     return (
       <div className={styles.faultWarnMain}>
-        {item}
+        {faultWarnList || faultWarnList.length !== 0 ? item : <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>}
       </div>
     );
   }
