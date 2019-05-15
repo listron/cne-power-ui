@@ -75,9 +75,6 @@ export default class DifferenceTemperature extends React.Component {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            diffDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesDiff(preParams);
         }

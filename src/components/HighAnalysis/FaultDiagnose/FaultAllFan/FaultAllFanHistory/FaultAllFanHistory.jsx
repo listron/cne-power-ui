@@ -40,7 +40,7 @@ export default class FaultAllFanHistory extends React.Component {
     // 读取localStorage
     const algorithmId = localStorage.getItem("algorithmId");
     const params = {
-      stationCode,
+      stationCodes: [`${stationCode}`],
       deviceFullCode: "",
       algorithmIds: [`${algorithmId}`],
       startTime: "",
@@ -64,7 +64,7 @@ export default class FaultAllFanHistory extends React.Component {
     // 读取localStorage
     const algorithmId = localStorage.getItem("algorithmId");
     const params = {
-      stationCode,
+      stationCodes: [`${stationCode}`],
       deviceFullCode: "",
       algorithmIds: [`${algorithmId}`],
       startTime: "",
@@ -110,7 +110,7 @@ export default class FaultAllFanHistory extends React.Component {
     // 读取localStorage
     const algorithmId = localStorage.getItem("algorithmId");
     const params = {
-      stationCode,
+      stationCodes: [`${stationCode}`],
       deviceFullCode: "",
       algorithmIds: [`${algorithmId}`],
       startTime: "",
@@ -133,33 +133,38 @@ export default class FaultAllFanHistory extends React.Component {
         count
       }} = this.props;
     const columns = [{
+      width: 168,
       title: '检测开始时间',
       dataIndex: 'startTime',
     }, {
+      width: 168,
       title: '检测结束时间',
       dataIndex: 'endTime',
     }, {
+      width: 240,
       title: '计划执行时间',
       dataIndex: 'planExecuteTime',
       render: (planExecuteTime) => {
         return <span>{planExecuteTime ? moment(planExecuteTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
+      width: 240,
       title: '执行开始时间',
       dataIndex: 'executeStartTime',
       render: (executeStartTime) => {
         return <span>{executeStartTime ? moment(executeStartTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
+      width: 240,
       title: '执行结束时间',
       dataIndex: 'executeEndTime',
       render: (executeEndTime) => {
         return <span>{executeEndTime ? moment(executeEndTime).format("YYYY-MM-DD HH:mm:ss") : "- -"}</span>
       }
     }, {
+      width: 102,
       title: '状态',
       dataIndex: 'status',
-      align:"center",
       render: (status, record) => {
         if(status === 1) {
           return <span>待执行</span>
@@ -175,7 +180,6 @@ export default class FaultAllFanHistory extends React.Component {
     },{
       title: '预警台数',
       dataIndex: 'warningUnitCount',
-      align:"center",
       sorter: true,
       render: (warningUnitCount) => (<span>{dataFormat(warningUnitCount)}</span>)
     }];

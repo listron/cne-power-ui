@@ -46,8 +46,8 @@ class FaultSingleFan extends React.Component {
       stationCode: `${stationCode}`,
       pageSize: 10,
       pageNum: 1,
-      sortField: "",
-      sortMethod: "",
+      sortField: "prediction_date",
+      sortMethod: "desc",
     };
     history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
     changeWarnListStore({

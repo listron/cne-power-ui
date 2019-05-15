@@ -43,7 +43,6 @@ export default class PreTemperature extends React.Component {
         stationCode
       },
       getTenMinutesBefore,
-      onChangeFilter,
       preTimeCompare: currentPreTimeCompare
     } = this.props;
     const { preTimeCompare } = prevProps;
@@ -80,9 +79,6 @@ export default class PreTemperature extends React.Component {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            preDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesBefore(preParams);
         }

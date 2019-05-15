@@ -39,7 +39,6 @@ export default class AfterTemperature extends React.Component {
         faultInfo: {
           stationCode
         },
-        onChangeFilter
       }
     } = this;
     const { afterTimeCompare } = prevProps;
@@ -75,9 +74,6 @@ export default class AfterTemperature extends React.Component {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            afterDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesAfter(preParams);
         }

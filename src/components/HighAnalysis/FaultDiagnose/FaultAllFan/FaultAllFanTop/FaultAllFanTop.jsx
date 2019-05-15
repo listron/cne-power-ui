@@ -147,7 +147,7 @@ export default class FaultAllFanTop extends React.Component {
           </div>
           {(status === 4) && (
             <div className={styles.allFanError}>
-              <span>任务执行失败失败：</span>
+              <span>任务执行失败：</span>
               <span>{faultInfoMessage}</span>
             </div>
           )}

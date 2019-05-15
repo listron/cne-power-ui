@@ -187,35 +187,38 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
         taskId: response.data.data.taskId,
         date: response.data.data.endTime
       };
-      yield put({
-        type: faultAllFanAction.getAllFanResultList,
-        payload: heatAndFansParams
-      });
-      yield put({
-        type: faultAllFanAction.getStandAloneList,
-        payload: aloneParams
-      });
-      yield put({
-        type: faultAllFanAction.getSimilarityList,
-        payload: heatAndFansParams
-      });
-      yield put({
-        type: faultAllFanAction.getTenMinutesDiff,
-        payload: diffParams
-      });
-      yield put({
-        type: faultAllFanAction.getTenMinutesAfter,
-        payload: afterParams
-      });
-      yield put({
-        type: faultAllFanAction.getTenMinutesBefore,
-        payload: preParams
-      });
+      // 任务执行失败不请求接口
+      if (response.data.data.status !== 4) {
+        yield put({
+          type: faultAllFanAction.getAllFanResultList,
+          payload: heatAndFansParams
+        });
+        yield put({
+          type: faultAllFanAction.getStandAloneList,
+          payload: aloneParams
+        });
+        yield put({
+          type: faultAllFanAction.getSimilarityList,
+          payload: heatAndFansParams
+        });
+        yield put({
+          type: faultAllFanAction.getTenMinutesDiff,
+          payload: diffParams
+        });
+        yield put({
+          type: faultAllFanAction.getTenMinutesAfter,
+          payload: afterParams
+        });
+        yield put({
+          type: faultAllFanAction.getTenMinutesBefore,
+          payload: preParams
+        });
+      }
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
           faultInfo: response.data.data || {},
-          faultInfoMessage: response.data.executeMessage || "",
+          faultInfoMessage: response.data.data.executeMessage || "",
           loading: false,
         },
       });

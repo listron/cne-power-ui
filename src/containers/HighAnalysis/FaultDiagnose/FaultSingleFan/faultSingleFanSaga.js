@@ -124,25 +124,25 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       const  preParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
       // 发电机后驱温度
       const  afterParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
       // 发电机温度差
       const diffParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010-GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
       // 单机自适应
       // 单风机设备全编码
@@ -185,7 +185,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           faultInfo: response.data.data || {},
-          faultInfoMessage: response.data.executeMessage || "",
+          faultInfoMessage: response.data.data.executeMessage || "",
           loading: false,
         },
       });
