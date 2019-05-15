@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Form, Select, Cascader, Button, Input } from 'antd';
+import { Icon, Form, Select, Cascader, Button, Input, Row, Col, } from 'antd';
 import styles from './intelligentExpert.scss';
 import WarningTip from '../../Common/WarningTip';
 import InputLimit from '../../Common/InputLimit';
@@ -51,8 +51,8 @@ class AddIntelligent extends Component {
     form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         addIntelligent({
-          deviceTypeCodes: values.deviceTypeCodes,
-          faultTypeIds: values.faultTypeIds,
+          deviceTypeCode: values.deviceTypeCode,
+          defectTypeCode: values.defectTypeCode,
           faultDescription: values.faultDescription,
           checkItems: values.checkItems,
           processingMethod: values.processingMethod,
@@ -132,7 +132,7 @@ class AddIntelligent extends Component {
         </div>
         <Form {...formItemLayout} className={styles.preFormStyle}>
           <FormItem label="设备类型">
-            {getFieldDecorator('deviceTypeCodes', {
+            {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择' }],
               initialValue: deviceTypes.deviceTypeCode || null
             })(
@@ -145,7 +145,7 @@ class AddIntelligent extends Component {
             )}
           </FormItem>
           <FormItem label="缺陷类型" className={styles.formItem}>
-            {getFieldDecorator('defectTypeCodes', {
+            {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择' }],
             })(
               <Cascader
@@ -245,8 +245,10 @@ class AddIntelligent extends Component {
               <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <Button onClick={this.saveHandler} className={styles.savePassword}>保存</Button>
-          <Button >保存并继续添加</Button>
+          <FormItem className={styles.actionBtn}>
+            <Button onClick={this.saveHandler} className={styles.savePassword}>保存</Button>
+            <Button >保存并继续添加</Button>
+          </FormItem>
         </Form>
       </div>
     )
