@@ -15,6 +15,7 @@ var initState = Immutable.fromJS({
    scatterTime:null,// 等效小时时间
    capabilityDataTime:null,//出力图时间
    powerTime:null,//发电量时间
+   capabilityLoading:false,// 出力图的loading
 });
 
 const stationMonitorReducer = (state = initState, action) => {
