@@ -63,8 +63,8 @@ var initState = Immutable.fromJS({
   firstPartitionCode: null,
   knowledgebaseList:[],// 专家库列表
   knowledgebasePramas:{
-    deviceTypeCode:'',  // 专家库设备code
-    faultTypeId:'' // 专家库缺陷ID
+    deviceTypeCodes:[],  // 专家库设备code
+    faultTypeIds:[] // 专家库缺陷ID
   } 
 });
 

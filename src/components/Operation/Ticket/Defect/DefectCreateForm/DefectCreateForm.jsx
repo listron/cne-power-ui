@@ -58,7 +58,7 @@ class TmpForm extends Component {
     const prevDefectId=this.props.defectDetail.defectId;
     if(defectId!==prevDefectId){
       this.props.getStationDeviceTypes({ stationCodes:stationCode });
-      this.props.getKnowledgebase({faultTypeId:defectTypeCode,deviceTypeCode})
+      this.props.getKnowledgebase({faultTypeIds:[defectTypeCode],deviceTypeCodes:[deviceTypeCode]})
     }
   }
 
@@ -172,7 +172,7 @@ class TmpForm extends Component {
     const { getFieldValue } = this.props.form;
     const faultTypeId=value.length>0 && value[1] || '';
     const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
-    this.props.getKnowledgebase({faultTypeId,deviceTypeCode});
+    this.props.getKnowledgebase({faultTypeIds:[faultTypeId],deviceTypeCodes:[deviceTypeCode]});
   }
 
   showModal = () => { // 查看解决方案

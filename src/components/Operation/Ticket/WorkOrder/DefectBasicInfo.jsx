@@ -30,7 +30,7 @@ class DefectBasicInfo extends Component {
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
       const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
-      this.props.getKnowledgebase({ deviceTypeCode, faultTypeId: defectTypeCode })
+      this.props.getKnowledgebase({ deviceTypeCodes:[deviceTypeCode], faultTypeIds: [defectTypeCode] })
     }
   }
 

@@ -283,8 +283,8 @@ function* likeKnowledgebase(action) { // 点赞智能专家
       const params = yield select(state => {
         const { defectDetail = {} } = state.operation.workOrder.toJS();
         return ({
-          deviceTypeCode: defectDetail.deviceTypeCode,
-          faultCode: defectDetail.defectTypeCode,
+          deviceTypeCodes: [defectDetail.deviceTypeCode],
+          faultCodes: [defectDetail.defectTypeCode],
         })
       }
       );

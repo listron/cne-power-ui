@@ -717,7 +717,6 @@ function* getKnowledgebase(action) { // 获取智能专家列表
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
   // let url = `/mock/operation/knowledgebase/list`;
-  console.log('url',url)
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
