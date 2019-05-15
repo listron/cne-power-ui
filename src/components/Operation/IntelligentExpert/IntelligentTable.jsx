@@ -195,7 +195,12 @@ class IntelligentTable extends Component {
       <div className={styles.intelligentTable}>
        <div className={styles.topHandler}>
           <div className={styles.leftPart}>
-           <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>
+           <Button 
+             className={styles.addHandler} 
+             icon="plus" 
+            //  onClick={this.addIntelligent}
+           >
+           添加</Button>
            <Button className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
            <Button className={styles.importHandler} onClick={this.showModal}>导入</Button>
            <Button className={styles.exportHandler} 

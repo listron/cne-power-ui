@@ -96,7 +96,6 @@ class IntelligentSearch extends Component {
   }
 
   changePerson = (value) => { // 选择option
-    console.log('value: ', value);
     this.setState({
       personValue:value
     })
@@ -107,7 +106,6 @@ class IntelligentSearch extends Component {
         recorder: value
       }
     })
-    console.log(132);
   }
   
   filterCondition = (changeValue) => { // 设备类型、缺陷类型筛选栏
@@ -123,7 +121,7 @@ class IntelligentSearch extends Component {
   render() {
     const { personValue, defectValue } = this.state;
     const { stations, deviceTypes, defectTypes, listParams, usernames = [] } = this.props;
-    const { faultDescription, recorder } = listParams;
+    // const { faultDescription, recorder } = listParams;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
     return (
       <div className={styles.intelligentSearch}>
@@ -134,7 +132,6 @@ class IntelligentSearch extends Component {
           deviceTypes={deviceTypes.filter(e => e.stationType !== 0) || []}
           onChange={this.filterCondition}
         />
-
         <div className={styles.partSearch}>
             <span>缺陷描述</span>
             <Input className={styles.defectDescription} value={defectValue} placeholder="请输入..." onChange={this.onDefect} />
