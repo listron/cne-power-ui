@@ -69,18 +69,20 @@ export default class FaultWarnAlgorithm extends React.Component {
     const largeSizeItem = largeSizeList && largeSizeList.map((cur, index) => {
       return (
         <div
-          className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
+          className={(cur.windTurbines.length === 0 || !cur.windTurbines) ? styles.successItem : styles.warnItem}
           key={cur.taskId + index}
           onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
+          </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
@@ -97,11 +99,13 @@ export default class FaultWarnAlgorithm extends React.Component {
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span>{cur.faultUnitCount}</span><span>风机</span>
+            </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
@@ -118,11 +122,13 @@ export default class FaultWarnAlgorithm extends React.Component {
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span>{cur.faultUnitCount}</span><span>风机</span>
+          </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
