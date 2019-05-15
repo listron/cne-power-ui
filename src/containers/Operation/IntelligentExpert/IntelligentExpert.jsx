@@ -20,6 +20,7 @@ class IntelligentExpert extends Component {
     getStationOfEnterprise: PropTypes.func,
     getLostGenType: PropTypes.func,
     listParams: PropTypes.object,
+    intelligentTableData: PropTypes.array,
   }
 
   constructor(props) {
@@ -32,7 +33,8 @@ class IntelligentExpert extends Component {
     const { enterpriseId, getStationOfEnterprise, getLostGenType } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     getLostGenType({ // 获取所有损失缺陷类型
-      objectType: 1
+      objectType: 1,
+      stationType:1
     })
   }
 

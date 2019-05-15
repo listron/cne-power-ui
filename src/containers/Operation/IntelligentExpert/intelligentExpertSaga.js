@@ -55,7 +55,7 @@ function* getIntelligentTable(action) { // 获取列表数据
       yield put({
         type: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
         payload: {
-          ...params,
+          ...payload,
           pageNum,
           pageSize,
           total,
@@ -183,10 +183,10 @@ function* getUserName({payload = {}}) { // 获取相关录入人
 
 function* addIntelligent({payload = {}}){ // 添加智能专家库
   const url= `${APIBasePath}${operation.operationIntelligent}`;
-  // const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod,  } = payload;
-  // const params = { deviceTypeCodes: deviceTypeCode, faultTypeIds: defectTypeCode, faultDescription, checkItems,  }; 
+  // const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = payload;
+  // const params = { deviceTypeCode, faultTypeId: defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark }; 
   try {
-    const response = yield call(axios.post, url, { ...payload });
+    const response = yield call(axios.post, url, { ...params });
     if (response.data.code === "10000") {
       message.success('添加成功！');
       yield put({
