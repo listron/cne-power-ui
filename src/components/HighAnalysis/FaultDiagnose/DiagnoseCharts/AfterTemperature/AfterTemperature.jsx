@@ -7,7 +7,9 @@ import styles from "./afterTemperature.scss";
 import moment from "moment";
 
 const { RangePicker } =  DatePicker;
-
+//默认保存echarts dataZoom滑块位置
+let paramsStart = 0;
+let paramsEnd = 100;
 
 export default class AfterTemperature extends React.Component {
   static propTypes = {
@@ -34,15 +36,6 @@ export default class AfterTemperature extends React.Component {
       afterChart,
       props: {
         tenMinutesAfterList,
-        getTenMinutesAfter,
-        match:{
-          params: {
-            stationCode
-          }
-        },
-        faultInfo: {
-          endTime
-        },
         deviceName,
         afterLoading
       }
@@ -55,46 +48,7 @@ export default class AfterTemperature extends React.Component {
     if (!afterLoading) {
       myChart.hideLoading();
     }
-    const params = {
-      stationCode,
-      pointCode: "GN011", //后驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(endTime).subtract(1,'months').utc().format(),
-      endTime: moment(endTime).utc().format()
-    };
-    // 接口
-    getTenMinutesAfter(params);
     myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      match:{
-        params: {
-          stationCode,
-        }
-      },
-      getTenMinutesAfter
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const params = {
-      stationCode,
-      pointCode: "GN011", //后驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
-      startTime: moment(nextEndTime).subtract(1,'months').utc().format(),
-      endTime: moment(nextEndTime).utc().format()
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getTenMinutesAfter(params);
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -103,9 +57,14 @@ export default class AfterTemperature extends React.Component {
       props: {
         tenMinutesAfterList,
         stationDeviceList,
+        getTenMinutesAfter,
         deviceName,
         afterLoading,
-        afterTimeCompare: currentAfterTimeCompare
+        afterTimeCompare: currentAfterTimeCompare,
+        faultInfo: {
+          stationCode
+        },
+        onChangeFilter
       }
     } = this;
     const { afterTimeCompare } = prevProps;
@@ -122,16 +81,42 @@ export default class AfterTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
-      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name || defaultName));
+      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name || defaultName, paramsStart, paramsEnd));
+      myChart.on('datazoom', function (params){
+        const opt = myChart.getOption();
+        const dz = opt.dataZoom[0];
+        const start = opt.xAxis[0].data[dz.startValue];
+        const end = opt.xAxis[0].data[dz.endValue];
+        const preParams = {
+          stationCode,
+          pointCode: "GN011", //后驱测点-固定字段
+          deviceFullcodes: [], // 默认传空代表所有风机
+          startTime: moment(start).utc().format(),
+          endTime: moment(end).utc().format()
+        };
+        if (paramsStart !== params.start || paramsEnd !== params.end) {
+          // 每次保存变量
+          paramsStart = params.start;
+          paramsEnd = params.end;
+          onChangeFilter({
+            afterDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
+          });
+          // 接口
+          getTenMinutesAfter(preParams);
+        }
+      })
     }
+  }
+
+  componentWillUnmount() {
+    paramsStart = 0;
+    paramsEnd = 100;
   }
 
   changeAfterDate = (date) => {
     const {
-      match:{
-        params: {
-          stationCode,
-        }
+      faultInfo: {
+        stationCode
       },
       onChangeFilter,
       getTenMinutesAfter
@@ -139,7 +124,7 @@ export default class AfterTemperature extends React.Component {
     const params = {
       stationCode,
       pointCode: "GN011", //后驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
       endTime: moment(date[1]).utc().format()
     };

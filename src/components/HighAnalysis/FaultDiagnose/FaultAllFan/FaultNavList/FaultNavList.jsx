@@ -23,6 +23,7 @@ export default class FaultNavList extends React.Component {
     preDate: PropTypes.array,
     afterDate: PropTypes.array,
     diffDate: PropTypes.array,
+    faultDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -92,6 +93,7 @@ export default class FaultNavList extends React.Component {
       faultInfo: {
         endTime
       },
+      faultDate,
       getTenMinutesBefore,
       getTenMinutesAfter,
       getTenMinutesDiff,
@@ -103,41 +105,41 @@ export default class FaultNavList extends React.Component {
       afterDate,
       diffDate
     } = this.props;
-    const { connectDeviceFullCode, deviceName } = data;
+    const { deviceFullCode, deviceName } = data;
     const taskId = localStorage.getItem("taskId");
     // 发电机前驱温度
     const preParams = {
       stationCode,
       pointCode: "GN010", //前驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: preDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(preDate[0]).utc().format(),
-      endTime: preDate.length === 0 ? moment(endTime).utc().format() : moment(preDate[0]).utc().format()
+      endTime: preDate.length === 0 ? moment(endTime).utc().format() : moment(preDate[1]).utc().format()
     };
     // 发电机后驱温度
     const afterParams = {
       stationCode,
       pointCode: "GN011", //后驱测点-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: afterDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(afterDate[0]).utc().format(),
-      endTime: afterDate.length === 0 ? moment(endTime).utc().format() : moment(afterDate[0]).utc().format()
+      endTime: afterDate.length === 0 ? moment(endTime).utc().format() : moment(afterDate[1]).utc().format()
     };
     // 发电机后驱温度
     const diffParams = {
       stationCode,
       pointCode: "GN010-GN011", //温度差-固定字段
-      deviceFullCodes: [], // 默认传空代表所有风机
+      deviceFullcodes: [], // 默认传空代表所有风机
       startTime: diffDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(diffDate[0]).utc().format(),
-      endTime: diffDate.length === 0 ? moment(endTime).utc().format() : moment(diffDate[0]).utc().format()
+      endTime: diffDate.length === 0 ? moment(endTime).utc().format() : moment(diffDate[1]).utc().format()
     };
     // 单机自适应模块
     const singleParams = {
       taskId,
-      deviceFullCode: connectDeviceFullCode
+      deviceFullCode
     };
     // 相似性热图
     const heatAndAllFansParams = {
       taskId,
-      date: endTime
+      date: faultDate || endTime
     };
     this.setState({
       fansFlag: index
@@ -145,8 +147,8 @@ export default class FaultNavList extends React.Component {
       // 改变设备选中
       onChangeFilter({
         deviceName,
-        deviceFullCode: connectDeviceFullCode,
-        warnId
+        deviceFullCode,
+        warnId,
       });
       // 请求接口
       getTenMinutesBefore(preParams);
@@ -168,7 +170,7 @@ export default class FaultNavList extends React.Component {
     const item = stationDeviceList && stationDeviceList.map((cur, index) => {
       return (
         <div
-          key={cur.deviceName}
+          key={`${cur.deviceName}${index}`}
           style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
           className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
           onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}

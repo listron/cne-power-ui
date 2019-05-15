@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {Table, Tag} from "antd";
 import styles from "./listViewTable.scss";
 import moment from "moment";
+import { dataFormat } from "../../../../../../utils/utilFunc";
 
 const defaultDate = "YYYY-MM-DD HH:mm:ss";
 
@@ -32,6 +33,7 @@ export default class ListViewTable extends React.Component {
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${stationCode}`);
     // localStore存储有故障的风机
+    localStorage.setItem("faultWarnNum", "1");
     localStorage.setItem("algorithmId", algorithmId);
     localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
@@ -66,19 +68,19 @@ export default class ListViewTable extends React.Component {
       title: '计划执行时间',
       dataIndex: 'planExecuteTime',
       render: (planExecuteTime) => {
-        return <span>{moment(planExecuteTime).format(defaultDate)}</span>
+        return <span>{planExecuteTime ? moment(planExecuteTime).format(defaultDate) : "- -"}</span>
       }
     }, {
       title: '执行开始时间',
       dataIndex: 'executeStartTime',
       render: (executeStartTime) => {
-        return <span>{moment(executeStartTime).format(defaultDate)}</span>
+        return <span>{executeStartTime ? moment(executeStartTime).format(defaultDate) : "- -"}</span>
       }
     }, {
       title: '执行结束时间',
       dataIndex: 'executeEndTime',
       render: (executeEndTime) => {
-        return <span>{moment(executeEndTime).format(defaultDate)}</span>
+        return <span>{executeEndTime ? moment(executeEndTime).format(defaultDate) : " - -"}</span>
       }
     }, {
       title: '状态',
@@ -99,9 +101,7 @@ export default class ListViewTable extends React.Component {
       title: '预警台数',
       dataIndex: 'warningUnitCount',
       sorter: true,
-      render: (warningUnitCount) => {
-        return <span>{warningUnitCount || "- -"}</span>
-      }
+      render: (warningUnitCount) => (<span>{dataFormat(warningUnitCount)}</span>)
     }];
     return (
       <div className={styles.listViewTable}>
@@ -110,7 +110,7 @@ export default class ListViewTable extends React.Component {
           loading={loading}
           columns={columns}
           onChange={this.tableChange}
-          rowKey={(record, index) => (record.taskId + index) || "key" }
+          rowKey={(record, index) => index || "key" }
           dataSource={dataList}
           locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
         />

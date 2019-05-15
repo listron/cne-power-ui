@@ -237,7 +237,7 @@ const routers = [
     path: '/hidden/analysis/single/fan',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
   },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
-    path: '/hidden/analysis/single/fan/:stationCode',
+    path: '/hidden/analysis/single/fan/:code',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
   },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
     path: '/hidden/analysis/all/fan/:stationCode',

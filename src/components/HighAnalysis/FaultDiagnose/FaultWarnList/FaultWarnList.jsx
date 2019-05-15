@@ -20,6 +20,7 @@ export default class FaultWarn extends React.Component {
     getAlgoModel: PropTypes.func,
     getList: PropTypes.func,
     getFanList: PropTypes.func,
+    algoModelData: PropTypes.object,
   };
 
   constructor(props) {
@@ -31,6 +32,13 @@ export default class FaultWarn extends React.Component {
   }
 
   componentDidMount() {
+    const { main } = this;
+    main && main.addEventListener('click', this.hideStationChange, true);
+  }
+
+  componentWillUnmount() {
+    const { main } = this;
+    main && main.removeEventListener('click', this.hideStationChange, true);
   }
 
   hideStationChange = () => {
@@ -103,6 +111,32 @@ export default class FaultWarn extends React.Component {
     getList(listParams);
   };
 
+  algorithmModalNumFunc = () => {
+    const {
+      algoModelData: {
+        healthList,
+        largeSizeList,
+        natureList
+    }} = this.props;
+    const arr = []; //保存有故障的
+    healthList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    largeSizeList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    natureList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    return arr.length;
+  };
+
   render() {
     const { stations, singleStationCode, viewType } = this.props;
     const warnCount = localStorage.getItem("warnCount");
@@ -111,10 +145,10 @@ export default class FaultWarn extends React.Component {
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
     return (
-      <div className={styles.faultWarnMain}>
+      <div className={styles.faultWarnMain} ref={(ref) => {this.main = ref;}}>
         <div className={styles.title}>
           {showStationSelect &&
-          <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
+          <ChangeStation stations={stationItems.filter(e => e.stationType === 0)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
           }
           <div className={styles.titleLeft}>
             <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
@@ -139,7 +173,7 @@ export default class FaultWarn extends React.Component {
                 算法模型
               </div>
               <div className={styles.num}>
-                <span>10</span>
+                <span>{this.algorithmModalNumFunc()}</span>
               </div>
             </div>
             <div

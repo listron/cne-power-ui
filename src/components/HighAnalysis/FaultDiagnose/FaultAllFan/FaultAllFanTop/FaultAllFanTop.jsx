@@ -24,12 +24,10 @@ export default class FaultAllFanTop extends React.Component {
     taskId: PropTypes.string,
     stations: PropTypes.object,
     stationCode: PropTypes.string,
-    deviceFullcode: PropTypes.string,
     downLoadFile: PropTypes.func,
     getResetTask: PropTypes.func,
-    getFaultInfo: PropTypes.func,
     faultInfo: PropTypes.object,
-    faultInfoMessage: PropTypes.string
+    faultInfoMessage: PropTypes.string,
   };
 
   constructor(props) {
@@ -38,18 +36,6 @@ export default class FaultAllFanTop extends React.Component {
       visibleFlag: false, //控制历史预警报告
       taskFlag: false, //控制重新执行
     };
-  }
-
-  componentDidMount() {
-    const {
-      getFaultInfo,
-    } = this.props;
-    // 读取localStorage
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId
-    };
-    getFaultInfo(params);
   }
 
   onVisible = (flag) => {
@@ -74,16 +60,15 @@ export default class FaultAllFanTop extends React.Component {
 
   downloadFunc = () => {
     const {
-      taskId,
-      deviceFullcode,
       downLoadFile,
       faultInfo:{
         stationName,
         startTime,
         endTime,
+        taskId
       }
     } = this.props;
-    const url  = `${APIBasePath}${downloadFile}/${taskId}/${deviceFullcode}`;
+    const url  = `${APIBasePath}${downloadFile}/${taskId}`;
     downLoadFile({
       url,
       method: "get",
@@ -105,6 +90,8 @@ export default class FaultAllFanTop extends React.Component {
         stationName
       },
       faultInfoMessage } = this.props;
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const roleDeleteRight = rightHandler.split(',').includes('analysis_turbineFDD_repeat');
     return (
       <div className={styles.faultAllFanTop}>
         <div className={styles.allFanTopCenter}>
@@ -143,8 +130,10 @@ export default class FaultAllFanTop extends React.Component {
             </div>
             <div className={styles.allFanTimeRight}>
               <div>
-                <Button block onClick={this.resetTaskFunc}>重新执行</Button>
-                <Button block onClick={this.historyFunc}>历史预警报告</Button>
+                {(roleDeleteRight) && (
+                  <Button style={{width: 90}} block onClick={this.resetTaskFunc}>重新执行</Button>
+                )}
+                <Button style={{width: 120}} block onClick={this.historyFunc}>历史预警报告</Button>
               </div>
               {(status && status !== 4) && (
                 <div>

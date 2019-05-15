@@ -9,14 +9,6 @@ export default class FaultWarn extends React.Component {
     faultWarnList: PropTypes.array
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-  }
-
   faultWarnFunc = (stationCode, warnCount, count) => {
     // 跳转到单风场预警
     //存储单风场故障数量和总数

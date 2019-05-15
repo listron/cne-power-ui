@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import echarts from 'echarts';
+import PropTypes from 'prop-types';
 import { Link } from 'react-dom';
 import { dataFormats } from '../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData.js';
@@ -8,20 +9,23 @@ import styles from './windCommon.scss';
 
 
 class PointScatter extends Component {
-    constructor(){
+    static propTypes = {
+        scatterData: PropTypes.object,
+        scatterpointTime: PropTypes.number,
+    }
+    constructor() {
         super();
     }
     componentDidMount() {
         this.drawCharts(this.props)
     }
 
-    shouldComponentUpdate(nextProps) {
-        if (Object.getOwnPropertyNames(this.props.scatterData).length===0 && 
-        Object.getOwnPropertyNames(nextProps.scatterData).length>0) {
-            this.drawCharts(nextProps)
-            return true
+    componentDidUpdate(prevProps) {
+        const { scatterpointTime } = this.props;
+        const preTime = prevProps.scatterpointTime;
+        if (scatterpointTime !== preTime) { // 数据重新请求后重绘。
+            this.drawCharts(this.props);
         }
-        return false
     }
 
 

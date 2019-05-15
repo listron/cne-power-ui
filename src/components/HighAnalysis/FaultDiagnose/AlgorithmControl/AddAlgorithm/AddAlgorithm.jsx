@@ -286,7 +286,14 @@ class AddAlgorithm extends React.Component {
           </div>
         </div>
         <CancelModal cancelModalFunc={this.cancelModalFunc} cancelFlag={cancelFlag} {...this.props} />
-        <SureModal downLink={downLink} sureModalFunc={this.sureModalFunc} sureFlag={sureFlag} {...this.props} />
+        <SureModal
+          downLink={downLink}
+          actionDiffTime={actionDiffTime}
+          endDiffTime={endDiffTime}
+          sureModalFunc={this.sureModalFunc}
+          sureFlag={sureFlag}
+          {...this.props}
+        />
       </div>
     );
   }

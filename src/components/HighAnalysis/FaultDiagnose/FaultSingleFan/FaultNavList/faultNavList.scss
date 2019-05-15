@@ -13,12 +13,13 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-self: flex-start;
+    padding-left: 10px;
     div{
       @include lineheight(20px);
       padding: 0 8px;
       cursor: pointer;
       border-radius: 2px;
-      margin: 6px 0 0 10px;
+      margin: 6px 10px 0 0;
     }
     .redWarn{
       color: #f4667c;
