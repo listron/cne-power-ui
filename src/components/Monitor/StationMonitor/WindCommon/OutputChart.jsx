@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
@@ -8,10 +8,11 @@ import moment from 'moment';
 import styles from './windCommon.scss';
 
 
-class OutputChart extends Component{
+class OutputChart extends Component {
     static propTypes = {
         scatterData: PropTypes.object,
         capabilityDataTime: PropTypes.number,
+        capabilityLoading: PropTypes.bool,
     }
     constructor() {
         super();
@@ -21,32 +22,32 @@ class OutputChart extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        const { capabilityDataTime } = this.props;
+        const { capabilityDataTime,capabilityLoading } = this.props;
         const preTime = prevProps.capabilityDataTime;
-        if (capabilityDataTime !== preTime) { // 数据重新请求后重绘。
+        if (capabilityDataTime !== preTime || capabilityLoading!=prevProps.capabilityLoading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
-     unitFormarts = (data,yAxisUnit) => {
+    unitFormarts = (data, yAxisUnit) => {
         if (isNaN(data) || (!data && data !== 0)) {
             return '--';
         }
-        if(yAxisUnit==='MW'){
+        if (yAxisUnit === 'MW') {
             return data / 1000
         }
         return data
     }
 
-    drawCharts=(params)=>{
-        const { capabilityData, yAxisUnit } = params;
+    drawCharts = (params) => {
+        const { capabilityData, yAxisUnit, capabilityLoading } = params;
         let yAxisType = `功率(${yAxisUnit})`
         const chartsBox = document.getElementById('capabilityDiagram');
-        const capabilityPower = capabilityData.map(e => dataFormats(this.unitFormarts(e.stationPower,yAxisUnit), '--', 2, true));
+        const capabilityPower = capabilityData.map(e => dataFormats(this.unitFormarts(e.stationPower, yAxisUnit), '--', 2, true));
         const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous || e.windSpeed, '--', 2, true));
         const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
         const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous || e.windSpeed);
-        const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
+        const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) && !capabilityLoading ? showNoData : hiddenNoData;
         const capabilityDiagram = echarts.init(chartsBox);
         const lineColor = '#666';
         const color = ['#c57576', '#3e97d1'];
@@ -58,7 +59,7 @@ class OutputChart extends Component{
         }
         const minPower = Math.min(...capabilityPower);
         const minRadiation = Math.min(...capabilityRadiation);
-        capabilityData.length>0 ? capabilityDiagram.hideLoading() : capabilityDiagram.showLoading('default', { color: '#199475' });
+        capabilityLoading ? capabilityDiagram.showLoading('default', { color: '#199475' }) : capabilityDiagram.hideLoading();
         const capabilityOption = {//出力图
             graphic: capabilityGraphic,
             title: {
@@ -207,12 +208,12 @@ class OutputChart extends Component{
                 }
             ]
         }
-        capabilityDiagram.setOption(capabilityOption,'notMerge');
+        capabilityDiagram.setOption(capabilityOption, 'notMerge');
         capabilityDiagram.resize();
     }
 
 
-    render(){
+    render() {
         const resourceAnalysis = `#/statistical/stationaccount/resource`;
         return (
             <div className={styles.capabilityBox}>
