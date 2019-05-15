@@ -58,7 +58,7 @@ class DeviceStatus extends Component {
       "status": 5,
     }
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
     this.onChangeFilter()

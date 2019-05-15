@@ -49,7 +49,7 @@ class PowerLost extends Component {
       "wind": 4,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
     

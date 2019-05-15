@@ -20,6 +20,7 @@ function* getSingleDeviceCurveData(action) { //功率曲线图表-功率曲线-�
         payload: {
           singleDeviceCurveData: response.data.data.powerCurveData || [],
           airDensity: response.data.data.airDensity || '',
+          curveTime:moment().unix(),//时间戳
         }
       })
     } else {
@@ -50,6 +51,7 @@ function* getSingleDeviceCurveList(action) { //功率曲线列表-单风机
         payload: {
           singleDeviceCurveList: response.data.data.dataList || [],
           total,
+         
         }
       })
     } else {
