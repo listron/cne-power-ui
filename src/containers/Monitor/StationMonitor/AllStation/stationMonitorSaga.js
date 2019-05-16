@@ -53,7 +53,10 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
 }
 
 function* getRealMonitorData(action) {
-  const { firtQuery = true, waiting=true } = action;
+  const { firtQuery = true, waiting } = action;
+  if (waiting) { // 进程刚进来就付值，防止关不掉这个进程
+    yield delay(10000);
+  }
   if (firtQuery) {
     yield put({
       type: allStationAction.changeMonitorstationStore,
@@ -61,9 +64,6 @@ function* getRealMonitorData(action) {
     })
   }
   yield fork(getMonitorStation, action);
-  if (waiting) { // 进程刚进来就付值，防止关不掉这个进程
-    yield delay(10000);
-  }
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
 
 }
