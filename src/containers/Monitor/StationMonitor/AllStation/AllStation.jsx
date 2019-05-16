@@ -8,8 +8,8 @@ import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 // import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
-import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
-// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
+// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class AllStation extends Component {
@@ -25,9 +25,13 @@ class AllStation extends Component {
     stationTypeCount: PropTypes.string,
     stationType: PropTypes.string,
     stopRealCharstData: PropTypes.func,
+    stations: PropTypes.array,
   }
   constructor(props) {
     super(props);
+    this.state={
+      showAreaSelect:false
+    }
   }
 
   componentWillUnmount() {
@@ -46,17 +50,29 @@ class AllStation extends Component {
     getRealMonitorData({ stationType: activeKey })
   }
 
+  showAreaSelect=()=>{
+
+  }
+
   render() {
-    const { stationTypeCount, stationType } = this.props;
+    const {  stationType, stations } = this.props;
+    const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
+    console.log('tet', regionArr)
+    const stationTypeCount='pv';
     return (
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
-            <div className={styles.allStationTitle} >
-              <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
-              <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
-              <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
+            <div className={styles.allStationTop} >
+              <div className={styles.allStationTitle}>
+                <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
+                <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
+                <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
+              </div>
+              {stationType === '1' &&
+                <div className={styles.allArea} onClick={this.showArea}>
+                {'全部区域'} <i className={'iconfont icon-content'}></i></div>}
             </div>
           }
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
@@ -75,6 +91,7 @@ class AllStation extends Component {
 const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
+    stations: state.common.get('stations').toJS(),
     realTimePowerUnit: state.common.get('realTimePowerUnit'),
     realTimePowerPoint: state.common.get('realTimePowerPoint'),
     realCapacityUnit: state.common.get('realCapacityUnit'),
@@ -82,7 +99,7 @@ const mapStateToProps = (state) => {
     powerUnit: state.common.get('powerUnit'),
     powerPoint: state.common.get('powerPoint'),
     stationTypeCount: state.common.get('stationTypeCount'), // 旧版本需要保留
-    monitorPvUnit:state.common.toJS().monitorPvUnit,
+    monitorPvUnit: state.common.toJS().monitorPvUnit,
   })
 }
 
