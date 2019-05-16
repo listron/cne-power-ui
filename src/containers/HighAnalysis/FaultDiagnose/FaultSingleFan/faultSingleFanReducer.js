@@ -13,7 +13,13 @@ const initState = Immutable.fromJS({
   deviceName: "", //设备名称
   faultInfo: {// 获取故障预警任务详情
     endTime: null,
+    stationName: "",
+    algorithmName: "",
+    deviceDatas: [],
+    algModeDatas: [],
+    deviceName: ""
   },
+  faultDateList: "", //预警日期-有故障的日期
   faultDate: "", // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择

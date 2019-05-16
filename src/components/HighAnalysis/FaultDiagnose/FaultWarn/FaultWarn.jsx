@@ -30,15 +30,17 @@ export default class FaultWarn extends React.Component {
             <span>{cur.faultUnitCount}</span>
             <span>{`/${cur.stationUnitCount}`}</span>
           </div>
-          <div className={styles.faultWarnCenterBottom}>
-            {cur.mainModules && cur.mainModules.map(item => {
-              return (
-                <div key={item}>
-                  {item}
-                </div>
-              )
-            })}
-          </div>
+          {(Number(cur.faultUnitCount) > 0) && (
+            <div className={styles.faultWarnCenterBottom}>
+              {cur.mainModules && cur.mainModules.map(item => {
+                return (
+                  <div key={item}>
+                    {item}
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       );
     });

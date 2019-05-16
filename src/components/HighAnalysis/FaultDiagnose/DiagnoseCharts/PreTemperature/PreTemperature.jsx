@@ -23,13 +23,13 @@ export default class PreTemperature extends React.Component {
     onChangeFilter: PropTypes.func,
     getSimilarityList: PropTypes.func,
     getAllFanResultList: PropTypes.func,
-    stationDeviceList: PropTypes.array,
     preDate: PropTypes.array,
     preLoading: PropTypes.bool,
     preTimeCompare: PropTypes.number,
     warnId: PropTypes.number,
     getTenMinutesAfter: PropTypes.func,
     getTenMinutesDiff: PropTypes.func,
+    faultDateList: PropTypes.string,
 
   };
 
@@ -37,7 +37,6 @@ export default class PreTemperature extends React.Component {
     const  {
       tenMinutesBeforeList,
       deviceName,
-      stationDeviceList,
       preLoading,
       faultInfo: {
         stationCode
@@ -55,14 +54,10 @@ export default class PreTemperature extends React.Component {
     if (!preLoading) {
       myChart.hideLoading();
     }
-    // 单风机的时候需要从这里获取
-    const defaultName = localStorage.getItem("deviceName");
-    // 设备名称
-    const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
       eCharts.init(preChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(preChart); //构建下一个实例
-      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName, paramsStart, paramsEnd));
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
         const dz = opt.dataZoom[0];
@@ -97,7 +92,6 @@ export default class PreTemperature extends React.Component {
       getSimilarityList,
       getAllFanResultList,
       warnId,
-      stationDeviceList,
       faultInfo:{
         stationCode
       },
@@ -144,12 +138,13 @@ export default class PreTemperature extends React.Component {
       taskId,
       date: dateString
     };
+    // 调接口
+    getTenMinutesBefore(preParams);
+    getTenMinutesAfter(afterParams);
+    getTenMinutesDiff(diffParams);
     // 有故障
-    if (warnId ? warnId === 1 : stationDeviceList[0].warnId) {
+    if (warnId === 1) {
       // 接口
-      getTenMinutesBefore(preParams);
-      getTenMinutesAfter(afterParams);
-      getTenMinutesDiff(diffParams);
       getSimilarityList(heatAndAllFansParams);
       getAllFanResultList(heatAndAllFansParams);
     }
@@ -185,6 +180,7 @@ export default class PreTemperature extends React.Component {
       },
       faultDate,
       preDate,
+      faultDateList
     } = this.props;
     return (
       <div className={styles.preChartsBox}>
@@ -192,6 +188,22 @@ export default class PreTemperature extends React.Component {
           <span>选择日期</span>
           {(endTime) && (
             <DatePicker
+              dateRender={(current) => {
+                const style = {};
+                faultDateList && faultDateList.split(",").map(cur => {
+                  if (moment(current).format('YYYY-MM-DD') === moment(cur).format('YYYY-MM-DD')) {
+                    style.border = '1px solid #a42b2c';
+                    style.borderRadius = '50%';
+                    style.color = "#ffffff";
+                    style.backgroundColor = "#a42b2c";
+                  }
+                });
+                return (
+                  <div className="ant-calendar-date" style={style}>
+                    {current.date()}
+                  </div>
+                );
+              }}
               onChange={this.changeFaultDate}
               value={moment(faultDate || endTime, "YYYY-MM-DD")}
             />

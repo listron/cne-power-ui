@@ -12,17 +12,38 @@ class FaultSingleFan extends React.Component {
     loading: PropTypes.bool,
     stations: PropTypes.object,
     history: PropTypes.object,
+    match: PropTypes.object,
     changeSingleFanStore: PropTypes.func,
     changeWarnListStore: PropTypes.func,
     getList: PropTypes.func,
     getFanList: PropTypes.func,
     resetStore: PropTypes.func,
+    getFaultInfo: PropTypes.func,
     faultInfo: PropTypes.object,
   };
+
+  componentDidMount() {
+    const {
+      getFaultInfo,
+    } = this.props;
+    const stationCode = this.getPortfolioCode();
+    // 调用任务详情
+    const taskId = localStorage.getItem("taskId");
+    // 单风机设备全编码
+    const deviceFullcode = localStorage.getItem("deviceFullCode");
+    const params = {
+      taskId,
+      stationCode,
+      deviceFullcode
+    };
+    getFaultInfo(params)
+  }
 
   componentWillUnmount() {
     const { resetStore } = this.props;
     resetStore();
+    // 移除
+    localStorage.removeItem("deviceFullName");
   }
 
   onChangeFilter = (params) => {
@@ -32,15 +53,18 @@ class FaultSingleFan extends React.Component {
     });
   };
 
+  getPortfolioCode = () => {
+    let arr = window.location.href.split('/');
+    return arr[arr.length - 1];
+  };
+
   callBackList = () => {
     const {
       history,
-      faultInfo:{
-        stationCode
-      },
       getList,
       changeWarnListStore
     } = this.props;
+    const stationCode = this.getPortfolioCode();
     // 返回列表需要的参数
     const listParams = {
       stationCode: `${stationCode}`,
@@ -59,12 +83,10 @@ class FaultSingleFan extends React.Component {
   callBackFans = () => {
     const {
       history,
-      faultInfo:{
-        stationCode
-      },
       getFanList,
       changeWarnListStore
     } = this.props;
+    const stationCode = this.getPortfolioCode();
     // 返回列表需要的参数
     const fansParams = {
       stationCode: `${stationCode}`,
@@ -121,7 +143,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultSingleFanAction.resetStore }),
-  getStationDeviceList: () => dispatch({ type: faultSingleFanAction.getStationDeviceList }),
   getStandAloneList: payload => dispatch({ type: faultSingleFanAction.getStandAloneList, payload }),
   getSimilarityList: payload => dispatch({ type: faultSingleFanAction.getSimilarityList, payload }),
   getAllFanResultList: payload => dispatch({ type: faultSingleFanAction.getAllFanResultList, payload }),
