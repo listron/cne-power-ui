@@ -33,30 +33,6 @@ export default class PreTemperature extends React.Component {
 
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  componentDidMount() {
-    const  {
-      deviceName,
-      tenMinutesBeforeList,
-      preLoading
-    } = this.props;
-    const { preChart } = this;
-    const myChart = eCharts.init(preChart);
-    if (preLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!preLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       tenMinutesBeforeList,
@@ -67,7 +43,6 @@ export default class PreTemperature extends React.Component {
         stationCode
       },
       getTenMinutesBefore,
-      onChangeFilter,
       preTimeCompare: currentPreTimeCompare
     } = this.props;
     const { preTimeCompare } = prevProps;
@@ -85,6 +60,8 @@ export default class PreTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
+      eCharts.init(preChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(preChart); //构建下一个实例
       myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
@@ -96,15 +73,12 @@ export default class PreTemperature extends React.Component {
           pointCode: "GN010", //前驱测点-固定字段
           deviceFullcodes: [], // 默认传空代表所有风机
           startTime: moment(start).utc().format(),
-          endTime: moment(end).utc().format()
+          endTime: moment(end).add(1, "days").utc().format()
         };
         if (paramsStart !== params.start || paramsEnd !== params.end) {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            preDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesBefore(preParams);
         }
@@ -147,7 +121,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 发电机后驱温度
     const afterParams = {
@@ -155,7 +129,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 发电机后驱温度
     const diffParams = {
@@ -163,7 +137,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 相似性热图和所有风机
     const heatAndAllFansParams = {
@@ -194,7 +168,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format()
     };
     onChangeFilter({
       preDate: date

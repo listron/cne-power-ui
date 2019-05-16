@@ -1,6 +1,7 @@
 import moment from "moment"
 import ecStat from "echarts-stat";
 import echarts from "echarts";
+import { showNoData, hiddenNoData } from "../../../../../constants/echartsNoData.js";
 
 const themeColor = "#dfdfdf";
 
@@ -18,7 +19,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   function valueFunc(arr) {
     let newArr = [];
     arr.map(cur => {
-      newArr.push(cur.value);
+      newArr.push(Number(cur.value).toFixed(2));
     });
     return newArr;
   }
@@ -51,6 +52,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     return newArr;
   }
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -91,7 +93,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     },
     yAxis: {
       type: 'value',
-      name: '（。）',
+      name: '℃',
       axisLine:{
         lineStyle:{
           width: 0, //这里是为了突出显示加上的
@@ -144,7 +146,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   function valueFunc(arr) {
     let newArr = [];
     arr.map(cur => {
-      newArr.push(cur.value);
+      newArr.push(Number(cur.value).toFixed(2));
     });
     return newArr;
   }
@@ -177,6 +179,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     return newArr;
   }
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -217,7 +220,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     },
     yAxis: {
       type: 'value',
-      name: '（。）',
+      name: '℃',
       axisLine:{
         lineStyle:{
           width: 0, //这里是为了突出显示加上的
@@ -270,7 +273,7 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
   function valueFunc(arr) {
     let newArr = [];
     arr.map(cur => {
-      newArr.push(cur.value);
+      newArr.push(Number(cur.value).toFixed(2));
     });
     return newArr;
   }
@@ -303,6 +306,7 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     return newArr;
   }
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -343,7 +347,7 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     },
     yAxis: {
       type: 'value',
-      name: '（。）',
+      name: '℃',
       axisLine:{
         lineStyle:{
           width: 0, //这里是为了突出显示加上的
@@ -396,7 +400,7 @@ export const singleTemperatureOptions = (data ,name) => {
   function dataFunc(arr) {
     let newArr = [];
     arr.map(cur => {
-      newArr.push(cur.value);
+      newArr.push(Number(cur.value).toFixed(2));
     });
     return newArr;
   }
@@ -409,6 +413,7 @@ export const singleTemperatureOptions = (data ,name) => {
         },
    * */
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     title: {
       text: name,
       left: "46%",
@@ -497,11 +502,12 @@ export const heatTemperatureOptions = (data, name) => {
   function dataFunc(arr) {
     let newArr = []; //保存value
     arr.map(cur => {
-      newArr.push([cur.deviceName1, cur.deviceName2, cur.value]);
+      newArr.push([cur.deviceName1, cur.deviceName2, Number(cur.value).toFixed(2)]);
     });
     return newArr;
   }
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     tooltip: {
       position: 'top',
       // formatter: (params) => {
@@ -552,9 +558,15 @@ export const heatTemperatureOptions = (data, name) => {
       precision: 1 //设置小数精度，默认0没有小数
     },
     series: [{
-      name: 'Punch Card',
       type: 'heatmap',
       data: dataFunc(data),
+      tooltip:{
+        formatter: (params) => {
+          return `<div>
+            <span>${params.value[0]}:${params.value[1]}</span><br />${params.marker}<span>${params.value[2]}</span>
+          </div>`;
+        }
+      },
       itemStyle: {
         emphasis: {
           shadowBlur: 10,
@@ -571,6 +583,7 @@ export const allFansOptions = (data, name) => {
   if (!cfResidual || cfResidual.length === 0) {
     return {}; //返回空对象
   }
+  return {};
   // 使用统计扩展处理过后的数据
   const bins = ecStat.histogram(cfResidual);
   let interval = null;
@@ -624,6 +637,21 @@ export const allFansOptions = (data, name) => {
     }
     return distanceX;
   }
+  // 计算出直方图的步长区间[[x1, x2], [x1, x2]]的格式
+  function histogramFunc() {
+    const newArr = []; // 保存数据
+    for (let i = 0; i< cfResidual.length; i++) {
+      newArr.push([distanceMin+i*distanceNum, distanceMin+(i+1)*distanceNum]);
+    }
+    for (let i = 0; i< cfResidual.length; i++) {
+      for(let j = 0; j < newArr.length; j++){
+        if(cfResidual[i] >= newArr[j][0] && cfResidual[i] < newArr[j][0]) {
+          console.log(cfResidual[i], "oldArr[i]");
+        }
+      }
+    }
+  }
+  console.log(histogramFunc(), "histogramFunc");
   /** 根据计算出来的x轴坐标点计算出y轴
    *正态曲线公式https://baike.baidu.com/item/%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E6%9B%B2%E7%BA%BF/12726695
    * √(2π)≈2.507
@@ -696,6 +724,7 @@ export const allFansOptions = (data, name) => {
   }
 
   return {
+    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
     title: {
       text: name,
       left: "46%",

@@ -64,9 +64,8 @@ function* getRealMonitorData(action) {
   }
   yield fork(getMonitorStation, action);
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
+
 }
-
-
 
 function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
@@ -341,7 +340,6 @@ function* getPvCapabilitydiagrams(action) {
     });
   }
 }
-
 
 function* getPvRealData(action) { // 获取光伏的数据
   const { firtQuery = true, waiting } = action;
