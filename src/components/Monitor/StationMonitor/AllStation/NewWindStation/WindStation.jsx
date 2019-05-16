@@ -45,7 +45,7 @@ class WindStation extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { getRealMonitorData, getRealChartsData, getRealMonitorPower } = this.props;
     getRealMonitorData({ stationType: '0' });
     const startTime = moment().subtract(24, 'hours').utc().format();

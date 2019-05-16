@@ -52,8 +52,8 @@ class PowerLost extends Component {
     this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-    
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;

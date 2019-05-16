@@ -152,13 +152,13 @@ class WindStationList extends React.Component {
         className: styles.numberStyle,
         render: value => dataFormats(value, '--', 2, true) + '%',
       },
-      {
-        title: () => <TableColumnTitle title="年利用小时" unit={'h'}  />,
-        dataIndex: "equivalentHours",
-        sorter: true,
-        className: styles.numberStyle,
-        render: value => this.powerPoint(value),
-      },
+      // {
+      //   title: () => <TableColumnTitle title="年利用小时" unit={'h'}  />,
+      //   dataIndex: "equivalentHours",
+      //   sorter: true,
+      //   className: styles.numberStyle,
+      //   render: value => this.powerPoint(value),
+      // },
       {
         title: () => <TableColumnTitle title="故障" unit={'台'}  />,
         dataIndex: "errorNum",

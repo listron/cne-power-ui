@@ -43,7 +43,7 @@ class AllStation extends Component {
     const { changeMonitorStationStore, stopRealMonitorData, getRealMonitorData } = this.props;
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
     stopRealMonitorData();
-    getRealMonitorData({ stationType: activeKey })
+    // getRealMonitorData({ stationType: activeKey })
   }
 
   render() {

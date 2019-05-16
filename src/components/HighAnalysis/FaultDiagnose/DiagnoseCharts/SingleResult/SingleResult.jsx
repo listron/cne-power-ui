@@ -14,7 +14,6 @@ export default class SingleResult extends React.Component {
     standAloneList: PropTypes.array,
     aloneLoading: PropTypes.bool,
     deviceFullCode: PropTypes.string,
-    stationDeviceList: PropTypes.array,
     aloneTimeCompare: PropTypes.number,
     deviceName: PropTypes.string,
   };
@@ -24,15 +23,14 @@ export default class SingleResult extends React.Component {
       singleChart,
       props: {
         standAloneList,
-        stationDeviceList,
         aloneLoading,
         deviceName,
         aloneTimeCompare: currentAloneTimeCompare
       }
     } = this;
     const { aloneTimeCompare } = prevProps;
+    const name = localStorage.getItem("deviceName");
     // 设备全编码
-    const name = deviceName || stationDeviceList[0].deviceName;
     const myChart = eCharts.init(singleChart);
     if (aloneLoading) { // loading态控制。
       myChart.showLoading();
@@ -44,7 +42,7 @@ export default class SingleResult extends React.Component {
     if (currentAloneTimeCompare && aloneTimeCompare !== currentAloneTimeCompare) {
       eCharts.init(singleChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(singleChart); //构建下一个实例
-      myChart.setOption(singleTemperatureOptions(standAloneList, name));
+      myChart.setOption(singleTemperatureOptions(standAloneList, deviceName ||name));
     }
   }
 

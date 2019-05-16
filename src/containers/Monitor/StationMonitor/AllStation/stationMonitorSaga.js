@@ -8,8 +8,8 @@ import moment from 'moment';
 let realtimeInterval = null;
 let realChartsInterval = null;
 let realPowerInterval = null;
-
 const baseurl = Path.basePaths.APIBasePath;
+
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime = moment.utc().format();
@@ -63,6 +63,7 @@ function* getRealMonitorData(action) {
   }
   yield fork(getMonitorStation, action);
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
+
 }
 
 function* stopRealMonitorData() { // 停止数据定时请求并清空数据
@@ -197,9 +198,6 @@ function* stopRealCharstData(action) {
     yield cancel(realPowerInterval);
   }
 }
-
-
-
 
 function* dayPower(){ // 多电站日发电量与等效时图
   const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');

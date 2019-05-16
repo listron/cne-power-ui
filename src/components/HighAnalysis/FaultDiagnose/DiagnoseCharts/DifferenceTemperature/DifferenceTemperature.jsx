@@ -18,7 +18,6 @@ export default class DifferenceTemperature extends React.Component {
     match: PropTypes.object,
     faultInfo: PropTypes.object,
     getTenMinutesDiff: PropTypes.func,
-    stationDeviceList: PropTypes.array,
     deviceName: PropTypes.string,
     diffDate: PropTypes.array,
     onChangeFilter: PropTypes.func,
@@ -32,14 +31,12 @@ export default class DifferenceTemperature extends React.Component {
       props: {
         tenMinutesDiffList,
         deviceName,
-        stationDeviceList,
         diffLoading,
         getTenMinutesDiff,
         diffTimeCompare: currentDiffTimeCompare,
         faultInfo: {
           stationCode
         },
-        onChangeFilter
       }
     } = this;
     const { diffTimeCompare } = prevProps;
@@ -51,14 +48,11 @@ export default class DifferenceTemperature extends React.Component {
     if (!diffLoading) {
       myChart.hideLoading();
     }
-    // 单风机的时候需要从这里获取
-    const defaultName = localStorage.getItem("deviceName");
     // 设备名称
-    const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentDiffTimeCompare && diffTimeCompare !== currentDiffTimeCompare) {
       eCharts.init(diffChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(diffChart); //构建下一个实例
-      myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name || defaultName, paramsStart, paramsEnd));
+      myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, deviceName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
         const dz = opt.dataZoom[0];
