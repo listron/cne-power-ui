@@ -544,7 +544,82 @@ function* getDeviceFactors(action) { //获取设备厂家列表
   } catch (e) {
     console.log(e);
     yield put({
-      type: deviceManageAction.changeAssetConfigStore,
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
+function* getDevicePartInfo(action) { //获取设备部件信息
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
+  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  try {
+    const response = yield call(axios.get, url,);
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          partInfoData: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
+function* getDevicefixRecord(action) { //获取检修记录
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getDevicefixRecord}`;
+  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  try {
+    const response = yield call(axios.get, url,);
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          fixRecordData: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
+function* getDevicehistoryWarning(action) { //获取设备历史告警
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceCode}/${payload.warningType}`;
+  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  try {
+    const response = yield call(axios.post, url,{...payload});
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          historyWarningData: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
       payload: { ...payload, loading: false },
     })
   }
@@ -571,5 +646,9 @@ export function* watchBookDeviceManage() {
   yield takeLatest(deviceManageAction.importStationDevice, importStationDevice);
   yield takeLatest(deviceManageAction.getStationDeviceType, getStationDeviceType);
   yield takeLatest(deviceManageAction.getDeviceFactors, getDeviceFactors);
+  yield takeLatest(deviceManageAction.getDevicePartInfo, getDevicePartInfo);
+  yield takeLatest(deviceManageAction.getDevicefixRecord, getDevicefixRecord);
+  yield takeLatest(deviceManageAction.getDevicehistoryWarning, getDevicehistoryWarning);
+ 
 }
 

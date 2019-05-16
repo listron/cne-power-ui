@@ -26,6 +26,9 @@ export const deviceManageAction = {
   importStationDevice:Symbol('importStationDevice'),
   getStationDeviceType:Symbol('getStationDeviceType'),
   getDeviceFactors:Symbol('getDeviceFactors'),
+  getDevicePartInfo:Symbol('getDevicePartInfo'),//获取某设备的部件信息
+  getDevicefixRecord:Symbol('getDevicefixRecord'),//获取某设备检修记录
+  getDevicehistoryWarning:Symbol('getDevicehistoryWarning'),//获取某设备的历史告警
 }
 
 

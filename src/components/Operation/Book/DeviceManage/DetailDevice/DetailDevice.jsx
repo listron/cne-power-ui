@@ -20,6 +20,7 @@ class DetailDevice extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '',
+      tableFilter: 'part'
     }
   }
   onShowSideChange = () => { // 编辑页
@@ -98,6 +99,11 @@ class DetailDevice extends Component {
       selectedStationIndex: null,
     });
   }
+  changeTableFilter = (value) => {
+    this.setState({
+      tableFilter: value
+    })
+  }
   render() {
     const { stationDeviceDetail } = this.props;
     const deviceTypeCode = stationDeviceDetail.deviceTypeCode;
@@ -107,7 +113,7 @@ class DetailDevice extends Component {
     const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
     const windTime = windTimeFun(stationDeviceDetail);
-    const { showWarningTip, warningTipText } = this.state;
+    const { showWarningTip, warningTipText, tableFilter } = this.state;
     return (
       <div className={styles.detailDevice}>
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -173,8 +179,8 @@ class DetailDevice extends Component {
             </div>}
           </div>
         </div>
-        <div>
-          <RecordTable />
+        <div className={styles.tableFilter}>
+          <RecordTable {...this.props} tableFilter={tableFilter} changeTableFilter={this.changeTableFilter} />
         </div>
       </div>
     )
