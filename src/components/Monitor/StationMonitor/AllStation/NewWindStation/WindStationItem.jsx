@@ -22,10 +22,6 @@ class WindStationItem extends React.Component {
     super(props, context)
   }
 
-  componentDidMount(){
-    console.log('前端渲染结束时间', moment().format('YYYY-MM-DD HH:MM:SS'))
-  }
-
   getStatusName = (stuats) => {
     let name = '';
     switch (stuats) {
