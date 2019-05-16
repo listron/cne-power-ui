@@ -50,12 +50,12 @@ class WindStation extends React.Component {
     getRealMonitorData({ stationType: '0' });
     const startTime = moment().subtract(24, 'hours').utc().format();
     const endTime = moment().utc().format();
-    getRealChartsData({ capability: { startTime, endTime } })
-    getRealMonitorPower({
-      intervalTime: 0,
-      startTime: moment().subtract(6, 'day').format('YYYY-MM-DD'),// 默认是6天前;
-      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-    })
+    // getRealChartsData({ capability: { startTime, endTime } })
+    // getRealMonitorPower({
+    //   intervalTime: 0,
+    //   startTime: moment().subtract(6, 'day').format('YYYY-MM-DD'),// 默认是6天前;
+    //   endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    // })
   }
 
   componentWillUnmount() {
