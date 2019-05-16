@@ -11,12 +11,13 @@ const Option = Select.Option;
 class PvStationItem extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
+    pvCapabilitydiagramsData: PropTypes.array,
     monitorPvUnit: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
-      sortStatusName: 'equivalentHours',
+      sortStatusName: 'sort',
       ascend: true,
       selectStation:null,
     }
@@ -80,7 +81,7 @@ class PvStationItem extends React.Component {
 
 
   render() {
-    const { stationDataList, monitorPvUnit } = this.props;
+    const { stationDataList, monitorPvUnit,pvCapabilitydiagramsData } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const { sortStatusName, ascend,selectStation } = this.state;
     const data = [
@@ -938,7 +939,7 @@ class PvStationItem extends React.Component {
       }
     ]
     const sortName = [
-      { text: '默认排序', id: 'default' },
+      { text: '默认排序', id: 'sort' },
       { text: '等效时', id: 'equivalentHours' },
       { text: '告警事件', id: 'alarmNum' },
       { text: '低效逆变器', id: 'lowEfficiencyInverterNum' },
@@ -983,22 +984,21 @@ class PvStationItem extends React.Component {
         <div className={styles.staionsListBox}>
           {stationDataList.length > 0 && filteredStation.map((list,key) => {
             const stationStatusList = list.stations.sort((a, b) => {
-              return 900 - b.stationStatus.stationStatus === 0 ? -1 : 1
+              return 900 - b.stationStatus === 0 ? -1 : 1
             })
             return (<div className={styles.regionList} key={key}>
               <div className={styles.regionName}>{list.regionName}</div>
               <div className={styles.staionsList}>
                 {stationStatusList.map((item, index) => {
-                  const stationStatus = item.stationStatus || {};
-                  const currentStatus = stationStatus.stationStatus;
-                  const stationPower = realTimePowerUnit === 'kW' ? item.stationPower : multiplyFormarts(item.stationPower, 1000);
+                  const currentStatus = item.stationStatus;
+                  const stationPower = divideFormarts(item.stationPower,realTimePowerUnit);
                   const stationCapacity = realCapacityUnit === 'MW' ? item.stationCapacity : multiplyFormarts(item.stationCapacity, 1000);
                   const instantaneous = item.instantaneous;
                   const dayPower = divideFormarts(item.dayPower, powerUnit);
                   const equivalentHours = item.equivalentHours;
-
+                  const chartData=pvCapabilitydiagramsData.length>0 && pvCapabilitydiagramsData[0].chartData || [];
                   return (
-                    <div className={`${styles[getStatusName[currentStatus]]} ${styles.staionCard}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
+                    <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
                       <Link to={`/monitor/singleStation/${item.stationCode}`}  className={styles.linkBox}>
                         <div className={styles.stationTop}>
                           <div className={styles.stationName} title={item.stationName}> {item.stationName}</div>
@@ -1041,7 +1041,7 @@ class PvStationItem extends React.Component {
                           yXaisName={'辐射(W/m²)'}
                           stationCode={item.stationCode}
                           yAxisUnit={realTimePowerUnit}
-                          capabilityData={data} />
+                          capabilityData={chartData} />
                       </div>
                       <Link  to={`/monitor/singleStation/${item.stationCode}`}  className={styles.linkBox}>
                         <div className={styles.bottom}>

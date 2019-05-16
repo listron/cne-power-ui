@@ -41,13 +41,13 @@ class PvStation extends React.Component {
   componentDidMount() {
     const { regionName } = this.props;
     console.log('1111111')
-    console.log('tst',regionName)
-    this.props.getPvRealData({regionName})
-    this.props.getPvChartsData()
+    console.log('tst', regionName)
+    this.props.getPvRealData({ regionName })
+    this.props.getPvChartsData({regionName})
   }
 
-  componentDidUpdate(){
-    
+  componentDidUpdate() {
+
   }
 
   onHandleAlarm = (checked) => {
@@ -79,19 +79,20 @@ class PvStation extends React.Component {
   getStatusNum = (status) => { // 获取状态的数量
     const { stationDataSummary = {} } = this.props.pvMonitorStation;
     const { stationStatusSummary = [] } = stationDataSummary;
-    const statusList = stationStatusSummary.filter(e => e.stationStatus === status)
+    const statusList = stationStatusSummary.filter(e => e.stationStatus === +status)
     return statusList.length > 0 && statusList[0].stationNum || 0
   }
 
   statusDataList = () => { // 删选数据
     let { checked, stationType } = this.state;
     const { pvMonitorStation, } = this.props;
-    const stationDataList = pvMonitorStation.stationDataList || [];
+    const { stationDataList = [] } = pvMonitorStation;
     const newStationDataList = stationDataList.filter(e => { return !checked || (checked && e.alarmNum > 0) }).filter(e => {
-      const stationStatus = e.stationStatus || {};
       if (stationType === 'all') {
         return true
-      } else { return stationStatus.stationStatus === `${stationType}` }
+      } else { 
+        return e.stationStatus === +stationType 
+      }
     })
     return newStationDataList
   }
@@ -112,6 +113,7 @@ class PvStation extends React.Component {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible } = this.state;
     const { pvMonitorStation, loading, monitorPvUnit } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
+    console.log('pvCapabilitydiagramsData',this.props.pvCapabilitydiagramsData)
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
@@ -132,9 +134,9 @@ class PvStation extends React.Component {
               value={stationType}
             >
               <RadioButton value="all">全部</RadioButton>
-              <RadioButton value="400">通讯正常  {this.getStatusNum(400)}</RadioButton>
-              <RadioButton value="500">通讯中断  {this.getStatusNum(500)}</RadioButton>
-              <RadioButton value="900">未接入  {this.getStatusNum(900)}</RadioButton>
+              <RadioButton value="400">通讯正常  {this.getStatusNum('400')}</RadioButton>
+              <RadioButton value="500">通讯中断  {this.getStatusNum('500')}</RadioButton>
+              <RadioButton value="900">未接入  {this.getStatusNum('900')}</RadioButton>
             </Radio.Group>
           </div>
         </div>

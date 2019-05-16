@@ -31,6 +31,9 @@ const divideFormarts = (data, unit) => { // 除
   if (unit === "万kWh") {
     return data / 10000
   }
+  if(unit==='MW'){
+    return data / 1000
+  }
   return data
 }
 

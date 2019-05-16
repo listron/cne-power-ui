@@ -17,6 +17,7 @@ var initState = Immutable.fromJS({
    powerTime:null,//发电量时间
    capabilityLoading:false,// 出力图的loading
    regionName:'全部区域', // 区域名称
+   pvCapabilitydiagramsData:[],// 光伏电站的图表数据
 });
 
 const stationMonitorReducer = (state = initState, action) => {

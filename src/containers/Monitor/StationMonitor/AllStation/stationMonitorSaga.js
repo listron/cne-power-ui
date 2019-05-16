@@ -190,10 +190,12 @@ function* stopRealCharstData(action) {
   }
 }
 
-function* dayPower() { // 多电站日发电量与等效时图
+function* dayPower(action) { // 多电站日发电量与等效时图
+  const { payload } = action;
+  const {regionName}=payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment(endDate).subtract(1, 'month').format('YYYY-MM-DD');
-  const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}/'全部区域'`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/dayPower`;
   try {
     const response = yield call(axios.get, url);
@@ -217,10 +219,12 @@ function* dayPower() { // 多电站日发电量与等效时图
   }
 }
 
-function* monthPower() { // 多电站月发电量与等效时图
+function* monthPower(action) { // 多电站月发电量与等效时图
+  const { payload } = action;
+  const {regionName}=payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
-  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}/'全部区域'`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}/${regionName}`;
   console.log('url', url)
   // const url=`/mock/api/v3/monitor/monthPower`;
   try {
@@ -245,7 +249,9 @@ function* monthPower() { // 多电站月发电量与等效时图
   }
 }
 
-function* monthplanpower() { // 多电站月累计与计划发电量图
+function* monthplanpower(action) { // 多电站月累计与计划发电量图
+  const { payload } = action;
+  const {regionName}=payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/'全部区域'`;
@@ -272,10 +278,10 @@ function* monthplanpower() { // 多电站月累计与计划发电量图
   }
 }
 
-function* getPvChartsData() { // 光伏电站的图表
-  yield fork(dayPower);
-  yield fork(monthPower);
-  yield fork(monthplanpower);
+function* getPvChartsData(action) { // 光伏电站的图表
+  yield fork(dayPower, action);
+  yield fork(monthPower, action);
+  yield fork(monthplanpower, action);
 }
 
 function* getPvMonitorStation(action) {//获取所有/风/光电站信息
@@ -283,6 +289,7 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
   const { regionName } = payload;
   const utcTime = moment.utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}/${utcTime}/${regionName}`
+  console.log('实时数据', url)
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -310,7 +317,8 @@ function* getPvCapabilitydiagrams(action) {
   const { regionName } = payload;
   let startTime = moment().subtract(1, 'day').utc().format()
   let endTime = moment.utc().format();
-  const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}/${startTime}/${endTime}/${regionName}`
+  const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}/${startTime}/${endTime}/${regionName}`;
+  console.log('出力图数据', url)
   try {
     yield put({
       type: allStationAction.changeMonitorstationStore,

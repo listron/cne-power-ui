@@ -77,7 +77,7 @@ class PvStationList extends React.Component {
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(realTimePowerUnit === 'kW' ? value : multiplyFormarts(value, 1000), '--', 2, true)
+        render: value => dataFormats(divideFormarts(value,realTimePowerUnit), '--', 2, true)
       },
 
       {

@@ -68,7 +68,9 @@ class AllStation extends Component {
       curName=value;
     }
     this.props.changeMonitorStationStore({regionName:curName})
-    this.setState({ showRegion: false })
+    this.setState({ showRegion: false });
+    this.props.stopRealMonitorData();
+    this.props.getPvRealData({regionName:curName});
   }
   
 

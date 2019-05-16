@@ -74,7 +74,7 @@ class PvMapChart extends Component {
           needData.forEach((e, index) => {
             let value = dataFormats(item[e['value']], '--', e.point, true)
             if (e.value === 'stationPower') {
-              const stationPowerNum = realTimePowerUnit === 'kW' ? item.stationPower : multiplyFormarts(item.stationPower, 1000);
+              const stationPowerNum =  divideFormarts(item.stationPower,realTimePowerUnit);
               value = dataFormats(stationPowerNum, '--', e.point, true)
             }
             if (e.value === 'stationPlanPower') {

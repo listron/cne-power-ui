@@ -121,6 +121,9 @@ class DayPower extends Component{
                     axisLabel: {
                         color: fontColor,
                         interval: 0,
+                        formatter:(value)=>{
+                            return moment(value).format('DD')
+                        }
                     },
                     axisTick: { show: false },
                     // boundaryGap: [true, true],
