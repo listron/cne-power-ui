@@ -8,14 +8,15 @@ import moment from 'moment';
 let realtimeInterval = null;
 let realChartsInterval = null;
 let realPowerInterval = null;
-
 const baseurl = Path.basePaths.APIBasePath;
+
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime = moment.utc().format();
   const anotherUrl = baseurl + Path.APISubPaths.monitor.getStationType + payload.stationType + '/' + utcTime;
   const windUrl = baseurl + Path.APISubPaths.monitor.getWindStation + '/' + utcTime;
   const url = payload.stationType === '0' ? windUrl : anotherUrl;
+  console.log('请求开始时间',moment().format('YYYY-MM-DD HH:MM:ss'))
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -26,6 +27,7 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
         });
       }
       if (payload.stationType === '0') { // 风电的数据
+        console.log('请求结束时间',moment().format('YYYY-MM-DD HH:MM:ss'))
         yield put({
           type: allStationAction.changeMonitorstationStore,
           payload: { windMonitorStation: response.data.data || {}, loading: false }
@@ -63,6 +65,7 @@ function* getRealMonitorData(action) {
   }
   yield fork(getMonitorStation, action);
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
+
 }
 
 function* stopRealMonitorData() { // 停止数据定时请求并清空数据
@@ -74,8 +77,6 @@ function* stopRealMonitorData() { // 停止数据定时请求并清空数据
     yield cancel(realtimeInterval);
   }
 }
-
-
 
 function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
@@ -109,7 +110,6 @@ function* getCapabilityDiagram(action) { //获取出力图数据
   }
 }
 
-
 function* getMonitorPower(action) { //获取理论发电量 实际发电量数据
   const { payload } = action;
   const { intervalTime, startTime, endTime } = payload;
@@ -136,7 +136,6 @@ function* getMonitorPower(action) { //获取理论发电量 实际发电量数�
   }
 }
 
- 
 function* getMonitorScatter(action) { // 等效小时数
   const localDate = moment().format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getWindScatter}/${localDate}}`
@@ -161,7 +160,6 @@ function* getMonitorScatter(action) { // 等效小时数
     });
   }
 }
-
 
 function* getRealChartsData(action) { // 获取出力图和日等效利用小时散点数
   const { payload } = action;
@@ -202,8 +200,6 @@ function* stopRealCharstData(action) {
     yield cancel(realPowerInterval);
   }
 }
-
-
 
 export function* watchStationMonitor() {
   yield takeLatest(allStationAction.getMonitorStation, getMonitorStation);
