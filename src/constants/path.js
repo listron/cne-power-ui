@@ -436,7 +436,6 @@ export default {
       algoList: "/v3/wtfdd/task/algomodel", // 获取预警任务列表-算法模型视图
       algoOptionList: "/v3/wtfdd/algorithm", // 获取算法列表
       addWarnTask: "/v3/wtfdd/task", // 新增预警任务
-      stationDeviceList: "/v3/management/devicelist", // 获取单电站所有风机
       downloadFile: "/v3/wtfdd/task", // 下载故障发生概率文件
       warnHistory: "/v3/wtfdd/warning/history", // 获取历史预警列表
       resetTask: "/v3/wtfdd/task/redo", // 重新执行
@@ -445,7 +444,7 @@ export default {
       similarityList: "/v3/wtfdd/result/similarity", // 获取风机相似性结果
       allFanResult: "/v3/wtfdd/result/std", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
       tenMinutesLine: "/v3/wtfdd/pt10m", // 获取风机10分钟数据
-      faultInfo: "/v3/wtfdd/task", // 获取故障预警任务详情
+      faultInfo: "/v3/wtfdd/task/detail", // 获取故障预警任务详情
       statusInfo: "/v3/wtfdd/task/status", // 获取预警任务状态统计
     }
   }

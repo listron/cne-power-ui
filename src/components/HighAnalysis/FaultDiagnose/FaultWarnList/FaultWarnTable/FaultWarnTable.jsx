@@ -71,7 +71,7 @@ export default class FaultWarnTable extends React.Component {
     localStorage.setItem("faultHistory", "");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
+    localStorage.setItem("deviceFullName", algorithmName);
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序

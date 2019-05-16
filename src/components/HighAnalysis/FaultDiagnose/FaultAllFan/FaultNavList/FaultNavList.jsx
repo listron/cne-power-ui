@@ -9,9 +9,7 @@ export default class FaultNavList extends React.Component {
     loading: PropTypes.bool,
     showFlag: PropTypes.bool,
     onChangeFilter: PropTypes.func,
-    getStationDeviceList: PropTypes.func,
     stationCode: PropTypes.string,
-    stationDeviceList: PropTypes.array,
     match: PropTypes.object,
     faultInfo: PropTypes.object,
     getTenMinutesBefore: PropTypes.func,
@@ -39,19 +37,8 @@ export default class FaultNavList extends React.Component {
       navList: { clientHeight },
       props: {
         onChangeFilter,
-        getStationDeviceList,
-        match:{
-          params: {
-            stationCode
-          }
-        },
       }
     } = this;
-    const params = {
-      stationCode: stationCode,
-      deviceTypeCode: "101"
-    };
-    getStationDeviceList(params);
     onChangeFilter({
       showFlag: clientHeight > 32
     });
@@ -85,13 +72,9 @@ export default class FaultNavList extends React.Component {
 
   handlerFansClick = (data, index, warnId) => {
     const {
-      match:{
-        params: {
-          stationCode
-        }
-      },
       faultInfo: {
-        endTime
+        endTime,
+        stationCode
       },
       faultDate,
       getTenMinutesBefore,
@@ -105,7 +88,7 @@ export default class FaultNavList extends React.Component {
       afterDate,
       diffDate
     } = this.props;
-    const { deviceFullCode, deviceName } = data;
+    const { deviceFullcode, deviceName, date } = data;
     const taskId = localStorage.getItem("taskId");
     // 发电机前驱温度
     const preParams = {
@@ -134,7 +117,7 @@ export default class FaultNavList extends React.Component {
     // 单机自适应模块
     const singleParams = {
       taskId,
-      deviceFullCode
+      deviceFullCode: deviceFullcode
     };
     // 相似性热图
     const heatAndAllFansParams = {
@@ -147,16 +130,20 @@ export default class FaultNavList extends React.Component {
       // 改变设备选中
       onChangeFilter({
         deviceName,
-        deviceFullCode,
+        deviceFullCode: deviceFullcode,
         warnId,
+        faultDateList: date
       });
       // 请求接口
       getTenMinutesBefore(preParams);
       getTenMinutesAfter(afterParams);
       getTenMinutesDiff(diffParams);
-      getStandAloneList(singleParams);
-      getSimilarityList(heatAndAllFansParams);
-      getAllFanResultList(heatAndAllFansParams);
+      // warnId等于1是有故障
+      if (warnId === 1) {
+        getStandAloneList(singleParams);
+        getSimilarityList(heatAndAllFansParams);
+        getAllFanResultList(heatAndAllFansParams);
+      }
     })
   };
 
@@ -165,15 +152,17 @@ export default class FaultNavList extends React.Component {
     const { openFlag, fansFlag } = this.state;
     const {
       showFlag,
-      stationDeviceList
+      faultInfo: {
+        deviceDatas
+      },
     } = this.props;
-    const item = stationDeviceList && stationDeviceList.map((cur, index) => {
+    const item = deviceDatas && deviceDatas.map((cur, index) => {
       return (
         <div
           key={`${cur.deviceName}${index}`}
           style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
-          className={cur.warnId === 1 ? styles.yellowWarn : styles.blueWarn}
-          onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}
+          className={Number(cur.type) === 1 ? styles.yellowWarn : styles.blueWarn}
+          onClick={() => {return this.handlerFansClick(cur, index, Number(cur.type))}}
         >
           {cur.deviceName}
         </div>
