@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -29,11 +28,14 @@ class OrbitMap extends Component {
       this.setMapChart(testChart, orbitList,users,itemOrbit,startAndEndCoord,data);
     }
   }
-   
+
   setMapChart = (testChart, orbitList,users,itemOrbit,startAndEndCoord,data) => {
+    // 取中心点
+    const pointData = orbitList && orbitList[0] && orbitList[0].pointData;
     const option = {
       bmap: {
-        center: [116.46, 39.92],//中心点
+        // 没数据的时候默认北京中心点
+        center: (!pointData || pointData.length === 0) ? [116.46, 39.92] : [pointData[0].longitude, pointData[0].latitude],//中心点
         zoom: 11,
         roam: true,//可放大缩小
         mapStyle: {
@@ -135,7 +137,7 @@ class OrbitMap extends Component {
             }
           }]
         }//地图样式配置
-       },
+      },
       tooltip: {
         trigger: 'item',
         enterable: true,
@@ -144,7 +146,7 @@ class OrbitMap extends Component {
         orient: 'vertical',
         top: 'bottom',
         left: 'right',
-        show:false, 
+        show:false,
       },
       selected: {
         '刘德华1': true,
@@ -156,14 +158,13 @@ class OrbitMap extends Component {
           type: 'lines',
           lineStyle: {
             normal: {
-                width: 3,
+              width: 3,
             }
           },
           mapType: 'none',
           tooltip: {
             enterable: true,
-            formatter: (params,orbitList) => {
-              // console.log(params,orbitList);
+            formatter: (params) => {
               return `<div style='display:flex; flex-direction: column;'>
             <div style='width:30px;height:30px;'><img src='/img/people.png'>${params.name}</div>
             <div style='height:30px;line-height:30px'>${params.data.date}</div>
@@ -205,7 +206,7 @@ class OrbitMap extends Component {
             //     coord: [116.4551, 40.2539],
             //     tooltip: {
             //       formatter: '终点'
-            //     },            
+            //     },
             //     symbol:'image:///img/end.png',
             //   }
             // ]
@@ -214,9 +215,9 @@ class OrbitMap extends Component {
           coordinateSystem: 'bmap',
           data:data,
           //  data: [
-            // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
+          // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
           //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
-            // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
+          // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
           // ],
           symbolSize: [8],
           label: {
@@ -244,15 +245,12 @@ class OrbitMap extends Component {
     }
     // testChart.setOption(option)
   }
- 
+
   render() {
     const { testId } = this.props;
     return (
-      <div id={testId} style={{ width: "100%", flex: 1 }} ></div>
+      <div id={testId} style={{width: "100%", flex: 1}} />
     )
   }
 }
 export default withRouter(OrbitMap);
-
-
-
