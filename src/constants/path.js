@@ -294,7 +294,7 @@ export default {
       getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
-                  
+
       getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
       getWindStation:'/v3/wind/monitor/stations', // 全部风电站
       getWindCapability:'/v3/wind/monitor/stations/capabilitydiagram',// 风电站出力图
@@ -381,7 +381,7 @@ export default {
       // 智能分析报告
       getIntelligent:'/v3/intelligence/analysis/station', // 单电站分析
       exportIntelligent:'/v3/intelligence/analysis/station/export', // 导出单电站分析导出
-      getArea:'/v3/intelligence/analysis/area', // 同区域电站对比 
+      getArea:'/v3/intelligence/analysis/area', // 同区域电站对比
       exportAreaStation:'/v3/intelligence/analysis/area/export', // 导出同区域电站对比
       getAreaCompare:'/v3/intelligence/analysis/areacompare', // 区域对比分析报告
       exportAreaCompare:'/v3/intelligence/analysis/areacompare/export', // 区域对比分析报告导出

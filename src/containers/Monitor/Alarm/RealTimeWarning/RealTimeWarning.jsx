@@ -25,10 +25,14 @@ class RealTimeWarning extends Component {
   componentDidMount() {
     const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
+    const  pathParams=this.props.history.location.state || {};
+    const {stationType = '',deviceName=''}=pathParams;
     const { warningTypeStatus, warningType } = this.props;
-    this.props.getRealtimeWarning({ 
+    this.props.getRealtimeWarning({
       stationCodes: stationCode ? [stationCode] : [],
-      warningTypeStatus, warningType 
+      warningTypeStatus, warningType,
+      stationType,
+      deviceName,
     })
   }
   componentWillUnmount() {
@@ -58,6 +62,7 @@ const mapStateToProps = (state) => {
     ...state.monitor.realtimeWarningReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    stationTypeCount: state.common.get('stationTypeCount'),
   }
 }
 const mapDispatchToProps = (dispatch) => ({

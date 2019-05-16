@@ -188,7 +188,6 @@
                 display: flex;
                 width:100%;
                 flex-direction: column;
-                height:170px;
                 border-bottom: 1px solid #dfdfdf;
                 .pointDataTitle{
                     color:#000000;
@@ -201,11 +200,36 @@
                     }
                 }
                 .pointDataContiner{
-                    .detailPointName{ // 查看全部测点数据
-                        // height:600px;
-                        // overflow: scroll;
+                    display: flex;
+                    flex-direction: row;
+                    padding: 0 12px 17px 12px;
+                    .group{
+                        display: flex;
+                        flex: 1;
+                        flex-direction: column;
+                        line-height: 27px;
+                        border-right:1px solid #dfdfdf;
+                        padding: 0 7px;
+                        &:last-child{
+                            border: none
+                        }
+                        .eachData{
+                            display: flex;
+                            justify-content: space-between;
+                            p{
+                                margin-bottom: 0
+                            }
+                            .devicePointValue{
+                                color: $themeColor;
+                            }
+                            .unit{
+                                display: inline-block;
+                                // width:30px;
+                                color: #666;
+                            }
                     }
                 }
+            }
             }
 
             .pointAlarm{

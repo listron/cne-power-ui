@@ -164,17 +164,7 @@
                 .weather{
                     margin: 0 13px 0 19px;
                 }
-                .newOperatorList{
-                    width:290px;
-                    background: #ececec;
-                    border-radius: 100px;
-                    height: 30px;
-                    .marquee{
-                        display: flex;
-                        flex: 1;
-                        line-height: 30px;
-                    }
-                }
+               
             }
         }
     }
@@ -272,6 +262,7 @@
         }
         .iconStyle{
             color: $themeColor;
+            cursor: pointer;
         }
     }
     .windContainer{
@@ -398,7 +389,7 @@
                     border-radius: 4px;
                     margin-right: 12px;
                     .spanNormal,.spanActive{
-                        padding: 0 8px;
+                        padding: 0 7px;
                         color:#666666;
                         display: inline-block;
                         cursor: pointer;

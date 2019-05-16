@@ -15,74 +15,24 @@ export default class SingleResult extends React.Component {
     aloneLoading: PropTypes.bool,
     deviceFullCode: PropTypes.string,
     stationDeviceList: PropTypes.array,
+    aloneTimeCompare: PropTypes.number,
+    deviceName: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      singleChart,
-      props: {
-        getStandAloneList,
-        standAloneList,
-        aloneLoading,
-        deviceFullCode,
-      }
-    } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      deviceFullCode
-    };
-    const myChart = eCharts.init(singleChart);
-    if (aloneLoading) {// loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!aloneLoading) {
-      myChart.hideLoading();
-    }
-    // 接口
-    getStandAloneList(params);
-    myChart.setOption(singleTemperatureOptions(standAloneList, deviceFullCode));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      getStandAloneList,
-      deviceFullCode: currentDeviceFullCode,
-      stationDeviceList: currentStationDeviceList
-    } = this.props;
-    const {
-      stationDeviceList: nextStationDeviceList,
-      deviceFullCode: nextDeviceFullCode
-    } = nextProps;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      deviceFullCode: nextDeviceFullCode ? nextDeviceFullCode : nextStationDeviceList[0].connectDeviceFullCode
-    };
-    if (currentStationDeviceList[0].connectDeviceFullCode !== nextStationDeviceList[0].connectDeviceFullCode|| currentDeviceFullCode !== nextDeviceFullCode) {
-      // 接口
-      getStandAloneList(params);
-    }
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const  {
       singleChart,
       props: {
         standAloneList,
         stationDeviceList,
-        deviceFullCode,
         aloneLoading,
+        deviceName,
+        aloneTimeCompare: currentAloneTimeCompare
       }
     } = this;
+    const { aloneTimeCompare } = prevProps;
     // 设备全编码
-    const name = deviceFullCode ? deviceFullCode : stationDeviceList[0].connectDeviceFullCode;
+    const name = deviceName || stationDeviceList[0].deviceName;
     const myChart = eCharts.init(singleChart);
     if (aloneLoading) { // loading态控制。
       myChart.showLoading();
@@ -91,7 +41,11 @@ export default class SingleResult extends React.Component {
     if (!aloneLoading) {
       myChart.hideLoading();
     }
-    myChart.setOption(singleTemperatureOptions(standAloneList, name));
+    if (currentAloneTimeCompare && aloneTimeCompare !== currentAloneTimeCompare) {
+      eCharts.init(singleChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(singleChart); //构建下一个实例
+      myChart.setOption(singleTemperatureOptions(standAloneList, name));
+    }
   }
 
 

@@ -76,17 +76,25 @@ function* stopRealMonitorData() { // 停止数据定时请求并清空数据
 }
 
 
-//获取出力图数据
-function* getCapabilityDiagram(action) {
+
+function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload:{
+        capabilityLoading:true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
           capabilityData: response.data.data || [],
+          capabilityDataTime:moment().unix(),
+          capabilityLoading:false
         }
       });
     } else { throw response.data }
@@ -101,12 +109,11 @@ function* getCapabilityDiagram(action) {
   }
 }
 
-//获取理论发电量 实际发电量数据
-function* getMonitorPower(action) {
+
+function* getMonitorPower(action) { //获取理论发电量 实际发电量数据
   const { payload } = action;
   const { intervalTime, startTime, endTime } = payload;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${-1}`;
-  // const url = Path.basePaths.APIBasePath + Path.APISubPaths.monitor.getMonitorPower + 350 + '/' + payload.startTime + '/' + payload.endTime + '/' + payload.intervalTime;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -114,6 +121,7 @@ function* getMonitorPower(action) {
         type: allStationAction.changeMonitorstationStore,
         payload: {
           powerData: response.data.data || [],
+          powerTime:moment().unix()
         }
       })
     } else { throw response.data }
@@ -128,8 +136,8 @@ function* getMonitorPower(action) {
   }
 }
 
-// 等效小时数
-function* getMonitorScatter(action) {
+ 
+function* getMonitorScatter(action) { // 等效小时数
   const localDate = moment().format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getWindScatter}/${localDate}}`
   try {
@@ -139,6 +147,7 @@ function* getMonitorScatter(action) {
         type: allStationAction.changeMonitorstationStore,
         payload: {
           scatterData: response.data.data || {},
+          scatterTime:moment().unix(),
         }
       })
     } else { throw response.data }
@@ -174,6 +183,13 @@ function* getRealMonitorPower(action) {
 function* stopRealCharstData(action) {
   const { payload } = action;
   if (realChartsInterval) {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        capabilityData: [],
+        scatterData:[],
+      }
+    });
     yield cancel(realChartsInterval);
   }
   if (payload === 'power' && realPowerInterval) {
@@ -182,7 +198,7 @@ function* stopRealCharstData(action) {
       payload: {
         powerData: []
       }
-    })
+    });
     yield cancel(realPowerInterval);
   }
 }

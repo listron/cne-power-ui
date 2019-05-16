@@ -30,11 +30,21 @@ const MapChart = ({ ...data }) => {
           top: 20,
           itemWidth: 21,
           itemHeight: 28,
+          selectedMode:false,
         },
         geo: {
           map: 'china',
           layoutCenter: ['50%', '50%'],
           layoutSize: '100%',
+          label: {
+            normal: {
+                show: false,
+            },
+            emphasis: {
+                show: false,
+               
+            }
+        },
           itemStyle: {
             normal: {
               areaColor: '#d8eef6',
@@ -102,7 +112,7 @@ const MapChart = ({ ...data }) => {
           name: '通讯正常',
           type: 'scatter',
           coordinateSystem: 'geo',
-          z:3,
+          z:2,
           data: normalData.map((dataItem, index) => {
             return {
               ...dataItem,
@@ -119,7 +129,7 @@ const MapChart = ({ ...data }) => {
           name: '通讯中断',
           type: 'scatter',
           coordinateSystem: 'geo',
-          z:2,
+          z:3,
           data: interrupt.map((dataItem, index) => {
             return {
               ...dataItem,

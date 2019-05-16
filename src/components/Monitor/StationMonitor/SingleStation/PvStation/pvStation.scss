@@ -1,9 +1,7 @@
 @import '../../../../../theme/theme.scss';
 .pvStation {
     background: #fff;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+    width:100%;
     :global {
         .ant-progress-inner {
             background-color: #dfdfdf;

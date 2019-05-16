@@ -30,6 +30,8 @@ class Malfunction extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    malfunctionList: PropTypes.array,
+    malfunctionDetailList: PropTypes.array,
   }
 
   onTimeChange = (value) => {
@@ -52,11 +54,11 @@ class Malfunction extends Component {
       "fault": 5,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;
@@ -85,9 +87,10 @@ class Malfunction extends Component {
   }
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData,tableType,malfunctionList,malfunctionDetailList } = this.props;
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
+    const disabledStatus=(tableType==='all'&&malfunctionList.length===0)||(tableType==='detail'&&malfunctionDetailList.length===0);
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -100,9 +103,9 @@ class Malfunction extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={disabledStatus} >导出</Button>
         </div>
-        <TableList {...this.props} params={params} />
+        <TableList {...this.props} onChangeFilter={this.onChangeFilter} params={params} />
       </div>
     )
   }

@@ -3,7 +3,7 @@ import { algorithmControlAction } from './algorithmControlAction.js';
 
 const initState = Immutable.fromJS({
   loading: false,
-  stationCodes: '',    // 电站编码，所有为空字符串
+  stationCodes: "",    // 电站编码，所有为空字符串
   deviceTypeCode: '',	 // 设备类型编码
   createTimeStart: '',	 // 开始时间
   createTimeEnd: '',	 // 结束时间
@@ -35,7 +35,7 @@ const AlgorithmControlReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case algorithmControlAction.fetchAlgorithmControlSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case algorithmControlAction.RESET_STORE:
+    case algorithmControlAction.resetStore:
       return initState
   }
   return state;

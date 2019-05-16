@@ -194,16 +194,26 @@
         }
        
     }
+    .stationCardContainer{
+        position: relative; 
+        :global {
+            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
+                display: none
+            }
+        }
+    }
     .deviceCard {
         width: 235px;
         height: 214px;
         cursor: pointer;
         @include propContainer();
-
         :global {
             .ant-popover-inner-content {
                 background: #f8f8f8;
                 box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+            }
+            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
+                display: none
             }
         }
     }
@@ -276,15 +286,16 @@
             text-align: right;
         }
         :global{
-            .ant-table-thead>tr>th.ant-table-column-has-actions.ant-table-column-has-sorters {
-                padding-right: 22px !important;
+            .ant-table .ant-table-thead>tr>th,
+            .ant-table .ant-table-tbody>tr>td {
+                padding: 0px 10px;
+                height: 40px;
+                line-height: 30px;
             }
-            .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
-                padding: 0 12px;
-            }
-            .ant-table-placeholder{
+            .ant-table-placeholder {
                 border: none;
             }
+            
         }
 
     }
@@ -299,14 +310,6 @@
         background: url('/img/undo.png') no-repeat center #fff;
     }
     :global {
-        .ant-table .ant-table-thead{
-            th>div{
-                height: 60px;
-            }
-        }
-        .ant-table .ant-table-thead .ant-table-column-sorter{
-            top: 18px;
-        }
         .ant-spin-dot i {
             background-color: #199475;
         }

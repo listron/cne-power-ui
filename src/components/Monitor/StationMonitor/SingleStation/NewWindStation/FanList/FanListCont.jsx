@@ -19,6 +19,11 @@ class FanListCont extends React.Component {
     changeSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
     fanDisplay: PropTypes.string,
+    loading: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    loading: true
   }
 
   constructor(props) {
@@ -28,6 +33,7 @@ class FanListCont extends React.Component {
       alarmSwitch: false,
       currentPage: 1,
       pageSize: 10,
+      firstLoad: true,
     }
   }
 
@@ -65,13 +71,11 @@ class FanListCont extends React.Component {
   }
 
 
-
-  getData = (stationCode) => {// 获取数据
-    const { getNewFanList } = this.props;
+  getData = stationCode => { // 获取数据
     const { firstLoad } = this.state;
-    getNewFanList({ stationCode, firstLoad });
-    this.timeOutId = setTimeout(() => {
-      if (firstLoad) {
+    this.props.getNewFanList({ stationCode, firstLoad });
+    this.timeOutId = setTimeout(()=>{
+      if(firstLoad){
         this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
@@ -88,17 +92,17 @@ class FanListCont extends React.Component {
   operations = () => { // 下拉筛选框
     const { pointparams, fanDisplay } = this.props;
     const { alarmSwitch, cardPointParams } = this.state;
-    let optionList = [];
-    for (let key in pointparams) {
-      optionList.push(<Option value={key} key={key}>{pointparams[key]}</Option>)
-    }
+    const list = ["Default", "NC005", "GN010", "GN001", "RT001", "TM101", "NC001", "TM105", "NC004"]
+    let optionList = list.map(e => {
+      return <Option value={e} key={e}>{pointparams[e]}</Option>
+    })
     const operations = (<div className={styles.inverterRight} >
       {fanDisplay === 'deviceCard' &&
         <Select style={{ width: 190, marginRight: 24 }} onChange={this.pointparamsChange} value={cardPointParams}>
           {optionList}
         </Select>
       }
-      <Switch onChange={this.onSwitchAlarm} value={alarmSwitch} style={{ marginRight: 8 }} /> 告警
+      <Switch onChange={this.onSwitchAlarm} value={alarmSwitch} style={{ marginRight: 8 }} /> 只看告警
     </div>);
     return operations
   }
@@ -123,7 +127,7 @@ class FanListCont extends React.Component {
 
   render() {
     const { currentPage, pageSize, cardPointParams } = this.state;
-    const { fanDisplay } = this.props;
+    const { fanDisplay, loading } = this.props;
     return (
       <div className={styles.fanListCont}>
         <div className={styles.StationTitle} >
@@ -138,11 +142,12 @@ class FanListCont extends React.Component {
           </div>
         </div>
         {fanDisplay === 'deviceCard' &&
-          <FanItem
-            {...this.props}
-            cardPointParams={cardPointParams}
-            deviceList={this.filterStatusDataList()}
-          />}
+          (loading  ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+            <FanItem
+              {...this.props}
+              cardPointParams={cardPointParams}
+              deviceList={this.filterStatusDataList()}
+            />)}
         {fanDisplay === 'deviceTable' &&
           <FanTable
             {...this.props}

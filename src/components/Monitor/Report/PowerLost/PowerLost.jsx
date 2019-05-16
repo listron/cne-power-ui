@@ -28,6 +28,7 @@ class PowerLost extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    powerLostList: PropTypes.array,
   }
 
   onTimeChange = (value) => {
@@ -48,11 +49,11 @@ class PowerLost extends Component {
       "wind": 4,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-    
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
@@ -81,7 +82,7 @@ class PowerLost extends Component {
   }
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData,powerLostList } = this.props;
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -95,7 +96,7 @@ class PowerLost extends Component {
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={powerLostList.length===0} >导出</Button>
         </div>
         <TableList {...this.props} />
       </div>

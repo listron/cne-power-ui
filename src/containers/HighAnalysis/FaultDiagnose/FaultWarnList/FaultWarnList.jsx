@@ -11,7 +11,6 @@ class FaultWarnList extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
-    singleStationCode: PropTypes.string,
     changeWarnListStore: PropTypes.func,
     location: PropTypes.object,
     match: PropTypes.object,

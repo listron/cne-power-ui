@@ -20,6 +20,7 @@ export default class FaultWarn extends React.Component {
     getAlgoModel: PropTypes.func,
     getList: PropTypes.func,
     getFanList: PropTypes.func,
+    algoModelData: PropTypes.object,
   };
 
   constructor(props) {
@@ -31,27 +32,19 @@ export default class FaultWarn extends React.Component {
   }
 
   componentDidMount() {
+    const { main } = this;
+    main && main.addEventListener('click', this.hideStationChange, true);
+  }
+
+  componentWillUnmount() {
+    const { main } = this;
+    main && main.removeEventListener('click', this.hideStationChange, true);
   }
 
   hideStationChange = () => {
     this.setState({
       showStationSelect: false
     });
-  };
-
-  modalTypeFunc = () => {
-    const {
-      viewType,
-    } = this.props;
-    if (viewType === 1) {
-      return <FaultWarnAlgorithm {...this.props} />;
-    }
-    if (viewType === 2) {
-      return <FaultWarnFan {...this.props} />;
-    }
-    if (viewType === 3) {
-      return <FaultWarnTable {...this.props} />
-    }
   };
 
   clickModalType = () => {
@@ -94,13 +87,39 @@ export default class FaultWarn extends React.Component {
       stationCode: singleStationCode,
       pageSize: 10,
       pageNum: 1,
-      sortField: "",
-      sortMethod: "",
+      sortField: "prediction_date",
+      sortMethod: "desc",
     };
     onChangeFilter({
       viewType: 3 //展示列表
     });
     getList(listParams);
+  };
+
+  algorithmModalNumFunc = () => {
+    const {
+      algoModelData: {
+        healthList,
+        largeSizeList,
+        natureList
+    }} = this.props;
+    const arr = []; //保存有故障的
+    healthList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    largeSizeList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    natureList.forEach(item => {
+      if (item.windTurbines.length !== 0) {
+        arr.push(item);
+      }
+    });
+    return arr.length;
   };
 
   render() {
@@ -111,10 +130,10 @@ export default class FaultWarn extends React.Component {
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
     return (
-      <div className={styles.faultWarnMain}>
+      <div className={styles.faultWarnMain} ref={(ref) => {this.main = ref;}}>
         <div className={styles.title}>
           {showStationSelect &&
-          <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
+          <ChangeStation stations={stationItems.filter(e => e.stationType === 0)} stationName={stationItem.stationName} baseLinkPath="/analysis/faultDiagnose/fanWarn" hideStationChange={this.hideStationChange} />
           }
           <div className={styles.titleLeft}>
             <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
@@ -139,7 +158,7 @@ export default class FaultWarn extends React.Component {
                 算法模型
               </div>
               <div className={styles.num}>
-                <span>10</span>
+                <span>{this.algorithmModalNumFunc()}</span>
               </div>
             </div>
             <div
@@ -180,7 +199,9 @@ export default class FaultWarn extends React.Component {
           </Link>
         </div>
         <div className={styles.faultWarnMainCenter}>
-          {this.modalTypeFunc()}
+          {(viewType === 1) && (<FaultWarnAlgorithm {...this.props} />)}
+          {(viewType === 2) && (<FaultWarnFan {...this.props} />)}
+          {(viewType === 3) && (<FaultWarnTable {...this.props} />)}
         </div>
       </div>
     );

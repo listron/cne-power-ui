@@ -24,7 +24,7 @@ const historyWarnReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case historyWarnAction.fetchHistoryWarnSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case historyWarnAction.RESET_STORE:
+    case historyWarnAction.resetStore:
       return initState
   }
   return state;

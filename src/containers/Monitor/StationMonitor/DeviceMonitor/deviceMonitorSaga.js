@@ -3,7 +3,7 @@ import axios from 'axios';
 import { delay } from 'redux-saga';
 import path from '../../../../constants/path';
 import { deviceAction } from './deviceAction';
-import { throwError } from 'rxjs';
+import moment from 'moment';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 let realChartsInterval=null;
@@ -323,6 +323,7 @@ function *getScatterpoint(action){ // 单风机散点图
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
           scatterpoint: response.data.data || {},
+          scatterpointTime:moment().unix(),
         }
       })
     }else{throw response.data}
@@ -348,6 +349,7 @@ function *getSequencediagram(action){ // 单风机时序图
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
         payload: {
           sequencediagram: response.data.data || {},
+          sequencediagramTime:moment().unix(),
         }
       })
     }else{throw response.data}
@@ -363,13 +365,16 @@ function *getSequencediagram(action){ // 单风机时序图
 }
 
 function *getWindDeviceCharts(action){ // 单风机散点图  单风机时序图
+  const {waiting}=action;
+  if(waiting){
+    yield delay(3600000); // 阻塞1小时
+  }
   yield fork(getScatterpoint,action);
   yield fork(getSequencediagram,action);
-  yield delay(3600000); // 阻塞1小时
-  realChartsInterval = yield fork(getWindDeviceCharts, action);
+  realChartsInterval = yield fork(getWindDeviceCharts, {...action,waiting: true});
 }
 
-function *getWindDeviceRealData(action){ // 单风机散点图  单风机时序图
+function *getWindDeviceRealData(action){ // 单风机实时数据
   const {waiting}=action;
   if(waiting){
     yield delay(10000); // 阻塞10秒
