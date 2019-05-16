@@ -25,12 +25,14 @@ class AllStation extends Component {
     stationTypeCount: PropTypes.string,
     stationType: PropTypes.string,
     stopRealCharstData: PropTypes.func,
+    changeMonitorstationStore: PropTypes.func,
     stations: PropTypes.array,
+    regionName: PropTypes.string,
   }
   constructor(props) {
     super(props);
-    this.state={
-      showAreaSelect:false
+    this.state = {
+      showRegion: false,
     }
   }
 
@@ -50,37 +52,67 @@ class AllStation extends Component {
     getRealMonitorData({ stationType: activeKey })
   }
 
-  showAreaSelect=()=>{
-
+  showRegionSelect = () => {
+    this.setState({ showRegion: true })
   }
 
+  hideRegionSelect = () => {
+    this.setState({ showRegion: false })
+  }
+
+  regionChange=(value)=>{
+    let curName='';
+    if(!value){
+      curName='全部区域';
+    }else{
+      curName=value;
+    }
+    this.props.changeMonitorStationStore({regionName:curName})
+    this.setState({ showRegion: false })
+  }
+  
+
   render() {
-    const {  stationType, stations } = this.props;
+    const { stationTypeCount, stationType, stations,regionName } = this.props;
     const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
-    console.log('tet', regionArr)
-    const stationTypeCount='pv';
+    const { showRegion } = this.state;
     return (
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
-            <div className={styles.allStationTop} >
-              <div className={styles.allStationTitle}>
-                <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
-                <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
-                <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
-              </div>
-              {stationType === '1' &&
-                <div className={styles.allArea} onClick={this.showArea}>
-                {'全部区域'} <i className={'iconfont icon-content'}></i></div>}
+            <div className={styles.allStationTitle}>
+              <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
+              <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
+              <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
             </div>
           }
+          {(stationType === '1' || stationTypeCount === 'pv') && <div className={styles.allArea} onClick={this.showRegionSelect}>
+            {regionName} <i className={'iconfont icon-content'}></i></div>}
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
           {stationTypeCount === 'wind' && <WindStation {...this.props} />}
           {stationTypeCount === 'pv' && <PvStation {...this.props} />}
           {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
+          {
+            showRegion &&
+            <div className={styles.regionSelect}>
+              <div className={styles.regionSelectTop}>
+                {'全部区域'} <i className={'iconfont icon-content'}></i>
+              </div>
+              <div className={styles.regionSelectCont}>
+                <div onClick={() => { this.regionChange('') }} className={`${styles.normal} ${regionName === '全部区域' && styles.active}`}> {'全部区域'}</div>
+                {regionArr.map(e => {
+                  return (<div 
+                  onClick={() => { this.regionChange(e) }} 
+                  key={e}
+                  className={`${styles.normal} ${e === regionName && styles.active}`}> {e}</div>)
+                })}
+              </div>
+
+            </div>
+          }
         </div>
         <Footer />
       </div>

@@ -198,14 +198,11 @@ function* stopRealCharstData(action) {
   }
 }
 
-
-
-
 function* dayPower(){ // 多电站日发电量与等效时图
   const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
   const startDate=moment(endDate).subtract(1,'month').format('YYYY-MM-DD');
-  // const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}}`;
-  const url=`/mock/api/v3/monitor/dayPower`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}`;
+  // const url=`/mock/api/v3/monitor/dayPower`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -231,8 +228,9 @@ function* dayPower(){ // 多电站日发电量与等效时图
 function* monthPower (){ // 多电站月发电量与等效时图
   const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
   const startDate= moment().startOf('year').format('YYYY-MM-DD');
-  // const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}}`;
-  const url=`/mock/api/v3/monitor/monthPower`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}`;
+  console.log('url',url)
+  // const url=`/mock/api/v3/monitor/monthPower`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -258,8 +256,8 @@ function* monthPower (){ // 多电站月发电量与等效时图
 function* monthplanpower(){ // 多电站月累计与计划发电量图
   const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
   const startDate= moment().startOf('year').format('YYYY-MM-DD');
-  // const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}}`;
-  const url=`/mock/api/v3/monitor/monthPlanpower`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}`;
+  // const url=`/mock/api/v3/monitor/monthPlanpower`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {

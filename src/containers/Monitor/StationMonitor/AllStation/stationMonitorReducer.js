@@ -16,6 +16,7 @@ var initState = Immutable.fromJS({
    capabilityDataTime:null,//出力图时间
    powerTime:null,//发电量时间
    capabilityLoading:false,// 出力图的loading
+   regionName:'全部区域', // 区域名称
 });
 
 const stationMonitorReducer = (state = initState, action) => {
