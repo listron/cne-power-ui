@@ -13,12 +13,33 @@ class FaultAllFan extends React.Component {
     loading: PropTypes.bool,
     stations: PropTypes.object,
     history: PropTypes.object,
+    match: PropTypes.object,
     faultInfo: PropTypes.object,
     changeFaultAllFanStore: PropTypes.func,
     resetStore: PropTypes.func,
     getListView: PropTypes.func,
+    getFaultInfo: PropTypes.func,
     changeAlgorithmControlStore: PropTypes.func,
   };
+
+  componentDidMount() {
+    const {
+      getFaultInfo,
+      match: {
+        params: {
+          stationCode
+        }
+      }
+    } = this.props;
+    // 调用任务详情
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId,
+      stationCode,
+      deviceFullcode: ""
+    };
+    getFaultInfo(params)
+  }
 
   componentWillUnmount() {
     const { resetStore } = this.props;
@@ -33,8 +54,10 @@ class FaultAllFan extends React.Component {
   callBackList = () => {
     const {
       history,
-      faultInfo:{
-        stationCode
+      match: {
+        params: {
+          stationCode
+        }
       },
     } = this.props;
     history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
@@ -98,7 +121,6 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultAllFanAction.resetStore }),
   changeFaultAllFanStore: payload => dispatch({ type: faultAllFanAction.changeFaultAllFanStore, payload }),
   changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
-  getStationDeviceList: payload => dispatch({ type: faultAllFanAction.getStationDeviceList, payload }),
   getResetTask: payload => dispatch({ type: faultAllFanAction.getResetTask, payload }),
   getFaultInfo: payload => dispatch({ type: faultAllFanAction.getFaultInfo, payload }),
   getFaultReport: payload => dispatch({ type: faultAllFanAction.getFaultReport, payload }),

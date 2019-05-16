@@ -15,7 +15,6 @@ const {
   },
   APISubPaths: {
     highAnalysis: {
-      algoOptionList,
       standAlone,
       similarityList,
       allFanResult,
@@ -23,53 +22,10 @@ const {
       faultInfo
     }
   }} = Path;
-// 处理数据
-// 查出两个数组相同的数据
-// 并且排在前面
-// warnList有故障风机，allList所有风机
-function getArrEqual(warnList, allList) {
-  let newSameArr = []; // 相同数据
-  let newDiffArr = []; // 相同数据
-  let newArr; // 拼接好的数据
-  // 取到相同的数据
-  for (let i = 0; i < allList.length; i++) {
-    for (let j = 0; j < warnList.length; j++) {
-      if(allList[i].algorithmName === warnList[j].algorithmName){
-        newSameArr.push(allList[i]);
-      }
-    }
-  }
-  // 取到不同的数据
-  for(let i = 0; i < allList.length; i++){
-    let obj = allList[i];
-    let num = obj.algorithmName;
-    let isExist = false;
-    for(let j = 0; j < warnList.length; j++){
-      let aj = warnList[j];
-      let n = aj.algorithmName;
-      if(n === num){
-        isExist = true;
-        break;
-      }
-    }
-    if(!isExist){
-      newDiffArr.push(obj);
-    }
-  }
-  // 为数据相同的添加属性 1，不同的数据添加属性 2
-  newArr = newSameArr.map(cur => {
-    // 代表有故障
-    return Object.assign(cur,{warnId: 1});
-  }).concat(newDiffArr.map(cur => {
-    // 代表无故障
-    return Object.assign(cur,{warnId: 2});
-  }));
-  return newArr;
-}
-function* getStationDeviceList(action) { // 获取单风机所有算法模型
+
+function* getFaultInfo(action) { // 获取故障预警任务详情
   const { payload } = action;
-  const url = `${APIBasePath}${algoOptionList}`;
-  const faultList = JSON.parse(localStorage.getItem("faultList"));
+  const url = `${APIBasePath}${faultInfo}`;
   try {
     yield put({
       type: faultSingleFanAction.changeSingleFanStore,
@@ -79,113 +35,78 @@ function* getStationDeviceList(action) { // 获取单风机所有算法模型
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      // 调用任务详情
-      const taskId = localStorage.getItem("taskId");
-      const params = {
-        taskId,
-        deviceList: getArrEqual(faultList, response.data.data) || []
-      };
-      yield put({
-        type: faultSingleFanAction.getFaultInfo,
-        payload: params,
-      });
-      yield put({
-        type: faultSingleFanAction.changeSingleFanStore,
-        payload: {
-          stationDeviceList: getArrEqual(faultList, response.data.data) || [],
-          loading: false,
-        },
-      });
-    }
-  } catch (e) {
-    console.log(e);
-    yield put({
-      type: faultSingleFanAction.changeSingleFanStore,
-      payload: {
-        loading: false
-      }
-    });
-  }
-}
-
-function* getFaultInfo(action) { // 获取故障预警任务详情
-  const { payload } = action;
-  const url = `${APIBasePath}${faultInfo}/${payload.taskId}`;
-  try {
-    yield put({
-      type: faultSingleFanAction.changeSingleFanStore,
-      payload: {
-        loading: true
-      }
-    });
-    const response = yield call(axios.post, url);
-    if (response.data.code === '10000') {
       // 发电机前驱温度
       const  preParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
       // 发电机后驱温度
       const  afterParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
       // 发电机温度差
       const diffParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010-GN011", //前驱测点-固定字段
-        deviceFullCodes: [], // 默认传空代表所有风机
+        deviceFullcodes: [], // 默认传空代表所有风机
         startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).utc().format()
+        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
       };
+      const deviceName = localStorage.getItem("deviceName");
       // 单机自适应
       // 单风机设备全编码
-      const fullCode = localStorage.getItem("deviceFullCode");
+      const deviceFullcode = localStorage.getItem("deviceFullCode");
       const aloneParams = {
         taskId: response.data.data.taskId,
-        //  默认本地，如果没有取数组的第一条
-        deviceFullCode: fullCode || payload.deviceList[0].deviceFullCode
+        deviceFullCode: deviceFullcode
       };
       // 相似性热图和所有风机
       const heatAndFansParams = {
         taskId: response.data.data.taskId,
         date: response.data.data.endTime
       };
-      yield put({
-        type: faultSingleFanAction.getAllFanResultList,
-        payload: heatAndFansParams
-      });
-      yield put({
-        type: faultSingleFanAction.getStandAloneList,
-        payload: aloneParams
-      });
-      yield put({
-        type: faultSingleFanAction.getSimilarityList,
-        payload: heatAndFansParams
-      });
-      yield put({
-        type: faultSingleFanAction.getTenMinutesDiff,
-        payload: diffParams
-      });
-      yield put({
-        type: faultSingleFanAction.getTenMinutesAfter,
-        payload: afterParams
-      });
-      yield put({
-        type: faultSingleFanAction.getTenMinutesBefore,
-        payload: preParams
-      });
+      // 任务执行失败不请求接口
+      if (response.data.data.status !== 4) {
+        yield put({
+          type: faultSingleFanAction.getAllFanResultList,
+          payload: heatAndFansParams
+        });
+        yield put({
+          type: faultSingleFanAction.getStandAloneList,
+          payload: aloneParams
+        });
+        yield put({
+          type: faultSingleFanAction.getSimilarityList,
+          payload: heatAndFansParams
+        });
+        yield put({
+          type: faultSingleFanAction.getTenMinutesDiff,
+          payload: diffParams
+        });
+        yield put({
+          type: faultSingleFanAction.getTenMinutesAfter,
+          payload: afterParams
+        });
+        yield put({
+          type: faultSingleFanAction.getTenMinutesBefore,
+          payload: preParams
+        });
+      }
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           faultInfo: response.data.data || {},
-          faultInfoMessage: response.data.executeMessage || "",
+          deviceName: deviceName,
+          warnId: Number(response.data.data.algModeDatas[0].type),
+          faultDateList: response.data.data.algModeDatas[0].date,
+          faultInfoMessage: response.data.data.executeMessage || "",
           loading: false,
         },
       });
@@ -289,7 +210,14 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
         type: faultSingleFanAction.changeSingleFanStore,
         payload: {
           allTimeCompare: moment().unix(),
-          allFanResultList: response.data.data || {},
+          allFanResultList: response.data.data || {
+            cfResidual: {
+              residual: []
+            },
+            cfStd1: [],
+            cfStd2: [],
+            cfStd3 : []
+          },
           loading: false,
           allLoading: false
         },
@@ -413,7 +341,6 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
 }
 
 export function* watchFaultSingleFan() {
-  yield takeEvery(faultSingleFanAction.getStationDeviceList, getStationDeviceList);
   yield takeEvery(faultSingleFanAction.getStandAloneList, getStandAloneList);
   yield takeEvery(faultSingleFanAction.getSimilarityList, getSimilarityList);
   yield takeEvery(faultSingleFanAction.getAllFanResultList, getAllFanResultList);

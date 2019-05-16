@@ -110,7 +110,7 @@ class windStationHeader extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div>年发电量  <span className={styles.dataValue}>{DeviceValueFormat(yearPower, '--', 2, true)}</span> 万kWh </div>
-          <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div>
+          {/* <div> 年利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2, true)}</span> h</div> */}
         </div>
       </div >
     )

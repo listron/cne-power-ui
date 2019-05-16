@@ -47,21 +47,6 @@ export default class FaultWarn extends React.Component {
     });
   };
 
-  modalTypeFunc = () => {
-    const {
-      viewType,
-    } = this.props;
-    if (viewType === 1) {
-      return <FaultWarnAlgorithm {...this.props} />;
-    }
-    if (viewType === 2) {
-      return <FaultWarnFan {...this.props} />;
-    }
-    if (viewType === 3) {
-      return <FaultWarnTable {...this.props} />
-    }
-  };
-
   clickModalType = () => {
     const {
       singleStationCode,
@@ -102,8 +87,8 @@ export default class FaultWarn extends React.Component {
       stationCode: singleStationCode,
       pageSize: 10,
       pageNum: 1,
-      sortField: "",
-      sortMethod: "",
+      sortField: "prediction_date",
+      sortMethod: "desc",
     };
     onChangeFilter({
       viewType: 3 //展示列表
@@ -214,7 +199,9 @@ export default class FaultWarn extends React.Component {
           </Link>
         </div>
         <div className={styles.faultWarnMainCenter}>
-          {this.modalTypeFunc()}
+          {(viewType === 1) && (<FaultWarnAlgorithm {...this.props} />)}
+          {(viewType === 2) && (<FaultWarnFan {...this.props} />)}
+          {(viewType === 3) && (<FaultWarnTable {...this.props} />)}
         </div>
       </div>
     );

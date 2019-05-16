@@ -10,7 +10,7 @@ export default class FaultWarnTable extends React.Component {
     loading: PropTypes.bool,
     match: PropTypes.object,
     getList: PropTypes.func,
-    listViewData: PropTypes.array,
+    listViewData: PropTypes.object,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
     pageSize: PropTypes.number,
@@ -71,24 +71,33 @@ export default class FaultWarnTable extends React.Component {
     localStorage.setItem("faultHistory", "");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
+    localStorage.setItem("deviceFullName", algorithmName);
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
     const { field, order } = sorter;
     const { singleStationCode, pageNum, pageSize, getList} = this.props;
+    // 根据字段匹配排序字段
+    const sortName = {
+      deviceName: "device_name",
+      predictionDate: "prediction_date",
+      algorithmName: "algorithm_name"
+    };
     const params = {
       stationCode: singleStationCode,
       pageNum,
       pageSize,
-      sortField: field ? field : "",
+      sortField: field ? sortName[field] : "",
       sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
     };
     getList(params)
   };
 
   render() {
-    const { loading, listViewData, pageSize, pageNum } = this.props;
+    const { loading, listViewData: {
+      totalSize,
+      resultList
+    }, pageSize, pageNum } = this.props;
     const columns = [{
       title: '风机名称',
       dataIndex: 'deviceName',
@@ -123,11 +132,11 @@ export default class FaultWarnTable extends React.Component {
     return (
       <div className={styles.faultWarnTable}>
         <div className={styles.warnTablePagination}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={listViewData.length} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalSize} onPaginationChange={this.onPaginationChange} />
         </div>
         <Table
           pagination={false}
-          dataSource={listViewData}
+          dataSource={resultList}
           loading={loading}
           onChange={this.tableChange}
           rowKey={(record, index) => (record.taskId + index) || 'key'}

@@ -8,8 +8,8 @@ import moment from 'moment';
 let realtimeInterval = null;
 let realChartsInterval = null;
 let realPowerInterval = null;
-
 const baseurl = Path.basePaths.APIBasePath;
+
 function* getMonitorStation(action) {//获取所有/风/光电站信息
   const { payload } = action;
   const utcTime = moment.utc().format();
@@ -63,6 +63,7 @@ function* getRealMonitorData(action) {
   }
   yield fork(getMonitorStation, action);
   realtimeInterval = yield fork(getRealMonitorData, { ...action, firtQuery: false, waiting: true });
+
 }
 
 function* stopRealMonitorData() { // 停止数据定时请求并清空数据
@@ -79,13 +80,20 @@ function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload:{
+        capabilityLoading:true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
           capabilityData: response.data.data || [],
-          capabilityDataTime:moment().unix()
+          capabilityDataTime:moment().unix(),
+          capabilityLoading:false
         }
       });
     } else { throw response.data }
@@ -171,6 +179,13 @@ function* getRealMonitorPower(action) {
 function* stopRealCharstData(action) {
   const { payload } = action;
   if (realChartsInterval) {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        capabilityData: [],
+        scatterData:[],
+      }
+    });
     yield cancel(realChartsInterval);
   }
   if (payload === 'power' && realPowerInterval) {
@@ -179,13 +194,10 @@ function* stopRealCharstData(action) {
       payload: {
         powerData: []
       }
-    })
+    });
     yield cancel(realPowerInterval);
   }
 }
-
-
-
 
 function* dayPower(){ // 多电站日发电量与等效时图
   const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
