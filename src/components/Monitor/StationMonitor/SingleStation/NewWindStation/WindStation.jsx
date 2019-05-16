@@ -68,7 +68,8 @@ class WindStation extends Component {
     this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
     this.getTenSeconds(stationCode, stationType);
     this.getPowerDataTenMin({stationCode,stationType}); // 发电量
-
+    const main = document.getElementById('main');
+    main.scrollTo(0, 0);
     this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
       stationCode,
       stationType,
