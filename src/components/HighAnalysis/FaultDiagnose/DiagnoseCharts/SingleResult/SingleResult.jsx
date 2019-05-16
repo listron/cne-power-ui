@@ -19,31 +19,6 @@ export default class SingleResult extends React.Component {
     deviceName: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      singleChart,
-      props: {
-        standAloneList,
-        aloneLoading,
-        stationDeviceList
-      }
-    } = this;
-    const myChart = eCharts.init(singleChart);
-    if (aloneLoading) {// loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!aloneLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(singleTemperatureOptions(standAloneList, stationDeviceList[0].deviceName));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       singleChart,
@@ -67,6 +42,8 @@ export default class SingleResult extends React.Component {
       myChart.hideLoading();
     }
     if (currentAloneTimeCompare && aloneTimeCompare !== currentAloneTimeCompare) {
+      eCharts.init(singleChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(singleChart); //构建下一个实例
       myChart.setOption(singleTemperatureOptions(standAloneList, name));
     }
   }

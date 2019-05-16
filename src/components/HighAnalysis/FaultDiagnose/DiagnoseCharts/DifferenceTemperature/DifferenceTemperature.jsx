@@ -26,31 +26,6 @@ export default class DifferenceTemperature extends React.Component {
     diffTimeCompare: PropTypes.number,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      diffChart,
-      props: {
-        tenMinutesDiffList,
-        deviceName,
-        diffLoading
-      }
-    } = this;
-    const myChart = eCharts.init(diffChart);
-    if (diffLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!diffLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, deviceName));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       diffChart,
@@ -81,6 +56,8 @@ export default class DifferenceTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentDiffTimeCompare && diffTimeCompare !== currentDiffTimeCompare) {
+      eCharts.init(diffChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(diffChart); //构建下一个实例
       myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, name || defaultName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
@@ -92,15 +69,12 @@ export default class DifferenceTemperature extends React.Component {
           pointCode: "GN010-GN011", //温度差-固定字段
           deviceFullcodes: [], // 默认传空代表所有风机
           startTime: moment(start).utc().format(),
-          endTime: moment(end).utc().format()
+          endTime: moment(end).add(1, "days").utc().format()
         };
         if (paramsStart !== params.start || paramsEnd !== params.end) {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            diffDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesDiff(preParams);
         }
@@ -126,7 +100,7 @@ export default class DifferenceTemperature extends React.Component {
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format()
     };
     onChangeFilter({
       diffDate: date

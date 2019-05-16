@@ -26,31 +26,6 @@ export default class AfterTemperature extends React.Component {
     afterTimeCompare: PropTypes.number,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      afterChart,
-      props: {
-        tenMinutesAfterList,
-        deviceName,
-        afterLoading
-      }
-    } = this;
-    const myChart = eCharts.init(afterChart);
-    if (afterLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!afterLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       afterChart,
@@ -64,7 +39,6 @@ export default class AfterTemperature extends React.Component {
         faultInfo: {
           stationCode
         },
-        onChangeFilter
       }
     } = this;
     const { afterTimeCompare } = prevProps;
@@ -81,6 +55,8 @@ export default class AfterTemperature extends React.Component {
     // 设备名称
     const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
+      eCharts.init(afterChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(afterChart); //构建下一个实例
       myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, name || defaultName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
@@ -92,15 +68,12 @@ export default class AfterTemperature extends React.Component {
           pointCode: "GN011", //后驱测点-固定字段
           deviceFullcodes: [], // 默认传空代表所有风机
           startTime: moment(start).utc().format(),
-          endTime: moment(end).utc().format()
+          endTime: moment(end).add(1, "days").utc().format()
         };
         if (paramsStart !== params.start || paramsEnd !== params.end) {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            afterDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesAfter(preParams);
         }
@@ -126,7 +99,7 @@ export default class AfterTemperature extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format()
     };
     onChangeFilter({
       afterDate: date

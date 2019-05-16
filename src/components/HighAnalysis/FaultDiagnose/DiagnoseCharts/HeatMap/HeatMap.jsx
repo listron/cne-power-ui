@@ -18,33 +18,6 @@ export default class HeatMap extends React.Component {
     faultDate: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      heatChart,
-      props: {
-        similarityList,
-        heatLoading,
-        faultInfo: {
-          endTime
-        },
-      }
-    } = this;
-    const myChart = eCharts.init(heatChart);
-    if (heatLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!heatLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(heatTemperatureOptions(similarityList, endTime));
-  }
-
   componentDidUpdate(prevProps) {
     const  {
       heatChart,
@@ -68,6 +41,8 @@ export default class HeatMap extends React.Component {
       myChart.hideLoading();
     }
     if (currentHeatTimeCompare && heatTimeCompare !== currentHeatTimeCompare) {
+      eCharts.init(heatChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(heatChart); //构建下一个实例
       myChart.setOption(heatTemperatureOptions(similarityList, faultDate || endTime));
     }
   }
