@@ -306,6 +306,9 @@ export default {
       getDayPower:'/v3/pv/monitor/stations/daypower/',// 多电站日发电量与等效时图(光伏电站)
       getMonthPower :'/v3/pv/monitor/stations/monthpower/',// 多电站月发电量与等效时图(光伏电站)
       getMonthPalnPower :'/v3/pv/monitor/stations/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
+
+      getPvStation:'/v3/pv/monitor/stations', // 全部风电站
+      getPvCapabilitydiagrams:'/v3/pv/monitor/stations/capabilitydiagrams',//光伏多电站出力图列表
       
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总

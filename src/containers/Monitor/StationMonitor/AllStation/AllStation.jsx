@@ -144,6 +144,7 @@ const mapDispatchToProps = (dispatch) => ({
   stopRealCharstData: payload => dispatch({ type: allStationAction.stopRealCharstData, payload }),
   getRealMonitorPower: payload => dispatch({ type: allStationAction.getRealMonitorPower, payload }),
   getPvChartsData: payload => dispatch({ type: allStationAction.getPvChartsData, payload }),
+  getPvRealData: payload => dispatch({ type: allStationAction.getPvRealData, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);

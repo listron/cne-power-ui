@@ -18,9 +18,10 @@ class PvStation extends React.Component {
     stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
     loading: PropTypes.bool,
-    getRealMonitorData: PropTypes.func,
+    getPvRealData: PropTypes.func,
     getPvChartsData: PropTypes.func,
     monitorPvUnit: PropTypes.object,
+    regionName: PropTypes.string,
   }
 
   constructor(props, context) {
@@ -38,8 +39,15 @@ class PvStation extends React.Component {
 
 
   componentDidMount() {
-    this.props.getRealMonitorData({ stationType: '1' })
+    const { regionName } = this.props;
+    console.log('1111111')
+    console.log('tst',regionName)
+    this.props.getPvRealData({regionName})
     this.props.getPvChartsData()
+  }
+
+  componentDidUpdate(){
+    
   }
 
   onHandleAlarm = (checked) => {
@@ -104,7 +112,6 @@ class PvStation extends React.Component {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible } = this.state;
     const { pvMonitorStation, loading, monitorPvUnit } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
-    console.log('detailVisible', detailVisible)
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
