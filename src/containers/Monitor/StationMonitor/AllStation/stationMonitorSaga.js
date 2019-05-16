@@ -16,7 +16,6 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
   const anotherUrl = baseurl + Path.APISubPaths.monitor.getStationType + payload.stationType + '/' + utcTime;
   const windUrl = baseurl + Path.APISubPaths.monitor.getWindStation + '/' + utcTime;
   const url = payload.stationType === '0' ? windUrl : anotherUrl;
-  console.log('请求开始时间',moment().format('YYYY-MM-DD HH:MM:ss'))
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -27,7 +26,6 @@ function* getMonitorStation(action) {//获取所有/风/光电站信息
         });
       }
       if (payload.stationType === '0') { // 风电的数据
-        console.log('请求结束时间',moment().format('YYYY-MM-DD HH:MM:ss'))
         yield put({
           type: allStationAction.changeMonitorstationStore,
           payload: { windMonitorStation: response.data.data || {}, loading: false }

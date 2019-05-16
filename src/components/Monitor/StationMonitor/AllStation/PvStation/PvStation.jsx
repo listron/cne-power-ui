@@ -35,7 +35,7 @@ class PvStation extends React.Component {
 
 
   componentDidMount() {
-    // this.props.getRealMonitorData({ stationType: '1' })
+    this.props.getRealMonitorData({ stationType: '1' })
   }
 
   onHandleAlarm = (checked) => {
