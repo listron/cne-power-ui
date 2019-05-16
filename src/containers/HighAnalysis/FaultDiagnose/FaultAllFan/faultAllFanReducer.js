@@ -13,7 +13,11 @@ const initState = Immutable.fromJS({
   deviceName: "", //设备名称
   faultInfo: {// 获取故障预警任务详情
     endTime: null,
+    stationName: "",
+    algorithmName: "",
+    deviceDatas: []
   },
+  faultDateList: "", //预警日期-有故障的日期
   faultDate: "", // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
@@ -38,8 +42,12 @@ const initState = Immutable.fromJS({
   standAloneList: [], // 获取单风机自适应模块检测结果
   similarityList: [], // 获取风机相似性结果
   allFanResultList: {// 获取多机协同模块检测结果-严重程度及识别（所有风机）
-    cfResidual: [],
-    cfStd: []
+    cfResidual: {
+      residual: []
+    },
+    cfStd1: [],
+    cfStd2: [],
+    cfStd3 : []
   },
   deviceFullCode: "", // 设备全编码
   tenMinutesBeforeList: [{// 获取风机10分钟数据-前驱
