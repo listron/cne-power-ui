@@ -46,10 +46,11 @@ class DeviceStatus extends Component {
       "year": 3,
       "custom": 4,
     };
+   
     this.props.changeDeviceStatusStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
-    
+   
     const modeType = {
       "area": 1,
       "station": 2,
@@ -61,7 +62,8 @@ class DeviceStatus extends Component {
     this.props.changeDeviceStatusStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;
