@@ -271,6 +271,16 @@ class AddDeviceForm extends Component {
               </FormItem>}
             </div>
             <div className={styles.systermStyle}>
+            <FormItem label="制造商" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('manufactorName')(
+                  <Input placeholder="请输入..." />
+                )}
+              </FormItem>
+              <FormItem label="供货商" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('supplierName')(
+                  <Input placeholder="请输入..." />
+                )}
+              </FormItem>
               <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('enableDisplay', { initialValue: '1', })(
                   <Select>

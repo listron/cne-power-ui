@@ -4,6 +4,7 @@ import styles from '../deviceSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import { baseFun, windTowerFun, windTimeFun, selcetbaseFun } from './detailInformation';
 import DetailInfoPart from './DetailInfoPart';
+import RecordTable from './RecordTable';
 import moment from 'moment';
 import { Icon, Button, Checkbox, Row, Col } from 'antd';
 class DetailDevice extends Component {
@@ -112,7 +113,7 @@ class DetailDevice extends Component {
         {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.detailTop}>
           <span className={styles.topInfoShow}>
-            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode==='509'}>编辑</Button>
+            <Button className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</Button>
           </span>
           <span className={styles.handleArea} >
             <i className="iconfont icon-last" title="上一个" onClick={this.preStation} />
@@ -145,14 +146,14 @@ class DetailDevice extends Component {
                 <div className={styles.infoName}>所用支路</div>
                 <div className={styles.checkGroup} >
                   <div className={styles.checkItem}>
-                  {connectedBranches.map((e, i) => {
-                    return (
-                      <div className={styles.itemStyle} key={i}>
-                        <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
-                        <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
-                      </div>
-                    )
-                  })}
+                    {connectedBranches.map((e, i) => {
+                      return (
+                        <div className={styles.itemStyle} key={i}>
+                          <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
+                          <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
+                        </div>
+                      )
+                    })}
                   </div>
                   <div className={styles.linestyle}>
                     <div className={styles.box}>( <span className={styles.selectRingStyle}></span>接入<span className={styles.ringStyle}></span>未接入 )
@@ -171,6 +172,9 @@ class DetailDevice extends Component {
               </div>
             </div>}
           </div>
+        </div>
+        <div>
+          <RecordTable />
         </div>
       </div>
     )

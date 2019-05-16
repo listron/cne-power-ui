@@ -5,11 +5,10 @@ import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
-import DeviceSide from '../../../../components/System/Station/DeviceManage/DeviceSide';
-import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
-import DeviceManageSearch from '../../../../components/System/Station/DeviceManage/DeviceManageSearch';
-import DeviceManageHandle from '../../../../components/System/Station/DeviceManage/DeviceManageHandle';
-import DeviceManageList from '../../../../components/System/Station/DeviceManage/DeviceManageList';
+import DeviceSide from '../../../../components/Operation/Book/DeviceManage/DeviceSide';
+import DeviceManageSearch from '../../../../components/Operation/Book/DeviceManage/DeviceManageSearch';
+import DeviceManageHandle from '../../../../components/Operation/Book/DeviceManage/DeviceManageHandle';
+import DeviceManageList from '../../../../components/Operation/Book/DeviceManage/DeviceManageList';
 import Footer from '../../../../components/Common/Footer';
 import PartInfo from './PartInfo/PartInfo';
 

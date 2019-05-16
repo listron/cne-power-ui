@@ -81,6 +81,16 @@ class DeviceManageList extends Component {
         key: 'deviceModeName',
         sorter: true,
       }, {
+        title: '厂家',
+        dataIndex: 'manufactorName',
+        key: 'manufactorName',
+        sorter: true,
+      }, {
+        title: '制造商',
+        dataIndex: 'supplierName',
+        key: 'supplierName',
+        sorter: true,
+      }, {
         title: '生产厂商',
         dataIndex: 'producerName',
         key: 'producerName',
