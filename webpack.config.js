@@ -23,7 +23,7 @@
     devServer: {
       contentBase: './dist',
       port: 8080,
-      host: "0.0.0.0",
+      // host: "0.0.0.0",
       before(server) {
         mockConfig.forEach(e=>{
           server[e.method](`${e.api}`, (req, res) => {

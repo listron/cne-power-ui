@@ -176,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
   importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
   getStationDeviceType: payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
+  addDeviceFactors: payload => dispatch({ type: deviceManageAction.addDeviceFactors, payload }),
   getDeviceFactors: payload => dispatch({ type: deviceManageAction.getDeviceFactors, payload }),
   getfactorsDeviceMode: payload => dispatch({ type: deviceManageAction.getfactorsDeviceMode, payload }),
   getDevicePartInfo: payload => dispatch({ type: deviceManageAction.getDevicePartInfo, payload }),
