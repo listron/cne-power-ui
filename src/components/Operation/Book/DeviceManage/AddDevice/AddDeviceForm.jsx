@@ -193,6 +193,39 @@ class AddDeviceForm extends Component {
                   initialValue: manufactureName,
                   rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
                 })(
+                  <Select className={styles.modelSelect} placeholder="请选择生产厂家" onChange={this.changeFactors} disabled={modelSelectDisable}>
+                  <Option key={'all'} value={''}>请选择设备设备</Option>
+                  {deviceModels.map((e, i) => {
+                    if (!e) { return null; } else {
+                      return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                    }
+                  })}
+                </Select>
+                )}
+              </FormItem>
+              <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('deviceModeCode', {
+                  initialValue: initiDeviceMode,
+                  rules: [{ required: true, message: '请选择设备型号' }],
+                })(
+                  <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={modelSelectDisable}>
+                    <Option key={'all'} value={''}>请选择设备设备</Option>
+                    {deviceModels.map((e, i) => {
+                      if (!e) { return null; } else {
+                        return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+                      }
+                    })}
+                  </Select>
+                )}
+                <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
+              </FormItem>
+
+             {/*
+             <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('manufacturer', {
+                  initialValue: manufactureName,
+                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
+                })(
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
@@ -212,6 +245,9 @@ class AddDeviceForm extends Component {
                 )}
                 <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
               </FormItem>
+            
+            
+            */}
 
             
 
