@@ -28,6 +28,7 @@ class PowerReport extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    powerReportList: PropTypes.array,
   }
 
   onTimeChange = (value) => {
@@ -40,22 +41,22 @@ class PowerReport extends Component {
     this.props.changePowerReportStore({ dateType: dateTypes[value.timeStyle], startTime: value.startTime, endTime: value.endTime })
   }
   onModechange = (value) => {
-    console.log(value)
     const modeType = {
       "area": 1,
       "station": 2,
       "modal": 3,
       "wind": 4,
-    }
-    this.props.changePowerReportStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    };
+    const list = (value.modeStyle === 'area' || value.modeStyle === 'station') ? value.list : value.list.map((e, i) => (e.split('_')[0]));
+    this.props.changePowerReportStore({ summaryType: modeType[value.modeStyle], summaryData: list, filterTable: modeType[value.modeStyle] })
   }
   onSearch = () => {
-  
-    this.onChangeFilter()
+    const resetStatus = { sortField: '', sortMethod: '', pageNum: 1, pageSize: 10 }
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
-    console.log('startTime: ', startTime);
+
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     this.props.getPowerReportList({ ...params, ...value })
   }
@@ -63,6 +64,7 @@ class PowerReport extends Component {
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportGen}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+    const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod };
     let timeZone = moment().zone();
     const modeType = ['状态', '区域', '电站', '型号', '风机'];
     const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -70,13 +72,9 @@ class PowerReport extends Component {
       url,
       fileName: `${modeType[summaryType]}-${dateTypes[dateType]}电量报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })
@@ -84,7 +82,7 @@ class PowerReport extends Component {
 
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData, powerReportList } = this.props;
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -92,12 +90,13 @@ class PowerReport extends Component {
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
             showFault={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={powerReportList.length === 0}  >导出</Button>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>

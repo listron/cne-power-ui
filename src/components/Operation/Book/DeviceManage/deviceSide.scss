@@ -1,0 +1,424 @@
+@import "../../../../theme/theme.scss";
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.nextButton {
+  margin-left: 156px;
+  width: 200px;
+}
+.deviceSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+  :global {
+    .ant-select,
+    .ant-cascader-picker {
+      width: 198px;
+    }
+  }
+  .unitStyle {
+    margin-left: 8px;
+  }
+
+  .addDevice,
+  .detailDevice,
+  .editDevice {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
+    .preFormStyle {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      .formItemStyle {
+        display: flex;
+      }
+      .fontColor {
+        color: #199475;
+      }
+      .nextButton {
+        margin-left: 200px;
+      }
+      :global {
+        .ant-select,
+        .ant-cascader-picker {
+          width: 198px;
+        }
+        .ant-form-item-label {
+          width: 200px;
+        }
+        .ant-btn {
+          width: 200px;
+        }
+      }
+    }
+    .editTop {
+      @include top;
+      justify-content: space-between;
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+    .colStyles {
+      .editPart {
+        display: flex;
+        .formItemStyle {
+          display: flex;
+        }
+        .leftlayout {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          justify-content: center;
+          :global {
+            .ant-form-item-label {
+              width: 200px;
+            }
+          }
+          .defaultConfigStyles {
+            .formItemStyle {
+              display: flex;
+            }
+            .fontColor {
+              color: #199475;
+            }
+          }
+          .submitStyle {
+            padding: 0 0 20px 250px;
+          }
+          .systermStyle{
+            .leftsubmitStyle {
+              padding: 20px 0 20px 200px;
+            }
+            .leftpreStyles {
+              margin-right: 40px;
+            }
+          }
+         
+        }
+        .rightContainer {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          .rightStyles {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            .formItemStyle {
+              display: flex;
+            }
+            .fontColor {
+              color: #199475;
+            }
+            :global {
+              .ant-form-item-label {
+                width: 100px;
+              }
+              .ant-checkbox-inner {
+                border-radius: 8px;
+              }
+              .ant-checkbox-checked .ant-checkbox-inner {
+                background: #ceebe0;
+              }
+              .ant-checkbox-checked .ant-checkbox-inner:after {
+                display: none;
+              }
+            }
+            .checkboxStyle {
+              display: flex;
+              flex-wrap: wrap;
+              width: 500px;
+              .itemStyle {
+                display: flex;
+                width: 60px;
+                flex-direction: column;
+                .checkedTopName {
+                  color: #199475;
+                  display: flex;
+                  flex: 1;
+                  justify-content: center;
+                  height: 30px;
+                  line-height: 30px;
+                }
+                .topName {
+                  display: flex;
+                  flex: 1;
+                  justify-content: center;
+                  height: 30px;
+                  line-height: 30px;
+                }
+                .bottomSelect {
+                  display: flex;
+                  flex: 1;
+                  justify-content: center;
+                  padding-top: 10px;
+                }
+              }
+            }
+
+            .linestyle {
+              margin: 0 4px;
+              .selectRingStyle,
+              .ringStyle {
+                display: inline-block;
+                border: 1px solid #199475;
+                width: 16px;
+                height: 16px;
+                margin: 0 4px;
+                border-radius: 8px;
+                background: #ceebe0;
+                vertical-align: -3px;
+              }
+              .ringStyle {
+                border: 1px solid #dfdfdf;
+                background: #fff;
+              }
+            }
+          }
+          .submitStyle {
+            margin: 40px 0 0 100px;
+            .preStyles {
+              margin-right: 40px;
+            }
+          }
+        }
+        :global {
+          .ant-form-item,
+          .ant-form-horizontal {
+            margin-bottom: 4px;
+          }
+          .ant-select,
+          .ant-cascader-picker {
+            width: 198px;
+          }
+          .ant-input {
+            width: 198px;
+          }
+        }
+        .defaultConfigStyles {
+          margin: 12px 0;
+        }
+        .unitStyle {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+  .detailDevice {
+    .detailTop {
+      // 顶部详情及操作
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: solid 1px $promptColor;
+      .topInfoShow {
+        .title {
+          font-size: 16px;
+          color: $darkColor;
+          margin-left: 36px;
+          margin-right: 28px;
+        }
+        .departmentInfo {
+          margin-left: 8px;
+          max-width: 740px;
+          display: inline-block;
+          vertical-align: middle;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+      .handleArea {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        :global {
+          .iconfont {
+            font-size: 20px;
+            margin-right: 20px;
+            cursor: pointer;
+          }
+        }
+        .previous,
+        .next,
+        .backIcon {
+          font-size: 20px;
+          cursor: pointer;
+          color: $darkColor;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .previous,
+        .next {
+          width: 40px;
+        }
+        .backIcon {
+          width: 60px;
+          border-left: solid 1px $promptColor;
+          margin-left: 20px;
+        }
+      }
+    }
+    .detailPart {
+      display: flex;
+      flex: 3;
+      .rightPart {
+        display: flex;
+        flex-direction: column;
+        flex: 2;
+        :global {
+          // .ant-form-item-label{
+          //   width: 100px;
+          // }
+          .ant-checkbox-inner {
+            border-radius: 8px;
+          }
+          .ant-checkbox-checked .ant-checkbox-inner {
+            background: #ceebe0;
+          }
+          .ant-checkbox-checked .ant-checkbox-inner:after {
+            display: none;
+          }
+        }
+        .linestyle {
+          margin: 0 4px;
+          text-align: end;
+          .box {
+            display: inline-block;
+          }
+          .selectRingStyle,
+          .ringStyle {
+            display: inline-block;
+            border: 1px solid #199475;
+            width: 16px;
+            height: 16px;
+            margin: 0 4px;
+            border-radius: 8px;
+            background: #ceebe0;
+            vertical-align: -3px;
+          }
+          .ringStyle {
+            border: 1px solid #dfdfdf;
+            background: #fff;
+          }
+        }
+      }
+      .eachInfo {
+        display: flex;
+        .infoName {
+          width: 150px;
+          height: 36px;
+          text-align: right;
+          margin-right: 12px;
+          color: $darkColor;
+        }
+        .infoValue {
+          flex: 1;
+          color: $darkColor;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .checkGroup {
+          display: flex;
+          flex-direction: column;
+
+        }
+        .checkItem {
+          display: flex;
+          flex-wrap: wrap;
+          width: 500px;
+          .itemStyle {
+            display: flex;
+            width: 60px;
+            flex-direction: column;
+            .checkedTopName {
+              color: #199475;
+              display: flex;
+              flex: 1;
+              justify-content: center;
+              height: 30px;
+              line-height: 30px;
+            }
+            .topName {
+              display: flex;
+              flex: 1;
+              justify-content: center;
+              height: 30px;
+              line-height: 30px;
+            }
+            .bottomSelect {
+              display: flex;
+              flex: 1;
+              justify-content: center;
+              padding-top: 10px;
+            }
+          }
+        }
+      }
+    }
+    .tableFilter{
+      margin: 0 40px;
+      .radioStyle{
+        margin-bottom: 12px;
+      }
+    }
+  }
+  .infoBox {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 20px 0 0 40px;
+    .infoPart {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .eachInfo {
+        display: flex;
+        .infoName {
+          width: 150px;
+          height: 36px;
+          text-align: right;
+          margin-right: 12px;
+          color: $darkColor;
+        }
+        .infoValue {
+          flex: 1;
+          color: $darkColor;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .checkGroup {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

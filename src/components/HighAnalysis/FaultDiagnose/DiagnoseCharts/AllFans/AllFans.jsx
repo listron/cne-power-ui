@@ -11,67 +11,11 @@ export default class AllFans extends React.Component {
     allFanResultList: PropTypes.object,
     faultInfo: PropTypes.object,
     allLoading: PropTypes.bool,
+    allTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  {
-      allFansCharts,
-      props: {
-        getAllFanResultList,
-        allFanResultList,
-        faultInfo: {
-          endTime
-        },
-        allLoading
-      }
-    } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: endTime
-    };
-    const myChart = eCharts.init(allFansCharts);
-    if (allLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!allLoading) {
-      myChart.hideLoading();
-    }
-    // 接口
-    getAllFanResultList(params);
-    myChart.setOption(allFansOptions(allFanResultList, params.date));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      getAllFanResultList
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: nextEndTime
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getAllFanResultList(params);
-    }
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const  {
       allFansCharts,
       props: {
@@ -80,13 +24,11 @@ export default class AllFans extends React.Component {
         faultInfo: {
           endTime
         },
+        faultDate,
+        allTimeCompare: currentAllTimeCompare
       }
     } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: endTime
-    };
+    const { allTimeCompare } = prevProps;
     const myChart = eCharts.init(allFansCharts);
     if (allLoading) { // loading态控制。
       myChart.showLoading();
@@ -95,7 +37,11 @@ export default class AllFans extends React.Component {
     if (!allLoading) {
       myChart.hideLoading();
     }
-    myChart.setOption(allFansOptions(allFanResultList, params.date));
+    if (currentAllTimeCompare && allTimeCompare !== currentAllTimeCompare) {
+      eCharts.init(allFansCharts).dispose();//销毁前一个实例
+      const myChart = eCharts.init(allFansCharts); //构建下一个实例
+      myChart.setOption(allFansOptions(allFanResultList, faultDate || endTime));
+    }
   }
 
 

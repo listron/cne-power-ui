@@ -10,8 +10,8 @@ const monitor = Path.APISubPaths.monitor
 function* getMalfunctionList(action) {  // 请求报表列表
   const { payload } = action;
   const {startTime,endTime}= payload;
-  // const url = `${APIBasePath}${monitor.getMalfunctionList}`;
-  const url = `/mock/v3/wind/report/fan/devicefault`;
+  const url = `${APIBasePath}${monitor.getMalfunctionList}`;
+  // const url = `/mock/v3/wind/report/fan/devicefault`;
   try {
     yield put({
       type: malfunctionAction.changeMalfunctionStore,
@@ -21,8 +21,8 @@ function* getMalfunctionList(action) {  // 请求报表列表
     });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:moment( startTime).utc().format(''),
-      endTime:moment( endTime).utc().format(''),
+      // startTime:moment( startTime).utc().format(''),
+      // endTime:moment( endTime).utc().format(''),
       timeZone:moment().zone() / (-60),
      
     });
@@ -42,6 +42,7 @@ function* getMalfunctionList(action) {  // 请求报表列表
           malfunctionList: response.data.data.dataList || [],
           loading: false,
           ...payload,
+          filterTable:payload.summaryType
         },
       });
     } else {
@@ -58,8 +59,8 @@ function* getMalfunctionList(action) {  // 请求报表列表
 function* getMalfunctionDetail(action) {  // 请求设备状态明细
   const { payload } = action;
   const {startTime,endTime}= payload;
-  // const url = `${APIBasePath}${monitor.getMalfunctionDetail}`;
-  const url = `/mock/v3/wind/report/fan/devicefault/detail`;
+  const url = `${APIBasePath}${monitor.getMalfunctionDetail}`;
+  // const url = `/mock/v3/wind/report/fan/devicefault/detail`;
   try {
     yield put({
       type: malfunctionAction.changeMalfunctionStore,
@@ -71,8 +72,8 @@ function* getMalfunctionDetail(action) {  // 请求设备状态明细
     });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:moment( startTime).utc().format(''),
-      endTime:moment( endTime).utc().format(''),
+      // startTime:moment( startTime).utc().format(''),
+      // endTime:moment( endTime).utc().format(''),
       timeZone:moment().zone() / (-60),
 
     });
@@ -102,7 +103,7 @@ function* getMalfunctionDetail(action) {  // 请求设备状态明细
     console.log(e);
     yield put({
       type: malfunctionAction.changeMalfunctionStore,
-      payload: { ...payload, loading: false, deviceStatusList: [] },
+      payload: { ...payload, loading: false, malfunctionDetailList: [] },
     })
   }
 }

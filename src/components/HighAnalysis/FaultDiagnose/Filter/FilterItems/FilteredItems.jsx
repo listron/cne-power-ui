@@ -76,7 +76,6 @@ class FilteredItems extends Component {
 
   render() {
     const {createTimeStart, createTimeEnd, stationCodes, stations, algorithmModalName } = this.props;
-    console.log(algorithmModalName, "algorithmModalName11");
     const tmpSelectedStation = stationCodes.split(',');//选中电站的数组
     const selectedStation = stations.filter(e=>
       tmpSelectedStation.some(m=>

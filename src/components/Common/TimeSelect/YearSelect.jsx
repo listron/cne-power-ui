@@ -28,6 +28,7 @@ class YearSelect extends React.Component {
     this.setState({ panelOpen: false });
     this.props.onYearSelect({ selectedYear: value.format('YYYY') }) // 输出年份字符串。
   }
+  
 
   render() {
     const { yearValue } = this.props;

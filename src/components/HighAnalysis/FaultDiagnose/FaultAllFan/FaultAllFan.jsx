@@ -15,19 +15,12 @@ export default class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object,
-    match: PropTypes.object,
     stations: PropTypes.object,
     stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
     faultInfo: PropTypes.object,
     warnId: PropTypes.number,
-    stationDeviceList:PropTypes.array
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   render() {
     const {
@@ -36,7 +29,6 @@ export default class FaultAllFan extends React.Component {
         status,
         stationName
       },
-      stationDeviceList,
       warnId
     } = this.props;
     return (
@@ -57,7 +49,7 @@ export default class FaultAllFan extends React.Component {
                   <PreTemperature {...this.props} />
                   <AfterTemperature {...this.props} />
                   <DifferenceTemperature {...this.props} />
-                  {(warnId ? warnId === 1 : stationDeviceList[0].warnId) && ([
+                  {(warnId === 1) && ([
                     <SingleResult key="singleResult" {...this.props} />,
                     <HeatMap key="heatMap" {...this.props} />,
                     <AllFans key="allFans" {...this.props} />

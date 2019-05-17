@@ -1,5 +1,4 @@
 
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './singleStationCommon.scss';
@@ -19,6 +18,7 @@ class PowerDiagramTenMin extends Component {
     match: PropTypes.object,
     getPowerDataTenMin: PropTypes.func,
     stationCode: PropTypes.string,
+    stationType: PropTypes.string,
   }
 
   constructor(props) {
@@ -255,10 +255,10 @@ class PowerDiagramTenMin extends Component {
   }
 
   onChangeTimePower = (e) => { // 改变 日／月／年
-    const { stationCode } = this.props;
+    const { stationCode ,stationType} = this.props;
     const intervalTime = e.target.value;
     this.setState({ intervalTime });
-    this.props.getPowerDataTenMin(stationCode, intervalTime);// 时间格式传出，清空定时器并重新请求数据。
+    this.props.getPowerDataTenMin({stationCode,stationType, intervalTime});// 时间格式传出，清空定时器并重新请求数据。
   }
 
   

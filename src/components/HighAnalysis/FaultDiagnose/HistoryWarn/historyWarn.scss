@@ -16,7 +16,7 @@
     display: flex;
     >div{
       display: flex;
-      line-height: 32px;
+      line-height: 40px;
       >span{
         margin-right: 5px;
       }
@@ -25,6 +25,7 @@
       margin-left: 40px;
     }
     .check{
+      padding-top: 4px;
       button{
         margin: 0 10px;
       }

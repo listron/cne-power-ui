@@ -4,13 +4,15 @@ import styles from './deviceStatus.scss';
 import { Table, Radio } from "antd";
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { cloneableGenerator } from 'redux-saga/utils';
+import { numWithComma,dataFormats } from '../../../../utils/utilFunc';
+
 
 class TableList extends Component {
   static propTypes = {
     getDeviceStatusList: PropTypes.func,
     changeDeviceStatusStore: PropTypes.func,
     onChangeFilter: PropTypes.func,
+    getDeviceStatusDetail: PropTypes.func,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
@@ -27,6 +29,7 @@ class TableList extends Component {
     sortMethod: PropTypes.string,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
+    params: PropTypes.object,
 
   }
 
@@ -67,6 +70,23 @@ class TableList extends Component {
   }
   initMonthColumn = () => {
     const { filterTable } = this.props;
+    
+    const filterDevice=[ {
+      title: "区域",
+      dataIndex: "regionName",
+      sorter: true,
+      // width:40,
+    },
+    {
+      title: "电站名称",
+      dataIndex: "stationName",
+      sorter: true,
+    },
+    {
+      title: "设备型号",
+      dataIndex: "deviceModeName",
+      sorter: true,
+    },]
     const filterShow = [
       {
         title: "区域",
@@ -90,16 +110,19 @@ class TableList extends Component {
         sorter: true,
       },
     ];
-    const show = filterShow.slice(0, filterTable);
+    let show = filterTable>3?filterShow.slice(0, filterTable):filterDevice.slice(0, filterTable);
     const showStatus = {
       title: "统计时段",
       dataIndex: "date",
       sorter: true,
-      defaultSortOrder: 'ascend'
+      render(text){return text.replace(/-/g,'/').replace(',','-')}
     };
-    const columns = [
-
-      {
+    const columns = [{
+      title: "统计时段",
+      dataIndex: "date",
+      sorter: true,
+      render(text){return text.replace(/-/g,'/').replace(',','-')}
+    },{
         title: "设备状态",
         dataIndex: "deviceStatusName",
         sorter: true,
@@ -109,17 +132,20 @@ class TableList extends Component {
         title: "次数",
         dataIndex: "num",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
 
       {
         title: () => <TableColumnTitle title="状态时长" unit="s" />,
         dataIndex: "statusTime",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
       {
         title: () => <TableColumnTitle title="状态小时数" unit="h" />,
         dataIndex: "statusHours",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
       },
 
       {
@@ -129,7 +155,7 @@ class TableList extends Component {
 
       },
     ];
-    filterTable > 4 ? columns.unshift(showStatus) : columns.unshift(...show);
+    filterTable > 4 ? columns : columns.unshift(...show);
     return columns
   }
   detailColumn = () => {
@@ -158,7 +184,7 @@ class TableList extends Component {
 
       {
         title: "设备状态",
-        dataIndex: "deviceStatusName",
+        dataIndex: "deviceStatus",
         sorter: true,
 
       },
@@ -171,11 +197,15 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="状态时长" unit="s" />,
         dataIndex: "statusTime",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+
       },
       {
         title: () => <TableColumnTitle title="状态小时数" unit="h" />,
         dataIndex: "statusHours",
         sorter: true,
+        render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+
       },
 
       {
@@ -187,10 +217,11 @@ class TableList extends Component {
     ];
     return columns
   }
-  changeTable = (e) => {
-    console.log(e)
+   changeTable=(e)=> {
     const tableType=e.target.value;
     this.props.changeDeviceStatusStore({tableType})
+    tableType==='all'&&this.props.getDeviceStatusList({ ...this.props.params })
+    tableType==='detail'&&this.props.getDeviceStatusDetail({ ...this.props.params })
   }
   render() {
     const { total, pageSize, pageNum, deviceStatusList,tableType,statusDetailList } = this.props;
@@ -200,7 +231,7 @@ class TableList extends Component {
       <React.Fragment>
         <div className={styles.tableHeader}>
           <div>
-            <Radio.Group defaultValue="all" buttonStyle="solid" onChange={this.changeTable}>
+            <Radio.Group value={tableType} buttonStyle="solid" onChange={this.changeTable}>
               <Radio.Button value="all">汇总</Radio.Button>
               <Radio.Button value="detail">明细</Radio.Button>
 

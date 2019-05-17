@@ -15,6 +15,7 @@ class SingleWindDeviceCharts extends Component {
     sequencechartData: PropTypes.array,
     roseChartData: PropTypes.array,
     powerspeedchartData: PropTypes.array,
+    curveTime: PropTypes.number,
   }
   constructor(props, context) {
     super(props, context)
@@ -34,7 +35,7 @@ class SingleWindDeviceCharts extends Component {
   }
 
   render() {
-    const { powerspeedchartData, pitchanglespeedchartData, sequencechartData, roseChartData } = this.props;
+    const { powerspeedchartData, pitchanglespeedchartData, sequencechartData, roseChartData,curveTime } = this.props;
     let sortrosedata = (roseChartData && roseChartData.length > 0) ? roseChartData.sort(this.compare('rangeId')) : [];
     let rosedata = sortrosedata.length > 0 ? sortrosedata.concat([sortrosedata[0]]) : [];
     const firstXAxisAllDate = sequencechartData.length > 0 ? sequencechartData[0] : {};
@@ -43,7 +44,7 @@ class SingleWindDeviceCharts extends Component {
       <div className={styles.chartsLayout}>
         <div className={styles.topBox}>
           <div className={styles.left}>
-            <div className={styles.leftTop}><PowercurveChart {...this.props} /></div>
+            <div className={styles.leftTop}><PowercurveChart {...this.props} curveTime={curveTime} /></div>
             <div className={styles.leftBottom}>
               <div className={styles.leftScatter}><PowerSpeedChart {...this.props} chartData={powerspeedchartData} chartId={'powerSpeedChart'} /></div>
               <div className={styles.rightScatter}><PowerSpeedChart {...this.props} chartData={pitchanglespeedchartData} chartId={'pitchange'} /></div>

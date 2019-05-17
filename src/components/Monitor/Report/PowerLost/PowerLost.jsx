@@ -28,10 +28,11 @@ class PowerLost extends Component {
     stationDevicemodeData: PropTypes.array,
     regionStationData: PropTypes.array,
     regionData: PropTypes.array,
+    powerLostList: PropTypes.array,
   }
 
   onTimeChange = (value) => {
-    console.log(value)
+    
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -46,12 +47,13 @@ class PowerLost extends Component {
       "station": 2,
       "modal": 3,
       "wind": 4,
-    }
-    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: value.list })
+    };
+    const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
+    this.props.changePowerLostStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-    
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize, } = this.props;
@@ -63,6 +65,7 @@ class PowerLost extends Component {
     //地址未改，当前是电量报表得地址
     const url = `${APIBasePath}${monitor.exportGen}`;
     let { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
+      const params={dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod};
     let timeZone = moment().zone();
     const modeType = ['状态', '区域', '电站', '型号', '风机'];
     const dateTypes = ['日', '日', '月', '年', '自定义'];
@@ -70,20 +73,16 @@ class PowerLost extends Component {
       url,
       fileName: `${modeType[summaryType]}-${dateTypes[dateType]}损失电量报表-${startTime}-${endTime}.xlsx`,
       params: {
-        dateType,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-        summaryType,
-        summaryData,
-        sortField,
-        sortMethod,
+        ...params,
+        // startTime: moment(startTime).utc().format(),
+        // endTime: moment(endTime).utc().format(),
         timeZone: timeZone / -60
       },
     })
   }
 
   render() {
-    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData } = this.props;
+    const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData,powerLostList } = this.props;
     return (
       <div style={{ width: '100%' }}>
         <div className={styles.topStyles}  >
@@ -91,12 +90,13 @@ class PowerLost extends Component {
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
             showFault={false}
+            modeStyle={'wind'}
             regionStationDevice={regionStationDeviceData}
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
             region={regionData} />
           <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList}>导出</Button>
+          <Button className={styles.btn} onClick={this.exportList} disabled={powerLostList.length===0} >导出</Button>
         </div>
         <TableList {...this.props} />
       </div>

@@ -77,6 +77,12 @@
     :global{
      .ant-tree-child-tree-open {
         display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+      }
+      .ant-tree-child-tree .ant-tree-child-tree-open{
+        display: flex;
+        flex-direction:row;
         flex-wrap: wrap;
       }
       .ant-tree-child-tree > li{

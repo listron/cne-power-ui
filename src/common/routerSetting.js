@@ -28,13 +28,28 @@ const routers = [
   }, { // 第二种工作票
     path: '/operation/twoTickets/typetwo',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, { // 备品备件
-    path: '/operation/book/sparePart',
+  }, { // 资产配置
+    path: '/operation/book/assetsConfig',
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component: lazy(() => import('../containers/Operation/Book/AssetsConfig/AssetsConfig')),
+  }, { // 设备管理
+    path: '/operation/book/deviceManage',
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component: lazy(() => import('../containers/Operation/Book/DeviceManage/DeviceManage')),
+  }, { // 设备台账
+    path: '/operation/book/deviceAccount',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, { // 工器具
-    path: '/operation/book/instrument',
+  }, { // 仓库配置
+    path: '/operation/book/warehouse',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, { // 运维管理-电站运行-日报
+  }, { // 仓库管理
+    path: '/operation/book/warehouseManage',
+    component: lazy(() => import('../components/Common/Building/Building')),
+  }, { // 出入库记录
+    path: '/operation/book/immigrationRecords',
+    component: lazy(() => import('../components/Common/Building/Building')),
+  }, 
+  { // 运维管理-电站运行-日报
     path: '/operation/running/dayReport',
     component: lazy(() => import('../containers/Operation/Running/DayReport/DayReport')),
   }, { // 运维管理-电站运行-月报
@@ -120,8 +135,8 @@ const routers = [
     component: lazy(() => import('../containers/Monitor/Report/Malfunction/Malfunction')),
   }, { //实时监控-报表查询-损失电量
     path: '/monitor/report/powerLost',
-    component: lazy(() => import('../components/Common/Building/Building')),
-    // component:lazy(() => import('../containers/Monitor/Report/PowerLost/PowerLost')),
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component:lazy(() => import('../containers/Monitor/Report/PowerLost/PowerLost')),
   },
   // { // 隐藏页： 修改密码
   //   path: '/hidden/user/editPassword',
@@ -234,7 +249,10 @@ const routers = [
     path: '/analysis/faultDiagnose/fanWarn/:fanWarnId',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultWarnList/FaultWarnList')),
   },{ // 高级分析-风机故障检测与诊断-故障预警-单风机详情图表展示
-    path: '/hidden/analysis/single/fan/:stationCode',
+    path: '/hidden/analysis/single/fan',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
+    path: '/hidden/analysis/single/fan/:code',
     component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
   },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
     path: '/hidden/analysis/all/fan/:stationCode',

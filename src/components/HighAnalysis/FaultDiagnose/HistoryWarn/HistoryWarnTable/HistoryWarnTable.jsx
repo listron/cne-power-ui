@@ -24,13 +24,14 @@ export default class HistoryWarnTable extends React.Component {
 
   onShowDetail = (data) => {
     const { history } = this.props;
-    const { taskId, deviceName, deviceFullCode, algorithmName, stationCode } = data;
+    const { taskId, deviceName, deviceFullcode, stationCode, algorithmName } = data;
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${stationCode}`);
     localStorage.setItem("taskId", taskId);
+    localStorage.setItem("faultHistory", "1");
     localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
+    localStorage.setItem("deviceFullCode", deviceFullcode);
+    localStorage.setItem("deviceFullName", algorithmName);
   };
 
 
@@ -56,7 +57,7 @@ export default class HistoryWarnTable extends React.Component {
       dataIndex: 'deviceName',
       sorter: true,
     }, {
-      title: '预期日期',
+      title: '预警日期',
       dataIndex: 'predictionDate',
       sorter: true,
       render: (predictionDate) => {

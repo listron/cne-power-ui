@@ -1,0 +1,237 @@
+@import '../../../../../theme/theme.scss';
+
+.box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .titleType {
+    display: flex;
+    align-content: center;
+    border-bottom: 1px solid #d9d9d9;
+
+
+    .selectPv,
+    .selectWind {
+      background: #199475;
+      border: 1px solid #199475;
+      width: 50px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+    }
+
+    .pv,
+    .wind {
+      width: 50px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      border: 1px solid #d9d9d9;
+      color: #666666;
+    }
+
+    .pv,
+    .selectPv {
+      border-radius: 4px 0 0 4px;
+      margin: 15px 0 15px 28px;
+    }
+
+    .wind,
+    .selectWind {
+      border-radius: 0 4px 4px 0;
+      margin-top: 15px;
+    }
+  }
+
+  .container {
+    display: flex;
+    flex: 1;
+
+    .leftTree {
+      display: flex;
+      width: 482px;
+      border-right: 1px solid #d9d9d9;
+    }
+
+    .rightNode {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 0 18px;
+
+      :global {
+        .icon-del {
+          color: #199475;
+        }
+      }
+
+      .plusButton,
+      .disabledStyle {
+        width: 104px;
+        padding: 0;
+        font-size: 0;
+        margin: 8px 0;
+
+        i {
+          vertical-align: top;
+          font-size: 14px;
+
+        }
+
+        span {
+          background-color: #fff;
+          color: $themeColor;
+          border-radius: 0 4px 4px 0;
+          display: inline-block;
+          font-size: 14px;
+          line-height: 30px;
+          margin: 0px;
+          padding-right: 4px
+        }
+
+        :global {
+          .anticon-plus {
+            color: #fff;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            width: 28px;
+            text-align: center;
+            line-height: 30px;
+            background-color: $themeColor;
+          }
+
+          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+            margin-left: 0px;
+            width: 28px;
+            color: $darkColor;
+          }
+        }
+      }
+
+      .plusButton:hover {
+        border-radius: 6px;
+
+        span {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .disabledStyle {
+        span {
+          background-color: #f8f8f8;
+          color: #999;
+        }
+
+        :global {
+          .anticon-plus {
+            color: #999;
+            background-color: #dfdfdf;
+          }
+
+        }
+      }
+
+
+    }
+
+    .addNodeFrom {
+      background: #f0f2f5;
+    }
+
+    .addNodeFrom,
+    .editNodeFrom {
+
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+      height: 270px;
+
+      .title {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+
+        .leftText {
+          margin-left: 20px;
+          height: 30px;
+          line-height: 30px;
+        }
+
+        .iconstyles {
+          border: 1px solid #199475;
+          width: 34px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          i {
+            font-size: 20px;
+          }
+        }
+      }
+
+      .contantBox {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+
+        .contant {
+          width: 300px;
+
+          .editPart {
+            display: flex;
+            flex-direction: column;
+
+            .formItemStyle {
+              display: flex;
+            }
+
+            .saveStyle {
+              width: 70px;
+              height: 32px;
+              margin: 10px 0 0 100px;
+
+            }
+
+            .editSaveButton {
+              display: flex;
+              margin: 10px 0 0 100px;
+
+              .saveButton,
+              .restore {
+                width: 70px;
+                height: 32px;
+                margin-right: 12px;
+              }
+            }
+
+
+          }
+
+          :global {
+
+            .ant-form-item,
+            .ant-form-horizontal {
+              margin-bottom: 4px;
+            }
+
+            .ant-form-item-label {
+              width: 100px;
+            }
+
+            .ant-btn {}
+          }
+
+
+        }
+      }
+
+
+
+    }
+
+  }
+}

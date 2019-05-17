@@ -14,30 +14,24 @@ export default class HeatMap extends React.Component {
     getSimilarityList: PropTypes.func,
     heatLoading: PropTypes.bool,
     faultInfo: PropTypes.object,
+    heatTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const  {
       heatChart,
       props: {
         similarityList,
-        getSimilarityList,
+        faultInfo: {
+          endTime
+        },
+        faultDate,
         heatLoading,
-        faultInfo: {
-          endTime
-        },
+        heatTimeCompare: currentHeatTimeCompare
       }
     } = this;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: endTime
-    };
+    const { heatTimeCompare } = prevProps;
     const myChart = eCharts.init(heatChart);
     if (heatLoading) { // loading态控制。
       myChart.showLoading();
@@ -46,54 +40,11 @@ export default class HeatMap extends React.Component {
     if (!heatLoading) {
       myChart.hideLoading();
     }
-    //接口
-    getSimilarityList(params);
-    myChart.setOption(heatTemperatureOptions(similarityList, params.date));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      faultInfo: {
-        endTime: currentEndTime
-      },
-      getSimilarityList
-    } = this.props;
-    const {
-      faultInfo: {
-        endTime: nextEndTime
-      },
-    } = nextProps;
-    const taskId = localStorage.getItem("taskId");
-    const params = {
-      taskId,
-      date: nextEndTime
-    };
-    if (currentEndTime !== nextEndTime) {
-      // 接口
-      getSimilarityList(params);
+    if (currentHeatTimeCompare && heatTimeCompare !== currentHeatTimeCompare) {
+      eCharts.init(heatChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(heatChart); //构建下一个实例
+      myChart.setOption(heatTemperatureOptions(similarityList, faultDate || endTime));
     }
-  }
-
-  componentDidUpdate() {
-    const  {
-      heatChart,
-      props: {
-        similarityList,
-        faultInfo: {
-          endTime
-        },
-        heatLoading
-      }
-    } = this;
-    const myChart = eCharts.init(heatChart);
-    if (heatLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!heatLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(heatTemperatureOptions(similarityList, endTime));
   }
 
   render() {

@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './singleStation.scss';
 import { singleStationAction } from './singleStationAction';
-import SingleStationMain from '../../../../components/Monitor/StationMonitor/SingleStation/SingleStationMain';
-import moment from 'moment';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
+import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/PvStation/PvStation';
+// import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/WindStation/WindStation';
+import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewWindStation/WindStation';
 class SingleStation extends Component {
   static propTypes = {
     stationType: PropTypes.string,
@@ -30,7 +31,9 @@ class SingleStation extends Component {
     deviceTypeFlow: PropTypes.object,
     resetSingleStationStore: PropTypes.func,
     getFanList: PropTypes.func,
+    getSingleScatter: PropTypes.func,
     singleStationData: PropTypes.object,
+    stationList: PropTypes.array,
   };
   constructor(props) {
     super(props);
@@ -38,108 +41,40 @@ class SingleStation extends Component {
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
-    this.getTenSeconds(stationCode);
-    this.getOutputDataTenMin(stationCode,this.props.stationType); // 解决出力图不显示的问题
-    this.getPowerDataTenMin(stationCode);
-    const { search } = this.props.location;
-    const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
-    const searchData = tmpSearchData.map(e => {
-      const subData = e.split('=');
-      return { [subData[0]]: subData[1] }
-    })
-    const deviceTypeInfo = searchData.find(e => e.showPart > 0);
-    if (deviceTypeInfo) {
-      const main = document.getElementById('main');
-      main.scrollTo(0, 700);
-      this.props.getDeviceTypeFlow({
-        stationCode,
-        deviceTypeCode: parseInt(deviceTypeInfo.showPart)
-      });//获取设备类型流程图
-    } else {
-      this.props.getDeviceTypeFlow({ stationCode });//获取设备类型流程图
-    }
-    this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
-    this.props.getStationList({});//获取电站列表
+    const { stationList } = this.props;
+    const staions = stationList.filter(e => e.stationCode === +stationCode);
+    const stationType = staions.length > 0 && `${staions[0].stationType}`;
+    this.props.changeSingleStationStore({ stationType })
   }
 
   componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
-    const nextParams = nextProps.match.params;
-    const nextStationCode = nextParams.stationCode;
-    const nextStationType=nextProps.stationType;
-    const stationType=this.props.stationType;
-    if(nextStationType && nextStationType !==stationType){
-      this.getOutputDataTenMin(nextStationCode,nextStationType);
-    }
+    const nextStationCode = nextProps.match.params.stationCode;
+    const { stationList } = nextProps;
+    const staions = stationList.filter(e => e.stationCode === +nextStationCode);
+    const nextStationType = staions.length > 0 && `${staions[0].stationType}`;
     if (nextStationCode !== stationCode) {
-      clearTimeout(this.timeOutId);
-      this.props.resetSingleStationStore();
-      this.props.getStationList({})
-      this.getTenSeconds(nextStationCode);
-      this.getOutputDataTenMin(nextStationCode,nextStationType);
-      this.getPowerDataTenMin(nextStationCode);
-      this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
+      this.props.changeSingleStationStore({ stationType: nextStationType })
+      this.props.stopSingleRealData();
     }
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timeOutId);
-    clearTimeout(this.timeOutOutputData);
-    clearTimeout(this.timeOutPowerData);
     this.props.resetSingleStationStore();
   }
 
-  getTenSeconds = (stationCode) => {
-    this.props.getSingleStation({ stationCode });
-    this.props.getAlarmList({ stationCode });
-    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime: moment().utc().format() });
-
-    this.timeOutId = setTimeout(() => {
-      this.getTenSeconds(stationCode);
-    }, 10000);
-  }
-
-  getOutputDataTenMin = (stationCode,stationType) => { // 10min请求一次处理
-    clearTimeout(this.timeOutOutputData);
-    this.props.getCapabilityDiagram({
-      stationCode,
-      stationType,
-      startTime: moment().subtract(24, 'hours').utc().format(),
-      endTime: moment().utc().format()
-    });
-    this.timeOutOutputData = setTimeout(() => {
-      this.getOutputDataTenMin(stationCode,stationType);
-    }, 600000);
-  }
-
-  getPowerDataTenMin = (stationCode, intervalTime = 0) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
-    clearTimeout(this.timeOutPowerData);
-    let startTime = moment().subtract(5, 'day').format('YYYY-MM-DD')// 默认是6天前;
-    if (intervalTime === 1) {
-      startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
-    } else if (intervalTime === 2) {
-      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
-    }
-    this.props.getMonitorPower({
-      stationCode,
-      intervalTime,
-      startTime,
-      endTime: moment().format('YYYY-MM-DD')
-    });
-    this.timeOutPowerData = setTimeout(() => {
-      this.getPowerDataTenMin(stationCode, intervalTime);
-    }, 600000);
-  }
 
   render() {
-    const { stationType }=this.props;
+    const { stationType } = this.props;
     return (
       <div className={styles.singleStation}>
         <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
         <div className={styles.singleStationContainer} >
-          <SingleStationMain {...this.props} getPowerDataTenMin={this.getPowerDataTenMin} stationType={stationType} />
-          <Footer />
+          {stationType === '1' && <PvStation {...this.props} />}
+          {stationType === '0' && <WindStation {...this.props} />}
+          {!stationType && <div style={{ display: 'flex', flex: 1, backgroundColor: '#fff' }}></div>}
         </div>
+        <Footer />
       </div>
     );
   }
@@ -148,7 +83,7 @@ class SingleStation extends Component {
 const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
-    // singleStationDatas: state.monitor.stationMonitor.toJS().singleStationData,//获取当前是在哪一个类型 风电／光伏
+    stationList: state.common.get('stations').toJS(),
     realTimePowerUnit: state.common.get('realTimePowerUnit'),
     realTimePowerPoint: state.common.get('realTimePowerPoint'),
     realCapacityUnit: state.common.get('realCapacityUnit'),
@@ -159,7 +94,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeSingleStationStore: payload => dispatch({ type: singleStationAction.CHANGE_SINGLE_STATION_STORE_SAGA, payload }),
+  changeSingleStationStore: payload => dispatch({ type: singleStationAction.changeSingleStationStore, payload }),
+  resetSingleStationStore: payload => dispatch({ type: singleStationAction.resetStore }),
+  getRealSingleData: payload => dispatch({ type: singleStationAction.getRealSingleData }),
   getSingleStation: payload => dispatch({ type: singleStationAction.GET_SINGLE_STATION_SAGA, payload }),
   getCapabilityDiagram: payload => dispatch({ type: singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload }),
   getMonitorPower: payload => dispatch({ type: singleStationAction.GET_MONITOR_POWER_SAGA, payload }),
@@ -178,8 +115,12 @@ const mapDispatchToProps = (dispatch) => ({
   getBoosterstation: payload => dispatch({ type: singleStationAction.getBoosterstation, payload }),
   getPowerNet: payload => dispatch({ type: singleStationAction.getPowerNet, payload }),
   editData: payload => dispatch({ type: singleStationAction.EDIT_MONTH_YEAR_DATA_SAGA, payload }),
-  getFanList: payload => dispatch({ type: singleStationAction.getFanList,payload }),
-  resetSingleStationStore: payload => dispatch({ type: singleStationAction.RESET_SINGLE_STATION_STORE }),
+  getFanList: payload => dispatch({ type: singleStationAction.getFanList, payload }),
+  getNewFanList: payload => dispatch({ type: singleStationAction.getNewFanList, payload }),
+  getSingleScatter: payload => dispatch({ type: singleStationAction.getSingleScatter, payload }),
+  getPointparams: payload => dispatch({ type: singleStationAction.pointparams, payload }),
+  getSingleRealChartsData: payload => dispatch({ type: singleStationAction.getSingleRealChartsData, payload }),
+  stopSingleRealData: payload => dispatch({ type: singleStationAction.stopSingleRealData, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

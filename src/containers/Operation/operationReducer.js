@@ -7,7 +7,11 @@ import personnelGps from './PersonnelGps/personnelGpsReducer';
 
 import dayReport from './Running/DayReport/dayReportReducer';
 import workOrder from './Ticket/WorkOrder/workOrderReducer';
+import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
+import deviceManage from './Book/DeviceManage/deviceManageReducer';
+import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
 
-const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder });
+
+const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder,assetsConfig,deviceManage,partInfo });
 
 export default operationReducer;

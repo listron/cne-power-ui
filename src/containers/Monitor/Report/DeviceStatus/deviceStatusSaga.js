@@ -4,13 +4,14 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { deviceStatusAction } from './deviceStatusAction';
 import moment from 'moment';
+import { cloneableGenerator } from 'redux-saga/utils';
 const APIBasePath = Path.basePaths.APIBasePath;
 const monitor = Path.APISubPaths.monitor
 
 function* getDeviceStatusList(action) {  // 请求报表列表
   const { payload } = action;
 
-  const {startTime,endTime}= payload;
+  const { startTime, endTime } = payload;
   const url = `${APIBasePath}${monitor.getDeviceStatusList}`;
   // const url = `/mock/v3/wind/report/fan/devicestatus`;
   try {
@@ -19,14 +20,14 @@ function* getDeviceStatusList(action) {  // 请求报表列表
       payload: {
         ...payload,
         loading: true,
-       
+
       },
     });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:moment( startTime).utc().format(''),
-      endTime:moment( endTime).utc().format(''),
-      timeZone:moment().zone() / (-60),
+      // startTime:moment( startTime).utc().format(''),
+      // endTime:moment( endTime).utc().format(''),
+      timeZone: moment().zone() / (-60),
 
     });
     if (response.data.code === '10000') {
@@ -45,7 +46,7 @@ function* getDeviceStatusList(action) {  // 请求报表列表
           deviceStatusList: response.data.data.dataList || [],
           loading: false,
           ...payload,
-          filterTable:payload.summaryType
+          filterTable: payload.summaryType
         },
       });
     } else {
@@ -53,6 +54,7 @@ function* getDeviceStatusList(action) {  // 请求报表列表
     }
   } catch (e) {
     console.log(e);
+
     yield put({
       type: deviceStatusAction.changeDeviceStatusStore,
       payload: { ...payload, loading: false, deviceStatusList: [] },
@@ -61,7 +63,7 @@ function* getDeviceStatusList(action) {  // 请求报表列表
 }
 function* getDeviceStatusDetail(action) {  // 请求设备状态明细
   const { payload } = action;
-  const {startTime,endTime}= payload;
+  const { startTime, endTime } = payload;
   const url = `${APIBasePath}${monitor.getDeviceStatusDetail}`;
   // const url = `/mock/v3/wind/report/fan/devicestatus/detail`;
   try {
@@ -70,14 +72,14 @@ function* getDeviceStatusDetail(action) {  // 请求设备状态明细
       payload: {
         ...payload,
         loading: true,
-       
+
       },
     });
     const response = yield call(axios.post, url, {
       ...payload,
-      startTime:moment( startTime).utc().format(''),
-      endTime:moment( endTime).utc().format(''),
-      timeZone:moment().zone() / (-60),
+      // startTime:moment( startTime).utc().format(''),
+      // endTime:moment( endTime).utc().format(''),
+      timeZone: moment().zone() / (-60),
 
     });
     if (response.data.code === '10000') {
@@ -96,7 +98,7 @@ function* getDeviceStatusDetail(action) {  // 请求设备状态明细
           statusDetailList: response.data.data.dataList || [],
           loading: false,
           ...payload,
-          filterTable:payload.summaryType
+          filterTable: payload.summaryType
         },
       });
     } else {
@@ -106,7 +108,7 @@ function* getDeviceStatusDetail(action) {  // 请求设备状态明细
     console.log(e);
     yield put({
       type: deviceStatusAction.changeDeviceStatusStore,
-      payload: { ...payload, loading: false, deviceStatusList: [] },
+      payload: { ...payload, loading: false, statusDetailList: [] },
     })
   }
 }

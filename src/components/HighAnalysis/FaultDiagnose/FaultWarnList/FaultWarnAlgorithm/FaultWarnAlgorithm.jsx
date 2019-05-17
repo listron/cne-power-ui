@@ -14,10 +14,6 @@ export default class FaultWarnAlgorithm extends React.Component {
     stationCode: PropTypes.number
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentWillReceiveProps(nextProps) {
     const {
       match: {params: {fanWarnId: currentSingleStationCode}},
@@ -25,7 +21,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     } = this.props;
     const { match: {params: {fanWarnId: nextSingleStationCode}} } = nextProps;
     const params = {
-      stationCode: currentSingleStationCode,
+      stationCode: nextSingleStationCode,
     };
     if (currentSingleStationCode !== nextSingleStationCode) {
       // 算法模型调用
@@ -41,7 +37,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     return <span>{str + fan[fan.length-1].deviceName}</span>;
   };
 
-  detailsFunc = (data, algorithmId, taskId) => {
+  detailsFunc = (algorithmId, taskId) => {
     const {
       history,
       match: {
@@ -53,8 +49,9 @@ export default class FaultWarnAlgorithm extends React.Component {
     // 跳到按模型单风机详情图表展示
     history.push(`/hidden/analysis/all/fan/${fanWarnId}`);
     // localStore存储有故障的风机
+    localStorage.setItem("deviceFullCode", "");
+    localStorage.setItem("faultWarnNum", "");
     localStorage.setItem("algorithmId", algorithmId);
-    localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
   };
 
@@ -67,18 +64,20 @@ export default class FaultWarnAlgorithm extends React.Component {
     const largeSizeItem = largeSizeList && largeSizeList.map((cur, index) => {
       return (
         <div
-          className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
+          className={(cur.windTurbines.length === 0 || !cur.windTurbines) ? styles.successItem : styles.warnItem}
           key={cur.taskId + index}
-          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
+          onClick={() => {return this.detailsFunc(cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
+          </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
-              <span>{cur.faultUnitCount}</span><span>风机</span>
+              <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
@@ -95,11 +94,13 @@ export default class FaultWarnAlgorithm extends React.Component {
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
+            </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
@@ -116,11 +117,13 @@ export default class FaultWarnAlgorithm extends React.Component {
           <div>
             {cur.algorithmName}
           </div>
-          <div>
+          {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
+          </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
             </Tooltip>
-          </div>
+          </div>}
           <div>
             <span>检测日期</span><span>{`${cur.startTime}~${cur.endTime}`}</span>
           </div>
@@ -129,37 +132,43 @@ export default class FaultWarnAlgorithm extends React.Component {
     });
     return (
       <div className={styles.faultWarnAlgorithm}>
-        {(largeSizeItem.length !== 0) && (
+        {(largeSizeItem.length === 0 && natureItem.length === 0 && healthItem.length === 0) ? (
+          <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
+        ) : (
           <div>
-            <div className={styles.title}>
-              大部件
-            </div>
-            <div className={styles.warnBox}>
-              {largeSizeItem}
-            </div>
+            {(largeSizeItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  大部件
+                </div>
+                <div className={styles.warnBox}>
+                  {largeSizeItem}
+                </div>
+              </div>
+            )}
+            {(natureItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  性能预警
+                </div>
+                <div className={styles.warnBox}>
+                  {natureItem}
+                </div>
+              </div>
+            )}
+            {(healthItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  设备健康
+                </div>
+                <div className={styles.warnBox}>
+                  {healthItem}
+                </div>
+              </div>
+            )}
           </div>
         )}
-        {(natureItem.length !== 0) && (
-          <div>
-            <div className={styles.title}>
-              性能预警
-            </div>
-            <div className={styles.warnBox}>
-              {natureItem}
-            </div>
-          </div>
-        )}
-        {(healthItem.length !== 0) && (
-          <div>
-            <div className={styles.title}>
-              设备健康
-            </div>
-            <div className={styles.warnBox}>
-              {healthItem}
-            </div>
-          </div>
-        )}
-      </div>
+    </div>
     );
   }
 }

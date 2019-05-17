@@ -1,0 +1,52 @@
+@import '../../../../../theme/theme.scss';
+.deviceFactory{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  .title{
+    display: flex;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f2f5;
+    .editPart,.formItemStyle{
+      display: flex;
+      margin: 0 12px 0 14px;
+      .addButton{
+        margin: 4px auto;
+      }
+    }
+    .rightSeach{
+      margin-right: 28px;
+      :global{
+        .ant-input-search-icon{
+          color:#199475;
+        }
+      }
+    }
+   
+  }
+  .tableStyles{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    :global{
+      .iconfont{
+        font-size: 20px;
+        &:hover{
+          color:#199475
+        }
+      }
+      .icon-edit,.icon-del{
+        color:#199475;
+      }
+    }
+    .paginationStyle{
+      display: flex;
+      height: 48px;
+      line-height: 48px;
+      border:1px solid #e1e2e2;
+      justify-content: flex-end;
+    }
+  }
+}

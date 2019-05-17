@@ -81,10 +81,19 @@ class AddForm extends Component {
         <FormItem label="用户名" >
           {getFieldDecorator('username',{
             initialValue: userDetail && userDetail.username,
-            rules: [
-              {pattern: /^[A-Za-z0-9~!@#$%^&*()_+.\u4e00-\u9fa5]{3,25}$/gi, message: '请输入字符长度为3-25的用户名',required: true,},
-              
-            ]
+            rules: [{
+              validator: (rule, value, callback) => {
+                let truelyStr = value.trim();
+                const patternRule = /^\S[\s\S]{1,23}\S$/;
+                if (!truelyStr) {
+                  callback('请输入字符长度为3-25的用户名');
+                } else if (!patternRule.test(truelyStr)) {
+                  callback('用户名需3-25个字符');
+                }
+                callback();
+              },
+              required: true
+            }]
           })(
             <Input placeholder="请输入用户名" />
           )}
@@ -111,7 +120,7 @@ class AddForm extends Component {
           })(
             <Input placeholder="请输入真实姓名" />
           )}
-          <span className={styles.instructionText}>(30字以内)</span>
+          <span className={styles.instructionText}>(中文/英文/空格 长度小于30个字)</span>
         </FormItem>
         <FormItem label="电话" >
           {getFieldDecorator('phoneNum',{

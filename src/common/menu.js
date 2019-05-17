@@ -167,12 +167,28 @@ const menuData = [
         rightKey: 'operation_book',
         children: [
           {
-            name: '备品备件',
-            path: 'sparePart',
+            name: '资产配置',
+            path: 'assetsConfig',
             rightKey: 'operation_book_sparePart',
           }, {
-            name: '工器具',
-            path: 'instrument',
+            name: '设备管理',
+            path: 'deviceManage',
+            rightKey: 'operation_book_instrument',
+          },{
+            name: '设备台账',
+            path: 'deviceAccount',
+            rightKey: 'operation_book_sparePart',
+          }, {
+            name: '仓库配置',
+            path: 'warehouse',
+            rightKey: 'operation_book_instrument',
+          },{
+            name: '仓库管理',
+            path: 'warehouseManage',
+            rightKey: 'operation_book_sparePart',
+          }, {
+            name: '出入境记录',
+            path: 'immigrationRecords',
             rightKey: 'operation_book_instrument',
           }
         ]
@@ -275,7 +291,6 @@ const menuData = [
           {
             name: '智能分析报告',
             path: 'intelligentAnalysis',
-            defaultPath: true,
             rightKey: 'statistics_report_report',
           },
         ]
@@ -388,21 +403,21 @@ const menuData = [
         name: '风机预警',
         iconStyle: 'icon-windlogo',
         path: 'faultDiagnose',
-        rightKey: 'analysis_intelligentWarning',
+        rightKey: 'analysis_turbineFDD',
         children: [
           {
             name: '故障预警',
             path: 'faultWarn',
             defaultPath: true,
-            rightKey: 'analysis_intelligentWarning',
+            rightKey: 'analysis_turbineFDD_recent',
           },{
             name: '历史预警',
             path: 'historyWarn',
-            rightKey: 'analysis_intelligentWarning',
+            rightKey: 'analysis_turbineFDD_history',
           },{
             name: '算法控制台',
             path: 'algorithmControl',
-            rightKey: 'analysis_intelligentWarning',
+            rightKey: 'analysis_turbineFDD_console',
           }
         ]
       }

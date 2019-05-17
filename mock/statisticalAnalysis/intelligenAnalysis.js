@@ -146,214 +146,189 @@ module.exports = [
         "maxFaultName":"123",
         "aveScore":"123",
         "scoreStations":[{
-
-        }],
-
-
-        "areaPartABean": {
-          "avgEquiventHours": '1',
-          "avgLostPowerEquiventHours": '2',
-          "hightStationInfoList": [{
-            "stationName": "电站1",
-            "lostValue": "2",
-            "per": "4"
-          },{
-            "stationName": "电站2",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站3",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          }],
-          "lowStationInfoList": [{
-            "stationName": "电站1",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站2",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站3",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          }]
-        },
-        "areaPartBBean": {
-          "avgPlanComplateRate": '1',
-          "hightStationInfoList": [{
-            "stationName": "电站1",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站2",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站3",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          }],
-          "lowStationInfoList": [{
-            "stationName": "电站1",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站2",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          },{
-            "stationName": "电站3",
-            "lostValue": "2",
-            "sunnyDays": "3",
-            "per": "4"
-          }]
-        },
-        "areaPartCBean": {
-          "lostPowers": "1",
-          "faultName": "2",
-          "faultLostPowerList": [{
-            "faultType": "1",
-            "lostPower": "2",
-            "lostPowerYearOnYear": "3",
-          }]
-        },
-        "areaPartDBean": {
-          "avgScore": "1",
-          "lowScoreStationList": [{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          },{
-            "stationName": "电站名称n",
-            "scoreValue": "2",
-            "stationScoreDetailList":[{
-              "indexCode": "1",
-              "indexName": "2",
-              "scoreValuePer": "3"
-            }]
-          }]
-        }
+          "stationName": "电站1",
+          "score": "12",
+          "lowPlanFinishRate": "12",
+          "lowPrFinishRate": "12",
+          "highLostPpwerEquivalentHours": "12",
+          "highComPlantPowerRate": "12",
+          "lowDefectFinishRate": "12",
+          "ALevelDefectFinishRate": "12",
+          "BLevelDefectFinishRate": "12",
+          "CLevelDefectFinishRate": "12"
+        },{
+          "stationName": "电站2",
+          "score": "12",
+          "lowPlanFinishRate": "12",
+          "lowPrFinishRate": "12",
+          "highLostPpwerEquivalentHours": "12",
+          "highComPlantPowerRate": "12",
+          "lowDefectFinishRate": "12",
+          "ALevelDefectFinishRate": "12",
+          "BLevelDefectFinishRate": "12",
+          "CLevelDefectFinishRate": "12"
+        },{
+          "stationName": "电站3",
+          "score": "12",
+          "lowPlanFinishRate": "12",
+          "lowPrFinishRate": "12",
+          "highLostPpwerEquivalentHours": "12",
+          "highComPlantPowerRate": "12",
+          "lowDefectFinishRate": "12",
+          "ALevelDefectFinishRate": "12",
+          "BLevelDefectFinishRate": "12",
+          "CLevelDefectFinishRate": "12"
+        },{
+          "stationName": "电站4",
+          "score": "12",
+          "lowPlanFinishRate": "12",
+          "lowPrFinishRate": "12",
+          "highLostPpwerEquivalentHours": "12",
+          "highComPlantPowerRate": "12",
+          "lowDefectFinishRate": "12",
+          "ALevelDefectFinishRate": "12",
+          "BLevelDefectFinishRate": "12",
+          "CLevelDefectFinishRate": "12"
+        }]
       }
     }
   },
   {
-  api: '/mock/statisticalAnalysis/intelligence/analysis/areacompare',
-  method: 'post',
-  response: {
-    code: "10000",
-    message: "请求成功",
-    "data": {
-      "avgComplateRate":"123",
-      "areaPartABeanList": {
-          "areaName":"区域一" ,
-          "hightStationInfoList":[{
-            "stationName": "电站1",
-            "lostValue": "123",
-            "sunnyDays": "456",
-            "per":"789"
+    api: '/mock/statisticalAnalysis/intelligence/analysis/areacompare',
+    method: 'post',
+    response: {
+      code: "10000",
+      message: "请求成功",
+      "data": {
+        "enterpriseGenData": [{
+          "rate": "123",
+          "regionNameList":["123","789","456"],
+          "regionDataList":[{
+            "regionName": "区域一",
+            "faultList":[{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            }]
           },{
-            "stationName": "电站2",
-            "lostValue": "123",
-            "sunnyDays": "456",
-            "per":"789"
+            "regionName": "区域二",
+            "faultList":[{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            }]
           },{
-            "stationName": "电站3",
-            "lostValue": "123",
-            "sunnyDays": "456",
-            "per":"789"
+            "regionName": "区域三",
+            "faultList":[{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            },{
+              "stationName":"电站1",
+              "faultGen":"123",
+              "faultLostRate":"123",
+              "sunnyDays":"123",
+              "sunnyDayRate":"123",
+            }]
           },
-        ]
-      },
-      "lostEquientHours": "123",
-      "areaPartBBeanList": [{
-        "areaName": "区域1",
-        "areaFaultLostPowerList": [{
-          "faultType": "1",
-          "lostPower": "2",
-          "lostPowerYearOnYear":"3"
+          ],
+        }],
+        "enterpriseHoursData": [{
+          "value": "123",
+          "regionNameList":["123","789","456"],
+          "regionDataList":[{
+            "regionName": "区域一",
+            "faultData":[{
+              "courtLostHours":"123",
+              "courtLostHoursRate":"123",
+              "maxFaultName":"123",
+              "maxLostHoursRate":"123",
+              "lowVoltageLostHoursRate":"123",
+              "lowVoltageLostHours":"123",
+              "substationLostHours" :"123",
+              "substationLostHoursRate":"123",
+              "outPutLostHours":"123",
+              "outPutLostHoursRate":"123",
+              "twiceLostHours":"123",
+              "twiceLostHoursRate":"123",
+              "otherLostHours":"123",
+              "otherLostHoursRate":"123", 
+            }]
+          },{
+            "regionName": "区域二",
+            "faultData":[{
+              "courtLostHours":"123",
+              "courtLostHoursRate":"123",
+              "maxFaultName":"123",
+              "maxLostHoursRate":"123",
+              "lowVoltageLostHoursRate":"123",
+              "lowVoltageLostHours":"123",
+              "substationLostHours" :"123",
+              "substationLostHoursRate":"123",
+              "outPutLostHours":"123",
+              "outPutLostHoursRate":"123",
+              "twiceLostHours":"123",
+              "twiceLostHoursRate":"123",
+              "otherLostHours":"123",
+              "otherLostHoursRate":"123", 
+            }]
+          },{
+            "regionName": "区域三",
+            "faultData":[{
+              "courtLostHours":"123",
+              "courtLostHoursRate":"123",
+              "maxFaultName":"123",
+              "maxLostHoursRate":"123",
+              "lowVoltageLostHoursRate":"123",
+              "lowVoltageLostHours":"123",
+              "substationLostHours" :"123",
+              "substationLostHoursRate":"123",
+              "outPutLostHours":"123",
+              "outPutLostHoursRate":"123",
+              "twiceLostHours":"123",
+              "twiceLostHoursRate":"123",
+              "otherLostHours":"123",
+              "otherLostHoursRate":"123", 
+            }]
+          }]
         }]
-      }]
+      }
     }
   }
-}
 ]

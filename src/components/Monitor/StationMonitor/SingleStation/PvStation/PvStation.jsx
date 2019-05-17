@@ -6,15 +6,11 @@ import PvStationTop from './PvStationTop';
 import OutputTenMin from '../SingleStationCommon/OutputTenMin';
 import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
 import CardSection from '../SingleStationCommon/CardSection';
+import PvStationCont from './PvStationCont';
 import styles from './pvStation.scss';
-import DeviceList from './DeviceList/DeviceList';
-import { Tabs, Radio } from 'antd';
-import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
 
-const { TabPane } = Tabs;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
 class PvStation extends Component {
   static propTypes = {
     deviceTypeFlow: PropTypes.object,
@@ -29,6 +25,28 @@ class PvStation extends Component {
     realTimePowerPoint: PropTypes.any,
     powerUnit: PropTypes.string,
     powerPoint: PropTypes.any,
+    stationList: PropTypes.array,
+    getSingleStation: PropTypes.func,
+    getCapabilityDiagram: PropTypes.func,
+    getMonitorPower: PropTypes.func,
+    getOperatorList: PropTypes.func,
+    getWeatherList: PropTypes.func,
+    getAlarmList: PropTypes.func,
+    getWorkList: PropTypes.func,
+    getDeviceTypeFlow: PropTypes.func,
+    getPvmoduleList: PropTypes.func,
+    getInverterList: PropTypes.func,
+    getStationList: PropTypes.func,
+    getBoxTransformerList: PropTypes.func,
+    changeSingleStationStore: PropTypes.func,
+    getStationDeviceList: PropTypes.func,
+    deviceTypeCode: PropTypes.number,
+    deviceTypeFlow: PropTypes.object,
+    resetSingleStationStore: PropTypes.func,
+    getFanList: PropTypes.func,
+    getSingleScatter: PropTypes.func,
+    singleStationData: PropTypes.object,
+    stationList: PropTypes.array,
   }
 
   constructor(props) {
@@ -38,9 +56,98 @@ class PvStation extends Component {
     }
   }
 
-  onSelectedDeviceType = (e) => {
-    const deviceTypeCode = parseInt(e.target.value);
-    this.props.changeSingleStationStore({ deviceTypeCode });
+  componentDidMount() {
+    const { stationCode } = this.props.match.params;
+    const stationType ='1';
+    const { search } = this.props.location;
+    const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
+    const searchData = tmpSearchData.map(e => {
+      const subData = e.split('=');
+      return { [subData[0]]: subData[1] }
+    })
+    const deviceTypeInfo = searchData.find(e => e.showPart > 0);
+    if (deviceTypeInfo) {
+      const main = document.getElementById('main');
+      main.scrollTo(0, 700);
+      this.props.getDeviceTypeFlow({
+        stationCode,
+        deviceTypeCode: parseInt(deviceTypeInfo.showPart)
+      });//获取设备类型流程图
+    } else {
+      this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
+    }
+    this.getOneHourData(stationCode, stationType);
+    this.getTenSeconds(stationCode, stationType);
+    this.getPowerDataTenMin({stationCode,stationType}); // 发电量
+    this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { stationCode } = this.props.match.params;
+    const nextStationCode = nextProps.match.params.stationCode;
+    const nextStationType='1'
+    if (nextStationCode !== stationCode) {
+      clearTimeout(this.timeOutId);
+      this.props.resetSingleStationStore();
+      this.getTenSeconds(nextStationCode, nextStationType);
+      this.getOneHourData(nextStationCode, nextStationType);
+      this.getPowerDataTenMin({stationCode:nextStationCode,stationType:nextStationType});
+      this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeOutId);
+    clearTimeout(this.timeOutOutputData);
+    clearTimeout(this.timeOutPowerData);
+    this.props.resetSingleStationStore();
+  }
+
+  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  天气情况 
+    this.props.getSingleStation({ stationCode, stationType });
+    this.props.getAlarmList({ stationCode });
+    this.props.getWeatherList({ stationCode }); // 天气
+    let endTime = moment().utc().format();
+    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
+    this.timeOutId = setTimeout(() => {
+      this.getTenSeconds(stationCode,stationType);
+    }, 10000);
+  }
+
+  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 运维人员
+    clearTimeout(this.timeOutOutputData);
+    this.props.getCapabilityDiagram({
+      stationCode,
+      stationType,
+      startTime: moment().subtract(24, 'hours').utc().format(),
+      endTime: moment().utc().format()
+    });
+    this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
+    this.timeOutOutputData = setTimeout(() => {
+      this.getOneHourData(stationCode, stationType);
+    }, 3600000); //600000
+  }
+
+  getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
+    clearTimeout(this.timeOutPowerData);
+    const {stationCode, stationType,intervalTime = 0}=value;
+    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    if (intervalTime === 1) {
+      startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
+    } else if (intervalTime === 2) {
+      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
+    }
+    this.props.changeSingleStationStore({powerData:[]})
+    this.props.getMonitorPower({ // 出力图数据
+      stationCode,
+      intervalTime,
+      startTime,
+      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+      stationType,
+    });
+    this.timeOutPowerData = setTimeout(() => {
+      this.getPowerDataTenMin({stationCode,stationType,intervalTime});
+    }, 600000);
   }
 
   hiddenStationList = () => {
@@ -49,201 +156,19 @@ class PvStation extends Component {
     });
   }
 
-  createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
-    <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }}>
-      <div className={styles.deviceTypeIcon} >
-        <i className={getDeviceTypeIcon(typeCode)} ></i>
-        {alarm && <i className="iconfont icon-alarm alarmIcon" ></i>}
-        <img src="/img/arrowgo.png" className={styles[imgClass]} />
-      </div>
-      <div>{typeName}</div>
-    </RadioButton>
-  )
-
-
-  filterDeviceFlowTypes = (deviceFlowTypes) => { // 删选出交流汇流箱(业务需求)
-    let newDeviceFlowTypes = [];
-    deviceFlowTypes.forEach(item => {
-      if (item.deviceTypes.length > 1) {
-        let newArray = []
-        item.deviceTypes.forEach(list => { list.deviceTypeCode !== 207 && newArray.push(list) })
-        newDeviceFlowTypes.push({ deviceTypes: newArray })
-      } else {
-        item.deviceTypes[0].deviceTypeCode !== 207 && newDeviceFlowTypes.push(item)
-      }
-    })
-    return newDeviceFlowTypes
-  }
-
   render() {
-    const clickable = [509, 201, 206, 304, 202, 302, 301];
-    const { deviceTypeFlow, stationDeviceList, deviceTypeCode, realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
-    const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
-    let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false
-    const weatherDeviceCode = stationDeviceList && stationDeviceList.deviceCode || 0;
+    const { realTimePowerUnit, realTimePowerPoint, powerUnit, powerPoint } = this.props;
     const { stationCode } = this.props.match.params;
-    const deviceFlowTypesArray = deviceTypeFlow && deviceTypeFlow.deviceFlowTypes || [];
-    const deviceFlowTypes = this.filterDeviceFlowTypes(deviceFlowTypesArray)
-    const isCombinedType = deviceFlowTypes.some(e => e.deviceTypes.length > 1);
-    let seriesInfo = {}, boxConfluentInfo = {}, integrateInfo = {}, boosterInfo = {}, deviceFlowRowTwo = [], deviceFlowRowThree = [];
-    deviceFlowTypes.forEach(device => { // 抽取各设备类型信息
-      const deviceTypes = device.deviceTypes || [];
-      let tmpSeriesInfo = deviceTypes.find(e => e.deviceTypeCode === 509); // 组串 光伏组件
-      let tmpBoxConfluentInfo = deviceTypes.find(e => e.deviceTypeCode === 304); // 箱变
-      let tmpIntegrateInfo = deviceTypes.find(e => e.deviceTypeCode === 302); // 集电线路
-      let tmpBoosterInfo = deviceTypes.find(e => e.deviceTypeCode === 301); // 升压站
-      tmpSeriesInfo && (seriesInfo = tmpSeriesInfo);
-      tmpBoxConfluentInfo && (boxConfluentInfo = tmpBoxConfluentInfo);
-      tmpIntegrateInfo && (integrateInfo = tmpIntegrateInfo);
-      tmpBoosterInfo && (boosterInfo = tmpBoosterInfo);
-      let tmpRowTwo = deviceTypes.filter(e => (e.deviceTypeCode === 202 || e.deviceTypeCode === 206))// 汇流箱或者组串式逆变器
-      let tmpRowThree = deviceTypes.filter(e => (e.deviceTypeCode === 201 || e.deviceTypeCode === 207))// 集中式逆变器或者交流汇流箱
-      tmpRowTwo.length > 0 && (deviceFlowRowTwo = tmpRowTwo);
-      tmpRowThree.length > 0 && (deviceFlowRowThree = tmpRowThree);
-    });
-    let RowTwoButton, RowThreeButton, needClassBox; // needClassBox需要双层结构包装
-    if (deviceFlowRowTwo.length <= 1 && deviceFlowRowThree.length <= 1) { // 设备顺序流程为一行。(有可能第二第三列中某设备类型完全不存在)
-      const stepTwoInfo = deviceFlowRowTwo[0];
-      const stepThreeInfo = deviceFlowRowThree[0];
-      RowTwoButton = stepTwoInfo ? this.createFlowButton(
-        stepTwoInfo.deviceTypeCode,
-        stepTwoInfo.deviceTypeName,
-        'deviceTypeItem',
-        'arrowgo',
-        clickable.includes(stepTwoInfo.deviceTypeCode),
-        deviceTypeCode === stepTwoInfo.deviceTypeCode && alarmStatus,
-      ) : null;
-      RowThreeButton = stepThreeInfo ? this.createFlowButton(
-        stepThreeInfo.deviceTypeCode,
-        stepThreeInfo.deviceTypeName,
-        'deviceTypeItem',
-        'arrowgo',
-        clickable.includes(stepThreeInfo.deviceTypeCode),
-        deviceTypeCode === stepThreeInfo.deviceTypeCode && alarmStatus,
-      ) : null;
-    } else if (deviceFlowRowTwo.length === 2 && deviceFlowRowThree.length === 2) { // 两行4种设备类型顺序。
-      needClassBox = true;
-      const acConflu = deviceFlowRowThree.find(e => e.deviceTypeCode === 207); // 有交流汇流箱
-      const seriesInver = deviceFlowRowTwo.find(e => e.deviceTypeCode === 206); // 有组串式逆变器
-      const concentrateConflu = deviceFlowRowTwo.find(e => e.deviceTypeCode === 202); // 有汇流箱
-      const concentrateInver = deviceFlowRowThree.find(e => e.deviceTypeCode === 201); // 有集中式逆变器
-      RowTwoButton = (<div>
-        {this.createFlowButton(
-          concentrateConflu.deviceTypeCode,
-          concentrateConflu.deviceTypeName,
-          'innerItem',
-          'innerArrow',
-          clickable.includes(concentrateConflu.deviceTypeCode),
-          deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus,
-        )}
-        {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus)}
-      </div>)
-      RowThreeButton = (<div>
-        {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus)}
-        {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)}
-      </div>)
-    } else {  // 1 + 2设备类型情况
-      needClassBox = true;
-      const acConflu = deviceFlowRowThree.find(e => e.deviceTypeCode === 207); // 有交流汇流箱
-      const seriesInver = deviceFlowRowTwo.find(e => e.deviceTypeCode === 206); // 有组串式逆变器
-      const concentrateConflu = deviceFlowRowTwo.find(e => e.deviceTypeCode === 202); // 有汇流箱
-      const concentrateInver = deviceFlowRowThree.find(e => e.deviceTypeCode === 201); // 有集中式逆变器
-
-      const concentrateType = concentrateInver && concentrateConflu // 有集中光伏电站流程
-      const distributeType = seriesInver && acConflu // 有分布光伏电站流程
-      if (concentrateType) {  // 有集中光伏电站流程-顶部为集中流程，底部为分布式居中
-        RowTwoButton = (<div>
-          {this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(concentrateConflu.deviceTypeCode), deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus)}
-          {this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus)}
-        </div>)
-        RowThreeButton = acConflu ? this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)
-          : this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus);
-      } else if (distributeType) { // 有分布光伏流程-顶部为集中流程居中，底部为分布式流程
-        RowTwoButton = (<div>
-          {this.createFlowButton(seriesInver.deviceTypeCode, seriesInver.deviceTypeName, 'innerItem', 'innerArrow', clickable.includes(seriesInver.deviceTypeCode), deviceTypeCode === seriesInver.deviceTypeCode && alarmStatus)}
-          {this.createFlowButton(acConflu.deviceTypeCode, acConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(acConflu.deviceTypeCode), deviceTypeCode === acConflu.deviceTypeCode && alarmStatus)}
-        </div>)
-        RowThreeButton = concentrateConflu ? this.createFlowButton(concentrateConflu.deviceTypeCode, concentrateConflu.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateConflu.deviceTypeCode), deviceTypeCode === concentrateConflu.deviceTypeCode && alarmStatus)
-          : this.createFlowButton(concentrateInver.deviceTypeCode, concentrateInver.deviceTypeName, 'innerItem', 'hideArrow', clickable.includes(concentrateInver.deviceTypeCode), deviceTypeCode === concentrateInver.deviceTypeCode && alarmStatus);
-      }
-    }
     return (
       <div className={styles.pvStation}  >
         <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
         <div className={styles.outputPowerDiagram}>
           <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} yAxisValuePoint={realTimePowerPoint} />
-          <PowerDiagramTenMin {...this.props} stationCode={stationCode} yAxisUnit={powerUnit} yAxisValuePoint={powerPoint} />
+          <PowerDiagramTenMin {...this.props} stationCode={stationCode} yAxisUnit={powerUnit} yAxisValuePoint={powerPoint}  getPowerDataTenMin={this.getPowerDataTenMin} />
         </div>
         <CardSection {...this.props} stationCode={stationCode} />
         {/* 设备类型流程图切换 */}
-        <div className={styles.threadAndDevice} id="deviceType" >
-          <Tabs type="card" defaultActiveKey="2" >
-            {/* <TabPane tab="主线" key="1">
-              <p>主线列表</p>
-            </TabPane> */}
-            <TabPane tab="示意图" key="2">
-              <div className={styles.deviceTypeFlow}>
-                <Link to={`/hidden/monitorDevice/${stationCode}/203/${weatherDeviceCode}`} className={styles.weatherStationLink} >
-                  <div className={isCombinedType ? styles.combinedTypeWeatherStation : styles.weatherStation}>
-                    <i className="iconfont icon-weather" ></i>
-                    <div className={styles.fontcolor}>气象站</div>
-                  </div>
-                </Link>
-                <RadioGroup value={deviceTypeCode} onChange={this.onSelectedDeviceType} >
-                  {seriesInfo.deviceTypeCode && this.createFlowButton(
-                    seriesInfo.deviceTypeCode,
-                    seriesInfo.deviceTypeName,
-                    'deviceTypeItem',
-                    'arrowgo',
-                    clickable.includes(seriesInfo.deviceTypeCode),
-                    deviceTypeCode === seriesInfo.deviceTypeCode && alarmStatus
-                  )}
-                  {!needClassBox && RowTwoButton}
-                  {!needClassBox && RowThreeButton}
-                  {needClassBox && <div className={styles.multipleType}>
-                    {RowTwoButton}
-                    {RowThreeButton}
-                    <img src="/img/arrowgo.png" className={styles.rightArrow} />
-                  </div>}
-                  {boxConfluentInfo.deviceTypeCode && this.createFlowButton(
-                    boxConfluentInfo.deviceTypeCode,
-                    boxConfluentInfo.deviceTypeName,
-                    'deviceTypeItem',
-                    'arrowgo',
-                    clickable.includes(boxConfluentInfo.deviceTypeCode),
-                    deviceTypeCode === boxConfluentInfo.deviceTypeCode && alarmStatus
-                  )}
-                  {integrateInfo.deviceTypeCode && this.createFlowButton(
-                    integrateInfo.deviceTypeCode,
-                    integrateInfo.deviceTypeName,
-                    'deviceTypeItem',
-                    'arrowgo',
-                    clickable.includes(integrateInfo.deviceTypeCode),
-                    deviceTypeCode === integrateInfo.deviceTypeCode && alarmStatus
-                  )}
-                  {boosterInfo.deviceTypeCode && this.createFlowButton(
-                    boosterInfo.deviceTypeCode,
-                    boosterInfo.deviceTypeName,
-                    'deviceTypeItem',
-                    'arrowgo',
-                    clickable.includes(boosterInfo.deviceTypeCode),
-                    deviceTypeCode === boosterInfo.deviceTypeCode && alarmStatus
-                  )}
-                  <RadioButton value={0} className={styles.elecnettingItem}>
-                    <div className={styles.deviceTypeIcon} >
-                      <i className="iconfont icon-elecnetting" ></i>
-                    </div>
-                    <div>电网</div>
-                  </RadioButton>
-                </RadioGroup>
-              </div>
-              <div className={styles.deviceList} >
-                <DeviceList {...this.props} />
-              </div>
-            </TabPane>
-          </Tabs>
-        </div>
-
+        <PvStationCont {...this.props} />
       </div>
     )
   }

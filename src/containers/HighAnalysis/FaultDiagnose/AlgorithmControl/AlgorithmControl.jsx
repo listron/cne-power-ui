@@ -17,7 +17,6 @@ class AlgorithmControl extends Component {
     changeAlgorithmControlStore: PropTypes.func,
     viewType: PropTypes.string,
     getAlgoOptionList: PropTypes.func,
-    getTaskStatusStat: PropTypes.func,
     getListView: PropTypes.func,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
@@ -29,6 +28,7 @@ class AlgorithmControl extends Component {
     sortMethod: PropTypes.string,
     stationCode: PropTypes.string,
     algorithmModalName: PropTypes.array,
+    stationCodes: PropTypes.string,
   };
 
   constructor(props, context) {
@@ -66,6 +66,7 @@ class AlgorithmControl extends Component {
       sortField,
       sortMethod,
       stationCode,
+      stationCodes,
       algorithmModalName
     } = this.props;
     // 新的参数
@@ -79,6 +80,7 @@ class AlgorithmControl extends Component {
       sortField,
       sortMethod,
       stationCode,
+      stationCodes,
       algorithmModalName,
       ...params
     };
@@ -99,7 +101,6 @@ class AlgorithmControl extends Component {
       changeAlgorithmControlStore,
       getListView,
       algorithmModalId,
-      getTaskStatusStat
     } = this.props;
     // 展示列表视图
     changeAlgorithmControlStore({
@@ -116,16 +117,8 @@ class AlgorithmControl extends Component {
       sortField:"",
       sortMethod:""
     };
-    const statusParams = {
-      stationCode:null,
-      algorithmIds: algorithmModalId,
-      startTime:"",
-      endTime:""
-    };
     // 列表
     getListView(listParams);
-    // 状态统计
-    getTaskStatusStat(statusParams);
   };
 
   render() {
