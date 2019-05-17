@@ -63,7 +63,8 @@ export default class ListView extends React.Component {
   handleStatusChange = (e) => {
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      status: e.target.value
+      status: e.target.value,
+      pageNum: 1
     });
   };
 
