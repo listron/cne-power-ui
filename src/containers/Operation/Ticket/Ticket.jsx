@@ -21,7 +21,7 @@ const TabPane = Tabs.TabPane;
 
 class Ticket extends Component {
   static propTypes = {
-    showContainer: PropTypes.string,
+    container: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     clearDefectState: PropTypes.func,
     clearInspectState: PropTypes.func,
@@ -94,13 +94,13 @@ class Ticket extends Component {
   }
 
   render() {
-    const { showContainer, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList } = this.props;
+    const { container, onChangeShowContainer, defectId, pageSize, pageNum, defectIdList } = this.props;
     const { tab } = this.state;
     return (
       <div className={styles.ticketBox}>
         <CommonBreadcrumb breadData={[{ name: '工单列表' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.ticket}>
-          {showContainer === 'list' &&
+          {container === 'list' &&
             <Tabs activeKey={tab} onChange={this.onChangeTab} type="card">
               <TabPane tab="缺陷" key="defect">
                 <DefectList showTab={tab} onChangeShowContainer={onChangeShowContainer} />
@@ -111,7 +111,7 @@ class Ticket extends Component {
             </Tabs>
           }
 
-          {tab === 'defect' && showContainer === 'detail' && defectId && defectIdList &&
+          {tab === 'defect' && container === 'detail' && defectId && defectIdList &&
             <WorkOrder
               defectId={defectId}
               otherFrom={false}
@@ -119,14 +119,14 @@ class Ticket extends Component {
               onChange={this.prevChange}
               showPage={true}
               defectIdList={defectIdList} />}
-          {tab === 'defect' && showContainer === 'create' && <DefectCreate {...this.props} />}
-          {tab === 'defect' && showContainer === 'edit' && <DefectCreate {...this.props} editDefect={true} />}
+          {tab === 'defect' && container === 'create' && <DefectCreate {...this.props} />}
+          {tab === 'defect' && container === 'edit' && <DefectCreate {...this.props} editDefect={true} />}
 
-          {tab === 'inspect' && showContainer === 'detail' && <InspectDetail {...this.props} />}
-          {tab === 'inspect' && showContainer === 'inspectOrbit' && <InspectOrbit {...this.props} />}
-          {tab === 'inspect' && showContainer === 'inspectRecord' && <InspectRecord {...this.props} />}
-          {tab === 'inspect' && showContainer === 'create' && <InspectCreate {...this.props} />}
-          {tab === 'inspect' && showContainer === 'edit' && <InspectCreate {...this.props} />}
+          {tab === 'inspect' && container === 'detail' && <InspectDetail {...this.props} />}
+          {tab === 'inspect' && container === 'inspectOrbit' && <InspectOrbit {...this.props} />}
+          {tab === 'inspect' && container === 'inspectRecord' && <InspectRecord {...this.props} />}
+          {tab === 'inspect' && container === 'create' && <InspectCreate {...this.props} />}
+          {tab === 'inspect' && container === 'edit' && <InspectCreate {...this.props} />}
           <Footer />
         </div>
       </div>

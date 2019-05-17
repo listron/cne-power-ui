@@ -1,6 +1,9 @@
 @import '../../../../../theme/theme.scss';
 .windStation {
     background: #fff;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     :global {
         .ant-progress-inner {
             background-color: #dfdfdf;

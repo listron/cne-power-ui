@@ -204,5 +204,86 @@ module.exports = [
     },
     delay:1000,
     error:{}
+  },
+  {
+    api:'/mock/operation/knowledgebase/list',
+    method:'post',
+    response:{
+      "code": "10000",
+      "message": "请求成功",
+      "data": {
+        "dataList": [
+            {
+                "knowledgeBaseId": '123',
+                "deviceTypeCode": 45,
+                "deviceTypeName": 'test1',
+                "deviceTypeName": 34,
+                "faultCode": 101,
+                "faultName": "不干净",
+                "faultDescription": "不干净不干净不干净不干净不干净不干净",
+                "checkItems": '清洁',
+                "processingMethod": '清洗',
+                "updateTime": "2019-05-06",
+                "likeCount": 34,
+            },
+            {
+                "knowledgeBaseId": '456',
+                "deviceTypeCode": 34,
+                "deviceTypeName": 'test2',
+                "deviceTypeName": 34,
+                "faultCode": 102,
+                "faultName": "不干净",
+                "faultDescription": "不干净不干净不干净不干净不干净不干净",
+                "checkItems": '清洁',
+                "processingMethod": '清洗',
+                "updateTime": "2019-05-10",
+                "likeCount": 56,
+            },
+            {
+                "knowledgeBaseId": '123',
+                "deviceTypeCode": 45,
+                "deviceTypeName": 'test3',
+                "deviceTypeName": 34,
+                "faultCode": 103,
+                "faultName": "不干净",
+                "faultDescription": "不干净不干净不干净不干净不干净不干净",
+                "checkItems": '清洁',
+                "processingMethod": '清洗',
+                "updateTime": "2019-05-08",
+                "likeCount": 67,
+            },
+            {
+                "knowledgeBaseId": '123',
+                "deviceTypeCode": 45,
+                "deviceTypeName": 'test4',
+                "deviceTypeName": 34,
+                "faultCode": 104,
+                "faultName": "不干净",
+                "faultDescription": "不干净不干净不干净不干净不干净不干净",
+                "checkItems": '清洁',
+                "processingMethod": '清洗',
+                "updateTime": "2019-05-07",
+                "likeCount": 78,
+            },
+          ],
+          'count':10,
+        },
+
+      "serviceCode": "3.0"
+    },
+    delay:1000,
+    error:{}
+  },
+  { // 点赞智能专家库
+    api: '/mock/operation/knowledgebase/like',
+    method: 'post',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": ['hhh','112','223'],
+      "serviceCode": "3.0"
+    },
+    delay: 1000,
+    error: {}
   }
 ]

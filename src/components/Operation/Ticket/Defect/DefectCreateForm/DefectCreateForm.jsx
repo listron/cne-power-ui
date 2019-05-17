@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import { Form, Input, Button, Select, Switch, Radio, Cascader } from 'antd';
+import { Form, Input, Button, Select, Switch, Radio, Cascader,Modal } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
 import InputLimit from '../../../../Common/InputLimit';
@@ -27,7 +27,7 @@ class TmpForm extends Component {
     getStationAreas: PropTypes.func,
     onDefectCreateNew: PropTypes.func,
     submitDefect: PropTypes.func,
-    showContainer: PropTypes.string,
+    container: PropTypes.string,
     onChangeShowContainer: PropTypes.func,
     changeCommonStore: PropTypes.func,
     defectDetail: PropTypes.object,
@@ -37,6 +37,9 @@ class TmpForm extends Component {
     getSliceDevices: PropTypes.func,
     getLostGenType: PropTypes.func,
     changeDefectStore: PropTypes.func,
+    knowledgebaseList: PropTypes.array,
+    getKnowledgebase: PropTypes.func,
+    likeKnowledgebase: PropTypes.func,
   };
 
   constructor(props) {
@@ -45,21 +48,23 @@ class TmpForm extends Component {
       checked: false,
       deviceAreaCode: '',
       deviceTypeCode: '',
+      dealVisible:false,
     }
   }
 
   
   componentWillReceiveProps(nextProps){
-    const {defectId,stationCode}=nextProps.defectDetail;
-    const oldDefectId=this.props.defectDetail.defectId;
-    if(defectId!==oldDefectId){
+    const {defectId,stationCode,deviceTypeCode,defectTypeCode}=nextProps.defectDetail;
+    const prevDefectId=this.props.defectDetail.defectId;
+    if(defectId!==prevDefectId){
       this.props.getStationDeviceTypes({ stationCodes:stationCode });
+      this.props.getKnowledgebase({faultTypeIds:[defectTypeCode],deviceTypeCodes:[deviceTypeCode]})
     }
   }
 
 
   componentWillUnmount(){
-    this.props.changeDefectStore({defectDetail:{}})
+    this.props.changeDefectStore({defectDetail:{},knowledgebaseList:[]})
   }
 
   onChangeReplace = (checked) => { // 更换部件
@@ -96,7 +101,7 @@ class TmpForm extends Component {
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
-    const { error, form, onDefectCreateNew, submitDefect, showContainer, defectDetail, changeCommonStore } = this.props;
+    const { error, form, onDefectCreateNew, submitDefect, container, defectDetail, changeCommonStore } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 电站类型(0:风电，1光伏，2：全部)
@@ -107,13 +112,13 @@ class TmpForm extends Component {
         let rotatePhotoArray = [];
         let photoAddress = [];
         let reasonDesc = values.reasonDesc || '';
-        if (showContainer === 'create') {
+        if (container === 'create') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.response},${e.rotate}`);
             return e.response;
           }).join(',');
         }
-        if (showContainer === 'edit') {
+        if (container === 'edit') {
           photoAddress = values.imgDescribe.map(e => {
             rotatePhotoArray.push(`${e.thumbUrl},${e.rotate}`);
             return e.thumbUrl;
@@ -141,14 +146,14 @@ class TmpForm extends Component {
           rotatePhoto,
           reasonDesc,
         };
-        if (showContainer === 'create') {
+        if (container === 'create') {
           onDefectCreateNew(params);
           changeCommonStore({
             stationDeviceTypes: [],
             devices: [],
           })
         }
-        if (showContainer === 'edit') {
+        if (container === 'edit') {
           params.defectId = defectDetail.defectId;
           submitDefect(params);
         }
@@ -161,18 +166,36 @@ class TmpForm extends Component {
 
   selectedDevice = (value) => { // 选择设备
     this.props.form.setFieldsValue({ deviceCode: value });
-    
+  }
+
+  defectTypeChange=(value)=>{ // 选择缺陷类型 deviceTypeCode  faultTypeId
+    const { getFieldValue } = this.props.form;
+    const faultTypeId=value.length>0 && value[1] || '';
+    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
+    this.props.getKnowledgebase({faultTypeIds:[faultTypeId],deviceTypeCodes:[deviceTypeCode]});
+  }
+
+  showModal = () => { // 查看解决方案
+    this.setState({ dealVisible: true })
+  }
+
+  modalCancle = () => { // 关闭解决方案
+    this.setState({ dealVisible: false })
+  }
+
+  knowledegeBask=(knowledgeBaseId)=>{  // 点赞智能专家库
+    this.props.likeKnowledgebase({knowledgeBaseId})
   }
 
 
   render() {
-    let { stations, deviceTypes, defectTypes, defectDetail, showContainer, commonList } = this.props;
+    let { stations, deviceTypes, defectTypes, defectDetail, container, commonList,knowledgebaseList} = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
     const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
     const defectFinished = getFieldValue('defectSolveResult') === '0';
-    const editDefect = showContainer === 'edit';
+    const editDefect = container === 'edit';
     const defaultStations = editDefect ? stations.filter(e => e.stationCode === defectDetail.stationCode) : [];
     const imgDescribe = editDefect && defectDetail.photoAddress && defectDetail.photoAddress.split(',').filter(e => !!e).map((e, i) => ({
       uid: i,
@@ -258,8 +281,10 @@ class TmpForm extends Component {
                 expandTrigger="hover"
                 placeholder="请选择"
                 className={styles.lostTypeSelector}
+                onChange={this.defectTypeChange}
               />
             )}
+           {knowledgebaseList.length>0 &&  <Button type="default" onClick={this.showModal} className={styles.dealMethod}>查看解决方案</Button>}
           </FormItem>
           <FormItem label="缺陷级别" colon={false}>
             {getFieldDecorator('defectLevel', {
@@ -369,6 +394,49 @@ class TmpForm extends Component {
           </div>
           {!editDefect && <div className={styles.addTips}></div>}
         </div>
+        <div ref="dealMethod" className={styles.dealModal}> </div>
+        <Modal
+          title="解决方案查看"
+          visible={this.state.dealVisible}
+          onCancel={this.modalCancle}
+          getContainer={() => this.refs.dealMethod}
+          footer={null}
+          mask={false}
+          centered={true}
+          wrapClassName={styles.deatilLike}
+          width={800}
+        >
+          <div className={styles.modalbody}>
+            {knowledgebaseList.map(list => {
+              return (<div key={list.faultTypeId} className={styles.dealBox}>
+                <div className={styles.column}>
+                  <div className={styles.text}>缺陷描述</div>  <div> {list.faultDescription}</div>
+                </div>
+                <div className={styles.column}>
+                  <div className={styles.text}>检查项目</div>  <div> {list.checkItems}</div>
+                </div>
+                <div className={styles.column}>
+                  <div className={styles.text}>处理方法</div>  <div> {list.processingMethod}</div>
+                </div>
+                <div className={styles.column}>
+                  <div className={styles.text}>所需工具</div>  <div> {list.requiredTools}</div>
+                </div>
+                <div className={styles.column}>
+                  <div className={styles.text}>备注</div>  <div> {list.remark}</div>
+                </div>
+                <div className={styles.column}>
+                  <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
+                </div>
+                <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                    点赞 <i  className="iconfont icon-edit" ></i>
+                </div>
+              </div>
+              )
+            })}
+          </div>
+
+        </Modal>
+
       </Form>
     );
   }

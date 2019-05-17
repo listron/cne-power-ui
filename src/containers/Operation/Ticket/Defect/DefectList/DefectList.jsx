@@ -137,7 +137,7 @@ const mapStateToProps = (state) => ({
   ...state.operation.defect.toJS(),
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
-  username: Cookie.get('username'),
+  username: state.common.get('username'),
 });
 
 const mapDispatchToProps = (dispatch) => ({
