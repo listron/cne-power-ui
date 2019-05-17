@@ -54,11 +54,11 @@ class Malfunction extends Component {
       "fault": 5,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list })
+    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
   }
   onSearch = () => {
-
-    this.onChangeFilter()
+    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
+    this.onChangeFilter(resetStatus)
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;

@@ -3,15 +3,22 @@
   width: 100%;
   flex: 1;
   display: flex;
+  padding: 0 0 20px 16px;
   flex-direction: row;
   flex-wrap: wrap;
   align-self: flex-start;
-  padding-bottom: 20px;
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .faultWarnCenter{
     width:278px;
     height:92px;
     cursor: pointer;
-    margin: 20px 0 0 28px;
+    margin: 20px 0 0 12px;
     display: flex;
     flex-direction: column;
     border:1px solid $promptColor;

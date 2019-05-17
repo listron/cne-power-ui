@@ -17,6 +17,9 @@
       flex-direction: row;
       flex:1;
       align-items: center;
+      div{
+        cursor: pointer;
+      }
       .stationName {
         &:hover{
           color: $themeColor;
@@ -46,16 +49,6 @@
         margin-left: 10px;
         cursor: pointer;
         border: 1px solid $promptColor;
-      }
-      >div:nth-of-type(3){
-        width: 94px;
-      }
-      >div:nth-of-type(1){
-        background-color: $themeColor;
-      }
-      >div:nth-of-type(1)>div:nth-of-type(1),
-      >div:nth-of-type(1)>div:nth-of-type(2){
-        color: $pageGround;
       }
       .iconBgc{
         width: 24px;

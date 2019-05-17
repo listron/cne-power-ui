@@ -8,6 +8,7 @@ const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 import moment from 'moment';
 message.config({ top: 120, duration: 2, maxCount: 2 });
+let realChartsInterval = null;
 
 function* getSingleStation(action) { //获取单电站实时数据
   const { payload } = action;
@@ -20,7 +21,7 @@ function* getSingleStation(action) { //获取单电站实时数据
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           singleStationData: response.data.data || {},
           stationType: response.data.data.stationType || '',
@@ -42,15 +43,14 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
   const pvUrl = `${APIBasePath}${monitor.getCapabilityDiagram}${stationCode}/${stationType}/${startTime}/${endTime}`
-  const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
-  const url = stationType === '0' ? windUrl : pvUrl;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, pvUrl);
     if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           capabilityData: response.data.data || [],
+          capabilityDataTime: moment().unix()
         }
       });
     } else { throw response.data }
@@ -65,9 +65,9 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
   }
 }
 
-function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据
+function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据(风电 光伏)
   const { payload } = action;
-  const { stationCode, startTime, endTime, intervalTime,stationType } = payload;
+  const { stationCode, startTime, endTime, intervalTime, stationType } = payload;
   const pvUrl = `${APIBasePath}${monitor.getMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`;
   const windUrl = `${APIBasePath}${monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${stationCode}`;
   const url = stationType === '0' ? windUrl : pvUrl;
@@ -75,9 +75,10 @@ function* getMonitorPower(action) { // 获取理论发电量 实际发电量数�
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           powerData: response.data.data || [],
+          powerTime: moment().unix(),
         }
       })
     } else { throw response.data }
@@ -103,6 +104,7 @@ function* getOperatorList(action) { // 获取单电站运维人员列表
         type: singleStationAction.changeSingleStationStore,
         payload: {
           operatorList: response.data.data || [],
+          operatorTime: moment().unix(),
         }
       });
     } else { throw response.data }
@@ -174,7 +176,7 @@ function* getWorkList(action) { // 获取单电站工单数统计
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           workList: response.data.data || {},
         }
@@ -506,34 +508,7 @@ function* getFanList(action) { // 获取风机实时数据列表
   }
 }
 
-function* getSingleScatter(action) {
-  const { payload } = action;
-  const { stationCode } = payload;
-  const localDate = moment().format('YYYY-MM-DD');
-  const url = `${APIBasePath}${monitor.getSingleWindScatter}/${stationCode}/${localDate}`;
-  try {
-    if (payload.firstLoad) {
-      yield put({ type: singleStationAction.singleStationFetch });
-    }
-    const response = yield call(axios.get, url, payload);
-    if (response.data.code === '10000') {
-      yield put({
-        type: singleStationAction.getSingleStationSuccess,
-        payload: {
-          singleStationScatter: response.data.data || [],
-        }
-      })
-    } else { throw response.data }
-  } catch (e) {
-    console.log(e);
-    yield put({
-      type: singleStationAction.getSingleStationSuccess,
-      payload: {
-        singleStationScatter: [],
-      }
-    })
-  }
-}
+
 
 function* pointparams() { // 单电站测点参数名称列表
   const url = `${APIBasePath}${monitor.getPointparams}`;
@@ -585,6 +560,115 @@ function* getNewFanList(action) {
   }
 }
 
+function* getWindSingleStation(action) { // 获取单电站实时数据(风电站)
+  const { payload } = action;
+  const { stationCode, stationType } = payload;
+  const utcTime = moment.utc().format();
+  const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
+  try {
+    const response = yield call(axios.get, windUrl);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          singleStationData: response.data.data || {},
+          stationType: response.data.data.stationType || '',
+        }
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        singleStationData: {},
+      }
+    });
+  }
+}
+
+function* getSingleScatter(action) { // 日等效利用小时散点数(风电站)
+  const { payload } = action;
+  const { stationCode } = payload;
+  const localDate = moment().format('YYYY-MM-DD');
+  const url = `${APIBasePath}${monitor.getSingleWindScatter}/${stationCode}/${localDate}`;
+  try {
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          singleStationScatter: response.data.data || [],
+          singleStationScattertime: moment().unix()
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        singleStationScatter: [],
+        singleStationScattertime: moment().unix()
+      }
+    })
+  }
+}
+
+function* getWindCapabilityDiagram(action) { // 获取出力图数据(❤风电站)
+  const { payload } = action;
+  const { stationCode, stationType, startTime, endTime } = payload
+  const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
+  try {
+    const response = yield call(axios.get, windUrl);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          windCapabilityData: response.data.data || [],
+          windCapabilityDataTime: moment().unix()
+        }
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        windCapabilityData: [],
+      }
+    });
+  }
+}
+
+function* getSingleRealChartsData(action) { // 获取出力图和日等效利用小时散点数 运维人员
+  const { waiting,payload } = action;
+  if (waiting) { // 进程刚进来就付值，防止关不掉这个进程
+    yield delay(3600000); //10000
+  }
+  yield fork(getWindCapabilityDiagram, action);
+  yield fork(getSingleScatter, action);
+  yield fork(getOperatorList, {payload:{...payload, roleId: '4,5' }})
+  realChartsInterval = yield fork(getSingleRealChartsData, { ...action, waiting: true });
+}
+
+function* stopSingleRealData(action) {
+  const { payload } = action;
+  if (realChartsInterval) {
+    yield cancel(realChartsInterval);
+  }
+  // if (payload === 'power' && realPowerInterval) {
+  //   yield put({
+  //     type: allStationAction.changeMonitorstationStore,
+  //     payload: {
+  //       powerData: []
+  //     }
+  //   })
+  //   yield cancel(realPowerInterval);
+  // }
+}
+
+
 
 
 export function* watchSingleStationMonitor() {
@@ -610,6 +694,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getSingleScatter, getSingleScatter); // 获取电网信息列表
   yield takeLatest(singleStationAction.pointparams, pointparams); // 单电站测点参数名称列表 风机
   yield takeLatest(singleStationAction.getNewFanList, getNewFanList); // 单电站测点参数名称列表 风机
+  yield takeLatest(singleStationAction.getSingleRealChartsData, getSingleRealChartsData); // 风电站出力图和日等效利用小时散点图
+  yield takeLatest(singleStationAction.stopSingleRealData, stopSingleRealData); // 关掉进程
 
 }
 

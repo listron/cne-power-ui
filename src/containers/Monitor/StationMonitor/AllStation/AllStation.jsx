@@ -11,7 +11,6 @@ import WindStation from '../../../../components/Monitor/StationMonitor/AllStatio
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-const TabPane = Tabs.TabPane;
 class AllStation extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -43,7 +42,7 @@ class AllStation extends Component {
     const { changeMonitorStationStore, stopRealMonitorData, getRealMonitorData } = this.props;
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
     stopRealMonitorData();
-    getRealMonitorData({ stationType: activeKey })
+    // getRealMonitorData({ stationType: activeKey })
   }
 
   render() {
@@ -71,6 +70,7 @@ class AllStation extends Component {
     )
   }
 }
+
 const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
@@ -83,6 +83,7 @@ const mapStateToProps = (state) => {
     stationTypeCount: state.common.get('stationTypeCount'),
   })
 }
+
 const mapDispatchToProps = (dispatch) => ({
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.changeMonitorstationStore, payload }),
   resetMonitorData: payload => dispatch({ type: allStationAction.resetMonitorData, payload }),

@@ -7,7 +7,7 @@ import DifferenceTemperature from "../DiagnoseCharts/DifferenceTemperature/Diffe
 import SingleResult from "../DiagnoseCharts/SingleResult/SingleResult";
 import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
-import FaultNavList from "../FaultNavList/FaultNavList";
+import FaultNavList from "./FaultNavList/FaultNavList";
 import FaultAllFanTop from "./FaultAllFanTop/FaultAllFanTop";
 
 
@@ -16,33 +16,46 @@ export default class FaultAllFan extends React.Component {
     loading: PropTypes.bool,
     history: PropTypes.object,
     stations: PropTypes.object,
+    stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
+    faultInfo: PropTypes.object,
+    warnId: PropTypes.number,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-
   render() {
+    const {
+      faultInfo: {
+        algorithmName,
+        status,
+        stationName
+      },
+      warnId
+    } = this.props;
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.title}>
-          <span>肥西风场</span><span>变桨电机温度异常识别</span>
+          <span>{`${stationName || ""}`}</span>
+          <span>{`：${algorithmName || ""}`}</span>
         </div>
         <div className={styles.allFanWrap}>
           <div className={styles.allFanContent}>
             <FaultAllFanTop {...this.props} />
-            <FaultNavList {...this.props} />
-            <div className={styles.allFanContentCharts}>
-              <PreTemperature {...this.props} />
-              <AfterTemperature {...this.props} />
-              <DifferenceTemperature {...this.props} />
-              <SingleResult {...this.props} />
-              <HeatMap {...this.props} />
-              <AllFans {...this.props} />
-            </div>
+            {status && status === 4 ?
+                <div className={styles.noData}>
+                  <img src="/img/nodata.png" style={{ width: 223, height: 164 }} />
+                </div> : [
+                <FaultNavList key="faultNavList" {...this.props} />,
+                <div key="allFanContentCharts" className={styles.allFanContentCharts}>
+                  <PreTemperature {...this.props} />
+                  <AfterTemperature {...this.props} />
+                  <DifferenceTemperature {...this.props} />
+                  {(warnId === 1) && ([
+                    <SingleResult key="singleResult" {...this.props} />,
+                    <HeatMap key="heatMap" {...this.props} />,
+                    <AllFans key="allFans" {...this.props} />
+                  ])}
+                </div>
+              ]}
           </div>
         </div>
       </div>

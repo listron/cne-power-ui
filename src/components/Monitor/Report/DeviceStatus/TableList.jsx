@@ -70,6 +70,23 @@ class TableList extends Component {
   }
   initMonthColumn = () => {
     const { filterTable } = this.props;
+    
+    const filterDevice=[ {
+      title: "区域",
+      dataIndex: "regionName",
+      sorter: true,
+      // width:40,
+    },
+    {
+      title: "电站名称",
+      dataIndex: "stationName",
+      sorter: true,
+    },
+    {
+      title: "设备型号",
+      dataIndex: "deviceModeName",
+      sorter: true,
+    },]
     const filterShow = [
       {
         title: "区域",
@@ -93,16 +110,19 @@ class TableList extends Component {
         sorter: true,
       },
     ];
-    const show = filterShow.slice(0, filterTable);
+    let show = filterTable>3?filterShow.slice(0, filterTable):filterDevice.slice(0, filterTable);
     const showStatus = {
       title: "统计时段",
       dataIndex: "date",
       sorter: true,
       render(text){return text.replace(/-/g,'/').replace(',','-')}
     };
-    const columns = [
-
-      {
+    const columns = [{
+      title: "统计时段",
+      dataIndex: "date",
+      sorter: true,
+      render(text){return text.replace(/-/g,'/').replace(',','-')}
+    },{
         title: "设备状态",
         dataIndex: "deviceStatusName",
         sorter: true,
@@ -135,7 +155,7 @@ class TableList extends Component {
 
       },
     ];
-    filterTable > 4 ? columns.unshift(showStatus) : columns.unshift(...show);
+    filterTable > 4 ? columns : columns.unshift(...show);
     return columns
   }
   detailColumn = () => {
@@ -164,7 +184,7 @@ class TableList extends Component {
 
       {
         title: "设备状态",
-        dataIndex: "deviceStatusName",
+        dataIndex: "deviceStatus",
         sorter: true,
 
       },

@@ -1,23 +1,47 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eCharts from "echarts";
-import { allFansOptions } from "../../../../../utils/chartsConfig/diagnoseConfig";
+import { allFansOptions } from "../chartsConfig/chartsConfig";
 import styles from "./allFans.scss";
 
 export default class AllFans extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
+    getAllFanResultList: PropTypes.func,
+    allFanResultList: PropTypes.object,
+    faultInfo: PropTypes.object,
+    allLoading: PropTypes.bool,
+    allTimeCompare: PropTypes.number,
+    faultDate: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    const  { allFansCharts } = this;
+  componentDidUpdate(prevProps) {
+    const  {
+      allFansCharts,
+      props: {
+        allFanResultList,
+        allLoading,
+        faultInfo: {
+          endTime
+        },
+        faultDate,
+        allTimeCompare: currentAllTimeCompare
+      }
+    } = this;
+    const { allTimeCompare } = prevProps;
     const myChart = eCharts.init(allFansCharts);
-    myChart.setOption(allFansOptions());
+    if (allLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!allLoading) {
+      myChart.hideLoading();
+    }
+    if (currentAllTimeCompare && allTimeCompare !== currentAllTimeCompare) {
+      eCharts.init(allFansCharts).dispose();//销毁前一个实例
+      const myChart = eCharts.init(allFansCharts); //构建下一个实例
+      myChart.setOption(allFansOptions(allFanResultList, faultDate || endTime));
+    }
   }
 
 

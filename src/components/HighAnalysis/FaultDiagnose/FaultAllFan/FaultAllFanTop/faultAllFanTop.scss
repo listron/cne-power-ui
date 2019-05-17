@@ -18,8 +18,8 @@
           margin-top: 12px;
           display: flex;
           color: $darkColor;
-          div:nth-of-type(2){
-            margin-left: 60px;
+          div:nth-of-type(1){
+            width: 230px;
           }
         }
       }
@@ -28,16 +28,19 @@
           display: flex;
           margin-top: 10px;
           justify-content: flex-end;
-          button:nth-of-type(1){
-            width: 90px;
-          }
           button:nth-of-type(2){
-            width: 120px;
             margin-left: 10px;
           }
         }
         div:nth-of-type(2){
           margin-top: 30px;
+          text-decoration: underline;
+          .download{
+            margin-left: 20px;
+            cursor: pointer;
+            text-decoration: underline;
+            color: $themeColor;
+          }
         }
       }
     }

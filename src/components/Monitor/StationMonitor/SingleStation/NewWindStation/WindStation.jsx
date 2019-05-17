@@ -27,25 +27,31 @@ class WindStation extends Component {
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     deviceTypeFlow: PropTypes.object,
-    location: PropTypes.object,
-    stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.number,
     resetSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
-    collectorList: PropTypes.array,
-    boosterList: PropTypes.array,
-    powerNetList: PropTypes.array,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
     weatherList: PropTypes.array,
     operatorList: PropTypes.array,
-    capabilityData: PropTypes.array,
+    windCapabilityData: PropTypes.array,
     fanDisplay: PropTypes.string,
     getMonitorPower: PropTypes.func,
     powerData: PropTypes.array,
     singleStationScatter: PropTypes.object,
     fanList: PropTypes.object,
     getPowerDataTenMin: PropTypes.func,
+    windCapabilityDataTime: PropTypes.number,
+    singleStationScattertime: PropTypes.number,
+    powerTime: PropTypes.number,
+    operatorTime: PropTypes.number,
+    getDeviceTypeFlow: PropTypes.func,
+    getSingleRealChartsData: PropTypes.func,
+    getSingleStation: PropTypes.func,
+    getAlarmList: PropTypes.func,
+    getWeatherList: PropTypes.func,
+    getWorkList: PropTypes.func,
+    editData: PropTypes.func,
   }
 
   constructor(props) {
@@ -57,18 +63,46 @@ class WindStation extends Component {
   }
 
   componentDidMount() {
+    const { stationCode } = this.props.match.params;
+    const stationType = '0';
+    this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
+    this.getTenSeconds(stationCode, stationType);
+    this.getPowerDataTenMin({stationCode,stationType}); // 发电量
+    const main = document.getElementById('main');
+    main.scrollTo(0, 0);
+    this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
+      stationCode,
+      stationType,
+      startTime: moment().subtract(24, 'hours').utc().format(),
+      endTime: moment().utc().format()});
   }
 
-  onSelectedDeviceType = (deviceTypeCode) => {
-    this.props.changeSingleStationStore({ deviceTypeCode });
+
+  componentWillReceiveProps(nextProps) {
+    const { stationCode } = this.props.match.params;
+    const nextStationCode = nextProps.match.params.stationCode;
+    const nextStationType = '1';
+    if (nextStationCode !== stationCode) {
+      clearTimeout(this.timeOutId);
+      this.props.resetSingleStationStore();
+      this.getTenSeconds(nextStationCode, nextStationType);
+      this.getPowerDataTenMin({stationCode:nextStationCode,stationType:nextStationType});
+      this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
+      this.props.stopSingleRealData();
+      this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
+        stationCode:nextStationCode,
+        stationType:nextStationType,
+        startTime: moment().subtract(24, 'hours').utc().format(),
+        endTime: moment().utc().format()});
+    }
   }
 
-
-  onSelectedDeviceType = (e) => {
-    const deviceTypeCode = parseInt(e.target.value);
-    this.props.changeSingleStationStore({ deviceTypeCode });
+  componentWillUnmount() {
+    clearTimeout(this.timeOutId);
+    clearTimeout(this.timeOutPowerData);
+    this.props.resetSingleStationStore();
+    this.props.stopSingleRealData();
   }
-
 
   onHandleStation = (e) => {
     this.setState({
@@ -76,11 +110,55 @@ class WindStation extends Component {
     })
   }
 
+  onSelectedDeviceType = (e) => { // 选择设备
+    const deviceTypeCode = parseInt(e.target.value);
+    this.props.changeSingleStationStore({ deviceTypeCode });
+  }
+
+
+  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  天气情况 
+    this.props.getSingleStation({ stationCode, stationType });
+    this.props.getAlarmList({ stationCode });
+    this.props.getWeatherList({ stationCode }); // 天气
+    let endTime = moment().utc().format();
+    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
+    this.timeOutId = setTimeout(() => {
+      this.getTenSeconds(stationCode,stationType);
+    }, 10000);
+  }
+
+
   getStatusNum = (status) => { // 获取状态的数量
     const { deviceStatusSummary = [] } = this.props.fanList;
     const statusList = deviceStatusSummary.filter(e => e.deviceStatusCode === status)
     return statusList.length > 0 && statusList[0].deviceStatusNum || 0
   }
+
+
+  getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
+    clearTimeout(this.timeOutPowerData);
+    const { stationCode } = this.props.match.params;
+    const { intervalTime=0 } = value;
+    const stationType = '0';
+    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    if (intervalTime === 1) {
+      startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
+    } else if (intervalTime === 2) {
+      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
+    }
+    this.props.changeSingleStationStore({powerData:[]})
+    this.props.getMonitorPower({ // 出力图数据
+      stationCode,
+      intervalTime,
+      startTime,
+      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+      stationType,
+    });
+    this.timeOutPowerData = setTimeout(() => {
+      this.getPowerDataTenMin({stationCode,stationType,intervalTime});
+    }, 600000);
+  }
+
 
 
   createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
@@ -94,15 +172,9 @@ class WindStation extends Component {
     </RadioButton>
   )
 
-  powerDiagramChange = (value) => { // 点击切换发电量的 年月日
-    const { stationCode } = this.props.match.params;
-    const { intervalTime } = value;
-    const stationType = '0';
-    this.props.getPowerDataTenMin({ stationCode, stationType, intervalTime })
-  }
-
   render() {
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, capabilityData, editData, } = this.props;
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, windCapabilityData, editData, } = this.props;
+    const {windCapabilityDataTime,singleStationScattertime,powerTime}=this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
@@ -124,7 +196,9 @@ class WindStation extends Component {
           singleStationData={singleStationData}
           stationList={this.props.stationList}
           weatherList={this.props.weatherList}
-          operatorList={this.props.operatorList} />
+          operatorList={this.props.operatorList}
+          operatorTime={this.props.operatorTime} 
+          />
         <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
         <div className={styles.windContainer}>
           <div className={styles.windList}>
@@ -171,13 +245,14 @@ class WindStation extends Component {
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
+                <OutputChart capabilityData={windCapabilityData} yAxisUnit={'MW'} capabilityDataTime={windCapabilityDataTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
+                <PowerDiagram powerData={powerData} onChange={this.getPowerDataTenMin} powerTime={powerTime} />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} />
+                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} 
+                scatterTime={singleStationScattertime} />
               </div>
             </div>
           }

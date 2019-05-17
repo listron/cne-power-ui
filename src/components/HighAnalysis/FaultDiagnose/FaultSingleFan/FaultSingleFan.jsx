@@ -7,7 +7,7 @@ import DifferenceTemperature from "../DiagnoseCharts/DifferenceTemperature/Diffe
 import SingleResult from "../DiagnoseCharts/SingleResult/SingleResult";
 import HeatMap from "../DiagnoseCharts/HeatMap/HeatMap";
 import AllFans from "../DiagnoseCharts/AllFans/AllFans";
-import FaultNavList from "../FaultNavList/FaultNavList";
+import FaultNavList from "./FaultNavList/FaultNavList";
 
 
 export default class FaultSingleFan extends React.Component {
@@ -16,20 +16,24 @@ export default class FaultSingleFan extends React.Component {
     history: PropTypes.object,
     stations: PropTypes.object,
     singleStationCode: PropTypes.string,
-    data: PropTypes.Array
+    getFaultInfo: PropTypes.func,
+    faultInfo: PropTypes.object,
+    warnId: PropTypes.number,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-
   render() {
+    const {
+      faultInfo: {
+        stationName
+      },
+      warnId
+    } = this.props;
+    const deviceName = localStorage.getItem("deviceName");
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.title}>
-          <span>肥西风场</span><span>WTG05</span>
+          <span>{`${stationName || ""}`}</span>
+          <span>{`：${deviceName || ""}`}</span>
         </div>
         <div className={styles.singleFanWrap}>
           <div className={styles.singleFanContent}>
@@ -38,9 +42,11 @@ export default class FaultSingleFan extends React.Component {
               <PreTemperature {...this.props} />
               <AfterTemperature {...this.props} />
               <DifferenceTemperature {...this.props} />
-              <SingleResult {...this.props} />
-              <HeatMap {...this.props} />
-              <AllFans {...this.props} />
+              {(warnId === 1) && ([
+                <SingleResult key="singleResult" {...this.props} />,
+                <HeatMap key="heatMap" {...this.props} />,
+                <AllFans key="allFans" {...this.props} />
+              ])}
             </div>
           </div>
         </div>

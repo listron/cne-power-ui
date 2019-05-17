@@ -29,6 +29,10 @@ class WindStation extends React.Component {
     powerData: PropTypes.array,
     history: PropTypes.object,
     scatterData: PropTypes.object,
+    scatterTime: PropTypes.number,
+    capabilityDataTime: PropTypes.number,
+    powerTime: PropTypes.number,
+    capabilityLoading: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);
@@ -41,7 +45,7 @@ class WindStation extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { getRealMonitorData, getRealChartsData, getRealMonitorPower } = this.props;
     getRealMonitorData({ stationType: '0' });
     const startTime = moment().subtract(24, 'hours').utc().format();
@@ -118,7 +122,7 @@ class WindStation extends React.Component {
       startTime = moment().subtract(5, 'year').format('YYYY-MM-DD')
     }
     let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
-    this.props.changeMonitorStationStore({powerData:[]})
+    this.props.changeMonitorStationStore({ powerData: [] })
     stopRealCharstData('power');
     getRealMonitorPower({ intervalTime, startTime, endTime })
   }
@@ -127,6 +131,7 @@ class WindStation extends React.Component {
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
     const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData, scatterData } = this.props;
+    const { capabilityDataTime, scatterTime, powerTime,capabilityLoading } = this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
     const deviceStatus = [
       { name: '运行', value: 'normalNum' },
@@ -153,7 +158,6 @@ class WindStation extends React.Component {
         </Radio.Group>
       </div>
     );
-
     return (
       <div className={styles.WindStation}>
         <WindStationHeader windMonitorStation={windMonitorStation} />
@@ -184,9 +188,7 @@ class WindStation extends React.Component {
           {stationShowType !== 'stationList' &&
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
-              {/* `/monitor/alarm/realtime?stationType=${0}` */}
-                {/* <Link to={`/monitor/alarm/realtime?stationType=${0}`}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link> */}
-                <Link to={{pathname:`/monitor/alarm/realtime`,state: { stationType: '0' }}}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
+                <Link to={{ pathname: `/monitor/alarm/realtime`, state: { stationType: '0' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                 <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
@@ -200,13 +202,18 @@ class WindStation extends React.Component {
                 </div>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={capabilityData} yAxisUnit={'MW'} />
+                <OutputChart
+                  capabilityData={capabilityData}
+                  yAxisUnit={'MW'}
+                  capabilityDataTime={capabilityDataTime}
+                  capabilityLoading={capabilityLoading}
+                />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} />
+                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} powerTime={powerTime} />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={scatterData} type={'allStation'} />
+                <SpeedScatter scatterData={scatterData} type={'allStation'} scatterTime={scatterTime} />
               </div>
             </div>}
         </div>

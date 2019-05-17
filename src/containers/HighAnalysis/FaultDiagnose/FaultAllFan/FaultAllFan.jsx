@@ -3,89 +3,109 @@ import PropTypes from "prop-types";
 import styles from "./faultAllFan.scss";
 import Footer from '../../../../components/Common/Footer';
 import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan';
-import {faultWarnAction} from "../FaultWarn/faultWarnAction";
+import {faultAllFanAction} from "./faultAllFanAction";
 import {connect} from "react-redux";
-
-const data = [{
-  id: 1,
-  name: "WGT012"
-},{
-  id: 2,
-  name: "WGT012"
-},{
-  id: 3,
-  name: "WGT012"
-},{
-  id: 4,
-  name: "WGT012"
-},{
-  id: 5,
-  name: "WGT012"
-},{
-  id: 6,
-  name: "WGT012"
-},{
-  id: 7,
-  name: "WGT012"
-},{
-  id: 8,
-  name: "WGT012"
-},{
-  id: 9,
-  name: "WGT012"
-},{
-  id: 10,
-  name: "WGT012"
-},{
-  id: 11,
-  name: "WGT012"
-},{
-  id: 12,
-  name: "WGT012"
-},{
-  id: 13,
-  name: "WGT012"
-},{
-  id: 14,
-  name: "WGT012"
-},{
-  id: 15,
-  name: "WGT012"
-},{
-  id: 16,
-  name: "WGT012"
-},{
-  id: 17,
-  name: "WGT012"
-},{
-  id: 18,
-  name: "WGT012"
-}];
+import {commonAction} from "../../../alphaRedux/commonAction";
+import {algorithmControlAction} from "../AlgorithmControl/algorithmControlAction";
 
 class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
+    history: PropTypes.object,
+    match: PropTypes.object,
+    faultInfo: PropTypes.object,
+    changeFaultAllFanStore: PropTypes.func,
+    resetStore: PropTypes.func,
+    getListView: PropTypes.func,
+    getFaultInfo: PropTypes.func,
+    changeAlgorithmControlStore: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
+  componentDidMount() {
+    const {
+      getFaultInfo,
+      match: {
+        params: {
+          stationCode
+        }
+      }
+    } = this.props;
+    // 调用任务详情
+    const taskId = localStorage.getItem("taskId");
+    const params = {
+      taskId,
+      stationCode,
+      deviceFullcode: ""
+    };
+    getFaultInfo(params)
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
   }
+
+  onChangeFilter = (params) => {
+    const { changeFaultAllFanStore } = this.props;
+    changeFaultAllFanStore({...params});
+  };
+
+  callBackList = () => {
+    const {
+      history,
+      match: {
+        params: {
+          stationCode
+        }
+      },
+    } = this.props;
+    history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
+  };
+
+  callBackAlgorithmControlList = () => {
+    const {
+      history,
+      getListView,
+      changeAlgorithmControlStore
+    } = this.props;
+    const listParams = {
+      stationCode:null,
+      algorithmIds: [],
+      startTime:"",
+      endTime:"",
+      status:null,
+      pageSize:null,
+      pageNum:null,
+      sortField:"",
+      sortMethod:""
+    };
+    history.push(`/analysis/faultDiagnose/algorithmControl`);
+    changeAlgorithmControlStore({
+      viewType: "list"
+    });
+    // 列表
+    getListView(listParams);
+  };
 
   render() {
+    const faultWarnNum = localStorage.getItem("faultWarnNum");
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.AllFanContent}>
-          <div className={styles.title}>
-            <div>故障预警</div>
-            <div>返回算法模型视图</div>
-          </div>
+          {(faultWarnNum) ? (
+            <div className={styles.title}>
+              <div>算法控制台</div>
+              <div onClick={this.callBackAlgorithmControlList}>返回算法控制台列表</div>
+            </div>
+          ) : (
+            <div className={styles.title}>
+              <div>故障预警</div>
+              <div onClick={this.callBackList}>返回算法模型视图</div>
+            </div>
+          )}
         </div>
-        <FaultAllFanMain data={data} {...this.props} />
+        <FaultAllFanMain onChangeFilter={this.onChangeFilter} {...this.props} />
         <Footer />
       </div>
     );
@@ -93,11 +113,30 @@ class FaultAllFan extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    ...state.highAanlysisReducer.faultWarn.toJS(),
+    ...state.highAanlysisReducer.faultAllFan.toJS(),
     stations: state.common.get('stations'),
   }
 };
 const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
+  resetStore: () => dispatch({ type: faultAllFanAction.resetStore }),
+  changeFaultAllFanStore: payload => dispatch({ type: faultAllFanAction.changeFaultAllFanStore, payload }),
+  changeAlgorithmControlStore: payload => dispatch({ type: algorithmControlAction.changeAlgorithmControlStore, payload }),
+  getResetTask: payload => dispatch({ type: faultAllFanAction.getResetTask, payload }),
+  getFaultInfo: payload => dispatch({ type: faultAllFanAction.getFaultInfo, payload }),
+  getFaultReport: payload => dispatch({ type: faultAllFanAction.getFaultReport, payload }),
+  getStandAloneList: payload => dispatch({ type: faultAllFanAction.getStandAloneList, payload }),
+  getSimilarityList: payload => dispatch({ type: faultAllFanAction.getSimilarityList, payload }),
+  getAllFanResultList: payload => dispatch({ type: faultAllFanAction.getAllFanResultList, payload }),
+  getTenMinutesBefore: payload => dispatch({ type: faultAllFanAction.getTenMinutesBefore, payload }),
+  getTenMinutesAfter: payload => dispatch({ type: faultAllFanAction.getTenMinutesAfter, payload }),
+  getTenMinutesDiff: payload => dispatch({ type: faultAllFanAction.getTenMinutesDiff, payload }),
+  getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: faultAllFanAction.changeFaultAllFanStore
+    }
+  })
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FaultAllFan)

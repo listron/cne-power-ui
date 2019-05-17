@@ -9,7 +9,12 @@ const initState = Immutable.fromJS({
   algorithmModalId: [], // 算法模型id
   stationCode: 0,
   deviceTypeCode: 0,
-  selectDeviceCode: []
+  selectDeviceCode: [],
+  faultWarnHistoryData: {}, // 获取历史预警列表
+  pageSize: 10,
+  pageNum: 1,
+  sortField: "",
+  sortMethod: ""
 });
 
 
@@ -19,7 +24,7 @@ const historyWarnReducer = (state = initState, action) => {
       return state.merge(Immutable.fromJS(action.payload));
     case historyWarnAction.fetchHistoryWarnSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case historyWarnAction.RESET_STORE:
+    case historyWarnAction.resetStore:
       return initState
   }
   return state;
