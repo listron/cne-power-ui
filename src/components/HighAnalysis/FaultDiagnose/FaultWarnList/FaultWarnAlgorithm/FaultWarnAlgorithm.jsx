@@ -21,7 +21,7 @@ export default class FaultWarnAlgorithm extends React.Component {
     } = this.props;
     const { match: {params: {fanWarnId: nextSingleStationCode}} } = nextProps;
     const params = {
-      stationCode: currentSingleStationCode,
+      stationCode: nextSingleStationCode,
     };
     if (currentSingleStationCode !== nextSingleStationCode) {
       // 算法模型调用
@@ -75,7 +75,7 @@ export default class FaultWarnAlgorithm extends React.Component {
             <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
           </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
-              <span>{cur.faultUnitCount}</span><span>风机</span>
+              <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
             </Tooltip>
           </div>}
           <div>
@@ -95,7 +95,7 @@ export default class FaultWarnAlgorithm extends React.Component {
             {cur.algorithmName}
           </div>
           {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
-            <span>{cur.faultUnitCount}</span><span>风机</span>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
             </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
@@ -118,7 +118,7 @@ export default class FaultWarnAlgorithm extends React.Component {
             {cur.algorithmName}
           </div>
           {(cur.windTurbines.length === 0 || !cur.windTurbines) ? <div>
-            <span>{cur.faultUnitCount}</span><span>风机</span>
+            <span><span>{cur.faultUnitCount}</span><span>风机</span></span>
           </div> : <div>
             <Tooltip placement="bottom" title={this.titleFunc(cur.windTurbines)}>
               <span>{cur.faultUnitCount}</span><span>风机</span>
@@ -132,37 +132,43 @@ export default class FaultWarnAlgorithm extends React.Component {
     });
     return (
       <div className={styles.faultWarnAlgorithm}>
-        {(largeSizeItem.length !== 0) && (
+        {(largeSizeItem.length === 0 && natureItem.length === 0 && healthItem.length === 0) ? (
+          <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
+        ) : (
           <div>
-            <div className={styles.title}>
-              大部件
-            </div>
-            <div className={styles.warnBox}>
-              {largeSizeItem}
-            </div>
+            {(largeSizeItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  大部件
+                </div>
+                <div className={styles.warnBox}>
+                  {largeSizeItem}
+                </div>
+              </div>
+            )}
+            {(natureItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  性能预警
+                </div>
+                <div className={styles.warnBox}>
+                  {natureItem}
+                </div>
+              </div>
+            )}
+            {(healthItem.length !== 0) && (
+              <div>
+                <div className={styles.title}>
+                  设备健康
+                </div>
+                <div className={styles.warnBox}>
+                  {healthItem}
+                </div>
+              </div>
+            )}
           </div>
         )}
-        {(natureItem.length !== 0) && (
-          <div>
-            <div className={styles.title}>
-              性能预警
-            </div>
-            <div className={styles.warnBox}>
-              {natureItem}
-            </div>
-          </div>
-        )}
-        {(healthItem.length !== 0) && (
-          <div>
-            <div className={styles.title}>
-              设备健康
-            </div>
-            <div className={styles.warnBox}>
-              {healthItem}
-            </div>
-          </div>
-        )}
-      </div>
+    </div>
     );
   }
 }
