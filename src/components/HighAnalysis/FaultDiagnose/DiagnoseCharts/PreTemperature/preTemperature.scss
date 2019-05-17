@@ -1,0 +1,25 @@
+.preChartsBox{
+  width: 100%;
+  .preChartsDate{
+    display: flex;
+    margin: 15px 0 11px;
+    span:nth-of-type(1){
+      margin-right: 10px;
+      line-height: 32px;
+    }
+  }
+  .preChartsDiff{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    div:nth-of-type(1){
+      color:#000000;
+      line-height: 32px;
+    }
+  }
+  .preCharts{
+    width: 100%;
+    height: 400px;
+  }
+}
+

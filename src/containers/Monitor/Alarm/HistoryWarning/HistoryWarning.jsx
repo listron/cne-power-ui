@@ -21,6 +21,8 @@ class HistoryWarning extends Component {
       showPage: false
     }
   }
+
+
   componentWillUnmount(){
     this.props.resetHistoryWarningStore()
   }

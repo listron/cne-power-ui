@@ -39,6 +39,7 @@ class UserList extends Component {
     stationName: PropTypes.string,
     phoneNum: PropTypes.string,
     selectedKey: PropTypes.object,
+    downLoadUserTemplate: PropTypes.func,
   }
 
   constructor(props) {
@@ -324,23 +325,40 @@ class UserList extends Component {
     const userAuditRight = rightHandler && rightHandler.split(',').includes('account_user_audit');
     const showAllHandler = userDeleteRight || userEnableRight || userDisableRight || userEditRight || userAuditRight;
     if (!showAllHandler) { return null; }
-    let [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
+    let [editable, deletable, usable, unallowable, examinable] = [true, true, true, true, true];
     if (selectedUser.length > 0) {
-      editable = selectedUser.length === 1;
-      let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
-      [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [false, false, false, false];
-      if (selectedUser[0].enterpriseStatus === 3) {//启用
-        [usable] = [false];
-      } else if (selectedUser[0].enterpriseStatus === 5 || selectedUser[0].enterpriseStatus === 6) {//待审核//未通过审核
-        [usable, unallowable] = [false, false];
-      } else if (selectedUser[0].enterpriseStatus === 4) {//禁用
-        [unallowable] = [false];
-      } else if (selectedUser[0].enterpriseStatus === 7) {//移除
-        [unallowable] = [false];
-      }
+      editable = false;
+      selectedUser.forEach(e => {
+        if ([3, 5, 6].includes(e.enterpriseStatus)) { // 已启用、待审核、未通过 不可启用
+          usable = false;
+        }
+        if ([4, 5, 6, 7].includes(e.enterpriseStatus)) { // 待审核、未通过、禁用、移除 不可禁用
+          unallowable = false;
+        }
+        if ([3].includes(e.enterpriseStatus)) { // 启用用户 不可审核
+          examinable = false;
+        }
+      })
     } else {
       [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
     }
+    
+    // if (selectedUser.length > 0) {
+    //   editable = selectedUser.length === 1;
+    //   let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
+    //   [deletable, usable, unallowable, examinable] = newArray.length < 2 ? [true, true, true, true] : [false, false, false, false];
+    //   if (selectedUser[0].enterpriseStatus === 3) {//启用
+    //     usable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 5 || selectedUser[0].enterpriseStatus === 6) {//待审核//未通过审核
+    //     usable = false, unallowable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 4) {//禁用
+    //     unallowable = false;
+    //   } else if (selectedUser[0].enterpriseStatus === 7) {//移除
+    //     unallowable = false;
+    //   }
+    // } else {
+    //   [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
+    // }
     return (<Select onSelect={this.userHandle} placeholder="操作" value="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.handleDropdown} >
       {userEditRight && <Option value="edit" disabled={!editable}><i className="iconfont icon-edit"></i><span>编辑</span></Option>}
       {userDeleteRight && <Option value="delete" disabled={!deletable}><i className="iconfont icon-remove"></i><span>移除</span></Option>}
@@ -432,6 +450,17 @@ class UserList extends Component {
     });
   }
 
+  downloadTemplate = () => {
+    const { downLoadUserTemplate } = this.props;
+    const url = `${apiUrlReal}/api/v3/user/template`;
+    downLoadUserTemplate({
+      url,
+      method: 'get',
+      fileName: '导入用户模板.xlsx',
+      params: {}
+    })
+  }
+
   examineModal = () => (
     <Modal
       onOk={this.cancelExamineTip}
@@ -465,7 +494,7 @@ class UserList extends Component {
   );
 
   render() {
-    const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey } = this.props;
+    const { pageSize, pageNum, userData, totalNum, loading, selectedUser, selectedKey, downloading } = this.props;
     const { selectedUserColumns, showDeleteTip, showExamineTip, deleteWarningTip, columnsHandleArr } = this.state;
     const authData = getCookie('authData');
     const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
@@ -523,7 +552,7 @@ class UserList extends Component {
             {userImportRight && <Upload {...uploadProps} className={styles.importUser}>
               <Button>批量导入</Button>
             </Upload>}
-            <Button className={styles.templateDown} href={`${apiUrlReal}/template/UserInfoTemplate.xlsx`} >导入模板下载</Button>
+            <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={downloading} >导入模板下载</Button>
             <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>

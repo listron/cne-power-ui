@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tree, message } from 'antd';
+import moment from 'moment';
 import styles from './historyStyle.scss';
 
 const { TreeNode } = Tree;
@@ -14,7 +15,7 @@ class PointTree extends Component {
     pointInfo: PropTypes.array,
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
-    // changeHistoryStore: PropTypes.func,
+    changeHistoryStore: PropTypes.func,
   };
 
   state = {
@@ -49,16 +50,25 @@ class PointTree extends Component {
     this.setState({
       halfCheckedKeys,
     })
-    const { queryParam, listParam, getChartHistory, getListHistory } = this.props;
+    const { queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore } = this.props;
+    const { startTime, endTime, timeInterval } = queryParam;
     const newQueryParam = {
       ...queryParam,
       devicePoints: selectedKeys,
     };
-    getChartHistory({ queryParam: newQueryParam });
-    getListHistory({
-      queryParam: newQueryParam,
-      listParam,
-    })
+    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
+    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
+      changeHistoryStore({
+        queryParam: newQueryParam
+      })
+    } else {
+      getChartHistory({ queryParam: newQueryParam });
+      getListHistory({
+        queryParam: newQueryParam,
+        listParam,
+      })
+    }
   }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。

@@ -1,0 +1,10 @@
+@import '../../../../../theme/theme.scss';
+.faultAllFanHistory{
+  padding-top: 20px;
+  .fanHistoryPagination{
+    padding: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid $promptColor;
+  }
+}

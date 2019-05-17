@@ -82,13 +82,13 @@ class IntegrateList extends Component {
         </div>
         {loading ? <Spin  size="large" style={{height: '100px',margin: '200px auto',width: '100%'}} /> 
         : <div className={styles.deviceList}>
-          {filteredCollection.length > 0 ? filteredCollection.map(e => {
+          {filteredCollection.length > 0 ? filteredCollection.map((e,index) => {
             const pData = dataFormat(e.griW, '--', 2);
             const cosData = dataFormat(e.griPF, '--', 2);
             const qData = dataFormat(e.griVar, '--', 2);
             const uabData = dataFormat(e.griPPhVUab, '--', 2);
             return (
-              <section className={styles.eachDevice} key={e.deviceCode} onClick={() => this.getIntegrateDetail(e.deviceCode)}>
+              <section className={styles.eachDevice} key={`${e.deviceCode}_${index}`} onClick={() => this.getIntegrateDetail(e.deviceCode)}>
                 <h3 className={styles.deviceName}>
                   <span className="iconfont icon-jidian" />
                   {e.warningStatus && <span className="iconfont icon-alarm" />}

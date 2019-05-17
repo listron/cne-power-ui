@@ -9,7 +9,7 @@ const getVerificationCode = require('./mock/login/getVerificationCode');
 const user = require('./mock/system/user');
 const stationManage = require('./mock/system/stationManage');
 
-const monitor =require('./mock/monitor/stationMonitor')
+const monitor =require('./mock/monitor/stationMonitor');
 const dataAnalysis = require('./mock/monitor/dataAnalysis');
 
 const singleStationMonitor = require('./mock/monitor/singleStationMonitor');
@@ -22,6 +22,8 @@ const allstationanalysis = require('./mock/statisticalAnalysis/allstationanalysi
 const stationContrast = require('./mock/statisticalAnalysis/stationContrast');
 const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
+const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
+const reportSeacher = require('./mock/monitor/report');
 
 
 // as
@@ -52,4 +54,6 @@ exports.mockConfig = [
   ...stationContrast,
   ...cleanWarning, // 高级分析-清洗预警
   ...score,//电站评分
+  ...intelligentAnalysis, // 智能分析报告
+  ...reportSeacher,//报表查询
 ]

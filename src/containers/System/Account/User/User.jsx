@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './user.scss';
 import { userAction } from './userAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import PropTypes from 'prop-types';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import UserSide from '../../../../components/System/Account/User/UserSide/UserSide';
@@ -114,11 +115,7 @@ class User extends Component {
     const { showPage } = this.props;
     const { showSidePage } = this.state;
     const breadCrumbData = {
-      breadData: [
-        {
-          name: '用户',
-        }
-      ],
+      breadData: [{ name: '用户' }],
     };
     return (
       <div className={styles.userContainerBox}>
@@ -168,6 +165,13 @@ const mapDispatchToProps = (dispatch) => ({
   editUserInfo: payload => dispatch({ type: userAction.EDIT_USER_INFO_SAGA, payload }),
   getInviteLink: payload => dispatch({ type: userAction.GET_INVITE_LINK_SAGA, payload }),
   resetUserState: payload => dispatch({ type: userAction.RESET_USER_STATE_SAGA, payload }),
+  downLoadUserTemplate: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: userAction.CHANGE_USER_STORE_SAGA
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

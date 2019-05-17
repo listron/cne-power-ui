@@ -14,6 +14,7 @@ const initState = immutable.fromJS({
   orderField:'',//排序方式
   orderType:'0',//'0'是正序，'1'是倒序
   airDensity:'',
+  curveTime:null,
   singleDeviceCurveData:[],//功率曲线图数据
   singleDeviceCurveList:[],//列表数据
   roseChartData:[],//玫瑰图数据

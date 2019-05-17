@@ -25,7 +25,7 @@ class PersonnelGps extends Component {
     let data = [];
     personnelGpsData.forEach((item, index) => {   
       data.push({
-        name: item.username,
+        name: item.userFullname || item.username,
         value: [item.longitude, item.latitude],
       
         symbol: 'image:///img/position.png',

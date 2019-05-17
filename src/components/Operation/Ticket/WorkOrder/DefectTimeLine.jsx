@@ -119,7 +119,7 @@ class DefectTimeLine extends Component {
         <div className={styles.lineBasic}>
           <div className={styles.flowName}>{flowName}</div>
           <div className={styles.operateTime}>{moment(item.operateTime).format('YYYY-MM-DD HH:mm')}</div>
-          <div className={styles.operateUser}>{item.operateUser}</div>
+          <div className={styles.operateUser}>{item.userFullname || item.operateUser}</div>
         </div>
         <div className={styles.advise}>
           <div className={styles.status}>{getHandleStatus(handleStatus)}</div>

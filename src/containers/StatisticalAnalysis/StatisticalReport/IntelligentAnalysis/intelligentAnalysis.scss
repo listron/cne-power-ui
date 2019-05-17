@@ -1,0 +1,42 @@
+@import '../../../../theme/theme.scss';
+
+.intelligentAnalysis{
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  .contentBox{
+    @include contentBoxStyle();
+    .intelligentAnalysisContent{
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .intelligentChoice{
+        background-color: #f8f8f8;
+        :global{
+          .ant-radio-button-wrapper{
+            width: 130px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 0;
+            border-top: 2px solid #f8f8f8;
+            background-color: #f8f8f8;
+          }
+          .ant-radio-button-wrapper-checked{
+            background-color: #fff;
+            color:#666;
+            border-top:2px solid $themeColor;
+            border-left: 1px solid $promptColor;
+            border-bottom: 0;
+            border-right: 1px solid $promptColor;
+            box-shadow: -1px 0 0 0 #fff;
+          }
+          .ant-radio-button-wrapper-checked:hover{
+            box-shadow: 0 0 0 0 #fff;
+          }
+        }
+      }
+    }
+  }
+}
