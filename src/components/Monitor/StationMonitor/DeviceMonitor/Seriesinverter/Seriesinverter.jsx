@@ -31,32 +31,32 @@ class Seriesinverter extends Component {
       deviceTypeCode,
       timeParam: '72',
     };
-    this.props.getMonitorDeviceData(params);
-    this.props.getTenMinDeviceData(params);
-    this.getData(stationCode, deviceCode, deviceTypeCode);
-    this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
+    // this.props.getMonitorDeviceData(params);
+    // this.props.getTenMinDeviceData(params);
+    // this.getData(stationCode, deviceCode, deviceTypeCode);
+    // this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
   }
 
   componentWillReceiveProps(nextProps){
-    const { deviceCode } = this.props.match.params;
-    const nextParams = nextProps.match.params;
-    const nextDevice = nextParams.deviceCode;
-    const nextType = nextParams.deviceTypeCode;
-    const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode && (nextType === '201' || nextType === '206') ){
-      clearTimeout(this.timeOutId);
-      clearTimeout(this.timeOutTenMin);
-      const params = {
-        stationCode: nextStation,
-        deviceCode: nextDevice,
-        deviceTypeCode: nextType,
-        timeParam: '72',
-      };
-      this.props.getMonitorDeviceData(params);
-      this.props.getTenMinDeviceData(params);
-      this.getData(nextStation, nextDevice, nextType);
-      this.getTenMinData(nextStation, nextDevice, nextType);
-    }
+    // const { deviceCode } = this.props.match.params;
+    // const nextParams = nextProps.match.params;
+    // const nextDevice = nextParams.deviceCode;
+    // const nextType = nextParams.deviceTypeCode;
+    // const nextStation = nextParams.stationCode;
+    // if( nextDevice !== deviceCode && (nextType === '201' || nextType === '206') ){
+    //   clearTimeout(this.timeOutId);
+    //   clearTimeout(this.timeOutTenMin);
+    //   const params = {
+    //     stationCode: nextStation,
+    //     deviceCode: nextDevice,
+    //     deviceTypeCode: nextType,
+    //     timeParam: '72',
+    //   };
+    //   this.props.getMonitorDeviceData(params);
+    //   this.props.getTenMinDeviceData(params);
+    //   this.getData(nextStation, nextDevice, nextType);
+    //   this.getTenMinData(nextStation, nextDevice, nextType);
+    // }
   }
 
   componentWillUnmount(){
@@ -65,30 +65,30 @@ class Seriesinverter extends Component {
     this.props.resetDeviceStore();
   }
 
-  getData = (stationCode, deviceCode, deviceTypeCode) => {
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-    };
-    this.timeOutId = setTimeout(() => {
-      this.props.getMonitorDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },10000)
-  }
+  // getData = (stationCode, deviceCode, deviceTypeCode) => {
+  //   const params = {
+  //     stationCode,
+  //     deviceCode,
+  //     deviceTypeCode,
+  //   };
+  //   this.timeOutId = setTimeout(() => {
+  //     this.props.getMonitorDeviceData(params);
+  //     this.getData(stationCode, deviceCode, deviceTypeCode);
+  //   },10000)
+  // }
 
-  getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-      timeParam: '72',
-    };
-    this.timeOutTenMin = setTimeout(() => {
-      this.props.getTenMinDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },600000)
-  }
+  // getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
+  //   const params = {
+  //     stationCode,
+  //     deviceCode,
+  //     deviceTypeCode,
+  //     timeParam: '72',
+  //   };
+  //   this.timeOutTenMin = setTimeout(() => {
+  //     this.props.getTenMinDeviceData(params);
+  //     this.getData(stationCode, deviceCode, deviceTypeCode);
+  //   },600000)
+  // }
 
   render(){
     const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading,singleStationData } = this.props;
