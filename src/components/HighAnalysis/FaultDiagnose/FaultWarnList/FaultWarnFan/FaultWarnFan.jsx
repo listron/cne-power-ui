@@ -9,11 +9,27 @@ export default class FaultWarnFan extends React.Component {
     loading: PropTypes.bool,
     history: PropTypes.object,
     fanListData: PropTypes.array,
-    match: PropTypes.object
+    match: PropTypes.object,
+    getFanList: PropTypes.func,
+    getAlgoModel: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
+  componentWillReceiveProps(nextProps) {
+    const {
+      match: {params: {fanWarnId: currentSingleStationCode}},
+      getFanList,
+      getAlgoModel,
+    } = this.props;
+    const { match: {params: {fanWarnId: nextSingleStationCode}} } = nextProps;
+    const params = {
+      stationCode: nextSingleStationCode,
+    };
+    if (currentSingleStationCode !== nextSingleStationCode) {
+      // 算法模型调用
+      getFanList(params);
+      // 算法模型调用
+      getAlgoModel(params);
+    }
   }
 
   detailsFunc = (taskId, deviceName, deviceFullCode) => {
@@ -136,7 +152,7 @@ export default class FaultWarnFan extends React.Component {
     });
     return (
       <div className={styles.faultWarnFan}>
-        {item}
+        {fanListData || fanListData.length !== 0 ? item : <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>}
       </div>
     );
   }
