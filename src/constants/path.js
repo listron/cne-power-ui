@@ -135,6 +135,7 @@ export default {
       editDeviceModes:'/v3/ledger/devicemodes/update',//编辑设备型号
       deleteDeviceModes:'/v3/ledger/devicemodes/delete',//删除设备型号
       //设备管理
+      getfactorsDeviceMode:'/v3/ledger/devicemodes',//获取某设备厂家下的设备型号
       getDevicePartInfo:'/v3/ledger/device/parts/list',//获取某设备的部件信息
       getDevicefixRecord:'/v3/ledger/device/defect/list',//获取某设备检修记录
       getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警

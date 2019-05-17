@@ -549,10 +549,35 @@ function* getDeviceFactors(action) { //获取设备厂家列表
     })
   }
 }
+function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型号
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
+  const url = `/mock/v3/ledger/devicemodes/manufactorId`;
+  try {
+    const response = yield call(axios.get, url,);
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          factorsDeviceModeData: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
 function* getDevicePartInfo(action) { //获取设备部件信息
   const { payload } = action;
   // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -577,7 +602,7 @@ function* getDevicePartInfo(action) { //获取设备部件信息
 function* getDevicefixRecord(action) { //获取检修记录
   const { payload } = action;
   // const url =`${APIBasePath}${operation.getDevicefixRecord}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url = `/mock/v3/ledger/device/defect/list`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -602,7 +627,7 @@ function* getDevicefixRecord(action) { //获取检修记录
 function* getDevicehistoryWarning(action) { //获取设备历史告警
   const { payload } = action;
   // const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceCode}/${payload.warningType}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
     const response = yield call(axios.post, url,{...payload});
     if (response.data.code === '10000') {
@@ -645,6 +670,7 @@ export function* watchBookDeviceManage() {
   yield takeLatest(deviceManageAction.deleteStationDevice, deleteStationDevice);
   yield takeLatest(deviceManageAction.importStationDevice, importStationDevice);
   yield takeLatest(deviceManageAction.getStationDeviceType, getStationDeviceType);
+  yield takeLatest(deviceManageAction.getfactorsDeviceMode, getfactorsDeviceMode);
   yield takeLatest(deviceManageAction.getDeviceFactors, getDeviceFactors);
   yield takeLatest(deviceManageAction.getDevicePartInfo, getDevicePartInfo);
   yield takeLatest(deviceManageAction.getDevicefixRecord, getDevicefixRecord);

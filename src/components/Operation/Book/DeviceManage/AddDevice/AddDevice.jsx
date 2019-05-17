@@ -77,12 +77,13 @@ class AddDevice extends Component {
   }
   nextStep = () => {
     //在这请求关联设备的数据
-    const selectdeviceType = this.props.form.getFieldValue('deviceTypeCode')
+    const selectdeviceType = this.props.form.getFieldValue('deviceTypeCode');
 
     this.setState({
       showStep: 'next', showAddDeviceName: false,
     })
     this.props.changeDeviceManageStore({ addSuccess: null })
+    this.props.getDeviceFactors({})
   }
   saveFormState = (record) => {
     this.setState({ deviceTypeName: record.addDeviceTypeCodeName, showAddDeviceName: true })

@@ -37,6 +37,7 @@ const initState = Immutable.fromJS({
   checkDeviceTypeData:{},//添加设备类型重复结果
   checkDeviceModeData:{},//添加设备型号重复结果
   deviceFactorsList:[],//设备厂家数据
+  factorsDeviceModeData:[],//设备厂家下的型号
   partInfoData:[],//部件信息table
   fixRecordData:[],//检修记录table
   historyWarningData:[],//设备历史告警table

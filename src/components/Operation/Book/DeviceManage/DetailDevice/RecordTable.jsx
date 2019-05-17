@@ -85,27 +85,29 @@ class RecordTable extends React.Component {
     const historyWarningColumns=[
       {
         title: '告警级别',
-        dataIndex: 'assetsCode',
+        dataIndex: 'warningLevel',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '告警类型',
-        dataIndex: 'assetsName',
+        dataIndex: 'warningConfigName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '告警描述',
-        dataIndex: 'assetsType',
+        dataIndex: 'warningCheckDesc',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '发生时间',
-        dataIndex: 'assetsUnit',
+        dataIndex: 'timeOn',
+        key:'startTime',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '完成时间',
-        dataIndex: 'createTime',
+        dataIndex: 'timeOn',
+        key:'endTime',
         render: (text) => <span title={text}>{text}</span>
       },{
         title: '持续时间',
-        dataIndex: 'begintime',
+        dataIndex: 'durationTime',
         render: (text) => <span title={text}>{text}</span>
       }, 
     ];

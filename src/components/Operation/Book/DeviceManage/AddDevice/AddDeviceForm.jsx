@@ -188,7 +188,14 @@ class AddDeviceForm extends Component {
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
-
+              <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('manufacturer', {
+                  initialValue: manufactureName,
+                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
+                })(
+                  <Input placeholder="不超过30字" />
+                )}
+              </FormItem>
               <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceModeCode', {
                   initialValue: initiDeviceMode,
@@ -206,14 +213,7 @@ class AddDeviceForm extends Component {
                 <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
               </FormItem>
 
-              <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('manufacturer', {
-                  initialValue: manufactureName,
-                  rules: [{ required: true, message: '请正确填写', type: "string", max: 30, }],
-                })(
-                  <Input placeholder="不超过30字" />
-                )}
-              </FormItem>
+            
 
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('lotNumber', {

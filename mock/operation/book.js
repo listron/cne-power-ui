@@ -74,7 +74,7 @@ module.exports = [
     delay: 1000,
     error: {data:'请求失败'}
   },
-  {
+  {//生产厂家列表
     api: '/mock/v3/ledger/devicemanufactors/list',
     method: 'post',
     response: {
@@ -94,7 +94,7 @@ module.exports = [
     delay: 1000,
     error: {data:'请求失败'}
   },
-  {
+  {//设备型号列表
     api: '/mock/v3/ledger/devicemodes/list',
     method: 'post',
     response: {
@@ -114,5 +114,94 @@ module.exports = [
     },
     delay: 1000,
     error: {data:'请求失败'}
-  }
+  },
+   {//获取某设备厂家下的设备型号
+    api: '/mock/v3/ledger/devicemodes/manufactorId',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      'data':[1,2,3].map((e,i)=>{
+        return{
+          'modeId':`设备型号${i}`,
+          'deviceModeName':`设备型号名称${i}`,
+        }
+      }),
+    },
+    delay: 1000,
+    error: {data:'请求失败'}
+  },
+   {//获取某设备的部件信息
+    api: '/mock/v3/ledger/device/parts/list/deviceFullcode',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      'data':[1, 2, 3,].map((e, i)=>{
+        return{
+          "assetsId1":`${Math.random(0, 1) * 10000}`,
+          "assetsName1":`${Math.random(0, 1) * 10000}`,
+          "assetsData2":[1,2].map((e,i)=>{
+            return {
+              'assetsId2':`${Math.random(0, 1) * 10000}`,
+              'assetsName2':`${Math.random(0, 1) * 10000}`,
+              'partsData':[1,2,3].map((e,i)=>{
+                return {
+                  'partsName':`${Math.random(0, 1) * 10000}`,
+                  'partsModeName':`${Math.random(0, 1) * 10000}`,
+                  'manufactorName':`${Math.random(0, 1) * 10000}`,
+                  'madeName':`${Math.random(0, 1) * 10000}`,
+                  'supplierName':`${Math.random(0, 1) * 10000}`,
+                }
+              })
+            }
+          }),
+        }
+      }),
+    },
+    delay: 1000,
+    error: {data:'请求失败'}
+  },
+    {//获取某设备的检修记录
+      api: '/mock/v3/ledger/device/defect/list',
+      method: 'post',
+      response: {
+        "code": "10000",
+        "message": "请求成功",
+        'data':[1, 2, 3, 4, ].map((e, i)=>{
+          return{
+            "defectId":`${Math.random(0, 1) * 10000}`,
+            "defectLevel":`${Math.random(0, 1) * 100}`,
+            "defectDescribe":`test${i+1}`,
+            "defectSolveInfo":`${Math.random(0, 1) * 100}`,
+            "replaceParts":`${Math.random(0, 1) * 100}`,
+            "assetsCode":`${Math.random(0, 1) * 100}`,
+            "createTime":`${Math.random(0, 1) * 100}`,
+            "finishTime":`${Math.random(0, 1) * 100}`,
+          }
+        }),
+      },
+      delay: 1000,
+      error: {data:'请求失败'}
+    },
+     {//获取某设备的历史告警
+      api: '/mock/v3/alarm/device/deviceCode/warningType',
+      method: 'GET',
+      response: {
+        "code": "10000",
+        "message": "请求成功",
+        'data':[1, 2, 3, 4, ].map((e, i)=>{
+          return{
+            "warningLevel":`${i}`,
+            "warningLogId":`${Math.random(0, 1) * 100}`,
+            "warningConfigName":`test${i+1}`,
+            "warningCheckDesc":`${Math.random(0, 1) * 100}`,
+            "timeOn":`${Math.random(0, 1) * 100}`,
+            "durationTime":`${Math.random(0, 1) * 100}`,
+          }
+        }),
+      },
+      delay: 1000,
+      error: {data:'请求失败'}
+    },
 ]

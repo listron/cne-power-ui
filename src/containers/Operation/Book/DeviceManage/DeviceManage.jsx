@@ -177,6 +177,7 @@ const mapDispatchToProps = (dispatch) => ({
   importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
   getStationDeviceType: payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
   getDeviceFactors: payload => dispatch({ type: deviceManageAction.getDeviceFactors, payload }),
+  getfactorsDeviceMode: payload => dispatch({ type: deviceManageAction.getfactorsDeviceMode, payload }),
   getDevicePartInfo: payload => dispatch({ type: deviceManageAction.getDevicePartInfo, payload }),
   getDevicefixRecord: payload => dispatch({ type: deviceManageAction.getDevicefixRecord, payload }),
   getDevicehistoryWarning: payload => dispatch({ type: deviceManageAction.getDevicehistoryWarning, payload }),
