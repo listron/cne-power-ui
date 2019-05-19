@@ -1,0 +1,99 @@
+@import '../../../../theme/theme.scss';
+
+.partInfoBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .title {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 0 35px;
+    .checkStation{
+      display: flex;
+      align-items: center;
+    }
+    .exportInfo{
+      margin-left: 16px;
+      color: $themeColor;
+      border-color: $themeColor
+    }
+  }
+
+  .conatainer {
+    display: flex;
+    flex: 1;
+
+    .leftTree {
+      display: flex;
+      flex-direction: column;
+      width: 482px;
+      border-right: 1px solid #d9d9d9;
+    }
+
+    .right {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 0 18px;
+      .plusButton{
+        width: 62px;
+        padding: 0;
+        font-size: 0;
+        margin: 8px 0;
+
+        i {
+          vertical-align: top;
+          font-size: 14px;
+
+        }
+
+        span {
+          background-color: #fff;
+          color: $themeColor;
+          border-radius: 0 4px 4px 0;
+          display: inline-block;
+          font-size: 14px;
+          line-height: 30px;
+          margin: 0px;
+          padding-right: 4px
+        }
+
+        :global {
+          .anticon-plus {
+            color: #fff;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            width: 28px;
+            text-align: center;
+            line-height: 30px;
+            background-color: $themeColor;
+          }
+
+          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+            margin-left: 0px;
+            width: 28px;
+            color: $darkColor;
+          }
+        }
+      }
+
+      .plusButton:hover {
+        border-radius: 6px;
+
+        span {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+      .copyCom{
+        margin-left: 16px;
+        color: $themeColor;
+        border-color: $themeColor
+      }
+    }
+  }
+}

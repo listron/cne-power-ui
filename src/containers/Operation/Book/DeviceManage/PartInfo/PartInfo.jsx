@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import styles from './partInfo.scss';
 import { partInfoAction } from './partInfoAction';
 
+import PartInfoBox from '../../../../../components/Operation/Book/PartInfoBox/PartInfoBox';
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
-import DeviceSide from '../../../../../components/System/Station/DeviceManage/DeviceSide';
+import DeviceSide from '../../../../../components/Operation/Book/DeviceManage/DeviceSide';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
@@ -22,7 +24,8 @@ class PartInfo extends Component {
     }
   }
   componentDidMount() {
-
+    const { enterpriseId, getStationOfEnterprise } = this.props;
+    getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
   }
   componentWillUnmount() {
 
@@ -50,7 +53,7 @@ class PartInfo extends Component {
               <p className={selectType === 'partInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('partInfo') }}>组件信息</p>
             </div>
             <div className={styles.deviceManageContent}>
-             这是页面容器
+             <PartInfoBox {...this.props} />
             </div>
           </div>
           <TransitionContainer
@@ -69,14 +72,37 @@ class PartInfo extends Component {
   }
 }
 const mapStateToProps = (state) => ({
+  enterpriseId: Cookie.get('enterpriseId'),
   ...state.operation.partInfo.toJS(),
   stations: state.common.get('stations').toJS(),
   selectType: state.operation.deviceManage.get('selectType'),
+ 
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changePartInfoStore: payload => dispatch({ type: partInfoAction.changePartInfoStore, payload }),
   resetPartInfoStore: payload => dispatch({ type: partInfoAction.resetPartInfoStore, payload }),
+  getDeviceTypeList: payload => dispatch({ type: partInfoAction.getDeviceTypeList, payload }),
+  getDeviceComList: payload => dispatch({ type: partInfoAction.getDeviceComList, payload }),
+  addPartInfo: payload => dispatch({ type: partInfoAction.addPartInfo, payload }),
+  editPartInfo: payload => dispatch({ type: partInfoAction.editPartInfo, payload }),
+  getDetailPartInfo: payload => dispatch({ type: partInfoAction.getDetailPartInfo, payload }),
+  deletePartInfo: payload => dispatch({ type: partInfoAction.deletePartInfo, payload }),
+  getStationOfEnterprise: params => dispatch({
+    type: commonAction.getStationOfEnterprise,
+    payload: {
+      params,
+      actionName: partInfoAction.changePartInfoStore,
+      resultName: 'allStationBaseInfo'
+    }
+  }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: partInfoAction.changePartInfoStore,
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PartInfo);
