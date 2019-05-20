@@ -4,7 +4,7 @@ import { showNoData, hiddenNoData } from "../../../../../constants/echartsNoData
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const PreTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -111,8 +111,8 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
+      start: 0,
+      end: 100,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -131,7 +131,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
 };
 
 // 故障图表-发电机后驱温度
-export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const AfterTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -238,8 +238,8 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
+      start: 0,
+      end: 100,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -258,7 +258,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
 };
 
 // 故障图表-温度差
-export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const diffTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -365,8 +365,8 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
+      start: 0,
+      end: 100,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
