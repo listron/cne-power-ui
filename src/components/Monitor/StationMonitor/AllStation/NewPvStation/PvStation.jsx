@@ -18,9 +18,10 @@ class PvStation extends React.Component {
     stationShowType: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
     loading: PropTypes.bool,
-    getRealMonitorData: PropTypes.func,
+    getPvRealData: PropTypes.func,
     getPvChartsData: PropTypes.func,
     monitorPvUnit: PropTypes.object,
+    regionName: PropTypes.string,
   }
 
   constructor(props, context) {
@@ -38,8 +39,13 @@ class PvStation extends React.Component {
 
 
   componentDidMount() {
-    this.props.getRealMonitorData({ stationType: '1' })
-    this.props.getPvChartsData()
+    const { regionName } = this.props;
+    this.props.getPvRealData({ regionName })
+    this.props.getPvChartsData({regionName})
+  }
+
+  componentDidUpdate() {
+
   }
 
   onHandleAlarm = (checked) => {
@@ -71,19 +77,20 @@ class PvStation extends React.Component {
   getStatusNum = (status) => { // 获取状态的数量
     const { stationDataSummary = {} } = this.props.pvMonitorStation;
     const { stationStatusSummary = [] } = stationDataSummary;
-    const statusList = stationStatusSummary.filter(e => e.stationStatus === status)
+    const statusList = stationStatusSummary.filter(e => e.stationStatus === +status)
     return statusList.length > 0 && statusList[0].stationNum || 0
   }
 
   statusDataList = () => { // 删选数据
     let { checked, stationType } = this.state;
     const { pvMonitorStation, } = this.props;
-    const stationDataList = pvMonitorStation.stationDataList || [];
+    const { stationDataList = [] } = pvMonitorStation;
     const newStationDataList = stationDataList.filter(e => { return !checked || (checked && e.alarmNum > 0) }).filter(e => {
-      const stationStatus = e.stationStatus || {};
       if (stationType === 'all') {
         return true
-      } else { return stationStatus.stationStatus === `${stationType}` }
+      } else { 
+        return e.stationStatus === +stationType 
+      }
     })
     return newStationDataList
   }
@@ -104,7 +111,6 @@ class PvStation extends React.Component {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible } = this.state;
     const { pvMonitorStation, loading, monitorPvUnit } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
-    console.log('detailVisible', detailVisible)
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
@@ -125,9 +131,9 @@ class PvStation extends React.Component {
               value={stationType}
             >
               <RadioButton value="all">全部</RadioButton>
-              <RadioButton value="400">通讯正常  {this.getStatusNum(400)}</RadioButton>
-              <RadioButton value="500">通讯中断  {this.getStatusNum(500)}</RadioButton>
-              <RadioButton value="900">未接入  {this.getStatusNum(900)}</RadioButton>
+              <RadioButton value="400">通讯正常  {this.getStatusNum('400')}</RadioButton>
+              <RadioButton value="500">通讯中断  {this.getStatusNum('500')}</RadioButton>
+              <RadioButton value="900">未接入  {this.getStatusNum('900')}</RadioButton>
             </Radio.Group>
           </div>
         </div>
@@ -150,7 +156,7 @@ class PvStation extends React.Component {
             {
               pvStationShow === 'stationBlock' &&
               <div onClick={this.detailShow} className={styles.detailShow}>
-                <i className="iconfont icon-upstream"></i>
+                <i className={`iconfont icon-back ${styles.show}`}></i>
                 <span className={styles.detailShowfont}>查看电站概况</span>
               </div>
             }

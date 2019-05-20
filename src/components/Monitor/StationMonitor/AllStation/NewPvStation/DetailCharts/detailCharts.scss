@@ -107,13 +107,15 @@
         display: flex;
         flex: 1;
         position: relative;
-    
+        .powerChart{
+            width: 440px;
+            height: 280px;
+        }
         .powerRadio {
             position: absolute;
             top: 11px;
-            right: 28px;
+            right: 24px;
             color: $darkColor;
-    
             :global {
                 .ant-radio-button-wrapper-checked:first-child {
                     border-color: $themeColor;
