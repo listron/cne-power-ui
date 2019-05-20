@@ -67,14 +67,15 @@ class WindStation extends Component {
     const stationType = '0';
     this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
     this.getTenSeconds(stationCode, stationType);
-    this.getPowerDataTenMin({stationCode,stationType}); // 发电量
+    this.getPowerDataTenMin({ stationCode, stationType }); // 发电量
     const main = document.getElementById('main');
     main.scrollTo(0, 0);
     this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
       stationCode,
       stationType,
       startTime: moment().subtract(24, 'hours').utc().format(),
-      endTime: moment().utc().format()});
+      endTime: moment().utc().format()
+    });
   }
 
 
@@ -86,14 +87,15 @@ class WindStation extends Component {
       clearTimeout(this.timeOutId);
       this.props.resetSingleStationStore();
       this.getTenSeconds(nextStationCode, nextStationType);
-      this.getPowerDataTenMin({stationCode:nextStationCode,stationType:nextStationType});
+      this.getPowerDataTenMin({ stationCode: nextStationCode, stationType: nextStationType });
       this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
       this.props.stopSingleRealData();
       this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
-        stationCode:nextStationCode,
-        stationType:nextStationType,
+        stationCode: nextStationCode,
+        stationType: nextStationType,
         startTime: moment().subtract(24, 'hours').utc().format(),
-        endTime: moment().utc().format()});
+        endTime: moment().utc().format()
+      });
     }
   }
 
@@ -123,7 +125,7 @@ class WindStation extends Component {
     let endTime = moment().utc().format();
     this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
     this.timeOutId = setTimeout(() => {
-      this.getTenSeconds(stationCode,stationType);
+      this.getTenSeconds(stationCode, stationType);
     }, 10000);
   }
 
@@ -138,7 +140,7 @@ class WindStation extends Component {
   getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
     clearTimeout(this.timeOutPowerData);
     const { stationCode } = this.props.match.params;
-    const { intervalTime=0 } = value;
+    const { intervalTime = 0 } = value;
     const stationType = '0';
     let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
@@ -146,7 +148,7 @@ class WindStation extends Component {
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
-    this.props.changeSingleStationStore({powerData:[]})
+    this.props.changeSingleStationStore({ powerData: [] })
     this.props.getMonitorPower({ // 出力图数据
       stationCode,
       intervalTime,
@@ -155,7 +157,7 @@ class WindStation extends Component {
       stationType,
     });
     this.timeOutPowerData = setTimeout(() => {
-      this.getPowerDataTenMin({stationCode,stationType,intervalTime});
+      this.getPowerDataTenMin({ stationCode, stationType, intervalTime });
     }, 600000);
   }
 
@@ -174,7 +176,7 @@ class WindStation extends Component {
 
   render() {
     const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, powerData, singleStationScatter, windCapabilityData, editData, } = this.props;
-    const {windCapabilityDataTime,singleStationScattertime,powerTime}=this.props;
+    const { windCapabilityDataTime, singleStationScattertime, powerTime } = this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceFlowTypes = deviceTypeFlow.deviceFlowTypes || [];
@@ -197,8 +199,8 @@ class WindStation extends Component {
           stationList={this.props.stationList}
           weatherList={this.props.weatherList}
           operatorList={this.props.operatorList}
-          operatorTime={this.props.operatorTime} 
-          />
+          operatorTime={this.props.operatorTime}
+        />
         <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
         <div className={styles.windContainer}>
           <div className={styles.windList}>
@@ -251,8 +253,8 @@ class WindStation extends Component {
                 <PowerDiagram powerData={powerData} onChange={this.getPowerDataTenMin} powerTime={powerTime} />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'} 
-                scatterTime={singleStationScattertime} />
+                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'}
+                  scatterTime={singleStationScattertime} />
               </div>
             </div>
           }

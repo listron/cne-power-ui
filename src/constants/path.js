@@ -111,7 +111,8 @@ export default {
       getPersonnelGpsData: '/v3/location',//获取员工位置
       getInspectUsers: '/v3/user/getusers',//获取巡检人员
       getInspectOrbit: '/v3/inspect/track',//获取巡航轨迹
-
+      getKnowledgebase:'/v3/knowledgebase/list',// 获取智能专家库列表
+      likeKnowledgebase:'/v3/knowledgebase/like/' // 点赞智能专家
     },
     operation: { // 运维管理
       getDayReportList: '/v3/performance/dailyreportlist', //获取各电站日报统计列表
@@ -121,6 +122,15 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+
+      getImportIntelligent: '/v3/knowledgebase/Import', // 智能专家库导入
+      getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
+      // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
+      // getLike: '/v3/knowledgebase/like', // 智能专家库点赞
+      downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
+      operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
+      getUserName: '/v3/user/related', // 获取相关用户名
+      
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表
@@ -301,7 +311,14 @@ export default {
       getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
       getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
       getPointparams:'/v3/wind/monitor/station/pointparams',// 单电站测点参数(风电站)
+      
+      getDayPower:'/v3/pv/monitor/stations/daypower/',// 多电站日发电量与等效时图(光伏电站)
+      getMonthPower :'/v3/pv/monitor/stations/monthpower/',// 多电站月发电量与等效时图(光伏电站)
+      getMonthPalnPower :'/v3/pv/monitor/stations/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
 
+      getPvStation:'/v3/pv/monitor/stations', // 全部风电站
+      getPvCapabilitydiagrams:'/v3/pv/monitor/stations/capabilitydiagrams',//光伏多电站出力图列表
+      
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表

@@ -27,7 +27,7 @@ function* getStations(action) { // 通用：获取所有电站信息
         stationTypeCount = 'multiple';
       } else if (stationTypes.has(1)) { // 只有光伏电站
         stationTypeCount = 'pv';
-      } else if ( stationTypes.has(0)) { // 只有风电站
+      } else if (stationTypes.has(0)) { // 只有风电站
         stationTypeCount = 'wind';
       }
       yield put({
@@ -68,15 +68,26 @@ function* getMonitorDataUnit(action) { // 通用： 获取用户权限范围内�
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       let monitorDataUnit = response.data.data || {};
+      const [realTimePowerUnit = 'MW', realTimePowerPoint = 0] = monitorDataUnit.realTimePower;
+      const [realCapacityUnit = 'MW', realCapacityPoint = 0] = monitorDataUnit.realCapacity;
+      const [powerUnit = '万kWh', powerPoint = 0] = monitorDataUnit.power;
       yield put({
         type: commonAction.GET_COMMON_FETCH_SUCCESS,
-        payload: {
-          realTimePowerUnit: monitorDataUnit.realTimePower && monitorDataUnit.realTimePower.length > 0 ? monitorDataUnit.realTimePower[0] : 'MW',
-          realTimePowerPoint: monitorDataUnit.realTimePower && monitorDataUnit.realTimePower.length > 0 ? parseFloat(monitorDataUnit.realTimePower[1]) : 0,
-          realCapacityUnit: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? monitorDataUnit.realCapacity[0] : 'MW',
-          realCapacityPoint: monitorDataUnit.realCapacity && monitorDataUnit.realCapacity.length > 0 ? parseFloat(monitorDataUnit.realCapacity[1]) : 0,
-          powerUnit: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? monitorDataUnit.power[0] : '万kWh',
-          powerPoint: monitorDataUnit.power && monitorDataUnit.power.length > 0 ? parseFloat(monitorDataUnit.power[1]) : 0,
+        payload: { // 旧版本需要保留
+          realTimePowerUnit,
+          realTimePowerPoint,
+          realCapacityUnit,
+          realCapacityPoint,
+          powerUnit,
+          powerPoint,
+          monitorPvUnit: {
+            realTimePowerUnit,
+            realTimePowerPoint,
+            realCapacityUnit,
+            realCapacityPoint,
+            powerUnit,
+            powerPoint,
+          }
         }
       });
     }
@@ -425,7 +436,7 @@ function* getWeather(action) { // 获取电站天气
 }
 
 function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件。(默认post请求), resultName会指定action去标识download的loading状态。
-  const { url, fileName, method='post', params, actionName } = payload;
+  const { url, fileName, method = 'post', params, actionName } = payload;
   let newFileName = fileName;
   try {
     yield put({
@@ -445,13 +456,13 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
     if (response.data) {
       const fileContent = response.data;
       const fileNameInfo = response.headers['content-disposition'];
-      if(fileNameInfo){
+      if (fileNameInfo) {
         const fileString = fileNameInfo.split(';')[1];
-        const fileNameCode = fileString? fileString.split('=')[1]: '';
-        const fileResult = fileNameCode?decodeURIComponent(fileNameCode): '';
+        const fileNameCode = fileString ? fileString.split('=')[1] : '';
+        const fileResult = fileNameCode ? decodeURIComponent(fileNameCode) : '';
         fileResult && (newFileName = fileResult)
       }
-      if(fileContent) {
+      if (fileContent) {
         const blob = new Blob([fileContent]);
         if ('download' in document.createElement('a')) { // 非IE下载
           const elink = document.createElement('a');
@@ -464,7 +475,7 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
           document.body.removeChild(elink);
         } else { // IE10+下载
           navigator.msSaveBlob(blob, newFileName);
-        }   
+        }
       }
     } else {
       throw response;
