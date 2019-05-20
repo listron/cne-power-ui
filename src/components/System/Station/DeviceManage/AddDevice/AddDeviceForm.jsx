@@ -271,7 +271,7 @@ class AddDeviceForm extends Component {
               </FormItem>}
             </div>
             <div className={styles.systermStyle}>
-              <FormItem label="是否显示" colon={false} className={styles.formItemStyle}>
+              <FormItem label="是否接入" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('enableDisplay', { initialValue: '1', })(
                   <Select>
                     <Option value={'1'}>是</Option>
