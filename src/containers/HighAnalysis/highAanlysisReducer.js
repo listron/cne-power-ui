@@ -14,8 +14,15 @@ import ignore from './EarlyWarning/Ignore/ignoreReducer'
 import transFer from './EarlyWarning/Transfer/transferReducer'
 import historyWarn from './EarlyWarning/HistoryWarn/historyWarnReducer'
 
+import faultWarn from './FaultDiagnose/FaultWarn/faultWarnReducer';
+import faultWarnList from './FaultDiagnose/FaultWarnList/faultWarnListReducer';
+import faultAllFan from './FaultDiagnose/FaultAllFan/faultAllFanReducer';
+import faultSingleFan from './FaultDiagnose/FaultSingleFan/faultSingleFanReducer';
+import algorithm from './FaultDiagnose/AlgorithmControl/algorithmControlReducer';
+import historyWarnReducer from './FaultDiagnose/HistoryWarn/historyWarnReducer';
 
-const highAnalysisReducer = combineReducers({ 
+
+const highAnalysisReducer = combineReducers({
   realtimeWarningReducer,
   transferFormReducer,
   handleRemoveReducer,
@@ -23,11 +30,18 @@ const highAnalysisReducer = combineReducers({
 
   cleanoutRecordReducer,
   cleanWarning,
-  
+
   unhandle,
   ignore,
   transFer,
   historyWarn,
+
+  faultWarn,
+  faultWarnList,
+  algorithm,
+  faultAllFan,
+  faultSingleFan,
+  historyWarnReducer
 
 });
 

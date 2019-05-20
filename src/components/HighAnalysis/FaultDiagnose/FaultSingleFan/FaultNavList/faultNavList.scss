@@ -1,0 +1,50 @@
+@import '../../../../../theme/theme';
+.faultNavList{
+  width: 100%;
+  display: flex;
+  height: 32px;
+  transition: all 0.3s;
+  overflow: hidden;
+  background-color: $themeColor;
+  .navListRight{
+    width: calc(100% - 90px);
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    padding-left: 10px;
+    div{
+      @include lineheight(20px);
+      padding: 0 8px;
+      cursor: pointer;
+      border-radius: 2px;
+      margin: 6px 10px 0 0;
+    }
+    .redWarn{
+      color: #f4667c;
+    }
+    .blueWarn{
+      color: #50e3c2;
+    }
+    .yellowWarn{
+      color: #f9b600;
+    }
+  }
+  .navListLeft{
+    min-width: 90px;
+    display: flex;
+    padding-top: 7px;
+    justify-content: center;
+    div{
+      width: 45px;
+      user-select: none;
+      cursor: pointer;
+      text-align: center;
+      color: $themeColor;
+      @include lineheight(20px);
+      background-color: #ceebe0;
+      border-radius: 10px;
+    }
+  }
+}

@@ -185,7 +185,7 @@ class BoxTransformerList extends Component {
       key: i,
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
-      const arraySort = ['parentDeviceName','deviceStatus'];
+      const arraySort = ['deviceName','deviceStatus'];
       const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
@@ -194,15 +194,6 @@ class BoxTransformerList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 1;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
     return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
 
@@ -226,12 +217,6 @@ class BoxTransformerList extends Component {
     const deviceStatus = boxTransformerList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm}  /> 告警
-      {/* <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
-        <Radio.Button value={0} >全部</Radio.Button>
-        {deviceStatus.map(e=>
-          (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
-        )}
-      </Radio.Group> */}
     </div>);
     
     const baseLinkPath = "/hidden/monitorDevice";

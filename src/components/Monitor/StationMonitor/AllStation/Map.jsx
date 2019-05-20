@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { message } from "antd";
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
+import styles from './allStation.scss';
 
 class Map extends Component {
   static propTypes = {
@@ -238,10 +239,9 @@ class Map extends Component {
   }
 
   render() {
-    // const { barData } = this.state;
     const { testId } = this.props;
     return (
-      <div id={testId} style={{ width: "100%", flex: 1 }} ></div>
+      <div id={testId} style={{display:'flex', flex: 1,}} className={styles.Map} ></div>
     )
   }
 }

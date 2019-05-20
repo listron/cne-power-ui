@@ -29,5 +29,12 @@ export const commonAction = {
 
   getWeather: Symbol('getWeather'), // 获取天气列表数据
   downLoadFile: Symbol('downLoadFile'), // 下载文件
+
+  resetCommonStore: Symbol('resetCommonStore'), // 重制公共文件
+  getRegion: Symbol('getRegion'),//获取用户权限的电站区域
+  getRegionStation: Symbol('getRegionStation'),//获取用户权限的电站区域下的电站
+  getStationDevicemode: Symbol('getStationDevicemode'),//获取用户权限的电站区域下的电站下的对应型号
+  getRegionStationDevice: Symbol('getRegionStationDevice'),//获取用户权限的电站区域下电站下的对应设备
+
 }
 

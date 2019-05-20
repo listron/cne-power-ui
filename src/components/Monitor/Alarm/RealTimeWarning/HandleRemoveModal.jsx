@@ -53,7 +53,7 @@ class HandleRemoveModal extends Component {
     if (value === 'sevenDay') {
       endTime = moment().add(7, 'days').utc().format('');
     } else if (value === 'oneDay') {
-      endTime = moment().add(1, 'days').utc().format();
+      endTime = moment().add(1, 'days').utc().format('');
     } else if (value = 'threeDay') {
       endTime = moment().add(3, 'days').utc().format('');
     }

@@ -28,12 +28,14 @@ class YearSelect extends React.Component {
     this.setState({ panelOpen: false });
     this.props.onYearSelect({ selectedYear: value.format('YYYY') }) // 输出年份字符串。
   }
+  
 
   render() {
     const { yearValue } = this.props;
     const { panelOpen } = this.state;
     return (
       <DatePicker
+        className={styles.yearSelectStyle}
         placeholder="选择年"
         format="YYYY年"
         mode="year"

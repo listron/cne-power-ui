@@ -58,8 +58,9 @@ class Transfer extends Component {
 
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
-    const sortField = this.sortField(sorter.field);
+    const initSorterField = 'create_time';
     let ascend = "";
+    const sortField = sorter.field ? this.sortField(sorter.field) : initSorterField;
     ascend = sorter.order === 'ascend' ? 'asc' : 'desc';
     this.getTransferList({ sortField, sortMethod: ascend });
   };
@@ -67,7 +68,7 @@ class Transfer extends Component {
   sortField(sortField) {
     let result = "";
     switch (sortField) {
-      case 'stationName': result = ' station_code'; break;
+      case 'stationName': result = 'station_code'; break;
       case 'happenTime': result = 'happen_time'; break;
       case 'createTime': result = 'create_time'; break;
       default: result = ""; break;
@@ -133,8 +134,9 @@ class Transfer extends Component {
         className: styles.iconDetail,
         render: (text, record) => (
           <span className={styles.iconBox}>
-            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record)  }} />
+            <i className="iconfont icon-tranlist icon-action" onClick={() => { this.onShowDetail(record) }} />
           </span>
+
         )
       }
     ]

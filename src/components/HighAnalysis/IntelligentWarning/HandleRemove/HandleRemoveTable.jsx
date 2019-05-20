@@ -121,7 +121,7 @@ class HandleRemoveTable extends Component {
         <div className={styles.content}>
           <div className={styles.infoItem}>
             <span className={styles.label}>解除人：</span>
-            <span className={styles.value}>{relieveInfo.userFullName ? relieveInfo.userFullName : relieveInfo.username}</span>
+            <span className={styles.value}>{relieveInfo.userFullname ? relieveInfo.userFullname : relieveInfo.username}</span>
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>截至时间：</span>
@@ -174,13 +174,9 @@ class HandleRemoveTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          if (record.deviceTypeCode === 206) {
-            return (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
-              </div>
-            );
-          } else if (record.deviceTypeCode === 304) {
+          const deviceTypeCodes = ["202", "304", "302", "201", "509", "206", "203", "101"];
+          const isClick = deviceTypeCodes.includes(`${record.deviceTypeCode}`);
+          if (isClick) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>

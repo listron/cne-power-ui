@@ -9,7 +9,7 @@
   const CopyWebpackPlugin = require('copy-webpack-plugin');
   const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
   const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-  
+
   const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
   const smp = new SpeedMeasurePlugin();
   const { mockConfig } = require('./mock.config.js');
@@ -23,7 +23,7 @@
     devServer: {
       contentBase: './dist',
       port: 8080,
-      hot: true,
+      host: "0.0.0.0",
       before(server) {
         mockConfig.forEach(e=>{
           server[e.method](`${e.api}`, (req, res) => {
@@ -40,7 +40,7 @@
         test: /\.(js|jsx)$/,
         // use: 'babel-loader',
         use: 'happypack/loader?id=happyBabel',
-        exclude: /node_modules/        
+        exclude: /node_modules/
       }, {
         test: /\.css$/,
         exclude: /node_modules/,
@@ -94,7 +94,7 @@
         exclude: /src/,
         use: 'happypack/loader?id=lessBabel',
         // use: [{
-        //   loader: "style-loader" 
+        //   loader: "style-loader"
         // }, {
         //     loader: "css-loader",
         // }, {
@@ -112,7 +112,7 @@
         test: /\.scss$/,
         use: 'happypack/loader?id=scssBabel',
         // use: [{
-        //   loader: "style-loader" 
+        //   loader: "style-loader"
         // }, {
         //     loader: "css-loader",
         //     options: {
@@ -120,7 +120,7 @@
         //       localIdentName: '[local]__[hash:base64:5]'
         //     }
         // }, {
-        //     loader: "sass-loader" 
+        //     loader: "sass-loader"
         // }]
       }, {
         test: /\.(png|jpg|gif)$/,
@@ -162,7 +162,7 @@
         id: 'cssBabel',
         use: [
           {
-            loader: 'babel-loader', 
+            loader: 'babel-loader',
           }, {
             loader:'css-loader',
             options: {
@@ -178,7 +178,7 @@
         id: 'antdBabel',
         use: [
           {
-            loader: 'babel-loader?cacheDirectory=true', 
+            loader: 'babel-loader?cacheDirectory=true',
           }, {
             loader:'css-loader?cacheDirectory=true',
             options:{
@@ -192,7 +192,7 @@
       new HappyPack({
         id: 'lessBabel',
         use: [{
-          loader: "style-loader" 
+          loader: "style-loader"
         }, {
             loader: "css-loader",
         }, {
@@ -212,7 +212,7 @@
       new HappyPack({
         id: 'scssBabel',
         use: [{
-          loader: "style-loader" 
+          loader: "style-loader"
         }, {
             loader: "css-loader",
             options: {
@@ -220,7 +220,7 @@
               localIdentName: '[local]__[hash:base64:5]'
             }
         }, {
-            loader: "sass-loader" 
+            loader: "sass-loader"
         }],
         threadPool: happyThreadPool,
         verbose: true,

@@ -41,14 +41,6 @@ class Login extends Component {
     this.props.changeLoginStore({pageTab, registerStep: 1, joinStep: 1,enterpriseId: ''});
   }
 
-  toSeeAgreement = () => {
-    this.props.changeLoginStore({pageTab: 'agreement'})
-  }
-
-  toContactUs = () => {
-    this.props.changeLoginStore({pageTab: 'contact'})
-  }
-
   render() {
     const {pageTab,history, userEnterpriseStatus} = this.props;
     return (
@@ -84,6 +76,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  loginLoading: state.login.get('loginLoading'),
   username: state.login.getIn(['loginData', 'username']),
   enterpriseId: state.login.getIn(['loginData', 'enterpriseId']),
   userEnterpriseStatus: state.login.get('userEnterpriseStatus'),

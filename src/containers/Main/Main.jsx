@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
 import { message, Modal, Button, Spin } from 'antd';
@@ -17,44 +17,24 @@ import SideMenu from '../../components/Layout/SideMenu';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
-import Loadable from 'react-loadable';
+// import Loadable from 'react-loadable';
 
-const Loading = ({ pastDelay, timedOut, error }) => {
-  if (pastDelay) {
-    return (<div className={styles.preComponent}>
-      <Spin size="large" tip="Loading..." />
-    </div>);
-  } else if (timedOut) {
-    return <div>Taking a long time...</div>;
-  } else if (error) {
-    return <div className={styles.preComponent}>Error! 请重新刷新页面</div>;
-  }
-  return null;
-};
-
-const Login = Loadable({
-  loader: () => import('../Login/LoginLayout'),
-  loading: Loading
-})
-const Agreement = Loadable({
-  loader: () => import('../../components/Login/Agreement'),
-  loading: Loading
-})
-const Contact = Loadable({
-  loader: () => import('../../components/Login/Contact'),
-  loading: Loading
-})
+const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
+    userFullName: PropTypes.string,
+    userLogo: PropTypes.string,
+    username: PropTypes.string,
     getStations: PropTypes.func,
     getDeviceTypes: PropTypes.func,
     login: PropTypes.object,
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
-    username: PropTypes.string,
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
+    resetCommonStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   };
 
   constructor(props) {
@@ -101,7 +81,8 @@ class Main extends Component {
     }
   }
   componentWillUnmount() {
-    this.props.resetMonitorData()
+    this.props.resetMonitorData();
+    this.props.resetCommonStore();
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -120,12 +101,13 @@ class Main extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
     this.props.history.push('/login');
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
     const authData = Cookie.get('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -148,7 +130,14 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
-              <UserInfo changeLoginStore={changeLoginStore} resetMonitorData={resetMonitorData} />
+              <UserInfo
+                username={username}
+                userFullName={userFullName}
+                userLogo={userLogo}
+                changeLoginStore={changeLoginStore}
+                resetMonitorData={resetMonitorData}
+                resetCommonStore={resetCommonStore}
+              />
             </div>
           </div>}
           <div className={styles.appMain}>
@@ -176,9 +165,15 @@ class Main extends Component {
     } else {
       return (
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/userAgreement" exact component={Agreement} />
-          <Route path="/contactUs" exact component={Contact} />
+          <Route path="/login" exact render={() => (
+            <Suspense fallback={
+              <div className={styles.preComponent}>
+                  <Spin size="large" tip="Loading..." />
+              </div>}
+            >
+              <Login {...this.props} />
+            </Suspense>)}
+          />
           <Redirect to="/login" />
         </Switch>
       );
@@ -190,7 +185,9 @@ const mapStateToProps = (state) => {
   return ({
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
-    username: state.login.get('username'),
+    username: state.common.get('username'),
+    userFullName: state.common.get('userFullName'),
+    userLogo: state.common.get('userLogo'),
   });
 }
 
@@ -200,6 +197,7 @@ const mapDispatchToProps = (dispatch) => ({
   getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 

@@ -46,7 +46,7 @@ class RealTimeWarningTable extends Component {
     }
   }
   onSelectChange = (selectedRowKeys) => {//选择checkbox
-    console.log('selectedRowKeys',selectedRowKeys)
+    // console.log('selectedRowKeys',selectedRowKeys)
     this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
 
@@ -95,13 +95,9 @@ class RealTimeWarningTable extends Component {
         key: 'deviceName',
         sorter: true,
         render: (text, record) => {
-          if (record.deviceTypeCode === 206) {
-            return (
-              <div className={styles.deviceName}>
-                <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>
-              </div>
-            );
-          } else if (record.deviceTypeCode === 304) {
+        const deviceTypeCodes=[ "202", "304", "302", "201", "509", "206", "203", "101"];
+        const isClick=deviceTypeCodes.includes(`${record.deviceTypeCode}`);
+          if (isClick) {
             return (
               <div className={styles.deviceName}>
                 <Link to={`/hidden/monitorDevice/${record.stationCode}/${record.deviceTypeCode}/${record.deviceFullCode}`} className={styles.underlin} >{text}</Link>

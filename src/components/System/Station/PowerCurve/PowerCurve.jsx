@@ -238,7 +238,6 @@ class PowerCurve extends Component {
       onChange: this.onSelectChange,
     };
     const downloadHref = `${path.basePaths.originUri}/template/PowerCurve.xlsx`;
-    // const authData = Cookie.get('authData') || null;
     return (
       <div className={styles.PowerCurve}>
 

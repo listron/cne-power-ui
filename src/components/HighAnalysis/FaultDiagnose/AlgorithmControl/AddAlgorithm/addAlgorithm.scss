@@ -1,0 +1,46 @@
+@import '../../../../../theme/theme.scss';
+.addAlgorithm{
+  width: 100%;
+  padding: 25px 34px 0 24px;
+  background-color: $pageBackground;
+  .addCenter{
+    width: 100%;
+    background-color: $pageGround;
+    .title{
+      width: 100%;
+      @include lineheight(60px);
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      border-bottom: 1px solid $pageBackground;
+      div:nth-of-type(1){
+        padding-left: 37px;
+      }
+      div:nth-of-type(2){
+        .backIcon{
+          display: block;
+          border-left: 1px solid $promptColor;
+          width: 60px;
+          line-height: 60px;
+          text-align: center;
+          color: $darkColor;
+          cursor: pointer;
+        }
+      }
+    }
+    .addContent{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      .addForm{
+        padding-top:20px;
+        width: 500px;
+        :global{
+          .ant-row{
+            height: 60px;
+          }
+        }
+      }
+    }
+  }
+}

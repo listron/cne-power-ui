@@ -1,0 +1,79 @@
+@import '../../../../theme/theme.scss';
+.controlBox{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .controlType{
+    width: 100%;
+    height: 40px;
+    padding: 8px 50px 0;
+    display: flex;
+    background-color: $pageBackground;
+    justify-content: flex-end;
+    div{
+      cursor: pointer;
+      user-select: none;
+      @include lineheight(24px);
+      border-radius: 12px;
+      color: $darkColor;
+      background-color: $pageGround;
+      border: 1px solid $lightColor;
+      padding: 0 10px;
+      i{
+        margin-right: 5px;
+      }
+    };
+    >div:nth-of-type(1){
+      margin-right: 10px;
+    }
+  }
+  .controlContainer{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 24px 0;
+    background-color: $pageBackground;
+    overflow: hidden;
+    .controlBox{
+      width: 100%;
+      background-color: $pageGround;
+      padding-top: 12px;
+      .addControl{
+        width: 70px;
+        padding: 0;
+        margin-left: 24px;
+        margin-right: 12px;
+        font-size: 0;
+        border: 1px solid $themeColor;
+        i {
+          background-color: $themeColor;
+          color: #fff;
+          font-size: 14px;
+          vertical-align: top;
+          width: 28px;
+          line-height: 30px;
+          border-radius: 2px 0 0 2px;
+        }
+        .text {
+          border-radius: 0 2px 2px 0;
+          font-size: 14px;
+          color: $themeColor;
+          display: inline-block;
+          width: 40px;
+          line-height: 30px;
+          margin: 0;
+          text-align: center;
+        }
+        @include highLight($themeColor);
+        &:hover {
+          .text {
+            background: $themeColor;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}
