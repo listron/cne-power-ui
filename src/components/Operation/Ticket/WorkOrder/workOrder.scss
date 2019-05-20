@@ -155,12 +155,61 @@
                 color: $darkColor;
                 padding-left: 24px;
             }
+            .dealMethod{
+                border: 1px solid $themeColor;
+                color: $themeColor;
+                margin: 0 10px;
+                height: 30px;
+            }
         }
         .viewImg {
             margin-top: 10px;
             margin-left: 80px;
         }
     }
+    .dealModal{
+        .modalbody{
+            height: 400px;
+            overflow: auto;
+            padding: 24px;
+        }
+        .dealBox{
+            background: #f0f2f5;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            position: relative;
+            .column{
+                display: flex;
+                line-height: 28px;
+                .text{
+                    width:70px;
+                    text-align: right;
+                    color: #000;
+                    margin-right: 12px;
+                    flex-shrink: 0;
+                }
+            }
+            .like{
+                color: $themeColor;
+                border: 1px solid $themeColor;
+                background: #fff;
+                position: absolute;
+                right:10px;
+                bottom:8px;
+                text-align: center;
+                cursor: pointer;
+                width: 202px;
+                border-radius: 4px;
+                line-height: 28px;
+            }
+        }
+        :global{
+            .ant-modal-body{
+                padding: 0
+            }
+        }
+    }
+   
 }
 
 .timeLineWrap {
