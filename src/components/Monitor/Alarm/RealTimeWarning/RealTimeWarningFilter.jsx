@@ -13,7 +13,7 @@ class RealTimeWarningFilter extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      value: ''
+      value: '' 
     };
   }
 
@@ -46,10 +46,12 @@ class RealTimeWarningFilter extends Component {
   }
 
   render() {
-     const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
+    const searchInfo = this.props.history.location.search;//拿到路径中的电站编码
     const stationCode = searchInfo.substring(searchInfo.indexOf('=') + 1);
-    const stationCodes=stationCode?[+stationCode]:null
-    const { stations, deviceTypes,stationTypeCount } = this.props;
+    const stationCodes = stationCode ? [+stationCode] : null;
+    const  pathParams=this.props.history.location.state || {};
+    const {stationType = '',deviceName=''}=pathParams;
+    const { stations, deviceTypes, stationTypeCount} = this.props;
     const option=stationTypeCount==='multiple'?['alarmLevel','stationType', 'stationName', 'deviceType', 'rangeTime']:['alarmLevel', 'stationName', 'deviceType', 'rangeTime'];
     return (
       <div className={styles.realTimeWarningFilter}>
@@ -60,6 +62,7 @@ class RealTimeWarningFilter extends Component {
           onChange={this.onChangeFilter}
           defaultValue={{
             stationCodes,
+            stationType,
           }}
         />
         <div className={styles.deviceNameSearch}>

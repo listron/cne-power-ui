@@ -231,7 +231,6 @@ class ConfluenceBoxList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
-    console.log('tableSource',tableSource)
     // const { inverterList } = this.props;
     // const initDeviceList = inverterList.deviceList || [];
     // const totalNum = initDeviceList.length || 0;

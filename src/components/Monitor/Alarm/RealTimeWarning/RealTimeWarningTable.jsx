@@ -46,7 +46,7 @@ class RealTimeWarningTable extends Component {
     }
   }
   onSelectChange = (selectedRowKeys) => {//选择checkbox
-    console.log('selectedRowKeys',selectedRowKeys)
+    // console.log('selectedRowKeys',selectedRowKeys)
     this.props.changeRealtimeWarningStore({ selectedRowKeys });
   }
 

@@ -3,12 +3,15 @@ import { singleStationAction } from './singleStationAction';
 
 var initState = Immutable.fromJS({
   loading: false,//加载状态
-  stationList: [],//所有电站列表
+  // stationList: [],//所有电站列表
   singleStationData: {},//单电站数据
-  stationType: null,//电站类型  0：风 1：光
+  stationType: '',//电站类型  0：风 1：光
   capabilityData: [],//出力图数据
+  capabilityDataTime:null,// 出力图的时间
   powerData: [],//理论发电量 实际发电量数据
+  powerTime:null,//发电量时间
   operatorList: [],//企业运维人员列表
+  operatorTime:null,// 企业运维人员列表时间
   weatherList: [],//天气列表
   alarmList: {},//告警数统计
   workList: {},//工单数统计
@@ -26,20 +29,23 @@ var initState = Immutable.fromJS({
   error: {},//请求错误返回信息
   stationDeviceList: [],//单电站设备列表
   fanList:{}, //风机列表
+  singleStationScatter:{},// 等效小时散点图
+  singleStationScattertime:null,// 等效小时散点图时间
+  pointparams:{},//单电站测点参数(风机)
+  fanDisplay:'deviceCard', // 单电站风机展示形式  deviceCard deviceTable deviceMap
+  windCapabilityData:[],
+  windCapabilityDataTime:null,
 });
 
 const singleStationReducer = (state = initState, action) => {
   switch (action.type) {
-    case singleStationAction.SINGLE_STATION_FETCH:
+    case singleStationAction.singleStationFetch:
       return state.set('loading',true);
-    case singleStationAction.GET_SINGLE_STATION_SUCCESS :
+    case singleStationAction.getSingleStationSuccess :
       return state.merge(Immutable.fromJS(action.payload)).set('loading',false);
-    case singleStationAction.CHANGE_SINGLE_STATION_STORE:
+    case singleStationAction.changeSingleStationStore:
       return state.merge(Immutable.fromJS(action.payload));
-    case singleStationAction.GET_SINGLE_STATION_FAIL:
-      return state.set('loading', false)
-                  .set('error', Immutable.fromJS(action.data));
-    case singleStationAction.RESET_SINGLE_STATION_SUCCESS:
+    case singleStationAction.resetStore:
       return initState;
   }
   return state;

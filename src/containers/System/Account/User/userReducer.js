@@ -3,6 +3,7 @@ import { userAction } from './userAction';
 
 var initState = Immutable.fromJS({
   loading: false,
+  downloading: false, // 模板下载loading
   showPage: 'list',//默认显示list,可显示list,detail,edit,add
   enterpriseId: '',//企业ID
   roleId: '',//筛选条件：选中的角色Id信息

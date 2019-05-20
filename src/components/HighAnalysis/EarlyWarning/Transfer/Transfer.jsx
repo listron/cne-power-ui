@@ -68,7 +68,7 @@ class Transfer extends Component {
   sortField(sortField) {
     let result = "";
     switch (sortField) {
-      case 'stationName': result = ' station_code'; break;
+      case 'stationName': result = 'station_code'; break;
       case 'happenTime': result = 'happen_time'; break;
       case 'createTime': result = 'create_time'; break;
       default: result = ""; break;

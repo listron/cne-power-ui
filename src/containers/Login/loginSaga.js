@@ -179,6 +179,10 @@ function *phoneCodeLogin(action){
           data, //data为API返回的值
         });
       } else { // 用户登录状态非可用。
+        if (params.showResetPassword) { // 忘记密码进入的登录状态。非可用用户,不可忘记密码=>修改密码
+          message.error('请先确认您已加入企业!');
+          return;
+        }
         if (needFillDetail) { // 被移除用户，数据暂存，去重新完善信息(密码)
           yield put({
             type: loginAction.CHANGE_LOGIN_STORE_SAGA,

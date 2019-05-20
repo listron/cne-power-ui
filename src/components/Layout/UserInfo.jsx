@@ -14,6 +14,7 @@ class UserInfo extends Component {
     inHomepage: PropTypes.bool,
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -42,13 +43,12 @@ class UserInfo extends Component {
     localStorage.clear();
     this.props.changeLoginStore({pageTab: 'login'});
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.history.push('/login');
   }
 
   render() {
     const { userFullName, username, userLogo } = this.props;
-    // const username = Cookie.get('username');
-    // const userFullName = Cookie.get('userFullName');
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
       <Menu className={styles.layoutUserDropdown}>

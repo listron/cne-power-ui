@@ -10,9 +10,11 @@ class AllStationMonthPie extends React.Component {
   constructor(props, context) {
     super(props, context)
   }
+  
   componentDidMount() {
     this.drawChart(this.props)
   }
+
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps)
   }

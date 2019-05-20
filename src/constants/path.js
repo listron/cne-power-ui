@@ -205,7 +205,7 @@ export default {
       getSeriesData: '/v3/forewarning/conf',  //获取低效组串预警配置
       addSeriesData: '/v3/forewarning/conf',  //设置低效组串预警配置
       getCleaningData: '/v3/pvclean/conf', //获取清洗模型预警配置
-      addCleaningData: '/v3/pvclean/conf', //设置清洗模型预警配置    
+      addCleaningData: '/v3/pvclean/conf', //设置清洗模型预警配置
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
       getStationPoints:'/v3/smartalarm/devicepointcode', // 测点，已预警的测点删除
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
@@ -235,6 +235,7 @@ export default {
       getBoosterstation: '/v3/monitor/boosterstation/datalist/', // 升压站列表 实时
       getPowerNet: '/v3/monitor/powercollection/datalist/', // 电网列表 实时
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
+      getSingleWindleStation:'/v3/wind/monitor/station/', // 单电站风电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
@@ -244,6 +245,7 @@ export default {
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
+      getSingleStationDeviceList: '/v3/wind/monitor/station/devices/',//风单电站设备列表
       editData: '/v3/management/stationgen',//编辑月，年的累计发电量
 
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
@@ -257,8 +259,13 @@ export default {
       resetRelieveAlarm: '/v3/alarm/delrelievealarm',//取消屏蔽告警
 
       getFanList:'/v3/monitor/windturbine/datalist', // 风机实时数据列表
+      getNewFanList:'/v3/wind/monitor/station/devices', // 新的风机实时数据列表
       windturbine:'/v3/monitor/windturbine',  //风机实时数据
-      sequencechart:'/v3/monitor/windturbine/sequencechart',
+      newWindturbine:'/v3/wind/monitor/windturbine',  //新的风机实时数据
+      sequencechart:'/v3/monitor/windturbine/sequencechart',// 风机图表数据
+      sequencediagram:'/v3/wind/monitor/windturbine/sequencediagram',// 单风机时序图
+      scatterpoint:'/v3/wind/monitor/windturbine/scatterpoint',// 单风机散点图
+
       //功率曲线
       getAllDeviceCurveData:'/v3/wind/powercurve/fans/chart',//功率曲线图表-多风机
       getPowerdeviceList:'/v3/wind/powercurve/fans/list',//..功率曲线列表-多风机
@@ -273,7 +280,7 @@ export default {
       getDeviceInfo: '/v3/management/device', // 设备详情信息表
 
 
-      // 数据分析 
+      // 数据分析
       getPointsInfo: '/v3/wind/analysis/devicepoint', // 数据趋势可用测点信息
       getAvailableDeviceType: '/v3/wind/analysis/devicetypelist', // 获取有测点的设备类型
       getListHistory: '/v3/wind/analysis/history/devicedata', // 历史数据 - 列表数据
@@ -287,16 +294,24 @@ export default {
       getListScatterDiagram: '/v3/wind/scatterpoint/fan/list', // 散点图 - 列表数据
       exportScatterDiagram: '/v3/wind/scatterpoint/fan/export', // 导出散点图数据
       getPoints: '/v3/wind/scatterpoint/fan/point', // 散点图X/Y轴测点数据
+
+      getWindMonitorPower:'/v3/wind/monitor/stations/power', // 全部风电站的理论发电量图表
+      getWindStation:'/v3/wind/monitor/stations', // 全部风电站
+      getWindCapability:'/v3/wind/monitor/stations/capabilitydiagram',// 风电站出力图
+      getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
+      getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
+      getPointparams:'/v3/wind/monitor/station/pointparams',// 单电站测点参数(风电站)
+
       //报表
-      getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总  
+      getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表
       getDeviceStatusList:'/v3/wind/report/fan/devicestatus' ,     //电设备状态报表汇总
       getDeviceStatusDetail:'/v3/wind/report/fan/devicestatus/detail' ,     //电设备状态报表明细
       exportDeviceStatus:'/v3/wind/report/fan/devicestatus/export',//导出设备状态
-      getMalfunctionList:'/v3/wind/report/fan/devicefault' ,     //故障报表汇总  
+      getMalfunctionList:'/v3/wind/report/fan/devicefault' ,     //故障报表汇总
       getMalfunctionDetail:'/v3/wind/report/fan/devicefault/detail' ,     //故障报表明细
       exportDevicefault:'/v3/wind/report/fan/devicefault/export',//导出设备故障报表
-      getPowerLostList:'/v3/wind/report/fan/lostpower' ,     //损失电量报表汇总  
+      getPowerLostList:'/v3/wind/report/fan/lostpower' ,     //损失电量报表汇总
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
@@ -365,9 +380,11 @@ export default {
       getPvStationType:'/v3/performance/score/reporttype', //用户电站下的光伏电站类型
       // 智能分析报告
       getIntelligent:'/v3/intelligence/analysis/station', // 单电站分析
-      exportIntelligent:'/v3/intelligence/analysis/station/export', // 单电站分析导出
-      getArea:'/v3/ intelligence/analysis/area', // 同区域电站对比 
-      getAreacompare:'/v3/ intelligence/analysis/areacompare', // 区域对比分析报告
+      exportIntelligent:'/v3/intelligence/analysis/station/export', // 导出单电站分析导出
+      getArea:'/v3/intelligence/analysis/area', // 同区域电站对比
+      exportAreaStation:'/v3/intelligence/analysis/area/export', // 导出同区域电站对比
+      getAreaCompare:'/v3/intelligence/analysis/areacompare', // 区域对比分析报告
+      exportAreaCompare:'/v3/intelligence/analysis/areacompare/export', // 区域对比分析报告导出
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
@@ -410,6 +427,25 @@ export default {
       faultReport: 'v3/performance/generalreport/fault', // 故障日报
       genReport: 'v3/performance/generalreport/gen', // 发电量信息
       indicatorReport: 'v3/performance/generalreport/indicator', // 生产运营指标
+
+      // 风机故障检测与诊断
+      warnSummary: "/v3/wtfdd/warning/summary", // 获取多风场故障预警汇总列表
+      algoModel: "/v3/wtfdd/warning/algomodel", // 获取单风场故障预警汇总-按模型
+      listView: "/v3/wtfdd/warning/list", // 获取单风场故障预警汇总-按模型
+      fanList: "/v3/wtfdd/warning/windturbine", // 获取单风场故障预警汇总-按风机
+      algoList: "/v3/wtfdd/task/algomodel", // 获取预警任务列表-算法模型视图
+      algoOptionList: "/v3/wtfdd/algorithm", // 获取算法列表
+      addWarnTask: "/v3/wtfdd/task", // 新增预警任务
+      downloadFile: "/v3/wtfdd/task", // 下载故障发生概率文件
+      warnHistory: "/v3/wtfdd/warning/history", // 获取历史预警列表
+      resetTask: "/v3/wtfdd/task/redo", // 重新执行
+      faultTaskList: "/v3/wtfdd/task/list", // 获取预警任务列表-列表视图
+      standAlone: "/v3/wtfdd/result/residual", // 获取单风机自适应模块检测结果
+      similarityList: "/v3/wtfdd/result/similarity", // 获取风机相似性结果
+      allFanResult: "/v3/wtfdd/result/std", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
+      tenMinutesLine: "/v3/wtfdd/pt10m", // 获取风机10分钟数据
+      faultInfo: "/v3/wtfdd/task/detail", // 获取故障预警任务详情
+      statusInfo: "/v3/wtfdd/task/status", // 获取预警任务状态统计
     }
   }
 }
