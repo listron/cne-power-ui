@@ -13,7 +13,7 @@ class InspectOrbit extends Component {
     createInspect: PropTypes.func,
     stations: PropTypes.object,
     getStations: PropTypes.func,
-    showContainer: PropTypes.string,
+    container: PropTypes.string,
     changeInspectStore: PropTypes.func,
   }
   constructor(props) {

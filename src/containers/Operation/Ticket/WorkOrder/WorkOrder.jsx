@@ -74,6 +74,8 @@ const mapDispatchToProps = (dispatch) => ({
   closeDefect: payload => dispatch({ type: workOrderAction.closeDefect, payload }),
   handleDefect: payload => dispatch({ type: workOrderAction.handleDefect, payload }),
   checkDefect: payload => dispatch({ type: workOrderAction.checkDefect, payload }),
+  getKnowledgebase: payload => dispatch({ type: workOrderAction.getKnowledgebase, payload }),
+  likeKnowledgebase: payload => dispatch({ type: workOrderAction.likeKnowledgebase, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkOrder)
