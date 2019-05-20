@@ -13,12 +13,15 @@ const EditableRow = ({ form, index, ...props }) => {
 const EditableFormRow = Form.create()(EditableRow);
 
 const data = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 10; i++) {
   data.push({
     key: i.toString(),
     name: `Edrward ${i}`,
     age: 32,
     address: `London Park no. ${i}`,
+    author: "哈哈",
+    createTime: "2018-08-08",
+    modeId: i
   });
 }
 class WarehouseWrapTable extends Component {
@@ -36,6 +39,12 @@ class WarehouseWrapTable extends Component {
 
   isEditing = record => record.modeId === this.state.editingKey;
 
+  save = (form, modeId) => {};
+
+  edit = (key) => {
+    this.setState({ editingKey: key });
+  };
+
   render() {
     const { form } = this.props;
     const components = {
@@ -44,7 +53,7 @@ class WarehouseWrapTable extends Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} {...rest[0]} />
+              return <EditableCell form={form} deviceFactorsList={data} {...rest[0]} />
             }}
           </EditableContext.Consumer>)
         },
@@ -53,13 +62,13 @@ class WarehouseWrapTable extends Component {
     const columns = [
       {
         title: '仓库名称',
-        dataIndex: '仓库名称',
+        dataIndex: 'name',
         sorter: true,
         editable: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '电站名称',
-        dataIndex: '电站名称',
+        dataIndex: 'key',
         editable: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
@@ -69,12 +78,12 @@ class WarehouseWrapTable extends Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建人',
-        dataIndex: 'manufactorName',
+        dataIndex: 'age',
         sorter: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作人',
-        dataIndex: 'operateUser',
+        dataIndex: 'author',
         sorter: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
@@ -98,7 +107,21 @@ class WarehouseWrapTable extends Component {
           </div>)
         }
       },
-    ]
+    ].map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          type: col.dataIndex === 'name' ? 'text' : 'select',
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: this.isEditing(record),
+        }),
+      };
+    });
     return (
       <div className={styles.warehouseWrapTable}>
         <EditableContext.Provider value={form}>

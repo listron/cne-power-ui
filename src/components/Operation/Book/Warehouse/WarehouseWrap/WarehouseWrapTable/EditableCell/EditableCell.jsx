@@ -9,11 +9,11 @@ const EditableContext = React.createContext();
 class EditableCell extends React.Component {
   static propTypes = {
     deviceFactorsList: PropTypes.array,
-    inputType: PropTypes.string
+    type: PropTypes.string
   };
   getInput = () => {
-    const { deviceFactorsList, inputType } = this.props;
-    if (inputType === 'text') {
+    const { deviceFactorsList, type } = this.props;
+    if (type === 'text') {
       return <Input onChange={this.testValue} />
     }
     return (
@@ -40,9 +40,7 @@ class EditableCell extends React.Component {
       editing,
       dataIndex,
       title,
-      // inputType,
       record,
-      index,
       form,
       ...restProps
     } = this.props;
