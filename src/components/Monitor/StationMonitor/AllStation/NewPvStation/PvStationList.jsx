@@ -54,7 +54,7 @@ class PvStationList extends React.Component {
         defaultSortOrder: "ascend",
         sorter: true,
         render: (value, record) => {
-          const stationStatus = record.stationStatus.stationStatus || '';
+          const stationStatus = record.stationStatus || '';
           if (stationStatus === '900') {
             return <div title={value} className={styles.stationName} onClick={this.showTip}>{value}</div>
           } else {
@@ -164,7 +164,7 @@ class PvStationList extends React.Component {
         render: (value) => {
           return (
             <div className={styles.currentStation}>
-              <div className={styles[getStatusName[value.stationStatus]]} ></div>
+              <div className={styles[getStatusName[value]]} ></div>
             </div>)
         }
       }

@@ -192,12 +192,18 @@ function* stopRealCharstData(action) {
 
 function* dayPower(action) { // 多电站日发电量与等效时图
   const { payload } = action;
-  const {regionName}=payload;
+  const { regionName } = payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment(endDate).subtract(1, 'month').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/dayPower`;
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        dayPowerLoading: true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
@@ -205,6 +211,7 @@ function* dayPower(action) { // 多电站日发电量与等效时图
         payload: {
           dayPowerData: response.data.data || [],
           dayPowerTime: moment().unix(),
+          dayPowerLoading: false
         }
       })
     } else { throw response.data }
@@ -214,6 +221,8 @@ function* dayPower(action) { // 多电站日发电量与等效时图
       type: allStationAction.changeMonitorstationStore,
       payload: {
         dayPowerData: [],
+        dayPowerTime: moment().unix(),
+        dayPowerLoading: false
       }
     });
   }
@@ -221,13 +230,18 @@ function* dayPower(action) { // 多电站日发电量与等效时图
 
 function* monthPower(action) { // 多电站月发电量与等效时图
   const { payload } = action;
-  const {regionName}=payload;
+  const { regionName } = payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}/${regionName}`;
-  console.log('url', url)
   // const url=`/mock/api/v3/monitor/monthPower`;
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        monthPowerLoading: true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
@@ -235,6 +249,7 @@ function* monthPower(action) { // 多电站月发电量与等效时图
         payload: {
           monthPowerData: response.data.data || [],
           monthPowerTime: moment().unix(),
+          monthPowerLoading:false,
         }
       })
     } else { throw response.data }
@@ -244,6 +259,8 @@ function* monthPower(action) { // 多电站月发电量与等效时图
       type: allStationAction.changeMonitorstationStore,
       payload: {
         monthPowerData: [],
+        monthPowerTime: moment().unix(),
+        monthPowerLoading:false,
       }
     });
   }
@@ -251,12 +268,18 @@ function* monthPower(action) { // 多电站月发电量与等效时图
 
 function* monthplanpower(action) { // 多电站月累计与计划发电量图
   const { payload } = action;
-  const {regionName}=payload;
+  const { regionName } = payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
-  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/'全部区域'`;
+  const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/monthPlanpower`;
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        monthPlanPowerLoading: true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
@@ -264,6 +287,7 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图
         payload: {
           monthPlanPowerData: response.data.data || [],
           monthPlanPowerTime: moment().unix(),
+          monthPlanPowerLoading: false
         }
       })
     } else { throw response.data }
@@ -272,7 +296,9 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图
     yield put({
       type: allStationAction.changeMonitorstationStore,
       payload: {
-        monthPowerData: [],
+        monthPlanPowerData: [],
+        monthPlanPowerTime: moment().unix(),
+        monthPlanPowerLoading: false
       }
     });
   }
@@ -289,7 +315,6 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
   const { regionName } = payload;
   const utcTime = moment.utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}/${utcTime}/${regionName}`
-  console.log('实时数据', url)
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -318,7 +343,6 @@ function* getPvCapabilitydiagrams(action) {
   let startTime = moment().subtract(1, 'day').utc().format()
   let endTime = moment.utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}/${startTime}/${endTime}/${regionName}`;
-  console.log('出力图数据', url)
   try {
     yield put({
       type: allStationAction.changeMonitorstationStore,
@@ -351,7 +375,6 @@ function* getPvCapabilitydiagrams(action) {
 
 function* getPvRealData(action) { // 获取光伏的数据
   const { firtQuery = true, waiting } = action;
-  console.log('action', action)
   if (waiting) {
     yield delay(600000); // 一分钟
   }

@@ -20,7 +20,7 @@ class pvStationHeader extends React.Component {
     const { pvMonitorStation, monitorPvUnit } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const stationDataSummary = pvMonitorStation.stationDataSummary || {};
-    const stationPower = divideFormarts(stationDataSummary.stationPower,realTimePowerUnit);
+    const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
@@ -30,7 +30,7 @@ class pvStationHeader extends React.Component {
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationPower && stationCapacity) ? (stationPower / 1000) / stationCapacity * 100 : 0;
+    const percent = (stationPower && stationCapacity) ? (stationPower / stationCapacity) * 100 : 0;
     return (
       <div className={styles.headStation}>
         <div className={styles.leftIcon}></div>

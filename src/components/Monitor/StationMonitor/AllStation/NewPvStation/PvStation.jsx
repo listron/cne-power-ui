@@ -40,8 +40,6 @@ class PvStation extends React.Component {
 
   componentDidMount() {
     const { regionName } = this.props;
-    console.log('1111111')
-    console.log('tst', regionName)
     this.props.getPvRealData({ regionName })
     this.props.getPvChartsData({regionName})
   }
@@ -113,7 +111,6 @@ class PvStation extends React.Component {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible } = this.state;
     const { pvMonitorStation, loading, monitorPvUnit } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
-    console.log('pvCapabilitydiagramsData',this.props.pvCapabilitydiagramsData)
     return (
       <div className={styles.pvStation}>
         <PvStationHeader {...this.props} />
@@ -159,7 +156,7 @@ class PvStation extends React.Component {
             {
               pvStationShow === 'stationBlock' &&
               <div onClick={this.detailShow} className={styles.detailShow}>
-                <i className="iconfont icon-upstream"></i>
+                <i className={`iconfont icon-back ${styles.show}`}></i>
                 <span className={styles.detailShowfont}>查看电站概况</span>
               </div>
             }

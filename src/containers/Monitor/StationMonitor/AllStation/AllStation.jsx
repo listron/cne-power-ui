@@ -28,6 +28,8 @@ class AllStation extends Component {
     changeMonitorstationStore: PropTypes.func,
     stations: PropTypes.array,
     regionName: PropTypes.string,
+    getPvRealData: PropTypes.func,
+    getPvChartsData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -71,6 +73,7 @@ class AllStation extends Component {
     this.setState({ showRegion: false });
     this.props.stopRealMonitorData();
     this.props.getPvRealData({regionName:curName});
+    this.props.getPvChartsData({regionName:curName})
   }
   
 
