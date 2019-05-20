@@ -1,6 +1,5 @@
 import React from "react";
 import { Form, Input } from 'antd';
-import StationSelect from "../../../../../../Common/StationSelect/index";
 import PropTypes from "prop-types";
 
 const FormItem = Form.Item;
@@ -10,7 +9,6 @@ class EditableCell extends React.Component {
   static propTypes = {
     data: PropTypes.array,
     type: PropTypes.string,
-    stations: PropTypes.object,
     form: PropTypes.object,
     record: PropTypes.object,
     dataIndex: PropTypes.string,
@@ -19,19 +17,12 @@ class EditableCell extends React.Component {
   };
 
   getInput = () => {
-    const { data, type, stations } = this.props;
+    const { data, type } = this.props;
     if (type === 'text') {
       return <Input onChange={this.testValue} />
     }
     return (
-      <StationSelect
-        data={stations.toJS().filter(e => e.stationType === 0)}
-        style={{ width: '200px' }}
-        onOK={this.selectStation}
-        multiple={true}
-        stationShowNumber={true}
-        disabledStation={stations.toJS().filter(e => e.isConnected === 0).map(e => e.stationCode)}
-      />
+      <Input onChange={this.testValue} />
     );
   };
 
@@ -39,10 +30,6 @@ class EditableCell extends React.Component {
     console.log('设备型号的编辑', e.target.value);
   };
 
-  selectManufactor = (value) =>{
-    console.log('value: ', value);
-
-  };
   render() {
 
     const {

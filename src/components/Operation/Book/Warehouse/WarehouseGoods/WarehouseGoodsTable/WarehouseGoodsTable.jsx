@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import styles from "./warehouseWrapTable.scss";
 import PropTypes from 'prop-types';
-import {Form, Table} from "antd";
+import {Form, Table} from 'antd';
 import EditableCell from "./EditableCell/EditableCell";
+
+import styles from "./warehouseGoodsTable.scss";
 
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
@@ -24,25 +25,19 @@ for (let i = 0; i < 10; i++) {
     modeId: i
   });
 }
-class WarehouseWrapTable extends Component {
+
+class WarehouseGoodsTable extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
     form: PropTypes.object,
-    stations: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       editingKey: '',
-      selectedRowKeys: []
     };
   }
-
-  onSelectChange = selectedRowKeys => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
-  };
 
   isEditing = record => record.modeId === this.state.editingKey;
 
@@ -55,52 +50,40 @@ class WarehouseWrapTable extends Component {
   };
 
   render() {
-    const { form, stations } = this.props;
-    const { selectedRowKeys } = this.state;
+    const { form } = this.props;
+    const { getFieldDecorator } = form;
     const components = {
       body: {
         row: EditableFormRow,
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} data={data} stations={stations} {...rest[0]} />
+              return <EditableCell form={form} data={data} {...rest[0]} />
             }}
           </EditableContext.Consumer>)
         },
       },
     };
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
-    const columns = [
+    const columnsEdit = [
       {
-        title: '仓库名称',
+        title: '物品名称',
         dataIndex: 'name',
-        sorter: true,
         editable: true,
-        width: 200,
+        width: 150,
         render: (text) => <span title={text}>{text}</span>
       }, {
-        title: '电站名称',
+        title: '计量单位',
         dataIndex: 'key',
         editable: true,
-        width: 200,
+        width: 150,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        sorter: true,
-        render: (text) => <span title={text}>{text}</span>
-      }, {
-        title: '创建人',
-        dataIndex: 'age',
-        sorter: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作人',
         dataIndex: 'author',
-        sorter: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作',
@@ -124,8 +107,8 @@ class WarehouseWrapTable extends Component {
                 : <a disabled={editingKey !== ''} onClick={() => this.edit(record.modeId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
               }
               <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)} />
-          </div>
-        )
+            </div>
+          )
         }
       },
     ].map((col) => {
@@ -143,15 +126,35 @@ class WarehouseWrapTable extends Component {
         }),
       };
     });
+
+    const columnsUnEdit = [
+      {
+        title: '物品名称',
+        dataIndex: 'name',
+        width: 150,
+        render: (text) => <span title={text}>{text}</span>
+      }, {
+        title: '计量单位',
+        dataIndex: 'key',
+        width: 150,
+        render: (text) => <span title={text}>{text}</span>
+      }, {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        render: (text) => <span title={text}>{text}</span>
+      }, {
+        title: '操作人',
+        dataIndex: 'author',
+        render: (text) => <span title={text}>{text}</span>
+      }];
     return (
-      <div className={styles.warehouseWrapTable}>
+      <div className={styles.warehouseGoodsTable}>
         <EditableContext.Provider value={form}>
           <Table
             loading={false}
             dataSource={data}
             components={components}
-            columns={columns}
-            rowSelection={rowSelection}
+            columns={columnsEdit}
             pagination={false}
             rowKey={(record, index) => index || "key"}
             onChange={this.tableChange}
@@ -163,4 +166,4 @@ class WarehouseWrapTable extends Component {
   }
 }
 
-export default Form.create()(WarehouseWrapTable);
+export default Form.create()(WarehouseGoodsTable);
