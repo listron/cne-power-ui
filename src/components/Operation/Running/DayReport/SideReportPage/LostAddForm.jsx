@@ -92,6 +92,7 @@ class LostAddForm extends Component {
         values.faultId = values.faultId[values.faultId.length - 1];
         values.type = 1;  // 损失type 1 => 后台接收。
         values.deviceTypeName = deviceTypeName;
+        values.lostPower = values.lostPower && values.lostPower.trim();
         changeFaultList([...faultGenList, values], true);
         // const { deviceName } = values;
         // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
@@ -329,10 +330,11 @@ class LostAddForm extends Component {
               {getFieldDecorator('lostPower', {
                 rules: [{
                   validator: (rule, value, callback) => {
-                    if (value && isNaN(value)) {
+                    let truelyValue = value && value.trim();
+                    if (value && isNaN(truelyValue)) {
                       callback('损失电量请填写数字');
-                    } else if (value) {
-                      const demical = `${value}`.split('.')[1];
+                    } else if (truelyValue) {
+                      const demical = `${truelyValue}`.split('.')[1];
                       demical && demical.length > 2 && callback('损失电量不超过2位小数');
                     }
                     callback();

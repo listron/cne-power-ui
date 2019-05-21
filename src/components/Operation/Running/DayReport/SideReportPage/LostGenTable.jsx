@@ -242,9 +242,9 @@ export default Form.create({ // 上述form值变化调整对应数据并保存�
     }
     const recordId = recordBase.split('_')[0];
     const recordName = recordBase.split('_')[1];
-    let recordValue = changeArr[1];
     const newFaultGenList = faultGenList.map(e=>{
       if(`${e.id}` === recordId){
+        const recordValue = (recordName === 'lostPower' && changeArr[1]) ? changeArr[1].trim() : changeArr[1];
         e[recordName] = recordValue;
       }
       return e
