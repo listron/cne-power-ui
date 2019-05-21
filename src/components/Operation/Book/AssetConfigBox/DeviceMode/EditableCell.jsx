@@ -11,9 +11,9 @@ class EditableCell extends React.Component {
     super(props, context)
   }
   getInput = () => {
-    const { deviceFactorsList } = this.props;
-    // console.log('deviceFactorsList: ', deviceFactorsList);
-    if (this.props.inputType === 'text') {
+    const { devicefactorslist } = this.props;
+    // console.log('devicefactorslist: ', devicefactorslist);
+    if (this.props.inputtype === 'text') {
       return <Input onChange={this.testValue} />
     }
     return (
@@ -21,7 +21,7 @@ class EditableCell extends React.Component {
         onSelect={this.selectManufactor}
         style={{ width: 194 }}
         placeholder="请选择厂家" >
-        {deviceFactorsList.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
+        {devicefactorslist.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
           {e.manufactorName}
         </Option>))}
       </Select>);
@@ -40,7 +40,7 @@ class EditableCell extends React.Component {
       editing,
       dataIndex,
       title,
-      // inputType,
+      // inputtype,
       record,
       index,
       form,

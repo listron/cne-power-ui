@@ -91,7 +91,7 @@ class DeviceManage extends Component {
 
           <div className={styles.deviceManageMain}>
             <div className={styles.allStationTitle} >
-              <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('deviceInfo') }}>设备信息</p>
+              <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} >设备信息</p>
               <p className={selectType === 'partInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('partInfo') }}>组件信息</p>
             </div>
             <div className={styles.deviceManageContent}>

@@ -155,7 +155,7 @@ class DeviceMode extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} deviceFactorsList={deviceFactorsList} {...rest[0]} />
+              return <EditableCell form={form} devicefactorslist={deviceFactorsList} {...rest[0]} />
             }}
           </EditableContext.Consumer>)
         },
@@ -230,7 +230,7 @@ class DeviceMode extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: col.dataIndex === 'deviceModeName' ? 'text' : 'select',
+          inputtype: col.dataIndex === 'deviceModeName' ? 'text' : 'select',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),

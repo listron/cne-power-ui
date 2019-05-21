@@ -12,12 +12,16 @@ const initState = Immutable.fromJS({
   pageNum: 1,
   pageSize: 10,
   totalNum:  0, // 设备总数
-  sortField: '', // 排序字段
-  sortMethod: '', // 排序方式('0':正序,'1': 倒序)
+  orderField: '', // 排序字段
+  orderMethod: '', // 排序方式('0':正序,'1': 倒序)
   showPage:'list',
   deviceTypeList: [], // 设备类型列表
   deviceComList: [], // 设备下组件列表
   detailPartInfo:{},//组件详情
+  assetList:[],//生产资产树
+  partsFactorsList:[],//组件厂家列表
+  factorsPartsMode:[],//厂家下型号列表
+ 
  
 });
 

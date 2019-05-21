@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Form, Select, DatePicker } from 'antd';
+import { Button, Input, Form, Select, DatePicker,Icon } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import DeviceSelect from '../../../../Common/DeviceSelect/index';
 import styles from '../deviceSide.scss';
@@ -228,7 +228,7 @@ class AddDeviceForm extends Component {
                     })}
                   </Select>
                 )}
-                {!!showAddfactorIcon&&<span className={styles.fontColor} onClick={this.showAddfactors}>添加生产厂家</span>}
+                {!!showAddfactorIcon&&<span className={styles.fontColor} onClick={this.showAddfactors}><Icon type="plus-circle" /></span>}
               </FormItem>
 
               <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
@@ -245,7 +245,7 @@ class AddDeviceForm extends Component {
                     })}
                   </Select>
                 )}
-                <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}>添加设备型号</span>
+                <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}><Icon type="plus-circle" /></span>
               </FormItem>
 
             
@@ -349,7 +349,7 @@ class AddDeviceForm extends Component {
             </div>}
           </div>
         </Form>
-        {}
+       
         {showAddDeviceModeModal && <ShowAddDeviceModeModal {...this.props} showAddDeviceModeModal={showAddDeviceModeModal} cancleDeviceModeModal={this.cancleDeviceModeModal}  selectdeviceType={selectdeviceType} manufacturerValue={manufacturerValue} />}
         {showAddfactorsModal&&<ShowAddFactor {...this.props}  showAddfactorsModal={showAddfactorsModal} cancleFactorModal={this.cancleFactorModal}  />}
       </div>
