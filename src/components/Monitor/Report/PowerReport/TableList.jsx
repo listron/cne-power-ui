@@ -112,6 +112,7 @@ class TableList extends Component {
         dataIndex: "windSpeedAvg",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
 
       },
       {
@@ -119,6 +120,7 @@ class TableList extends Component {
         dataIndex: "genValid",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
 
       {
@@ -126,35 +128,41 @@ class TableList extends Component {
         dataIndex: "genTime",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
         dataIndex: "equivalentHours",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="限电损失电量" unit="kWh" />,
         dataIndex: "limitGen",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
         dataIndex: "limitTime",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="故障损失电量" unit="kWh" />,
         dataIndex: "faultGen",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },{
         title: () => <TableColumnTitle title="故障时长" unit="h" />,
         dataIndex: "faultHours",
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
         sorter: true,
+        className:styles.numRight
       },
     ];
     columns.unshift(...show)
@@ -163,7 +171,7 @@ class TableList extends Component {
 
 
   render() {
-    const { total, pageSize, pageNum, powerReportList } = this.props;
+    const { total, pageSize, pageNum, powerReportList,loading } = this.props;
     const columns = this.initMonthColumn();
     const dataSource = powerReportList.map((e, i) => ({
       ...e, key: i,
@@ -173,10 +181,12 @@ class TableList extends Component {
         <div className={styles.tableHeader}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns}
+        <Table 
+          loading={loading}
+          columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          // scroll={{ x: 1440 }}
+          scroll={{ x: 1440 }}
           pagination={false} />
       </React.Fragment>
     )
