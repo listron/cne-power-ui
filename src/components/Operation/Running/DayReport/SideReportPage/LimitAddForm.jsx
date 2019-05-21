@@ -85,6 +85,7 @@ class LimitAddForm extends Component {
         values.deviceCode = tmpDeviceCode.join(',');
         values.type = 0;  // 限电type 0 => 后台接收。
         values.deviceTypeName = deviceTypeName;
+        values.lostPower = values.lostPower && values.lostPower.trim();
         changeLimitList([...limitGenList,values], true);
         // const { deviceName } = values;
         // const tmpDeviceName = deviceName.split(' ').filter(e=>!!e);
@@ -287,11 +288,12 @@ class LimitAddForm extends Component {
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
                 rules: [{ 
-                  validator: (rule, value, callback)=>{
-                    if(value && isNaN(value)){
+                  validator: (rule, value, callback) => {
+                    let truelyValue = value && value.trim();
+                    if(value && isNaN(truelyValue)){
                       callback('损失电量请填写数字');
-                    }else if(value){
-                      const demical = `${value}`.split('.')[1];
+                    }else if(truelyValue){
+                      const demical = `${truelyValue}`.split('.')[1];
                       demical && demical.length > 2 && callback('不超过2位小数');
                     }
                     callback();
