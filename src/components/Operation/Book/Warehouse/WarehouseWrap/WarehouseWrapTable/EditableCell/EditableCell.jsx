@@ -51,6 +51,7 @@ class EditableCell extends React.Component {
       title,
       record,
       form,
+      stations,
       ...restProps
     } = this.props;
     const { getFieldDecorator } = form;
@@ -66,7 +67,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入${title}!`,
                     }],
-                    initialValue: record[dataIndex],
+                    initialValue: dataIndex === "warehouseName" ? record[dataIndex] : stations.toJS().filter(e => [82, 76].includes(e.stationCode)),
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

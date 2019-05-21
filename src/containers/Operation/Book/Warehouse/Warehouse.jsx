@@ -7,6 +7,7 @@ import WarehouseWrap from '../../../../components/Operation/Book/Warehouse/Wareh
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { warehouseAction } from "./warehouseAction.js";
 import Footer from '../../../../components/Common/Footer';
+import {assetConfigAction} from "../AssetsConfig/assetsConfigAction";
 
 class Warehouse extends Component {
   static propTypes = {
@@ -70,5 +71,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: warehouseAction.resetStore }),
+  getWarehouseList: payload => dispatch({ type: warehouseAction.getWarehouseList, payload }),
+  getWarehouseAddList: payload => dispatch({ type: warehouseAction.getWarehouseAddList, payload }),
+  getWarehouseDelList: payload => dispatch({ type: warehouseAction.getWarehouseDelList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Warehouse)

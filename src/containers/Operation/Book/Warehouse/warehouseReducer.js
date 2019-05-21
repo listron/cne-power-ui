@@ -3,6 +3,13 @@ import { warehouseAction } from './warehouseAction.js';
 
 const initState = Immutable.fromJS({
   loading: false,
+  warehouseData: { // 仓库列表
+    pageCount: 0,
+    dataList: []
+  },
+  pageSize: 10,
+  pageNum: 1,
+  warehouseName: "" // 仓库名称
 });
 
 

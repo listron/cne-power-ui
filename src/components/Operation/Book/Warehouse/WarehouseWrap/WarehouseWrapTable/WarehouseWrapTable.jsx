@@ -12,50 +12,70 @@ const EditableRow = ({ form, index, ...props }) => {
 };
 const EditableFormRow = Form.create()(EditableRow);
 
-const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: ["82"],
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-    author: "哈哈",
-    createTime: "2018-08-08",
-    modeId: i
-  });
-}
 class WarehouseWrapTable extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
     form: PropTypes.object,
     stations: PropTypes.object,
+    warehouseData: PropTypes.object,
+    getWarehouseDelList: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    warehouseName: PropTypes.string,
+    onSelectedRowKeys: PropTypes.func,
+    onDeleteMode: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       editingKey: '',
-      selectedRowKeys: []
+      selectedRowKeys: [],
     };
   }
 
+  // 批量选中
   onSelectChange = selectedRowKeys => {
+    const { onSelectedRowKeys } = this.props;
     console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
+    this.setState({
+      selectedRowKeys
+    }, () => {
+      onSelectedRowKeys(selectedRowKeys);
+    });
   };
 
-  isEditing = record => record.modeId === this.state.editingKey;
+  // 当前的warehouseId
+  isEditing = record => record.warehouseId === this.state.editingKey;
 
   // 保存
   save = (form, modeId) => {};
 
   // 编辑
   edit = (key) => {
+    console.log(key, "key");
     this.setState({ editingKey: key });
   };
 
+  // 删除
+  deleteMode = (record) => {
+    const { onDeleteMode } = this.props;
+    const params = {
+      showWarningTip: true,
+      warningTipText: '确认删除?',
+      tableRecord: record,
+    };
+    onDeleteMode(params);
+  };
+
   render() {
-    const { form, stations } = this.props;
+    const {
+      form,
+      stations,
+      warehouseData: {
+        dataList : data
+      },
+    } = this.props;
     const { selectedRowKeys } = this.state;
     const components = {
       body: {
@@ -76,14 +96,14 @@ class WarehouseWrapTable extends Component {
     const columns = [
       {
         title: '仓库名称',
-        dataIndex: 'name',
+        dataIndex: 'warehouseName',
         sorter: true,
         editable: true,
         width: 200,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '电站名称',
-        dataIndex: 'key',
+        dataIndex: 'stationName',
         editable: true,
         width: 200,
         render: (text) => <span title={text}>{text}</span>
@@ -94,12 +114,7 @@ class WarehouseWrapTable extends Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建人',
-        dataIndex: 'age',
-        sorter: true,
-        render: (text) => <span title={text}>{text}</span>
-      }, {
-        title: '操作人',
-        dataIndex: 'author',
+        dataIndex: 'user',
         sorter: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
@@ -114,16 +129,16 @@ class WarehouseWrapTable extends Component {
                   {form => {
                     return (
                       <a
-                        onClick={() => this.save(form, record.modeId)}
+                        onClick={() => this.save(form, record.warehouseId)}
                         style={{ marginRight: 8 }}>
                         <span style={{marginRight: '4px'}} title="编辑" className={"iconfont icon-doned"} />
                       </a>
                     )
                   }}
                 </EditableContext.Consumer>)
-                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.modeId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
+                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.warehouseId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
               }
-              <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)} />
+              <span style={{cursor: "pointer"}} title="删除" className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
           </div>
         )
         }
@@ -136,7 +151,7 @@ class WarehouseWrapTable extends Component {
         ...col,
         onCell: record => ({
           record,
-          type: col.dataIndex === 'name' ? 'text' : 'select',
+          type: col.dataIndex === 'warehouseName' ? 'text' : 'select',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -153,7 +168,7 @@ class WarehouseWrapTable extends Component {
             columns={columns}
             rowSelection={rowSelection}
             pagination={false}
-            rowKey={(record, index) => index || "key"}
+            rowKey={(record) => record.warehouseId || "key"}
             onChange={this.tableChange}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />

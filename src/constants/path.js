@@ -139,8 +139,10 @@ export default {
       getDevicePartInfo:'/v3/ledger/device/parts/list',//获取某设备的部件信息
       getDevicefixRecord:'/v3/ledger/device/defect/list',//获取某设备检修记录
       getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警
-
-    
+      // 台账-仓库配置
+      warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
+      warehouseAdd: "/v3/warehouse/add",  // 仓库添加
+      warehouseDel: "/v3/warehouse/del",  // 仓库删除
 
     },
     system: {//系统管理
