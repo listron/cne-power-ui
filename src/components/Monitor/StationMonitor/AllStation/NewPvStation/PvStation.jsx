@@ -22,6 +22,7 @@ class PvStation extends React.Component {
     getPvChartsData: PropTypes.func,
     monitorPvUnit: PropTypes.object,
     regionName: PropTypes.string,
+    stations: PropTypes.array,
   }
 
   constructor(props, context) {
@@ -41,7 +42,7 @@ class PvStation extends React.Component {
   componentDidMount() {
     const { regionName } = this.props;
     this.props.getPvRealData({ regionName })
-    this.props.getPvChartsData({regionName})
+    this.props.getPvChartsData({ regionName })
   }
 
   componentDidUpdate() {
@@ -88,8 +89,8 @@ class PvStation extends React.Component {
     const newStationDataList = stationDataList.filter(e => { return !checked || (checked && e.alarmNum > 0) }).filter(e => {
       if (stationType === 'all') {
         return true
-      } else { 
-        return e.stationStatus === +stationType 
+      } else {
+        return e.stationStatus === +stationType
       }
     })
     return newStationDataList
@@ -160,10 +161,13 @@ class PvStation extends React.Component {
                 <span className={styles.detailShowfont}>查看电站概况</span>
               </div>
             }
-            {
-              pvStationShow === 'stationMap' &&
-              <PvMapChart stationDataList={this.statusDataList()} history={history} {...this.props} />
-            }
+            { pvStationShow === 'stationMap' &&
+              <PvMapChart
+                stationDataList={this.statusDataList()}
+                history={history}
+                monitorPvUnit={monitorPvUnit} 
+                stations={this.props.stations}
+              /> }
           </div>
           <TransitionContainer
             show={detailVisible}
