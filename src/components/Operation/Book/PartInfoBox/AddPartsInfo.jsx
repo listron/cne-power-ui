@@ -24,7 +24,7 @@ class AddPartsInfo extends React.Component {
     const { getPartsFactorsList, getPartsAssetTree } = this.props;
     getPartsAssetTree({ stationType: '0' })
     getPartsFactorsList()
-   
+
   }
   confirmWarningTip = () => {
     this.setState({
@@ -69,6 +69,27 @@ class AddPartsInfo extends React.Component {
   changeFactors = (value) => {
     this.props.getfactorsPartsMode({})
   }
+  nextAdd = () => {
+    const { validateFieldsAndScroll, resetFields } = this.props.form;
+    validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.addPartInfo({
+          ...values,
+        })
+      }
+    })
+    resetFields('partsName');
+  }
+  submitForm = () => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.addPartInfo({
+          ...values,
+        })
+        this.props.changePartInfoStore({ showPage: 'list' })
+      }
+    })
+  }
   renderTreeNodes = data => data.map((item) => {
     if (item.childernNodes) {
       return (
@@ -79,29 +100,14 @@ class AddPartsInfo extends React.Component {
     }
     return <TreeNode title={item.assetsName} key={item.assetName} value={item.assetsId} />;
   })
-  nextAdd=()=>{
-    this.props.form.validateFieldsAndScroll((err,values)=>{
-      if(!err){
-        this.props.addPartInfo({
-          ...values,
-        })
-      }
-    })
-    const { getFieldDecorator, getFieldValue ,setFieldsValue,resetFields} = this.props.form;
-    resetFields('partsName');
-  }
-  submitForm=()=>{
 
-  }
 
   render() {
     let { partsFactorsList, assetList, factorsPartsMode, } = this.props;
-    console.log('factorsPartsMode: ', factorsPartsMode);
-    console.log('partsFactorsList: ', partsFactorsList);
-    console.log('assetList: ', assetList);
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showWarningTip, warningTipText,showAddPartsMode, showAddfactorsModal } = this.state;
-    const manufacturerValue = getFieldValue('manufactorCode');
+    let { showWarningTip, warningTipText, showAddPartsMode, showAddfactorsModal } = this.state;
+    let manufacturerValue = getFieldValue('manufactorCode');
+    let initfac='';//新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -150,7 +156,7 @@ class AddPartsInfo extends React.Component {
           </FormItem>
           <FormItem label="部件厂家" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('manufactorCode', {
-
+              initialValue: initfac,
               rules: [{ required: true, message: '请选择部件厂家', }],
             })(
               <Select className={styles.modelSelect} placeholder="请选择部件厂家" onChange={this.changeFactors} disabled={partsFactorsList.length === 0}>
@@ -183,21 +189,21 @@ class AddPartsInfo extends React.Component {
           </FormItem>
           <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('batchNumber', {
-              rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+              rules: [{ message: '请正确填写,不超过30字', type: "string", max: 30, }],
             })(
               <Input placeholder="不超过30字" />
             )}
           </FormItem>
           <FormItem label="制造商" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('madeName', {
-              rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+              rules: [{ message: '请正确填写,不超过30字', type: "string", max: 30, }],
             })(
               <Input placeholder="不超过30字" />
             )}
           </FormItem>
           <FormItem label="供货商" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('supplierName', {
-              rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+              rules: [{ message: '请正确填写,不超过30字', type: "string", max: 30, }],
             })(
               <Input placeholder="不超过30字" />
             )}
@@ -207,7 +213,7 @@ class AddPartsInfo extends React.Component {
             <Button onClick={this.nextAdd} className={styles.leftsave} >保存并继续添加</Button>
           </div>
         </Form>
-        {showAddPartsMode && <ShowAddPartsModeModal {...this.props} showAddPartsMode={showAddPartsMode} cancleDeviceModeModal={this.cancleDeviceModeModal}  manufacturerValue={manufacturerValue} />}
+        {showAddPartsMode && <ShowAddPartsModeModal {...this.props} showAddPartsMode={showAddPartsMode} cancleDeviceModeModal={this.cancleDeviceModeModal} manufacturerValue={manufacturerValue} />}
         {showAddfactorsModal && <ShowAddFactor {...this.props} showAddfactorsModal={showAddfactorsModal} cancleFactorModal={this.cancleFactorModal} />}
 
       </div>

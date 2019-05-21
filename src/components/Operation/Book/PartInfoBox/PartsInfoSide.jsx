@@ -19,7 +19,7 @@ class PartsInfoSide extends Component {
   }
 
   render(){
-    const { showSidePage,queryParams } = this.props;
+    const { showSidePage, } = this.props;
     return (
       <div className={styles.partsInfoSide}>
      

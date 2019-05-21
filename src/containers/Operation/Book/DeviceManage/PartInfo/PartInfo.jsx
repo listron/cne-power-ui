@@ -40,14 +40,10 @@ class PartInfo extends Component {
     this.props.changeTab(value)
   }
   render() {
-    const {
-      selectType, stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod, showPage
-    } = this.props;
-    console.log('pageNum: ', pageNum);
+    const {selectType, showPage} = this.props;
+
     const { showSidePage } = this.state;
-    const queryParams = {
-      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod
-    }
+   
     return (
       <div className={styles.deviceManageContainer}>
         {selectType === 'partInfo' && <div className={styles.deviceManage}>
@@ -67,7 +63,7 @@ class PartInfo extends Component {
             timeout={500}
             effect="side"
           >
-            <PartsInfoSide {...this.props} queryParams={queryParams} showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
+            <PartsInfoSide {...this.props}  showSidePage={showSidePage} onShowSideChange={this.onShowSideChange} />
           </TransitionContainer>
         </div>
         }

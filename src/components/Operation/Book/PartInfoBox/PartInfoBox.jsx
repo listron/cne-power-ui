@@ -14,8 +14,8 @@ class PartInfoBox extends React.Component {
     super(props, context)
     this.state = {
       selectStation: [],
-      showDetailParts:false,
-      detailPartsInfo:{},
+      showDetailParts: false,
+      detailPartsInfo: {},
     }
   }
   selectStation = (stations) => {
@@ -51,45 +51,51 @@ class PartInfoBox extends React.Component {
       },
     })
   }
-  addPartsInfo=()=>{
+  addPartsInfo = () => {
     this.props.changePartInfoStore({ showPage: 'add' })
   }
-  editParts=()=>{
-    this.props.changePartInfoStore({ showPage: 'edit' })
+  editParts = (record) => {
+    this.props.changePartInfoStore({ showPage: 'edit', detailPartsRecord: record })
   }
-  showDetailParts=(record)=>{
+  showDetailParts = (record) => {
     this.setState({
-      showDetailParts:true,
-      detailPartsInfo:record
+      showDetailParts: true,
+      detailPartsInfo: record
     })
-    
+
   }
   cancleDetailModal = () => {
     this.setState({
       showDetailParts: false
     })
   }
-  
+
   render() {
-    const { allStationBaseInfo, deviceComList, stationCode } = this.props;
-  
-    let { selectStation,showDetailParts,detailPartsInfo } = this.state;
+    const { allStationBaseInfo, deviceComList, stationCode, detailPartsRecord } = this.props;
+
+    let { selectStation, showDetailParts, detailPartsInfo } = this.state;
     let stationName = selectStation.length > 0 && selectStation[0].stationName;
-  
+
     const testData = [{
+      stationName: '电站名称',
+      deviceName: '上级设备',
       partsName: '部件名称',
-      partsModeName: '部件型号',
       assetsName: '资产结构',
+      assetsId: '资产配置',
+      manufactorCode: '厂家号',
       manufactorName: '厂家',
+      modeId: '组件型号',
+      partsModeName: '部件型号',
       madeName: '制造商',
       supplierName: '供货商',
+      batchNumber: '批次号',
     }]
 
     const columns = [
       {
         title: '部件名称',
         dataIndex: 'partsName',
-        render: (text,record,index) => <span title={text} onClick={()=>this.showDetailParts(record)} >{text}</span>
+        render: (text, record, index) => <span title={text} onClick={() => this.showDetailParts(record)} >{text}</span>
       }, {
         title: '部件型号',
         dataIndex: 'partsModeName',
@@ -114,7 +120,7 @@ class PartInfoBox extends React.Component {
         title: '操作',
         render: (text, record, index) => {
           return (<div>
-            <span title="编辑" className="iconfont icon-edit" onClick={this.editParts}></span>
+            <span title="编辑" className="iconfont icon-edit" onClick={() => this.editParts(record)}></span>
             <span title="删除" className="iconfont icon-del" onClick={() => this.deleteParts(record)}></span>
           </div>)
         }
@@ -188,7 +194,7 @@ class PartInfoBox extends React.Component {
 
           </div>
         </div>
-        {showDetailParts&&<DetailPartsInfo {...this.props} detailPartsInfo={detailPartsInfo} showDetailParts={showDetailParts} cancleDetailModal={this.cancleDetailModal}  />}
+        {showDetailParts && <DetailPartsInfo {...this.props} detailPartsInfo={detailPartsInfo} showDetailParts={showDetailParts} cancleDetailModal={this.cancleDetailModal} />}
       </div>
     )
   }

@@ -143,32 +143,41 @@
     flex: 1 0 auto;
     flex-direction: column;
     background: #fff;
+
     .preFormStyle {
       margin-top: 20px;
       display: flex;
       flex-direction: column;
+
       .formItemStyle {
         display: flex;
       }
+
       .fontColor {
         color: #199475;
       }
+
       .nextButton {
         margin-left: 200px;
       }
+
       :global {
+
         .ant-select,
         .ant-cascader-picker {
           width: 198px;
         }
+
         .ant-form-item-label {
           width: 200px;
         }
+
         .ant-btn {
           width: 200px;
         }
       }
     }
+
     .editTop {
       @include top;
       justify-content: space-between;
@@ -200,10 +209,12 @@
       .formItemStyle {
         display: flex;
         width: 500px;
-        .fontColor{
+
+        .fontColor {
           margin-left: 4px;
           color: #199475;
-          i{
+
+          i {
             font-size: 20px
           }
         }
@@ -213,6 +224,7 @@
         .ant-form-item-label {
           width: 160px;
         }
+
         .ant-form-item,
         .ant-form-horizontal {
           margin-bottom: 4px;
@@ -226,19 +238,25 @@
         .ant-input {
           width: 198px;
         }
-        .ant-btn{
+
+        .ant-btn {
           padding: 0 11px;
         }
       }
-      .submitStyle{
+
+      .submitStyle {
         margin-left: 160px;
         margin-top: 12px;
         display: flex;
-      
-        .leftsave,.submitForm{
+
+        .leftsave,
+        .submitForm {
           margin-right: 20px;
           color: #199475;
-        border-color: #199475;
+          border-color: #199475;
+        }
+        .editSave{
+          margin-left: 64px;
         }
       }
 
@@ -255,6 +273,7 @@
 
 
 }
+
 .nextButton {
   margin-left: 156px;
   width: 200px;
