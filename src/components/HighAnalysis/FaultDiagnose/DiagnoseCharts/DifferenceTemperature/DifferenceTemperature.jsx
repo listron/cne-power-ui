@@ -52,6 +52,9 @@ export default class DifferenceTemperature extends React.Component {
     }
     // 设备名称
     if (currentDiffTimeCompare && diffTimeCompare !== currentDiffTimeCompare) {
+      // 重新请求回到默认
+      paramsStart = 0;
+      paramsEnd = 100;
       eCharts.init(diffChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(diffChart); //构建下一个实例
       myChart.setOption(diffTemperatureOptions(tenMinutesDiffList, deviceName, paramsStart, paramsEnd, diffTimeData));

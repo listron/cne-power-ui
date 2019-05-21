@@ -51,6 +51,9 @@ export default class AfterTemperature extends React.Component {
       myChart.hideLoading();
     }
     if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
+      // 重新请求回到默认
+      paramsStart = 0;
+      paramsEnd = 100;
       eCharts.init(afterChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(afterChart); //构建下一个实例
       myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName, paramsStart, paramsEnd, afterTimeData));
