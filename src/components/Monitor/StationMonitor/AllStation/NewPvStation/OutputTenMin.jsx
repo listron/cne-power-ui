@@ -100,7 +100,7 @@ class OutputTenMin extends Component {
         splitNumber: 4,
         boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
-          return moment(moment.utc(e.utc)).format('MM-DD HH:mm');
+          return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
         }),
         axisLine: {
           lineStyle: {
