@@ -46,6 +46,7 @@ function *userNameLogin(action){
       const { data } = response.data;
       if(data.userEnterpriseStatus === 3) {//3启用状态
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+        data.access_token && localStorage.setItem('authData', data.access_token);
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
         data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
         data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
@@ -136,6 +137,7 @@ function *phoneCodeLogin(action){
       if(data.userEnterpriseStatus === 3) {
         if(params.isNotLogin === 1 || (data.auto==='0' && data.enterpriseId!==null)) {//非登录/正常用户
           data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
+          data.access_token && localStorage.setItem('authData', data.access_token);
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
           data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
           data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
@@ -179,6 +181,10 @@ function *phoneCodeLogin(action){
           data, //data为API返回的值
         });
       } else { // 用户登录状态非可用。
+        if (params.showResetPassword) { // 忘记密码进入的登录状态。非可用用户,不可忘记密码=>修改密码
+          message.error('请先确认您已加入企业!');
+          return;
+        }
         if (needFillDetail) { // 被移除用户，数据暂存，去重新完善信息(密码)
           yield put({
             type: loginAction.CHANGE_LOGIN_STORE_SAGA,

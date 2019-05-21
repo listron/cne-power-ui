@@ -1,0 +1,75 @@
+@import '../../../../theme/theme.scss';
+.faultWarnMain{
+  width: 100%;
+  height: 100%;
+  .title{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    flex-direction: row;
+    height: 60px;
+    padding: 0 0 0 28px;
+    border-bottom: 1px solid #ececec;
+    align-items: center;
+    .titleLeft{
+      display: flex;
+      flex-direction: row;
+      flex:1;
+      align-items: center;
+      div{
+        cursor: pointer;
+      }
+      .stationName {
+        &:hover{
+          color: $themeColor;
+        }
+        .icon {
+          cursor: pointer;
+          color: $themeColor;
+          margin-right: 15px;
+          font-size: 18px;
+        }
+        >span {
+          font-size: 18px;
+        }
+      }
+    }
+    .titleRight{
+      display: flex;
+      line-height: 25px;
+      margin-right: 24px;
+      >div{
+        display: flex;
+        user-select: none;
+        justify-content: space-evenly;
+        width: 110px;
+        @include lineheight(24px);
+        border-radius: 12px;
+        margin-left: 10px;
+        cursor: pointer;
+        border: 1px solid $promptColor;
+      }
+      .iconBgc{
+        width: 24px;
+        text-align: center;
+      }
+      .num{
+        span:nth-of-type(1){
+          color: #fad553;
+        }
+      }
+    }
+    .backIcon {
+      border-left: 1px solid $promptColor;
+      width: 60px;
+      line-height: 60px;
+      text-align: center;
+      color: $darkColor;
+      cursor: pointer;
+    }
+  }
+  .faultWarnMainCenter{
+    width: 100%;
+  }
+}

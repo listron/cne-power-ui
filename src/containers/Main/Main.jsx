@@ -33,6 +33,8 @@ class Main extends Component {
     enterpriseId: PropTypes.string,
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
+    resetCommonStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
   };
 
   constructor(props) {
@@ -79,7 +81,8 @@ class Main extends Component {
     }
   }
   componentWillUnmount() {
-    this.props.resetMonitorData()
+    this.props.resetMonitorData();
+    this.props.resetCommonStore();
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -98,19 +101,22 @@ class Main extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     this.props.resetMonitorData();
+    this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
     this.props.history.push('/login');
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo } = this.props;
-    const authData = Cookie.get('authData') || null;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
+    // const authData = Cookie.get('authData') || null;
+    const authData = localStorage.getItem('authData') || null;
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if (authData && isTokenValid) {
-      axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+      // axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
+      axios.defaults.headers.common['Authorization'] = "bearer " + authData;
     }
     if (isTokenValid && authData && (isNotLogin === '0')) {
       // if(true){
@@ -132,6 +138,7 @@ class Main extends Component {
                 userLogo={userLogo}
                 changeLoginStore={changeLoginStore}
                 resetMonitorData={resetMonitorData}
+                resetCommonStore={resetCommonStore}
               />
             </div>
           </div>}
@@ -192,6 +199,7 @@ const mapDispatchToProps = (dispatch) => ({
   getMonitorDataUnit: payload => dispatch({ type: commonAction.getMonitorDataUnit, payload }),
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 

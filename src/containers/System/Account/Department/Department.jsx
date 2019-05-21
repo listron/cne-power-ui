@@ -103,7 +103,7 @@ class Department extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(),
+  ...state.system.department.delete('allDepartment').delete('departmentUser').delete('DepartmentStation').toJS(), // 狗屎代码，会不会写？
   allDepartment: state.system.department.get('allDepartment'),
   departmentUser: state.system.department.get('departmentUser'),
   DepartmentStation: state.system.department.get('DepartmentStation'),

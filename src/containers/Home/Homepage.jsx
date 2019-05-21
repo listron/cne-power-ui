@@ -12,6 +12,7 @@ import AlarmList from '../../components/Home/HomeParts/AlarmList';
 import CenterMap from '../../components/Home/CenterMap';
 import styles from './homepage.scss';
 import { loginAction } from '../Login/loginAction';
+import { commonAction } from '../alphaRedux/commonAction';
 import { homepageAction } from './homepageAction';
 import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import PropTypes from 'prop-types';
@@ -45,6 +46,7 @@ class Homepage extends Component {
     getOutputDiagram: PropTypes.func,
     getOperationInfo: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
   }
 
   constructor(props){
@@ -96,7 +98,7 @@ class Homepage extends Component {
 
   render() {
     const { 
-      changeLoginStore, enterpriseId, username, userFullName, userLogo,
+      changeLoginStore, enterpriseId, username, userFullName, userLogo, resetCommonStore,
       realTimeInfo, // 10s实时数据 
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
@@ -111,6 +113,7 @@ class Homepage extends Component {
           realTimeInfo={realTimeInfo}
           energySaving={energySaving}
           resetMonitorData={resetMonitorData}
+          resetCommonStore={resetCommonStore}
           username={username}
           userFullName={userFullName}
           userLogo={userLogo}
@@ -173,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
 
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
+  resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
 });
 
 

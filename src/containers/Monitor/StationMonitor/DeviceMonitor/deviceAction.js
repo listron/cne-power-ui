@@ -16,6 +16,9 @@ export const deviceAction = {
   RESET_DEVICE_MONITOR_STORE_SUCCESS: Symbol('RESET_DEVICE_MONITOR_STORE_SUCCESS'),
   getwindturbineData: Symbol('getwindturbineData'), // 单风机详情
   getSequencechartData: Symbol('getSequencechartData'), // 单风机图表数据
+  getWindDeviceCharts: Symbol('getWindDeviceCharts'), // 单风机图表数据(时序图和散点图)
+  stopWindDeviceCharts: Symbol('stopWindDeviceCharts'), // 单风机图表数据(时序图和散点图)
+  getWindDeviceRealData: Symbol('getWindDeviceRealData'), // 单风机图表数据(10s 数据)
 
 
 }

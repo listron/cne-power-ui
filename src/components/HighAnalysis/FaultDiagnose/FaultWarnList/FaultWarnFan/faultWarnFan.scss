@@ -1,0 +1,75 @@
+@import '../../../../../theme/theme.scss';
+.faultWarnFan{
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  padding-left: 8px;
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
+  .fanItem{
+    border:1px solid $promptColor;
+    width:278px;
+    height:92px;
+    cursor: pointer;
+    margin: 20px 0 0 12px;
+    .fanItemTop{
+      padding-left: 12px;
+      display: flex;
+      margin-top: 10px;
+      div:nth-of-type(1){
+        font-size: 16px;
+        margin-right: 8px;
+      }
+      .warnItem{
+        border-radius: 12px;
+        line-height: 24px;
+        text-align: center;
+        background-color: $warnColor;
+        display: inline-block;
+        padding: 0 5px;
+        color: $pageGround;
+      }
+      .successItem{
+        border-radius: 12px;
+        line-height: 24px;
+        text-align: center;
+        background-color: $themeColor;
+        display: inline-block;
+        padding: 0 5px;
+        color: $pageGround;
+      }
+    }
+    .fanItemBottom{
+      width: 100%;
+      display: flex;
+      margin-top: 23px;
+      border-top:1px solid $promptColor;
+      background-color: #f8f8f8;
+      b{
+        width: 1px;
+        height: 16px;
+        margin-top: 8px;
+        background-color: $promptColor;
+      }
+      .warnColor{
+        color: $warnColor;
+      }
+      .grayColor{
+        color: $lightColor;
+      }
+      div{
+        text-align: center;
+        width: 33.33%;
+        @include lineheight(32px);
+      }
+    }
+  }
+}

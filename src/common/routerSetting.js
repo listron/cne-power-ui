@@ -40,9 +40,9 @@ const routers = [
   }, { // 运维管理-电站运行-月报
     path: '/operation/running/monthReport',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, { // 运维管理-经验库
-    path: '/operation/experience',
-    component: lazy(() => import('../components/Common/Building/Building')),
+  }, { // 运维管理-智能专家库
+    path: '/operation/intelligentExpert',
+    component: lazy(() => import('../containers/Operation/IntelligentExpert/IntelligentExpert')),
   }, { // 系统管理-账户管理-企业
     path: '/system/account/enterprise',
     component: lazy(() => import('../containers/System/Account/Enterprise/Enterprise')),
@@ -77,7 +77,7 @@ const routers = [
   // { // 实时监控-告警-告警统计
   //   path: '/monitor/alarm/statistics',
   //   component: () => import('../containers/Monitor/Alarm/AlarmCount/AlarmCount'),
-  // }, 
+  // },
   { // 实时监控-电站监控-全部电站
     path: '/monitor/station',
     component: lazy(() => import('../containers/Monitor/StationMonitor/AllStation/AllStation')),
@@ -126,7 +126,7 @@ const routers = [
   // { // 隐藏页： 修改密码
   //   path: '/hidden/user/editPassword',
   //   component: () => import('../containers/Others/EditPassword'),
-  // }, 
+  // },
   { // 隐藏页： 修改账户
     path: '/hidden/user/accountSettings',
     component: lazy(() => import('../containers/Others/AccountSettings')),
@@ -227,7 +227,28 @@ const routers = [
   }, { // 高级分析-低效组串预警-历史预警
     path: '/analysis/earlyWarning/history',
     component: lazy(() => import('../containers/HighAnalysis/EarlyWarning/HistoryWarn/HistoryWarn')),
-  }, { // 偏航对风分析
+  }, { // 高级分析-风机故障检测与诊断-故障预警
+    path: '/analysis/faultDiagnose/faultWarn',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultWarn/FaultWarn')),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-单风场故障预警
+    path: '/analysis/faultDiagnose/fanWarn/:fanWarnId',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultWarnList/FaultWarnList')),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-单风机详情图表展示
+    path: '/hidden/analysis/single/fan',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
+    path: '/hidden/analysis/single/fan/:code',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan')),
+  },{ // 高级分析-风机故障检测与诊断-故障预警-按模型单风机详情图表展示
+    path: '/hidden/analysis/all/fan/:stationCode',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan')),
+  },{ // 高级分析-风机故障检测与诊断-算法控制台
+    path: '/analysis/faultDiagnose/algorithmControl',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/AlgorithmControl/AlgorithmControl')),
+  },{ // 高级分析-风机故障检测与诊断-历史预警
+    path: '/analysis/faultDiagnose/historyWarn',
+    component: lazy(() => import('../containers/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn')),
+  },{ // 偏航对风分析
     path: '/analysis/yaw/wind',
     component: lazy(() => import('../components/Common/Building/Building')),
   }, { // 预警事件配置

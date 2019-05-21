@@ -1,12 +1,14 @@
 
 export const allStationAction = {
-  GET_MONITORSTATION_SAGA: Symbol('GET_MONITORSTATION_SAGA'),//	获取多电站实时数据列表
-  MONITORSTATION_FETCH: Symbol('MONITORSTATION_FETCH'),//loading
-  GET_MONITORSTATION_FETCH_SUCCESS: Symbol('GET_MONITORSTATION_FETCH_SUCCESS'),//请求成功
-  
-  CHANGE_MONITORSTATION_STORE_SAGA: Symbol('CHANGE_MONITORSTATION_STORE_SAGA'),
-  CHANGE_MONITORSTATION_STORE: Symbol('CHANGE_MONITORSTATION_STORE'),
+  changeMonitorstationStore: Symbol('changeMonitorstationStore'),
   resetMonitorData: Symbol('resetMonitorData'),
-
+  getMonitorStation: Symbol('getMonitorStation'),
+  stopRealMonitorData: Symbol('stopRealMonitorData'),
+  getRealMonitorData: Symbol('getRealMonitorData'),
+  getRealChartsData: Symbol('getRealChartsData'), // 出力图和散点图
+  getRealMonitorPower: Symbol('getRealMonitorPower'), // 出力图和散点图
+  stopRealCharstData: Symbol('stopRealCharstData'), // 停止计时器
+  getPvChartsData: Symbol('getPvChartsData'), // 光伏图表
+  getPvRealData: Symbol('getPvRealData'), // 光伏实时数据
 }
 
