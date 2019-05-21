@@ -139,10 +139,26 @@
       }
       .apk{
         position: absolute;
-        right: 70px;
-        width: 150x;
-        height: 150px;
+        right: 80px;
         bottom: -60px;
+        background: url("../../../assets/img/apkbackgroud.png") no-repeat center ;
+        box-shadow: #eeee 0px -1px 2px; 
+        width:134px;
+        height:124px;
+        .a{
+          margin-top: 5px;
+          text-align: center;
+        }
+        .b{
+          margin-top: 3px;
+          margin-left: 36px;
+          width: 64px;
+          height: 64px;
+        }
+        .c{
+          margin-bottom: 3px;
+          text-align: center;
+        }
     } 
       //下面的联系我们
       .bottomInfo {

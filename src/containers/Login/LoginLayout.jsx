@@ -107,7 +107,13 @@ class LoginLayout extends Component {
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore}/>}
           
               {appDownload  && <div className={styles.apk}> 
-                 <img src={defaultLogo} width="150px" height="150px"  />
+                 <div className={styles.a}>
+                 手机扫一扫    
+                 </div>
+                 <img className={styles.b} src={defaultLogo} width="64px" height="64px" />
+                 <div className={styles.c}>
+                 下载app安装包        
+                 </div>
               </div>}
               <div className={styles.bottomInfo}>
                 <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
