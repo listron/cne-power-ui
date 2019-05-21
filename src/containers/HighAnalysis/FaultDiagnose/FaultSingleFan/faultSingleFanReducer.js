@@ -24,6 +24,9 @@ const initState = Immutable.fromJS({
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
   diffDate: [], // 后驱温度时间选择
+  beforeTimeData: [], // 前驱温度时间轴
+  afterTimeData: [], // 后驱温度时间轴
+  diffTimeData: [], // 温度差时间轴
   preTimeCompare: 0, // 用于前驱比较时间戳
   afterTimeCompare: 0, // 用于后驱比较时间戳
   diffTimeCompare: 0, // 用于温度差比较时间戳
