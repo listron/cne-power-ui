@@ -47,11 +47,12 @@ class WindStation extends Component {
     operatorTime: PropTypes.number,
     getDeviceTypeFlow: PropTypes.func,
     getSingleRealChartsData: PropTypes.func,
-    getSingleStation: PropTypes.func,
+    getWindSingleStation: PropTypes.func,
     getAlarmList: PropTypes.func,
     getWeatherList: PropTypes.func,
     getWorkList: PropTypes.func,
     editData: PropTypes.func,
+    stopSingleRealData: PropTypes.func,
   }
 
   constructor(props) {
@@ -117,7 +118,7 @@ class WindStation extends Component {
 
 
   getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  天气情况 
-    this.props.getSingleStation({ stationCode, stationType });
+    this.props.getWindSingleStation({ stationCode });
     this.props.getAlarmList({ stationCode });
     this.props.getWeatherList({ stationCode }); // 天气
     let endTime = moment().utc().format();

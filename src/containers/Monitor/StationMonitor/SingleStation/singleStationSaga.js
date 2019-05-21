@@ -10,7 +10,7 @@ import moment from 'moment';
 message.config({ top: 120, duration: 2, maxCount: 2 });
 let realChartsInterval = null;
 
-function* getSingleStation(action) { //获取单电站实时数据
+function* getSingleStation(action) { //获取单电站实时数据 (后期可删除)
   const { payload } = action;
   const { stationCode, stationType } = payload;
   const utcTime = moment.utc().format();
@@ -508,8 +508,6 @@ function* getFanList(action) { // 获取风机实时数据列表
   }
 }
 
-
-
 function* pointparams() { // 单电站测点参数名称列表
   const url = `${APIBasePath}${monitor.getPointparams}`;
   try {
@@ -562,7 +560,7 @@ function* getNewFanList(action) {
 
 function* getWindSingleStation(action) { // 获取单电站实时数据(风电站)
   const { payload } = action;
-  const { stationCode, stationType } = payload;
+  const { stationCode } = payload;
   const utcTime = moment.utc().format();
   const windUrl = `${APIBasePath}${monitor.getSingleWindleStation}${stationCode}/${utcTime}`;
   try {
@@ -572,7 +570,6 @@ function* getWindSingleStation(action) { // 获取单电站实时数据(风电�
         type: singleStationAction.changeSingleStationStore,
         payload: {
           singleStationData: response.data.data || {},
-          stationType: response.data.data.stationType || '',
         }
       });
     } else { throw response.data }
@@ -617,7 +614,7 @@ function* getSingleScatter(action) { // 日等效利用小时散点数(风电站
 
 function* getWindCapabilityDiagram(action) { // 获取出力图数据(❤风电站)
   const { payload } = action;
-  const { stationCode, stationType, startTime, endTime } = payload
+  const { stationCode, startTime, endTime } = payload
   const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
   try {
     const response = yield call(axios.get, windUrl);
@@ -669,6 +666,32 @@ function* stopSingleRealData(action) {
 }
 
 
+function* getPvSingleStation(action) { //获取单电站实时数据
+  const { payload } = action;
+  const { stationCode } = payload;
+  const utcTime = moment.utc().format();
+  const pvUrl = `${APIBasePath}${monitor.getSinglePvStation}${stationCode}/${utcTime}`;
+  try {
+    const response = yield call(axios.get, pvUrl);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          singleStationData: response.data.data || {},
+        }
+      });
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        singleStationData: {},
+      }
+    });
+  }
+}
+
 
 
 export function* watchSingleStationMonitor() {
@@ -696,6 +719,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getNewFanList, getNewFanList); // 单电站测点参数名称列表 风机
   yield takeLatest(singleStationAction.getSingleRealChartsData, getSingleRealChartsData); // 风电站出力图和日等效利用小时散点图
   yield takeLatest(singleStationAction.stopSingleRealData, stopSingleRealData); // 关掉进程
+  yield takeLatest(singleStationAction.getPvSingleStation, getPvSingleStation); // 光伏电站
+  yield takeLatest(singleStationAction.getWindSingleStation, getWindSingleStation); // 风电
 
 }
 

@@ -5,7 +5,8 @@ import styles from './singleStation.scss';
 import { singleStationAction } from './singleStationAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer/index';
-import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/PvStation/PvStation';
+import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewPvStation/PvStation';
+// import PvStation from '../../../../components/Monitor/StationMonitor/SingleStation/PvStation/PvStation';
 // import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/WindStation/WindStation';
 import WindStation from '../../../../components/Monitor/StationMonitor/SingleStation/NewWindStation/WindStation';
 class SingleStation extends Component {
@@ -34,6 +35,7 @@ class SingleStation extends Component {
     getSingleScatter: PropTypes.func,
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
+    stopSingleRealData: PropTypes.func,
   };
   constructor(props) {
     super(props);
@@ -48,14 +50,14 @@ class SingleStation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stationCode } = this.props.match.params;
+    const { stationCode, } = this.props.match.params;
+    const {stationType}=this.props;
     const nextStationCode = nextProps.match.params.stationCode;
     const { stationList } = nextProps;
     const staions = stationList.filter(e => e.stationCode === +nextStationCode);
     const nextStationType = staions.length > 0 && `${staions[0].stationType}`;
-    if (nextStationCode !== stationCode) {
-      this.props.changeSingleStationStore({ stationType: nextStationType })
-      this.props.stopSingleRealData();
+    if (nextStationCode !== stationCode || stationType!== nextStationType) {
+      this.props.changeSingleStationStore({ stationType:nextStationType})
     }
   }
 
@@ -90,6 +92,7 @@ const mapStateToProps = state => {
     realCapacityPoint: state.common.get('realCapacityPoint'),
     powerUnit: state.common.get('powerUnit'),
     powerPoint: state.common.get('powerPoint'),
+    monitorPvUnit: state.common.toJS().monitorPvUnit,
   })
 };
 
@@ -121,6 +124,8 @@ const mapDispatchToProps = (dispatch) => ({
   getPointparams: payload => dispatch({ type: singleStationAction.pointparams, payload }),
   getSingleRealChartsData: payload => dispatch({ type: singleStationAction.getSingleRealChartsData, payload }),
   stopSingleRealData: payload => dispatch({ type: singleStationAction.stopSingleRealData, payload }),
+  getPvSingleStation: payload => dispatch({ type: singleStationAction.getPvSingleStation, payload }),
+  getWindSingleStation: payload => dispatch({ type: singleStationAction.getWindSingleStation, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

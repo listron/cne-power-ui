@@ -237,6 +237,7 @@ export default {
       getPowerNet: '/v3/monitor/powercollection/datalist/', // 电网列表 实时
       getSingleStation: '/v3/monitor/station/',//单电站实时数据
       getSingleWindleStation:'/v3/wind/monitor/station/', // 单电站风电站实时数据
+      getSinglePvStation:'/v3/pv/monitor/station/', // 单电站光伏电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
