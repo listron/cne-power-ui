@@ -28,8 +28,8 @@ class DeviceMonitor extends Component {
 
   componentDidUpdate(prevProps){
     const { deviceTypeCode, stationCode } =this.props.match.params;
-    const preTypeCode = prevProps.match.params;
-    if (preTypeCode !== deviceTypeCode) { // 已切换设备类型，重新请求设备
+    const preTypeCode = prevProps.match.params.deviceTypeCode;
+    if (preTypeCode !== deviceTypeCode) { // 设备类型变化，重新请求设备列表
       this.props.getDevices({ deviceTypeCode, stationCode });
     }
   }

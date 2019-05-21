@@ -57,12 +57,19 @@ class ConfluenceHeader extends Component {
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
-        {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
+        {showDeviceChangeBox && <HeaderDeviceChange
+          devices={devices}
+          deviceDetail={deviceDetail}
+          baseLinkPath={baseLinkPath}
+          hideDeviceChange={this.hideDeviceChange}
+        />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
-          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || ''}</span>
-          <span className={styles.dispersionRatio}>离散率>{dispersionRatio||'--'}</span>
+          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName || '--'}</span>
+          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span>
+          <span className={styles.dispersionRatio}>离散率>{dispersionRatio || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{deviceDetail.manufactor || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceDetail.deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
@@ -72,11 +79,14 @@ class ConfluenceHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
+            <Icon type="arrow-left" />
+          </Link>
+          {/* {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>}
+          </Link>} */}
         </div>
       </div>
     )

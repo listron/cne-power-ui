@@ -53,7 +53,8 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
 // 集电线路302 - 详情, 下级, 测点, 告警
 // 升压站301 - 详情, 下级, 测点, 告警
 
-function *getDevices({ deviceTypeCode, stationCode }){ // 单设备同级所有设备信息[]
+function *getDevices({ payload }){ // 单设备同级所有设备信息[]
+  const { deviceTypeCode, stationCode } = payload;
   const devicesUrl = `${APIBasePath}${monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
   try{
     const tmpDevices = yield call(axios.get, devicesUrl);
@@ -63,14 +64,13 @@ function *getDevices({ deviceTypeCode, stationCode }){ // 单设备同级所有�
         payload: { devices: tmpDevices.data.data || [] },
       })
     } else { throw tmpDevices.data }
-  }catch(error){
+  } catch(error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
       payload: { devices: [] },
     })
   }
-  
 }
 
 function *getDeviceDetail({ deviceTypeCode, deviceCode }){ // 10s实时详情
@@ -100,14 +100,18 @@ function *getTenMin({ deviceTypeCode, deviceCode, timeParam }){ // 1h实时十�
     if (tmpTenMin.data.code === '10000') {
       yield put({
         type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
-        payload: { deviceTenMin: tmpTenMin.data.data || {} },
+        payload: {
+          deviceTenMin: tmpTenMin.data.data || {},
+          tenMinUnix: moment().unix(),
+          tenMinChartLoading: false
+        },
       })
     } else { throw tmpTenMin.data }
   } catch(error) {
     console.log(error);
     yield put({
       type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
-      payload: { deviceTenMin: [] },
+      payload: { deviceTenMin: [], tenMinChartLoading: false },
     })
   }
 }
@@ -152,7 +156,7 @@ function *getAlarms({ deviceCode }){ // 10s实时告警
 }
 
 function *getSubList({ deviceCode }) { // 10s获取下级设备详情
-  const subDeviceUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}`;
+  const subDeviceUrl = `${APIBasePath}${monitor.subList}/${deviceCode}`;
   try {
     const tmpSubList = yield call(axios.get, subDeviceUrl);
     if (tmpSubList.data.code === '10000') {
@@ -181,18 +185,23 @@ function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   if (['202', '206', '201', '302', '301'].includes(deviceTypeCode)) { // 汇流202,组串逆变206,集中逆变201,集电302,升压301 需下级信息
     yield fork(getSubList, { deviceCode });
   }
-  pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
+  // pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
 }
 
 function *getDeviceChartMonitor({ payload, waiting }){ // 开启图表1h实时监控
   const { deviceTypeCode, deviceCode, timeParam } = payload;
   if (waiting) {
     yield delay(3600000); // 阻塞1h
+  } else { // 第一次请求
+    yield put({
+      type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+      payload: { tenMinChartLoading: true }
+    })
   }
   yield fork(getTenMin, { deviceTypeCode, deviceCode, timeParam });
   // if (['202', '206', '201', '304'].includes(deviceTypeCode)) { // 汇流箱202, 组串逆变器206, 集中式逆变器201, 箱变304需时序图数据
   // }
-  pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
+  // pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
 }
 
 function *stopMonitor() {

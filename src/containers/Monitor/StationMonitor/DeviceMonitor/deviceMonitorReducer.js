@@ -27,6 +27,8 @@ const initState = Immutable.fromJS({
   deviceAlarmList: [], // 单设备告警
   devices: [], // 设备列表列表
   deviceTenMin: [], // 设备时序图
+  tenMinUnix: null, // 时序时间记录
+  tenMinChartLoading: false, // chartloading状态
   subDeviceList: [], // 下级设备信息
 
   sequencechart: {}, // 风机图表
