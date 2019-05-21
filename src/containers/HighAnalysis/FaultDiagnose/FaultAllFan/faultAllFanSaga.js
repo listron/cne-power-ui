@@ -297,6 +297,14 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
   }
 }
 
+// 温度处理时间
+function dateFunc(arr) {
+  return arr[0].dataList && arr[0].dataList.map(cur => {
+    return moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss");
+  });
+}
+
+let beforeTimeData = null; // 保存风机10分钟数据-前驱温度时间轴
 function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温度
   const { payload } = action;
   const url = `${APIBasePath}${tenMinutesLine}`;
@@ -310,11 +318,16 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 判断是否有数据
+      if(!beforeTimeData) {
+        beforeTimeData = response.data.data;
+      }
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
           preTimeCompare: moment().unix(),
           tenMinutesBeforeList: response.data.data || [],
+          beforeTimeData: dateFunc(beforeTimeData),
           loading: false,
           preLoading: false
         },
@@ -332,6 +345,7 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
   }
 }
 
+let afterTimeData = null; // 保存风机10分钟数据-后驱温度时间轴
 function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温度
   const { payload } = action;
   const url = `${APIBasePath}${tenMinutesLine}`;
@@ -345,11 +359,16 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 判断是否有数据
+      if(!afterTimeData) {
+        afterTimeData = response.data.data;
+      }
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
           afterTimeCompare: moment().unix(),
           tenMinutesAfterList: response.data.data || [],
+          afterTimeData: dateFunc(afterTimeData),
           loading: false,
           afterLoading: false
         },
@@ -367,6 +386,7 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
   }
 }
 
+let diffTimeData = null; // 保存风机10分钟数据-温度差
 function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
   const { payload } = action;
   const url = `${APIBasePath}${tenMinutesLine}`;
@@ -380,11 +400,16 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 判断是否有数据
+      if(!diffTimeData) {
+        diffTimeData = response.data.data;
+      }
       yield put({
         type: faultAllFanAction.changeFaultAllFanStore,
         payload: {
           diffTimeCompare: moment().unix(),
           tenMinutesDiffList: response.data.data || [],
+          diffTimeData: dateFunc(diffTimeData),
           loading: false,
           diffLoading: false
         },

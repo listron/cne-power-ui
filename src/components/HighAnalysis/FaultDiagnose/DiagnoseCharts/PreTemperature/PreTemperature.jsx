@@ -30,6 +30,7 @@ export default class PreTemperature extends React.Component {
     getTenMinutesAfter: PropTypes.func,
     getTenMinutesDiff: PropTypes.func,
     faultDateList: PropTypes.string,
+    beforeTimeData: PropTypes.array,
 
   };
 
@@ -41,6 +42,7 @@ export default class PreTemperature extends React.Component {
       faultInfo: {
         stationCode
       },
+      beforeTimeData,
       getTenMinutesBefore,
       preTimeCompare: currentPreTimeCompare
     } = this.props;
@@ -60,7 +62,7 @@ export default class PreTemperature extends React.Component {
       paramsEnd = 100;
       eCharts.init(preChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(preChart); //构建下一个实例
-      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName));
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName, paramsStart, paramsEnd, beforeTimeData));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
         const dz = opt.dataZoom[0];
