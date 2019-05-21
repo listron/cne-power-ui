@@ -260,32 +260,50 @@
             cursor: pointer;
         }
     }
+
     .pvDeviceCont{
-        $normalNum:#199475;
-        $standbyNum:#199475;
-        $shutdownNum:#f9b600;
-        $maintainNum:#f9b600;
-        $errorNum:#a42b2c;
-        $interruptNum:#a42b2c;
-        $noAccessNum:#f1e2e2;
+       .top{
+           margin-left: 24px;
+           display: flex;
+           align-items: center;
+           .icon{
+                background:#199475;
+                border-radius:4px;
+                width:24px;
+                height:24px;
+                margin-left: 4px;
+                color: #fff;
+                text-align: center;
+           }
+       }
+        
     }
 
-    $dark_color:#199475;
-    $normal_color:#f9b600;
+    // $dark_color:#199475;
+    $normal_color:#199475;
+    $normal_hover_color:#ceebe0;
     
     .pvDeviceContnormal{
-        $theme:'dark';
-        background: #{$theme}_color;
-        // background: $dark_color;
+        $theme:'normal';
+        // background: $normal_color;
+        :global{
+            .ant-select-open .ant-select-selection,.ant-select-selection{
+                background:$normal_hover_color;
+                color: $normal_color;
+            }
+            .ant-select-dropdown-menu-item-selected{
+                background:$normal_hover_color;
+            }
+            .ant-select-dropdown-menu-item:hover{
+                background:$normal_hover_color;
+            }
+        }
     }
 
-    .darkContnormal{
-        $theme:'normal';
-        background: $normal_color;
-    }
-    @function color($color-name){
-        @return var(--color-#{$color-name});
-    }
+    // .darkContnormal{
+    //     $theme:'normal';
+    //     background: $normal_color;
+    // }
 
     .outputPowerDiagram {
         border-top: 1px solid #dfdfdf;

@@ -150,13 +150,6 @@
       flex-wrap: wrap;
       .parentDeviceName{
         margin: 20px 0;
-        .underlin{
-          text-decoration: underline;
-          i{
-            display: inline-block;
-            font-size: 20px;
-          }
-        }
       } 
       .nodata{
         text-align: center;
@@ -168,7 +161,7 @@
         margin-bottom: 20px;
         width: 222px;
         height: 76px;
-        // padding: 5px;
+        padding: 5px;
         box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
         border-radius:4px;
         font-size: 12px;
@@ -215,10 +208,6 @@
             color: #dfdfdf;
           }
         }
-        .statusBox{
-          // background: pink;
-          padding: 5px 5px 0px 5px;
-        }
         .inverterItemR{
           display: inline-block;
           width: 165px;
@@ -247,7 +236,6 @@
           line-height: 22px;
           margin-top: 10px;
           padding-left: 3px;
-          padding: 0 5px 5px 5px;
           >div{
             display: inline-block;
             width: 50%;
