@@ -7,7 +7,6 @@ const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
   static propTypes = {
-    data: PropTypes.array,
     type: PropTypes.string,
     form: PropTypes.object,
     record: PropTypes.object,
@@ -17,17 +16,9 @@ class EditableCell extends React.Component {
   };
 
   getInput = () => {
-    const { data, type } = this.props;
-    if (type === 'text') {
-      return <Input onChange={this.testValue} />
-    }
     return (
-      <Input onChange={this.testValue} />
+      <Input />
     );
-  };
-
-  testValue = (e) => {
-    console.log('设备型号的编辑', e.target.value);
   };
 
   render() {

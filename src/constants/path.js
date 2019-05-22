@@ -143,6 +143,8 @@ export default {
       warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
       warehouseAdd: "/v3/warehouse/add",  // 仓库添加
       warehouseDel: "/v3/warehouse/del",  // 仓库删除
+      warehouseUpdate: "/v3/warehouse/update",  // 仓库编辑
+      goodsList: "/v3/goods/pageList",  // 物品（物资）清单分页列表
 
     },
     system: {//系统管理

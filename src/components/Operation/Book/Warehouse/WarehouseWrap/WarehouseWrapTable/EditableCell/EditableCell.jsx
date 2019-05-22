@@ -8,7 +8,6 @@ const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
   static propTypes = {
-    data: PropTypes.array,
     type: PropTypes.string,
     stations: PropTypes.object,
     form: PropTypes.object,
@@ -19,13 +18,13 @@ class EditableCell extends React.Component {
   };
 
   getInput = () => {
-    const { data, type, stations } = this.props;
+    const { type, stations } = this.props;
     if (type === 'text') {
-      return <Input onChange={this.testValue} />
+      return <Input />
     }
     return (
       <StationSelect
-        data={stations.toJS().filter(e => e.stationType === 0)}
+        data={stations.toJS()}
         style={{ width: '200px' }}
         onOK={this.selectStation}
         multiple={true}
@@ -35,16 +34,7 @@ class EditableCell extends React.Component {
     );
   };
 
-  testValue = (e) => {
-    console.log('设备型号的编辑', e.target.value);
-  };
-
-  selectManufactor = (value) =>{
-    console.log('value: ', value);
-
-  };
   render() {
-
     const {
       editing,
       dataIndex,
@@ -67,7 +57,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入${title}!`,
                     }],
-                    initialValue: dataIndex === "warehouseName" ? record[dataIndex] : stations.toJS().filter(e => [82, 76].includes(e.stationCode)),
+                    initialValue: dataIndex === "warehouseName" ? record[dataIndex] : stations.toJS().filter(e => record["stationCodes"].split(",").includes(`${e.stationCode}`)),
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

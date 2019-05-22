@@ -74,5 +74,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWarehouseList: payload => dispatch({ type: warehouseAction.getWarehouseList, payload }),
   getWarehouseAddList: payload => dispatch({ type: warehouseAction.getWarehouseAddList, payload }),
   getWarehouseDelList: payload => dispatch({ type: warehouseAction.getWarehouseDelList, payload }),
+  getWarehouseUpdateList: payload => dispatch({ type: warehouseAction.getWarehouseUpdateList, payload }),
+  getGoodsList: payload => dispatch({ type: warehouseAction.getGoodsList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Warehouse)

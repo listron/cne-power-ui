@@ -14,7 +14,13 @@ const Search = Input.Search;
 class WarehouseGoods extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
+    getGoodsList:PropTypes.func,
     form: PropTypes.object,
+    goodsData: PropTypes.object,
+    pageSize: PropTypes.number,
+    pageNum: PropTypes.number,
+    goodsType: PropTypes.string,
+    goodsName: PropTypes.string,
   };
 
   constructor(props) {
@@ -24,8 +30,58 @@ class WarehouseGoods extends Component {
     };
   }
 
-  onSelect = (selectedKeys, info) => {
-    console.log('selected', selectedKeys, info);
+  componentDidMount() {
+    const { getGoodsList } = this.props;
+    const params = {
+      goodsType: "",
+      goodsName: "",
+      pageNum: 1,
+      pageSize: 10
+    };
+    getGoodsList(params);
+  }
+
+  onSelect = (selectedKeys) => {
+    const { getGoodsList } = this.props;
+    // 判断如果为空不发送请求
+    if (selectedKeys.join("") !== "") {
+      // 参数
+      const params = {
+        goodsType: selectedKeys.join("") === "100" ? "" : selectedKeys.join(""),
+        goodsName: "",
+        pageNum: 1,
+        pageSize: 10
+      };
+      getGoodsList(params);
+    }
+  };
+
+  onAddFunc = () => {
+    this.setState({
+      addFlag: true
+    })
+  };
+
+  // 分页
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    const {
+      getGoodsList,
+      goodsType,
+      goodsName
+    } = this.props;
+    const params = {
+      goodsType,
+      goodsName,
+      pageNum: currentPage,
+      pageSize
+    };
+    getGoodsList(params);
+  };
+
+  closeFunc = () => {
+    this.setState({
+      addFlag: false
+    })
   };
 
   handleSend = event => {
@@ -40,20 +96,35 @@ class WarehouseGoods extends Component {
     });
   };
 
-  closeFunc = () => {
-    this.setState({
-      addFlag: false
-    })
-  };
-
-  onAddFunc = () => {
-    this.setState({
-      addFlag: true
-    })
+  // 搜索
+  searchGoodsFunc = (value) => {
+    const {
+      getGoodsList,
+      pageNum,
+      pageSize,
+      goodsType
+    } = this.props;
+    const params = {
+      goodsType,
+      goodsName: value,
+      pageNum,
+      pageSize
+    };
+    getGoodsList(params);
   };
 
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      goodsData: {
+        isAbleOper,
+        pageData: {
+          pageCount
+        }
+      },
+      pageNum,
+      pageSize
+    } = this.props;
     const { addFlag } = this.state;
     const { getFieldDecorator } = form;
     return (
@@ -62,33 +133,33 @@ class WarehouseGoods extends Component {
         <div className={styles.warehouseGoodsCenter}>
           <div className={styles.goodsLeft}>
             <Tree
-              defaultExpandedKeys={['0-0', '0-0']}
-              defaultSelectedKeys={['0-0', '0-0']}
-              defaultCheckedKeys={['0-0', '0-0']}
+              defaultExpandedKeys={['100', '100']}
+              defaultSelectedKeys={['100', '100']}
+              defaultCheckedKeys={['100', '100']}
               onSelect={this.onSelect}
             >
-              <TreeNode title="仓库资产" key="0-0">
-                <TreeNode title="备品备件" key="0-0-2" />
-                <TreeNode title="工器具" key="0-0-0">
-                  <TreeNode title="安全工器具" key="0-0-0-0" />
-                  <TreeNode title="检修工器具" key="0-0-0-1" />
-                  <TreeNode title="仪器仪表" key="0-0-0-2" />
+              <TreeNode title="仓库资产" key="100">
+                <TreeNode title="备品备件" key="101" />
+                <TreeNode title="工器具" key="200">
+                  <TreeNode title="安全工器具" key="201" />
+                  <TreeNode title="检修工器具" key="202" />
+                  <TreeNode title="仪器仪表" key="203" />
                 </TreeNode>
-                <TreeNode title="物资管理" key="0-0-1">
-                  <TreeNode title="生活物资" key="0-0-1-0" />
-                  <TreeNode title="办公物资" key="0-0-1-1" />
+                <TreeNode title="物资管理" key="300">
+                  <TreeNode title="生活物资" key="301" />
+                  <TreeNode title="办公物资" key="302" />
                 </TreeNode>
               </TreeNode>
             </Tree>
           </div>
           <div className={styles.goodsRight}>
             <div className={styles.goodsBtn}>
-              <Button className={styles.addControl} onClick={() => {return this.onAddFunc()}}>
+              <Button disabled={isAbleOper === 1} className={styles.addControl} onClick={() => {return this.onAddFunc()}}>
                 <Icon type="plus" />
-                <span className={styles.text}>添加备品备件</span>
+                <span className={styles.text}>添加</span>
               </Button>
             </div>
-            {(addFlag) && (
+            {(isAbleOper === 1 ? false : addFlag) && (
               <div className={styles.goodsAdd}>
                 <div className={styles.goodsTitle}>
                   <span>添加</span><Icon onClick={() => this.closeFunc()} type="close" />
@@ -123,10 +194,10 @@ class WarehouseGoods extends Component {
             <div className={styles.goodsSearch}>
               <Search
                 placeholder="请输入物品名称"
-                onSearch={value => console.log(value)}
+                onSearch={(value) => {return this.searchGoodsFunc(value)}}
                 style={{ width: 200, height: 32, marginTop: "4px" }}
               />
-              <CommonPagination pageSize={10} currentPage={1} total={1} onPaginationChange={this.onPaginationChange} />
+              <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} />
             </div>
             <WarehouseGoodsTable {...this.props} />
           </div>

@@ -30,6 +30,7 @@ class WarehouseGoodsTable extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
     form: PropTypes.object,
+    goodsData: PropTypes.object,
   };
 
   constructor(props) {
@@ -39,7 +40,7 @@ class WarehouseGoodsTable extends Component {
     };
   }
 
-  isEditing = record => record.modeId === this.state.editingKey;
+  isEditing = record => record.goodsId === this.state.editingKey;
 
   // 保存
   save = (form, modeId) => {};
@@ -50,7 +51,15 @@ class WarehouseGoodsTable extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const {
+      form,
+      goodsData: {
+        isAbleOper,
+        pageData: {
+          dataList
+        }
+      }
+    } = this.props;
     const { getFieldDecorator } = form;
     const components = {
       body: {
@@ -58,7 +67,7 @@ class WarehouseGoodsTable extends Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} data={data} {...rest[0]} />
+              return <EditableCell form={form} {...rest[0]} />
             }}
           </EditableContext.Consumer>)
         },
@@ -67,15 +76,13 @@ class WarehouseGoodsTable extends Component {
     const columnsEdit = [
       {
         title: '物品名称',
-        dataIndex: 'name',
+        dataIndex: 'goodsName',
         editable: true,
-        width: 150,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '计量单位',
-        dataIndex: 'key',
+        dataIndex: 'goodsUnit',
         editable: true,
-        width: 150,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建时间',
@@ -83,7 +90,7 @@ class WarehouseGoodsTable extends Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作人',
-        dataIndex: 'author',
+        dataIndex: 'user',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作',
@@ -97,14 +104,14 @@ class WarehouseGoodsTable extends Component {
                   {form => {
                     return (
                       <a
-                        onClick={() => this.save(form, record.modeId)}
+                        onClick={() => this.save(form, record.goodsId)}
                         style={{ marginRight: 8 }}>
                         <span style={{marginRight: '4px'}} title="编辑" className={"iconfont icon-doned"} />
                       </a>
                     )
                   }}
                 </EditableContext.Consumer>)
-                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.modeId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
+                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
               }
               <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)} />
             </div>
@@ -119,7 +126,6 @@ class WarehouseGoodsTable extends Component {
         ...col,
         onCell: record => ({
           record,
-          type: col.dataIndex === 'name' ? 'text' : 'select',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -130,13 +136,11 @@ class WarehouseGoodsTable extends Component {
     const columnsUnEdit = [
       {
         title: '物品名称',
-        dataIndex: 'name',
-        width: 150,
+        dataIndex: 'goodsName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '计量单位',
-        dataIndex: 'key',
-        width: 150,
+        dataIndex: 'goodsUnit',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建时间',
@@ -144,7 +148,7 @@ class WarehouseGoodsTable extends Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '操作人',
-        dataIndex: 'author',
+        dataIndex: 'user',
         render: (text) => <span title={text}>{text}</span>
       }];
     return (
@@ -152,12 +156,11 @@ class WarehouseGoodsTable extends Component {
         <EditableContext.Provider value={form}>
           <Table
             loading={false}
-            dataSource={data}
+            dataSource={dataList}
             components={components}
-            columns={columnsEdit}
+            columns={isAbleOper === 0 ? columnsEdit : columnsUnEdit}
             pagination={false}
-            rowKey={(record, index) => index || "key"}
-            onChange={this.tableChange}
+            rowKey={(record) => record.goodsId || "key"}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </EditableContext.Provider>

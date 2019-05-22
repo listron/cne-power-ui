@@ -24,6 +24,7 @@ class WarehouseWrapTable extends Component {
     warehouseName: PropTypes.string,
     onSelectedRowKeys: PropTypes.func,
     onDeleteMode: PropTypes.func,
+    getWarehouseUpdateList: PropTypes.func,
   };
 
   constructor(props) {
@@ -49,7 +50,34 @@ class WarehouseWrapTable extends Component {
   isEditing = record => record.warehouseId === this.state.editingKey;
 
   // 保存
-  save = (form, modeId) => {};
+  save = (form, warehouseId) => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      const {
+        getWarehouseUpdateList,
+        warehouseName: searchName,
+        pageNum,
+        pageSize,
+      } = this.props;
+      const { warehouseName, stationName } = fieldsValue;
+      const stationCode = stationName.map(cur => {
+        return cur.stationCode;
+      });
+      const params = {
+        warehouseId,
+        warehouseName,
+        stationCodes: stationCode.join(","),
+        pageNum,
+        pageSize,
+        searchName,
+        func: () => {
+          this.setState({ editingKey: "" });
+        }
+      };
+      getWarehouseUpdateList(params);
+
+    });
+  };
 
   // 编辑
   edit = (key) => {
@@ -131,7 +159,7 @@ class WarehouseWrapTable extends Component {
                       <a
                         onClick={() => this.save(form, record.warehouseId)}
                         style={{ marginRight: 8 }}>
-                        <span style={{marginRight: '4px'}} title="编辑" className={"iconfont icon-doned"} />
+                        <span style={{marginRight: '4px'}} title="保存" className={"iconfont icon-doned"} />
                       </a>
                     )
                   }}

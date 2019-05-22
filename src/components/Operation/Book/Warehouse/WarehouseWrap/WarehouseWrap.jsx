@@ -211,7 +211,7 @@ class WarehouseWrap extends Component {
                     rules: [{ required: true, message: '请输入电站名称'}],
                   })(
                     <StationSelect
-                      data={stations.toJS().filter(e => e.stationType === 0)}
+                      data={stations.toJS()}
                       style={{ width: '200px' }}
                       onOK={this.selectStation}
                       multiple={true}
