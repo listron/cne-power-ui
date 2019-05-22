@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styles from "./warehouse.scss";
 import PropTypes from 'prop-types';
 import WarehouseGoods from '../../../../components/Operation/Book/Warehouse/WarehouseGoods/WarehouseGoods';
 import WarehouseWrap from '../../../../components/Operation/Book/Warehouse/WarehouseWrap/WarehouseWrap';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { warehouseAction } from "./warehouseAction.js";
 import Footer from '../../../../components/Common/Footer';
-import {assetConfigAction} from "../AssetsConfig/assetsConfigAction";
+
+import styles from "./warehouse.scss";
 
 class Warehouse extends Component {
   static propTypes = {
@@ -76,5 +76,8 @@ const mapDispatchToProps = (dispatch) => ({
   getWarehouseDelList: payload => dispatch({ type: warehouseAction.getWarehouseDelList, payload }),
   getWarehouseUpdateList: payload => dispatch({ type: warehouseAction.getWarehouseUpdateList, payload }),
   getGoodsList: payload => dispatch({ type: warehouseAction.getGoodsList, payload }),
+  getGoodsAddList: payload => dispatch({ type: warehouseAction.getGoodsAddList, payload }),
+  getGoodsDelList: payload => dispatch({ type: warehouseAction.getGoodsDelList, payload }),
+  getGoodsUpdateList: payload => dispatch({ type: warehouseAction.getGoodsUpdateList, payload }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Warehouse)

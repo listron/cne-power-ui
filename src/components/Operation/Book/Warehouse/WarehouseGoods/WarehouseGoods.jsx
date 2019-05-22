@@ -21,6 +21,7 @@ class WarehouseGoods extends Component {
     pageNum: PropTypes.number,
     goodsType: PropTypes.string,
     goodsName: PropTypes.string,
+    getGoodsAddList: PropTypes.func,
   };
 
   constructor(props) {
@@ -86,13 +87,35 @@ class WarehouseGoods extends Component {
 
   handleSend = event => {
     event.preventDefault();
-    const { form } = this.props;
+    const {
+      form,
+      getGoodsAddList,
+      goodsType,
+      pageNum,
+      pageSize,
+      goodsName: searchName
+    } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       const {
-        warehouseName,
-        stationName,
+        goodsUnit,
+        goodsName,
       } = fieldsValue;
+      const params = {
+        goodsUnit,
+        goodsName,
+        goodsType,
+        pageNum,
+        searchName,
+        pageSize,
+        func: () => {
+          form.setFieldsValue({
+            goodsName: "",
+            goodsUnit: ""
+          });
+        }
+      };
+      getGoodsAddList(params);
     });
   };
 
@@ -153,12 +176,14 @@ class WarehouseGoods extends Component {
             </Tree>
           </div>
           <div className={styles.goodsRight}>
-            <div className={styles.goodsBtn}>
-              <Button disabled={isAbleOper === 1} className={styles.addControl} onClick={() => {return this.onAddFunc()}}>
-                <Icon type="plus" />
-                <span className={styles.text}>添加</span>
-              </Button>
-            </div>
+            {(isAbleOper === 0) && (
+              <div className={styles.goodsBtn}>
+                <Button className={styles.addControl} onClick={() => {return this.onAddFunc()}}>
+                  <Icon type="plus" />
+                  <span className={styles.text}>添加</span>
+                </Button>
+              </div>
+            )}
             {(isAbleOper === 1 ? false : addFlag) && (
               <div className={styles.goodsAdd}>
                 <div className={styles.goodsTitle}>
@@ -169,14 +194,14 @@ class WarehouseGoods extends Component {
                     <Row>
                       <Col>
                         <FormItem label="物品名称">
-                          {getFieldDecorator('warehouseName', {
+                          {getFieldDecorator('goodsName', {
                             rules: [{ required: true, message: '请输入物品名称'}],
                           })(
                             <Input placeholder="30字以内" />
                           )}
                         </FormItem>
                         <FormItem label="计量单位">
-                          {getFieldDecorator('stationName', {
+                          {getFieldDecorator('goodsUnit', {
                             rules: [{ required: true, message: '请输入计量单位'}],
                           })(
                             <Input placeholder="6字以内" />

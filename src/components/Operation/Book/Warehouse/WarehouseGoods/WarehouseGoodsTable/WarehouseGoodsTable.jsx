@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import {Form, Table} from 'antd';
+import moment from "moment";
 import EditableCell from "./EditableCell/EditableCell";
 
 import styles from "./warehouseGoodsTable.scss";
+import WarningTip from "../../../../../Common/WarningTip";
 
+const defaultTime = "YYYY-MM-DD HH:mm:ss";
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
@@ -31,23 +34,107 @@ class WarehouseGoodsTable extends Component {
     resetStore:PropTypes.func,
     form: PropTypes.object,
     goodsData: PropTypes.object,
+    getGoodsDelList: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    goodsName: PropTypes.string,
+    goodsType: PropTypes.string,
+    getGoodsUpdateList: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       editingKey: '',
+      showWarningTip: false,
+      warningTipText: '',
+      tableRecord: {},
     };
   }
+
+  onCancelWarningTip = () => {
+    this.setState({
+      showWarningTip: false,
+      warningTipText: '',
+      tableRecord: {},
+    });
+  };
+
+  onConfirmWarningTip = () => {
+    const {
+      tableRecord: {
+        goodsId
+      }
+    } = this.state;
+    const {
+      getGoodsDelList,
+      pageNum,
+      pageSize,
+      goodsName,
+      goodsType
+    } = this.props;
+    // 参数
+    const params = {
+      goodsId,
+      pageNum,
+      pageSize,
+      goodsName,
+      goodsType,
+      func: () => {
+        this.setState({
+          showWarningTip: false,
+          warningTipText: '',
+          tableRecord: {},
+        });
+      }
+    };
+    getGoodsDelList(params);
+  };
 
   isEditing = record => record.goodsId === this.state.editingKey;
 
   // 保存
-  save = (form, modeId) => {};
+  save = (form, goodsId) => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      const {
+        getGoodsUpdateList,
+        goodsName: searchName,
+        pageNum,
+        pageSize,
+        goodsType
+      } = this.props;
+      const { goodsName, goodsUnit } = fieldsValue;
+      // 参数
+      const params = {
+        goodsId,
+        goodsName,
+        goodsUnit,
+        pageNum,
+        pageSize,
+        searchName,
+        goodsType,
+        func: () => {
+          this.setState({ editingKey: "" });
+        }
+      };
+      getGoodsUpdateList(params);
+
+    });
+  };
 
   // 编辑
   edit = (key) => {
     this.setState({ editingKey: key });
+  };
+
+  // 删除
+  deleteMode = (record) => {
+    this.setState({
+      showWarningTip: true,
+      warningTipText: '确认删除?',
+      tableRecord: record,
+    });
   };
 
   render() {
@@ -60,6 +147,10 @@ class WarehouseGoodsTable extends Component {
         }
       }
     } = this.props;
+    const {
+      showWarningTip,
+      warningTipText
+    } = this.state;
     const { getFieldDecorator } = form;
     const components = {
       body: {
@@ -87,7 +178,7 @@ class WarehouseGoodsTable extends Component {
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
       }, {
         title: '操作人',
         dataIndex: 'user',
@@ -113,7 +204,7 @@ class WarehouseGoodsTable extends Component {
                 </EditableContext.Consumer>)
                 : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
               }
-              <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)} />
+              <span title="删除" style={{cursor: "pointer"}} className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
             </div>
           )
         }
@@ -145,7 +236,7 @@ class WarehouseGoodsTable extends Component {
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
       }, {
         title: '操作人',
         dataIndex: 'user',
@@ -164,6 +255,12 @@ class WarehouseGoodsTable extends Component {
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </EditableContext.Provider>
+        {showWarningTip && <WarningTip
+          style={{ marginTop: '350px', width: '240px', height: '88px' }}
+          onCancel={this.onCancelWarningTip}
+          hiddenCancel={false}
+          onOK={this.onConfirmWarningTip}
+          value={warningTipText} />}
       </div>
     )
   }

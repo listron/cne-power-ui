@@ -9,10 +9,10 @@ const initState = Immutable.fromJS({
   },
   pageSize: 10,
   pageNum: 1,
-  warehouseName: "", // 仓库名称
-  goodsName: "", // 物品名称
+  warehouseName: "", // 仓库名称（搜索）
+  goodsName: "", // 物品名称（搜索）
   goodsData: { // 物品列表
-    isAbleOper: 0, // 列表是否可编辑（不可编辑，0：可编辑 1）
+    isAbleOper: 0, // 列表是否可编辑（不可编辑，1：可编辑 0）
     pageData: { // 表格数据
       dataList: [],
       pageCount: 0

@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import styles from "./warehouseWrapTable.scss";
 import PropTypes from 'prop-types';
 import {Form, Table} from "antd";
+import moment from "moment";
 import EditableCell from "./EditableCell/EditableCell";
 
+import styles from "./warehouseWrapTable.scss";
+
+const defaultTime = "YYYY-MM-DD HH:mm:ss";
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
@@ -63,6 +66,7 @@ class WarehouseWrapTable extends Component {
       const stationCode = stationName.map(cur => {
         return cur.stationCode;
       });
+      // 参数
       const params = {
         warehouseId,
         warehouseName,
@@ -139,7 +143,7 @@ class WarehouseWrapTable extends Component {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
       }, {
         title: '创建人',
         dataIndex: 'user',

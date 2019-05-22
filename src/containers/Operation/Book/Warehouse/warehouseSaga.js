@@ -18,7 +18,10 @@ const {
       warehouseAdd,
       warehouseDel,
       warehouseUpdate,
-      goodsList
+      goodsList,
+      goodsAdd,
+      goodsDel,
+      goodsUpdate
     }
   }} = Path;
 
@@ -41,44 +44,6 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
         type: warehouseAction.warehouseFetchSuccess,
         payload: {
           warehouseData: response.data.data || {},
-          loading: false,
-        },
-      });
-    }else {
-      throw response.data
-    }
-  } catch (e) {
-    console.log(e);
-    yield put({
-      type: warehouseAction.warehouseFetchSuccess,
-      payload: {
-        loading: false
-      }
-    });
-  }
-}
-
-function* getGoodsList(action) { // 物品（物资）清单分页列表
-  const { payload } = action;
-  const url = `${APIBasePath}${goodsList}`;
-  try {
-    yield put({
-      type: warehouseAction.warehouseFetchSuccess,
-      payload: {
-        loading: true,
-        pageSize: payload.pageSize || 10,
-        pageNum: payload.pageNum || 1,
-        goodsName: payload.goodsName,
-        goodsType: payload.goodsType,
-      }
-    });
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
-      console.log(response.data.data, "response.data.data");
-      yield put({
-        type: warehouseAction.warehouseFetchSuccess,
-        payload: {
-          goodsData: response.data.data || {},
           loading: false,
         },
       });
@@ -225,10 +190,207 @@ function* getWarehouseUpdateList(action) { // 仓库更新
         pageNum,
         pageSize
       };
-      // 更新成功之后关闭
+      // 更新成功退出编辑状态
       func();
       yield put({
         type: warehouseAction.getWarehouseList,
+        payload: paramsList,
+      });
+    }else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getGoodsList(action) { // 物品（物资）清单分页列表
+  const { payload } = action;
+  const url = `${APIBasePath}${goodsList}`;
+  try {
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: true,
+        pageSize: payload.pageSize || 10,
+        pageNum: payload.pageNum || 1,
+        goodsName: payload.goodsName,
+        goodsType: payload.goodsType,
+      }
+    });
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      console.log(response.data.data, "response.data.data");
+      yield put({
+        type: warehouseAction.warehouseFetchSuccess,
+        payload: {
+          goodsData: response.data.data || {},
+          loading: false,
+        },
+      });
+    }else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getGoodsAddList(action) { // 物品添加
+  const {
+    payload: {
+      goodsUnit,
+      goodsName,
+      goodsType,
+      pageNum,
+      pageSize,
+      searchName,
+      func
+    }
+  } = action;
+  // 添加的参数
+  const paramsAdd = {
+    goodsUnit,
+    goodsName,
+    goodsType
+  };
+  const url = `${APIBasePath}${goodsAdd}`;
+  try {
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: true,
+      }
+    });
+    const response = yield call(axios.post, url, paramsAdd);
+    if (response.data.code === '10000') {
+      // 添加完之后在调用物品列表
+      const paramsList = {
+        searchName,
+        goodsType,
+        pageNum,
+        pageSize
+      };
+      // 添加成功清空input的值
+      func();
+      yield put({
+        type: warehouseAction.getGoodsList,
+        payload: paramsList,
+      });
+    }else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getGoodsDelList(action) { // 物品删除
+  const {
+    payload: {
+      goodsId,
+      pageNum,
+      pageSize,
+      goodsName,
+      goodsType,
+      func
+    }
+  } = action;
+  const url = `${APIBasePath}${goodsDel}?goodsIds=${goodsId}`;
+  try {
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: true,
+      }
+    });
+    const response = yield call(axios.delete, url);
+    if (response.data.code === '10000') {
+      // 删除完之后在调用物品列表
+      const paramsList = {
+        pageNum,
+        pageSize,
+        goodsName,
+        goodsType
+      };
+      // 添加成功清空input的值
+      func();
+      yield put({
+        type: warehouseAction.getGoodsList,
+        payload: paramsList,
+      });
+    }else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: false
+      }
+    });
+  }
+}
+
+function* getGoodsUpdateList(action) { // 物品（物资）修改
+  const {
+    payload: {
+      goodsId,
+      goodsName,
+      goodsUnit,
+      pageNum,
+      pageSize,
+      searchName,
+      goodsType,
+      func
+    }
+  } = action;
+  const url = `${APIBasePath}${goodsUpdate}`;
+  // 修改参数
+  const paramsUpdate = {
+    goodsId,
+    goodsName,
+    goodsUnit
+  };
+  try {
+    yield put({
+      type: warehouseAction.warehouseFetchSuccess,
+      payload: {
+        loading: true,
+      }
+    });
+    const response = yield call(axios.put, url, paramsUpdate);
+    if (response.data.code === '10000') {
+      // 更新完之后在调用物品列表
+      const paramsList = {
+        pageNum,
+        pageSize,
+        searchName,
+        goodsType
+      };
+      // 更新成功退出编辑状态
+      func();
+      yield put({
+        type: warehouseAction.getGoodsList,
         payload: paramsList,
       });
     }else {
@@ -251,6 +413,9 @@ export function* watchWarehouse() {
   yield takeEvery(warehouseAction.getWarehouseDelList, getWarehouseDelList);
   yield takeEvery(warehouseAction.getWarehouseUpdateList, getWarehouseUpdateList);
   yield takeEvery(warehouseAction.getGoodsList, getGoodsList);
+  yield takeEvery(warehouseAction.getGoodsAddList, getGoodsAddList);
+  yield takeEvery(warehouseAction.getGoodsDelList, getGoodsDelList);
+  yield takeEvery(warehouseAction.getGoodsUpdateList, getGoodsUpdateList);
 
 }
 
