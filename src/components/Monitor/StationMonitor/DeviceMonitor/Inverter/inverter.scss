@@ -1,0 +1,215 @@
+@import '../../../../../theme/theme.scss';
+
+$normal:#fff;
+$normal_color:#199475;
+$normal_hover_color:rgba(0,0,0,0.20);
+$moreThanTen:#fefad2;
+$moreThanTen_color:#f9b600;
+$moreThanTwenty:#ffce7f;
+$moreThanTwenty_color:#e08031;
+$noContact:#f0f2f5;
+$noContact_color:#666666;
+$noAccess:#ededed;
+$noAccess_color:#999;
+$noAccess_background_color:#ededed;
+$arlam:#ff8e9c;
+$arlam_color:#a42b2c;
+
+.statisticsBox{
+  display: flex;
+  justify-content: space-between;
+  .inverterInfo{
+    display: flex;
+  }
+  .seriesCurrent{
+    display: flex;
+    width: 400px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    margin-right: 4px;
+    .eachCurrent{
+      width: 40px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      background:#ceebe0;
+      border-radius:2px;
+      color: $themeColor;
+    }
+  }
+}
+
+.subConfluence{ // 子汇流箱
+  display: flex;
+  padding: 0 60px;
+  flex-wrap: wrap;
+  .singledeviceItem{
+    display: inline-block;
+    margin-right: 18px; 
+    margin-bottom: 20px;
+    width: 222px;
+    height: 121px;
+    border-radius:4px;
+    font-size: 12px;
+    cursor: pointer;
+    border:1px solid #dfdfdf;
+    .statusBox{
+      padding: 5px 5px 0px 5px;
+      .deviceItemIcon{
+        display: inline-block;
+        vertical-align: top;
+        margin: 5px;
+        position: relative;
+      }
+      a{
+        color: $darkColor;
+      }
+      :global{
+        .iconfont{
+          font-size: 22px;
+        }
+        .icon-alarm{
+          position: absolute;
+          bottom: 10px;
+          right: 2px;
+          width: 10px;
+          height: 10px;
+          color: #a42b2c;
+          font-size: 14px;
+        }
+        .icon-outage{
+          position: absolute;
+          bottom: 9px;
+          left: -5px;
+          width: 10px;
+          height: 10px;
+          color: #e08031;
+          font-size: 14px;
+        }
+        .ant-progress-inner{
+          background-color: #dfdfdf;
+        }
+      }
+      .deviceItemR{
+        display: inline-block;
+        width: 165px;
+        color: $darkColor;
+        .deviceBlockName{
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: -4px;
+          margin-top: 7px;
+        }
+        .deviceItemPower{
+          display: flex;
+          justify-content: space-between;
+          margin-top: -4px;
+          .realDevicePower{
+            color: $themeColor
+          }
+        }
+        :global{
+          .ant-progress{
+            line-height: 3px;
+          }
+          .ant-progress-success-bg, .ant-progress-bg{
+            background-color: $themeColor;
+          }
+        }
+      }
+    }
+    .deviceBlockFooter{
+      line-height: 22px;
+      margin-top: 10px;
+      padding-left: 3px;
+      padding: 0 5px 5px 5px;
+      >div{
+        display: inline-block;
+        width: 50%;
+        text-align: left;
+      }
+      .dispersionRatio{
+        color:#666666;
+      }
+    }
+  }
+  .normal{
+    &:hover{
+      box-shadow:0px 1px 4px 1px $normal_hover_color;
+    }
+    .statusBox{
+      background: $normal;
+      .deviceBlockName,.icon{
+        color: $normal_color
+      }
+    }
+  }
+  .normal.alarm{
+    .statusBox{
+      background:  $arlam;
+      .deviceBlockName,.iconHl{
+        color: $arlam_color
+      }
+    }
+    &:hover{
+      box-shadow:0px 1px 4px 1px $arlam;
+    }
+  }
+  .moreThanTen{
+    &:hover{
+      box-shadow:0px 1px 4px 1px $moreThanTen;
+    }
+    .statusBox{
+      background: $moreThanTen;
+      .deviceBlockName,.iconHl{
+        color: $moreThanTen_color
+      }
+    }
+    .deviceBlockFooter{
+      .dispersionRatio{
+        color:$moreThanTen_color;
+      }
+    }
+  }
+  .moreThanTwenty{
+    &:hover{
+      box-shadow:0px 1px 4px 1px  $moreThanTwenty;
+    }
+    .statusBox{
+      background: $moreThanTwenty;
+      .deviceBlockName,.iconHl{
+        color: $moreThanTwenty_color;
+      }
+    }
+    .deviceBlockFooter{
+      .dispersionRatio{
+        color:$moreThanTwenty_color;
+      }
+    }
+    
+  }
+  .noContact{
+    &:hover{
+      box-shadow:0px 1px 4px 1px $noContact;
+    }
+    .statusBox{
+      background: $noContact;
+      .deviceBlockName,.iconHl{
+        color: $noContact_color
+      }
+      :global{
+        .icon-alarm{
+          color: $noContact_color
+        }
+      }
+    }
+  }
+  .noAccess{
+    box-shadow:0 1px 4px 0  $noAccess;
+    background: $noAccess_background_color;
+    pointer-events: none;
+    .deviceBlockName,.iconHl{
+      color:$noAccess_color
+    }
+  }
+}

@@ -52,7 +52,11 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
             <span
               className={styles.eachCurrent}
               key={i}
-              style={ emptySeries ? { backgroundColor: '#f1f1f1' } : {...statusColor[status]}}
+              style={{
+                backgroundColor: emptySeries ? '#f1f1f1': statusColor[status].backgroundColor,
+                color: emptySeries ? '#199475': statusColor[status].color,
+                marginRight: (i + 1) % 4 === 0 ? '20px' : '6px'
+              }}
             >{emptySeries ? '' : electricCurrent}</span>
           )
         })}

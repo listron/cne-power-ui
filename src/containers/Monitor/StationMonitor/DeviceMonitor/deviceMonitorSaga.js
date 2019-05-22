@@ -202,7 +202,7 @@ function *getSubList({ deviceCode, deviceTypeCode }) { // 10s获取下级设备�
 function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   const { deviceTypeCode, deviceCode } = payload;
   if (waiting) {
-    yield delay(10000); // 阻塞10秒
+    yield delay(60000); // 阻塞1分钟
   }
   yield fork(getDeviceDetail, { deviceTypeCode, deviceCode });
   yield fork(getAlarms, { deviceCode });

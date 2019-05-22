@@ -48,16 +48,15 @@
   }
   .seriesCurrent{
     display: flex;
-    width: 370px;
+    width: 400px;
     flex-wrap: wrap;
     margin-top: 18px;
-    margin-right: 24px;
+    margin-right: 4px;
     .eachCurrent{
       width: 40px;
       height: 24px;
       line-height: 24px;
       text-align: center;
-      margin-right: 6px;
       background:#ceebe0;
       border-radius:2px;
       color: $themeColor;

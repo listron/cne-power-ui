@@ -47,13 +47,11 @@ class ConfluenceHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice, sonDevice, dispersionRatio } = deviceDetail;
+    const { deviceStatus, parentDevice, dispersionRatio, manufactor, deviceModelName } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
-    
     const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
-    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && `${sonDevice.deviceTypeCode}` === e.deviceTypeCode);
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -68,8 +66,8 @@ class ConfluenceHeader extends Component {
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName || '--'}</span>
           <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span>
           <span className={styles.dispersionRatio}>离散率>{dispersionRatio || '--'}</span>
-          <span className={styles.manufactor}>生产厂商：{deviceDetail.manufactor || '--'}</span>
-          <span className={styles.deviceModelName}>设备型号：{deviceDetail.deviceModelName || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufactor || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
