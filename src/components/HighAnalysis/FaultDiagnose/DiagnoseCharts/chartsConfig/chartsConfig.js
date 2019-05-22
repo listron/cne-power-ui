@@ -123,8 +123,8 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -262,8 +262,8 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -401,8 +401,8 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
