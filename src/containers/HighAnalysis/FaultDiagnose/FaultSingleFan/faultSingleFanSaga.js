@@ -35,6 +35,8 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 故障日期时间
+      const dateArr = response.data.data.algModeDatas[0].date.split(",");
       // 发电机前驱温度
       const  preParams = {
         stationCode: response.data.data.stationCode,
@@ -105,6 +107,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
           faultInfo: response.data.data || {},
           deviceName: deviceName,
           warnId: Number(response.data.data.algModeDatas[0].type),
+          faultDate: dateArr[dateArr.length - 1] || response.data.data.endTime,
           faultDateList: response.data.data.algModeDatas[0].date,
           faultInfoMessage: response.data.data.executeMessage || "",
           loading: false,
