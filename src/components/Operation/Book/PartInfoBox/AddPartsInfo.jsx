@@ -11,6 +11,18 @@ const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
 class AddPartsInfo extends React.Component {
+  static propTypes = {
+    changePartInfoStore: PropTypes.func,
+    getPartsFactorsList: PropTypes.func,
+    getPartsAssetTree: PropTypes.func,
+    form: PropTypes.object,
+    addPartInfo: PropTypes.func,
+    getfactorsPartsMode: PropTypes.func,
+    detailPartsRecord: PropTypes.object,
+    partsFactorsList: PropTypes.array,
+    factorsPartsMode: PropTypes.array,
+    assetList: PropTypes.array,
+  }
   constructor(props, context) {
     super(props, context)
     this.state = {

@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Form, Select, Icon, Modal, message } from 'antd';
+import { Button, Input, Form, Modal,  } from 'antd';
 import styles from './partInfoBox.scss';
 const FormItem = Form.Item;
-const Option = Select.Option;
+
 class ShowAddDeviceModeModal extends Component {
   static propTypes = {
+    cancleFactorModal: PropTypes.func,
+    addPartsFactors: PropTypes.func,
+    showAddfactorsModal: PropTypes.bool,
+    form:PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -16,11 +20,11 @@ class ShowAddDeviceModeModal extends Component {
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { getFieldsValue } = this.props.form;
-    const { addDeviceTypeData } = this.props;
-    this.props.form.validateFieldsAndScroll(["addFactorName",], (err, values) => {
+    const { validateFieldsAndScroll } = this.props.form;
+    const { addPartsFactors} = this.props;
+    validateFieldsAndScroll(["addFactorName",], (err, values) => {
       if (!err) {
-        this.props.addPartsFactors({
+        addPartsFactors({
           manufactorName: values.addFactorName,
          
         })

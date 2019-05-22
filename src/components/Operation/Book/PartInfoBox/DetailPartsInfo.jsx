@@ -2,11 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./partInfoBox.scss";
 import { Modal } from 'antd';
-import DetailInfoPart from '../DeviceManage/DetailDevice/DetailInfoPart';
-
-
 
 class DetailPartsInfo extends React.Component {
+  static propTypes = {
+
+    changePartInfoStore: PropTypes.func,
+    cancleDetailModal: PropTypes.func,
+    detailPartsInfo: PropTypes.object,
+    showDetailParts: PropTypes.bool,
+  }
   constructor(props, context) {
     super(props, context)
   }
@@ -59,8 +63,7 @@ class DetailPartsInfo extends React.Component {
   }
   render() {
     let { showDetailParts, detailPartsInfo } = this.props;
-    console.log('showDetailParts: ', showDetailParts);
-    console.log('detailPartsInfo: ', detailPartsInfo);
+
     let baseInfo = this.baseFun(detailPartsInfo);
     let assetInfo = this.assetFun(detailPartsInfo);
     return (

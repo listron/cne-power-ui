@@ -10,6 +10,21 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 class EditPartsInfo extends React.Component {
+  static propTypes = {
+
+    changePartInfoStore: PropTypes.func,
+    getPartsAssetTree: PropTypes.func,
+    getPartsFactorsList: PropTypes.func,
+    onShowSideChange: PropTypes.func,
+    getfactorsPartsMode: PropTypes.func,
+    addPartInfo: PropTypes.func,
+    form: PropTypes.object,
+    detailPartsRecord: PropTypes.object,
+    partsFactorsList: PropTypes.array,
+    factorsPartsMode: PropTypes.array,
+    assetList: PropTypes.array,
+    
+  }
   constructor(props, context) {
     super(props, context)
     this.state = {

@@ -6,6 +6,12 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 class ShowAddPartsModeModal extends Component {
   static propTypes = {
+    cancleDeviceModeModal: PropTypes.func,
+    addPartsModes: PropTypes.func,
+    showAddPartsMode: PropTypes.bool,
+    form:PropTypes.object,
+    partsFactorsList:PropTypes.array,
+    manufacturerValue:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -36,9 +42,9 @@ class ShowAddPartsModeModal extends Component {
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { getFieldsValue } = this.props.form;
+    const { validateFieldsAndScroll } = this.props.form;
     const { addDeviceTypeData } = this.props;
-    this.props.form.validateFieldsAndScroll(["addPartsModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
+    validateFieldsAndScroll(["addPartsModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
       if (!err) {
         // this.props.checkDeviceMode({
         //   deviceModeName: values.addPartsModeCodeName,
@@ -56,7 +62,7 @@ class ShowAddPartsModeModal extends Component {
   }
   
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator,  } = this.props.form;
     const { showAddPartsMode ,manufacturerValue,partsFactorsList} = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },

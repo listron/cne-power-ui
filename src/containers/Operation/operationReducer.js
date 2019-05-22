@@ -10,8 +10,9 @@ import workOrder from './Ticket/WorkOrder/workOrderReducer';
 import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
+import deviceAccount from './Book/DeviceAccount/deviceAccountReducer';
 
 
-const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder,assetsConfig,deviceManage,partInfo });
+const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder,assetsConfig,deviceManage,partInfo,deviceAccount });
 
 export default operationReducer;

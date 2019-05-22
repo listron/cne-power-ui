@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./partInfoBox.scss";
 import DetailPartsInfo from "./DetailPartsInfo";
+import CopyParts from "./CopyParts";
 import { Button, Table, Tree, Upload, message } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import path from '../../../../constants/path';
@@ -10,17 +11,28 @@ const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
 class PartInfoBox extends React.Component {
+  static propTypes = {
+
+    changePartInfoStore: PropTypes.func,
+    getDeviceTypeList: PropTypes.func,
+    downLoadFile: PropTypes.func,
+    allStationBaseInfo: PropTypes.array,
+    deviceComList: PropTypes.array,
+    stationCode: PropTypes.string,
+    detailPartsRecord: PropTypes.object,
+
+  }
   constructor(props, context) {
     super(props, context)
     this.state = {
       selectStation: [],
       showDetailParts: false,
       detailPartsInfo: {},
+      showCopyParts: false,
     }
   }
   selectStation = (stations) => {
-    console.log('stations: ', stations);
-    const { getDeviceTypeList, queryParams, changePartInfoStore } = this.props;
+    const { getDeviceTypeList, changePartInfoStore } = this.props;
     let stationCode = stations.length > 0 && stations[0].stationCode;
     getDeviceTypeList({
       stationCode,
@@ -70,10 +82,20 @@ class PartInfoBox extends React.Component {
     })
   }
 
+  copyComponent = () => {
+    this.setState({
+      showCopyParts: true
+    })
+  }
+  closeComParts=()=>{
+    this.setState({
+      showCopyParts: false
+    })
+  }
   render() {
-    const { allStationBaseInfo, deviceComList, stationCode, detailPartsRecord } = this.props;
+    const { allStationBaseInfo, deviceComList, stationCode, } = this.props;
 
-    let { selectStation, showDetailParts, detailPartsInfo } = this.state;
+    let { selectStation, showDetailParts, detailPartsInfo,showCopyParts } = this.state;
     let stationName = selectStation.length > 0 && selectStation[0].stationName;
 
     const testData = [{
@@ -95,7 +117,7 @@ class PartInfoBox extends React.Component {
       {
         title: '部件名称',
         dataIndex: 'partsName',
-        render: (text, record, index) => <span title={text} onClick={() => this.showDetailParts(record)} >{text}</span>
+        render: (text, record, index) => <span className={styles.comName} title={text} onClick={() => this.showDetailParts(record)} >{text}</span>
       }, {
         title: '部件型号',
         dataIndex: 'partsModeName',
@@ -181,7 +203,7 @@ class PartInfoBox extends React.Component {
           <div className={styles.right}>
             <div className={styles.addParts}>
               <Button onClick={this.addPartsInfo} className={styles.plusButton} icon="plus"  >添加</Button>
-              <Button className={styles.copyCom}  >复制</Button>
+              <Button className={styles.copyCom} onClick={this.copyComponent} >复制</Button>
             </div>
             <Table
               loading={false}
@@ -195,6 +217,7 @@ class PartInfoBox extends React.Component {
           </div>
         </div>
         {showDetailParts && <DetailPartsInfo {...this.props} detailPartsInfo={detailPartsInfo} showDetailParts={showDetailParts} cancleDetailModal={this.cancleDetailModal} />}
+        {showCopyParts&&<CopyParts {...this.props} closeComParts={this.closeComParts} showCopyParts={showCopyParts} />}
       </div>
     )
   }

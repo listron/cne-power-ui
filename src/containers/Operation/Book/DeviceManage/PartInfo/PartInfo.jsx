@@ -16,6 +16,11 @@ class PartInfo extends Component {
 
     changePartInfoStore: PropTypes.func,
     resetPartInfoStore: PropTypes.func,
+    enterpriseId: PropTypes.string,
+    getStationOfEnterprise: PropTypes.func,
+    changeTab: PropTypes.func,
+    showPage: PropTypes.string,
+    selectType: PropTypes.string,
   }
   constructor(props) {
     super(props);

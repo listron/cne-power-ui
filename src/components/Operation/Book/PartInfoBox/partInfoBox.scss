@@ -102,6 +102,10 @@
         }
       }
 
+      .comName {
+        text-decoration: underline;
+      }
+
       .copyCom {
         margin-left: 16px;
         color: $themeColor;
@@ -255,7 +259,8 @@
           color: #199475;
           border-color: #199475;
         }
-        .editSave{
+
+        .editSave {
           margin-left: 64px;
         }
       }
@@ -313,6 +318,55 @@
         display: flex;
         flex-direction: column;
       }
+    }
+  }
+}
+
+
+
+.copyPartsStyle{
+  :global{
+
+    .ant-modal-body{
+      padding: 0;
+    }
+  }
+
+
+  .copyPartsBox {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    height: 375px;
+    .content {
+      display: flex;
+      flex:1;
+      
+      .leftTree {
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        border-right: 1px solid #dfdfdf;
+        padding: 16px
+      }
+  
+      .rightTree {
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        padding: 16px
+      }
+    }
+  
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      background: #ececec;
+      padding: 8px 0;
+      .confire{
+        margin: 0 12px;
+      }
+  
     }
   }
 }
