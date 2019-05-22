@@ -177,9 +177,6 @@ export default class PreTemperature extends React.Component {
 
   render() {
     const {
-      faultInfo: {
-        endTime
-      },
       faultDate,
       preDate,
       faultDateList
@@ -188,16 +185,28 @@ export default class PreTemperature extends React.Component {
       <div className={styles.preChartsBox}>
         <div className={styles.preChartsDate}>
           <span>选择日期</span>
-          {(endTime) && (
+          {(faultDate) && (
             <DatePicker
               dateRender={(current) => {
                 const style = {};
                 faultDateList && faultDateList.split(",").map(cur => {
                   if (moment(current).format('YYYY-MM-DD') === moment(cur).format('YYYY-MM-DD')) {
-                    style.border = '1px solid #a42b2c';
-                    style.borderRadius = '50%';
-                    style.color = "#ffffff";
-                    style.backgroundColor = "#a42b2c";
+                    // 判断faultDate不等于当前cur故障日期
+                    // 标记故障颜色
+                    if (moment(cur).format('YYYY-MM-DD') !== moment(faultDate).format('YYYY-MM-DD')) {
+                      style.border = '1px solid #a42b2c';
+                      style.borderRadius = '50%';
+                      style.color = "#ffffff";
+                      style.background = "#a42b2c";
+                    }
+                    // 判断faultDate等于当前cur故障日期
+                    // 恢复原来的选中颜色
+                    if (moment(current).format('YYYY-MM-DD') === moment(faultDate).format('YYYY-MM-DD')) {
+                      style.color = "#fff";
+                      style.borderRadius = '0';
+                      style.background = "#199475";
+                      style.border = "1px solid transparent";
+                    }
                   }
                 });
                 return (
@@ -207,7 +216,7 @@ export default class PreTemperature extends React.Component {
                 );
               }}
               onChange={this.changeFaultDate}
-              value={moment(faultDate || endTime, "YYYY-MM-DD")}
+              value={moment(faultDate, "YYYY-MM-DD")}
             />
           )}
         </div>
@@ -216,12 +225,12 @@ export default class PreTemperature extends React.Component {
             发电机前驱温度
           </div>
           <div>
-            {(endTime) && (
+            {(faultDate) && (
               <RangePicker
                 onChange={this.changePreDate}
                 value={preDate.length === 0 ? [
-                  moment(endTime, "YYYY/MM/DD").subtract(1,'months'),
-                  moment(endTime, "YYYY/MM/DD")
+                  moment(faultDate, "YYYY/MM/DD").subtract(1,'months'),
+                  moment(faultDate, "YYYY/MM/DD")
                 ] : preDate}
               />
             )}
