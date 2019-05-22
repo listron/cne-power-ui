@@ -36,18 +36,15 @@ class DayReportListSearch extends Component {
   }
 
   regionSelect = (value) => {
-    const { getDayReportList, stationType, stationNameSort, pageSize, pageNum, startTime  } = this.props;
-    let params = { stationType, stationNameSort, pageSize, pageNum, startTime };
-    getDayReportList({ ...params, regionName: value });
+    const { getDayReportList, stationType, stationNameSort, pageSize, startTime  } = this.props;
+    let params = { stationType, stationNameSort, pageSize, startTime };
+    getDayReportList({ ...params, pageNum: 1, regionName: value });
   }
 
   stationTypeChange = (e) => {
-    const { getDayReportList, stationNameSort, pageSize, pageNum, startTime, regionName } = this.props;
-    let params = { stationNameSort, pageSize, pageNum, startTime, regionName };
-    getDayReportList({
-      ...params,
-      stationType: e.target.value,
-    });
+    const { getDayReportList, stationNameSort, pageSize, startTime, regionName } = this.props;
+    let params = { stationNameSort, pageSize, startTime, regionName };
+    getDayReportList({ ...params, pageNum: 1, stationType: e.target.value });
   }
 
   disabledDate = (start) => {
