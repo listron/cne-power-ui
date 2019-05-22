@@ -50,14 +50,14 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
@@ -189,14 +189,14 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
@@ -328,14 +328,14 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
