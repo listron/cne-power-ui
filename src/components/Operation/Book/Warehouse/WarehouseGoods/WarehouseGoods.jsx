@@ -197,14 +197,14 @@ class WarehouseGoods extends Component {
                           {getFieldDecorator('goodsName', {
                             rules: [{ required: true, message: '请输入物品名称'}],
                           })(
-                            <Input placeholder="30字以内" />
+                            <Input maxLength={30} placeholder="30字以内" />
                           )}
                         </FormItem>
                         <FormItem label="计量单位">
                           {getFieldDecorator('goodsUnit', {
                             rules: [{ required: true, message: '请输入计量单位'}],
                           })(
-                            <Input placeholder="6字以内" />
+                            <Input maxLength={6} placeholder="6字以内" />
                           )}
                         </FormItem>
                         <Button style={{ width: '68px', marginTop: "4px" }} htmlType="submit">

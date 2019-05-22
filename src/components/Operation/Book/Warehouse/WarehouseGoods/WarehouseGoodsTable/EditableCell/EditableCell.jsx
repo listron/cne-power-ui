@@ -16,8 +16,12 @@ class EditableCell extends React.Component {
   };
 
   getInput = () => {
+    const { type } = this.props;
+    if (type === 'goodsName') {
+      return <Input maxLength={30} placeholder="物品名称" />
+    }
     return (
-      <Input />
+      <Input maxLength={6} placeholder="计量单位" />
     );
   };
 
@@ -38,7 +42,7 @@ class EditableCell extends React.Component {
           return (
             <td {...restProps}>
               {editing ? (
-                <FormItem style={{ margin: 0 }}>
+                <FormItem help="" style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
                     rules: [{
                       required: true,

@@ -21,6 +21,11 @@ class Warehouse extends Component {
     };
   }
 
+  componentWillUnmount() {
+    const { resetStore } = this.props;
+    resetStore();
+  }
+
   // 仓库
   warehouseFunc = () => {
     this.setState({

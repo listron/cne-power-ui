@@ -151,7 +151,6 @@ class WarehouseGoodsTable extends Component {
       showWarningTip,
       warningTipText
     } = this.state;
-    const { getFieldDecorator } = form;
     const components = {
       body: {
         row: EditableFormRow,
@@ -217,6 +216,7 @@ class WarehouseGoodsTable extends Component {
         ...col,
         onCell: record => ({
           record,
+          type: col.dataIndex  === 'goodsName' ? 'goodsName' : 'goodsUnit',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),

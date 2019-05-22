@@ -20,7 +20,7 @@ class EditableCell extends React.Component {
   getInput = () => {
     const { type, stations } = this.props;
     if (type === 'text') {
-      return <Input />
+      return <Input maxLength={30} placeholder="仓库名称" />
     }
     return (
       <StationSelect
@@ -51,7 +51,7 @@ class EditableCell extends React.Component {
           return (
             <td {...restProps}>
               {editing ? (
-                <FormItem style={{ margin: 0 }}>
+                <FormItem help="" style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
                     rules: [{
                       required: true,
