@@ -214,16 +214,21 @@ export default {
       getStationType: '/v3/monitor/stations/',
       stationDeviceList: '/v3/station/devicelist', // 单电站设备列表获取
       seriesinverterDetail: '/v3/monitor/seriesinverter',//组串式逆变器详情
+      inverterSubList: '/v3/monitor/subList/inverter', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
       confluenceboxDetail: '/v3/monitor/confluencebox',//汇流箱详情
+      confluenceboxSubList: '/v3/monitor/subList/confluencebox', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图
       boxtransformerDetail: '/v3/monitor/boxtransformer',//箱变详情
       boxtransformerTenMin: '/v3/monitor/boxtransformer/sequencechart',//箱变10min时序图
       weatherstationDetail: '/v3/monitor/weatherstation', //气象站详情
       integrateDetail: '/v3/monitor/collectorline', // 集电线路详情
+      integrateSubList: '/v3/monitor/subList/integrate', // 集电线路下级信息
       boosterDetail: '/v3/monitor/boosterstation', // 升压站详情
+      boosterSubList: '/v3/monitor/subList/booster', // 升压站下级信息
       monitorPointData: '/v3/monitor/point', //设备测点数据
       deviceAlarmData: '/v3/alarm/device', // 单设备告警信息
+      monitorEvents: '/v3/monitor/events', // 单设备事件
       getRealtimeAlarm: '/v3/alarm/station/alarmlist', //实时告警信息
       exportAlarmStatistic: '/v3/alarm/station/alarmsummary/export',//导出告警统计
 

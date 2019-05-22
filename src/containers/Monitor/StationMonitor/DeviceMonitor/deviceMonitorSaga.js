@@ -17,14 +17,17 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
   '202': {  // 汇流箱： 202
     detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
     tenMin: monitor.confluenceboxTenMin, // '/mock/monitor/confluenceboxTenMin'
+    subList: monitor.confluenceboxSubList,
   },
   '206': {  // 组串式逆变器：206
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
-    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin' 
+    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
+    subList: monitor.inverterSubList,
   },
   '201': {  // 集中式逆变器：201
     detail: monitor.seriesinverterDetail, //  '/mock/monitor/seriesinverter'
-    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin' 
+    tenMin: monitor.seriesinverterTenMin, //  '/mock/monitor/seriesinverterTenMin'
+    subList: monitor.inverterSubList,
   },
   '304': {  // 箱变： 304
     detail: monitor.boxtransformerDetail, // '/mock/monitor/boxtransformerDetail'
@@ -39,19 +42,22 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
   // },
   '302': { // 集电线路 302
     detail: monitor.integrateDetail,
+    subList: monitor.integrateSubList,
   },
   '301': { // 升压站 301
     detail: monitor.boosterDetail,
+    subList: monitor.boosterSubList,
   }
 }
 
 // 各类单设备展示内容：
-// 汇流箱202 - 详情, 下级, 时序图, 测点, 告警
-// 组串逆变器206 - 详情, 下级, 时序图+支路电流, 测点, 告警
-// 集中逆变器201 - 详情, 下级, 出力图, 测点, 告警
-// 箱变304 - 详情, 出力, 测点, 告警
-// 集电线路302 - 详情, 下级, 测点, 告警
-// 升压站301 - 详情, 下级, 测点, 告警
+// 汇流箱202 - 详情, 下级, 时序图, 测点, 事件, 告警
+// 组串逆变器206 - 详情, 下级, 时序图+支路电流, 测点, 事件, 告警
+// 集中逆变器201 - 详情, 下级, 出力图, 测点, 事件, 告警
+// 箱变304 - 详情, 出力, 测点, 事件, 告警
+// 集电线路302 - 详情, 下级, 测点, 事件, 告警
+// 升压站301 - 详情, 下级, 测点, 事件, 告警
+// 所有设备类型共有: 
 
 function *getDevices({ payload }){ // 单设备同级所有设备信息[]
   const { deviceTypeCode, stationCode } = payload;
@@ -135,6 +141,25 @@ function *getDevicePoints({ deviceCode }){ // 10s实时测点信息
   }
 }
 
+function *getEvents({ deviceCode }){ // 10s事件信息
+  const eventUrl = `${APIBasePath}${monitor.monitorEvents}/${deviceCode}`;
+  try {
+    const tmpEvents = yield call(axios.get, eventUrl);
+    if (tmpEvents.data.code === '10000') {
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: { deviceEvents: tmpEvents.data.data || {} },
+      })
+    } else { throw tmpEvents.data }
+  } catch(error) {
+    console.log(error);
+    yield put({
+      type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+      payload: { deviceEvents: [] },
+    })
+  }
+}
+
 function *getAlarms({ deviceCode }){ // 10s实时告警
   const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`;
   try {
@@ -155,8 +180,8 @@ function *getAlarms({ deviceCode }){ // 10s实时告警
   
 }
 
-function *getSubList({ deviceCode }) { // 10s获取下级设备详情
-  const subDeviceUrl = `${APIBasePath}${monitor.subList}/${deviceCode}`;
+function *getSubList({ deviceCode, deviceTypeCode }) { // 10s获取下级设备详情
+  const subDeviceUrl = `${APIBasePath}${monitorPath[deviceTypeCode].subList}/${deviceCode}`;
   try {
     const tmpSubList = yield call(axios.get, subDeviceUrl);
     if (tmpSubList.data.code === '10000') {
@@ -181,9 +206,10 @@ function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   }
   yield fork(getDeviceDetail, { deviceTypeCode, deviceCode });
   yield fork(getAlarms, { deviceCode });
-  yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警
+  yield fork(getEvents, { deviceCode });
+  yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警, 事件
   if (['202', '206', '201', '302', '301'].includes(deviceTypeCode)) { // 汇流202,组串逆变206,集中逆变201,集电302,升压301 需下级信息
-    yield fork(getSubList, { deviceCode });
+    yield fork(getSubList, { deviceCode, deviceTypeCode });
   }
   // pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
 }

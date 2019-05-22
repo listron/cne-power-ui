@@ -89,7 +89,6 @@
 }
 
 .alarmTable{
-  border-top: solid 1px $promptColor;
   padding: 0px 68px 48px 68px;
   .alarmTip{
     line-height: 20px;
@@ -100,6 +99,10 @@
       background-color: $promptColor;
       color: #fff;
     }
+  }
+  h3 {
+    font-weight: 700;
+    margin: 20px 0 0 0;
   }
   .tableHeader{
     display: flex;
@@ -175,6 +178,59 @@
     .eachGroup:last-child{
       border-right: none;
     }
+  }
+}
+
+.devicePointsTable{ // 设备测点表格图
+  display: flex;
+  justify-content: space-around;
+  .pointsList, .eventsList{
+    flex-basis: 615px;
+    border: 1px solid $promptColor;
+    height: 240px;
+    h3{
+      padding-left: 8px;
+      margin-bottom: 0;
+      height: 32px;
+      line-height: 32px;
+      border-bottom: 1px solid $promptColor;
+      font-weight: 700;
+    }
+    .listBox{
+      overflow-y: auto;
+      height: 206px;
+      padding: 8px 0 8px 8px;
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 2px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+    .eachInfo{
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+      padding-left: 24px;
+    }
+  }
+  .pointsList .eachInfo{
+    display: flex;
+    justify-content: space-between;
+    .pointValue{
+      .value{
+        color: $themeColor;
+      }
+      .unit{
+        display: inline-block;
+        margin-left: 4px;
+        width: 72px;
+      }
+    }
+  }
+  .eventsList .eventDescribe{
+    margin-left: 30px;
   }
 }
 

@@ -30,6 +30,7 @@ const initState = Immutable.fromJS({
   tenMinUnix: null, // 时序时间记录
   tenMinChartLoading: false, // chartloading状态
   subDeviceList: [], // 下级设备信息
+  deviceEvents: [], // 单设备事件信息
 
   sequencechart: {}, // 风机图表
   scatterpoint: {}, // 风机散点图

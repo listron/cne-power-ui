@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ConfluenceStatistics from './ConfluenceStatistics';
 import ConfluenceTenMin from './ConfluenceTenMin';
-// import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
+import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import ConfluenceHeader from './ConfluenceHeader';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
@@ -17,10 +17,12 @@ class Confluencebox extends Component {
     // getTenMinDeviceData: PropTypes.func,
     devices: PropTypes.array,
     deviceDetail: PropTypes.object,
+    subDeviceList: PropTypes.array,
+    deviceEvents: PropTypes.array,
     tenMinChartLoading: PropTypes.bool,
     tenMinUnix: PropTypes.number,
     deviceTenMin: PropTypes.array,
-    // deviceAlarmList: PropTypes.array,
+    deviceAlarmList: PropTypes.array,
     // devicePointData: PropTypes.array,
     // resetDeviceStore: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
@@ -100,7 +102,9 @@ class Confluencebox extends Component {
   // }
 
   render(){
-    const { match, deviceDetail, devices, deviceTenMin, tenMinUnix, tenMinChartLoading } = this.props;
+    const {
+      match, deviceDetail, devices, deviceTenMin, tenMinUnix, tenMinChartLoading, subDeviceList, deviceEvents, deviceAlarmList
+    } = this.props;
     // const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
@@ -124,20 +128,20 @@ class Confluencebox extends Component {
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
-          <ConfluenceStatistics deviceDetail={deviceDetail} />
+          <ConfluenceStatistics deviceDetail={deviceDetail} subDeviceList={subDeviceList} />
           <ConfluenceTenMin
             deviceTenMin={deviceTenMin}
             tenMinUnix={tenMinUnix}
             tenMinChartLoading={tenMinChartLoading}
           />
-          <DevicePointsTable />
-          {/* <DeviceAlarmTable
+          <DevicePointsTable deviceEvents={deviceEvents} />
+          <DeviceAlarmTable
             deviceAlarmList={deviceAlarmList}
             deviceDetail={deviceDetail}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}
-          /> */}
+          />
         </div>
       </div>
     ) 
