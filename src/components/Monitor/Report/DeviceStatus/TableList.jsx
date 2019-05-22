@@ -133,6 +133,7 @@ class TableList extends Component {
         dataIndex: "num",
         sorter: true,
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+        className:styles.numRight
       },
 
       {
@@ -140,18 +141,21 @@ class TableList extends Component {
         dataIndex: "statusTime",
         sorter: true,
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="状态小时数" unit="h" />,
         dataIndex: "statusHours",
         sorter: true,
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+        className:styles.numRight
       },
 
       {
         title: "平均时长",
         dataIndex: "avgTime",
         sorter: true,
+        className:styles.numRight
 
       },
     ];
@@ -198,6 +202,7 @@ class TableList extends Component {
         dataIndex: "statusTime",
         sorter: true,
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+        className:styles.numRight
 
       },
       {
@@ -205,6 +210,7 @@ class TableList extends Component {
         dataIndex: "statusHours",
         sorter: true,
         render(text){ return numWithComma(dataFormats(text,'--',2,true)); },
+        className:styles.numRight
 
       },
 
@@ -224,7 +230,7 @@ class TableList extends Component {
     tableType==='detail'&&this.props.getDeviceStatusDetail({ ...this.props.params })
   }
   render() {
-    const { total, pageSize, pageNum, deviceStatusList,tableType,statusDetailList } = this.props;
+    const { total, pageSize, pageNum, deviceStatusList,tableType,statusDetailList ,loading} = this.props;
     const columns =tableType==='all'? this.initMonthColumn():this.detailColumn();
     const dataSource = tableType==='all'?deviceStatusList.map((e, i) => ({...e, key: i,})):statusDetailList.map((e, i) => ({...e, key: i,}));
     return (
@@ -239,7 +245,9 @@ class TableList extends Component {
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns}
+        <Table 
+          loading={loading}
+          columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
           // scroll={{ x: 1440 }}
