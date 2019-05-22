@@ -50,14 +50,14 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
@@ -123,8 +123,8 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -189,14 +189,14 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
@@ -262,8 +262,8 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
@@ -328,14 +328,14 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
       styles = showNoData;
     }
     if (arr.length !== 0) {
-      arr.forEach(cur => {
-        if (!cur.data || cur.data.length === 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
           styles = showNoData;
         }
-        if (cur.data.length !== 0) {
-          styles = hiddenNoData;
-        }
-      });
+      }
     }
     return styles;
   }
@@ -401,8 +401,8 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
     dataZoom: [{
       // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
       // endValue: `2019-05-01 00:00:00`,
-      start: 0,
-      end: 100,
+      start: paramsStart,
+      end: paramsEnd,
       moveOnMouseMove: false,
       realtime: false, // 控制拖动连续触发
       top: "220px",
