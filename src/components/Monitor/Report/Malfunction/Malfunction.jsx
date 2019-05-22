@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './malfunction.scss';
-import { Button } from 'antd';
+import { Button ,message} from 'antd';
 import TimeSelectReport from '../../../Common/TimeSelect/TimeSelectReport';
 import SummaryMode from '../../../Common/SummaryMode';
 import TableList from './TableList';
@@ -9,7 +9,11 @@ import moment from 'moment';
 import path from '../../../../constants/path';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
-
+message.config({
+  top: 200,
+  duration: 1,
+  maxCount: 3,
+});
 class Malfunction extends Component {
   static propTypes = {
     getMalfunctionList: PropTypes.func,
@@ -54,11 +58,16 @@ class Malfunction extends Component {
       "fault": 5,
     };
     const list=(value.modeStyle==='area'||value.modeStyle==='station')?value.list:value.list.map((e,i)=>(e.split('_')[0]));
-    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list,filterTable:modeType[value.modeStyle] })
+    this.props.changeMalfunctionStore({ summaryType: modeType[value.modeStyle], summaryData: list, })
   }
   onSearch = () => {
-    const resetStatus={sortField:'', sortMethod:'', pageNum:1, pageSize:10}
-    this.onChangeFilter(resetStatus)
+    const {summaryData}=this.props;
+    if(summaryData.length>0){
+      const resetStatus = { sortField: '', sortMethod: '', pageNum: 1, pageSize: 10 }
+      this.onChangeFilter(resetStatus)
+    }else{
+      message.warning('请选择汇总对象')
+    }
   }
   onChangeFilter = (value) => {
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize,tableType } = this.props;
