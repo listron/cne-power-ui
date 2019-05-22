@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvmoduleList from './PvmoduleList';
 import InverterList from './InverterList';
-// import ConfluenceBoxList from './ConfluenceBoxList';
-import ConfluenceBoxList from './NewConfluenceBoxList';
+import ConfluenceBoxList from './ConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
 import IntegrateList from '../../SingleStationCommon/DeviceList/IntegrateList';
 import Boosterstation from '../../SingleStationCommon/DeviceList/Boosterstation';
@@ -24,11 +23,11 @@ class DeviceList extends Component {
 
   render() {
     // const { deviceTypeCode } = this.props;
-    const deviceTypeCode = 202
+    const deviceTypeCode = 509
     //  207 为交流汇流箱 暂时已经舍去了
     return (
       <div >
-        <ConfluenceBoxList {...this.props} />
+         <InverterList {...this.props} />
         {/* {deviceTypeCode === 509 && <PvmoduleList {...this.props} />} */}
         {/* {deviceTypeCode === 206 && <InverterList {...this.props} />}
         {deviceTypeCode === 201 && <InverterList {...this.props} />}

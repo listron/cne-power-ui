@@ -15,7 +15,7 @@
       align-items: flex-end;
       justify-content: flex-end;
       padding-right: 30px;
-      p{
+      .pvmoduleSelect{
         height: 24px;
         line-height: 24px;
         padding: 0 4px;
@@ -23,7 +23,12 @@
         border-radius:4px;
         margin-left: 8px;
         cursor: pointer;
+        i{
+          font-size: 12px;
+          margin-right: 4px;
+        }
       }
+      
       .normal{
         color: #199475;
         border:1px solid #199475;
@@ -41,36 +46,35 @@
         border:1px solid #3e97d1;
       }
       .abnormal.active{
-        background: #a42b2c;
-        border:1px solid #a42b2c;
-        color:#fff;
+        background: #FBE6E3;
       }
       .normal.active{
-        background: #199475;
-        border:1px solid #199475;
-        color:#fff;
+        background: #ceebe0;
       }
       .small.active{
-        background: #f9b600;
-        border:1px solid #f9b600;
-        color:#fff;
+        background: #FCFFE5;
       }
       .big.active{
-        background: #3e97d1;
-        border:1px solid #3e97d1;
-        color:#fff;
+        background: #DDEBFF;
       }
     }
     .pvmoduleCont{
       padding: 16px 25px;
       .pvmoduleItem{
-        width: 272px;
-        margin: 0 12px;
+        width: 295px;
+        margin: 0 0 0 12px;
         display: inline-block;
         margin-bottom: 20px;
         .deviceName{
           font-size: 14px;
           color: $darkColor;
+          a{
+            text-decoration: underline;
+          }
+        }
+        .singlePvmodule{
+          display: flex;
+          flex-wrap: wrap;
         }
         :global{
           .iconfont{
@@ -90,6 +94,9 @@
             margin: 1px;
             border-radius: 2px;
             text-align: center;
+            &:nth-child(4n){
+              margin-right: 12px;
+            }
           }
           .normalValue{
             background: #ceebe0;
@@ -137,14 +144,27 @@
   }
 }
 //逆变器 
+$normal:#fff;
+$normal_color:#199475;
+$normal_hover_color:rgba(0,0,0,0.20);
+$moreThanTen:#fefad2;
+$moreThanTen_color:#f9b600;
+$moreThanTwenty:#ffce7f;
+$moreThanTwenty_color:#e08031;
+$noContact:#f0f2f5;
+$noContact_color:#666666;
+$noAccess:#ededed;
+$noAccess_color:#999;
+$noAccess_background_color:#ededed;
+$arlam:#ff8e9c;
+$arlam_color:#a42b2c;
 .inverterList{
-  
   .inverterTab{
     .inverterRight{
       margin-right: 20px;
     }
     .inverterBlockBox{
-      padding: 20px 20px 60px;
+      padding: 0px 20px 20px 24px;
       color: $darkColor;
       display: flex;
       flex-wrap: wrap;
@@ -167,17 +187,22 @@
         margin-right: 18px; 
         margin-bottom: 20px;
         width: 222px;
-        height: 76px;
-        // padding: 5px;
-        box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+        height: 121px;
         border-radius:4px;
         font-size: 12px;
         cursor: pointer;
-        .inverterItemIcon{
-          display: inline-block;
-          vertical-align: top;
-          margin: 5px;
-          position: relative;
+        border:1px solid #dfdfdf;
+        .statusBox{
+          padding: 5px 5px 0px 5px;
+          .inverterItemIcon{
+            display: inline-block;
+            vertical-align: top;
+            margin: 5px;
+            position: relative;
+          }
+          a{
+            color: $darkColor;
+          }
           :global{
             .iconfont{
               font-size: 22px;
@@ -190,10 +215,6 @@
               height: 10px;
               color: #a42b2c;
               font-size: 14px;
-              background: #fff;
-            }
-            a{
-              color: $darkColor;
             }
             .icon-outage{
               position: absolute;
@@ -204,42 +225,32 @@
               color: #e08031;
               font-size: 14px;
             }
-          }
-          .orange{
-            color: #f9b600;
-          }
-          .red{
-            color: #a42b2c;
-          }
-          .common{
-            color: #dfdfdf;
-          }
-        }
-        .statusBox{
-          // background: pink;
-          padding: 5px 5px 0px 5px;
-        }
-        .inverterItemR{
-          display: inline-block;
-          width: 165px;
-          color: $darkColor;
-          .hlBlockName{
-            display: flex;
-            justify-content: space-between;
-          }
-          .inverterItemPower{
-            display: flex;
-            justify-content: space-between;
-            div:first-child{
-              color: $themeColor;
-            }
-            div:last-child{
-              color: $darkColor;
+            .ant-progress-inner{
+              background-color: #dfdfdf;
             }
           }
-          :global{
-            .ant-progress-success-bg, .ant-progress-bg{
-              background-color: $themeColor;
+          .inverterItemR{
+            display: inline-block;
+            width: 165px;
+            color: $darkColor;
+            .hlBlockName{
+              display: flex;
+              justify-content: space-between;
+            }
+            .inverterItemPower{
+              display: flex;
+              justify-content: space-between;
+              div:first-child{
+                color: $themeColor;
+              }
+              div:last-child{
+                color: $darkColor;
+              }
+            }
+            :global{
+              .ant-progress-success-bg, .ant-progress-bg{
+                background-color: $themeColor;
+              }
             }
           }
         }
@@ -253,88 +264,94 @@
             width: 50%;
             text-align: left;
           }
-          .orange{
-            color: #f9b600;
-          }
-          .red{
-            color: #a62e2f;
+          .dispersionRatio{
+            color:#666666;
           }
         }
         .hlBlockLink:hover{
           color: $darkColor;
         }
       }
-      .cutOverItem{
-        display: inline-block;
-        margin-right: 18px; 
-        margin-bottom: 20px;
-        width: 222px;
-        height: 76px;
-        padding: 5px;
-        box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
-        border-radius:4px;
-        background: #f8f8f8;
-        pointer-events: none;
-        font-size: 12px;
-        .inverterItemIcon{
-          display: inline-block;
-          vertical-align: top;
-          margin: 5px;
-          position: relative;
-          :global{
-            .iconfont{
-              font-size: 22px;
-              color: #dfdfdf;
-            }
-            .icon-alarm{
-              position: absolute;
-              bottom: 10px;
-              right: 2px;
-              width: 10px;
-              height: 10px;
-              color: #a42b2c;
-              font-size: 14px;
-            }
-            a{
-              color: $darkColor;
+        
+        .normal{
+          &:hover{
+            box-shadow:0px 1px 4px 1px $normal_hover_color;
+          }
+          .statusBox{
+            background: $normal;
+            .hlBlockName,.iconHl{
+              color: $normal_color
             }
           }
         }
-        .inverterItemR{
-          display: inline-block;
-          width: 166px;
-          color: $darkColor;
-          .hlBlockName{
-            display: flex;
-            justify-content: space-between;
-          }
-          .inverterItemPower{
-            display: flex;
-            justify-content: space-between;
-            div:first-child{
-              color: $themeColor;
-            }
-            div:last-child{
-              color: $darkColor;
+        .normal.alarm{
+          .statusBox{
+            background:  $arlam;
+            .hlBlockName,.iconHl{
+              color: $arlam_color
             }
           }
-          :global{
-            .ant-progress-success-bg, .ant-progress-bg{
-              background-color: $themeColor;
+          &:hover{
+            box-shadow:0px 1px 4px 1px $arlam;
+          }
+        }
+        .moreThanTen{
+          &:hover{
+            box-shadow:0px 1px 4px 1px $moreThanTen;
+          }
+          .statusBox{
+            background: $moreThanTen;
+            .hlBlockName,.iconHl{
+              color: $moreThanTen_color
+            }
+          }
+          .hlBlockFooter{
+            .dispersionRatio{
+              color:$moreThanTen_color;
             }
           }
         }
-        .hlBlockFooter{
-          line-height: 22px;
-          margin-top: 10px;
-          padding-left: 3px;
-          >div{
-            display: inline-block;
-            width: 50%;
-            text-align: left;
+        .moreThanTwenty{
+          &:hover{
+            box-shadow:0px 1px 4px 1px  $moreThanTwenty;
+          }
+          .statusBox{
+            background: $moreThanTwenty;
+            .hlBlockName,.iconHl{
+              color: $moreThanTwenty_color;
+            }
+          }
+          .hlBlockFooter{
+            .dispersionRatio{
+              color:$moreThanTwenty_color;
+            }
+          }
+          
+        }
+        .noContact{
+          &:hover{
+            box-shadow:0px 1px 4px 1px $noContact;
+          }
+          .statusBox{
+            background: $noContact;
+            .hlBlockName,.iconHl{
+              color: $noContact_color
+            }
+            :global{
+              .icon-alarm{
+                color: $noContact_color
+              }
+            }
           }
         }
-      }
+        .noAccess{
+          box-shadow:0 1px 4px 0  $noAccess;
+          background: $noAccess_background_color;
+          pointer-events: none;
+          .hlBlockName,.iconHl{
+            color:$noAccess_color
+          }
+        }
     }
     .inverterTableBox{
       .nodata{
@@ -347,70 +364,35 @@
         justify-content: flex-end;
       }
       .inverterTable{
-        .tableDeviceName{
-          text-decoration: underline;
-        }
         .deviceCode{
           pointer-events: none;
-        }
-        .devicePower{
-          .progressPower{
-            .deviceValue{
-              display: flex;
-              justify-content: space-between;
+          .tableDeviceName{
+            text-decoration: none;
+            &:hover{
+              color: $noContact_color;
             }
           }
         }
-        .statusColor{
-          background:#199475;
-          border-radius:2px;
-          width:3px;
-          height:16px;
-          margin-right: 5px;
-          display: inline-block;
-          vertical-align: middle;
+        .tableDeviceName{
+          text-decoration: underline;
+          &:hover{
+            color: $normal_color;
+          }
         }
+        .normal{color:$normal_color}
+        .moreThanTen{color:$moreThanTen_color}
+        .moreThanTwenty{color:$moreThanTwenty_color}
+        .noContact{color:$arlam_color}
+        .noAccess{color:$noAccess_color}
         margin-bottom: 60px;
         :global{
-          .ant-table-placeholder{
-            z-index: 0;
-            border-bottom: 0; 
-          }
-          .ant-progress-success-bg, .ant-progress-bg{
-            background-color: $themeColor;
-          }
-          a{
-            color:#666666;
-          }
-          a:hover{
-            color: $themeColor;
-          }
-          .ant-table-column-sorter-up.on .anticon-caret-up, .ant-table-column-sorter-down.on .anticon-caret-up, .ant-table-column-sorter-up.on .anticon-caret-down, .ant-table-column-sorter-down.on .anticon-caret-down {
-            color: $themeColor;
-          }
-          .ant-pagination-item-active {
-            border-color: $themeColor;
-          }
-          .ant-pagination.mini .ant-pagination-options-quick-jumper input {
-            border: 1px solid $themeColor;
-          }
-          .ant-table-pagination.ant-pagination {
-            margin: 16px;
-            float: right;
-          }
           .ant-table .ant-table-tbody > tr > td {
             line-height: 20px;
-          }
-          .ant-table-thead{
-            background: #f4f4f4;
-            color: $darkColor;
           }
         }
       }
     }
-    
   }
-  
   :global{
     .ant-table .ant-table-thead{
       th>div{

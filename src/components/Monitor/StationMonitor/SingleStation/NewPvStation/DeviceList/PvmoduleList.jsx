@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styles from './deviceList.scss';
 import classnames from 'classnames';
 import { Spin } from 'antd';
@@ -62,7 +63,7 @@ class PvmoduleList extends Component {
     this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
   }
   render() {
-    const { pvmoduleList, loading, pvLevelNums } = this.props;
+    const { pvmoduleList, loading, pvLevelNums,deviceTypeCode } = this.props;
     const { pvLevelStatus } = this.state;
     const pvmoduleListSet = Array.from(new Set(pvmoduleList));
     let statusArray = ['big', 'normal', 'small', 'abnormal']
@@ -73,33 +74,47 @@ class PvmoduleList extends Component {
       { name: 'small', value: '偏小', useName: 'pvSmallerNum' },
       { name: 'abnormal', value: '异常', useName: 'pvAbnormalNum' },
       { name: 'big', value: '偏大', useName: 'pvBiggerNum' },
-    ]
+    ];
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
           <div className={styles.pvmoduleListTop}>
             {pvStatus.map(item => {
               return (
-              <p className={`${styles[item.name]} ${pvLevelStatus === item.name && styles.active}`} key={item.name}
-               onClick={() => { this.buttonClick(item.name) }}>{item.value} {pvLevelNums[item.useName] || '--'}</p>)
+                <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.name && styles.active}`} key={item.name}
+                  onClick={() => { this.buttonClick(item.name) }}>
+                  {pvLevelStatus !== item.name && <i className={'iconfont icon-goon'}></i>}
+                  {pvLevelStatus === item.name && <i className={'iconfont icon-done'}></i>}
+                  {item.value} {pvLevelNums[item.useName] || '--'}
+                </p>)
             })}
           </div>
           <div className={styles.pvmoduleCont}>
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
+                const { deviceCode, deviceName } = item;
                 return (
                   <div key={index} className={styles.pvmoduleItem} >
-                    <div className={styles.deviceName} ><i className="iconfont icon-nb" ></i>{item.deviceName}</div>
-                    {item.electricityList.map((e, i) => {
-                      let pointLevelName = ['big', 'normal', 'small', 'abnormal',][e.pointLevel - 1];
-                      return (<span className={classnames({
-                        normalValue: !!e.pointStatus,
-                        commonStyle: true,
-                        [pointLevelName]: !!e.pointStatus,
-                      })} key={i}>
-                        {!!e.pointStatus && dataFormats(e.pointValue, '--', 1, false)}
-                      </span>)
-                    })}
+                    <div className={styles.deviceName} >
+                      <i className="iconfont icon-nb" ></i>
+                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
+                        {deviceName}
+                      </Link>
+                    </div>
+                    <div className={styles.singlePvmodule}>
+                      {item.electricityList.map((e, i) => {
+                        let pointLevelName = ['big', 'normal', 'small', 'abnormal',][e.pointLevel - 1];
+                        return (<span className={classnames({
+                          normalValue: !!e.pointStatus,
+                          commonStyle: true,
+                          [pointLevelName]: !!e.pointStatus,
+                        })} key={i}>
+                          {!!e.pointStatus && dataFormats(e.pointValue, '--', 2, false)}
+                        </span>)
+                      })}
+                    </div>
                   </div>
                 );
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)

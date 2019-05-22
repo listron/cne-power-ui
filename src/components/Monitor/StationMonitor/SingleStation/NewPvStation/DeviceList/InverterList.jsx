@@ -203,17 +203,9 @@ class InverterList extends Component {
         return sortType * (a[sortName].length - b[sortName].length);
       }
     })
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 1;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
     return tableSource.splice((currentPage-1)*pageSize,pageSize);
   }
+  
   render(){
     const { inverterList, deviceTypeCode,loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize  } = this.state;

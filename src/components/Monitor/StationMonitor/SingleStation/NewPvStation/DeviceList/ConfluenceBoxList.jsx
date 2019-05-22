@@ -26,7 +26,7 @@ class ConfluenceBoxList extends Component {
       alarmSwitch: false,
       pageSize: 10,
       currentPage: 1,
-      sortName: 'devicePower',
+      sortName: 'deviceName',
       descend: false,
       firstLoad: true,
     }
@@ -76,49 +76,17 @@ class ConfluenceBoxList extends Component {
     }, 10000);
   }
 
-  getDeviceStatus = (value) => {
+  getStatusName = (value) => {
+    let result = [];
     switch (value) {
-      case 100:
-        return '正常';
-      case 200:
-        return '离散率>10%';
-      case 300:
-        return '离散率>20%';
-      case 500:
-        return '无通讯';
-      case 900:
-        return '未接入';
-      default:
-        return '';
+      case '100': result = [{ name: 'normal', text: '正常' }]; break;
+      case '200': result = [{ name: 'moreThanTen', text: '离散率>10%' }]; break;
+      case '300': result = [{ name: 'moreThanTwenty', text: '离散率>20%' }]; break;
+      case '500': result = [{ name: 'noContact', text: '无通讯' }]; break;
+      case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
+      default: result = [{ name: 'normal', text: '' }]; break;
     }
-  }
-
-  getStatusColor = (value) => {
-    switch (value) {
-      case 100:
-        return '#199475';
-      case 200:
-        return '#f5a623';
-      case 300:
-        return '#a42b2c';
-      case 500:
-        return '#999999';
-      case 900:
-        return '#c7ceb2';
-      default:
-        return '#c7ceb2';
-    }
-  }
-
-  getStatus = (value) => {
-    switch (value) {
-      case 200:
-        return 'orange';
-      case 300:
-        return 'red';
-      default:
-        return 'common';
-    }
+    return result;
   }
 
 
@@ -131,46 +99,26 @@ class ConfluenceBoxList extends Component {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        render: (text, record, index) => (<div className={record.deviceStatus === 900 ? styles.deviceCode : ""} ><Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link></div>)
+        sorter: true,
+        defaultSortOrder: "ascend",
+        render: (text, record) => {
+          return (
+            <div className={`${record.deviceStatus}` === '900' &&  styles.deviceCode || ''} >
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link>
+            </div>)
+        }
       }, {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
         key: 'devicePower',
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div>
-                <div className={styles.devicePower}>
-                  <div className={styles.progressPower}>
-                    <div className={styles.deviceValue}>
-                      <div>{numWithComma(record.devicePower)}</div>
-                      <div>{numWithComma(record.deviceCapacity)}</div>
-                    </div>
-                    <Progress percent={record.devicePower / record.deviceCapacity * 100} showInfo={false} strokeWidth={3} />
-                  </div>
-                </div>
-              </div>
-            ),
-            props: {
-              colSpan: 2
-            }
-          };
-        },
+        render: value => numWithComma(value),
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="装机容量" unit="kW" />,
         dataIndex: 'deviceCapacity',
         key: 'deviceCapacity',
         width: '140px',
-        render: (value, columns, index) => {
-          const obj = {
-            children: null,
-            props: {
-              colSpan: 0
-            }
-          };
-          return obj;
-        },
+        render: value => numWithComma(value),
         sorter: (a, b) => a.deviceCapacity - b.deviceCapacity,
       }, {
         title: () => <TableColumnTitle title="电压" unit="V" />,
@@ -188,7 +136,7 @@ class ConfluenceBoxList extends Component {
         title: () => <TableColumnTitle title="离散率" unit="%" />,
         dataIndex: 'dispersionRatio',
         key: 'dispersionRatio',
-        render: value => value && value+'%' || '--',
+        render: value => value && value + '%' || '--',
         sorter: (a, b) => a.dispersionRatio - b.dispersionRatio,
       }, {
         title: () => <TableColumnTitle title="温度" unit="℃" />,
@@ -200,12 +148,13 @@ class ConfluenceBoxList extends Component {
         title: '设备状态',
         dataIndex: 'deviceStatus',
         key: 'deviceStatus',
-        render: text => (<span><i className={styles.statusColor} style={{ backgroundColor: this.getStatusColor(text) }} ></i>{this.getDeviceStatus(text)}</span>),
+        render: value => <span className={styles[this.getStatusName(`${value}`)[0].name]}>{this.getStatusName(`${value}`)[0].text}</span>,
         sorter: (a, b) => a.deviceStatus - b.deviceStatus,
       },
     ];
     return columns;
   }
+
   changePagination = ({ pageSize, currentPage }) => {
     this.setState({ pageSize, currentPage })
   }
@@ -215,56 +164,259 @@ class ConfluenceBoxList extends Component {
       descend: sorter.order === 'descend'
     })
   }
-  createTableSource = (data) => {
+
+  createTableSource = (data = []) => { // 排序
     const { sortName, descend, currentPage, pageSize } = this.state;
-    const tableSource = [...data].map((e, i) => ({
-      ...e,
-      key: i,
-    })).sort((a, b) => { // 排序
+    const tableSource = data.sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
       const arraySort = ['deviceName'];
-      const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp','deviceStatus'];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'electricity', 'voltage', 'dispersionRatio', 'temp', 'deviceStatus'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
         a[sortName] = a[sortName] ? a[sortName] : '';
-        return sortType * (a[sortName].length - b[sortName].length);
+        return sortType * (a[sortName].localeCompare(b[sortName]));
       }
     })
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 1;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
+
 
   render() {
     const { confluenceBoxList, deviceTypeCode, loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
-    const initDeviceList = confluenceBoxList.deviceList && confluenceBoxList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
-    // const initDeviceList = confluenceBoxList && confluenceBoxList.map((e,i)=>({...e,key:i})) || []; // 初始化数据
-    const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
-      return (currentStatus === 0 || e.deviceStatus === currentStatus);
-    }) // 根据筛选条件处理数据源。
-    const sortedParentList = filteredDeviceList.sort((a, b) => {
-      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
-    })
-    const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet];
+   /** let confluenceBoxList = {
+     *  deviceList: [
+        {
+          "alarmNum": 2,
+          "deviceCapacity": 89.1000,
+          "deviceCode": "394M202M6M2",
+          "deviceFullcode": "394M202M6M2",
+          "deviceId": 987932,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-02",
+          "devicePower": 63.5315,
+          "deviceStatus": 100,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.80",
+          "electricity": 104.15,
+          "isConnected": 1,
+          "parentDeviceCode": 987891,
+          "parentDeviceName": "NB01-A",
+          "stationCode": 394,
+          "temp": 56.0,
+          "voltage": 610.0
+        },
+        {
+          "alarmNum": 2,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M3",
+          "deviceFullcode": "394M202M6M3",
+          "deviceId": 987933,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-03",
+          "devicePower": 69.3181,
+          "deviceStatus": 200,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.90",
+          "electricity": 114.01,
+          "isConnected": 1,
+          "parentDeviceCode": 987891,
+          "parentDeviceName": "NB01-A",
+          "stationCode": 394,
+          "temp": 55.0,
+          "voltage": 608.0
+        },
+        {
+          "alarmNum": 2,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M4",
+          "deviceFullcode": "394M202M6M4",
+          "deviceId": 987934,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-04",
+          "devicePower": 69.7405,
+          "deviceStatus": 300,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "1.19",
+          "electricity": 116.06,
+          "isConnected": 1,
+          "parentDeviceCode": 987891,
+          "parentDeviceName": "NB01-A",
+          "stationCode": 394,
+          "temp": 49.0,
+          "voltage": 600.9
+        },
+        {
+          "alarmNum": 2,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M5",
+          "deviceFullcode": "394M202M6M5",
+          "deviceId": 987935,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-05",
+          "devicePower": 68.9370,
+          "deviceStatus": 500,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.98",
+          "electricity": 115.26,
+          "isConnected": 1,
+          "parentDeviceCode": 987891,
+          "parentDeviceName": "NB01-A",
+          "stationCode": 394,
+          "temp": 54.0,
+          "voltage": 598.1
+        },
+        {
+          "alarmNum": 2,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M6",
+          "deviceFullcode": "394M202M6M6",
+          "deviceId": 987936,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-06",
+          "devicePower": 69.0274,
+          "deviceStatus": 900,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.69",
+          "electricity": 115.18,
+          "isConnected": 1,
+          "parentDeviceCode": 987891,
+          "parentDeviceName": "NB01-A",
+          "stationCode": 394,
+          "temp": 56.0,
+          "voltage": 599.3
+        },
+        {
+          "alarmNum": 0,
+          "deviceCapacity": 83.1600,
+          "deviceCode": "394M202M6M7",
+          "deviceFullcode": "394M202M6M7",
+          "deviceId": 987937,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-07",
+          "devicePower": 61.6498,
+          "deviceStatus": 100,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "1.45",
+          "electricity": 101.85,
+          "isConnected": 1,
+          "parentDeviceCode": 987892,
+          "parentDeviceName": "NB01-B",
+          "stationCode": 394,
+          "temp": 48.0,
+          "voltage": 605.3
+        },
+        {
+          "alarmNum": 0,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M8",
+          "deviceFullcode": "394M202M6M8",
+          "deviceId": 987938,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-08",
+          "devicePower": 69.2075,
+          "deviceStatus": 200,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "1.26",
+          "electricity": 115.02,
+          "isConnected": 1,
+          "parentDeviceCode": 987892,
+          "parentDeviceName": "NB01-B",
+          "stationCode": 394,
+          "temp": 54.0,
+          "voltage": 601.7
+        },
+        {
+          "alarmNum": 0,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M9",
+          "deviceFullcode": "394M202M6M9",
+          "deviceId": 987939,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-09",
+          "devicePower": 69.3494,
+          "deviceStatus": 300,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.63",
+          "electricity": 115.16,
+          "isConnected": 1,
+          "parentDeviceCode": 987892,
+          "parentDeviceName": "NB01-B",
+          "stationCode": 394,
+          "temp": 55.0,
+          "voltage": 602.2
+        },
+        {
+          "alarmNum": 0,
+          "deviceCapacity": 89.1000,
+          "deviceCode": "394M202M6M10",
+          "deviceFullcode": "394M202M6M10",
+          "deviceId": 987940,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-10",
+          "devicePower": 64.4069,
+          "deviceStatus": 500,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "1.03",
+          "electricity": 106.74,
+          "isConnected": 1,
+          "parentDeviceCode": 987892,
+          "parentDeviceName": "NB01-B",
+          "stationCode": 394,
+          "temp": 54.0,
+          "voltage": 603.4
+        },
+        {
+          "alarmNum": 0,
+          "deviceCapacity": 95.0400,
+          "deviceCode": "394M202M6M11",
+          "deviceFullcode": "394M202M6M11",
+          "deviceId": 987941,
+          "deviceModeCode": 6,
+          "deviceName": "HL01-11",
+          "devicePower": 70.0097,
+          "deviceStatus": 900,
+          "deviceTypeCode": 202,
+          "dispersionRatio": "0.95",
+          "electricity": 114.77,
+          "isConnected": 1,
+          "parentDeviceCode": 987892,
+          "parentDeviceName": "NB01-B",
+          "stationCode": 394,
+          "temp": 56.0,
+          "voltage": 610.0
+        },
+      ],
+      deviceStatusSummary: {
+        "biggerThanTwentyNum": 2,
+        "normalNum": 2,
+        "biggerThanTenNum": 2,
+        "unJoinNum": 2,
+        "unConnectNum": 2
+      }
+    } 
+    * */
+    const { deviceList = [] } = confluenceBoxList;
+    const filteredDeviceList = deviceList
+    .filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0)))
+    .filter(e => { 
+      return (currentStatus === 0 || e.deviceStatus === currentStatus); })
+    .sort((a, b) => {
+       return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
+      })  // 筛选告警和排序的数据 按照电站名称排序
+
+    const parentDeviceCodes = [...new Set(filteredDeviceList.map(e => e.parentDeviceCode))];
     const deviceGroupedList = parentDeviceCodes.map(e => {
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
-    });
+    }); // 用于网格
+
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-    const deviceStatus = confluenceBoxList.deviceStatusSummary || [];
+
     const { deviceStatusSummary = {} } = confluenceBoxList;
     const operations = (<div className={styles.inverterRight} >
-      <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 告警
+      <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
         <Radio.Button value={100} >正常 {dataFormat(deviceStatusSummary.normalNum)}</Radio.Button>
@@ -277,72 +429,61 @@ class ConfluenceBoxList extends Component {
 
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
-    const transData = (value, pointLength) => { // 数据转换。
-      let tmpValue = parseFloat(value);
-      let tmpBackData;
-      if (tmpValue || tmpValue === 0) {
-        tmpBackData = (pointLength || pointLength === 0) ? tmpValue.toFixed(pointLength) : tmpValue;
-      } else {
-        tmpBackData = '--'
-      }
-      return tmpBackData;
-    }
     return (
       <div className={styles.inverterList} >
         <Tabs defaultActiveKey="1" className={styles.inverterTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.inverterBlockBox} >
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              (deviceGroupedList.length > 0 ? deviceGroupedList.map((e, index) => {
-                return (<div key={index}>
-                  <div className={styles.parentDeviceName} >{e && e[0] && e[0].parentDeviceName}</div>
-                  {e.map((item, i) => {
-                    const { devicePower, deviceCapacity, voltage, electricity, dispersionRatio, temp } = item;
-                    const showDevicePower = transData(devicePower, 2);
-                    const showDeviceCapacity = transData(deviceCapacity, 2);
-                    const showVoltage = transData(voltage);
-                    const showElectricity = transData(electricity);
-                    const showTemp = transData(temp);
-                    const status =this.getStatus(item.deviceStatus)
-                    let percent, progressPercent;
-                    if (!deviceCapacity || isNaN(deviceCapacity)) {
-                      percent = '--';
-                      progressPercent = 0;
-                    } else {
-                      percent = transData(devicePower / deviceCapacity * 100, 2);
-                      progressPercent = +percent;
-                    }
-                    return (<div key={i} className={item.deviceStatus === 900 ? styles.cutOverItem : styles.inverterItem} style={{ height: "121px" }}>
-                      <div className={styles.inverterItemIcon} >
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}
-                          className={styles[status]} >
-                          {item.deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
-                          <i className="iconfont icon-hl" ></i>
-                        </Link>
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
-                          {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
-                        </Link>
-                      </div>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
-                        <div className={styles.inverterItemR} >
-                          <div className={styles.hlBlockName}><span>{item.deviceName}</span><span>{percent}%</span></div>
-                          <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                          <div className={styles.inverterItemPower}>
-                            <div>{showDevicePower}kW</div>
-                            <div>{showDeviceCapacity}kW</div>
-                          </div>
-                        </div>
+              (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
+                const { parentDeviceName, parentDeviceCode, parentDeviceFullCode } = list.length > 0 && list[0];
+                return (
+                  <div key={index}>
+                    <div className={styles.parentDeviceName} >
+                      <Link to={`/hidden/monitorDevice/${stationCode}/${parentDeviceCode}/${parentDeviceFullCode}`} className={styles.underlin} >
+                        <i className={'iconfont icon-hl'}></i>
+                        {parentDeviceName}
                       </Link>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} className={styles.hlBlockLink} >
-                        <div className={styles.hlBlockFooter} >
-                          <div>电压：{showVoltage}V</div>
-                          <div>电流：{showElectricity}A</div>
-                          <div className={styles[status]}>离散率：{dispersionRatio || '--'} %</div>
-                          <div>温度：{showTemp}℃</div>
+                    </div>
+                    {list.map((item, i) => {
+                      const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
+                      const deviceStatus = item.deviceStatus;
+                      const alarm = item.alarmNum && item.alarmNum > 0;
+                      const deviceCapacity = dataFormat(item.deviceCapacity, '--', 2);
+                      const devicePower = dataFormat(item.devicePower, '--', 2);
+                      let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                      return (
+                        <div key={i} className={`${styles.inverterItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
+                          <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}>
+                            <div className={`${styles.statusBox}`} >
+                              <div className={styles.inverterItemIcon} >
+                                {deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
+                                <i className={`iconfont icon-hl ${styles.iconHl}`} ></i>
+                                <object>
+                                  <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}/?showPart=alarmList`} >
+                                    {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
+                                  </Link>
+                                </object>
+                              </div>
+                              <div className={styles.inverterItemR} >
+                                <div className={styles.hlBlockName}><span>{item.deviceName}</span></div>
+                                <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                                <div className={styles.inverterItemPower}>
+                                  <div>{devicePower} kW</div>
+                                  <div>{deviceCapacity} kW</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className={styles.hlBlockFooter} >
+                              <div>电压：{dataFormat(item.voltage, '--')} V</div>
+                              <div>电流：{dataFormat(item.electricity, '--')} A</div>
+                              <div className={styles.dispersionRatio}>离散率：{dataFormat(item.dispersionRatio, '--', 2)} %</div>
+                              <div>温度：{dataFormat(item.temp, '--')} ℃</div>
+                            </div>
+                          </Link>
                         </div>
-                      </Link>
-                    </div>);
-                  })}
-                </div>);
+                      );
+                    })}
+                  </div>);
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
             }
           </TabPane>
@@ -352,7 +493,7 @@ class ConfluenceBoxList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table
-                dataSource={currentTableList}
+                dataSource={currentTableList.map((e,i)=>{return {...e,key:i}})}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
