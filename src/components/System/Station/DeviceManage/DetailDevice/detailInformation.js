@@ -4,7 +4,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
   const latitude = (detailData.latitude || parseFloat(detailData.latitude) === 0)? `${parseFloat(detailData.latitude).toFixed(6)}°` : '--';
   const deviceTypeCode = detailData.deviceTypeCode?detailData.deviceTypeCode:'';
   
-  const isShowData = [ '202',  '101','207','203','501','206', '304','201',].includes(deviceTypeCode);//显示是否显示以及接入时间
+  const isShowData = [ '202',  '101','207','203','501','206', '304','201',].includes(deviceTypeCode);//显示是否接入以及接入时间
   if(!isShowData){
     let baseArray = [  // 基础信息配置 -- > 
       { name: '电站名称', value: detailData.stationName || '--'}, 
@@ -13,7 +13,7 @@ export const baseFun = (detailData) => { // 根据基础信息配置输出指定
       { name: '设备型号', value: detailData.deviceModeName, },
       { name: '生产厂家', value: detailData.manufacturer, },
       { name: '批次号', value: detailData.lotNumber,  },
-      { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
+      { name: '是否接入', value: ['否','是'][detailData.enableDisplay] },
       { name: '创建时间', value: detailData.connectTime },
     ];
     return baseArray;
@@ -50,7 +50,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '经度', value: `${longitude}`, },
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
-      { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
+      { name: '是否接入', value: ['否','是'][detailData.enableDisplay] },
       { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
@@ -60,7 +60,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '经度', value: `${longitude}`, },
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
-      { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
+      { name: '是否接入', value: ['否','是'][detailData.enableDisplay] },
       { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
@@ -74,7 +74,7 @@ export const selcetbaseFun = (detailData) => { // 根据基础信息配置输出
       { name: '经度', value: `${longitude}`, },
       { name: '纬度', value: ` ${latitude}`, },
       { name: '设备编号', value: detailData.deviceFullCode,  },
-      { name: '是否显示', value: ['否','是'][detailData.enableDisplay] },
+      { name: '是否接入', value: ['否','是'][detailData.enableDisplay] },
       { name: '创建时间', value: detailData.connectTime },
     ];
     return selcetbaseArray;
