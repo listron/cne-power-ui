@@ -616,6 +616,9 @@ export const allFansOptions = (data, name) => {
   const { cfResidual: { residual }, cfStd1, cfStd2, cfStd3 } = data;
   //将科学计数法转换为小数
   function toNonExponential(num) {
+    if (!num) {
+      return num;
+    }
     const m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
     return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
   }
