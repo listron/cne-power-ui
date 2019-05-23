@@ -31,6 +31,8 @@ export default class FaultAllFan extends React.Component {
       },
       warnId
     } = this.props;
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const roleDeleteRight = rightHandler.split(',').includes('analysis_turbineFDD_repeat');
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.title}>
@@ -39,7 +41,7 @@ export default class FaultAllFan extends React.Component {
         </div>
         <div className={styles.allFanWrap}>
           <div className={styles.allFanContent}>
-            <FaultAllFanTop {...this.props} />
+            {roleDeleteRight && (<FaultAllFanTop {...this.props} />)}
             {status && status === 4 ?
                 <div className={styles.noData}>
                   <img src="/img/nodata.png" style={{ width: 223, height: 164 }} />
