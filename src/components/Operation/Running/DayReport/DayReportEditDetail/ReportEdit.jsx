@@ -273,7 +273,6 @@ class ReportEdit extends Component {
     const { updateDayReportDetail, addLostFormShow, addLimitFormShow, abnormalTextShow, showBackWarningTip, warningTipText } = this.state;
     const { findDeviceExist, deviceExistInfo, dayReportConfig, lostGenTypes, getStationDeviceTypes, stationDeviceTypes, getLostGenType } = this.props;
     const {faultList, limitList, stationCode, errorInfo, stationType, reportDate} = updateDayReportDetail;
-    console.log(faultList)
     return (
       <div className={styles.reportEdit}>
         <div className={styles.reportDetailTitle} >
