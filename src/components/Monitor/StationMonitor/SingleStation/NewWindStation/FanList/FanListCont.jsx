@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './fanList.scss';
@@ -20,6 +19,7 @@ class FanListCont extends React.Component {
     fanList: PropTypes.object,
     fanDisplay: PropTypes.string,
     loading: PropTypes.bool,
+    alarmSwitch: PropTypes.bool,
   }
 
   static defaultProps = {

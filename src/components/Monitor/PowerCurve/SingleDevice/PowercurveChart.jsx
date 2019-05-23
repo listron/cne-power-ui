@@ -17,7 +17,8 @@ class PowercurveChart extends Component {
     endTime: PropTypes.string,
     curveTime: PropTypes.number,
 
-  }
+ 
+ }
   constructor(props, context) {
     super(props, context)
   }

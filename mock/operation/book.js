@@ -186,7 +186,7 @@ module.exports = [
     },
      {//获取某设备的历史告警
       api: '/mock/v3/alarm/device/deviceCode/warningType',
-      method: 'GET',
+      method: 'get',
       response: {
         "code": "10000",
         "message": "请求成功",

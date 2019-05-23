@@ -17,7 +17,7 @@ const initState = immutable.fromJS({
   selectedRowKeys:[],//选择的行的索引
   selectedRowData:[],//选择的行的数据
   knowledgeBaseIds: '', //删除id数组
-  knowledgeBaseId: '', // 点赞id
+  knowledgeBaseId: "", // 点赞id
   deviceTypes: [], // 设备类型
   defectTypes: [], // 缺陷类型
   intelligentTableData: {}, // 列表数据
