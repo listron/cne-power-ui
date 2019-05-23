@@ -11,7 +11,9 @@ import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
 
+import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 
-const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder,assetsConfig,deviceManage,partInfo });
+const operationReducer = combineReducers({ defect, inspect, ticket,personnelGps, dayReport,workOrder,assetsConfig,deviceManage,partInfo ,intelligentExpert});
+
 
 export default operationReducer;
