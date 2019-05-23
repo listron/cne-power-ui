@@ -89,7 +89,7 @@ export default class FaultWarnAlgorithm extends React.Component {
         <div
           className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
           key={cur.taskId}
-          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
+          onClick={() => {return this.detailsFunc(cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
@@ -112,7 +112,7 @@ export default class FaultWarnAlgorithm extends React.Component {
         <div
           className={cur.windTurbines.length === 0 || !cur.windTurbines ? styles.successItem : styles.warnItem}
           key={cur.taskId}
-          onClick={() => {return this.detailsFunc(cur.windTurbines, cur.algorithmId, cur.taskId)}}
+          onClick={() => {return this.detailsFunc(cur.algorithmId, cur.taskId)}}
         >
           <div>
             {cur.algorithmName}
