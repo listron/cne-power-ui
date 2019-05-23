@@ -187,15 +187,12 @@ class InverterList extends Component {
       descend : sorter.order === 'descend'
     })
   }
-  createTableSource = (data) => {
+  createTableSource = (data = []) => { // 排序
     const { sortName, descend, currentPage, pageSize } = this.state;
-    const tableSource = [...data].map((e, i) => ({
-      ...e,
-      key: i,
-    })).sort((a, b) => { // 排序
+    const tableSource = data.sort((a, b) => { 
       const sortType = descend ? -1 : 1;
-      const arraySort = ['parentDeviceName','deviceStatus'];
-      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
+      const arraySort = ['parentDeviceName','deviceName'];
+      const arrayNumSort = ['devicePower','deviceStatus','deviceCapacity', 'alarmNum',];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {

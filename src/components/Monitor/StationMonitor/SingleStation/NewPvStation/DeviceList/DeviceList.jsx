@@ -6,9 +6,9 @@ import PvmoduleList from './PvmoduleList';
 import InverterList from './InverterList';
 import ConfluenceBoxList from './ConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
-import IntegrateList from '../../SingleStationCommon/DeviceList/IntegrateList';
-import Boosterstation from '../../SingleStationCommon/DeviceList/Boosterstation';
-import PowerNet from '../../SingleStationCommon/DeviceList/PowerNet';
+import IntegrateList from './IntegrateList';
+import Boosterstation from './Boosterstation';
+import PowerNet from './PowerNet';
 
 class DeviceList extends Component {
   static propTypes = {
@@ -27,7 +27,12 @@ class DeviceList extends Component {
     //  207 为交流汇流箱 暂时已经舍去了
     return (
       <div >
-         <InverterList {...this.props} />
+        {/* <ConfluenceBoxList {...this.props} /> */}
+        {/* <BoxTransformerList {...this.props} />   */}
+        {/* <IntegrateList {...this.props} /> */}
+        {/* <PvmoduleList {...this.props} /> */}
+        {/* <Boosterstation {...this.props} /> */}
+        <PowerNet {...this.props} />
         {/* {deviceTypeCode === 509 && <PvmoduleList {...this.props} />} */}
         {/* {deviceTypeCode === 206 && <InverterList {...this.props} />}
         {deviceTypeCode === 201 && <InverterList {...this.props} />}
