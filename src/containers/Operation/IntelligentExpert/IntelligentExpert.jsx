@@ -32,7 +32,7 @@ class IntelligentExpert extends Component {
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     getLostGenType({ // 获取所有损失缺陷类型
       objectType: 1,
-      stationType:1
+      stationType: 1
     })
   }
 
@@ -46,7 +46,6 @@ class IntelligentExpert extends Component {
 
   onToggleSide = () => {
     const { showPage } = this.props;
-    console.log('showPage: ', showPage);
     this.setState({
       showSidePage: showPage
     });

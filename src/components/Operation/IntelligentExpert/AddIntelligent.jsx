@@ -123,7 +123,7 @@ class AddIntelligent extends Component {
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <Form className={styles.preFormStyle}>
-          <FormItem label="设备类型">
+          <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择' }],
               initialValue: deviceTypes.deviceTypeCode || null
@@ -138,7 +138,7 @@ class AddIntelligent extends Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label="缺陷类型" className={styles.formItem}>
+          <FormItem label="缺陷类型" className={styles.formItem} colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择' }],
             })(
@@ -151,34 +151,34 @@ class AddIntelligent extends Component {
               />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="缺陷描述">
+          <FormItem className={styles.formItem} label="缺陷描述" colon={false}>
             {getFieldDecorator('faultDescription', {
               rules: [{ required: true, message: '请输入缺陷描述'}],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="检查项目">
+          <FormItem className={styles.formItem} label="检查项目" colon={false}>
             {getFieldDecorator('checkItems', {
               rules: [{ required: true, message: '请输入检查项目' }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="处理方法">
+          <FormItem className={styles.formItem} label="处理方法" colon={false}>
             {getFieldDecorator('processingMethod', {
               rules: [{ required: true, message: '请输入处理方法' }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="所需工具">
+          <FormItem className={styles.formItem} label="所需工具" colon={false}>
             {getFieldDecorator('requiredTools', {
               rules: [{
                 message: '请输入...',
               }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
           <FormItem className={styles.formItem} label="备注">
@@ -188,7 +188,7 @@ class AddIntelligent extends Component {
                 conlon: false
                }]
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
           <FormItem className={styles.actionBtn}>

@@ -85,7 +85,7 @@ class ShowIntelligent extends Component {
             <span>{moment(updateTime).format('YYYY-MM-DD') || '无'}</span>
           </div>
           <div className={styles.detailText}>
-            <span className={styles.title}>点赞数：</span>
+            <span className={styles.title}>点赞数</span>
             <span>{likeCount || '无'}</span>
           </div>
           <Button className={styles.likeBtn} onClick={this.likeBtn}>点赞<Icon type="like" /></Button>

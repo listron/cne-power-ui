@@ -114,13 +114,6 @@ class IntelligentSearch extends Component {
     const { getIntelligentTable, listParams } = this.props;
     const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
     const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
-    // if(changeValue.deviceTypeCode){
-    //   this.props.getLostGenType({ // 获取所有损失缺陷类型
-    //     objectType: 1,
-    //     stationType:1,
-    //     ...changeValue,
-    //   })
-    // }
     getIntelligentTable({
       ...params,
       ...changeValue,

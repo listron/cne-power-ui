@@ -77,7 +77,7 @@ class EditIntelligent extends Component {
             </div>
             <div className={styles.editmiddle}>
             <Form className={styles.preFormStyle}>
-              <FormItem label="设备类型" >
+              <FormItem label="设备类型" colon={false}>
                  {getFieldDecorator('deviceTypeCode',{
                    rules: [{
                      required : true,
@@ -87,7 +87,7 @@ class EditIntelligent extends Component {
                    <span>{intelligentDetail.deviceTypeName || '无'}</span>
                  )}
               </FormItem>
-              <FormItem label="缺陷类型" >
+              <FormItem label="缺陷类型" colon={false}>
                 {getFieldDecorator('faultTypeId',{
                   rules: [{
                     required : true,
@@ -97,7 +97,7 @@ class EditIntelligent extends Component {
                   <span>{intelligentDetail.faultName || '无'}</span>
                 )}
               </FormItem>
-              <FormItem label="缺陷描述" >
+              <FormItem label="缺陷描述" colon={false}>
                 {getFieldDecorator('faultDescription',{
                   rules: [{
                     required : true,
@@ -105,10 +105,10 @@ class EditIntelligent extends Component {
                   }],
                   initialValue: intelligentDetail.faultDescription || ''
                 })(
-                  <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+                  <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
                 )}
               </FormItem>
-              <FormItem label="检查项目" >
+              <FormItem label="检查项目" colon={false}>
                  {getFieldDecorator('checkItems',{
                    rules: [{
                      required : true,
@@ -116,10 +116,10 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.checkItems || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
                  )}
                </FormItem>
-               <FormItem label="处理方法" >
+               <FormItem label="处理方法" colon={false}>
                  {getFieldDecorator('processingMethod',{
                    rules: [{
                      required : true,
@@ -127,27 +127,27 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.processingMethod || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
                  )}
                </FormItem>
-               <FormItem label="所需工具" >
+               <FormItem label="所需工具" colon={false}>
                  {getFieldDecorator('requiredTools',{
                    rules: [{
                      message: '请输入...',
                    }],
                    initialValue: intelligentDetail.requiredTools || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
                  )}
                </FormItem>
-               <FormItem label="备注" >
+               <FormItem label="备注" colon={false}>
                  {getFieldDecorator('remark',{
                    rules: [{
                      message: '请输入...',
                    }],
                    initialValue: intelligentDetail.remark || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
                  )}
                </FormItem>
                <div className={styles.intelligentBottom}>
