@@ -133,13 +133,11 @@ class WarehouseWrapTable extends Component {
         dataIndex: 'warehouseName',
         sorter: true,
         editable: true,
-        width: 200,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         editable: true,
-        width: 200,
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '创建时间',
