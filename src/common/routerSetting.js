@@ -30,19 +30,19 @@ const routers = [
     component: lazy(() => import('../components/Common/Building/Building')),
   }, { // 资产配置
     path: '/operation/book/assetsConfig',
-    // component: lazy(() => import('../components/Common/Building/Building')),
-    component: lazy(() => import('../containers/Operation/Book/AssetsConfig/AssetsConfig')),
+    component: lazy(() => import('../components/Common/Building/Building')),
+    // component: lazy(() => import('../containers/Operation/Book/AssetsConfig/AssetsConfig')),
   }, { // 设备管理
     path: '/operation/book/deviceManage',
-    // component: lazy(() => import('../components/Common/Building/Building')),
-    component: lazy(() => import('../containers/Operation/Book/DeviceManage/DeviceManage')),
+    component: lazy(() => import('../components/Common/Building/Building')),
+    // component: lazy(() => import('../containers/Operation/Book/DeviceManage/DeviceManage')),
   }, { // 设备台账
     path: '/operation/book/deviceAccount',
     component: lazy(() => import('../components/Common/Building/Building')),
   }, { // 仓库配置
     path: '/operation/book/warehouse',
-    // component: lazy(() => import('../components/Common/Building/Building')),
-    component: lazy(() => import('../containers/Operation/Book/Warehouse/Warehouse')),
+    component: lazy(() => import('../components/Common/Building/Building')),
+    // component: lazy(() => import('../containers/Operation/Book/Warehouse/Warehouse')),
   }, { // 仓库管理
     path: '/operation/book/warehouseManage',
     component: lazy(() => import('../components/Common/Building/Building')),
