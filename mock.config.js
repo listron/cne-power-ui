@@ -3,6 +3,7 @@ const inspectionList = require('./mock/operation/MockinspectionList');
 const defectList = require('./mock/operation/MockDefectList');
 const enterprise = require('./mock/system/enterprise');
 const dayReport = require('./mock/operation/dayReport');
+const intelligent = require('./mock/operation/intelligent');
 
 const department = require('./mock/system/department');
 const getVerificationCode = require('./mock/login/getVerificationCode');
@@ -34,6 +35,7 @@ exports.mockConfig = [
   ...inspectionList,
   ...defectList,
   ...dayReport, // 日报
+  ...intelligent, // 智能专家库
 
   ...enterprise,
   ...department,

@@ -121,6 +121,15 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+
+      getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
+      getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
+      // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
+      getLike: '/v3/knowledgebase/like', // 智能专家库点赞
+      downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
+      operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
+      getUserName: '/v3/user/related', // 获取相关用户名
+      
       getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
       getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
       addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点

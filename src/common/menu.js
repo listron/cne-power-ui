@@ -209,8 +209,8 @@ const menuData = [
           }
         ]
       }, {
-        name: '经验库',
-        path: 'experience',
+        name: '智能专家库',
+        path: 'intelligentExpert',
         iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
       }

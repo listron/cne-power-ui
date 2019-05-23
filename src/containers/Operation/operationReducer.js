@@ -11,6 +11,7 @@ import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
 import warehouse from './Book/Warehouse/warehouseReducer';
+import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 
 
 const operationReducer = combineReducers({
@@ -23,7 +24,8 @@ const operationReducer = combineReducers({
   assetsConfig,
   deviceManage,
   partInfo,
-  warehouse
+  warehouse,
+  intelligentExpert
 });
 
 export default operationReducer;
