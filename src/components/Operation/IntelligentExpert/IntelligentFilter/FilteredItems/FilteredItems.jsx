@@ -30,7 +30,9 @@ class FilteredItems extends Component {
 
   onCancelDefectType = (cancelId) => { // 删除某缺陷类型
     const {defectTypeCode, onChangeFilter} = this.props;
-    onChangeFilter({defectTypeCode: defectTypeCode.filter(e => e !== cancelId),});
+    onChangeFilter({
+      defectTypeCode: defectTypeCode.filter(e => e !== cancelId)
+    });
   };
 
   getDefectInfoArr = (defectTypes, selectedTypes) => {

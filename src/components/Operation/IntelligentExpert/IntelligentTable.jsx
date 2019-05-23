@@ -179,7 +179,6 @@ class IntelligentTable extends Component {
       onChange: this.onSelectChange,
     };
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.operation.downloadIntelligentTemplet}`; // 下载导入模板
-
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
 

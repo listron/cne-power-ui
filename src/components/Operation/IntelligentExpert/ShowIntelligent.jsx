@@ -40,11 +40,13 @@ class ShowIntelligent extends Component {
 
   render(){
     const { intelligentDetail = {} } = this.props;
-    let { deviceTypeName, faultName, faultDescription, checkItems, processingMethod, requiredTools, remark, recorder, updateTime, likeCount } = intelligentDetail
+    let { deviceTypeName, faultName, faultDescription, checkItems, processingMethod, requiredTools, remark, recorder, updateTime, likeCount } = intelligentDetail;
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const editRight = rightHandler.split(',').includes('operation_experience_edit');
     return (
       <div className={styles.showIntelligent}>
         <div className={styles.titleTop}>
-          <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button>
+          {editRight && <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button>}
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.detailContent}> 
