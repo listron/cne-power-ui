@@ -48,13 +48,16 @@ class IntelligentSearch extends Component {
     this.entryPerson = debounce(this.entryPerson, 800);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps) {
     const { deviceTypeCode: deviceTypeCodeCurrent } = this.props;
     const { deviceTypeCode: deviceTypeCodeNext } = nextProps;
+    const { showFilter } = this.state;
     if (deviceTypeCodeCurrent !== deviceTypeCodeNext && deviceTypeCodeNext.length === 0) {
-      this.setState({
-        showFilter: ""
-      });
+      if (showFilter !== "") {
+        this.setState({
+          showFilter: ""
+        });
+      }
     }
   }
 
@@ -150,8 +153,8 @@ class IntelligentSearch extends Component {
     return (
       <div className={styles.intelligentSearch}>
         <div className={styles.topSearch}>
-          <span>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('deviceTypes')}>
+          <span className={styles.text}>筛选条件</span>
+          <Button onClick={()=>this.onFilterShowChange('deviceTypes')} className={styles.filterBtn}>
             设备类型<Icon type={showFilter ==='deviceTypes' ? "up" : "down"} />
           </Button>
           <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={()=>this.onFilterShowChange('defectTypes')}>

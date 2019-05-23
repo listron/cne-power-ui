@@ -180,6 +180,9 @@ class IntelligentTable extends Component {
     };
     const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.operation.downloadIntelligentTemplet}`; // 下载导入模板
 
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const editRight = rightHandler.split(',').includes('operation_experience_edit');
+
     const columns = [{
       title: '设备类型',
       dataIndex: 'deviceTypeName',
@@ -232,12 +235,12 @@ class IntelligentTable extends Component {
         <i className={`${styles.lookRole} iconfont icon-look`}
         onClick={()=>this.columnlook(record, index)}
         />
-        <i className={`${styles.editRole} iconfont icon-edit`}
+        {editRight && <i className={`${styles.editRole} iconfont icon-edit`}
         onClick={() => this.columnEdit(record)}
-        />
-        <i className={`${styles.deleteRole} iconfont icon-del`}
+        />}
+        {editRight && <i className={`${styles.deleteRole} iconfont icon-del`}
         onClick={() => this.singleDeleteIntelligent(record, index)}
-        />
+        />}
       </span>
     )
     }];
@@ -246,14 +249,10 @@ class IntelligentTable extends Component {
       <div className={styles.intelligentTable}>
        <div className={styles.topHandler}>
           <div className={styles.leftPart}>
-           <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>
-           <Button className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
-           <Button className={styles.importHandler} onClick={this.showModal}>导入</Button>
-           <Button className={styles.exportHandler}
-            href={downloadTemplet}
-            download={downloadTemplet}
-            target="_blank"
-           >下载导入模板</Button>
+           {editRight && <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>}
+           {editRight && <Button className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>}
+           {editRight && <Button className={styles.importHandler} onClick={this.showModal}>导入</Button>}
+           {editRight && <Button className={styles.exportHandler} href={downloadTemplet} download={downloadTemplet} target="_blank">下载导入模板</Button>}
           </div>
           <CommonPagination
             currentPage={pageNum}

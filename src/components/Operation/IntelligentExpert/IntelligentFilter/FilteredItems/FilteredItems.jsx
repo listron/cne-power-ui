@@ -59,11 +59,11 @@ class FilteredItems extends Component {
 
   render() {
     const { deviceTypeCode, defectTypeCode, deviceTypes, defectTypes } = this.props;
-    const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => +m === e.deviceTypeCode));
-    const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
-    if ((!deviceTypeCode || deviceTypeCode.length === 0) && (!defectTypeCode ||defectTypeCode.length === 0)) {
+    if ((!deviceTypeCode || deviceTypeCode.length === 0) && (!defectTypeCode || defectTypeCode.length === 0)) {
       return null;
     }
+    const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => +m === e.deviceTypeCode));
+    const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
 
     return (
       <div className={styles.filteredItems}>
