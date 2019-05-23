@@ -82,6 +82,12 @@ import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan
 import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
+import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
+import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
+// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
+// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
+// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
+// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
 
 
 // root saga
@@ -171,6 +177,9 @@ export default function* rootSaga() {
     watchFaultSingleFan(),
     // 工单
     watchWorkOrder(),
+    //operation_Book台账
+    watchBookAssetsConfig(),//资产配置
+    watchBookDeviceManage(),//设备管理
 
   ])
 }

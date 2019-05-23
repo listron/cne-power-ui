@@ -130,6 +130,27 @@ export default {
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
       
+      getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
+      getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
+      addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
+      deleteAssetNode:'/v3/ledger/assets/delete',//台账删除生产资产树
+      editAssetNode:'/v3/ledger/assets/update',//台账编辑生产资产节点
+      getDeviceFactorsList:'/v3/ledger/devicemanufactors/list',//获取设备厂家列表
+      addDeviceFactors:'/v3/ledger/devicemanufactors/add',//新建设备厂家
+      editDeviceFactors:'/v3/ledger/devicemanufactors/update',//编辑设备厂家
+      deleteDeviceFactors:'/v3/ledger/devicemanufactors/delete',//删除设备厂家
+      getDeviceModesList:'/v3/ledger/devicemodes/list',//获取设备型号列表
+      addDeviceModes:'/v3/ledger/devicemodes/add',//新建设备型号
+      editDeviceModes:'/v3/ledger/devicemodes/update',//编辑设备型号
+      deleteDeviceModes:'/v3/ledger/devicemodes/delete',//删除设备型号
+      //设备管理
+      getfactorsDeviceMode:'/v3/ledger/devicemodes',//获取某设备厂家下的设备型号
+      getDevicePartInfo:'/v3/ledger/device/parts/list',//获取某设备的部件信息
+      getDevicefixRecord:'/v3/ledger/device/defect/list',//获取某设备检修记录
+      getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警
+
+    
+
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表
@@ -445,7 +466,6 @@ export default {
       algoList: "/v3/wtfdd/task/algomodel", // 获取预警任务列表-算法模型视图
       algoOptionList: "/v3/wtfdd/algorithm", // 获取算法列表
       addWarnTask: "/v3/wtfdd/task", // 新增预警任务
-      stationDeviceList: "/v3/management/devicelist", // 获取单电站所有风机
       downloadFile: "/v3/wtfdd/task", // 下载故障发生概率文件
       warnHistory: "/v3/wtfdd/warning/history", // 获取历史预警列表
       resetTask: "/v3/wtfdd/task/redo", // 重新执行
@@ -454,7 +474,7 @@ export default {
       similarityList: "/v3/wtfdd/result/similarity", // 获取风机相似性结果
       allFanResult: "/v3/wtfdd/result/std", // 获取多机协同模块检测结果-严重程度及识别（所有风机）
       tenMinutesLine: "/v3/wtfdd/pt10m", // 获取风机10分钟数据
-      faultInfo: "/v3/wtfdd/task", // 获取故障预警任务详情
+      faultInfo: "/v3/wtfdd/task/detail", // 获取故障预警任务详情
       statusInfo: "/v3/wtfdd/task/status", // 获取预警任务状态统计
     }
   }

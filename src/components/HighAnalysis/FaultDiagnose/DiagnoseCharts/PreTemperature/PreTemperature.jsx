@@ -23,51 +23,25 @@ export default class PreTemperature extends React.Component {
     onChangeFilter: PropTypes.func,
     getSimilarityList: PropTypes.func,
     getAllFanResultList: PropTypes.func,
-    stationDeviceList: PropTypes.array,
     preDate: PropTypes.array,
     preLoading: PropTypes.bool,
     preTimeCompare: PropTypes.number,
     warnId: PropTypes.number,
     getTenMinutesAfter: PropTypes.func,
     getTenMinutesDiff: PropTypes.func,
+    faultDateList: PropTypes.string,
 
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  componentDidMount() {
-    const  {
-      deviceName,
-      tenMinutesBeforeList,
-      preLoading
-    } = this.props;
-    const { preChart } = this;
-    const myChart = eCharts.init(preChart);
-    if (preLoading) { // loading态控制。
-      myChart.showLoading();
-      return false;
-    }
-    if (!preLoading) {
-      myChart.hideLoading();
-    }
-    myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName));
-  }
 
   componentDidUpdate(prevProps) {
     const  {
       tenMinutesBeforeList,
       deviceName,
-      stationDeviceList,
       preLoading,
       faultInfo: {
         stationCode
       },
       getTenMinutesBefore,
-      onChangeFilter,
       preTimeCompare: currentPreTimeCompare
     } = this.props;
     const { preTimeCompare } = prevProps;
@@ -80,12 +54,10 @@ export default class PreTemperature extends React.Component {
     if (!preLoading) {
       myChart.hideLoading();
     }
-    // 单风机的时候需要从这里获取
-    const defaultName = localStorage.getItem("deviceName");
-    // 设备名称
-    const name = deviceName ? deviceName : stationDeviceList[0].deviceName;
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
-      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, name || defaultName, paramsStart, paramsEnd));
+      eCharts.init(preChart).dispose();//销毁前一个实例
+      const myChart = eCharts.init(preChart); //构建下一个实例
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName, paramsStart, paramsEnd));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
         const dz = opt.dataZoom[0];
@@ -96,15 +68,12 @@ export default class PreTemperature extends React.Component {
           pointCode: "GN010", //前驱测点-固定字段
           deviceFullcodes: [], // 默认传空代表所有风机
           startTime: moment(start).utc().format(),
-          endTime: moment(end).utc().format()
+          endTime: moment(end).add(1, "days").utc().format()
         };
         if (paramsStart !== params.start || paramsEnd !== params.end) {
           // 每次保存变量
           paramsStart = params.start;
           paramsEnd = params.end;
-          onChangeFilter({
-            preDate: [moment(start, "YYYY/MM/DD"), moment(end, "YYYY/MM/DD")]
-          });
           // 接口
           getTenMinutesBefore(preParams);
         }
@@ -123,7 +92,6 @@ export default class PreTemperature extends React.Component {
       getSimilarityList,
       getAllFanResultList,
       warnId,
-      stationDeviceList,
       faultInfo:{
         stationCode
       },
@@ -147,7 +115,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 发电机后驱温度
     const afterParams = {
@@ -155,7 +123,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 发电机后驱温度
     const diffParams = {
@@ -163,19 +131,20 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).utc().format()
+      endTime: moment(date).add(1, "days").utc().format()
     };
     // 相似性热图和所有风机
     const heatAndAllFansParams = {
       taskId,
       date: dateString
     };
+    // 调接口
+    getTenMinutesBefore(preParams);
+    getTenMinutesAfter(afterParams);
+    getTenMinutesDiff(diffParams);
     // 有故障
-    if (warnId ? warnId === 1 : stationDeviceList[0].warnId) {
+    if (warnId === 1) {
       // 接口
-      getTenMinutesBefore(preParams);
-      getTenMinutesAfter(afterParams);
-      getTenMinutesDiff(diffParams);
       getSimilarityList(heatAndAllFansParams);
       getAllFanResultList(heatAndAllFansParams);
     }
@@ -194,7 +163,7 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format()
     };
     onChangeFilter({
       preDate: date
@@ -211,6 +180,7 @@ export default class PreTemperature extends React.Component {
       },
       faultDate,
       preDate,
+      faultDateList
     } = this.props;
     return (
       <div className={styles.preChartsBox}>
@@ -218,6 +188,22 @@ export default class PreTemperature extends React.Component {
           <span>选择日期</span>
           {(endTime) && (
             <DatePicker
+              dateRender={(current) => {
+                const style = {};
+                faultDateList && faultDateList.split(",").map(cur => {
+                  if (moment(current).format('YYYY-MM-DD') === moment(cur).format('YYYY-MM-DD')) {
+                    style.border = '1px solid #a42b2c';
+                    style.borderRadius = '50%';
+                    style.color = "#ffffff";
+                    style.backgroundColor = "#a42b2c";
+                  }
+                });
+                return (
+                  <div className="ant-calendar-date" style={style}>
+                    {current.date()}
+                  </div>
+                );
+              }}
               onChange={this.changeFaultDate}
               value={moment(faultDate || endTime, "YYYY-MM-DD")}
             />

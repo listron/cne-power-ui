@@ -8,9 +8,7 @@ export default class FaultNavList extends React.Component {
     loading: PropTypes.bool,
     showFlag: PropTypes.bool,
     onChangeFilter: PropTypes.func,
-    getStationDeviceList: PropTypes.func,
     stationCode: PropTypes.string,
-    stationDeviceList: PropTypes.array,
     match: PropTypes.object,
     faultInfo: PropTypes.object,
     getTenMinutesBefore: PropTypes.func,
@@ -38,10 +36,8 @@ export default class FaultNavList extends React.Component {
       navList: { clientHeight },
       props: {
         onChangeFilter,
-        getStationDeviceList,
       }
     } = this;
-    getStationDeviceList();
     onChangeFilter({
       showFlag: clientHeight > 32
     });
@@ -91,15 +87,19 @@ export default class FaultNavList extends React.Component {
     const { openFlag, fansFlag } = this.state;
     const {
       showFlag,
-      stationDeviceList
+      faultInfo: {
+        algModeDatas
+      }
     } = this.props;
-    const item = stationDeviceList && stationDeviceList.map((cur, index) => {
+    const deviceFullName = localStorage.getItem("deviceFullName");
+    const item = algModeDatas && algModeDatas.map((cur, index) => {
       return (
         <div
           key={`${cur.algorithmName}${index}`}
-          style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
-          className={cur.warnId === 1 ? styles.redWarn : styles.blueWarn}
-          onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}
+          style={deviceFullName === cur.algorithmName ? {backgroundColor: "#ffffff"} :
+            {backgroundColor: (!deviceFullName && index === fansFlag) ?  "#ffffff" : "#199475"}}
+          className={Number(cur.type) === 1 ? styles.redWarn : styles.blueWarn}
+          onClick={() => {return this.handlerFansClick(cur, index, Number(cur.type))}}
         >
           {cur.algorithmName}
         </div>

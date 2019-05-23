@@ -63,7 +63,8 @@ export default class ListView extends React.Component {
   handleStatusChange = (e) => {
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      status: e.target.value
+      status: e.target.value,
+      pageNum: 1
     });
   };
 
@@ -100,7 +101,7 @@ export default class ListView extends React.Component {
           </div>
           <div className={styles.statusGroup}>
             <div className={styles.text}><span>状</span><span>态</span></div>
-            <Radio.Group value={status} onChange={this.handleStatusChange}>
+            <Radio.Group value={status} buttonStyle="solid" onChange={this.handleStatusChange}>
               <Radio.Button value="0">全部</Radio.Button>
               <Radio.Button value="1">{`待执行 ${pending || ""}`}</Radio.Button>
               <Radio.Button value="2">{`执行中 ${processing || ""}`}</Radio.Button>

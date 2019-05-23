@@ -9,6 +9,13 @@
     color: #000000;
     line-height:32px;
   }
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .warnBox{
     width: 100%;
     flex: 1;
@@ -65,8 +72,8 @@
         margin-left: 5px;
         display: inline-block;
         border-radius: 10px;
-        color: $pageGround;
-        background-color: $warnColor;
+        color: $themeColor;
+        background-color: $pageGround;
         @include lineheight(20px);
       }
       div:nth-of-type(2){

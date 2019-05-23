@@ -7,6 +7,13 @@
   flex-wrap: wrap;
   align-self: flex-start;
   padding-left: 8px;
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .fanItem{
     border:1px solid $promptColor;
     width:278px;

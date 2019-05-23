@@ -117,9 +117,12 @@ class TableList extends Component {
       sorter: true,
       render(text){return text.replace(/-/g,'/').replace(',','-')}
     };
-    const columns = [
-
-      {
+    const columns = [{
+      title: "统计时段",
+      dataIndex: "date",
+      sorter: true,
+      render(text){return text.replace(/-/g,'/').replace(',','-')}
+    },{
         title: "设备状态",
         dataIndex: "deviceStatusName",
         sorter: true,
@@ -152,7 +155,7 @@ class TableList extends Component {
 
       },
     ];
-    filterTable > 4 ? columns.unshift(showStatus) : columns.unshift(...show);
+    filterTable > 4 ? columns : columns.unshift(...show);
     return columns
   }
   detailColumn = () => {

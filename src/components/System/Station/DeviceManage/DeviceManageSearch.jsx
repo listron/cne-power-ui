@@ -20,11 +20,15 @@ class DeviceManageSearch extends Component {
     getStationDeviceTypes: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
+    getDeviceFactors: PropTypes.func,
+  
   }
   constructor(props) {
     super(props);
     this.state = {
     }
+  }
+  componentDidMount(){
   }
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
@@ -63,8 +67,15 @@ class DeviceManageSearch extends Component {
       pageNum: 1,
     })
   }
+  selectfactory=(value)=>{
+    const { getDeviceList, queryParams } = this.props;
+    getDeviceList({
+      ...queryParams,
+      manufactorId:value
+    })
+  }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, } = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = deviceModels.length === 0;
     return (
@@ -89,7 +100,8 @@ class DeviceManageSearch extends Component {
             if(!e){ return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
-        </Select>
+        </Select> 
+         
       </div>
     );
   }
