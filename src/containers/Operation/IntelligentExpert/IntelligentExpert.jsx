@@ -44,8 +44,8 @@ class IntelligentExpert extends Component {
 
   onChangeFilter = (changeValue) => {
     const { getIntelligentTable, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
-    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
+    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod, deviceTypeCode } = listParams;
+    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod, deviceTypeCode };
 
     getIntelligentTable({
       ...params,

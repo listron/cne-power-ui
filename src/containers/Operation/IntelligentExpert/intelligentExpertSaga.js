@@ -9,7 +9,9 @@ const { operation } = path.APISubPaths;
 
 function* getIntelligentTable({ payload = {}}) { // 获取列表数据
   const url = `${APIBasePath}${operation.getIntelligentTable}`;
+
   const { deviceTypeCode, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = payload;
+
   const params = {
     deviceTypeCodes: deviceTypeCode,
     faultTypeIds: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode,
@@ -45,7 +47,7 @@ function* getIntelligentTable({ payload = {}}) { // 获取列表数据
             ...payload,
             pageNum,
             pageSize,
-            defectTypeCode: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode
+            defectTypeCode: (!deviceTypeCode || deviceTypeCode.length === 0) ? [] : defectTypeCode,
           },
           tableLoading: false,
           intelligentTableData: response.data.data || {},
