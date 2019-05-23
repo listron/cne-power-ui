@@ -17,7 +17,6 @@ class Seriesinverter extends Component {
     deviceTenMin: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
-
     deviceEvents: PropTypes.array,
     tenMinUnix: PropTypes.number,
     tenMinChartLoading: PropTypes.bool,

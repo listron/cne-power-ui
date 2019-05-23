@@ -45,7 +45,7 @@ class DeviceMonitor extends Component {
         {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Inverter {...this.props} /> }
         {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} /> }
         {deviceTypeCode === '304' && <Boxtransformer {...this.props} /> }
-        {deviceTypeCode === '203' && <Weatherstation {...this.props} /> }
+        {/* {deviceTypeCode === '203' && <Weatherstation {...this.props} /> } */}
         {deviceTypeCode === '101' && <WindDevice {...this.props} /> }
         {deviceTypeCode === '302' && <IntegrateLine {...this.props} /> }
         {deviceTypeCode === '301' && <BoosterStation {...this.props} /> }

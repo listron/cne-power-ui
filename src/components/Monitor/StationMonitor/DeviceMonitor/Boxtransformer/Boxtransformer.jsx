@@ -1,26 +1,29 @@
 import React, { Component } from 'react';
 import BoxtransformerHeader from './BoxtransformerHeader';
-import BoxtransformerStatistics from './BoxtransformerStatistics';
+import SubInverter from './SubInverter';
 import BoxtransformerTenMin from './BoxtransformerTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
+import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
 class Boxtransformer extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     match: PropTypes.object,
-    getMonitorDeviceData: PropTypes.func,
-    getTenMinDeviceData: PropTypes.func,
+    deviceEvents: PropTypes.array,
     devices: PropTypes.array,
     deviceDetail: PropTypes.object,
     deviceTenMin: PropTypes.array,
+    subDeviceList: PropTypes.array,
     deviceAlarmList: PropTypes.array,
     devicePointData: PropTypes.array,
-    singleStationData: PropTypes.object,
+    tenMinUnix: PropTypes.number,
+    tenMinChartLoading: PropTypes.bool,
+    getDeviceInfoMonitor: PropTypes.func,
+    getDeviceChartMonitor: PropTypes.func,
     resetDeviceStore: PropTypes.func,
+    stopMonitor: PropTypes.func,
   }
 
   componentDidMount(){
@@ -31,10 +34,8 @@ class Boxtransformer extends Component {
       deviceTypeCode,
       timeParam: '72',
     };
-    this.props.getMonitorDeviceData(params);
-    this.props.getTenMinDeviceData(params);
-    this.getData(stationCode, deviceCode, deviceTypeCode);
-    this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
+    this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
+    this.props.getDeviceChartMonitor(params);
   }
 
   componentWillReceiveProps(nextProps){
@@ -43,61 +44,34 @@ class Boxtransformer extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode && nextType === '304' ){
-      clearTimeout(this.timeOutId);
-      clearTimeout(this.timeOutTenMin);
+    if( nextDevice !== deviceCode ){
       const params = {
         stationCode: nextStation,
         deviceCode: nextDevice,
         deviceTypeCode: nextType,
         timeParam: '72',
       };
-      this.props.getMonitorDeviceData(params);
-      this.props.getTenMinDeviceData(params);
-      this.getData(nextStation, nextDevice, nextType);
-      this.getTenMinData(nextStation, nextDevice, nextType);
+      this.props.stopMonitor(); // 停止之前的定时器。
+      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType, });
+      this.props.getDeviceChartMonitor(params);
     }
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId);
-    clearTimeout(this.timeOutTenMin);
+    this.props.stopMonitor(); // 停止之前的定时器。
     this.props.resetDeviceStore();
   }
 
-  getData = (stationCode, deviceCode, deviceTypeCode) => {
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-    };
-    this.timeOutId = setTimeout(() => {
-    this.props.getMonitorDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },10000)
-  }
-
-  getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-      timeParam: '72',
-    };
-    this.timeOutTenMin = setTimeout(() => {
-      this.props.getTenMinDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },600000)
-  }
-
   render(){
-    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading, singleStationData } = this.props;
+    const {
+      devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, tenMinUnix, tenMinChartLoading, deviceEvents, subDeviceList
+    } = this.props;
     const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: singleStationData && singleStationData.stationName || '',
+        name: deviceDetail && deviceDetail.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
         name: '箱变',
@@ -109,10 +83,16 @@ class Boxtransformer extends Component {
         <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <BoxtransformerHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <BoxtransformerStatistics deviceDetail={deviceDetail} />
-          <BoxtransformerTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
-          <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
+          {/* <BoxtransformerStatistics deviceDetail={deviceDetail} /> */}
+          <BoxtransformerTenMin
+            deviceTenMin={deviceTenMin}
+            tenMinUnix={tenMinUnix}
+            tenMinChartLoading={tenMinChartLoading}
+          />
+          <DevicePointsTable deviceEvents={deviceEvents} devicePointData={devicePointData} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
+          {/* <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
+          <SubInverter subDeviceList={subDeviceList} deviceDetail={deviceDetail} />
         </div>
       </div>
     ) 

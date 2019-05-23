@@ -47,11 +47,11 @@ class ConfluenceHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice, dispersionRatio, manufactor, deviceModelName } = deviceDetail;
+    const { deviceStatus, parentDevice = {}, dispersionRatio, manufactor, deviceModelName } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
-    const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode);
-    const parentDeviceTypeCode = parentDevice && parentDevice.deviceTypeCode; // 父级设备type
-    const parentDeviceCode = parentDevice && parentDevice.deviceCode; //父级设备code
+    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
+    const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
+    const parentDeviceCode = parentDevice.deviceCode; //父级设备code
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -70,8 +70,11 @@ class ConfluenceHeader extends Component {
           <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link  to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
-            <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
+          {parentDeviceTypeCode && parentDeviceCode && <Link
+            to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`}
+            className={styles.eachLink}
+          >
+            <span className={`${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
             </span>

@@ -1,25 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
 import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
-function BoxtransformerTenMin({ deviceTenMin, loading }) {
-  const echartBox = document.getElementById('boxtransformer_monitor_tenMin');
-  const lineColor = '#666';
-  if(echartBox){
+class BoxtransformerTenMin extends Component {
+  static propTypes = {
+    tenMinChartLoading: PropTypes.bool,
+    tenMinUnix: PropTypes.number,
+    deviceTenMin: PropTypes.array,
+  }
+
+  componentDidUpdate(prevProps){
+    const { tenMinUnix, tenMinChartLoading } = this.props;
+    const prevTenMinUnix = prevProps.tenMinUnix;
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading) { // 获得数据
+      this.renderChart();
+    }
+  }
+
+  renderChart = () => {
+    const { deviceTenMin, tenMinChartLoading } = this.props;
+    const echartBox = document.getElementById('boxtransformer_monitor_tenMin');
     const boxtransformerChart = echarts.init(echartBox);
-    // if(loading){
-    //   boxtransformerChart.showLoading();
-    // }else{
-    //   boxtransformerChart.hideLoading();
-    // }
+    if (tenMinChartLoading) {
+      boxtransformerChart.showLoading();
+      return;
+    } else {
+      boxtransformerChart.hideLoading();
+    }
+    const lineColor = '#666';
     let powerLineData = [], instantaneousData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
       powerLineData.push(e.stationPower);
       instantaneousData.push(e.instantaneous);
     });
-    
     const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
     const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
     const boxtransformerTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
@@ -196,9 +212,12 @@ function BoxtransformerTenMin({ deviceTenMin, loading }) {
     boxtransformerChart.setOption(option);
     boxtransformerChart.resize();
   }
-  return (
-    <div id="boxtransformer_monitor_tenMin" style={{height:"335px",marginTop: '10px',}}></div>
-  );
+
+  render(){
+    return (
+      <div id="boxtransformer_monitor_tenMin" style={{height:"335px",marginTop: '10px',}}></div>
+    )
+  }
 }
 
 export default BoxtransformerTenMin;
