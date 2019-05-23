@@ -121,7 +121,7 @@ class SingleStationAnalysisSearch extends Component{
                showYearPick={false}
                onChange={this.onTimeChange}
                timerText={''}
-               needDefault={false}
+               refuseDefault={true}
                value={{
                 timeStyle: 'day',
                 startTime: null,

@@ -29,7 +29,7 @@ class TimeSelect extends React.Component {
     timerText: PropTypes.string,
     value: PropTypes.object,
     showYearPick: PropTypes.bool,
-    needDefault: PropTypes.bool,
+    refuseDefault: PropTypes.bool,
     showMonthPick: PropTypes.bool,
     showDayPick: PropTypes.bool,
     defaultLast: PropTypes.bool,
@@ -43,6 +43,7 @@ class TimeSelect extends React.Component {
     showMonthPick: true,
     showDayPick: true,
     defaultLast: false,
+    refuseDefault:false,
     value: {
       timeStyle: 'month',
       startTime: moment().format('YYYY-MM-DD'), // 默认今年
@@ -62,16 +63,18 @@ class TimeSelect extends React.Component {
   onTimeStyleChange = (e) => { // 时间模式选择
     const timeStyle = e.target.value;
     const params = { timeStyle };
-    const { defaultLast, needDefault } = this.props;
-    if (!needDefault) { // 切换时不需要默认值
+    const { defaultLast, refuseDefault } = this.props;
+    if (refuseDefault) { // 切换时不需要默认值
       params.startTime = params.endTime = null;
-    } else if (timeStyle === 'year') { // 默认近五年
-      params.startTime = moment().subtract(5, 'year').format('YYYY');
-      params.endTime = moment().format('YYYY');
-    } else if (timeStyle === 'month') { // 默认今年
-      params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
-    } else if (timeStyle === 'day') { // 默认本月
-      params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
+    } else{
+      if (timeStyle === 'year') { // 默认近五年
+        params.startTime = moment().subtract(5, 'year').format('YYYY');
+        params.endTime = moment().format('YYYY');
+      } else if (timeStyle === 'month') { // 默认今年
+        params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
+      } else if (timeStyle === 'day') { // 默认本月
+        params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
+      }
     }
     this.setState({ ...params });
     this.props.onChange({ ...params });
@@ -117,7 +120,7 @@ class TimeSelect extends React.Component {
 
   disabledDate = (current) => { // 不可以选择的时间
     const { defaultLast } = this.props;
-    return !defaultLast && current > moment().endOf('day') || current > moment().subtract(1,'month').endOf('day');
+    return !defaultLast ? current > moment().endOf('day') : current > moment().subtract(1,'month').endOf('day');
   }
 
 
