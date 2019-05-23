@@ -11,12 +11,12 @@ const FormItem = Form.Item;
 class EditIntelligent extends Component {
   static propTypes = {
     form: PropTypes.object,
-    intelligentDetail: PropTypes.ocject,
+    intelligentDetail: PropTypes.object,
     editIntelligent: PropTypes.func,
     getIntelligentExpertStore: PropTypes.func,
     listParams: PropTypes.object,
     getIntelligentTable: PropTypes.func,
-    knowledgeBaseId:  PropTypes.number,
+    knowledgeBaseId:  PropTypes.string,
   }
 
   constructor(props){
@@ -62,7 +62,7 @@ class EditIntelligent extends Component {
   }
 
   render(){
-    const { showWarningTip, warningTipText } = this.state; 
+    const { showWarningTip, warningTipText } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { intelligentDetail } = this.props;
     let { recorder, updateTime, likeCount } = intelligentDetail;
@@ -153,7 +153,7 @@ class EditIntelligent extends Component {
                <div className={styles.intelligentBottom}>
                  <div className={styles.otherInformation}>
                    <div className={styles.information}>
-                     <span>录入人：</span> 
+                     <span>录入人：</span>
                      <span className={styles.text}>{recorder || '无'}</span>
                      <span>更新时间：</span>
                      <span className={styles.text}>{moment(updateTime).format('YYYY-MM-DD') || '无'}</span>

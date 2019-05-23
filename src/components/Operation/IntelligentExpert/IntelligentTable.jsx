@@ -14,7 +14,7 @@ class IntelligentTable extends Component {
     pageSize: PropTypes.number,
     total: PropTypes.number,
     tableLoading: PropTypes.bool,
-    intelligentTableData: PropTypes.array,
+    intelligentTableData: PropTypes.object,
     getIntelligentExpertStore: PropTypes.func,
     getIntelligentTable: PropTypes.func,
     deleteIntelligent: PropTypes.func,
@@ -38,12 +38,12 @@ class IntelligentTable extends Component {
   }
 
   componentDidMount(){
-    const { getIntelligentTable, listParams } = this.props;  
+    const { getIntelligentTable, listParams } = this.props;
     getIntelligentTable(listParams)
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    const { getIntelligentExpertStore, getIntelligentTable, listParams } = this.props; 
+    const { getIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
     getIntelligentExpertStore({
       pageSize,
       pageNum: currentPage,
@@ -52,7 +52,7 @@ class IntelligentTable extends Component {
       ...listParams,
       pageSize: pageSize,
       pageNum: currentPage,
-      // orderField: 'like_count', 
+      // orderField: 'like_count',
       // sortMethod: 'desc',
     })
   }
@@ -65,7 +65,7 @@ class IntelligentTable extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
-    const { getIntelligentTable, listParams } = this.props;  
+    const { getIntelligentTable, listParams } = this.props;
     const { order } = sorter;
     const initSorterField = 'like_count';
     const sortMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
@@ -98,9 +98,9 @@ class IntelligentTable extends Component {
   }
 
   deleteIntelligent = () => { // 批量删除
-    this.setState({ 
-      showDeleteWarning: true, 
-      warningTipText: '确定要删除解决方案么?' 
+    this.setState({
+      showDeleteWarning: true,
+      warningTipText: '确定要删除解决方案么?'
     })
   }
 
@@ -122,18 +122,18 @@ class IntelligentTable extends Component {
         })
       })
     }
-    this.setState({ 
+    this.setState({
       showDeleteWarning: false,
       handleColumnDel: false,
       handleColumnDelInfo: {},
      })
-     
+
      getIntelligentTable(listParams) // 返回列表页面时重新请求列表数据
   }
 
   singleDeleteIntelligent = (record) => { // 单独删除
-    this.setState({ 
-      showDeleteWarning: true, 
+    this.setState({
+      showDeleteWarning: true,
       warningTipText: '确定要删除解决方案么?' ,
       handleColumnDel: true,
       handleColumnDelInfo: record
@@ -174,7 +174,7 @@ class IntelligentTable extends Component {
     const { intelligentTableData, tableLoading, listParams, selectedRowKeys, allStationBaseInfo } = this.props;
     const { pageNum, pageSize, } = listParams;
     const { total, dataList = [] } = intelligentTableData;
-    const rowSelection = { 
+    const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
@@ -230,13 +230,13 @@ class IntelligentTable extends Component {
       render: (text, record, index) => (
       <span>
         <i className={`${styles.lookRole} iconfont icon-look`}
-        onClick={()=>this.columnlook(record, index)} 
+        onClick={()=>this.columnlook(record, index)}
         />
-        <i className={`${styles.editRole} iconfont icon-edit`} 
-        onClick={() => this.columnEdit(record)} 
+        <i className={`${styles.editRole} iconfont icon-edit`}
+        onClick={() => this.columnEdit(record)}
         />
-        <i className={`${styles.deleteRole} iconfont icon-del`} 
-        onClick={() => this.singleDeleteIntelligent(record, index)} 
+        <i className={`${styles.deleteRole} iconfont icon-del`}
+        onClick={() => this.singleDeleteIntelligent(record, index)}
         />
       </span>
     )
@@ -249,33 +249,33 @@ class IntelligentTable extends Component {
            <Button className={styles.addHandler} icon="plus" onClick={this.addIntelligent}>添加</Button>
            <Button className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
            <Button className={styles.importHandler} onClick={this.showModal}>导入</Button>
-           <Button className={styles.exportHandler} 
-            href={downloadTemplet} 
-            download={downloadTemplet} 
-            target="_blank" 
+           <Button className={styles.exportHandler}
+            href={downloadTemplet}
+            download={downloadTemplet}
+            target="_blank"
            >下载导入模板</Button>
           </div>
-          <CommonPagination 
-            currentPage={pageNum} 
-            pageSize={pageSize} 
-            total={total} 
-            onPaginationChange={this.onPaginationChange} 
+          <CommonPagination
+            currentPage={pageNum}
+            pageSize={pageSize}
+            total={total}
+            onPaginationChange={this.onPaginationChange}
           />
 
           {showModal ? <ImportIntelligent {...this.props} showModal={showModal} cancelModal={this.cancelModal}  allStationBaseInfo={allStationBaseInfo} /> : ''}
           {showDeleteWarning && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
 
        </div>
-       <Table 
+       <Table
           loading={tableLoading}
           className={styles.intelligentList}
-          dataSource={ dataList.map((e, i) => ({...e, key: i})) } 
-          columns={columns} 
+          dataSource={ dataList.map((e, i) => ({...e, key: i})) }
+          columns={columns}
           rowSelection={rowSelection}
           onChange={this.tableChange}
           pagination={false}
           locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
-          rowKey={(record)=>{return record.knowledgeBaseId}} 
+          rowKey={(record)=>{return record.knowledgeBaseId}}
         />
       </div>
       )

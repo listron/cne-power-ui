@@ -41,14 +41,15 @@ const routers = [
     component: lazy(() => import('../components/Common/Building/Building')),
   }, { // 仓库配置
     path: '/operation/book/warehouse',
-    component: lazy(() => import('../components/Common/Building/Building')),
+    // component: lazy(() => import('../components/Common/Building/Building')),
+    component: lazy(() => import('../containers/Operation/Book/Warehouse/Warehouse')),
   }, { // 仓库管理
     path: '/operation/book/warehouseManage',
     component: lazy(() => import('../components/Common/Building/Building')),
   }, { // 出入库记录
     path: '/operation/book/immigrationRecords',
     component: lazy(() => import('../components/Common/Building/Building')),
-  }, 
+  },
   { // 运维管理-电站运行-日报
     path: '/operation/running/dayReport',
     component: lazy(() => import('../containers/Operation/Running/DayReport/DayReport')),

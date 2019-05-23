@@ -19,6 +19,8 @@ class IntelligentExpert extends Component {
     resetStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
     getLostGenType: PropTypes.func,
+    getIntelligentTable: PropTypes.func,
+    listParams: PropTypes.object,
   }
 
   constructor(props) {
@@ -39,6 +41,17 @@ class IntelligentExpert extends Component {
   componentWillUnmount(){
     this.props.resetStore();
   }
+
+  onChangeFilter = (changeValue) => {
+    const { getIntelligentTable, listParams } = this.props;
+    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
+    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
+
+    getIntelligentTable({
+      ...params,
+      ...changeValue,
+    })
+  };
 
   onShowSideChange = (showSidePage) => {
     this.setState({ showSidePage });
@@ -61,11 +74,11 @@ class IntelligentExpert extends Component {
         <div className={styles.contentBox}>
           <div className={styles.container}>
             <div className={styles.intelligentContent}>
-              <IntelligentSearch {...this.props} />
+              <IntelligentSearch onChangeFilter={this.onChangeFilter} {...this.props} />
               <IntelligentTable {...this.props} />
             </div>
           </div>
-          <TransitionContainer 
+          <TransitionContainer
             show={showPage !== 'list'}
             onEnter={this.onToggleSide}
             onExited={this.onToggleSide}
@@ -102,12 +115,12 @@ class IntelligentExpert extends Component {
     editIntelligent: payload => dispatch({ type: intelligentExpertAction.editIntelligent, payload }),
     resetStore: () => dispatch({ type: intelligentExpertAction.resetStore }),
     getStationOfEnterprise: params =>dispatch({
-      type: commonAction.getStationOfEnterprise, 
+      type: commonAction.getStationOfEnterprise,
       payload: {
-        params, 
+        params,
         actionName: intelligentExpertAction.GET_INTELLIGENTEXPERT_SUCCESS,
         resultName: 'allStationBaseInfo'
-      } 
+      }
     }),
     getLostGenType: params => dispatch({
       type: commonAction.getLostGenType,

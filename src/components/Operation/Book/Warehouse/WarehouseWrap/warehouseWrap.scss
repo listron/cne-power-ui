@@ -1,0 +1,18 @@
+@import "../../../../../theme/theme.scss";
+.warehouseWrap{
+  width: 100%;
+  .warehouseSearch{
+    width: 100%;
+    padding: 16px 25px 10px 27px;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: space-between;
+  }
+  .warehouseHandle{
+    width: 100%;
+    display: flex;
+    padding: 17px 30px;
+    justify-content: space-between;
+    background-color: $pageGround;
+  }
+}
