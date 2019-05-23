@@ -40,6 +40,7 @@ class WarehouseGoodsTable extends Component {
     goodsName: PropTypes.string,
     goodsType: PropTypes.string,
     getGoodsUpdateList: PropTypes.func,
+    goodsListLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -145,7 +146,8 @@ class WarehouseGoodsTable extends Component {
         pageData: {
           dataList
         }
-      }
+      },
+      goodsListLoading
     } = this.props;
     const {
       showWarningTip,
@@ -246,7 +248,7 @@ class WarehouseGoodsTable extends Component {
       <div className={styles.warehouseGoodsTable}>
         <EditableContext.Provider value={form}>
           <Table
-            loading={false}
+            loading={goodsListLoading}
             dataSource={dataList}
             components={components}
             columns={isAbleOper === 0 ? columnsEdit : columnsUnEdit}

@@ -22,6 +22,7 @@ class WarehouseGoods extends Component {
     goodsType: PropTypes.string,
     goodsName: PropTypes.string,
     getGoodsAddList: PropTypes.func,
+    goodsAddLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -146,7 +147,8 @@ class WarehouseGoods extends Component {
         }
       },
       pageNum,
-      pageSize
+      pageSize,
+      goodsAddLoading
     } = this.props;
     const { addFlag } = this.state;
     const { getFieldDecorator } = form;
@@ -207,7 +209,7 @@ class WarehouseGoods extends Component {
                             <Input maxLength={6} placeholder="6字以内" />
                           )}
                         </FormItem>
-                        <Button style={{ width: '68px', marginTop: "4px" }} htmlType="submit">
+                        <Button loading={goodsAddLoading} style={{ minWidth: '68px', marginTop: "4px" }} htmlType="submit">
                           添加
                         </Button>
                       </Col>

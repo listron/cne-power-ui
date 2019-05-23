@@ -9,10 +9,14 @@ const initState = Immutable.fromJS({
   },
   pageSize: 10,
   pageNum: 1,
+  goodsListLoading: true, // 物品列表loading
+  warehouseListLoading: true, // 仓库列表loading
+  warehouseAddLoading: false, // 仓库添加loading
+  goodsAddLoading: false, // 物品添加loading
   warehouseName: "", // 仓库名称（搜索）
   goodsName: "", // 物品名称（搜索）
   goodsData: { // 物品列表
-    isAbleOper: 0, // 列表是否可编辑（不可编辑，1：可编辑 0）
+    isAbleOper: 1, // 列表是否可编辑（不可编辑，1：可编辑 0）
     pageData: { // 表格数据
       dataList: [],
       pageCount: 0

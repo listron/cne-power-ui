@@ -23,6 +23,7 @@ class WarehouseWrap extends Component {
     warehouseName: PropTypes.string,
     getWarehouseAddList: PropTypes.func,
     getWarehouseDelList: PropTypes.func,
+    warehouseAddLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -57,7 +58,6 @@ class WarehouseWrap extends Component {
 
   // 批量选中的数据
   onSelectedRowKeys = (data) => {
-    console.log(data, "data");
     this.setState({
       selectedRowKeys: data.join(","),
       selectData: data.join(",")
@@ -117,9 +117,16 @@ class WarehouseWrap extends Component {
       pageNum,
       pageSize,
       func: () => {
-        this.setState({
+        // 点击的table后面的删除按钮
+        if (selectedRowKeys) {
+          return this.setState({
+            showWarningTip: false,
+            selectedRowKeys: ""
+          })
+        }
+        // 点击的批量删除
+        return this.setState({
           showWarningTip: false,
-          selectedRowKeys : "",
           selectData: ""
         })
       }
@@ -190,6 +197,7 @@ class WarehouseWrap extends Component {
       },
       pageSize,
       pageNum,
+      warehouseAddLoading
     } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const { getFieldDecorator } = form;
@@ -220,7 +228,7 @@ class WarehouseWrap extends Component {
                     />
                   )}
                 </FormItem>
-                <Button style={{ width: '68px', marginTop: "4px" }} htmlType="submit">
+                <Button loading={warehouseAddLoading} style={{ minWidth: '68px', marginTop: "4px" }} htmlType="submit">
                   添加
                 </Button>
               </Col>

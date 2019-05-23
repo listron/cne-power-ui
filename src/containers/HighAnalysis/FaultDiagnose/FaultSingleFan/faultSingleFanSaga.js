@@ -77,30 +77,30 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       // 任务执行失败不请求接口
       if (response.data.data.status !== 4) {
         yield put({
-          type: faultSingleFanAction.getAllFanResultList,
-          payload: heatAndFansParams
+          type: faultSingleFanAction.getTenMinutesDiff,
+          payload: diffParams
         });
         yield put({
-          type: faultSingleFanAction.getStandAloneList,
-          payload: aloneParams
+          type: faultSingleFanAction.getTenMinutesAfter,
+          payload: afterParams
         });
         yield put({
-          type: faultSingleFanAction.getSimilarityList,
-          payload: heatAndFansParams
+          type: faultSingleFanAction.getTenMinutesBefore,
+          payload: preParams
         });
         // 判断当前type === 1 再发请求
         if (Number(response.data.data.algModeDatas[0].type) === 1) {
           yield put({
-            type: faultSingleFanAction.getTenMinutesDiff,
-            payload: diffParams
+            type: faultSingleFanAction.getAllFanResultList,
+            payload: heatAndFansParams
           });
           yield put({
-            type: faultSingleFanAction.getTenMinutesAfter,
-            payload: afterParams
+            type: faultSingleFanAction.getStandAloneList,
+            payload: aloneParams
           });
           yield put({
-            type: faultSingleFanAction.getTenMinutesBefore,
-            payload: preParams
+            type: faultSingleFanAction.getSimilarityList,
+            payload: heatAndFansParams
           });
         }
       }

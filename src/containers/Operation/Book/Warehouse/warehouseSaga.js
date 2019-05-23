@@ -33,6 +33,7 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
+        warehouseListLoading: true,
         pageSize: payload.pageSize || 10,
         pageNum: payload.pageNum || 1,
         warehouseName: payload.warehouseName,
@@ -45,6 +46,7 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
         payload: {
           warehouseData: response.data.data || {},
           loading: false,
+          warehouseListLoading: false,
         },
       });
     }else {
@@ -55,7 +57,8 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
+        loading: false,
+        warehouseListLoading: false,
       }
     });
   }
@@ -80,6 +83,7 @@ function* getWarehouseAddList(action) { // 仓库添加
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
+        warehouseAddLoading: true,
       }
     });
     const response = yield call(axios.post, url, paramsAdd);
@@ -96,6 +100,12 @@ function* getWarehouseAddList(action) { // 仓库添加
         type: warehouseAction.getWarehouseList,
         payload: paramsList,
       });
+      yield put({
+        type: warehouseAction.warehouseFetchSuccess,
+        payload: {
+          warehouseAddLoading: false,
+        },
+      });
     }else {
       throw response.data
     }
@@ -104,7 +114,8 @@ function* getWarehouseAddList(action) { // 仓库添加
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
+        loading: false,
+        warehouseAddLoading: false,
       }
     });
   }
@@ -218,6 +229,7 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
+        goodsListLoading: true,
         pageSize: payload.pageSize || 10,
         pageNum: payload.pageNum || 1,
         goodsName: payload.goodsName,
@@ -226,12 +238,12 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
-      console.log(response.data.data, "response.data.data");
       yield put({
         type: warehouseAction.warehouseFetchSuccess,
         payload: {
           goodsData: response.data.data || {},
           loading: false,
+          goodsListLoading: false,
         },
       });
     }else {
@@ -242,7 +254,8 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
+        loading: false,
+        goodsListLoading: false,
       }
     });
   }
@@ -272,6 +285,7 @@ function* getGoodsAddList(action) { // 物品添加
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
+        goodsAddLoading: true,
       }
     });
     const response = yield call(axios.post, url, paramsAdd);
@@ -289,6 +303,12 @@ function* getGoodsAddList(action) { // 物品添加
         type: warehouseAction.getGoodsList,
         payload: paramsList,
       });
+      yield put({
+        type: warehouseAction.warehouseFetchSuccess,
+        payload: {
+          goodsAddLoading: false,
+        }
+      });
     }else {
       throw response.data
     }
@@ -297,7 +317,8 @@ function* getGoodsAddList(action) { // 物品添加
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
+        loading: false,
+        goodsAddLoading: false,
       }
     });
   }
