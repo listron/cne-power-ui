@@ -100,7 +100,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       // 相似性热图和所有风机
       const heatAndFansParams = {
         taskId: response.data.data.taskId,
-        date: response.data.data.endTime
+        date: !response.data.data.deviceDatas[0].date ? response.data.data.endTime : dateArr[dateArr.length - 1]
       };
       // 任务执行失败不请求接口
       if (response.data.data.status !== 4) {
