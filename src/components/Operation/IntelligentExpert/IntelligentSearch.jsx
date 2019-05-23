@@ -25,8 +25,8 @@ class IntelligentSearch extends Component {
     getIntelligentTable: PropTypes.func,
     getUserName: PropTypes.func,
     listParams: PropTypes.object,
-    deviceTypeCodes: PropTypes.array,
-    defectTypeCodes: PropTypes.array,
+    deviceTypeCode: PropTypes.array,
+    defectTypeCode: PropTypes.array,
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
     usernames: PropTypes.array,
@@ -84,15 +84,17 @@ class IntelligentSearch extends Component {
     this.setState({
       personValue: value
     });
-    getUserName({
-      username: value,
-    })
-    getIntelligentExpertStore({
-      listParams: {
-        ...listParams,
-        recorder: value
-      }
-    })
+    if (value) {
+      getUserName({
+        username: value,
+      })
+      getIntelligentExpertStore({
+        listParams: {
+          ...listParams,
+          recorder: value
+        }
+      })
+    }
   }
 
   changePerson = (value) => { // 选择option
@@ -110,8 +112,15 @@ class IntelligentSearch extends Component {
   
   filterCondition = (changeValue) => { // 设备类型、缺陷类型筛选栏
     const { getIntelligentTable, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCodes, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
-    const params = { deviceTypeCodes, defectTypeCodes, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
+    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
+    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
+    // if(changeValue.deviceTypeCode){
+    //   this.props.getLostGenType({ // 获取所有损失缺陷类型
+    //     objectType: 1,
+    //     stationType:1,
+    //     ...changeValue,
+    //   })
+    // }
     getIntelligentTable({
       ...params,
       ...changeValue,
@@ -120,7 +129,7 @@ class IntelligentSearch extends Component {
 
   render() {
     const { personValue, defectValue } = this.state;
-    const { stations, deviceTypes, defectTypes, listParams, usernames = [] } = this.props;
+    const { stations, deviceTypes, defectTypes, usernames = [] } = this.props;
     const showResetBtn = personValue || defectValue; // 控制“重置”按钮是否出现
     return (
       <div className={styles.intelligentSearch}>
@@ -144,7 +153,7 @@ class IntelligentSearch extends Component {
               onSearch={this.entryPerson}
               onChange={this.changePerson}
             >
-              {usernames.map(e => {
+              {usernames && usernames.map(e => {
                   return <Option key={e} value={e}>{e}</Option>
               })}
             </Select>

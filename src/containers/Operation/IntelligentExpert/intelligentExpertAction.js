@@ -10,4 +10,7 @@ export const intelligentExpertAction = {
   deleteIntelligent: Symbol('getImportIntelligent'), // 删除
   getUserName: Symbol('getUserName'), // 获取录入人
   addIntelligent: Symbol('addIntelligent'), // 添加列表数据
+  getKnowledgebase: Symbol('getKnowledgebase'), // 查看详情
+  getLike: Symbol('getLike'), // 点赞
+  editIntelligent: Symbol('editIntelligent'), // 编辑
 }

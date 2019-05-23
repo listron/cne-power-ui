@@ -12,6 +12,7 @@ class ImportIntelligent extends Component {
     getFieldDecorator: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     showModal: PropTypes.bool,
+    form: PropTypes.object,
   }
 
   constructor(props){
@@ -38,9 +39,9 @@ class ImportIntelligent extends Component {
   }
 
   handleSubmit = (e) => { // 导入按钮
-    const { cancelModal, getImportIntelligent } = this.props;
+    const { form, cancelModal, getImportIntelligent } = this.props;
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         const { fileList } = this.state;
         const formData = new FormData();
