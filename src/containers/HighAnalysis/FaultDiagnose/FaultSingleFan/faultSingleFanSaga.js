@@ -88,18 +88,21 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
           type: faultSingleFanAction.getSimilarityList,
           payload: heatAndFansParams
         });
-        yield put({
-          type: faultSingleFanAction.getTenMinutesDiff,
-          payload: diffParams
-        });
-        yield put({
-          type: faultSingleFanAction.getTenMinutesAfter,
-          payload: afterParams
-        });
-        yield put({
-          type: faultSingleFanAction.getTenMinutesBefore,
-          payload: preParams
-        });
+        // 判断当前type === 1 再发请求
+        if (Number(response.data.data.algModeDatas[0].type) === 1) {
+          yield put({
+            type: faultSingleFanAction.getTenMinutesDiff,
+            payload: diffParams
+          });
+          yield put({
+            type: faultSingleFanAction.getTenMinutesAfter,
+            payload: afterParams
+          });
+          yield put({
+            type: faultSingleFanAction.getTenMinutesBefore,
+            payload: preParams
+          });
+        }
       }
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
