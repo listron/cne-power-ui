@@ -28,6 +28,7 @@ class WarehouseWrapTable extends Component {
     onSelectedRowKeys: PropTypes.func,
     onDeleteMode: PropTypes.func,
     getWarehouseUpdateList: PropTypes.func,
+    warehouseListLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -107,6 +108,7 @@ class WarehouseWrapTable extends Component {
       warehouseData: {
         dataList : data
       },
+      warehouseListLoading
     } = this.props;
     const { selectedRowKeys } = this.state;
     const components = {
@@ -194,7 +196,7 @@ class WarehouseWrapTable extends Component {
       <div className={styles.warehouseWrapTable}>
         <EditableContext.Provider value={form}>
           <Table
-            loading={false}
+            loading={warehouseListLoading}
             dataSource={data}
             components={components}
             columns={columns}
