@@ -37,6 +37,8 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
         pageSize: payload.pageSize || 10,
         pageNum: payload.pageNum || 1,
         warehouseName: payload.warehouseName,
+        sortField: payload.sortField,
+        sortMethod: payload.sortMethod,
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -92,7 +94,9 @@ function* getWarehouseAddList(action) { // 仓库添加
       const paramsList = {
         warehouseName: "",
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        sortField: "",
+        sortMethod: "",
       };
       // 添加成功清空input的值
       func();
@@ -128,6 +132,8 @@ function* getWarehouseDelList(action) { // 仓库删除
       warehouseName,
       pageNum,
       pageSize,
+      sortField,
+      sortMethod,
       func
     }
   } = action;
@@ -145,7 +151,9 @@ function* getWarehouseDelList(action) { // 仓库删除
       const paramsList = {
         warehouseName,
         pageNum,
-        pageSize
+        pageSize,
+        sortField,
+        sortMethod,
       };
       // 删除成功之后关闭
       func();
@@ -176,6 +184,8 @@ function* getWarehouseUpdateList(action) { // 仓库更新
       pageNum,
       pageSize,
       searchName,
+      sortField,
+      sortMethod,
       func
     }
   } = action;
@@ -199,7 +209,9 @@ function* getWarehouseUpdateList(action) { // 仓库更新
       const paramsList = {
         warehouseName: searchName,
         pageNum,
-        pageSize
+        pageSize,
+        sortField,
+        sortMethod,
       };
       // 更新成功退出编辑状态
       func();
@@ -234,6 +246,8 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
         pageNum: payload.pageNum || 1,
         goodsName: payload.goodsName,
         goodsType: payload.goodsType,
+        sortField: payload.sortField,
+        sortMethod: payload.sortMethod,
       }
     });
     const response = yield call(axios.post, url, payload);
@@ -267,9 +281,6 @@ function* getGoodsAddList(action) { // 物品添加
       goodsUnit,
       goodsName,
       goodsType,
-      pageNum,
-      pageSize,
-      searchName,
       func
     }
   } = action;
@@ -292,10 +303,12 @@ function* getGoodsAddList(action) { // 物品添加
     if (response.data.code === '10000') {
       // 添加完之后在调用物品列表
       const paramsList = {
-        searchName,
+        goodsName: "",
         goodsType,
-        pageNum,
-        pageSize
+        pageNum: 1,
+        pageSize: 10,
+        sortField: "",
+        sortMethod: "",
       };
       // 添加成功清空input的值
       func();
@@ -332,6 +345,8 @@ function* getGoodsDelList(action) { // 物品删除
       pageSize,
       goodsName,
       goodsType,
+      sortField,
+      sortMethod,
       func
     }
   } = action;
@@ -350,7 +365,9 @@ function* getGoodsDelList(action) { // 物品删除
         pageNum,
         pageSize,
         goodsName,
-        goodsType
+        goodsType,
+        sortField,
+        sortMethod,
       };
       // 添加成功清空input的值
       func();
@@ -382,6 +399,8 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
       pageSize,
       searchName,
       goodsType,
+      sortField,
+      sortMethod,
       func
     }
   } = action;
@@ -406,7 +425,9 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
         pageNum,
         pageSize,
         searchName,
-        goodsType
+        goodsType,
+        sortField,
+        sortMethod,
       };
       // 更新成功退出编辑状态
       func();

@@ -29,6 +29,9 @@ class WarehouseWrapTable extends Component {
     onDeleteMode: PropTypes.func,
     getWarehouseUpdateList: PropTypes.func,
     warehouseListLoading: PropTypes.bool,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
+    getWarehouseList: PropTypes.func,
   };
 
   constructor(props) {
@@ -50,6 +53,31 @@ class WarehouseWrapTable extends Component {
     });
   };
 
+  tableChange = (pagination, filter, sorter) => {// 点击表头 排序
+    const { field, order } = sorter;
+    const {
+      getWarehouseList,
+      warehouseName,
+      pageNum,
+      pageSize,
+    } = this.props;
+    // 根据字段匹配
+    const fieldData = {
+      warehouseName: "warehouse_name",
+      createTime: "create_time",
+      user: "username"
+    };
+    // 参数
+    const params =  {
+      warehouseName,
+      pageNum,
+      pageSize,
+      sortField: field ? fieldData[field] : "",
+      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+    };
+    getWarehouseList(params);
+  };
+
   // 当前的warehouseId
   isEditing = record => record.warehouseId === this.state.editingKey;
 
@@ -62,6 +90,8 @@ class WarehouseWrapTable extends Component {
         warehouseName: searchName,
         pageNum,
         pageSize,
+        sortField,
+        sortMethod,
       } = this.props;
       const { warehouseName, stationName } = fieldsValue;
       const stationCode = stationName.map(cur => {
@@ -75,6 +105,8 @@ class WarehouseWrapTable extends Component {
         pageNum,
         pageSize,
         searchName,
+        sortField,
+        sortMethod,
         func: () => {
           this.setState({ editingKey: "" });
         }
