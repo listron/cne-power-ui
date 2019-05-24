@@ -554,7 +554,7 @@ function* getDeviceFactors(action) { //获取设备厂家列表
 function* addDeviceFactors(action) { //新建设备厂家
   const { payload } = action;
   // const url = `${APIBasePath}${operation.addDeviceFactors}`;
-  const nowTime = moment().utc();
+  const nowTime = moment().utc().format();
   const url =`/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });

@@ -37,8 +37,17 @@ class CopyParts extends React.Component{
         >
           <div className={styles.copyPartsBox}>
             <div className={styles.content}>
-              <div className={styles.leftTree}>请选择部件结构</div>
-              <div className={styles.rightTree}>请选择应用设备</div>
+              <div className={styles.leftTree}>
+                请选择部件结构
+
+              
+              </div>
+              <div className={styles.rightTree}>
+                请选择应用设备
+                
+              
+              
+              </div>
             </div>
             <div className={styles.footer}>
             <Button onClick={this.handleCancel} >取消</Button>

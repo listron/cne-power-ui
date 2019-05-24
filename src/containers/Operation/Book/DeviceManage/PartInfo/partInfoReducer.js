@@ -4,6 +4,7 @@ import { partInfoAction } from './partInfoAction';
 
 const initState = Immutable.fromJS({
   partsId:'',
+  deviceCode:'',
   allStationBaseInfo:[],
   detailPartsRecord:{},
   loading: false,
@@ -19,6 +20,9 @@ const initState = Immutable.fromJS({
   assetList:[],//生产资产树
   partsFactorsList:[],//组件厂家列表
   factorsPartsMode:[],//厂家下型号列表
+  collectorDevices:[],//集电线路数据
+  boostDevices:[],//升压数据
+  undefinedDevices:[],//未分组数据数据
  
  
 });

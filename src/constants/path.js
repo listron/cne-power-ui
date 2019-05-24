@@ -141,7 +141,7 @@ export default {
       getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警
 
       //部件
-      getDeviceTypeList:'/v3/ledger/devicetype/',
+      getDeviceTypeList:'/v3/ledger/devicetype',
       getDeviceComList: '/v3/ledger/parts/list',
       addPartInfo: '/v3/ledger/parts/add',
       editPartInfo: '/v3/ledger/parts/update',

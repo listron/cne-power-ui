@@ -57,7 +57,9 @@ class RecordTable extends React.Component {
   render() {
     const { tableFilter, historyWarningData, fixRecordData, partInfoData } = this.props;
     console.log('partInfoData: ', partInfoData);
-    const partInfoDataFormate = this.partInfoFormat(partInfoData)
+    // const partInfoDataFormate = this.partInfoFormat(partInfoData);
+    const partInfoDataFormate = partInfoData;
+
     console.log('partInfoDataFormate: ', partInfoDataFormate);
 
     const partColumns = [

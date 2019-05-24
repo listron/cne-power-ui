@@ -32,7 +32,7 @@ class AssetStructure extends React.Component {
   }
   componentDidMount() {
     const { stationType } = this.props;
-    this.props.getAssetTree({ stationType });
+    this.props.getAssetTree({ stationType});
     this.getTreeData();
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
@@ -49,14 +49,16 @@ class AssetStructure extends React.Component {
     });
     this.props.deleteAssetNode({ stationType, assetsId });
   }
-  getTreeData = (value) => {
+  getTreeData = (value) => {assetsParentId
     const { stationType, assetsParentId } = this.props;
-    const params = { stationType, assetsParentId }
+    const params = { stationType,assetsParentId  }
     this.props.getNodeDetail({ ...params, ...value })
   }
   queryType = (active) => {
     const { changeAssetConfigStore, } = this.props;
     changeAssetConfigStore({ stationType: active, });
+    this.props.getAssetTree({ stationType:active});
+
   }
   addDevice = () => {
     this.setState({
@@ -131,6 +133,7 @@ class AssetStructure extends React.Component {
 
   render() {
     const { stationType, stationTypeCount, assetList, childrenNodeDetail ,childrenNum,} = this.props;
+    console.log('assetList: ', assetList);
     // const formatAssetData = this.formatAsset(assetList);
     const { addNode, editNode, showWarningTip, warningTipText } = this.state;
     const columns = [

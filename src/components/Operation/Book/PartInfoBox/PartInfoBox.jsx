@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./partInfoBox.scss";
 import DetailPartsInfo from "./DetailPartsInfo";
+import DeviceTree from "./DeviceTree";
 import CopyParts from "./CopyParts";
-import { Button, Table, Tree, Upload, message } from 'antd';
+import { Button, Table, Tree, Upload, message, } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import path from '../../../../constants/path';
 import Cookie from 'js-cookie';
@@ -18,7 +19,7 @@ class PartInfoBox extends React.Component {
     downLoadFile: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     deviceComList: PropTypes.array,
-    stationCode: PropTypes.string,
+    // stationCode: PropTypes.num,
     detailPartsRecord: PropTypes.object,
 
   }
@@ -34,8 +35,11 @@ class PartInfoBox extends React.Component {
   selectStation = (stations) => {
     const { getDeviceTypeList, changePartInfoStore } = this.props;
     let stationCode = stations.length > 0 && stations[0].stationCode;
+   
     getDeviceTypeList({
       stationCode,
+      deviceCode:'',
+      type:0
     })
     changePartInfoStore({
       stationCode,
@@ -199,6 +203,7 @@ class PartInfoBox extends React.Component {
         <div className={styles.conatainer}>
           <div className={styles.leftTree}>
             {stationName ? stationName : '请选择电站选择'}
+            <DeviceTree {...this.props} />
           </div>
           <div className={styles.right}>
             <div className={styles.addParts}>
