@@ -4,10 +4,6 @@ import { DeviceValueFormat } from '../../../../Common/UtilComponent';
 import { monitordataFormat } from '../../../../../utils/utilFunc';
 import styles from './confluencebox.scss';
 
-{/* <div className={styles.genNum}>
-  <DeviceValueFormat value={monitordataFormat(powerMonth, '--')} />
-</div> */}
-
 const EachRecord = ({text, value, unit}) => (
   <div className={styles.eachRecord}>
     <span className={styles.text}>{text}</span>

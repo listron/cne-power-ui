@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { PVStationTypes, deviceStatusArray } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -47,9 +47,9 @@ class IntegrateHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { sonDevice, parentDevice } = deviceDetail;
+    const { parentDevice, deviceStatus, manufactor, deviceModelName } = deviceDetail;
+    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -59,9 +59,12 @@ class IntegrateHeader extends Component {
           baseLinkPath={baseLinkPath}
           hideDeviceChange={this.hideDeviceChange}
         />}
-        <div className={styles.deviceName} onClick={this.showDeviceChange}>
-          <Icon type="swap" className={styles.swap} />
+        <div className={styles.deviceName}>
+          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
+          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufactor || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDevice && parentDevice.deviceTypeCode && <Link
@@ -74,14 +77,17 @@ class IntegrateHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          {sonDevice && sonDevice.deviceTypeCode && <Link
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
+            <Icon type="arrow-left" />
+          </Link>
+          {/* {sonDevice && sonDevice.deviceTypeCode && <Link
             to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`}
             className={styles.eachLink}
           >
             <span className={`${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{sonDevice.deviceTypeName}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>}
+          </Link>} */}
         </div>
       </div>
     )

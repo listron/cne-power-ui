@@ -56,6 +56,7 @@ class DeviceMonitor extends Component {
 }
 const mapStateToProps = (state) => ({
   ...state.monitor.deviceMonitor.toJS(),
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

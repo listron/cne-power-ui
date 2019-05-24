@@ -75,12 +75,13 @@ class BoosterStation extends Component {
   }
 
   render(){
-    const { loading, devices, deviceDetail, deviceAlarmList, singleStationData } = this.props;
+    const { loading, devices, deviceDetail, deviceAlarmList, stations } = this.props;
     const { activeIndex } = this.state;
     let boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode } = this.props.match.params;
-    const { stationName, stationType } = singleStationData;
+    const currentStation = stations.find(e => e.stationCode === stationCode) || {};
+    const { stationName, stationType } = currentStation;
     const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -96,7 +97,12 @@ class BoosterStation extends Component {
       <div className={styles.boosterStation}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
         <div className={styles.deviceContent}>
-          <BoosterHeader deviceDetail={boosterDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+          <BoosterHeader
+            deviceDetail={boosterDetail}
+            devices={devices}
+            stationCode={stationCode}
+            deviceTypeCode={deviceTypeCode}
+          />
           <div className={styles.deviceList}>
             {deviceDetail.length > 0 && deviceDetail.map((e, index) => (
               <span

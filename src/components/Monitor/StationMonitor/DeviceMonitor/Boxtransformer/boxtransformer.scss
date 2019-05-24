@@ -102,7 +102,10 @@
     pointer-events: none;
     background: #ededed;
   }
-  .stopShadow, .planShadow, .normalShadow{
+  .normalShadow{
+    box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.20);
+  }
+  .stopShadow, .planShadow{
     box-shadow: 0px 1px 4px 1px #199475;
   }
   .faultShadow, .breakShadow, .limitShadow {
