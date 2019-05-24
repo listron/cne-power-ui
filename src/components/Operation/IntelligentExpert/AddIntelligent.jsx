@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Form, Select, Cascader, Button, Input, Row, Col, } from 'antd';
+import { Icon, Form, Select, Cascader, Button } from 'antd';
 import styles from './intelligentExpert.scss';
 import WarningTip from '../../Common/WarningTip';
 import InputLimit from '../../Common/InputLimit';
@@ -12,8 +12,10 @@ class AddIntelligent extends Component {
   static propTypes = {
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
-    intelligentTableData: PropTypes.array,
     getIntelligentExpertStore: PropTypes.func,
+    form: PropTypes.object,
+    getIntelligentTable: PropTypes.func,
+    listParams: PropTypes.object,
     addIntelligent: PropTypes.func,
   }
 
@@ -21,7 +23,7 @@ class AddIntelligent extends Component {
     super(props);
     this.state = {
       showWarningTip: false,
-      warningTipText: '退出后信息无法保存!',
+      warningTipText: '退出后信息无法保存！',
     }
   }
 
@@ -32,10 +34,11 @@ class AddIntelligent extends Component {
   }
 
   confirmWarningTip = () => {
+    const { getIntelligentExpertStore } = this.props;
     this.setState({
       showWarningTip: false,
     })
-    this.props.getIntelligentExpertStore({
+    getIntelligentExpertStore({
       showPage: 'list',
     });
   }
@@ -47,60 +50,53 @@ class AddIntelligent extends Component {
   }
 
   saveHandler = () => { // 保存按钮
-    const { form, getIntelligentExpertStore, intelligentTableData, addIntelligent } = this.props;
+    const { form, addIntelligent, getIntelligentTable, listParams } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
+      if(!err) {
+        const { deviceTypeCode, defectTypeCode, faultDescription, checkItems, processingMethod, requiredTools, remark } = values;
+        addIntelligent({
+          deviceTypeCode: deviceTypeCode,
+          defectTypeCode: defectTypeCode[1],
+          faultDescription: faultDescription,
+          checkItems: checkItems,
+          processingMethod: processingMethod,
+          requiredTools: requiredTools,
+          remark: remark,
+          continueAdd: false,
+        })
+      }
+    });
+    getIntelligentTable({ // 返回列表页面时重新请求列表数据 && 改变排序字段和排序方式
+      ...listParams,
+      orderField: "update_time", 
+      sortMethod: "desc",
+    })
+  }
+
+  saveAndAddHandler = () => { // 保存并继续添加
+    const { form, addIntelligent } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         addIntelligent({
           deviceTypeCode: values.deviceTypeCode,
-          defectTypeCode: values.defectTypeCode,
+          defectTypeCode: values.defectTypeCode[1],
           faultDescription: values.faultDescription,
           checkItems: values.checkItems,
           processingMethod: values.processingMethod,
           requiredTools: values.requiredTools,
           remark: values.remark,
+          continueAdd: true,
         })
+        form.resetFields();
       }
-
-      const params = {
-        // deviceTypeCode: "deviceTypeCode1",
-        // deviceTypeName: "deviceTypeCode1",
-        // faultName: "deviceTypeCode1",
-        // faultTypeId: "deviceTypeCode1",
-        // faultDescription: "deviceTypeCode1",
-        // processingMethod: "deviceTypeCode1",
-        // checkItems: "deviceTypeCode1",
-        // requiredTools: "deviceTypeCode1",
-        // processingMethod: "deviceTypeCode1",
-        // update_time: "deviceTypeCode1",
-        // like_count: "deviceTypeCode1",
-        // knowledgeBaseId: "deviceTypeCode1",
-        // remark:"deviceTypeCode1",
-        // recorder: "deviceTypeCode1",
-      };
-
-      intelligentTableData.unshift(params);
-
-      getIntelligentExpertStore({
-        intelligentTableData,
-        showPage: 'list',
-      })
     });
   }
 
   render(){
+    const { showWarningTip, warningTipText } = this.state; 
     const { deviceTypes, defectTypes } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 16 },
-        sm: { span: 2 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 20 },
-      },
-    };
-    const { showWarningTip, warningTipText } = this.state; 
+    const deviceTypeCode = getFieldValue('deviceTypeCode');  // 设备code
     let tmpGenTypes = [];
     defectTypes.forEach(e => e && e.list && e.list.length > 0 && tmpGenTypes.push(...e.list));
     const groupedLostGenTypes = [];
@@ -122,132 +118,82 @@ class AddIntelligent extends Component {
     return (
       <div className={styles.addIntelligent}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.addTop}>
+        <div className={styles.titleTop}>
           <span className={styles.text}>添加</span>
-          <Icon 
-          type="arrow-left" 
-          className={styles.backIcon} 
-          onClick={this.onWarningTipShow} 
-          />
+          <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
-        <Form {...formItemLayout} className={styles.preFormStyle}>
-          <FormItem label="设备类型">
+        <Form className={styles.preFormStyle}>
+          <FormItem label="设备类型" colon={false}>
             {getFieldDecorator('deviceTypeCode', {
               rules: [{ required: true, message: '请选择' }],
               initialValue: deviceTypes.deviceTypeCode || null
             })(
               <Select 
-                style={{ width: 198 }} 
+                style={{ width: 360 }} 
                 placeholder="请选择" 
                 onChange={this.onChangeDeviceType}>
-                {deviceTypes.map(e => (<Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>))}
+                {deviceTypes.filter(e => e.stationType !== 0).map(e => (
+                <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>
+                {e.deviceTypeName}</Option>))}
               </Select>
             )}
           </FormItem>
-          <FormItem label="缺陷类型" className={styles.formItem}>
+          <FormItem label="缺陷类型" className={styles.formItem} colon={false}>
             {getFieldDecorator('defectTypeCode', {
               rules: [{ required: true, message: '请选择' }],
             })(
               <Cascader
-                // disabled={deviceTypeCode.length === 0}
-                style={{ width: 200 }}
+                disabled={!deviceTypeCode}
+                style={{ width: 360 }}
                 options={groupedLostGenTypes}
                 expandTrigger="hover"
                 placeholder="请选择"
               />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="缺陷描述">
+          <FormItem className={styles.formItem} label="缺陷描述" colon={false}>
             {getFieldDecorator('faultDescription', {
-              rules: [{
-                required: true,
-                message: '请输入...'
-              },{
-                validator: (rule, value, callback)=>{
-                  if(value.trim().length > 999){
-                    callback('不超过999个字');
-                  }else{
-                    callback();
-                  }
-                }
-              }],
+              rules: [{ required: true, message: '请输入缺陷描述'}],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="检查项目">
+          <FormItem className={styles.formItem} label="检查项目" colon={false}>
             {getFieldDecorator('checkItems', {
-              rules: [{
-                required: true,
-                message: '请输入...'
-              },{
-                validator: (rule, value, callback)=>{
-                  if(value.trim().length > 999){
-                    callback('不超过999个字');
-                  }else{
-                    callback();
-                  }
-                }
-              }],
+              rules: [{ required: true, message: '请输入检查项目' }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="处理方法">
+          <FormItem className={styles.formItem} label="处理方法" colon={false}>
             {getFieldDecorator('processingMethod', {
-              rules: [{
-                required: true,
-                message: '请输入...'
-              },{
-                validator: (rule, value, callback)=>{
-                  if(value.trim().length > 999){
-                    callback('不超过999个字');
-                  }else{
-                    callback();
-                  }
-                }
-              }],
+              rules: [{ required: true, message: '请输入处理方法' }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
-          <FormItem className={styles.formItem} label="所需工具">
+          <FormItem className={styles.formItem} label="所需工具" colon={false}>
             {getFieldDecorator('requiredTools', {
               rules: [{
-                message: '请输入...'
-              },{
-                validator: (rule, value, callback)=>{
-                  if(value.trim().length > 999){
-                    callback('不超过999个字');
-                  }else{
-                    callback();
-                  }
-                }
+                message: '请输入...',
               }],
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
           <FormItem className={styles.formItem} label="备注">
             {getFieldDecorator('remark', {
-              rules: [{
-                message: '请输入...'
-              },{
-                validator: (rule, value, callback)=>{
-                  if(value.trim().length > 999){
-                    callback('不超过999个字');
-                  }else{
-                    callback();
-                  }
-                }
-              }],
+              rules: [{ 
+                message: '请输入......',
+                conlon: false
+               }]
             })(
-              <InputLimit style={{ marginLeft: -80, marginTop: 15 }} size={999} width={960} placeholder="请输入..." />
+              <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
             )}
           </FormItem>
           <FormItem className={styles.actionBtn}>
-            <Button onClick={this.saveHandler} className={styles.savePassword}>保存</Button>
-            <Button >保存并继续添加</Button>
+            <Button onClick={this.saveHandler} className={styles.saveBtn}>保存</Button>
+            <Button onClick={this.saveAndAddHandler} className={styles.saveAndAddHandler}>保存并继续添加</Button>
           </FormItem>
         </Form>
       </div>

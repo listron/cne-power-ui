@@ -11,13 +11,18 @@
     justify-content: space-between;
     flex: 1 0 auto;
     width: 100%;
-    padding: 24px 24px 0;
     .container{
+      padding: 24px 24px 0;
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
       width: 100%;
-      background: #fff;
+      .intelligentContent{
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
     }
   }
 }
