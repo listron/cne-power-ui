@@ -12,15 +12,7 @@ import moment from 'moment';
 class Confluencebox extends Component {
   static propTypes = {
     match: PropTypes.object,
-    devices: PropTypes.array,
-    deviceDetail: PropTypes.object,
-    subDeviceList: PropTypes.array,
-    devicePointData: PropTypes.array,
-    deviceEvents: PropTypes.array,
-    tenMinChartLoading: PropTypes.bool,
-    tenMinUnix: PropTypes.number,
-    deviceTenMin: PropTypes.array,
-    deviceAlarmList: PropTypes.array,
+    stations: PropTypes.array,
     resetDeviceStore: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
@@ -68,15 +60,14 @@ class Confluencebox extends Component {
   }
 
   render(){
-    const {
-      match, deviceDetail, devices, deviceTenMin, tenMinUnix, tenMinChartLoading, subDeviceList, devicePointData, deviceEvents, deviceAlarmList
-    } = this.props;
+    const { match,  stations } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail.stationName || '',
+        name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       }, {
         name: '汇流箱',
@@ -88,21 +79,15 @@ class Confluencebox extends Component {
         <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <ConfluenceHeader
-            deviceDetail={deviceDetail}
-            devices={devices}
+             {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
-          <ConfluenceStatistics deviceDetail={deviceDetail} subDeviceList={subDeviceList} />
-          <ConfluenceTenMin
-            deviceTenMin={deviceTenMin}
-            tenMinUnix={tenMinUnix}
-            tenMinChartLoading={tenMinChartLoading}
-          />
-          <DevicePointsTable deviceEvents={deviceEvents} devicePointData={devicePointData} />
+          <ConfluenceStatistics {...this.props} />
+          <ConfluenceTenMin {...this.props} />
+          <DevicePointsTable {...this.props} />
           <DeviceAlarmTable
-            deviceAlarmList={deviceAlarmList}
-            deviceDetail={deviceDetail}
+             {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}

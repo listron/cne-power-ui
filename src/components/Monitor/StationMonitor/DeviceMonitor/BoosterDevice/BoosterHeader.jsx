@@ -47,7 +47,7 @@ class BoosterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { sonDevice, parentDevice } = deviceDetail;
+    const { sonDevice, parentDevice, manufacturer, deviceModelName } = deviceDetail;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     // const sonDeviceBaseInfo = PVStationTypes.find(e => sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
@@ -62,9 +62,11 @@ class BoosterHeader extends Component {
           baseLinkPath={baseLinkPath}
           hideDeviceChange={this.hideDeviceChange}
         />}
-        <div className={styles.deviceName} onClick={this.showDeviceChange}>
-          <Icon type="swap" className={styles.swap} />
+        <div className={styles.deviceName}>
+          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDevice && parentDevice.deviceTypeCode && <Link

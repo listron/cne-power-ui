@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { confluenceStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -47,8 +47,7 @@ class ConfluenceHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice = {}, dispersionRatio, manufactor, deviceModelName } = deviceDetail;
-    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
+    const { deviceStatus, parentDevice = {}, dispersionRatio, manufacturer, deviceModelName } = deviceDetail;
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
@@ -64,9 +63,9 @@ class ConfluenceHeader extends Component {
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName || '--'}</span>
-          <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span>
+          <span className={styles.status} >设备状态: {confluenceStatus[deviceStatus] || '--'}</span>
           <span className={styles.dispersionRatio}>离散率>{dispersionRatio || '--'}</span>
-          <span className={styles.manufactor}>生产厂商：{manufactor || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>

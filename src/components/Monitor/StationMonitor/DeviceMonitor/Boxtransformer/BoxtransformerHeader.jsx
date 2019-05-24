@@ -47,7 +47,7 @@ class BoxtransformerHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice = {}, manufactor, deviceModelName } = deviceDetail;
+    const { deviceStatus, parentDevice = {}, manufacturer, deviceModelName } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     // const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
@@ -65,7 +65,7 @@ class BoxtransformerHeader extends Component {
             <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
             <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
           </span>
-          <span className={styles.manufactor}>生产厂商：{manufactor || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>

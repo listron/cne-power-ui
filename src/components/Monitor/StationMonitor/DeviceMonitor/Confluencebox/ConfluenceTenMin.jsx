@@ -167,7 +167,7 @@ class ConfluenceTenMin extends Component {
           },
         },
         {
-          name: '离散率',
+          name: '离散率(%)',
           nameTextStyle: {
             color: lineColor,
           },

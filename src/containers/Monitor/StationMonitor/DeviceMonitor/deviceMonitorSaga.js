@@ -32,6 +32,7 @@ const monitorPath = { // 详情， 十分钟数据，各设备类型路径不同
   '304': {  // 箱变： 304
     detail: monitor.boxtransformerDetail, // '/mock/monitor/boxtransformerDetail'
     tenMin: monitor.boxtransformerTenMin, // '/mock/monitor/boxtransformerTenMin'
+    subList: monitor.boxtransformerSubList,
   },
   // '207': {  // 交流汇流箱 - 暂不考虑
   //   detail: monitor.confluenceboxDetail, // '/mock/monitor/confluenceboxDetail'
@@ -207,10 +208,11 @@ function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   yield fork(getDeviceDetail, { deviceTypeCode, deviceCode });
   yield fork(getAlarms, { deviceCode });
   yield fork(getEvents, { deviceCode });
-  yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警, 事件
-  if (['202', '206', '201', '302', '301'].includes(deviceTypeCode)) { // 汇流202,组串逆变206,集中逆变201,集电302,升压301 需下级信息
-    yield fork(getSubList, { deviceCode, deviceTypeCode });
-  }
+  yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警, 事件, 下级
+  yield fork(getSubList, { deviceCode, deviceTypeCode });
+  // if (['202', '206', '201', '302', '301'].includes(deviceTypeCode)) { // 汇流202,组串逆变206,集中逆变201,集电302,升压301 需下级信息
+  //   yield fork(getSubList, { deviceCode, deviceTypeCode });
+  // }
   // pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
 }
 

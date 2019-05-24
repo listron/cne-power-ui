@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { interverStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -47,8 +47,7 @@ class InverterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice = {}, dispersionRatio, manufactor, deviceModelName } = deviceDetail;
-    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
+    const { deviceStatus, parentDevice = {}, dispersionRatio, manufacturer, deviceModelName } = deviceDetail;
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
@@ -59,13 +58,9 @@ class InverterHeader extends Component {
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >
-            <span>设备状态:</span> 
-            <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
-            <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
-          </span>
+          <span className={styles.status}>设备状态: {interverStatus[deviceStatus] || '--'}</span>
           <span className={styles.dispersionRatio}>离散率>{dispersionRatio || '--'}</span>
-          <span className={styles.manufactor}>生产厂商：{manufactor || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
@@ -79,11 +74,6 @@ class InverterHeader extends Component {
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
             <Icon type="arrow-left" />
           </Link>
-          {/* {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
-            <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
-            <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
-            <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>} */}
         </div>
       </div>
     )
