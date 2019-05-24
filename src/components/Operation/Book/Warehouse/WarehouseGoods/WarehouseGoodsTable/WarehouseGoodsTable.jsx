@@ -40,6 +40,7 @@ class WarehouseGoodsTable extends Component {
     goodsName: PropTypes.string,
     goodsType: PropTypes.string,
     getGoodsUpdateList: PropTypes.func,
+    getGoodsList: PropTypes.func,
     goodsListLoading: PropTypes.bool,
   };
 
@@ -90,6 +91,32 @@ class WarehouseGoodsTable extends Component {
       }
     };
     getGoodsDelList(params);
+  };
+
+  tableChange = (pagination, filter, sorter) => {// 点击表头 排序
+    const { field, order } = sorter;
+    const {
+      getGoodsList,
+      goodsName,
+      pageNum,
+      pageSize,
+      goodsType
+    } = this.props;
+    // 根据字段匹配
+    const fieldData = {
+      goodsType: "goods_type",
+      createTime: "create_time",
+    };
+    // 参数
+    const params =  {
+      goodsName,
+      pageNum,
+      pageSize,
+      goodsType,
+      sortField: field ? fieldData[field] : "",
+      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+    };
+    getGoodsList(params);
   };
 
   isEditing = record => record.goodsId === this.state.editingKey;
@@ -232,6 +259,11 @@ class WarehouseGoodsTable extends Component {
         dataIndex: 'goodsName',
         render: (text) => <span title={text}>{text}</span>
       }, {
+        title: '物品类型',
+        dataIndex: 'goodsType',
+        sorter: true,
+        render: (text, record) => <span title={record.goodsTypeName}>{record.goodsTypeName}</span>
+      },{
         title: '计量单位',
         dataIndex: 'goodsUnit',
         render: (text) => <span title={text}>{text}</span>
@@ -253,6 +285,7 @@ class WarehouseGoodsTable extends Component {
             components={components}
             columns={isAbleOper === 0 ? columnsEdit : columnsUnEdit}
             pagination={false}
+            onChange={this.tableChange}
             rowKey={(record) => record.goodsId || "key"}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
