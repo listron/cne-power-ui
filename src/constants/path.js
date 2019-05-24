@@ -123,14 +123,42 @@ export default {
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
 
-      getImportIntelligent: '/v3/knowledgebase/Import', // 智能专家库导入
+      getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
       getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
       // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
-      // getLike: '/v3/knowledgebase/like', // 智能专家库点赞
+      getLike: '/v3/knowledgebase/like', // 智能专家库点赞
       downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
       
+      getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
+      getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
+      addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
+      deleteAssetNode:'/v3/ledger/assets/delete',//台账删除生产资产树
+      editAssetNode:'/v3/ledger/assets/update',//台账编辑生产资产节点
+      getDeviceFactorsList:'/v3/ledger/devicemanufactors/list',//获取设备厂家列表
+      addDeviceFactors:'/v3/ledger/devicemanufactors/add',//新建设备厂家
+      editDeviceFactors:'/v3/ledger/devicemanufactors/update',//编辑设备厂家
+      deleteDeviceFactors:'/v3/ledger/devicemanufactors/delete',//删除设备厂家
+      getDeviceModesList:'/v3/ledger/devicemodes/list',//获取设备型号列表
+      addDeviceModes:'/v3/ledger/devicemodes/add',//新建设备型号
+      editDeviceModes:'/v3/ledger/devicemodes/update',//编辑设备型号
+      deleteDeviceModes:'/v3/ledger/devicemodes/delete',//删除设备型号
+      //设备管理
+      getfactorsDeviceMode:'/v3/ledger/devicemodes',//获取某设备厂家下的设备型号
+      getDevicePartInfo:'/v3/ledger/device/parts/list',//获取某设备的部件信息
+      getDevicefixRecord:'/v3/ledger/device/defect/list',//获取某设备检修记录
+      getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警
+      // 台账-仓库配置
+      warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
+      warehouseAdd: "/v3/warehouse/add",  // 仓库添加
+      warehouseDel: "/v3/warehouse/del",  // 仓库删除
+      warehouseUpdate: "/v3/warehouse/update",  // 仓库编辑
+      goodsList: "/v3/goods/pageList",  // 物品（物资）清单分页列表
+      goodsAdd: "/v3/goods/add",  // 物品增加
+      goodsDel: "/v3/goods/del",  // 物品删除
+      goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
+
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表

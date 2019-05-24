@@ -1,0 +1,78 @@
+@import '../../../../../theme/theme.scss';
+.warehouseGoods{
+  width: 100%;
+  background-color: $pageGround;
+  .warehouseGoodsCenter{
+    width: 100%;
+    border-top: 1px solid $promptColor;
+    display: flex;
+    padding-bottom: 40px;
+    .goodsLeft{
+      min-width: 430px;
+      padding-left: 38px;
+      border-right: 1px solid $promptColor;
+    }
+    .goodsRight{
+      width: 100%;
+      padding: 12px 14px 0 25px;
+      .goodsBtn{
+        width: 100%;
+        .addControl{
+          width: 70px;
+          padding: 0;
+          font-size: 0;
+          border: 1px solid $themeColor;
+          i {
+            background-color: $themeColor;
+            color: #fff;
+            font-size: 14px;
+            vertical-align: top;
+            width: 28px;
+            line-height: 30px;
+            border-radius: 2px 0 0 2px;
+          }
+          .text {
+            border-radius: 0 2px 2px 0;
+            font-size: 14px;
+            color: $themeColor;
+            display: inline-block;
+            width: 40px;
+            line-height: 30px;
+            margin: 0;
+            text-align: center;
+          }
+          @include highLight($themeColor);
+          &:hover {
+            .text {
+              background: $themeColor;
+              color: #fff;
+            }
+          }
+        }
+      }
+      .goodsAdd{
+        width: 100%;
+        margin: 8px 0 0;
+        border-radius: 4px;
+        padding: 14px 14px 25px 16px;
+        border: 1px solid $promptColor;
+        background-color: #f0f2f5;
+        .goodsTitle{
+          display: flex;
+          justify-content: space-between;
+          i{
+            font-size: 20px;
+          }
+        }
+        .goodsCenter{
+          padding-left: 23px;
+        }
+      }
+      .goodsSearch{
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

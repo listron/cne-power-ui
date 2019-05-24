@@ -1,0 +1,109 @@
+
+@import '../../../../theme/theme.scss';
+
+.deviceManageSearch{ // 条件查询
+  display: flex;
+  align-items: center;
+  height: 71px;
+  line-height: 40px;
+  border-bottom: solid 1px $promptColor;
+  .titleText{
+    color: $darkColor;
+    margin-left: 28px;
+    margin-right: 12px;
+  }
+  .typeSelect,.modelSelect{
+    width: 198px;
+    margin-right: 12px;
+  }
+  .typeSelect{
+    margin: 0 12px;
+  }
+}
+.deviceManageHandle{ // 导出设备， 翻页器
+  display:flex;
+  justify-content: space-between;
+  height: 72px;
+  align-items: center;
+  .plusButton { // 添加电站 
+    margin: 0 12px 0 32px;
+    padding: 0;
+    font-size: 0;
+    i{
+      vertical-align: top;
+      font-size: 14px;
+    }
+    span{
+      background-color: #fff;
+      color:$themeColor;
+      border-radius: 0 4px 4px 0;
+      display: inline-block;
+      font-size: 14px;
+      width: 40px;
+      line-height: 30px; 
+      margin: 0px;
+    }
+    &:hover{
+      span{
+        background-color: $themeColor;
+        color:#fff;
+      }
+    }
+  }
+  .plusButton:hover{
+    border-radius: 6px;
+  }
+  :global{
+    .anticon-plus{
+      color: #fff;
+      height: 100%;
+      border-radius: 4px 0 0 4px;
+      width: 28px;
+      text-align: center;
+      line-height: 30px;
+      background-color: $themeColor;
+    }
+    .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+      margin-left: 0px;
+      width: 28px;
+      color: $darkColor;
+    }
+  }
+  .left{
+    display: flex;
+    flex:1;
+  }
+  .deletStyle,.downloadStyle,.import{
+    margin:0 4px;
+  }
+  .exportInfo{
+    margin-left: 12px;
+  }
+  .deleteStationDevice{
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.deviceManageList{ // 设备表格区
+  .deviceNameStyle{
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  border-top: 1px solid $promptColor;
+  :global{
+    .ant-table{
+      .ant-table-placeholder{
+        border-bottom: none;
+      }
+      .ant-table-thead{
+        th>div{
+          height: 60px;
+        }
+      }
+      .ant-table-column-sorter{
+        top: 18px;
+      }
+    }
+  }
+}
