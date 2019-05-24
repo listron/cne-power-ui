@@ -49,7 +49,7 @@ class BoosterHeader extends Component {
     const { showDeviceChangeBox } = this.state;
     const { sonDevice, parentDevice } = deviceDetail;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-    const sonDeviceBaseInfo = PVStationTypes.find(e => sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
+    // const sonDeviceBaseInfo = PVStationTypes.find(e => sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
       <div className={styles.deviceMonitorHeader} >
@@ -77,14 +77,17 @@ class BoosterHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          {sonDevice && sonDevice.deviceTypeCode && <Link
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
+            <Icon type="arrow-left" />
+          </Link>
+          {/* {sonDevice && sonDevice.deviceTypeCode && <Link
             to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`}
             className={styles.eachLink}
           >
             <span className={`${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{sonDevice.deviceTypeName}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>}
+          </Link>} */}
         </div>
       </div>
     )
