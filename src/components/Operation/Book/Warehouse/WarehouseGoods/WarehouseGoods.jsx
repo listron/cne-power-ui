@@ -23,6 +23,8 @@ class WarehouseGoods extends Component {
     goodsName: PropTypes.string,
     getGoodsAddList: PropTypes.func,
     goodsAddLoading: PropTypes.bool,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
   };
 
   constructor(props) {
@@ -38,7 +40,9 @@ class WarehouseGoods extends Component {
       goodsType: "",
       goodsName: "",
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
+      sortField: "",
+      sortMethod: "",
     };
     getGoodsList(params);
   }
@@ -52,7 +56,9 @@ class WarehouseGoods extends Component {
         goodsType: selectedKeys.join("") === "100" ? "" : selectedKeys.join(""),
         goodsName: "",
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
+        sortField: "",
+        sortMethod: "",
       };
       getGoodsList(params);
     }
@@ -69,13 +75,17 @@ class WarehouseGoods extends Component {
     const {
       getGoodsList,
       goodsType,
-      goodsName
+      goodsName,
+      sortField,
+      sortMethod,
     } = this.props;
     const params = {
       goodsType,
       goodsName,
       pageNum: currentPage,
-      pageSize
+      pageSize,
+      sortField,
+      sortMethod,
     };
     getGoodsList(params);
   };
@@ -92,9 +102,6 @@ class WarehouseGoods extends Component {
       form,
       getGoodsAddList,
       goodsType,
-      pageNum,
-      pageSize,
-      goodsName: searchName
     } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -106,9 +113,6 @@ class WarehouseGoods extends Component {
         goodsUnit,
         goodsName,
         goodsType,
-        pageNum,
-        searchName,
-        pageSize,
         func: () => {
           form.setFieldsValue({
             goodsName: "",
@@ -126,13 +130,17 @@ class WarehouseGoods extends Component {
       getGoodsList,
       pageNum,
       pageSize,
-      goodsType
+      goodsType,
+      sortField,
+      sortMethod,
     } = this.props;
     const params = {
       goodsType,
       goodsName: value,
       pageNum,
-      pageSize
+      pageSize,
+      sortField,
+      sortMethod,
     };
     getGoodsList(params);
   };

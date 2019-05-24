@@ -24,6 +24,8 @@ class WarehouseWrap extends Component {
     getWarehouseAddList: PropTypes.func,
     getWarehouseDelList: PropTypes.func,
     warehouseAddLoading: PropTypes.bool,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
   };
 
   constructor(props) {
@@ -41,17 +43,26 @@ class WarehouseWrap extends Component {
     const params = {
       warehouseName: "",
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
+      sortField: "",
+      sortMethod: "",
     };
     getWarehouseList(params);
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
-    const { getWarehouseList, warehouseName } = this.props;
+    const {
+      getWarehouseList,
+      warehouseName,
+      sortField,
+      sortMethod,
+    } = this.props;
     const params = {
       warehouseName,
       pageNum: currentPage,
-      pageSize
+      pageSize,
+      sortField,
+      sortMethod,
     };
     getWarehouseList(params);
   };
@@ -109,6 +120,8 @@ class WarehouseWrap extends Component {
       warehouseName,
       pageNum,
       pageSize,
+      sortField,
+      sortMethod,
       getWarehouseDelList,
     } = this.props;
     const params = {
@@ -116,6 +129,8 @@ class WarehouseWrap extends Component {
       warehouseName,
       pageNum,
       pageSize,
+      sortField,
+      sortMethod,
       func: () => {
         // 点击的table后面的删除按钮
         if (selectedRowKeys) {
