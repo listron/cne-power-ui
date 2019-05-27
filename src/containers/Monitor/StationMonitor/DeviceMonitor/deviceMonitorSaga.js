@@ -239,10 +239,7 @@ function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   yield fork(getEvents, { deviceCode });
   yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警, 事件, 下级
   yield fork(getSubList, { deviceCode, deviceTypeCode });
-  // if (['202', '206', '201', '302', '301'].includes(deviceTypeCode)) { // 汇流202,组串逆变206,集中逆变201,集电302,升压301 需下级信息
-  //   yield fork(getSubList, { deviceCode, deviceTypeCode });
-  // }
-  // pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
+  pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
 }
 
 function *getDeviceChartMonitor({ payload, waiting }){ // 开启图表1h实时监控
@@ -256,9 +253,7 @@ function *getDeviceChartMonitor({ payload, waiting }){ // 开启图表1h实时�
     })
   }
   yield fork(getTenMin, { deviceTypeCode, deviceCode, timeParam });
-  // if (['202', '206', '201', '304'].includes(deviceTypeCode)) { // 汇流箱202, 组串逆变器206, 集中式逆变器201, 箱变304需时序图数据
-  // }
-  // pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
+  pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
 }
 
 function *stopMonitor() {
