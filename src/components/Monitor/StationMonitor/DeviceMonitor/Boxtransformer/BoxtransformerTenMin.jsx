@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import styles from './boxtransformer.scss';
 import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 class BoxtransformerTenMin extends Component {
@@ -215,7 +216,7 @@ class BoxtransformerTenMin extends Component {
 
   render(){
     return (
-      <div id="boxtransformer_monitor_tenMin" style={{height:"335px",marginTop: '10px',}}></div>
+      <div id="boxtransformer_monitor_tenMin" className={styles.boxtransformerTenMin} style={{height:"335px"}}></div>
     )
   }
 }

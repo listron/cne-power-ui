@@ -53,7 +53,7 @@ class InverterSeriesTenMin extends Component {
           opacity: 0,
         },
         yAxisIndex: 0,
-        data: deviceTenMin[e],
+        data: branchTenMin[e],
       }
     })
     const seriesInverterGraphic = time.length===0  ? showNoData : hiddenNoData;

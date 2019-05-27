@@ -6,7 +6,6 @@
   padding: 0 60px;
   .singledeviceItem{
     margin-bottom: 12px;
-    padding: 0 12px;
     width: 230px;
     height: 151px;
     border-radius:4px;
@@ -14,6 +13,7 @@
     .statusBox{
       display: flex;
       align-items: center;
+      padding: 0 12px;
     }
     .deviceItemIcon{
       align-self: flex-start;
@@ -54,8 +54,9 @@
     .allStatus{
       display: flex;
       justify-content: space-between;
-      height: 28px;
+      height: 36px;
       align-items: center;
+      padding: 0 12px;
       .branchStatus{
         display: flex;
         width: 120px;
@@ -98,17 +99,15 @@
       }
     }
   }
+  .singledeviceItem:hover{
+    box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.20);
+  }
   .unconnect{
     pointer-events: none;
     background: #ededed;
   }
-  .normalShadow{
-    box-shadow: 0px 1px 4px 1px rgba(0,0,0,0.20);
-  }
-  .stopShadow, .planShadow{
-    box-shadow: 0px 1px 4px 1px #199475;
-  }
-  .faultShadow, .breakShadow, .limitShadow {
-    box-shadow: 0px 1px 4px 1px #a42b2c;
-  }
+}
+.boxtransformerTenMin{
+  border-top: 1px solid $promptColor;
+  padding-top: 10px;
 }

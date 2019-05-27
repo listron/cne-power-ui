@@ -115,7 +115,7 @@ class Seriesinverter extends Component {
             deviceCode={deviceCode}
           />
           <h3 className={styles.subTitleConfig}>下级设备</h3>
-          {deviceTypeCode === '201' && <SubConfluenceList {...this.props} />}
+          {deviceTypeCode === '201' && <SubConfluenceList {...this.props} stationCode={stationCode} />}
         </div>
       </div>
     ) 

@@ -4,8 +4,7 @@ import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './boxtransformer.scss';
 
-const SubInverter = ({ subDeviceList = [], deviceDetail = {} }) => {
-  const { stationCode } = deviceDetail;
+const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode }) => {
   const baseLinkPath = '/hidden/monitorDevice';
   subDeviceList= [
     {
@@ -66,9 +65,8 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {} }) => {
         let progressPercent = devicePower / deviceCapacity * 100 || 0;
         const unconnect = deviceStatus === '900';
         const statusBoxStyle = getStatusBox(item.alarmNum, item.isLow);
-        const shadowStyle = `${inverterStatus[deviceStatus].name}Shadow`;
         return (
-          <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect: ''} ${styles[shadowStyle]}`}>
+          <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect: ''}`}>
             <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
               <div className={`${styles.statusBox}`} style={{backgroundColor: statusBoxStyle.backgroundColor}}>
                 <div className={styles.deviceItemIcon}>

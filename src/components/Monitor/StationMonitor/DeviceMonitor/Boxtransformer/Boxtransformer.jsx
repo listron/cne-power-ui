@@ -11,15 +11,7 @@ import styles from '../eachDeviceMonitor.scss';
 class Boxtransformer extends Component {
   static propTypes = {
     match: PropTypes.object,
-    deviceEvents: PropTypes.array,
-    devices: PropTypes.array,
-    deviceDetail: PropTypes.object,
-    deviceTenMin: PropTypes.array,
-    subDeviceList: PropTypes.array,
-    deviceAlarmList: PropTypes.array,
-    devicePointData: PropTypes.array,
-    tenMinUnix: PropTypes.number,
-    tenMinChartLoading: PropTypes.bool,
+    stations: PropTypes.array,
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
     resetDeviceStore: PropTypes.func,
@@ -63,15 +55,14 @@ class Boxtransformer extends Component {
   }
 
   render(){
-    const {
-      devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, tenMinUnix, tenMinChartLoading, deviceEvents, subDeviceList
-    } = this.props;
+    const { stations } = this.props;
     const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail && deviceDetail.stationName || '',
+        name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       },{
         name: '箱变',
@@ -82,17 +73,12 @@ class Boxtransformer extends Component {
       <div className={styles.boxtransformer}>
         <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
-          <BoxtransformerHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          {/* <BoxtransformerStatistics deviceDetail={deviceDetail} /> */}
-          <BoxtransformerTenMin
-            deviceTenMin={deviceTenMin}
-            tenMinUnix={tenMinUnix}
-            tenMinChartLoading={tenMinChartLoading}
-          />
-          <DevicePointsTable deviceEvents={deviceEvents} devicePointData={devicePointData} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
-          {/* <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} /> */}
-          <SubInverter subDeviceList={subDeviceList} deviceDetail={deviceDetail} />
+          <BoxtransformerHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+          <BoxtransformerTenMin {...this.props} />
+          <DevicePointsTable {...this.props} />
+          <DeviceAlarmTable {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
+          <h3 className={styles.subTitleConfig}>下级设备</h3>
+          <SubInverter {...this.props} stationCode={stationCode} />
         </div>
       </div>
     ) 

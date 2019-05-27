@@ -4,7 +4,7 @@ import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './inverter.scss';
 
-const SubConfluenceList = ({ subDeviceList, deviceDetail }) => {
+const SubConfluenceList = ({ subDeviceList, deviceDetail, stationCode }) => {
   subDeviceList = [
     {
       "alarmNum": 2,
@@ -198,7 +198,6 @@ const SubConfluenceList = ({ subDeviceList, deviceDetail }) => {
       "voltage": 610.0
     },
   ];
-  const { stationCode, } = deviceDetail;
   const baseLinkPath = "/hidden/monitorDevice";
   const getStatusName = (value) => {
     let result = [];

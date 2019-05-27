@@ -4,24 +4,13 @@ import IntegrateHeader from './IntegrateHeader';
 import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import SubBoxtransformer from './SubBoxtransformer';
-import { YcPoints, YxPoints, YmPoints } from '../DeviceMonitorCommon/PointsGroup';
 import PropTypes from 'prop-types';
 import styles from '../eachDeviceMonitor.scss';
 
 class IntegrateLine extends Component {
   static propTypes = {
-    // loading: PropTypes.bool,
     match: PropTypes.object,
-  //   getMonitorDeviceData: PropTypes.func,
-    devices: PropTypes.array,
     stations: PropTypes.array,
-    deviceDetail: PropTypes.object,
-    subDeviceList: PropTypes.array,
-    deviceAlarmList: PropTypes.array,
-    deviceEvents: PropTypes.array,
-    devicePointData: PropTypes.array,
-    // singleStationData: PropTypes.object,
-    // getIntegrateData: PropTypes.func,
     resetDeviceStore: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
@@ -49,10 +38,9 @@ class IntegrateLine extends Component {
   }
 
   render(){
-    const { devices, deviceDetail, deviceAlarmList, stations, deviceEvents, devicePointData, subDeviceList } = this.props;
+    const { stations } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
-    // const pointData = deviceDetail.pointData || {}; // 测点数据集合
-    const currentStation = stations.find(e => e.stationCode === stationCode) || {};
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -69,25 +57,19 @@ class IntegrateLine extends Component {
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
         <div className={styles.deviceContent}>
           <IntegrateHeader
-            deviceDetail={deviceDetail}
-            devices={devices}
+            {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
-          <DevicePointsTable deviceEvents={deviceEvents} devicePointData={devicePointData} />
-          {/* <div className={styles.points}>
-            <YcPoints ycData={pointData.YC} />
-            <YxPoints yxData={pointData.YX} />
-          </div>
-          <YmPoints ymData={pointData.YM} /> */}
+          <DevicePointsTable {...this.props} />
           <DeviceAlarmTable
-            deviceAlarmList={deviceAlarmList}
-            deviceDetail={deviceDetail}
+            {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}
           />
-          <SubBoxtransformer subDeviceList={subDeviceList} deviceDetail={deviceDetail} />
+          <h3 className={styles.subTitleConfig}>下级设备</h3>
+          <SubBoxtransformer {...this.props} stationCode={stationCode} />
         </div>
       </div>
     ) 

@@ -52,7 +52,10 @@ class IntegrateHeader extends Component {
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
-      <div className={styles.deviceMonitorHeader} >
+      <div className={styles.deviceMonitorHeader} style={{
+        borderBottom: '1px solid #dfdfdf',
+        marginBottom: '20px'
+      }}>
         {showDeviceChangeBox && <HeaderDeviceChange
           devices={devices}
           deviceDetail={deviceDetail}

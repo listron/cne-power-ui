@@ -5,8 +5,7 @@ import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './integrate.scss';
 
-const SubBoxtransformer = ({ subDeviceList, deviceDetail }) => {
-  const { stationCode } = deviceDetail;
+const SubBoxtransformer = ({ subDeviceList, deviceDetail, stationCode }) => {
   const baseLinkPath = '/hidden/monitorDevice';
   subDeviceList = [
     {
@@ -49,23 +48,12 @@ const SubBoxtransformer = ({ subDeviceList, deviceDetail }) => {
       "voltage": 608.0
     }
   ];
-  // const getStatusName = (value) => {
-  //   let result = [];
-  //   switch (value) {
-  //     case '100': result = [{ name: 'normal', text: '正常' }]; break;
-  //     case '200': result = [{ name: 'downtime', text: '停机' }]; break;
-  //     case '300': result = [{ name: 'fault', text: '故障' }]; break;
-  //     case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
-  //     default: result = [{ name: 'normal', text: '' }]; break;
-  //   }
-  //   return result;
-  // }
 
-  const boxStatus = { // 逆变器各种设备状态
-    '400': {color: '#199475', statusName: '正常', name: 'normal'}, // 正常
-    '500': {color: '#a42b2c', statusName: '无通讯', name: 'break'}, // 中断
-    '900': {color: '#999', statusName: '未接入', name: 'unconnect'}, // 未接入
-  }
+  // const boxStatus = { // 逆变器各种设备状态
+  //   '400': {color: '#199475', statusName: '正常', name: 'normal'}, // 正常
+  //   '500': {color: '#a42b2c', statusName: '无通讯', name: 'break'}, // 中断
+  //   '900': {color: '#999', statusName: '未接入', name: 'unconnect'}, // 未接入
+  // }
 
   return (
     <div className={styles.subBoxtransformer}>

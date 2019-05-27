@@ -57,7 +57,7 @@ class BoosterStation extends Component {
   }
 
   render(){
-    const { devices, deviceDetail, deviceAlarmList, stations, subDeviceList } = this.props;
+    const { stations, devices, deviceDetail, deviceAlarmList, subDeviceList } = this.props;
     const { activeIndex } = this.state;
     let boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
@@ -108,6 +108,7 @@ class BoosterStation extends Component {
             deviceTypeCode={boosterDetail.deviceTypeCode}
             deviceCode={boosterDetail.deviceCode}
           />
+          <h3 className={styles.subTitleConfig}>下级设备</h3>
           <SubIntegrate subDeviceList={subDeviceList} deviceDetail={deviceDetail} />
         </div>
       </div>
