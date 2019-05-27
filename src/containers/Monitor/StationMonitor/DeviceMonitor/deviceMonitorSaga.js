@@ -100,9 +100,38 @@ function *getDeviceDetail({ deviceTypeCode, deviceCode }){ // 10s实时详情
   
 }
 
+function *getSeriesInverterTenMin({ deviceCode }) {
+  const startTime = moment().utc().subtract(72,'hours').format();
+  const endTime = moment().utc().format();
+  const tenMinUrl = `${APIBasePath}${monitorPath.seriesBranchTenMin}/${deviceCode}/${startTime}/${endTime}`;
+  try {
+    const tmpBranch = yield call(axios.get, tenMinUrl);
+    if (tmpBranch.data.code === '10000') {
+      yield put({
+        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        payload: {
+          branchTenMin: tmpBranch.data.data || {},
+          branchTenMinUnix: moment().unix(),
+        }
+      })
+    } else { throw tmpBranch.data }
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
+      payload: { branchTenMin: [] },
+    })
+  }
+  
+}
+
 function *getTenMin({ deviceTypeCode, deviceCode, timeParam }){ // 1h实时十分钟数据
   try {
     const tenMinUrl = `${APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${timeParam}`;
+    // 组串式逆变器需额外请求下方组串10分钟数据
+    if (deviceTypeCode === '206') {
+      yield fork(getSeriesInverterTenMin, { deviceCode })
+    }
     const tmpTenMin = yield call(axios.get, tenMinUrl);
     if (tmpTenMin.data.code === '10000') {
       yield put({

@@ -44,14 +44,14 @@ class InverterOutPutTenMin extends Component {
     const inverterTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
-      title: {
-        text: '时序图',
-        textStyle: {
-          color: lineColor,
-          fontSize: 14,
-        },
-        left: 60
-      },
+      // title: {
+      //   text: '时序图',
+      //   textStyle: {
+      //     color: lineColor,
+      //     fontSize: 14,
+      //   },
+      //   left: 60
+      // },
       legend: {
         data:['功率','瞬时辐照'],
         top: 24,

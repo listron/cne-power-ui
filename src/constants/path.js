@@ -216,6 +216,7 @@ export default {
       seriesinverterDetail: '/v3/monitor/seriesinverter',//组串式逆变器详情
       inverterSubList: '/v3/monitor/seriesinverter/subList', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart',//组串式逆变器10min时序图
+      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图 
       confluenceboxDetail: '/v3/monitor/confluencebox',//汇流箱详情
       confluenceboxSubList: '/v3/monitor/confluencebox/subList', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart',//汇流箱10min时序图

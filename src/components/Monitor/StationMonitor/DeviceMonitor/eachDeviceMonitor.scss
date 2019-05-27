@@ -139,9 +139,40 @@
           margin-left: 24px;
       }
     }
+    .subTitleConfig{
+      padding-left: 48px;
+    }
     .points{
       display: flex;
       border-top: 1px solid $promptColor;
+    }
+  }
+}
+
+.seriesinverter .inverterChartTitle{
+  height: 0px;
+  position: relative;
+  z-index: 9999;
+  top: 12px;
+  left: 56px;
+  .single{
+    font-weight: 700;
+  }
+  .tabs{
+    border-radius: 4px;
+    .inactive, .active{
+      padding: 2px 6px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .inactive{
+      color: #666;
+      border:1px solid #dfdfdf;
+    }
+    .active{
+      color: #fff;
+      border:1px solid $themeColor;
+      background-color: $themeColor;
     }
   }
 }

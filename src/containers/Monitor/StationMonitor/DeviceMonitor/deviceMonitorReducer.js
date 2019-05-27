@@ -31,6 +31,8 @@ const initState = Immutable.fromJS({
   tenMinChartLoading: false, // chartloading状态
   subDeviceList: [], // 下级设备信息
   deviceEvents: [], // 单设备事件信息
+  branchTenMin: [], // 仅组串逆变器下支路电流数组
+  branchTenMinUnix: null, // 仅组串逆变器下支路电流时间记录
 
   sequencechart: {}, // 风机图表
   scatterpoint: {}, // 风机散点图

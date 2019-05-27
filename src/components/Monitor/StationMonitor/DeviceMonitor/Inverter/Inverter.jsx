@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import InverterStatistics from './InverterStatistics';
 import InverterOutPutTenMin from './InverterOutPutTenMin';
+import InverterSeriesTenMin from './InverterSeriesTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import InverterHeader from './InverterHeader';
@@ -17,6 +18,10 @@ class Seriesinverter extends Component {
     stopMonitor: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
+  }
+
+  state = {
+    chartName: 'output', // 组串式逆变器 chart图表切换 output <=> branch
   }
 
   componentDidMount(){
@@ -55,7 +60,18 @@ class Seriesinverter extends Component {
     this.props.resetDeviceStore();
   }
 
+  toggleChart = (e) => {
+    const { innerHTML } = e.target;
+    const { chartName } = this.state;
+    if (innerHTML === '出力图' && chartName === 'branch') {
+      this.setState({ chartName: 'output' });
+    } else if (innerHTML === '支路电流图' && chartName === 'output') {
+      this.setState({ chartName: 'branch' });
+    }
+  }
+
   render(){
+    const { chartName } = this.state;
     const { match, stations } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const backData={ path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
@@ -76,8 +92,21 @@ class Seriesinverter extends Component {
         <div className={styles.deviceContent}>
           <InverterHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics {...this.props} />
-          <InverterOutPutTenMin {...this.props} />
-          {/* <InverterSeriesTenMin {...this.props} /> */}
+          <div className={styles.inverterChartTitle}>
+            {deviceTypeCode === '201' && <span className={styles.single}>出力图</span>}
+            {deviceTypeCode === '206' && <span className={styles.tabs} onClick={this.toggleChart}>
+              <span
+                className={chartName === 'output' ? styles.active : styles.inactive}
+                style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}
+              >出力图</span>
+              <span
+                className={chartName === 'branch' ? styles.active : styles.inactive}
+                style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px'}}
+              >支路电流图</span>
+            </span>}
+          </div>
+          {chartName === 'output' && <InverterOutPutTenMin {...this.props} />}
+          {chartName === 'branch' && <InverterSeriesTenMin {...this.props} />}
           <DevicePointsTable {...this.props} />
           <DeviceAlarmTable
             {...this.props}
@@ -85,6 +114,7 @@ class Seriesinverter extends Component {
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}
           />
+          <h3 className={styles.subTitleConfig}>下级设备</h3>
           {deviceTypeCode === '201' && <SubConfluenceList {...this.props} />}
         </div>
       </div>
