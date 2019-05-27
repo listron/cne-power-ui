@@ -3,12 +3,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './booster.scss';
 
-const SubIntegrate = ({ subDeviceList, deviceDetail }) => {
-  const { stationCode } = deviceDetail;
+const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
   const baseLinkPath = '/hidden/monitorDevice';
   subDeviceList = [
     {

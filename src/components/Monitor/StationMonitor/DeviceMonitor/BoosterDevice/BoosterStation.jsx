@@ -109,7 +109,7 @@ class BoosterStation extends Component {
             deviceCode={boosterDetail.deviceCode}
           />
           <h3 className={styles.subTitleConfig}>下级设备</h3>
-          <SubIntegrate subDeviceList={subDeviceList} deviceDetail={deviceDetail} />
+          <SubIntegrate subDeviceList={subDeviceList} deviceDetail={deviceDetail} stationCode={stationCode} />
         </div>
       </div>
     ) 
