@@ -104,6 +104,7 @@ class IntelligentExpert extends Component {
   };
 
   const mapDispatchToProps = (dispatch) => ({
+    changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
     getIntelligentExpertStore: payload => dispatch({ type: intelligentExpertAction.getIntelligentExpertStore,payload }),
     getIntelligentTable: payload => dispatch({ type: intelligentExpertAction.getIntelligentTable, payload }),
     getImportIntelligent: payload => dispatch({ type: intelligentExpertAction.getImportIntelligent, payload }),

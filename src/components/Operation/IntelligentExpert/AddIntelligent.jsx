@@ -12,11 +12,13 @@ class AddIntelligent extends Component {
   static propTypes = {
     deviceTypes: PropTypes.array,
     defectTypes: PropTypes.array,
-    getIntelligentExpertStore: PropTypes.func,
-    form: PropTypes.object,
-    getIntelligentTable: PropTypes.func,
     listParams: PropTypes.object,
+    form: PropTypes.object,
+    getIntelligentExpertStore: PropTypes.func,
+    getIntelligentTable: PropTypes.func,
     addIntelligent: PropTypes.func,
+    changeCommonStore: PropTypes.func,
+    getLostGenType: PropTypes.func,
   }
 
   constructor(props){
@@ -24,7 +26,19 @@ class AddIntelligent extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存！',
+      deviceTypeCode: '',
     }
+  }
+
+  onChangeDeviceType = (deviceTypeCode) => { // 选择设备类型
+    let params = { deviceTypeCode };
+    this.setState({ deviceTypeCode: deviceTypeCode });
+    this.props.changeCommonStore(params);
+    this.props.form.setFieldsValue({ defectTypeCode: null, deviceCode: null });
+    this.props.getLostGenType({
+      objectType: 1,
+      deviceTypeCode
+    })
   }
 
   onWarningTipShow = () => {
@@ -91,6 +105,8 @@ class AddIntelligent extends Component {
       }
     });
   }
+
+
 
   render(){
     const { showWarningTip, warningTipText } = this.state; 

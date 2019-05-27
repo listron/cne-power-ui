@@ -24,7 +24,7 @@ class ImportIntelligent extends Component {
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'];
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.config({ top: 200, duration: 2, maxCount: 3, });
