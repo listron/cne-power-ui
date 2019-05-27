@@ -12,5 +12,6 @@ export const partInfoAction = {
   getfactorsPartsMode: Symbol('getfactorsPartsMode'),//厂家下组件型号
   addPartsFactors: Symbol('addPartsFactors'),//新建组件厂家
   addPartsModes: Symbol('addPartsModes'),//新建组件型号
+  getDevicePartInfo: Symbol('getPartDevicePartInfo'),////通过设备获得组件详情树
 
 }

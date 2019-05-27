@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 import { partInfoAction } from './partInfoAction';
 
 const initState = Immutable.fromJS({
+  type: '',
   partsId:'',
   deviceCode:'',
   allStationBaseInfo:[],
@@ -23,6 +24,7 @@ const initState = Immutable.fromJS({
   collectorDevices:[],//集电线路数据
   boostDevices:[],//升压数据
   undefinedDevices:[],//未分组数据数据
+  partInfoTree:[],//复制组件中的树
  
  
 });

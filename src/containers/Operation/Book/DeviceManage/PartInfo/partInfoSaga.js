@@ -223,12 +223,8 @@ function* getPartsAssetTree(action) {  // 生产资产树
   // const url =`${APIBasePath}${operation.getAssetTree}`;
   const url = `/mock/v3/ledger/assetslist`;
   const nowTime = moment().utc().format();
-  console.log('nowTime: ', nowTime);
-
-
-
   try {
-    const response = yield call(axios.post, url, { ...payload, assetsParentId: '0', nowTime });
+    const response = yield call(axios.post, url, { ...payload, nowTime });
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
@@ -245,6 +241,31 @@ function* getPartsAssetTree(action) {  // 生产资产树
     yield put({
       type: partInfoAction.changePartInfoStore,
       payload: { ...payload, loading: false, assetList: [] },
+    })
+  }
+}
+function* getDevicePartInfo(action) { //获取设备部件信息,复制功能中的树
+  const { payload } = action;
+  // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
+  const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
+  try {
+    const response = yield call(axios.get, url,);
+    if (response.data.code === '10000') {
+      yield put({
+        type: partInfoAction.changePartInfoStore,
+        payload: {
+          ...payload,
+          partInfoTree: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: partInfoAction.changePartInfoStore,
+      payload: { ...payload, loading: false },
     })
   }
 }
@@ -381,11 +402,6 @@ export function* watchBookPartsInfo() {
   yield takeLatest(partInfoAction.getfactorsPartsMode, getfactorsPartsMode);
   yield takeLatest(partInfoAction.addPartsFactors, addPartsFactors);
   yield takeLatest(partInfoAction.addPartsModes, addPartsModes);
-  // 电站下设备类型列表
-  // 设备下组件列表
-  // 添加组件信息
-  // 添加组件信息
-  // 组件信息详情
-  // 删除组件信息
+  yield takeLatest(partInfoAction.getDevicePartInfo, getDevicePartInfo);
 
 }

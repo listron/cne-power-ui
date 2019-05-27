@@ -21,47 +21,29 @@ class RecordTable extends React.Component {
     this.props.changeTableFilter(value);
     value === 'part' ? getDevicePartInfo({}) : value === 'record' ? getDevicefixRecord({}) : getDevicehistoryWarning({});
   }
-  partInfoFormat = (data) => {
-    console.log('data: ', data);
-    let test1 = [];
-    data.forEach((e, i) => {    
-      let test2 = [];
-      e.assetsData2.forEach((item, index) => {
-        let test3=[];
-        item.partsData.forEach((value,key)=>{
-          test3.push({
-            ...value,
-           
-          })
-        })
-        test2.push({
-          ...item,
-          key: item.assetsId2,
-          value: item.assetsName2,
-          partsName: item.assetsName2,
-          childrens: test3,
-        })
 
-      
-      })
-      test1.push({
-        ...e,
-        key: e.assetsId1,
-        value: e.assetsName1,
-        partsName: e.assetsName1,
-        childrens: test2,
-      })
-    });
-    return test1;
+  formate = (data) => {
+    data.forEach((e, i) => {
+      e.key = e.assetsId;
+      e.partsName = e.assetsName;
+      if (e.assetsData && !e.partsData) {
+        this.formay(e.assetsData);
+      } else {
+        e.assetsData = e.partsData;
+        e.partsData&&e.partsData.forEach((e,i)=>{
+          e.key = e.partsModeName;
+        })
+      }
+      return e
+    })
+    return data
   }
+
+
+
   render() {
     const { tableFilter, historyWarningData, fixRecordData, partInfoData } = this.props;
-    console.log('partInfoData: ', partInfoData);
-    // const partInfoDataFormate = this.partInfoFormat(partInfoData);
-    const partInfoDataFormate = partInfoData;
-
-    console.log('partInfoDataFormate: ', partInfoDataFormate);
-
+    const partInfoDataFormate = this.formate(partInfoData);
     const partColumns = [
       {
         title: '部件名称',
@@ -159,7 +141,7 @@ class RecordTable extends React.Component {
           dataSource={tableFilter === 'part' ? partInfoDataFormate : tableFilter === 'record' ? fixRecordData : historyWarningData}
           columns={tableFilter === 'part' ? partColumns : tableFilter === 'record' ? fixRecordColumns : historyWarningColumns}
           pagination={false}
-          childrenColumnName={['childrens']}
+          childrenColumnName={['assetsData']}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 

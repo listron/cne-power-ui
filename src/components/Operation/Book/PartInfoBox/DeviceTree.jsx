@@ -7,31 +7,25 @@ class DeviceTree extends React.Component {
   constructor(props, context) {
     super(props, context)
   }
-  onLoadData=(treeNode)=>{
-    console.log('treeNode: ', treeNode);
-    const{stationCode}=this.props;
-
-
+  onLoadData = (treeNode) => {
+    const { stationCode } = this.props;
     return new Promise(resolve => {
-      console.log('11111')
       if (treeNode.props.children) {
         this.props.getDeviceTypeList({
           stationCode,
-          deviceCode:11,
-          type:1
+          deviceCode: 11,
+          type: 1
         })
-        console.log('22222')
         resolve();
         return;
       }
-      setTimeout(()=>{
-        console.log('3333333')
+      setTimeout(() => {
         this.props.getDeviceTypeList({
           stationCode,
-          deviceCode:'',
-          type:1
+          deviceCode: '',
+          type: 1
         })
-      },10)
+      }, 10)
     })
 
 
@@ -39,31 +33,39 @@ class DeviceTree extends React.Component {
   selectNode = (selectedKeys, e) => {
     console.log(' e: ', e);
     console.log('selectedKeys: ', selectedKeys);
+    let selectData=selectedKeys.join();
+    let deviceCode=selectData.split('_')[0];
+    let type=selectData.split('_')[1];
     const { stationCode } = this.props;
-    this.props.getDeviceTypeList({
+    // this.props.getDeviceTypeList({
+    //   stationCode,
+    //   deviceCode: '11',
+    //   type: 1
+    // })
+    this.props.changePartInfoStore({
       stationCode,
-      deviceCode: '11',
-      type: 1
+      deviceCode,
+      type
     })
-
+    this.props.getDevicePartInfo({
+      deviceFullcode:deviceCode
+    })
 
   }
 
   renderTreeNodes = data => data.map((item) => {
     if (item.children) {
       return (
-        <TreeNode title={item.deviceName} key={`${item.deviceCode}_${item.type}`} dataRef={item}  loadData={this.onLoadData}>
+        <TreeNode title={item.deviceName} key={`${item.deviceCode}_${item.type}`} dataRef={item} loadData={this.onLoadData}>
           {this.renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode {...item} title={item.deviceName} key={`${item.deviceCode}_${item.type}`}  dataRef={item} ></TreeNode>;
+    return <TreeNode {...item} title={item.deviceName} key={`${item.deviceCode}_${item.type}`} dataRef={item} ></TreeNode>;
   })
   render() {
     const { undefinedDevices, boostDevices, collectorDevices } = this.props;
-    console.log('collectorDevices: ', collectorDevices);
-    console.log('boostDevices: ', boostDevices);
-    console.log('undefinedDevices: ', undefinedDevices);
+
     return (
       <div>
         <Tree
@@ -74,7 +76,6 @@ class DeviceTree extends React.Component {
           onCheck={this.onCheck}
           blockNode={false}
           onSelect={this.selectNode}
-
           showIcon
         >
           {this.renderTreeNodes(collectorDevices)}
