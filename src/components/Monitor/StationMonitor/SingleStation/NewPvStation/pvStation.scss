@@ -1,9 +1,18 @@
 @import '../../../../../theme/theme.scss';
+.pvStationWrap{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    flex: 1;
+}
+
 .pvStation {
     background: #fff;
     display: flex;
-    flex: 1;
     flex-direction: column;
+    position: relative;
+    flex: 1 0 auto;
+    width: 100%;
     .stationTop {
         display: flex;
         flex-direction: column;
@@ -260,7 +269,6 @@
             cursor: pointer;
         }
     }
-
     .pvDeviceCont{
        .top{
            margin-left: 24px;
@@ -278,11 +286,9 @@
        }
         
     }
-
     // $dark_color:#199475;
     $normal_color:#199475;
     $normal_hover_color:#ceebe0;
-    
     .pvDeviceContnormal{
         $theme:'normal';
         // background: $normal_color;
@@ -299,12 +305,6 @@
             }
         }
     }
-
-    // .darkContnormal{
-    //     $theme:'normal';
-    //     background: $normal_color;
-    // }
-
     .outputPowerDiagram {
         border-top: 1px solid #dfdfdf;
         border-bottom: 1px solid #dfdfdf;
@@ -370,7 +370,6 @@
             }
         }
     }
-
     .threadAndDevice {
         .deviceTypeFlow {
             display: flex;
@@ -561,6 +560,41 @@
                 height: 33px;
                 text-align: center;
                 color: $darkColor;
+            }
+        }
+    }
+
+    .detailShow{
+        position: absolute;
+        right: 0;
+        top: 61px;
+        background:#199475;
+        border-radius:4px;
+        width:40px;
+        height:158px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 12px 0;
+        cursor: pointer;
+        .detailShowfont{
+            color: #fff;
+            width: 14px;
+            line-height: 20px;
+            z-index: 66;
+        }
+        .show{
+            transform: translate(-180deg)
+        }
+        :global{
+            .iconfont{
+                background:#ffffff;
+                width:14px;
+                height:14px; 
+                border-radius: 50%;
+                color: $themeColor;
+                font-size: 12px;
             }
         }
     }

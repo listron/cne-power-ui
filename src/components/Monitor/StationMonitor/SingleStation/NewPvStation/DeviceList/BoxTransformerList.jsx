@@ -58,7 +58,7 @@ class BoxTransformerList extends Component {
       currentPage: 1,
     })
   }
-  
+
   onSwitchAlarm = (e) => {
     this.setState({
       alarmSwitch: e,
@@ -163,7 +163,7 @@ class BoxTransformerList extends Component {
 
 
   render() {
-    const { boxTransformerList,deviceTypeCode, loading } = this.props;
+    const { boxTransformerList, deviceTypeCode, loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
     const { deviceList = [] } = boxTransformerList;
     const filteredDeviceList = deviceList
@@ -203,38 +203,40 @@ class BoxTransformerList extends Component {
                       {parentDeviceName}
                     </Link>
                   </div>
-                  {list.map((item, i) => {
-                    const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
-                    const alarm = item.alarmNum && item.alarmNum > 0;
-                    const devicePower = dataFormats(item.devicePower, '--', 2);
-                    const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
-                    let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
-                    return (
-                      <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
-                        <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
-                          <div className={`${styles.statusBox}`} >
-                            <div className={styles.deviceItemIcon} >
-                              <i className={`iconfont icon-xb ${styles.icon}`} ></i>
-                              {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
-                            </div>
-                            <div className={styles.deviceItemR} >
-                              <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>
-                              <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                              <div className={styles.deviceItemPower}>
-                                <div className={styles.realDevicePower}>{devicePower} kW</div>
-                                <div>{deviceCapacity} kW</div>
+                  <div className={styles.singledeviceItemBox}>
+                    {list.map((item, i) => {
+                      const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
+                      const alarm = item.alarmNum && item.alarmNum > 0;
+                      const devicePower = dataFormats(item.devicePower, '--', 2);
+                      const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
+                      let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                      return (
+                        <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
+                          <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
+                            <div className={`${styles.statusBox}`} >
+                              <div className={styles.deviceItemIcon} >
+                                <i className={`iconfont icon-xb ${styles.icon}`} ></i>
+                                {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
+                              </div>
+                              <div className={styles.deviceItemR} >
+                                <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>
+                                <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                                <div className={styles.deviceItemPower}>
+                                  <div className={styles.realDevicePower}>{devicePower} kW</div>
+                                  <div>{deviceCapacity} kW</div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className={styles.deviceBlockFooter}>
-                            <div>Q：{dataFormats(item.voltage, '--', 2)} kVar</div>
-                            <div>F：{dataFormats(item.electricity, '--', 2)} Hz</div>
-                            <div>Cos：{dataFormats(item.dispersionRatio, '--', 2)} </div>
-                            <div>Ia:{dataFormats(item.temp, '--', 2)} A</div>
-                          </div>
-                        </Link>
-                      </div>);
-                  })}
+                            <div className={styles.deviceBlockFooter}>
+                              <div>Q：{dataFormats(item.voltage, '--', 2)} kVar</div>
+                              <div>F：{dataFormats(item.electricity, '--', 2)} Hz</div>
+                              <div>Cos：{dataFormats(item.dispersionRatio, '--', 2)} </div>
+                              <div>Ia:{dataFormats(item.temp, '--', 2)} A</div>
+                            </div>
+                          </Link>
+                        </div>);
+                    })}
+                  </div>
                 </div>);
 
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)

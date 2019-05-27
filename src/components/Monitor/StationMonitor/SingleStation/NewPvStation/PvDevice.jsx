@@ -16,6 +16,74 @@ class PvDevice extends Component {
     }
 
     render() {
+        // const deviceTypeFlow={
+        //     "code": "509",
+        //     "levelLength": 6,
+        //     "name": "光伏组件",
+        //     "parents": [
+        //         {
+        //             "code": "206",
+        //             "levelLength": 4,
+        //             "name": "组串式逆变器",
+        //             "parents": [
+        //                 {
+        //                     "code": "304",
+        //                     "levelLength": 3,
+        //                     "name": "箱变",
+        //                     "parents": [
+        //                         {
+        //                             "code": "302",
+        //                             "levelLength": 2,
+        //                             "name": "集电线路",
+        //                             "parents": [
+        //                                 {
+        //                                     "code": "301",
+        //                                     "levelLength": 1,
+        //                                     "name": "升压站",
+        //                                     "parents": []
+        //                                 }
+        //                             ]
+        //                         }
+        //                     ]
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             "code": "202",
+        //             "levelLength": 5,
+        //             "name": "汇流箱",
+        //             "parents": [
+        //                 {
+        //                     "code": "201",
+        //                     "levelLength": 4,
+        //                     "name": "集中式逆变器",
+        //                     "parents": [
+        //                         {
+        //                             "code": "304",
+        //                             "levelLength": 3,
+        //                             "name": "箱变",
+        //                             "parents": [
+        //                                 {
+        //                                     "code": "302",
+        //                                     "levelLength": 2,
+        //                                     "name": "集电线路",
+        //                                     "parents": [
+        //                                         {
+        //                                             "code": "301",
+        //                                             "levelLength": 1,
+        //                                             "name": "升压站",
+        //                                             "parents": []
+        //                                         }
+        //                                     ]
+        //                                 }
+        //                             ]
+        //                         }
+        //                     ]
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // }
         const deviceTypeFlow = [
             {
                 "deviceTypeCode": 509,
@@ -64,6 +132,7 @@ class PvDevice extends Component {
                         {deviceTypeFlow.map((item) => {
                             return <Option value={item.deviceTypeCode} key={item.deviceTypeCode}>{item.deviceTypeName}</Option>
                         })}
+                        <Option value={'weather'}>{'气象站'}</Option>
                     </Select>
                     <div className={styles.icon}> <i className={'iconfont icon-examine1'}></i></div>
                 </div>

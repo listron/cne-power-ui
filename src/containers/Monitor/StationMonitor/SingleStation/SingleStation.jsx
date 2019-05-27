@@ -13,27 +13,10 @@ class SingleStation extends Component {
   static propTypes = {
     stationType: PropTypes.string,
     match: PropTypes.object,
-    location: PropTypes.object,
-    getSingleStation: PropTypes.func,
-    getCapabilityDiagram: PropTypes.func,
-    getMonitorPower: PropTypes.func,
-    getOperatorList: PropTypes.func,
-    getWeatherList: PropTypes.func,
-    getAlarmList: PropTypes.func,
-    getWorkList: PropTypes.func,
-    getDeviceTypeFlow: PropTypes.func,
-    getPvmoduleList: PropTypes.func,
-    getInverterList: PropTypes.func,
-    getStationList: PropTypes.func,
-    getBoxTransformerList: PropTypes.func,
     changeSingleStationStore: PropTypes.func,
-    getStationDeviceList: PropTypes.func,
-    deviceTypeCode: PropTypes.number,
-    deviceTypeFlow: PropTypes.object,
     resetSingleStationStore: PropTypes.func,
     getFanList: PropTypes.func,
     getSingleScatter: PropTypes.func,
-    singleStationData: PropTypes.object,
     stationList: PropTypes.array,
     stopSingleRealData: PropTypes.func,
   };
@@ -126,6 +109,10 @@ const mapDispatchToProps = (dispatch) => ({
   stopSingleRealData: payload => dispatch({ type: singleStationAction.stopSingleRealData, payload }),
   getPvSingleStation: payload => dispatch({ type: singleStationAction.getPvSingleStation, payload }),
   getWindSingleStation: payload => dispatch({ type: singleStationAction.getWindSingleStation, payload }),
+  monthplanpower: payload => dispatch({ type: singleStationAction.monthplanpower, payload }),
+  getPvMonitorPower: payload => dispatch({ type: singleStationAction.getPvMonitorPower, payload }),
+  getWeatherDetail: payload => dispatch({ type: singleStationAction.getWeatherDetail, payload }),
+  getRadiationchart: payload => dispatch({ type: singleStationAction.getRadiationchart, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

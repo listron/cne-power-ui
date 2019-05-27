@@ -156,7 +156,7 @@ class PowerNet extends Component {
                       <span>{e.name}</span>
                       <div>
                         <span className={styles.vlue}>{e.value}</span>
-                        <span>{e.unit}</span>
+                        <span className={styles.unit}>{e.unit}</span>
                       </div>
                     </div>))}
                   </div>

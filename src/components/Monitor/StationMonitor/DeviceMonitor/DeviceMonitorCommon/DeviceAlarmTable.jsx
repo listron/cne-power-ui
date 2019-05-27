@@ -131,7 +131,7 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList, deviceDetail, stationCode, deviceTypeCode, deviceCode, style, titleName } = this.props;
+    const { deviceAlarmList, deviceDetail={}, stationCode, deviceTypeCode, deviceCode, style, titleName } = this.props;
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
@@ -139,7 +139,7 @@ class DeviceAlarmTable extends Component {
     return (
       <div className={styles.alarmTable} style={style}>
         <div className={styles.alarmTip}>
-          {titleName && `${deviceDetail.deviceTypeName}告警`}
+          {titleName && `${deviceDetail.deviceTypeName} 告警`}
           {/* <Icon type="info" title="此列表为设备当前活动的告警" /> */}
         </div>
         <div className={styles.tableHeader}>

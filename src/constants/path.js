@@ -240,6 +240,7 @@ export default {
       getSinglePvStation:'/v3/pv/monitor/station/', // 单电站光伏电站实时数据
       getCapabilityDiagram: '/v3/monitor/capabilitydiagram/',//单电站出力图表
       getMonitorPower: '/v3/monitor/power/',//单电站理论发电量-实际发电量图表
+      getPvMonitorPower:'/v3/pv/monitor/station/power/',// 光伏-单电站理论发电量-实际发电量图表
       getStationList: '/v3/station/datalist/',//电站列表
       getWeatherList: '/v3/monitor/weather',//单电站未来天气
       getOperatorList: '/v3/station/user/',//单电站运维人员列表
@@ -249,6 +250,7 @@ export default {
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       getSingleStationDeviceList: '/v3/wind/monitor/station/devices/',//风单电站设备列表
       editData: '/v3/management/stationgen',//编辑月，年的累计发电量
+      radiationchart: '/v3/monitor/device/radiationchart/',// 获取气象站日辐射图表
 
       getHistoryAlarm: '/v3/alarm/station/historyalarmlist',//历史告警
       getStationsAlarmStatistic: '/v3/alarm/stations/alarmsummary',//多电站统计
@@ -307,6 +309,7 @@ export default {
       getDayPower:'/v3/pv/monitor/stations/daypower/',// 多电站日发电量与等效时图(光伏电站)
       getMonthPower :'/v3/pv/monitor/stations/monthpower/',// 多电站月发电量与等效时图(光伏电站)
       getMonthPalnPower :'/v3/pv/monitor/stations/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
+      getSingleMonthPalnPower :'/v3/pv/monitor/station/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
 
       getPvStation:'/v3/pv/monitor/stations', // 全部风电站
       getPvCapabilitydiagrams:'/v3/pv/monitor/stations/capabilitydiagrams',//光伏多电站出力图列表

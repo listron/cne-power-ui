@@ -3,15 +3,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
-import PvStationHeader from './PvStationHeader';
-import OutputTenMin from '../SingleStationCommon/OutputTenMin';
-import PowerDiagramTenMin from '../SingleStationCommon/PowerDiagramTenMin';
-import CardSection from '../SingleStationCommon/CardSection';
+import PvStationHeader from './PvStationHeader';;
 import PvStationCont from './PvStationCont';
 import PvDevice from './PvDevice';
 import styles from './pvStation.scss';
 import moment from 'moment';
-import { getDeviceTypeIcon, getAlarmStatus } from '../SingleStationCommon/DeviceTypeIcon'
+import TransitionContainer from '../../../../Common/TransitionContainer';
+import DetailCharts from './DetailCharts/DetailCharts';
 
 class PvStation extends Component {
   static propTypes = {
@@ -50,6 +48,8 @@ class PvStation extends Component {
     singleStationData: PropTypes.object,
     stationList: PropTypes.array,
     monitorPvUnit: PropTypes.object,
+    workList: PropTypes.object,
+    monthplanpower: PropTypes.func,
   }
 
   constructor(props) {
@@ -79,8 +79,9 @@ class PvStation extends Component {
     }
     this.getOneHourData(stationCode, stationType);
     this.getTenSeconds(stationCode, stationType);
-    this.getPowerDataTenMin({ stationCode, stationType }); // 发电量
-    this.props.getStationDeviceList({ stationCode, deviceTypeCode: 203 });//获取气象站
+
+    this.props.monthplanpower({ stationCode })
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -108,48 +109,44 @@ class PvStation extends Component {
     this.props.getPvSingleStation({ stationCode });
     this.props.getAlarmList({ stationCode });
     this.props.getWeatherList({ stationCode }); // 天气
-    let endTime = moment().utc().format();
-    this.props.getWorkList({ stationCode, startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(), endTime, });
+    this.props.getWorkList({
+      stationCode,
+      startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(),
+      endTime:moment().utc().format(),
+    });
     this.timeOutId = setTimeout(() => {
       this.getTenSeconds(stationCode, stationType);
     }, 10000);
   }
 
-  getOneHourData = (stationCode, stationType) => { // 1小时 请求一次处理 出力图 运维人员
-    clearTimeout(this.timeOutOutputData);
+  getOneHourData = (stationCode, stationType) => {
     this.props.getCapabilityDiagram({
       stationCode,
       stationType,
-      startTime: moment().subtract(24, 'hours').utc().format(),
-      endTime: moment().utc().format()
+      startTime: moment().startOf('day').utc().format(),
+      endTime: moment().endOf('day').utc().format()
     });
+    this.getPowerDataTenMin({ stationCode, stationType }); // 发电量
     this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
-    this.timeOutOutputData = setTimeout(() => {
-      this.getOneHourData(stationCode, stationType);
-    }, 3600000); //600000
   }
 
   getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
-    clearTimeout(this.timeOutPowerData);
-    const { stationCode, stationType, intervalTime = 0 } = value;
-    let startTime = moment().subtract(6, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    const { stationCode, intervalTime = 0 } = value;
+    let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
       startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.changeSingleStationStore({ powerData: [] })
-    this.props.getMonitorPower({ // 出力图数据
+    this.props.getPvMonitorPower({ // 出力图数据
       stationCode,
       intervalTime,
       startTime,
       endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-      stationType,
     });
-    this.timeOutPowerData = setTimeout(() => {
-      this.getPowerDataTenMin({ stationCode, stationType, intervalTime });
-    }, 600000);
   }
+  
 
   hiddenStationList = () => {
     this.setState({
@@ -157,27 +154,51 @@ class PvStation extends Component {
     });
   }
 
+  detailShow = () => { // 查看详情
+    this.setState({ detailVisible: true })
+  }
+
+  detailHide = (value) => { // 关闭详情
+    this.setState(value)
+  }
+
   render() {
-    const { singleStationData, editData, monitorPvUnit } = this.props;
+    const { singleStationData, editData, monitorPvUnit, monthPlanPower } = this.props;
+    const { detailVisible } = this.state;
     const { stationCode } = this.props.match.params;
+    const { alarmNum } = singleStationData;
     return (
-      <div className={styles.pvStation}  >
-        <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
-        <PvStationHeader
-          singleStationData={singleStationData}
-          editData={editData}
-          stationCode={stationCode}
-          monitorPvUnit={monitorPvUnit}
-        />
-        <PvDevice {...this.props} />
-        {/* <div className={styles.outputPowerDiagram}>
-          <OutputTenMin {...this.props} yXaisName={'辐射(W/m²)'} stationCode={stationCode} yAxisUnit={realTimePowerUnit} yAxisValuePoint={realTimePowerPoint} />
-          <PowerDiagramTenMin {...this.props} stationCode={stationCode} yAxisUnit={powerUnit} yAxisValuePoint={powerPoint}  getPowerDataTenMin={this.getPowerDataTenMin} />
-        </div> */}
-        {/* <CardSection {...this.props} stationCode={stationCode} /> */}
-        {/* 设备类型流程图切换 */}
-        {/* <PvStationCont {...this.props} /> */}
+      <div className={styles.pvStationWrap}>
+        <div className={styles.pvStation}  >
+          <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
+          <PvStationHeader
+            singleStationData={singleStationData}
+            editData={editData}
+            stationCode={stationCode}
+            monitorPvUnit={monitorPvUnit}
+          />
+          <PvDevice {...this.props} />
+          <div onClick={this.detailShow} className={styles.detailShow}>
+            <i className={`iconfont icon-back ${styles.show}`}></i>
+            <span className={styles.detailShowfont}>查看电站概况</span>
+          </div>
+        </div>
+        <TransitionContainer
+          show={detailVisible}
+          timeout={500}
+          effect="side"
+        >
+          <DetailCharts
+            alarmNum={alarmNum}
+            workList={this.props.workList}
+            detailChange={this.detailHide}
+            {...this.props}
+            detailVisible={detailVisible}
+            getPowerDataTenMin={this.getPowerDataTenMin}
+          />
+        </TransitionContainer>
       </div>
+
     )
   }
 }

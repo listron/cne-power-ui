@@ -1,5 +1,6 @@
 @import '../../../../../../theme/theme.scss';
 
+.deviceListBox{
 // 光伏组件
 .pvmodule{
   .pvmoduleList{
@@ -140,10 +141,8 @@
       }
   
     }
-    
   }
-}
-//逆变器 
+} 
 $normal:#fff;
 $normal_color:#199475;
 $normal_hover_color:rgba(0,0,0,0.20);
@@ -186,8 +185,12 @@ $arlam_color:#a42b2c;
         text-align: center;
         margin: 30px auto;
       }
+      .singledeviceItemBox{
+        display: flex;
+        flex-wrap: wrap;
+      }
       .singledeviceItem{
-        display: inline-block;
+        display: flex;
         margin-right: 18px; 
         margin-bottom: 20px;
         width: 222px;
@@ -394,64 +397,6 @@ $arlam_color:#a42b2c;
           }
         }
       }
-    }
-  }
-  :global{
-    .ant-table .ant-table-thead{
-      th>div{
-        height: 60px;
-      }
-    }
-    .ant-table .ant-table-thead .ant-table-column-sorter{
-      top: 18px;
-    }
-    .ant-spin-dot i {
-      background-color: #199475;
-    }
-    .ant-tabs-extra-content {
-      line-height: 46px;
-    }
-    .ant-radio-group{
-      margin: 0 20px;
-    }
-    .ant-tabs{
-      margin-top: 20px;
-    }
-    .ant-tabs-bar{
-      border-top: 1px dashed #dfdfdf;
-      border-bottom: 1px dashed #dfdfdf;
-    }
-    .ant-tabs-nav .ant-tabs-tab{
-      margin: 0;
-      background: #f1f1f1;
-      color: $darkColor;
-    }
-    .ant-tabs-nav .ant-tabs-tab:hover {
-      color: $themeColor;
-    }
-    .ant-tabs-nav .ant-tabs-tab-active {
-      color: #fff;
-      background: $themeColor;
-    }
-    .ant-tabs-nav .ant-tabs-tab-active:hover {
-      color: #fff;
-    }
-
-    .ant-switch-checked {
-      background-color: $themeColor;
-    }
-    .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-      background: $themeColor;
-      border-color: $themeColor;
-      color: #fff;
-    }
-    .ant-radio-button-wrapper{
-      height: 24px;
-      line-height: 24px;
-    }
-    .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
-      color: $themeColor;
-      position: relative;
     }
   }
 }
@@ -682,17 +627,380 @@ $arlam:#ff8e9c;
 
   .deviceValue{
     display: flex;
-    margin: 0 12px;
+    margin: 8px 12px;
     flex-direction: column;
   }
   .eachValue{
     display: flex;
     flex: 1;
     justify-content: space-between;
+    line-height: 22px;
     .vlue{
       color: #199475;
+      margin-right: 4px;
+      display: inline-block;
+    }
+    .unit{
+      width: 33px;
+      text-align: left;
+      display: inline-block;
     }
   }
+}
+
+.invertDeviceList{ // 逆变器
+  .deviceListTab{
+      .deviceRight{
+        margin-right: 20px;
+      }
+      .deviceListBlockBox{
+        padding: 0px 20px 20px 24px;
+        color: $darkColor;
+        display: flex;
+        flex-direction: column;
+        .parentDeviceName{
+          margin: 0 0 8px 0;
+          .underlin{
+            text-decoration: underline;
+            i{
+              display: inline-block;
+              font-size: 20px;
+              margin-left: 4px;
+            }
+          }
+          a:hover{
+            color: $themeColor
+          }
+        } 
+        .nodata{
+          text-align: center;
+          margin: 30px auto;
+        }
+        .singledeviceItemBox{
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .singledeviceItem{
+          margin-right: 18px; 
+          margin-bottom: 20px;
+          width: 230px;
+          height: 151px;
+          border-radius:4px;
+          border:1px solid #dfdfdf;
+          .statusBox{
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+          }
+          .deviceItemIcon{
+            align-self: flex-start;
+            margin-top: 5px;
+            flex-basis: 28px;
+            position: relative;
+          }
+          .deviceItemR{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .deviceBlockName, .deviceItemPower{
+              color: $darkColor;
+              display: flex;
+              justify-content: space-between;
+            }
+            .deviceBlockName {
+              height: 33px;
+              line-height: 33px;
+              margin-bottom: -4px;
+            }
+            .deviceItemPower {
+              height: 25px;
+              line-height: 25px;
+            }
+          }
+          .deviceBlockFooter{
+            display: flex;
+            padding: 0 12px;
+            .eachInfo{
+              flex-basis: 50%;
+              text-align: center;
+              color: $darkColor;
+              line-height: 24px;
+            }
+            .value{
+              color: $themeColor;
+            }
+          }
+          .allStatus{
+            display: flex;
+            justify-content: space-between;
+            height: 28px;
+            padding: 4px 12px;
+            align-items: center;
+            .branchStatus{
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 146px;
+            }
+            .rect{
+              width: 5px;
+              height: 15px;
+              margin: 0px 4px 4px 0;
+            }
+            .round {
+              width: 10px;
+              height: 10px;
+              border-radius: 10px;
+              margin: 0px 4px 4px 0;
+            }
+          }
+          :global{
+            .icon-nb{
+              font-size: 22px;
+            }
+            .icon-alarm{
+              position: absolute;
+              bottom: 10px;
+              left: 11px;
+              width: 10px;
+              height: 10px;
+              color: #a42b2c;
+              font-size: 14px;
+            }
+            .ant-progress{
+              line-height: 8px;
+              height: 8px;
+            }
+            .ant-progress-inner{
+              background-color: #dfdfdf;
+            }
+            .ant-progress-success-bg, .ant-progress-bg{
+              background-color: $themeColor;
+            }
+          }
+        }
+
+        .unconnect{
+          pointer-events: none;
+          background: #ededed;
+          .value{
+            color: #999999;
+          }
+        }
+        .stopShadow, .planShadow, .normalShadow{
+          &:hover{
+            box-shadow: 0px 1px 4px 1px rgba($color: #000000, $alpha: 0.4);
+          }
+          
+        }
+        .faultShadow, .breakShadow, .limitShadow {
+          &:hover{
+            box-shadow: 0px 1px 4px 1px rgba($color: #000000, $alpha: 0.4);
+          }
+        }
+      }
+      .deviceTableBox{
+        .nodata{
+          text-align: center;
+          margin: 30px auto;
+        }
+        .pagination{
+          margin: 10px ;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .deviceTable{
+          .deviceCode{
+            pointer-events: none;
+            .tableDeviceName{
+              text-decoration: none;
+              &:hover{
+                color: $noContact_color;
+              }
+            }
+          }
+          .tableDeviceName{
+            text-decoration: underline;
+            &:hover{
+              color: $normal_color;
+            }
+          }
+          .normal{color:$normal_color}
+          .moreThanTen{color:$moreThanTen_color}
+          .moreThanTwenty{color:$moreThanTwenty_color}
+          .noContact{color:$arlam_color}
+          .noAccess{color:$noAccess_color}
+          margin-bottom: 60px;
+          :global{
+            .ant-table .ant-table-tbody > tr > td {
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+}
+
+.weatherStation{ // 气象站
+  display: flex;
+  flex-direction: column;
+
+  .datailWrap{
+    display: flex;
+    // height: 238px;
+    justify-content: space-between;
+    padding: 0 29px 0 21px; 
+    margin: 20px 0;
+
+    .detail{
+      border:1px solid #dfdfdf;
+      width:237px;
+      height:236px;
+      .everyDetail{
+        line-height: 28px;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        &:nth-child(2n){
+          background:#f8f8f8;
+        }
+        .detailId{
+          color: #199475;
+        }
+        .detailUnit{
+          width:47px;
+          text-align: left;
+          color: #666;
+          display: inline-block;
+          margin-left:8px;
+        }
+        
+      }
+    }
+
+    .weatherList{
+      border:1px solid #dfdfdf;
+      border-right:none; 
+      height:236px;
+      display: flex;
+      flex-direction: row;
+      margin-right: -1px;
+      flex: 1;
+      margin-left: 21px;
+      line-height: 28px;
+      .weatherDay{
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // justify-content: center;
+        border-right: 1px solid #dfdfdf;
+        .weatherDate{
+            line-height: 32px;
+            background:#f8f8f8;
+            width: 100%;
+            text-align: center;
+        }
+        .weatherIcon{
+          margin: 16px;
+        }
+        .weatherNoData{
+          display: flex;
+          justify-content: center;
+        }
+      }
+      
+    }
+  }
+  .charts{
+    height: 270px;
+    display: flex;
+  }
+  .tooltipBox {
+    width: 150px;
+    .axisValue {
+        border-bottom: 1px solid #dfdfdf;
+        padding: 0 30px 0 10px;
+        line-height: 26px;
+    }
+    .tooltipContainer {
+        padding: 10px 0;
+    }
+    .tooltipCont {
+        span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            vertical-align: 2px;
+            margin: 0 4px 0 8px;
+        }
+    }
+}
+
+}
+:global{
+  .ant-table .ant-table-thead{
+    th>div{
+      height: 60px;
+    }
+  }
+  .ant-table-placeholder{
+    border: none
+  }
+  .ant-table .ant-table-thead .ant-table-column-sorter{
+    top: 18px;
+  }
+  .ant-spin-dot i {
+    background-color: #199475;
+  }
+  .ant-tabs-extra-content {
+    line-height: 46px;
+  }
+  .ant-radio-group{
+    margin: 0 20px;
+  }
+  .ant-tabs{
+    margin-top: 20px;
+  }
+  .ant-tabs-bar{
+    border-top: 1px dashed #dfdfdf;
+    border-bottom: 1px dashed #dfdfdf;
+  }
+  .ant-tabs-nav .ant-tabs-tab{
+    margin: 0;
+    background: #f1f1f1;
+    color: $darkColor;
+  }
+  .ant-tabs-nav .ant-tabs-tab:hover {
+    color: $themeColor;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active {
+    color: #fff;
+    background: $themeColor;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active:hover {
+    color: #fff;
+  }
+
+  .ant-switch-checked {
+    background-color: $themeColor;
+  }
+  .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: $themeColor;
+    border-color: $themeColor;
+    color: #fff;
+  }
+  .ant-radio-button-wrapper{
+    height: 24px;
+    line-height: 24px;
+  }
+  .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+    color: $themeColor;
+    position: relative;
+  }
+}
+
 }
 
 

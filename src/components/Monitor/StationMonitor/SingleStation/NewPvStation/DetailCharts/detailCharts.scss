@@ -1,0 +1,162 @@
+@import '../../../../../../theme/theme';
+
+
+.showCharts{
+    display: flex;
+    background:#f8f8f8;
+     box-shadow:0 0 6px 0 rgba(0,0,0,0.50);
+     width:464px;
+     height:1046px; 
+     flex: 1 0 auto;
+     margin-left: 6px;
+     margin-top: 61px;
+     flex-direction: column;
+     padding: 8px 12px 24px 12px;
+     position: relative;
+     z-index: 99;
+     .hideDetail{
+         background:$themeColor;
+         border-radius:4px;
+         width:40px;
+         height:40px;  
+         position: absolute;
+         right:7px;
+         top:0;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         cursor: pointer;
+         :global{
+             .iconfont{
+                 background:#ffffff;
+                 width:14px;
+                 height:14px; 
+                 border-radius: 50%;
+                 color: $themeColor;
+                 font-size: 12px;
+                 display: inline-block;
+             }
+         }
+     }
+     .tags {
+         display: flex;
+         justify-content: flex-start;
+         a {
+             padding: 0 12px;
+             background: #ffffff;
+             border: 1px solid #dfdfdf;
+             border-radius: 4px;
+             height: 30px;
+             line-height: 30px;
+             color: #666;
+             margin-right: 11px;
+         }
+         .noLink{
+             pointer-events: none;
+         }
+     }
+     .deviceStatus {
+         background: #ffffff;
+         border-radius: 4px;
+         line-height: 40px;
+         margin-top: 12px;
+         padding: 0 13px;
+         .deviceStaTitle{
+             display: flex;
+             justify-content: space-between;
+             color: #000;
+         }
+         .deviceStaCont{
+             display: flex;
+             span{
+                 margin-right: 12px;
+                 display: inline-block;
+                 flex: 1
+             }
+         }
+     }
+     .chartsBox{
+         margin-top: 12px;
+         display: flex;
+         height: 278px;
+         width:100%;
+         background: #fff;
+     }
+
+     .tooltipBox {
+        width: 150px;
+        .axisValue {
+            border-bottom: 1px solid #dfdfdf;
+            padding: 0 30px 0 10px;
+            line-height: 26px;
+        }
+        .tooltipContainer {
+            padding: 10px 0;
+        }
+        .tooltipCont {
+            span {
+                display: inline-block;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                vertical-align: 2px;
+                margin: 0 4px 0 8px;
+            }
+        }
+    }
+    
+    .powerDiagramBox {
+        display: flex;
+        flex: 1;
+        position: relative;
+        .powerChart{
+            width: 440px;
+            height: 280px;
+        }
+        .powerRadio {
+            position: absolute;
+            top: 11px;
+            right: 24px;
+            color: $darkColor;
+            :global {
+                .ant-radio-button-wrapper-checked:first-child {
+                    border-color: $themeColor;
+                }
+    
+                .ant-radio-button-wrapper:hover,
+                .ant-radio-button-wrapper-focused {
+                    color: $darkColor;
+                }
+    
+                .ant-radio-button-wrapper-checked {
+                    border-color: $themeColor;
+                    -webkit-box-shadow: -1px 0 0 0 $themeColor;
+                    box-shadow: -1px 0 0 0 $themeColor;
+                    color: #fff;
+                    background: $themeColor;
+                }
+    
+                .ant-radio-button-wrapper-checked:hover {
+                    color: #fff;
+                }
+            }
+        }
+    
+        .dataChange{
+            position: absolute;
+            top: 11px;
+            right: 24px;
+        }
+        .link {
+            color: #666666;
+            position: absolute;
+            top: 10px;
+            right: 4px;
+            font-size: 16px;
+            display: inline-block;
+        }
+    }
+}
+.hideCharts{
+ display: none
+}

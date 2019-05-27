@@ -39,4 +39,9 @@ export const singleStationAction = {
 
   getPvSingleStation: Symbol('getPvSingleStation'),
   getWindSingleStation: Symbol('getWindSingleStation'),
+  monthplanpower: Symbol('monthplanpower'),
+  getPvMonitorPower: Symbol('getPvMonitorPower'),
+  getWeatherDetail: Symbol('getWeatherDetail'),
+  getStationAlarm: Symbol('getStationAlarm'),
+  getRadiationchart: Symbol('getRadiationchart'),
 }
