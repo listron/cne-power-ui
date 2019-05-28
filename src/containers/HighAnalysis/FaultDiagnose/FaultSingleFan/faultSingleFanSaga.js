@@ -38,7 +38,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       // 结束日期和结束列表
       const { endTime, algModeDatas } = response.data.data;
       // 故障日期时间
-      const dateArr = algModeDatas && algModeDatas[0].date.split(",");
+      const dateArr = algModeDatas && algModeDatas[0].date && algModeDatas[0].date.split(",");
       // 判断如果algModeDatas有数据
       const timeValue = algModeDatas && algModeDatas[0].date ? dateArr[dateArr.length - 1] : endTime;
       // 发电机前驱温度
