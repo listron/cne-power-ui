@@ -123,6 +123,7 @@ export default class AfterTemperature extends React.Component {
           <div>
             {(endTime) && (
               <RangePicker
+                allowClear={false}
                 onChange={this.changeAfterDate}
                 value={afterDate.length === 0 ? [
                   moment(endTime, "YYYY/MM/DD").subtract(1,'months'),

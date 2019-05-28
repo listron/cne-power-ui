@@ -124,6 +124,7 @@ export default class DifferenceTemperature extends React.Component {
           <div>
             {(endTime) && (
               <RangePicker
+                allowClear={false}
                 onChange={this.changeAfterDate}
                 value={diffDate.length === 0 ? [
                   moment(endTime, "YYYY-MM-DD").subtract(1,'months'),
