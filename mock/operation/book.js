@@ -161,7 +161,7 @@ module.exports = [
                 }
               })
 
-             
+
             }
           }),
         }
@@ -209,12 +209,12 @@ module.exports = [
         }
       }),
     },
+
     delay: 1000,
     error: { data: '请求失败' }
   },
   {
     //获取某电站下的设备类型
-
     api: '/mock/v3/ledger/devicetype/stationCode',
     method: 'post',
     response: {
@@ -248,6 +248,26 @@ module.exports = [
     },
     delay: 1000,
     error: { data: '电站下设备类型请求失败' }
-
-  }
+  },
+  {//获取某设备的历史告警
+    api: '/mock/v3/alarm/device/deviceCode/warningType',
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      'data': [1, 2, 3, 4,].map((e, i) => {
+        return {
+          "warningLevel": `${i}`,
+          "warningLogId": `${Math.random(0, 1) * 100}`,
+          "warningConfigName": `test${i + 1}`,
+          "warningCheckDesc": `${Math.random(0, 1) * 100}`,
+          "timeOn": `${Math.random(0, 1) * 100}`,
+          "durationTime": `${Math.random(0, 1) * 100}`,
+        }
+      }),
+    },
+    delay: 1000,
+    error: { data: '请求失败' }
+  },
 ]
+

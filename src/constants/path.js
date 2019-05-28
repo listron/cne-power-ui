@@ -121,6 +121,15 @@ export default {
       uploadDayReport: '/v3/performance/dailyreport', // 上报日报
       dayReportDetail: '/v3/performance/detail', // 获取选中日报详情
       dayReportUpdate: '/v3/performance/dailyReport/mulitUpdate', // 日报详情编辑
+
+      getImportIntelligent: '/v3/knowledgebase/import', // 智能专家库导入
+      getIntelligentTable: '/v3/knowledgebase/list', // 智能专家库列表
+      // getKnowledgebase: '/v3/knowledgebase', // 智能专家库详情
+      getLike: '/v3/knowledgebase/like', // 智能专家库点赞
+      downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
+      operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
+      getUserName: '/v3/user/related', // 获取相关用户名
+      
       getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
       getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
       addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
@@ -149,9 +158,18 @@ export default {
       deletePartInfo: '/v3/ledger/delete/',
 
       importParts:'/v3/ledger/parts/import',
-      exportParts:'/v3/ledger/parts/export'
+      exportParts:'/v3/ledger/parts/export',
 
     
+      // 台账-仓库配置
+      warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
+      warehouseAdd: "/v3/warehouse/add",  // 仓库添加
+      warehouseDel: "/v3/warehouse/del",  // 仓库删除
+      warehouseUpdate: "/v3/warehouse/update",  // 仓库编辑
+      goodsList: "/v3/goods/pageList",  // 物品（物资）清单分页列表
+      goodsAdd: "/v3/goods/add",  // 物品增加
+      goodsDel: "/v3/goods/del",  // 物品删除
+      goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
 
     },
     system: {//系统管理

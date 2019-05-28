@@ -96,7 +96,7 @@ class DeviceManageList extends Component {
         render(text) { return numWithComma(text); },
         sorter: true,
       }, {
-        title: '是否显示',
+        title: '是否接入',
         dataIndex: 'enableDisplay',
         key: 'enableDisplay',
         sorter: true,

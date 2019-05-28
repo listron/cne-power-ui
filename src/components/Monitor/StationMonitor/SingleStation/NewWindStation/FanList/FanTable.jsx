@@ -19,6 +19,7 @@ class WindStationList extends React.Component {
     pageSize: PropTypes.number,
     currentPage: PropTypes.number,
     onPaginationChange: PropTypes.func,
+    deviceList:PropTypes.array,
   }
 
   constructor(props, context) {
@@ -229,8 +230,7 @@ class WindStationList extends React.Component {
 
 
   render() {
-    const { fanList, pageSize, currentPage, onPaginationChange, alarmSwitch, currentStatus } = this.props;
-    const { deviceList = [] } = fanList;
+    const { deviceList = [], pageSize, currentPage, onPaginationChange, alarmSwitch, currentStatus } = this.props;
     const initDeviceList = deviceList.map((e, i) => ({ ...e, key: i }));
     const filteredDeviceList = initDeviceList.filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0))).filter(e => {
       return (currentStatus === 0 || e.deviceStatus === currentStatus);

@@ -8,6 +8,7 @@ import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
 import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
+import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 
 import { watchEnterprise } from './System/Account/Enterprise/enterpriseSaga';
 import { watchDepartment } from './System/Account/Department/departmentSaga';
@@ -85,6 +86,8 @@ import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfi
 import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
 import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
 import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
+import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+
 
 
 // root saga
@@ -99,6 +102,7 @@ export default function* rootSaga() {
     watchInspect(),// 巡检
     watchPersonnelGps(),//员工定位
     watchDayReport(), // operation- 日报
+    watchIntelligentExper(), // 光伏智能专家库
 
     //system-enterprise
     watchEnterprise(),
@@ -178,6 +182,7 @@ export default function* rootSaga() {
     watchBookDeviceManage(),//设备管理
     watchBookPartsInfo(),//组件信息
     watchDeviceAccount(),//设备台账
+    watchWarehouse(),//仓库配置
 
   ])
 }
