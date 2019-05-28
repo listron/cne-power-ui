@@ -198,6 +198,7 @@ export default class PreTemperature extends React.Component {
           <span>选择日期</span>
           {(faultDate) && (
             <DatePicker
+              allowClear={false}
               dateRender={(current) => {
                 const style = {};
                 faultDateList && faultDateList.split(",").map(cur => {
@@ -238,6 +239,7 @@ export default class PreTemperature extends React.Component {
           <div>
             {(faultDate) && (
               <RangePicker
+                allowClear={false}
                 onChange={this.changePreDate}
                 value={preDate.length === 0 ? [
                   moment(faultDate, "YYYY/MM/DD").subtract(1,'months'),
