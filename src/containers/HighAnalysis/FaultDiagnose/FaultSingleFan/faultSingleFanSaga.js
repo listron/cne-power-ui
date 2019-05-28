@@ -35,31 +35,38 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
+      // 结束日期和结束列表
+      const { endTime, algModeDatas } = response.data.data;
       // 故障日期时间
-      const dateArr = response.data.data.algModeDatas[0].date && response.data.data.algModeDatas[0].date.split(",");
+      const dateArr = algModeDatas && algModeDatas[0].date.split(",");
+      // 判断如果algModeDatas有数据
+      const timeValue = algModeDatas && algModeDatas[0].date ? dateArr[dateArr.length - 1] : endTime;
       // 发电机前驱温度
       const  preParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010", //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
+        startTime: moment(timeValue).subtract(1,'months').utc().format(),
+        endTime: moment(timeValue).add(1, "days").utc().format(),
+        queryFlag: true // 判断是否重新存贮时间轴
       };
       // 发电机后驱温度
       const  afterParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN011", //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
+        startTime: moment(timeValue).subtract(1,'months').utc().format(),
+        endTime: moment(timeValue).add(1, "days").utc().format(),
+        queryFlag: true // 判断是否重新存贮时间轴
       };
       // 发电机温度差
       const diffParams = {
         stationCode: response.data.data.stationCode,
         pointCode: "GN010-GN011", //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(response.data.data.endTime).subtract(1,'months').utc().format(),
-        endTime: moment(response.data.data.endTime).add(1, "days").utc().format()
+        startTime: moment(timeValue).subtract(1,'months').utc().format(),
+        endTime: moment(timeValue).add(1, "days").utc().format(),
+        queryFlag: true // 判断是否重新存贮时间轴
       };
       const deviceName = localStorage.getItem("deviceName");
       // 单机自适应
@@ -72,7 +79,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       // 相似性热图和所有风机
       const heatAndFansParams = {
         taskId: response.data.data.taskId,
-        date: !response.data.data.algModeDatas[0].date ? response.data.data.endTime : dateArr[dateArr.length - 1]
+        date: timeValue
       };
       // 任务执行失败不请求接口
       if (response.data.data.status !== 4) {
@@ -110,7 +117,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
           faultInfo: response.data.data || {},
           deviceName: deviceName,
           warnId: Number(response.data.data.algModeDatas[0].type),
-          faultDate: !response.data.data.algModeDatas[0].date ? response.data.data.endTime : dateArr[dateArr.length - 1],
+          faultDate: timeValue,
           faultDateList: response.data.data.algModeDatas[0].date,
           faultInfoMessage: response.data.data.executeMessage || "",
           loading: false,
@@ -249,9 +256,23 @@ function dateFunc(arr) {
 }
 
 let beforeTimeData = null; // 保存风机10分钟数据-前驱温度时间轴
-
 function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温度
-  const { payload } = action;
+  const { payload: {
+    stationCode,
+    pointCode, //前驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime,
+    queryFlag
+  } } = action;
+  // 参数
+  const params = {
+    stationCode,
+    pointCode, //前驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime,
+  };
   const url = `${APIBasePath}${tenMinutesLine}`;
   try {
     yield put({
@@ -261,11 +282,19 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
         preLoading: true
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
-      // 判断是否有数据
-      if(!beforeTimeData) {
+      // queryFlag === true 重新储存数据
+      if (queryFlag) {
+        // 储存数据
         beforeTimeData = response.data.data;
+      }
+      // queryFlag === false 储存数据
+      if (!queryFlag) {
+        // 判断有无数据
+        if(!beforeTimeData) {
+          beforeTimeData = response.data.data;
+        }
       }
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
@@ -292,7 +321,22 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
 
 let afterTimeData = null; // 保存风机10分钟数据-后驱温度时间轴
 function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温度
-  const { payload } = action;
+  const { payload: {
+    queryFlag,
+    stationCode,
+    pointCode, //后驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime,
+  } } = action;
+  // 参数
+  const params = {
+    stationCode,
+    pointCode, //后驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime,
+  };
   const url = `${APIBasePath}${tenMinutesLine}`;
   try {
     yield put({
@@ -302,11 +346,19 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
         afterLoading: true
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
-      // 判断是否有数据
-      if(!afterTimeData) {
+      // queryFlag === true 重新储存数据
+      if (queryFlag) {
+        // 储存数据
         afterTimeData = response.data.data;
+      }
+      // queryFlag === false 储存数据
+      if (!queryFlag) {
+        // 判断有无数据
+        if(!afterTimeData) {
+          afterTimeData = response.data.data;
+        }
       }
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
@@ -333,7 +385,22 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
 
 let diffTimeData = null; // 保存风机10分钟数据-温度差
 function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
-  const { payload } = action;
+  const { payload: {
+    stationCode,
+    pointCode, //前驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime,
+    queryFlag
+  } } = action;
+  // 参数
+  const params = {
+    stationCode,
+    pointCode, //前驱测点-固定字段
+    deviceFullcodes, // 默认传空代表所有风机
+    startTime,
+    endTime
+  };
   const url = `${APIBasePath}${tenMinutesLine}`;
   try {
     yield put({
@@ -343,11 +410,19 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
         diffLoading: true
       }
     });
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
-      // 判断是否有数据
-      if(!diffTimeData) {
+      // queryFlag === true 重新储存数据
+      if (queryFlag) {
+        // 储存数据
         diffTimeData = response.data.data;
+      }
+      // queryFlag === false 储存数据
+      if (!queryFlag) {
+        // 判断有无数据
+        if(!diffTimeData) {
+          diffTimeData = response.data.data;
+        }
       }
       yield put({
         type: faultSingleFanAction.changeSingleFanStore,
