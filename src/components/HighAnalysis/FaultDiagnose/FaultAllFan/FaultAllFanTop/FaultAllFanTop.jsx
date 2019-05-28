@@ -90,8 +90,7 @@ export default class FaultAllFanTop extends React.Component {
         stationName
       },
       faultInfoMessage } = this.props;
-    const rightHandler = localStorage.getItem('rightHandler') || '';
-    const roleDeleteRight = rightHandler.split(',').includes('analysis_turbineFDD_repeat');
+
     return (
       <div className={styles.faultAllFanTop}>
         <div className={styles.allFanTopCenter}>
@@ -130,17 +129,15 @@ export default class FaultAllFanTop extends React.Component {
             </div>
             <div className={styles.allFanTimeRight}>
               <div>
-                {(roleDeleteRight) && (
-                  <Button style={{width: 90}} block onClick={this.resetTaskFunc}>重新执行</Button>
-                )}
+                <Button style={{width: 90}} block onClick={this.resetTaskFunc}>重新执行</Button>
                 <Button style={{width: 120}} block onClick={this.historyFunc}>历史预警报告</Button>
               </div>
               {(status && status !== 4) && (
                 <div>
                   <span>{`${stationName || ""}_${startTime || ""}_${endTime || ""}.csv`}</span>
                   <span className={styles.download} onClick={this.downloadFunc}>
-                    下载
-                  </span>
+                  下载
+                </span>
                 </div>
               )}
             </div>

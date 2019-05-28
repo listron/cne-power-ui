@@ -23,6 +23,7 @@ export default class AfterTemperature extends React.Component {
     afterDate: PropTypes.array,
     afterLoading: PropTypes.bool,
     afterTimeCompare: PropTypes.number,
+    afterTimeData: PropTypes.array,
   };
 
   componentDidUpdate(prevProps) {
@@ -37,6 +38,7 @@ export default class AfterTemperature extends React.Component {
         faultInfo: {
           stationCode
         },
+        afterTimeData
       }
     } = this;
     const { afterTimeCompare } = prevProps;
@@ -49,12 +51,9 @@ export default class AfterTemperature extends React.Component {
       myChart.hideLoading();
     }
     if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
-      // 重新请求回到默认
-      paramsStart = 0;
-      paramsEnd = 100;
       eCharts.init(afterChart).dispose();//销毁前一个实例
       const myChart = eCharts.init(afterChart); //构建下一个实例
-      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName));
+      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName, paramsStart, paramsEnd, afterTimeData));
       myChart.on('datazoom', function (params){
         const opt = myChart.getOption();
         const dz = opt.dataZoom[0];

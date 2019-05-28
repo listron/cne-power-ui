@@ -12,6 +12,7 @@ class ImportIntelligent extends Component {
     getFieldDecorator: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     showModal: PropTypes.bool,
+    form: PropTypes.object,
   }
 
   constructor(props){
@@ -23,7 +24,7 @@ class ImportIntelligent extends Component {
   }
 
   beforeUploadStation = (file) => { // 上传前的校验
-    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'];
     const validFile = validType.includes(file.type);
     if (!validFile) {
       message.config({ top: 200, duration: 2, maxCount: 3, });
@@ -38,9 +39,9 @@ class ImportIntelligent extends Component {
   }
 
   handleSubmit = (e) => { // 导入按钮
-    const { cancelModal, getImportIntelligent } = this.props;
+    const { form, cancelModal, getImportIntelligent } = this.props;
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err, values) => {
       if(!err) {
         const { fileList } = this.state;
         const formData = new FormData();

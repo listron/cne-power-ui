@@ -167,12 +167,28 @@ const menuData = [
         rightKey: 'operation_book',
         children: [
           {
-            name: '备品备件',
-            path: 'sparePart',
+            name: '资产配置',
+            path: 'assetsConfig',
             rightKey: 'operation_book_sparePart',
           }, {
-            name: '工器具',
-            path: 'instrument',
+            name: '设备管理',
+            path: 'deviceManage',
+            rightKey: 'operation_book_instrument',
+          },{
+            name: '设备台账',
+            path: 'deviceAccount',
+            rightKey: 'operation_book_sparePart',
+          }, {
+            name: '仓库配置',
+            path: 'warehouse',
+            rightKey: 'operation_book_warehouseConfig',
+          },{
+            name: '仓库管理',
+            path: 'warehouseManage',
+            rightKey: 'operation_book_sparePart',
+          }, {
+            name: '出入境记录',
+            path: 'immigrationRecords',
             rightKey: 'operation_book_instrument',
           }
         ]

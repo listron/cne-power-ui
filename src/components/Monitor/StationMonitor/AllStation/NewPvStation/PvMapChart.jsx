@@ -8,14 +8,15 @@ import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { divideFormarts, multiplyFormarts, powerPoint, provinceList, provinceListArray } from '../../PvCommon/PvDataformat';
-import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 
 
 class PvMapChart extends Component {
   static propTypes = {
     stations: PropTypes.array,
-    
-  } 
+    monitorPvUnit: PropTypes.object,
+    stations: PropTypes.array,
+  }
 
   constructor(props) {
     super();
@@ -177,11 +178,10 @@ class PvMapChart extends Component {
             key: index,
             name: dataItem.stationName,
             value: [dataItem.longitude, dataItem.latitude, 10],
-            symbol: dataItem.alarmNum > 0 ? `image:///img/wrong2.png` : `image:///img/pv03.png`,
+            symbol: dataItem.alarmNum > 0 ? `image:///img/wrong2.png` : `image:///img/pvcutdown.png`,
           }
         }),
-        symbol: `image:///img/pv03.png`,
-        rotation: () => { let rotation = 0; (rotation += Math.PI / 360) % (Math.PI * 2) },
+        symbol: `image:///img/pvcutdown.png`,
         symbolSize: [24, 17],
       },
       {
@@ -206,47 +206,44 @@ class PvMapChart extends Component {
 
 
   drawCharts = (params) => {
-    const { stationDataList = [], history = {}, monitorPvUnit } = params;
+    const { stationDataList = [], history = {} } = params;
     const { mapType, mapTypeName } = this.state;
     const initOption = this.initOption();
-    const wrapStationDataList = stationDataList.filter(e => e.provinceName.includes(mapTypeName))
+    const wrapStationDataList = stationDataList.filter(e => e.provinceName.includes(mapTypeName));
     const changOption = this.changOption(wrapStationDataList);
     const countryBox = document.getElementById('pvStationMap');
-    axios.get(`/mapJson/${mapType}.json`).then(response => {
-      echarts.registerMap(mapType, response.data);
-      const option = {
-        ...initOption,
-        ...changOption,
-      };
-      const countryChart = echarts.init(countryBox);
-      countryChart.clear();
-      countryChart.resize();
-      countryChart.setOption(option, 'notMerge');
-      countryChart.on('click', (params) => {
-        if (!params.seriesType) {
-          if (mapType === 'china') {
-            this.setState({
+    if (mapType) {
+      axios.get(`/mapJson/${mapType}.json`).then(response => {
+        echarts.registerMap(mapType, response.data);
+        const option = {
+          ...initOption,
+          ...changOption,
+        };
+        const countryChart = echarts.init(countryBox);
+        countryChart.clear();
+        countryChart.setOption(option, 'notMerge');
+        countryChart.on('click', (params) => {
+          if (!params.seriesType) {
+            setTimeout(this.setState({
               mapType: provinceList[params.name],
               mapTypeName: params.name
-            }, () => {
-              this.drawCharts(params)
-            })
+            }), 0);
+            this.drawCharts(this.props)
           } else {
-            return false
+            if (params.data.stationStatus !== '900') {
+              return history.push(`/monitor/singleStation/${params.data.stationCode}`)
+            } else {
+              this.showTip();
+            }
           }
-        } else {
-          if (params.data.stationStatus !== '900') {
-            return history.push(`/monitor/singleStation/${params.data.stationCode}`)
-          } else {
-            this.showTip();
-          }
-        }
+        })
       })
-    })
+    }
+
   }
 
   showBack = () => {
-    this.setState({ mapType: 'china', mapTypeName: '' }, () => {
+    this.setState({ mapType: 'china', mapTypeName: '' },()=>{
       this.drawCharts(this.props)
     })
   }

@@ -288,7 +288,7 @@ class LimitAddForm extends Component {
             <Form.Item label="日损失电量" {...formItemLayout1} >
               {getFieldDecorator('lostPower', {
                 rules: [{ 
-                  validator: (rule, value, callback)=>{
+                  validator: (rule, value, callback) => {
                     let truelyValue = value && value.trim();
                     if(truelyValue && isNaN(truelyValue)){
                       callback('损失电量请填写数字');

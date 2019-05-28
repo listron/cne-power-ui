@@ -44,11 +44,7 @@ class DayReportListSearch extends Component {
   stationTypeChange = (e) => {
     const { getDayReportList, stationNameSort, pageSize, startTime, regionName } = this.props;
     let params = { stationNameSort, pageSize, startTime, regionName };
-    getDayReportList({
-      ...params,
-      pageNum: 1,
-      stationType: e.target.value,
-    });
+    getDayReportList({ ...params, pageNum: 1, stationType: e.target.value });
   }
 
   disabledDate = (start) => {

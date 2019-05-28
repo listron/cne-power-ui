@@ -152,7 +152,7 @@ class PvStationItem extends React.Component {
                           <div className={styles.staionCapacity}>
                             <div>
                               <span className={styles.changeNum}>
-                                <i className={'iconfont icon-tranlist'}></i> {stationCapacity}</span> {realCapacityUnit}
+                                <i className={'iconfont icon-da'}></i> {stationCapacity}</span> {realCapacityUnit}
                             </div>
                             <div className={styles.stationUnitCount}>
                               <span className={styles.changeNum}>{item.stationUnitCount}</span> 台

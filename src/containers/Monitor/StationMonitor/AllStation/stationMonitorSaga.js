@@ -350,8 +350,8 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
 function* getPvCapabilitydiagrams(action) {
   const { payload } = action;
   const { regionName } = payload;
-  let startTime = moment().subtract(1, 'day').utc().format()
-  let endTime = moment.utc().format();
+  let startTime = moment().startOf('day').utc().format();
+  let endTime = moment().endOf('day').utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}/${startTime}/${endTime}/${regionName}`;
   try {
     yield put({
