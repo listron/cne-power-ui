@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import { DatePicker } from 'antd';
 import eCharts from "echarts";
 import { AfterTemperatureOptions } from "../chartsConfig/chartsConfig";
-import styles from "./afterTemperature.scss";
 import moment from "moment";
+import DataZoom from "../../../../../components/Common/DataZoom/DataZoom";
+
+import styles from "./afterTemperature.scss";
 
 const { RangePicker } =  DatePicker;
-//默认保存echarts dataZoom滑块位置
-let paramsStart = 0;
-let paramsEnd = 100;
 
 export default class AfterTemperature extends React.Component {
   static propTypes = {
@@ -24,6 +23,8 @@ export default class AfterTemperature extends React.Component {
     afterLoading: PropTypes.bool,
     afterTimeCompare: PropTypes.number,
     afterTimeData: PropTypes.array,
+    afterDataZoomStart: PropTypes.number,
+    afterDataZoomEnd: PropTypes.number,
   };
 
   componentDidUpdate(prevProps) {
@@ -31,14 +32,9 @@ export default class AfterTemperature extends React.Component {
       afterChart,
       props: {
         tenMinutesAfterList,
-        getTenMinutesAfter,
         deviceName,
         afterLoading,
         afterTimeCompare: currentAfterTimeCompare,
-        faultInfo: {
-          stationCode
-        },
-        afterTimeData
       }
     } = this;
     const { afterTimeCompare } = prevProps;
@@ -51,35 +47,10 @@ export default class AfterTemperature extends React.Component {
       myChart.hideLoading();
     }
     if (currentAfterTimeCompare && afterTimeCompare !== currentAfterTimeCompare) {
-      eCharts.init(afterChart).dispose();//销毁前一个实例
+      eCharts.init(afterChart).clear();//清除
       const myChart = eCharts.init(afterChart); //构建下一个实例
-      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName, paramsStart, paramsEnd, afterTimeData));
-      myChart.on('datazoom', function (params){
-        const opt = myChart.getOption();
-        const dz = opt.dataZoom[0];
-        const start = opt.xAxis[0].data[dz.startValue];
-        const end = opt.xAxis[0].data[dz.endValue];
-        const preParams = {
-          stationCode,
-          pointCode: "GN011", //后驱测点-固定字段
-          deviceFullcodes: [], // 默认传空代表所有风机
-          startTime: moment(start).utc().format(),
-          endTime: moment(end).add(1, "days").utc().format()
-        };
-        if (paramsStart !== params.start || paramsEnd !== params.end) {
-          // 每次保存变量
-          paramsStart = params.start;
-          paramsEnd = params.end;
-          // 接口
-          getTenMinutesAfter(preParams);
-        }
-      })
+      myChart.setOption(AfterTemperatureOptions(tenMinutesAfterList, deviceName));
     }
-  }
-
-  componentWillUnmount() {
-    paramsStart = 0;
-    paramsEnd = 100;
   }
 
   changeAfterDate = (date) => {
@@ -95,13 +66,42 @@ export default class AfterTemperature extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).add(1, "days").utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     onChangeFilter({
-      afterDate: date
+      afterDate: date,
+      afterDataZoomStart: 0,
+      afterDataZoomEnd: 100,
     });
     // 接口
     getTenMinutesAfter(params);
+  };
+
+  // dataZoom滑块
+  dataZoomFunc = (start, end, startZoom, endZoom) => {
+    const {
+      getTenMinutesAfter,
+      faultInfo:{
+        stationCode
+      },
+      onChangeFilter
+    } = this.props;
+    const afterParams = {
+      stationCode,
+      pointCode: "GN011", //后驱测点-固定字段
+      deviceFullcodes: [], // 默认传空代表所有风机
+      startTime: moment(start).utc().format(),
+      endTime: moment(end).utc().format(),
+      queryFlag: false // 判断是否重新存贮时间轴
+    };
+    onChangeFilter({
+      afterDataZoomStart: startZoom,
+      afterDataZoomEnd: endZoom,
+    });
+    // 接口
+    getTenMinutesAfter(afterParams);
+
   };
 
   render() {
@@ -109,7 +109,10 @@ export default class AfterTemperature extends React.Component {
       faultInfo: {
         endTime
       },
-      afterDate
+      afterDate,
+      afterDataZoomStart,
+      afterDataZoomEnd,
+      afterTimeData
     } = this.props;
     return (
       <div className={styles.afterChartsBox}>
@@ -129,9 +132,18 @@ export default class AfterTemperature extends React.Component {
             )}
           </div>
         </div>
-        <div ref={(ref) => {
-          this.afterChart = ref;
-        }} className={styles.afterCharts} />
+        <div className={styles.afterChartBox}>
+          <div ref={(ref) => {
+            this.afterChart = ref;
+          }} className={styles.afterCharts} />
+          <DataZoom
+            styleData={{top: "220px"}}
+            paramsStart={afterDataZoomStart}
+            paramsEnd={afterDataZoomEnd}
+            onChange={this.dataZoomFunc}
+            xAxisData={afterTimeData}
+          />
+        </div>
       </div>
     );
   }

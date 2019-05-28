@@ -10,7 +10,7 @@ const initState = Immutable.fromJS({
     warnId: 1
   }], // 获取单电站所有风机
   stationCode: "82", // 电站编码
-  deviceName: "", //设备名称
+  deviceName: "", // 设备名称
   faultInfo: {// 获取故障预警任务详情
     endTime: null,
     stationName: "",
@@ -19,11 +19,17 @@ const initState = Immutable.fromJS({
     algModeDatas: [],
     deviceName: ""
   },
-  faultDateList: "", //预警日期-有故障的日期
+  faultDateList: "", // 预警日期-有故障的日期
   faultDate: "", // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
   diffDate: [], // 后驱温度时间选择
+  preDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  preDataZoomEnd: 100,
+  afterDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  afterDataZoomEnd: 100,
+  diffDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  diffDataZoomEnd: 100,
   beforeTimeData: [], // 前驱温度时间轴
   afterTimeData: [], // 后驱温度时间轴
   diffTimeData: [], // 温度差时间轴
