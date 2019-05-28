@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Tag} from 'antd';
 import styles from './../filterCondition.scss';
-import moment from 'moment';
 
 class FilteredItems extends Component {
   static propTypes = {

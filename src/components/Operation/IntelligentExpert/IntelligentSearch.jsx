@@ -136,16 +136,6 @@ class IntelligentSearch extends Component {
     })
   }
 
-  filterCondition = (changeValue) => { // 设备类型、缺陷类型筛选栏
-    const { getIntelligentTable, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
-    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
-    getIntelligentTable({
-      ...params,
-      ...changeValue,
-    })
-  }
-
   render() {
     const { personValue, defectValue, showFilter } = this.state;
     const { usernames = [], deviceTypeCode } = this.props;
