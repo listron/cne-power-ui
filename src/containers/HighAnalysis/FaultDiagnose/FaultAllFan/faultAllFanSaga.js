@@ -68,7 +68,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
       // 结束日期和结束列表
       const { endTime, deviceDatas } = response.data.data;
       // 故障日期时间
-      const dateArr = deviceDatas && deviceDatas[0].date.split(",");
+      const dateArr = deviceDatas && deviceDatas[0].date && deviceDatas[0].date.split(",");
       // 判断如果deviceDatas有数据
       const timeValue = deviceDatas && deviceDatas[0].date ? dateArr[dateArr.length - 1] : endTime;
       // 发电机前驱温度
