@@ -46,7 +46,7 @@ class ShowIntelligent extends Component {
     return (
       <div className={styles.showIntelligent}>
         <div className={styles.titleTop}>
-          {editRight && <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button>}
+          {editRight ? <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button> : <div></div>}
           <Icon type="arrow-left" className={styles.backIcon} onClick={this.onWarningTipShow} />
         </div>
         <div className={styles.detailContent}> 
