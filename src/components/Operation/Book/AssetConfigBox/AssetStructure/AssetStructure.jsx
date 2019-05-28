@@ -133,6 +133,7 @@ class AssetStructure extends React.Component {
 
   render() {
     const { stationType, stationTypeCount, assetList, childrenNodeDetail ,childrenNum,} = this.props;
+    console.log('stationTypeCount: ', stationTypeCount);
     console.log('assetList: ', assetList);
     // const formatAssetData = this.formatAsset(assetList);
     const { addNode, editNode, showWarningTip, warningTipText } = this.state;
@@ -172,8 +173,8 @@ class AssetStructure extends React.Component {
     return (
       <div className={styles.box}>
         <div className={styles.titleType} >
-          <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1) }} >{(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ? '光伏' : ''}</div>
-          <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0) }}>{(stationTypeCount === 'wind' || stationTypeCount === 'multiple') ? '风电' : ''}</div>
+          {(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ?<div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1) }} >光伏</div>:''}
+          {(stationTypeCount === 'wind' || stationTypeCount === 'multiple')?<div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0) }}>风电</div>:''}
         </div>
         <div className={styles.container}>
           <div className={styles.leftTree}>

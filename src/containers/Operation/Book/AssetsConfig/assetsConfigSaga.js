@@ -182,8 +182,8 @@ function* editAssetNode(action) { //台账编辑生产资产节点
 }
 function* getDeviceFactorsList(action) { //获取设备厂家列表
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
@@ -191,7 +191,9 @@ function* getDeviceFactorsList(action) { //获取设备厂家列表
         type: assetConfigAction.changeAssetConfigStore,
         payload: {
           ...payload,
-          deviceFactorsList: response.data.data || [],
+          deviceFactorsList: response.data.data.dataList || [],
+          total: response.data.data.pageCount || 0,
+
         },
       });
     } else {

@@ -275,6 +275,10 @@ class DeviceMode extends React.Component {
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
+          
+        </div>
+        <div className={styles.tableStyles}>
+          <div className={styles.paginationStyle}>
           <div className={styles.rightSeach}>
             <Input.Search
               placeholder="请输入设备型号"
@@ -282,9 +286,6 @@ class DeviceMode extends React.Component {
               onSearch={this.searchFactory}
             />
           </div>
-        </div>
-        <div className={styles.tableStyles}>
-          <div className={styles.paginationStyle}>
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
           <EditableContext.Provider value={this.props.form}>

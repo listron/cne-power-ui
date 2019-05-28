@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./deviceFactory.scss";
 import EditableCell from "./EditableCell";
 import { Button, Table, Form, Input, Icon } from 'antd';
+import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 
@@ -40,7 +41,7 @@ class DeviceFactory extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.getDeviceFactorsList()
+    this.props.getDeviceFactorsList({ orderField: '1', orderMethod: 'desc' })
   }
   onPaginationChange = ({ currentPage, pageSize }) => {
     this.changFilter({ pageNum: currentPage, pageSize })
@@ -63,13 +64,8 @@ class DeviceFactory extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, manufactorId) {
-    
-
-    
     const { deviceFactorsList } = this.props;
-    
     form.validateFields((error, row) => {
-      
       if (error) {
         return;
       }
@@ -94,7 +90,7 @@ class DeviceFactory extends React.Component {
       const index = newData.findIndex(item => manufactorId === item.manufactorId);
       if (index > -1) {
         const item = newData[index];
-        
+
         newData.splice(index, 1, {
           ...item,
           ...row,
@@ -119,9 +115,9 @@ class DeviceFactory extends React.Component {
     })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll(['manufactorName'],(err, values) => {
+    this.props.form.validateFieldsAndScroll(['manufactorName', 'assetsIds'], (err, values) => {
       if (!err) {
-      this.props.addDeviceFactors({manufactorName:values.manufactorName})
+        this.props.addDeviceFactors({ manufactorName: values.manufactorName, assetsIds: values.assetsIds.assetsIds })
       }
     });
   }
@@ -147,6 +143,13 @@ class DeviceFactory extends React.Component {
     const params = { orderField, orderMethod, pageNum, pageSize, manufactorName };
     getDeviceFactorsList({ ...params, ...value })
   }
+  changeSelctNode = (data) => {
+    console.log('data: ', data);
+
+  }
+  queryDataType = (value) => {
+    this.props.getAssetTree({ stationType: value })
+  }
   render() {
     const components = {
       body: {
@@ -162,7 +165,8 @@ class DeviceFactory extends React.Component {
         },
       },
     };
-    const { pageSize, pageNum, total, deviceFactorsList } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount } = this.props;
+    console.log('deviceFactorsList: ', deviceFactorsList);
     // const deviceFactorsList = [
     //   {
     //     manufactorCode: '1',
@@ -186,6 +190,12 @@ class DeviceFactory extends React.Component {
         editable: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
+        title: '生产资产',
+        dataIndex: 'assetsNames',
+        sorter: true,
+        editable: true,
+        render: (text) => <span title={text}>{text}</span>
+      },{
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
@@ -204,7 +214,7 @@ class DeviceFactory extends React.Component {
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                  
+
                   return (<a
                     onClick={() => this.save(form, record.manufactorId)}
                     style={{ marginRight: 8 }}>
@@ -236,6 +246,7 @@ class DeviceFactory extends React.Component {
       <div className={styles.deviceFactory}>
         <div className={styles.title}>
           <div className={styles.leftAdd}>
+
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="添加设备厂家">
                 {getFieldDecorator('manufactorName', {
@@ -249,26 +260,46 @@ class DeviceFactory extends React.Component {
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
+              <FormItem className={styles.formItemStyle} colon={false} label="添加设备厂家">
+                {getFieldDecorator('assetsIds', {
+                  rules: [{
+                    required: true,
+                    message: '请选择节点',
+                  }],
+                })(
+                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
+                )}
+              </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
-          <div className={styles.rightSeach}>
-            <Input.Search
-              placeholder="请输入设备厂家名称"
-              allowClear
-              onSearch={this.searchFactory}
-            />
-          </div>
+
+
         </div>
         <div className={styles.tableStyles}>
           <div className={styles.paginationStyle}>
+            <div className={styles.rightSeach}>
+              <Input.Search
+                placeholder="请输入设备厂家名称"
+                allowClear
+                onSearch={this.searchFactory}
+              />
+            </div>
+
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
           <EditableContext.Provider value={this.props.form}>
             <Table
               loading={false}
               components={components}
-              dataSource={deviceFactorsList}
+              dataSource={deviceFactorsList.map((e,i)=>{
+                e.assetsDatas.forEach((item,i)=>{
+                  e.assetsNames=item.assetsNames;
+                  e.assetsIds=item.assetsIds;
+                  e.isBuild=item.isBuild;
+                })
+                return {...e}
+              })}
               columns={columns}
               pagination={false}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
