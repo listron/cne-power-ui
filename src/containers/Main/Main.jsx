@@ -109,7 +109,7 @@ class Main extends Component {
   render() {
     const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
     // const authData = Cookie.get('authData') || null;
-    const authData = localStorage.getItem('authData') || null;
+    const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
