@@ -16,7 +16,7 @@ class DefectCreate extends Component {
     devices: PropTypes.array,
     defectTypes: PropTypes.array,
     getStations: PropTypes.func,
-    showContainer: PropTypes.string,
+    container: PropTypes.string,
     defectDetail: PropTypes.object,
     getStationDeviceTypes: PropTypes.func,
     getDefectTypes: PropTypes.func,
@@ -40,8 +40,8 @@ class DefectCreate extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { showContainer, defectDetail } = nextProps;
-    if (showContainer === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
+    const { container, defectDetail } = nextProps;
+    if (container === 'edit' && defectDetail.defectId !== this.props.defectDetail.defectId) {
       const stationCode=defectDetail.stationCode
       this.props.getLostGenType({ stationCode, objectType: 1 });
     }
@@ -73,9 +73,9 @@ class DefectCreate extends Component {
 
   render() {
     const { showWarningTip, warningTipText } = this.state;
-    const { showContainer, defectDetail, editDefect } = this.props;
+    const { container, defectDetail, editDefect } = this.props;
     let rejectReason;
-    if (showContainer === 'edit') {
+    if (container === 'edit') {
       const processData = defectDetail.processData || [];
       const processLength = processData.length || [];
       if (processLength > 0) {
@@ -112,6 +112,8 @@ const mapDispatchToProps = (dispatch) => ({
   getDefectTypes: payload => dispatch({ type: ticketAction.GET_DEFECT_TYPE_SAGA, payload }),
   onDefectCreateNew: payload => dispatch({ type: ticketAction.DEFECT_CREATE_SAGA, payload }),
   submitDefect: payload => dispatch({ type: ticketAction.SUBMIT_DEFECT_SAGA, payload }),
+  getKnowledgebase: payload => dispatch({ type: ticketAction.getKnowledgebase, payload }),
+  likeKnowledgebase: payload => dispatch({ type: ticketAction.likeKnowledgebase, payload }),
   getStationDeviceTypes: params => dispatch({ //  获取某一个电站下的设备
     type: commonAction.getStationDeviceTypes,
     payload: {

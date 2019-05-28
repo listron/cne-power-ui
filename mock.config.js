@@ -3,6 +3,7 @@ const inspectionList = require('./mock/operation/MockinspectionList');
 const defectList = require('./mock/operation/MockDefectList');
 const enterprise = require('./mock/system/enterprise');
 const dayReport = require('./mock/operation/dayReport');
+const intelligent = require('./mock/operation/intelligent');
 
 const department = require('./mock/system/department');
 const getVerificationCode = require('./mock/login/getVerificationCode');
@@ -24,6 +25,7 @@ const cleanWarning = require('./mock/highAnalysis/cleanWarning');
 const score = require('./mock/system/score.js');
 const intelligentAnalysis = require('./mock/statisticalAnalysis/intelligenAnalysis.js');
 const reportSeacher = require('./mock/monitor/report');
+const book=require('./mock/operation/book');
 
 
 // as
@@ -33,6 +35,7 @@ exports.mockConfig = [
   ...inspectionList,
   ...defectList,
   ...dayReport, // 日报
+  ...intelligent, // 智能专家库
 
   ...enterprise,
   ...department,
@@ -56,4 +59,5 @@ exports.mockConfig = [
   ...score,//电站评分
   ...intelligentAnalysis, // 智能分析报告
   ...reportSeacher,//报表查询
+  ...book,//台账
 ]
