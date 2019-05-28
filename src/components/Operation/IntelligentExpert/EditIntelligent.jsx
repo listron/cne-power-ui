@@ -24,13 +24,24 @@ class EditIntelligent extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存！',
+      showChangeInput: false,
     }
   }
 
   onWarningTipShow = () => {
-    this.setState({
-      showWarningTip: true,
-    })
+    const { showChangeInput } = this.state;
+    const { getIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
+
+    if(showChangeInput){
+      this.setState({
+        showWarningTip: true,
+      })
+    }else{
+      getIntelligentExpertStore({
+        showPage: 'list',
+      });
+      getIntelligentTable(listParams)
+    }
   }
 
   confirmWarningTip = () => {
@@ -58,7 +69,12 @@ class EditIntelligent extends Component {
       }
     })
     getIntelligentTable(listParams) // 返回列表页面时重新请求列表数据
+  }
 
+  changeInput = () => { // 内容改变时弹框
+    this.setState({
+      showChangeInput: true,
+    })
   }
 
   render(){
@@ -105,7 +121,7 @@ class EditIntelligent extends Component {
                   }],
                   initialValue: intelligentDetail.faultDescription || ''
                 })(
-                  <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
+                  <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." onChange={this.changeInput} />
                 )}
               </FormItem>
               <FormItem label="检查项目" colon={false}>
@@ -116,7 +132,7 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.checkItems || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." onChange={this.changeInput} />
                  )}
                </FormItem>
                <FormItem label="处理方法" colon={false}>
@@ -127,7 +143,7 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.processingMethod || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." onChange={this.changeInput} />
                  )}
                </FormItem>
                <FormItem label="所需工具" colon={false}>
@@ -137,7 +153,7 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.requiredTools || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." onChange={this.changeInput} />
                  )}
                </FormItem>
                <FormItem label="备注" colon={false}>
@@ -147,7 +163,7 @@ class EditIntelligent extends Component {
                    }],
                    initialValue: intelligentDetail.remark || ''
                  })(
-                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." />
+                   <InputLimit style={{ marginLeft: -80 }} size={999} width={960} placeholder="请输入..." onChange={this.changeInput} />
                  )}
                </FormItem>
                <div className={styles.intelligentBottom}>
