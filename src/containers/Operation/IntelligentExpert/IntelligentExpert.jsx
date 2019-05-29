@@ -20,6 +20,7 @@ class IntelligentExpert extends Component {
     getStationOfEnterprise: PropTypes.func,
     getLostGenType: PropTypes.func,
     getIntelligentTable: PropTypes.func,
+    changeCommonStore: PropTypes.func,
     listParams: PropTypes.object,
   }
 
@@ -43,19 +44,18 @@ class IntelligentExpert extends Component {
   }
 
   onChangeFilter = (changeValue) => { // 设备类型、缺陷类型筛选栏
-    const { getIntelligentTable, listParams } = this.props;
+    const { getIntelligentTable, listParams, getLostGenType } = this.props;
     getIntelligentTable({
       ...listParams,
       ...changeValue,
-    })
-    // if(changeValue.deviceTypeCode){
-    //    this.props.getLostGenType({
-    //    objectType: 1,
-    //   //  deviceTypeCode:changeValue.deviceTypeCode,
-    //    deviceTypeCode: ["305", "202", "504"].join(','),
-    //    stationType:'1',
-    // });
-    // }
+    });
+    if(changeValue.deviceTypeCode){
+      getLostGenType({
+        objectType: 1,
+        stationType: 1,
+        deviceTypeCode: changeValue.deviceTypeCode.join(','),
+      });
+    }
   };
 
   onShowSideChange = (showSidePage) => {
