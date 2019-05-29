@@ -181,7 +181,7 @@ const menuData = [
           }, {
             name: '仓库配置',
             path: 'warehouse',
-            rightKey: 'operation_book_instrument',
+            rightKey: 'operation_book_warehouseConfig',
           },{
             name: '仓库管理',
             path: 'warehouseManage',

@@ -48,13 +48,16 @@ class IntelligentSearch extends Component {
     this.entryPerson = debounce(this.entryPerson, 800);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps) {
     const { deviceTypeCode: deviceTypeCodeCurrent } = this.props;
     const { deviceTypeCode: deviceTypeCodeNext } = nextProps;
+    const { showFilter } = this.state;
     if (deviceTypeCodeCurrent !== deviceTypeCodeNext && deviceTypeCodeNext.length === 0) {
-      this.setState({
-        showFilter: ""
-      });
+      if (showFilter !== "") {
+        this.setState({
+          showFilter: ""
+        });
+      }
     }
   }
 
@@ -133,23 +136,6 @@ class IntelligentSearch extends Component {
     })
   }
 
-  filterCondition = (changeValue) => { // 设备类型、缺陷类型筛选栏
-    const { getIntelligentTable, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod } = listParams;
-    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod };
-    // if(changeValue.deviceTypeCode){
-    //   this.props.getLostGenType({ // 获取所有损失缺陷类型
-    //     objectType: 1,
-    //     stationType:1,
-    //     ...changeValue,
-    //   })
-    // }
-    getIntelligentTable({
-      ...params,
-      ...changeValue,
-    })
-  }
-
   render() {
     const { personValue, defectValue, showFilter } = this.state;
     const { usernames = [], deviceTypeCode } = this.props;
@@ -157,8 +143,8 @@ class IntelligentSearch extends Component {
     return (
       <div className={styles.intelligentSearch}>
         <div className={styles.topSearch}>
-          <span>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('deviceTypes')}>
+          <span className={styles.text}>筛选条件</span>
+          <Button onClick={()=>this.onFilterShowChange('deviceTypes')} className={styles.filterBtn}>
             设备类型<Icon type={showFilter ==='deviceTypes' ? "up" : "down"} />
           </Button>
           <Button disabled={!deviceTypeCode || deviceTypeCode.length === 0} onClick={()=>this.onFilterShowChange('defectTypes')}>

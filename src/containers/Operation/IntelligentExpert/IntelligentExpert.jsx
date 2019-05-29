@@ -34,7 +34,7 @@ class IntelligentExpert extends Component {
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     getLostGenType({ // 获取所有损失缺陷类型
       objectType: 1,
-      stationType:1
+      stationType: 1
     })
   }
 
@@ -42,15 +42,20 @@ class IntelligentExpert extends Component {
     this.props.resetStore();
   }
 
-  onChangeFilter = (changeValue) => {
+  onChangeFilter = (changeValue) => { // 设备类型、缺陷类型筛选栏
     const { getIntelligentTable, listParams } = this.props;
-    const { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod, deviceTypeCode } = listParams;
-    const params = { deviceTypeCodes, defectTypeCode, faultDescription, recorder, pageNum, pageSize, orderField, sortMethod, deviceTypeCode };
-
     getIntelligentTable({
-      ...params,
+      ...listParams,
       ...changeValue,
     })
+    // if(changeValue.deviceTypeCode){
+    //    this.props.getLostGenType({
+    //    objectType: 1,
+    //   //  deviceTypeCode:changeValue.deviceTypeCode,
+    //    deviceTypeCode: ["305", "202", "504"].join(','),
+    //    stationType:'1',
+    // });
+    // }
   };
 
   onShowSideChange = (showSidePage) => {
@@ -59,7 +64,6 @@ class IntelligentExpert extends Component {
 
   onToggleSide = () => {
     const { showPage } = this.props;
-    console.log('showPage: ', showPage);
     this.setState({
       showSidePage: showPage
     });
@@ -105,6 +109,7 @@ class IntelligentExpert extends Component {
   };
 
   const mapDispatchToProps = (dispatch) => ({
+    changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
     getIntelligentExpertStore: payload => dispatch({ type: intelligentExpertAction.getIntelligentExpertStore,payload }),
     getIntelligentTable: payload => dispatch({ type: intelligentExpertAction.getIntelligentTable, payload }),
     getImportIntelligent: payload => dispatch({ type: intelligentExpertAction.getImportIntelligent, payload }),
