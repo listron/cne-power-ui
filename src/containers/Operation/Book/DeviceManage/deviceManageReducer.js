@@ -8,6 +8,7 @@ const initState = Immutable.fromJS({
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
   deviceModeCode: null, // 选中的设备型号
+  deviceFullcode:'',
   manufactorId:null,//设备厂家
   pageNum: 1,
   pageSize: 10,

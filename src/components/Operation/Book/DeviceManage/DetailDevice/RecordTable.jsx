@@ -16,10 +16,10 @@ class RecordTable extends React.Component {
     super(props, context)
   }
   changeTableData = (e) => {
-    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning } = this.props;
+    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning ,deviceFullcode} = this.props;
     const value = e.target.value;
     this.props.changeTableFilter(value);
-    value === 'part' ? getDevicePartInfo({}) : value === 'record' ? getDevicefixRecord({}) : getDevicehistoryWarning({});
+    value === 'part' ? getDevicePartInfo({ deviceFullcode}) : value === 'record' ? getDevicefixRecord({deviceFullcode}) : getDevicehistoryWarning({deviceFullcode});
   }
 
   formate = (data) => {
@@ -27,7 +27,7 @@ class RecordTable extends React.Component {
       e.key = e.assetsId;
       e.partsName = e.assetsName;
       if (e.assetsData && !e.partsData) {
-        this.formay(e.assetsData);
+        this.formate(e.assetsData);
       } else {
         e.assetsData = e.partsData;
         e.partsData&&e.partsData.forEach((e,i)=>{

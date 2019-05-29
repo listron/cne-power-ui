@@ -29,8 +29,11 @@ class DeviceManageSearch extends Component {
     this.state = {
     }
   }
-  componentDidMount(){
-    this.props.getDeviceFactors()
+  componentDidMount() {
+    this.props.getDeviceFactors({
+      orderField: '1',
+      orderMethod: 'desc',
+    })
   }
   selectStation = (stations) => {
     const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
@@ -69,37 +72,44 @@ class DeviceManageSearch extends Component {
       pageNum: 1,
     })
   }
+  selectfactory=(value)=>{
+    console.log('value: ', value);
+    this.props.getfactorsDeviceMode({
+      manufactorId:value
+    })
+
+  }
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode,deviceFactorsList,manufactorId } = this.props;
+    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, deviceFactorsList, manufactorId ,factorsDeviceModeData} = this.props;
     const typeSelectDisable = stationDeviceTypes.length === 0;
-    const modelSelectDisable = deviceModels.length === 0;
+    const modelSelectDisable = factorsDeviceModeData.length === 0;
     return (
       <div className={styles.deviceManageSearch}>
         <span className={styles.titleText}>条件查询</span>
-        <StationSelect 
-          data={allStationBaseInfo} 
-          onOK={this.selectStation} 
-          holderText="请选择电站" 
-          value={allStationBaseInfo.filter(e=>e.stationCode === stationCode)}
+        <StationSelect
+          data={allStationBaseInfo}
+          onOK={this.selectStation}
+          holderText="请选择电站"
+          value={allStationBaseInfo.filter(e => e.stationCode === stationCode)}
         />
         <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
           <Option key={null} value={null}>{'全部设备类型'}</Option>
-          {stationDeviceTypes.map(e=>{
-            if(!e){ return null; }
+          {stationDeviceTypes.map(e => {
+            if (!e) { return null; }
             return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
           })}
         </Select>
-        <Select className={styles.modelSelect} onChange={this.selectfactory} value={manufactorId} placeholder="请选择设备厂家" disabled={false}>
+        <Select className={styles.modelSelect} onChange={this.selectfactory} value={manufactorId}  placeholder="请选择设备厂家" disabled={false}>
           <Option key={null} value={null}>{'全部厂家'}</Option>
-          {deviceFactorsList.map(e=>{
-            if(!e){ return null; }
+          {deviceFactorsList.map(e => {
+            if (!e) { return null; }
             return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>
           })}
-        </Select> 
+        </Select>
         <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
           <Option key={null} value={null}>{'全部设备型号'}</Option>
-          {deviceModels.map(e=>{
-            if(!e){ return null; }
+          {factorsDeviceModeData.map(e => {
+            if (!e) { return null; }
             return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
           })}
         </Select>
