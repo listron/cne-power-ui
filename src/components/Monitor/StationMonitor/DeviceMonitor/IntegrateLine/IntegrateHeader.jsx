@@ -47,7 +47,7 @@ class IntegrateHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { parentDevice, deviceStatus, manufacturer, deviceModelName } = deviceDetail;
+    const { parentDevice, deviceStatus, manufacturer, deviceModeName } = deviceDetail;
     const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     const parentDeviceBaseInfo = PVStationTypes.find(e=>parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
@@ -67,7 +67,7 @@ class IntegrateHeader extends Component {
           <span className={styles.name}>{deviceDetail.deviceName}</span>
           <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
-          <span className={styles.deviceModelName}>设备型号：{deviceModelName || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDevice && parentDevice.deviceTypeCode && <Link

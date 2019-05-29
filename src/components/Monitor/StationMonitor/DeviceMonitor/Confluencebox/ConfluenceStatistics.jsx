@@ -13,9 +13,12 @@ const EachRecord = ({text, value, unit}) => (
 )
 
 function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
-  const { devicePower, deviceCapacity, voltage, electricity, temperature, dispersedRate } = deviceDetail;
+  const { devicePower, deviceCapacity, voltage, electricity, temperature, dispersionRatio } = deviceDetail;
+  if (!subDeviceList.length && subDeviceList.electricityList) {
+    subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
+  }
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
-  const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 195; 
+  const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
     '500': { color: '#199475', backgroundColor: '#ceebe0'}, // 无通讯
     '900': { color: '#199475', backgroundColor: '#ceebe0'}, // 未接入
@@ -40,7 +43,7 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
         <div className={styles.line} />
         <div className={styles.statisticsInfo}>
           <EachRecord text="温度" value={monitordataFormat(temperature, '--')} unit="℃" />
-          <EachRecord text="离散率" value={monitordataFormat(parseFloat(dispersedRate), '--')} unit="%" />
+          <EachRecord text="离散率" value={monitordataFormat(dispersionRatio, '--')} unit="%" />
         </div>
       </div>
       <div className={styles.seriesCurrent} style={{width: `${seriesGroupWidth}px`}}>

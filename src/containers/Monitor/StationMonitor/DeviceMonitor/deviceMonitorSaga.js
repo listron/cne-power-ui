@@ -239,7 +239,7 @@ function *getDeviceInfoMonitor({ payload, waiting }){ // 开启10s实时监控
   yield fork(getEvents, { deviceCode });
   yield fork(getDevicePoints, { deviceCode }); // 所有设备类型都要请求详情, 测点, 告警, 事件, 下级
   yield fork(getSubList, { deviceCode, deviceTypeCode });
-  pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
+  // pvMonitorInfoTask = yield fork(getDeviceInfoMonitor, { payload, waiting: true });
 }
 
 function *getDeviceChartMonitor({ payload, waiting }){ // 开启图表1h实时监控
@@ -253,7 +253,7 @@ function *getDeviceChartMonitor({ payload, waiting }){ // 开启图表1h实时�
     })
   }
   yield fork(getTenMin, { deviceTypeCode, deviceCode, timeParam });
-  pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
+  // pvMonitorChartTask = yield fork(getDeviceChartMonitor, { payload, waiting: true });
 }
 
 function *stopMonitor() {

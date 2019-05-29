@@ -12,7 +12,7 @@ function InverterStatistics({ deviceDetail, subDeviceList }) {
   powerYear = isNaN(parseFloat(powerYear)) ? ' -- ' : parseFloat(powerYear);
   // deviceTypeCode === '201' 集中式逆变器 206 组串式逆变器
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
-  const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 195; 
+  const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
     '500': { color: '#199475', backgroundColor: '#ceebe0'}, // 无通讯
     '900': { color: '#199475', backgroundColor: '#ceebe0'}, // 未接入
