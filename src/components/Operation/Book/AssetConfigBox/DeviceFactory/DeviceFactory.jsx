@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./deviceFactory.scss";
 import EditableCell from "./EditableCell";
 import { Button, Table, Form, Input, Icon } from 'antd';
+import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 
@@ -28,6 +29,8 @@ class DeviceFactory extends React.Component {
     manufactorName: PropTypes.string,
     total: PropTypes.number,
     addDeviceFactors: PropTypes.func,
+    stationTypeCount: PropTypes.string,
+    assetList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -40,7 +43,7 @@ class DeviceFactory extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.getDeviceFactorsList()
+    this.props.getDeviceFactorsList({ orderField: '1', orderMethod: 'desc' })
   }
   onPaginationChange = ({ currentPage, pageSize }) => {
     this.changFilter({ pageNum: currentPage, pageSize })
@@ -63,38 +66,22 @@ class DeviceFactory extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, manufactorId) {
-    
-
-    
     const { deviceFactorsList } = this.props;
-    
     form.validateFields((error, row) => {
-      
       if (error) {
         return;
       }
       if (!error) {
-        this.props.editDeviceFactors({ manufactorId, ...row })
+        this.props.editDeviceFactors({ manufactorId, assetsIds:row.assetsNames.assetsIds,manufactorName:row.manufactorName  })
       };
-      // const deviceFactorsList = [
-      //   {
-      //     manufactorCode: '1',
-      //     manufactorName: 'test',
-      //     createTime: '1:00',
-      //     operateUser: 'name1',
-      //     manufactorId: '1',
-      //   }, {
-      //     manufactorCode: '2',
-      //     manufactorName: 'test2',
-      //     createTime: '2:00',
-      //     operateUser: 'name2',
-      //     manufactorId: '2',
-      //   }];
+      
       const newData = [...deviceFactorsList];
       const index = newData.findIndex(item => manufactorId === item.manufactorId);
       if (index > -1) {
         const item = newData[index];
-        
+        console.log('item: ', item);
+        console.log('...row: ', ...row);
+
         newData.splice(index, 1, {
           ...item,
           ...row,
@@ -119,9 +106,9 @@ class DeviceFactory extends React.Component {
     })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll(['manufactorName'],(err, values) => {
+    this.props.form.validateFieldsAndScroll(['manufactorName', 'assetsIds'], (err, values) => {
       if (!err) {
-      this.props.addDeviceFactors({manufactorName:values.manufactorName})
+        this.props.addDeviceFactors({ manufactorName: values.manufactorName, assetsIds: values.assetsIds.assetsIds })
       }
     });
   }
@@ -147,7 +134,15 @@ class DeviceFactory extends React.Component {
     const params = { orderField, orderMethod, pageNum, pageSize, manufactorName };
     getDeviceFactorsList({ ...params, ...value })
   }
+  changeSelctNode = (data) => {
+    console.log('data: ', data);
+
+  }
+  queryDataType = (value) => {
+    this.props.getAssetTree({ stationType: value })
+  }
   render() {
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount } = this.props;
     const components = {
       body: {
         row: EditableFormRow,
@@ -156,13 +151,13 @@ class DeviceFactory extends React.Component {
           return (<EditableContext.Consumer>
             {form => {
 
-              return <EditableCell form={form} {...rest[0]} />
+              return <EditableCell form={form} {...rest[0]}  onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
             }}
           </EditableContext.Consumer>)
         },
       },
     };
-    const { pageSize, pageNum, total, deviceFactorsList } = this.props;
+
     // const deviceFactorsList = [
     //   {
     //     manufactorCode: '1',
@@ -186,6 +181,12 @@ class DeviceFactory extends React.Component {
         editable: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
+        title: '生产资产',
+        dataIndex: 'assetsNames',
+        sorter: true,
+        editable: true,
+        render: (text) => <span title={text}>{text}</span>
+      },{
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
@@ -204,8 +205,7 @@ class DeviceFactory extends React.Component {
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                  
-                  return (<a
+                  return (<a 
                     onClick={() => this.save(form, record.manufactorId)}
                     style={{ marginRight: 8 }}>
                     <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)
@@ -213,7 +213,7 @@ class DeviceFactory extends React.Component {
               </EditableContext.Consumer>)
               : <a disabled={editingKey !== ''} onClick={() => this.edit(record.manufactorId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"}></span></a>
             }
-            <span title="删除" className="iconfont icon-del" onClick={() => this.deleteFactory(record)}></span>
+            <span title="删除" className={"iconfont icon-del"} onClick={() => this.deleteFactory(record)}></span>
           </div>)
         }
 
@@ -228,6 +228,7 @@ class DeviceFactory extends React.Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
+          type: col.dataIndex === 'manufactorName' ? 'text' : 'select',
           editing: this.isEditing(record),
         }),
       };
@@ -236,6 +237,7 @@ class DeviceFactory extends React.Component {
       <div className={styles.deviceFactory}>
         <div className={styles.title}>
           <div className={styles.leftAdd}>
+
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="添加设备厂家">
                 {getFieldDecorator('manufactorName', {
@@ -249,26 +251,47 @@ class DeviceFactory extends React.Component {
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
+              <FormItem className={styles.formItemStyle} colon={false} label="生产资产">
+                {getFieldDecorator('assetsIds', {
+                  rules: [{
+                    required: true,
+                    message: '请选择节点',
+                  }],
+                })(
+                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
+                )}
+              </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
-          <div className={styles.rightSeach}>
-            <Input.Search
-              placeholder="请输入设备厂家名称"
-              allowClear
-              onSearch={this.searchFactory}
-            />
-          </div>
+
+
         </div>
         <div className={styles.tableStyles}>
           <div className={styles.paginationStyle}>
+            <div className={styles.rightSeach}>
+              <Input.Search
+                placeholder="请输入设备厂家名称"
+                allowClear
+                onSearch={this.searchFactory}
+              />
+            </div>
+
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
           <EditableContext.Provider value={this.props.form}>
             <Table
               loading={false}
               components={components}
-              dataSource={deviceFactorsList}
+              dataSource={deviceFactorsList.map((e,i)=>{
+                e.assetsDatas.forEach((item,index)=>{
+                  // e.assetsNames[i]=item.assetsNames;
+                  e.assetsNames=item.assetsNames;
+                  e.assetsIds=item.assetsIds;
+                  e.isBuild=item.isBuild;
+                })
+                return {...e}
+              })}
               columns={columns}
               pagination={false}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}

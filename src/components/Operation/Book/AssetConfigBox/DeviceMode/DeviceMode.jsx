@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./deviceMode.scss";
 import EditableCell from "./EditableCell";
+import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import { Button, Table, Form, Input, Icon, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
@@ -30,6 +31,8 @@ class DeviceMode extends React.Component {
     deviceModeName: PropTypes.string,
     form: PropTypes.object,
     deviceFactorsList: PropTypes.array,
+    stationTypeCount: PropTypes.string,
+    assetList: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -43,13 +46,13 @@ class DeviceMode extends React.Component {
   }
   componentDidMount() {
     //获取设备厂家列表供select选择厂家
-    this.props.getDeviceFactorsList({
-      orderField: '2',
-      orderMethod: 'asc'
+   this.props.getDeviceFactorsList({
+      orderField: '1',
+      orderMethod: 'desc'
     })
     this.props.getDeviceModesList({
-      orderField: '2',
-      orderMethod: 'asc'
+      orderField: '1',
+      orderMethod: 'desc'
     })
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
@@ -81,7 +84,7 @@ class DeviceMode extends React.Component {
         return;
       }
       if (!error) {
-        this.props.editDeviceModes({ modeId, ...row })
+        this.props.editDeviceModes({ modeId,deviceModeName :row.deviceModeName, assetsId:row.assetsName.assetsIds.join(),manufactorId:row.manufactorName })
       };
      
       const newData = [...deviceModesList];
@@ -121,9 +124,9 @@ class DeviceMode extends React.Component {
     this.setState({ isSaveStyle: !isSaveStyle })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll(['deviceModeName','manufactorId'],(err, values) => {
+    this.props.form.validateFieldsAndScroll(['deviceModeName','assetsId','manufactorId'],(err, values) => {
       if (!err) {
-        this.props.addDeviceModes({ ...values })
+        this.props.addDeviceModes({ ...values,assetsId:values.assetsId.assetsIds.join() })
       }
     });
   }
@@ -147,7 +150,20 @@ class DeviceMode extends React.Component {
   }
   selectManufactor = (value, option) => {
   }
+  changeSelctNode = (data) => {
+    // this.props.getDeviceFactorsList({
+    //   assetsId:data.assetsIds.join(),
+    //   orderField: '1',
+    //   orderMethod: 'desc'
+    // })
+
+  }
+  queryDataType = (value) => {
+    this.props.getAssetTree({ stationType: value })
+  }
   render() {
+    const { pageSize, pageNum, total, deviceFactorsList, deviceModesList,assetList, stationTypeCount } = this.props;
+    console.log('deviceModesList: ', deviceModesList);
     const components = {
       body: {
         row: EditableFormRow,
@@ -155,21 +171,12 @@ class DeviceMode extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} deviceFactorsList={deviceFactorsList} {...rest[0]} />
+              return <EditableCell form={form} devicefactorslist={deviceFactorsList} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} />
             }}
           </EditableContext.Consumer>)
         },
       },
     };
-    const { pageSize, pageNum, total, deviceFactorsList, deviceModesList } = this.props;
-    // const deviceModesList = [{
-    //   deviceModeCode: '编码',
-    //   deviceModeName: '设备型号名称',
-    //   manufactorName: '厂家名',
-    //   createTime: '时间',
-    //   operateUser: '操作人',
-    //   modeId: 'id',
-    // }];
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { showWarningTip, warningTipText, isSaveStyle } = this.state;
     const columns = [
@@ -184,7 +191,13 @@ class DeviceMode extends React.Component {
         sorter: true,
         editable: true,
         render: (text) => <span title={text}>{text}</span>
-      }, {
+      },{
+        title: '生产资产',
+        dataIndex: 'assetsName',
+        sorter: true,
+        editable: true,
+        render: (text) => <span title={text}>{text}</span>
+      },  {
         title: '设备厂家',
         dataIndex: 'manufactorName',
         sorter: true,
@@ -209,7 +222,6 @@ class DeviceMode extends React.Component {
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                 
                   return (<a
                     onClick={() => this.save(form, record.modeId)}
                     style={{ marginRight: 8 }}>
@@ -230,7 +242,7 @@ class DeviceMode extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: col.dataIndex === 'deviceModeName' ? 'text' : 'select',
+          type: col.dataIndex === 'deviceModeName' ? 'text' :(col.dataIndex === 'assetsName'?'modal':'select'),
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -242,6 +254,28 @@ class DeviceMode extends React.Component {
         <div className={styles.title}>
           <div className={styles.leftAdd}>
             <Form className={styles.editPart}>
+            <FormItem className={styles.formItemStyle} colon={false} label="设备型号">
+                {getFieldDecorator('deviceModeName', {
+                  rules: [{
+                    required: true,
+                    message: '请输入30字以内的设备厂家',
+                    type: "string",
+                    max: 30,
+                  }],
+                })(
+                  <Input placeholder="不超过30字" />
+                )}
+              </FormItem>
+              <FormItem className={styles.formItemStyle} colon={false} label="生产资产">
+                {getFieldDecorator('assetsId', {
+                  rules: [{
+                    required: true,
+                    message: '请选择节点',
+                  }],
+                })(
+                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType}  />
+                )}
+              </FormItem>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">
                 {getFieldDecorator('manufactorId', {
                   rules: [{
@@ -260,21 +294,14 @@ class DeviceMode extends React.Component {
                   </Select>
                 )}
               </FormItem>
-              <FormItem className={styles.formItemStyle} colon={false} label="设备型号">
-                {getFieldDecorator('deviceModeName', {
-                  rules: [{
-                    required: true,
-                    message: '请输入30字以内的设备厂家',
-                    type: "string",
-                    max: 30,
-                  }],
-                })(
-                  <Input placeholder="不超过30字" />
-                )}
-              </FormItem>
+              
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
+          
+        </div>
+        <div className={styles.tableStyles}>
+          <div className={styles.paginationStyle}>
           <div className={styles.rightSeach}>
             <Input.Search
               placeholder="请输入设备型号"
@@ -282,9 +309,6 @@ class DeviceMode extends React.Component {
               onSearch={this.searchFactory}
             />
           </div>
-        </div>
-        <div className={styles.tableStyles}>
-          <div className={styles.paginationStyle}>
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
           <EditableContext.Provider value={this.props.form}>

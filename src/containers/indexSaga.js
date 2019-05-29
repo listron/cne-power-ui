@@ -84,11 +84,10 @@ import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
 import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
+import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
+import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
 import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
-// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
-// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
-// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
-// import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
+
 
 
 // root saga
@@ -181,6 +180,8 @@ export default function* rootSaga() {
     //operation_Book台账
     watchBookAssetsConfig(),//资产配置
     watchBookDeviceManage(),//设备管理
+    watchBookPartsInfo(),//组件信息
+    watchDeviceAccount(),//设备台账
     watchWarehouse(),//仓库配置
 
   ])

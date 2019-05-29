@@ -1,0 +1,372 @@
+@import '../../../../theme/theme.scss';
+
+@mixin top {
+  @include lineheight(64px);
+  display: flex;
+  padding-left: 32px;
+  align-items: center;
+  border-bottom: 1px solid $promptColor;
+}
+
+.partInfoBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .title {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 0 35px;
+
+    .checkStation {
+      display: flex;
+      align-items: center;
+    }
+
+    .exportInfo {
+      margin-left: 16px;
+      color: $themeColor;
+      border-color: $themeColor
+    }
+  }
+
+  .conatainer {
+    display: flex;
+    flex: 1;
+
+    .leftTree {
+      display: flex;
+      flex-direction: column;
+      width: 482px;
+      border-right: 1px solid #d9d9d9;
+      padding: 12px 35px;
+    }
+
+    .right {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 0 18px;
+
+      .plusButton {
+        width: 62px;
+        padding: 0;
+        font-size: 0;
+        margin: 8px 0;
+
+        i {
+          vertical-align: top;
+          font-size: 14px;
+
+        }
+
+        span {
+          background-color: #fff;
+          color: $themeColor;
+          border-radius: 0 4px 4px 0;
+          display: inline-block;
+          font-size: 14px;
+          line-height: 30px;
+          margin: 0px;
+          padding-right: 4px
+        }
+
+        :global {
+          .anticon-plus {
+            color: #fff;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+            width: 28px;
+            text-align: center;
+            line-height: 30px;
+            background-color: $themeColor;
+          }
+
+          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
+            margin-left: 0px;
+            width: 28px;
+            color: $darkColor;
+          }
+        }
+      }
+
+      .plusButton:hover {
+        border-radius: 6px;
+
+        span {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+
+      .comName {
+        text-decoration: underline;
+      }
+
+      .copyCom {
+        margin-left: 16px;
+        color: $themeColor;
+        border-color: $themeColor
+      }
+
+      :global {
+        .iconfont {
+          font-size: 20px;
+
+          &:hover {
+            color: #199475
+          }
+        }
+
+        .icon-edit,
+        .icon-del {
+          color: #199475;
+        }
+      }
+    }
+  }
+
+}
+
+.partsInfoSide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  width: 100%;
+  background: #ececec;
+  padding: 24px 24px 0;
+  z-index: 99;
+
+  .addDevice,
+  .editDevice {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    background: #fff;
+
+    .preFormStyle {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+
+      .formItemStyle {
+        display: flex;
+      }
+
+      .fontColor {
+        color: #199475;
+      }
+
+      .nextButton {
+        margin-left: 200px;
+      }
+
+      :global {
+
+        .ant-select,
+        .ant-cascader-picker {
+          width: 198px;
+        }
+
+        .ant-form-item-label {
+          width: 200px;
+        }
+
+        .ant-btn {
+          width: 200px;
+        }
+      }
+    }
+
+    .editTop {
+      @include top;
+      justify-content: space-between;
+
+      .text {
+        font-size: 18px;
+        color: $darkColor;
+        letter-spacing: 4px;
+      }
+
+      .backIcon {
+        color: $darkColor;
+        font-size: 20px;
+        border-left: 1px solid #dfdfdf;
+        height: 100%;
+        line-height: 64px;
+        width: 64px;
+        cursor: pointer;
+      }
+    }
+
+    .editPart {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      // justify-content: center;
+      margin: 40px auto;
+
+      .formItemStyle {
+        display: flex;
+        width: 500px;
+
+        .fontColor {
+          margin-left: 4px;
+          color: #199475;
+
+          i {
+            font-size: 20px
+          }
+        }
+      }
+
+      :global {
+        .ant-form-item-label {
+          width: 160px;
+        }
+
+        .ant-form-item,
+        .ant-form-horizontal {
+          margin-bottom: 4px;
+        }
+
+        .ant-select,
+        .ant-cascader-picker {
+          width: 198px;
+        }
+
+        .ant-input {
+          width: 198px;
+        }
+
+        .ant-btn {
+          padding: 0 11px;
+        }
+      }
+
+      .submitStyle {
+        margin-left: 160px;
+        margin-top: 12px;
+        display: flex;
+
+        .leftsave,
+        .submitForm {
+          margin-right: 20px;
+          color: #199475;
+          border-color: #199475;
+        }
+
+        .editSave {
+          margin-left: 64px;
+        }
+      }
+
+      .defaultConfigStyles {
+        margin: 12px 0;
+      }
+
+      .unitStyle {
+        margin-left: 8px;
+      }
+    }
+
+  }
+
+
+}
+
+.nextButton {
+  margin-left: 156px;
+  width: 200px;
+}
+
+.detailPartsinfoBox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 20px 0 0 40px;
+
+  .infoPart {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .eachInfo {
+      display: flex;
+
+      .infoName {
+        width: 150px;
+        height: 36px;
+        text-align: right;
+        margin-right: 12px;
+        color: $darkColor;
+      }
+
+      .infoValue {
+        flex: 1;
+        color: $darkColor;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .checkGroup {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+
+
+.copyPartsStyle{
+  :global{
+
+    .ant-modal-body{
+      padding: 0;
+    }
+  }
+
+
+  .copyPartsBox {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    height: 375px;
+    .content {
+      display: flex;
+      flex:1;
+      
+      .leftTree {
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        border-right: 1px solid #dfdfdf;
+        padding: 16px
+      }
+  
+      .rightTree {
+        display: flex;
+        flex:1;
+        flex-direction: column;
+        padding: 16px
+      }
+    }
+  
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      background: #ececec;
+      padding: 8px 0;
+      .confire{
+        margin: 0 12px;
+      }
+  
+    }
+  }
+}
