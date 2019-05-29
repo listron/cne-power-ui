@@ -61,14 +61,14 @@ class DefectTypeFilter extends Component {
     defectTypes.forEach(e => {
       e.list && e.list.length > 0 && defectTypeTab.push(...e.list)
     });
-    const selectDefectArr = defectTypeCode.filter(e => !!e);
+    const selectDefectArr = defectTypeCode.filter(e => !!e); 
     return (
       <div className={styles.stationFilter}>
         <Tabs onChange={this.onDefectTabChange} activeKey={activeKey} animated={false}>
           <TabPane tab="不限" key={'all'}>
             {null}
           </TabPane>
-          {defectTypeTab.map(e => {
+          {defectTypeTab.filter(e=>e.list && e.list.length>0).map(e => {
             const options = [];
             e.list && e.list.length > 0 && e.list.forEach((lastItem) => {
               options.push({
