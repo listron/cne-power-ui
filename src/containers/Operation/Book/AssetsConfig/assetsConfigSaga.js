@@ -230,11 +230,11 @@ function* addDeviceFactors(action) { //新建设备厂家
         },
       });
       const payload = yield select(state => ({
-        manufactorName: state.operation.assetsConfig.get('manufactorName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageNum: state.operation.assetsConfig.get('pageNum'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
+        
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
@@ -270,6 +270,8 @@ function* editDeviceFactors(action) { //编辑设备厂家
       
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       
       }));
       yield put({
@@ -304,6 +306,8 @@ function* deleteDeviceFactors(action) { //删除设备厂家
       const payload = yield select(state => ({
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
@@ -328,8 +332,7 @@ function* getDeviceModesList(action) { //获取设备型号列表
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
-      let deviceModesList=response.data.data.dataList || [];
-      console.log('deviceModesList: ', deviceModesList);
+      
       const total = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
@@ -372,9 +375,10 @@ function* addDeviceModes(action) { //新建设备型号
         },
       });
       const payload = yield select(state => ({
-      
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       
       }));
       yield put({

@@ -13,6 +13,7 @@ class EditableCell extends React.Component {
 
   getInput = () => {
     const { type, onChange, assetlist, stationtypecount, querydatatype, record } = this.props;
+    // console.log('assetlist: ', assetlist);
     if (type === 'text') {
       return record.isBuild ? <span>{record.manufactorName}</span> : <Input onChange={this.testValue} />;
     }
@@ -41,8 +42,6 @@ class EditableCell extends React.Component {
       ...restProps
     } = this.props;
 
-
-    // const { getFieldDecorator, getFieldValue } = this.props.form;
     const { getFieldDecorator } = form;
     return (
       <EditableContext.Consumer>
