@@ -73,18 +73,18 @@ class DeviceFactory extends React.Component {
       }
       if (!error) {
         this.props.editDeviceFactors({ manufactorId, assetsIds:row.assetsNames.assetsIds,manufactorName:row.manufactorName  })
-      };
+      }
       
       const newData = [...deviceFactorsList];
       const index = newData.findIndex(item => manufactorId === item.manufactorId);
       if (index > -1) {
         const item = newData[index];
-        console.log('item: ', item);
-        console.log('...row: ', ...row);
+        
+        
 
         newData.splice(index, 1, {
           ...item,
-          ...row,
+          // ...row,
         });
         this.props.changeAssetConfigStore({ deviceFactorsList: newData })
         this.setState({ data: newData, editingKey: '' });
@@ -135,7 +135,7 @@ class DeviceFactory extends React.Component {
     getDeviceFactorsList({ ...params, ...value })
   }
   changeSelctNode = (data) => {
-    console.log('data: ', data);
+    
 
   }
   queryDataType = (value) => {
@@ -185,7 +185,7 @@ class DeviceFactory extends React.Component {
         dataIndex: 'assetsNames',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text.join(',')}</span>
       },{
         title: '创建时间',
         dataIndex: 'createTime',
@@ -284,11 +284,13 @@ class DeviceFactory extends React.Component {
               loading={false}
               components={components}
               dataSource={deviceFactorsList.map((e,i)=>{
+                e.assetsNames=[];
+                e.assetsIds=[];
+                e.isBuild=[];
                 e.assetsDatas.forEach((item,index)=>{
-                  // e.assetsNames[i]=item.assetsNames;
-                  e.assetsNames=item.assetsNames;
-                  e.assetsIds=item.assetsIds;
-                  e.isBuild=item.isBuild;
+                  e.assetsNames.push(item.assetsNames.replace(/,/g,'/'));
+                  e.assetsIds.push(item.assetsIds);
+                  e.isBuild.push(item.isBuild);
                 })
                 return {...e}
               })}

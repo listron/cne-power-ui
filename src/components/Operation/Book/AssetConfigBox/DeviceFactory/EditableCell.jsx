@@ -12,41 +12,41 @@ class EditableCell extends React.Component {
   }
 
   getInput = () => {
-    const { type,onChange,assetlist,stationtypecount,querydatatype,record } = this.props;
+    const { type, onChange, assetlist, stationtypecount, querydatatype, record } = this.props;
     if (type === 'text') {
-      return record.isBuild? <span>{record.manufactorName}</span> :<Input onChange={this.testValue} />;
+      return record.isBuild ? <span>{record.manufactorName}</span> : <Input onChange={this.testValue} />;
     }
     return (
-      <AssetNodeSelect 
-      onChange={onChange} assetList={assetlist} stationTypeCount={stationtypecount} queryDataType={querydatatype} multiple={true}
-      assetsIds={record.assetsIds.split()}
+      <AssetNodeSelect
+        onChange={onChange}
+        assetList={assetlist}
+        stationTypeCount={stationtypecount}
+        queryDataType={querydatatype}
+        multiple={true}
+        assetsIds={record.assetsIds}
       />
-      )
+    )
   };
   testValue = (e) => {
-    console.log('e', e.target.value);
-
+    // console.log('e', e.target.value);
   }
   render() {
-
     const {
       editing,
       dataIndex,
-      title,
-      // inputType,
+      title,  
       record,
       index,
       form,
       ...restProps
     } = this.props;
-  
+
 
     // const { getFieldDecorator, getFieldValue } = this.props.form;
     const { getFieldDecorator } = form;
     return (
       <EditableContext.Consumer>
         {(form) => {
-
           return (
             <td {...restProps}>
               {editing ? (
@@ -56,7 +56,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入 ${title}!`,
                     }],
-                    initialValue: dataIndex === "manufactorName" ? record[dataIndex] : record['assetsIds'].split()
+                    initialValue: dataIndex === "manufactorName" ? record[dataIndex] : record['assetsIds']
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

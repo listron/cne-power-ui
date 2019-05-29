@@ -42,6 +42,8 @@ class DeviceMode extends React.Component {
       tableRecord: {},
       isSaveStyle: false,
       editingKey: '',
+      assetsIds:[],
+      checkedName:'',
     }
   }
   componentDidMount() {
@@ -66,7 +68,7 @@ class DeviceMode extends React.Component {
     this.setState({
       showWarningTip: false,
     });
-    this.props.deleteDeviceModes({ modeId });
+    this.props.deleteDeviceModes({ modeId:`${modeId}` });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -88,19 +90,23 @@ class DeviceMode extends React.Component {
       };
      
       const newData = [...deviceModesList];
+      
       const index = newData.findIndex(item => modeId === item.modeId);
+      
       if (index > -1) {
         const item = newData[index];
+        
+        
         newData.splice(index, 1, {
           ...item,
-          ...row,
         });
-        this.props.changeAssetConfigStore({ deviceModesList: newData })
-        this.setState({ data: newData, editingKey: '' });
+        
+        // this.props.changeAssetConfigStore({ deviceModesList: newData })
+        this.setState({  editingKey: '' });
       } else {
         newData.push(row);
-        this.props.changeAssetConfigStore({ deviceModesList: newData })
-        this.setState({ data: newData, editingKey: '' });
+        // this.props.changeAssetConfigStore({ deviceModesList: newData })
+        this.setState({  editingKey: '' });
       }
     });
   }
@@ -124,9 +130,17 @@ class DeviceMode extends React.Component {
     this.setState({ isSaveStyle: !isSaveStyle })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll(['deviceModeName','assetsId','manufactorId'],(err, values) => {
+    const {validateFieldsAndScroll,resetFields}=this.props.form;
+    validateFieldsAndScroll(['deviceModeName','assetsId','manufactorId'],(err, values) => {
       if (!err) {
         this.props.addDeviceModes({ ...values,assetsId:values.assetsId.assetsIds.join() })
+        //请求全部厂家
+        this.props.getDeviceFactorsList({
+          orderField: '1',
+          orderMethod: 'desc'
+        })
+        this.setState({assetsIds:[],checkedName:''})
+        resetFields()
       }
     });
   }
@@ -151,11 +165,19 @@ class DeviceMode extends React.Component {
   selectManufactor = (value, option) => {
   }
   changeSelctNode = (data) => {
-    // this.props.getDeviceFactorsList({
-    //   assetsId:data.assetsIds.join(),
-    //   orderField: '1',
-    //   orderMethod: 'desc'
-    // })
+    console.log('data选中的: ', data);
+    this.setState({
+      assetsIds:data.assetsIds
+    })
+    this.props.getDeviceFactorsList({
+      assetsId:data.assetsIds.join(),
+      orderField: '1',
+      orderMethod: 'desc'
+    })
+
+  }
+  changeNode=(data)=>{
+    console.log('form里的节点选择: ', data);
 
   }
   queryDataType = (value) => {
@@ -163,7 +185,7 @@ class DeviceMode extends React.Component {
   }
   render() {
     const { pageSize, pageNum, total, deviceFactorsList, deviceModesList,assetList, stationTypeCount } = this.props;
-    console.log('deviceModesList: ', deviceModesList);
+    
     const components = {
       body: {
         row: EditableFormRow,
@@ -171,7 +193,7 @@ class DeviceMode extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} devicefactorslist={deviceFactorsList} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} />
+              return <EditableCell form={form} devicefactorslist={deviceFactorsList} {...rest[0]} onChange={this.changeNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType}  />
             }}
           </EditableContext.Consumer>)
         },
@@ -273,7 +295,7 @@ class DeviceMode extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType}  />
+                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} assetsIds={this.state.assetsIds} checkedName={this.state.checkedName} />
                 )}
               </FormItem>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">
@@ -285,6 +307,7 @@ class DeviceMode extends React.Component {
                 })(
                   <Select
                     onSelect={this.selectManufactor}
+                    disabled={this.state.assetsIds.length===0}
                     style={{ width: 194 }}
                     placeholder="请选择厂家" >
                     {deviceFactorsList.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
