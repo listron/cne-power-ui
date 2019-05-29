@@ -11,8 +11,8 @@ import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
 import warehouse from './Book/Warehouse/warehouseReducer';
+import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
-
 
 const operationReducer = combineReducers({
   defect,
@@ -25,6 +25,7 @@ const operationReducer = combineReducers({
   deviceManage,
   partInfo,
   warehouse,
+  warehouseManage,
   intelligentExpert
 });
 

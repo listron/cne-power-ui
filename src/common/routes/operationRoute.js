@@ -38,7 +38,7 @@ const book = [
     component: lazy(() => import('../../containers/Operation/Book/Warehouse/Warehouse')),
   }, { // 仓库管理
     path: '/operation/book/warehouseManage',
-    component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/Book/WarehouseManage/WarehouseManage')),
   }, { // 出入库记录
     path: '/operation/book/immigrationRecords',
     component: lazy(() => import('../../components/Common/Building/Building')),

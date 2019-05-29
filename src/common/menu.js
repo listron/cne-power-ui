@@ -185,7 +185,8 @@ const menuData = [
           },{
             name: '仓库管理',
             path: 'warehouseManage',
-            rightKey: 'operation_book_sparePart',
+            // rightKey: 'operation_book_sparePart',
+            rightKey: 'operation_book',
           }, {
             name: '出入境记录',
             path: 'immigrationRecords',
