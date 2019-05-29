@@ -1,0 +1,64 @@
+
+@import "../../../theme/theme.scss";
+.stationSelect{
+  position: relative;
+  width: 200px;
+}
+.deviceSelectModal {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  font-size: 18px;
+  right: 8px;
+  top: 4px;
+  height: 30px;
+  line-height: 30px;
+  :global {
+    .icon-filter {
+      font-size: 14px;
+      color: $darkColor;
+    }
+  }
+}
+.deviceModal {
+  :global {
+    .ant-modal-body {
+      padding: 0px 20px 0;
+      overflow: auto;
+      
+    }
+  }
+}
+.titleType {
+  display: flex;
+  .selectPv,
+  .selectWind {
+    background: #199475;
+    border: 1px solid #199475;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .pv,
+  .wind {
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    color: #666666;
+  }
+
+  .pv,
+  .selectPv {
+    border-radius: 4px 0 0 4px;
+    margin: 15px 0 15px 28px;
+  }
+
+  .wind,
+  .selectWind {
+    border-radius: 0 4px 4px 0;
+    margin-top: 15px;
+  }
+}

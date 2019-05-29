@@ -32,7 +32,7 @@ class AssetStructure extends React.Component {
   }
   componentDidMount() {
     const { stationType } = this.props;
-    this.props.getAssetTree({ stationType });
+    this.props.getAssetTree({ stationType});
     this.getTreeData();
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
@@ -49,14 +49,16 @@ class AssetStructure extends React.Component {
     });
     this.props.deleteAssetNode({ stationType, assetsId });
   }
-  getTreeData = (value) => {
+  getTreeData = (value) => {assetsParentId
     const { stationType, assetsParentId } = this.props;
-    const params = { stationType, assetsParentId }
+    const params = { stationType,assetsParentId  }
     this.props.getNodeDetail({ ...params, ...value })
   }
   queryType = (active) => {
     const { changeAssetConfigStore, } = this.props;
     changeAssetConfigStore({ stationType: active, });
+    this.props.getAssetTree({ stationType:active});
+
   }
   addDevice = () => {
     this.setState({
@@ -81,23 +83,23 @@ class AssetStructure extends React.Component {
   }
 
   selectNode = (selectedKeys, e) => {
-    console.log('e: ', e);
-    console.log('selectedKeys: ', selectedKeys);
+    
+    
     const { node } = e;
     const { props } = node;
     const tableData = props ? props.dataRef : {};
-    console.log('tableData: ', tableData);
+    
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
-    console.log('assetsName: ', assetsName);
+    
     const isBuild=tableData.isBuild;
 
     //当前节点所处第几级
     const currentLeavel = assetsParentId.split(',').length - 1;
-    console.log('currentLeavel: ', currentLeavel);
+    
     //此节点下面有几级节点、()
     const childrenNum = tableData.childNodeNum;
-    console.log('assetsParentId: ', assetsParentId);
+    
     //保留当前节点的id和name，供编辑节点和新建节点使用
 
     this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, childrenNum ,isBuild})
@@ -131,6 +133,7 @@ class AssetStructure extends React.Component {
 
   render() {
     const { stationType, stationTypeCount, assetList, childrenNodeDetail ,childrenNum,} = this.props;
+ 
     // const formatAssetData = this.formatAsset(assetList);
     const { addNode, editNode, showWarningTip, warningTipText } = this.state;
     const columns = [
@@ -169,8 +172,8 @@ class AssetStructure extends React.Component {
     return (
       <div className={styles.box}>
         <div className={styles.titleType} >
-          <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1) }} >{(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ? '光伏' : ''}</div>
-          <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0) }}>{(stationTypeCount === 'wind' || stationTypeCount === 'multiple') ? '风电' : ''}</div>
+          {(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ?<div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1) }} >光伏</div>:''}
+          {(stationTypeCount === 'wind' || stationTypeCount === 'multiple')?<div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0) }}>风电</div>:''}
         </div>
         <div className={styles.container}>
           <div className={styles.leftTree}>
