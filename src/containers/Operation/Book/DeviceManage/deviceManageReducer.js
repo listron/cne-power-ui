@@ -16,6 +16,8 @@ const initState = Immutable.fromJS({
   sortMethod: '', // 排序方式('0':正序,'1': 倒序)
   showPage:'list',
   deviceList: [], // 设备列表
+  orderMethod:'',//设备厂家列表传参
+  orderField:'',//设备厂家列表传参
   stationDeviceTypes: [], //电站下设备类型
   deviceModels: [], // 电站设备类型下设备型号
   pvDeviceModels:[],//光伏组件下的设备型号

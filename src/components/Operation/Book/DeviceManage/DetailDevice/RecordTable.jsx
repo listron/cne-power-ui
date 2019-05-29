@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Radio } from 'antd';
 import styles from '../deviceSide.scss';
 
+
 class RecordTable extends React.Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -15,43 +16,58 @@ class RecordTable extends React.Component {
     super(props, context)
   }
   changeTableData = (e) => {
- 
-    const {getDevicePartInfo,getDevicefixRecord,getDevicehistoryWarning } = this.props;
+    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning } = this.props;
     const value = e.target.value;
     this.props.changeTableFilter(value);
-    value === 'part' ?getDevicePartInfo({}): value === 'record' ? getDevicefixRecord({}) : getDevicehistoryWarning({}) ;
-
-
-
+    value === 'part' ? getDevicePartInfo({}) : value === 'record' ? getDevicefixRecord({}) : getDevicehistoryWarning({});
   }
-  render() {
-    const { tableFilter,historyWarningData,fixRecordData,partInfoData } = this.props;
-    console.log('tableFilter: ', tableFilter);
 
+  formate = (data) => {
+    data.forEach((e, i) => {
+      e.key = e.assetsId;
+      e.partsName = e.assetsName;
+      if (e.assetsData && !e.partsData) {
+        this.formay(e.assetsData);
+      } else {
+        e.assetsData = e.partsData;
+        e.partsData&&e.partsData.forEach((e,i)=>{
+          e.key = e.partsModeName;
+        })
+      }
+      return e
+    })
+    return data
+  }
+
+
+
+  render() {
+    const { tableFilter, historyWarningData, fixRecordData, partInfoData } = this.props;
+    const partInfoDataFormate = this.formate(partInfoData);
     const partColumns = [
       {
         title: '部件名称',
-        dataIndex: 'assetsCode',
+        dataIndex: 'partsName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '部件型号',
-        dataIndex: 'assetsName',
+        dataIndex: 'partsModeName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '厂家',
-        dataIndex: 'assetsType',
+        dataIndex: 'manufactorName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '制造商',
-        dataIndex: 'assetsUnit',
+        dataIndex: 'madeName',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '供应商',
-        dataIndex: 'createTime',
+        dataIndex: 'supplierName',
         render: (text) => <span title={text}>{text}</span>
       }
     ]
-    const fixRecordColumns=[
+    const fixRecordColumns = [
       {
         title: '缺陷级别',
         dataIndex: 'assetsCode',
@@ -72,7 +88,7 @@ class RecordTable extends React.Component {
         title: '资产编码',
         dataIndex: 'createTime',
         render: (text) => <span title={text}>{text}</span>
-      },{
+      }, {
         title: '发生时间',
         dataIndex: 'begintime',
         render: (text) => <span title={text}>{text}</span>
@@ -82,7 +98,7 @@ class RecordTable extends React.Component {
         render: (text) => <span title={text}>{text}</span>
       }
     ];
-    const historyWarningColumns=[
+    const historyWarningColumns = [
       {
         title: '告警级别',
         dataIndex: 'warningLevel',
@@ -98,34 +114,34 @@ class RecordTable extends React.Component {
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
-        key:'startTime',
+        key: 'startTime',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '完成时间',
         dataIndex: 'timeOn',
-        key:'endTime',
+        key: 'endTime',
         render: (text) => <span title={text}>{text}</span>
-      },{
+      }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         render: (text) => <span title={text}>{text}</span>
-      }, 
+      },
     ];
     return (
       <div >
-      <div className={styles.radioStyle}>
-        <Radio.Group value={tableFilter} buttonStyle="solid" onChange={this.changeTableData}>
-          <Radio.Button value="part">部件信息</Radio.Button>
-          <Radio.Button value="record">检修记录</Radio.Button>
-          <Radio.Button value="warning">历史告警</Radio.Button>
-        </Radio.Group>
+        <div className={styles.radioStyle}>
+          <Radio.Group value={tableFilter} buttonStyle="solid" onChange={this.changeTableData}>
+            <Radio.Button value="part">部件信息</Radio.Button>
+            <Radio.Button value="record">检修记录</Radio.Button>
+            <Radio.Button value="warning">历史告警</Radio.Button>
+          </Radio.Group>
         </div>
         <Table
           loading={false}
-          dataSource={tableFilter==='part'?partInfoData:tableFilter==='record'?fixRecordData:historyWarningData}
-          columns={tableFilter==='part'?partColumns:tableFilter==='record'?fixRecordColumns:historyWarningColumns}
+          dataSource={tableFilter === 'part' ? partInfoDataFormate : tableFilter === 'record' ? fixRecordData : historyWarningData}
+          columns={tableFilter === 'part' ? partColumns : tableFilter === 'record' ? fixRecordColumns : historyWarningColumns}
           pagination={false}
-          childrenColumnName={['childrens']}
+          childrenColumnName={['assetsData']}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 

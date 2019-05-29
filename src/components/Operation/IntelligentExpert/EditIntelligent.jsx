@@ -24,15 +24,15 @@ class EditIntelligent extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '退出后信息无法保存！',
-      showChangeInput: false,
+      inputEdited: false,
     }
   }
 
   onWarningTipShow = () => {
-    const { showChangeInput } = this.state;
+    const { inputEdited } = this.state;
     const { getIntelligentExpertStore, getIntelligentTable, listParams } = this.props;
 
-    if(showChangeInput){
+    if(inputEdited){
       this.setState({
         showWarningTip: true,
       })
@@ -71,10 +71,13 @@ class EditIntelligent extends Component {
     getIntelligentTable(listParams) // 返回列表页面时重新请求列表数据
   }
 
-  changeInput = () => { // 内容改变时弹框
-    this.setState({
-      showChangeInput: true,
-    })
+  changeInput = () => { // 内容改变时弹出提示框
+    const { inputEdited } = this.state;
+    if(!inputEdited){
+      this.setState({
+        inputEdited: true,
+      })
+    }
   }
 
   render(){
