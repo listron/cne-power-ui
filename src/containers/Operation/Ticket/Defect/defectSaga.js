@@ -706,11 +706,58 @@ function* submitDefect(action) {
     message.error('创建缺陷失败！')
   }
 }
+
 function* clearDefect(action) {
   yield put({
     type: ticketAction.CLEAR_DEFECT_STATE,
   });
 }
+
+function* getKnowledgebase(action) { // 获取智能专家列表
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  // let url = `/mock/operation/knowledgebase/list`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: ticketAction.GET_DEFECT_FETCH_SUCCESS,
+        payload: {
+          knowledgebasePramas:payload,
+          knowledgebaseList: response.data.data.dataList || [],
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* likeKnowledgebase(action) { // 点赞智能专家
+  const { payload } = action;
+  const { knowledgeBaseId } = payload;
+  let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  // let url = `/mock/operation/knowledgebase/like`;
+  
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      message.config({ top: 230,duration: 2, maxCount: 2,});
+      message.success('点赞成功')
+      const params = yield select(state => {
+        const { knowledgebasePramas = {} } = state.operation.defect.toJS();
+        return knowledgebasePramas
+      });
+      yield put({ // 重新请求点赞列表
+        type: ticketAction.getKnowledgebase,
+        payload: params,
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 export function* watchDefect() {
   yield takeLatest(ticketAction.GET_DEFECT_LIST_SAGA, getDefectList);
@@ -732,6 +779,8 @@ export function* watchDefect() {
   yield takeLatest(ticketAction.DEFECT_CREATE_SAGA, createNewDefect);
   yield takeLatest(ticketAction.SUBMIT_DEFECT_SAGA, submitDefect);
   yield takeLatest(ticketAction.CLEAR_DEFECT_STATE_SAGA, clearDefect);
+  yield takeLatest(ticketAction.getKnowledgebase, getKnowledgebase);
+  yield takeLatest(ticketAction.likeKnowledgebase, likeKnowledgebase);
 }
 
 

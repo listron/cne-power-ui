@@ -14,7 +14,7 @@ import { dataFormats } from '../../../../../utils/utilFunc';
 import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { PointScatter } from '../../WindCommon/PointScatter';
-
+import { apiUrlReal } from '../../../../../config/apiConfig';
 class WindDevice extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -141,10 +141,10 @@ class WindDevice extends Component {
   }
 
   render() {
-    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint,  } = this.props;
-    const {scatterpointTime,sequencediagramTime}=this.props;
+    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint, } = this.props;
+    const { scatterpointTime, sequencediagramTime } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
-    const { deviceName } = deviceDetail
+    const { deviceName, deviceModeCode } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const breadCrumbData = {
@@ -168,7 +168,9 @@ class WindDevice extends Component {
             <div className={styles.windDeviceInfo}>
               <div className={styles.structure}>
                 <div className={styles.structureTitle}>风机结构图</div>
-                <div className={styles.structureImg}><img src="/img/wind_fan.png" /></div>
+                <div className={styles.structureImg}>
+                  {deviceModeCode  && <img src={`${apiUrlReal}/api/v3/images/windturbine/${deviceModeCode}.png`} />}
+                </div>
               </div>
               <div className={styles.windPointData} >
                 <div className={styles.pointDataTitle}>

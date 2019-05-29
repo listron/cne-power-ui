@@ -26,6 +26,7 @@ var initState = Immutable.fromJS({
   stationType:'',//电站类型
   defectSource:'',//缺陷来源
   modify:false, // 是否进行了修改
+  knowledgebaseList:[],// 专家库列表
 });
 
 
