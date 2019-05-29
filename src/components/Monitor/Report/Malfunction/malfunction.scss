@@ -21,4 +21,13 @@
   height: 55px;
   padding: 0 28px;
   background-color: #fff;
+  :global{
+    .ant-table .ant-table-thead > tr > th{
+      padding: 0 4px;
+    }
+  }
+}
+.numRight{
+  text-align: right;
+  margin-right: 4px;
 }

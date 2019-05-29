@@ -184,11 +184,7 @@ const menuData = [
           }, {
             name: '仓库配置',
             path: 'warehouse',
-<<<<<<< HEAD
             rightKey: 'operation_book_warehouseConfig',
-=======
-            rightKey: 'operation_book',
->>>>>>> 32ce5f8531bee47bb1f25245af3cc3148e50c9e1
           },{
             name: '仓库管理',
             path: 'warehouseManage',

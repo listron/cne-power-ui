@@ -142,6 +142,7 @@ class TableList extends Component {
         dataIndex: "num",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
 
       {
@@ -149,12 +150,14 @@ class TableList extends Component {
         dataIndex: "faultTime",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="故障小时数" unit="h" />,
         dataIndex: "faultHours",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
 
       {
@@ -162,6 +165,7 @@ class TableList extends Component {
         dataIndex: "faultGen",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
     ];
     filterTable > 4 ? columns.unshift(...showFault) : columns.unshift(...show);
@@ -174,7 +178,7 @@ class TableList extends Component {
         dataIndex: "regionName",
         sorter: true,
         fixed: 'left',
-         width:108,
+        width:80,
       },
       {
         title: "电站名称",
@@ -226,8 +230,9 @@ class TableList extends Component {
         title: () => <TableColumnTitle title="故障时长" unit="s" />,
         dataIndex: "faultTime",
         sorter: true,
-        width:108,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="故障小时数" unit="h" />,
@@ -235,6 +240,7 @@ class TableList extends Component {
         sorter: true,
         width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       }, {
         title: "损失电量",
@@ -242,31 +248,36 @@ class TableList extends Component {
         sorter: true,
         width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       }, {
         title: "风速",
         dataIndex: "windSpeedAvg",
         sorter: true,
-        width:108,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       }, {
         title: "有功功率",
         dataIndex: "usePower",
         sorter: true,
         width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       }, {
         title: "发电机转速",
         dataIndex: "speed",
         sorter: true,
-        width:128,
+        width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },{
         title: "桨叶角",
         dataIndex: "bladeAngle",
         sorter: true,
-        width:112,
+        // width:112,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
     ];
     return columns
@@ -280,7 +291,7 @@ class TableList extends Component {
 
 
   render() {
-    const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList } = this.props;
+    const { total, pageSize, pageNum, malfunctionList, tableType, malfunctionDetailList,loading } = this.props;
     const columns = tableType === 'all' ? this.initMonthColumn() : this.detailColumn();
     const dataSource = tableType === 'all' ? malfunctionList.map((e, i) => ({ ...e, key: i, })) : malfunctionDetailList.map((e, i) => ({ ...e, key: i, }));
     return (
@@ -294,10 +305,12 @@ class TableList extends Component {
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns}
+        <Table 
+          loading={loading}
+          columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={tableType === "detail" ? {x:1792} : {x:0}}
+          scroll={tableType === "detail" ? {x:1900} : {x:0}}
           pagination={false} />
       </React.Fragment>
     )
