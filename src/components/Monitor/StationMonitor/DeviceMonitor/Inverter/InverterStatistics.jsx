@@ -11,6 +11,9 @@ function InverterStatistics({ deviceDetail, subDeviceList }) {
   powerMonth = isNaN(parseFloat(powerMonth)) ? ' -- ' : parseFloat(powerMonth);
   powerYear = isNaN(parseFloat(powerYear)) ? ' -- ' : parseFloat(powerYear);
   // deviceTypeCode === '201' 集中式逆变器 206 组串式逆变器
+  if (!subDeviceList.length && subDeviceList.electricityList) {
+    subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
+  }
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
   const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
@@ -54,7 +57,7 @@ function InverterStatistics({ deviceDetail, subDeviceList }) {
       {deviceTypeCode === '206' && <div className={inverterStyles.seriesCurrent} style={{width: `${seriesGroupWidth}px`}}>
         {subDeviceList.map((e, i) => (
           <span
-            className={styles.eachCurrent}
+            className={inverterStyles.eachCurrent}
             key={i}
             style={{
               ...statusColor[e.pointStatus],

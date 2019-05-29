@@ -47,7 +47,7 @@ class InverterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, parentDevice = {}, dispersionRatio, manufacturer, deviceModeName } = deviceDetail;
+    const { deviceStatus, parentDevice = {}, manufacturer, deviceModeName } = deviceDetail;
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
@@ -59,7 +59,6 @@ class InverterHeader extends Component {
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
           <span className={styles.status}>设备状态: {interverStatus[deviceStatus] || '--'}</span>
-          <span className={styles.dispersionRatio}>离散率>{dispersionRatio || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>

@@ -8,47 +8,6 @@ import styles from './booster.scss';
 
 const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
   const baseLinkPath = '/hidden/monitorDevice';
-  subDeviceList = [
-    {
-      "alarmNum": 2,
-      "deviceCapacity": 89.1000,
-      "deviceCode": "394M202M6M2",
-      "deviceFullcode": "394M202M6M2",
-      "deviceId": 987932,
-      "deviceModeCode": 6,
-      "deviceName": "HL01-02",
-      "devicePower": 63.5315,
-      "deviceStatus": 100,
-      "deviceTypeCode": 202,
-      "dispersionRatio": "0.80",
-      "electricity": 104.15,
-      "isConnected": 1,
-      "parentDeviceCode": 987891,
-      "parentDeviceName": "NB01-A",
-      "stationCode": 394,
-      "temp": 56.0,
-      "voltage": 610.0
-    }, {
-      "alarmNum": 2,
-      "deviceCapacity": 95.0400,
-      "deviceCode": "394M202M6M3",
-      "deviceFullcode": "394M202M6M3",
-      "deviceId": 987933,
-      "deviceModeCode": 6,
-      "deviceName": "HL01-03",
-      "devicePower": 69.3181,
-      "deviceStatus": 200,
-      "deviceTypeCode": 202,
-      "dispersionRatio": "0.90",
-      "electricity": 114.01,
-      "isConnected": 1,
-      "parentDeviceCode": 987891,
-      "parentDeviceName": "NB01-A",
-      "stationCode": 394,
-      "temp": 55.0,
-      "voltage": 608.0
-    }
-  ];
 
   return (
     <div className={styles.subIntergrate}>
@@ -71,7 +30,7 @@ const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
                 <div>Q：{dataFormats(item.voltage, '--', 2)} kVar</div>
                 <div>F：{dataFormats(item.electricity, '--', 2)} Hz</div>
                 <div>Cos：{dataFormats(item.dispersionRatio, '--', 2)} </div>
-                <div>Ia:{dataFormats(item.temp, '--', 2)} A</div>
+                <div>Ia:{dataFormats(item.current, '--', 2)} A</div>
               </div>
             </Link>
           </div>);

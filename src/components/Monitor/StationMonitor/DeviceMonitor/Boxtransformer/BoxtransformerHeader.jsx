@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { PVStationTypes, boxtransformerStatus } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -48,8 +48,6 @@ class BoxtransformerHeader extends Component {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const { deviceStatus, parentDevice = {}, manufacturer, deviceModeName } = deviceDetail;
-    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
-    // const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
     const parentDeviceCode = parentDevice.deviceCode; //父级设备code
@@ -59,12 +57,8 @@ class BoxtransformerHeader extends Component {
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
-          <span className={styles.name}  onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >
-            <span>设备状态:</span> 
-            <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
-            <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
-          </span>
+          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
+          <span className={styles.status}>设备状态:{boxtransformerStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>

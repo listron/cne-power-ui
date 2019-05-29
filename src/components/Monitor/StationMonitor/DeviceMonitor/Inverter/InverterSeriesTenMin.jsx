@@ -32,8 +32,9 @@ class InverterSeriesTenMin extends Component {
     const echartBox = document.getElementById('seriesInverter_monitor_tenMin');
     const seriesInverterChart = echarts.init(echartBox);
     const { index = [], time = [], rate = []} = branchTenMin;
+    const hlArr = index.filter(e => e !== 'time'); // 取出正确的组串对应索引。
     const lineColor = '#666';
-    const hlSeries = index.map(e => {
+    const hlSeries = hlArr.map(e => {
       return {
         name: `HL#${`${e}`.padStart(2, '0')}`,
         nameTextStyle: {
@@ -61,7 +62,7 @@ class InverterSeriesTenMin extends Component {
       graphic: seriesInverterGraphic,
       color: ['#3e97d1', ...HLColors],
       legend: {
-        data:['离散率',...index.map(e => `HL#${`${e}`.padStart(2, '0')}`)],
+        data:['离散率',...hlArr.map(e => `HL#${`${e}`.padStart(2, '0')}`)],
         top: 24,
         itemWidth: 20,
         itemHeight: 4, 
@@ -85,7 +86,7 @@ class InverterSeriesTenMin extends Component {
             let { seriesName, value } = e;
             let hlColor = '';
             value = (value || value === 0)?value: '--';
-            index.forEach((hlName, hlIndex) => {
+            hlArr.forEach((hlName, hlIndex) => {
               if(`HL#${`${e}`.padStart(2, '0')}` === seriesName){
                 hlColor = HLColors[hlIndex]
               }

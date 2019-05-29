@@ -103,7 +103,7 @@ function *getDeviceDetail({ deviceTypeCode, deviceCode }){ // 10s实时详情
 function *getSeriesInverterTenMin({ deviceCode }) {
   const startTime = moment().utc().subtract(72,'hours').format();
   const endTime = moment().utc().format();
-  const tenMinUrl = `${APIBasePath}${monitorPath.seriesBranchTenMin}/${deviceCode}/${startTime}/${endTime}`;
+  const tenMinUrl = `${APIBasePath}${monitor.seriesBranchTenMin}/${deviceCode}/${startTime}/${endTime}`;
   try {
     const tmpBranch = yield call(axios.get, tenMinUrl);
     if (tmpBranch.data.code === '10000') {
@@ -211,8 +211,11 @@ function *getAlarms({ deviceCode }){ // 10s实时告警
 }
 
 function *getSubList({ deviceCode, deviceTypeCode }) { // 10s获取下级设备详情
-  const subDeviceUrl = `${APIBasePath}${monitorPath[deviceTypeCode].subList}/${deviceCode}`;
   try {
+    if (deviceTypeCode === '301') { // 升压站时，直接传送stationCode
+      deviceCode = deviceCode.split('M')[0];
+    }
+    const subDeviceUrl = `${APIBasePath}${monitorPath[deviceTypeCode].subList}/${deviceCode}`;
     const tmpSubList = yield call(axios.get, subDeviceUrl);
     if (tmpSubList.data.code === '10000') {
       yield put({
