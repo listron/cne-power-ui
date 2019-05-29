@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Icon } from "antd";
 import styles from "./faultNavList.scss";
+import moment from "../../FaultAllFan/FaultNavList/FaultNavList";
 
 export default class FaultNavList extends React.Component {
   static propTypes = {
@@ -70,14 +71,37 @@ export default class FaultNavList extends React.Component {
   };
 
   handlerFansClick = (data, index, warnId) => {
-    const { onChangeFilter } = this.props;
+    const {
+      onChangeFilter,
+      faultInfo: {
+        endTime
+      },
+    } = this.props;
+    const { date } = data;
+    // 故障日期时间
+    const dateArr = date && date.split(",");
+    // 判断如果date有数据
+    const timeValue = date && date ? dateArr[dateArr.length - 1] : endTime;
     // 目前先不用掉接口
     this.setState({
       fansFlag: index
     }, () => {
       // 改变设备选中
       onChangeFilter({
-        warnId
+        warnId,
+        faultDate: timeValue, // 故障详情页选择日期
+        preDate: [// 前驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        afterDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        diffDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
       });
     })
   };

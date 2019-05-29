@@ -10,8 +10,14 @@
       line-height: 32px;
     }
   }
-  .afterCharts{
+  .afterChartBox{
     width: 100%;
     height: 400px;
+    position: relative;
+    .afterCharts{
+      width: 100%;
+      height: 100%;
+    }
   }
+
 }
