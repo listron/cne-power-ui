@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Tag} from 'antd';
 import styles from './../filterCondition.scss';
-import moment from 'moment';
 
 class FilteredItems extends Component {
   static propTypes = {
@@ -30,7 +29,9 @@ class FilteredItems extends Component {
 
   onCancelDefectType = (cancelId) => { // 删除某缺陷类型
     const {defectTypeCode, onChangeFilter} = this.props;
-    onChangeFilter({defectTypeCode: defectTypeCode.filter(e => e !== cancelId),});
+    onChangeFilter({
+      defectTypeCode: defectTypeCode.filter(e => e !== cancelId)
+    });
   };
 
   getDefectInfoArr = (defectTypes, selectedTypes) => {
@@ -59,11 +60,11 @@ class FilteredItems extends Component {
 
   render() {
     const { deviceTypeCode, defectTypeCode, deviceTypes, defectTypes } = this.props;
-    const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => +m === e.deviceTypeCode));
-    const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
-    if ((!deviceTypeCode || deviceTypeCode.length === 0) && (!defectTypeCode ||defectTypeCode.length === 0)) {
+    if ((!deviceTypeCode || deviceTypeCode.length === 0) && (!defectTypeCode || defectTypeCode.length === 0)) {
       return null;
     }
+    const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => +m === e.deviceTypeCode));
+    const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
 
     return (
       <div className={styles.filteredItems}>
