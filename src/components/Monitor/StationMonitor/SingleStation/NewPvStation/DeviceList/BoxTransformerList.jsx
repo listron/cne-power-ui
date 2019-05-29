@@ -15,7 +15,7 @@ class BoxTransformerList extends Component {
   static propTypes = {
     boxTransformerList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     getBoxTransformerList: PropTypes.func,
     loading: PropTypes.bool,
   }

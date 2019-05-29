@@ -14,7 +14,7 @@ class InverterList extends Component {
   static propTypes = {
     inverterList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     getInverterList: PropTypes.func,
     loading: PropTypes.bool,
   }

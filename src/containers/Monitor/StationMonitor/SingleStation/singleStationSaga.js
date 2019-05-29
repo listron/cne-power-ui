@@ -209,7 +209,7 @@ function* getDeviceTypeFlow(action) { // 获取单电站设备类型流程图(�
   const url = `${APIBasePath}${monitor.getDeviceTypeFlow}${stationCode}`;
   try {
     const response = yield call(axios.get, url, payload);
-    let deviceTypeCode = 206; // 默认组串式逆变器
+    let deviceTypeCode = 0; // 默认组串式逆变器
     if (payload.deviceTypeCode) {
       deviceTypeCode = payload.deviceTypeCode;
     } else {
@@ -225,7 +225,7 @@ function* getDeviceTypeFlow(action) { // 获取单电站设备类型流程图(�
     }
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           deviceTypeFlow: response.data.data || {},
           deviceTypeCode,
@@ -457,6 +457,7 @@ function* getStationDeviceList(action) { // 获取单电站设备列表(气象�
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           stationDeviceList: response.data.data || [],
+          weatherDeviceDetail:response.data.data.length>0 && response.data.data[0].deviceCode || {},
         }
       })
       yield put({
@@ -485,7 +486,7 @@ function* editData(action) { // 编辑月，年的累计发电量
     if (response.data.code === "10000") {
       message.success('数据编辑成功，请稍等', 2);
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           editAllData: response.data.data || [],
         }
@@ -868,6 +869,54 @@ function* getRadiationchart(action){ // 气象站图表的数据
 }
 
 
+function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图(设备示意图)
+  const { payload } = action;
+  const { stationCode } = payload;
+  const url = `${APIBasePath}${monitor.getNewDeviceTypeFlow}${stationCode}`;
+  try {
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          deviceTypeFlow: response.data.data || {},
+        }
+      })
+    } else { throw 'error' }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        deviceTypeFlow: {},
+      }
+    });
+  }
+}
+function* getSketchmap(action) { // 获取单电站设备类型流程图(设备示意图)数据(光伏)
+  const { payload } = action;
+  const { stationCode } = payload;
+  const url = `${APIBasePath}${monitor.getSketchmap}${stationCode}`;
+  try {
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: singleStationAction.changeSingleStationStore,
+        payload: {
+          sketchmapData: response.data.data || {},
+        }
+      })
+    } else { throw 'error' }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: singleStationAction.changeSingleStationStore,
+      payload: {
+        sketchmapData: {},
+      }
+    });
+  }
+}
 
 
 export function* watchSingleStationMonitor() {
@@ -902,6 +951,8 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.getWeatherDetail, getWeatherDetail); 
   yield takeLatest(singleStationAction.getStationAlarm, getStationAlarm); 
   yield takeLatest(singleStationAction.getRadiationchart, getRadiationchart); 
+  yield takeLatest(singleStationAction.getNewDeviceTypeFlow, getNewDeviceTypeFlow); 
+  yield takeLatest(singleStationAction.getSketchmap, getSketchmap); 
 
 }
 

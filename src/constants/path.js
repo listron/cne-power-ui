@@ -247,6 +247,8 @@ export default {
       getAlarmList: '/v3/alarm/station/alarmnum/',//单电站活动告警数统计
       getWorkList: '/v3/monitor/worklist/',//单电站工单数统计
       getDeviceTypeFlow: '/v3/station/devicetypeflow/',//单电站设备类型流程图
+      getNewDeviceTypeFlow: '/v3/station/typeflow/',//单电站设备类型流程图
+      getSketchmap: '/v3/station/sketchmap/',//单电站设备类型流程图数据
       getStationDeviceList: '/v3/station/devicelist/',//单电站设备列表
       getSingleStationDeviceList: '/v3/wind/monitor/station/devices/',//风单电站设备列表
       editData: '/v3/management/stationgen',//编辑月，年的累计发电量

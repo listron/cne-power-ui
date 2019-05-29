@@ -18,7 +18,7 @@ class PvStation extends Component {
     location: PropTypes.object,
     match: PropTypes.object,
     stationDeviceList: PropTypes.array,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     stationCode: PropTypes.string,
     resetSingleStationStore: PropTypes.func,
     realTimePowerUnit: PropTypes.string,
@@ -40,7 +40,6 @@ class PvStation extends Component {
     getBoxTransformerList: PropTypes.func,
     changeSingleStationStore: PropTypes.func,
     getStationDeviceList: PropTypes.func,
-    deviceTypeCode: PropTypes.number,
     deviceTypeFlow: PropTypes.object,
     resetSingleStationStore: PropTypes.func,
     getFanList: PropTypes.func,
@@ -50,6 +49,7 @@ class PvStation extends Component {
     monitorPvUnit: PropTypes.object,
     workList: PropTypes.object,
     monthplanpower: PropTypes.func,
+    getNewDeviceTypeFlow: PropTypes.func,
   }
 
   constructor(props) {
@@ -70,17 +70,17 @@ class PvStation extends Component {
     })
     const deviceTypeInfo = searchData.find(e => e.showPart > 0);
     if (deviceTypeInfo) {
-      this.props.getDeviceTypeFlow({
-        stationCode,
-        deviceTypeCode: parseInt(deviceTypeInfo.showPart)
-      });//获取设备类型流程图
+      this.props.getNewDeviceTypeFlow({ stationCode });//获取设备类型流程图
+      this.props.getSketchmap({stationCode});
+      this.props.changeSingleStationStore({ deviceTypeCode: deviceTypeInfo.showPart })
     } else {
-      this.props.getDeviceTypeFlow({ stationCode }); //获取设备类型流程图
+      this.props.getNewDeviceTypeFlow({ stationCode }); //获取设备类型流程图
+      this.props.getSketchmap({stationCode});
     }
     this.getOneHourData(stationCode, stationType);
     this.getTenSeconds(stationCode, stationType);
-
-    this.props.monthplanpower({ stationCode })
+    this.props.monthplanpower({ stationCode });
+    
 
   }
 
@@ -94,7 +94,8 @@ class PvStation extends Component {
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOneHourData(nextStationCode, nextStationType);
       this.getPowerDataTenMin({ stationCode: nextStationCode, stationType: nextStationType });
-      this.props.getDeviceTypeFlow({ stationCode: nextStationCode });//获取设备类型流程图
+      this.props.getNewDeviceTypeFlow({ stationCode }); //获取设备类型流程图
+      this.props.getSketchmap({stationCode});
     }
   }
 
@@ -112,7 +113,7 @@ class PvStation extends Component {
     this.props.getWorkList({
       stationCode,
       startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(),
-      endTime:moment().utc().format(),
+      endTime: moment().utc().format(),
     });
     this.timeOutId = setTimeout(() => {
       this.getTenSeconds(stationCode, stationType);
@@ -146,7 +147,7 @@ class PvStation extends Component {
       endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
     });
   }
-  
+
 
   hiddenStationList = () => {
     this.setState({

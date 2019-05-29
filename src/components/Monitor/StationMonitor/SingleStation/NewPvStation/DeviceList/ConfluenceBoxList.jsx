@@ -14,7 +14,7 @@ class ConfluenceBoxList extends Component {
   static propTypes = {
     confluenceBoxList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     getConfluenceBoxList: PropTypes.func,
     loading: PropTypes.bool,
   }

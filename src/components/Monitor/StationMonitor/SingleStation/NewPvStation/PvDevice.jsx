@@ -7,16 +7,39 @@ import DeviceList from './DeviceList/DeviceList';
 
 class PvDevice extends Component {
     static propTypes = {
-        changeSingleStationStore:PropTypes.func
+        changeSingleStationStore: PropTypes.func
+
     }
+
+    constructor() {
+        super();
+
+    }
+
+    getDeviceTypeFlow = (deviceTypeFlow, list = []) => {
+        deviceTypeFlow.forEach(e => {
+            if (!(list.some(item => item.deviceTypeCode === e.code))) {
+                list.push({
+                    deviceTypeCode: e.code,
+                    deviceTypeName: e.name,
+                })
+                if (e.parents) {
+                    this.getDeviceTypeFlow(e.parents, list)
+                }
+            }
+        })
+        return list
+    }
+
 
     deviceSelect = (value) => {
-        console.log('value', value)
-        this.props.changeSingleStationStore({ deviceTypeCode:value });
+        // console.log('value', value)
+        this.props.changeSingleStationStore({ deviceTypeCode: value });
     }
 
+
     render() {
-        // const deviceTypeFlow={
+        // const deviceTypeFlow = [{
         //     "code": "509",
         //     "levelLength": 6,
         //     "name": "光伏组件",
@@ -83,61 +106,28 @@ class PvDevice extends Component {
         //             ]
         //         }
         //     ]
-        // }
-        const deviceTypeFlow = [
-            {
-                "deviceTypeCode": 509,
-                "deviceTypeId": null,
-                "deviceTypeName": "光伏组件"
-            },
-            {
-                "deviceTypeCode": 202,
-                "deviceTypeId": null,
-                "deviceTypeName": "汇流箱"
-            },
-            {
-                "deviceTypeCode": 206,
-                "deviceTypeId": null,
-                "deviceTypeName": "组串式逆变器"
-            },
-            {
-                "deviceTypeCode": 201,
-                "deviceTypeId": null,
-                "deviceTypeName": "集中式逆变器"
-            },
-            {
-                "deviceTypeCode": 304,
-                "deviceTypeId": null,
-                "deviceTypeName": "箱变"
-            },
-            {
-                "deviceTypeCode": 302,
-                "deviceTypeId": null,
-                "deviceTypeName": "集电线路"
-            },
-            {
-                "deviceTypeCode": 301,
-                "deviceTypeId": null,
-                "deviceTypeName": "升压站"
-            },
-        ]
+        // }]
+        const {deviceTypeFlow,deviceTypeCode}=this.props;
+        const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
         return (
             <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
                 <div className={styles.top}>
                     <Select
-                        defaultValue={'picture'}
+                        value={deviceTypeCode}
                         style={{ width: 140 }}
-                        onChange={this.deviceSelect}>
-                        <Option value={'picture'}>{'示意图'}</Option>
-                        {deviceTypeFlow.map((item) => {
+                        onChange={this.deviceSelect}
+                    >
+                        <Option value={'1'}>{'示意图'}</Option>
+                        {deviceTypeList.map((item) => {
                             return <Option value={item.deviceTypeCode} key={item.deviceTypeCode}>{item.deviceTypeName}</Option>
                         })}
-                        <Option value={'weather'}>{'气象站'}</Option>
+                        <Option value={'0'}>{'电能表'}</Option>
+                        <Option value={'203'}>{'气象站'}</Option>
                     </Select>
                     <div className={styles.icon}> <i className={'iconfont icon-examine1'}></i></div>
                 </div>
                 <div className={styles.deviceList} >
-                    <DeviceList {...this.props} />
+                    <DeviceList {...this.props} deviceTypeList={deviceTypeList} />
                 </div>
             </div>
         )

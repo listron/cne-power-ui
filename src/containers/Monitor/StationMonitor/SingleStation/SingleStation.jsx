@@ -113,6 +113,8 @@ const mapDispatchToProps = (dispatch) => ({
   getPvMonitorPower: payload => dispatch({ type: singleStationAction.getPvMonitorPower, payload }),
   getWeatherDetail: payload => dispatch({ type: singleStationAction.getWeatherDetail, payload }),
   getRadiationchart: payload => dispatch({ type: singleStationAction.getRadiationchart, payload }),
+  getNewDeviceTypeFlow: payload => dispatch({ type: singleStationAction.getNewDeviceTypeFlow, payload }),
+  getSketchmap: payload => dispatch({ type: singleStationAction.getSketchmap, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleStation);

@@ -12,7 +12,7 @@ class IntegrateList extends Component {
     getCollectorLine: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     loading: PropTypes.bool,
   }
 

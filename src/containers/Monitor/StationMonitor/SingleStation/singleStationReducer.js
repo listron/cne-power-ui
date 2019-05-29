@@ -17,7 +17,7 @@ var initState = Immutable.fromJS({
   alarmList: {},//告警数统计
   workList: {},//工单数统计
   deviceTypeFlow: {},//设备类型示意图
-  deviceTypeCode: 206,//当前显示设备列表code值 默认显示逆变器
+  deviceTypeCode: '1',//当前显示设备列表code值 默认显示逆变器
   pvmoduleList: [],//光伏组件列表
   pvAvgValue: '', //光伏组件列表 正常电流
   pvLevelNums: {},//光伏组件 电流等级
@@ -45,6 +45,7 @@ var initState = Immutable.fromJS({
   deviceAlarmList: [],//气象站告警
   radiationchartData: [], // 气象站的图表数据
   radiationchartTime: null, // 气象站的图表数据时间
+  sketchmapData:{},//流程图数据
 });
 
 const singleStationReducer = (state = initState, action) => {

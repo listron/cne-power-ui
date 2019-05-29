@@ -44,4 +44,6 @@ export const singleStationAction = {
   getWeatherDetail: Symbol('getWeatherDetail'),
   getStationAlarm: Symbol('getStationAlarm'),
   getRadiationchart: Symbol('getRadiationchart'),
+  getNewDeviceTypeFlow: Symbol('getNewDeviceTypeFlow'),
+  getSketchmap: Symbol('getSketchmap'),
 }

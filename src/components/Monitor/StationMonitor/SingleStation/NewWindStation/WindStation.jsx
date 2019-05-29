@@ -27,7 +27,7 @@ class WindStation extends Component {
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     deviceTypeFlow: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     resetSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
     singleStationData: PropTypes.object,
@@ -232,10 +232,10 @@ class WindStation extends Component {
               }
             </div>
             <div>
-              {deviceTypeCode === 101 && <FanListCont {...this.props} currentStatus={singleDeviceType} />}
-              {deviceTypeCode === 302 && <IntegrateList {...this.props} />}
-              {deviceTypeCode === 301 && <Boosterstation {...this.props} />}
-              {deviceTypeCode === 0 && <PowerNet {...this.props} />}
+              {`${deviceTypeCode}` === '101' && <FanListCont {...this.props} currentStatus={singleDeviceType} />}
+              {`${deviceTypeCode}` === '302' && <IntegrateList {...this.props} />}
+              {`${deviceTypeCode}` === '301' && <Boosterstation {...this.props} />}
+              {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />}
             </div>
           </div>
           {fanDisplay !== 'deviceTable' &&

@@ -12,7 +12,7 @@ class Boosterstation extends Component {
     boosterList: PropTypes.array,
     getBoosterstation: PropTypes.func,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
+    deviceTypeCode: PropTypes.string,
     loading: PropTypes.bool,
   }
 
