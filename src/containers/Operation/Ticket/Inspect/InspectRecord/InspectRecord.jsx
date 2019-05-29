@@ -13,7 +13,7 @@ class inspectRecord extends Component {
   static propTypes = {
     onChangeShowContainer: PropTypes.func,
     stations: PropTypes.object,
-    showContainer: PropTypes.string,
+    container: PropTypes.string,
     getStations: PropTypes.func,
   }
   constructor(props) {

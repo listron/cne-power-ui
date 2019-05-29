@@ -67,7 +67,7 @@ class InspectCreate extends Component{
 }
 
 const mapStateToProps = (state) => ({
-  showContainer: state.operation.ticket.get('showContainer'),
+  container: state.operation.ticket.get('container'),
   stations: state.common.get('stations'),
   error: state.operation.inspect.get('error'),
   deviceTypeItems: state.operation.inspect.get('deviceTypeItems'),

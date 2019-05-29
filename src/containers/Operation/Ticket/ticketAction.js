@@ -56,7 +56,6 @@ export const ticketAction = {
     getInspectUsers: Symbol('getInspectUsers'),//巡检人员
     getInspectOrbit: Symbol('getInspectOrbit'),//巡检人员轨迹
     
-
-
-
+    getKnowledgebase: Symbol('getKnowledgebase'), // 专家库列表
+    likeKnowledgebase: Symbol('likeKnowledgebase'), // 点赞专家库
 };

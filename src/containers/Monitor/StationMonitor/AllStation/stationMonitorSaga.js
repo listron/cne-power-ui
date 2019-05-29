@@ -199,6 +199,94 @@ function* stopRealCharstData(action) {
   }
 }
 
+function* dayPower(){ // 多电站日发电量与等效时图
+  const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
+  const startDate=moment(endDate).subtract(1,'month').format('YYYY-MM-DD');
+  // const url = `${baseurl + Path.APISubPaths.monitor.getDayPower}${startDate}/${endDate}}`;
+  const url=`/mock/api/v3/monitor/dayPower`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          dayPowerData: response.data.data || [],
+          dayPowerTime:moment().unix(),
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        dayPowerData: [],
+      }
+    });
+  }
+}
+
+function* monthPower (){ // 多电站月发电量与等效时图
+  const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
+  const startDate= moment().startOf('year').format('YYYY-MM-DD');
+  // const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}}`;
+  const url=`/mock/api/v3/monitor/monthPower`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          monthPowerData: response.data.data || [],
+          monthPowerTime:moment().unix(),
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        monthPowerData: [],
+      }
+    });
+  }
+}
+
+function* monthplanpower(){ // 多电站月累计与计划发电量图
+  const endDate = moment().subtract(1,'days').format('YYYY-MM-DD');
+  const startDate= moment().startOf('year').format('YYYY-MM-DD');
+  // const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}}`;
+  const url=`/mock/api/v3/monitor/monthPlanpower`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: allStationAction.changeMonitorstationStore,
+        payload: {
+          monthPlanPowerData: response.data.data || [],
+          monthPlanPowerTime:moment().unix(),
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        monthPowerData: [],
+      }
+    });
+  }
+}
+
+function* getPvChartsData(){
+  yield fork(dayPower);
+  yield fork(monthPower);
+  yield fork(monthplanpower);
+}
+
+
 export function* watchStationMonitor() {
   yield takeLatest(allStationAction.getMonitorStation, getMonitorStation);
   yield takeLatest(allStationAction.stopRealMonitorData, stopRealMonitorData);
@@ -206,5 +294,6 @@ export function* watchStationMonitor() {
   yield takeLatest(allStationAction.getRealMonitorPower, getRealMonitorPower);
   yield takeLatest(allStationAction.getRealChartsData, getRealChartsData);
   yield takeLatest(allStationAction.stopRealCharstData, stopRealCharstData);
+  yield takeLatest(allStationAction.getPvChartsData, getPvChartsData);
 }
 
