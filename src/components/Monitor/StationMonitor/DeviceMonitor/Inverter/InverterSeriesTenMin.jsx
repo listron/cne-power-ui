@@ -32,6 +32,7 @@ class InverterSeriesTenMin extends Component {
     const echartBox = document.getElementById('seriesInverter_monitor_tenMin');
     const seriesInverterChart = echarts.init(echartBox);
     const { index = [], time = [], rate = []} = branchTenMin;
+    const timeFormatArr = time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
     const hlArr = index.filter(e => e !== 'time'); // 取出正确的组串对应索引。
     const lineColor = '#666';
     const hlSeries = hlArr.map(e => {
@@ -106,7 +107,7 @@ class InverterSeriesTenMin extends Component {
       },
       xAxis: {
         type: 'category',
-        data: time,
+        data: timeFormatArr,
         axisTick: {
           show: false,
         },

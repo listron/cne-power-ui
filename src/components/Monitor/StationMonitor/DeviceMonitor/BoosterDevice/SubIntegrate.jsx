@@ -3,12 +3,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './booster.scss';
 
 const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
   const baseLinkPath = '/hidden/monitorDevice';
-
   return (
     <div className={styles.subIntergrate}>
       {subDeviceList.map((item, i) => {
@@ -37,6 +37,12 @@ const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
       })}
     </div>
   )
+}
+
+SubIntegrate.propTypes = {
+  subDeviceList: PropTypes.array,
+  deviceDetail: PropTypes.object,
+  stationCode: PropTypes.string,
 }
 
 export default SubIntegrate;
