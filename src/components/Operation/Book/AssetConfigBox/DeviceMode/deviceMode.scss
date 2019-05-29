@@ -24,14 +24,14 @@
     flex-direction: column;
     flex:1;
     :global{
-      .iconfont{
+      .icon-edit,.icon-del,icon-doned{
         font-size: 20px;
         &:hover{
           color:#199475
         }
       }
       .icon-edit,.icon-del{
-        color:#199475;
+        // color:#199475;
       }
     }
     .paginationStyle{

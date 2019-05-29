@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Table, Form, Input, Icon, Select } from 'antd';
+import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -11,11 +13,14 @@ class EditableCell extends React.Component {
     super(props, context)
   }
   getInput = () => {
-    const { devicefactorslist } = this.props;
-    // console.log('devicefactorslist: ', devicefactorslist);
-    if (this.props.inputtype === 'text') {
+    const { devicefactorslist,type,onChange,assetlist,stationtypecount,querydatatype,record } = this.props;
+    
+    
+    // 
+    if (type === 'text') {
       return <Input onChange={this.testValue} />
     }
+    if (type === 'select') {
     return (
       <Select
         onSelect={this.selectManufactor}
@@ -24,14 +29,23 @@ class EditableCell extends React.Component {
         {devicefactorslist.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
           {e.manufactorName}
         </Option>))}
-      </Select>);
+      </Select>)}
+      if(type==='modal'){
+        return (
+          <AssetNodeSelect 
+          onChange={onChange} assetList={assetlist} stationTypeCount={stationtypecount} queryDataType={querydatatype} 
+          assetsIds={record.assetsId?record.assetsId.split():[]}
+          />
+          )
+      }
+      
   };
   testValue = (e) => {
-    console.log('设备型号的编辑', e.target.value);
+    
 
   }
   selectManufactor=(value)=>{
-    console.log('value: ', value);
+    
     
   }
   render() {
@@ -40,7 +54,7 @@ class EditableCell extends React.Component {
       editing,
       dataIndex,
       title,
-      // inputtype,
+      // type,
       record,
       index,
       form,
@@ -61,7 +75,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入 ${title}!`,
                     }],
-                    initialValue: record[dataIndex],
+                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId']:record['manufactorId'],
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

@@ -39,13 +39,10 @@ class SelectModal extends Component {
     this.setState({ checkedKeys: nextProps.assetsIds });
   }
   onCheck = (checkedKeys, e) => {
-    console.log('e: ', e);
-    console.log('checkedKeys: ', checkedKeys);
+    const {multiple}=this.props;
     let dataRef = e.node.props.dataRef;
-    console.log('dataRef: ', dataRef);
     let { assetsNames, assetsName } = dataRef
-
-    this.setState({ checkedKeys: checkedKeys.checked, checkedName: `${assetsNames}/${assetsName}` });
+    this.setState({ checkedKeys: multiple?checkedKeys.checked:checkedKeys, checkedName: `${assetsNames}/${assetsName}` });
   }
   showModal = () => {
     this.props.showModal();
@@ -102,6 +99,7 @@ class SelectModal extends Component {
               onCheck={this.onCheck}
               onSelect={this.onCheck}
               checkedKeys={this.state.checkedKeys}
+              selectedKeys={this.state.checkedKeys}
               blockNode={false}
               
             >
