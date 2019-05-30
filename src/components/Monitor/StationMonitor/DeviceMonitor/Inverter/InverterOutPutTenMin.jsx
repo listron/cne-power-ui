@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import echarts from 'echarts';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
-function InverterTenMin({ deviceTenMin, loading }) {
-  const echartBox = document.getElementById('inverter_monitor_tenMin');
-  const lineColor = '#666';
-  if(echartBox){
-    
+
+class InverterOutPutTenMin extends Component {
+  static propTypes = {
+    tenMinChartLoading: PropTypes.bool,
+    tenMinUnix: PropTypes.number,
+    deviceTenMin: PropTypes.array,
+  }
+
+  componentDidUpdate(prevProps){
+    const { tenMinUnix, tenMinChartLoading } = this.props;
+    const prevTenMinUnix = prevProps.tenMinUnix;
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading) { // 获得数据
+      this.renderChart();
+    }
+  }
+
+  renderChart = () => {
+    const { deviceTenMin, tenMinChartLoading } = this.props;
+    const echartBox = document.getElementById('inverter_monitor_tenMin');
     const inverterChart = echarts.init(echartBox);
-    // if(loading){
-    //   inverterChart.showLoading();
-    // }else{
-    //   inverterChart.hideLoading();
-    // }
+    if (tenMinChartLoading) {
+      inverterChart.showLoading();
+      return;
+    } else {
+      inverterChart.hideLoading();
+    }
+    const lineColor = '#666';
     let powerLineData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       //console.log(e.utc);
@@ -22,20 +39,19 @@ function InverterTenMin({ deviceTenMin, loading }) {
       powerLineData.push(e.stationPower);
       radiationLineData.push(e.instantaneous);
     });
-    
     const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
     const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
     const inverterTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {
       graphic: inverterTenMinGraphic,
-      title: {
-        text: '时序图',
-        textStyle: {
-          color: lineColor,
-          fontSize: 14,
-        },
-        left: 60
-      },
+      // title: {
+      //   text: '时序图',
+      //   textStyle: {
+      //     color: lineColor,
+      //     fontSize: 14,
+      //   },
+      //   left: 60
+      // },
       legend: {
         data:['功率','瞬时辐照'],
         top: 24,
@@ -202,9 +218,12 @@ function InverterTenMin({ deviceTenMin, loading }) {
     inverterChart.setOption(option);
     inverterChart.resize();
   }
-  return (
-    <div id="inverter_monitor_tenMin" style={{height:"335px",width: "100%",flex: 1,marginTop: "10px"}}></div>
-  );
+
+  render(){
+    return (
+      <div id="inverter_monitor_tenMin" style={{height:"335px",width: "100%",flex: 1,marginTop: "10px"}}></div>
+    );
+  }
 }
 
-export default InverterTenMin;
+export default InverterOutPutTenMin;
