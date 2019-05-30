@@ -4,8 +4,10 @@ import Path from '../../../../constants/path';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import { message } from 'antd';
+import moment from 'moment';
 const APIBasePath = Path.basePaths.APIBasePath;
 const operation = Path.APISubPaths.operation;
+
 
 function* changeDeviceManageStore(action) { // 存储payload指定参数，替换reducer-store属性。
   const { payload } = action;
@@ -220,13 +222,13 @@ function* deleteDevice(action) { // 删除设备信息；
       }
 
       const params = yield select(state => ({//继续请求部门列表
-        stationCode: state.system.deviceManage.get('stationCode'),
-        pageNum: state.system.deviceManage.get('pageNum'),
-        pageSize: state.system.deviceManage.get('pageSize'),
-        deviceModeCode: state.system.deviceManage.get('deviceModeCode'),
-        deviceTypeCode: state.system.deviceManage.get('deviceTypeCode'),
-        sortMethod: state.system.deviceManage.get('sortMethod'),
-        sortField: state.system.deviceManage.get('sortField'),
+        stationCode: state.operation.deviceManage.get('stationCode'),
+        pageNum: state.operation.deviceManage.get('pageNum'),
+        pageSize: state.operation.deviceManage.get('pageSize'),
+        deviceModeCode: state.operation.deviceManage.get('deviceModeCode'),
+        deviceTypeCode: state.operation.deviceManage.get('deviceTypeCode'),
+        sortMethod: state.operation.deviceManage.get('sortMethod'),
+        sortField: state.operation.deviceManage.get('sortField'),
       }));
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_LIST,
@@ -253,13 +255,13 @@ function* deleteStationDevice(action) { // 清除设备；
         }
       })
       const params = yield select(state => ({//继续请求部门列表
-        stationCode: state.system.deviceManage.get('stationCode'),
-        pageNum: state.system.deviceManage.get('pageNum'),
-        pageSize: state.system.deviceManage.get('pageSize'),
-        deviceModeCode: state.system.deviceManage.get('deviceModeCode'),
-        deviceTypeCode: state.system.deviceManage.get('deviceTypeCode'),
-        sortMethod: state.system.deviceManage.get('sortMethod'),
-        sortField: state.system.deviceManage.get('sortField'),
+        stationCode: state.operation.deviceManage.get('stationCode'),
+        pageNum: state.operation.deviceManage.get('pageNum'),
+        pageSize: state.operation.deviceManage.get('pageSize'),
+        deviceModeCode: state.operation.deviceManage.get('deviceModeCode'),
+        deviceTypeCode: state.operation.deviceManage.get('deviceTypeCode'),
+        sortMethod: state.operation.deviceManage.get('sortMethod'),
+        sortField: state.operation.deviceManage.get('sortField'),
       }));
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_LIST,
@@ -294,13 +296,13 @@ function* importStationDevice(action) { // 导入设备；
         }
       })
       const params = yield select(state => ({//继续请求部门列表
-        stationCode: state.system.deviceManage.get('stationCode'),
-        pageNum: state.system.deviceManage.get('pageNum'),
-        pageSize: state.system.deviceManage.get('pageSize'),
-        deviceModeCode: state.system.deviceManage.get('deviceModeCode'),
-        deviceTypeCode: state.system.deviceManage.get('deviceTypeCode'),
-        sortMethod: state.system.deviceManage.get('sortMethod'),
-        sortField: state.system.deviceManage.get('sortField'),
+        stationCode: state.operation.deviceManage.get('stationCode'),
+        pageNum: state.operation.deviceManage.get('pageNum'),
+        pageSize: state.operation.deviceManage.get('pageSize'),
+        deviceModeCode: state.operation.deviceManage.get('deviceModeCode'),
+        deviceTypeCode: state.operation.deviceManage.get('deviceTypeCode'),
+        sortMethod: state.operation.deviceManage.get('sortMethod'),
+        sortField: state.operation.deviceManage.get('sortField'),
       }));
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_LIST,
@@ -526,16 +528,25 @@ function* getStationDeviceType(action) { //获取电站设备类型
 }
 function* getDeviceFactors(action) { //获取设备厂家列表
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
+      const total = response.data.data.pageCount || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           ...payload,
-          deviceFactorsList: response.data.data || [],
+          deviceFactorsList: response.data.data.dataList || [],
+          total,
         },
       });
     } else {
@@ -549,10 +560,46 @@ function* getDeviceFactors(action) { //获取设备厂家列表
     })
   }
 }
+function* addDeviceFactors(action) { //新建设备厂家
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.addDeviceFactors}`;
+  const nowTime = moment().utc().format();
+  // const url =`/mock/v3/ledger/assetslist`;
+  try {
+    const response = yield call(axios.post, url, { ...payload, nowTime });
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          //应该反回一个厂家Id供我使用
+        },
+      });
+      const payload = yield select(state => ({
+        orderField: operation.deviceManage.get('orderField'),
+        orderMethod:operation.deviceManage.get('orderMethod'),
+        
+      }));
+      yield put({
+        type: deviceManageAction.getDeviceFactors,
+        payload,
+      })   
+    }else{
+      message.error(`新增设备厂家失败!${response.data.message}`);
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
 function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型号
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
-  const url = `/mock/v3/ledger/devicemodes/manufactorId`;
+  const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
+  // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -576,8 +623,8 @@ function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型�
 }
 function* getDevicePartInfo(action) { //获取设备部件信息
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
-  const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
+  const url =`${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
+  // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -601,10 +648,10 @@ function* getDevicePartInfo(action) { //获取设备部件信息
 }
 function* getDevicefixRecord(action) { //获取检修记录
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicefixRecord}`;
-  const url = `/mock/v3/ledger/device/defect/list`;
+  const url =`${APIBasePath}${operation.getDevicefixRecord}`;
+  // const url = `/mock/v3/ledger/device/defect/list`;
   try {
-    const response = yield call(axios.get, url,);
+    const response = yield call(axios.get, url,{params:{...payload,}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -626,10 +673,10 @@ function* getDevicefixRecord(action) { //获取检修记录
 }
 function* getDevicehistoryWarning(action) { //获取设备历史告警
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceCode}/${payload.warningType}`;
-  const url = `/mock/v3/alarm/device/deviceCode/warningType`;
+  const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}/${'事件告警'}`;
+  // const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
-    const response = yield call(axios.post, url,{...payload});
+    const response = yield call(axios.get, url,{params:{orderMethod:'desc',orderField:'1'}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -671,6 +718,7 @@ export function* watchBookDeviceManage() {
   yield takeLatest(deviceManageAction.importStationDevice, importStationDevice);
   yield takeLatest(deviceManageAction.getStationDeviceType, getStationDeviceType);
   yield takeLatest(deviceManageAction.getfactorsDeviceMode, getfactorsDeviceMode);
+  yield takeLatest(deviceManageAction.addDeviceFactors, addDeviceFactors);
   yield takeLatest(deviceManageAction.getDeviceFactors, getDeviceFactors);
   yield takeLatest(deviceManageAction.getDevicePartInfo, getDevicePartInfo);
   yield takeLatest(deviceManageAction.getDevicefixRecord, getDevicefixRecord);
