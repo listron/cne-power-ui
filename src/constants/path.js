@@ -149,6 +149,19 @@ export default {
       getDevicePartInfo:'/v3/ledger/device/parts/list',//获取某设备的部件信息
       getDevicefixRecord:'/v3/ledger/device/defect/list',//获取某设备检修记录
       getDevicehistoryWarning:'/v3/alarm/device',//获取某设备的历史告警
+
+      //部件
+      getDeviceTypeList:'/v3/ledger/devicetype',
+      getDeviceComList: '/v3/ledger/parts/list',
+      addPartInfo: '/v3/ledger/parts/add',
+      editPartInfo: '/v3/ledger/parts/update',
+      getDetailPartInfo: '/v3/ledger/partsdetail/list',
+      deletePartInfo: '/v3/ledger/delete/',
+
+      importParts:'/v3/ledger/parts/import',
+      exportParts:'/v3/ledger/parts/export',
+
+    
       // 台账-仓库配置
       warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
       warehouseAdd: "/v3/warehouse/add",  // 仓库添加

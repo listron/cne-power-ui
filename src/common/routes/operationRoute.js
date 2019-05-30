@@ -23,8 +23,8 @@ const twoTickets = [
 const book = [
   { // 资产配置
     path: '/operation/book/assetsConfig',
-    component: lazy(() => import('../../components/Common/Building/Building')),
-    // component: lazy(() => import('../../containers/Operation/Book/AssetsConfig/AssetsConfig')),
+    // component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/Book/AssetsConfig/AssetsConfig')),
   }, { // 设备管理
     path: '/operation/book/deviceManage',
     component: lazy(() => import('../../components/Common/Building/Building')),
