@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { confluenceStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { interverStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
-class ConfluenceHeader extends Component {
+class InverterHeader extends Component {
 
   static propTypes = {
     devices: PropTypes.array,
@@ -54,41 +54,28 @@ class ConfluenceHeader extends Component {
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
-        {showDeviceChangeBox && <HeaderDeviceChange
-          devices={devices}
-          deviceDetail={deviceDetail}
-          baseLinkPath={baseLinkPath}
-          hideDeviceChange={this.hideDeviceChange}
-        />}
+        {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
-          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName || '--'}</span>
-          <span className={styles.status} >设备状态: {confluenceStatus[deviceStatus] || '--'}</span>
+          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
+          <span className={styles.status}>设备状态: {interverStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link
-            to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`}
-            className={styles.eachLink}
-          >
-            <span className={`${parentDeviceBaseInfo.icon} linkIcon`}></span>
+          {(parentDeviceTypeCode && parentDeviceCode && <Link to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
+            <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
-              {parentDevice && parentDevice.deviceTypeName}{parentDevice && parentDevice.deviceName}详情
+              {parentDevice.deviceTypeName}{parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>}
+          </Link>)}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
             <Icon type="arrow-left" />
           </Link>
-          {/* {sonDevice && sonDevice.deviceTypeCode && <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
-            <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
-            <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
-            <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>} */}
         </div>
       </div>
     )
   }
 }
-export default ConfluenceHeader;
+export default InverterHeader;
