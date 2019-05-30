@@ -103,18 +103,16 @@ class ForgetForm extends Component{
       <div className={styles.checkCode} >
         <span className={styles.findPass}>找回密码</span>
         <Form>
-          <div>
-            <FormItem>
-              {getFieldDecorator('phoneNum', {
-                rules: [
-                  {required: true, message: '请输入手机号'},
-                  {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
-                ]
-              })(
-                <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
-              )}
-            </FormItem>
-          </div>
+          <FormItem style={{marginBottom: '21px'}}>
+            {getFieldDecorator('phoneNum', {
+              rules: [
+                {required: true, message: '请输入手机号'},
+                {pattern: /(^1\d{10}$)/, message: '手机号格式不对'}
+              ]
+            })(
+              <Input addonBefore={<i className="iconfont icon-phone"></i>} placeholder="请输入手机号" />
+            )}
+          </FormItem>
           <div className={styles.checkCodeBox}>
             <FormItem  >
               {getFieldDecorator('verificationCode',{

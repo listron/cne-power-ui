@@ -172,7 +172,7 @@ class StationManageTable extends Component {
   render(){
     const { stationListLoading, stationList, totalNum, allDepartmentData, pageNum, pageSize  } = this.props;
     const { departmentModal, departmentSetInfo, uploading, fileList ,showWarningTip, warningTipText,deleteInfo} = this.state;
-    const authData = Cookie.get('authData') || null;
+    const authData = localStorage.getItem('authData') || '';
     const column = [
       {
         title: '电站名称',
@@ -228,7 +228,7 @@ class StationManageTable extends Component {
               action={`${path.basePaths.APIBasePath}${path.APISubPaths.system.uploadStationFile}`}
               className={styles.uploadStation}
               onChange={this.onStationUpload}
-              headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
+              headers={{'Authorization': 'bearer ' + authData}}
               beforeUpload={this.beforeUploadStation}
               data={(file)=>({file})}
               showUploadList={false}

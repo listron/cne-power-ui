@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import { DatePicker } from 'antd';
 import eCharts from "echarts";
 import { PreTemperatureOptions } from "../chartsConfig/chartsConfig";
-import styles from "./preTemperature.scss";
 import moment from "moment";
+import DataZoom from "../../../../../components/Common/DataZoom/DataZoom";
+
+import styles from "./preTemperature.scss";
 
 const { RangePicker } =  DatePicker;
-//默认保存echarts dataZoom滑块位置
-let paramsStart = 0;
-let paramsEnd = 100;
 
 export default class PreTemperature extends React.Component {
   static propTypes = {
@@ -31,6 +30,8 @@ export default class PreTemperature extends React.Component {
     getTenMinutesDiff: PropTypes.func,
     faultDateList: PropTypes.string,
     beforeTimeData: PropTypes.array,
+    preDataZoomStart: PropTypes.number,
+    preDataZoomEnd: PropTypes.number,
 
   };
 
@@ -39,12 +40,7 @@ export default class PreTemperature extends React.Component {
       tenMinutesBeforeList,
       deviceName,
       preLoading,
-      faultInfo: {
-        stationCode
-      },
-      beforeTimeData,
-      getTenMinutesBefore,
-      preTimeCompare: currentPreTimeCompare
+      preTimeCompare: currentPreTimeCompare,
     } = this.props;
     const { preTimeCompare } = prevProps;
     const { preChart } = this;
@@ -57,35 +53,10 @@ export default class PreTemperature extends React.Component {
       myChart.hideLoading();
     }
     if (currentPreTimeCompare && preTimeCompare !== currentPreTimeCompare) {
-      eCharts.init(preChart).dispose();//销毁前一个实例
+      eCharts.init(preChart).clear();//清除
       const myChart = eCharts.init(preChart); //构建下一个实例
-      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName, paramsStart, paramsEnd, beforeTimeData));
-      myChart.on('datazoom', function (params){
-        const opt = myChart.getOption();
-        const dz = opt.dataZoom[0];
-        const start = opt.xAxis[0].data[dz.startValue];
-        const end = opt.xAxis[0].data[dz.endValue];
-        const preParams = {
-          stationCode,
-          pointCode: "GN010", //前驱测点-固定字段
-          deviceFullcodes: [], // 默认传空代表所有风机
-          startTime: moment(start).utc().format(),
-          endTime: moment(end).add(1, "days").utc().format()
-        };
-        if (paramsStart !== params.start || paramsEnd !== params.end) {
-          // 每次保存变量
-          paramsStart = params.start;
-          paramsEnd = params.end;
-          // 接口
-          getTenMinutesBefore(preParams);
-        }
-      })
+      myChart.setOption(PreTemperatureOptions(tenMinutesBeforeList, deviceName));
     }
-  }
-
-  componentWillUnmount() {
-    paramsStart = 0;
-    paramsEnd = 100;
   }
 
   changeFaultDate = (date, dateString) => {
@@ -109,6 +80,12 @@ export default class PreTemperature extends React.Component {
       afterDate: [moment(date, "YYYY/MM/DD").subtract(1,'months'), moment(date, "YYYY/MM/DD")],
       // 后驱温度时间选择
       diffDate: [moment(date, "YYYY/MM/DD").subtract(1,'months'), moment(date, "YYYY/MM/DD")],
+      preDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+      preDataZoomEnd: 100,
+      afterDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+      afterDataZoomEnd: 100,
+      diffDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+      diffDataZoomEnd: 100,
     });
     const taskId = localStorage.getItem("taskId");
     // 发电机前驱温度
@@ -117,7 +94,8 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).add(1, "days").utc().format()
+      endTime: moment(date).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     // 发电机后驱温度
     const afterParams = {
@@ -125,15 +103,17 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).add(1, "days").utc().format()
+      endTime: moment(date).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
-    // 发电机后驱温度
+    // 发电机温度差
     const diffParams = {
       stationCode,
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date).subtract(1,'months').utc().format(),
-      endTime: moment(date).add(1, "days").utc().format()
+      endTime: moment(date).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     // 相似性热图和所有风机
     const heatAndAllFansParams = {
@@ -165,21 +145,52 @@ export default class PreTemperature extends React.Component {
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
       startTime: moment(date[0]).utc().format(),
-      endTime: moment(date[1]).add(1, "days").utc().format()
+      endTime: moment(date[1]).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     onChangeFilter({
-      preDate: date
+      preDate: date,
+      preDataZoomStart: 0,
+      preDataZoomEnd: 100,
     });
     // 接口
     getTenMinutesBefore(params);
   };
 
+  // dataZoom滑块
+  dataZoomFunc = (start, end, startZoom, endZoom) => {
+    const {
+      getTenMinutesBefore,
+      faultInfo:{
+        stationCode
+      },
+      onChangeFilter
+    } = this.props;
+    const preParams = {
+      stationCode,
+      pointCode: "GN010", //前驱测点-固定字段
+      deviceFullcodes: [], // 默认传空代表所有风机
+      startTime: moment(start).utc().format(),
+      endTime: moment(end).utc().format(),
+      queryFlag: false // 判断是否重新存贮时间轴
+    };
+    onChangeFilter({
+      preDataZoomStart: startZoom,
+      preDataZoomEnd: endZoom,
+    });
+    // 接口
+    getTenMinutesBefore(preParams);
+
+  };
 
   render() {
     const {
       faultDate,
       preDate,
-      faultDateList
+      faultDateList,
+      beforeTimeData,
+      preDataZoomStart,
+      preDataZoomEnd
     } = this.props;
     return (
       <div className={styles.preChartsBox}>
@@ -187,6 +198,7 @@ export default class PreTemperature extends React.Component {
           <span>选择日期</span>
           {(faultDate) && (
             <DatePicker
+              allowClear={false}
               dateRender={(current) => {
                 const style = {};
                 faultDateList && faultDateList.split(",").map(cur => {
@@ -227,6 +239,7 @@ export default class PreTemperature extends React.Component {
           <div>
             {(faultDate) && (
               <RangePicker
+                allowClear={false}
                 onChange={this.changePreDate}
                 value={preDate.length === 0 ? [
                   moment(faultDate, "YYYY/MM/DD").subtract(1,'months'),
@@ -236,9 +249,18 @@ export default class PreTemperature extends React.Component {
             )}
           </div>
         </div>
-        <div ref={(ref) => {
-          this.preChart = ref;
-        }} className={styles.preCharts} />
+        <div className={styles.preChartBox}>
+          <div ref={(ref) => {
+            this.preChart = ref;
+          }} className={styles.preCharts} />
+          <DataZoom
+            styleData={{top: "220px"}}
+            paramsStart={preDataZoomStart}
+            paramsEnd={preDataZoomEnd}
+            onChange={this.dataZoomFunc}
+            xAxisData={beforeTimeData}
+          />
+        </div>
       </div>
     );
   }
