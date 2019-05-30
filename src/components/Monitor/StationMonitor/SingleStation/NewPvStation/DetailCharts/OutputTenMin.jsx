@@ -42,11 +42,6 @@ class OutputTenMin extends Component {
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
-    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
-    const totalLength = capabilityData.length;
-    if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
-      labelInterval = parseInt(totalLength / 3) - 1;
-    }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
     const capabilityOption = {//出力图
@@ -102,7 +97,6 @@ class OutputTenMin extends Component {
       color: ['#a42b2c', '#f9b600'],
       xAxis: {
         type: 'category',
-        splitNumber: 4,
         boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
           return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
@@ -114,7 +108,10 @@ class OutputTenMin extends Component {
         },
         axisLabel: {
           color: fontColor,
-          interval: labelInterval,
+          formatter:(value)=>{
+            return moment(value).format('HH:MM')
+          }
+
         },
         axisTick: {
           show: false,

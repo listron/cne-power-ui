@@ -195,10 +195,10 @@ class BoxTransformerList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.deviceListBlockBox} >
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
-                const { parentDeviceName, parentDeviceCode, parentDeviceFullCode } = list.length > 0 && list[0];
+                const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
                 return (<div key={index}>
                   <div className={styles.parentDeviceName} >
-                    <Link to={`/hidden/monitorDevice/${stationCode}/${parentDeviceCode}/${parentDeviceFullCode}`} className={styles.underlin} >
+                    <Link to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
                       <i className={'iconfont icon-jidian'}></i>
                       {parentDeviceName}
                     </Link>
@@ -228,10 +228,10 @@ class BoxTransformerList extends Component {
                               </div>
                             </div>
                             <div className={styles.deviceBlockFooter}>
-                              <div>Q：{dataFormats(item.voltage, '--', 2)} kVar</div>
-                              <div>F：{dataFormats(item.electricity, '--', 2)} Hz</div>
-                              <div>Cos：{dataFormats(item.dispersionRatio, '--', 2)} </div>
-                              <div>Ia:{dataFormats(item.temp, '--', 2)} A</div>
+                              <div>Q：{dataFormats(item.reactivePower, '--', 2)} kVar</div>
+                              <div>F：{dataFormats(item.powerFrequency, '--', 2)} Hz</div>
+                              <div>Cos：{dataFormats(item.powerFactor, '--', 2)} </div>
+                              <div>Ia:{dataFormats(item.current, '--', 2)} A</div>
                             </div>
                           </Link>
                         </div>);

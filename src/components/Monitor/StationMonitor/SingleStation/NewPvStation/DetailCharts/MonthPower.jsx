@@ -29,19 +29,19 @@ class MonthPower extends Component {
         this.drawCharts(this.props)
     }
 
-    componentDidUpdate(prevProps,prevState){ // 数据重新请求后重绘。
-        const { powerTime, loading,intervalTime } = this.props;
+    componentDidUpdate(prevProps, prevState) { // 数据重新请求后重绘。
+        const { powerTime, loading, intervalTime } = this.props;
         const preTime = prevProps.powerTime;
-        if (powerTime !== preTime || prevState.intervalTime !==intervalTime) {
+        if (powerTime !== preTime || prevState.intervalTime !== intervalTime) {
             this.drawCharts(this.props);
         }
     }
 
     onChangeTimePower = (e) => { // 改变 日／月／年
-        const {stationCode} =this.props;
+        const { stationCode } = this.props;
         const intervalTime = e.target.value;
-        setTimeout(()=>{this.setState({ intervalTime })},0)
-        this.props.onChange({ stationCode,intervalTime });
+        setTimeout(() => { this.setState({ intervalTime }) }, 0)
+        this.props.onChange({ stationCode, intervalTime });
     }
 
     yAxisType = () => { // 左侧y轴的数据
@@ -75,7 +75,7 @@ class MonthPower extends Component {
                 splitLine: {
                     show: false,
                 }
-            }]; 
+            }];
         return intervalTime === 0 ? dayObj : monthObj;
     }
 
@@ -114,15 +114,15 @@ class MonthPower extends Component {
     }
 
     drawCharts = (params) => {
-        let { monthPowerData = [], powerUnit, loading } = params;
+        let { powerData = [], powerUnit, loading } = params;
         const { intervalTime } = this.state;
-        const actualPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.actualPower, powerUnit), '--', 2, true));  // 发电量
-        const filterMonthPower = monthPowerData.filter(e => e.actualPower);
-        const theoryPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.theoryPower, powerUnit), '--', 2, true)); // 计划发电量
-        const filterMonthPlanPower = monthPowerData.filter(e => e.theoryPower);
-        const instantaneous = monthPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
-        const filterInstantaneous = monthPowerData.filter(e => e.instantaneous);
-        const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
+        const actualPower = powerData.map(e => chartPowerPoint(divideFormarts(e.actualPower, powerUnit), '--', 2, true));  // 发电量
+        const filterMonthPower = powerData.filter(e => e.actualPower);
+        const theoryPower = powerData.map(e => chartPowerPoint(divideFormarts(e.theoryPower, powerUnit), '--', 2, true)); // 计划发电量
+        const filterMonthPlanPower = powerData.filter(e => e.theoryPower);
+        const instantaneous = powerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
+        const filterInstantaneous = powerData.filter(e => e.instantaneous);
+        const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const monthPowerChart = echarts.init(document.getElementById('powerChart'));
@@ -148,7 +148,7 @@ class MonthPower extends Component {
                 right: intervalTime === 0 ? '13%' : '20%',
                 top: 100,
                 left: '13%',
-                bottom: 40,
+                bottom: intervalTime === 0 ? 60 : 40,
             },
             legend: {
                 left: 'center',
@@ -194,7 +194,7 @@ class MonthPower extends Component {
             xAxis: [
                 {
                     type: 'category',
-                    data: monthPowerData.map(e => e.date),
+                    data: powerData.map(e => e.time),
                     axisLine: {
                         lineStyle: {
                             color: lineColor,
@@ -204,7 +204,16 @@ class MonthPower extends Component {
                         color: fontColor,
                         interval: 0,
                         formatter: (value) => {
-                            return moment(value).format('MM')
+                            const { intervalTime } = this.state;
+                            if (intervalTime === 0) {
+                              return moment(value).format('MM-DD');
+                            }
+                            if (intervalTime === 1) {
+                                return moment(value).format('MM');
+                            }
+                            if (intervalTime === 2) {
+                                return moment(value).format('YYYY');
+                            }
                         }
                     },
                     axisTick: { show: false },
@@ -262,6 +271,27 @@ class MonthPower extends Component {
                 },
 
             ],
+            dataZoom: [{
+                type: 'slider',
+                show:intervalTime===0,
+                realtime: intervalTime===0,
+                filterMode: 'filter',
+                startValue: powerData.length > 0 && powerData.length - 7,
+                endValue: powerData.length > 0 && powerData.length - 1,
+                bottom: 15,
+                handleSize: '80%',
+                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                backgroundColor: 'rgba(213,219,228,.8)',
+                height: '11px',
+                zoomLock: true,
+                handleStyle: {
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '100%',
+                    color: '#fff',
+                    shadowBlur: 3,
+                }
+            }],
             series: [
                 ...seriesType,
                 {

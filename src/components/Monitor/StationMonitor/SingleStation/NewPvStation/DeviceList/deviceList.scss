@@ -10,12 +10,12 @@
     }
     .pvmoduleListTop{
       height: 49px;
-      border-top: 1px dashed #dfdfdf;
-      border-bottom: 1px dashed #dfdfdf;
+      // border-top: 1px dashed #dfdfdf;
+      // border-bottom: 1px dashed #dfdfdf;
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-      padding-right: 30px;
+      padding-right: 48px;
       .pvmoduleSelect{
         height: 24px;
         line-height: 24px;
@@ -658,6 +658,27 @@ $arlam:#ff8e9c;
         color: $darkColor;
         display: flex;
         flex-direction: column;
+        .statusTipsWrap{
+          display: flex;
+          justify-content: flex-end;
+          .statusTips{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+          }
+          .rect{
+            width: 5px;
+            height: 15px;
+            margin: 0px 4px 4px 0;
+          }
+          .round {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            margin: 0px 4px 4px 0;
+          }
+        }
         .parentDeviceName{
           margin: 0 0 8px 0;
           .underlin{
@@ -844,7 +865,6 @@ $arlam:#ff8e9c;
 .weatherStation{ // 气象站
   display: flex;
   flex-direction: column;
-
   .datailWrap{
     display: flex;
     // height: 238px;
@@ -937,7 +957,6 @@ $arlam:#ff8e9c;
         }
     }
 }
-
 }
 :global{
   .ant-table .ant-table-thead{

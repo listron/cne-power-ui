@@ -82,7 +82,7 @@ class InverterList extends Component {
       this.getData(stationCode);
     }, 10000);
   }
- 
+
 
   getStatusBox = (alarmNum, isLowEfficiency) => {
     let backgroundColor = 'transparent', color = '#666';
@@ -212,129 +212,23 @@ class InverterList extends Component {
     '802': '#ffce7f', // 离散率>=20%数
   }
 
-  render() {
-    const { deviceTypeCode, loading } = this.props;
-    let inverterList = {
-      "deviceList": [
-        {
-          "alarmNum": 12,
-          "deviceCapacity": "502.90",
-          "deviceCode": "302M201M4M1",
-          "deviceId": "874614",
-          "deviceName": "NB-01-01",
-          "devicePower": "10.77",
-          "deviceStatus": 400,
-          "parentDeviceCode": "302M304M16M1",
-          "parentDeviceName": "XB-01",
-          transferRate: '25',
-          dayPower: '23423',
-          isLowEfficiency: 0,
-          equipmentHours: '2011',
-          branchState: [801, 802, 803, 400, 500, 900, 2, 3, 3, 3, 3], // 支路装填
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": "502.90",
-          "deviceCode": "302M206M4M2",
-          "deviceId": "874615",
-          "deviceName": "NB-01-02",
-          "devicePower": "10.69",
-          "deviceStatus": 401,
-          "parentDeviceCode": "302M304M16M1",
-          "parentDeviceName": "XB-01",
-          transferRate: '25',
-          dayPower: '23423',
-          isLowEfficiency: 1,
-          equipmentHours: '2011',
-          branchState: [400, 500, 801, 802, 500, 900, 2, 3, 3, 3, 3], // 支路装填
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": "500.32",
-          "deviceCode": "302M201M4M3",
-          "deviceId": "874616",
-          "deviceName": "NB-02-01",
-          "devicePower": "338.0",
-          "deviceStatus": 500,
-          "parentDeviceCode": "302M304M16M2",
-          "parentDeviceName": "XB-02",
-          transferRate: '25',
-          dayPower: '23423',
-          isLowEfficiency: 1,
-          equipmentHours: '2011',
-          branchState: [801, 802, 803, 400, 500, 900, 2, 3, 3, 3, 3], // 支路装填
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": "500.32",
-          "deviceCode": "302M201M4M4",
-          "deviceId": "874617",
-          "deviceName": "NB-02-02",
-          "devicePower": "10.65",
-          "deviceStatus": 900,
-          "parentDeviceCode": "302M304M16M2",
-          "parentDeviceName": "XB-02",
-          transferRate: '25',
-          dayPower: '23423',
-          isLowEfficiency: 1,
-          equipmentHours: '2011',
-          branchState: [801, 802, 803, 400, 500, 900, 2, 3, 3, 3, 3], // 支路装填
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": "500.32",
-          "deviceCode": "302M201M4M5",
-          "deviceId": "874618",
-          "deviceName": "NB-03-01",
-          "devicePower": "11.29",
-          "deviceStatus": 203,
-          "parentDeviceCode": "302M304M16M3",
-          "parentDeviceName": "XB-03",
-          transferRate: '25',
-          dayPower: '23423',
-          isLowEfficiency: 1,
-          equipmentHours: '2011',
-          branchState: [801, 802, 803, 400, 500, 900, 2, 3, 3, 3, 3], // 支路装填
-        },
-      ],
-      "deviceStatusSummary": [
-        {
-          "deviceStatusCode": 400,
-          "deviceStatusName": "正常",
-          "deviceStatusNum": 18
-        },
-        {
-          "deviceStatusCode": 401,
-          "deviceStatusName": "限电",
-          "deviceStatusNum": 0
-        },
-        {
-          "deviceStatusCode": 201,
-          "deviceStatusName": "正常停机",
-          "deviceStatusNum": 1
-        },
-        {
-          "deviceStatusCode": 202,
-          "deviceStatusName": "计划停机",
-          "deviceStatusNum": 0
-        },
-        {
-          "deviceStatusCode": 203,
-          "deviceStatusName": "故障停机",
-          "deviceStatusNum": 0
-        },
-        {
-          "deviceStatusCode": 500,
-          "deviceStatusName": "无通讯",
-          "deviceStatusNum": 0
-        }, {
-          "deviceStatusCode": 900,
-          "deviceStatusName": "未接入",
-          "deviceStatusNum": 0
-        }
-      ]
-    }
+  statusTips = { // 状态提示
+    '206': [
+      { 'status': '400', 'text': '支路正常' },
+      { 'status': '803', 'text': '支路异常' },
+      { 'status': '802', 'text': '支路偏大' },
+      { 'status': '801', 'text': '支路偏小' },
+    ],
+    "201": [
+      { 'status': '400', 'text': '汇流箱正常' },
+      { 'status': '802', 'text': '汇流箱离散率>20%' },
+      { 'status': '801', 'text': '汇流箱离散率>10%' },
+      { 'status': '500', 'text': '汇流箱无通讯' },
+    ]
+  }
 
+  render() {
+    const { inverterList,deviceTypeCode, loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize, lowSwitch } = this.state;
     const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
     const filteredDeviceList = initDeviceList
@@ -375,64 +269,85 @@ class InverterList extends Component {
         <Tabs defaultActiveKey="1" className={styles.deviceListTab} tabBarExtraContent={operations}>
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.deviceListBlockBox} >
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
-                return (<div key={index}>
-                  <div className={styles.parentDeviceName} >{list && list[0] && list[0].parentDeviceName}</div>
-                  <div className={styles.singledeviceItemBox}>
-                    {list.map((item, i) => {
-                      const { branchState = [], deviceStatus, deviceCapacity, devicePower, deviceCode = '' } = item;
-                      const deviceTypeCode = deviceCode.split('M')[1];
-                      let progressPercent = devicePower / deviceCapacity * 100 || 0;
-                      const unconnect = `${deviceStatus}` === '900';
-                      const statusBoxStyle = this.getStatusBox(item.alarmNum, item.isLowEfficiency);
-                      const shadowStyle = `${this.inverterStatus[deviceStatus].name}Shadow`;
-                      return (
-                        <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect : ''} ${styles[shadowStyle]}`}>
-                          <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
-                            <div className={`${styles.statusBox}`} style={{ backgroundColor: statusBoxStyle.backgroundColor }}>
-                              <div className={styles.deviceItemIcon}>
-                                <i className={`iconfont icon-nb ${styles.icon}`} />
-                                {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
-                              </div>
-                              <div className={styles.deviceItemR}>
-                                <div className={styles.deviceBlockName}>
-                                  <span style={{ color: statusBoxStyle.color }}>{item.deviceName}</span>
-                                  <span>{item.transferRate}%</span>
+              <div>
+                <div className={styles.statusTipsWrap}>
+                  {this.statusTips[deviceTypeCode].map((e,i) => {
+                    return (
+                      <div className={styles.statusTips} key={i}>
+                        <span
+                          className={deviceTypeCode === '201' ? styles.rect : styles.round}
+                          style={{ backgroundColor: deviceTypeCode === '201' ? this.seriesStatus[e.status] : this.confluenceStatus[e.status] }}
+                        />
+                         {e.text}
+                      </div>
+                    )
+                  })}
+                </div>
+                {(deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
+                  const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
+                  return (<div key={index}>
+                    <div className={styles.parentDeviceName} >
+                      <Link to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
+                        <i className={'iconfont icon-xb'}></i>
+                        {parentDeviceName}
+                      </Link>
+                    </div>
+                    <div className={styles.singledeviceItemBox}>
+                      {list.map((item, i) => {
+                        const { branchState = [], deviceStatus, deviceCapacity, devicePower, deviceCode = '' } = item;
+                        const deviceTypeCode = deviceCode.split('M')[1];
+                        let progressPercent = devicePower / deviceCapacity * 100 || 0;
+                        const unconnect = `${deviceStatus}` === '900';
+                        const statusBoxStyle = this.getStatusBox(item.alarmNum, item.isLowEfficiency);
+                        const shadowStyle = `${this.inverterStatus[`${deviceStatus}`].name || ''}Shadow`;
+                        return (
+                          <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect : ''} ${styles[shadowStyle]}`}>
+                            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
+                              <div className={`${styles.statusBox}`} style={{ backgroundColor: statusBoxStyle.backgroundColor }}>
+                                <div className={styles.deviceItemIcon}>
+                                  <i className={`iconfont icon-nb ${styles.icon}`} />
+                                  {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
                                 </div>
-                                <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                                <div className={styles.deviceItemPower}>
-                                  <div className={styles.realDevicePower}>{dataFormats(devicePower, '--', 2)} kW</div>
-                                  <div>{dataFormats(deviceCapacity, '--', 2)} kW</div>
+                                <div className={styles.deviceItemR}>
+                                  <div className={styles.deviceBlockName}>
+                                    <span style={{ color: statusBoxStyle.color }}>{item.deviceName}</span>
+                                    <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                                  </div>
+                                  <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                                  <div className={styles.deviceItemPower}>
+                                    <div className={styles.realDevicePower}>{dataFormats(devicePower, '--', 2)} kW</div>
+                                    <div>{dataFormats(deviceCapacity, '--', 2)} kW</div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className={styles.deviceBlockFooter} >
-                              <div className={styles.eachInfo}>
-                                <div>日发电量</div>
-                                <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
+                              <div className={styles.deviceBlockFooter} >
+                                <div className={styles.eachInfo}>
+                                  <div>日发电量</div>
+                                  <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
+                                </div>
+                                <div className={styles.eachInfo}>
+                                  <div>日利用小时</div>
+                                  <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                                </div>
                               </div>
-                              <div className={styles.eachInfo}>
-                                <div>日利用小时</div>
-                                <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                              <div className={styles.allStatus}>
+                                <div className={styles.branchStatus}>{branchState && branchState.map((e, i) => (
+                                  <span
+                                    key={i}
+                                    className={deviceTypeCode === '201' ? styles.rect : styles.round}
+                                    style={{ backgroundColor: deviceTypeCode === '201' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
+                                  />
+                                ))}</div>
+                                <div style={{ color: this.inverterStatus[`${deviceStatus}`].color }}>{this.inverterStatus[`${deviceStatus}`].statusName}</div>
                               </div>
-                            </div>
-                            <div className={styles.allStatus}>
-                              <div className={styles.branchStatus}>{branchState.map((e, i) => (
-                                <span
-                                  key={i}
-                                  className={deviceTypeCode === '206' ? styles.rect : styles.round}
-                                  style={{ backgroundColor: deviceTypeCode === '206' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
-                                />
-                              ))}</div>
-                              <div style={{ color: this.inverterStatus[deviceStatus].color }}>{this.inverterStatus[deviceStatus].statusName}</div>
-                            </div>
-                          </Link>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>);
-              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
+                            </Link>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>);
+                }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
+              </div>
             }
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >

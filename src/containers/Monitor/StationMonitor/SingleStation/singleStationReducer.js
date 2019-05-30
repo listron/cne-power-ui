@@ -10,6 +10,8 @@ var initState = Immutable.fromJS({
   capabilityLoading: false,
   powerData: [],//理论发电量 实际发电量数据
   powerTime: null,//发电量时间
+  windPowerData:[],
+  windPowerTime:null,
   powerDataLoading: false,
   operatorList: [],//企业运维人员列表
   operatorTime: null,// 企业运维人员列表时间

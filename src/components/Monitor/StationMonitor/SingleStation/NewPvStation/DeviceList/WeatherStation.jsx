@@ -13,6 +13,12 @@ class WeatherStation extends Component {
     static propTypes = {
         getWeatherDetail: PropTypes.func,
         match: PropTypes.object,
+        weatherstationDetail: PropTypes.object,
+        deviceAlarmList:PropTypes.array,
+        weatherList:PropTypes.array,
+        radiationchartTime:PropTypes.number,
+        getStationDeviceList:PropTypes.func,
+        getRadiationchart:PropTypes.func,
     }
 
     constructor(props) {
@@ -51,21 +57,7 @@ class WeatherStation extends Component {
     }
 
     drawChart = (params) => {
-        // let { radiationchartData = [] } = params;
-        const radiationchartData = [
-            { hour: '01:00', instantaneous: Math.random() * 1000 },
-            { hour: '02:00', instantaneous: Math.random() * 1000 },
-            { hour: '03:00', instantaneous: Math.random() * 1000 },
-            { hour: '04:00', instantaneous: Math.random() * 1000 },
-            { hour: '05:00', instantaneous: Math.random() * 1000 },
-            { hour: '06:00', instantaneous: Math.random() * 1000 },
-            { hour: '07:00', instantaneous: Math.random() * 1000 },
-            { hour: '08:00', instantaneous: Math.random() * 1000 },
-            { hour: '11:00', instantaneous: Math.random() * 1000 },
-            { hour: '12:00', instantaneous: Math.random() * 1000 },
-            { hour: '23:00', instantaneous: Math.random() * 1000 },
-            { hour: '24:00', instantaneous: Math.random() * 1000 },
-        ]
+        let { radiationchartData = [] } = params;
         const instantaneous = radiationchartData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 辐射值
         const filterInstantaneous = radiationchartData.filter(e => e.instantaneous);
         const powerGraphic = (filterInstantaneous.length === 0) ? showNoData : hiddenNoData;
@@ -112,7 +104,9 @@ class WeatherStation extends Component {
                 {
                     type: 'category',
                     boundaryGap: false,
-                    data: radiationchartData && radiationchartData.map(e => e.hour),
+                    data: radiationchartData && radiationchartData.map(e => {
+                        return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
+                      }),
                     axisLine: {
                         lineStyle: {
                             color: '#dfdfdf',
@@ -120,7 +114,10 @@ class WeatherStation extends Component {
                     },
                     axisLabel: {
                         color: fontColor,
-                        interval: 0,
+                        formatter:(value)=>{
+                            return moment(value).format('HH:mm');
+                        }
+                        
                     },
                     axisTick: { show: false },
                 }
@@ -166,61 +163,9 @@ class WeatherStation extends Component {
     }
 
     render() {
-        const { loading, weatherstationDetail = {}, deviceAlarmList = [], radiationchartDat = [] } = this.props;
-        console.log('stationDeviceList', deviceAlarmList, radiationchartDat)
+        const { loading, weatherstationDetail = {}, deviceAlarmList = [],weatherList=[] } = this.props;
         const { stationCode } = this.props.match.params;
-        const waether = [
-            {
-                "id": "397267738019861",
-                "stationCode": 504,
-                "temperature": "4℃~20℃",
-                "weather": "多云转晴",
-                "weatherDate": "2019-05-27",
-                "weatherId": "01,00",
-                "weatherSummary": "晴",
-                "wind": "持续无风向微风"
-            },
-            {
-                "id": "397630125885461",
-                "stationCode": 504,
-                "temperature": "5℃~19℃",
-                "weather": "晴转多云",
-                "weatherDate": "2019-05-28",
-                "weatherId": "00,01",
-                "weatherSummary": "晴",
-                "wind": "持续无风向微风"
-            },
-            {
-                "id": "397992505362453",
-                "stationCode": 504,
-                "temperature": "3℃~18℃",
-                "weather": "晴转多云",
-                "weatherDate": "2019-05-29",
-                "weatherId": "00,01",
-                "weatherSummary": "晴",
-                "wind": "持续无风向微风"
-            },
-            {
-                "id": "398354901616661",
-                "stationCode": 504,
-                "temperature": "4℃~18℃",
-                "weather": "晴转多云",
-                "weatherDate": "2019-05-30",
-                "weatherId": "00,01",
-                "weatherSummary": "晴",
-                "wind": "持续无风向微风"
-            },
-            {
-                "id": "398717281093653",
-                "stationCode": 504,
-                "temperature": "4℃~18℃",
-                "weather": "晴转多云",
-                "weatherDate": "2019-05-31",
-                "weatherId": "00,01",
-                "weatherSummary": "晴",
-                "wind": "持续无风向微风"
-            },
-        ];
+        const weather=weatherList.filter(e=>moment(e.weatherDate).isBefore(moment().add(3,'day')))
         let deatilData = [
             { id: 'instantaneous', name: '瞬时辐射', unit: 'W/m²', point: '2', },
             { id: 'temp', name: '环境温度', unit: '℃', point: '2', },
@@ -244,13 +189,13 @@ class WeatherStation extends Component {
                         })}
                     </div>
                     <div className={styles.weatherList}>
-                        {waether.map((e, index) => {
+                        {weather.map((e, index) => {
                             const weekArray = ['日', '一', '二', '三', '四', '五', '六']
                             let date = ['昨天', '今天', '明天', '后天', '星期'];
-                            let dateInner = (index === waether.length - 1) ? '星期' + weekArray[moment(e.weatherDate).get('weekday')] : date[index]
+                            let dateInner = (index === weather.length - 1) ? '星期' + weekArray[moment(e.weatherDate).get('weekday')] : date[index]
                             return (<div className={styles.weatherDay} key={index}>
                                 <div className={styles.weatherDate}>{e.weatherDate} <span> {dateInner}</span></div>
-                                {waether.length > 0 &&
+                                {weather.length > 0 &&
                                     <React.Fragment>
                                         <div className={styles.weatherIcon}><img src={`/img/weathercn/${e.weatherId.split(',')[0]}.png`} /></div>
                                         <div>{e.weather}</div>

@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   getRealSingleData: payload => dispatch({ type: singleStationAction.getRealSingleData }),
   getSingleStation: payload => dispatch({ type: singleStationAction.GET_SINGLE_STATION_SAGA, payload }),
   getCapabilityDiagram: payload => dispatch({ type: singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, payload }),
-  getMonitorPower: payload => dispatch({ type: singleStationAction.GET_MONITOR_POWER_SAGA, payload }),
+  getWindMonitorPower: payload => dispatch({ type: singleStationAction.GET_MONITOR_POWER_SAGA, payload }),
   getOperatorList: payload => dispatch({ type: singleStationAction.GET_OPERATOR_LIST_SAGA, payload }),
   getWeatherList: payload => dispatch({ type: singleStationAction.GET_WEATHER_LIST_SAGA, payload }),
   getAlarmList: payload => dispatch({ type: singleStationAction.GET_ALARM_LIST_SAGA, payload }),

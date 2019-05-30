@@ -79,9 +79,9 @@ class ConfluenceBoxList extends Component {
   getStatusName = (value) => {
     let result = [];
     switch (value) {
-      case '100': result = [{ name: 'normal', text: '正常' }]; break;
-      case '200': result = [{ name: 'moreThanTen', text: '离散率>10%' }]; break;
-      case '300': result = [{ name: 'moreThanTwenty', text: '离散率>20%' }]; break;
+      case '400': result = [{ name: 'normal', text: '正常' }]; break;
+      case '801': result = [{ name: 'moreThanTen', text: '离散率>10%' }]; break;
+      case '802': result = [{ name: 'moreThanTwenty', text: '离散率>20%' }]; break;
       case '500': result = [{ name: 'noContact', text: '无通讯' }]; break;
       case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
       default: result = [{ name: 'normal', text: '' }]; break;
@@ -89,6 +89,11 @@ class ConfluenceBoxList extends Component {
     return result;
   }
 
+  getStatusNum = (status) => { // 获取状态的数量
+    const { deviceStatusSummary = [] } = this.props.confluenceBoxList;
+    const deviceList = deviceStatusSummary.filter(e => `${e.deviceStatusCode}` === `${status}`)
+    return deviceList.length > 0 && deviceList[0].deviceStatusNum || 0
+  }
 
   tableColumn = () => {
     const baseLinkPath = "/hidden/monitorDevice";
@@ -182,221 +187,12 @@ class ConfluenceBoxList extends Component {
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
 
+ 
+
 
   render() {
-    const { deviceTypeCode, loading } = this.props;
+    const { confluenceBoxList, deviceTypeCode, loading } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
-    let confluenceBoxList = {
-      deviceList: [
-        {
-          "alarmNum": 2,
-          "deviceCapacity": 89.1000,
-          "deviceCode": "394M202M6M2",
-          "deviceFullcode": "394M202M6M2",
-          "deviceId": 987932,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-02",
-          "devicePower": 63.5315,
-          "deviceStatus": 100,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.80",
-          "electricity": 104.15,
-          "isConnected": 1,
-          "parentDeviceCode": 987891,
-          "parentDeviceName": "NB01-A",
-          "stationCode": 394,
-          "temp": 56.0,
-          "voltage": 610.0
-        },
-        {
-          "alarmNum": 2,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M3",
-          "deviceFullcode": "394M202M6M3",
-          "deviceId": 987933,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-03",
-          "devicePower": 69.3181,
-          "deviceStatus": 200,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.90",
-          "electricity": 114.01,
-          "isConnected": 1,
-          "parentDeviceCode": 987891,
-          "parentDeviceName": "NB01-A",
-          "stationCode": 394,
-          "temp": 55.0,
-          "voltage": 608.0
-        },
-        {
-          "alarmNum": 2,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M4",
-          "deviceFullcode": "394M202M6M4",
-          "deviceId": 987934,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-04",
-          "devicePower": 69.7405,
-          "deviceStatus": 300,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "1.19",
-          "electricity": 116.06,
-          "isConnected": 1,
-          "parentDeviceCode": 987891,
-          "parentDeviceName": "NB01-A",
-          "stationCode": 394,
-          "temp": 49.0,
-          "voltage": 600.9
-        },
-        {
-          "alarmNum": 2,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M5",
-          "deviceFullcode": "394M202M6M5",
-          "deviceId": 987935,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-05",
-          "devicePower": 68.9370,
-          "deviceStatus": 500,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.98",
-          "electricity": 115.26,
-          "isConnected": 1,
-          "parentDeviceCode": 987891,
-          "parentDeviceName": "NB01-A",
-          "stationCode": 394,
-          "temp": 54.0,
-          "voltage": 598.1
-        },
-        {
-          "alarmNum": 2,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M6",
-          "deviceFullcode": "394M202M6M6",
-          "deviceId": 987936,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-06",
-          "devicePower": 69.0274,
-          "deviceStatus": 900,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.69",
-          "electricity": 115.18,
-          "isConnected": 1,
-          "parentDeviceCode": 987891,
-          "parentDeviceName": "NB01-A",
-          "stationCode": 394,
-          "temp": 56.0,
-          "voltage": 599.3
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": 83.1600,
-          "deviceCode": "394M202M6M7",
-          "deviceFullcode": "394M202M6M7",
-          "deviceId": 987937,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-07",
-          "devicePower": 61.6498,
-          "deviceStatus": 100,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "1.45",
-          "electricity": 101.85,
-          "isConnected": 1,
-          "parentDeviceCode": 987892,
-          "parentDeviceName": "NB01-B",
-          "stationCode": 394,
-          "temp": 48.0,
-          "voltage": 605.3
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M8",
-          "deviceFullcode": "394M202M6M8",
-          "deviceId": 987938,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-08",
-          "devicePower": 69.2075,
-          "deviceStatus": 200,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "1.26",
-          "electricity": 115.02,
-          "isConnected": 1,
-          "parentDeviceCode": 987892,
-          "parentDeviceName": "NB01-B",
-          "stationCode": 394,
-          "temp": 54.0,
-          "voltage": 601.7
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M9",
-          "deviceFullcode": "394M202M6M9",
-          "deviceId": 987939,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-09",
-          "devicePower": 69.3494,
-          "deviceStatus": 300,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.63",
-          "electricity": 115.16,
-          "isConnected": 1,
-          "parentDeviceCode": 987892,
-          "parentDeviceName": "NB01-B",
-          "stationCode": 394,
-          "temp": 55.0,
-          "voltage": 602.2
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": 89.1000,
-          "deviceCode": "394M202M6M10",
-          "deviceFullcode": "394M202M6M10",
-          "deviceId": 987940,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-10",
-          "devicePower": 64.4069,
-          "deviceStatus": 500,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "1.03",
-          "electricity": 106.74,
-          "isConnected": 1,
-          "parentDeviceCode": 987892,
-          "parentDeviceName": "NB01-B",
-          "stationCode": 394,
-          "temp": 54.0,
-          "voltage": 603.4
-        },
-        {
-          "alarmNum": 0,
-          "deviceCapacity": 95.0400,
-          "deviceCode": "394M202M6M11",
-          "deviceFullcode": "394M202M6M11",
-          "deviceId": 987941,
-          "deviceModeCode": 6,
-          "deviceName": "HL01-11",
-          "devicePower": 70.0097,
-          "deviceStatus": 900,
-          "deviceTypeCode": 202,
-          "dispersionRatio": "0.95",
-          "electricity": 114.77,
-          "isConnected": 1,
-          "parentDeviceCode": 987892,
-          "parentDeviceName": "NB01-B",
-          "stationCode": 394,
-          "temp": 56.0,
-          "voltage": 610.0
-        },
-      ],
-      deviceStatusSummary: {
-        "biggerThanTwentyNum": 2,
-        "normalNum": 2,
-        "biggerThanTenNum": 2,
-        "unJoinNum": 2,
-        "unConnectNum": 2
-      }
-    }
     const { deviceList = [] } = confluenceBoxList;
     const filteredDeviceList = deviceList
       .filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0)))
@@ -415,16 +211,19 @@ class ConfluenceBoxList extends Component {
 
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
 
-    const { deviceStatusSummary = {} } = confluenceBoxList;
+    const { deviceStatusSummary = [] } = confluenceBoxList;
     const operations = (<div className={styles.deviceRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        <Radio.Button value={100} >正常 {dataFormats(deviceStatusSummary.normalNum)}</Radio.Button>
-        <Radio.Button value={200} >离散率>10% {dataFormats(deviceStatusSummary.biggerThanTenNum)}</Radio.Button>
-        <Radio.Button value={300} >离散率>20% {dataFormats(deviceStatusSummary.biggerThanTwentyNum)}</Radio.Button>
-        <Radio.Button value={500} >无通讯 {dataFormats(deviceStatusSummary.unConnectNum)}</Radio.Button>
-        <Radio.Button value={900} >未接入 {dataFormats(deviceStatusSummary.unJoinNum)}</Radio.Button>
+        {/* {deviceStatusSummary.map(e=>{
+          return  <Radio.Button value={e.deviceStatusCode}  key={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>
+        })} */}
+        <Radio.Button value={400} >正常 {this.getStatusNum(400)}</Radio.Button>
+        <Radio.Button value={801} >离散率>10% {this.getStatusNum(801)}</Radio.Button>
+        <Radio.Button value={802} >离散率>20% {this.getStatusNum(802)}</Radio.Button>
+        <Radio.Button value={500} >无通讯 {this.getStatusNum(500)}</Radio.Button>
+        <Radio.Button value={900} >未接入 {this.getStatusNum(900)}</Radio.Button>
       </Radio.Group>
     </div>);
 
@@ -436,11 +235,11 @@ class ConfluenceBoxList extends Component {
           <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.deviceListBlockBox} >
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
-                const { parentDeviceName, parentDeviceCode, parentDeviceFullCode } = list.length > 0 && list[0];
+                const { parentDeviceName, parentDeviceFullCode } = list.length > 0 && list[0];
                 return (
                   <div key={index}>
                     <div className={styles.parentDeviceName} >
-                      <Link to={`/hidden/monitorDevice/${stationCode}/${parentDeviceCode}/${parentDeviceFullCode}`} className={styles.underlin} >
+                      <Link to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
                         <i className={'iconfont icon-hl'}></i>
                         {parentDeviceName}
                       </Link>

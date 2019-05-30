@@ -60,39 +60,7 @@ class Boosterstation extends Component {
 
   render() {
     const baseLinkPath = "/hidden/monitorDevice";
-    const { deviceTypeCode, loading, match } = this.props;
-    const boosterList = [
-      {
-        "deviceTypeCode": "302M301",
-        "deviceTypeName": "升压站",
-        "total": 1,
-        "warningStatus": true
-      },
-      {
-        "deviceTypeCode": "302M306",
-        "deviceTypeName": "站用变",
-        "total": 1,
-        "warningStatus": true
-      },
-      {
-        "deviceTypeCode": "302M307",
-        "deviceTypeName": "主进线",
-        "total": 1,
-        "warningStatus": false
-      },
-      {
-        "deviceTypeCode": "302M504",
-        "deviceTypeName": "SVG",
-        "total": 1,
-        "warningStatus": false
-      },
-      {
-        "deviceTypeCode": "302M507",
-        "deviceTypeName": "站内母线",
-        "total": 1,
-        "warningStatus": false
-      }
-    ]
+    const {boosterList, deviceTypeCode, loading, match } = this.props;
     const { stationCode } = match.params;
     const { alarmSwitch } = this.state;
     const filteredBooster = boosterList.filter(e => !alarmSwitch || e.warningStatus)
@@ -122,10 +90,10 @@ class Boosterstation extends Component {
                     {e.warningStatus && <span className="iconfont icon-alarm" />}
                   </div>
                   <div className={styles.deviceValue}>
-                    <span className={styles.eachValue}>P : {dataFormat(e.griW, '--', 2)} MW</span>
-                    <span className={styles.eachValue}>Cos : {dataFormat(e.griPF, '--', 2)}</span>
-                    <span className={styles.eachValue}>Q : {dataFormat(e.griVar, '--', 2)} MVar</span>
-                    <span className={styles.eachValue}>Uab : {dataFormat(e.griPPhVUab, '--', 2)} kV</span>
+                    <span className={styles.eachValue}>P : {dataFormat(e.highPressureP, '--', 2)} MW</span>
+                    <span className={styles.eachValue}>Cos : {dataFormat(e.highPressureQ, '--', 2)}</span>
+                    <span className={styles.eachValue}>Q : {dataFormat(e.highPressureCos, '--', 2)} MVar</span>
+                    <span className={styles.eachValue}>Uab : {dataFormat(e.highPressureUab, '--', 2)} kV</span>
                   </div>
                 </Link>
               )

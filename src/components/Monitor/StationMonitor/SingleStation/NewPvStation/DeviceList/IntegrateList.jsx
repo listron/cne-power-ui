@@ -66,45 +66,7 @@ class IntegrateList extends Component {
   }
 
   render() {
-    const { loading } = this.props;
-    const collectorList = [
-      {
-        "deviceCode": "302M302M17M1",
-        "deviceId": 874604,
-        "deviceName": "集电线3511",
-        "deviceTypeCode": 302,
-        "deviceTypeName": "集电线路",
-        "griPF": "-0.19",
-        "griPPhVUab": "36.34",
-        "griVar": "0.06",
-        "griW": "-0.01",
-        "warningStatus": true
-      },
-      {
-        "deviceCode": "302M302M17M1",
-        "deviceId": 874604,
-        "deviceName": "集电线3511",
-        "deviceTypeCode": 302,
-        "deviceTypeName": "集电线路",
-        "griPF": "-0.19",
-        "griPPhVUab": "36.34",
-        "griVar": "0.06",
-        "griW": "-0.01",
-        "warningStatus": false
-      },
-      {
-        "deviceCode": "302M302M17M1",
-        "deviceId": 874604,
-        "deviceName": "集电线3511",
-        "deviceTypeCode": 302,
-        "deviceTypeName": "集电线路",
-        "griPF": "-0.19",
-        "griPPhVUab": "36.34",
-        "griVar": "0.06",
-        "griW": "-0.01",
-        "warningStatus": true
-      }
-    ]
+    const { collectorList,loading } = this.props;
     const { alarmSwitch } = this.state;
     const filteredCollection = collectorList.filter(e => !alarmSwitch || e.warningStatus);
     return (

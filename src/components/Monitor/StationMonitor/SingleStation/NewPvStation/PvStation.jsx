@@ -13,43 +13,25 @@ import DetailCharts from './DetailCharts/DetailCharts';
 
 class PvStation extends Component {
   static propTypes = {
-    deviceTypeFlow: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     location: PropTypes.object,
     match: PropTypes.object,
-    stationDeviceList: PropTypes.array,
     deviceTypeCode: PropTypes.string,
     stationCode: PropTypes.string,
     resetSingleStationStore: PropTypes.func,
-    realTimePowerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.any,
-    powerUnit: PropTypes.string,
-    powerPoint: PropTypes.any,
-    stationList: PropTypes.array,
     getPvSingleStation: PropTypes.func,
     getCapabilityDiagram: PropTypes.func,
-    getMonitorPower: PropTypes.func,
     getOperatorList: PropTypes.func,
     getWeatherList: PropTypes.func,
-    getAlarmList: PropTypes.func,
     getWorkList: PropTypes.func,
-    getDeviceTypeFlow: PropTypes.func,
-    getPvmoduleList: PropTypes.func,
-    getInverterList: PropTypes.func,
     getStationList: PropTypes.func,
-    getBoxTransformerList: PropTypes.func,
-    changeSingleStationStore: PropTypes.func,
-    getStationDeviceList: PropTypes.func,
-    deviceTypeFlow: PropTypes.object,
-    resetSingleStationStore: PropTypes.func,
-    getFanList: PropTypes.func,
-    getSingleScatter: PropTypes.func,
     singleStationData: PropTypes.object,
-    stationList: PropTypes.array,
     monitorPvUnit: PropTypes.object,
     workList: PropTypes.object,
     monthplanpower: PropTypes.func,
     getNewDeviceTypeFlow: PropTypes.func,
+    getSketchmap: PropTypes.func,
+    getPvMonitorPower: PropTypes.func,
   }
 
   constructor(props) {
@@ -70,18 +52,11 @@ class PvStation extends Component {
     })
     const deviceTypeInfo = searchData.find(e => e.showPart > 0);
     if (deviceTypeInfo) {
-      this.props.getNewDeviceTypeFlow({ stationCode });//获取设备类型流程图
-      this.props.getSketchmap({stationCode});
       this.props.changeSingleStationStore({ deviceTypeCode: deviceTypeInfo.showPart })
-    } else {
-      this.props.getNewDeviceTypeFlow({ stationCode }); //获取设备类型流程图
-      this.props.getSketchmap({stationCode});
-    }
-    this.getOneHourData(stationCode, stationType);
+    } 
+   
+    this.getOnceData(stationCode, stationType);
     this.getTenSeconds(stationCode, stationType);
-    this.props.monthplanpower({ stationCode });
-    
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,52 +65,50 @@ class PvStation extends Component {
     const nextStationType = '1'
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
-      this.props.resetSingleStationStore();
       this.getTenSeconds(nextStationCode, nextStationType);
-      this.getOneHourData(nextStationCode, nextStationType);
-      this.getPowerDataTenMin({ stationCode: nextStationCode, stationType: nextStationType });
-      this.props.getNewDeviceTypeFlow({ stationCode }); //获取设备类型流程图
-      this.props.getSketchmap({stationCode});
+      this.getOnceData(nextStationCode, nextStationType);
     }
   }
 
   componentWillUnmount() {
     clearTimeout(this.timeOutId);
-    clearTimeout(this.timeOutOutputData);
-    clearTimeout(this.timeOutPowerData);
     this.props.resetSingleStationStore();
+    console.log('111')
   }
 
-  getTenSeconds = (stationCode, stationType) => { // 10s请求一次数据 单电站 告警列表 工单列表  天气情况 
+  getTenSeconds = (stationCode, stationType) => { // 1min请求一次数据 单电站 工单列表  天气情况 
     this.props.getPvSingleStation({ stationCode });
-    this.props.getAlarmList({ stationCode });
-    this.props.getWeatherList({ stationCode }); // 天气
+    const startTime=moment().subtract(1,'days').format('YYYY-MM-DD'); // 查询昨天开始的未来7天的数据
+    this.props.getWeatherList({ stationCode,dateReport: startTime}); // 天气
     this.props.getWorkList({
       stationCode,
       startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(),
       endTime: moment().utc().format(),
     });
+    this.props.getSketchmap({stationCode}); // 获取流程图的数据
     this.timeOutId = setTimeout(() => {
       this.getTenSeconds(stationCode, stationType);
     }, 10000);
   }
 
-  getOneHourData = (stationCode, stationType) => {
-    this.props.getCapabilityDiagram({
+  getOnceData = (stationCode, stationType) => { // 只请求一次数据
+    this.props.getCapabilityDiagram({  // 出力图
       stationCode,
       stationType,
       startTime: moment().startOf('day').utc().format(),
       endTime: moment().endOf('day').utc().format()
     });
+    this.props.monthplanpower({ stationCode });
     this.getPowerDataTenMin({ stationCode, stationType }); // 发电量
+    this.props.getNewDeviceTypeFlow({ stationCode,stationType }); //获取设备类型流程图
     this.props.getOperatorList({ stationCode, roleId: '4,5' }); // 运维人员
   }
 
-  getPowerDataTenMin = (value) => { // 10min 请求一次发电量(默认请求intervalTime = 0 的日数据)
+  getPowerDataTenMin = (value) => { // 默认请求intervalTime = 0 的日数据
     const { stationCode, intervalTime = 0 } = value;
     let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD')// 默认是6天前;
     if (intervalTime === 1) {
-      startTime = moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD')
+      startTime = moment().subtract(12, 'month').startOf('month').format('YYYY-MM-DD')
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
@@ -164,7 +137,7 @@ class PvStation extends Component {
   }
 
   render() {
-    const { singleStationData, editData, monitorPvUnit, monthPlanPower } = this.props;
+    const { singleStationData, editData, monitorPvUnit } = this.props;
     const { detailVisible } = this.state;
     const { stationCode } = this.props.match.params;
     const { alarmNum } = singleStationData;
@@ -180,7 +153,7 @@ class PvStation extends Component {
           />
           <PvDevice {...this.props} />
           <div onClick={this.detailShow} className={styles.detailShow}>
-            <i className={`iconfont icon-back ${styles.show}`}></i>
+            <i className={`iconfont icon-go2 ${styles.show}`}></i>
             <span className={styles.detailShowfont}>查看电站概况</span>
           </div>
         </div>

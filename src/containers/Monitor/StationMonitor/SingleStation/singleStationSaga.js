@@ -43,7 +43,7 @@ function* getSingleStation(action) { //获取单电站实时数据 (后期可删
 function* getCapabilityDiagram(action) { // 获取出力图数据
   const { payload } = action;
   const { stationCode, stationType, startTime, endTime } = payload
-  const pvUrl = `${APIBasePath}${monitor.getCapabilityDiagram}${stationCode}/${stationType}/${startTime}/${endTime}`
+  const pvUrl = `${APIBasePath}${monitor.getCapabilityDiagram}${startTime}/${endTime}/${stationCode}`
   try {
     yield put({
       type: singleStationAction.getSingleStationSuccess,
@@ -75,20 +75,18 @@ function* getCapabilityDiagram(action) { // 获取出力图数据
   }
 }
 
-function* getMonitorPower(action) { // 获取理论发电量 实际发电量数据(风电 光伏)
+function* getWindMonitorPower(action) { // 获取理论发电量 实际发电量数据(风电 光伏)
   const { payload } = action;
   const { stationCode, startTime, endTime, intervalTime, stationType } = payload;
-  const pvUrl = `${APIBasePath}${monitor.getMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`;
   const windUrl = `${APIBasePath}${monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${stationCode}`;
-  const url = stationType === '0' ? windUrl : pvUrl;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, windUrl);
     if (response.data.code === "10000") {
       yield put({
         type: singleStationAction.changeSingleStationStore,
         payload: {
-          powerData: response.data.data || [],
-          powerTime: moment().unix(),
+          windPowerData: response.data.data || [],
+          windPowerTime: moment().unix(),
         }
       })
     } else { throw response.data }
@@ -131,9 +129,9 @@ function* getOperatorList(action) { // 获取单电站运维人员列表
 
 function* getWeatherList(action) { // 获取单电站未来天气数据
   const { payload } = action;
-  const url = `${APIBasePath}${monitor.getWeatherList}?stationCode=${payload.stationCode}`;
+  const url = `${APIBasePath}${monitor.getWeatherList}`;
   try {
-    const response = yield call(axios.get, url, payload);
+    const response = yield call(axios.get, url,{params:payload} );
     if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.changeSingleStationStore,
@@ -206,6 +204,7 @@ function* getWorkList(action) { // 获取单电站工单数统计
 function* getDeviceTypeFlow(action) { // 获取单电站设备类型流程图(设备示意图)
   const { payload } = action;
   const { stationCode } = payload;
+  console.log(1111)
   const url = `${APIBasePath}${monitor.getDeviceTypeFlow}${stationCode}`;
   try {
     const response = yield call(axios.get, url, payload);
@@ -452,12 +451,12 @@ function* getStationDeviceList(action) { // 获取单电站设备列表(气象�
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
-      const deviceCode=response.data.data.length>0 && response.data.data[0].deviceCode || ''
+      const deviceCode = response.data.data.length > 0 && response.data.data[0].deviceCode || ''
       yield put({
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           stationDeviceList: response.data.data || [],
-          weatherDeviceDetail:response.data.data.length>0 && response.data.data[0].deviceCode || {},
+          weatherDeviceDetail: response.data.data.length > 0 && response.data.data[0].deviceCode || {},
         }
       })
       yield put({
@@ -742,7 +741,7 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图
   } catch (e) {
     console.log(e);
     yield put({
-      type:singleStationAction.changeSingleStationStore,
+      type: singleStationAction.changeSingleStationStore,
       payload: {
         monthPlanPower: {
           monthPlanPowerData: [],
@@ -757,7 +756,7 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图
 function* getPvMonitorPower(action) { // 获取理论发电量 实际发电量数据(风电 光伏)
   const { payload } = action;
   const { stationCode, startTime, endTime, intervalTime } = payload;
-  const url = `${APIBasePath}${monitor.getPvMonitorPower}${stationCode}/${startTime}/${endTime}/${intervalTime}`;
+  const url = `${APIBasePath}${monitor.getPvMonitorPower}${intervalTime}/${startTime}/${endTime}/${stationCode}`;
   try {
     yield put({
       type: singleStationAction.changeSingleStationStore,
@@ -790,7 +789,7 @@ function* getPvMonitorPower(action) { // 获取理论发电量 实际发电量�
   }
 }
 
-function* getWeatherDetail(action){ // 气象站的数据
+function* getWeatherDetail(action) { // 气象站的数据
   const { payload } = action;
   const { stationCode } = payload;
   const url = `${APIBasePath}${monitor.weatherstationDetail}/${stationCode}`;
@@ -809,14 +808,14 @@ function* getWeatherDetail(action){ // 气象站的数据
     yield put({
       type: singleStationAction.changeSingleStationStore,
       payload: {
-        weatherstationDetail:{}
+        weatherstationDetail: {}
       }
     });
   }
-  
+
 }
 
-function* getStationAlarm(action){ // 气象站告警
+function* getStationAlarm(action) { // 气象站告警
   const { payload } = action;
   const { deviceCode } = payload;
   const url = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`;
@@ -835,16 +834,18 @@ function* getStationAlarm(action){ // 气象站告警
     yield put({
       type: singleStationAction.changeSingleStationStore,
       payload: {
-        deviceAlarmList:  [],
+        deviceAlarmList: [],
       }
     });
   }
 }
 
-function* getRadiationchart(action){ // 气象站图表的数据
+function* getRadiationchart(action) { // 气象站图表的数据
   const { payload } = action;
   const { stationCode } = payload;
-  const url = `${APIBasePath}${monitor.radiationchart}${stationCode}`;
+  let startTime = moment().startOf('day').utc().format();
+  let endTime = moment().endOf('day').utc().format();
+  const url = `${APIBasePath}${monitor.radiationchart}${stationCode}/${startTime}/${endTime}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -852,7 +853,7 @@ function* getRadiationchart(action){ // 气象站图表的数据
         type: singleStationAction.changeSingleStationStore,
         payload: {
           radiationchartData: response.data.data || [],
-          radiationchartTime:moment().unix(),
+          radiationchartTime: moment().unix(),
         }
       })
     } else { throw response.data }
@@ -861,8 +862,8 @@ function* getRadiationchart(action){ // 气象站图表的数据
     yield put({
       type: singleStationAction.changeSingleStationStore,
       payload: {
-        radiationchartData:  [],
-        radiationchartTime:moment().unix(),
+        radiationchartData: [],
+        radiationchartTime: moment().unix(),
       }
     });
   }
@@ -871,8 +872,9 @@ function* getRadiationchart(action){ // 气象站图表的数据
 
 function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图(设备示意图)
   const { payload } = action;
-  const { stationCode } = payload;
+  const { stationCode,stationType } = payload;
   const url = `${APIBasePath}${monitor.getNewDeviceTypeFlow}${stationCode}`;
+ let deviceTypeCode= stationType==='0'? '101':'1' // 光伏默认示意图  风电默认是风机
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -880,6 +882,7 @@ function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图
         type: singleStationAction.changeSingleStationStore,
         payload: {
           deviceTypeFlow: response.data.data || {},
+          deviceTypeCode,
         }
       })
     } else { throw 'error' }
@@ -889,6 +892,7 @@ function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图
       type: singleStationAction.changeSingleStationStore,
       payload: {
         deviceTypeFlow: {},
+        deviceTypeCode,
       }
     });
   }
@@ -923,7 +927,7 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.GET_SINGLE_STATION_SAGA, getSingleStation);
   // yield takeLatest(singleStationAction.GET_STATION_LIST_SAGA, getStationList);
   yield takeLatest(singleStationAction.GET_CAPABILITY_DIAGRAM_SAGA, getCapabilityDiagram);
-  yield takeLatest(singleStationAction.GET_MONITOR_POWER_SAGA, getMonitorPower);
+  yield takeLatest(singleStationAction.GET_MONITOR_POWER_SAGA, getWindMonitorPower);
   yield takeLatest(singleStationAction.GET_OPERATOR_LIST_SAGA, getOperatorList);
   yield takeLatest(singleStationAction.GET_WEATHER_LIST_SAGA, getWeatherList);
   yield takeLatest(singleStationAction.GET_ALARM_LIST_SAGA, getAlarmList);
@@ -946,13 +950,13 @@ export function* watchSingleStationMonitor() {
   yield takeLatest(singleStationAction.stopSingleRealData, stopSingleRealData); // 关掉进程
   yield takeLatest(singleStationAction.getPvSingleStation, getPvSingleStation); // 光伏电站
   yield takeLatest(singleStationAction.getWindSingleStation, getWindSingleStation); // 风电
-  yield takeLatest(singleStationAction.monthplanpower, monthplanpower); 
-  yield takeLatest(singleStationAction.getPvMonitorPower, getPvMonitorPower); 
-  yield takeLatest(singleStationAction.getWeatherDetail, getWeatherDetail); 
-  yield takeLatest(singleStationAction.getStationAlarm, getStationAlarm); 
-  yield takeLatest(singleStationAction.getRadiationchart, getRadiationchart); 
-  yield takeLatest(singleStationAction.getNewDeviceTypeFlow, getNewDeviceTypeFlow); 
-  yield takeLatest(singleStationAction.getSketchmap, getSketchmap); 
+  yield takeLatest(singleStationAction.monthplanpower, monthplanpower);
+  yield takeLatest(singleStationAction.getPvMonitorPower, getPvMonitorPower);
+  yield takeLatest(singleStationAction.getWeatherDetail, getWeatherDetail);
+  yield takeLatest(singleStationAction.getStationAlarm, getStationAlarm);
+  yield takeLatest(singleStationAction.getRadiationchart, getRadiationchart);
+  yield takeLatest(singleStationAction.getNewDeviceTypeFlow, getNewDeviceTypeFlow);
+  yield takeLatest(singleStationAction.getSketchmap, getSketchmap);
 
 }
 

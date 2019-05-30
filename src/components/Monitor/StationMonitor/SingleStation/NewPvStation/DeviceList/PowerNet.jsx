@@ -59,70 +59,7 @@ class PowerNet extends Component {
   }
 
   render() {
-    const { loading } = this.props;
-    // console.log('powerNetList',powerNetList)
-    let powerNetList = [
-      {
-        "backwardActivePower": 5.6,
-        "backwardReactivePower": 3.4,
-        "deviceCode": "302M505M2M2",
-        "deviceId": null,
-        "deviceName": "协水线副表",
-        "deviceTypeCode": 505,
-        "deviceTypeName": "电能采集",
-        "forwardActivePower": 78,
-        "forwardReactivePower": null,
-        "warningStatus": true
-      },
-      {
-        "backwardActivePower": null,
-        "backwardReactivePower": null,
-        "deviceCode": "302M505M2M3",
-        "deviceId": null,
-        "deviceName": "集电线3511电度表",
-        "deviceTypeCode": 505,
-        "deviceTypeName": "电能采集",
-        "forwardActivePower": 123.435,
-        "forwardReactivePower": null,
-        "warningStatus": false
-      },
-      {
-        "backwardActivePower": null,
-        "backwardReactivePower": null,
-        "deviceCode": "302M505M2M4",
-        "deviceId": null,
-        "deviceName": "站用变3551电度表",
-        "deviceTypeCode": 505,
-        "deviceTypeName": "电能采集",
-        "forwardActivePower": null,
-        "forwardReactivePower": null,
-        "warningStatus": false
-      },
-      {
-        "backwardActivePower": null,
-        "backwardReactivePower": null,
-        "deviceCode": "302M505M2M5",
-        "deviceId": null,
-        "deviceName": "SVG3561电度表",
-        "deviceTypeCode": 505,
-        "deviceTypeName": "电能采集",
-        "forwardActivePower": null,
-        "forwardReactivePower": null,
-        "warningStatus": false
-      },
-      {
-        "backwardActivePower": null,
-        "backwardReactivePower": null,
-        "deviceCode": "302M505M7M1",
-        "deviceId": null,
-        "deviceName": "协水线主表",
-        "deviceTypeCode": 505,
-        "deviceTypeName": "电能采集",
-        "forwardActivePower": null,
-        "forwardReactivePower": null,
-        "warningStatus": false
-      }
-    ]
+    const { powerNetList,loading } = this.props;
     const { alarmSwitch } = this.state;
     const filteredPowerNet = powerNetList.filter(e => !alarmSwitch || e.warningStatus);
     return (

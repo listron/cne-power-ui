@@ -589,12 +589,11 @@
         }
         :global{
             .iconfont{
-                background:#ffffff;
-                width:14px;
-                height:14px; 
+                width: 14px;
+                height: 18px;
                 border-radius: 50%;
-                color: $themeColor;
-                font-size: 12px;
+                color: #fff;
+                font-size: 13px;
             }
         }
     }

@@ -40,7 +40,7 @@ class DetailCharts extends Component {
                     <Link to={`/statistical/stationaccount/allstation`}> 统计分析  </Link>
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }) }}>
-                    <i className="iconfont icon-upstream"></i>
+                    <i className="iconfont icon-go"></i>
                 </div>
                 <div className={styles.deviceStatus}>
                     <div className={styles.deviceStaTitle}> <span>电站工单</span> {/* <i className="iconfont icon-more"></i>  */}

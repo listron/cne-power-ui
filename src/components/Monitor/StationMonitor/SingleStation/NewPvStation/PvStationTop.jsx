@@ -57,7 +57,8 @@ class PvStationTop extends Component {
     const currentStationName = singleStationData.stationName;
     const { stationStatus = {} } = singleStationData;
     const { stationStatusName, stationStatusTime } = stationStatus;
-    const todayWeather = weatherList.length > 0 && weatherList[0] || {}
+    const todayWeatherData=weatherList.filter(e=>moment(moment()).isSame(e.weatherDate, 'day'))
+    const todayWeather =  todayWeatherData.length>0 && todayWeatherData[0]
     return (
       <div className={styles.stationTop} >
         {showStationList && <ChangeStation stations={stationList.filter(e => e.isConnected === 1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
