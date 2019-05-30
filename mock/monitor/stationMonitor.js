@@ -105,5 +105,52 @@ module.exports = [
         power:['kWh','4'],
       }
     }
+  },
+  {
+    api: '/mock/api/v3/monitor/dayPower',//	多电站日发电量与等效时图
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,29,30].map(e=>({
+        date: e,
+        dayPower:parseFloat(Math.random() * 2000),
+        equipmentHours:parseFloat(Math.random() * 1000),
+        instantaneous:parseFloat(Math.random() * 200),
+      })),
+      "serviceCode": "3.0"
+    },
+  },
+  {
+    api: '/mock/api/v3/monitor/monthPower', //	多电站月发电量与等效时图
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10,11,12].map(e=>({
+        date: e,
+        monthPower:parseFloat(Math.random() * 2000),
+        monthPlanPower:parseFloat(Math.random() * 2000),
+        completeRate:parseFloat(Math.random() * 100),
+        equipmentHours:parseFloat(Math.random() * 200),
+        instantaneous:parseFloat(Math.random() * 200),
+      })),
+      "serviceCode": "3.0"
+    },
+  },
+  {
+    api: '/mock/api/v3/monitor/monthPlanpower', //	多电站月发电量与等效时图
+    method: 'get',
+    response: {
+      "code": "10000",
+      "message": "请求成功",
+      "data": [1,2,3,4,5,6,7,8,9,10,11,12].map(e=>({
+        date: e,
+        monthPower:parseFloat(Math.random() * 2000),
+        monthPlanPower:parseFloat(Math.random() * 1000),
+        instantaneous:parseFloat(Math.random() * 200),
+      })),
+      "serviceCode": "3.0"
+    },
   }
 ]

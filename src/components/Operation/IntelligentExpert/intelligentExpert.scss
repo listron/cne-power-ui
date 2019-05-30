@@ -10,7 +10,23 @@
 .intelligentSearch{
   display: flex;
   flex-direction: column;
-  // margin-bottom: 30px;
+  .topSearch{
+    min-height: 80px;
+    height: auto;
+    background-color: #fff;
+    padding: 0px 28px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    .filterBtn{
+      margin-right: 16px;
+      color: #666;
+    }
+    .text{
+      margin-right: 16px;
+    }
+  }
   .partSearch{
     display: flex;
     height: 50px;
