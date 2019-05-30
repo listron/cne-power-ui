@@ -18,8 +18,9 @@ const Option = Select.Option;
 
 
   assetsIds:[],默认选中的节点
-  
+  checkedName:'',单选节点时默认展示的值。
 
+  resetValue:bool,true时重置所选。
 */
 
 class StationSelect extends Component {
@@ -46,13 +47,21 @@ class StationSelect extends Component {
   }
   constructor(props) {
     super(props);
-
     this.state = {
       assetsIds: props.assetsIds,
       assetList: props.assetList,
       stationType: props.stationType,
-      checkedName: null,
+      checkedName: props.checkedName,
       stationTypeCount: props.stationTypeCount
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    const { resetValue} = nextProps;
+    if(resetValue &&this.props.resetValue===false){
+      this.setState({
+        assetsIds: [],
+        checkedName: '',
+      })
     }
   }
   onModalHandelOK = (value, name) => {
@@ -97,10 +106,9 @@ class StationSelect extends Component {
   clearList = () => {
     this.setState({ assetsIds: [] });
   }
-
   render() {
     const { multiple, assetList, } = this.props;
-    const { visiableModal, assetsIds, stationType, checkedName, stationTypeCount } = this.state;
+    const { visiableModal,  stationType, assetsIds,checkedName, stationTypeCount } = this.state;
     return (
       <div className={styles.stationSelect}>
         {

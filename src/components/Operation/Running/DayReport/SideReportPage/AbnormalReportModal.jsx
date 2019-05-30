@@ -144,7 +144,6 @@ class AbnormalReportModal extends Component {
     const { abnormalModalshow, stationDeviceTypes, abnormalInfo, hideAbnormalModal, findDeviceExist, deviceExistInfo, lostGenTypes, dayReportConfig, getStationDeviceTypes, getLostGenType, stationType} = this.props;
     const { addLostFormShow, faultGenList, limitGenList, addLimitFormShow, abnormalTextShow, abnormalText } = this.state;
     const { modelInverterPowerGen, modelInverterCapacity, stationCapacity, reportDate } = abnormalInfo;
-    console.log(faultGenList[0])
     let defaultLimitLost, tmpRealityGen = 0; // 默认限电剩余损失电量, 
     if(modelInverterCapacity > 0){
       const tmpTheoryGen = modelInverterPowerGen / modelInverterCapacity * stationCapacity; // 理论发电量

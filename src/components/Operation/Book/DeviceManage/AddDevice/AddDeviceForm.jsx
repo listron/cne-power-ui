@@ -214,13 +214,13 @@ class AddDeviceForm extends Component {
 
 
 
-              <FormItem label="生产厂家" colon={false} className={styles.formItemStyle}>
+              <FormItem label="厂家" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('manufacturer', {
                   initialValue: manufactureName,
-                  rules: [{ required: true, message: '请选择生产厂家',  }],
+                  rules: [{ required: true, message: '请选择设备厂家',  }],
                 })(
-                  <Select className={styles.modelSelect} placeholder="请选择生产厂家" onChange={this.changeFactors} disabled={deviceFactorsList.length===0}>
-                    <Option key={'all'} value={''}>请选择生产厂家</Option>
+                  <Select className={styles.modelSelect} placeholder="请选择设备厂家" onChange={this.changeFactors} disabled={deviceFactorsList.length===0}>
+                    <Option key={'all'} value={''}>请选择设备厂家</Option>
                     {deviceFactorsList.map((e, i) => {
                       if (!e) { return null; } else {
                         return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>
@@ -307,7 +307,7 @@ class AddDeviceForm extends Component {
             </div>
             <div className={styles.systermStyle}>
               <FormItem label="制造商" colon={false} className={styles.formItemStyle}>
-                {getFieldDecorator('manufactorName')(
+                {getFieldDecorator('madeName')(
                   <Input placeholder="请输入..." />
                 )}
               </FormItem>

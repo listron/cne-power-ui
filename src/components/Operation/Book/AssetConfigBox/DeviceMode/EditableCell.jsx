@@ -13,40 +13,43 @@ class EditableCell extends React.Component {
     super(props, context)
   }
   getInput = () => {
-    const { devicefactorslist,type,onChange,assetlist,stationtypecount,querydatatype,record } = this.props;
-    
-    
-    // 
+    const { devicefactorslist, type, onChange, assetlist, stationtypecount, querydatatype, record } = this.props;
+
     if (type === 'text') {
       return <Input onChange={this.testValue} />
     }
     if (type === 'select') {
-    return (
-      <Select
-        onSelect={this.selectManufactor}
-        style={{ width: 194 }}
-        placeholder="请选择厂家" >
-        {devicefactorslist.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
-          {e.manufactorName}
-        </Option>))}
-      </Select>)}
-      if(type==='modal'){
-        return (
-          <AssetNodeSelect 
-          onChange={onChange} assetList={assetlist} stationTypeCount={stationtypecount} queryDataType={querydatatype} 
-          assetsIds={record.assetsId?record.assetsId.split():[]}
-          />
-          )
-      }
-      
+      return (
+        <Select
+          onSelect={this.selectManufactor}
+          style={{ width: 194 }}
+          placeholder="请选择厂家" >
+          {devicefactorslist.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
+            {e.manufactorName}
+          </Option>))}
+        </Select>)
+    }
+    if (type === 'modal') {
+      return (
+        <AssetNodeSelect
+          onChange={onChange} 
+          assetList={assetlist} 
+          stationTypeCount={stationtypecount} 
+          queryDataType={querydatatype} 
+          checkedName={record.assetsName ? record.assetsName.replace(/,/g, '/') : ''}
+          assetsIds={record.assetsId ? record.assetsId.split() : []}
+        />
+      )
+    }
+
   };
   testValue = (e) => {
-    
+
 
   }
-  selectManufactor=(value)=>{
-    
-    
+  selectManufactor = (value) => {
+
+
   }
   render() {
 
@@ -65,7 +68,6 @@ class EditableCell extends React.Component {
     return (
       <EditableContext.Consumer>
         {(form) => {
-
           return (
             <td {...restProps}>
               {editing ? (
@@ -75,7 +77,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入 ${title}!`,
                     }],
-                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId']:record['manufactorId'],
+                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId']: record['manufactorId'],
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

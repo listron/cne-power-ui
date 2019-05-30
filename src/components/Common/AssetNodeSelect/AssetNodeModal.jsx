@@ -41,8 +41,10 @@ class SelectModal extends Component {
   onCheck = (checkedKeys, e) => {
     const {multiple}=this.props;
     let dataRef = e.node.props.dataRef;
-    let { assetsNames, assetsName } = dataRef
-    this.setState({ checkedKeys: multiple?checkedKeys.checked:checkedKeys, checkedName: `${assetsNames}/${assetsName}` });
+    let { assetsNames, assetsName } = dataRef;
+    let parentNodeName=assetsNames.replace(/,/g,'/');
+    
+    this.setState({ checkedKeys: multiple?checkedKeys.checked:checkedKeys, checkedName: `${parentNodeName}/${assetsName}` });
   }
   showModal = () => {
     this.props.showModal();
@@ -73,6 +75,8 @@ class SelectModal extends Component {
   })
   render() {
     const { visiable, sourceData, stationType, multiple,stationTypeCount } = this.props;
+    const {checkedKeys}=this.state;
+    
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -94,12 +98,12 @@ class SelectModal extends Component {
             <Tree
               checkable={multiple}
               checkStrictly
+              checkedKeys={checkedKeys}
               autoExpandParent={true}
               // defaultExpandAll={true}
               onCheck={this.onCheck}
               onSelect={this.onCheck}
-              checkedKeys={this.state.checkedKeys}
-              selectedKeys={this.state.checkedKeys}
+              selectedKeys={multiple?[]:checkedKeys}
               blockNode={false}
               
             >

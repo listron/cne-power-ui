@@ -93,82 +93,96 @@ class TableList extends Component {
         dataIndex: "limitHour",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="限电损失电量" unit="万kWh" />,
         dataIndex: "limitpower",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="维护时长" unit="h" />,
         dataIndex: "weihuHour",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="风电维护损失电量" unit="万kWh" />,
         dataIndex: "weihupower",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="技术待命时长" unit="h" />,
         dataIndex: "resourceValue",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="技术待命损失电量" unit="万kWh" />,
         dataIndex: "resourceRate",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="远程停机时长" unit="h" />,
         dataIndex: "equivalentHours",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
       {
         title: () => <TableColumnTitle title="远程停机损失电量" unit="万kWh" />,
         dataIndex: "pr",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       }, {
         title: () => <TableColumnTitle title="电网故障时长" unit="h" />,
         dataIndex: "lostPower",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },{
         title: () => <TableColumnTitle title="电网故障损失电量" unit="万kWh" />,
         dataIndex: "limitPowerHours",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       },{
         title: () => <TableColumnTitle title="故障停机时长" unit="h" />,
         dataIndex: "guzhangHours",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       },{
         title: () => <TableColumnTitle title="故障停机损失电量" unit="万kWh" />,
         dataIndex: "guazhangpower",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       },{
         title: () => <TableColumnTitle title="就地停机时长" unit="h" />,
         dataIndex: "jiudihour",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
 
       },{
         title: () => <TableColumnTitle title="就地停机损失电量" unit="万kWh" />,
         dataIndex: "jiudipower",
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
+        className:styles.numRight
       },
     ];
     columns.unshift(...show);
@@ -177,7 +191,7 @@ class TableList extends Component {
 
 
   render() {
-    const { total, pageSize, pageNum, powerLostList } = this.props;
+    const { total, pageSize, pageNum, powerLostList,loading } = this.props;
     const columns = this.initMonthColumn();
     const dataSource = powerLostList.map((e, i) => ({
       ...e, key: i,
@@ -188,7 +202,9 @@ class TableList extends Component {
         <div className={styles.tableHeader}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table columns={columns}
+        <Table 
+          loading={loading}
+          columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
           scroll={{ x: 1440 }}

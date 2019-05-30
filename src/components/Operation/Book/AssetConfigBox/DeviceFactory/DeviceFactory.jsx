@@ -40,10 +40,21 @@ class DeviceFactory extends React.Component {
       tableRecord: {},
       isSaveStyle: false,
       editingKey: '',
+      resetValue: false,
     }
   }
   componentDidMount() {
     this.props.getDeviceFactorsList({ orderField: '1', orderMethod: 'desc' })
+  }
+  componentWillUnmount() {
+    this.props.changeAssetConfigStore({
+      manufactorName: '',//设备厂家名称(模糊查询)
+      orderField: '1',//排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
+      orderMethod: 'desc',//排序方式（“asc”：升序，”desc“:降序）
+      pageNum: 1,//页码
+      pageSize: 10,//每页记录数
+      total: 0,
+    })
   }
   onPaginationChange = ({ currentPage, pageSize }) => {
     this.changFilter({ pageNum: currentPage, pageSize })
@@ -72,19 +83,19 @@ class DeviceFactory extends React.Component {
         return;
       }
       if (!error) {
-        this.props.editDeviceFactors({ manufactorId, assetsIds:row.assetsNames.assetsIds,manufactorName:row.manufactorName  })
-      };
-      
+        this.props.editDeviceFactors({ manufactorId, assetsIds: row.assetsNames.assetsIds, manufactorName: row.manufactorName })
+      }
+
       const newData = [...deviceFactorsList];
       const index = newData.findIndex(item => manufactorId === item.manufactorId);
       if (index > -1) {
         const item = newData[index];
-        console.log('item: ', item);
-        console.log('...row: ', ...row);
+
+
 
         newData.splice(index, 1, {
           ...item,
-          ...row,
+          // ...row,
         });
         this.props.changeAssetConfigStore({ deviceFactorsList: newData })
         this.setState({ data: newData, editingKey: '' });
@@ -106,9 +117,12 @@ class DeviceFactory extends React.Component {
     })
   }
   submitForm = (e) => {
-    this.props.form.validateFieldsAndScroll(['manufactorName', 'assetsIds'], (err, values) => {
+    const { validateFieldsAndScroll, resetFields } = this.props.form;
+    validateFieldsAndScroll(['manufactorName', 'assetsIds'], (err, values) => {
       if (!err) {
         this.props.addDeviceFactors({ manufactorName: values.manufactorName, assetsIds: values.assetsIds.assetsIds })
+        this.setState({ resetValue: true })
+        resetFields()
       }
     });
   }
@@ -126,8 +140,8 @@ class DeviceFactory extends React.Component {
       operateUser: '4',
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    this.changFilter({ orderField, orderCommand })
+    const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
+    this.changFilter({ orderField, orderMethod })
   }
   changFilter = (value) => {
     const { getDeviceFactorsList, orderField, orderMethod, pageNum, pageSize, manufactorName } = this.props;
@@ -135,7 +149,7 @@ class DeviceFactory extends React.Component {
     getDeviceFactorsList({ ...params, ...value })
   }
   changeSelctNode = (data) => {
-    console.log('data: ', data);
+
 
   }
   queryDataType = (value) => {
@@ -151,7 +165,7 @@ class DeviceFactory extends React.Component {
           return (<EditableContext.Consumer>
             {form => {
 
-              return <EditableCell form={form} {...rest[0]}  onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
+              return <EditableCell form={form} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
             }}
           </EditableContext.Consumer>)
         },
@@ -183,10 +197,10 @@ class DeviceFactory extends React.Component {
       }, {
         title: '生产资产',
         dataIndex: 'assetsNames',
-        sorter: true,
+        // sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
-      },{
+        render: (text) => <span title={text}>{text.join(',')}</span>
+      }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
@@ -205,7 +219,7 @@ class DeviceFactory extends React.Component {
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                  return (<a 
+                  return (<a
                     onClick={() => this.save(form, record.manufactorId)}
                     style={{ marginRight: 8 }}>
                     <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)
@@ -258,7 +272,7 @@ class DeviceFactory extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} />
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
@@ -283,14 +297,16 @@ class DeviceFactory extends React.Component {
             <Table
               loading={false}
               components={components}
-              dataSource={deviceFactorsList.map((e,i)=>{
-                e.assetsDatas.forEach((item,index)=>{
-                  // e.assetsNames[i]=item.assetsNames;
-                  e.assetsNames=item.assetsNames;
-                  e.assetsIds=item.assetsIds;
-                  e.isBuild=item.isBuild;
+              dataSource={deviceFactorsList.map((e, i) => {
+                e.assetsNames = [];
+                e.assetsIds = [];
+                e.isBuild = [];
+                e.assetsDatas.forEach((item, index) => {
+                  e.assetsNames.push(item.assetsNames.replace(/,/g, '/'));
+                  e.assetsIds.push(item.assetsIds);
+                  e.isBuild.push(item.isBuild);
                 })
-                return {...e}
+                return { ...e }
               })}
               columns={columns}
               pagination={false}
