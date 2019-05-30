@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Inverter from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Inverter/Inverter';
 import Confluencebox from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Confluencebox/Confluencebox';
 import Boxtransformer from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Boxtransformer/Boxtransformer';
-import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
+// import Weatherstation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/Weatherstation/Weatherstation';
 import WindDevice from '../../../../components/Monitor/StationMonitor/DeviceMonitor/NewWindDevice/WindDevice';
 import IntegrateLine from '../../../../components/Monitor/StationMonitor/DeviceMonitor/IntegrateLine/IntegrateLine';
 import BoosterStation from '../../../../components/Monitor/StationMonitor/DeviceMonitor/BoosterDevice/BoosterStation';
