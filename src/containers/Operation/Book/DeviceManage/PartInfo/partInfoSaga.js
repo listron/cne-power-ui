@@ -9,8 +9,8 @@ const operation = Path.APISubPaths.operation;
 
 function* getDeviceTypeList(action) {  // 电站下设备类型
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceTypeList}/${payload.stationCode}`;
-  const url = `/mock/v3/ledger/devicetype/stationCode`;
+  const url =`${APIBasePath}${operation.getDeviceTypeList}/${payload.stationCode}`;
+  // const url = `/mock/v3/ledger/devicetype/stationCode`;
   const { deviceCode, type } = payload;
   console.log('type: ', type);
   try {

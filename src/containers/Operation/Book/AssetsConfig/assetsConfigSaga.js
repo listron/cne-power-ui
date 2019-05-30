@@ -230,11 +230,11 @@ function* addDeviceFactors(action) { //新建设备厂家
         },
       });
       const payload = yield select(state => ({
-        manufactorName: state.operation.assetsConfig.get('manufactorName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageNum: state.operation.assetsConfig.get('pageNum'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
+        
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
@@ -267,11 +267,12 @@ function* editDeviceFactors(action) { //编辑设备厂家
         },
       });
       const payload = yield select(state => ({
-        manufactorName: state.operation.assetsConfig.get('manufactorName'),
+      
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageNum: state.operation.assetsConfig.get('pageNum'),
-        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
+      
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
@@ -303,11 +304,10 @@ function* deleteDeviceFactors(action) { //删除设备厂家
         },
       });
       const payload = yield select(state => ({
-        manufactorName: state.operation.assetsConfig.get('manufactorName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageNum: state.operation.assetsConfig.get('pageNum'),
-        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
@@ -332,6 +332,7 @@ function* getDeviceModesList(action) { //获取设备型号列表
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
+      
       const total = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
@@ -374,11 +375,11 @@ function* addDeviceModes(action) { //新建设备型号
         },
       });
       const payload = yield select(state => ({
-        deviceModeName: state.operation.assetsConfig.get('deviceModeName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageNum: state.operation.assetsConfig.get('pageNum'),
-        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
+      
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
@@ -411,11 +412,12 @@ function* editDeviceModes(action) { //编辑设备型号
         },
       });
       const payload = yield select(state => ({
-        deviceModeName: state.operation.assetsConfig.get('deviceModeName'),
+      
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageNum: state.operation.assetsConfig.get('pageNum'),
-        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
+       
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
@@ -435,10 +437,10 @@ function* editDeviceModes(action) { //编辑设备型号
 }
 function* deleteDeviceModes(action) { //删除设备型号
   const { payload } = action;
-  const url = `${APIBasePath}${operation.deleteDeviceModes}`;
+  const url = `${APIBasePath}${operation.deleteDeviceModes}?modeId=${payload.modeId}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.delete, url,payload);
     if (response.data.code === '10000') {
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
@@ -447,11 +449,10 @@ function* deleteDeviceModes(action) { //删除设备型号
         },
       });
       const payload = yield select(state => ({
-        deviceModeName: state.operation.assetsConfig.get('deviceModeName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageNum: state.operation.assetsConfig.get('pageNum'),
-        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
