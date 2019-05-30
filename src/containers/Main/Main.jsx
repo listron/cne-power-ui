@@ -49,7 +49,7 @@ class Main extends Component {
   componentDidMount() {
     const { pathname } = this.props.history.location;
     if (pathname !== '/login') {
-      const authData = Cookie.get('authData');
+      const authData = localStorage.getItem('authData') || '';
       if (authData) {
         this.props.getStations();
         this.props.getDeviceTypes();
@@ -60,7 +60,7 @@ class Main extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const authData = Cookie.get('authData');
+    const authData = localStorage.getItem('authData') || '';
     const refreshToken = Cookie.get('refresh_token');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if (isTokenValid && authData && this.props.history.location.pathname === '/login'
@@ -108,14 +108,12 @@ class Main extends Component {
 
   render() {
     const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
-    // const authData = Cookie.get('authData') || null;
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
     const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
     if (authData && isTokenValid) {
-      // axios.defaults.headers.common['Authorization'] = "bearer " + JSON.parse(authData);
       axios.defaults.headers.common['Authorization'] = "bearer " + authData;
     }
     if (isTokenValid && authData && (isNotLogin === '0')) {
