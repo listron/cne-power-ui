@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { warehouseManageAction } from './warehouseManageReducer';
+import styles from './warehouseManage.scss';
 
 class WarehouseManage extends Component {
+
+  static propTypes = {
+    resetStore: PropTypes.func,
+  }
   
   componentDidMount(){
 
   }
+
+  componentWillUnmount(){
+    this.props.resetStore();
+  }
   
   render(){
     return (
-      <div>
+      <div className={styles.warehouseManage}>
         仓库管理
       </div>
     )
