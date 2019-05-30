@@ -12,6 +12,7 @@ import WarningTip from '../../../../Common/WarningTip';
 class SideReportPage extends Component {
   static propTypes = {
     loading: PropTypes.bool,
+    showPage: PropTypes.string,
     reportDay: PropTypes.string,
     sidePage: PropTypes.string,
     stations: PropTypes.array,
@@ -218,7 +219,7 @@ class SideReportPage extends Component {
   }
 
   render(){
-    const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation } = this.props;
+    const { loading, reportDay, stations, reportStation, showReportInputList, reportDisableStation, showPage } = this.props;
     const canReport = reportDay && reportStation && reportStation.length > 0;
     const { dayReportTotalInfoArr, warningKey, warningTipText } = this.state;
     return (
@@ -245,11 +246,17 @@ class SideReportPage extends Component {
         {!showReportInputList && <div className={styles.sideReportContent}>
           <div className={styles.selectTime} >
             <span><i>*</i>日报时间</span>
-            <DatePicker onChange={this.selectReportTime} value={moment(reportDay)} disabledDate={this.disabledDate} />
+            <DatePicker
+              onChange={this.selectReportTime}
+              value={moment(reportDay)}
+              disabledDate={this.disabledDate}
+              disabled={showPage === 'list'}
+            />
           </div>
           <div className={styles.selectStation}>
             <span><i>*</i>电站选择</span>
-            <StationSelect 
+            <StationSelect
+              disabled={showPage === 'list'}
               value={reportStation}
               data={stations.filter(e=>!reportDisableStation.includes(e.stationCode))}
               onChange={this.stationSelected}
