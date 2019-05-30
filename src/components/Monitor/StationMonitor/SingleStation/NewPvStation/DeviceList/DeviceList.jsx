@@ -10,7 +10,7 @@ import IntegrateList from './IntegrateList';
 import Boosterstation from './Boosterstation';
 import PowerNet from './PowerNet';
 import WeatherStation from './WeatherStation'
-import Schematic from './Schematic'
+import Schematic from './SchematicMap'
 import styles from './deviceList.scss';
 
 class DeviceList extends Component {
