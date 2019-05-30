@@ -4,7 +4,7 @@ import { showNoData, hiddenNoData } from "../../../../../constants/echartsNoData
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, beforeTimeData) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -41,16 +41,28 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     });
     return newArr;
   }
-  //处理时间
-  function dateFunc(arr) {
-    let newArr = [];
-    arr[0].dataList && arr[0].dataList.map(cur => {
-      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
-    });
-    return newArr;
+
+  // 处理显示没有数据还是有数据
+  function showNoDataFunc() {
+    let styles; // 变量
+    const arr = dataFunc(data);
+    if (!arr || arr.length === 0) {
+      styles = showNoData;
+    }
+    if (arr.length !== 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
+          styles = showNoData;
+        }
+      }
+    }
+    return styles;
   }
   return {
-    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
+    graphic: showNoDataFunc(),
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -84,7 +96,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: dateFunc(data),
+      data: beforeTimeData,
       splitLine: {
         show: true,
       }
@@ -131,7 +143,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
 };
 
 // 故障图表-发电机后驱温度
-export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afterTimeData) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -168,16 +180,28 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     });
     return newArr;
   }
-  //处理时间
-  function dateFunc(arr) {
-    let newArr = [];
-    arr[0].dataList && arr[0].dataList.map(cur => {
-      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
-    });
-    return newArr;
+
+  // 处理显示没有数据还是有数据
+  function showNoDataFunc() {
+    let styles; // 变量
+    const arr = dataFunc(data);
+    if (!arr || arr.length === 0) {
+      styles = showNoData;
+    }
+    if (arr.length !== 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
+          styles = showNoData;
+        }
+      }
+    }
+    return styles;
   }
   return {
-    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
+    graphic: showNoDataFunc(),
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -211,7 +235,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: dateFunc(data),
+      data: afterTimeData,
       splitLine: {
         show: true,
       }
@@ -258,7 +282,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
 };
 
 // 故障图表-温度差
-export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
+export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffTimeData) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -295,16 +319,28 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
     });
     return newArr;
   }
-  //处理时间
-  function dateFunc(arr) {
-    let newArr = [];
-    arr[0].dataList && arr[0].dataList.map(cur => {
-      newArr.push(moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss"))
-    });
-    return newArr;
+
+  // 处理显示没有数据还是有数据
+  function showNoDataFunc() {
+    let styles; // 变量
+    const arr = dataFunc(data);
+    if (!arr || arr.length === 0) {
+      styles = showNoData;
+    }
+    if (arr.length !== 0) {
+      for(let i = 0; i < arr.length; i++ ) {
+        if (arr[i].data.length !== 0){
+          styles = hiddenNoData;
+          return false
+        }else {
+          styles = showNoData;
+        }
+      }
+    }
+    return styles;
   }
   return {
-    graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
+    graphic: showNoDataFunc(),
     tooltip: {
       trigger: 'axis',
       position: function (pt) {
@@ -338,7 +374,7 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd) => {
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: dateFunc(data),
+      data: diffTimeData,
       splitLine: {
         show: true,
       }
@@ -580,6 +616,9 @@ export const allFansOptions = (data, name) => {
   const { cfResidual: { residual }, cfStd1, cfStd2, cfStd3 } = data;
   //将科学计数法转换为小数
   function toNonExponential(num) {
+    if (!num) {
+      return num;
+    }
     const m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
     return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
   }

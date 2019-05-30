@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
-import { deviceStatusArray, PVStationTypes } from '../../../../../constants/stationBaseInfo';
+import { PVStationTypes, boxtransformerStatus } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -47,29 +47,43 @@ class BoxtransformerHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { deviceStatus, sonDevice } = deviceDetail;
-    const deviceStatusInfo = deviceStatusArray.find(e=>parseInt(e.statusCode) === parseInt(deviceStatus));
-    const sonDeviceBaseInfo = PVStationTypes.find(e=>sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode);
+    const { deviceStatus, parentDevice = {}, manufacturer, deviceModeName } = deviceDetail;
+    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
+    const parentDeviceTypeCode = parentDevice.deviceTypeCode; // 父级设备type
+    const parentDeviceCode = parentDevice.deviceCode; //父级设备code
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange devices={devices} deviceDetail={deviceDetail} baseLinkPath={baseLinkPath} hideDeviceChange={this.hideDeviceChange} />}
         <div className={styles.deviceName}>
           <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
-          <span className={styles.name}  onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
-          <span className={styles.status} >
-            <span>设备状态:</span> 
-            <span className={deviceStatusInfo && `${deviceStatusInfo.icon} statusIcon` || ''}></span>
-            <span>{ deviceStatusInfo && deviceStatusInfo.statusName || ' '}</span>
-          </span>
+          <span className={styles.name} onClick={this.showDeviceChange}>{deviceDetail.deviceName}</span>
+          <span className={styles.status}>设备状态:{boxtransformerStatus[deviceStatus] || '--'}</span>
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
-        {sonDevice && sonDevice.deviceTypeCode && <div className={styles.linkTo}>
+        <div className={styles.linkTo}>
+          {parentDeviceTypeCode && parentDeviceCode && <Link
+            to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`}
+            className={styles.eachLink}
+          >
+            <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
+            <span className={styles.linkName}>
+              {parentDevice.deviceTypeName}{parentDevice.deviceName}详情
+            </span>
+            <span className="iconfont icon-upstream linkIcon"></span>
+          </Link>}
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
+            <Icon type="arrow-left" />
+          </Link>
+        </div>
+        {/* {sonDevice && sonDevice.deviceTypeCode && <div className={styles.linkTo}>
           <Link  to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`} className={styles.eachLink}>
             <span className={sonDeviceBaseInfo && `${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{`${sonDevice?sonDevice.deviceTypeName:''}`}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
           </Link>
-        </div>}
+        </div>} */}
       </div>
     )
   }

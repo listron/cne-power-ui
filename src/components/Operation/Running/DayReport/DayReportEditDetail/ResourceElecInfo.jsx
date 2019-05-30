@@ -37,12 +37,13 @@ class ResourceElecInfo extends Component {
                   required: requireTargetArr.includes('resourceValue'),
                   rules: [{ 
                     validator: (rule, value, callback) => {
-                      if(requireTargetArr.includes('resourceValue') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('resourceValue') && !truelyValue){
                         callback(`请填写${stationType>0?'日累计辐射':'平均风速'}`);
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > 2 && callback(`不超过2位小数`);
                       }
                       callback();
@@ -77,13 +78,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('genInverter'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('genInverter') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('genInverter') && !truelyValue){
                         callback(`请填写${stationType>0?'逆变器':'风电机组'}日发电量`);
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -100,13 +102,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('yearGenInverter'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('yearGenInverter') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('yearGenInverter') && !truelyValue){
                         callback(`请填写${stationType>0?'逆变器':'风电机组'}年发电量`);
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -129,13 +132,14 @@ class ResourceElecInfo extends Component {
                   required: requireTargetArr.includes('genIntegrated'),
                   rules: [{ 
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('genIntegrated') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('genIntegrated') && !truelyValue){
                         callback('请填写集电线路日发电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -152,13 +156,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('yearGenIntegrated'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('yearGenIntegrated') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('yearGenIntegrated') && !truelyValue){
                         callback('请填写集电线路年发电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -180,14 +185,15 @@ class ResourceElecInfo extends Component {
                 {getFieldDecorator('genInternet', {
                   rules: [{
                     required: requireTargetArr.includes('genInternet'),
-                    validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('genInternet') && !value){
+                    validator: (rule, value, callback) => {
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('genInternet') && !truelyValue){
                         callback('请填写上网电量日发电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -204,13 +210,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('yearGenInternet'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('yearGenInternet') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('yearGenInternet') && !truelyValue){
                         callback('请填写上网电量年发电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -227,13 +234,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('dailyBuyPower'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('dailyBuyPower') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('dailyBuyPower') && !truelyValue){
                         callback('请填写日购网电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -250,13 +258,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('buyPower'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('buyPower') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('buyPower') && !truelyValue){
                         callback('请填写年购网电量' );
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -279,12 +288,13 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('modelInverterCapacity'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('modelInverterCapacity') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('modelInverterCapacity') && !truelyValue){
                         callback(`请填写样板${stationType>0?'逆变器':'风机'}容量`);
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > 2 && callback('不超过2位小数');
                       }
                       callback();
@@ -301,13 +311,14 @@ class ResourceElecInfo extends Component {
                   rules: [{
                     required: requireTargetArr.includes('modelInverterPowerGen'),
                     validator: (rule, value, callback)=>{
-                      if(requireTargetArr.includes('modelInverterPowerGen') && !value){
+                      const truelyValue = value && value.trim();
+                      if(requireTargetArr.includes('modelInverterPowerGen') && !truelyValue){
                         callback(`请填写样板${stationType>0?'逆变器':'风机'}发电量`);
-                      }else if(isNaN(value)){
+                      }else if(isNaN(truelyValue)){
                         callback('请填写数字');
                       }else{
                         const demicalMax = genUnit === 'kWh'? 2: 4;
-                        const demical = `${value}`.split('.')[1];
+                        const demical = `${truelyValue}`.split('.')[1];
                         demical && demical.length > demicalMax && callback(`不超过${demicalMax}位小数`);
                       }
                       callback();
@@ -329,10 +340,13 @@ class ResourceElecInfo extends Component {
 
 export default Form.create({
   onValuesChange:(props, changedValues, allValues)=>{
+    const tmpRecord = Object.entries(changedValues) || [];
+    const tmpInfo = tmpRecord[0] || []; // 将input文字中值的空格去掉。
+    const valueRecord = {[`${tmpInfo[0]}`]: tmpInfo[1] && tmpInfo[1].trim()};
     const { updateDayReportDetail, changeReportDetail } = props;
     changeReportDetail({
       ...updateDayReportDetail,
-      ...changedValues,
+      ...valueRecord,
     });
   }
 })(ResourceElecInfo);

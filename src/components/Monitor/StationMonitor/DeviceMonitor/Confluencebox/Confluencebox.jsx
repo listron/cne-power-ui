@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ConfluenceStatistics from './ConfluenceStatistics';
 import ConfluenceTenMin from './ConfluenceTenMin';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
-import DevicePointsData from '../DeviceMonitorCommon/DevicePointsData';
+import DevicePointsTable from '../DeviceMonitorCommon/DevicePointsTable';
 import ConfluenceHeader from './ConfluenceHeader';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import PropTypes from 'prop-types';
@@ -11,19 +11,15 @@ import moment from 'moment';
 
 class Confluencebox extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
     match: PropTypes.object,
-    getMonitorDeviceData: PropTypes.func,
-    getTenMinDeviceData: PropTypes.func,
-    devices: PropTypes.array,
-    deviceDetail: PropTypes.object,
-    deviceTenMin: PropTypes.array,
-    deviceAlarmList: PropTypes.array,
-    devicePointData: PropTypes.array,
+    stations: PropTypes.array,
     resetDeviceStore: PropTypes.func,
+    getDeviceInfoMonitor: PropTypes.func,
+    getDeviceChartMonitor: PropTypes.func,
+    stopMonitor: PropTypes.func,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
     const startTime = moment().utc().subtract(72,'hours').format();
     const endTime = moment().utc().format();
@@ -33,10 +29,8 @@ class Confluencebox extends Component {
       deviceTypeCode,
       timeParam: `${startTime}/${endTime}`,
     };
-    this.props.getMonitorDeviceData(params);
-    this.props.getTenMinDeviceData(params);
-    this.getData(stationCode, deviceCode, deviceTypeCode);
-    this.getTenMinData(stationCode, deviceCode, deviceTypeCode);
+    this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
+    this.props.getDeviceChartMonitor(params);
   }
 
   componentWillReceiveProps(nextProps){
@@ -45,9 +39,7 @@ class Confluencebox extends Component {
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode && (nextType === '202' || nextType === '207') ){
-      clearTimeout(this.timeOutId);
-      clearTimeout(this.timeOutTenMin);
+    if( nextDevice !== deviceCode ){
       const startTime = moment().subtract(72,'hours').utc().format();
       const endTime = moment().utc().format();
       const params = {
@@ -56,56 +48,28 @@ class Confluencebox extends Component {
         deviceTypeCode: nextType,
         timeParam: `${startTime}/${endTime}`,
       };
-      this.props.getMonitorDeviceData(params);
-      this.props.getTenMinDeviceData(params);
-      this.getData(nextStation, nextDevice, nextType);
-      this.getTenMinData(nextStation, nextDevice, nextType);
+      this.props.stopMonitor(); // 停止之前的定时器。
+      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType, });
+      this.props.getDeviceChartMonitor(params);
     }
   }
 
   componentWillUnmount(){
-    clearTimeout(this.timeOutId);
-    clearTimeout(this.timeOutTenMin);
+    this.props.stopMonitor(); // 停止之前的定时器。
     this.props.resetDeviceStore();
   }
 
-  getData = (stationCode, deviceCode, deviceTypeCode) => {
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-    };
-    this.timeOutId = setTimeout(() => {
-      this.props.getMonitorDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },10000)
-  }
-
-  getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
-    const startTime = moment().utc().format();
-    const endTime = moment().subtract(72,'hours').utc().format();
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode,
-      timeParam: `${startTime}/${endTime}`,
-    };
-    this.timeOutTenMin = setTimeout(() => {
-      this.props.getTenMinDeviceData(params);
-      this.getData(stationCode, deviceCode, deviceTypeCode);
-    },600000)
-  }
-
   render(){
-    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading } = this.props;
-    const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
+    const { match,  stations } = this.props;
+    const { stationCode, deviceTypeCode, deviceCode } = match.params;
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
         link: true,
-        name: deviceDetail.stationName || '',
+        name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
+      }, {
         name: '汇流箱',
       }],
       iconName: 'iconfont icon-hl'
@@ -114,11 +78,20 @@ class Confluencebox extends Component {
       <div className={styles.confluencebox}>
         <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
         <div className={styles.deviceContent}>
-          <ConfluenceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
-          <ConfluenceStatistics deviceDetail={deviceDetail} />
-          <ConfluenceTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} />
-          <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
+          <ConfluenceHeader
+             {...this.props}
+            stationCode={stationCode}
+            deviceTypeCode={deviceTypeCode}
+          />
+          <ConfluenceStatistics {...this.props} />
+          <ConfluenceTenMin {...this.props} />
+          <DevicePointsTable {...this.props} />
+          <DeviceAlarmTable
+             {...this.props}
+            stationCode={stationCode}
+            deviceTypeCode={deviceTypeCode}
+            deviceCode={deviceCode}
+          />
         </div>
       </div>
     ) 

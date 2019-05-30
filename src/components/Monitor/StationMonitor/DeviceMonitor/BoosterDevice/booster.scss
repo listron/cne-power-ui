@@ -1,6 +1,6 @@
 @import '../../../../../theme/theme.scss';
 
-.subBoxtransformer {
+.subIntergrate {
   padding: 0 60px;
 }
 
@@ -38,45 +38,13 @@
         color: #a42b2c;
         font-size: 14px;
       }
-      .icon-outage{
-        position: absolute;
-        bottom: 9px;
-        left: -5px;
-        width: 10px;
-        height: 10px;
-        color: #e08031;
-        font-size: 14px;
-      }
-      .ant-progress-inner{
-        background-color: #dfdfdf;
-      }
     }
     .deviceItemR{
       display: inline-block;
       width: 165px;
       color: $darkColor;
-      .deviceBlockName{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: -4px;
-        margin-top: 7px;
-      }
-      .deviceItemPower{
-        display: flex;
-        justify-content: space-between;
-        margin-top: -4px;
-        .realDevicePower{
-          color: $themeColor
-        }
-      }
-      :global{
-        .ant-progress{
-          line-height: 3px;
-        }
-        .ant-progress-success-bg, .ant-progress-bg{
-          background-color: $themeColor;
-        }
-      }
+      margin-bottom: -4px;
+      margin-top: 7px;
     }
   }
   .deviceBlockFooter{

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DeviceAlarmTable from '../DeviceMonitorCommon/DeviceAlarmTable';
 import BoosterHeader from './BoosterHeader';
+import SubIntegrate from './SubIntegrate';
 import CommonBreadcrumb from '../../../../Common/CommonBreadcrumb';
 import { YcPoints, YxPoints, YmPoints } from '../DeviceMonitorCommon/PointsGroup';
 import PropTypes from 'prop-types';
@@ -10,12 +11,14 @@ class BoosterStation extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     match: PropTypes.object,
+    stations: PropTypes.array,
     devices: PropTypes.array,
     deviceDetail: PropTypes.any, // 对于升压站的设备详情为特殊情况数据，数组。
     deviceAlarmList: PropTypes.array,
-    singleStationData: PropTypes.object,
-    getBoosterData: PropTypes.func,
+    subDeviceList: PropTypes.array,
     resetDeviceStore: PropTypes.func,
+    getDeviceInfoMonitor: PropTypes.func,
+    stopMonitor: PropTypes.func,
   }
 
   constructor(props) {
@@ -26,13 +29,8 @@ class BoosterStation extends Component {
   }
 
   componentDidMount() {
-    const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
-    const params = {
-      stationCode,
-      deviceCode,
-      deviceTypeCode
-    };
-    this.getData(params);
+    const { deviceCode, deviceTypeCode } = this.props.match.params;
+    this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,31 +38,15 @@ class BoosterStation extends Component {
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
-    const nextStation = nextParams.stationCode;
-    if( nextDevice !== deviceCode && nextType === '301' ){ // 升压站内设备切换
-      clearTimeout(this.timeOutId);
-      const params = {
-        stationCode: nextStation,
-        deviceCode: nextDevice,
-        deviceTypeCode: nextType,
-      };
-      this.setState({
-        activeIndex: 0,
-      });
-      this.getData(params);
+    if( nextDevice !== deviceCode ){ // 升压站内设备切换
+      this.props.stopMonitor();
+      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType });
     }
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timeOutId);
+    this.props.stopMonitor();
     this.props.resetDeviceStore();
-  }
-
-  getData = params => {
-    this.props.getBoosterData(params);
-    this.timeOutId = setTimeout(() => {
-      this.getData(params);
-    }, 10000)
   }
 
   checkDevice = (index) => {
@@ -75,12 +57,13 @@ class BoosterStation extends Component {
   }
 
   render(){
-    const { loading, devices, deviceDetail, deviceAlarmList, singleStationData } = this.props;
+    const { stations, devices, deviceDetail, deviceAlarmList, subDeviceList } = this.props;
     const { activeIndex } = this.state;
     let boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode } = this.props.match.params;
-    const { stationName, stationType } = singleStationData;
+    const currentStation = stations.find(e => e.stationCode === stationCode) || {};
+    const { stationName, stationType } = currentStation;
     const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
       breadData:[{
@@ -96,7 +79,12 @@ class BoosterStation extends Component {
       <div className={styles.boosterStation}>
         <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
         <div className={styles.deviceContent}>
-          <BoosterHeader deviceDetail={boosterDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+          <BoosterHeader
+            deviceDetail={boosterDetail}
+            devices={devices}
+            stationCode={stationCode}
+            deviceTypeCode={deviceTypeCode}
+          />
           <div className={styles.deviceList}>
             {deviceDetail.length > 0 && deviceDetail.map((e, index) => (
               <span
@@ -115,12 +103,13 @@ class BoosterStation extends Component {
           <YmPoints data={pointData.YCS} name="YCS" />
           <DeviceAlarmTable
             deviceAlarmList={deviceAlarmList}
-            loading={loading}
             deviceDetail={boosterDetail}
             stationCode={stationCode}
             deviceTypeCode={boosterDetail.deviceTypeCode}
             deviceCode={boosterDetail.deviceCode}
           />
+          <h3 className={styles.subTitleConfig}>下级设备</h3>
+          <SubIntegrate subDeviceList={subDeviceList} deviceDetail={deviceDetail} stationCode={stationCode} />
         </div>
       </div>
     ) 
