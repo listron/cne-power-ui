@@ -55,7 +55,7 @@ class ShowAddDeviceModeModal extends Component {
       >
         <Form className={styles.preFormStyle}>
          
-          <FormItem label="生产厂家" colon={false} {...formItemLayout}  >
+          <FormItem label="设备厂家" colon={false} {...formItemLayout}  >
             {getFieldDecorator('addFactorName', {
               rules: [
                 { message: '设备型号不超过30字', required: true, type: 'string', max: 30 },

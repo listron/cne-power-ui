@@ -7,6 +7,7 @@ const initState = Immutable.fromJS({
   loading: false,
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
+  manufactorId:null,//厂家Id
   deviceModeCode: null, // 选中的设备型号
   deviceFullcode:'',
   manufactorId:null,//设备厂家
@@ -17,8 +18,8 @@ const initState = Immutable.fromJS({
   sortMethod: '', // 排序方式('0':正序,'1': 倒序)
   showPage:'list',
   deviceList: [], // 设备列表
-  orderMethod:'',//设备厂家列表传参
-  orderField:'',//设备厂家列表传参
+  orderMethod:'desc',//设备厂家列表传参
+  orderField:'1',//设备厂家列表传参
   stationDeviceTypes: [], //电站下设备类型
   deviceModels: [], // 电站设备类型下设备型号
   pvDeviceModels:[],//光伏组件下的设备型号

@@ -34,8 +34,8 @@ const routers = [
     component: lazy(() => import('../containers/Operation/Book/AssetsConfig/AssetsConfig')),
   }, { // 设备管理
     path: '/operation/book/deviceManage',
-    // component: lazy(() => import('../components/Common/Building/Building')),
-    component: lazy(() => import('../containers/Operation/Book/DeviceManage/DeviceManage')),
+    component: lazy(() => import('../components/Common/Building/Building')),
+    // component: lazy(() => import('../containers/Operation/Book/DeviceManage/DeviceManage')),
   }, { // 设备台账
     path: '/operation/book/deviceAccount',
     component: lazy(() => import('../containers/Operation/Book/DeviceAccount/DeviceAccount')),

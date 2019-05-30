@@ -77,7 +77,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入 ${title}!`,
                     }],
-                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId'] : record['manufactorId'],
+                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId']: record['manufactorId'],
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}

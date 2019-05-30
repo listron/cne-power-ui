@@ -623,7 +623,7 @@ function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型�
 }
 function* getDevicePartInfo(action) { //获取设备部件信息
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
+  const url =`${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
   // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url,);
@@ -651,7 +651,7 @@ function* getDevicefixRecord(action) { //获取检修记录
   const url =`${APIBasePath}${operation.getDevicefixRecord}`;
   // const url = `/mock/v3/ledger/device/defect/list`;
   try {
-    const response = yield call(axios.get, url,{params:{deviceFullcode:payload.deviceFullcode}});
+    const response = yield call(axios.get, url,{params:{...payload,}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -673,10 +673,10 @@ function* getDevicefixRecord(action) { //获取检修记录
 }
 function* getDevicehistoryWarning(action) { //获取设备历史告警
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}`;
+  const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}/${'事件告警'}`;
   // const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
-    const response = yield call(axios.post, url,{...payload});
+    const response = yield call(axios.get, url,{params:{orderMethod:'desc',orderField:'1'}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,

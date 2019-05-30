@@ -415,6 +415,8 @@ function* editDeviceModes(action) { //编辑设备型号
       
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
        
       }));
       yield put({
@@ -447,10 +449,10 @@ function* deleteDeviceModes(action) { //删除设备型号
         },
       });
       const payload = yield select(state => ({
-       
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-      
+        pageSize:state.operation.assetsConfig.get('pageSize'),
+        pageNum:state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,

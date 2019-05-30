@@ -100,8 +100,13 @@ class DeviceMode extends React.Component {
         return;
       }
       if (!error) {
-        this.props.editDeviceModes({ modeId, deviceModeName: row.deviceModeName, assetsId: row.assetsName.assetsIds.join(), manufactorId: row.manufactorName })
-      };
+        this.props.editDeviceModes({ 
+          modeId, 
+          deviceModeName: row.deviceModeName, 
+          assetsId: row.assetsName.assetsIds?row.assetsName.assetsIds.join():row.assetsName, 
+          manufactorId: row.manufactorName 
+        })
+      }
 
       const newData = [...deviceModesList];
 
