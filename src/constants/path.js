@@ -172,6 +172,13 @@ export default {
       goodsDel: "/v3/goods/del",  // 物品删除
       goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
 
+      // 台账-出入库记录
+      warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
+      warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
+      inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
+      outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
+      inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
+      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表

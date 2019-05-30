@@ -87,6 +87,7 @@ import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManag
 import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
 import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
 import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+import { watchStockRecords } from "./Operation/Book/StockRecords/stockRecordsSaga";
 
 
 
@@ -183,6 +184,6 @@ export default function* rootSaga() {
     watchBookPartsInfo(),//组件信息
     watchDeviceAccount(),//设备台账
     watchWarehouse(),//仓库配置
-
+    watchStockRecords(),//出入库记录
   ])
 }

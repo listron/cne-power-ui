@@ -190,9 +190,9 @@ const menuData = [
             path: 'warehouseManage',
             rightKey: 'operation_book_sparePart',
           }, {
-            name: '出入境记录',
-            path: 'immigrationRecords',
-            rightKey: 'operation_book_instrument',
+            name: '出入库记录',
+            path: 'stockRecords',
+            rightKey: 'operation_book_warehouseConfig',
           }
         ]
       }, {

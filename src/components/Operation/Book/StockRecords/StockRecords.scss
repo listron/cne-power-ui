@@ -1,0 +1,26 @@
+@import '../../../../theme/theme.scss';
+
+.stockSearch{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding:24px;
+  .searchLeft{
+    .text,.warehouseName,.inventory{
+      margin-right: 10px;
+    }
+    .warehouseName{
+      width: 180px;
+    }
+  }
+  .searchRight{
+    .inImportBtn{
+      color: $themeColor;
+      border: 1px solid $themeColor;
+    }
+    .inImportBtn:hover{
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+}

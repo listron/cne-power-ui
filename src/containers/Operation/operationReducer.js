@@ -12,6 +12,7 @@ import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
 import deviceAccount from './Book/DeviceAccount/deviceAccountReducer';
 import warehouse from './Book/Warehouse/warehouseReducer';
+import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 const operationReducer = combineReducers({
   defect,
@@ -24,6 +25,7 @@ const operationReducer = combineReducers({
   deviceManage,
   partInfo,
   warehouse,
+  stockRecords,
   intelligentExpert,
   deviceAccount,
 });
