@@ -159,6 +159,24 @@ export default {
       goodsDel: "/v3/goods/del",  // 物品删除
       goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
 
+      // 台账-仓库管理
+      getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
+      getManufactures: '/v3/manufactor/user/manufactors', // 所有厂家下拉项
+      getModes: '/v3/manufactor/user', // 所有厂家下拉项
+      getMaterialList: '/v3/goods/listByWarehouse', // 所有物品列表下拉项
+      getWarehouseManageList: '/v3/inventory/pageList', // 获取仓库管理下-备品备件/工器具/物资列表
+      insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
+      deleteWarehouseMaterial: '/v3/inventory/del', // 删除 备品备件/工器具/物资列表
+      takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
+      setStockMax: '/v3/inventory/thresholdSet', // 设置库存阈值
+      exportStockFile: '/v3/inventory/export', // 导出备品备件/工器具/物资列表
+      downloadStockTemplete: '/v3/inventory/downLoad', // 下载导入模板
+      importStockFile: '/v3/inventory/importEntry', // 导入备品备件/工器具/物资列表
+      getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
+      getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
+      getStockList: '/v3/inventory/inventoryInfo', // 获取某库存信息列表
+      deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
+      recallStockInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表

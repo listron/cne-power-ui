@@ -1,0 +1,49 @@
+@import '../../../../../theme/theme.scss';
+
+.conditionSearch{
+  display: flex;
+  height: 64px;
+  align-items: center;
+  .title{
+    margin-left: 28px;
+    color: $darkColor;
+  }
+  :global{
+    .ant-select{
+      width: 200px;
+      margin-left: 8px;
+    }
+  }
+}
+
+.enterWarehouse{ // 入库
+  width: 70px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid $themeColor;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  .plus, .text{
+    line-height: 30px;
+  }
+  .plus{
+    background-color: $themeColor;
+    color: #fff;
+    flex: 0 0 28px;
+    &:focus{
+      outline-width: 0;
+    }
+  }
+  .text{
+    color: $themeColor;
+    flex: 1; 
+    &:focus{
+      outline-width: 0;
+    }
+  }
+  &:focus{
+    outline-width: 0;
+  }
+}

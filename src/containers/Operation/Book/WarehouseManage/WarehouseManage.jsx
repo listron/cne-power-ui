@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
@@ -11,7 +12,11 @@ class WarehouseManage extends Component {
   static propTypes = {
     tabName: PropTypes.string,
     sideKey: PropTypes.string,
-    changStore: PropTypes.func,
+    tableParams: PropTypes.object,
+    getWarehouses: PropTypes.func,
+    getManufactures: PropTypes.func,
+    getWarehouseManageList: PropTypes.func,
+    changeStore: PropTypes.func,
     resetStore: PropTypes.func,
   }
 
@@ -20,7 +25,10 @@ class WarehouseManage extends Component {
   }
   
   componentDidMount(){
-
+    const { tableParams } = this.props;
+    this.props.getWarehouses();
+    this.props.getManufactures();
+    this.props.getWarehouseManageList({ ...tableParams })
   }
 
   componentWillUnmount(){
@@ -38,15 +46,17 @@ class WarehouseManage extends Component {
       '工具器': 'tools',
       '物资': 'materials',
     };
-    this.props.changStore({ tabName: tabInfo[innerHTML] });
+    this.props.changeStore({ tabName: tabInfo[innerHTML] });
   }
 
-  showSide = () => {
-    this.setState({ sideTransform: 100 })
+  showSide = (sideKey) => {
+    this.setState({ sideTransform: 100 });
+    this.props.changeStore({ sideKey });
   }
 
   backList = () => {
-    this.setState({ sideTransform: 0 })
+    this.setState({ sideTransform: 0 });
+    this.props.changeStore({ sideKey: 'list' });
   }
   
   render(){
@@ -59,12 +69,15 @@ class WarehouseManage extends Component {
         <CommonBreadcrumb  breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
         <div className={styles.manageContainer}>
           <div className={styles.listPage}>
-            <div className={styles.tabs} onClick={this.tabChange}>
-              <span className={tabName === 'spares' ? styles.active : styles.inactive}>备品备件</span>
-              <span className={tabName === 'tools' ? styles.active : styles.inactive}>工具器</span>
-              <span className={tabName === 'materials' ? styles.active : styles.inactive}>物资</span>
+            <div className={styles.listContent}>
+              <div className={styles.tabs} onClick={this.tabChange}>
+                <span className={tabName === 'spares' ? styles.active : styles.inactive}>备品备件</span>
+                <span className={tabName === 'tools' ? styles.active : styles.inactive}>工具器</span>
+                <span className={tabName === 'materials' ? styles.active : styles.inactive}>物资</span>
+              </div>
+              <SparePage {...this.props} showSide={this.showSide} />
             </div>
-            {/* <SparePage /> */}
+            
             {/* <ToolPage /> */}
             {/* <MaterialPage /> */}
             {/* <div className={styles.listContent}>
@@ -105,15 +118,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: warehouseManageAction.resetStore }),
-  changStore: payload => dispatch({ type: warehouseManageAction.changStore, payload }),
-//   // getWarehouseList: payload => dispatch({ type: warehouseAction.getWarehouseList, payload }),
-//   // getWarehouseAddList: payload => dispatch({ type: warehouseAction.getWarehouseAddList, payload }),
-//   // getWarehouseDelList: payload => dispatch({ type: warehouseAction.getWarehouseDelList, payload }),
-//   // getWarehouseUpdateList: payload => dispatch({ type: warehouseAction.getWarehouseUpdateList, payload }),
-//   // getGoodsList: payload => dispatch({ type: warehouseAction.getGoodsList, payload }),
-//   // getGoodsAddList: payload => dispatch({ type: warehouseAction.getGoodsAddList, payload }),
-//   // getGoodsDelList: payload => dispatch({ type: warehouseAction.getGoodsDelList, payload }),
-//   // getGoodsUpdateList: payload => dispatch({ type: warehouseAction.getGoodsUpdateList, payload }),
+  changeStore: payload => dispatch({ type: warehouseManageAction.changeStore, payload }),
+  getWarehouses: () => dispatch({ type: warehouseManageAction.getWarehouses }),
+  getManufactures: () => dispatch({ type: warehouseManageAction.getManufactures }),
+  getModes: payload => dispatch({ type: warehouseManageAction.getModes, payload }),
+  getWarehouseManageList: payload => dispatch({ type: warehouseManageAction.getWarehouseManageList, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

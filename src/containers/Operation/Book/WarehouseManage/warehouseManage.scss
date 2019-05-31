@@ -18,6 +18,10 @@
     width: 100%;
     padding: 24px 24px 0;
     background:#ececec;
+    .listContent{
+      background-color: #fff;
+      flex: 1;
+    }
   }
   .listPage .tabs{
     background:#f8f8f8;
@@ -29,12 +33,12 @@
       line-height: 34px;
     }
     .active{
-      color: $lightColor;
+      color: $themeColor;
       border-bottom: 2px solid $themeColor;
     }
     .inactive{
       cursor: pointer;
-      color: $themeColor;
+      color: $lightColor;
       border: none;
     }
   }
