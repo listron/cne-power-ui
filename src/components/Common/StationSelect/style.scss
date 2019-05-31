@@ -1,7 +1,7 @@
 @import '../../../theme/theme.scss';
 .stationSelect{
   position: relative;
-  width: 198px; 
+  width: 198px;
   :global {
     .ant-select:not(.ant-select-disabled) {
       &:active, &:focus, &:hover {
@@ -57,7 +57,7 @@
   padding-top: 24px;
   :global {
     .ant-radio-button-wrapper {
-      padding: 0 8px; 
+      padding: 0 8px;
       color: $darkColor;
     }
     .ant-radio-button-wrapper-checked {
@@ -71,7 +71,7 @@
     padding: 0 24px 0 20px;
   }
   .provinceList{
-    border-bottom: 1px #f1f1f1 solid; 
+    border-bottom: 1px #f1f1f1 solid;
     padding: 0 20px 0 24px;
     max-height: 344px;
     height: 344px;
@@ -156,6 +156,10 @@
         display: flex;
         background-color:#f1f1f1;
         color: $darkColor;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
         &:hover {
           background-color: #fbe6e3;
         }

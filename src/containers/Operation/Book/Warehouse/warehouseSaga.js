@@ -2,6 +2,7 @@ import {put, takeEvery, call} from 'redux-saga/effects';
 import { warehouseAction } from './warehouseAction';
 import Path from "../../../../constants/path";
 import axios from "axios";
+import { message } from "antd";
 
 /***
  * 解析公共头APIBasePath
@@ -111,6 +112,7 @@ function* getWarehouseAddList(action) { // 仓库添加
         },
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -323,6 +325,7 @@ function* getGoodsAddList(action) { // 物品添加
         }
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
