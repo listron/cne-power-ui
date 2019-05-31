@@ -7,8 +7,6 @@ import { deviceAccountAction } from './deviceAccountAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
 import DeviceAccountBox from '../../../../components/Operation/Book/DeviceAccount/DeviceAccountBox';
-import deviceAccount from "./deviceAccountReducer";
-
 
 class DeviceAccount extends Component {
   static propTypes = {

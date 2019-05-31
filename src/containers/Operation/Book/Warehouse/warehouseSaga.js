@@ -157,6 +157,7 @@ function* getWarehouseDelList(action) { // 仓库删除
         sortField,
         sortMethod,
       };
+      message.success("删除成功");
       // 删除成功之后关闭
       func();
       yield put({
@@ -222,6 +223,7 @@ function* getWarehouseUpdateList(action) { // 仓库更新
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -372,6 +374,7 @@ function* getGoodsDelList(action) { // 物品删除
         sortField,
         sortMethod,
       };
+      message.success("删除成功");
       // 添加成功清空input的值
       func();
       yield put({
@@ -439,6 +442,7 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
