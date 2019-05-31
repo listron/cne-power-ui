@@ -20,39 +20,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  // justify-content: space-between;
   background: #fff;
   overflow: hidden;
-
-  .typeCheck {
-    display: flex;
-
-    .typeNormal,
-    .typeActive {
-      height: 40px;
-      line-height: 40px;
-      flex-basis: 120px;
-      text-align: center;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid $promptColor;
-      border-left: none;
-      color: $lightColor;
-      background-color: #f8f8f8;
-    }
-
-    .typeActive {
-      background-color: #fff;
-      border-top: 2px solid $themeColor;
-      border-bottom: none;
-      color: #000;
-    }
-
-    .holder {
-      flex: 1;
-      background-color: #f8f8f8;
-      border-top: 1px solid $promptColor;
-      border-bottom: 1px solid $promptColor;
-    }
-  }
 }

@@ -1,0 +1,24 @@
+.deviceAccountBox{
+  width: 100%;
+  .deviceAccountSearch{
+    width: 100%;
+    padding: 20px 0 0 29px;
+    line-height: 40px;
+    display: flex;
+    :global{
+      .ant-select-selection--single{
+        height: 34px;
+      }
+      .ant-select-selection__rendered{
+        line-height: 32px;
+      }
+    }
+  }
+  .deviceAccountPage{
+    width: 100%;
+    display: flex;
+    height: 40px;
+    padding-right: 12px;
+    justify-content: flex-end;
+  }
+}
