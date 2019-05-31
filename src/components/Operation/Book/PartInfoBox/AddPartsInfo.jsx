@@ -33,9 +33,6 @@ class AddPartsInfo extends React.Component {
     }
   }
   componentDidMount() {
-    const { getPartsFactorsList, getPartsAssetTree } = this.props;
-    getPartsAssetTree({ stationType: '0' })
-    getPartsFactorsList()
 
   }
   confirmWarningTip = () => {
@@ -79,7 +76,10 @@ class AddPartsInfo extends React.Component {
     })
   }
   changeFactors = (value) => {
-    this.props.getfactorsPartsMode({})
+    this.props.getfactorsPartsMode({
+      manufactorId: value,
+      assetsId: '0',
+    })
   }
   nextAdd = () => {
     const { validateFieldsAndScroll, resetFields } = this.props.form;
@@ -87,6 +87,8 @@ class AddPartsInfo extends React.Component {
       if (!err) {
         this.props.addPartInfo({
           ...values,
+          stationCode: '350',
+          deviceCodes: ['2M201M1M19']
         })
       }
     })
@@ -97,6 +99,13 @@ class AddPartsInfo extends React.Component {
       if (!err) {
         this.props.addPartInfo({
           ...values,
+          stationCode: this.props.stationCode,
+          deviceCodes: ['2M201M1M19'],
+          modeId: '2'
+
+
+
+
         })
         this.props.changePartInfoStore({ showPage: 'list' })
       }
@@ -115,11 +124,12 @@ class AddPartsInfo extends React.Component {
 
 
   render() {
-    let { partsFactorsList, assetList, factorsPartsMode, } = this.props;
+    let { partsFactorsList, assetList, factorsPartsMode, stationName, addmanufactorId, addmodeId } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let { showWarningTip, warningTipText, showAddPartsMode, showAddfactorsModal } = this.state;
-    let manufacturerValue = getFieldValue('manufactorCode');
-    let initfac='';//新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
+    let manufacturerValue = getFieldValue('manufactorId');
+    //新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
+    let changjia=getFieldValue('addManufacturer')?getFieldValue('addManufacturer'):addmanufactorId;
     return (
       <div className={styles.addDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -131,12 +141,12 @@ class AddPartsInfo extends React.Component {
         <Form className={styles.editPart}>
           <FormItem label="电站名称" colon={false} className={styles.formItemStyle} >
             {getFieldDecorator('stationCode')(
-              <span>{'电站名称'}</span>
+              <span>{stationName}</span>
             )}
           </FormItem>
           <FormItem label="上级设备" colon={false} className={styles.formItemStyle} >
             {getFieldDecorator('deviceCodes')(
-              <span>{'上级设备'}</span>
+              <span>{'202'}</span>
             )}
           </FormItem>
           <FormItem label="部件名称" colon={false} className={styles.formItemStyle}>
@@ -167,11 +177,17 @@ class AddPartsInfo extends React.Component {
             )}
           </FormItem>
           <FormItem label="部件厂家" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('manufactorCode', {
-              initialValue: initfac,
+            {getFieldDecorator('manufactorId', {
+              initialValue: changjia,
               rules: [{ required: true, message: '请选择部件厂家', }],
             })(
-              <Select className={styles.modelSelect} placeholder="请选择部件厂家" onChange={this.changeFactors} disabled={partsFactorsList.length === 0}>
+              <Select
+                className={styles.modelSelect}
+                placeholder="请选择部件厂家"
+                onChange={this.changeFactors}
+                disabled={false}
+              // disabled={partsFactorsList.length === 0}
+              >
                 <Option key={'all'} value={''}>请选择部件厂家</Option>
                 {partsFactorsList.map((e, i) => {
                   if (!e) { return null; } else {
@@ -185,10 +201,18 @@ class AddPartsInfo extends React.Component {
 
           <FormItem label="部件型号" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('modeId', {
-
-              rules: [{ required: true, message: '请选择部件型号' }],
+              initialValue: addmodeId,
+              rules: [{
+                // required: true,
+                message: '请选择部件型号'
+              }],
             })(
-              <Select className={styles.modelSelect} placeholder="请选择部件型号" onChange={this.changeDeviceMode} disabled={false}>
+              <Select
+                className={styles.modelSelect}
+                placeholder="请选择部件型号"
+                onChange={this.changeDeviceMode}
+                disabled={false}
+              >
                 <Option key={'all'} value={''}>请选择部件型号</Option>
                 {factorsPartsMode.map((e, i) => {
                   if (!e) { return null; } else {

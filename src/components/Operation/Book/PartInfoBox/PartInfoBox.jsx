@@ -7,6 +7,7 @@ import CopyParts from "./CopyParts";
 import { Button, Table, Tree, Upload, message, } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import path from '../../../../constants/path';
+import moment from 'moment';
 import Cookie from 'js-cookie';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
@@ -26,7 +27,7 @@ class PartInfoBox extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      selectStation: [],
+
       showDetailParts: false,
       detailPartsInfo: {},
       showCopyParts: false,
@@ -35,18 +36,18 @@ class PartInfoBox extends React.Component {
   selectStation = (stations) => {
     const { getDeviceTypeList, changePartInfoStore } = this.props;
     let stationCode = stations.length > 0 && stations[0].stationCode;
-   
+    let stationName = stations.length > 0 && stations[0].stationName;
+
     getDeviceTypeList({
       stationCode,
-      deviceCode:'',
-      type:0
+      deviceCode: '',
+      type: 0
     })
     changePartInfoStore({
       stationCode,
+      stationName
     })
-    this.setState({
-      selectStation: stations
-    })
+
 
   }
   beforeUpload = (file) => {
@@ -68,15 +69,52 @@ class PartInfoBox extends React.Component {
     })
   }
   addPartsInfo = () => {
+    const { getPartsAssetTree, stationCode, stations, getPartsFactorsList } = this.props;
+    let stationInfo = stations.filter((e, i) => (e.stationCode === stationCode));
+    let { stationType } = stationInfo[0];
     this.props.changePartInfoStore({ showPage: 'add' })
+    getPartsAssetTree({//资产树
+      stationType,
+      assetsParentId: '0',
+    })
+    getPartsFactorsList({
+      deviceTypeCode: 202,
+      orderField: '1',
+      orderMethod: 'desc',
+    })
+
+
   }
   editParts = (record) => {
+    const { getPartsAssetTree, stationCode, stations, getPartsFactorsList } = this.props;
+    let stationInfo = stations.filter((e, i) => (e.stationCode === stationCode));
+    let { stationType } = stationInfo[0];
+    getPartsAssetTree({//资产树
+      stationType,
+      assetsParentId: '0',
+    })
+    getPartsFactorsList({
+      deviceTypeCode: 202,
+      orderField: '1',
+      orderMethod: 'desc',
+    })
+
     this.props.changePartInfoStore({ showPage: 'edit', detailPartsRecord: record })
+
+  }
+  deleteParts = (record) => {
+
+    this.props.deletePartInfo({
+      partsId: record.partsId
+    })
   }
   showDetailParts = (record) => {
     this.setState({
       showDetailParts: true,
-      detailPartsInfo: record
+      // detailPartsInfo: record
+    })
+    this.props.getDetailPartInfo({
+      partsId: record.partsId
     })
 
   }
@@ -91,32 +129,16 @@ class PartInfoBox extends React.Component {
       showCopyParts: true
     })
   }
-  closeComParts=()=>{
+  closeComParts = () => {
     this.setState({
       showCopyParts: false
     })
   }
   render() {
-    const { allStationBaseInfo, deviceComList, stationCode, } = this.props;
-
-    let { selectStation, showDetailParts, detailPartsInfo,showCopyParts } = this.state;
-    let stationName = selectStation.length > 0 && selectStation[0].stationName;
-
-    const testData = [{
-      stationName: '电站名称',
-      deviceName: '上级设备',
-      partsName: '部件名称',
-      assetsName: '资产结构',
-      assetsId: '资产配置',
-      manufactorCode: '厂家号',
-      manufactorName: '厂家',
-      modeId: '组件型号',
-      partsModeName: '部件型号',
-      madeName: '制造商',
-      supplierName: '供货商',
-      batchNumber: '批次号',
-    }]
-
+    const { allStationBaseInfo, deviceComList, stationCode, stationName,deviceCode } = this.props;
+    let { showDetailParts, detailPartsInfo, showCopyParts } = this.state;
+    let disableClick=!(stationCode&&deviceCode);
+    console.log('disableClick: ', disableClick);
     const columns = [
       {
         title: '部件名称',
@@ -165,6 +187,7 @@ class PartInfoBox extends React.Component {
       beforeUpload: this.beforeUpload,
       data: {
         stationCode: this.props.stationCode,
+        nowTime:moment().utc().format()
       },
       onChange: (info) => {
         if (info.file.status === 'done') {
@@ -193,9 +216,9 @@ class PartInfoBox extends React.Component {
           </div>
           <div>
             <Upload {...uploadProps} className={styles.exportInfo}>
-              <Button className={styles.exportInfo} onClick={this.showModal}>批量导入文件</Button>
+              <Button className={styles.exportInfo} disabled={!stationCode} onClick={this.showModal}>批量导入文件</Button>
             </Upload>
-            <Button disabled={false} className={styles.exportInfo} onClick={this.exportparts}  >导出</Button>
+            <Button disabled={false} className={styles.exportInfo} disabled={!stationCode} onClick={this.exportparts}  >导出</Button>
             <Button className={styles.exportInfo} href={downloadTemplet} download={downloadTemplet} target="_blank"  >下载部件导入模板</Button>
           </div>
 
@@ -207,13 +230,12 @@ class PartInfoBox extends React.Component {
           </div>
           <div className={styles.right}>
             <div className={styles.addParts}>
-              <Button onClick={this.addPartsInfo} className={styles.plusButton} icon="plus"  >添加</Button>
-              <Button className={styles.copyCom} onClick={this.copyComponent} >复制</Button>
+              <Button onClick={this.addPartsInfo} disabled={disableClick} className={disableClick?styles.noColor:styles.plusButton} icon="plus"  >添加</Button>
+              <Button className={disableClick?styles.noColor:styles.copyCom} disabled={disableClick} onClick={this.copyComponent} >复制</Button>
             </div>
             <Table
               loading={false}
-              // dataSource={deviceComList}
-              dataSource={testData}
+              dataSource={deviceComList}
               columns={columns}
               pagination={false}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
@@ -221,8 +243,8 @@ class PartInfoBox extends React.Component {
 
           </div>
         </div>
-        {showDetailParts && <DetailPartsInfo {...this.props} detailPartsInfo={detailPartsInfo} showDetailParts={showDetailParts} cancleDetailModal={this.cancleDetailModal} />}
-        {showCopyParts&&<CopyParts {...this.props} closeComParts={this.closeComParts} showCopyParts={showCopyParts} />}
+        {showDetailParts && <DetailPartsInfo {...this.props} showDetailParts={showDetailParts} cancleDetailModal={this.cancleDetailModal} />}
+        {showCopyParts && <CopyParts {...this.props} closeComParts={this.closeComParts} showCopyParts={showCopyParts} />}
       </div>
     )
   }

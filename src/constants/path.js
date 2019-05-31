@@ -156,7 +156,7 @@ export default {
       addPartInfo: '/v3/ledger/parts/add',
       editPartInfo: '/v3/ledger/parts/update',
       getDetailPartInfo: '/v3/ledger/partsdetail/list',
-      deletePartInfo: '/v3/ledger/delete/',
+      deletePartInfo: '/v3/ledger/delete',
 
       importParts:'/v3/ledger/parts/import',
       exportParts:'/v3/ledger/parts/export',

@@ -35,6 +35,8 @@ class DeviceTree extends React.Component {
     console.log('selectedKeys: ', selectedKeys);
     let selectData=selectedKeys.join();
     let deviceCode=selectData.split('_')[0];
+  
+
     let type=selectData.split('_')[1];
     const { stationCode } = this.props;
     // this.props.getDeviceTypeList({
@@ -47,9 +49,18 @@ class DeviceTree extends React.Component {
       deviceCode,
       type
     })
-    this.props.getDevicePartInfo({
-      deviceFullcode:deviceCode
+    this.props.getDeviceComList({
+      deviceCode:'2M201M1M19',
+      orderField:'1',
+      orderMethod:'desc'
+
     })
+    // this.props.getDevicePartInfo({
+    //   deviceFullcode:deviceCode,
+    //   orderField:'1',
+    //   orderMethod:'desc',
+    
+    // })
 
   }
 
