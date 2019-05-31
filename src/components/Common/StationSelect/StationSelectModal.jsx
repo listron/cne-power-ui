@@ -77,7 +77,7 @@ class StationSelectModal extends Component {
       selectedStation: tmpSelectedStation
     })
   }
-  
+
   handleOK = () => {
     this.props.handleOK(this.state.selectedStation)
   }
@@ -111,14 +111,14 @@ class StationSelectModal extends Component {
       }
     })
     return filteredStation.map(e=>(
-      <ProvinceItem 
-        key={e.provinceCode} 
+      <ProvinceItem
+        key={e.provinceCode}
         oneStyleOnly={oneStyleOnly}
         disabledStation={disabledStation}
-        multiple={multiple} 
-        checkStation={this.checkStation} 
-        provinceInfo={{...e}} 
-        selectedStation={selectedStation} 
+        multiple={multiple}
+        checkStation={this.checkStation}
+        provinceInfo={{...e}}
+        selectedStation={selectedStation}
       />
     ))
   }
@@ -128,11 +128,11 @@ class StationSelectModal extends Component {
       <div className={styles.selectedStationList}>
         <div className={styles.selectedStationTitle}>
           <span>已选电站{selectedStation.length}个</span>
-          {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>} 
+          {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>}
         </div>
         <div className={styles.innerStationList}>
           {selectedStation.map(e=>{
-            return <div key={e.stationCode} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
+            return <div key={e.stationCode} title={e.stationName} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
           })}
         </div>
       </div>
@@ -174,7 +174,7 @@ class StationSelectModal extends Component {
         </Modal>
       </div>
     )
-    
+
   }
 }
 export default StationSelectModal;

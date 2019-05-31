@@ -171,6 +171,11 @@ export default {
       goodsAdd: "/v3/goods/add",  // 物品增加
       goodsDel: "/v3/goods/del",  // 物品删除
       goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
+      // 台账-设备台账
+      deviceAccountList: "/v3/ledger/list", // 设备台账列表
+      stationsManufactors: "/v3/ledger/stations/manufactors", // 获取电站下的厂家列表
+      deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
+      attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
 
     },
     system: {//系统管理
@@ -520,3 +525,4 @@ export default {
     }
   }
 }
+
