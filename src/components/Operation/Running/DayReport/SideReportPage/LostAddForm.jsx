@@ -331,7 +331,7 @@ class LostAddForm extends Component {
                 rules: [{
                   validator: (rule, value, callback) => {
                     let truelyValue = value && value.trim();
-                    if (value && isNaN(truelyValue)) {
+                    if (truelyValue && isNaN(truelyValue)) {
                       callback('损失电量请填写数字');
                     } else if (truelyValue) {
                       const demical = `${truelyValue}`.split('.')[1];
