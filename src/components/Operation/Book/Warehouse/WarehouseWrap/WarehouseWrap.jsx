@@ -250,6 +250,7 @@ class WarehouseWrap extends Component {
             </Row>
           </Form>
           <Search
+            allowClear
             placeholder="请输入仓库名称"
             onSearch={(value) => {return this.searchFunc(value)}}
             style={{ width: 200, height: 32, marginTop: "4px" }}
