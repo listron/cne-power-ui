@@ -228,6 +228,7 @@ class WarehouseGoods extends Component {
             )}
             <div className={styles.goodsSearch}>
               <Search
+                allowClear
                 placeholder="请输入物品名称"
                 onSearch={(value) => {return this.searchGoodsFunc(value)}}
                 style={{ width: 200, height: 32, marginTop: "4px" }}
