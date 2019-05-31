@@ -1,4 +1,4 @@
-import {put, takeEvery, call} from 'redux-saga/effects';
+import {put, takeLatest, call} from 'redux-saga/effects';
 import { deviceAccountAction } from './deviceAccountAction';
 import Path from "../../../../constants/path";
 import axios from "axios";
@@ -166,8 +166,8 @@ function* getDeviceAttachments(action) { // 台账备件列表
 
 
 export function* watchDeviceAccount() {
-  yield takeEvery(deviceAccountAction.getDeviceAccountList, getDeviceAccountList);
-  yield takeEvery(deviceAccountAction.getStationsManufactorsList, getStationsManufactorsList);
-  yield takeEvery(deviceAccountAction.getDeviceModeList, getDeviceModeList);
-  yield takeEvery(deviceAccountAction.getDeviceAttachments, getDeviceAttachments);
+  yield takeLatest(deviceAccountAction.getDeviceAccountList, getDeviceAccountList);
+  yield takeLatest(deviceAccountAction.getStationsManufactorsList, getStationsManufactorsList);
+  yield takeLatest(deviceAccountAction.getDeviceModeList, getDeviceModeList);
+  yield takeLatest(deviceAccountAction.getDeviceAttachments, getDeviceAttachments);
 }

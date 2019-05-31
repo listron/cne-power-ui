@@ -6,14 +6,16 @@
   flex-direction: row;
   justify-content: center;
   min-height: 100%;
-  background: url("/img/bigbg.png") no-repeat center center;
-  background-size: 100% 100%;
+  background-color: transparent;
+  // background: url("/img/bigbg.png") no-repeat center center;
+  // background-size: 100% 100%;
   .modalBox{
     width: 480px;
-    height: 466px;
-    opacity: 0.85;
+    height: 480px;
+    background-color: #f1f1f1;
+    // opacity: 0.85;
     .content{
-      height: 466px;
+      height: 440px;
       width: 100%;
       padding: 24px;
       border-radius: 4px;
@@ -23,7 +25,7 @@
       &::-webkit-scrollbar {
         width: 6px;
         height: 200px;
-        background-color: #fff;
+        background-color: #f1f1f1;
       }
       &::-webkit-scrollbar-thumb{
         border-radius: 3px;
@@ -36,11 +38,10 @@
       position: absolute;
       top: 436px;
       line-height: 40px;
-      opacity: .9;
       border-radius: 4px;
       text-align: center;
       cursor: pointer;
-      background-color: #fff;
+      // background-color: #fff;
     }
     .footerTitle{
       width: 100%;
@@ -54,9 +55,6 @@
     .ant-modal{
       margin-top: 136px;
       top: 0;
-      .ant-modal-content{
-        opacity: 0.85;
-      }
       .ant-modal-body{
         padding: 0;
       }

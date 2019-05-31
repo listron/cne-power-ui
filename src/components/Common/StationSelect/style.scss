@@ -156,12 +156,15 @@
         display: flex;
         background-color:#f1f1f1;
         color: $darkColor;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
         &:hover {
           background-color: #fbe6e3;
+        }
+        span{
+          width: 100%;
+          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .deleteIcon{
           cursor: pointer;
