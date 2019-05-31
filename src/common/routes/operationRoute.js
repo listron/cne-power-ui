@@ -31,7 +31,7 @@ const book = [
     // component: lazy(() => import('../../containers/Operation/Book/DeviceManage/DeviceManage')),
   }, { // 设备台账
     path: '/operation/book/deviceAccount',
-    component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/Book/DeviceAccount/DeviceAccount')),
   }, { // 仓库配置
     path: '/operation/book/warehouse',
     // component: lazy(() => import('../../components/Common/Building/Building')),
