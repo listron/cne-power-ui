@@ -17,9 +17,15 @@
       line-height: 32px;
     }
   }
-  .preCharts{
+  .preChartBox{
     width: 100%;
     height: 400px;
+    position: relative;
+    .preCharts{
+      width: 100%;
+      height: 100%;
+    }
   }
+
 }
 
