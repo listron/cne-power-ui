@@ -4,7 +4,7 @@ import styles from "./partInfoBox.scss";
 import DetailPartsInfo from "./DetailPartsInfo";
 import DeviceTree from "./DeviceTree";
 import CopyParts from "./CopyParts";
-import { Button, Table, Tree, Upload, message, } from 'antd';
+import { Button, Table,  Upload, message, } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import path from '../../../../constants/path';
 import moment from 'moment';
@@ -14,20 +14,24 @@ const { operation } = path.APISubPaths;
 
 class PartInfoBox extends React.Component {
   static propTypes = {
-
     changePartInfoStore: PropTypes.func,
+    getDevicePartInfo: PropTypes.func,
+    deletePartInfo: PropTypes.func,
+    getDetailPartInfo: PropTypes.func,
     getDeviceTypeList: PropTypes.func,
     downLoadFile: PropTypes.func,
+    getPartsAssetTree: PropTypes.func,
+    getPartsFactorsList: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     deviceComList: PropTypes.array,
-    // stationCode: PropTypes.num,
+    stationCode: PropTypes.any,
     detailPartsRecord: PropTypes.object,
-
+    stationName: PropTypes.string,
+    deviceCode: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
-
       showDetailParts: false,
       detailPartsInfo: {},
       showCopyParts: false,
@@ -64,21 +68,25 @@ class PartInfoBox extends React.Component {
       url,
       fileName: `导出电站组件.xlsx`,
       params: {
-        stationCode
+        stationCode,
+        nowTime:moment().utc().format()
       },
     })
   }
   addPartsInfo = () => {
-    const { getPartsAssetTree, stationCode, stations, getPartsFactorsList } = this.props;
-    let stationInfo = stations.filter((e, i) => (e.stationCode === stationCode));
+    const { getPartsAssetTree, stationCode, allStationBaseInfo, getPartsFactorsList,deviceCode } = this.props;
+    let deviceTypeCode=deviceCode.split('M')[1];
+    let stationInfo = allStationBaseInfo.filter((e, i) => (e.stationCode === stationCode));
     let { stationType } = stationInfo[0];
+
     this.props.changePartInfoStore({ showPage: 'add' })
     getPartsAssetTree({//资产树
       stationType,
       assetsParentId: '0',
     })
     getPartsFactorsList({
-      deviceTypeCode: 202,
+      // deviceTypeCode: 202,
+      deviceTypeCode: deviceTypeCode,
       orderField: '1',
       orderMethod: 'desc',
     })
@@ -86,15 +94,17 @@ class PartInfoBox extends React.Component {
 
   }
   editParts = (record) => {
-    const { getPartsAssetTree, stationCode, stations, getPartsFactorsList } = this.props;
-    let stationInfo = stations.filter((e, i) => (e.stationCode === stationCode));
+    const { getPartsAssetTree, stationCode, allStationBaseInfo, getPartsFactorsList,deviceCode } = this.props;
+    let deviceTypeCode=deviceCode.split('M')[1];
+    let stationInfo = allStationBaseInfo.filter((e, i) => (e.stationCode === stationCode));
     let { stationType } = stationInfo[0];
     getPartsAssetTree({//资产树
       stationType,
       assetsParentId: '0',
     })
     getPartsFactorsList({
-      deviceTypeCode: 202,
+      // deviceTypeCode: 202,
+      deviceTypeCode: deviceTypeCode,
       orderField: '1',
       orderMethod: 'desc',
     })
@@ -125,8 +135,15 @@ class PartInfoBox extends React.Component {
   }
 
   copyComponent = () => {
+    const{getDevicePartInfo,deviceCode}=this.props;
     this.setState({
       showCopyParts: true
+    })
+     getDevicePartInfo({
+      deviceFullcode:deviceCode,
+      orderField:'1',
+      orderMethod:'desc',
+    
     })
   }
   closeComParts = () => {
@@ -136,9 +153,9 @@ class PartInfoBox extends React.Component {
   }
   render() {
     const { allStationBaseInfo, deviceComList, stationCode, stationName,deviceCode } = this.props;
-    let { showDetailParts, detailPartsInfo, showCopyParts } = this.state;
+    let { showDetailParts,  showCopyParts } = this.state;
     let disableClick=!(stationCode&&deviceCode);
-    console.log('disableClick: ', disableClick);
+    
     const columns = [
       {
         title: '部件名称',
@@ -174,9 +191,7 @@ class PartInfoBox extends React.Component {
         }
       },
     ];
-    // const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.exportParts}?stationCode=${stationCode}`;
-    const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.system.downloadDeviceTemplet}`;
-    // const url = Path.basePaths.APIBasePath + Path.APISubPaths.system.importUserBatch;
+    const downloadTemplet = `${path.basePaths.originUri}${path.APISubPaths.operation.downloadPartInfoTemplet}`;
     const url = `${APIBasePath}${operation.importParts}`;
     const authData = Cookie.get('authData') || null;
     const uploadProps = {

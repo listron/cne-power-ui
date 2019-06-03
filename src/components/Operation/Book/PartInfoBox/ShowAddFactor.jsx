@@ -22,21 +22,14 @@ class ShowAddDeviceModeModal extends Component {
     e.preventDefault();
     const { validateFieldsAndScroll } = this.props.form;
     const { addPartsFactors,deviceCode} = this.props;
-    console.log('deviceCode: ', deviceCode);
     let deviceTypeCode=deviceCode.split('M')[1];
-    console.log('deviceTypeCode: ', deviceTypeCode);
-
-
     validateFieldsAndScroll(["addFactorName",], (err, values) => {
       if (!err) {
         addPartsFactors({
           manufactorName: values.addFactorName,
           deviceTypeCode,
           assetsIds:['0'],
-         
         })
-
-    
         this.props.cancleFactorModal()
       }
     })

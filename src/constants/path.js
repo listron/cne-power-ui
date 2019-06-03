@@ -154,12 +154,14 @@ export default {
       getDeviceTypeList:'/v3/ledger/devicetype',
       getDeviceComList: '/v3/ledger/parts/list',
       addPartInfo: '/v3/ledger/parts/add',
+      copyPartInfo: '/v3/ledger/parts/copy',
       editPartInfo: '/v3/ledger/parts/update',
       getDetailPartInfo: '/v3/ledger/partsdetail/list',
       deletePartInfo: '/v3/ledger/delete',
 
       importParts:'/v3/ledger/parts/import',
       exportParts:'/v3/ledger/parts/export',
+      downloadPartInfoTemplet:'/template/ComponentImport.xlsx',
 
     
       // 台账-仓库配置

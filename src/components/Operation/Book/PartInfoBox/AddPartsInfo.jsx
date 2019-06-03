@@ -22,6 +22,7 @@ class AddPartsInfo extends React.Component {
     partsFactorsList: PropTypes.array,
     factorsPartsMode: PropTypes.array,
     assetList: PropTypes.array,
+    stationCode: PropTypes.num,
   }
   constructor(props, context) {
     super(props, context)
@@ -87,8 +88,9 @@ class AddPartsInfo extends React.Component {
       if (!err) {
         this.props.addPartInfo({
           ...values,
-          stationCode: '350',
-          deviceCodes: ['2M201M1M19']
+          stationCode: this.props.stationCode,
+          deviceCodes: ['2M201M1M19'],
+            // deviceCodes: [this.props.deviceCode],
         })
       }
     })
@@ -101,11 +103,8 @@ class AddPartsInfo extends React.Component {
           ...values,
           stationCode: this.props.stationCode,
           deviceCodes: ['2M201M1M19'],
+          // deviceCodes: [this.props.deviceCode],
           modeId: '2'
-
-
-
-
         })
         this.props.changePartInfoStore({ showPage: 'list' })
       }
@@ -124,7 +123,7 @@ class AddPartsInfo extends React.Component {
 
 
   render() {
-    let { partsFactorsList, assetList, factorsPartsMode, stationName, addmanufactorId, addmodeId } = this.props;
+    let { partsFactorsList, assetList, factorsPartsMode, stationName,deviceName, addmanufactorId, addmodeId } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let { showWarningTip, warningTipText, showAddPartsMode, showAddfactorsModal } = this.state;
     let manufacturerValue = getFieldValue('manufactorId');
@@ -146,7 +145,7 @@ class AddPartsInfo extends React.Component {
           </FormItem>
           <FormItem label="上级设备" colon={false} className={styles.formItemStyle} >
             {getFieldDecorator('deviceCodes')(
-              <span>{'202'}</span>
+              <span>{deviceName}</span>
             )}
           </FormItem>
           <FormItem label="部件名称" colon={false} className={styles.formItemStyle}>

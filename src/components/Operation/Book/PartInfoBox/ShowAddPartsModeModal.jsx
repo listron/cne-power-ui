@@ -47,11 +47,6 @@ class ShowAddPartsModeModal extends Component {
     let deviceTypeCode=deviceCode.split('M')[1];
     validateFieldsAndScroll(["addPartsModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
       if (!err) {
-        // this.props.checkDeviceMode({
-        //   deviceModeName: values.addPartsModeCodeName,
-        //   deviceTypeCode: addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode
-        // })
-
         this.props.changePartInfoStore({
           manufactorId:values.addManufacturer,
         })
@@ -60,7 +55,6 @@ class ShowAddPartsModeModal extends Component {
           manufactorId:values.addManufacturer,
           deviceModeName:values.addPartsModeCodeName,
           deviceTypeCode,
-         
         })
         this.props.cancleDeviceModeModal()
       }
@@ -71,7 +65,7 @@ class ShowAddPartsModeModal extends Component {
   render() {
     const { getFieldDecorator,  } = this.props.form;
     const { showAddPartsMode ,manufacturerValue,partsFactorsList} = this.props;
-    console.log('manufacturerValue: ', manufacturerValue);
+    
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },
