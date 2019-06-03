@@ -20,7 +20,7 @@ function* getWarehouses() {
   } catch (e) {
     console.log(e);
     yield put({
-      type: warehouseManageAction.changStore,
+      type: warehouseManageAction.changeStore,
       payload: { warehouseList: [] }
     })
   }
@@ -39,7 +39,7 @@ function* getManufactures() {
   } catch (e) {
     console.log(e);
     yield put({
-      type: warehouseManageAction.changStore,
+      type: warehouseManageAction.changeStore,
       payload: { manufacturerList: [] }
     })
   }
@@ -59,7 +59,7 @@ function* getModes({ payload = {} }) {
   } catch (e) {
     console.log(e);
     yield put({
-      type: warehouseManageAction.changStore,
+      type: warehouseManageAction.changeStore,
       payload: { modeList: [] }
     })
   }
@@ -96,7 +96,7 @@ function *getWarehouseManageList({ payload = {} }) {
   } catch (error) {
     console.log(error);
     yield put({
-      type: warehouseManageAction.changStore,
+      type: warehouseManageAction.changeStore,
       payload: { stocksList: [], totalCount: 0 }
     })
   }

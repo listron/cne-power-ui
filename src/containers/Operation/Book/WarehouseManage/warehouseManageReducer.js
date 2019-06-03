@@ -40,7 +40,7 @@ const warehouseManage = (state = initState, action) => {
   switch (action.type) {
     case warehouseManageAction.fetchSuccess:
       return state.merge(Immutable.fromJS(action.payload));
-    case warehouseManageAction.changStore:
+    case warehouseManageAction.changeStore:
       return state.merge(Immutable.fromJS(action.payload));
     case warehouseManageAction.resetStore:
       return initState

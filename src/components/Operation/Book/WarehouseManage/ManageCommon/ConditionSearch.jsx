@@ -23,7 +23,7 @@ class ConditionSearch extends Component {
       selectedWarehouse,
       pageNum: 1
     };
-    changeStore({ tableParams: newParams });
+    changeStore({ tableParams: newParams, checkedStocks: [] });
     getWarehouseManageList(newParams);
   }
 
@@ -35,7 +35,7 @@ class ConditionSearch extends Component {
       selectedMode: undefined,
       pageNum: 1,
     };
-    changeStore({ tableParams: newParams });
+    changeStore({ tableParams: newParams, checkedStocks: [] });
     getModes({ selectedManufacturer });
     getWarehouseManageList(newParams);
   }
@@ -47,7 +47,7 @@ class ConditionSearch extends Component {
       selectedMode,
       pageNum: 1,
     };
-    changeStore({ tableParams: newParams });
+    changeStore({ tableParams: newParams, checkedStocks: [] });
     getWarehouseManageList(newParams);
   }
 
