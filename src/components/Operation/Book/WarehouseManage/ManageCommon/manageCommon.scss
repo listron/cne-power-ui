@@ -16,34 +16,48 @@
   }
 }
 
-.enterWarehouse{ // 入库
-  width: 70px;
-  height: 32px;
-  border-radius: 4px;
-  border: 1px solid $themeColor;
-  background-color: #fff;
-  cursor: pointer;
+.handleRow{
   display: flex;
+  justify-content: space-between;
+  height: 64px;
   align-items: center;
-  .plus, .text{
-    line-height: 30px;
+}
+.leftHandler{
+  display: flex;
+  margin-left: 30px;
+  button{
+    margin-right: 8px;
   }
-  .plus{
-    background-color: $themeColor;
-    color: #fff;
-    flex: 0 0 28px;
+  .enterWarehouse{ // 入库
+    width: 70px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid $themeColor;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    .plus, .text{
+      line-height: 30px;
+    }
+    .plus{
+      background-color: $themeColor;
+      color: #fff;
+      flex: 0 0 28px;
+      &:focus{
+        outline-width: 0;
+      }
+    }
+    .text{
+      color: $themeColor;
+      flex: 1; 
+      &:focus{
+        outline-width: 0;
+      }
+    }
     &:focus{
       outline-width: 0;
     }
-  }
-  .text{
-    color: $themeColor;
-    flex: 1; 
-    &:focus{
-      outline-width: 0;
-    }
-  }
-  &:focus{
-    outline-width: 0;
   }
 }
+

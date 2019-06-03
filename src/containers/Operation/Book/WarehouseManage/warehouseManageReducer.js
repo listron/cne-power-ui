@@ -5,6 +5,7 @@ const warehouseManageAction = {
   getManufactures: Symbol('getManufactures'),
   getModes: Symbol('getModes'),
   getWarehouseManageList: Symbol('getWarehouseManageList'),
+  deleteWarehouseMaterial: Symbol('deleteWarehouseMaterial'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),

@@ -1,11 +1,16 @@
-import { put, takeLatest, select, call } from 'redux-saga/effects';
+import { put, takeLatest, select, call, fork } from 'redux-saga/effects';
 import { warehouseManageAction } from './warehouseManageReducer';
 import path from '../../../../constants/path';
 import axios from 'axios';
-import { Repeat } from 'immutable';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths;
 const { operation } = APISubPaths;
+
+const stockTypeCodes = {
+  spares: 101,
+  tools: 200,
+  materials: 300
+}
 
 function* getWarehouses() {
   const url = `${APIBasePath}${operation.getWarehouses}`;
@@ -69,16 +74,11 @@ function *getWarehouseManageList({ payload = {} }) {
   const url = `${APIBasePath}${operation.getWarehouseManageList}`;
   try {
     const { tabName } = yield select(state => state.operation.warehouseManage.toJS());
-    const goodsMaxType = {
-      spares: 101,
-      tools: 200,
-      materials: 300
-    }[tabName];
     const response = yield call(axios.post, url, {
       warehouseId: payload.selectedWarehouse,
       manufactorId: payload.selectedManufacturer,
       modeId: payload.selectedMode,
-      goodsMaxType,
+      goodsMaxType: stockTypeCodes[tabName],
       pageNum: payload.pageNum,
       pageSize: payload.pageSize,
       sortField: payload.sortField,
@@ -102,13 +102,30 @@ function *getWarehouseManageList({ payload = {} }) {
   }
 }
 
+function *deleteWarehouseMaterial({ payload }) {
+  const url = `${APIBasePath}${operation.deleteWarehouseMaterial}`;
+  try {
+    const { tabName, tableParams } = yield select(state => state.operation.warehouseManage.toJS());
+    const { stocksList = [] } = payload;
+    const response = yield call(axios.post, url, {
+      goodsMaxType: stockTypeCodes[tabName],
+      inventoryIds: stocksList.map(e => e.inventoryId).join(','),
+    })
+    if (response.data.code === '10000') { // 删除成功后重新请求列表数据
+      yield fork(getWarehouseManageList, {
+        ...tableParams,
+        pageNum: 1,
+      })
+    } else { throw response.data }
+  } catch(error) {
+    console.log(error);
+  }
+}
+
       // getMaterialList: '/v3/goods/listByWarehouse', // 所有物品列表下拉项
       // insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
-      // deleteWarehouseMaterial: '/v3/inventory/del', // 删除 备品备件/工器具/物资列表
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
       // setStockMax: '/v3/inventory/thresholdSet', // 设置库存阈值
-      // exportStockFile: '/v3/inventory/export', // 导出备品备件/工器具/物资列表
-      // downloadStockTemplete: '/v3/inventory/downLoad', // 下载导入模板
       // importStockFile: '/v3/inventory/importEntry', // 导入备品备件/工器具/物资列表
       // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
       // getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
@@ -121,6 +138,7 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getManufactures, getManufactures);
   yield takeLatest(warehouseManageAction.getModes, getModes);
   yield takeLatest(warehouseManageAction.getWarehouseManageList, getWarehouseManageList);
+  yield takeLatest(warehouseManageAction.deleteWarehouseMaterial, deleteWarehouseMaterial);
   // yield takeLatest(warehouseAction.getGoodsList, getGoodsList);
   // yield takeLatest(warehouseAction.getGoodsAddList, getGoodsAddList);
   // yield takeLatest(warehouseAction.getGoodsDelList, getGoodsDelList);

@@ -5,6 +5,7 @@ import SparePage from '../../../../components/Operation/Book/WarehouseManage/Spa
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
+import { commonAction } from '../../../alphaRedux/commonAction';
 import styles from './warehouseManage.scss';
 
 class WarehouseManage extends Component {
@@ -123,6 +124,14 @@ const mapDispatchToProps = (dispatch) => ({
   getManufactures: () => dispatch({ type: warehouseManageAction.getManufactures }),
   getModes: payload => dispatch({ type: warehouseManageAction.getModes, payload }),
   getWarehouseManageList: payload => dispatch({ type: warehouseManageAction.getWarehouseManageList, payload }),
+  deleteWarehouseMaterial: payload => dispatch({ type: warehouseManageAction.deleteWarehouseMaterial, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: warehouseManageAction.changeStore
+    }
+  })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

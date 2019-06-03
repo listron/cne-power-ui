@@ -1,38 +1,20 @@
 import React, { Component } from 'react';
 import ConditionSearch from './ManageCommon/ConditionSearch';
-import { EnterWarehouse } from './ManageCommon/HandleComponents';
-import CommonPagination from '../../../Common/CommonPagination';
-import { Button, Table, Popover } from 'antd';
+import HandleComponent from './ManageCommon/HandleComponents';
+import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './warehouseManageComp.scss';
 
 class SparePage extends Component {
 
   static propTypes = {
-    totalCount: PropTypes.number,
     checkedStocks: PropTypes.array,
     stocksList: PropTypes.array,
-    tableParams: PropTypes.object,
     changeStore: PropTypes.func,
-    getWarehouseManageList: PropTypes.func,
   }
 
   state = {
     highlightId: null,
-  }
-
-  onPaginationChange = ({pageSize, currentPage}) => { // 翻页
-    const { tableParams, getWarehouseManageList, changeStore } = this.props;
-    changeStore({
-      pageNum: currentPage,
-      pageSize,
-      checkedStocks: [], // 清空选中
-    });
-    getWarehouseManageList({
-      ...tableParams,
-      pageNum: currentPage, 
-      pageSize
-    });
   }
 
   onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
@@ -139,30 +121,14 @@ class SparePage extends Component {
         </div>
       )
     }
-    // 物品名称：goods_name | 库存类型：goods_type |仓库名称：warehouse_name | 库存数量：inventory_num | 最低阈值：threshold | 厂家：devManufactorName | 供货商：supplier_name | 制造商：manufactor_name
   ];
 
   render(){
-    const { tableParams, totalCount, checkedStocks, stocksList } = this.props;
-    const { pageSize, pageNum } = tableParams;
-    console.log('render?')
+    const { checkedStocks, stocksList } = this.props;
     return (
       <div className={styles.sparePage}>
         <ConditionSearch {...this.props} />
-        <div className={styles.handleRow}>
-          <div className={styles.leftHandler}>
-            <EnterWarehouse {...this.props} />
-            <Button disabled={!(checkedStocks.length > 0)}>删除</Button>
-            <Button>导出</Button>
-            <Button>下载导入模板</Button>
-          </div>
-          <CommonPagination
-            total={totalCount}
-            pageSize={pageSize}
-            currentPage={pageNum}
-            onPaginationChange={this.onPaginationChange}
-          />
-        </div>
+        <HandleComponent {...this.props} />
         <Table
           // loading={loading}
           onChange={this.tableChange}

@@ -1,19 +1,6 @@
 @import '../../../../theme/theme.scss';
 
 .sparePage{
-  .handleRow{
-    display: flex;
-    justify-content: space-between;
-    height: 64px;
-    align-items: center;
-  }
-  .leftHandler{
-    display: flex;
-    margin-left: 30px;
-    button{
-      margin-right: 8px;
-    }
-  }
   table{
     .assetsPath{
       word-break: break-all;
@@ -96,5 +83,6 @@
   }
   &::-webkit-scrollbar-thumb{
     background-color: $themeColor;
+    border-radius: 3px;
   }
 }
