@@ -23,6 +23,8 @@ import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSag
 import { watchPointManage } from './System/Station/PointManage/pointManageSaga';
 import { watchAlarmManage } from './System/Station/AlarmManage/alarmManageSaga';
 import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
+import { watchWeatherStation } from './System/Station/WeatherStationConf/weatherStationSaga';
+
 
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
@@ -115,6 +117,7 @@ export default function* rootSaga() {
     watchPointManage(),
     watchAlarmManage(),
     watchPowerCurve(),
+    watchWeatherStation(),
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
