@@ -60,4 +60,37 @@
     }
   }
 }
+.maxStock{
+  .editPart, .savePart{
+    display: flex;
+    .text{
+      flex: 0 0 240px;
+      text-align: right;
+      &::after{
+        content: '*';
+        position: relative;
+        font-size: 20px;
+        top: 5px;
+        width: 10px;
+        display: inline-block;
+        text-align: center;
+      }
+    }
+    .error{
+      margin-left: 8px;
+      color: #f5222d;
+      font-size: 12px;
+      line-height: 30px;
+    }
+    .holder{
+      flex: 0 0 240px;
+    }
+  }
+  .editPart{
+    margin-bottom: 12px;
+    input {
+      width: 200px;
+    }
+  }
+}
 

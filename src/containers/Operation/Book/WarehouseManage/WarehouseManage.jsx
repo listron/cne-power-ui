@@ -131,7 +131,8 @@ const mapDispatchToProps = (dispatch) => ({
       ...payload,
       actionName: warehouseManageAction.changeStore
     }
-  })
+  }),
+  setStockMax: payload => dispatch({ type: warehouseManageAction.setStockMax, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

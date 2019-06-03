@@ -122,10 +122,26 @@ function *deleteWarehouseMaterial({ payload }) {
   }
 }
 
+function *setStockMax({ payload }) {
+  const url = `${APIBasePath}${operation.setStockMax}`;
+  try {
+    const response = yield call(axios.put, url, { ...payload });
+    const { tableParams } = yield select(state => state.operation.warehouseManage.toJS());
+    if (response.data.code === '10000') {
+      yield fork(getWarehouseManageList, { ...tableParams });
+      yield put({
+        type: warehouseManageAction.changeStore,
+        payload: { stockMaxShow: false },
+      })
+    } else { throw response.data }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
       // getMaterialList: '/v3/goods/listByWarehouse', // 所有物品列表下拉项
       // insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
-      // setStockMax: '/v3/inventory/thresholdSet', // 设置库存阈值
       // importStockFile: '/v3/inventory/importEntry', // 导入备品备件/工器具/物资列表
       // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
       // getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
@@ -139,6 +155,7 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getModes, getModes);
   yield takeLatest(warehouseManageAction.getWarehouseManageList, getWarehouseManageList);
   yield takeLatest(warehouseManageAction.deleteWarehouseMaterial, deleteWarehouseMaterial);
+  yield takeLatest(warehouseManageAction.setStockMax, setStockMax);
   // yield takeLatest(warehouseAction.getGoodsList, getGoodsList);
   // yield takeLatest(warehouseAction.getGoodsAddList, getGoodsAddList);
   // yield takeLatest(warehouseAction.getGoodsDelList, getGoodsDelList);

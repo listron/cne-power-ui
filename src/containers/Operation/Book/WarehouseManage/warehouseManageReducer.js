@@ -6,6 +6,7 @@ const warehouseManageAction = {
   getModes: Symbol('getModes'),
   getWarehouseManageList: Symbol('getWarehouseManageList'),
   deleteWarehouseMaterial: Symbol('deleteWarehouseMaterial'),
+  setStockMax: Symbol('setStockMax'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -24,6 +25,8 @@ const tableParams = { // 表格共有的请求
 const initState = Immutable.fromJS({
   tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
   sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeOut-出, reserve-库存
+  stockMaxShow: false, // 阈值设置弹框
+  importFileShow: false, // 导入库存文件
   tableParams: { ...tableParams }, // 表格请求参数
 
   warehouseList: [], // 仓库列表
