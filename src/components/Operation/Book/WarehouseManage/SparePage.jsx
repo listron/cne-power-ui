@@ -17,6 +17,10 @@ class SparePage extends Component {
     getWarehouseManageList: PropTypes.func,
   }
 
+  state = {
+    highlightId: null,
+  }
+
   onPaginationChange = ({pageSize, currentPage}) => { // 翻页
     const { tableParams, getWarehouseManageList, changeStore } = this.props;
     changeStore({
@@ -33,6 +37,10 @@ class SparePage extends Component {
 
   onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
     this.props.changeStore({ checkedStocks });
+  }
+
+  getMoreInfo = () => {
+
   }
 
   getStockDetail = (record) => { // 操作 - 查看库存
@@ -66,17 +74,16 @@ class SparePage extends Component {
       sorter: true,
       render: (text, record) => {
         const { inventoryNum, goodsUnit, threshold } = record;
-        console.log(record)
-        let StockNum = <span></span>;
+        let StockNum = <span />;
         if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
-          StockNum = <span className={styles.stockSaved}>--{goodsUnit || ''}</span>
+          StockNum = <span>--{goodsUnit || ''}</span>
         } else if (inventoryNum < threshold) { // 库存紧张
           StockNum = (<span className={styles.shortage}>
-            <span className={styles.stockSaved}>--{goodsUnit || ''}</span>
+            <span>--{goodsUnit || ''}</span>
             <span className={styles.config}>紧张</span>
           </span>)
         } else {
-          StockNum = <span className={styles.stockSaved}>{inventoryNum}{goodsUnit || ''}</span>
+          StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
         }
         return StockNum;
       }
@@ -94,13 +101,33 @@ class SparePage extends Component {
       title: '更多信息',
       className: styles.moreInfo,
       dataIndex: 'moreInfo',
-      render: (text, record) => (
-        <Popover content={<div>
-          <span>详细信息</span>
-        </div>} title="更多信息" trigger="click">
-          <span className={styles.text}>查看</span>
-        </Popover>
-      )
+      render: (text, record) => {
+        const InfoContent = (
+          <div className={styles.infoContent}>
+            <div className={styles.eachInfo}>
+              <span className={styles.name}>厂家</span>
+              <span className={styles.info}>{record.devManufactorName || '--'}</span>
+            </div>
+            <div className={styles.eachInfo}>
+              <span className={styles.name}>供货商</span>
+              <span className={styles.info}>{record.supplierName || '--'}</span>
+            </div>
+            <div className={styles.eachInfo}>
+              <span className={styles.name}>制造商</span>
+              <span className={styles.info}>{record.manufactorName || '--'}</span>
+            </div>
+          </div>
+        )
+        return (
+          <Popover
+            content={InfoContent}
+            title={<span className={styles.infoContentTitle}>更多信息</span>}
+            trigger="click"
+          >
+            <button className={styles.trigButton}>查看</button>
+          </Popover>
+        )
+      }
     }, {
       title: '操作',
       dataIndex: 'handle',
@@ -118,6 +145,7 @@ class SparePage extends Component {
   render(){
     const { tableParams, totalCount, checkedStocks, stocksList } = this.props;
     const { pageSize, pageNum } = tableParams;
+    console.log('render?')
     return (
       <div className={styles.sparePage}>
         <ConditionSearch {...this.props} />

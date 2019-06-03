@@ -27,8 +27,14 @@
     }
     .moreInfo{
       width: 72px;
-      .text{
+      .trigButton{
+        border: none;
         cursor: pointer;
+        background-color: transparent;
+        &:focus{
+          outline: none;
+          color:#e08031;
+        }
       }
     }
     .shortage{
@@ -58,5 +64,37 @@
     .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
       padding: 0 8px;
     }
+  }
+}
+
+.infoContentTitle{
+  font-weight: 700;
+  color: #000;
+}
+.infoContent{
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  width: 296px;
+  overflow-y: auto;
+  .eachInfo{
+    display: flex;
+    flex-basis: 21px;
+  }
+  .name{
+    flex-basis: 56px;
+    font-weight: 700;
+    text-align: right;
+    margin-right: 12px;
+    color: #000;
+  }
+  .info{
+    flex: 1;
+  }
+  &::-webkit-scrollbar{
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $themeColor;
   }
 }
