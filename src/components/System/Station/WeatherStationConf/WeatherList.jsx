@@ -30,7 +30,7 @@ class WeatherList extends Component {
         this.state = {
             showWarningTip: false,
             warningTipText: '确认重置山东平原一期的气象站信息么',
-            stationCode: null,
+            weatherConfigId: null,
             editList: {},
             filterStatus: 'all'
         }
@@ -62,14 +62,15 @@ class WeatherList extends Component {
     editStaion = (record) => {
         this.setState({ editList: record })
         this.props.changeWeatherStationStore({ pageStatus: 'edit' })
-        this.props.getWeatherStation({stationCode:record.stationCode})
+        this.props.getWeatherStation({ stationCode: record.stationCode })
     }
 
     refresh = (record) => {
-        const { stationName, stationCode } = record;
+        const { stationName, weatherConfigId } = record;
+        console.log('weatherConfigId', weatherConfigId)
         this.setState({
             warningTipText: `确认重置${stationName}的气象站信息么`,
-            stationCode,
+            weatherConfigId,
             showWarningTip: true
         })
     }
@@ -79,8 +80,8 @@ class WeatherList extends Component {
     }
 
     confirmWarningTip = () => {
-        const { stationCode } = this.state;
-        this.props.getUpdateWeather({ stationCode })
+        const { weatherConfigId } = this.state;
+        this.props.getUpdateWeather({ weatherConfigId })
         this.setState({ showWarningTip: false })
     }
 
@@ -132,9 +133,9 @@ class WeatherList extends Component {
         const { pageSize, pageNum, } = listParameter;
         const { showWarningTip, warningTipText, editList, filterStatus } = this.state;
         const weatherData = weatherList.map((e, index) => ({ ...e, key: index })).filter(e => {
-            if (filterStatus === 'noset') return !e.subordinateStationCode
-            if (filterStatus === 'set') return e.subordinateStationCode
-            if (filterStatus === 'all') return true
+            if (filterStatus === 'all') return true;
+            if (filterStatus === 'set') return e.subordinateStationCode;
+            if (filterStatus === 'noSet') return !e.subordinateStationCode;
         })
         return (
             <div className={styles.weatherList}>

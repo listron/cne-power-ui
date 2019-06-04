@@ -71,7 +71,6 @@ function* getEditWeather(action) { // 修改气象站
                 },
             });
             const params = yield select(state => state.system.weatherStationReducer.get('listParameter').toJS());
-            console.log('params', params)
             yield put({
                 type: weatherStationAction.getWeatherList,
                 payload: params,
@@ -91,15 +90,13 @@ function* getEditWeather(action) { // 修改气象站
 
 function* getUpdateWeather(action) { // 重制气象站配置
     const { payload } = action;
-    const { stationCode } = payload;
-    console.log(stationCode)
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.WeatherStaion}/${stationCode}`
+    const { weatherConfigId } = payload;
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.WeatherStaion}/${weatherConfigId}`
     try {
         const response = yield call(axios.delete, url);
         if (response.data.code === '10000') {
             message.success(`重制成功`);
             const params = yield select(state => state.system.weatherStationReducer.get('listParameter').toJS());
-            console.log(params)
             yield put({
                 type: weatherStationAction.getWeatherList,
                 payload: params,

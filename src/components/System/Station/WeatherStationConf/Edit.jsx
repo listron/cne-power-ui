@@ -49,10 +49,11 @@ class WeatherList extends Component {
 
     confirmWarningTip = () => {
         const { editList } = this.props;
-        const { stationCode } = editList;
+        const { stationCode,weatherConfigId } = editList;
         const { subordinateStationCode } = this.state;
         this.props.getEditWeather({
             stationCode,
+            weatherConfigId,
             subordinateStationCode: subordinateStationCode || editList.subordinateStationCode,
         });
         this.setState({
