@@ -38,60 +38,61 @@ class StockSearch extends Component {
     this.props.getWarehouseName();
   }
 
-  onWarehouseName = (warehouseId) => { // 选择仓库名称
+  onWarehouseName = (warehouseId = null) => { // 选择仓库名称
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
-    stockRecordsStore({
+    const newParams = {
       ...listParams,
-      warehouseId: warehouseId || null
+      warehouseId
+    }
+    stockRecordsStore({
+      ...newParams
     })
     getInRecordList({
-      ...listParams,
-      warehouseId: warehouseId || null
+      ...newParams
     })
     getOutRecordList({
-      ...listParams,
-      warehouseId: warehouseId || null
+      ...newParams
     })
   }
 
-  onManufactor = value => { // 选择库存类型
+  onManufactor = (goodsType = null) => { // 选择库存类型
     const { listParams, stockRecordsStore, getInRecordList, getOutRecordList } = this.props;
-    this.setState({ value: value })
-    stockRecordsStore({ 
+    this.setState({ value: goodsType })
+    const newParams = {
       ...listParams,
-      goodsType: value || null
+      goodsType
+    }
+    stockRecordsStore({ 
+      ...newParams
     }); 
     getInRecordList({
-      ...listParams,
-      goodsType: value || null
+      ...newParams
     })
     getOutRecordList({
-      ...listParams,
-      goodsType: value || null
+      ...newParams
     })
   }
   
   timeChange = (time) => { // 选择时间
-    const timeLength = time.length === 0;
+    const timeLength = time.length > 0;
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
-    let startTime = timeLength ? null : moment(time[0]).startOf('day').format('YYYY-MM-DD');
-    let endTime = timeLength ? null : moment(time[1]).endOf('day').format('YYYY-MM-DD');
+    let startTime = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD') : null;
+    let endTime = timeLength ? moment(time[1]).endOf('day').format('YYYY-MM-DD') : null;
     let isToday = moment(endTime).isSame(moment(), 'd');
     isToday ? endTime = moment().format('YYYY-MM-DD') : endTime;
-    stockRecordsStore({
+    const newParams = {
       ...listParams,
       startTime,
       endTime,
+    }
+    stockRecordsStore({
+      ...newParams
     })
     getInRecordList({
-      ...listParams,
-      startTime,
-      endTime,
+      ...newParams
     })
     getOutRecordList({
-      ...listParams,
-      startTime,
-      endTime,
+      ...newParams
     })
   }
 
@@ -189,3 +190,18 @@ class StockSearch extends Component {
 }
 
 export default StockSearch;
+
+[
+  {value: '101', name: '备品备件', children: []}, 
+  {value: '200', name: '工器具', children: [
+    {value: '201', name: '测试1', children: []},
+    {value: '202', name: '测试2', children: [
+      {value: '2011', name: '测试11', children: []},
+      {value: '2012', name: '测试12', children: [
+        {value: '20121', name: '测试121', children: []},
+        {value: '20122', name: '测试122', children: []},
+      ]},
+    ]},
+  ]},
+  {value: '300', name: '物资', children: []},
+]
