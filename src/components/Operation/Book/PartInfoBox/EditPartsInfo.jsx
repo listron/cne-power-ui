@@ -89,7 +89,6 @@ class EditPartsInfo extends React.Component {
   })
   render() {
     let { partsFactorsList, assetList, factorsPartsMode, detailPartsRecord } = this.props;
-    console.log('detailPartsRecord: ', detailPartsRecord);
     const { stationName, deviceName, partsName, batchNumber, supplierName,madeName,assetsIds,partsModeId,manufactorId ,partsModeName} = detailPartsRecord
 
     const { getFieldDecorator, getFieldValue } = this.props.form;

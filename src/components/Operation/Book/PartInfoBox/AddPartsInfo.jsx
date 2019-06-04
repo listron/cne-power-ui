@@ -4,7 +4,7 @@ import styles from "./partInfoBox.scss";
 import ShowAddPartsModeModal from "./ShowAddPartsModeModal";
 import ShowAddFactor from "./ShowAddFactor";
 
-import { Button, Table, Icon, Input, Form, Select, TreeSelect } from 'antd';
+import { Button,  Icon, Input, Form, Select, TreeSelect } from 'antd';
 
 import WarningTip from '../../../../components/Common/WarningTip';
 const TreeNode = TreeSelect.TreeNode;

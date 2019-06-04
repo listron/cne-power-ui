@@ -10,6 +10,7 @@ class ShowAddDeviceModeModal extends Component {
     addPartsFactors: PropTypes.func,
     showAddfactorsModal: PropTypes.bool,
     form:PropTypes.object,
+    deviceCode:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)

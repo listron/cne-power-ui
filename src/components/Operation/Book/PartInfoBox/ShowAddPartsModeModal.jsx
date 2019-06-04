@@ -7,11 +7,13 @@ const Option = Select.Option;
 class ShowAddPartsModeModal extends Component {
   static propTypes = {
     cancleDeviceModeModal: PropTypes.func,
+    changePartInfoStore: PropTypes.func,
     addPartsModes: PropTypes.func,
     showAddPartsMode: PropTypes.bool,
     form:PropTypes.object,
     partsFactorsList:PropTypes.array,
     manufacturerValue:PropTypes.string,
+    deviceCode:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -43,7 +45,7 @@ class ShowAddPartsModeModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { validateFieldsAndScroll } = this.props.form;
-    const { addDeviceTypeData,deviceCode } = this.props;
+    const { deviceCode } = this.props;
     let deviceTypeCode=deviceCode.split('M')[1];
     validateFieldsAndScroll(["addPartsModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
       if (!err) {

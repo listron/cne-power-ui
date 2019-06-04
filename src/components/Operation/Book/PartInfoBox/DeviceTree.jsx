@@ -77,8 +77,6 @@ class DeviceTree extends React.Component {
       <div>
         <Tree
           autoExpandParent={true}
-          // defaultExpandedKeys={["0"]}
-          // defaultSelectedKeys={["0"]}
           loadData={this.onLoadData}
           onCheck={this.onCheck}
           blockNode={false}
@@ -90,8 +88,6 @@ class DeviceTree extends React.Component {
         </Tree>
         <Tree
           autoExpandParent={true}
-          // defaultExpandedKeys={["0"]}
-          // defaultSelectedKeys={["0"]}
           loadData={this.onLoadData}
           onCheck={this.onCheck}
           blockNode={false}
@@ -102,8 +98,6 @@ class DeviceTree extends React.Component {
         </Tree>
         <Tree
           autoExpandParent={true}
-          // defaultExpandedKeys={["0"]}
-          // defaultSelectedKeys={["0"]}
           loadData={this.onLoadData}
           selectedKeys={selectedKeys}
           onCheck={this.onCheck}
