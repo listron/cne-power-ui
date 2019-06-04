@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './weatherstation.scss';
+import styles from './weatherStationConf.scss';
 import { weatherStationAction } from './weatherStationReducer';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
