@@ -12,6 +12,11 @@ class EditableCell extends React.Component {
   constructor(props, context) {
     super(props, context)
   }
+  onChangeAssets = (data) => {
+    
+    this.props.changeNode(data)
+    this.props.form.setFieldsValue({ manufactorName: '' })
+  }
   getInput = () => {
     const { devicefactorslist, type, onChange, assetlist, stationtypecount, querydatatype, record } = this.props;
 
@@ -24,6 +29,7 @@ class EditableCell extends React.Component {
           onSelect={this.selectManufactor}
           style={{ width: 194 }}
           placeholder="请选择厂家" >
+          <Option key={'请选择厂家'} value={''}>请选择厂家</Option>
           {devicefactorslist.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
             {e.manufactorName}
           </Option>))}
@@ -32,37 +38,30 @@ class EditableCell extends React.Component {
     if (type === 'modal') {
       return (
         <AssetNodeSelect
-          onChange={onChange} 
-          assetList={assetlist} 
-          stationTypeCount={stationtypecount} 
-          queryDataType={querydatatype} 
-          checkedName={record.assetsName ? record.assetsName.replace(/,/g, '/') : ''}
-          assetsIds={record.assetsId ? record.assetsId.split() : []}
+          onChange={this.onChangeAssets}
+          assetList={assetlist}
+          stationTypeCount={stationtypecount}
+          queryDataType={querydatatype}
+          checkedName={this.props.checkedName}
+          assetsIds={this.props.checkedAssetId}
+        // checkedName={record.assetsName ? record.assetsName.replace(/,/g, '/') : ''}
+        // assetsIds={record.assetsId ? record.assetsId.split() : []}
         />
       )
     }
 
   };
   testValue = (e) => {
-
-
   }
   selectManufactor = (value) => {
-
+    this.props.changeAssetConfigStore({
+      checkedManufactor: value,
+    })
 
   }
   render() {
 
-    const {
-      editing,
-      dataIndex,
-      title,
-      // type,
-      record,
-      index,
-      form,
-      ...restProps
-    } = this.props;
+    const {editing,dataIndex,title,record,index,form,checkedManufactor, ...restProps} = this.props;
     // const { getFieldDecorator, getFieldValue } = this.props.form;
     const { getFieldDecorator } = form;
     return (
@@ -77,7 +76,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入 ${title}!`,
                     }],
-                    initialValue: dataIndex === "deviceModeName" ? record[dataIndex] : dataIndex === "assetsName" ? record['assetsId']: record['manufactorId'],
+                    initialValue: dataIndex === "deviceModeName" ? record['deviceModeName'] : dataIndex === "assetsName" ? record['assetsId'] : checkedManufactor,
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}
