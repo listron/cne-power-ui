@@ -1,0 +1,17 @@
+.deviceDetailsTable{
+  width: 100%;
+  min-height: 510px;
+  .deviceDetailsTop{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px  0 10px 0;
+  }
+  .noData{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
+}

@@ -83,7 +83,6 @@ class EditNodeFrom extends React.Component {
   render() {
     const { getFieldDecorator} = this.props.form;
     const { assetList ,assetsName,assetsId,childrenNum} = this.props;
-    console.log('childrenNum: ', childrenNum);
     //childrenNum为当前节点的子节点数。
     //assetsId是当前节点所有的父节点+当前节点id,去除最后一项得到父节点id
      //assetsParentId是当前选中节点的父节点Id

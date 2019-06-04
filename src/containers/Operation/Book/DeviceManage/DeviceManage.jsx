@@ -78,11 +78,10 @@ class DeviceManage extends Component {
   render() {
     const { showDeviceTip, showSidePage } = this.state;
     const {
-      selectType, stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod, showPage
+      selectType, stationCode, deviceTypeCode, manufactorId,deviceModeCode, pageNum, pageSize, sortField, sortMethod, showPage
     } = this.props;
-    console.log('selectType: ', selectType);
     const queryParams = {
-      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod
+      stationCode, deviceTypeCode,manufactorId, deviceModeCode, pageNum, pageSize, sortField, sortMethod
     }
     return (
       <div className={styles.deviceManageContainer}>

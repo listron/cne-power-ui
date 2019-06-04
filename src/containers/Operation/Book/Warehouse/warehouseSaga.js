@@ -1,7 +1,8 @@
-import {put, takeEvery, call} from 'redux-saga/effects';
+import {put, takeLatest, call} from 'redux-saga/effects';
 import { warehouseAction } from './warehouseAction';
 import Path from "../../../../constants/path";
 import axios from "axios";
+import { message } from "antd";
 
 /***
  * 解析公共头APIBasePath
@@ -111,6 +112,7 @@ function* getWarehouseAddList(action) { // 仓库添加
         },
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -155,6 +157,7 @@ function* getWarehouseDelList(action) { // 仓库删除
         sortField,
         sortMethod,
       };
+      message.success("删除成功");
       // 删除成功之后关闭
       func();
       yield put({
@@ -220,6 +223,7 @@ function* getWarehouseUpdateList(action) { // 仓库更新
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -323,6 +327,7 @@ function* getGoodsAddList(action) { // 物品添加
         }
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -369,6 +374,7 @@ function* getGoodsDelList(action) { // 物品删除
         sortField,
         sortMethod,
       };
+      message.success("删除成功");
       // 添加成功清空input的值
       func();
       yield put({
@@ -436,6 +442,7 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
@@ -450,14 +457,14 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
 }
 
 export function* watchWarehouse() {
-  yield takeEvery(warehouseAction.getWarehouseList, getWarehouseList);
-  yield takeEvery(warehouseAction.getWarehouseAddList, getWarehouseAddList);
-  yield takeEvery(warehouseAction.getWarehouseDelList, getWarehouseDelList);
-  yield takeEvery(warehouseAction.getWarehouseUpdateList, getWarehouseUpdateList);
-  yield takeEvery(warehouseAction.getGoodsList, getGoodsList);
-  yield takeEvery(warehouseAction.getGoodsAddList, getGoodsAddList);
-  yield takeEvery(warehouseAction.getGoodsDelList, getGoodsDelList);
-  yield takeEvery(warehouseAction.getGoodsUpdateList, getGoodsUpdateList);
+  yield takeLatest(warehouseAction.getWarehouseList, getWarehouseList);
+  yield takeLatest(warehouseAction.getWarehouseAddList, getWarehouseAddList);
+  yield takeLatest(warehouseAction.getWarehouseDelList, getWarehouseDelList);
+  yield takeLatest(warehouseAction.getWarehouseUpdateList, getWarehouseUpdateList);
+  yield takeLatest(warehouseAction.getGoodsList, getGoodsList);
+  yield takeLatest(warehouseAction.getGoodsAddList, getGoodsAddList);
+  yield takeLatest(warehouseAction.getGoodsDelList, getGoodsDelList);
+  yield takeLatest(warehouseAction.getGoodsUpdateList, getGoodsUpdateList);
 
 }
 

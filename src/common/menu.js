@@ -169,18 +169,18 @@ const menuData = [
           {
             name: '资产配置',
             path: 'assetsConfig',
-            rightKey: 'operation_book',
-            // rightKey: 'operation_book_sparePart',
+            defaultPath: true,
+            rightKey: 'operation_book_assetConfig',
           }, {
             name: '设备管理',
             path: 'deviceManage',
-            rightKey: 'operation_book',
-            // rightKey: 'operation_book_instrument',
+           
+            rightKey: 'operation_book_deviceManage',
           },{
             name: '设备台账',
             path: 'deviceAccount',
-            rightKey: 'operation_book',
-            // rightKey: 'operation_book_sparePart',
+         
+            rightKey: 'operation_book_deviceBook',
           }, {
             name: '仓库配置',
             path: 'warehouse',
@@ -188,11 +188,11 @@ const menuData = [
           },{
             name: '仓库管理',
             path: 'warehouseManage',
-            rightKey: 'operation_book_sparePart',
+            rightKey: 'operation_book_warehouseManage',
           }, {
             name: '出入库记录',
             path: 'stockRecords',
-            rightKey: 'operation_book_warehouseConfig',
+            rightKey: 'operation_book_warehouseRecord',
           }
         ]
       }, {

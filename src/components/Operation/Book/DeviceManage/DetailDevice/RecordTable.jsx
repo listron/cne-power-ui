@@ -11,15 +11,29 @@ class RecordTable extends React.Component {
     pageSize: PropTypes.number,
     onShowSideChange: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
+    getDevicePartInfo: PropTypes.func,
+    getDevicefixRecord: PropTypes.func,
+    changeTableFilter: PropTypes.func,
+    getDevicehistoryWarning: PropTypes.func,
+    deviceFullcode: PropTypes.string,
+    orderMethod: PropTypes.string,
+    orderField: PropTypes.string,
+    tableFilter: PropTypes.string,
+    historyWarningData: PropTypes.array,
+    fixRecordData: PropTypes.array,
+    partInfoData: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
   }
   changeTableData = (e) => {
-    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning } = this.props;
+    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning ,deviceFullcode, orderField,
+      orderMethod,} = this.props;
     const value = e.target.value;
     this.props.changeTableFilter(value);
-    value === 'part' ? getDevicePartInfo({}) : value === 'record' ? getDevicefixRecord({}) : getDevicehistoryWarning({});
+    value === 'part' ? getDevicePartInfo({ deviceFullcode,orderMethod:'desc',orderField:'1'}): 
+    value === 'record' ? getDevicefixRecord({deviceFullcode,orderMethod,orderField}) : 
+    getDevicehistoryWarning({deviceFullcode,orderMethod,orderField});
   }
 
   formate = (data) => {
@@ -27,7 +41,7 @@ class RecordTable extends React.Component {
       e.key = e.assetsId;
       e.partsName = e.assetsName;
       if (e.assetsData && !e.partsData) {
-        this.formay(e.assetsData);
+        this.formate(e.assetsData);
       } else {
         e.assetsData = e.partsData;
         e.partsData&&e.partsData.forEach((e,i)=>{

@@ -528,16 +528,25 @@ function* getStationDeviceType(action) { //获取电站设备类型
 }
 function* getDeviceFactors(action) { //获取设备厂家列表
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
+      const total = response.data.data.pageCount || 0;
+      let { pageNum, pageSize } = payload;
+      const maxPage = Math.ceil(total / pageSize);
+      if (total === 0) { // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) { // 当前页已超出
+        pageNum = maxPage;
+      }
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           ...payload,
-          deviceFactorsList: response.data.data || [],
+          deviceFactorsList: response.data.data.dataList || [],
+          total,
         },
       });
     } else {
@@ -553,9 +562,9 @@ function* getDeviceFactors(action) { //获取设备厂家列表
 }
 function* addDeviceFactors(action) { //新建设备厂家
   const { payload } = action;
-  // const url = `${APIBasePath}${operation.addDeviceFactors}`;
+  const url = `${APIBasePath}${operation.addDeviceFactors}`;
   const nowTime = moment().utc().format();
-  const url =`/mock/v3/ledger/assetslist`;
+  // const url =`/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
     if (response.data.code === '10000') {
@@ -589,8 +598,8 @@ function* addDeviceFactors(action) { //新建设备厂家
 }
 function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型号
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
-  const url = `/mock/v3/ledger/devicemodes/manufactorId`;
+  const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
+  // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -614,8 +623,8 @@ function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型�
 }
 function* getDevicePartInfo(action) { //获取设备部件信息
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
-  const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
+  const url =`${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
+  // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url,);
     if (response.data.code === '10000') {
@@ -639,10 +648,10 @@ function* getDevicePartInfo(action) { //获取设备部件信息
 }
 function* getDevicefixRecord(action) { //获取检修记录
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicefixRecord}`;
-  const url = `/mock/v3/ledger/device/defect/list`;
+  const url =`${APIBasePath}${operation.getDevicefixRecord}`;
+  // const url = `/mock/v3/ledger/device/defect/list`;
   try {
-    const response = yield call(axios.get, url,);
+    const response = yield call(axios.get, url,{params:{...payload,}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -664,10 +673,10 @@ function* getDevicefixRecord(action) { //获取检修记录
 }
 function* getDevicehistoryWarning(action) { //获取设备历史告警
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceCode}/${payload.warningType}`;
-  const url = `/mock/v3/alarm/device/deviceCode/warningType`;
+  const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}/${'事件告警'}`;
+  // const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
-    const response = yield call(axios.post, url,{...payload});
+    const response = yield call(axios.get, url,{params:{orderMethod:'desc',orderField:'1'}});
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,

@@ -71,7 +71,7 @@ class ShowAddDeviceModeModal extends Component {
         maskClosable={false}
       >
         <Form className={styles.preFormStyle}>
-          <FormItem label="生产厂家" colon={false} {...formItemLayout} >
+          <FormItem label="设备厂家" colon={false} {...formItemLayout} >
             {getFieldDecorator('addManufacturer', {
               initialValue: manufacturerValue,
               rules: [

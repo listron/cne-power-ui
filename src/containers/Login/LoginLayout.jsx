@@ -10,17 +10,20 @@ import Login from './Login';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
 import ReactPlayer from 'react-player';
+import {apiUrlReal} from '../../config/apiConfig';
 
 class LoginLayout extends Component {
   static propTypes = {
     pageTab: PropTypes.string,
     changeLoginStore: PropTypes.func,
     resetLoginState: PropTypes.func,
+    appDownload:PropTypes.bool,
   }
 
   state = {
     modalName: 'agreement', // agreement  contact
-    showModal: false
+    showModal: false,
+    appDownload: false //是否显示app下载二维码
   }
 
   componentWillUnmount() {
@@ -56,6 +59,20 @@ class LoginLayout extends Component {
     })
   }
 
+  toAppDownload = (e) => {
+    e.stopPropagation();
+    this.setState({
+      appDownload:true
+    })
+  }
+
+  toDisableAppDownload = (e) => {
+    e.stopPropagation();
+    this.setState({
+      appDownload:false
+    })
+  }
+
   hideInfoModal = (modalName) => {
     this.setState({
       modalName: 'agreement',
@@ -65,7 +82,8 @@ class LoginLayout extends Component {
 
   render() {
     const { pageTab, changeLoginStore } = this.props;
-    const { modalName, showModal } = this.state;
+    const { modalName, showModal,appDownload} = this.state;
+    const defaultLogo = `${apiUrlReal}/api/v3/images/app_download.png`;
     return (
       <div className={styles.loginLayout}>
           <ReactPlayer 
@@ -80,17 +98,29 @@ class LoginLayout extends Component {
             width="auto"
             height="auto" 
           />
-        <div className={styles.right}>
+        <div className={styles.right} onClick={(e)=>this.toDisableAppDownload(e)}>
           <div className={styles.rightContent}>
-            <div className={styles.mainBox}>
+            <div className={styles.mainBox} >
               {pageTab === 'login' && <Login changeLoginStore={changeLoginStore} pageTab={pageTab} />}
               {/* {pageTab === 'register' && <Register changeLoginStore={changeLoginStore} pageTab={pageTab} />} */}
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} toShowAgreement={this.toShowAgreement} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore}/>}
+          
+              {appDownload  && <div className={styles.apk}> 
+                 <div className={styles.a}>
+                 手机扫一扫    
+                 </div>
+                 <img className={styles.b} src={defaultLogo} width="64px" height="64px" />
+                 <div className={styles.c}>
+                 下载app安装包        
+                 </div>
+              </div>}
               <div className={styles.bottomInfo}>
                 <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
                 <span className={styles.contact} onClick={this.toContact}>联系我们</span>
+                <span className={styles.appdownload} onClick={(e)=>this.toAppDownload(e)}>移动端下载</span>
               </div>
+              
               {/* <div className={styles.contactUs}>
                 <Link to="/userAgreement" >用户协议</Link>
                 <Link to="/contactUs" >联系我们</Link>
