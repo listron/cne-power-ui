@@ -70,7 +70,7 @@ class StationSelect extends Component {
       assetsIds: value,
       checkedName: name,
     })
-    this.props.onChange({ assetsIds: value });
+    this.props.onChange({ assetsIds: value,checkedName:name, });
   }
   getNodeNum = (data) => {//统计树的所有节点
     let numArr = [];
@@ -112,7 +112,7 @@ class StationSelect extends Component {
     return (
       <div className={styles.stationSelect}>
         {
-          <span onClick={this.showModal}>
+          <span className={styles.selectStyle} onClick={this.showModal}>
             {multiple ? <Select
               mode="multiple"
               placeholder="选择节点"

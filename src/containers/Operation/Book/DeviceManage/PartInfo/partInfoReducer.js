@@ -6,10 +6,13 @@ const initState = Immutable.fromJS({
   type: '',
   partsId:'',
   deviceCode:'',
+  deviceName:'',
+  manufactorId:null,//厂家Id
   allStationBaseInfo:[],
-  detailPartsRecord:{},
+  detailPartsRecord:{},//编辑前的默认值
   loading: false,
-  stationCode: null, // 选中的电站
+  stationCode: '', // 选中的电站
+  stationName:'',//电站名
   deviceTypeCode: null, // 选中的设备类型
   deviceModeCode: null, // 选中的设备型号
   orderField: '', // 排序字段
@@ -25,6 +28,8 @@ const initState = Immutable.fromJS({
   boostDevices:[],//升压数据
   undefinedDevices:[],//未分组数据数据
   partInfoTree:[],//复制组件中的树
+  addmanufactorId:'',//新增的厂家Id
+  addmodeId:'',//新增设备型号
  
  
 });

@@ -84,31 +84,31 @@ class RecordTable extends React.Component {
     const fixRecordColumns = [
       {
         title: '缺陷级别',
-        dataIndex: 'assetsCode',
+        dataIndex: 'defectLevel',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '缺陷描述',
-        dataIndex: 'assetsName',
+        dataIndex: 'defectDescribe',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '处理过程',
-        dataIndex: 'assetsType',
+        dataIndex: 'defectSolveInfo',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '更换部件',
-        dataIndex: 'assetsUnit',
+        dataIndex: 'replaceParts',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '资产编码',
-        dataIndex: 'createTime',
+        dataIndex: 'assetsCode',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '发生时间',
-        dataIndex: 'begintime',
+        dataIndex: 'createTime',
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '完成时间',
-        dataIndex: 'endTime',
+        dataIndex: 'finishTime',
         render: (text) => <span title={text}>{text}</span>
       }
     ];
@@ -132,8 +132,8 @@ class RecordTable extends React.Component {
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '完成时间',
-        dataIndex: 'timeOn',
-        key: 'endTime',
+        dataIndex: 'finishTime',
+       
         render: (text) => <span title={text}>{text}</span>
       }, {
         title: '持续时间',
