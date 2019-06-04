@@ -1,6 +1,7 @@
 import { put, takeLatest, select, call, fork } from 'redux-saga/effects';
 import { warehouseManageAction } from './warehouseManageReducer';
 import path from '../../../../constants/path';
+import { message } from 'antd';
 import axios from 'axios';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths;
@@ -167,7 +168,7 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
   }
 }
 
-function *getGoodsList({ payload }) {
+function *getGoodsList({ payload }) { // 仓库下所有物品列表
   const url = `${APIBasePath}/${operation.getGoodsList}`;
   try {
     const response = yield call(axios.get, url, {
@@ -189,6 +190,24 @@ function *getGoodsList({ payload }) {
     })
   }
 }
+
+function *addNewGood({ payload }) { // 新增物品
+  const url = `${APIBasePath}/${operation.goodsAdd}`
+  try {
+    const { warehouseId, ...resParams } = payload;
+    const response = yield call(axios.post, url, { ...resParams });
+    if (response.data.code === '10000') { // 重新请求仓库下物品
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { addGoodSuccess: true },
+      })
+      yield fork(getGoodsList, { warehouseId })
+    } else { throw response.data }
+  } catch(error) {
+    message.error('新增失败,请重试');
+    console.log(error);
+  }
+}
       // insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
       // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
@@ -206,5 +225,6 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.setStockMax, setStockMax);
   yield takeLatest(warehouseManageAction.importStockFile, importStockFile);
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
+  yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Form, Select, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
+import AddGood from './ManageCommon/AddGood';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -8,9 +9,15 @@ const { Option } = Select;
 class SpareInsert extends Component {
 
   static propTypes = {
+    originInsertInfo: PropTypes.object, // 是否编辑状态唯一标识。null: 新入库, object: 编辑信息
     warehouseList: PropTypes.array,
+    manufacturerList: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
+  }
+
+  state = {
+    warehouseId: null,
   }
 
   changeWarehouse = () => { // 仓库选择 并重置物品选择。
@@ -49,8 +56,9 @@ class SpareInsert extends Component {
   }
 
   render(){
-    const { form, warehouseList } = this.props;
+    const { form, warehouseList, manufacturerList } = this.props;
     const { getFieldDecorator } = form;
+    const { warehouseId } = this.state;
     return (
       <section>
         <h3>
@@ -80,7 +88,7 @@ class SpareInsert extends Component {
                 message: '请选择物品名称'
               }],
             })(
-              <Input />
+              <AddGood warehouseId={warehouseId} />
             )}
           </FormItem>
           <FormItem label="厂家">
@@ -90,7 +98,11 @@ class SpareInsert extends Component {
                 message: '请选择厂家'
               }],
             })(
-              <Input />
+              <Select placeholder="请选择" onChange={this.changeWarehouse} >
+                {manufacturerList.map(e => (
+                  <Option key={e.code} value={e.code}>{e.name}</Option>
+                ))}
+              </Select>
             )}
           </FormItem>
           <FormItem label="型号">

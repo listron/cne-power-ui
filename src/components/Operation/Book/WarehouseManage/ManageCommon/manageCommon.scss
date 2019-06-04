@@ -134,3 +134,35 @@
   }
 }
 
+.addGoodModal{
+  .confirmRow, .eathItem{
+    display: flex;
+    margin-bottom: 4px;
+  }
+  .confirmRow{
+    margin: 12px 0 24px;
+    .holder{
+      flex-basis: 36%;
+    }
+    .save{
+      margin-right: 16px;
+    }
+  }
+  :global{
+    .ant-form-item-label{
+      flex-basis: 36%;
+    }
+    .ant-form-item-control-wrapper{
+      flex-basis: 63%;
+    }
+    .ant-form-item-control{
+      display: flex;
+      align-items: center;
+      input{
+        width: 200px;
+        margin-right: 8px;
+      }
+    }
+
+  }
+}
