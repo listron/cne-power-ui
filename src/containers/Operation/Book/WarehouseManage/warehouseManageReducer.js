@@ -6,7 +6,9 @@ const warehouseManageAction = {
   getModes: Symbol('getModes'),
   getWarehouseManageList: Symbol('getWarehouseManageList'),
   deleteWarehouseMaterial: Symbol('deleteWarehouseMaterial'),
+  importStockFile: Symbol('importStockFile'),
   setStockMax: Symbol('setStockMax'),
+  getGoodsList: Symbol('getMaterialList'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -35,6 +37,8 @@ const initState = Immutable.fromJS({
   stocksList: [], // 备品备件 | 工具数据 | 物资表格
   totalCount: 0, // 备品备件 | 工具数据 | 物资表格 数据总条数
   checkedStocks: [], // 备品备件 | 工具数据 | 物资表格选中项集合
+  goodsList: [], // 仓库下所有物品列表
+  originInsertInfo: null, // 入库对象基础信息(新入库null, 再入库{...})
   // sparesData: [], // 备品备件表格
   // toolsData: [], // 工具数据表格
   // materialsData: [], // 物资数据表格

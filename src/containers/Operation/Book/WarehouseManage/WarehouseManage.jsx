@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
+import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
@@ -90,7 +91,7 @@ class WarehouseManage extends Component {
             <Footer />
           </div>
           <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
-            {/* <SpareInsert /> */}
+            <SpareInsert {...this.props} backList={this.backList} />
             {/* <SpareTakeout /> */}
             {/* <SpareReserve /> */}
             {/* <ToolInsert /> */}
@@ -133,6 +134,8 @@ const mapDispatchToProps = (dispatch) => ({
     }
   }),
   setStockMax: payload => dispatch({ type: warehouseManageAction.setStockMax, payload }),
+  importStockFile: payload => dispatch({ type: warehouseManageAction.importStockFile, payload }),
+  getGoodsList: payload => dispatch({ type: warehouseManageAction.getGoodsList, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

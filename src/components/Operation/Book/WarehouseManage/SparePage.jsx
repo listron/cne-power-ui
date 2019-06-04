@@ -37,7 +37,7 @@ class SparePage extends Component {
 
   }
 
-  spareColumn = () => [
+  spareColumn = () => [ // 表头
     {
       title: '物品名称',
       dataIndex: 'goodsName',
@@ -61,7 +61,7 @@ class SparePage extends Component {
           StockNum = <span>--{goodsUnit || ''}</span>
         } else if (inventoryNum < threshold) { // 库存紧张
           StockNum = (<span className={styles.shortage}>
-            <span>--{goodsUnit || ''}</span>
+            <span>{inventoryNum}{goodsUnit || ''}</span>
             <span className={styles.config}>紧张</span>
           </span>)
         } else {

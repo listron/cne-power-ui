@@ -1,5 +1,15 @@
 @import '../../../../../theme/theme.scss';
 
+@mixin requireStyle($width){ // 页面主内容区常用布局样式。
+  content: '*';
+  position: relative;
+  font-size: 20px;
+  top: 6px;
+  width: $width;
+  display: inline-block;
+  text-align: center;
+}
+
 .conditionSearch{
   display: flex;
   height: 64px;
@@ -67,13 +77,7 @@
       flex: 0 0 240px;
       text-align: right;
       &::after{
-        content: '*';
-        position: relative;
-        font-size: 20px;
-        top: 5px;
-        width: 10px;
-        display: inline-block;
-        text-align: center;
+        @include requireStyle(10px);
       }
     }
     .error{
@@ -91,6 +95,42 @@
     input {
       width: 200px;
     }
+  }
+}
+
+.importFileModal{
+  .warehouseSelect, .resetStock, .uploader, .confirmImport{
+    display: flex;
+    line-height: 32px;
+    align-items: center;
+    margin-bottom: 8px;
+    .title, .holder{
+      flex: 0 0 40%;
+      text-align: right;
+      padding-right: 12px;
+    }
+    .title::after{
+      @include requireStyle(16px);
+    }
+  }
+  .resetStock{
+    padding-left: 12px;
+  }
+  .uploader {
+    .text{
+      color: $lightColor;
+      padding-left: 8px;
+    }
+    :global{
+      .iconfont.icon-del{
+        margin-left: 8px;
+        cursor: pointer;
+      }
+    }
+  } 
+  .confirmImport button{
+    width: 200px;
+    margin: 12px 0;
   }
 }
 
