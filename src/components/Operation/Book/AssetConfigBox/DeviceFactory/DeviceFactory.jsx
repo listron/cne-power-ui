@@ -6,6 +6,8 @@ import { Button, Table, Form, Input, Icon } from 'antd';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
+import moment from 'moment';
+
 
 
 const FormItem = Form.Item;
@@ -19,6 +21,8 @@ const EditableFormRow = Form.create()(EditableRow);
 class DeviceFactory extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
+    editDeviceFactors: PropTypes.func,
+    getAssetTree: PropTypes.func,
     getDeviceFactorsList: PropTypes.func,
     deleteDeviceFactors: PropTypes.func,
     deviceFactorsList: PropTypes.array,
@@ -31,6 +35,8 @@ class DeviceFactory extends React.Component {
     addDeviceFactors: PropTypes.func,
     stationTypeCount: PropTypes.string,
     assetList: PropTypes.array,
+    form: PropTypes.object,
+
   }
   constructor(props, context) {
     super(props, context)
@@ -44,7 +50,8 @@ class DeviceFactory extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.getDeviceFactorsList({ orderField: '1', orderMethod: 'desc' })
+    const{getDeviceFactorsList,pageNum,pageSize}=this.props;
+   getDeviceFactorsList({ orderField: '1', orderMethod: 'desc',pageNum,pageSize })
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
@@ -77,13 +84,13 @@ class DeviceFactory extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, manufactorId) {
-    const { deviceFactorsList } = this.props;
+    const { deviceFactorsList ,editDeviceFactors} = this.props;
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
       if (!error) {
-        this.props.editDeviceFactors({ manufactorId, assetsIds: row.assetsNames.assetsIds, manufactorName: row.manufactorName })
+       editDeviceFactors({ manufactorId, assetsIds: row.assetsNames.assetsIds, manufactorName: row.manufactorName })
       }
 
       const newData = [...deviceFactorsList];
@@ -172,16 +179,8 @@ class DeviceFactory extends React.Component {
       },
     };
 
-    // const deviceFactorsList = [
-    //   {
-    //     manufactorCode: '1',
-    //     manufactorName: 'test',
-    //     createTime: '1:00',
-    //     operateUser: 'name1',
-    //     manufactorId: '1',
-    //   }, ];
-    const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showWarningTip, warningTipText, isSaveStyle } = this.state;
+    const { getFieldDecorator, } = this.props.form;
+    const { showWarningTip, warningTipText } = this.state;
     const columns = [
       {
         title: '编码',
@@ -204,7 +203,7 @@ class DeviceFactory extends React.Component {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
@@ -308,6 +307,7 @@ class DeviceFactory extends React.Component {
                 })
                 return { ...e }
               })}
+              onChange={this.tableChange}
               columns={columns}
               pagination={false}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}

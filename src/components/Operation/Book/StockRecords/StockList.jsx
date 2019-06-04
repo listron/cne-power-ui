@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { Button, Table, Radio, Popover, Icon } from "antd";
+import { Table, Radio, Popover, Icon } from "antd";
 import moment from 'moment';
-import styles from "./stockRecords.scss";
+import styles from "./record.scss";
 import CommonPagination from '../../../Common/CommonPagination';
 
 class StockList extends Component {
@@ -34,20 +34,19 @@ class StockList extends Component {
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
-    stockRecordsStore({
+    const newParams = {
       ...listParams,
       pageSize,
       pageNum: currentPage,
+    }
+    stockRecordsStore({
+      ...newParams
     })
     getInRecordList({
-      ...listParams,
-      pageSize,
-      pageNum: currentPage,
+      ...newParams
     })
     getOutRecordList({
-      ...listParams,
-      pageSize,
-      pageNum: currentPage,
+      ...newParams
     })
   }
 
@@ -240,20 +239,19 @@ class StockList extends Component {
     }
     const sortField = sortInfo[field] ? sortInfo[field] : '';
     const orderCommand = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    stockRecordsStore({
+    const newParams = {
       ...listParams,
       sortField,
       sortMethod: orderCommand
+    }
+    stockRecordsStore({
+      ...newParams
     })
     getInRecordList({
-      ...listParams,
-      sortField,
-      sortMethod: orderCommand
+      ...newParams
     })
     getOutRecordList({
-      ...listParams,
-      sortField,
-      sortMethod: orderCommand
+      ...newParams
     })
   }
 
@@ -277,15 +275,16 @@ class StockList extends Component {
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
     const tableType = e.target.value;
     stockRecordsStore({tableType});
-    tableType === 'inRecord' && getInRecordList({
+    const newParams = {
       ...listParams,
       pageSize: 10,
       pageNum:1
+    }
+    tableType === 'inRecord' && getInRecordList({
+      ...newParams
     });
     tableType === 'outRecord' && getOutRecordList({
-      ...listParams,
-      pageSize: 10,
-      pageNum:1
+      ...newParams
     });
   }
   
@@ -343,7 +342,7 @@ class StockList extends Component {
   }
 
   render() {
-    const { listParams = {}, tableLoading, inRecordListData, outRecordListData, tableType , pageCount = 0} = this.props;
+    const { listParams, tableLoading, inRecordListData, outRecordListData, tableType , pageCount = 0} = this.props;
     const { pageNum, pageSize } = listParams;
     const dataSource = tableType === 'inRecord' ? inRecordListData.map((e, i) => ({...e, key: i,})) : outRecordListData.map((e, i) => ({...e, key: i,}));
     const columns = tableType === 'inRecord' ? this.inColumns() : this.outColumns(); 

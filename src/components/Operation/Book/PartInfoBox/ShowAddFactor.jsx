@@ -10,6 +10,7 @@ class ShowAddDeviceModeModal extends Component {
     addPartsFactors: PropTypes.func,
     showAddfactorsModal: PropTypes.bool,
     form:PropTypes.object,
+    deviceCode:PropTypes.string,
   }
   constructor(props, context) {
     super(props, context)
@@ -21,15 +22,15 @@ class ShowAddDeviceModeModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { validateFieldsAndScroll } = this.props.form;
-    const { addPartsFactors} = this.props;
+    const { addPartsFactors,deviceCode} = this.props;
+    let deviceTypeCode=deviceCode.split('M')[1];
     validateFieldsAndScroll(["addFactorName",], (err, values) => {
       if (!err) {
         addPartsFactors({
           manufactorName: values.addFactorName,
-         
+          deviceTypeCode,
+          assetsIds:['0'],
         })
-
-    
         this.props.cancleFactorModal()
       }
     })

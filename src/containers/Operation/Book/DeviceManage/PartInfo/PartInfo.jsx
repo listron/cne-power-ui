@@ -89,6 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetPartInfoStore: payload => dispatch({ type: partInfoAction.resetPartInfoStore, payload }),
   getDeviceTypeList: payload => dispatch({ type: partInfoAction.getDeviceTypeList, payload }),
   getDeviceComList: payload => dispatch({ type: partInfoAction.getDeviceComList, payload }),
+  copyPartInfo: payload => dispatch({ type: partInfoAction.copyPartInfo, payload }),
   addPartInfo: payload => dispatch({ type: partInfoAction.addPartInfo, payload }),
   editPartInfo: payload => dispatch({ type: partInfoAction.editPartInfo, payload }),
   getDetailPartInfo: payload => dispatch({ type: partInfoAction.getDetailPartInfo, payload }),
