@@ -9,12 +9,11 @@ const operation = Path.APISubPaths.operation;
 
 function* getDeviceTypeList(action) {  // 电站下设备类型
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceTypeList}/${payload.stationCode}`;
+  const url = `${APIBasePath}${operation.getDeviceTypeList}/${payload.stationCode}`;
   // const url = `/mock/v3/ledger/devicetype/stationCode`;
   const { deviceCode, type } = payload;
-  console.log('type: ', type);
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.get, url, { params: { ...payload }, });
     if (response.data.code === '10000') {
       let collecto = response.data.data.collectorDevices || [];//获取当前集电线路请求的结果
       let boost = response.data.data.boostDevices || [];//获取当前升压站请求的结果
@@ -29,15 +28,15 @@ function* getDeviceTypeList(action) {  // 电站下设备类型
       let curNoType = noType.map((e, i) => {//当前请求的数据处理，加一个children，
         return { ...e, children: [] }
       });
-      console.log('curCollecto: ', curCollecto);
+     
       const findFunc = (data = [], deviceCode, curCollecto) => {//查询匹配的deviceCode,并将新请求的值插入children
-        console.log('data: ', data);
+        // console.log('data: ', data);
         data.forEach((e, i) => {
           if (e.children && e.deviceCode !== deviceCode) {
             return findFunc(e.children, deviceCode, curCollecto)
           }
-          e.children&&e.children.push(...curCollecto)
-          console.log('e: ', e);
+          e.children && e.children.push(...curCollecto)
+        
           return data
         })
         return data;
@@ -47,32 +46,19 @@ function* getDeviceTypeList(action) {  // 电站下设备类型
         boostDevices: state.operation.partInfo.get('boostDevices').toJS(),
         undefinedDevices: state.operation.partInfo.get('undefinedDevices').toJS(),
       }));
-      console.log('getPreTreeData: ', getPreTreeData);
-      console.log('payload: ', payload);
-      console.log('type: ', type);
+      // console.log('getPreTreeData: ', getPreTreeData);
+      // console.log('payload: ', payload);
 
       let collectorDevices = type === 1 ? findFunc(getPreTreeData.collectorDevices, deviceCode, curCollecto) : getPreTreeData.collectorDevices;
       let boostDevices = type === 2 ? findFunc(getPreTreeData.boostDevices, deviceCode, curBoost) : getPreTreeData.boostDevices;
       let undefinedDevices = type === 3 ? findFunc(getPreTreeData.undefinedDevices, deviceCode, curNoType) : getPreTreeData.undefinedDevices;
-      if(type===0){
-        collectorDevices=curCollecto;
-        boostDevices=curBoost;
-        undefinedDevices=curNoType;
+      if (type === 0) {
+        collectorDevices = curCollecto;
+        boostDevices = curBoost;
+        undefinedDevices = curNoType;
 
       }
-      console.log('collectorDevices',collectorDevices)
-
-      // const data=[
-      //   {deviceCode:11,name:'1',type:1,children:[]},
-      //   {deviceCode:12,name:'2',type:1,children:[]},
-      // ];
-      //   let data=[
-      //     {deviceCode:12,name:'1',type:1,children:[{deviceCode:11,name:'2',type:1,children:[]}]},
-      //     {deviceCode:13,name:'3',type:1,children:[{deviceCode:14,name:'4',type:1,children:[]}]},
-      // ];//这个是上次的数据
-
-      // let result=findFunc(data,11,curCollecto);
-      // console.log('result: ', result);
+      // console.log('collectorDevices', collectorDevices)
 
       yield put({
         type: partInfoAction.changePartInfoStore,
@@ -96,8 +82,8 @@ function* getDeviceTypeList(action) {  // 电站下设备类型
 }
 function* getDeviceComList(action) {  // 设备下组件列表
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceComList}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.getDeviceComList}`;
+  // const url = `/mock/v3/ledger/assetslist`;
 
   try {
     const response = yield call(axios.post, url, { ...payload, });
@@ -110,6 +96,7 @@ function* getDeviceComList(action) {  // 设备下组件列表
         },
       });
     } else {
+      message.error(`获取组件列表失败!${response.data.message}`);
       throw response.data
     }
   } catch (e) {
@@ -122,57 +109,80 @@ function* getDeviceComList(action) {  // 设备下组件列表
 }
 function* addPartInfo(action) {  // 添加组件
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.addPartInfo}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.addPartInfo}`;
+  // const url = `/mock/v3/ledger/assetslist`;
+  const nowTime = moment().utc().format();
 
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.post, url, { ...payload,nowTime });
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
-          ...payload,
+         
         },
       });
+      const payload = yield select(state => ({
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
+      }));
+      yield put({
+        type: partInfoAction.getDeviceComList,
+        payload,
+      })
     } else {
+      message.error(`新增组件失败!${response.data.message}`);
       throw response.data
     }
   } catch (e) {
     console.log(e);
+  
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false, },
+      payload: {  loading: false, },
     })
   }
 }
 function* editPartInfo(action) {  // 编辑组件信息
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.editPartInfo}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.editPartInfo}`;
+  // const url = `/mock/v3/ledger/assetslist`;
+  const nowTime = moment().utc().format();
   try {
-    const response = yield call(axios.put, url, { ...payload, });
+    const response = yield call(axios.put, url, { ...payload,nowTime });
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
-          ...payload,
+       
         },
       });
+      const payload = yield select(state => ({
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
+      }));
+      yield put({
+        type: partInfoAction.getDeviceComList,
+        payload,
+      })
     } else {
+      message.error(`编辑组件失败!${response.data.message}`);
       throw response.data
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false, },
+      payload: {  loading: false, },
     })
   }
 }
 function* getDetailPartInfo(action) {  // 组件信息详情
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDetailPartInfo}/${payload.partsId}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.getDetailPartInfo}/${payload.partsId}`;
+  // const url = `/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -196,10 +206,10 @@ function* getDetailPartInfo(action) {  // 组件信息详情
 }
 function* deletePartInfo(action) {  // 删除组件信息
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.deletePartInfo}/${payload.partsId}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.deletePartInfo}/${payload.partsId}`;
+  // const url = `/mock/v3/ledger/assetslist`;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.delete, url,{data:payload});
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
@@ -207,6 +217,16 @@ function* deletePartInfo(action) {  // 删除组件信息
           ...payload,
         },
       });
+      const payload = yield select(state => ({
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
+      }));
+      yield put({
+        type: partInfoAction.getDeviceComList,
+        payload,
+      })
+
     } else {
       throw response.data
     }
@@ -220,8 +240,8 @@ function* deletePartInfo(action) {  // 删除组件信息
 }
 function* getPartsAssetTree(action) {  // 生产资产树
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getAssetTree}`;
-  const url = `/mock/v3/ledger/assetslist`;
+  const url = `${APIBasePath}${operation.getAssetTree}`;
+  // const url = `/mock/v3/ledger/assetslist`;
   const nowTime = moment().utc().format();
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
@@ -246,10 +266,10 @@ function* getPartsAssetTree(action) {  // 生产资产树
 }
 function* getDevicePartInfo(action) { //获取设备部件信息,复制功能中的树
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDevicePartInfo}/{payload.deviceFullcode}`;
-  const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
+  const url = `${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
+  // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
-    const response = yield call(axios.get, url,);
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
@@ -271,8 +291,8 @@ function* getDevicePartInfo(action) { //获取设备部件信息,复制功能中
 }
 function* getPartsFactorsList(action) { //获取组件厂家列表
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
-  const url = `/mock/v3/ledger/devicemanufactors/list`;
+  const url = `${APIBasePath}${operation.getDeviceFactorsList}`;
+  // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
@@ -280,7 +300,7 @@ function* getPartsFactorsList(action) { //获取组件厂家列表
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          partsFactorsList: response.data.data || [],
+          partsFactorsList: response.data.data.dataList || [],
         },
       });
     } else {
@@ -296,10 +316,10 @@ function* getPartsFactorsList(action) { //获取组件厂家列表
 }
 function* getfactorsPartsMode(action) { //获取某组件厂家下的设备型号
   const { payload } = action;
-  // const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
-  const url = `/mock/v3/ledger/devicemodes/manufactorId`;
+  const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${payload.manufactorId}`;
+  // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.get, url, { params: { ...payload } });
     if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
@@ -331,13 +351,12 @@ function* addPartsFactors(action) { //新建组件厂家
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
+          addmanufactorId: response.data.data.manufactorId||'',
         },
       });
       const payload = yield select(state => ({
-
         orderField: state.operation.partInfo.get('orderField'),
         orderMethod: state.operation.partInfo.get('orderMethod'),
-
       }));
       yield put({
         type: partInfoAction.getPartsFactorsList,
@@ -366,12 +385,14 @@ function* addPartsModes(action) { //新建组件型号
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
-          // ...payload,
+          ...payload,
+          addmodeId: response.data.data.modeId|| '',
         },
       });
       const payload = yield select(state => ({
-        orderField: state.operation.partInfo.get('orderField'),
-        orderMethod: state.operation.partInfo.get('orderMethod'),
+        manufactorId: state.operation.partInfo.get('manufactorId'),
+        assetsId: '0',
+      
       }));
       yield put({
         type: partInfoAction.getfactorsPartsMode,
@@ -389,6 +410,34 @@ function* addPartsModes(action) { //新建组件型号
     })
   }
 }
+function* copyPartInfo(action) {  // 复制组件
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.copyPartInfo}`;
+  // const url = `/mock/v3/ledger/assetslist`;
+  const nowTime = moment().utc().format();
+  try {
+    const response = yield call(axios.post, url, { ...payload,nowTime });
+    if (response.data.code === '10000') {
+      yield put({
+        type: partInfoAction.changePartInfoStore,
+        payload: {
+         
+        },
+      });
+     
+    } else {
+      message.error(`新增组件失败!${response.data.message}`);
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+  
+    yield put({
+      type: partInfoAction.changePartInfoStore,
+      payload: {  loading: false, },
+    })
+  }
+}
 
 export function* watchBookPartsInfo() {
   yield takeLatest(partInfoAction.getDeviceTypeList, getDeviceTypeList);
@@ -403,5 +452,6 @@ export function* watchBookPartsInfo() {
   yield takeLatest(partInfoAction.addPartsFactors, addPartsFactors);
   yield takeLatest(partInfoAction.addPartsModes, addPartsModes);
   yield takeLatest(partInfoAction.getDevicePartInfo, getDevicePartInfo);
+  yield takeLatest(partInfoAction.copyPartInfo, copyPartInfo);
 
 }

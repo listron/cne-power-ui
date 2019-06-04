@@ -186,7 +186,7 @@ function* getOtherPageDeviceDetail(action) { // 设备详情页面翻页时请�
 function* editDeviceDetail(action) { // 编辑设备详情；
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.editDeviceInfo}`
-  console.log('payload',payload)
+  console.log('payload', payload)
   try {
     const response = yield call(axios.put, url, { ...payload });
     // if(response.data.code === "10000"){
@@ -309,7 +309,7 @@ function* importStationDevice(action) { // 导入设备；
         payload: params,
       });
     } else {
-      message.config({ top: 200,  duration: 2,maxCount: 3,});
+      message.config({ top: 200, duration: 2, maxCount: 3, });
       message.error(response.data.message)
     }
   } catch (e) {
@@ -528,7 +528,7 @@ function* getStationDeviceType(action) { //获取电站设备类型
 }
 function* getDeviceFactors(action) { //获取设备厂家列表
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  const url = `${APIBasePath}${operation.getDeviceFactorsList}`;
   // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
@@ -572,19 +572,54 @@ function* addDeviceFactors(action) { //新建设备厂家
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           ...payload,
-          //应该反回一个厂家Id供我使用
+          addmanufactorId: response.data.data.manufactorId || '',
         },
       });
       const payload = yield select(state => ({
-        orderField: operation.deviceManage.get('orderField'),
-        orderMethod:operation.deviceManage.get('orderMethod'),
-        
+        deviceTypeCode: state.operation.deviceManage.get('deviceTypeCode'),
+        orderField: state.operation.deviceManage.get('orderField'),
+        orderMethod: state.operation.deviceManage.get('orderMethod'),
       }));
       yield put({
         type: deviceManageAction.getDeviceFactors,
         payload,
-      })   
-    }else{
+      })
+    } else {
+      message.error(`新增设备厂家失败!${response.data.message}`);
+      throw response.data
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE,
+      payload: { ...payload, loading: false },
+    })
+  }
+}
+function* addDeviceModes(action) { //新建设备型号（新）
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.addDeviceModes}`;
+  const nowTime = moment().utc().format();
+  // const url =`/mock/v3/ledger/assetslist`;
+  try {
+    const response = yield call(axios.post, url, { ...payload, nowTime });
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+          addmodeId: response.data.data.modeId|| '',
+        },
+      });
+      const payload = yield select(state => ({
+        manufactorId: state.operation.deviceManage.get('manufactorId'),
+        assetsId: '0'
+      }));
+      yield put({
+        type: deviceManageAction.getfactorsDeviceMode,
+        payload,
+      })
+    } else {
       message.error(`新增设备厂家失败!${response.data.message}`);
       throw response.data
     }
@@ -598,10 +633,10 @@ function* addDeviceFactors(action) { //新建设备厂家
 }
 function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型号
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getfactorsDeviceMode}/{payload.manufactorId}`;
+  const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${payload.manufactorId}`;
   // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
-    const response = yield call(axios.get, url,);
+    const response = yield call(axios.get, url, { params: { ...payload } });
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -623,10 +658,10 @@ function* getfactorsDeviceMode(action) { //获取某设备厂家下的设备型�
 }
 function* getDevicePartInfo(action) { //获取设备部件信息
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
+  const url = `${APIBasePath}${operation.getDevicePartInfo}/${payload.deviceFullcode}`;
   // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
-    const response = yield call(axios.get, url,);
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -648,10 +683,10 @@ function* getDevicePartInfo(action) { //获取设备部件信息
 }
 function* getDevicefixRecord(action) { //获取检修记录
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDevicefixRecord}`;
+  const url = `${APIBasePath}${operation.getDevicefixRecord}`;
   // const url = `/mock/v3/ledger/device/defect/list`;
   try {
-    const response = yield call(axios.get, url,{params:{...payload,}});
+    const response = yield call(axios.get, url, { params: { ...payload, } });
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -673,10 +708,10 @@ function* getDevicefixRecord(action) { //获取检修记录
 }
 function* getDevicehistoryWarning(action) { //获取设备历史告警
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}/${'事件告警'}`;
+  const url = `${APIBasePath}${operation.getDevicehistoryWarning}/${payload.deviceFullcode}/${'事件告警'}`;
   // const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
-    const response = yield call(axios.get, url,{params:{orderMethod:'desc',orderField:'1'}});
+    const response = yield call(axios.get, url, { params: { orderMethod: 'desc', orderField: '1' } });
     if (response.data.code === '10000') {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
@@ -719,10 +754,11 @@ export function* watchBookDeviceManage() {
   yield takeLatest(deviceManageAction.getStationDeviceType, getStationDeviceType);
   yield takeLatest(deviceManageAction.getfactorsDeviceMode, getfactorsDeviceMode);
   yield takeLatest(deviceManageAction.addDeviceFactors, addDeviceFactors);
+  yield takeLatest(deviceManageAction.addDeviceModes, addDeviceModes);
   yield takeLatest(deviceManageAction.getDeviceFactors, getDeviceFactors);
   yield takeLatest(deviceManageAction.getDevicePartInfo, getDevicePartInfo);
   yield takeLatest(deviceManageAction.getDevicefixRecord, getDevicefixRecord);
   yield takeLatest(deviceManageAction.getDevicehistoryWarning, getDevicehistoryWarning);
- 
+
 }
 

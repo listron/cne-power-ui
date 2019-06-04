@@ -72,7 +72,8 @@ class DeviceManageSearch extends Component {
   selectfactory = (value) => {
     const { getDeviceList, queryParams, getfactorsDeviceMode } = this.props;
     getfactorsDeviceMode({
-      manufactorId: value
+      manufactorId: value,
+      assetsId:'0',
     })
     getDeviceList({
       ...queryParams,

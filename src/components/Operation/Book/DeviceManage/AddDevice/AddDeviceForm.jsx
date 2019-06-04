@@ -159,13 +159,15 @@ class AddDeviceForm extends Component {
 
   }
   changeFactors = (value) => {
-    console.log('value: ', value);
-    this.props.getfactorsDeviceMode({manufactorId:value})
+    this.props.getfactorsDeviceMode({
+      manufactorId:value,
+      assetsId:'0',
+    })
   }
   render() {
     const { showAddDeviceModeModal,showAddfactorsModal} = this.state;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { stationDevices, deviceModels, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData, addDeviceModeData, deviceFactorsList ,factorsDeviceModeData} = this.props;
+    const { stationDevices, deviceModels, form, selectdeviceType, selectStation, pvDeviceModels, connectDevice, addDeviceTypeData, addDeviceModeData, deviceFactorsList ,factorsDeviceModeData,addmanufactorId,addmodeId} = this.props;
     const stationName = selectStation ? selectStation[0].stationName : '';
     const deviceTypeName = getFieldValue('deviceTypeCode');
     const deviceModeCodeValue = getFieldValue('deviceModeCode');
@@ -182,11 +184,8 @@ class AddDeviceForm extends Component {
     const isShowSaveButton = ['501', '202', '206', '304', '101',].includes(`${selectdeviceType}`);//显示组件
 
     const showAddfactorIcon=[ '101', '201','202', '203','206', '207','304', '501'].includes(`${selectdeviceType}`);//显示新增厂家的图标
-
     const manufacturerValue = getFieldValue('manufacturer');
-
-
-
+    let changjia=getFieldValue('addManufacturer')?getFieldValue('addManufacturer'):addmanufactorId;
     return (
       <div className={styles.colStyles}>
         <Form className={styles.editPart}>
@@ -210,16 +209,18 @@ class AddDeviceForm extends Component {
                   <Input placeholder="不超过30字" />
                 )}
               </FormItem>
-
-
-
-
               <FormItem label="厂家" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('manufacturer', {
-                  initialValue: manufactureName,
+                  initialValue: changjia,
+                  // initialValue: addmanufactorId,
                   rules: [{ required: true, message: '请选择设备厂家',  }],
                 })(
-                  <Select className={styles.modelSelect} placeholder="请选择设备厂家" onChange={this.changeFactors} disabled={deviceFactorsList.length===0}>
+                  <Select 
+                   className={styles.modelSelect}
+                   placeholder="请选择设备厂家" 
+                   onChange={this.changeFactors}  
+                   disabled={deviceFactorsList.length===0}
+                   >
                     <Option key={'all'} value={''}>请选择设备厂家</Option>
                     {deviceFactorsList.map((e, i) => {
                       if (!e) { return null; } else {
@@ -233,10 +234,16 @@ class AddDeviceForm extends Component {
 
               <FormItem label="设备型号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('deviceModeCode', {
-                  initialValue: initiDeviceMode,
+                  // initialValue: initiDeviceMode,
+                  initialValue: addmodeId,
                   rules: [{ required: true, message: '请选择设备型号' }],
                 })(
-                  <Select className={styles.modelSelect} placeholder="请选择设备型号" onChange={this.changeDeviceMode} disabled={factorsDeviceModeData.length===0}>
+                  <Select 
+                  className={styles.modelSelect} 
+                  placeholder="请选择设备型号" 
+                  onChange={this.changeDeviceMode} 
+                  disabled={factorsDeviceModeData.length===0}
+                  >
                     <Option key={'all'} value={''}>请选择设备型号</Option>
                     {factorsDeviceModeData.map((e, i) => {
                       if (!e) { return null; } else {
@@ -247,9 +254,6 @@ class AddDeviceForm extends Component {
                 )}
                 <span className={styles.fontColor} onClick={this.showAddDeviceModeModal}><Icon type="plus-circle" /></span>
               </FormItem>
-
-            
-
               <FormItem label="批次号" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('lotNumber', {
                   rules: [{ max: 30, message: '不超过30字' }]

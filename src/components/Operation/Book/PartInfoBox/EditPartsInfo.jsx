@@ -13,6 +13,7 @@ class EditPartsInfo extends React.Component {
   static propTypes = {
 
     changePartInfoStore: PropTypes.func,
+    editPartInfo: PropTypes.func,
     getPartsAssetTree: PropTypes.func,
     getPartsFactorsList: PropTypes.func,
     onShowSideChange: PropTypes.func,
@@ -33,10 +34,7 @@ class EditPartsInfo extends React.Component {
     }
   }
   componentDidMount() {
-    const { getPartsFactorsList, getPartsAssetTree } = this.props;
-    getPartsAssetTree({ stationType: '0' })
-    getPartsFactorsList()
-
+  
   }
   backToList = () => {
     this.props.changePartInfoStore({ showPage: 'list' });
@@ -63,14 +61,17 @@ class EditPartsInfo extends React.Component {
     })
   }
   changeFactors = (value) => {
-    this.props.getfactorsPartsMode({})
+    this.props.getfactorsPartsMode({
+      manufactorId: value,
+      assetsId: '0',
+    })
   }
   submitForm = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.addPartInfo({
+        this.props.editPartInfo({
           ...values,
-          partsId:this.props.partsId
+          partsId:this.props.detailPartsRecord.partsId
         })
         this.props.changePartInfoStore({ showPage: 'list' })
       }
@@ -88,12 +89,12 @@ class EditPartsInfo extends React.Component {
   })
   render() {
     let { partsFactorsList, assetList, factorsPartsMode, detailPartsRecord } = this.props;
-    const { stationName, deviceName, partsName, batchNumber, supplierName,madeName,assetsId,modeId,manufactorCode } = detailPartsRecord
+    const { stationName, deviceName, partsName, batchNumber, supplierName,madeName,assetsIds,partsModeId,manufactorId ,partsModeName} = detailPartsRecord
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let { showWarningTip, warningTipText, showAddPartsMode, showAddfactorsModal } = this.state;
-    let manufacturerValue = getFieldValue('manufactorCode');
-    let initfac = '';//新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
+    let manufacturerValue = getFieldValue('manufactorId');
+   //新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
     return (
       <div className={styles.editDevice}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
@@ -122,8 +123,8 @@ class EditPartsInfo extends React.Component {
           </FormItem>
 
           <FormItem label="部件厂家" colon={false} className={styles.formItemStyle}>
-            {getFieldDecorator('manufactorCode', {
-              initialValue: manufactorCode,
+            {getFieldDecorator('manufactorId', {
+              initialValue: manufactorId,
               rules: [{ required: true, message: '请选择部件厂家', }],
             })(
               <Select className={styles.modelSelect} placeholder="请选择部件厂家" onChange={this.changeFactors} disabled={partsFactorsList.length === 0}>
@@ -140,7 +141,7 @@ class EditPartsInfo extends React.Component {
 
           <FormItem label="部件型号" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('modeId', {
-              initialValue: modeId,
+              initialValue: partsModeId,
               rules: [{ required: true, message: '请选择部件型号' }],
             })(
               <Select className={styles.modelSelect} placeholder="请选择部件型号" onChange={this.changeDeviceMode} disabled={false}>
@@ -164,17 +165,14 @@ class EditPartsInfo extends React.Component {
           </FormItem>
           <FormItem label="生产资产" colon={false} className={styles.formItemStyle}>
             {getFieldDecorator('assetsId', {
-              initialValue: assetsId,
-              rules: [{ message: '请正确填写,不超过30字', type: "string", max: 30, }],
+              initialValue: assetsIds,
+              rules: [{ message: '请正确填写,不超过30字', }],
             })(
               <TreeSelect
                 // showSearch
                 style={{ width: 194 }}
-                // value={this.state.value}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 placeholder="请输入父节点"
-                // allowClear
-                // treeDefaultExpandAll
                 onChange={this.onChange}
               >
                 <TreeNode title="生产资产" key="0" value={'0'} >

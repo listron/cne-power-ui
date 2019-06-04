@@ -83,7 +83,11 @@ class AddDevice extends Component {
       showStep: 'next', showAddDeviceName: false,
     })
     this.props.changeDeviceManageStore({ addSuccess: null })
-    this.props.getDeviceFactors({})
+    this.props.getDeviceFactors({
+      deviceTypeCode: selectdeviceType,
+      orderField: '1',
+      orderMethod: 'desc',
+    })
   }
   saveFormState = (record) => {
     this.setState({ deviceTypeName: record.addDeviceTypeCodeName, showAddDeviceName: true })
