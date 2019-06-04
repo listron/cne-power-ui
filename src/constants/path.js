@@ -130,7 +130,7 @@ export default {
       downloadIntelligentTemplet: '/template/knowledgeBase.zip', // 下载导入模板
       operationIntelligent: '/v3/knowledgebase', // 删除、添加、编辑智能专家库
       getUserName: '/v3/user/related', // 获取相关用户名
-      
+
       getAssetTree:'/v3/ledger/assetslist',//台账生产资产树
       getNodeDetail:'/v3/ledger/assets/detail',//台账生产资产树
       addAssetNode:'/v3/ledger/assets/add',//台账增加生产资产节点
@@ -161,7 +161,7 @@ export default {
       importParts:'/v3/ledger/parts/import',
       exportParts:'/v3/ledger/parts/export',
 
-    
+
       // 台账-仓库配置
       warehouseList: "/v3/warehouse/pageList",  // 仓库列表分页查询 || 模糊搜索
       warehouseAdd: "/v3/warehouse/add",  // 仓库添加
@@ -171,6 +171,11 @@ export default {
       goodsAdd: "/v3/goods/add",  // 物品增加
       goodsDel: "/v3/goods/del",  // 物品删除
       goodsUpdate: "/v3/goods/update",  // 物品（物资）修改
+      // 台账-设备台账
+      deviceAccountList: "/v3/ledger/list", // 设备台账列表
+      stationsManufactors: "/v3/ledger/stations/manufactors", // 获取电站下的厂家列表
+      deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
+      attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
 
     },
     system: {//系统管理
@@ -358,11 +363,11 @@ export default {
       getWindScatter:'/v3/wind/monitor/stations/equivalenthours',// 等效小时数
       getSingleWindScatter:'/v3/wind/monitor/station/equivalenthours',// 等效小时数
       getPointparams:'/v3/wind/monitor/station/pointparams',// 单电站测点参数(风电站)
-      
+
       getDayPower:'/v3/pv/monitor/stations/daypower/',// 多电站日发电量与等效时图(光伏电站)
       getMonthPower :'/v3/pv/monitor/stations/monthpower/',// 多电站月发电量与等效时图(光伏电站)
       getMonthPalnPower :'/v3/pv/monitor/stations/monthplanpower/',// 多电站月累计与计划发电量图(光伏电站)
-      
+
       //报表
       getPowerReportList:'/v3/wind/report/fan/gen' ,     //电量报表汇总
       exportGen:'/v3/wind/report/fan/gen/export',//导出电量报表

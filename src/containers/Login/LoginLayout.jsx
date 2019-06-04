@@ -106,7 +106,7 @@ class LoginLayout extends Component {
               {pageTab === 'joinIn' && <JoinIn changeLoginStore={changeLoginStore} toShowAgreement={this.toShowAgreement} />}
               {pageTab === 'forget' && <Forget changeLoginStore={changeLoginStore}/>}
           
-              {appDownload  && <div className={styles.apk}> 
+              {appDownload  && pageTab === 'login' && <div className={styles.apk}> 
                  <div className={styles.a}>
                  手机扫一扫    
                  </div>
@@ -115,11 +115,14 @@ class LoginLayout extends Component {
                  下载app安装包        
                  </div>
               </div>}
-              <div className={styles.bottomInfo}>
+              {pageTab === 'login' ? <div className={styles.bottomInfoAppDownload}>
                 <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
                 <span className={styles.contact} onClick={this.toContact}>联系我们</span>
                 <span className={styles.appdownload} onClick={(e)=>this.toAppDownload(e)}>移动端下载</span>
-              </div>
+              </div> : <div className={styles.bottomInfo}>
+                <span className={styles.agreement} onClick={this.toShowAgreement}>用户协议</span>
+                <span className={styles.contact} onClick={this.toContact}>联系我们</span>
+              </div>}
               
               {/* <div className={styles.contactUs}>
                 <Link to="/userAgreement" >用户协议</Link>
