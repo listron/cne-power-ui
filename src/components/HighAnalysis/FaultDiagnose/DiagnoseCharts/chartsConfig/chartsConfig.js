@@ -4,7 +4,7 @@ import { showNoData, hiddenNoData } from "../../../../../constants/echartsNoData
 const themeColor = "#dfdfdf";
 
 // 故障图表-发电机前驱温度
-export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, beforeTimeData) => {
+export const PreTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -15,11 +15,9 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
   }
   // 处理线条的value
   function valueFunc(arr) {
-    let newArr = [];
-    arr.map(cur => {
-      newArr.push(Number(cur.value).toFixed(2));
+    return arr.map(cur => {
+      return Number(cur.value || 0).toFixed(2);
     });
-    return newArr;
   }
   // 处理data
   function dataFunc (arr) {
@@ -61,6 +59,13 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
     }
     return styles;
   }
+  //处理时间
+  function dateFunc(arr) {
+    return arr[0].dataList && arr[0].dataList.map(cur => {
+      return moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss");
+    });
+  }
+
   return {
     graphic: showNoDataFunc(),
     tooltip: {
@@ -96,7 +101,7 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: beforeTimeData,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -120,30 +125,12 @@ export const PreTemperatureOptions = (data, name, paramsStart, paramsEnd, before
       },
       boundaryGap: [0, '100%']
     },
-    dataZoom: [{
-      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
-      // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
-      moveOnMouseMove: false,
-      realtime: false, // 控制拖动连续触发
-      top: "220px",
-      handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-      handleSize: '80%',
-      handleStyle: {
-        color: '#fff',
-        shadowBlur: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.6)',
-        shadowOffsetX: 2,
-        shadowOffsetY: 2
-      }
-    }],
     series: dataFunc(data)
   };
 };
 
 // 故障图表-发电机后驱温度
-export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afterTimeData) => {
+export const AfterTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -200,6 +187,12 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
     }
     return styles;
   }
+  //处理时间
+  function dateFunc(arr) {
+    return arr[0].dataList && arr[0].dataList.map(cur => {
+      return moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss");
+    });
+  }
   return {
     graphic: showNoDataFunc(),
     tooltip: {
@@ -235,7 +228,7 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: afterTimeData,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -259,30 +252,12 @@ export const AfterTemperatureOptions = (data, name, paramsStart, paramsEnd, afte
       },
       boundaryGap: [0, '100%']
     },
-    dataZoom: [{
-      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
-      // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
-      moveOnMouseMove: false,
-      realtime: false, // 控制拖动连续触发
-      top: "220px",
-      handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-      handleSize: '80%',
-      handleStyle: {
-        color: '#fff',
-        shadowBlur: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.6)',
-        shadowOffsetX: 2,
-        shadowOffsetY: 2
-      }
-    }],
     series: dataFunc(data)
   };
 };
 
 // 故障图表-温度差
-export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffTimeData) => {
+export const diffTemperatureOptions = (data, name) => {
   // 处理设备名称
   function itemFunc(arr) {
     let newArr = [];
@@ -339,6 +314,12 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
     }
     return styles;
   }
+  //处理时间
+  function dateFunc(arr) {
+    return arr[0].dataList && arr[0].dataList.map(cur => {
+      return moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss");
+    });
+  }
   return {
     graphic: showNoDataFunc(),
     tooltip: {
@@ -374,7 +355,7 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
         lineStyle:{ color: themeColor}    // 刻度的颜色
       },
       boundaryGap: false,
-      data: diffTimeData,
+      data: dateFunc(data),
       splitLine: {
         show: true,
       }
@@ -398,24 +379,6 @@ export const diffTemperatureOptions = (data, name, paramsStart, paramsEnd, diffT
       },
       boundaryGap: [0, '100%']
     },
-    dataZoom: [{
-      // startValue: moment(time).subtract('days',7).format('YYYY-MM-DD HH:mm:ss'),
-      // endValue: `2019-05-01 00:00:00`,
-      start: paramsStart,
-      end: paramsEnd,
-      moveOnMouseMove: false,
-      realtime: false, // 控制拖动连续触发
-      top: "220px",
-      handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-      handleSize: '80%',
-      handleStyle: {
-        color: '#fff',
-        shadowBlur: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.6)',
-        shadowOffsetX: 2,
-        shadowOffsetY: 2
-      }
-    }],
     series: dataFunc(data)
   };
 };

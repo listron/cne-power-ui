@@ -143,7 +143,7 @@ class StationSelectModal extends Component {
     const stationTypeSet = new Set(tmpStationTypeArray);
     const stationTypeArray = Array.from(stationTypeSet);
     const showTypeSelectButton = stationTypeArray.length === 2;
-    const authData = Cookie.get('authData') || null;
+    const authData = localStorage.getItem('authData') || '';
     const uploadExtraObject = {};
     uploadExtraData.forEach(e=>{
       uploadExtraObject[e] = selectedStation[e];
@@ -159,7 +159,7 @@ class StationSelectModal extends Component {
         footer={<Upload
           action={uploadPath}
           className={styles.excelInfoUploader}
-          headers={{'Authorization': 'bearer ' + JSON.parse(authData)}}
+          headers={{'Authorization': 'bearer ' + authData}}
           beforeUpload={this.beforeUpload}
           onChange={this.excelInfoUpload}
           showUploadList={false}
