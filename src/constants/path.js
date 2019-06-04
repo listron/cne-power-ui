@@ -265,6 +265,12 @@ export default {
       warnConf: '/v3/smartalarm/conf',// 预警配置 增删改查
       getStationPoints:'/v3/smartalarm/devicepointcode', // 测点，已预警的测点删除
       ScoreConfig:'/v3/performance/score/conf', //	评分配置
+
+      // 气象站配置
+      WeatherStaion:'/v3/pv/monitor/weather',
+      getWeatherStation:'/v3/pv/monitor/weather/list/',
+
+
     },
     monitor: {//实时监控
       getStationType: '/v3/monitor/stations/',
