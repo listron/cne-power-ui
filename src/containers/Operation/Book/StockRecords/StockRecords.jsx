@@ -2,23 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import styles from "./stockRecords.scss";
+import { commonAction } from '../../../alphaRedux/commonAction';
 import { stockRecordsAction } from "./stockRecordsAction.js";
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import StockSearch from '../../../../components/Operation/Book/StockRecords/StockSearch';
-import StockList from '../../../../components/Operation/Book/StockRecords/StockSearch';
+import StockList from '../../../../components/Operation/Book/StockRecords/StockList';
 
 class StockRecords extends Component {
   static propTypes = {
     resetStore:PropTypes.func,
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      
-    };
-  }
 
   componentWillUnmount() {
     this.props.resetStore();
@@ -52,6 +46,10 @@ const mapDispatchToProps = (dispatch) => ({
   getWarehouseName: payload => dispatch({ type: stockRecordsAction.getWarehouseName, payload }),
   getInRecordList: payload => dispatch({ type: stockRecordsAction.getInRecordList, payload }),
   getOutRecordList: payload => dispatch({ type: stockRecordsAction.getOutRecordList, payload }),
+  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
+    ...payload,
+    actionName: stockRecordsAction.stockRecordsStore
+  } }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StockRecords)

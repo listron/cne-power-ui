@@ -3,7 +3,7 @@ import axios from 'axios';
 import path from '../../../../constants/path';
 import { stockRecordsAction } from './stockRecordsAction';
 import { message } from 'antd';
-// import moment from 'moment';
+
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -38,7 +38,6 @@ function *getInRecordList({ payload = {} }) { // 入库列表
       type: stockRecordsAction.stockRecordsStore,
       payload: {
         tableLoading: true,
-        ...payload,
       }
     })
     const response = yield call(axios.post, url, {...payload});
@@ -54,11 +53,14 @@ function *getInRecordList({ payload = {} }) { // 入库列表
       yield put({
         type: stockRecordsAction.GET_STOCKRECORDS_SUCCESS,
         payload: {
-          ...payload,
-          pageNum,
-          pageSize,
+          listParams:{
+            ...payload,
+            pageNum, 
+            pageSize,
+          },
           tableLoading: false,
-          inRecordListData: response.data.data || {},
+          inRecordListData: response.data.data.dataList || [],
+          pageCount: response.data.data.pageCount || 0,
         },
       });
     } else {
@@ -66,13 +68,61 @@ function *getInRecordList({ payload = {} }) { // 入库列表
     }
   }catch(error) {
     message.error('获取入库列表信息失败!');
+    yield put({
+      type: stockRecordsAction.stockRecordsStore,
+      payload: { tableLoading: false }
+    })
     console.log(error);
   }
 }
- 
 
+function *getOutRecordList({ payload = {} }) { // 出库列表
+  const url = `${APIBasePath}${operation.outRecordList}`;
+  try{
+    yield put({
+      type: stockRecordsAction.stockRecordsStore,
+      payload: {
+        tableLoading: true,
+      }
+    })
+    const response = yield call(axios.post, url, {...payload});
+    const { pageCount = 0 } = response.data.data;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(pageCount / pageSize);
+    if (pageCount === 0) {
+      pageNum = 1;
+    } else if (maxPage < pageNum) {
+      pageNum = maxPage;
+    }
+    if (response.data.code === '10000') {
+      yield put({
+        type: stockRecordsAction.GET_STOCKRECORDS_SUCCESS,
+        payload: {
+          listParams: {
+            ...payload,
+            pageNum, 
+            pageSize
+          },
+          tableLoading: false,
+          outRecordListData: response.data.data.dataList || [],
+          pageCount: response.data.data.pageCount || 0,
+        },
+      });
+    } else {
+      throw response.data
+    }
+  }catch(error) {
+    message.error('获取出库列表信息失败!');
+    yield put({
+      type: stockRecordsAction.stockRecordsStore,
+      payload: { tableLoading: false }
+    })
+    console.log(error);
+  }
+}
 
 export function* watchStockRecords() {
   yield takeLatest(stockRecordsAction.getWarehouseName, getWarehouseName);
   yield takeLatest(stockRecordsAction.getInRecordList, getInRecordList);
+  yield takeLatest(stockRecordsAction.getOutRecordList, getOutRecordList);
 }

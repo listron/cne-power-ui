@@ -1,19 +1,25 @@
 import immutable from 'immutable';
-import moment from 'moment';
 import { stockRecordsAction } from './stockRecordsAction.js';
 
 const initState = immutable.fromJS({
   tableLoading: false, // 列表请求的loading
-  startTime: moment().startOf('day').subtract(0, 'day'),
-  endTime: moment(),
-  pageNum: 1, // 当前页（第一页）
-  pageSize: 10, // 每页条数
   warehouseNames: [], // 仓库名称下拉列表
-  warehouseId: '', // 仓库id
-  goodsType: '', // 库存类型
-  sortField: '', // 排序字段
-  sortMethod: '', // 排序规则 "asc"：正序  "desc"：倒序
+  inRecordListData: [], // 入库列表数据
+  outRecordListData: [], // 出库列表数据
+  tableType: 'inRecord', // 切换列表：入库inRecord，出库outRecord
+  pageCount: 0, // 总数
+  listParams:{ // 列表信息
+    startTime: null,
+    endTime: null,
+    pageNum: 1, // 当前页（第一页）
+    pageSize: 10, // 每页条数
+    warehouseId: null, // 仓库id
+    goodsType: null, // 库存类型
+    sortField: '', // 排序字段
+    sortMethod: '', // 排序规则：asc正序  desc倒序
+  },
 })
+
 const stockRecords = (state = initState, action) => {
   switch (action.type) {
     case stockRecordsAction.GET_STOCKRECORDS_SUCCESS :
