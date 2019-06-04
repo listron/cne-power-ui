@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Select, TreeSelect, DatePicker, Button } from 'antd';
 import path from '../../../../constants/path';
-import styles from "./stockRecords.scss";
+import styles from "./record.scss";
 import moment from 'moment';
 
 const { APIBasePath } = path.basePaths;
@@ -190,18 +190,3 @@ class StockSearch extends Component {
 }
 
 export default StockSearch;
-
-[
-  {value: '101', name: '备品备件', children: []}, 
-  {value: '200', name: '工器具', children: [
-    {value: '201', name: '测试1', children: []},
-    {value: '202', name: '测试2', children: [
-      {value: '2011', name: '测试11', children: []},
-      {value: '2012', name: '测试12', children: [
-        {value: '20121', name: '测试121', children: []},
-        {value: '20122', name: '测试122', children: []},
-      ]},
-    ]},
-  ]},
-  {value: '300', name: '物资', children: []},
-]
