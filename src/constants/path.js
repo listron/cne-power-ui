@@ -177,6 +177,13 @@ export default {
       deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
       attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
 
+      // 台账-出入库记录
+      warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
+      warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
+      inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
+      outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
+      inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
+      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
     },
     system: {//系统管理
       getEnterprisList: '/v3/enterprise/list',//企业列表

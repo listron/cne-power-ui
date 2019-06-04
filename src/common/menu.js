@@ -191,7 +191,7 @@ const menuData = [
             rightKey: 'operation_book_warehouseManage',
           }, {
             name: '出入库记录',
-            path: 'immigrationRecords',
+            path: 'stockRecords',
             rightKey: 'operation_book_warehouseRecord',
           }
         ]
