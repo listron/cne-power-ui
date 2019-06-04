@@ -33,7 +33,7 @@ class StockList extends Component {
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
+    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams, tableType } = this.props;
     const newParams = {
       ...listParams,
       pageSize,
@@ -42,10 +42,10 @@ class StockList extends Component {
     stockRecordsStore({
       ...newParams
     })
-    getInRecordList({
+    tableType === 'inRecord' && getInRecordList({
       ...newParams
     })
-    getOutRecordList({
+    tableType === 'outRecord' && getOutRecordList({
       ...newParams
     })
   }
@@ -342,7 +342,7 @@ class StockList extends Component {
   }
 
   render() {
-    const { listParams, tableLoading, inRecordListData, outRecordListData, tableType , pageCount = 0} = this.props;
+    const { listParams, tableLoading, inRecordListData, outRecordListData, tableType , pageCount } = this.props;
     const { pageNum, pageSize } = listParams;
     const dataSource = tableType === 'inRecord' ? inRecordListData.map((e, i) => ({...e, key: i,})) : outRecordListData.map((e, i) => ({...e, key: i,}));
     const columns = tableType === 'inRecord' ? this.inColumns() : this.outColumns(); 
