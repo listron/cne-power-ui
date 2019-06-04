@@ -874,7 +874,7 @@ function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图
   const { payload } = action;
   const { stationCode,stationType } = payload;
   const url = `${APIBasePath}${monitor.getNewDeviceTypeFlow}${stationCode}`;
- let deviceTypeCode= stationType==='0'? '101':'1' // 光伏默认示意图  风电默认是风机
+//  let deviceTypeCode= stationType==='0'? '101':'1' // 光伏默认示意图  风电默认是风机
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -882,7 +882,7 @@ function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图
         type: singleStationAction.changeSingleStationStore,
         payload: {
           deviceTypeFlow: response.data.data || {},
-          deviceTypeCode,
+          // deviceTypeCode,
         }
       })
     } else { throw 'error' }
@@ -892,7 +892,7 @@ function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图
       type: singleStationAction.changeSingleStationStore,
       payload: {
         deviceTypeFlow: {},
-        deviceTypeCode,
+        // deviceTypeCode,
       }
     });
   }

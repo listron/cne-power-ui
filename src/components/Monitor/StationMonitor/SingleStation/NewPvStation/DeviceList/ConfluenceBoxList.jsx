@@ -236,10 +236,11 @@ class ConfluenceBoxList extends Component {
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
                 const { parentDeviceName, parentDeviceFullCode } = list.length > 0 && list[0];
+                const praentTypeCode=parentDeviceFullCode && parentDeviceFullCode.split('M')[1] || '';
                 return (
                   <div key={index}>
                     <div className={styles.parentDeviceName} >
-                      <Link to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
+                      <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
                         <i className={'iconfont icon-hl'}></i>
                         {parentDeviceName}
                       </Link>
