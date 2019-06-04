@@ -191,7 +191,7 @@ const menuData = [
             rightKey: 'operation_book_warehouseManage',
           }, {
             name: '出入库记录',
-            path: 'immigrationRecords',
+            path: 'stockRecords',
             rightKey: 'operation_book_warehouseRecord',
           }
         ]
@@ -482,6 +482,11 @@ const menuData = [
             name: '功率曲线',
             path: 'powerCurve',
             rightKey: 'system_station_powercurve',
+          },
+          {
+            name: '气象站配置',
+            path: 'weatherStation',
+            rightKey: 'system_weatherConfig',
           }
         ]
       }, {

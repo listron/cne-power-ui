@@ -23,6 +23,8 @@ import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSag
 import { watchPointManage } from './System/Station/PointManage/pointManageSaga';
 import { watchAlarmManage } from './System/Station/AlarmManage/alarmManageSaga';
 import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
+import { watchWeatherStation } from './System/Station/WeatherStationConf/weatherStationSaga';
+
 
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
@@ -87,6 +89,7 @@ import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManag
 import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
 import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
 import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+import { watchStockRecords } from "./Operation/Book/StockRecords/stockRecordsSaga";
 
 
 
@@ -115,6 +118,7 @@ export default function* rootSaga() {
     watchPointManage(),
     watchAlarmManage(),
     watchPowerCurve(),
+    watchWeatherStation(),
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
@@ -183,6 +187,6 @@ export default function* rootSaga() {
     watchBookPartsInfo(),//组件信息
     watchDeviceAccount(),//设备台账
     watchWarehouse(),//仓库配置
-
+    watchStockRecords(),//出入库记录
   ])
 }
