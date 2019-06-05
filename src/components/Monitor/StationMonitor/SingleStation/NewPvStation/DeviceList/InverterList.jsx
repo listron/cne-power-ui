@@ -116,10 +116,17 @@ class InverterList extends Component {
         sorter: true,
       },
       {
+        title: () => <TableColumnTitle title="日利用小时" unit="h" />,
+        dataIndex: 'equipmentHours',
+        key: 'equipmentHours',
+        render: value =>  dataFormats(value,'--',2),
+        sorter: true,
+      },
+      {
         title: () => <TableColumnTitle title="转换效率" unit="%" />,
         dataIndex: 'transferRate',
         key: 'transferRate',
-        render: value => numWithComma(value),
+        render: value => dataFormats(value,'--',2),
         sorter: true,
       },
       {
@@ -174,7 +181,7 @@ class InverterList extends Component {
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
       const arraySort = ['parentDeviceName', 'deviceName'];
-      const arrayNumSort = ['devicePower', 'deviceStatus', 'deviceCapacity', 'alarmNum', 'transferRate', 'dayPower'];
+      const arrayNumSort = ['devicePower', 'deviceStatus', 'deviceCapacity', 'alarmNum', 'transferRate', 'dayPower','equipmentHours'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
@@ -276,7 +283,7 @@ class InverterList extends Component {
                       <div className={styles.statusTips} key={i}>
                         <span
                           className={deviceTypeCode === '201' ? styles.rect : styles.round}
-                          style={{ backgroundColor: deviceTypeCode === '201' ? this.seriesStatus[e.status] : this.confluenceStatus[e.status] }}
+                          style={{ background: deviceTypeCode === '206' ? this.seriesStatus[e.status] : this.confluenceStatus[e.status] }}
                         />
                          {e.text}
                       </div>
@@ -335,7 +342,7 @@ class InverterList extends Component {
                                   <span
                                     key={i}
                                     className={deviceTypeCode === '201' ? styles.rect : styles.round}
-                                    style={{ backgroundColor: deviceTypeCode === '201' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
+                                    style={{ backgroundColor: deviceTypeCode === '206' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
                                   />
                                 ))}</div>
                                 <div style={{ color: this.inverterStatus[`${deviceStatus}`].color }}>{this.inverterStatus[`${deviceStatus}`].statusName}</div>
