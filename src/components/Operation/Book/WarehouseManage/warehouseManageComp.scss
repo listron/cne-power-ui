@@ -89,6 +89,8 @@
 
 .insert{
   background-color: #fff;
+  height: 100%;
+  padding-bottom: 24px;
   .title{
     display: flex;
     justify-content: space-between;
@@ -110,8 +112,12 @@
     }
   }
   .handlePart{
+    display: flex;
     .holder{
-
+      flex-basis: 35%;
+    }
+    button{
+      margin-right: 12px;
     }
   }
   .formPart{

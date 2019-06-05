@@ -13,6 +13,7 @@ const { Option } = Select;
 class SpareInsert extends Component {
 
   static propTypes = {
+    insertStatus: PropTypes.string,
     addGoodName: PropTypes.string,
     originInsertInfo: PropTypes.object, // 是否编辑状态唯一标识。null: 新入库, object: 编辑信息
     stations: PropTypes.array,
@@ -20,16 +21,30 @@ class SpareInsert extends Component {
     insertModes: PropTypes.array,
     goodsList: PropTypes.array,
     manufacturerList: PropTypes.array,
+    assetsTree: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
     getModes: PropTypes.func,
     getAssetslist: PropTypes.func,
+    insertWarehouse: PropTypes.func,
+    changeStore: PropTypes.func,
   }
 
   state = {
-    warehouseId: null,
+    saveMode: '',
+  }
+
+  componentDidUpdate(preProps){
+    const preInsertStatus = preProps.insertResult;
+    const { insertStatus, form, changeStore } = this.props;
+    if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
+      const { saveMode } = this.state;
+      form.resetFields(); // form内数据需重置
+      changeStore({ assetsTree: [] }); // 树清空
+      (saveMode === 'once') && this.backToList(); // 不继续添加则返回list页面.
+    }
   }
 
   backToList = () => {
@@ -52,22 +67,29 @@ class SpareInsert extends Component {
     this.props.getModes({ selectedManufacturer, formModes: true });
   }
 
-  addGoodHandle = (param) => {
-    console.log(param);
+  insertSave = () => { // 保存
+    this.setState({ saveMode: 'once' });
+    this.saveInfo();
   }
 
-  insertSave = () => {
-    this.props.form.validateFields((err, values) => {
-      console.log(values);
+  saveAndContinue = () => { // 保存并继续添加
+    this.setState({ saveMode: 'more' });
+    this.saveInfo();
+  }
+
+  saveInfo = () => {
+    const { form, insertWarehouse } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
+      const assetsIds = values.assetsIds[0];
+      insertWarehouse({ ...values, assetsIds });
     })
   }
 
-  saveAndContinue = () => {
-    this.props.form.resetFields();
-  }
-
   render(){
-    const { form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree } = this.props;
+    const { saveMode } = this.state;
+    const {
+      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus
+    } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { warehouseId, manufactorId } = getFieldsValue(['warehouseId', 'manufactorId']);
     const requireInfoFun = (text) => ({
@@ -101,7 +123,6 @@ class SpareInsert extends Component {
                 warehouseId={warehouseId}
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
-                onChange={this.addGoodHandle}
                 goodsType="101"
                 disabled={!warehouseId}
               />
@@ -136,7 +157,7 @@ class SpareInsert extends Component {
             )}
           </FormItem>
           <FormItem label="对应生产资产">
-            {getFieldDecorator('assetsIds', requireInfoFun('生产资产'))(
+            {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
               <AssetsSelectTree assetsTree={assetsTree} />
             )}
           </FormItem>
@@ -170,8 +191,14 @@ class SpareInsert extends Component {
         </Form>
         <div className={styles.handlePart}>
           <span className={styles.holder} />
-          <Button onClick={this.insertSave}>保存</Button>
-          <Button onClick={this.saveAndContinue}>保存并继续添加</Button>
+          <Button
+            onClick={this.insertSave}
+            loading={saveMode === 'once' && insertStatus === 'loading'}
+          >保存</Button>
+          <Button
+            onClick={this.saveAndContinue}
+            loading={saveMode === 'more' && insertStatus === 'loading'}
+          >保存并继续添加</Button>
         </div>
       </section>
     )

@@ -11,6 +11,7 @@ const warehouseManageAction = {
   getGoodsList: Symbol('getMaterialList'),
   addNewGood: Symbol('addGoodSuccess'),
   getAssetslist: Symbol('getAssetslist'),
+  insertWarehouse: Symbol('insertWarehouse'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -44,6 +45,7 @@ const initState = Immutable.fromJS({
   addGoodName: '', // 新添加物品的名称
   insertModes: [], // 入库的型号列表
   assetsTree: [], // 入库资产树
+  insertStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
   // sparesData: [], // 备品备件表格
   // toolsData: [], // 工具数据表格
   // materialsData: [], // 物资数据表格

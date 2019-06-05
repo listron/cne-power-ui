@@ -185,14 +185,23 @@
 
 .assetsSelectTree{
   background-color: #f8f8f8;
-  height: 272px;
+  max-height: 272px;
+  min-width: 200px;
   overflow-y: auto;
+  margin-top: 5px;
+  .noDataText{
+    height: 30px;
+    line-height: 30px;
+    color: $lightColor;
+    padding-left: 12px;
+    cursor: not-allowed;
+  }
   &::-webkit-scrollbar{
     width: 4px;
     height: 90px;
   }
   &::-webkit-scrollbar-thumb{
     background-color: $themeColor;
-    border-radius: 50%;
+    border-radius: 2px;
   }
 }

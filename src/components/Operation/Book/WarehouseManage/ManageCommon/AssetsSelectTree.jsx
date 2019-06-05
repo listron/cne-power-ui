@@ -8,11 +8,13 @@ const { TreeNode } = Tree;
 export default class AssetsSelectTree extends Component {
 
   static propTypes = {
+    value: PropTypes.array,
     assetsTree: PropTypes.array,
+    onChange: PropTypes.func,
   }
 
-  onSelect = (selectedKeys, info) => {
-    console.log(selectedKeys, info);
+  onSelect = (selectedKeys) => {
+    this.props.onChange(selectedKeys);
   }
 
   renderNodes = (nodesInfo = []) => nodesInfo.map(info => {
@@ -31,11 +33,12 @@ export default class AssetsSelectTree extends Component {
   
 
   render(){
-    const { assetsTree } = this.props;
+    const { assetsTree, value } = this.props;
     return (
       <div className={styles.assetsSelectTree}>
-        {assetsTree.length === 0 && <div>生产资产</div>}
+        {assetsTree.length === 0 && <div className={styles.noDataText}>生产资产</div>}
         {assetsTree.length > 0 && <Tree
+          selectedKeys={value}
           onSelect={this.onSelect}
         >
           {this.renderNodes(assetsTree)}

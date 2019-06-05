@@ -234,7 +234,35 @@ function *getAssetslist({ payload }) { // 生产资产树
     })
   }
 }
-      // insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
+
+function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 => 入库||再入库
+  const url = `${APIBasePath}${operation.insertWarehouse}`;
+  try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { insertStatus: 'loading' },
+    })
+    const { tableParams, tabName } = yield select(state => state.operation.warehouseManage.toJS());
+    const response = yield call(axios.post, url, {
+      goodsMaxType: stockTypeCodes[tabName],
+      ...payload
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.changeStore,
+        payload: { insertStatus: 'success' },
+      })
+      yield fork(getWarehouseManageList, { payload: { tableParams } });
+    } else { throw response.data }
+  } catch (err) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { insertStatus: 'normal' },
+    })
+    console.log(err);
+    message('入库失败！')
+  }
+} 
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
       // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
       // getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
@@ -253,5 +281,6 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
   yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
+  yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);
 }
 
