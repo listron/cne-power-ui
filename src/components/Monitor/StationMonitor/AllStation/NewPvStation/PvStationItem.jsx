@@ -18,7 +18,7 @@ class PvStationItem extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      sortStatusName: 'dayPower',
+      sortStatusName: 'sort',
       ascend: true,
       selectStation: null,
     }
