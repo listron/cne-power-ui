@@ -182,3 +182,17 @@
 
   }
 }
+
+.assetsSelectTree{
+  background-color: #f8f8f8;
+  height: 272px;
+  overflow-y: auto;
+  &::-webkit-scrollbar{
+    width: 4px;
+    height: 90px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $themeColor;
+    border-radius: 50%;
+  }
+}

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Icon, Form, Select, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import AddGood from './ManageCommon/AddGood';
+import AssetsSelectTree from './ManageCommon/AssetsSelectTree';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
 
@@ -23,6 +25,7 @@ class SpareInsert extends Component {
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
     getModes: PropTypes.func,
+    getAssetslist: PropTypes.func,
   }
 
   state = {
@@ -34,11 +37,15 @@ class SpareInsert extends Component {
   }
 
   selectWarehouse = (warehouseId) => { // 仓库 => 下物品 + 所有生产资产
-    const { warehouseList, getGoodsList, stations } = this.props;
+    const { warehouseList, getGoodsList, stations, getAssetslist } = this.props;
     const { stationName } = warehouseList.find(e => e.warehouseId === warehouseId) || {};
     const { stationType = 1 } = stations.find(e => e.stationName === stationName) || {};
     getGoodsList({ warehouseId });
-    console.log(stationType)
+    getAssetslist({
+      stationType,
+      assetsParentId: 0,
+      nowTime: moment().utc().format(),
+    })
   }
 
   selectManufacturer = (selectedManufacturer) => { // 选择厂家
@@ -60,7 +67,7 @@ class SpareInsert extends Component {
   }
 
   render(){
-    const { form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes } = this.props;
+    const { form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { warehouseId, manufactorId } = getFieldsValue(['warehouseId', 'manufactorId']);
     const requireInfoFun = (text) => ({
@@ -129,8 +136,8 @@ class SpareInsert extends Component {
             )}
           </FormItem>
           <FormItem label="对应生产资产">
-            {getFieldDecorator('assetsIds')(
-              <Input style={{width: 200}} />
+            {getFieldDecorator('assetsIds', requireInfoFun('生产资产'))(
+              <AssetsSelectTree assetsTree={assetsTree} />
             )}
           </FormItem>
           <FormItem label="入库数量">

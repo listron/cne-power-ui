@@ -216,6 +216,24 @@ function *addNewGood({ payload }) { // 新增物品
     console.log(error);
   }
 }
+
+function *getAssetslist({ payload }) { // 生产资产树
+  const url = `${APIBasePath}${operation.getAssetTree}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { assetsTree: response.data.data || [] }
+      })
+    } else { throw response.data }
+  } catch(error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { assetsTree: [] }
+    })
+  }
+}
       // insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
       // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
@@ -234,5 +252,6 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.importStockFile, importStockFile);
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
+  yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
 }
 
