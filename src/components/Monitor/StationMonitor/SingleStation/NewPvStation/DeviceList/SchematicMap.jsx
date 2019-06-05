@@ -121,8 +121,8 @@ class Schematic extends Component {
                 summaryInfo: [
                     { 'id': 'totalSize', name: '逆变器总数', unit: '台', point: 0, },
                     { 'id': 'normalSize', name: '正常运行数', unit: '台', point: 0 },
-                    { 'id': 'exceptionSize', name: '限电运行数', unit: '台', point: 0, hot: true },
-                    { 'id': 'breakSize', name: '正常停机数', unit: '台', point: 0, },
+                    { 'id': 'limitSize', name: '限电运行数', unit: '台', point: 0, hot: true },
+                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
                     { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true },
@@ -132,8 +132,8 @@ class Schematic extends Component {
                 summaryInfo: [
                     { 'id': 'totalSize', name: '逆变器数', unit: '台', point: 0, },
                     { 'id': 'normalSize', name: '正常运行数', unit: '台', point: 0 },
-                    { 'id': 'exceptionSize', name: '限电运行数', unit: '台', point: 0, hot: true },
-                    { 'id': 'breakSize', name: '正常停机数', unit: '台', point: 0, },
+                    { 'id': 'limitSize', name: '限电运行数', unit: '台', point: 0, hot: true },
+                    { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
                     { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true },
@@ -251,10 +251,10 @@ class Schematic extends Component {
                                     <div> 集电线路数</div>
                                     <div> {sketchmapData['302'] && sketchmapData['302'].summaryInfo.length || '--'} <span> 个</span></div>
                                 </div>
-                                <div className={`${styles.column}`}>
+                                {/* <div className={`${styles.column}`}>
                                     <div> 总功率</div>
                                     <div> {sketchmapData['302'] && sketchmapData['302'].summaryInfo.length > 0 && dataFormats(sketchmapData['302'].summaryInfo[0]['summaryInfo']['totalPower'], '--', 2) || '--'} <span> kWh</span></div>
-                                </div>
+                                </div> */}
                                 <div className={styles.lineWrap}>
                                     <i className={`${'iconfont icon-content'} ${styles.prev} ${activeCarousel === 0 && styles.disabled}`} onClick={this.prev} />
                                     <div className={styles.carousel}>
