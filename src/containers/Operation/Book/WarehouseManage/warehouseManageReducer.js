@@ -27,7 +27,7 @@ const tableParams = { // 表格共有的请求
 
 const initState = Immutable.fromJS({
   tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
-  sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeOut-出, reserve-库存
+  sideKey: 'insert', // 抽屉页控制 list-主页面, insert-入, takeOut-出, reserve-库存
   stockMaxShow: false, // 阈值设置弹框
   importFileShow: false, // 导入库存文件
   tableParams: { ...tableParams }, // 表格请求参数
@@ -40,7 +40,8 @@ const initState = Immutable.fromJS({
   checkedStocks: [], // 备品备件 | 工具数据 | 物资表格选中项集合
   goodsList: [], // 仓库下所有物品列表
   originInsertInfo: null, // 入库对象基础信息(新入库null, 再入库{...})
-  addGoodSuccess: false, // 新添加物品的标识
+  addGoodName: '', // 新添加物品的名称
+  insertModes: [], // 入库的型号列表
   // sparesData: [], // 备品备件表格
   // toolsData: [], // 工具数据表格
   // materialsData: [], // 物资数据表格

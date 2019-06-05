@@ -86,3 +86,56 @@
     border-radius: 3px;
   }
 }
+
+.insert{
+  background-color: #fff;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $promptColor;
+    .text{
+      font-size: 18px;
+      font-weight: 550;
+      color: #000;
+      padding-left: 30px;
+    }
+    .backIcon{
+      font-size: 24px;
+      flex-basis: 64px;
+      height: 64px;
+      line-height: 64px;
+      color: $lightColor;
+      border-left: 1px solid $promptColor;
+    }
+  }
+  .handlePart{
+    .holder{
+
+    }
+  }
+  .formPart{
+    :global{
+      .ant-form-item{
+        display: flex;
+        margin-bottom: 4px;
+      }
+      .ant-form-item-label{
+        flex-basis: 35%;
+        label::after{
+          content: '';
+        }
+      }
+      .ant-form-item-control-wrapper{
+        flex-basis: 64%;
+      }
+      .ant-form-item-control{
+        display: flex;
+        align-items: center;
+      }
+      .ant-form-explain{
+        margin-left: 8px;
+      }
+    }
+  }
+}

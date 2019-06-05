@@ -52,21 +52,23 @@ function* getManufactures() { // 所有厂家列表
 }
 
 function* getModes({ payload = {} }) { // 厂家下所有型号
-  const { selectedManufacturer } = payload;
+  const { selectedManufacturer, formModes } = payload;
   const url = `${APIBasePath}${operation.getModes}/${selectedManufacturer}/modes`;
   try {
     const response =  yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,
-        payload: { modeList: response.data.data || [] }
+        payload: {
+          [formModes ? 'insertModes' : 'modeList']: response.data.data || [],
+        }
       })
     } else { throw response.data }
   } catch (e) {
     console.log(e);
     yield put({
       type: warehouseManageAction.changeStore,
-      payload: { modeList: [] }
+      payload: { [formModes ? 'insertModes' : 'modeList']: [] }
     })
   }
 }
@@ -107,15 +109,17 @@ function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
   const url = `${APIBasePath}${operation.deleteWarehouseMaterial}`;
   try {
     const { tabName, tableParams } = yield select(state => state.operation.warehouseManage.toJS());
-    const { stocksList = [] } = payload;
+    const { checkedStocks = [] } = payload;
     const response = yield call(axios.post, url, {
       goodsMaxType: stockTypeCodes[tabName],
-      inventoryIds: stocksList.map(e => e.inventoryId).join(','),
+      inventoryIds: checkedStocks.map(e => e.inventoryId).join(','),
     })
     if (response.data.code === '10000') { // 删除成功后重新请求列表数据
       yield fork(getWarehouseManageList, {
-        ...tableParams,
-        pageNum: 1,
+        payload: {
+          ...tableParams,
+          pageNum: 1,
+        }
       })
     } else { throw response.data }
   } catch(error) {
@@ -129,7 +133,9 @@ function *setStockMax({ payload }) { // 设置备品备件阈值
     const response = yield call(axios.put, url, { ...payload });
     const { tableParams } = yield select(state => state.operation.warehouseManage.toJS());
     if (response.data.code === '10000') {
-      yield fork(getWarehouseManageList, { ...tableParams });
+      yield fork(getWarehouseManageList, { 
+        payload: { ...tableParams }
+      });
       yield put({
         type: warehouseManageAction.changeStore,
         payload: { stockMaxShow: false },
@@ -159,8 +165,10 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
     });
     if (response.data.code === '10000') { // 导入成功刷新列表
       yield fork(getWarehouseManageList, {
-        ...tableParams,
-        pageNum: 1,
+        payload: {
+          ...tableParams,
+          pageNum: 1,
+        }
       })
     } else { throw response.data }
   } catch (error) {
@@ -169,7 +177,7 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
 }
 
 function *getGoodsList({ payload }) { // 仓库下所有物品列表
-  const url = `${APIBasePath}/${operation.getGoodsList}`;
+  const url = `${APIBasePath}${operation.getGoodsList}`;
   try {
     const response = yield call(axios.get, url, {
       params: { ...payload }
@@ -192,16 +200,16 @@ function *getGoodsList({ payload }) { // 仓库下所有物品列表
 }
 
 function *addNewGood({ payload }) { // 新增物品
-  const url = `${APIBasePath}/${operation.goodsAdd}`
+  const url = `${APIBasePath}${operation.goodsAdd}`
   try {
     const { warehouseId, ...resParams } = payload;
     const response = yield call(axios.post, url, { ...resParams });
     if (response.data.code === '10000') { // 重新请求仓库下物品
       yield put({
         type: warehouseManageAction.fetchSuccess,
-        payload: { addGoodSuccess: true },
+        payload: { addGoodName: payload.goodsName },
       })
-      yield fork(getGoodsList, { warehouseId })
+      yield fork(getGoodsList, { payload: { warehouseId } });
     } else { throw response.data }
   } catch(error) {
     message.error('新增失败,请重试');

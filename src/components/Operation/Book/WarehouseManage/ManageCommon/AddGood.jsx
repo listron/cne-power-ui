@@ -11,9 +11,11 @@ class AddGood extends Component {
   // 101:备品备件、201：安全工器具、202：检修工器具、203：仪器仪表、301：生活物资、302：办公物资、303：其他
   static propTypes = {
     warehouseId: PropTypes.number,
-    addGoodSuccess: PropTypes.bool,
+    addGoodName: PropTypes.string,
+    goodsList: PropTypes.array,
     goodsType: PropTypes.string, // 添加物品的
     form: PropTypes.object,
+    disabled: PropTypes.bool,
     value: PropTypes.string,
     onChange: PropTypes.func,
     addNewGood: PropTypes.func,
@@ -25,11 +27,22 @@ class AddGood extends Component {
   }
 
   componentDidUpdate(preProps){
-    const { addGoodSuccess } = this.props;
-    const preAddResult = preProps.addGoodSuccess;
-    if (!preAddResult && addGoodSuccess) { // 添加新物品成功 => 重置数据, 选中物品
+    const { addGoodName, onChange, form } = this.props;
+    const preAddName = preProps.addGoodName;
+    if (addGoodName !== preAddName) { // 添加新物品成功 => 重置数据, 选中物品
       const { saveMode } = this.state;
+      if (saveMode === 'once') {
+        onChange(addGoodName);
+        this.hideModal();
+      } else {
+        onChange(addGoodName);
+        form.resetFields();
+      }
     }
+  }
+
+  selectGoods = (goodsName) => {
+    this.props.onChange(goodsName);
   }
 
   hideModal = () => this.setState({ addModalShow: false });
@@ -58,13 +71,23 @@ class AddGood extends Component {
 
   render(){
     const { addModalShow } = this.state;
-    const { form } = this.props;
+    const { form, goodsList, disabled, value } = this.props;
     const { getFieldDecorator } = form;
     return(
-      <div>
-        <Input />
-        <span onClick={this.showModal}>+</span>
-        <Modal
+      <div className={styles.addGood}>
+        <Select
+          placeholder="请选择"
+          onChange={this.selectGoods}
+          value={value}
+          style={{width: 200}}
+          disabled={disabled}
+        >
+          {goodsList.map(e => (
+            <Option key={e.goodsName} value={e.goodsName}>{e.goodsName}</Option>
+          ))}
+        </Select>
+        <span onClick={this.showModal} className={styles.addIcon}>+</span>
+        {addModalShow && <Modal
           title="添加物品"
           visible={addModalShow}
           onCancel={this.hideModal}
@@ -99,7 +122,7 @@ class AddGood extends Component {
               <Button onClick={this.saveContinue}>保存并继续添加</Button>
             </div>
           </Form>
-        </Modal>
+        </Modal>}
       </div>
     )
   }

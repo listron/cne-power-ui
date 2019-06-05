@@ -23,7 +23,7 @@ class WarehouseManage extends Component {
   }
 
   state = {
-    sideTransform: 0,
+    sideTransform: 100,
   }
   
   componentDidMount(){
@@ -115,7 +115,8 @@ class WarehouseManage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.operation.warehouseManage.toJS()
+  ...state.operation.warehouseManage.toJS(),
+  stations: state.common.get('stations').toJS(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
