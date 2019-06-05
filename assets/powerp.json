@@ -6,7 +6,7 @@
 		"logoText": "",
 		"needLogin": true,
 		"biUriPrefix": "/bi/",
-		"environment": "test"
+		"environment": "fine"
 	},
 	"demo": {
 		"apiUrlReal": "http://cnedemoapi.chinacloudsites.cn"
@@ -23,6 +23,11 @@
 	"test": {
 		"htUrl": "http://10.10.11.3",
 		"apiUrlReal": "http://10.10.15.51",
+		"signalrReal": "http://dev-api.cnecloud.cn"
+	},
+	"fine":{
+		"htUrl": "http://10.10.11.3",
+		"apiUrlReal": "http://10.10.15.83",
 		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"official": {
