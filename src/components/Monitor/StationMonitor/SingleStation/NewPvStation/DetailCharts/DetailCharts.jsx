@@ -37,7 +37,7 @@ class DetailCharts extends Component {
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts}`}>
                 <div className={styles.tags}>
                     <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(alarmNum, '--')} </Link>
-                    <Link to={`/statistical/stationaccount/allstation`}> 统计分析  </Link>
+                    <Link to={`/statistical/stationaccount/allstation/${stationCode}`}> 统计分析  </Link>
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }) }}>
                     <i className="iconfont icon-go"></i>

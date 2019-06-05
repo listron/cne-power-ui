@@ -274,7 +274,7 @@
            margin-left: 24px;
            display: flex;
            align-items: center;
-           .icon{
+           .activeIcon{
                 background:#199475;
                 border-radius:4px;
                 width:24px;
@@ -282,6 +282,11 @@
                 margin-left: 4px;
                 color: #fff;
                 text-align: center;
+                cursor: pointer;
+           }
+           .icon{
+               pointer-events: none;
+               background:#dfdfdf;
            }
        }
         
@@ -292,18 +297,21 @@
     .pvDeviceContnormal{
         $theme:'normal';
         // background: $normal_color;
-        :global{
-            .ant-select-open .ant-select-selection,.ant-select-selection{
-                background:$normal_hover_color;
-                color: $normal_color;
-            }
-            .ant-select-dropdown-menu-item-selected{
-                background:$normal_hover_color;
-            }
-            .ant-select-dropdown-menu-item:hover{
-                background:$normal_hover_color;
+        .top{
+            :global{
+                .ant-select-open .ant-select-selection,.ant-select-selection{
+                    background:$normal_hover_color;
+                    color: $normal_color;
+                }
+                .ant-select-dropdown-menu-item-selected{
+                    background:$normal_hover_color;
+                }
+                .ant-select-dropdown-menu-item:hover{
+                    background:$normal_hover_color;
+                }
             }
         }
+        
     }
     .outputPowerDiagram {
         border-top: 1px solid #dfdfdf;

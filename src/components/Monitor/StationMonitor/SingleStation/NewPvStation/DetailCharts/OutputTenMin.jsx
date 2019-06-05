@@ -222,6 +222,7 @@ class OutputTenMin extends Component {
             format={'YYYY/MM/DD'} 
             style={{width:128}}
             onChange={this.timeChange}
+            disabledDate={(current)=>{return  current > moment().endOf('day');}}
             />
         </div>
         {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}

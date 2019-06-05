@@ -53,6 +53,8 @@ class PvStation extends Component {
     const deviceTypeInfo = searchData.find(e => e.showPart > 0);
     if (deviceTypeInfo) {
       this.props.changeSingleStationStore({ deviceTypeCode: deviceTypeInfo.showPart })
+    }else{
+      this.props.changeSingleStationStore({ deviceTypeCode: '1' })
     } 
    
     this.getOnceData(stationCode, stationType);
@@ -73,7 +75,6 @@ class PvStation extends Component {
   componentWillUnmount() {
     clearTimeout(this.timeOutId);
     this.props.resetSingleStationStore();
-    console.log('111')
   }
 
   getTenSeconds = (stationCode, stationType) => { // 1min请求一次数据 单电站 工单列表  天气情况 

@@ -95,11 +95,12 @@ class PvmoduleList extends Component {
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
                 const { deviceCode, deviceName } = item;
+                const parentTypeCode= deviceCode.split('M')[1];
                 return (
                   <div key={index} className={styles.pvmoduleItem} >
                     <div className={styles.deviceName} >
                       <i className="iconfont icon-nb" ></i>
-                      <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
+                      <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
                         {deviceName}
                       </Link>
                     </div>

@@ -259,7 +259,7 @@ function* monthPower(action) { // 多电站月发电量与等效时图
         payload: {
           monthPowerData: response.data.data || [],
           monthPowerTime: moment().unix(),
-          monthPowerLoading:false,
+          monthPowerLoading: false,
         }
       })
     } else { throw response.data }
@@ -270,7 +270,7 @@ function* monthPower(action) { // 多电站月发电量与等效时图
       payload: {
         monthPowerData: [],
         monthPowerTime: moment().unix(),
-        monthPowerLoading:false,
+        monthPowerLoading: false,
       }
     });
   }
@@ -330,8 +330,12 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
-        payload: { pvMonitorStation: response.data.data || {}, loading: false },
-        stationType: '1',
+        payload: {
+          pvMonitorStation: response.data.data || {},
+          loading: false,
+          stationType: '1',
+        },
+
       });
     } else { throw response.data }
   } catch (e) {
@@ -340,8 +344,9 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
     yield put({
       type: allStationAction.changeMonitorstationStore,
       payload: {
-        pvMonitorStation: [],
+        pvMonitorStation: {},
         stationType: '1',
+        loading: false,
       }
     });
   }

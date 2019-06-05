@@ -14,11 +14,6 @@ import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class AllStation extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
-    allMonitorStation: PropTypes.object,
-    windMonitorStation: PropTypes.object,
-    pvMonitorStation: PropTypes.object,
-    stationTypes: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
     stopRealMonitorData: PropTypes.func,
     getRealMonitorData: PropTypes.func,
@@ -51,7 +46,6 @@ class AllStation extends Component {
     const { changeMonitorStationStore, stopRealMonitorData, getRealMonitorData } = this.props;
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
     stopRealMonitorData();
-    // getRealMonitorData({ stationType: activeKey })
   }
 
   showRegionSelect = () => {

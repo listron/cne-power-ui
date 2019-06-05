@@ -28,13 +28,13 @@
          cursor: pointer;
          :global{
              .iconfont{
-                 background:#ffffff;
-                 width:14px;
-                 height:14px; 
-                 border-radius: 50%;
-                 color: $themeColor;
-                 font-size: 12px;
-                 display: inline-block;
+                width: 13px;
+                height: 12px;
+                border-radius: 50%;
+                color: #fff;
+                font-size: 14px;
+                display: inline-block;
+                line-height: 12px;
              }
          }
      }

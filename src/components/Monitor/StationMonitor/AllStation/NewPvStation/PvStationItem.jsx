@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './pvStation.scss';
-import { Progress, message, Select } from "antd";
+import { message, Select } from "antd";
 import { Link } from 'react-router-dom';
-import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
+import { dataFormats } from '../../../../../utils/utilFunc';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 import OutputTenMin from './OutputTenMin';
 const Option = Select.Option;
@@ -13,6 +13,7 @@ class PvStationItem extends React.Component {
     stationDataList: PropTypes.array,
     pvCapabilitydiagramsData: PropTypes.array,
     monitorPvUnit: PropTypes.object,
+    areaChecked: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context)
@@ -52,28 +53,36 @@ class PvStationItem extends React.Component {
 
   dealData = (stationDataList) => { // 处理数据
     const { sortStatusName, ascend } = this.state;
+    const { areaChecked } = this.props;
     const sortType = ascend ? 1 : -1;
     let filteredStation = [];
     if (stationDataList.length > 0) {
       const newStationsList = stationDataList.sort((a, b) => {
         return sortType * (a[sortStatusName] - b[sortStatusName]);
       });
-      const temType = newStationsList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
-      temType.forEach(e => {
-        let findExactStation = false;
-        filteredStation.forEach(m => {
-          if (m.regionName === e.provinceName) {
-            findExactStation = true;
-            m.stations.push(e);
-          }
-        })
-        if (!findExactStation) {
-          filteredStation.push({
-            regionName: e.provinceName,
-            stations: [e]
+      if (areaChecked) {
+        const temType = newStationsList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
+        temType.forEach(e => {
+          let findExactStation = false;
+          filteredStation.forEach(m => {
+            if (m.regionName === e.provinceName) {
+              findExactStation = true;
+              m.stations.push(e);
+            }
           })
-        }
-      });
+          if (!findExactStation) {
+            filteredStation.push({
+              regionName: e.provinceName,
+              stations: [e]
+            })
+          }
+        });
+      } else {
+        filteredStation.push({
+          stations: newStationsList
+        })
+      }
+
     }
     return filteredStation
   }
@@ -110,9 +119,9 @@ class PvStationItem extends React.Component {
             optionFilterProp="children"
             onChange={this.conditionChange}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            // value={selectStation}
+          // value={selectStation}
           >
-            <Option value={''}>{'不筛选电站'}</Option>
+            <Option value={''}>{'全部电站'}</Option>
             {stationDataList.map(list => {
               return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>
             })}
@@ -144,8 +153,9 @@ class PvStationItem extends React.Component {
                   const dayPower = divideFormarts(item.dayPower, powerUnit);
                   const equivalentHours = item.equivalentHours;
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
+                  const alarm=item.alarmNum>0;
                   return (
-                    <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
+                    <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
                       <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
                         <div className={styles.stationTop}>
                           <div className={styles.stationName} title={item.stationName}> {item.stationName}</div>
@@ -157,7 +167,8 @@ class PvStationItem extends React.Component {
                             <div className={styles.stationUnitCount}>
                               <span className={styles.changeNum}>{item.stationUnitCount}</span> 台
                             </div>
-                            {currentStatus === '500' && <i className="iconfont icon-outage"></i>}
+                            {`${currentStatus}` === '500' && <i className="iconfont icon-outage" />}
+                            {item.alarmNum>0 && <i className="iconfont icon-alarm" />}
                           </div>
                         </div>
                         <div className={styles.staionCenter}>
@@ -190,24 +201,19 @@ class PvStationItem extends React.Component {
                           yAxisUnit={realTimePowerUnit}
                           capabilityData={filterChartData.length > 0 && filterChartData[0].chartData || []} />
                       </div>
-                      <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
-                        <div className={styles.bottom}>
-                          <div className={styles.dataColumn}>
-                            异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
+                      <div className={styles.bottom}>
+                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
+                          异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
+                        </Link>
+                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'201'}`} className={styles.dataColumn}>
+                          低效逆变器  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
+                        </Link>
+                        <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} className={styles.dataColumn}>
+                          <div>
+                            告警  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.alarmNum, '--', 0)}</span>
                           </div>
-                          <div className={styles.dataColumn}>
-                            低效逆变器  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
-                          </div>
-                          <object className={styles.dataColumn}>
-                            <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} key={item.stationCode}>
-                              <div>
-                                告警  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.alarmNum, '--', 0)}</span>
-                              </div>
-                            </Link>
-                          </object>
-                        </div>
-
-                      </Link>
+                        </Link>
+                      </div>
                     </div>
                   )
                 })}
