@@ -161,7 +161,7 @@ class AddDeviceForm extends Component {
   changeFactors = (value) => {
     this.props.getfactorsDeviceMode({
       manufactorId:value,
-      assetsId:'0',
+      assetsId:'',
     })
   }
   render() {

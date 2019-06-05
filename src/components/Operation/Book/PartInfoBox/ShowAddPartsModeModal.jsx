@@ -53,7 +53,7 @@ class ShowAddPartsModeModal extends Component {
           manufactorId:values.addManufacturer,
         })
         this.props.addPartsModes({
-          assetsId:'0',
+          assetsId:'',
           manufactorId:values.addManufacturer,
           deviceModeName:values.addPartsModeCodeName,
           deviceTypeCode,

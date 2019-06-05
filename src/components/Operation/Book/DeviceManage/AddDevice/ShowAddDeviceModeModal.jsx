@@ -6,6 +6,9 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 class ShowAddDeviceModeModal extends Component {
   static propTypes = {
+    cancleDeviceModeModal: PropTypes.func,
+    addDeviceModes: PropTypes.func,
+    form: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
@@ -36,7 +39,6 @@ class ShowAddDeviceModeModal extends Component {
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { getFieldsValue } = this.props.form;
     const { addDeviceTypeData,addDeviceModes } = this.props;
     this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
       if (!err) {
@@ -48,7 +50,7 @@ class ShowAddDeviceModeModal extends Component {
           manufactorId:values.addManufacturer,
         })
         addDeviceModes({
-          assetsId:'0',
+          assetsId:'',
           deviceTypeCode:addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode,
           manufactorId:values.addManufacturer,
           deviceModeName:values.addDeviceModeCodeName,
@@ -63,7 +65,7 @@ class ShowAddDeviceModeModal extends Component {
   changeFactors = (value) => {
     this.props.getfactorsDeviceMode({
       manufactorId: value,
-      assetsId: '0',
+      assetsId: '',
     })
   }
   render() {

@@ -4,6 +4,7 @@ import styles from './deviceManage.scss';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DeviceSide from '../../../../components/Operation/Book/DeviceManage/DeviceSide';
 import DeviceManageSearch from '../../../../components/Operation/Book/DeviceManage/DeviceManageSearch';
@@ -89,6 +90,7 @@ class DeviceManage extends Component {
         {selectType === 'deviceInfo' && <div className={styles.deviceManage}>
 
           <div className={styles.deviceManageMain}>
+          {showDeviceTip && <StationManageTip hideManageTip={this.hideManageTip} text="请选择您要查看的电站！" />}
             <div className={styles.allStationTitle} >
               <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} >设备信息</p>
               <p className={selectType === 'partInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('partInfo') }}>组件信息</p>

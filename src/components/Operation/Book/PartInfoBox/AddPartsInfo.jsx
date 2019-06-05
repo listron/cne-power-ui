@@ -79,7 +79,7 @@ class AddPartsInfo extends React.Component {
   changeFactors = (value) => {
     this.props.getfactorsPartsMode({
       manufactorId: value,
-      assetsId: '0',
+      assetsId: '',
     })
   }
   nextAdd = () => {

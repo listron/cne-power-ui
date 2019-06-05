@@ -6,6 +6,10 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 class ShowAddDeviceModeModal extends Component {
   static propTypes = {
+    cancleFactorModal: PropTypes.func,
+    form: PropTypes.object,
+    addDeviceFactors: PropTypes.func,
+    showAddfactorsModal: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context)
@@ -16,26 +20,23 @@ class ShowAddDeviceModeModal extends Component {
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { getFieldsValue } = this.props.form;
-    const { addDeviceTypeData,deviceTypeCode,selectdeviceType } = this.props;
+    const { selectdeviceType } = this.props;
     this.props.form.validateFieldsAndScroll(["addFactorName",], (err, values) => {
       if (!err) {
         this.props.addDeviceFactors({
           manufactorName: values.addFactorName,
           deviceTypeCode:selectdeviceType,
-          assetsIds:['0'],
+          assetsIds:[''],
         })
         this.props.cancleFactorModal()
       }
     })
 
   }
-  changeFactors=(value)=>{
-    this.props.getfactorsDeviceMode({manufactorId:value})
-  }
+ 
   render() {
     const { getFieldDecorator,  } = this.props.form;
-    const { showAddfactorsModal ,} = this.props;
+    const { showAddfactorsModal} = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },
