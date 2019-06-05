@@ -78,11 +78,10 @@ class DeviceManage extends Component {
   render() {
     const { showDeviceTip, showSidePage } = this.state;
     const {
-      selectType, stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod, showPage
+      selectType, stationCode, deviceTypeCode, manufactorId,deviceModeCode, pageNum, pageSize, sortField, sortMethod, showPage
     } = this.props;
-    console.log('selectType: ', selectType);
     const queryParams = {
-      stationCode, deviceTypeCode, deviceModeCode, pageNum, pageSize, sortField, sortMethod
+      stationCode, deviceTypeCode,manufactorId, deviceModeCode, pageNum, pageSize, sortField, sortMethod
     }
     return (
       <div className={styles.deviceManageContainer}>
@@ -91,7 +90,7 @@ class DeviceManage extends Component {
 
           <div className={styles.deviceManageMain}>
             <div className={styles.allStationTitle} >
-              <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('deviceInfo') }}>设备信息</p>
+              <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} >设备信息</p>
               <p className={selectType === 'partInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('partInfo') }}>组件信息</p>
             </div>
             <div className={styles.deviceManageContent}>
@@ -176,6 +175,8 @@ const mapDispatchToProps = (dispatch) => ({
   deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
   importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
   getStationDeviceType: payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
+  addDeviceFactors: payload => dispatch({ type: deviceManageAction.addDeviceFactors, payload }),
+  addDeviceModes: payload => dispatch({ type: deviceManageAction.addDeviceModes, payload }),
   getDeviceFactors: payload => dispatch({ type: deviceManageAction.getDeviceFactors, payload }),
   getfactorsDeviceMode: payload => dispatch({ type: deviceManageAction.getfactorsDeviceMode, payload }),
   getDevicePartInfo: payload => dispatch({ type: deviceManageAction.getDevicePartInfo, payload }),

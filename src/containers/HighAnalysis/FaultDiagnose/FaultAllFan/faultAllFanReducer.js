@@ -17,11 +17,17 @@ const initState = Immutable.fromJS({
     algorithmName: "",
     deviceDatas: []
   },
-  faultDateList: "", //预警日期-有故障的日期
+  faultDateList: "", // 预警日期-有故障的日期
   faultDate: "", // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
-  diffDate: [], // 后驱温度时间选择
+  diffDate: [], // 温度差时间选择
+  preDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  preDataZoomEnd: 100,
+  afterDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  afterDataZoomEnd: 100,
+  diffDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  diffDataZoomEnd: 100,
   beforeTimeData: [], // 前驱温度时间轴
   afterTimeData: [], // 后驱温度时间轴
   diffTimeData: [], // 温度差时间轴
@@ -66,6 +72,7 @@ const initState = Immutable.fromJS({
 
 
 const faultAllFanReducer = (state = initState, action) => {
+  // console.log(action.payload, "action");
   switch (action.type) {
     case faultAllFanAction.changeFaultAllFanStore:
       return state.merge(Immutable.fromJS(action.payload));

@@ -10,7 +10,9 @@ import workOrder from './Ticket/WorkOrder/workOrderReducer';
 import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
+import deviceAccount from './Book/DeviceAccount/deviceAccountReducer';
 import warehouse from './Book/Warehouse/warehouseReducer';
+import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 
@@ -25,8 +27,11 @@ const operationReducer = combineReducers({
   deviceManage,
   partInfo,
   warehouse,
+  stockRecords,
   warehouseManage,
-  intelligentExpert
+  intelligentExpert,
+  deviceAccount,
 });
+
 
 export default operationReducer;

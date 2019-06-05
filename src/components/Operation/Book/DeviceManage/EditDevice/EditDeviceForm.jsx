@@ -33,7 +33,7 @@ class EditDeviceForm extends Component {
               return values.connectedBranches.includes(e) ? 1 : 0
             })
           }
-          
+
           if (typeof (values.componentMode) === 'string') {
             let filterMode = pvDeviceModels.filter((e, i) =>
               e.deviceModeName === values.componentMode
@@ -203,6 +203,16 @@ class EditDeviceForm extends Component {
               </FormItem>}
             </div>
             <div className={styles.systermStyle}>
+              <FormItem label="制造商" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('madeName', { initialValue: stationDeviceDetail.madeName, })(
+                  <Input placeholder="请输入..." />
+                )}
+              </FormItem>
+              <FormItem label="供货商" colon={false} className={styles.formItemStyle}>
+                {getFieldDecorator('supplierName', { initialValue: stationDeviceDetail.supplierName, })(
+                  <Input placeholder="请输入..." />
+                )}
+              </FormItem>
               <FormItem label="设备编号" colon={false} className={styles.formItemStyle} >
                 {getFieldDecorator('deviceFullCode', { initialValue: stationDeviceDetail.deviceFullCode, })(
                   <span>{deviceFullCode}</span>

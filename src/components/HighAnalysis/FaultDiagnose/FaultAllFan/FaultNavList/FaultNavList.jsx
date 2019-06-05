@@ -18,9 +18,6 @@ export default class FaultNavList extends React.Component {
     getStandAloneList: PropTypes.func,
     getSimilarityList: PropTypes.func,
     getAllFanResultList: PropTypes.func,
-    preDate: PropTypes.array,
-    afterDate: PropTypes.array,
-    diffDate: PropTypes.array,
     faultDate: PropTypes.string,
   };
 
@@ -73,8 +70,8 @@ export default class FaultNavList extends React.Component {
   handlerFansClick = (data, index, warnId) => {
     const {
       faultInfo: {
-        endTime,
-        stationCode
+        stationCode,
+        endTime
       },
       faultDate,
       getTenMinutesBefore,
@@ -84,35 +81,40 @@ export default class FaultNavList extends React.Component {
       getSimilarityList,
       getAllFanResultList,
       onChangeFilter,
-      preDate,
-      afterDate,
-      diffDate
     } = this.props;
+    // 当前点击的数据
     const { deviceFullcode, deviceName, date } = data;
+    // 故障日期时间
+    const dateArr = date && date.split(",");
+    // 判断如果date有数据
+    const timeValue = date && date ? dateArr[dateArr.length - 1] : endTime;
     const taskId = localStorage.getItem("taskId");
     // 发电机前驱温度
     const preParams = {
       stationCode,
       pointCode: "GN010", //前驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
-      startTime: preDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(preDate[0]).utc().format(),
-      endTime: preDate.length === 0 ? moment(endTime).utc().format() : moment(preDate[1]).utc().format()
+      startTime: moment(timeValue).subtract(1,'months').utc().format() ,
+      endTime: moment(timeValue).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     // 发电机后驱温度
     const afterParams = {
       stationCode,
       pointCode: "GN011", //后驱测点-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
-      startTime: afterDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(afterDate[0]).utc().format(),
-      endTime: afterDate.length === 0 ? moment(endTime).utc().format() : moment(afterDate[1]).utc().format()
+      startTime: moment(timeValue).subtract(1,'months').utc().format(),
+      endTime: moment(timeValue).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     // 发电机后驱温度
     const diffParams = {
       stationCode,
       pointCode: "GN010-GN011", //温度差-固定字段
       deviceFullcodes: [], // 默认传空代表所有风机
-      startTime: diffDate.length === 0 ? moment(endTime).subtract(1,'months').utc().format() : moment(diffDate[0]).utc().format(),
-      endTime: diffDate.length === 0 ? moment(endTime).utc().format() : moment(diffDate[1]).utc().format()
+      startTime: moment(timeValue).subtract(1,'months').utc().format(),
+      endTime: moment(timeValue).add(1, "days").utc().format(),
+      queryFlag: true // 判断是否重新存贮时间轴
     };
     // 单机自适应模块
     const singleParams = {
@@ -122,7 +124,7 @@ export default class FaultNavList extends React.Component {
     // 相似性热图
     const heatAndAllFansParams = {
       taskId,
-      date: faultDate || endTime
+      date: faultDate
     };
     this.setState({
       fansFlag: index
@@ -132,7 +134,26 @@ export default class FaultNavList extends React.Component {
         deviceName,
         deviceFullCode: deviceFullcode,
         warnId,
-        faultDateList: date
+        faultDate: timeValue, // 故障详情页选择日期
+        faultDateList: date, // 预警日期-有故障的日期
+        preDate: [// 前驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        afterDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        diffDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        preDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+        preDataZoomEnd: 100,
+        afterDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+        afterDataZoomEnd: 100,
+        diffDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+        diffDataZoomEnd: 100,
       });
       // 请求接口
       getTenMinutesBefore(preParams);

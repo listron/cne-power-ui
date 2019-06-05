@@ -16,14 +16,7 @@
         margin: 4px auto;
       }
     }
-    .rightSeach{
-      margin-right: 28px;
-      :global{
-        .ant-input-search-icon{
-          color:#199475;
-        }
-      }
-    }
+  
    
   }
   .tableStyles{
@@ -31,14 +24,14 @@
     flex-direction: column;
     flex:1;
     :global{
-      .iconfont{
+      .icon-edit,.icon-del,icon-doned{
         font-size: 20px;
         &:hover{
           color:#199475
         }
       }
       .icon-edit,.icon-del{
-        color:#199475;
+        // color:#199475;
       }
     }
     .paginationStyle{
@@ -46,7 +39,19 @@
       height: 48px;
       line-height: 48px;
       border:1px solid #e1e2e2;
-      justify-content: flex-end;
+      justify-content: space-between;
+      .rightSeach{
+        margin-left: 28px;
+        width: 200px;
+        :global{
+          .ant-input-search-icon{
+            color:#199475;
+          }
+          .ant-input-affix-wrapper .ant-input:not(:last-child) {
+            padding-right: 47px;
+        }
+        }
+      }
     }
   }
 }

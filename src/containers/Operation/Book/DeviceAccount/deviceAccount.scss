@@ -1,0 +1,25 @@
+@import '../../../../theme/theme.scss';
+.containerDiv {
+  min-height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.containerBg {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px 24px 0 24px;
+  background-color: #ececec;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}

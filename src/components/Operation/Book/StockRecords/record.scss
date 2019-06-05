@@ -1,0 +1,55 @@
+@import '../../../../theme/theme.scss';
+
+.stockSearch{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding:24px 35px;
+  .searchLeft{
+    .text,.warehouseName,.inventory{
+      margin-right: 10px;
+    }
+    .warehouseName{
+      width: 180px;
+    }
+  }
+  .searchRight{
+    .inImportBtn{
+      color: $themeColor;
+      border: 1px solid $themeColor;
+    }
+    .inImportBtn:hover{
+      background-color: $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.stockList{
+  .stockListTop{
+    display: flex;
+    justify-content: space-between;
+    margin:0 0 15px 34px;
+  }
+  .moreInformation{
+    cursor: pointer;
+  }
+}
+
+.inRecordInfo{
+  width: 320px;
+  padding:10px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+  }
+  .title,.content{
+    .text{
+      font-weight: bold;
+      text-align: right;
+      margin: 0 10px 10px 0;
+      display: inline-block;
+      width: 60px;
+    }
+  }
+}
