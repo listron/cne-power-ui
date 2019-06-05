@@ -14,6 +14,7 @@ class PvmoduleList extends Component {
     match: PropTypes.object,
     getPvmoduleList: PropTypes.func,
     loading: PropTypes.bool,
+    pvLevelNums: PropTypes.object,
   }
 
   constructor(props) {
@@ -52,10 +53,20 @@ class PvmoduleList extends Component {
       this.getData(stationCode);
     }, 10000);
   }
-  compareName = (a, b) => {
+
+  compareName = (a, b) => { // 排序
     if (a['deviceName'] && b['deviceName']) {
       return a['deviceName'].localeCompare(b['deviceName']);
     }
+  }
+
+  pointStatus = {
+    '801': { backgroundColor: '#f9b600', color: '#fff' },// 偏低
+    '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
+    '803': { backgroundColor: '#a42b2c', color: '#fff' }, // 异常
+    '400': { backgroundColor: '#ceebe0', color: '#199475' }, // 正常
+    '500': { backgroundColor: '#f1f1f1', color: '#fff' }, // 无通讯
+    '900': { backgroundColor: '#f1f1f1', color: '#fff' },// 未接入
   }
 
   buttonClick = (e) => {
@@ -63,64 +74,63 @@ class PvmoduleList extends Component {
     this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
   }
   render() {
-    const { pvmoduleList, loading, pvLevelNums,deviceTypeCode } = this.props;
+    const { pvmoduleList, loading, pvLevelNums, deviceTypeCode } = this.props;
     const { pvLevelStatus } = this.state;
-    const pvmoduleListSet = Array.from(new Set(pvmoduleList));
-    let statusArray = ['big', 'normal', 'small', 'abnormal']
-    const tmpPvmoduleList = pvLevelStatus ? pvmoduleListSet.filter(e => e.pvAllLevel.includes((statusArray.findIndex(item => item === pvLevelStatus)) + 1)) : pvmoduleListSet;
-    // 评价等级(1-蓝色、2-绿色、3-橙色、4-红色)
+    const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     const pvStatus = [
-      { name: 'normal', value: '正常', useName: 'pvNormalNum' },
-      { name: 'small', value: '偏小', useName: 'pvSmallerNum' },
-      { name: 'abnormal', value: '异常', useName: 'pvAbnormalNum' },
-      { name: 'big', value: '偏大', useName: 'pvBiggerNum' },
+      { name: 'normal', text: '正常', useName: 'pvNormalNum', pointStatus: '400' },
+      { name: 'abnormal', text: '异常', useName: 'pvAbnormalNum', pointStatus: '803' },
+      { name: 'small', text: '偏小', useName: 'pvSmallerNum', pointStatus: '801' },
+      { name: 'big', text: '偏大', useName: 'pvBiggerNum', pointStatus: '802' },
     ];
     const baseLinkPath = "/hidden/monitorDevice";
     const { stationCode } = this.props.match.params;
     return (
       <div className={styles.pvmodule}>
         <div className={styles.pvmoduleList} >
-          <div className={styles.pvmoduleListTop}>
-            {pvStatus.map(item => {
-              return (
-                <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.name && styles.active}`} key={item.name}
-                  onClick={() => { this.buttonClick(item.name) }}>
-                  {pvLevelStatus !== item.name && <i className={'iconfont icon-goon'}></i>}
-                  {pvLevelStatus === item.name && <i className={'iconfont icon-done'}></i>}
-                  {item.value} {pvLevelNums[item.useName] || '--'}
-                </p>)
-            })}
-          </div>
-          <div className={styles.pvmoduleCont}>
-            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              (tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
-                const { deviceCode, deviceName } = item;
-                const parentTypeCode= deviceCode.split('M')[1];
-                return (
-                  <div key={index} className={styles.pvmoduleItem} >
-                    <div className={styles.deviceName} >
-                      <i className="iconfont icon-nb" ></i>
-                      <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
-                        {deviceName}
-                      </Link>
+          {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+            <React.Fragment>
+              <div className={styles.pvmoduleListTop}>
+                {pvStatus.map(item => {
+                  return (
+                    <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.pointStatus && styles.active}`} key={item.name}
+                      onClick={() => { this.buttonClick(item.pointStatus) }}>
+                      {pvLevelStatus !== item.pointStatus && <i className={'iconfont icon-goon'}></i>}
+                      {pvLevelStatus === item.pointStatus && <i className={'iconfont icon-done'}></i>}
+                      {item.text} {pvLevelNums[item.useName] || '--'}
+                    </p>)
+                })}
+              </div>
+              <div className={styles.pvmoduleCont}>
+                {(tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
+                  const { deviceCode, deviceName } = item;
+                  const parentTypeCode = deviceCode.split('M')[1];
+                  return (
+                    <div key={index} className={styles.pvmoduleItem} >
+                      <div className={styles.deviceName} >
+                        <i className="iconfont icon-nb" ></i>
+                        <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
+                          {deviceName}
+                        </Link>
+                      </div>
+                      <div className={styles.singlePvmodule}>
+                        {item.electricityList.map((e, i) => {
+                          return (
+                            <span
+                              style={{ backgroundColor: this.pointStatus[e.pointStatus].backgroundColor, color: this.pointStatus[e.pointStatus].color }}
+                              className={styles.commonStyle}
+                            >
+                              {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}
+                            </span>)
+                        })}
+                      </div>
                     </div>
-                    <div className={styles.singlePvmodule}>
-                      {item.electricityList.map((e, i) => {
-                        let pointLevelName = ['big', 'normal', 'small', 'abnormal',][e.pointLevel - 1];
-                        return (<span className={classnames({
-                          normalValue: !!e.pointStatus,
-                          commonStyle: true,
-                          [pointLevelName]: !!e.pointStatus,
-                        })} key={i}>
-                          {!!e.pointStatus && dataFormats(e.pointValue, '--', 2, false)}
-                        </span>)
-                      })}
-                    </div>
-                  </div>
-                );
-              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
-            }
-          </div>
+                  );
+                }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
+              </div>
+            </React.Fragment>
+
+          }
 
         </div>
       </div>
