@@ -17,15 +17,14 @@ class ShowAddDeviceModeModal extends Component {
   confirmForm = (e) => {
     e.preventDefault();
     const { getFieldsValue } = this.props.form;
-    const { addDeviceTypeData } = this.props;
+    const { addDeviceTypeData,deviceTypeCode,selectdeviceType } = this.props;
     this.props.form.validateFieldsAndScroll(["addFactorName",], (err, values) => {
       if (!err) {
         this.props.addDeviceFactors({
           manufactorName: values.addFactorName,
-         
+          deviceTypeCode:selectdeviceType,
+          assetsIds:['0'],
         })
-
-    
         this.props.cancleFactorModal()
       }
     })

@@ -1,33 +1,42 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./partInfoBox.scss";
-import { Modal, Button, Tree, Checkbox } from 'antd';
+import { Modal, Button, Tree, Checkbox, message } from 'antd';
 const { TreeNode } = Tree;
 class CopyParts extends React.Component {
   static propTypes = {
-
     changePartInfoStore: PropTypes.func,
     closeComParts: PropTypes.func,
+    copyPartInfo: PropTypes.func,
     detailPartsInfo: PropTypes.object,
     showCopyParts: PropTypes.bool,
+    deviceComList: PropTypes.array,
+    stationCode: PropTypes.number,
+    undefinedDevices: PropTypes.array,
+    boostDevices: PropTypes.array,
+    collectorDevices: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
     this.state = {
-      checkedKeys: [],
+      checkedDevice: [],
+      checkedAssetId: [],
     }
   }
-
-
-  onCheck = () => {
+  onCheck = (checkedKeys) => {
+    
+    const { checkedDevice } = this.state;
+    checkedDevice.push(...checkedKeys)
+    
+    this.setState({
+      checkedDevice: checkedDevice
+    })
 
   }
-
   onCheckLeft = (checkedKeys) => {
-    this.setState({ checkedKeys });
+    this.setState({ checkedAssetId: checkedKeys });
   }
   selectNode = () => {
-
   }
   selectLeftNode = () => {
 
@@ -35,8 +44,38 @@ class CopyParts extends React.Component {
   handleCancel = () => {
     this.props.closeComParts()
   }
-  confire = () => {
+  confireCopy = () => {
     //确认复制，传参不明确
+    const { deviceComList, stationCode } = this.props;
+    const { checkedDevice, checkedAssetId } = this.state;
+    let copyDevice = new Set(checkedDevice);
+    let deviceCodes = [...copyDevice].slice(1);
+    let datas = deviceComList.map((e, i) => {
+      if (checkedAssetId.includes(e.assetsIds)) {
+        let { partsName, manufactorId, modeId, partsModeId, assetsId, batchNumber, madeName, supplierName } = e;
+        return {
+          partsName,
+          manufactorId,
+          modeId: partsModeId,
+          assetsId,
+          batchNumber,
+          madeName,
+          supplierName,
+        }
+      }
+    })
+
+    if (checkedAssetId.length) {
+      this.props.copyPartInfo({
+        stationCode,
+        deviceCodes: deviceCodes,
+        datas: datas,
+      })
+      this.props.closeComParts()
+    } else {
+      message.warning('请选择要复制的设备组件')
+    }
+
   }
   checkAll = (e) => {
     if (!e.target.checked) { // 取消全选时清空。
@@ -58,7 +97,7 @@ class CopyParts extends React.Component {
     }
     const selectDepartment = getSelectCode(partInfoTree);//全部选择的id
     let selectkeys = this.delParentNode(partInfoTree, [...selectDepartment]);//去除所有的父级节点id
-    this.setState({ checkedKeys: selectkeys });
+    this.setState({ checkedAssetId: selectkeys });
   }
   delParentNode = (data, keys) => {//去除上级的id
     data.forEach(e => {
@@ -84,16 +123,16 @@ class CopyParts extends React.Component {
   renderTreeNodes = data => data.map((item) => {//右侧的设备树
     if (item.children) {
       return (
-        <TreeNode title={item.deviceName} key={`${item.deviceCode}_${item.type}`} dataRef={item} loadData={this.onLoadData}>
+        <TreeNode title={item.deviceName} key={`${item.deviceCode}`} dataRef={item} disableCheckbox={`${item.deviceCode}` === this.props.deviceCode} loadData={this.onLoadData}>
           {this.renderTreeNodes(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode {...item} title={item.deviceName} key={`${item.deviceCode}_${item.type}`} dataRef={item} ></TreeNode>;
+    return <TreeNode {...item} title={item.deviceName} key={`${item.deviceCode}`} dataRef={item}  ></TreeNode>;
   })
   render() {
-    let { showCopyParts, collectorDevices, undefinedDevices, boostDevices, partInfoTree } = this.props;
-    console.log('partInfoTree: ', partInfoTree);
+    let { showCopyParts, collectorDevices, undefinedDevices, boostDevices, partInfoTree, deviceCode } = this.props;
+
     return (
       <div>
         <div className={styles.copyPartsStyle} ref="copyPartsStyle"></div>
@@ -118,10 +157,9 @@ class CopyParts extends React.Component {
                 <Tree
                   autoExpandParent={true}
                   checkable
-                  // defaultExpandedKeys={["0"]}
-                  // defaultSelectedKeys={["0"]}
+
                   onCheck={this.onCheckLeft}
-                  checkedKeys={this.state.checkedKeys}
+                  checkedKeys={this.state.checkedAssetId}
                   blockNode={false}
                   onSelect={this.selectLeftNode}
                   showIcon
@@ -134,8 +172,7 @@ class CopyParts extends React.Component {
                 <Tree
                   autoExpandParent={true}
                   checkable
-                  // defaultExpandedKeys={["0"]}
-                  // defaultSelectedKeys={["0"]}
+                  defaultCheckedKeys={[deviceCode]}
                   loadData={this.onLoadData}
                   onCheck={this.onCheck}
                   blockNode={false}
@@ -147,8 +184,8 @@ class CopyParts extends React.Component {
                 <Tree
                   autoExpandParent={true}
                   checkable
-                  // defaultExpandedKeys={["0"]}
                   // defaultSelectedKeys={["0"]}
+                  defaultCheckedKeys={[deviceCode]}
                   loadData={this.onLoadData}
                   onCheck={this.onCheck}
                   blockNode={false}
@@ -159,8 +196,8 @@ class CopyParts extends React.Component {
                 <Tree
                   autoExpandParent={true}
                   checkable
-                  // defaultExpandedKeys={["0"]}
                   // defaultSelectedKeys={["0"]}
+                  defaultCheckedKeys={[deviceCode]}
                   loadData={this.onLoadData}
                   onCheck={this.onCheck}
                   blockNode={false}
@@ -172,7 +209,7 @@ class CopyParts extends React.Component {
             </div>
             <div className={styles.footer}>
               <Button onClick={this.handleCancel} >取消</Button>
-              <Button className={styles.confire} >确认复制</Button>
+              <Button className={styles.confire} onClick={this.confireCopy} >确认复制</Button>
             </div>
           </div>
         </Modal>

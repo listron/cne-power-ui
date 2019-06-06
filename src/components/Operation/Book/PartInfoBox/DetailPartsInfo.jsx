@@ -8,7 +8,7 @@ class DetailPartsInfo extends React.Component {
 
     changePartInfoStore: PropTypes.func,
     cancleDetailModal: PropTypes.func,
-    detailPartsInfo: PropTypes.object,
+    detailPartInfo: PropTypes.object,
     showDetailParts: PropTypes.bool,
   }
   constructor(props, context) {
@@ -17,24 +17,24 @@ class DetailPartsInfo extends React.Component {
   handleCancel = () => {
     this.props.cancleDetailModal()
   }
-  baseFun = (detailPartsInfo) => {
+  baseFun = (detailPartInfo) => {
     let baseArray = [
-      { name: '电站名称', value: detailPartsInfo.stationName, },
-      { name: '上级设备', value: detailPartsInfo.deviceCode, },
-      { name: '部件名称', value: detailPartsInfo.partsName, },
-      { name: '部件型号', value: detailPartsInfo.partsModeName, },
-      { name: '厂家', value: detailPartsInfo.manufactorName, },
-      { name: '批次号', value: detailPartsInfo.batchNumber, },
+      { name: '电站名称', value: detailPartInfo.stationName, },
+      { name: '上级设备', value: detailPartInfo.deviceName, },
+      { name: '部件名称', value: detailPartInfo.partsName, },
+      { name: '部件型号', value: detailPartInfo.partsModeName, },
+      { name: '厂家', value: detailPartInfo.manufactorName, },
+      { name: '批次号', value: detailPartInfo.batchNumber, },
 
     ];
     return baseArray
   }
-  assetFun = (detailPartsInfo) => {
+  assetFun = (detailPartInfo) => {
     let assetArray = [
-      { name: '资产结构', value: detailPartsInfo.assetsName, },
-      { name: '制造商', value: detailPartsInfo.madeName, },
-      { name: '供货商', value: detailPartsInfo.supplierName, },
-      { name: '创建时间', value: detailPartsInfo.creatTime, },
+      { name: '资产结构', value: detailPartInfo.assetsName, },
+      { name: '制造商', value: detailPartInfo.madeName, },
+      { name: '供货商', value: detailPartInfo.supplierName, },
+      { name: '创建时间', value: detailPartInfo.createTime, },
     ];
     return assetArray
   }
@@ -62,10 +62,11 @@ class DetailPartsInfo extends React.Component {
     )
   }
   render() {
-    let { showDetailParts, detailPartsInfo } = this.props;
+    let { showDetailParts, detailPartInfo } = this.props;
+    console.log('detailPartInfo: ', detailPartInfo);
 
-    let baseInfo = this.baseFun(detailPartsInfo);
-    let assetInfo = this.assetFun(detailPartsInfo);
+    let baseInfo = this.baseFun(detailPartInfo);
+    let assetInfo = this.assetFun(detailPartInfo);
     return (
       <div>
         <Modal
