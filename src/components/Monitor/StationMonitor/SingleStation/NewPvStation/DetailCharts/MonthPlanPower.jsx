@@ -35,7 +35,6 @@ class MonthPlanPower extends Component {
     drawCharts = (params) => {
         let { monthPlanPower = {}, powerUnit } = params;
         const { monthPlanPowerData = [], monthPlanPowerLoading } = monthPlanPower;
-        console.log('monthPlanPowerData',monthPlanPowerData)
         const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 月发电量
         const filterMonthPower = monthPlanPowerData.filter(e => e.dayPower);
         const monthPlanPowers = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 月计划发电量

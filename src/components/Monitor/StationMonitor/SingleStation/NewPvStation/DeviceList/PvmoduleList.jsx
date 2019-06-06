@@ -97,7 +97,7 @@ class PvmoduleList extends Component {
                       onClick={() => { this.buttonClick(item.pointStatus) }}>
                       {pvLevelStatus !== item.pointStatus && <i className={'iconfont icon-goon'}></i>}
                       {pvLevelStatus === item.pointStatus && <i className={'iconfont icon-done'}></i>}
-                      {item.text} {dataFormats(pvLevelNums[item.useName],'--',2) }
+                      {item.text} {dataFormats(pvLevelNums[item.useName],'--',0) }
                     </p>)
                 })}
               </div>
