@@ -21,7 +21,7 @@ class PvMapChart extends Component {
   constructor(props) {
     super();
     this.state = {
-      mapType: 'china',
+      mapType: 'China',
       mapTypeName: "",
     }
   }
@@ -32,7 +32,7 @@ class PvMapChart extends Component {
     if (provinceType.length === 1) {
       const province = provinceListArray.filter(e => provinceType[0].includes(e.name));
       this.setState({
-        mapType: province.length > 0 && province[0].id || 'china'
+        mapType: province.length > 0 && province[0].id || 'China'
       }, () => {
         this.drawCharts(this.props)
       })
@@ -130,7 +130,7 @@ class PvMapChart extends Component {
       geo: {
         map: mapType,
         layoutCenter: ['50%', '50%'],
-        layoutSize: mapType === 'china' ? '100%' : '70%',
+        layoutSize: mapType === 'China' ? '100%' : '70%',
         label: {
           normal: {
             show: false,
@@ -230,7 +230,7 @@ class PvMapChart extends Component {
             }), 0);
             this.drawCharts(this.props)
           } else {
-            if (params.data.stationStatus !== '900') {
+            if (`${params.data.stationStatus}` !== '900') {
               return history.push(`/monitor/singleStation/${params.data.stationCode}`)
             } else {
               this.showTip();
@@ -243,7 +243,7 @@ class PvMapChart extends Component {
   }
 
   showBack = () => {
-    this.setState({ mapType: 'china', mapTypeName: '' },()=>{
+    this.setState({ mapType: 'China', mapTypeName: '' },()=>{
       this.drawCharts(this.props)
     })
   }
@@ -252,7 +252,7 @@ class PvMapChart extends Component {
     const { mapType } = this.state;
     return (
       <div className={styles.pvStationMap}>
-        {mapType !== 'china' && <div onClick={this.showBack} className={styles.backChina}> 返回</div>}
+        {mapType !== 'China' && <div onClick={this.showBack} className={styles.backChina}> 返回</div>}
         <div id={'pvStationMap'} className={styles.mapChart} > </div>
       </div>
     );
