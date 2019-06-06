@@ -299,7 +299,7 @@ const menuData = [
           {
             name: '智能报表',
             path: 'intelligentReport',
-            rightKey: 'statistics_report_report',
+            rightKey: 'statistics_report_table',
           },
         ]
       }
