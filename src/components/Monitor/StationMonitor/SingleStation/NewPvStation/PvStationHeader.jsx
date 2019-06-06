@@ -94,7 +94,7 @@ class PvStationHeader extends React.Component {
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 平均辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{DeviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
+          <div> 瞬时辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{DeviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
           <div >  装机台数 <span className={styles.dataValue}>{DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>

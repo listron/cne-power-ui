@@ -181,10 +181,13 @@ class WeatherStation extends Component {
                 <div className={styles.datailWrap}>
                     <div className={styles.detail}>
                         {deatilData.map((e, index) => {
+                            let value=dataFormats(weatherstationDetail[e.id], '--', e.point, true)
+                            if(e.id==='radiatioQuantity'){
+                               value=dataFormats(weatherstationDetail[e.id]/1000, '--', e.point, true)
+                            }
                             return (<div className={styles.everyDetail} key={index}>
                                 <div>{e.name}</div>
-                                <div className={styles.detailId}>{dataFormats(weatherstationDetail[e.id], '--', e.point, true)}
-                                    <span className={styles.detailUnit}>{e.unit}</span></div>
+                                <div className={styles.detailId}>{value}<span className={styles.detailUnit}>{e.unit}</span></div>
                             </div>)
                         })}
                     </div>
