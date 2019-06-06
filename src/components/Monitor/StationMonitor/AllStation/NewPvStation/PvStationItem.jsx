@@ -154,6 +154,7 @@ class PvStationItem extends React.Component {
                   const equivalentHours = item.equivalentHours;
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
                   const alarm=item.alarmNum>0;
+                  const invertType=item.lowEffType===1 ?'201':'206'
                   return (
                     <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
                       <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
@@ -205,7 +206,7 @@ class PvStationItem extends React.Component {
                         <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
                           异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
                         </Link>
-                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'201'}`} className={styles.dataColumn}>
+                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
                           低效逆变器  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
                         </Link>
                         <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} className={styles.dataColumn}>
