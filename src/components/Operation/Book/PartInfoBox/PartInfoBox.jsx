@@ -78,23 +78,16 @@ class PartInfoBox extends React.Component {
   };
   addPartsInfo = () => {
     const {
-      getPartsAssetTree,
-      stationCode,
-      allStationBaseInfo,
+      getDevicePartInfo,
+
       getPartsFactorsList,
       deviceCode
     } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
-    let stationInfo = allStationBaseInfo.filter(
-      (e, i) => e.stationCode === stationCode
-    );
-    let { stationType } = stationInfo[0];
-
     this.props.changePartInfoStore({ showPage: "add" });
-    getPartsAssetTree({
-      //资产树
-      stationType,
-      assetsParentId: "0"
+    getDevicePartInfo({
+      //新增部件资产树
+      deviceFullcode: deviceCode
     });
     getPartsFactorsList({
       // deviceTypeCode: 202,
@@ -105,24 +98,16 @@ class PartInfoBox extends React.Component {
   };
   editParts = record => {
     const {
-      getPartsAssetTree,
-      stationCode,
-      allStationBaseInfo,
+      getDevicePartInfo,
+
       getPartsFactorsList,
       deviceCode
     } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
-    let stationInfo = allStationBaseInfo.filter(
-      (e, i) => e.stationCode === stationCode
-    );
-    let { stationType } = stationInfo[0];
-    getPartsAssetTree({
-      //资产树
-      stationType,
-      assetsParentId: "0"
+    getDevicePartInfo({
+      deviceFullcode: deviceCode
     });
     getPartsFactorsList({
-      // deviceTypeCode: 202,
       deviceTypeCode: deviceTypeCode,
       orderField: "1",
       orderMethod: "desc"
@@ -159,9 +144,9 @@ class PartInfoBox extends React.Component {
       showCopyParts: true
     });
     getDevicePartInfo({
-      deviceFullcode: deviceCode,
-      orderField: "1",
-      orderMethod: "desc"
+      deviceFullcode: deviceCode
+      // orderField: "1",
+      // orderMethod: "desc"
     });
   };
   closeComParts = () => {

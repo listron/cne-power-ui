@@ -355,11 +355,19 @@ function* getfactorsPartsMode(action) {
   try {
     const response = yield call(axios.get, url, { params: { ...payload } });
     if (response.data.code === "10000") {
+      let allMode = response.data.data || [];
+      let modaArr = [];
+      allMode.forEach((e, i) => {
+        e.modeDatas &&
+          e.modeDatas.forEach((item, index) => {
+            modaArr.push(item);
+          });
+      });
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          factorsPartsMode: response.data.data || []
+          factorsPartsMode: modaArr
         }
       });
     } else {
