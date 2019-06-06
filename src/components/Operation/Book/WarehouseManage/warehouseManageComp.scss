@@ -87,7 +87,7 @@
   }
 }
 
-.insert{
+.insert, .takeout{
   background-color: #fff;
   height: 100%;
   padding-bottom: 24px;
@@ -121,6 +121,17 @@
     }
   }
   .formPart{
+    .prompt{
+      margin-left: 8px;
+    }
+    .materialCodes{
+      :global{
+        .ant-form-explain{
+          align-self: flex-start;
+          margin-top: 10px;
+        }
+      }
+    }
     :global{
       .ant-form-item{
         display: flex;

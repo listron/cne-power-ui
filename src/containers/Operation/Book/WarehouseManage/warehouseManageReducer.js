@@ -12,6 +12,7 @@ const warehouseManageAction = {
   addNewGood: Symbol('addGoodSuccess'),
   getAssetslist: Symbol('getAssetslist'),
   insertWarehouse: Symbol('insertWarehouse'),
+  getMaterialDetailsList: Symbol('getMaterialDetailsList'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -29,7 +30,7 @@ const tableParams = { // 表格共有的请求
 
 const initState = Immutable.fromJS({
   tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
-  sideKey: 'insert', // 抽屉页控制 list-主页面, insert-入, takeOut-出, reserve-库存
+  sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeout-出, reserve-库存
   stockMaxShow: false, // 阈值设置弹框
   importFileShow: false, // 导入库存文件
   tableParams: { ...tableParams }, // 表格请求参数
@@ -46,6 +47,8 @@ const initState = Immutable.fromJS({
   insertModes: [], // 入库的型号列表
   assetsTree: [], // 入库资产树
   insertStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
+  originTakeoutInfo: {}, // 出库对象基本信息
+  materialDetailsList: [], // 出库操作 选定库存对应所有物资列表
   // sparesData: [], // 备品备件表格
   // toolsData: [], // 工具数据表格
   // materialsData: [], // 物资数据表格
@@ -58,7 +61,7 @@ const warehouseManage = (state = initState, action) => {
     case warehouseManageAction.changeStore:
       return state.merge(Immutable.fromJS(action.payload));
     case warehouseManageAction.resetStore:
-      return initState
+      return initState;
   }
   return state;
 };

@@ -27,7 +27,6 @@ export default class HandleComponent extends Component {
     getWarehouseManageList: PropTypes.func,
     downLoadFile: PropTypes.func,
     setStockMax: PropTypes.func,
-    originInsertInfo: PropTypes.func,
   }
 
   state = {
@@ -54,7 +53,7 @@ export default class HandleComponent extends Component {
     if (checkedStocks.length === 1) { // 选中库存直接再入库
       changeStore({ originInsertInfo: checkedStocks[0] });
     }
-    showSide({ sideKey: 'insert' });
+    showSide('insert');
   }
 
   toDelete = () => {

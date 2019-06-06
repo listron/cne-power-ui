@@ -202,14 +202,14 @@ function *getGoodsList({ payload }) { // 仓库下所有物品列表
 function *addNewGood({ payload }) { // 新增物品
   const url = `${APIBasePath}${operation.goodsAdd}`
   try {
-    const { warehouseId, ...resParams } = payload;
-    const response = yield call(axios.post, url, { ...resParams });
+    const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') { // 重新请求仓库下物品
+      const { tabName } = yield select(state => state.operation.warehouseManage.toJS());
       yield put({
         type: warehouseManageAction.fetchSuccess,
         payload: { addGoodName: payload.goodsName },
       })
-      yield fork(getGoodsList, { payload: { warehouseId } });
+      yield fork(getGoodsList, { payload: { goodsMaxType: stockTypeCodes[tabName] } });
     } else { throw response.data }
   } catch(error) {
     message.error('新增失败,请重试');
@@ -262,9 +262,27 @@ function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 =
     console.log(err);
     message('入库失败！')
   }
-} 
+}
+
+function *getMaterialDetailsList({ payload }) {
+  const url = `${APIBasePath}${operation.getMaterialDetailsList}`;
+  try{
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { materialDetailsList: response.data.data || [] }
+      })
+    } else { throw response.data }
+  } catch (error) {
+    console.log(error)
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { materialDetailsList: [] }
+    })
+  }
+}
       // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
-      // getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
       // getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
       // getStockList: '/v3/inventory/inventoryInfo', // 获取某库存信息列表
       // deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
@@ -282,5 +300,6 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
   yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
   yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);
+  yield takeLatest(warehouseManageAction.getMaterialDetailsList, getMaterialDetailsList);
 }
 

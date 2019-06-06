@@ -11,6 +11,7 @@ class SparePage extends Component {
     checkedStocks: PropTypes.array,
     stocksList: PropTypes.array,
     changeStore: PropTypes.func,
+    showSide: PropTypes.func,
   }
 
   state = {
@@ -29,12 +30,16 @@ class SparePage extends Component {
     
   }
 
-  toAdd = (record) => { // 操作 - 再入库
-
+  toInsert = (record) => { // 操作 - 再入库
+    const { changeStore, showSide } = this.props;
+    changeStore({ originInsertInfo: record });
+    showSide('insert');
   }
 
   toTakeout = (record) => { // 操作 - 出库
-
+    const { changeStore, showSide } = this.props;
+    changeStore({ originTakeoutInfo: record });
+    showSide('takeout');
   }
 
   spareColumn = () => [ // 表头
@@ -113,9 +118,9 @@ class SparePage extends Component {
     }, {
       title: '操作',
       dataIndex: 'handle',
-      render: (record) => (
+      render: (text, record) => (
         <div className={styles.stockHandle}>
-          <span className={styles.text} onClick={() => this.toAdd(record)}>入库</span>
+          <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
           <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
           <span className={styles.text} onClick={() => this.getStockDetail(record)}>库存</span>
         </div>

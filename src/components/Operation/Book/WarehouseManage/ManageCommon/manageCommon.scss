@@ -10,7 +10,17 @@
   text-align: center;
 }
 
-.conditionSearch{
+@mixin scrollBar($width) {
+  &::-webkit-scrollbar{
+    width: $width;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $themeColor;
+    border-radius: $width / 2;
+  }
+}
+
+.conditionSearch{ // 顶部通用查询
   display: flex;
   height: 64px;
   align-items: center;
@@ -98,7 +108,7 @@
   }
 }
 
-.importFileModal{
+.importFileModal{ //  导入 文件弹框
   .warehouseSelect, .resetStock, .uploader, .confirmImport{
     display: flex;
     line-height: 32px;
@@ -134,7 +144,7 @@
   }
 }
 
-.addGood{
+.addGood{ // 新增物品组件
  .addIcon{
    margin-left: 8px;
    font-size: 18px;
@@ -148,9 +158,14 @@
    border: 1px solid $themeColor;
    border-radius: 50%;
  }
+ .disabled{
+   cursor: not-allowed;
+   border-color: $promptColor;
+   color: $lightColor;
+ }
 }
 
-.addGoodModal{
+.addGoodModal{ // 新增物品 弹框
   .confirmRow, .eathItem{
     display: flex;
     margin-bottom: 4px;
@@ -183,7 +198,7 @@
   }
 }
 
-.assetsSelectTree{
+.assetsSelectTree{ // 生产资产树
   background-color: #f8f8f8;
   max-height: 272px;
   min-width: 200px;
@@ -196,12 +211,121 @@
     padding-left: 12px;
     cursor: not-allowed;
   }
-  &::-webkit-scrollbar{
-    width: 4px;
-    height: 90px;
+  @include scrollBar(4px);
+}
+
+.materialDetailsList{ // 仓库内所有物资列表
+  margin-bottom: 12px;
+  .title{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    .checkButton{
+      display: flex;
+      align-items: center;
+      width: 200px;
+      border: 1px dashed $themeColor;
+      border-radius: 4px;
+      height: 30px;
+      cursor: pointer;
+      justify-content: center;
+      margin-right: 8px;
+    }
+    .plus{
+      font-size: 10px;
+      margin-right: 4px;
+      color: $themeColor;
+    }
   }
-  &::-webkit-scrollbar-thumb{
-    background-color: $themeColor;
-    border-radius: 2px;
+  .checkedStatis{
+    margin-bottom: 0px;
+    height: 30px;
+    line-height: 30px;
+    .hightlight{
+      color: #e08031;
+      margin: 0 4px;
+    }
+  }
+  .recordsList{
+    overflow-y: auto;
+    height: 200px;
+    padding: 8px;
+    width: 226px;
+    border-radius: 4px;
+    border: 1px solid $promptColor;
+    @include scrollBar(6px);
+    .eachInfo{
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px 0 20px;
+      margin-bottom: 8px;
+      background:#f8f8f8;
+      height: 30px;
+      align-items: center;
+      border-radius: 4px;
+      .deleteIcon{
+        font-size: 18px;
+        cursor: pointer;
+        color: $lightColor;
+        &:hover{
+          color: #a42b2c;
+        }
+      }
+      &:hover{
+        background:#fbe6e3;
+      }
+    }
+  }
+}
+
+.materialListModal{ // 选择仓库内某物资所有物品列表弹框
+  .handle{
+    display: flex;
+    height: 46px;
+    align-items: center;
+    background-color: #f8f8f8;
+    justify-content: flex-end;
+    .confirm{
+      margin-left: 12px;
+      margin-right: 40px;
+    }
+  }
+  .supplierName, .goodsName, .remarks{
+    display: inline-block;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .supplierName{
+    width: 100px;
+  }
+  .goodsName{
+    width: 90px;
+  }
+  .remarks{
+    width: 110px;
+  }
+  :global{
+    .ant-modal-body{
+      padding: 24px 0 0 0;
+    }
+    .ant-table-wrapper{
+      margin: 0 24px;
+      .ant-table .ant-table-body{
+        @include scrollBar(6px);
+      }
+      .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+        padding-top: 0px;
+        padding-bottom: 0px;
+      }
+      .ant-table .ant-table-tbody > tr > td{
+        border-bottom: none;
+        line-height: 32px;
+        height: 32px;
+      }
+    }
   }
 }

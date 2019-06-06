@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
 import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
+import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/SpareTakeout';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
@@ -23,7 +24,7 @@ class WarehouseManage extends Component {
   }
 
   state = {
-    sideTransform: 100,
+    sideTransform: 0,
   }
   
   componentDidMount(){
@@ -65,7 +66,7 @@ class WarehouseManage extends Component {
     const { sideTransform } = this.state;
     const { tabName, sideKey } = this.props;
     // tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
-    // sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeOut-出, reserve-库存
+    // sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeout-出, reserve-库存
     return (
       <div className={styles.warehouseManage}>
         <CommonBreadcrumb  breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
@@ -82,17 +83,11 @@ class WarehouseManage extends Component {
             
             {/* <ToolPage /> */}
             {/* <MaterialPage /> */}
-            {/* <div className={styles.listContent}>
-              <h3>主内容页面</h3>
-              {new Array(10).fill(10).map((e, i) => <p key={i}>测试内容</p>)}
-              <button onClick={this.showSide}>主内容页面</button>
-              <input />
-            </div> */}
             <Footer />
           </div>
           <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
-            <SpareInsert {...this.props} backList={this.backList} />
-            {/* <SpareTakeout /> */}
+            {sideKey === 'insert' && <SpareInsert {...this.props} backList={this.backList} />}
+            {sideKey === 'takeout' && <SpareTakeout {...this.props} backList={this.backList} />}
             {/* <SpareReserve /> */}
             {/* <ToolInsert /> */}
             {/* <ToolTakeout /> */}
@@ -100,12 +95,6 @@ class WarehouseManage extends Component {
             {/* <MaterialInsert /> */}
             {/* <MaterialTakeout /> */}
             {/* <MaterialReserve /> */}
-            {/* <div className={styles.sideContent}>
-              <h3>侧边栏</h3>
-              {new Array(100).fill(10).map((e, i) => <p key={i}>测试内容</p>)}
-              <button onClick={this.backList}>回到主页面</button>
-              <input />
-            </div> */}
             <Footer />
           </div>
         </div>
@@ -140,6 +129,7 @@ const mapDispatchToProps = (dispatch) => ({
   addNewGood: payload => dispatch({ type: warehouseManageAction.addNewGood, payload }),
   getAssetslist: payload => dispatch({ type: warehouseManageAction.getAssetslist, payload }),
   insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
+  getMaterialDetailsList: payload => dispatch({ type: warehouseManageAction.getMaterialDetailsList, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

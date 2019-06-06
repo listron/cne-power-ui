@@ -36,26 +36,48 @@ class SpareInsert extends Component {
     saveMode: '',
   }
 
+  componentDidMount(){
+    const { originInsertInfo, form, getGoodsList } = this.props; 
+    getGoodsList({ goodsMaxType: 101 });
+    if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
+      form.setFieldsValue({
+        warehouseId: originInsertInfo.warehouseId,
+        goodsName: originInsertInfo.goodsName,
+        manufactorId: originInsertInfo.manufactorId,
+        modeId: originInsertInfo.modeId,
+        manufactorName: originInsertInfo.manufactorName,
+        supplierName: originInsertInfo.supplierName,
+        assetsIds: originInsertInfo.assetsIds,
+      })
+    }
+  }
+
   componentDidUpdate(preProps){
     const preInsertStatus = preProps.insertResult;
     const { insertStatus, form, changeStore } = this.props;
     if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
       const { saveMode } = this.state;
       form.resetFields(); // form内数据需重置
-      changeStore({ assetsTree: [] }); // 树清空
-      (saveMode === 'once') && this.backToList(); // 不继续添加则返回list页面.
+      if (saveMode === 'once') {
+        this.backToList();
+      } else {
+        changeStore({ assetsTree: [] }); // 树清空
+      }
     }
   }
 
   backToList = () => {
+    this.props.changeStore({
+      assetsTree: [], 
+      originInsertInfo: null,
+    }); // 树清空
     this.props.backList();
   }
 
   selectWarehouse = (warehouseId) => { // 仓库 => 下物品 + 所有生产资产
-    const { warehouseList, getGoodsList, stations, getAssetslist } = this.props;
+    const { warehouseList, stations, getAssetslist } = this.props;
     const { stationName } = warehouseList.find(e => e.warehouseId === warehouseId) || {};
     const { stationType = 1 } = stations.find(e => e.stationName === stationName) || {};
-    getGoodsList({ warehouseId });
     getAssetslist({
       stationType,
       assetsParentId: 0,
@@ -88,10 +110,10 @@ class SpareInsert extends Component {
   render(){
     const { saveMode } = this.state;
     const {
-      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus
+      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { warehouseId, manufactorId } = getFieldsValue(['warehouseId', 'manufactorId']);
+    const { manufactorId } = getFieldsValue(['manufactorId']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
@@ -109,7 +131,7 @@ class SpareInsert extends Component {
         <Form className={styles.formPart}>
           <FormItem label="仓库名称">
             {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
-              <Select placeholder="请选择" style={{width: 200}} onChange={this.selectWarehouse}>
+              <Select placeholder="请选择" style={{width: 200}} onChange={this.selectWarehouse} disabled={!!originInsertInfo}>
                 {warehouseList.map(e => (
                   <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
                 ))}
@@ -120,17 +142,16 @@ class SpareInsert extends Component {
             {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
               <AddGood
                 goodsList={goodsList}
-                warehouseId={warehouseId}
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
                 goodsType="101"
-                disabled={!warehouseId}
+                disabled={!!originInsertInfo}
               />
             )}
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
-              <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}}>
+              <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}} disabled={!!originInsertInfo}>
                 {manufacturerList.map(e => (
                   <Option key={e.code} value={e.code}>{e.name}</Option>
                 ))}
@@ -139,7 +160,7 @@ class SpareInsert extends Component {
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId}>
+              <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
                 {insertModes.map(e => (
                   <Option key={e.code} value={e.code}>{e.name}</Option>
                 ))}
@@ -148,17 +169,17 @@ class SpareInsert extends Component {
           </FormItem>
           <FormItem label="制造商">
             {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{width: 200}} />
+              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="供货商">
             {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{width: 200}} />
+              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="对应生产资产">
             {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
-              <AssetsSelectTree assetsTree={assetsTree} />
+              <AssetsSelectTree assetsTree={assetsTree} originInsertInfo={originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="入库数量">
@@ -170,7 +191,7 @@ class SpareInsert extends Component {
             })(
               <Input placeholder="30字以内" style={{width: 200}} />
             )}
-            <span>当前库存量为{0}</span>
+            <span className={styles.prompt}>当前库存量为{originInsertInfo ? originInsertInfo.inventoryNum : 0}</span>
           </FormItem>
           <FormItem label="单价">
             {getFieldDecorator('price', {
@@ -181,7 +202,7 @@ class SpareInsert extends Component {
             })(
               <Input placeholder="请输入..." style={{width: 200}} />
             )}
-            <span>元</span>
+            <span className={styles.prompt}>元</span>
           </FormItem>
           <FormItem label="备注">
             {getFieldDecorator('remarks')(
@@ -204,7 +225,5 @@ class SpareInsert extends Component {
     )
   }
 }
-
-
 
 export default Form.create()(SpareInsert);

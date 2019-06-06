@@ -10,7 +10,6 @@ class AddGood extends Component {
 
   // 101:备品备件、201：安全工器具、202：检修工器具、203：仪器仪表、301：生活物资、302：办公物资、303：其他
   static propTypes = {
-    warehouseId: PropTypes.number,
     addGoodName: PropTypes.string,
     goodsList: PropTypes.array,
     goodsType: PropTypes.string, // 添加物品的
@@ -60,11 +59,11 @@ class AddGood extends Component {
   }
 
   querySaveInfo = () => {
-    const { form, warehouseId, addNewGood, goodsType } = this.props;
+    const { form, addNewGood, goodsType } = this.props;
     const { validateFields } = form;
     validateFields((err, values) => {
       if (!err) {
-        addNewGood({ ...values, goodsType, warehouseId });
+        addNewGood({ ...values, goodsType });
       }
     });
   }
@@ -86,7 +85,10 @@ class AddGood extends Component {
             <Option key={e.goodsName} value={e.goodsName}>{e.goodsName}</Option>
           ))}
         </Select>
-        <span onClick={this.showModal} className={styles.addIcon}>+</span>
+        <span
+          onClick={this.showModal}
+          className={`${styles.addIcon} ${disabled ? styles.disabled : null}`}
+        >+</span>
         {addModalShow && <Modal
           title="添加物品"
           visible={addModalShow}
