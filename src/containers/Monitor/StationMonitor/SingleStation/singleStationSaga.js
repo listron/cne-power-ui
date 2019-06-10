@@ -256,7 +256,6 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
         type: singleStationAction.getSingleStationSuccess,
         payload: {
           pvmoduleList: response.data.data.dataList || [],
-          pvAvgValue: response.data.data.pvAvgValue || '',
           pvLevelNums: response.data.data.pvLevelNums || {}
         }
       });

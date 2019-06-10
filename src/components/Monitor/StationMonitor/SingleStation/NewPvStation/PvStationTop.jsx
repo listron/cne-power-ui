@@ -70,7 +70,7 @@ class PvStationTop extends Component {
             </div>
             <div>
               <span>电站状态：{stationStatusName}</span>
-              {stationStatus.stationStatus === 500 && <span>时间:{stationStatusTime && moment(stationStatusTime).fromNow() || ''}</span>}
+              {stationStatus.stationStatus === 500 && <span>数据中断时间:{stationStatusTime && moment(stationStatusTime).fromNow() || ''}</span>}
             </div>
           </div>
           <div className={styles.stationRight}>

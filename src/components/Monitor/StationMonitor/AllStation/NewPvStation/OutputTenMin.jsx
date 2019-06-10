@@ -170,9 +170,9 @@ class OutputTenMin extends Component {
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
-          areaStyle: {
-            color: '#fff2f2',
-          },
+          // areaStyle: {
+          //   color: '#fff2f2',
+          // },
           axisTick: {
             show: false,
           },

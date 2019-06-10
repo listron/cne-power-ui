@@ -104,7 +104,7 @@ class Schematic extends Component {
                         { 'id': 'HP', name: 'P', unit: 'MW', point: 2, },
                         { 'id': 'HQ', name: 'Q', unit: 'MVar', point: 2 },
                         { 'id': 'HCos', name: 'Cos', unit: '', point: 2 },
-                        { 'id': 'Uab', name: 'Uab', unit: 'kV', point: 2 },
+                        { 'id': 'HUab', name: 'Uab', unit: 'kV', point: 2 },
                     ]
                 },
                 low: {
@@ -158,7 +158,7 @@ class Schematic extends Component {
                                 <div className={styles.verticalLine} />
                             </div>
                         }
-                        {deviceTypeArr.includes('201') || deviceTypeArr.includes('206') &&
+                        {(deviceTypeArr.includes('201') || deviceTypeArr.includes('206')) &&
                             <div className={styles.inverter}>
                                 <div className={styles.verticalLine} />
                             </div>

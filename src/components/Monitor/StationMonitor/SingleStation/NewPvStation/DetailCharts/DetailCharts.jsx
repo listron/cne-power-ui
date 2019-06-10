@@ -76,7 +76,6 @@ class DetailCharts extends Component {
                     <MonthPlanPower
                         monthPlanPower={this.props.monthPlanPower}
                         powerUnit={powerUnit}
-                        loading={this.props.monthPlanPowerLoading}
                     />
                 </div>
 

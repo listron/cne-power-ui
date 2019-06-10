@@ -34,9 +34,9 @@ class DetailCharts extends Component {
         return (
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts}`}>
                 <div className={styles.tags}>
-                    <Link to={{ pathname: `/monitor/alarm/realtime`, state: { stationType: '0' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
+                    <Link to={{ pathname: `/monitor/alarm/realtime`, state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                     <Link to={`/statistical/stationaccount/allstation`}> 统计分析  </Link>
-                    <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
+                    <Link to={`/statistical/statement/currency`} > 报表查询  </Link>
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }) }}>
                     <i className="iconfont icon-go"></i>

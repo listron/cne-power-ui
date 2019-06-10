@@ -94,12 +94,12 @@ class PvStationItem extends React.Component {
     const { sortStatusName, ascend, selectStation } = this.state;
     const sortName = [
       { text: '默认排序', id: 'sort' },
-      { text: '等效时', id: 'equivalentHours' },
+      { text: '日利用小时 ', id: 'equivalentHours' },
       { text: '告警事件', id: 'alarmNum' },
       { text: '低效逆变器', id: 'lowEfficiencyInverterNum' },
-      { text: '零支路数', id: 'anomalousBranchNum' },
+      { text: '异常支路数 ', id: 'anomalousBranchNum' },
       { text: '日发电量', id: 'dayPower' },
-      { text: '辐射强度', id: 'instantaneous' },
+      { text: '瞬时辐射', id: 'instantaneous' },
       { text: '实时功率', id: 'stationPower' },
     ];
     const getStatusName = {
@@ -154,6 +154,7 @@ class PvStationItem extends React.Component {
                   const equivalentHours = item.equivalentHours;
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
                   const alarm=item.alarmNum>0;
+                  const invertType=item.lowEffType===1 ?'201':'206'
                   return (
                     <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
                       <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
@@ -178,7 +179,7 @@ class PvStationItem extends React.Component {
                               <div> <span className={styles.changeNum}> {dataFormats(stationPower, '--', 2, true)}</span> {realTimePowerUnit} </div>
                             </div>
                             <div className={styles.column}>
-                              <span className={styles.dataName}> 日累计辐射</span>
+                              <span className={styles.dataName}> 瞬时辐射</span>
                               <div> <span className={styles.changeNum}> {dataFormats(instantaneous, '--', 2, true)}</span> W/m² </div>
                             </div>
                           </div>
@@ -205,7 +206,7 @@ class PvStationItem extends React.Component {
                         <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
                           异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
                         </Link>
-                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'201'}`} className={styles.dataColumn}>
+                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
                           低效逆变器  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
                         </Link>
                         <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} className={styles.dataColumn}>
