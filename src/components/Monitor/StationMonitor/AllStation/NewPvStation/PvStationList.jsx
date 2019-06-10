@@ -54,7 +54,7 @@ class PvStationList extends React.Component {
         defaultSortOrder: "ascend",
         sorter: true,
         render: (value, record) => {
-          const stationStatus = record.stationStatus.stationStatus || '';
+          const stationStatus = record.stationStatus || '';
           if (stationStatus === '900') {
             return <div title={value} className={styles.stationName} onClick={this.showTip}>{value}</div>
           } else {
@@ -77,7 +77,7 @@ class PvStationList extends React.Component {
         dataIndex: "stationPower",
         sorter: true,
         className: styles.numberStyle,
-        render: value => dataFormats(realTimePowerUnit === 'kW' ? value : multiplyFormarts(value, 1000), '--', 2, true)
+        render: value => dataFormats(divideFormarts(value,realTimePowerUnit), '--', 2, true)
       },
 
       {
@@ -164,7 +164,7 @@ class PvStationList extends React.Component {
         render: (value) => {
           return (
             <div className={styles.currentStation}>
-              <div className={styles[getStatusName[value.stationStatus]]} ></div>
+              <div className={styles[getStatusName[value]]} ></div>
             </div>)
         }
       }

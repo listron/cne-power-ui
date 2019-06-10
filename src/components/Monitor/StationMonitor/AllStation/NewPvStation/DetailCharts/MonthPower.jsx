@@ -4,7 +4,7 @@ import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
-import { divideFormarts, powerPoint } from '../../../PvCommon/PvDataformat';
+import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 import { Radio } from 'antd';
@@ -28,27 +28,27 @@ class MonthPower extends Component {
         this.drawCharts(this.props)
     }
 
-    componentDidUpdate(prevProps) { // 数据重新请求后重绘。
-        const { powerTime } = this.props;
-        const preTime = prevProps.powerTime;
-        if (powerTime !== preTime) { 
-            this.drawCharts(this.props);
+    componentWillReceiveProps(nextProps) { // 数据重新请求后重绘。
+        const { powerTime,loading } = this.props;
+        const preTime = nextProps.powerTime;
+        if (powerTime !== preTime) {
+            this.drawCharts(nextProps);
         }
     }
 
     onChangeTimePower = (e) => { // 改变 发电量和等效时
         const chartType = e.target.value;
-        this.setState({ chartType },()=>{
+        this.setState({ chartType }, () => {
             this.drawCharts(this.props)
         });
     }
 
-    yAxisType=()=>{ // 左侧y轴的数据
-        const {chartType}=this.state;
-        const {powerUnit}=this.props;
+    yAxisType = () => { // 左侧y轴的数据
+        const { chartType } = this.state;
+        const { powerUnit } = this.props;
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
-        const equipmentHoursObj = {
+        const equipmentHoursObj = [{
             name: '等效时(h)',
             type: 'value',
             axisLabel: {
@@ -69,78 +69,114 @@ class MonthPower extends Component {
             splitLine: {
                 show: false,
             }
-        };
-        const monthPowerObj = {
-            name: `发电量(${powerUnit})`,
-            type: 'value',
-            position: 'left',
-            axisLabel: {
-                formatter: '{value}',
-                color: fontColor,
-            },
-            nameTextStyle: {
-                color: fontColor,
-            },
-            axisLine: {
-                lineStyle: {
+        }]
+        const monthPowerObj = [
+            {
+                name: `发电量(${powerUnit})`,
+                type: 'value',
+                position: 'left',
+                axisLabel: {
+                    formatter: '{value}',
+                    color: fontColor,
+                },
+                nameTextStyle: {
+                    color: fontColor,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: lineColor,
+                    },
+                },
+                axisTick: {
                     color: lineColor,
                 },
+                splitLine: {
+                    show: false,
+                }
             },
-            axisTick: {
-                color: lineColor,
-            },
-            splitLine: {
-                show: false,
-            }
-        };
-        return  chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
+            {
+                name: '完成率',
+                type: 'value',
+                offset: 40,
+                position: 'right',
+                axisLabel: {
+                    formatter: '{value}%',
+                    color: fontColor,
+                },
+                nameTextStyle: {
+                    color: fontColor,
+                    padding: [0, 0, 0, 30],
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: lineColor,
+                    },
+                },
+                axisTick: {
+                    // show: false,
+                    color: lineColor,
+                },
+                splitLine: {
+                    show: false,
+                }
+            }];
+        return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
-    seriesType=(monthPower,monthPlanPower,equipmentHours)=>{ // 根据不同的类型，series不同
-        const {chartType}=this.state;
-        const monthPowerObj=[{
+    seriesType = ({monthPower, monthPlanPower,completeRate,equipmentHours}) => { // 根据不同的类型，series不同
+        const { chartType } = this.state;
+        const monthPowerObj = [{
             name: '月发电量',
             type: 'bar',
             color: '#3e97d1',
             data: getDefaultData(monthPower),
+            yAxisIndex: 0,
             barWidth: 6,
-        },{
+        }, {
             name: '计划发电量',
             type: 'bar',
             color: '#fbe6e3',
             data: getDefaultData(monthPlanPower),
+            yAxisIndex: 0,
             barWidth: 6,
+        },{
+            name: '完成率',
+            type: 'line',
+            color: '#199475',
+            data: getDefaultData(completeRate),
+            yAxisIndex: 2,
         }];
-        const equipmentHoursObj=[{
+        const equipmentHoursObj = [{
             name: '等效时',
             type: 'bar',
             color: '#c7ceb2',
             barWidth: 6,
             data: getDefaultData(equipmentHours),
         }];
-        return  chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
+        return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
     drawCharts = (params) => {
-        let { monthPowerData = [], powerUnit } = params;
-        const monthPower = monthPowerData.map(e => powerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 发电量
+        let { monthPowerData = [], powerUnit, loading } = params;
+        const {chartType}=this.state;
+        const monthPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 发电量
         const filterMonthPower = monthPowerData.filter(e => e.monthPower);
-        const monthPlanPower = monthPowerData.map(e => powerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 计划发电量
+        const monthPlanPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 计划发电量
         const filterMonthPlanPower = monthPowerData.filter(e => e.monthPlanPower);
         const equipmentHours = monthPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等效时
         const filterEquipmentHours = monthPowerData.filter(e => e.equipmentHours);
-        const instantaneous = monthPowerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 辐射值
-        const filterInstantaneous = monthPowerData.filter(e => e.instantaneous); 
+        const instantaneous = monthPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
+        const filterInstantaneous = monthPowerData.filter(e => e.instantaneous);
         const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const monthPowerChart = echarts.init(document.getElementById('powerChart'));
-        monthPowerData.length > 0 ? monthPowerChart.hideLoading() : monthPowerChart.showLoading('default', { color: '#199475' });
+        // loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
         monthPowerChart.resize();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
-        const yAxisType=this.yAxisType(powerUnit);
-        const seriesType=this.seriesType(monthPower,monthPlanPower,equipmentHours);
+        const yAxisType = this.yAxisType(powerUnit);
+        const seriesType = this.seriesType({monthPower, monthPlanPower,completeRate, equipmentHours});
         let powerOption = {
             graphic: powerGraphic,
             title: {
@@ -154,10 +190,10 @@ class MonthPower extends Component {
                 left: 10,
             },
             grid: {
-                right: '20%',
+                right: chartType === 'monthPower'?'20%':'13%',
                 top: 100,
                 left: '13%',
-                bottom:40,
+                bottom: 40,
             },
             legend: {
                 left: 'center',
@@ -212,13 +248,16 @@ class MonthPower extends Component {
                     axisLabel: {
                         color: fontColor,
                         interval: 0,
+                        formatter: (value) => {
+                            return moment(value).format('MM')
+                        }
                     },
                     axisTick: { show: false },
                     boundaryGap: true,
                 }
             ],
             yAxis: [
-                yAxisType,
+                ...yAxisType,
                 {
                     name: '累计辐射(MJ/m²)',
                     type: 'value',
@@ -243,31 +282,7 @@ class MonthPower extends Component {
                         show: false,
                     }
                 },
-                {
-                    name: '完成率',
-                    type: 'value',
-                    offset: 40,
-                    axisLabel: {
-                        formatter: '{value}%',
-                        color: fontColor,
-                    },
-                    nameTextStyle: {
-                        color: fontColor,
-                        padding: [0, 0, 0, 30],
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: lineColor,
-                        },
-                    },
-                    axisTick: {
-                        // show: false,
-                        color: lineColor,
-                    },
-                    splitLine: {
-                        show: false,
-                    }
-                }
+
             ],
             series: [
                 ...seriesType,
@@ -277,24 +292,17 @@ class MonthPower extends Component {
                     data: getDefaultData(instantaneous),
                     color: '#f9b600',
                     yAxisIndex: 1,
-                }, {
-                    name: '完成率',
-                    type: 'line',
-                    color: '#199475',
-                    data: getDefaultData(completeRate),
-                    yAxisIndex: 2,
-                }
+                }, 
             ]
         }
         monthPowerChart.setOption(powerOption, 'notMerge');
-       
     }
 
     render() {
         const productionAnalysis = `#/statistical/stationaccount/production`;
         return (
             <div className={styles.powerDiagramBox} >
-                <div id="powerChart" style={{ display: 'flex', flex: 1 }}></div>
+                <div id="powerChart" style={{ display: 'flex', flex: 1 }} className={styles.powerChart}></div>
                 <div className={styles.powerRadio}>
                     <RadioGroup defaultValue={'monthPower'} size="small" onChange={this.onChangeTimePower} >
                         <RadioButton value={'monthPower'}>发电量</RadioButton>

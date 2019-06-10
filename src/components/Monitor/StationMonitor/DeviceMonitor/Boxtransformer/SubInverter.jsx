@@ -84,8 +84,8 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode }) => 
                 <div className={styles.branchStatus}>{branchState && branchState.map((e, i) => (
                   <span
                     key={i}
-                    className={deviceTypeCode === '206' ? styles.rect : styles.round}
-                    style={{backgroundColor: deviceTypeCode === '206' ? seriesStatus[e] : confluenceStatus[e]}}
+                    className={deviceTypeCode === '201' ? styles.rect : styles.round}
+                    style={{backgroundColor: deviceTypeCode === '201' ? seriesStatus[e] : confluenceStatus[e]}}
                   />
                 ))}</div>
                 <div style={{color: inverterStatusInfo.color}}>{inverterStatusInfo.statusName}</div>
