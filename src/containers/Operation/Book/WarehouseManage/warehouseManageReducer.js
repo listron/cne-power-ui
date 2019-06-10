@@ -13,6 +13,9 @@ const warehouseManageAction = {
   getAssetslist: Symbol('getAssetslist'),
   insertWarehouse: Symbol('insertWarehouse'),
   getMaterialDetailsList: Symbol('getMaterialDetailsList'),
+  takeoutWarehouseMaterial: Symbol('takeoutWarehouseMaterial'),
+  getReserveDetail: Symbol('getReserveDetail'),
+  getReserveList: Symbol('getReserveList'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -49,6 +52,15 @@ const initState = Immutable.fromJS({
   insertStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
   originTakeoutInfo: {}, // 出库对象基本信息
   materialDetailsList: [], // 出库操作 选定库存对应所有物资列表
+  takeoutStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
+  reserveDetail: {}, // 库存对象基本信息
+  reserveParams: { // 库存列表请求参数
+    pageNum: 1,
+    pageSize: 10,
+    sortField: 'entry_time', // 单价：price, 入库人：username, 入库时间：entry_time, 出库时间：we_entry_time, 状态：is_entry
+    sortMethod: 'desc', // 'asc'：正序  'desc'：倒序
+  },
+  reserveListInfo: {}, // 库存对象统计列表信息
   // sparesData: [], // 备品备件表格
   // toolsData: [], // 工具数据表格
   // materialsData: [], // 物资数据表格

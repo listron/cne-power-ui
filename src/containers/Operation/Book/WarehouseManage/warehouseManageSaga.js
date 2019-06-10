@@ -212,7 +212,7 @@ function *addNewGood({ payload }) { // 新增物品
       yield fork(getGoodsList, { payload: { goodsMaxType: stockTypeCodes[tabName] } });
     } else { throw response.data }
   } catch(error) {
-    message.error('新增失败,请重试');
+    message.error(`物品添加失败,请重试,${error.message}`);
     console.log(error);
   }
 }
@@ -260,7 +260,7 @@ function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 =
       payload: { insertStatus: 'normal' },
     })
     console.log(err);
-    message('入库失败！')
+    message.error(`入库失败,请重试,${err.message}`);
   }
 }
 
@@ -282,9 +282,80 @@ function *getMaterialDetailsList({ payload }) {
     })
   }
 }
-      // takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
-      // getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
-      // getStockList: '/v3/inventory/inventoryInfo', // 获取某库存信息列表
+
+function *takeoutWarehouseMaterial({ payload }){
+  const url = `${APIBasePath}${operation.takeoutWarehouseMaterial}`;
+  try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { takeoutStatus: 'loading' },
+    })
+    const { tableParams, tabName } = yield select(state => state.operation.warehouseManage.toJS());    
+    const response = yield call(axios.post, url, {
+      ...payload,
+      goodsMaxType: stockTypeCodes[tabName],
+    });
+    if (response.data.code === '10000') { // 成功出库，重新请求列表
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { takeoutStatus: 'success' },
+      })
+      yield fork(getWarehouseManageList, {
+        payload: {
+          ...tableParams,
+          pageNum: 1,
+        }
+      })
+    } else { throw response.data }
+  } catch (err) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { takeoutStatus: 'normal' },
+    })
+    message.error(`出库失败,请重试,${err.message}`);
+    console.log(err);
+  }
+}
+
+function *getReserveDetail({ payload }) { // 获取某库存详情
+  const url = `${APIBasePath}${operation.getReserveDetail}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: {
+          reserveDetail: response.data.data || {}
+        }
+      })
+    } else { throw response.data }
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { reserveDetail: {} },
+    })
+  }
+}
+
+function *getReserveList({ payload }) { // 获取某库存信息列表
+  const url = `${APIBasePath}${operation.getReserveList}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { reserveListInfo: response.data.data || {} },
+      })
+    } else { throw response.data }
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { reserveListInfo: {} },
+    })
+  }
+}
       // deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
       // recallStockInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
 
@@ -301,5 +372,8 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
   yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);
   yield takeLatest(warehouseManageAction.getMaterialDetailsList, getMaterialDetailsList);
+  yield takeLatest(warehouseManageAction.takeoutWarehouseMaterial, takeoutWarehouseMaterial);
+  yield takeLatest(warehouseManageAction.getReserveDetail, getReserveDetail);
+  yield takeLatest(warehouseManageAction.getReserveList, getReserveList);
 }
 

@@ -15,10 +15,12 @@ class SpareTakeout extends Component {
   static propTypes = {
     form: PropTypes.object,
     materialDetailsList: PropTypes.array,
+    takeoutStatus: PropTypes.string,
     backList: PropTypes.func,
     originTakeoutInfo: PropTypes.object,
     changeStore: PropTypes.func,
     getMaterialDetailsList: PropTypes.func,
+    takeoutWarehouseMaterial: PropTypes.func,
   }
 
   componentDidMount(){
@@ -27,14 +29,13 @@ class SpareTakeout extends Component {
     getMaterialDetailsList({ inventoryId });
   }
 
-  // componentDidUpdate(preProps){ //  loading to do 
-  //   const preInsertStatus = preProps.insertResult;
-  //   const { insertStatus, changeStore } = this.props;
-  //   if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
-  //     this.backToList();
-  //     changeStore({ assetsTree: [] }); // 树清空
-  //   }
-  // }
+  componentDidUpdate(preProps){
+    const preStatus = preProps.takeoutStatus;
+    const { takeoutStatus } = this.props;
+    if ( preStatus === 'loading' && takeoutStatus === 'success') {
+      this.backToList(); // 成功，返回主页面
+    }
+  }
 
   backToList = () => {
     this.props.changeStore({ originTakeoutInfo: {} });
@@ -42,21 +43,22 @@ class SpareTakeout extends Component {
   }
 
   takeoutSave = () => {
-    const { form, originTakeoutInfo } = this.props;
+    const { form, originTakeoutInfo, takeoutWarehouseMaterial } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (err) {
         const { remarks, materialCodes } = values;
         const { inventoryId } = originTakeoutInfo;
-        // takeoutWarehouseMaterial 出库请求.todo 
-        // {
-        //   remarks, materialCodes, inventoryId
-        // }
+        takeoutWarehouseMaterial({
+          inventoryId,
+          materialCodes: materialCodes.map(e => e.materialCode).join(','),
+          remarks
+        });
       }
     })
   }
 
   render(){
-    const { form, originTakeoutInfo, materialDetailsList } = this.props;
+    const { form, originTakeoutInfo, materialDetailsList, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
@@ -118,7 +120,7 @@ class SpareTakeout extends Component {
         </Form>
         <div className={styles.handlePart}>
           <span className={styles.holder} />
-          <Button onClick={this.takeoutSave} >保存</Button>
+          <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
         </div>
       </section>
     )

@@ -193,8 +193,8 @@ export default {
       downloadStockTemplete: '/v3/inventory/downLoad', // 下载导入模板
       importStockFile: '/v3/inventory/importEntry', // 导入备品备件/工器具/物资列表
       getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
-      getStockDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
-      getStockList: '/v3/inventory/inventoryInfo', // 获取某库存信息列表
+      getReserveDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
+      getReserveList: '/v3/inventory/inventoryInfoPageList', // 获取某库存信息列表
       deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
       recallStockInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
       // 台账-出入库记录

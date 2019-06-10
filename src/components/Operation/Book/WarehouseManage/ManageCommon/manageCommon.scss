@@ -248,7 +248,7 @@
   }
   .recordsList{
     overflow-y: auto;
-    height: 200px;
+    max-height: 200px;
     padding: 8px;
     width: 226px;
     border-radius: 4px;
@@ -272,10 +272,14 @@
           color: #a42b2c;
         }
       }
+      &:last-child{
+        margin-bottom: 0;
+      }
       &:hover{
         background:#fbe6e3;
       }
     }
+    
   }
 }
 
@@ -326,6 +330,34 @@
         line-height: 32px;
         height: 32px;
       }
+    }
+  }
+}
+
+.reserveDetail{
+  display: flex;
+  padding: 12px 60px;
+  .reserveLeft, .reserveRight{
+    flex: 0 0 50%;
+  }
+  .eachInfo{
+    padding: 0 0 0 40px;
+    width: 580px;
+    display: flex;
+    .name{
+      flex: 0 0 60px;
+      text-align: right;
+      margin-right: 16px;
+      color: #000;
+      font-weight: 600;
+    }
+    .value{
+      flex: 1;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: $darkColor;
     }
   }
 }

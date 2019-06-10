@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
 import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
 import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/SpareTakeout';
+import SpareReserve from '../../../../components/Operation/Book/WarehouseManage/SpareReserve';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
@@ -88,7 +89,7 @@ class WarehouseManage extends Component {
           <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
             {sideKey === 'insert' && <SpareInsert {...this.props} backList={this.backList} />}
             {sideKey === 'takeout' && <SpareTakeout {...this.props} backList={this.backList} />}
-            {/* <SpareReserve /> */}
+            {sideKey === 'reserve' && <SpareReserve {...this.props} backList={this.backList} />}
             {/* <ToolInsert /> */}
             {/* <ToolTakeout /> */}
             {/* <ToolReserve /> */}
@@ -130,6 +131,9 @@ const mapDispatchToProps = (dispatch) => ({
   getAssetslist: payload => dispatch({ type: warehouseManageAction.getAssetslist, payload }),
   insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
   getMaterialDetailsList: payload => dispatch({ type: warehouseManageAction.getMaterialDetailsList, payload }),
+  takeoutWarehouseMaterial: payload => dispatch({ type: warehouseManageAction.takeoutWarehouseMaterial, payload }),
+  getReserveDetail: payload => dispatch({ type: warehouseManageAction.getReserveDetail, payload }),
+  getReserveList: payload => dispatch({ type: warehouseManageAction.getReserveList, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);
