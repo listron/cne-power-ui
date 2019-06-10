@@ -23,6 +23,7 @@ class PvStation extends React.Component {
     monitorPvUnit: PropTypes.object,
     regionName: PropTypes.string,
     stations: PropTypes.array,
+    history: PropTypes.object,
   }
 
   constructor(props, context) {
@@ -117,7 +118,7 @@ class PvStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible, areaChecked } = this.state;
-    const { pvMonitorStation, loading, monitorPvUnit } = this.props;
+    const { pvMonitorStation, loading, monitorPvUnit,history } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
     return (
       <div className={styles.pvStation}>

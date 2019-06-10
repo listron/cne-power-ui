@@ -77,6 +77,21 @@
           display: flex;
           flex-wrap: wrap;
         }
+        .commonStyle{
+          background: #f1f1f1;
+          width: 32px;
+          height: 18px;
+          display: block;
+          float: left;
+          font-size: 11px;
+          color: $themeColor;
+          margin: 1px;
+          border-radius: 2px;
+          text-align: center;
+          &:nth-child(4n){
+            margin-right: 12px;
+          }
+        }
         :global{
           .iconfont{
             width: 23px;
@@ -84,21 +99,7 @@
             margin-right: 5px;
             font-size: 23px;
           }
-          .commonStyle{
-            background: #f1f1f1;
-            width: 32px;
-            height: 18px;
-            display: block;
-            float: left;
-            font-size: 11px;
-            color: $themeColor;
-            margin: 1px;
-            border-radius: 2px;
-            text-align: center;
-            &:nth-child(4n){
-              margin-right: 12px;
-            }
-          }
+         
           .normalValue{
             background: #ceebe0;
           }
