@@ -3,6 +3,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { workOrderAction } from './workOrderAction';
+message.config({ top: 120,duration: 2, maxCount: 2,});
 
 
 function* changeWorkOrderStore(action) { // 存储payload指定参数，替换reducer-store属性。
@@ -19,8 +20,7 @@ function* resetStore() {
   })
 }
 
-//获取缺陷工单详情  两种状态  get 请求方式  defectID
-function* getDefectDetail(action) {
+function* getDefectDetail(action) { // 获取缺陷工单详情  两种状态  get 请求方式  defectID
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectDetail;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -32,11 +32,11 @@ function* getDefectDetail(action) {
         payload: {
           ...payload,
           defectDetail: response.data.data,
-          stationType:response.data.data.stationType,
-          defectSource:response.data.data.defectSource,
+          stationType: response.data.data.stationType,
+          defectSource: response.data.data.defectSource,
         }
       });
-    }else{
+    } else {
       throw response.data
     }
   } catch (e) {
@@ -45,8 +45,7 @@ function* getDefectDetail(action) {
   }
 }
 
-//获取缺陷工单Id列表(用于上一个，下一个) 暂时用不上
-function* getDefectIdList(action) {
+function* getDefectIdList(action) { // 获取缺陷工单Id列表(用于上一个，下一个) 暂时用不上
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectIdList;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -85,8 +84,8 @@ function* getDefectCommonList(action) { // 参数 languageType：0 全部 1 缺�
   }
 }
 
-//获取缺陷类型信息
-function* getDefectTypes(action) {
+
+function* getDefectTypes(action) { // 获取缺陷类型信息
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectTypes;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -105,8 +104,8 @@ function* getDefectTypes(action) {
   }
 }
 
-//下发工单
-function* sendDefect(action) {
+
+function* sendDefect(action) { // 下发工单
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.sendDefect;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -134,8 +133,8 @@ function* sendDefect(action) {
   }
 }
 
-//驳回工单
-function* rejectDefect(action) {
+
+function* rejectDefect(action) { // 驳回工单
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.rejectDefect;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -164,8 +163,8 @@ function* rejectDefect(action) {
   }
 }
 
-//关闭工单
-function* closeDefect(action) {
+
+function* closeDefect(action) { // 关闭工单
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.closeDefect;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -193,8 +192,8 @@ function* closeDefect(action) {
   }
 }
 
-//执行工单
-function* handleDefect(action) {
+
+function* handleDefect(action) { // 执行工单
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.handleDefect;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -222,8 +221,8 @@ function* handleDefect(action) {
   }
 }
 
-//验收工单
-function* checkDefect(action) {
+
+function* checkDefect(action) { // 验收工单
   const { payload } = action;
   let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.checkDefect;
   yield put({ type: workOrderAction.workOrderFetch });
@@ -252,6 +251,56 @@ function* checkDefect(action) {
   }
 }
 
+function* getKnowledgebase(action) { // 获取智能专家列表
+  const { payload } = action;
+  let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getKnowledgebase;
+  // let url = `/mock/operation/knowledgebase/list`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: workOrderAction.changeWorkOrderStore,
+        payload: {
+          knowledgebaseList: response.data.data.dataList || [],
+        }
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* likeKnowledgebase(action) { // 点赞智能专家
+  const { payload } = action;
+  const { knowledgeBaseId } = payload;
+  let url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.ticket.likeKnowledgebase}${knowledgeBaseId }`;
+  // let url = `/mock/operation/knowledgebase/like`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') {
+      message.config({ top: 230,duration: 2, maxCount: 2,});
+      message.success('点赞成功')
+      const params = yield select(state => {
+        const { defectDetail = {} } = state.operation.workOrder.toJS();
+        return ({
+          deviceTypeCodes: [defectDetail.deviceTypeCode],
+          faultCodes: [defectDetail.defectTypeCode],
+        })
+      }
+      );
+      yield put({ // 重新请求点赞列表
+        type: workOrderAction.getKnowledgebase,
+        payload: params,
+      })
+    } else { throw response.data }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
+
+
 
 export function* watchWorkOrder() {
   yield takeLatest(workOrderAction.changeWorkOrderStoreSaga, changeWorkOrderStore);
@@ -265,6 +314,8 @@ export function* watchWorkOrder() {
   yield takeLatest(workOrderAction.closeDefect, closeDefect);
   yield takeLatest(workOrderAction.handleDefect, handleDefect);
   yield takeLatest(workOrderAction.checkDefect, checkDefect);
+  yield takeLatest(workOrderAction.getKnowledgebase, getKnowledgebase);
+  yield takeLatest(workOrderAction.likeKnowledgebase, likeKnowledgebase);
 
 }
 

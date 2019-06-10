@@ -15,13 +15,11 @@ export default class FaultAllFan extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object,
-    match: PropTypes.object,
     stations: PropTypes.object,
     stationCode: PropTypes.string,
     singleStationCode: PropTypes.string,
     faultInfo: PropTypes.object,
     warnId: PropTypes.number,
-    stationDeviceList:PropTypes.array
   };
 
   render() {
@@ -31,9 +29,10 @@ export default class FaultAllFan extends React.Component {
         status,
         stationName
       },
-      stationDeviceList,
       warnId
     } = this.props;
+    const rightHandler = localStorage.getItem('rightHandler') || '';
+    const roleDeleteRight = rightHandler.split(',').includes('analysis_turbineFDD_repeat');
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.title}>
@@ -42,7 +41,7 @@ export default class FaultAllFan extends React.Component {
         </div>
         <div className={styles.allFanWrap}>
           <div className={styles.allFanContent}>
-            <FaultAllFanTop {...this.props} />
+            {roleDeleteRight && (<FaultAllFanTop {...this.props} />)}
             {status && status === 4 ?
                 <div className={styles.noData}>
                   <img src="/img/nodata.png" style={{ width: 223, height: 164 }} />
@@ -52,7 +51,7 @@ export default class FaultAllFan extends React.Component {
                   <PreTemperature {...this.props} />
                   <AfterTemperature {...this.props} />
                   <DifferenceTemperature {...this.props} />
-                  {(warnId ? warnId === 1 : stationDeviceList[0].warnId) && ([
+                  {(warnId === 1) && ([
                     <SingleResult key="singleResult" {...this.props} />,
                     <HeatMap key="heatMap" {...this.props} />,
                     <AllFans key="allFans" {...this.props} />

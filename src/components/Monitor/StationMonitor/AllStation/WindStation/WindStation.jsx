@@ -37,7 +37,7 @@ class WindStation extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log(222)
+    // console.log(222)
   }
 
   onHandleAlarm = (checked) => {

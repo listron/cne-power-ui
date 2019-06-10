@@ -22,7 +22,7 @@ const Option = Select.Option;
       stationCode:35           //必传
       stationId:"07392334-41ee-46f3-9385-e0617bd79433"       //必传
       stationName:"阜西古力本皋"  //必传
-      stationPower:"49.50" 
+      stationPower:"49.50"
       stationType:10              //必传
       stationUnitCount:33
       subCompany:"辽宁分公司"
@@ -37,10 +37,11 @@ const Option = Select.Option;
   3. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
   4. 选填 - 组件生成时默认已选中的电站(value)(value形式与data相同[object])
   5. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
-  6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。 
+  6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。
   7. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
   8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填 - oneStyleOnly : bool; 默认为false，用于控制用户是否只能选一种类型的电站(默认都可以)。
+  10. 选填- stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示的时已选电站 已选电站数量/所有电站数量
 */
 
 class StationSelect extends Component {
@@ -55,13 +56,15 @@ class StationSelect extends Component {
     disabledStation: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
-    style: PropTypes.object
+    style: PropTypes.object,
+    deviceShowNumber: PropTypes.bool,
   }
   static defaultProps = {
     multiple: false,
     oneStyleOnly: false,
     holderText: '输入关键字快速查询',
     disabled: false,
+    stationShowNumber: false,
     data: [],
     disabledStation: [],
   }
@@ -145,7 +148,7 @@ class StationSelect extends Component {
     })
     this.onOK(checkedStations)
   }
-  
+
   showStationModal = () => {
     !this.props.disabled && this.setState({
       stationModalShow: true,
@@ -153,8 +156,12 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
+    const deviceShow = checkedStations.length > 0 && stationShowNumber && {
+      maxTagCount: 0,
+      maxTagPlaceholder: `已选电站${checkedStations.length}/${data.length}`
+    } || {};
     return (
       <div className={styles.stationSelect} style={this.props.style}>
         {multiple ? <Select
@@ -165,6 +172,7 @@ class StationSelect extends Component {
           onChange={this.selectStation}
           value={checkedStationName}
           className={styles.stationSelectMainInput}
+          {...deviceShow}
         >
           {data.filter(e=>!disabledStation.includes(e.stationCode)).map(e=>(
             <Option key={e.stationName}>{e.stationName}</Option>
@@ -179,21 +187,21 @@ class StationSelect extends Component {
         >
           {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
         </AutoComplete>}
-        <StationSelectModal 
+        <StationSelectModal
           multiple={multiple}
           oneStyleOnly={oneStyleOnly}
           disabled={disabled}
           disabledStation={disabledStation}
           checkedStations={checkedStations}
-          data={data} 
+          data={data}
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
-          hideStationModal={this.hideStationModal} 
+          hideStationModal={this.hideStationModal}
           showStationModal={this.showStationModal}
         />
       </div>
     )
-    
+
   }
 }
 export default StationSelect;

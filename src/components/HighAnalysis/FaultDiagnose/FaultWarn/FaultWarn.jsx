@@ -9,11 +9,11 @@ export default class FaultWarn extends React.Component {
     faultWarnList: PropTypes.array
   };
 
-  faultWarnFunc = (stationCode, warnCount, count) => {
+  faultWarnFunc = (stationCode) => {
+    const { faultWarnList } = this.props;
     // 跳转到单风场预警
     //存储单风场故障数量和总数
-    localStorage.setItem("warnCount", warnCount);
-    localStorage.setItem("count", count);
+    localStorage.setItem("faultAllWarnList", JSON.stringify(faultWarnList));
     this.props.history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
   };
 
@@ -21,7 +21,7 @@ export default class FaultWarn extends React.Component {
     const { faultWarnList } = this.props;
     const item = faultWarnList && faultWarnList.map(cur => {
       return (
-        <div key={cur.stationCode} className={styles.faultWarnCenter} onClick={() => this.faultWarnFunc(cur.stationCode, cur.faultUnitCount, cur.stationUnitCount)}>
+        <div key={cur.stationCode} className={styles.faultWarnCenter} onClick={() => this.faultWarnFunc(cur.stationCode)}>
           <div className={styles.faultWarnCenterTop}>
             <div>{cur.stationName}</div>
           </div>
@@ -30,21 +30,23 @@ export default class FaultWarn extends React.Component {
             <span>{cur.faultUnitCount}</span>
             <span>{`/${cur.stationUnitCount}`}</span>
           </div>
-          <div className={styles.faultWarnCenterBottom}>
-            {cur.mainModules && cur.mainModules.map(item => {
-              return (
-                <div key={item}>
-                  {item}
-                </div>
-              )
-            })}
-          </div>
+          {(Number(cur.faultUnitCount) > 0) && (
+            <div className={styles.faultWarnCenterBottom}>
+              {cur.mainModules && cur.mainModules.map(item => {
+                return (
+                  <div key={item}>
+                    {item}
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       );
     });
     return (
       <div className={styles.faultWarnMain}>
-        {faultWarnList || faultWarnList.length !== 0 ? item : <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>}
+        {!faultWarnList || faultWarnList.length === 0 ? <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> : item }
       </div>
     );
   }

@@ -2,7 +2,6 @@ export const faultAllFanAction = {
   changeFaultAllFanStore: Symbol('changeFaultAllFanStore'), // 替换reducer参数
   fetchFaultAllFanSuccess: Symbol('fetchFaultAllFanSuccess'), // 请求成功
 
-  getStationDeviceList:Symbol('getStationDeviceList'), // 获取单电站所有风机
   getDownloadFile:Symbol('getDownloadFile'), // 获取单电站所有风机
   getResetTask:Symbol('getDownloadFile'), // 重新执行
   getFaultInfo:Symbol('getFaultInfo'), // 获取故障预警任务详情

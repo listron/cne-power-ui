@@ -122,10 +122,30 @@ export default class FaultWarn extends React.Component {
     return arr.length;
   };
 
+  allFansWarnNum = () => {
+    const { stations, singleStationCode } = this.props;
+    const faultAllWarnList = JSON.parse(localStorage.getItem("faultAllWarnList"));
+    const stationItems = stations && stations.toJS();
+    const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
+    // 判断当前风场的名字和存储的名字相等取出故障数量和总数量
+    let faultUnitCount = 0;
+    let stationUnitCount = 0;
+    faultAllWarnList.forEach((cur) => {
+      if (cur.stationName === stationItem.stationName) {
+        faultUnitCount = cur.faultUnitCount;
+        stationUnitCount = cur.stationUnitCount;
+      }
+    });
+    return (
+      <div className={styles.num}>
+        <span>{faultUnitCount}</span>
+        <span>{`/${Number(stationUnitCount)}`}</span>
+      </div>
+    );
+  };
+
   render() {
     const { stations, singleStationCode, viewType } = this.props;
-    const warnCount = localStorage.getItem("warnCount");
-    const allCount = localStorage.getItem("count");
     const { showStationSelect } = this.state;
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
@@ -174,10 +194,7 @@ export default class FaultWarn extends React.Component {
               <div style={viewType === 2 ? { color: "#ffffff" } : { color: "#595959" }}>
                 风机
               </div>
-              <div className={styles.num}>
-                <span>{`${warnCount}`}</span>
-                <span>{`/${Number(allCount)}`}</span>
-              </div>
+              {this.allFansWarnNum()}
             </div>
             <div
               style={viewType === 3 ? { backgroundColor: "#199475" } : { backgroundColor: "#ffffff" }}

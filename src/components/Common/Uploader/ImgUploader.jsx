@@ -128,7 +128,7 @@ class ImgUploader extends Component {
   }
 
   render() {
-    const authData = Cookie.get('authData') || null;
+    const authData = localStorage.getItem('authData') || '';
     const { imageListShow, currentImgIndex, fileList } = this.state;
     const { uploadPath, max,  data, editable, imgStyle } = this.props;
 		const imageProps = {
@@ -137,7 +137,7 @@ class ImgUploader extends Component {
       multiple: true,
       fileList,
 			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + JSON.parse(authData)}, //JSON.parse(authData).access_token
+      headers:{'Authorization': 'bearer ' + authData},
       beforeUpload:this.beforeUpload
 		};
     const uploadButton = (

@@ -13,11 +13,24 @@ const initState = Immutable.fromJS({
   deviceName: "", //设备名称
   faultInfo: {// 获取故障预警任务详情
     endTime: null,
+    stationName: "",
+    algorithmName: "",
+    deviceDatas: []
   },
+  faultDateList: "", // 预警日期-有故障的日期
   faultDate: "", // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
-  diffDate: [], // 后驱温度时间选择
+  diffDate: [], // 温度差时间选择
+  preDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  preDataZoomEnd: 100,
+  afterDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  afterDataZoomEnd: 100,
+  diffDataZoomStart: 0, // 保存echarts dataZoom滑块位置
+  diffDataZoomEnd: 100,
+  beforeTimeData: [], // 前驱温度时间轴
+  afterTimeData: [], // 后驱温度时间轴
+  diffTimeData: [], // 温度差时间轴
   preTimeCompare: 0, // 用于前驱比较时间戳
   afterTimeCompare: 0, // 用于后驱比较时间戳
   diffTimeCompare: 0, // 用于温度差比较时间戳
@@ -38,8 +51,12 @@ const initState = Immutable.fromJS({
   standAloneList: [], // 获取单风机自适应模块检测结果
   similarityList: [], // 获取风机相似性结果
   allFanResultList: {// 获取多机协同模块检测结果-严重程度及识别（所有风机）
-    cfResidual: [],
-    cfStd: []
+    cfResidual: {
+      residual: []
+    },
+    cfStd1: [],
+    cfStd2: [],
+    cfStd3 : []
   },
   deviceFullCode: "", // 设备全编码
   tenMinutesBeforeList: [{// 获取风机10分钟数据-前驱
@@ -55,6 +72,7 @@ const initState = Immutable.fromJS({
 
 
 const faultAllFanReducer = (state = initState, action) => {
+  // console.log(action.payload, "action");
   switch (action.type) {
     case faultAllFanAction.changeFaultAllFanStore:
       return state.merge(Immutable.fromJS(action.payload));

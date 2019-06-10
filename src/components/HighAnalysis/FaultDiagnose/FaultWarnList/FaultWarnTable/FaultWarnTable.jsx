@@ -17,6 +17,7 @@ export default class FaultWarnTable extends React.Component {
     pageNum: PropTypes.number,
     singleStationCode: PropTypes.string,
     history: PropTypes.object,
+    getAlgoModel: PropTypes.func,
   };
 
   constructor(props) {
@@ -27,14 +28,17 @@ export default class FaultWarnTable extends React.Component {
     const {
       match: {params: {fanWarnId: currentSingleStationCode}},
       getList,
+      getAlgoModel
     } = this.props;
     const { match: {params: {fanWarnId: nextSingleStationCode}} } = nextProps;
     const params = {
-      stationCode: currentSingleStationCode,
+      stationCode: nextSingleStationCode,
     };
     if (currentSingleStationCode !== nextSingleStationCode) {
       // 算法模型调用
       getList(params);
+      // 算法模型调用
+      getAlgoModel(params);
     }
   }
 
@@ -71,7 +75,7 @@ export default class FaultWarnTable extends React.Component {
     localStorage.setItem("faultHistory", "");
     localStorage.setItem("deviceName", deviceName);
     localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("faultList", JSON.stringify([{algorithmName: `${algorithmName}`}]))
+    localStorage.setItem("deviceFullName", algorithmName);
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序

@@ -35,7 +35,6 @@ export default class ListViewTable extends React.Component {
     // localStore存储有故障的风机
     localStorage.setItem("faultWarnNum", "1");
     localStorage.setItem("algorithmId", algorithmId);
-    localStorage.setItem("warnFans", JSON.stringify(data));
     localStorage.setItem("taskId", taskId);
   };
 

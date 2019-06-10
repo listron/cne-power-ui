@@ -2,15 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Icon } from "antd";
 import styles from "./faultNavList.scss";
+import moment from "../../FaultAllFan/FaultNavList/FaultNavList";
 
 export default class FaultNavList extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     showFlag: PropTypes.bool,
     onChangeFilter: PropTypes.func,
-    getStationDeviceList: PropTypes.func,
     stationCode: PropTypes.string,
-    stationDeviceList: PropTypes.array,
     match: PropTypes.object,
     faultInfo: PropTypes.object,
     getTenMinutesBefore: PropTypes.func,
@@ -38,10 +37,8 @@ export default class FaultNavList extends React.Component {
       navList: { clientHeight },
       props: {
         onChangeFilter,
-        getStationDeviceList,
       }
     } = this;
-    getStationDeviceList();
     onChangeFilter({
       showFlag: clientHeight > 32
     });
@@ -74,14 +71,37 @@ export default class FaultNavList extends React.Component {
   };
 
   handlerFansClick = (data, index, warnId) => {
-    const { onChangeFilter } = this.props;
+    const {
+      onChangeFilter,
+      faultInfo: {
+        endTime
+      },
+    } = this.props;
+    const { date } = data;
+    // 故障日期时间
+    const dateArr = date && date.split(",");
+    // 判断如果date有数据
+    const timeValue = date && date ? dateArr[dateArr.length - 1] : endTime;
     // 目前先不用掉接口
     this.setState({
       fansFlag: index
     }, () => {
       // 改变设备选中
       onChangeFilter({
-        warnId
+        warnId,
+        faultDate: timeValue, // 故障详情页选择日期
+        preDate: [// 前驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        afterDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
+        diffDate: [// 后驱温度时间选择
+          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
+          moment(timeValue, "YYYY/MM/DD")
+        ],
       });
     })
   };
@@ -91,15 +111,19 @@ export default class FaultNavList extends React.Component {
     const { openFlag, fansFlag } = this.state;
     const {
       showFlag,
-      stationDeviceList
+      faultInfo: {
+        algModeDatas
+      }
     } = this.props;
-    const item = stationDeviceList && stationDeviceList.map((cur, index) => {
+    const deviceFullName = localStorage.getItem("deviceFullName");
+    const item = algModeDatas && algModeDatas.map((cur, index) => {
       return (
         <div
           key={`${cur.algorithmName}${index}`}
-          style={{backgroundColor: index === fansFlag ?  "#ffffff" : "#199475"}}
-          className={cur.warnId === 1 ? styles.redWarn : styles.blueWarn}
-          onClick={() => {return this.handlerFansClick(cur, index, cur.warnId)}}
+          style={deviceFullName === cur.algorithmName ? {backgroundColor: "#ffffff"} :
+            {backgroundColor: (!deviceFullName && index === fansFlag) ?  "#ffffff" : "#199475"}}
+          className={Number(cur.type) === 1 ? styles.redWarn : styles.blueWarn}
+          onClick={() => {return this.handlerFansClick(cur, index, Number(cur.type))}}
         >
           {cur.algorithmName}
         </div>

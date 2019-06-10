@@ -9,6 +9,13 @@
     color: #000000;
     line-height:32px;
   }
+  .noData {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
   .warnBox{
     width: 100%;
     flex: 1;

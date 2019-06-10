@@ -2,8 +2,7 @@ export const faultSingleFanAction = {
   changeSingleFanStore: Symbol('changeSingleFanStore'), // 替换reducer参数
   fetchSingleFanSuccess: Symbol('fetchSingleFanSuccess'), // 请求成功
 
-  getStationDeviceList:Symbol('getStationDeviceList'), // 获取单电站所有风机
-  getDownloadFile:Symbol('getDownloadFile'), // 获取单电站所有风机
+  getDownloadFile:Symbol('getDownloadFile'), // 下载
   getResetTask:Symbol('getDownloadFile'), // 重新执行
   getFaultInfo:Symbol('getFaultInfo'), // 获取故障预警任务详情
   getFaultReport:Symbol('getFaultReport'), // 历史预警报告。。。
