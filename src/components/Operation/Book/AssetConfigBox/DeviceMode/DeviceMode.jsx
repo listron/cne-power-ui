@@ -277,7 +277,7 @@ class DeviceMode extends React.Component {
         dataIndex: 'assetsName',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text?text.replace(',', '/'):''}>{text?text.replace(',', '/'):'--'}</span>
+        render: (text) => <span title={text?text.replace(/,/g, '/'):''}>{text?text.replace(/,/g, '/'):'--'}</span>
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',

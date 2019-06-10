@@ -29,7 +29,7 @@ class ShowAddDeviceModeModal extends Component {
         addPartsFactors({
           manufactorName: values.addFactorName,
           deviceTypeCode,
-          assetsIds:['0'],
+          assetsIds:[''],
         })
         this.props.cancleFactorModal()
       }
