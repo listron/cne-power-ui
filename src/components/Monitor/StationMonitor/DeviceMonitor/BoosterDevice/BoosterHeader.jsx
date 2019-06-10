@@ -47,10 +47,10 @@ class BoosterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { sonDevice, parentDevice, manufacturer, deviceModeName } = deviceDetail;
+    const { manufacturer, deviceModeName } = deviceDetail;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-    // const sonDeviceBaseInfo = PVStationTypes.find(e => sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
-    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
+    let parentDevice = deviceDetail.parentDevice || {};
+    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange
