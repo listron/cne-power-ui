@@ -44,6 +44,7 @@ const initState = Immutable.fromJS({
   manufacturerList: [], // 厂家列表
   modeList: [], // 型号列表
   stocksList: [], // 备品备件 | 工具数据 | 物资表格
+  stocksListLoading: false, // 主页面表格loading态
   totalCount: 0, // 备品备件 | 工具数据 | 物资表格 数据总条数
   checkedStocks: [], // 备品备件 | 工具数据 | 物资表格选中项集合
   goodsList: [], // 仓库下所有物品列表

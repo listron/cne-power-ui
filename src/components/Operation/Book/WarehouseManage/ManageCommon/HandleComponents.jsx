@@ -37,8 +37,11 @@ export default class HandleComponent extends Component {
   onPaginationChange = ({pageSize, currentPage}) => { // 翻页
     const { tableParams, getWarehouseManageList, changeStore } = this.props;
     changeStore({
-      pageNum: currentPage,
-      pageSize,
+      tableParams: {
+        ...tableParams,
+        pageNum: currentPage,
+        pageSize,
+      },
       checkedStocks: [], // 清空选中
     });
     getWarehouseManageList({

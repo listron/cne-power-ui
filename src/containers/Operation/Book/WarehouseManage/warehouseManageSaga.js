@@ -76,6 +76,10 @@ function* getModes({ payload = {} }) { // 厂家下所有型号
 function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存信息
   const url = `${APIBasePath}${operation.getWarehouseManageList}`;
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { stocksListLoading: true },
+    })
     const { tabName } = yield select(state => state.operation.warehouseManage.toJS());
     const response = yield call(axios.post, url, {
       warehouseId: payload.selectedWarehouse,
@@ -91,6 +95,7 @@ function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存
       yield put({
         type: warehouseManageAction.fetchSuccess,
         payload: {
+          stocksListLoading: false,
           stocksList: response.data.data.dataList || {},
           totalCount: response.data.data.pageCount || 0
         }
@@ -100,7 +105,11 @@ function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存
     console.log(error);
     yield put({
       type: warehouseManageAction.changeStore,
-      payload: { stocksList: [], totalCount: 0 }
+      payload: {
+        stocksList: [],
+        totalCount: 0,
+        stocksListLoading: false
+      }
     })
   }
 }

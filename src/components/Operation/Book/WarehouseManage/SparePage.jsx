@@ -10,11 +10,14 @@ class SparePage extends Component {
   static propTypes = {
     checkedStocks: PropTypes.array,
     stocksList: PropTypes.array,
+    stocksListLoading: PropTypes.bool,
+    tableParams: PropTypes.object,
     reserveParams: PropTypes.object,
     changeStore: PropTypes.func,
     showSide: PropTypes.func,
     getReserveDetail: PropTypes.func,
     getReserveList: PropTypes.func,
+    getWarehouseManageList: PropTypes.func,
   }
 
   state = {
@@ -36,6 +39,29 @@ class SparePage extends Component {
     changeStore({ reserveInventoryId: inventoryId })
     getReserveDetail({ inventoryId }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
+  }
+
+  tableChange = (pagination, filter, sorter) => { // 排序 todo 主页面的排序同样未完成
+    const { field, order } = sorter;
+    const { tableParams, getWarehouseManageList, changeStore } = this.props;
+    const sortTemplete = {
+      goodsName: 'goods_name',
+      modeName: 'mode_name',
+      warehouseName: 'warehouse_name',
+      inventoryNum: 'inventory_num',
+      threshold: 'threshold',
+      descend: 'desc',
+      ascend: 'asc',
+    };
+    const sortField = field ? sortTemplete[field] : 'goods_name';
+    const sortMethod = order ? sortTemplete[order] : 'desc';
+    const newParam = {
+      ...tableParams,
+      sortField,
+      sortMethod,
+    }
+    changeStore({ tableParams: newParam });
+    getWarehouseManageList({ ...newParam });
   }
 
   toInsert = (record) => { // 操作 - 再入库
@@ -60,7 +86,7 @@ class SparePage extends Component {
       dataIndex: 'modeName',
       sorter: true,
     }, {
-      title: '仓库',
+      title: '所属仓库',
       dataIndex: 'warehouseName',
       sorter: true,
     }, {
@@ -117,7 +143,7 @@ class SparePage extends Component {
           <Popover
             content={InfoContent}
             title={<span className={styles.infoContentTitle}>更多信息</span>}
-            trigger="click"
+            trigger="hover"
           >
             <button className={styles.trigButton}>查看</button>
           </Popover>
@@ -137,13 +163,13 @@ class SparePage extends Component {
   ];
 
   render(){
-    const { checkedStocks, stocksList } = this.props;
+    const { checkedStocks, stocksList, stocksListLoading } = this.props;
     return (
       <div className={styles.sparePage}>
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
         <Table
-          // loading={loading}
+          loading={stocksListLoading}
           onChange={this.tableChange}
           rowSelection={{
             selectedRowKeys: checkedStocks.map(e => e.key),

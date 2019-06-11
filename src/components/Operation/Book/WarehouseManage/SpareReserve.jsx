@@ -32,7 +32,7 @@ export default class SpareReserve extends Component {
     })
   }
 
-  tableChange = (pagination, filter, sorter) => { // 排序 todo 主页面的排序同样未完成
+  tableChange = (pagination, filter, sorter) => { // 排序
     const { field, order } = sorter;
     const { reserveParams } = this.props;
     const sortTemplete = {
