@@ -38,7 +38,7 @@ class DayPower extends Component {
         let { dayPowerData = [], powerUnit, loading } = params;
         const dayPower = dayPowerData.map(e => chartPowerPoint(divideFormarts(e.dayPower, powerUnit), '--', 2, true));  // 发电量
         const filterDayPower = dayPowerData.filter(e => e.dayPower);
-        const equipmentHours = dayPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等效时
+        const equipmentHours = dayPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等日用小时
         const filterEquipmentHours = dayPowerData.filter(e => e.equipmentHours);
         const instantaneous = dayPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = dayPowerData.filter(e => e.instantaneous);
@@ -54,7 +54,7 @@ class DayPower extends Component {
             graphic: powerGraphic,
             color: color,
             title: {
-                text: '日发电量与等效时',
+                text: '日发电量与利用小时',
                 textStyle: {
                     color: '#000',
                     fontSize: 14,
@@ -131,7 +131,7 @@ class DayPower extends Component {
             ],
             yAxis: [
                 {
-                    name: '等效时(h)',
+                    name: '利用小时(h)',
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
@@ -139,6 +139,7 @@ class DayPower extends Component {
                     },
                     nameTextStyle: {
                         color: fontColor,
+                        padding: [0, 10, 0,0 ],
                     },
                     axisLine: {
                         lineStyle: {
@@ -162,7 +163,7 @@ class DayPower extends Component {
                     },
                     nameTextStyle: {
                         color: fontColor,
-                        padding: [0, 0, 0, 60],
+                        padding: [0, 0, 0, 50],
                     },
                     axisLine: {
                         lineStyle: {
@@ -234,7 +235,7 @@ class DayPower extends Component {
                     yAxisIndex: 1,
                 },
                 {
-                    name: '日等效时',
+                    name: '日利用小时',
                     type: 'bar',
                     data: getDefaultData(equipmentHours),
                     color: '#c7ceb2',

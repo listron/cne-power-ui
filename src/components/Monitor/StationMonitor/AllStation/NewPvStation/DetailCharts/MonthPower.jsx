@@ -49,7 +49,7 @@ class MonthPower extends Component {
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
         const equipmentHoursObj = [{
-            name: '等效时(h)',
+            name: '利用小时(h)',
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
@@ -147,7 +147,7 @@ class MonthPower extends Component {
             yAxisIndex: 2,
         }];
         const equipmentHoursObj = [{
-            name: '等效时',
+            name: '利用小时',
             type: 'bar',
             color: '#c7ceb2',
             barWidth: 6,
@@ -163,7 +163,7 @@ class MonthPower extends Component {
         const filterMonthPower = monthPowerData.filter(e => e.monthPower);
         const monthPlanPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 计划发电量
         const filterMonthPlanPower = monthPowerData.filter(e => e.monthPlanPower);
-        const equipmentHours = monthPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等效时
+        const equipmentHours = monthPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 利用小时
         const filterEquipmentHours = monthPowerData.filter(e => e.equipmentHours);
         const instantaneous = monthPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = monthPowerData.filter(e => e.instantaneous);
@@ -180,7 +180,7 @@ class MonthPower extends Component {
         let powerOption = {
             graphic: powerGraphic,
             title: {
-                text: '月发电量与等效时（截止昨天）',
+                text: '月发电量与利用小时（截止昨天）',
                 textStyle: {
                     color: '#000',
                     fontSize: 14,
@@ -306,7 +306,7 @@ class MonthPower extends Component {
                 <div className={styles.powerRadio}>
                     <RadioGroup defaultValue={'monthPower'} size="small" onChange={this.onChangeTimePower} >
                         <RadioButton value={'monthPower'}>发电量</RadioButton>
-                        <RadioButton value={'equipmentHours'}>等效时</RadioButton>
+                        <RadioButton value={'equipmentHours'}>利用小时</RadioButton>
                     </RadioGroup>
                 </div>
                 {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}

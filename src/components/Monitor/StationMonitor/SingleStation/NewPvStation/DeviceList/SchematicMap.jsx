@@ -125,7 +125,7 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true },
+                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true,single:true },
                 ]
             },
             "all": {
@@ -136,7 +136,7 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true },
+                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true,single:true },
                 ]
             }
         };
@@ -208,7 +208,7 @@ class Schematic extends Component {
                             <div className={styles.inverter} onClick={() => { this.changeTypeCode(invertTypeCode) }}>
                                 <div className={styles.title}>{deviceTypeArr.includes('201') ? '集中式逆变器' : '组串式逆变器'}</div>
                                 {commonList['201'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && styles.hot} ${e.single && styles.singleLine}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {this.dealData(invertTypeCode, e.id, e.point)} <span> {e.unit}</span></div>
                                     </div>)
@@ -226,7 +226,7 @@ class Schematic extends Component {
                                     <span className={`${activeInvertType === '206' && styles.activeButton}`} onClick={(e) => { this.changeInverType(e, '206') }}>组串式</span>
                                 </div>
                                 {commonList['all'].summaryInfo.map((e, index) => {
-                                    return (<div className={`${styles.column} ${e.hot && styles.hot}`} key={index}>
+                                    return (<div className={`${styles.column} ${e.hot && styles.hot} ${e.single && styles.singleLine}`} key={index}>
                                         <div>{e.name} </div>
                                         <div> {this.dealData(activeInvertType, e.id, e.point)} <span> {e.unit}</span></div>
                                     </div>)

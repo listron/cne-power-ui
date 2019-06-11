@@ -291,6 +291,9 @@ class MonthPower extends Component {
                     borderRadius: '100%',
                     color: '#fff',
                     shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2
                 }
             }],
             series: [

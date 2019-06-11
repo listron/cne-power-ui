@@ -59,8 +59,11 @@ class PvStation extends Component {
    
     this.getOnceData(stationCode, stationType);
     this.getTenSeconds(stationCode, stationType);
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.detailHide);
   }
 
+  
   componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
     const nextStationCode = nextProps.match.params.stationCode;
@@ -75,7 +78,11 @@ class PvStation extends Component {
   componentWillUnmount() {
     clearTimeout(this.timeOutId);
     this.props.resetSingleStationStore();
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.detailHide,true);
   }
+
+  
 
   getTenSeconds = (stationCode, stationType) => { // 1min请求一次数据 单电站 工单列表  天气情况 
     this.props.getPvSingleStation({ stationCode });

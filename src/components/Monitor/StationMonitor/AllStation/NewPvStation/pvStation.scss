@@ -235,7 +235,7 @@
                 .staionCenter{
                     display: flex;
                     justify-content: space-between;
-                    margin: 4px 12px;
+                    margin: 4px 8px;
                     line-height: 30px;
                     border-bottom: 1px solid #dfdfdf;
                     .column{
@@ -243,13 +243,13 @@
                     }
                     .staionCenterLeft{
                         .dataName{
-                            width:70px;
+                            width:60px;
                             margin-right: 6px;
                         }
                     }
                     .staionCenterRight{
                         .dataName{
-                            width:56px;
+                            width:70px;
                             margin-right: 6px;
                         }
                     }
@@ -266,7 +266,7 @@
                     border-top: 1px solid #dfdfdf;
                     margin: 0 12px;
                     .dataColumn{
-                        flex: 1;
+                        flex: 1 auto;
                         justify-content: center;
                         border-right: 1px solid #dfdfdf;
                         display: flex;
@@ -286,9 +286,11 @@
                 .bottom{
                     .red{
                         color:#a42b2c;  
+                        margin-left: 4px;
                     }
                     .grey{
                         color:#666666;
+                        margin-left: 4px;
                     }
                 }
             }
