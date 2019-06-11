@@ -356,8 +356,42 @@ function *getReserveList({ payload }) { // 获取某库存信息列表
     })
   }
 }
-      // deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
-      // recallStockInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
+
+function *deleteReserveInfo({ payload }){ // 删除库存中某物资
+  const url = `${APIBasePath}${operation.deleteReserveInfo}`;
+  try {
+    const response = yield call(axios.delete, url, { params: payload });
+    if (response.data.code === '10000') { // 删除成功, 重新请求物资列表.
+      const { reserveInventoryId } = yield select(state => state.operation.warehouseManage.toJS());
+      yield fork(getReserveList, {
+        payload: {
+          inventoryId: reserveInventoryId,
+        }
+      })
+    } else { throw response.data }
+  } catch (err) {
+    console.log(err);
+    message.err(`删除失败, ${err.message}`);
+  }
+}
+
+function *recallReserveInfo({ payload }){ // 撤回库存中某物资的出库
+  const url = `${APIBasePath}${operation.recallReserveInfo}`;
+  try {
+    const response = yield call(axios.post, url, payload);
+    if (response.data.code === '10000') { // 撤回后重新请求物资列表.
+      const { reserveInventoryId } = yield select(state => state.operation.warehouseManage.toJS());
+      yield fork(getReserveList, {
+        payload: {
+          inventoryId: reserveInventoryId,
+        }
+      })
+    } else { throw response.data }
+  } catch (err) {
+    console.log(err);
+    message.err(`撤回失败, ${err.message}`);
+  }
+}
 
 export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getWarehouses, getWarehouses);
@@ -375,5 +409,7 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.takeoutWarehouseMaterial, takeoutWarehouseMaterial);
   yield takeLatest(warehouseManageAction.getReserveDetail, getReserveDetail);
   yield takeLatest(warehouseManageAction.getReserveList, getReserveList);
+  yield takeLatest(warehouseManageAction.deleteReserveInfo, deleteReserveInfo);
+  yield takeLatest(warehouseManageAction.recallReserveInfo, recallReserveInfo);
 }
 

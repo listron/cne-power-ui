@@ -3,6 +3,7 @@
 .sparePage{
   table{
     .assetsPath{
+      @include overflowText();
       word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -152,6 +153,46 @@
       }
       .ant-form-explain{
         margin-left: 8px;
+      }
+    }
+  }
+}
+
+.reserve{ // 库存表格
+  .pagination{
+    display: flex;
+    justify-content: flex-end;
+    height: 48px;
+    line-height: 48px;
+    align-items: center;
+  }
+  table{
+    .supplierName, .manufactorName, .remarks{
+      @include overflowText();
+    }
+    .inWarehouse, .outWarehouse{
+      padding: 2px;
+      border-radius: 4px;
+      background-color: rgb(199, 206, 178);
+      color: #fff;
+    }
+    .inWarehouse{
+      background-color: $themeColor;
+    }
+    .handle{
+      cursor: pointer;
+      padding-right: 24px;
+    }
+  }
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 8px;
+    }
+    .ant-table .ant-table-thead, .ant-table .ant-table-tbody{
+      :local{
+        .materialCode{
+          padding-left: 24px;
+        }
       }
     }
   }

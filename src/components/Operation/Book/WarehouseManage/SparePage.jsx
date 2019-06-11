@@ -30,9 +30,10 @@ class SparePage extends Component {
   }
 
   getReserveDetail = (record) => { // 操作 - 查看库存
-    const { showSide, getReserveDetail, getReserveList, reserveParams } = this.props;
+    const { showSide, getReserveDetail, getReserveList, reserveParams, changeStore } = this.props;
     const { inventoryId } = record;
     showSide('reserve');
+    changeStore({ reserveInventoryId: inventoryId })
     getReserveDetail({ inventoryId }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
   }

@@ -195,8 +195,8 @@ export default {
       getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
       getReserveDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
       getReserveList: '/v3/inventory/inventoryInfoPageList', // 获取某库存信息列表
-      deleteStockInfo: '/v3/inventory/record/del', // 删除库存中某物资
-      recallStockInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
+      deleteReserveInfo: '/v3/inventory/record/del', // 删除库存中某物资
+      recallReserveInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
       // 台账-出入库记录
       warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
       warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表

@@ -16,6 +16,8 @@ const warehouseManageAction = {
   takeoutWarehouseMaterial: Symbol('takeoutWarehouseMaterial'),
   getReserveDetail: Symbol('getReserveDetail'),
   getReserveList: Symbol('getReserveList'),
+  deleteReserveInfo: Symbol('deleteReserveInfo'),
+  recallReserveInfo: Symbol('recallReserveInfo'),
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
@@ -53,6 +55,7 @@ const initState = Immutable.fromJS({
   originTakeoutInfo: {}, // 出库对象基本信息
   materialDetailsList: [], // 出库操作 选定库存对应所有物资列表
   takeoutStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
+  reserveInventoryId: null, // 查看库存对象的id
   reserveDetail: {}, // 库存对象基本信息
   reserveParams: { // 库存列表请求参数
     pageNum: 1,
