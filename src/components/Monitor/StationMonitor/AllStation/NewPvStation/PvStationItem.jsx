@@ -153,8 +153,8 @@ class PvStationItem extends React.Component {
                   const dayPower = divideFormarts(item.dayPower, powerUnit);
                   const equivalentHours = item.equivalentHours;
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
-                  const alarm=item.alarmNum>0;
-                  const invertType=item.lowEffType===1 ?'201':'206'
+                  const alarm = item.alarmNum > 0;
+                  const invertType = item.lowEffType === 1 ? '201' : '206'
                   return (
                     <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
                       <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
@@ -169,7 +169,7 @@ class PvStationItem extends React.Component {
                               <span className={styles.changeNum}>{item.stationUnitCount}</span> 台
                             </div>
                             {`${currentStatus}` === '500' && <i className="iconfont icon-outage" />}
-                            {item.alarmNum>0 && <i className="iconfont icon-alarm" />}
+                            {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
                           </div>
                         </div>
                         <div className={styles.staionCenter}>
@@ -189,7 +189,7 @@ class PvStationItem extends React.Component {
                               <div> <span className={styles.changeNum}> {powerPoint(dayPower)}</span> {powerUnit} </div>
                             </div>
                             <div className={styles.column}>
-                              <span className={styles.dataName}> 日等效时</span>
+                              <span className={styles.dataName}> 日利用小时</span>
                               <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2, true)}</span> h </div>
                             </div>
                           </div>
@@ -204,17 +204,17 @@ class PvStationItem extends React.Component {
                       </div>
                       <div className={styles.bottom}>
                         <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
-                          异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.anomalousBranchNum, '--', 0)}</span>
+                          异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.anomalousBranchNum, '--', 0)}</span>
                         </Link>
                         <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
-                          低效逆变器  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
+                          低效逆变器  <span className={styles[`${item.lowEfficiencyInverterNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
                         </Link>
                         <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} className={styles.dataColumn}>
                           <div>
-                            告警  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}>{dataFormats(item.alarmNum, '--', 0)}</span>
+                            告警  <span className={styles[`${item.alarmNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.alarmNum, '--', 0)}</span>
                           </div>
                         </Link>
-                      </div>
+                      </div> 
                     </div>
                   )
                 })}

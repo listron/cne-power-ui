@@ -37,8 +37,8 @@ class pvStationHeader extends React.Component {
         <div ref={'allStaionStatic'} className={styles.allStaionStatic}></div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span>{realCapacityUnit}</div>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>{realTimePowerUnit}</div>
+            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
+            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
           </div>
           <OwnProgress percent={percent} active={true} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
@@ -49,7 +49,7 @@ class pvStationHeader extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{DeviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-          <div> 日等效时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
+          <div> 日利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span> {powerUnit}  </div>

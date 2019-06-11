@@ -20,6 +20,9 @@
             .hot{
                 color:#e08031;
             }
+            .singleLine{
+                border-top:2px dotted rgba(25, 148, 117, 0.6)
+            }
             @mixin  triangle(){
                 content: '';
                 width: 0px;

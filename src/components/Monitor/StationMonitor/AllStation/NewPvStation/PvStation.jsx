@@ -36,7 +36,8 @@ class PvStation extends React.Component {
       pageSize: 10,
       pvStationShow: 'stationBlock',
       detailVisible: false,
-      areaChecked: false
+      areaChecked: false,
+      queryFirst: true
     }
   }
 
@@ -44,12 +45,16 @@ class PvStation extends React.Component {
   componentDidMount() {
     const { regionName } = this.props;
     this.props.getPvRealData({ regionName })
-    this.props.getPvChartsData({ regionName })
+    const main = document.getElementById('main');
+    main && main.addEventListener('click', this.detailHide);
   }
 
-  componentDidUpdate() {
 
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('click', this.detailHide,true);
   }
+
 
   onHandleAlarm = (checked) => {
     this.setState({
@@ -109,16 +114,23 @@ class PvStation extends React.Component {
   }
 
   detailShow = () => { // 查看详情
-    this.setState({ detailVisible: true })
+    this.setState({ detailVisible: true });
+    const { regionName } = this.props;
+    const { queryFirst } = this.state;
+    if (queryFirst) { // 只请求一次
+      this.props.getPvChartsData({ regionName });
+      this.setState({ queryFirst: !queryFirst })
+    }
+
   }
 
   detailHide = (value) => { // 关闭详情
-    this.setState(value)
+    this.setState({ detailVisible: false })
   }
 
   render() {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible, areaChecked } = this.state;
-    const { pvMonitorStation, loading, monitorPvUnit,history } = this.props;
+    const { pvMonitorStation, loading, monitorPvUnit, history } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
     return (
       <div className={styles.pvStation}>
