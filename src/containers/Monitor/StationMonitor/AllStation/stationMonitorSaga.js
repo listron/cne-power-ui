@@ -231,7 +231,7 @@ function* dayPower(action) { // 多电站日发电量与等效时图
 function* monthPower(action) { // 多电站月发电量与等效时图
   const { payload } = action;
   const { regionName } = payload;
-  const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+  const endDate = moment().endOf('year').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/monthPower`;
@@ -381,7 +381,7 @@ function* getPvCapabilitydiagrams(action) {
 function* getPvRealData(action) { // 获取光伏的数据
   const { firtQuery = true, waiting } = action;
   if (waiting) {
-    yield delay(600000); // 一分钟
+    yield delay(60000); // 一分钟
   }
   if (firtQuery) {
     yield put({
