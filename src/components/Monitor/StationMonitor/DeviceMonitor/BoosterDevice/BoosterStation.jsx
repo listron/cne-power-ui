@@ -62,7 +62,7 @@ class BoosterStation extends Component {
     let boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode } = this.props.match.params;
-    const currentStation = stations.find(e => e.stationCode === stationCode) || {};
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const { stationName, stationType } = currentStation;
     const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
     const breadCrumbData = {
