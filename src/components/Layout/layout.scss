@@ -82,7 +82,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
-      background:#f2f3f4;
+      background:#3f3f3f;
       border-right: solid 1px $promptColor;
       border-bottom: solid 1px $promptColor;
       .action {
@@ -99,33 +99,33 @@
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: auto;
-      background:#fbfbfb;
+      background:#3f3f3f;
       border-right: solid 1px $promptColor;
       :global{
         .iconfont {
           margin-right:5px;
         }
         .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
-          background-color: #fbfbfb;
+          background-color: #3f3f3f;
         }
         .ant-menu-item:hover{
-          background-color: #f4f4f4;
+          background-color: #ceebe0;
         }
         .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
           &:hover {
             color: $themeColor;
           }
-          color: $darkColor;
+          color: $slideFontColor;
           a{
-            color: $darkColor;
+            color: $slideFontColor;
           }
           a:hover {
             color: $themeColor;
           }
           .ant-menu-item {
-            color: $darkColor;
+            color: $slideFontColor;
             a{
-              color: $darkColor;
+              color: $slideFontColor;
             }
           }
         }
@@ -133,7 +133,7 @@
           border-color: $themeColor;
         }
         .ant-menu-item-selected {
-          background-color: transparent;
+          background: $slideSelectColor;
           color: $themeColor;
           a{
             color: $themeColor;
@@ -148,7 +148,7 @@
           }
         }
         .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before{
-          background: linear-gradient(to right, $themeColor, $themeColor);
+          background:$slideSelectColor;
         }
       }
     }
