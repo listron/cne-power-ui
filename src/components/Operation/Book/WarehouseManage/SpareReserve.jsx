@@ -3,6 +3,7 @@ import { Icon, Table, Select, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ReserveDetail } from './ManageCommon/ReserveDetail';
+import WarningTip from '../../../Common/WarningTip';
 import CommonPagination from '../../../Common/CommonPagination';
 import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
@@ -14,6 +15,7 @@ export default class SpareReserve extends Component {
     reserveInventoryId: PropTypes.number,
     reserveDetail: PropTypes.object,
     reserveListInfo: PropTypes.object,
+    reserveListLoading: PropTypes.bool,
     reserveParams: PropTypes.object,
     backList: PropTypes.func,
     changeStore: PropTypes.func,
@@ -21,6 +23,13 @@ export default class SpareReserve extends Component {
     getReserveList: PropTypes.func,
     deleteReserveInfo: PropTypes.func,
     recallReserveInfo: PropTypes.func,
+  }
+
+  state = {
+    remindShow: false,
+    remindText: '',
+    materialCode: null,
+    confirmRemind: () => {}
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
@@ -133,7 +142,7 @@ export default class SpareReserve extends Component {
           return (
             <span
               className={styles.handle}
-              onClick={isEntry > 0 ? () => this.deleteReserve(record) : () => this.takebackReserve(record)}
+              onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
             >
               {isEntry > 0 ? <i className="iconfont icon-del" /> : <Icon type="enter" />}
               <span>{isEntry > 0 ? '删除' : '撤回'}</span>
@@ -144,13 +153,36 @@ export default class SpareReserve extends Component {
     ]
   }
 
-  deleteReserve = ({ materialCode }) => { // 删除物资
+  showRemindModal = ({ materialCode }, key) => { // key: 'delete' 'takeback'
+    this.setState({
+      remindShow: true,
+      materialCode,
+      remindText: key === 'delete' ? '确定删除么' : '确定撤回且重新入库么',
+      confirmRemind: key === 'delete' ? this.deleteReserve : this.takebackReserve
+    })
+  }
+
+  hideRemindModal = () => { // 隐藏删除/撤回弹框
+    this.setState({
+      remindShow: false,
+      remindText: '',
+      materialCode: null,
+      confirmRemind: () => {}
+    })
+  }
+
+
+  deleteReserve = () => { // 删除物资
     const { deleteReserveInfo } = this.props;
+    const { materialCode } = this.state;
+    this.hideRemindModal();
     deleteReserveInfo({ materialCode });
   }
 
-  takebackReserve = ({ materialCode }) => { // 撤回物资
+  takebackReserve = () => { // 撤回物资
     const { recallReserveInfo } = this.props;
+    const { materialCode } = this.state;
+    this.hideRemindModal();
     recallReserveInfo({ materialCode });
   }
 
@@ -170,7 +202,8 @@ export default class SpareReserve extends Component {
   }
 
   render(){
-    const { reserveDetail, reserveListInfo, tabName, reserveParams } = this.props;
+    const { remindShow, remindText, confirmRemind } = this.state;
+    const { reserveDetail, reserveListInfo, tabName, reserveParams, reserveListLoading } = this.props;
     const { pageSize, pageNum } = reserveParams;
     const { pageCount = 0 } = reserveListInfo;
     const dataList = reserveListInfo.dataList || [];
@@ -190,13 +223,14 @@ export default class SpareReserve extends Component {
           />
         </div>
         <Table
-          // loading={loading}
+          loading={reserveListLoading}
           onChange={this.tableChange}
           columns={this.reserveColumn()}
           dataSource={dataList.map(e => ({ key: e.materialCode, ...e }))}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
+        {remindShow && <WarningTip onOK={confirmRemind} onCancel={this.hideRemindModal} value={remindText} />}
       </section>
     )
   }

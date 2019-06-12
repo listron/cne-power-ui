@@ -387,7 +387,15 @@ function *getReserveDetail({ payload }) { // 获取某库存详情
 function *getReserveList({ payload }) { // 获取某库存信息列表
   const url = `${APIBasePath}${operation.getReserveList}`;
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { reserveListLoading: true }
+    })
     const response = yield call(axios.post, url, payload);
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { reserveListLoading: false }
+    })
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,
@@ -416,7 +424,6 @@ function *deleteReserveInfo({ payload }){ // 删除库存中某物资
       })
     } else { throw response.data }
   } catch (err) {
-    console.log(err);
     message.err(`删除失败, ${err.message}`);
   }
 }
@@ -434,7 +441,6 @@ function *recallReserveInfo({ payload }){ // 撤回库存中某物资的出库
       })
     } else { throw response.data }
   } catch (err) {
-    console.log(err);
     message.err(`撤回失败, ${err.message}`);
   }
 }
