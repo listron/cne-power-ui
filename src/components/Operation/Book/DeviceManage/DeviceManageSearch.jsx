@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import styles from './deviceManage.scss';
-import StationSelect from '../../../Common/StationSelect';
-import { Select } from 'antd';
-const { Option } = Select
+import React, { Component } from "react";
+import styles from "./deviceManage.scss";
+import StationSelect from "../../../Common/StationSelect";
+import { Select } from "antd";
+const { Option } = Select;
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class DeviceManageSearch extends Component {
   static propTypes = {
@@ -18,42 +18,60 @@ class DeviceManageSearch extends Component {
     changeCommonStore: PropTypes.func,
     getDeviceList: PropTypes.func,
     getStationDeviceTypes: PropTypes.func,
+    getStationDeviceType: PropTypes.func,
+    getfactorsDeviceMode: PropTypes.func,
     getDeviceModel: PropTypes.func,
     changeDeviceManageStore: PropTypes.func,
     getDeviceFactors: PropTypes.func,
     manufactorId: PropTypes.string,
     deviceFactorsList: PropTypes.array,
-  }
+    stationDevices: PropTypes.array,
+    factorsDeviceModeData: PropTypes.array
+  };
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {};
   }
-  selectStation = (stations) => {
-    const { getStationDeviceTypes, getDeviceList, queryParams, changeDeviceManageStore } = this.props;
-    getStationDeviceTypes({
-      stationCodes: stations[0].stationCode,
+  selectStation = stations => {
+    const {
+      getStationDeviceTypes,
+      getStationDeviceType,
+      getDeviceList,
+      queryParams,
+      changeDeviceManageStore
+    } = this.props;
+    // getStationDeviceTypes({
+    //之前的获取电站下设备类型接口
+    //   stationCodes: stations[0].stationCode
+    // });
+    getStationDeviceType({
+      stationCode: stations[0].stationCode
     });
     getDeviceList({
       ...queryParams,
       stationCode: stations[0].stationCode,
       deviceTypeCode: null,
       deviceModeCode: null,
-      manufactorId:null,
-      pageNum: 1,
-    })
+      manufactorId: null,
+      pageNum: 1
+    });
     changeDeviceManageStore({
       factorsDeviceModeData: [],
-      deviceFactorsList: [],
-    })
-  }
-  selectDeviceType = (value) => {
-    const { getDeviceModel, getDeviceList, queryParams,  changeDeviceManageStore } = this.props;
+      deviceFactorsList: []
+    });
+  };
+  selectDeviceType = value => {
+    const {
+      getDeviceModel,
+      getDeviceList,
+      queryParams,
+      changeDeviceManageStore
+    } = this.props;
     this.props.getDeviceFactors({
       deviceTypeCode: value,
-      orderField: '1',
-      orderMethod: 'desc',
-    })
+      orderField: "1",
+      orderMethod: "desc"
+    });
     // getDeviceModel({
     //   stationCode,
     //   deviceTypeCode: value,
@@ -61,40 +79,50 @@ class DeviceManageSearch extends Component {
     getDeviceList({
       ...queryParams,
       deviceTypeCode: value,
-      manufactorId:null,
+      manufactorId: null,
       deviceModeCode: null,
-      pageNum: 1,
-    })
+      pageNum: 1
+    });
     changeDeviceManageStore({
-      factorsDeviceModeData: [],
-    })
-  }
-  selectfactory = (value) => {
+      factorsDeviceModeData: []
+    });
+  };
+  selectfactory = value => {
     const { getDeviceList, queryParams, getfactorsDeviceMode } = this.props;
     getfactorsDeviceMode({
       manufactorId: value,
-      assetsId:'0',
-    })
+      assetsId: ""
+    });
     getDeviceList({
       ...queryParams,
       manufactorId: value,
       deviceModeCode: null,
-      pageNum: 1,
-    })
-
-  }
-  selectDeviceModel = (value) => {
+      pageNum: 1
+    });
+  };
+  selectDeviceModel = value => {
     const { getDeviceList, queryParams } = this.props;
     getDeviceList({
       ...queryParams,
       deviceModeCode: value,
-      pageNum: 1,
-    })
-  }
- 
+      pageNum: 1
+    });
+  };
+
   render() {
-    const { allStationBaseInfo, stationDeviceTypes, deviceModels, deviceTypeCode, deviceModeCode, stationCode, deviceFactorsList, manufactorId, factorsDeviceModeData } = this.props;
-    const typeSelectDisable = stationDeviceTypes.length === 0;
+    const {
+      allStationBaseInfo,
+      stationDeviceTypes,
+      deviceModels,
+      deviceTypeCode,
+      deviceModeCode,
+      stationCode,
+      deviceFactorsList,
+      manufactorId,
+      factorsDeviceModeData,
+      stationDevices
+    } = this.props;
+    const typeSelectDisable = stationDevices.length === 0;
     const modelSelectDisable = factorsDeviceModeData.length === 0;
     return (
       <div className={styles.deviceManageSearch}>
@@ -105,25 +133,68 @@ class DeviceManageSearch extends Component {
           holderText="请选择电站"
           value={allStationBaseInfo.filter(e => e.stationCode === stationCode)}
         />
-        <Select className={styles.typeSelect} onChange={this.selectDeviceType} value={deviceTypeCode} placeholder="请选择设备类型" disabled={typeSelectDisable}>
-          <Option key={null} value={null}>{'全部设备类型'}</Option>
-          {stationDeviceTypes.map(e => {
-            if (!e) { return null; }
-            return <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>{e.deviceTypeName}</Option>
+        <Select
+          className={styles.typeSelect}
+          onChange={this.selectDeviceType}
+          value={deviceTypeCode}
+          placeholder="请选择设备类型"
+          disabled={typeSelectDisable}
+        >
+          <Option key={null} value={null}>
+            {"全部设备类型"}
+          </Option>
+          {/* {stationDeviceTypes.map(e => { */}
+          {stationDevices.map(e => {
+            if (!e) {
+              return null;
+            }
+            return (
+              <Option key={e.deviceTypeCode} value={e.deviceTypeCode}>
+                {e.deviceTypeName}
+              </Option>
+            );
           })}
         </Select>
-        <Select className={styles.modelSelect} onChange={this.selectfactory} value={manufactorId} placeholder="请选择设备厂家" disabled={deviceFactorsList.length === 0}>
-          <Option key={null} value={null}>{'全部厂家'}</Option>
+        <Select
+          className={styles.modelSelect}
+          onChange={this.selectfactory}
+          value={manufactorId}
+          placeholder="请选择设备厂家"
+          disabled={deviceFactorsList.length === 0}
+        >
+          <Option key={null} value={null}>
+            {"全部厂家"}
+          </Option>
           {deviceFactorsList.map(e => {
-            if (!e) { return null; }
-            return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>
+            if (!e) {
+              return null;
+            }
+            return (
+              <Option key={e.manufactorCode} value={e.manufactorId}>
+                {e.manufactorName}
+              </Option>
+            );
           })}
         </Select>
-        <Select className={styles.modelSelect} onChange={this.selectDeviceModel} value={deviceModeCode} placeholder="请选择设备型号" disabled={modelSelectDisable}>
-          <Option key={null} value={null}>{'全部设备型号'}</Option>
+        <Select
+          className={styles.modelSelect}
+          onChange={this.selectDeviceModel}
+          value={deviceModeCode}
+          placeholder="请选择设备型号"
+          disabled={modelSelectDisable}
+        >
+          <Option key={null} value={null}>
+            {"全部设备型号"}
+          </Option>
           {factorsDeviceModeData.map(e => {
-            if (!e) { return null; }
-            return <Option key={e.deviceModeCode} value={e.deviceModeCode}>{e.deviceModeName}</Option>
+            if (!e) {
+              return null;
+            }
+            return (
+              <Option key={e.deviceModeCode} value={e.deviceModeCode}>
+                {e.modeName}
+              </Option>
+            );
           })}
         </Select>
       </div>

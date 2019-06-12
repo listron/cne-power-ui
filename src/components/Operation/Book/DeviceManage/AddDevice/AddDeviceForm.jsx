@@ -212,7 +212,7 @@ class AddDeviceForm extends Component {
       addmanufactorId,
       addmodeId
     } = this.props;
-    console.log("factorsDeviceModeData: ", factorsDeviceModeData);
+
     const stationName = selectStation ? selectStation[0].stationName : "";
     const deviceTypeName = getFieldValue("deviceTypeCode");
     const deviceModeCodeValue = getFieldValue("deviceModeCode");
@@ -361,7 +361,7 @@ class AddDeviceForm extends Component {
                         return null;
                       } else {
                         return (
-                          <Option key={e.modeId} value={e.modeId}>
+                          <Option key={e.modeId} value={e.deviceModeCode}>
                             {e.modeName}
                           </Option>
                         );

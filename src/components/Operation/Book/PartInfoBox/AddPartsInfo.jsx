@@ -18,11 +18,9 @@ class AddPartsInfo extends React.Component {
     form: PropTypes.object,
     addPartInfo: PropTypes.func,
     getfactorsPartsMode: PropTypes.func,
-    detailPartsRecord: PropTypes.object,
     partsFactorsList: PropTypes.array,
     factorsPartsMode: PropTypes.array,
-    partInfoTree: PropTypes.array,
-    stationCode: PropTypes.num
+    partAssetsTree: PropTypes.array
   };
   constructor(props, context) {
     super(props, context);
@@ -148,7 +146,7 @@ class AddPartsInfo extends React.Component {
   render() {
     let {
       partsFactorsList,
-      partInfoTree,
+      partAssetsTree,
       factorsPartsMode,
       stationName,
       deviceName,
@@ -244,7 +242,7 @@ class AddPartsInfo extends React.Component {
                   value={"0"}
                   // selectable={false}
                 >
-                  {this.renderTreeNodes(partInfoTree)}
+                  {this.renderTreeNodes(partAssetsTree)}
                 </TreeNode>
               </TreeSelect>
             )}
