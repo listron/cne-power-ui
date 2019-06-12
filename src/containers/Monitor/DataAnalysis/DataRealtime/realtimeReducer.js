@@ -40,6 +40,8 @@ const initState = immutable.fromJS({
   pointInfo: [], // 选中设备内可选测点信息。
   chartRealtime: {}, // chart图 - 所有历史数据
   listRealtime: {}, // 表格内 - 分页后的历史数据
+
+  exportTime: null, // 导出的开始时间
 });
 
 const dataRealtime = (state = initState, action) => {

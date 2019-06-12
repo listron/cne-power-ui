@@ -17,6 +17,7 @@ class PointTree extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    chartRealtime: PropTypes.object,
     changeRealtimeStore: PropTypes.func,
   };
 
@@ -37,8 +38,10 @@ class PointTree extends Component {
 
   onPointsQuery = () => {
     const {
-      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, chartRealtime
     } = this.props;
+    const clickTime = new Date(); // 点击按钮的时间
+    
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
       getRealtimeChart({ queryParam });
@@ -49,6 +52,11 @@ class PointTree extends Component {
         listParam,
       });
     }
+
+    changeRealtimeStore({
+      exportTime: clickTime,
+      chartRealtime
+    })
   }
 
   expandTree = (expandedKeys) => {
