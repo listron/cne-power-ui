@@ -102,7 +102,7 @@ class PvmoduleList extends Component {
                 })}
               </div>
               <div className={styles.pvmoduleCont}>
-                {(tmpPvmoduleList.length > 0 ? tmpPvmoduleList.sort(this.compareName).map((item, index) => {
+                {(tmpPvmoduleList.length > 0 ? tmpPvmoduleList.map((item, index) => {
                   const { deviceCode, deviceName } = item;
                   const parentTypeCode = deviceCode.split('M')[1];
                   return (

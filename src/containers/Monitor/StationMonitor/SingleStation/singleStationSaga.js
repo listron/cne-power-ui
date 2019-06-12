@@ -131,7 +131,7 @@ function* getWeatherList(action) { // 获取单电站未来天气数据
   const { payload } = action;
   const url = `${APIBasePath}${monitor.getWeatherList}`;
   try {
-    const response = yield call(axios.get, url,{params:payload} );
+    const response = yield call(axios.get, url, { params: payload });
     if (response.data.code === '10000') {
       yield put({
         type: singleStationAction.changeSingleStationStore,
@@ -204,7 +204,6 @@ function* getWorkList(action) { // 获取单电站工单数统计
 function* getDeviceTypeFlow(action) { // 获取单电站设备类型流程图(设备示意图)
   const { payload } = action;
   const { stationCode } = payload;
-  console.log(1111)
   const url = `${APIBasePath}${monitor.getDeviceTypeFlow}${stationCode}`;
   try {
     const response = yield call(axios.get, url, payload);
@@ -253,10 +252,11 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
       yield put({
-        type: singleStationAction.getSingleStationSuccess,
+        type: singleStationAction.changeSingleStationStore,
         payload: {
           pvmoduleList: response.data.data.dataList || [],
-          pvLevelNums: response.data.data.pvLevelNums || {}
+          pvLevelNums: response.data.data.pvLevelNums || {},
+          loading: false,
         }
       });
     } else { throw 'error' }
@@ -267,7 +267,8 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
       payload: {
         pvmoduleList: [],
         pvAvgValue: '',
-        pvLevelNums: {}
+        pvLevelNums: {},
+        loading: false,
       }
     });
   }
@@ -870,9 +871,9 @@ function* getRadiationchart(action) { // 气象站图表的数据
 
 function* getNewDeviceTypeFlow(action) { // 获取单电站设备类型流程图(设备示意图)
   const { payload } = action;
-  const { stationCode,stationType } = payload;
+  const { stationCode, stationType } = payload;
   const url = `${APIBasePath}${monitor.getNewDeviceTypeFlow}${stationCode}`;
-//  let deviceTypeCode= stationType==='0'? '101':'1' // 光伏默认示意图  风电默认是风机
+  //  let deviceTypeCode= stationType==='0'? '101':'1' // 光伏默认示意图  风电默认是风机
   try {
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {

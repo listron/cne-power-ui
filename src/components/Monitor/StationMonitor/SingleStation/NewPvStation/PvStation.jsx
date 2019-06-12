@@ -71,6 +71,7 @@ class PvStation extends Component {
       clearTimeout(this.timeOutId);
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOnceData(nextStationCode, nextStationType);
+      this.props.changeSingleStationStore({ deviceTypeCode: '1' })
     }
   }
 
@@ -130,7 +131,6 @@ class PvStation extends Component {
     const { stationCode } = this.props.match.params;
     const {queryFirst}=this.state;
     if(queryFirst){
-      console.log('111')
       this.props.getCapabilityDiagram({  // 出力图
         stationCode,
         stationType:'1',

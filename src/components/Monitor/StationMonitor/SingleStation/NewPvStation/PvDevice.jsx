@@ -15,7 +15,18 @@ class PvDevice extends Component {
 
     constructor() {
         super();
+        this.state = {
+            choiceCode: '1'
+        }
 
+    }
+
+    componentDidUpdate(prevProps) {
+        const { deviceTypeCode } = prevProps;
+        const { choiceCode } = this.state;
+        if (deviceTypeCode!==choiceCode){
+            this.setState({choiceCode:deviceTypeCode})
+        }
     }
 
     getDeviceTypeFlow = (deviceTypeFlow, list = []) => {
@@ -24,7 +35,7 @@ class PvDevice extends Component {
                 list.push({
                     deviceTypeCode: e.code,
                     deviceTypeName: e.name,
-                    key:e.code,
+                    key: e.code,
                 })
                 if (e.parents) {
                     this.getDeviceTypeFlow(e.parents, list)
@@ -37,21 +48,24 @@ class PvDevice extends Component {
 
     deviceSelect = (value) => {
         this.props.changeSingleStationStore({ deviceTypeCode: value });
+        this.setState({ choiceCode: value })
     }
 
-    goSchematic=()=>{ // 返回示意图
+    goSchematic = () => { // 返回示意图
         this.props.changeSingleStationStore({ deviceTypeCode: '1' });
+        this.setState({ choiceCode: '1' })
     }
 
 
     render() {
-        const {deviceTypeFlow,deviceTypeCode}=this.props;
+        const { deviceTypeFlow, deviceTypeCode } = this.props;
+        const { choiceCode } = this.state;
         const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
         return (
             <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
                 <div className={styles.top}>
-                    <Select
-                        value={deviceTypeCode}
+                    {<Select
+                        value={choiceCode}
                         style={{ width: 140 }}
                         onChange={this.deviceSelect}
                     >
@@ -61,9 +75,8 @@ class PvDevice extends Component {
                         })}
                         <Option value={'0'} key={'0'}>{'电能表'}</Option>
                         <Option value={'203'} key={'203'}>{'气象站'}</Option>
-                    </Select>
-                    
-                    <div className={`${deviceTypeCode==='1'&& styles.icon} ${styles.activeIcon}`} onClick={this.goSchematic}> <i className={'iconfont icon-back2'}></i></div>
+                    </Select>}
+                    <div className={`${deviceTypeCode === '1' && styles.icon} ${styles.activeIcon}`} onClick={this.goSchematic}> <i className={'iconfont icon-back2'}></i></div>
                 </div>
                 <div className={styles.deviceList} >
                     <DeviceList {...this.props} deviceTypeList={deviceTypeList} />

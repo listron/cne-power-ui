@@ -89,6 +89,7 @@ class WindStation extends Component {
       clearTimeout(this.timeOutId);
       this.props.resetSingleStationStore();
       this.getTenSeconds(nextStationCode, nextStationType);
+      this.props.changeSingleStationStore({ deviceTypeCode: '101' })
       this.getPowerDataTenMin({ stationCode: nextStationCode, stationType: nextStationType });
       this.props.getNewDeviceTypeFlow({ stationCode: nextStationCode, stationType: nextStationType  });//获取设备类型流程图
       this.props.stopSingleRealData();
