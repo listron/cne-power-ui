@@ -150,7 +150,9 @@ const mapDispatchToProps = dispatch => ({
   addPartsModes: payload =>
     dispatch({ type: partInfoAction.addPartsModes, payload }), //新建组件型号
   getDevicePartInfo: payload =>
-    dispatch({ type: partInfoAction.getDevicePartInfo, payload }) //通过设备获得组件详情树
+    dispatch({ type: partInfoAction.getDevicePartInfo, payload }), //通过设备获得组件详情树
+  getPartAssetsTree: payload =>
+    dispatch({ type: partInfoAction.getPartAssetsTree, payload }) //通过设备获得组件详情树
 });
 
 export default connect(

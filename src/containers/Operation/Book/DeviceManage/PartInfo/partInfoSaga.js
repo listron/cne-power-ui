@@ -401,7 +401,9 @@ function* addPartsFactors(action) {
       });
       const payload = yield select(state => ({
         orderField: state.operation.partInfo.get("orderField"),
-        orderMethod: state.operation.partInfo.get("orderMethod")
+        orderMethod: state.operation.partInfo.get("orderMethod"),
+        deviceTypeCode: state.operation.partInfo.get("deviceTypeCode"),
+        assetsIds: state.operation.partInfo.get("assetsIds")
       }));
       yield put({
         type: partInfoAction.getPartsFactorsList,
@@ -482,6 +484,34 @@ function* copyPartInfo(action) {
     yield put({
       type: partInfoAction.changePartInfoStore,
       payload: { loading: false }
+    });
+  }
+}
+function* getPartAssetsTree(action) {
+  //获取新增和编辑的生产资产树，通过设备全编码,deviceFullCode
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.getPartAssetsTree}/${
+    payload.deviceFullcode
+  }`;
+  // const url = `/mock/v3/ledger/assetslist`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === "10000") {
+      yield put({
+        type: partInfoAction.changePartInfoStore,
+        payload: {
+          ...payload,
+          partAssetsTree: response.data.data || {}
+        }
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: partInfoAction.changePartInfoStore,
+      payload: { ...payload, loading: false }
     });
   }
 }

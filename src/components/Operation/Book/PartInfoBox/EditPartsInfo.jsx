@@ -19,7 +19,7 @@ class EditPartsInfo extends React.Component {
     getfactorsPartsMode: PropTypes.func,
     addPartInfo: PropTypes.func,
     form: PropTypes.object,
-    detailPartsRecord: PropTypes.object,
+    detailPartInfo: PropTypes.object,
     partsFactorsList: PropTypes.array,
     factorsPartsMode: PropTypes.array,
     partInfoTree: PropTypes.array
@@ -75,7 +75,7 @@ class EditPartsInfo extends React.Component {
       if (!err) {
         this.props.editPartInfo({
           ...values,
-          partsId: this.props.detailPartsRecord.partsId
+          partsId: this.props.partsId
         });
         this.props.changePartInfoStore({ showPage: "list" });
       }
@@ -110,8 +110,9 @@ class EditPartsInfo extends React.Component {
     let {
       partsFactorsList,
       partInfoTree,
+      partAssetsTree,
       factorsPartsMode,
-      detailPartsRecord
+      detailPartInfo
     } = this.props;
     const {
       stationName,
@@ -124,7 +125,7 @@ class EditPartsInfo extends React.Component {
       partsModeId,
       manufactorId,
       partsModeName
-    } = detailPartsRecord;
+    } = detailPartInfo;
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
     let {
@@ -205,6 +206,7 @@ class EditPartsInfo extends React.Component {
                   value={"0"}
                   // selectable={false}
                 >
+                  {/* {this.renderTreeNodes(partAssetsTree)} */}
                   {this.renderTreeNodes(partInfoTree)}
                 </TreeNode>
               </TreeSelect>
@@ -235,7 +237,7 @@ class EditPartsInfo extends React.Component {
                   } else {
                     return (
                       <Option key={e.manufactorCode} value={e.manufactorId}>
-                        {e.modeName}
+                        {e.manufactorName}
                       </Option>
                     );
                   }
