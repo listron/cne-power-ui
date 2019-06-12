@@ -96,16 +96,12 @@ class MonthPlanPower extends Component {
                             <div class=${styles.tooltipContainer}> ${paramsItem}</div>
                         </div>`
                     )
-                }
+                },
+                axisPointer: {
+                    type: 'cross',
+                },
             },
-            axisPointer: {
-                type: 'line',
-                snap: true,
-                lineStyle: {
-                    width: 38,
-                    color: 'rgba(150,150,150,0.3)'
-                }
-            },
+           
             calculable: false,
             xAxis: [
                 {

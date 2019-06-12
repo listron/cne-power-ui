@@ -122,7 +122,7 @@ class DayPower extends Component {
                         color: fontColor,
                         interval: 0,
                         formatter: (value) => {
-                            return moment(value).format('DD')
+                            return moment(value).format('MM-DD')
                         }
                     },
                     axisTick: { show: false },

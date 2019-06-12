@@ -186,7 +186,7 @@
                     bottom:-13px;
                     border:2px dotted rgba(25, 148, 117, 0.6);
                     background:rgba(206, 235, 224, 0.6);
-                    padding: 0 20px 0 8px;
+                    padding: 0 8px 0 8px;
                     cursor: pointer;
                     &::before{
                         @include triangle();
@@ -200,7 +200,7 @@
                     bottom:-13px;
                     border:2px dotted rgba(25, 148, 117, 0.6);
                     background:rgba(206, 235, 224, 0.6);
-                    padding: 0 20px 0 8px;
+                    padding: 0 8px 0 8px;
                     cursor: pointer;
                     &::before{
                         @include triangle();

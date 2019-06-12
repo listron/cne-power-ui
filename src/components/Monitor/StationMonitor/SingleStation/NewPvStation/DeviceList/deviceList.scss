@@ -453,6 +453,12 @@ $arlam_color:#a42b2c;
       display: flex;
       align-items: center;
       color: $darkColor;
+      .name{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 180px;
+      }
     }
     .deviceValue{
       font-size: 12px;
@@ -593,7 +599,6 @@ $arlam:#ff8e9c;
       }
     }
   }
-
   .alarm{
     .deviceName{
       background: $arlam;
@@ -680,6 +685,10 @@ $arlam:#ff8e9c;
             margin: 0px 4px 4px 0;
           }
         }
+        .listWrap{
+          display: flex;
+          flex-wrap: wrap;
+        }
         .parentDeviceName{
           margin: 0 0 8px 0;
           .underlin{
@@ -761,7 +770,6 @@ $arlam:#ff8e9c;
             .branchStatus{
               display: flex;
               align-items: center;
-              justify-content: center;
               width: 146px;
             }
             .rect{

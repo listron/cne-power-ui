@@ -114,8 +114,9 @@ class MonthPower extends Component {
     }
 
     drawCharts = (params) => {
-        let { powerData = [], powerUnit, loading } = params;
+        let { powerData = [], powerUnit } = params;
         const { intervalTime } = this.state;
+        const xData=powerData.map(e => e.time)
         const actualPower = powerData.map(e => chartPowerPoint(divideFormarts(e.actualPower, powerUnit), '--', 2, true));  // 发电量
         const filterMonthPower = powerData.filter(e => e.actualPower);
         const theoryPower = powerData.map(e => chartPowerPoint(divideFormarts(e.theoryPower, powerUnit), '--', 2, true)); // 计划发电量
@@ -180,21 +181,17 @@ class MonthPower extends Component {
                             <div class=${styles.tooltipContainer}> ${paramsItem}</div>
                         </div>`
                     )
-                }
+                },
+                axisPointer: {
+                    type: 'shadow',
+                },
             },
-            axisPointer: {
-                type: 'line',
-                snap: true,
-                lineStyle: {
-                    width: 38,
-                    color: 'rgba(150,150,150,0.3)'
-                }
-            },
+           
             calculable: false,
             xAxis: [
                 {
                     type: 'category',
-                    data: powerData.map(e => e.time),
+                    data: xData,
                     axisLine: {
                         lineStyle: {
                             color: lineColor,
@@ -206,7 +203,7 @@ class MonthPower extends Component {
                         formatter: (value) => {
                             const { intervalTime } = this.state;
                             if (intervalTime === 0) {
-                              return moment(value).format('MM-DD');
+                                return moment(value).format('MM-DD');
                             }
                             if (intervalTime === 1) {
                                 return moment(value).format('MM');
@@ -271,15 +268,27 @@ class MonthPower extends Component {
                 },
 
             ],
-            dataZoom: [{
+            series: [
+                ...seriesType,
+                {
+                    name: '累计辐射',
+                    type: 'line',
+                    data: getDefaultData(instantaneous),
+                    color: '#f9b600',
+                    yAxisIndex: 1,
+                },
+            ]
+        }
+        if(intervalTime===0){
+            powerOption.dataZoom=[{
                 type: 'slider',
-                show:intervalTime===0,
-                realtime: intervalTime===0,
+                show: true,
+                realtime: true,
                 filterMode: 'filter',
                 startValue: powerData.length > 0 && powerData.length - 7,
                 endValue: powerData.length > 0 && powerData.length - 1,
                 bottom: 15,
-                showDetail:false,
+                showDetail: false,
                 handleSize: '80%',
                 handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
                 backgroundColor: 'rgba(213,219,228,.8)',
@@ -295,17 +304,7 @@ class MonthPower extends Component {
                     shadowOffsetX: 2,
                     shadowOffsetY: 2
                 }
-            }],
-            series: [
-                ...seriesType,
-                {
-                    name: '累计辐射',
-                    type: 'line',
-                    data: getDefaultData(instantaneous),
-                    color: '#f9b600',
-                    yAxisIndex: 1,
-                },
-            ]
+            }]
         }
         monthPowerChart.setOption(powerOption, 'notMerge');
     }
