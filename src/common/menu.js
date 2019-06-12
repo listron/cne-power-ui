@@ -296,6 +296,11 @@ const menuData = [
             path: 'intelligentAnalysis',
             rightKey: 'statistics_report_report',
           },
+          {
+            name: '智能报表',
+            path: 'intelligentReport',
+            rightKey: 'statistics_report_table',
+          },
         ]
       }
     ]

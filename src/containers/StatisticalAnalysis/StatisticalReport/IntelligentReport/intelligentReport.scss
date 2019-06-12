@@ -1,0 +1,15 @@
+@import '../../../../theme/theme.scss';
+
+.intelligentReport{
+  // position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  .intelligentSearch{
+    margin:20px 0;
+    .text{
+      display: inline-block;
+      margin-left: 30px;
+    }
+  }
+}
