@@ -26,7 +26,6 @@ class PartInfoBox extends React.Component {
     getPartsFactorsList: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     deviceComList: PropTypes.array,
-    stationCode: PropTypes.any,
     detailPartsRecord: PropTypes.object,
     stationName: PropTypes.string,
     deviceCode: PropTypes.string
@@ -42,6 +41,21 @@ class PartInfoBox extends React.Component {
       tableRecord: {}
     };
   }
+  onCancelWarningTip = () => {
+    //删除信息提示栏隐藏
+    this.setState({
+      showWarningTip: false
+    });
+  };
+  onConfirmWarningTip = () => {
+    const { tableRecord } = this.state;
+    this.setState({
+      showWarningTip: false
+    });
+    this.props.deletePartInfo({
+      partsId: tableRecord.partsId
+    });
+  };
   selectStation = stations => {
     const { getDeviceTypeList, changePartInfoStore } = this.props;
     let stationCode = stations.length > 0 && stations[0].stationCode;
@@ -82,16 +96,10 @@ class PartInfoBox extends React.Component {
     });
   };
   addPartsInfo = () => {
-    const {
-      getDevicePartInfo,
-      // getPartAssetsTree,
-      getPartsFactorsList,
-      deviceCode
-    } = this.props;
+    const { getPartAssetsTree, getPartsFactorsList, deviceCode } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
     this.props.changePartInfoStore({ showPage: "add" });
-    // getPartAssetsTree({
-    getDevicePartInfo({
+    getPartAssetsTree({
       //这个接口用于生产资产树
       deviceFullcode: deviceCode
     });
@@ -104,15 +112,13 @@ class PartInfoBox extends React.Component {
   };
   editParts = record => {
     const {
-      getDevicePartInfo,
-      // getPartAssetsTree,
+      getPartAssetsTree,
       getDetailPartInfo,
       getPartsFactorsList,
       deviceCode
     } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
-    // getPartAssetsTree({
-    getDevicePartInfo({
+    getPartAssetsTree({
       //这个接口用于生产资产树
       deviceFullcode: deviceCode
     });
@@ -167,21 +173,7 @@ class PartInfoBox extends React.Component {
       showCopyParts: false
     });
   };
-  onCancelWarningTip = () => {
-    //删除信息提示栏隐藏
-    this.setState({
-      showWarningTip: false
-    });
-  };
-  onConfirmWarningTip = () => {
-    const { tableRecord } = this.state;
-    this.setState({
-      showWarningTip: false
-    });
-    this.props.deletePartInfo({
-      partsId: tableRecord.partsId
-    });
-  };
+
   render() {
     const {
       allStationBaseInfo,

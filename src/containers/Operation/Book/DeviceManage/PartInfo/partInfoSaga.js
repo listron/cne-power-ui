@@ -501,7 +501,7 @@ function* getPartAssetsTree(action) {
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          partAssetsTree: response.data.data || {}
+          partAssetsTree: response.data.data || []
         }
       });
     } else {
@@ -530,4 +530,5 @@ export function* watchBookPartsInfo() {
   yield takeLatest(partInfoAction.addPartsModes, addPartsModes);
   yield takeLatest(partInfoAction.getDevicePartInfo, getDevicePartInfo);
   yield takeLatest(partInfoAction.copyPartInfo, copyPartInfo);
+  yield takeLatest(partInfoAction.getPartAssetsTree, getPartAssetsTree);
 }

@@ -22,7 +22,7 @@ class EditPartsInfo extends React.Component {
     detailPartInfo: PropTypes.object,
     partsFactorsList: PropTypes.array,
     factorsPartsMode: PropTypes.array,
-    partInfoTree: PropTypes.array
+    partAssetsTree: PropTypes.array
   };
   constructor(props, context) {
     super(props, context);
@@ -109,7 +109,6 @@ class EditPartsInfo extends React.Component {
   render() {
     let {
       partsFactorsList,
-      partInfoTree,
       partAssetsTree,
       factorsPartsMode,
       detailPartInfo
@@ -206,8 +205,7 @@ class EditPartsInfo extends React.Component {
                   value={"0"}
                   // selectable={false}
                 >
-                  {/* {this.renderTreeNodes(partAssetsTree)} */}
-                  {this.renderTreeNodes(partInfoTree)}
+                  {this.renderTreeNodes(partAssetsTree)}
                 </TreeNode>
               </TreeSelect>
             )}
