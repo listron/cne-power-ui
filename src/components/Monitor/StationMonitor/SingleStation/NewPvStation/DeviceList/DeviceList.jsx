@@ -29,17 +29,6 @@ class DeviceList extends Component {
     //  207 为交流汇流箱 暂时已经舍去了
     return (
       <div className={styles.deviceListBox}>
-        {/* <ConfluenceBoxList {...this.props} /> */}
-        {/* <BoxTransformerList {...this.props} />   */}
-        {/* <IntegrateList {...this.props} /> */}
-        {/* <PvmoduleList {...this.props} /> */}
-        {/* <Boosterstation {...this.props} /> */}
-        {/* <PowerNet {...this.props} /> */}
-        {/* <InverterList {...this.props} /> */}
-        {/* <WeatherStation {...this.props} /> */}
-        {/* <Schematic {...this.props} /> */}
-
-
         {`${deviceTypeCode}` === '1' && <Schematic {...this.props} />}
         {`${deviceTypeCode}` === '509' && <PvmoduleList {...this.props} />}
         {`${deviceTypeCode}` === '206' && <InverterList {...this.props} />}

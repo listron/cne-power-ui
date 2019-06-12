@@ -13,6 +13,7 @@ class Schematic extends Component {
         deviceTypeList: PropTypes.array,
         changeSingleStationStore: PropTypes.func,
         sketchmapData: PropTypes.object,
+        getSketchmap: PropTypes.func,
     }
 
     constructor(props) {
@@ -21,6 +22,32 @@ class Schematic extends Component {
             activeCarousel: 0,
             activeInvertType: '201'
         }
+    }
+
+    componentDidMount() {
+        const { stationCode } = this.props.match.params;
+        this.getData(stationCode);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { stationCode } = this.props.match.params;
+        const nextParams = nextProps.match.params;
+        const nextStation = nextParams.stationCode;
+        if (nextStation !== stationCode) {
+            this.timeOutId && clearTimeout(this.timeOutId);
+            this.getData(nextStation);
+        }
+    }
+
+    componentWillUnmount() {
+        this.timeOutId && clearTimeout(this.timeOutId);
+    }
+
+    getData = stationCode => {
+        this.props.getSketchmap({ stationCode }); // 获取流程图的数据
+        this.timeOutId = setTimeout(() => {
+            this.getData(stationCode);
+        }, 60000);
     }
 
     getEveryData = (deviceTypeCode) => {
@@ -125,7 +152,7 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true,single:true },
+                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
                 ]
             },
             "all": {
@@ -136,7 +163,7 @@ class Schematic extends Component {
                     { 'id': 'stopSize', name: '正常停机数', unit: '台', point: 0, },
                     { 'id': 'exceptionSize', name: '故障停机数', unit: '台', point: 0, hot: true },
                     { 'id': 'breakSize', name: '通讯中断数', unit: '台', point: 0, hot: true },
-                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true,single:true },
+                    { 'id': 'lowEff', name: '低效逆变器数', unit: '台', point: 0, hot: true, single: true },
                 ]
             }
         };

@@ -55,11 +55,11 @@ class PowerNet extends Component {
         this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
-    }, 10000);
+    }, 60000);
   }
 
   render() {
-    const { powerNetList,loading } = this.props;
+    const { powerNetList, loading } = this.props;
     const { alarmSwitch } = this.state;
     const filteredPowerNet = powerNetList.filter(e => !alarmSwitch || e.warningStatus);
     return (
@@ -85,7 +85,7 @@ class PowerNet extends Component {
               return (
                 <section className={`${styles.eachDevice} ${e.warningStatus && styles.alarm}`} key={e.deviceCode}>
                   <h3 className={styles.deviceName}>
-                    <span>{e.deviceName}</span>
+                    <span className={styles.name} title={e.deviceName}>{e.deviceName}</span>
                     {e.warningStatus && <span className="iconfont icon-alarm" />}
                   </h3>
                   <div className={styles.deviceValue}>

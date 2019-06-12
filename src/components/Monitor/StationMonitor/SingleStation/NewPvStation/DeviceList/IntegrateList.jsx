@@ -55,7 +55,7 @@ class IntegrateList extends Component {
         this.setState({ firstLoad: false });
       }
       this.getData(stationCode);
-    }, 10000);
+    }, 60000);
   }
 
   getIntegrateDetail = deviceCode => {
