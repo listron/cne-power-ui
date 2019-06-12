@@ -8,6 +8,7 @@ export default class ImportFile extends Component {
 
   static propTypes = {
     tabName: PropTypes.string,
+    importLoading: PropTypes.bool,
     importFileShow: PropTypes.bool,
     warehouseList: PropTypes.array,
     changeStore: PropTypes.func,
@@ -27,8 +28,8 @@ export default class ImportFile extends Component {
   hideImportModal = () => this.props.changeStore({ importFileShow: false });
 
   beforeUploadStation = (file) => {
-    // const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
-    const validFile = true; // validType.includes(file.type);
+    const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+    const validFile = validType.includes(file.type);
     if (validFile) {
       this.setState({ fileList: [file] });
     } else {
@@ -46,7 +47,7 @@ export default class ImportFile extends Component {
   }
 
   render(){
-    const { importFileShow, warehouseList } = this.props;
+    const { importFileShow, warehouseList, importLoading } = this.props;
     const { fileList, warehouseId } = this.state;
     const onlyFile = fileList[0] || {};
     return (
@@ -95,7 +96,12 @@ export default class ImportFile extends Component {
           </div>
           <div className={styles.confirmImport}>
             <span className={styles.holder} />
-            <Button type="primary" disabled={!(warehouseId && fileList.length > 0)} onClick={this.importFile}>导入</Button>
+            <Button
+              type="primary"
+              disabled={!(warehouseId && fileList.length > 0)}
+              onClick={this.importFile}
+              loading={importLoading}
+            >导入</Button>
           </div>
         </div>
       </Modal>

@@ -11,6 +11,7 @@ class AddGood extends Component {
   // 101:备品备件、201：安全工器具、202：检修工器具、203：仪器仪表、301：生活物资、302：办公物资、303：其他
   static propTypes = {
     addGoodName: PropTypes.string,
+    addGoodStatus: PropTypes.string,
     goodsList: PropTypes.array,
     goodsType: PropTypes.string, // 添加物品的
     form: PropTypes.object,
@@ -26,9 +27,9 @@ class AddGood extends Component {
   }
 
   componentDidUpdate(preProps){
-    const { addGoodName, onChange, form } = this.props;
+    const { addGoodName, onChange, form, addGoodStatus } = this.props;
     const preAddName = preProps.addGoodName;
-    if (addGoodName !== preAddName) { // 添加新物品成功 => 重置数据, 选中物品
+    if (addGoodName !== preAddName && addGoodStatus === 'success') { // 添加新物品成功 => 重置数据, 选中物品
       const { saveMode } = this.state;
       if (saveMode === 'once') {
         onChange(addGoodName);
@@ -69,8 +70,8 @@ class AddGood extends Component {
   }
 
   render(){
-    const { addModalShow } = this.state;
-    const { form, goodsList, disabled, value } = this.props;
+    const { addModalShow, saveMode } = this.state;
+    const { form, goodsList, disabled, value, addGoodStatus } = this.props;
     const { getFieldDecorator } = form;
     return(
       <div className={styles.addGood}>
@@ -120,8 +121,15 @@ class AddGood extends Component {
             </FormItem>
             <div className={styles.confirmRow}>
               <span className={styles.holder} />
-              <Button className={styles.save} onClick={this.save}>保存</Button>
-              <Button onClick={this.saveContinue}>保存并继续添加</Button>
+              <Button
+                className={styles.save}
+                onClick={this.save}
+                loading={saveMode === 'once' && addGoodStatus === 'loading'}
+              >保存</Button>
+              <Button
+                onClick={this.saveContinue}
+                loading={saveMode === 'more' && addGoodStatus === 'loading'}
+              >保存并继续添加</Button>
             </div>
           </Form>
         </Modal>}

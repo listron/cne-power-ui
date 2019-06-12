@@ -112,7 +112,7 @@ class SparePage extends Component {
       title: '对应资产类型',
       dataIndex: 'assetsPath',
       className: styles.assetsPath,
-      render: (text) => <div title={text} className={styles.assetsPath}>{text}</div>
+      render: (text) => <div title={text} className={styles.assetsPath}>{text || '--'}</div>
     }, {
       title: '最低阈值',
       dataIndex: 'threshold',

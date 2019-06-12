@@ -15,6 +15,7 @@ class SpareInsert extends Component {
   static propTypes = {
     insertStatus: PropTypes.string,
     addGoodName: PropTypes.string,
+    addGoodStatus: PropTypes.string,
     originInsertInfo: PropTypes.object, // 是否编辑状态唯一标识。null: 新入库, object: 编辑信息
     stations: PropTypes.array,
     warehouseList: PropTypes.array,
@@ -53,7 +54,7 @@ class SpareInsert extends Component {
   }
 
   componentDidUpdate(preProps){
-    const preInsertStatus = preProps.insertResult;
+    const preInsertStatus = preProps.insertStatus;
     const { insertStatus, form, changeStore } = this.props;
     if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
       const { saveMode } = this.state;
@@ -110,7 +111,7 @@ class SpareInsert extends Component {
   render(){
     const { saveMode } = this.state;
     const {
-      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo
+      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId } = getFieldsValue(['manufactorId']);
@@ -144,6 +145,7 @@ class SpareInsert extends Component {
                 goodsList={goodsList}
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
+                addGoodStatus={addGoodStatus}
                 goodsType="101"
                 disabled={!!originInsertInfo}
               />

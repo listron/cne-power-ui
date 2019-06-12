@@ -117,11 +117,19 @@ function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存
 function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
   const url = `${APIBasePath}${operation.deleteWarehouseMaterial}`;
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { delStockLoading: true }
+    })
     const { tabName, tableParams } = yield select(state => state.operation.warehouseManage.toJS());
     const { checkedStocks = [] } = payload;
     const response = yield call(axios.post, url, {
       goodsMaxType: stockTypeCodes[tabName],
       inventoryIds: checkedStocks.map(e => e.inventoryId).join(','),
+    })
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { delStockLoading: false }
     })
     if (response.data.code === '10000') { // 删除成功后重新请求列表数据
       yield fork(getWarehouseManageList, {
@@ -132,6 +140,7 @@ function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
       })
     } else { throw response.data }
   } catch(error) {
+    message.error(`删除失败,${error.message}`);
     console.log(error);
   }
 }
@@ -139,8 +148,16 @@ function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
 function *setStockMax({ payload }) { // 设置备品备件阈值
   const url = `${APIBasePath}${operation.setStockMax}`;
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { maxSettingLoading: true }
+    })
     const response = yield call(axios.put, url, { ...payload });
     const { tableParams } = yield select(state => state.operation.warehouseManage.toJS());
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { maxSettingLoading: false }
+    })
     if (response.data.code === '10000') {
       yield fork(getWarehouseManageList, { 
         payload: { ...tableParams }
@@ -151,6 +168,7 @@ function *setStockMax({ payload }) { // 设置备品备件阈值
       })
     } else { throw response.data }
   } catch (error) {
+    message.error(`阈值设置失败, ${error.message}`)
     console.log(error);
   }
 }
@@ -158,6 +176,10 @@ function *setStockMax({ payload }) { // 设置备品备件阈值
 function *importStockFile({ payload }) {// 导入备品备件/工器具/物资列表excel
   const url = `${APIBasePath}${operation.setStockMax}`;
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { importLoading: true }
+    })
     const { tableParams, tabName } = yield select(state => state.operation.warehouseManage.toJS());
     const formData = new FormData();
     const { warehouseId, resetStock, fileList } = payload;
@@ -172,6 +194,10 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
       processData: false,
       contentType: false,
     });
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { importLoading: false }
+    })
     if (response.data.code === '10000') { // 导入成功刷新列表
       yield fork(getWarehouseManageList, {
         payload: {
@@ -181,7 +207,7 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
       })
     } else { throw response.data }
   } catch (error) {
-    console.log(error);
+    message.error(`导入失败, ${error.message}`)
   }
 }
 
@@ -211,16 +237,27 @@ function *getGoodsList({ payload }) { // 仓库下所有物品列表
 function *addNewGood({ payload }) { // 新增物品
   const url = `${APIBasePath}${operation.goodsAdd}`
   try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addGoodStatus: 'loading' }
+    })
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') { // 重新请求仓库下物品
       const { tabName } = yield select(state => state.operation.warehouseManage.toJS());
       yield put({
         type: warehouseManageAction.fetchSuccess,
-        payload: { addGoodName: payload.goodsName },
+        payload: {
+          addGoodName: payload.goodsName,
+          addGoodStatus: 'success'
+        },
       })
       yield fork(getGoodsList, { payload: { goodsMaxType: stockTypeCodes[tabName] } });
     } else { throw response.data }
   } catch(error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addGoodStatus: 'normal' }
+    })
     message.error(`物品添加失败,请重试,${error.message}`);
     console.log(error);
   }

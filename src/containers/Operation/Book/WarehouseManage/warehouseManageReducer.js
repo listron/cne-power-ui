@@ -23,23 +23,20 @@ const warehouseManageAction = {
   resetStore: Symbol('resetStore'),
 }
 
-const tableParams = { // 表格共有的请求
-  selectedWarehouse: undefined, //  仓库
-  selectedManufacturer: undefined, // 厂家
-  selectedMode: undefined, // 型号
-  pageSize: 10,
-  pageNum: 1,
-  sortField: 'goods_name', // 物品名称：goods_name | 库存类型：goods_type |仓库名称：warehouse_name | 库存数量：inventory_num | 最低阈值：threshold | 厂家：devManufactorName | 供货商：supplier_name | 制造商：manufactor_name
-  sortMethod: 'desc', // "asc"：正序  "desc"：倒序
-}
-
 const initState = Immutable.fromJS({
   tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
   sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeout-出, reserve-库存
   stockMaxShow: false, // 阈值设置弹框
   importFileShow: false, // 导入库存文件
-  tableParams: { ...tableParams }, // 表格请求参数
-
+  tableParams: { // 表格请求参数
+    selectedWarehouse: undefined, //  仓库
+    selectedManufacturer: undefined, // 厂家
+    selectedMode: undefined, // 型号
+    pageSize: 10,
+    pageNum: 1,
+    sortField: 'goods_name', // 物品名称：goods_name | 库存类型：goods_type |仓库名称：warehouse_name | 库存数量：inventory_num | 最低阈值：threshold | 厂家：devManufactorName | 供货商：supplier_name | 制造商：manufactor_name
+    sortMethod: 'desc', // "asc"：正序  "desc"：倒序
+  },
   warehouseList: [], // 仓库列表
   manufacturerList: [], // 厂家列表
   modeList: [], // 型号列表
@@ -50,8 +47,14 @@ const initState = Immutable.fromJS({
   goodsList: [], // 仓库下所有物品列表
   originInsertInfo: null, // 入库对象基础信息(新入库null, 再入库{...})
   addGoodName: '', // 新添加物品的名称
+  addGoodStatus: 'normal', // 保存新增物品的状态: 'loading' ,'success';
   insertModes: [], // 入库的型号列表
   assetsTree: [], // 入库资产树
+  delStockLoading: false, // 删除库存loading状态
+  maxSettingLoading: false, // 阈值设置loading
+  exportInfoLoading: false, // 导出表格内容loading态
+  exportTempleteLoading: false, // 导出模板loading态
+  importLoading: false, // 导入loading态
   insertStatus: 'normal', // 'loading', 'success' =>控制loading + 状态判定
   originTakeoutInfo: {}, // 出库对象基本信息
   materialDetailsList: [], // 出库操作 选定库存对应所有物资列表

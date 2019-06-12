@@ -79,31 +79,32 @@
       }
     }
   }
-  .maxStock{
-    .editPart, .savePart{
-      display: flex;
-      .text{
-        flex: 0 0 240px;
-        text-align: right;
-        &::after{
-          @include requireStyle(10px);
-        }
-      }
-      .error{
-        margin-left: 8px;
-        color: #f5222d;
-        font-size: 12px;
-        line-height: 30px;
-      }
-      .holder{
-        flex: 0 0 240px;
+}
+
+.maxStock{ // 设置阈值
+  .editPart, .savePart{
+    display: flex;
+    .text{
+      flex: 0 0 240px;
+      text-align: right;
+      &::after{
+        @include requireStyle(10px);
       }
     }
-    .editPart{
-      margin-bottom: 12px;
-      input {
-        width: 200px;
-      }
+    .error{
+      margin-left: 8px;
+      color: #f5222d;
+      font-size: 12px;
+      line-height: 30px;
+    }
+    .holder{
+      flex: 0 0 240px;
+    }
+  }
+  .editPart{
+    margin-bottom: 12px;
+    input {
+      width: 200px;
     }
   }
 }

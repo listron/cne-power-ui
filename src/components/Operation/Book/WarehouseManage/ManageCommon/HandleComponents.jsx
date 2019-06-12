@@ -14,7 +14,11 @@ const { operation } = path.APISubPaths;
 export default class HandleComponent extends Component {
   static propTypes = {
     tabName: PropTypes.string,
+    exportInfoLoading: PropTypes.bool,
+    exportTempleteLoading: PropTypes.bool,
     stockMaxShow: PropTypes.bool,
+    maxSettingLoading: PropTypes.bool,
+    delStockLoading: PropTypes.bool,
     importFileShow: PropTypes.bool,
     totalCount: PropTypes.number,
     warehouseList: PropTypes.array,
@@ -76,6 +80,7 @@ export default class HandleComponent extends Component {
     const warehouseName = warehouseList.find(e => e.warehouseId === selectedManufacturer) || {};
     downLoadFile({
       url,
+      loadingName: 'exportInfoLoading',
       fileName: `${warehouseName.warehouseName}-${stockTypeInfo[tabName][1]}库${moment().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,
       params: {
         goodsMaxType: stockTypeInfo[tabName][0],
@@ -96,6 +101,7 @@ export default class HandleComponent extends Component {
     }
     downLoadFile({
       url,
+      loadingName: 'exportTempleteLoading',
       fileName: `${stockTypeInfo[tabName][1]}导入模板.xlsx`,
       params: {
         goodsMaxType: stockTypeInfo[tabName][0],
@@ -122,7 +128,10 @@ export default class HandleComponent extends Component {
 
   render(){
     const { stockMaxValue } = this.state;
-    const { tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow } = this.props;
+    const {
+      tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
+      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading
+    } = this.props;
     const { pageSize, pageNum, selectedWarehouse, selectedManufacturer } = tableParams;
     const insertDisable = checkedStocks.length > 1;
     return (
@@ -146,11 +155,15 @@ export default class HandleComponent extends Component {
               style={{ color: insertDisable ? '#dfdfdf' : '#666'}}
             >入库</span>
           </button>
-          <Button disabled={!(checkedStocks.length > 0)} onClick={this.toDelete}>删除</Button>
+          <Button disabled={!(checkedStocks.length > 0)} onClick={this.toDelete} loading={delStockLoading}>删除</Button>
           <Button disabled={!(checkedStocks.length > 0)} onClick={this.showStockMax}>设置阈值</Button>
-          <Button disabled={!(selectedWarehouse || selectedManufacturer)} onClick={this.exportStock}>导出</Button>
+          <Button 
+            disabled={!(selectedWarehouse || selectedManufacturer)}
+            onClick={this.exportStock}
+            loading={exportInfoLoading}
+          >导出</Button>
           <Button onClick={this.toImport}>导入</Button>
-          <Button onClick={this.exportTemplete}>下载导入模板</Button>
+          <Button onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</Button>
         </div>
         <CommonPagination
           total={totalCount}
@@ -173,7 +186,11 @@ export default class HandleComponent extends Component {
             </div>
             <div className={styles.savePart}>
               <span className={styles.holder} />
-              <Button onClick={this.saveStockMax} disabled={isNaN(stockMaxValue) || !stockMaxValue}>保存</Button>
+              <Button
+                onClick={this.saveStockMax}
+                disabled={isNaN(stockMaxValue) || !stockMaxValue}
+                loading={maxSettingLoading}
+              >保存</Button>
             </div>
           </div>
         </Modal>
