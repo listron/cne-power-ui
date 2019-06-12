@@ -1,63 +1,72 @@
 @import '../../../../theme/theme.scss';
-.manufacturers{
+
+.manufacturers {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .search {
+    background: $pageGround;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    .search{
-        background: $pageGround;
-        display: flex;
-        flex-direction: column;
-        padding: 24px 28px;
-        .condition{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            line-height: 42px;
-            .select{
-                margin-left: 15px;
-            }
-        }
-        .antherCondition{
-            margin-top: 12px;
-        }
-        :global{
-            .ant-input{
-                width: 225px;
-            }
-        }
+    padding: 24px 28px;
+
+    .condition {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      line-height: 42px;
+
+      .select {
+        margin-left: 15px;
+      }
     }
-    .manuCont{
-        display: flex;
-        flex-direction: column;
-        background: $pageGround;
-        margin-top: 12px;
-        >div{
-            display: flex;
-            flex: 1;
-            height: 383px;
-            padding-top: 28px;
-            border-bottom:1px solid $promptColor;
-        }
+
+    .antherCondition {
+      margin-top: 12px;
     }
+
+    :global {
+      .ant-input {
+        width: 225px;
+      }
+    }
+  }
+
+  .manuCont {
+    display: flex;
+    flex-direction: column;
+    background: $pageGround;
+    margin-top: 12px;
+
+    >div {
+      display: flex;
+      // flex: 1;
+      height: 383px;
+      padding-top: 28px;
+      border-bottom: 1px solid $promptColor;
+    }
+  }
 }
 
 .tooltipTitle {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 7px;
-    margin-bottom: 7px;
-    width: 180px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 7px;
+  margin-bottom: 7px;
+  width: 180px;
 }
 
 .tooltipCont {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  line-height: 20px;
+
+  span {
     display: flex;
-    justify-items: center;
-    align-items: center;
-    line-height: 20px;
-    span {
-        display: flex;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        margin-right: 4px;
-    }
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
 }
