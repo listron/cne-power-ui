@@ -1,14 +1,32 @@
 @import "../../../../../theme/theme.scss";
-.warehouseWrap{
+
+.warehouseWrap {
   width: 100%;
-  .warehouseSearch{
+
+  .warehouseSearch {
     width: 100%;
     padding: 16px 25px 10px 27px;
     background-color: #f0f2f5;
     display: flex;
     justify-content: space-between;
+
+    .rightSeach {
+      margin-left: 28px;
+      width: 200px;
+
+      :global {
+        .ant-input-search-icon {
+          color: #199475;
+        }
+
+        .ant-input-affix-wrapper .ant-input:not(:last-child) {
+          padding-right: 47px;
+        }
+      }
+    }
   }
-  .warehouseHandle{
+
+  .warehouseHandle {
     width: 100%;
     display: flex;
     padding: 17px 30px;

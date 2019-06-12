@@ -6,6 +6,8 @@ import DeviceTree from "./DeviceTree";
 import CopyParts from "./CopyParts";
 import { Button, Table, Upload, message } from "antd";
 import StationSelect from "../../../Common/StationSelect";
+import WarningTip from "../../../Common/WarningTip";
+
 import path from "../../../../constants/path";
 import moment from "moment";
 import Cookie from "js-cookie";
@@ -24,7 +26,6 @@ class PartInfoBox extends React.Component {
     getPartsFactorsList: PropTypes.func,
     allStationBaseInfo: PropTypes.array,
     deviceComList: PropTypes.array,
-    stationCode: PropTypes.any,
     detailPartsRecord: PropTypes.object,
     stationName: PropTypes.string,
     deviceCode: PropTypes.string
@@ -34,9 +35,27 @@ class PartInfoBox extends React.Component {
     this.state = {
       showDetailParts: false,
       detailPartsInfo: {},
-      showCopyParts: false
+      showCopyParts: false,
+      showWarningTip: false,
+      warningTipText: "",
+      tableRecord: {}
     };
   }
+  onCancelWarningTip = () => {
+    //删除信息提示栏隐藏
+    this.setState({
+      showWarningTip: false
+    });
+  };
+  onConfirmWarningTip = () => {
+    const { tableRecord } = this.state;
+    this.setState({
+      showWarningTip: false
+    });
+    this.props.deletePartInfo({
+      partsId: tableRecord.partsId
+    });
+  };
   selectStation = stations => {
     const { getDeviceTypeList, changePartInfoStore } = this.props;
     let stationCode = stations.length > 0 && stations[0].stationCode;
@@ -77,16 +96,11 @@ class PartInfoBox extends React.Component {
     });
   };
   addPartsInfo = () => {
-    const {
-      getDevicePartInfo,
-
-      getPartsFactorsList,
-      deviceCode
-    } = this.props;
+    const { getPartAssetsTree, getPartsFactorsList, deviceCode } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
     this.props.changePartInfoStore({ showPage: "add" });
-    getDevicePartInfo({
-      //新增部件资产树
+    getPartAssetsTree({
+      //这个接口用于生产资产树
       deviceFullcode: deviceCode
     });
     getPartsFactorsList({
@@ -98,13 +112,14 @@ class PartInfoBox extends React.Component {
   };
   editParts = record => {
     const {
-      getDevicePartInfo,
-
+      getPartAssetsTree,
+      getDetailPartInfo,
       getPartsFactorsList,
       deviceCode
     } = this.props;
     let deviceTypeCode = deviceCode.split("M")[1];
-    getDevicePartInfo({
+    getPartAssetsTree({
+      //这个接口用于生产资产树
       deviceFullcode: deviceCode
     });
     getPartsFactorsList({
@@ -112,15 +127,19 @@ class PartInfoBox extends React.Component {
       orderField: "1",
       orderMethod: "desc"
     });
+    getDetailPartInfo({
+      partsId: record.partsId
+    });
 
     this.props.changePartInfoStore({
-      showPage: "edit",
-      detailPartsRecord: record
+      showPage: "edit"
     });
   };
   deleteParts = record => {
-    this.props.deletePartInfo({
-      partsId: record.partsId
+    this.setState({
+      tableRecord: record,
+      showWarningTip: true,
+      warningTipText: "确认删除吗?"
     });
   };
   showDetailParts = record => {
@@ -154,6 +173,7 @@ class PartInfoBox extends React.Component {
       showCopyParts: false
     });
   };
+
   render() {
     const {
       allStationBaseInfo,
@@ -162,7 +182,13 @@ class PartInfoBox extends React.Component {
       stationName,
       deviceCode
     } = this.props;
-    let { showDetailParts, showCopyParts } = this.state;
+    let {
+      showDetailParts,
+      showCopyParts,
+      showWarningTip,
+      warningTipText
+    } = this.state;
+
     let disableClick = !(stationCode && deviceCode);
 
     const columns = [
@@ -187,7 +213,9 @@ class PartInfoBox extends React.Component {
       {
         title: "资产结构",
         dataIndex: "assetsName",
-        render: text => <span title={text}>{text}</span>
+        render: text => (
+          <span title={text.replace(/,/g, ">")}>{text.replace(/,/g, ">")}</span>
+        )
       },
       {
         title: "厂家",
@@ -228,15 +256,13 @@ class PartInfoBox extends React.Component {
       path.APISubPaths.operation.downloadPartInfoTemplet
     }`;
     const url = `${APIBasePath}${operation.importParts}`;
-    const authData = Cookie.get("authData") || null;
+    const authData = localStorage.getItem("authData") || "";
     const uploadProps = {
       showUploadList: false,
       name: "file",
       action: url,
       headers: {
-        Authorization:
-          "bearer " +
-          (authData && authData !== "undefined" ? JSON.parse(authData) : "")
+        Authorization: "bearer " + authData
       },
       beforeUpload: this.beforeUpload,
       data: {
@@ -334,6 +360,15 @@ class PartInfoBox extends React.Component {
                 )
               }}
             />
+            {showWarningTip && (
+              <WarningTip
+                style={{ marginTop: "350px", width: "210px", height: "80px" }}
+                onCancel={this.onCancelWarningTip}
+                hiddenCancel={false}
+                onOK={this.onConfirmWarningTip}
+                value={warningTipText}
+              />
+            )}
           </div>
         </div>
         {showDetailParts && (

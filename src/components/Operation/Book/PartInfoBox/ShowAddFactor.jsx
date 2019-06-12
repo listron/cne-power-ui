@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Form, Modal,  } from 'antd';
-import styles from './partInfoBox.scss';
+import { Button, Input, Form, Modal } from "antd";
+import styles from "./partInfoBox.scss";
 const FormItem = Form.Item;
 
 class ShowAddDeviceModeModal extends Component {
@@ -9,44 +9,43 @@ class ShowAddDeviceModeModal extends Component {
     cancleFactorModal: PropTypes.func,
     addPartsFactors: PropTypes.func,
     showAddfactorsModal: PropTypes.bool,
-    form:PropTypes.object,
-    deviceCode:PropTypes.string,
-  }
+    form: PropTypes.object,
+    deviceCode: PropTypes.string
+  };
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   handleCancel = () => {
-    this.props.cancleFactorModal()
-  }
-  confirmForm = (e) => {
+    this.props.cancleFactorModal();
+  };
+  confirmForm = e => {
     e.preventDefault();
     const { validateFieldsAndScroll } = this.props.form;
-    const { addPartsFactors,deviceCode} = this.props;
-    let deviceTypeCode=deviceCode.split('M')[1];
-    validateFieldsAndScroll(["addFactorName",], (err, values) => {
+    const { addPartsFactors, deviceCode } = this.props;
+    let deviceTypeCode = deviceCode.split("M")[1];
+    validateFieldsAndScroll(["addFactorName"], (err, values) => {
       if (!err) {
         addPartsFactors({
           manufactorName: values.addFactorName,
           deviceTypeCode,
-          assetsIds:[''],
-        })
-        this.props.cancleFactorModal()
+          assetsIds: [""]
+        });
+        this.props.cancleFactorModal();
       }
-    })
+    });
+  };
 
-  }
- 
   render() {
-    const { getFieldDecorator,  } = this.props.form;
-    const { showAddfactorsModal ,} = this.props;
+    const { getFieldDecorator } = this.props.form;
+    const { showAddfactorsModal } = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
-      wrapperCol: { span: 10 },
+      wrapperCol: { span: 10 }
     };
     return (
       <Modal
-        title="新增组件厂家"
+        title="新增部件厂家"
         visible={showAddfactorsModal}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
@@ -57,21 +56,29 @@ class ShowAddDeviceModeModal extends Component {
         maskClosable={false}
       >
         <Form className={styles.preFormStyle}>
-         
-          <FormItem label="生产厂家" colon={false} {...formItemLayout}  >
-            {getFieldDecorator('addFactorName', {
+          <FormItem label="生产厂家" colon={false} {...formItemLayout}>
+            {getFieldDecorator("addFactorName", {
               rules: [
-                { message: '设备型号不超过30字', required: true, type: 'string', max: 30 },
+                {
+                  message: "设备型号不超过30字",
+                  required: true,
+                  type: "string",
+                  max: 30
+                }
               ]
-            })(
-              <Input placeholder="请输入..." />
-            )}
+            })(<Input placeholder="请输入..." />)}
           </FormItem>
 
-          <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
+          <Button
+            type="primary"
+            onClick={this.confirmForm}
+            className={styles.nextButton}
+          >
+            确定
+          </Button>
         </Form>
       </Modal>
-    )
+    );
   }
 }
-export default Form.create()(ShowAddDeviceModeModal)
+export default Form.create()(ShowAddDeviceModeModal);
