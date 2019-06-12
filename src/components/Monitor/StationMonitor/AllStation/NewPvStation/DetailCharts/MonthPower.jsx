@@ -29,7 +29,7 @@ class MonthPower extends Component {
     }
 
     componentWillReceiveProps(nextProps) { // 数据重新请求后重绘。
-        const { powerTime,loading } = this.props;
+        const { powerTime, loading } = this.props;
         const preTime = nextProps.powerTime;
         if (powerTime !== preTime) {
             this.drawCharts(nextProps);
@@ -123,7 +123,7 @@ class MonthPower extends Component {
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
-    seriesType = ({monthPower, monthPlanPower,completeRate,equipmentHours}) => { // 根据不同的类型，series不同
+    seriesType = ({ monthPower, monthPlanPower, completeRate, equipmentHours }) => { // 根据不同的类型，series不同
         const { chartType } = this.state;
         const monthPowerObj = [{
             name: '月发电量',
@@ -139,7 +139,7 @@ class MonthPower extends Component {
             data: getDefaultData(monthPlanPower),
             yAxisIndex: 0,
             barWidth: 6,
-        },{
+        }, {
             name: '完成率',
             type: 'line',
             color: '#199475',
@@ -158,7 +158,7 @@ class MonthPower extends Component {
 
     drawCharts = (params) => {
         let { monthPowerData = [], powerUnit, loading } = params;
-        const {chartType}=this.state;
+        const { chartType } = this.state;
         const monthPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 发电量
         const filterMonthPower = monthPowerData.filter(e => e.monthPower);
         const monthPlanPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 计划发电量
@@ -176,7 +176,7 @@ class MonthPower extends Component {
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
         const yAxisType = this.yAxisType(powerUnit);
-        const seriesType = this.seriesType({monthPower, monthPlanPower,completeRate, equipmentHours});
+        const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         let powerOption = {
             graphic: powerGraphic,
             title: {
@@ -190,7 +190,7 @@ class MonthPower extends Component {
                 left: 10,
             },
             grid: {
-                right: chartType === 'monthPower'?'20%':'13%',
+                right: chartType === 'monthPower' ? '20%' : '13%',
                 top: 100,
                 left: '13%',
                 bottom: 40,
@@ -206,11 +206,13 @@ class MonthPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
+                
                 backgroundColor: '#fff',
                 textStyle: {
                     color: fontColor,
                     fontSize: 12,
                 },
+                alwaysShowContent:true,
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 padding: 0,
                 formatter: (params) => {
@@ -225,16 +227,13 @@ class MonthPower extends Component {
                             <div class=${styles.tooltipContainer}> ${paramsItem}</div>
                         </div>`
                     )
-                }
+                },
+                axisPointer: {
+                    type: 'shadow',
+                    snap: true,
+                },
             },
-            axisPointer: {
-                type: 'line',
-                snap: true,
-                lineStyle: {
-                    width: 38,
-                    color: 'rgba(150,150,150,0.3)'
-                }
-            },
+
             calculable: false,
             xAxis: [
                 {
@@ -292,7 +291,7 @@ class MonthPower extends Component {
                     data: getDefaultData(instantaneous),
                     color: '#f9b600',
                     yAxisIndex: 1,
-                }, 
+                },
             ]
         }
         monthPowerChart.setOption(powerOption, 'notMerge');

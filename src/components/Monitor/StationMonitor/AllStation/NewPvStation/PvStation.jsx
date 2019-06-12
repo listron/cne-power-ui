@@ -45,16 +45,7 @@ class PvStation extends React.Component {
   componentDidMount() {
     const { regionName } = this.props;
     this.props.getPvRealData({ regionName })
-    const main = document.getElementById('main');
-    main && main.addEventListener('click', this.detailHide);
   }
-
-
-  componentWillUnmount() {
-    const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.detailHide,true);
-  }
-
 
   onHandleAlarm = (checked) => {
     this.setState({

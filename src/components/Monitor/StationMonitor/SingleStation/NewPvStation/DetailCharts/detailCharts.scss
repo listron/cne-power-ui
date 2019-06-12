@@ -84,14 +84,13 @@
      }
 
      .tooltipBox {
-        width: 150px;
         .axisValue {
             border-bottom: 1px solid #dfdfdf;
             padding: 0 30px 0 10px;
             line-height: 26px;
         }
         .tooltipContainer {
-            padding: 10px 0;
+            padding: 10px 30px 10px 0;
         }
         .tooltipCont {
             span {

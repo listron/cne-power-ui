@@ -707,7 +707,7 @@ function* getPvSingleStation(action) { //获取单电站实时数据
   }
 }
 
-function* monthplanpower(action) { // 多电站月累计与计划发电量图
+function* monthplanpower(action) { // 单电站月累计与计划发电量图(光伏)
   const { payload } = action;
   const { stationCode } = payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -719,7 +719,6 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图
       payload: {
         monthPlanPower: {
           monthPlanPowerData: [],
-          monthPlanPowerTime: moment().unix(),
           monthPlanPowerLoading: true
         }
       }
