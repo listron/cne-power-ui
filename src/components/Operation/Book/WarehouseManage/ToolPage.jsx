@@ -4,8 +4,9 @@ import HandleComponent from './ManageCommon/HandleComponents';
 import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './warehouseManageComp.scss';
+import { dataFormat } from '../../../../utils/utilFunc';
 
-class SparePage extends Component {
+class ToolPage extends Component {
 
   static propTypes = {
     checkedStocks: PropTypes.array,
@@ -43,9 +44,12 @@ class SparePage extends Component {
     const sortTemplete = {
       goodsName: 'goods_name',
       modeName: 'mode_name',
+      goodsType: 'goods_type',
       warehouseName: 'warehouse_name',
       inventoryNum: 'inventory_num',
-      threshold: 'threshold',
+      devManufactorName: 'devManufactorName',
+      supplierName: 'supplier_name',
+      manufactorName: 'manufactor_name',
       descend: 'desc',
       ascend: 'asc',
     };
@@ -82,6 +86,19 @@ class SparePage extends Component {
       dataIndex: 'modeName',
       sorter: true,
     }, {
+      title: '物品类型',
+      dataIndex: 'goodsType',
+      sorter: true,
+      render: (text) => ({
+        101: '备品备件',
+        201: '安全工器具',
+        202: '检修工器具',
+        203: '仪器仪表',
+        301: '生活物资',
+        302: '办公物资',
+        303: '其他',
+      }[text])
+    }, {
       title: '所属仓库',
       dataIndex: 'warehouseName',
       sorter: true,
@@ -90,68 +107,28 @@ class SparePage extends Component {
       dataIndex: 'inventoryNum',
       sorter: true,
       render: (text, record) => {
-        const { inventoryNum, goodsUnit, threshold } = record;
-        let StockNum = <span />;
-        if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
-          StockNum = <span>--{goodsUnit || ''}</span>
-        } else if (inventoryNum < threshold) { // 库存紧张
-          StockNum = (<span className={styles.shortage}>
-            <span>{inventoryNum}{goodsUnit || ''}</span>
-            <span className={styles.config}>紧张</span>
-          </span>)
-        } else {
-          StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
-        }
-        return StockNum;
+        const { inventoryNum, goodsUnit } = record;
+        return <span>{dataFormat(inventoryNum)}{goodsUnit || ''}</span>;
       }
     }, {
-      title: '对应资产类型',
-      dataIndex: 'assetsPath',
-      className: styles.assetsPath,
-      render: (text) => <div title={text} className={styles.assetsPath}>{text || '--'}</div>
-    }, {
-      title: '最低阈值',
-      dataIndex: 'threshold',
-      className: styles.threshold,
+      title: '厂家',
+      dataIndex: 'devManufactorName',
       sorter: true,
     }, {
-      title: '更多信息',
-      className: styles.moreInfo,
-      dataIndex: 'moreInfo',
-      render: (text, record) => {
-        const InfoContent = (
-          <div className={styles.infoContent}>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>厂家</span>
-              <span className={styles.info}>{record.devManufactorName || '--'}</span>
-            </div>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>供货商</span>
-              <span className={styles.info}>{record.supplierName || '--'}</span>
-            </div>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>制造商</span>
-              <span className={styles.info}>{record.manufactorName || '--'}</span>
-            </div>
-          </div>
-        )
-        return (
-          <Popover
-            content={InfoContent}
-            title={<span className={styles.infoContentTitle}>更多信息</span>}
-            trigger="hover"
-          >
-            <button className={styles.trigButton}>查看</button>
-          </Popover>
-        )
-      }
+      title: '供货商',
+      dataIndex: 'supplierName',
+      sorter: true,
+    }, {
+      title: '制造商',
+      dataIndex: 'manufactorName',
+      sorter: true,
     }, {
       title: '操作',
       dataIndex: 'handle',
       render: (text, record) => (
         <div className={styles.stockHandle}>
           <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-          <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
+          <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
           <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
         </div>
       )
@@ -181,4 +158,4 @@ class SparePage extends Component {
   }
 }
 
-export default SparePage;
+export default ToolPage;

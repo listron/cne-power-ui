@@ -144,7 +144,7 @@ export default class SpareReserve extends Component {
               className={styles.handle}
               onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
             >
-              {isEntry > 0 ? <i className="iconfont icon-del" /> : <Icon type="enter" />}
+              {isEntry > 0 ? <i className="iconfont icon-del" /> : <i className="iconfont icon-back2" />}
               <span>{isEntry > 0 ? '删除' : '撤回'}</span>
             </span>
           )

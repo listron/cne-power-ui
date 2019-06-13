@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button, Modal, Input, Upload, message } from 'antd';
+import { Icon, Button, Modal, Input } from 'antd';
 import moment from 'moment';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
@@ -129,7 +129,7 @@ export default class HandleComponent extends Component {
   render(){
     const { stockMaxValue } = this.state;
     const {
-      tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
+      tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
       delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading
     } = this.props;
     const { pageSize, pageNum, selectedWarehouse, selectedManufacturer } = tableParams;
@@ -156,7 +156,10 @@ export default class HandleComponent extends Component {
             >入库</span>
           </button>
           <Button disabled={!(checkedStocks.length > 0)} onClick={this.toDelete} loading={delStockLoading}>删除</Button>
-          <Button disabled={!(checkedStocks.length > 0)} onClick={this.showStockMax}>设置阈值</Button>
+          {tabName === 'spares' && <Button
+            disabled={!(checkedStocks.length > 0)}
+            onClick={this.showStockMax}
+          >设置阈值</Button>}
           <Button 
             disabled={!(selectedWarehouse || selectedManufacturer)}
             onClick={this.exportStock}

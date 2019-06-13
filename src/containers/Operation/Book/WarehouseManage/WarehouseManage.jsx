@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
+import ToolPage from '../../../../components/Operation/Book/WarehouseManage/ToolPage';
 import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
 import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/SpareTakeout';
 import SpareReserve from '../../../../components/Operation/Book/WarehouseManage/SpareReserve';
+import ToolInsert from '../../../../components/Operation/Book/WarehouseManage/ToolInsert';
+
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { warehouseManageAction } from './warehouseManageReducer';
@@ -32,7 +35,7 @@ class WarehouseManage extends Component {
     const { tableParams } = this.props;
     this.props.getWarehouses();
     this.props.getManufactures();
-    this.props.getWarehouseManageList({ ...tableParams })
+    this.props.getWarehouseManageList({ ...tableParams });
   }
 
   componentWillUnmount(){
@@ -43,14 +46,27 @@ class WarehouseManage extends Component {
     this.setState({ sideTransform });
   }
 
-  tabChange = (e) => {
+  tabChange = (e) => { // 切换页面 重置请求数据
     const { innerHTML } = e.target;
     const tabInfo = {
       '备品备件': 'spares',
       '工具器': 'tools',
       '物资': 'materials',
     };
-    this.props.changeStore({ tabName: tabInfo[innerHTML] });
+    const newTableParams = {
+      selectedWarehouse: undefined,
+      selectedManufacturer: undefined,
+      selectedMode: undefined,
+      pageSize: 10,
+      pageNum: 1,
+      sortField: 'goods_name',
+      sortMethod: 'desc',
+    }
+    this.props.changeStore({
+      tabName: tabInfo[innerHTML],
+      tableParams: {...newTableParams},
+    });
+    this.props.getWarehouseManageList({ ...newTableParams });
   }
 
   showSide = (sideKey) => {
@@ -79,18 +95,30 @@ class WarehouseManage extends Component {
                 <span className={tabName === 'tools' ? styles.active : styles.inactive}>工具器</span>
                 <span className={tabName === 'materials' ? styles.active : styles.inactive}>物资</span>
               </div>
-              <SparePage {...this.props} showSide={this.showSide} />
+              {tabName === 'spares' && <SparePage {...this.props} showSide={this.showSide} />}
+              {tabName === 'tools' && <ToolPage {...this.props} showSide={this.showSide} />}
+              {/* {tabName === 'materials' && <MaterialPage {...this.props} showSide={this.showSide} />} */}
             </div>
-            
-            {/* <ToolPage /> */}
-            {/* <MaterialPage /> */}
             <Footer />
           </div>
           <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
-            {sideKey === 'insert' && <SpareInsert {...this.props} backList={this.backList} />}
-            {sideKey === 'takeout' && <SpareTakeout {...this.props} backList={this.backList} />}
-            {sideKey === 'reserve' && <SpareReserve {...this.props} backList={this.backList} />}
-            {/* <ToolInsert /> */}
+            {{
+              spares: {
+                insert: <SpareInsert {...this.props} backList={this.backList} />,
+                takeout: <SpareTakeout {...this.props} backList={this.backList} />,
+                reserve: <SpareReserve {...this.props} backList={this.backList} />,
+              },
+              tools: {
+                insert: <ToolInsert {...this.props} backList={this.backList} />,
+                takeout: <div></div>,
+                reserve: <div></div>,
+              },
+              materials: {
+                insert: <div></div>,
+                takeout: <div></div>,
+                reserve: <div></div>,
+              }
+            }[tabName][sideKey]}
             {/* <ToolTakeout /> */}
             {/* <ToolReserve /> */}
             {/* <MaterialInsert /> */}
