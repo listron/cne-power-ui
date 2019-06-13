@@ -106,25 +106,31 @@ class PvStation extends Component {
   getPowerDataTenMin = (value) => { // 默认请求intervalTime = 0 的日数据
     const { stationCode, intervalTime = 0 } = value;
     let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    let endTime=moment().subtract(1, 'day').format('YYYY-MM-DD');
     if (intervalTime === 1) {
-      startTime = moment().subtract(12, 'month').startOf('month').format('YYYY-MM-DD')
+      startTime =  moment().startOf('year').format('YYYY-MM-DD');
+      endTime=moment().endOf('year').format('YYYY-MM-DD');
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.changeSingleStationStore({ powerData: [] })
-    this.props.getPvMonitorPower({ // 出力图数据
-      stationCode,
-      intervalTime,
-      startTime,
-      endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-    });
+    this.props.getPvMonitorPower({   stationCode, intervalTime, startTime, endTime   });
   }
 
-
-  hiddenStationList = () => {
-    this.setState({
-      hiddenStationList: true,
-    });
+  getDeviceTypeFlow = (deviceTypeFlow, list = []) => { // 流程图
+    deviceTypeFlow.forEach(e => {
+      if (!(list.some(item => item.deviceTypeCode === e.code))) {
+        list.push({
+          deviceTypeCode: e.code,
+          deviceTypeName: e.name,
+          key: e.code,
+        })
+        if (e.parents) {
+          this.getDeviceTypeFlow(e.parents, list)
+        }
+      }
+    })
+    return list
   }
 
   detailShow = () => { // 查看详情
@@ -144,24 +150,14 @@ class PvStation extends Component {
     }
   }
 
-  detailHide = (value) => { // 关闭详情
-    this.setState(value)
+  hiddenStationList = () => {
+    this.setState({
+      hiddenStationList: true,
+    });
   }
 
-  getDeviceTypeFlow = (deviceTypeFlow, list = []) => { // 流程图
-    deviceTypeFlow.forEach(e => {
-      if (!(list.some(item => item.deviceTypeCode === e.code))) {
-        list.push({
-          deviceTypeCode: e.code,
-          deviceTypeName: e.name,
-          key: e.code,
-        })
-        if (e.parents) {
-          this.getDeviceTypeFlow(e.parents, list)
-        }
-      }
-    })
-    return list
+  detailHide = (value) => { // 关闭详情
+    this.setState(value)
   }
 
   render() {
