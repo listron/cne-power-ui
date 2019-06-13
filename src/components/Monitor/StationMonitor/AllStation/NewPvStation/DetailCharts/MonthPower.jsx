@@ -206,13 +206,11 @@ class MonthPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                
                 backgroundColor: '#fff',
                 textStyle: {
                     color: fontColor,
                     fontSize: 12,
                 },
-                alwaysShowContent:true,
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 padding: 0,
                 formatter: (params) => {

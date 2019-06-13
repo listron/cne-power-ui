@@ -231,7 +231,7 @@ class Schematic extends Component {
                                 })}
                             </div>
                         }
-                        {!invertType && (deviceTypeArr.includes('202') || deviceTypeArr.includes('206')) &&// 集中式逆变器／组合式逆变器
+                        {!invertType && (deviceTypeArr.includes('201') || deviceTypeArr.includes('206')) &&// 集中式逆变器／组合式逆变器
                             <div className={styles.inverter} onClick={() => { this.changeTypeCode(invertTypeCode) }}>
                                 <div className={styles.title}>{deviceTypeArr.includes('201') ? '集中式逆变器' : '组串式逆变器'}</div>
                                 {commonList['201'].summaryInfo.map((e, index) => {
