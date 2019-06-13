@@ -6,54 +6,71 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 class ShowAddDeviceModeModal extends Component {
   static propTypes = {
+    cancleDeviceModeModal: PropTypes.func,
+    addDeviceModes: PropTypes.func,
+    form: PropTypes.object,
   }
   constructor(props, context) {
     super(props, context)
   }
-  componentWillReceiveProps(nextProps) {
-    const { checkDeviceModeOk, addDeviceTypeData, selectStation } = nextProps;
-    if (checkDeviceModeOk !== this.props.checkDeviceModeOk && checkDeviceModeOk === true) {
-      this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
-        if (!err) {
-          this.props.addDeviceMode({
-            deviceTypeCode: addDeviceTypeData.deviceTypeCode ? `${addDeviceTypeData.deviceTypeCode}` : `${values.deviceTypeCode}`,
-            // deviceTypeCode:'202',
-            deviceModeName: values.addDeviceModeCodeName,
-            manufacturer: values.addManufacturer,
-          })
-          // this.props.getDeviceModel({
-          //   // stationCode:selectStation?selectStation[0].stationCode:null,
-          //   deviceTypeCode:this.props.selectdeviceType,
-          // })
-          // this.props.saveFormState(values)
-          this.props.cancleDeviceModeModal()
-        }
-      })
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { checkDeviceModeOk, addDeviceTypeData, selectStation } = nextProps;
+  //   if (checkDeviceModeOk !== this.props.checkDeviceModeOk && checkDeviceModeOk === true) {
+  //     this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
+  //       if (!err) {
+  //         this.props.addDeviceMode({
+  //           deviceTypeCode: addDeviceTypeData.deviceTypeCode ? `${addDeviceTypeData.deviceTypeCode}` : `${values.deviceTypeCode}`,
+  //           // deviceTypeCode:'202',
+  //           deviceModeName: values.addDeviceModeCodeName,
+  //           manufacturer: values.addManufacturer,
+  //         })
+  //         // this.props.getDeviceModel({
+  //         //   // stationCode:selectStation?selectStation[0].stationCode:null,
+  //         //   deviceTypeCode:this.props.selectdeviceType,
+  //         // })
+  //         // this.props.saveFormState(values)
+  //         this.props.cancleDeviceModeModal()
+  //       }
+  //     })
+  //   }
+  // }
   handleCancel = () => {
     this.props.cancleDeviceModeModal()
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { getFieldsValue } = this.props.form;
-    const { addDeviceTypeData } = this.props;
+    const { addDeviceTypeData,addDeviceModes } = this.props;
     this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
       if (!err) {
-        this.props.checkDeviceMode({
-          deviceModeName: values.addDeviceModeCodeName,
-          deviceTypeCode: addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode
+        // this.props.checkDeviceMode({
+        //   deviceModeName: values.addDeviceModeCodeName,
+        //   deviceTypeCode: addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode
+        // })
+        this.props.changeDeviceManageStore({
+          manufactorId:values.addManufacturer,
         })
+        addDeviceModes({
+          assetsId:'',
+          deviceTypeCode:addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode,
+          manufactorId:values.addManufacturer,
+          deviceModeName:values.addDeviceModeCodeName,
+        })
+        this.props.cancleDeviceModeModal()
+       
+
       }
     })
 
   }
-  changeFactors=(value)=>{
-    this.props.getfactorsDeviceMode({manufactorId:value})
+  changeFactors = (value) => {
+    this.props.getfactorsDeviceMode({
+      manufactorId: value,
+      assetsId: '',
+    })
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showAddDeviceModeModal ,manufacturerValue,deviceFactorsList} = this.props;
+    const { showAddDeviceModeModal, manufacturerValue, deviceFactorsList } = this.props;
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },

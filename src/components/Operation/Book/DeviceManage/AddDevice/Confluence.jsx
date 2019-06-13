@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from '../deviceSide.scss';
 import ShowAddComponentMode from './ShowAddComponentMode';
-import { Input, Form, DatePicker, Select, Checkbox, Row, Col } from 'antd';
+import { Input, Form,  Select, Checkbox,  } from 'antd';
 const FormItem = Form.Item;
 const { Option } = Select;
 class Confluence extends Component {
   static propTypes = {
+    changeDeviceManageStore: PropTypes.func,
+    form: PropTypes.object,
+    addPvDeviceModeData: PropTypes.object,
+    pvDeviceModels: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context)
@@ -39,9 +43,7 @@ class Confluence extends Component {
   }
 
   render() {
-    const { showAddComponentMode, showAddComponent, componentModeCodeAdd, manufacturerComAdd,checkStyle } = this.state;
-    console.log('checkStyle: ', checkStyle);
- 
+    const { showAddComponentMode,checkStyle } = this.state;
     const { pvDeviceModels, addPvDeviceModeData } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const branchCount = getFieldValue("branchCount");
@@ -106,7 +108,4 @@ class Confluence extends Component {
   }
 }
 export default (Confluence)
-//  {/* <Col span={3} key={i}>
-//                       <div>第{e}支路</div>
-//                       <Checkbox value={e} key={i}></Checkbox>
-//                     </Col> */}
+

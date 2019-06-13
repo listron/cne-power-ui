@@ -3,6 +3,10 @@ import { assetConfigAction } from './assetsConfigAction';
 import moment from 'moment';
 
 var initState = Immutable.fromJS({
+  checkedManufactor:'',
+  
+  checkedAssetId:[],
+  checkedName:'',
   loading: false,
   selectType:'assetStructure',//'assetStructure'资产结构，'deviceFactory'设备厂家，'deviceMode'设备型号
   assetType:1,//用户权限类型，1是光，0风,multiple是两种都有

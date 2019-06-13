@@ -49,13 +49,15 @@ function* getNodeDetail(action) {  // 生产资产树详情
         },
       });
     } else {
+      message.error( response.data.message)
       throw response.data
     }
   } catch (e) {
     console.log(e);
+  
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false, assetList: [] },
+      payload: {  loading: false,  },
     })
   }
 }

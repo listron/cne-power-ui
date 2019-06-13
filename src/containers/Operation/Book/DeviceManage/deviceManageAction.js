@@ -26,6 +26,7 @@ export const deviceManageAction = {
   importStationDevice:Symbol('importStationDevice'),
   getStationDeviceType:Symbol('getStationDeviceType'),
   addDeviceFactors:Symbol('addDeviceFactors'),
+  addDeviceModes:Symbol('addDeviceModes'),
   getDeviceFactors:Symbol('getDeviceFactors'),
   getfactorsDeviceMode:Symbol('getfactorsDeviceMode'),//厂家下的设备型号
   getDevicePartInfo:Symbol('getDevicePartInfo'),//获取某设备的部件信息

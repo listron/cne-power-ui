@@ -144,7 +144,7 @@ class AddNodeFrom extends React.Component {
 
               <FormItem label="分类" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsType', {
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+                  rules: [{ required: true, message: '请选择分类', type: "string", max: 30, }],
                 })(
                   <Select  style={{ width: 194 }}>
                    <Option value="1">系统</Option>
@@ -155,7 +155,7 @@ class AddNodeFrom extends React.Component {
               </FormItem>
               <FormItem label="计量单位" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsUnit', {
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 6, }],
+                  rules: [{  message: '请填写正确的计量单位6字以内', type: "string", max: 6, }],
                 })(
                   <Input placeholder="6字以内" />
                 )}

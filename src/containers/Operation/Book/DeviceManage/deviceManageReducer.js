@@ -10,7 +10,6 @@ const initState = Immutable.fromJS({
   manufactorId:null,//厂家Id
   deviceModeCode: null, // 选中的设备型号
   deviceFullcode:'',
-  manufactorId:null,//设备厂家
   pageNum: 1,
   pageSize: 10,
   totalNum:  0, // 设备总数
@@ -42,6 +41,7 @@ const initState = Immutable.fromJS({
   checkDeviceModeData:{},//添加设备型号重复结果
   deviceFactorsList:[],//设备厂家数据
   factorsDeviceModeData:[],//设备厂家下的型号
+  addmanufactorId:'',//新增设备厂家的Id
   partInfoData:[],//部件信息table
   fixRecordData:[],//检修记录table
   historyWarningData:[],//设备历史告警table
