@@ -16,7 +16,7 @@ const realtimeAction = {
 }
 
 const initState = immutable.fromJS({
-  selectStationType: null, // 选中的电站类型
+  selectStationType: 0, // 选中的电站类型
   deviceTypeCode: null, // 选中的设备类型
   dataTime: null, // 记录的最新数据时间
   tableLoading: false, // 列表请求的loading
@@ -40,6 +40,8 @@ const initState = immutable.fromJS({
   pointInfo: [], // 选中设备内可选测点信息。
   chartRealtime: {}, // chart图 - 所有历史数据
   listRealtime: {}, // 表格内 - 分页后的历史数据
+
+  exportTime: null, // 导出的开始时间
 });
 
 const dataRealtime = (state = initState, action) => {

@@ -1,0 +1,10 @@
+.DeviceAccountTable{
+  width: 100%;
+  .noData{
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: #fff;
+    margin-top: 48px;
+  }
+}

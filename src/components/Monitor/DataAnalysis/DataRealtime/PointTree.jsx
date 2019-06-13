@@ -17,6 +17,7 @@ class PointTree extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    chartRealtime: PropTypes.object,
     changeRealtimeStore: PropTypes.func,
   };
 
@@ -37,8 +38,10 @@ class PointTree extends Component {
 
   onPointsQuery = () => {
     const {
-      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, chartRealtime
     } = this.props;
+    const clickTime = new Date(); // 点击按钮的时间
+    
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
       getRealtimeChart({ queryParam });
@@ -49,6 +52,11 @@ class PointTree extends Component {
         listParam,
       });
     }
+
+    changeRealtimeStore({
+      exportTime: clickTime,
+      chartRealtime
+    })
   }
 
   expandTree = (expandedKeys) => {
@@ -81,7 +89,7 @@ class PointTree extends Component {
     const { pointInfo } = this.props;
     const PointsNodes = [];
     const sortNames = [
-      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '其他'
+      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '逆变器', '汇流箱', '气象站', '汇流箱电流', '集电线路', '箱变', '主变', '站用变', '主进线', '母线分段', '馈线', '功率预测系统', '能量管理', 'SVG', '电能采集', '站内木箱', '全场信息汇', '其他'
     ];
     if (pointInfo.length === 0) {
       return null;

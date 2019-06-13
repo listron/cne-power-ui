@@ -102,7 +102,11 @@
               display: flex;
             }
             .fontColor {
+              margin-left: 4px;
               color: #199475;
+              i{
+                font-size: 20px
+              }
             }
           }
           .submitStyle {

@@ -22,7 +22,7 @@ class AssetsConfig extends Component {
     super(props, context)
   }
   componentDidMount() {
-    this.props.getAssetTree()
+
   }
 
   queryTargetData = (activeKey) => { //头部tab切换
