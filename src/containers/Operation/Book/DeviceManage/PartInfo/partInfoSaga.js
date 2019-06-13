@@ -112,7 +112,7 @@ function* getDeviceComList(action) {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
-          ...payload,
+          // ...payload,
           deviceComList: response.data.data || []
         }
       });
