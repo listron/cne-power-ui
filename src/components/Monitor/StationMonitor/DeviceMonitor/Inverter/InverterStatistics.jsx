@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import styles from '../eachDeviceMonitor.scss';
 import inverterStyles from './inverter.scss';
@@ -17,15 +18,15 @@ function InverterStatistics({ deviceDetail, subDeviceList }) {
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
   const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
-    '500': { color: '#199475', backgroundColor: '#ceebe0'}, // 无通讯
-    '900': { color: '#199475', backgroundColor: '#ceebe0'}, // 未接入
+    '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
+    '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
     '802': { color: '#fff', backgroundColor: '#3e97d1'}, // 偏大 - 蓝
-    '400': { color: '#fff', backgroundColor: '#199475'}, // 正常 - 绿
+    '400': { color: '#199475', backgroundColor: '#ceebe0'}, // 正常 - 绿
     '801': { color: '#fff', backgroundColor: '#f9b600'}, // 偏小 - 橙
-    '803': { color: '#fff', backgroundColor: '#3e97d1'}, // 异常 - 红
+    '803': { color: '#fff', backgroundColor: '#a42b2c'}, // 异常 - 红
   };
-
   return (
+    
     <div className={`${styles.statisticsBox} ${inverterStyles.statisticsBox}`} >
       <div className={inverterStyles.inverterInfo}>
         <div className={styles.deviceIcon}>
@@ -68,6 +69,11 @@ function InverterStatistics({ deviceDetail, subDeviceList }) {
       </div>}
     </div>
   )
+}
+
+InverterStatistics.propTypes = {
+  deviceDetail: PropTypes.object,
+  subDeviceList: PropTypes.array,
 }
 
 export default InverterStatistics;
