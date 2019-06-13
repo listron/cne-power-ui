@@ -253,10 +253,10 @@ class InverterList extends Component {
     const parentDeviceCodes = [...parentDeviceCodeSet];
     const deviceGroupedList = parentDeviceCodes.map(e => {
       const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
-      return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
+      return subDeviceList
+      // return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
 
-    const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
     const deviceStatus = inverterList.deviceStatusSummary || [];
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchLow} /> 只看低效逆变器
@@ -366,7 +366,7 @@ class InverterList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table
-                dataSource={currentTableList}
+                dataSource={this.createTableSource(filteredDeviceList)}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
