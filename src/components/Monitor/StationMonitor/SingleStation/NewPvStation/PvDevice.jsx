@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import styles from './pvStation.scss';
 const Option = Select.Option;
-import DeviceList from './DeviceList/DeviceList';
+
 
 class PvDevice extends Component {
     static propTypes = {
@@ -24,12 +24,12 @@ class PvDevice extends Component {
     componentDidUpdate(prevProps) {
         const { deviceTypeCode } = prevProps;
         const { choiceCode } = this.state;
-        if (deviceTypeCode!==choiceCode){
-            this.setState({choiceCode:deviceTypeCode})
+        if (deviceTypeCode !== choiceCode) {
+            this.setState({ choiceCode: deviceTypeCode })
         }
     }
 
-    getDeviceTypeFlow = (deviceTypeFlow, list = []) => {
+    getDeviceTypeFlow = (deviceTypeFlow, list = []) => { // 流程图
         deviceTypeFlow.forEach(e => {
             if (!(list.some(item => item.deviceTypeCode === e.code))) {
                 list.push({
@@ -45,22 +45,23 @@ class PvDevice extends Component {
         return list
     }
 
-
     deviceSelect = (value) => {
+        setTimeout(()=>{this.setState({ choiceCode: value })},0) 
         this.props.changeSingleStationStore({ deviceTypeCode: value });
-        this.setState({ choiceCode: value })
     }
 
     goSchematic = () => { // 返回示意图
+        this.setState({ choiceCode: '1' });
         this.props.changeSingleStationStore({ deviceTypeCode: '1' });
-        this.setState({ choiceCode: '1' })
     }
+
+
 
 
     render() {
         const { deviceTypeFlow, deviceTypeCode } = this.props;
-        const { choiceCode } = this.state;
         const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
+        const { choiceCode } = this.state;
         return (
             <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
                 <div className={styles.top}>
@@ -78,9 +79,7 @@ class PvDevice extends Component {
                     </Select>}
                     <div className={`${deviceTypeCode === '1' && styles.icon} ${styles.activeIcon}`} onClick={this.goSchematic}> <i className={'iconfont icon-back2'}></i></div>
                 </div>
-                <div className={styles.deviceList} >
-                    <DeviceList {...this.props} deviceTypeList={deviceTypeList} />
-                </div>
+
             </div>
         )
     }

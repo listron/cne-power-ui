@@ -54,12 +54,6 @@ class PvmoduleList extends Component {
     }, 60000);
   }
 
-  compareName = (a, b) => { // 排序
-    if (a['deviceName'] && b['deviceName']) {
-      return a['deviceName'].localeCompare(b['deviceName']);
-    }
-  }
-
   pointStatus = {
     '801': { backgroundColor: '#f9b600', color: '#fff' },// 偏低
     '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
@@ -74,6 +68,7 @@ class PvmoduleList extends Component {
     this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
   }
   render() {
+    
     const { pvmoduleList, loading, pvLevelNums, deviceTypeCode } = this.props;
     const { pvLevelStatus } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
@@ -91,7 +86,8 @@ class PvmoduleList extends Component {
           {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
             <React.Fragment>
               <div className={styles.pvmoduleListTop}>
-                {pvStatus.map(item => {
+                { 
+                  pvStatus.map(item => {
                   return (
                     <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.pointStatus && styles.active}`} key={item.name}
                       onClick={() => { this.buttonClick(item.pointStatus) }}>
@@ -115,9 +111,10 @@ class PvmoduleList extends Component {
                       </div>
                       <div className={styles.singlePvmodule}>
                         {item.electricityList.map((e, i) => {
+                          const colorStatus=this.pointStatus[e.pointStatus];
                           return (
                             <span
-                              style={{ backgroundColor: this.pointStatus[e.pointStatus].backgroundColor, color: this.pointStatus[e.pointStatus].color }}
+                              style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
                               className={styles.commonStyle}
                             >
                               {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}

@@ -10,6 +10,7 @@ import styles from './pvStation.scss';
 import moment from 'moment';
 import TransitionContainer from '../../../../Common/TransitionContainer';
 import DetailCharts from './DetailCharts/DetailCharts';
+import DeviceList from './DeviceList/DeviceList';
 
 class PvStation extends Component {
   static propTypes = {
@@ -90,7 +91,7 @@ class PvStation extends Component {
   }
 
   getOnceData = (stationCode, stationType) => { // 只请求一次数据
-   
+
     const startTime = moment().subtract(1, 'days').format('YYYY-MM-DD'); // 查询昨天开始的未来7天的数据
     this.props.getWeatherList({ stationCode, dateReport: startTime }); // 天气
     this.props.getWorkList({
@@ -129,17 +130,17 @@ class PvStation extends Component {
   detailShow = () => { // 查看详情
     this.setState({ detailVisible: true })
     const { stationCode } = this.props.match.params;
-    const {queryFirst}=this.state;
-    if(queryFirst){
+    const { queryFirst } = this.state;
+    if (queryFirst) {
       this.props.getCapabilityDiagram({  // 出力图
         stationCode,
-        stationType:'1',
+        stationType: '1',
         startTime: moment().startOf('day').utc().format(),
         endTime: moment().endOf('day').utc().format()
       });
-      this.getPowerDataTenMin({ stationCode, stationType:'1' }); // 发电量
+      this.getPowerDataTenMin({ stationCode, stationType: '1' }); // 发电量
       this.props.monthplanpower({ stationCode }); // 月累计与计划发电量
-      this.setState({queryFirst:false})
+      this.setState({ queryFirst: false })
     }
   }
 
@@ -147,8 +148,25 @@ class PvStation extends Component {
     this.setState(value)
   }
 
+  getDeviceTypeFlow = (deviceTypeFlow, list = []) => { // 流程图
+    deviceTypeFlow.forEach(e => {
+      if (!(list.some(item => item.deviceTypeCode === e.code))) {
+        list.push({
+          deviceTypeCode: e.code,
+          deviceTypeName: e.name,
+          key: e.code,
+        })
+        if (e.parents) {
+          this.getDeviceTypeFlow(e.parents, list)
+        }
+      }
+    })
+    return list
+  }
+
   render() {
-    const { singleStationData, editData, monitorPvUnit } = this.props;
+    const { singleStationData, editData, monitorPvUnit, deviceTypeFlow } = this.props;
+    const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
     const { detailVisible } = this.state;
     const { stationCode } = this.props.match.params;
     const { alarmNum } = singleStationData;
@@ -162,7 +180,12 @@ class PvStation extends Component {
             stationCode={stationCode}
             monitorPvUnit={monitorPvUnit}
           />
-          <PvDevice {...this.props} />
+          <div>
+            <PvDevice {...this.props} />
+            <div className={styles.deviceList} >
+              <DeviceList {...this.props} deviceTypeList={deviceTypeList} />
+            </div>
+          </div>
           <div onClick={this.detailShow} className={styles.detailShow}>
             <i className={`iconfont icon-go2 ${styles.show}`}></i>
             <span className={styles.detailShowfont}>查看电站概况</span>
