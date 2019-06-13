@@ -46,7 +46,7 @@ class PvDevice extends Component {
     }
 
     deviceSelect = (value) => {
-        setTimeout(()=>{this.setState({ choiceCode: value })},0) 
+        setTimeout(() => { this.setState({ choiceCode: value }) }, 0)
         this.props.changeSingleStationStore({ deviceTypeCode: value });
     }
 
@@ -65,10 +65,12 @@ class PvDevice extends Component {
         return (
             <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
                 <div className={styles.top}>
+                    <div ref={'selectBody'}></div>
                     {<Select
                         value={choiceCode}
                         style={{ width: 140 }}
                         onChange={this.deviceSelect}
+                        getPopupContainer={()=>this.refs.selectBody}
                     >
                         <Option value={'1'} key={'1'} >{'示意图'}</Option>
                         {deviceTypeList.map((item) => {
