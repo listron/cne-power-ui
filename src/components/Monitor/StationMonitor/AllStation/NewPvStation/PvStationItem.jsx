@@ -111,6 +111,7 @@ class PvStationItem extends React.Component {
     const filteredStation = this.dealData(filterStationList);
     return (
       <div className={styles.stationCardContainer}>
+        <div ref={'selectBody'}></div>
         <div className={styles.filterCondition}>
           <Select
             showSearch
@@ -119,9 +120,10 @@ class PvStationItem extends React.Component {
             optionFilterProp="children"
             onChange={this.conditionChange}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            getPopupContainer={() => this.refs.selectBody}
           // value={selectStation}
           >
-            <Option value={''}>{'全部电站'}</Option>
+            <Option value={''} key={''}>{'全部电站'}</Option>
             {stationDataList.map(list => {
               return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>
             })}
@@ -214,7 +216,7 @@ class PvStationItem extends React.Component {
                             告警  <span className={styles[`${item.alarmNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.alarmNum, '--', 0)}</span>
                           </div>
                         </Link>
-                      </div> 
+                      </div>
                     </div>
                   )
                 })}
