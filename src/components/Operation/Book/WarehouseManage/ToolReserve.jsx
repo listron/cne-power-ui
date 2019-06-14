@@ -8,7 +8,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-export default class SpareReserve extends Component {
+export default class ToolReserve extends Component {
 
   static propTypes = {
     tabName: PropTypes.string,
@@ -121,8 +121,8 @@ export default class SpareReserve extends Component {
         sorter: true,
         render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--'
       }, {
-        title: '备注',
-        dataIndex: 'remarks',
+        title: '更多信息',
+        dataIndex: 'moreInfo',
         width: textWidth,
         render: (text) => <div className={styles.remarks} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
       }, {

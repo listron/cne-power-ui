@@ -90,12 +90,9 @@ class ToolPage extends Component {
       dataIndex: 'goodsType',
       sorter: true,
       render: (text) => ({
-        101: '备品备件',
         201: '安全工器具',
         202: '检修工器具',
         203: '仪器仪表',
-        301: '生活物资',
-        302: '办公物资',
         303: '其他',
       }[text])
     }, {

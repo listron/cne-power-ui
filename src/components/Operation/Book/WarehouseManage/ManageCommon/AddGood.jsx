@@ -10,10 +10,10 @@ class AddGood extends Component {
 
   // 101:备品备件、201：安全工器具、202：检修工器具、203：仪器仪表、301：生活物资、302：办公物资、303：其他
   static propTypes = {
+    tabName: PropTypes.string,
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
     goodsList: PropTypes.array,
-    goodsType: PropTypes.string, // 添加物品的
     form: PropTypes.object,
     disabled: PropTypes.bool,
     value: PropTypes.string,
@@ -24,6 +24,21 @@ class AddGood extends Component {
   state = {
     saveMode: '', // 保存 || 继续添加
     addModalShow: false,
+    goodTypeInfo: {
+      spares: [
+        { value: 101, label: '备品备件' }
+      ],
+      tools: [
+        { value: 201, label: '安全工器具' },
+        { value: 202, label: '检修工器具' },
+        { value: 203, label: '仪器仪表' },
+      ],
+      materials: [
+        { value: 301, label: '生活物资' },
+        { value: 302, label: '办公物资' },
+        { value: 303, label: '其他' },
+      ]
+    }
   }
 
   componentDidUpdate(preProps){
@@ -60,18 +75,18 @@ class AddGood extends Component {
   }
 
   querySaveInfo = () => {
-    const { form, addNewGood, goodsType } = this.props;
+    const { form, addNewGood } = this.props;
     const { validateFields } = form;
     validateFields((err, values) => {
       if (!err) {
-        addNewGood({ ...values, goodsType });
+        addNewGood({ ...values });
       }
     });
   }
 
   render(){
-    const { addModalShow, saveMode } = this.state;
-    const { form, goodsList, disabled, value, addGoodStatus } = this.props;
+    const { addModalShow, saveMode, goodTypeInfo } = this.state;
+    const { form, goodsList, disabled, value, addGoodStatus, tabName } = this.props;
     const { getFieldDecorator } = form;
     return(
       <div className={styles.addGood}>
@@ -87,7 +102,7 @@ class AddGood extends Component {
           ))}
         </Select>
         <span
-          onClick={this.showModal}
+          onClick={disabled ? null : this.showModal}
           className={`${styles.addIcon} ${disabled ? styles.disabled : null}`}
         >+</span>
         {addModalShow && <Modal
@@ -107,6 +122,25 @@ class AddGood extends Component {
                 }],
               })(
                 <Input placeholder="30字以内" />
+              )}
+            </FormItem>
+            <FormItem
+              label="物品类型"
+              className={styles.eathItem}
+              style={{display: tabName === 'spares' ? 'none' : 'flex'}}
+            >
+              {getFieldDecorator('goodsType', {
+                rules: [{
+                  required: true,
+                  message: '请选择物品类型',
+                }],
+                initialValue: tabName === 'spares' ? 101 : null
+              })(
+                <Select placeholder="请选择" style={{width: 200}}>
+                  {goodTypeInfo[tabName].map(e => (
+                    <Option key={e.value} value={e.value}>{e.label}</Option>
+                  ))}
+                </Select>
               )}
             </FormItem>
             <FormItem label="计量单位" className={styles.eathItem}>

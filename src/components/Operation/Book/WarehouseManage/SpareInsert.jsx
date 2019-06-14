@@ -13,6 +13,7 @@ const { Option } = Select;
 class SpareInsert extends Component {
 
   static propTypes = {
+    tabName: PropTypes.string,
     insertStatus: PropTypes.string,
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
@@ -111,7 +112,7 @@ class SpareInsert extends Component {
   render(){
     const { saveMode } = this.state;
     const {
-      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
+      form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId } = getFieldsValue(['manufactorId']);
@@ -146,7 +147,7 @@ class SpareInsert extends Component {
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
                 addGoodStatus={addGoodStatus}
-                goodsType="101"
+                tabName={tabName}
                 disabled={!!originInsertInfo}
               />
             )}

@@ -211,12 +211,11 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
   }
 }
 
-function *getGoodsList({ payload }) { // 仓库下所有物品列表
-  const url = `${APIBasePath}${operation.getGoodsList}`;
+function *getGoodsList({ payload }) { // 指定物资类型下所有物品列表
+  // const url = `${APIBasePath}${operation.getGoodsList}`;
+  const url = `${APIBasePath}${operation.getGoodsList}/${payload.goodsMaxType}`;
   try {
-    const response = yield call(axios.get, url, {
-      params: { ...payload }
-    });
+    const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,
@@ -259,7 +258,6 @@ function *addNewGood({ payload }) { // 新增物品
       payload: { addGoodStatus: 'normal' }
     })
     message.error(`物品添加失败,请重试,${error.message}`);
-    console.log(error);
   }
 }
 
@@ -305,12 +303,11 @@ function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 =
       type: warehouseManageAction.changeStore,
       payload: { insertStatus: 'normal' },
     })
-    console.log(err);
     message.error(`入库失败,请重试,${err.message}`);
   }
 }
 
-function *getMaterialDetailsList({ payload }) {
+function *getMaterialDetailsList({ payload }) { // 获取仓库下的物资列表
   const url = `${APIBasePath}${operation.getMaterialDetailsList}`;
   try{
     const response = yield call(axios.post, url, payload);
@@ -321,7 +318,6 @@ function *getMaterialDetailsList({ payload }) {
       })
     } else { throw response.data }
   } catch (error) {
-    console.log(error)
     yield put({
       type: warehouseManageAction.changeStore,
       payload: { materialDetailsList: [] }
@@ -329,7 +325,7 @@ function *getMaterialDetailsList({ payload }) {
   }
 }
 
-function *takeoutWarehouseMaterial({ payload }){
+function *takeoutWarehouseMaterial({ payload }){ // 出库
   const url = `${APIBasePath}${operation.takeoutWarehouseMaterial}`;
   try {
     yield put({
@@ -359,7 +355,6 @@ function *takeoutWarehouseMaterial({ payload }){
       payload: { takeoutStatus: 'normal' },
     })
     message.error(`出库失败,请重试,${err.message}`);
-    console.log(err);
   }
 }
 

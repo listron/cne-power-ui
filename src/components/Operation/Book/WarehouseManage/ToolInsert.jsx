@@ -12,6 +12,7 @@ const { Option } = Select;
 class ToolInsert extends Component {
 
   static propTypes = {
+    tabName: PropTypes.string,
     insertStatus: PropTypes.string,
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
@@ -88,15 +89,15 @@ class ToolInsert extends Component {
   saveInfo = () => {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      const assetsIds = values.assetsIds[0];
-      insertWarehouse({ ...values, assetsIds });
+      insertWarehouse({ ...values });
     })
   }
 
   render(){
     const { saveMode } = this.state;
     const {
-      form, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, insertStatus, originInsertInfo, addGoodStatus
+      form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes,
+      insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId } = getFieldsValue(['manufactorId']);
@@ -109,13 +110,9 @@ class ToolInsert extends Component {
       callback();
     }
     const goodsInfo = [
-      { value: 101, label: '备品备件' },
       { value: 201, label: '安全工器具' },
       { value: 202, label: '检修工器具' },
       { value: 203, label: '仪器仪表' },
-      { value: 301, label: '生活物资' },
-      { value: 302, label: '办公物资' },
-      { value: 303, label: '其他' },
     ];
     return (
       <section className={styles.insert}>
@@ -149,7 +146,7 @@ class ToolInsert extends Component {
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
                 addGoodStatus={addGoodStatus}
-                goodsType="101"
+                tabName={tabName}
                 disabled={!!originInsertInfo}
               />
             )}

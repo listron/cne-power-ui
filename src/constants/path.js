@@ -183,7 +183,7 @@ export default {
       getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
       getManufactures: '/v3/manufactor/user/manufactors', // 所有厂家下拉项
       getModes: '/v3/manufactor/user', // 所有厂家下拉项
-      getGoodsList: '/v3/goods/listByWarehouse', // 所有物品列表下拉项
+      getGoodsList: '/v3/goods/listByType', // 物品类别下所有物品列表下拉
       getWarehouseManageList: '/v3/inventory/pageList', // 获取仓库管理下-备品备件/工器具/物资列表
       insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
       deleteWarehouseMaterial: '/v3/inventory/del', // 删除 备品备件/工器具/物资列表
