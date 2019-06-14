@@ -441,7 +441,7 @@ function* addPartsModes(action) {
       });
       const payload = yield select(state => ({
         manufactorId: state.operation.partInfo.get("manufactorId"),
-        assetsId: "0"
+        assetsId: state.operation.partInfo.get("assetsId")
       }));
       yield put({
         type: partInfoAction.getfactorsPartsMode,

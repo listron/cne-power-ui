@@ -34,7 +34,7 @@ class CopyParts extends React.Component {
   onCheckLeft = checkedKeys => {
     this.setState({ checkedAssetId: checkedKeys });
   };
-  selectNode = () => {};
+
   selectLeftNode = () => {};
   handleCancel = () => {
     this.props.closeComParts();
@@ -246,7 +246,7 @@ class CopyParts extends React.Component {
                 </Tree> */}
                 <Checkbox.Group
                   defaultValue={[deviceCode]}
-                  onChange={this.selectNode}
+                  onChange={this.onCheck}
                 >
                   {brotherNode.map((e, i) => {
                     return (

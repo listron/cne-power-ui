@@ -191,7 +191,7 @@ class EditPartsInfo extends React.Component {
           >
             {getFieldDecorator("assetsId", {
               initialValue: assetsIds,
-              rules: [{ message: "请正确填写,不超过30字" }]
+              rules: [{ required: true, message: "请正确填写,不超过30字" }]
             })(
               <TreeSelect
                 style={{ width: 194 }}
