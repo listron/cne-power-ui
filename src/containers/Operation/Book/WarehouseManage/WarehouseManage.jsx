@@ -3,12 +3,19 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
 import ToolPage from '../../../../components/Operation/Book/WarehouseManage/ToolPage';
+import MaterialPage from '../../../../components/Operation/Book/WarehouseManage/MaterialPage';
+
 import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
 import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/SpareTakeout';
 import SpareReserve from '../../../../components/Operation/Book/WarehouseManage/SpareReserve';
+
 import ToolInsert from '../../../../components/Operation/Book/WarehouseManage/ToolInsert';
 import ToolTakeout from '../../../../components/Operation/Book/WarehouseManage/ToolTakeout';
 import ToolReserve from '../../../../components/Operation/Book/WarehouseManage/ToolReserve';
+
+import MaterialInsert from '../../../../components/Operation/Book/WarehouseManage/MaterialInsert';
+import MaterialTakeout from '../../../../components/Operation/Book/WarehouseManage/MaterialTakeout';
+import MaterialReserve from '../../../../components/Operation/Book/WarehouseManage/MaterialReserve';
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -99,7 +106,7 @@ class WarehouseManage extends Component {
               </div>
               {tabName === 'spares' && <SparePage {...this.props} showSide={this.showSide} />}
               {tabName === 'tools' && <ToolPage {...this.props} showSide={this.showSide} />}
-              {/* {tabName === 'materials' && <MaterialPage {...this.props} showSide={this.showSide} />} */}
+              {tabName === 'materials' && <MaterialPage {...this.props} showSide={this.showSide} />}
             </div>
             <Footer />
           </div>
@@ -116,14 +123,11 @@ class WarehouseManage extends Component {
                 reserve: <ToolReserve {...this.props} backList={this.backList} />,
               },
               materials: {
-                insert: <div></div>,
-                takeout: <div></div>,
-                reserve: <div></div>,
+                insert: <MaterialInsert {...this.props} backList={this.backList} />,
+                takeout: <MaterialTakeout {...this.props} backList={this.backList} />,
+                reserve: <MaterialReserve {...this.props} backList={this.backList} />,
               }
             }[tabName][sideKey]}
-            {/* <MaterialInsert /> */}
-            {/* <MaterialTakeout /> */}
-            {/* <MaterialReserve /> */}
             <Footer />
           </div>
         </div>

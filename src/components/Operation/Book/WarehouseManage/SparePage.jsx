@@ -33,7 +33,7 @@ class SparePage extends Component {
     const { inventoryId } = record;
     showSide('reserve');
     changeStore({ reserveInventoryId: inventoryId })
-    getReserveDetail({ inventoryId }); // 库存详情
+    getReserveDetail({ inventoryId: `${inventoryId}` }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
   }
 

@@ -361,7 +361,7 @@ function *takeoutWarehouseMaterial({ payload }){ // 出库
 function *getReserveDetail({ payload }) { // 获取某库存详情
   const url = `${APIBasePath}${operation.getReserveDetail}`;
   try {
-    const response = yield call(axios.post, url, payload);
+    const response = yield call(axios.get, url, {params: payload});
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,

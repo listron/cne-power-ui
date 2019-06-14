@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Table, Popover } from 'antd';
+import { Icon, Table } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ReserveDetail } from './ManageCommon/ReserveDetail';
@@ -8,7 +8,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 
-export default class ToolReserve extends Component {
+export default class MaterialReserve extends Component {
 
   static propTypes = {
     tabName: PropTypes.string,
@@ -75,12 +75,11 @@ export default class ToolReserve extends Component {
     const reserveBox = this.reserveBox;
     const timeWidth = 160;
     const pricePersonWidth = 90;
-    const moreInfoWidth = 75;
     const statusWidth = 70;
     let codeWidth = 140, handleWidth = 90, textWidth = 120;
     if (reserveBox) { // 样式对齐，防止文字过多错行。
       const { clientWidth } = reserveBox;
-      textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - moreInfoWidth - statusWidth - codeWidth - handleWidth) / 2;
+      textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - statusWidth - codeWidth - handleWidth) / 3;
     }
     return [
       {
@@ -122,36 +121,10 @@ export default class ToolReserve extends Component {
         sorter: true,
         render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--'
       }, {
-        title: '更多信息',
-        dataIndex: 'moreInfo',
-        width: moreInfoWidth,
-        render: (text, record) => {
-          const InfoContent = (
-            <div className={styles.infoContent}>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>耗损类型(todo)</span>
-                <span className={styles.info}>{record.devManufactorName || '--'}</span>
-              </div>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>耗损原因(todo)</span>
-                <span className={styles.info}>{record.supplierName || '--'}</span>
-              </div>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>入库备注</span>
-                <span className={styles.info}>{record.manufactorName || '--'}</span>
-              </div>
-            </div>
-          )
-          return (
-            <Popover
-              content={InfoContent}
-              title={<span className={styles.infoContentTitle}>更多信息</span>}
-              trigger="hover"
-            >
-              <button className={styles.trigButton}>查看</button>
-            </Popover>
-          )
-        }
+        title: '备注',
+        dataIndex: 'remarks',
+        width: textWidth,
+        render: (text) => <div className={styles.remarks} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
       }, {
         title: '状态',
         dataIndex: 'isEntry',
@@ -237,7 +210,7 @@ export default class ToolReserve extends Component {
     return (
       <section className={styles.reserve} ref={(ref) => this.reserveBox = ref}>
         <h3 className={styles.title}>
-          <span className={styles.text}>工器具 - 库存</span>
+          <span className={styles.text}>物资 - 库存</span>
           <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
         </h3>
         <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import ConditionSearch from './ManageCommon/ConditionSearch';
 import HandleComponent from './ManageCommon/HandleComponents';
-import { Table } from 'antd';
+import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
+import styles from './warehouseManageComp.scss';
 
-class ToolPage extends Component {
+class MaterialPage extends Component {
 
   static propTypes = {
     checkedStocks: PropTypes.array,
@@ -44,12 +44,9 @@ class ToolPage extends Component {
     const sortTemplete = {
       goodsName: 'goods_name',
       modeName: 'mode_name',
-      goodsType: 'goods_type',
       warehouseName: 'warehouse_name',
       inventoryNum: 'inventory_num',
-      devManufactorName: 'devManufactorName',
-      supplierName: 'supplier_name',
-      manufactorName: 'manufactor_name',
+      threshold: 'threshold',
       descend: 'desc',
       ascend: 'asc',
     };
@@ -90,11 +87,11 @@ class ToolPage extends Component {
       dataIndex: 'goodsType',
       sorter: true,
       render: (text) => ({
-        201: '安全工器具',
-        202: '检修工器具',
-        203: '仪器仪表',
+        301: '生活物资',
+        302: '办公物资',
+        303: '其他',
       }[text])
-    }, {
+    },{
       title: '所属仓库',
       dataIndex: 'warehouseName',
       sorter: true,
@@ -124,7 +121,7 @@ class ToolPage extends Component {
       render: (text, record) => (
         <div className={styles.stockHandle}>
           <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-          <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
+          <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
           <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
         </div>
       )
@@ -154,4 +151,4 @@ class ToolPage extends Component {
   }
 }
 
-export default ToolPage;
+export default MaterialPage;

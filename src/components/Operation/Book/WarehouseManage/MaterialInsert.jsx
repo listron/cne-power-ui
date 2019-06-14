@@ -8,7 +8,7 @@ import styles from './warehouseManageComp.scss';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-class ToolInsert extends Component {
+class MaterialInsert extends Component {
 
   static propTypes = {
     tabName: PropTypes.string,
@@ -37,7 +37,7 @@ class ToolInsert extends Component {
 
   componentDidMount(){
     const { originInsertInfo, form, getGoodsList } = this.props; 
-    getGoodsList({ goodsMaxType: 200 });
+    getGoodsList({ goodsMaxType: 300 });
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
         warehouseId: originInsertInfo.warehouseId,
@@ -116,7 +116,7 @@ class ToolInsert extends Component {
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
-          <span className={styles.text}>工器具 - 入库</span>
+          <span className={styles.text}>物资 - 入库</span>
           <Icon type="arrow-left" onClick={this.backToList} className={styles.backIcon} />
         </h3>
         <Form className={styles.formPart}>
@@ -222,4 +222,4 @@ class ToolInsert extends Component {
   }
 }
 
-export default Form.create()(ToolInsert);
+export default Form.create()(MaterialInsert);
