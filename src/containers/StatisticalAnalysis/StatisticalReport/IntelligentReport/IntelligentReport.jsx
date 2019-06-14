@@ -55,21 +55,21 @@ class IntelligentReport extends Component {
                 </Radio.Group>
             </div>
           </div>
-
-          {dayStation &&
-          <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`}></iframe> }
-
-          {monthStation && <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0"  src={`${apiUrlReal}/decision/view/report? viewlet=report_month_station.cpt&__bypagesize__=false`}></iframe>}
-
-          {yearStation && <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`}></iframe>}
-
-          {dayRegion &&
-          <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`}></iframe> }
-
-          {yearRegion && <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0"  src={`${apiUrlReal}/decision/view/report? viewlet=report_month_region.cpt&__bypagesize__=false`}></iframe>}
-
-          {monthRegion && <iframe id="reportFrame" width="100%" height="670" background="white" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`}></iframe>}
-
+          <div className={styles.iframeContent}>
+            {dayStation &&
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`}></iframe> }
+  
+            {monthStation && <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report? viewlet=report_month_station.cpt&__bypagesize__=false`}></iframe>}
+            
+            {yearStation && <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`}></iframe>}
+            
+            {dayRegion &&
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`}></iframe> }
+  
+            {yearRegion && <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report? viewlet=report_month_region.cpt&__bypagesize__=false`}></iframe>}
+            
+            {monthRegion && <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`}></iframe>}
+          </div>
           <Footer />
           </div>
         </div>

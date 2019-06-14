@@ -27,6 +27,14 @@
           }
         }
       }
+      .iframeContent{
+        margin: 0 30px;
+        .iframeBody{
+          width: 100%;
+          height: 658px;
+          background: #fff;
+        }
+      }
     }
   }
 }
