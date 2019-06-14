@@ -27,8 +27,8 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
   const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
-    '500': { color: 'transparent', backgroundColor: '#ceebe0'}, // 无通讯
-    '900': { color: 'transparent', backgroundColor: '#ceebe0'}, // 未接入
+    '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
+    '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
     '802': { color: '#fff', backgroundColor: '#3e97d1'}, // 偏大 - 蓝
     '400': { color: '#199475', backgroundColor: '#ceebe0'}, // 正常 - 绿
     '801': { color: '#fff', backgroundColor: '#f9b600'}, // 偏小 - 橙
