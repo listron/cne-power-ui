@@ -31,31 +31,31 @@ class HistorySearch extends Component {
     getListHistory: PropTypes.func,
   };
 
-  // componentDidUpdate(prevProps){
-  //   const { queryParam, changeHistoryStore, filterDevices } = this.props;
-  //   const prevDevices = prevProps.filterDevices;
-  //   if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
-  //     changeHistoryStore({
-  //       queryParam: {
-  //         ...queryParam,
-  //         deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-  //       }
-  //     });
-  //     this.selectedDevice([filterDevices[0]]);
-  //   } else if (
-  //     prevDevices.length > 0
-  //       && filterDevices.length > 0
-  //       && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
-  //   ) { // 设备数据切换
-  //     changeHistoryStore({
-  //       queryParam: {
-  //         ...queryParam,
-  //         deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-  //       }
-  //     });
-  //     this.selectedDevice([filterDevices[0]])
-  //   }
-  // }
+  componentDidUpdate(prevProps){
+    const { queryParam, changeHistoryStore, filterDevices } = this.props;
+    const prevDevices = prevProps.filterDevices;
+    if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    } else if (
+      prevDevices.length > 0
+        && filterDevices.length > 0
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+    ) { // 设备数据切换
+      changeHistoryStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]])
+    }
+  }
 
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
     const { changeHistoryStore, queryParam } = this.props;

@@ -23,7 +23,8 @@ class RealtimeDataType extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
-    exportTime: PropTypes.string,
+    endTime: PropTypes.string,
+    startTime: PropTypes.string,
   };
 
   showChart = () => { // 若已选测点=>终止当前请求启动图表定时请求,若未选测点则存储属性
@@ -57,14 +58,12 @@ class RealtimeDataType extends Component {
   }
 
   exportRealtime = () => { // '导出实时数据excel'
-    const { exportTime } = this.props;
-    const clickTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"),'YYYY-MM-DD hh:mm:ss');
-    if (clickTime.diff(exportTime, 'minute') >= 1) {
-      message.warning('最多支持导出最近半小时数据');
-      return;
+    const { startTime, downLoadFile, queryParam } = this.props;
+    const clickEndTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"),'YYYY-MM-DD hh:mm:ss'); // 点击导出按钮时间
+    if (clickEndTime.diff(startTime, 'minute') >= 30) {
+      return message.warning('最多支持导出最近半小时数据');
     }
 
-    const { downLoadFile, queryParam } = this.props;
     const url = `${APIBasePath}${monitor.exportRealtime}`;
     const { deviceFullCodes, devicePoints } = queryParam;
     const timeZone = moment().zone() / (-60);
@@ -77,6 +76,8 @@ class RealtimeDataType extends Component {
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         timeZone,
+        startTime: moment(startTime).utc().format(), 
+        endTime: moment(clickEndTime).utc().format(),
       },
     })
   }

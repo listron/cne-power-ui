@@ -43,7 +43,7 @@ class PointTree extends Component {
     const {
       queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, chartRealtime
     } = this.props;
-    const clickTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"), 'YYYY-MM-DD hh:mm:ss');// 点击按钮的时间
+    const clickStartTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"), 'YYYY-MM-DD hh:mm:ss'); // 点击确定按钮的时间
     
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
@@ -57,7 +57,7 @@ class PointTree extends Component {
     }
 
     changeRealtimeStore({
-      exportTime: clickTime,
+      startTime: clickStartTime,
       chartRealtime
     })
   }
