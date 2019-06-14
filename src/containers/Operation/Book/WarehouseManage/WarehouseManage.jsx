@@ -8,6 +8,7 @@ import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/
 import SpareReserve from '../../../../components/Operation/Book/WarehouseManage/SpareReserve';
 import ToolInsert from '../../../../components/Operation/Book/WarehouseManage/ToolInsert';
 import ToolTakeout from '../../../../components/Operation/Book/WarehouseManage/ToolTakeout';
+import ToolReserve from '../../../../components/Operation/Book/WarehouseManage/ToolReserve';
 
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
@@ -112,7 +113,7 @@ class WarehouseManage extends Component {
               tools: {
                 insert: <ToolInsert {...this.props} backList={this.backList} />,
                 takeout: <ToolTakeout {...this.props} backList={this.backList} />,
-                reserve: <div></div>,
+                reserve: <ToolReserve {...this.props} backList={this.backList} />,
               },
               materials: {
                 insert: <div></div>,
@@ -120,7 +121,6 @@ class WarehouseManage extends Component {
                 reserve: <div></div>,
               }
             }[tabName][sideKey]}
-            {/* <ToolReserve /> */}
             {/* <MaterialInsert /> */}
             {/* <MaterialTakeout /> */}
             {/* <MaterialReserve /> */}

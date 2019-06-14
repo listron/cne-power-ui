@@ -166,6 +166,15 @@
     line-height: 48px;
     align-items: center;
   }
+  .trigButton{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    &:focus{
+      outline: none;
+      color:#e08031;
+    }
+  }
   table{
     .supplierName, .manufactorName, .remarks{
       @include overflowText();

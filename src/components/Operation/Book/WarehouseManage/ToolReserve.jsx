@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Table } from 'antd';
+import { Icon, Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ReserveDetail } from './ManageCommon/ReserveDetail';
@@ -75,11 +75,12 @@ export default class ToolReserve extends Component {
     const reserveBox = this.reserveBox;
     const timeWidth = 160;
     const pricePersonWidth = 90;
+    const moreInfoWidth = 75;
     const statusWidth = 70;
     let codeWidth = 140, handleWidth = 90, textWidth = 120;
     if (reserveBox) { // 样式对齐，防止文字过多错行。
       const { clientWidth } = reserveBox;
-      textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - statusWidth - codeWidth - handleWidth) / 3;
+      textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - moreInfoWidth - statusWidth - codeWidth - handleWidth) / 2;
     }
     return [
       {
@@ -123,8 +124,34 @@ export default class ToolReserve extends Component {
       }, {
         title: '更多信息',
         dataIndex: 'moreInfo',
-        width: textWidth,
-        render: (text) => <div className={styles.remarks} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        width: moreInfoWidth,
+        render: (text, record) => {
+          const InfoContent = (
+            <div className={styles.infoContent}>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>耗损类型(todo)</span>
+                <span className={styles.info}>{record.devManufactorName || '--'}</span>
+              </div>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>耗损原因(todo)</span>
+                <span className={styles.info}>{record.supplierName || '--'}</span>
+              </div>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>入库备注</span>
+                <span className={styles.info}>{record.manufactorName || '--'}</span>
+              </div>
+            </div>
+          )
+          return (
+            <Popover
+              content={InfoContent}
+              title={<span className={styles.infoContentTitle}>更多信息</span>}
+              trigger="hover"
+            >
+              <button className={styles.trigButton}>查看</button>
+            </Popover>
+          )
+        }
       }, {
         title: '状态',
         dataIndex: 'isEntry',

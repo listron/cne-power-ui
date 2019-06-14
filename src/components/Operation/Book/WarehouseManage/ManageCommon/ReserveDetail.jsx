@@ -22,7 +22,7 @@ export const ReserveDetail = ({ reserveDetail, tabName }) => {
   
   const rightArr = [
     { label: '入库总数', key: 'entryNum' },
-    { label: '出库总数', key: 'outNum' },
+    { label: tabName === 'tools' ? '损耗总数' : '出库总数', key: 'outNum' },
     { label: '在库总数', key: 'currentNum' },
   ]
 
