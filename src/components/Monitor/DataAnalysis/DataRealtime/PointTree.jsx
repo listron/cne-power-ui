@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tree, message, Button } from 'antd';
 import styles from './realtimeStyle.scss';
+// import moment = require('moment');
+import moment from 'moment';
+
 
 const { TreeNode } = Tree;
 
@@ -40,7 +43,7 @@ class PointTree extends Component {
     const {
       queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, chartRealtime
     } = this.props;
-    const clickTime = new Date(); // 点击按钮的时间
+    const clickTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"), 'YYYY-MM-DD hh:mm:ss');// 点击按钮的时间
     
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();

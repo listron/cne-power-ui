@@ -58,14 +58,12 @@ class RealtimeDataType extends Component {
 
   exportRealtime = () => { // '导出实时数据excel'
     const { exportTime } = this.props;
-    const clickTime = new Date(); // 点击按钮的时间
-    const timeDifference = exportTime.getTime() - clickTime.getTime(); // 计算时间差
-    const leave1 = timeDifference % (24 * 3600 * 3600 * 1000  * 1000); 
-    const minutes = Math.floor(Math.abs(leave1 / (60 * 1000))); // 分钟
-    if(minutes > 30 ){
+    const clickTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"),'YYYY-MM-DD hh:mm:ss');
+    if (clickTime.diff(exportTime, 'minute') >= 1) {
       message.warning('最多支持导出最近半小时数据');
       return;
     }
+
     const { downLoadFile, queryParam } = this.props;
     const url = `${APIBasePath}${monitor.exportRealtime}`;
     const { deviceFullCodes, devicePoints } = queryParam;
