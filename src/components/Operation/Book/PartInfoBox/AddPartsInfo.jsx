@@ -292,7 +292,7 @@ class AddPartsInfo extends React.Component {
             className={styles.formItemStyle}
           >
             {getFieldDecorator("modeId", {
-              initialValue: addmodeId,
+              initialValue: `${addmodeId}`,
               rules: [
                 {
                   required: true,

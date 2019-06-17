@@ -31,7 +31,8 @@ const initState = Immutable.fromJS({
   partInfoTree: [], //复制组件中的树
   addmanufactorId: "", //新增的厂家Id
   addmodeId: "", //新增设备型号
-  partAssetsTree: [] //新增和编辑种的生产资产树
+  partAssetsTree: [], //新增和编辑种的生产资产树
+  brotherNode: [] //部件复制中右边的选择框
 });
 
 const partInfoReducer = (state = initState, action) => {
