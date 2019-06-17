@@ -76,65 +76,106 @@ class ToolPage extends Component {
     showSide('takeout');
   }
 
-  spareColumn = () => [ // 表头
-    {
-      title: '物品名称',
-      dataIndex: 'goodsName',
-      sorter: true,
-    }, {
-      title: '型号',
-      dataIndex: 'modeName',
-      sorter: true,
-    }, {
-      title: '物品类型',
-      dataIndex: 'goodsType',
-      sorter: true,
-      render: (text) => ({
-        201: '安全工器具',
-        202: '检修工器具',
-        203: '仪器仪表',
-      }[text])
-    }, {
-      title: '所属仓库',
-      dataIndex: 'warehouseName',
-      sorter: true,
-    }, {
-      title: '库存数量',
-      dataIndex: 'inventoryNum',
-      sorter: true,
-      render: (text, record) => {
-        const { inventoryNum, goodsUnit } = record;
-        return <span>{dataFormat(inventoryNum)}{goodsUnit || ''}</span>;
-      }
-    }, {
-      title: '厂家',
-      dataIndex: 'devManufactorName',
-      sorter: true,
-    }, {
-      title: '供货商',
-      dataIndex: 'supplierName',
-      sorter: true,
-    }, {
-      title: '制造商',
-      dataIndex: 'manufactorName',
-      sorter: true,
-    }, {
-      title: '操作',
-      dataIndex: 'handle',
-      render: (text, record) => (
-        <div className={styles.stockHandle}>
-          <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-          <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
-          <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
-        </div>
-      )
+  spareColumn = () => {
+    const toolRef = this.toolRef;
+    const selectWidth = 60; // 选框宽度
+    const fiexedWidth = 95; // 物品类型 = 库存数量
+    const handleWidth = 140; // 操作
+    let calcNormalWidth = 100; // 物品名 + 型号 + 所属仓库 + 厂家 + 供货 + 制造
+    if (toolRef) { // 样式对齐，防止文字过多错行。
+      const { clientWidth } = toolRef;
+      const restWidth = (clientWidth - selectWidth - fiexedWidth * 2 - handleWidth);
+      calcNormalWidth = restWidth / 6; // 物品名称, 型号, 所属仓库
     }
-  ];
+    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
+      <div
+        title={text || '--'}
+        className={styles[styleText]}
+        style={{maxWidth: `${widthParam - 16}px`}}
+      >{text || '--'}</div>
+    )
+    const goodsInitTypes = {
+      201: '安全工器具',
+      202: '检修工器具',
+      203: '仪器仪表',
+    }
+    return [
+      {
+        title: '物品名称',
+        dataIndex: 'goodsName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('goodsName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '型号',
+        dataIndex: 'modeName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('modeName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '物品类型',
+        dataIndex: 'goodsType',
+        sorter: true,
+        width: fiexedWidth,
+        render: (text) => (
+          <div
+            title={goodsInitTypes[text] || '--'}
+            className={styles.goodsType}
+            style={{maxWidth: `${fiexedWidth - 16}px`}}
+          >{goodsInitTypes[text] || '--'}</div>
+        )
+      }, {
+        title: '所属仓库',
+        dataIndex: 'warehouseName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('warehouseName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '库存数量',
+        dataIndex: 'inventoryNum',
+        sorter: true,
+        width: fiexedWidth,
+        render: (text, record) => {
+          const { inventoryNum, goodsUnit } = record;
+          return <span>{dataFormat(inventoryNum)}{goodsUnit || ''}</span>;
+        }
+      }, {
+        title: '厂家',
+        dataIndex: 'devManufactorName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('devManufactorName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '供货商',
+        dataIndex: 'supplierName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('supplierName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '制造商',
+        dataIndex: 'manufactorName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('manufactorName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '操作',
+        dataIndex: 'handle',
+        width: handleWidth,
+        render: (text, record) => (
+          <div className={styles.stockHandle}>
+            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
+            <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>
+            <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
+          </div>
+        )
+      }
+    ]
+  }
 
   render(){
     const { checkedStocks, stocksList, stocksListLoading } = this.props;
     return (
-      <div className={styles.sparePage}>
+      <div className={styles.toolPage} ref={(ref) => this.toolRef = ref}>
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
         <Table

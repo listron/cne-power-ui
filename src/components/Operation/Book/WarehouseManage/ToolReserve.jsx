@@ -73,15 +73,24 @@ export default class ToolReserve extends Component {
 
   reserveColumn = () => {
     const reserveBox = this.reserveBox;
-    const timeWidth = 160;
-    const pricePersonWidth = 90;
-    const moreInfoWidth = 75;
-    const statusWidth = 70;
-    let codeWidth = 140, handleWidth = 90, textWidth = 120;
+    const timeWidth = 160; // 入库 出库
+    const pricePersonWidth = 90; // 单价 入库人
+    const moreInfoWidth = 75; // 更多
+    const statusWidth = 70; // 状态
+    const codeWidth = 140; // 物资编码
+    const handleWidth = 90; // 操作
+    let textWidth = 120;
     if (reserveBox) { // 样式对齐，防止文字过多错行。
       const { clientWidth } = reserveBox;
       textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - moreInfoWidth - statusWidth - codeWidth - handleWidth) / 2;
     }
+    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
+      <div
+        title={text || '--'}
+        className={styles[styleText]}
+        style={{maxWidth: `${widthParam - 16}px`}}
+      >{text || '--'}</div>
+    );
     return [
       {
         title: '物资编码',
@@ -92,12 +101,12 @@ export default class ToolReserve extends Component {
         title: '供货商',
         dataIndex: 'supplierName',
         width: textWidth,
-        render: (text) => <div className={styles.supplierName} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        render: TextOverflowDOM('supplierName', textWidth),
       }, {
         title: '制造商',
         dataIndex: 'manufactorName',
         width: textWidth,
-        render: (text) => <div className={styles.manufactorName} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        render: TextOverflowDOM('manufactorName', textWidth),
       }, {
         title: '单价/元',
         dataIndex: 'price',

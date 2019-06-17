@@ -1,8 +1,8 @@
 @import '../../../../theme/theme.scss';
 
-.sparePage{
+.sparePage, .toolPage, .materialPage{ // 备品备件 工器具 物资主页面公用样式
   table{
-    .goodsName, .modeName, .warehouseName, .assetsPath{
+    .goodsName, .modeName, .warehouseName, .assetsPath, .goodsType, .warehouseName, .devManufactorName, .supplierName, .manufactorName{
       @include overflowText();
     }
     .threshold{
@@ -154,7 +154,7 @@
   }
 }
 
-.reserve{ // 库存表格
+.reserve{ // 库存表格 统一样式
   .pagination{
     display: flex;
     justify-content: flex-end;

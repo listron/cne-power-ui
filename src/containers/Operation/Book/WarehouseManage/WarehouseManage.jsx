@@ -71,11 +71,14 @@ class WarehouseManage extends Component {
       sortField: 'goods_name',
       sortMethod: 'desc',
     }
-    this.props.changeStore({
-      tabName: tabInfo[innerHTML],
-      tableParams: {...newTableParams},
-    });
-    this.props.getWarehouseManageList({ ...newTableParams });
+    const tabName = tabInfo[innerHTML];
+    if (tabName) {
+      this.props.changeStore({
+        tabName: tabInfo[innerHTML],
+        tableParams: {...newTableParams},
+      });
+      this.props.getWarehouseManageList({ ...newTableParams });
+    }
   }
 
   showSide = (sideKey) => {

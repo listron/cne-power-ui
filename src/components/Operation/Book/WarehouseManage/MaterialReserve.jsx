@@ -73,7 +73,7 @@ export default class MaterialReserve extends Component {
 
   reserveColumn = () => {
     const reserveBox = this.reserveBox;
-    const timeWidth = 160;
+    const timeWidth = 160; // 
     const pricePersonWidth = 90;
     const statusWidth = 70;
     let codeWidth = 140, handleWidth = 90, textWidth = 120;
@@ -81,6 +81,13 @@ export default class MaterialReserve extends Component {
       const { clientWidth } = reserveBox;
       textWidth = (clientWidth - timeWidth * 2 - pricePersonWidth * 2 - statusWidth - codeWidth - handleWidth) / 3;
     }
+    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
+      <div
+        title={text || '--'}
+        className={styles[styleText]}
+        style={{maxWidth: `${widthParam - 16}px`}}
+      >{text || '--'}</div>
+    );
     return [
       {
         title: '物资编码',
@@ -91,12 +98,12 @@ export default class MaterialReserve extends Component {
         title: '供货商',
         dataIndex: 'supplierName',
         width: textWidth,
-        render: (text) => <div className={styles.supplierName} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        render: TextOverflowDOM('supplierName', textWidth),
       }, {
         title: '制造商',
         dataIndex: 'manufactorName',
         width: textWidth,
-        render: (text) => <div className={styles.manufactorName} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        render: TextOverflowDOM('manufactorName', textWidth),
       }, {
         title: '单价/元',
         dataIndex: 'price',
@@ -124,7 +131,7 @@ export default class MaterialReserve extends Component {
         title: '备注',
         dataIndex: 'remarks',
         width: textWidth,
-        render: (text) => <div className={styles.remarks} style={{maxWidth: `${textWidth}px`}} title={text}>{text || '--'}</div>
+        render: TextOverflowDOM('remarks', textWidth),
       }, {
         title: '状态',
         dataIndex: 'isEntry',
