@@ -29,7 +29,7 @@ function* getDeviceList(action) {
   // const url = '/mock/system/deviceManage/deviceList';
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.getDeviceList
-  }`;
+    }`;
   try {
     yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
     yield put({
@@ -75,7 +75,7 @@ function* addDeviceDetail(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.addDeviceInfo
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === "10000") {
@@ -116,7 +116,7 @@ function* getStationDeviceDetail(action) {
   // const url = '/mock/system/management/device/deviceFullcode';
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.showDeviceInfo
-  }/${payload.deviceFullCode}`;
+    }/${payload.deviceFullCode}`;
   try {
     const response = yield call(axios.get, url, payload);
     // if(response.data.code === "10000"){
@@ -139,7 +139,7 @@ function* getConnectDevice(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.getConnectDevice
-  }/${payload.stationCode}/${payload.deviceTypeCode}`;
+    }/${payload.stationCode}/${payload.deviceTypeCode}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -161,7 +161,7 @@ function* getOtherPageDeviceDetail(action) {
   const { payload } = action;
   const listUrl = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.getDeviceList
-  }`;
+    }`;
   try {
     yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
     const { selectedStationIndex } = payload;
@@ -173,7 +173,7 @@ function* getOtherPageDeviceDetail(action) {
     // const detailUrl = '/mock/system/management/device/deviceFullcode';
     const detailUrl = `${Path.basePaths.APIBasePath}${
       Path.APISubPaths.system.showDeviceInfo
-    }/${selecteddeviceFullCode}`;
+      }/${selecteddeviceFullCode}`;
     const detailResponse = yield call(axios.get, detailUrl);
     if (1) {
       yield put({
@@ -206,7 +206,7 @@ function* editDeviceDetail(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.editDeviceInfo
-  }`;
+    }`;
   console.log("payload", payload);
   try {
     const response = yield call(axios.put, url, { ...payload });
@@ -243,7 +243,7 @@ function* deleteDevice(action) {
   console.log("payload: ", payload);
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.deleteDevice
-  }`;
+    }`;
   try {
     const response = yield call(axios.delete, url, { data: payload });
     if (response.data.code === "10000") {
@@ -284,7 +284,7 @@ function* deleteStationDevice(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.deleteStationDevice
-  }/${payload.stationCode}`;
+    }/${payload.stationCode}`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -322,7 +322,7 @@ function* importStationDevice(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.importStationDevice
-  }/${payload.stationCode}`;
+    }/${payload.stationCode}`;
   try {
     const response = yield call(axios, {
       method: "post",
@@ -368,7 +368,7 @@ function* checkDeviceMode(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.checkDeviceMode
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -403,7 +403,7 @@ function* checkDeviceType(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.checkDeviceType
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -438,7 +438,7 @@ function* checkDeviceName(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.checkDeviceName
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -472,7 +472,7 @@ function* addPvDeviceMode(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.addPvDeviceMode
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -504,7 +504,7 @@ function* addDeviceMode(action) {
   console.log("payload: ", payload);
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.addDeviceMode
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -536,7 +536,7 @@ function* addDeviceType(action) {
 
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.addDeviceType
-  }`;
+    }`;
   try {
     const response = yield call(axios.post, url, payload);
     if (response.data.code === "10000") {
@@ -572,7 +572,7 @@ function* getStationDeviceType(action) {
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${
     Path.APISubPaths.system.getStationDeviceType
-  }/${payload.stationCode}`;
+    }/${payload.stationCode}`;
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
@@ -709,7 +709,7 @@ function* getfactorsDeviceMode(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${
     payload.manufactorId
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
     const response = yield call(axios.get, url, { params: { ...payload } });
@@ -745,7 +745,7 @@ function* getDevicePartInfo(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getDevicePartInfo}/${
     payload.deviceFullcode
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url);
@@ -799,11 +799,11 @@ function* getDevicehistoryWarning(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getDevicehistoryWarning}/${
     payload.deviceFullcode
-  }/${"事件告警"}`;
+    }/${"事件告警"}`;
   // const url = `/mock/v3/alarm/device/deviceCode/warningType`;
   try {
     const response = yield call(axios.get, url, {
-      params: { orderMethod: "desc", orderField: "1" }
+      params: { orderMethod: "desc", orderField: "1", warningStatus: 0 }
     });
     if (response.data.code === "10000") {
       yield put({
