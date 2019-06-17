@@ -54,7 +54,6 @@ class DeviceTree extends React.Component {
     let type = selectData.split("_")[1];
     let deviceName = selectData.split("_")[2];
     const { stationCode } = this.props;
-    changePartInfoStore({ stationCode, deviceCode, type, deviceName });
     getDeviceComList({
       //获得设备的部件列表
       // deviceCode:'2M201M1M19',
@@ -62,6 +61,35 @@ class DeviceTree extends React.Component {
       orderField: "1",
       orderMethod: "desc"
     });
+
+    let brotherNode = this.filterNode(type, deviceCode);
+    changePartInfoStore({
+      stationCode,
+      deviceCode,
+      type,
+      deviceName,
+      brotherNode
+    });
+  };
+  filterNode = (type, deviceCode) => {
+    const { collectorDevices, boostDevices, undefinedDevices } = this.props;
+    return type === "1"
+      ? this.filterArr(collectorDevices, deviceCode)
+      : type === "2"
+      ? this.filterArr(boostDevices, deviceCode)
+      : this.filterArr(undefinedDevices, deviceCode);
+  };
+
+  filterArr = (data, deviceCode, test = []) => {
+    data.forEach((e, i) => {
+      if (e.deviceCode !== deviceCode && e.children.length) {
+        this.filterArr(e.children, deviceCode, test);
+      }
+      if (e.deviceCode === deviceCode) {
+        test.push(...data);
+      }
+    });
+    return test;
   };
   renderTreeNodes = data =>
     data.map(item => {

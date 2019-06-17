@@ -210,13 +210,28 @@ function* editDeviceDetail(action) {
   console.log("payload", payload);
   try {
     const response = yield call(axios.put, url, { ...payload });
-    // if(response.data.code === "10000"){
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        showPage: "list"
-      }
-    });
+    if (response.data.code === "10000") {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          showPage: "list"
+        }
+      });
+      const params = yield select(state => ({
+        //继续请求部门列表
+        stationCode: state.operation.deviceManage.get("stationCode"),
+        pageNum: state.operation.deviceManage.get("pageNum"),
+        pageSize: state.operation.deviceManage.get("pageSize"),
+        deviceModeCode: state.operation.deviceManage.get("deviceModeCode"),
+        deviceTypeCode: state.operation.deviceManage.get("deviceTypeCode"),
+        sortMethod: state.operation.deviceManage.get("sortMethod"),
+        sortField: state.operation.deviceManage.get("sortField")
+      }));
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_LIST,
+        payload: params
+      });
+    }
   } catch (e) {
     console.log(e);
     message.error("编辑电站详情失败，请重试");
