@@ -53,6 +53,9 @@ class RecordTable extends React.Component {
     })
     return data
   }
+  timeFormate = (text) => {
+    return text ? <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span> : '--'
+  }
 
 
 
@@ -111,11 +114,11 @@ class RecordTable extends React.Component {
       }, {
         title: '发生时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => this.timeFormate(text)
       }, {
         title: '完成时间',
         dataIndex: 'finishTime',
-        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => this.timeFormate(text)
       }
     ];
     const historyWarningColumns = [
@@ -137,12 +140,12 @@ class RecordTable extends React.Component {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'startTime',
-        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => this.timeFormate(text)
       }, {
         title: '完成时间',
         dataIndex: 'finishTime',
 
-        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => this.timeFormate(text)
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
