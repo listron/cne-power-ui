@@ -141,6 +141,7 @@ export default class MaterialReserve extends Component {
           const { isEntry } = record;
           return (
             <span
+              style={{width: `${handleWidth - 16}px`}}
               className={styles.handle}
               onClick={() => this.showRemindModal(record, isEntry > 0 ? 'delete' : 'takeback')}
             >

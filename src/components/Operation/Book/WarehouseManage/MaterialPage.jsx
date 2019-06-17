@@ -44,9 +44,12 @@ class MaterialPage extends Component {
     const sortTemplete = {
       goodsName: 'goods_name',
       modeName: 'mode_name',
+      goodsType: 'goods_type',
       warehouseName: 'warehouse_name',
       inventoryNum: 'inventory_num',
-      threshold: 'threshold',
+      devManufactorName: 'devManufactorName',
+      supplierName: 'supplier_name',
+      manufactorName: 'manufactor_name',
       descend: 'desc',
       ascend: 'asc',
     };

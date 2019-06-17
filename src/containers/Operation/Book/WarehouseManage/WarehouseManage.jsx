@@ -91,8 +91,6 @@ class WarehouseManage extends Component {
   render(){
     const { sideTransform } = this.state;
     const { tabName, sideKey } = this.props;
-    // tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
-    // sideKey: 'list', // 抽屉页控制 list-主页面, insert-入, takeout-出, reserve-库存
     return (
       <div className={styles.warehouseManage}>
         <CommonBreadcrumb  breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />

@@ -72,96 +72,125 @@ class SparePage extends Component {
     showSide('takeout');
   }
 
-  spareColumn = () => [ // 表头
-    {
-      title: '物品名称',
-      dataIndex: 'goodsName',
-      sorter: true,
-    }, {
-      title: '型号',
-      dataIndex: 'modeName',
-      sorter: true,
-    }, {
-      title: '所属仓库',
-      dataIndex: 'warehouseName',
-      sorter: true,
-    }, {
-      title: '库存数量',
-      dataIndex: 'inventoryNum',
-      sorter: true,
-      render: (text, record) => {
-        const { inventoryNum, goodsUnit, threshold } = record;
-        let StockNum = <span />;
-        if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
-          StockNum = <span>--{goodsUnit || ''}</span>
-        } else if (inventoryNum < threshold) { // 库存紧张
-          StockNum = (<span className={styles.shortage}>
-            <span>{inventoryNum}{goodsUnit || ''}</span>
-            <span className={styles.config}>紧张</span>
-          </span>)
-        } else {
-          StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
+  spareColumn = () => {
+    const spareRef = this.spareRef;
+    const selectWidth = 60; // 选框宽度
+    const fiexedWidth = 95; // 库存数量 = 最低阈值 = 更多信息
+    const handleWidth = 140; // 操作
+    let calcNormalWidth = 100, calcLongWidth = 200;
+    if (spareRef) { // 样式对齐，防止文字过多错行。
+      const { clientWidth } = spareRef;
+      const restWidth = (clientWidth - selectWidth - fiexedWidth * 3 - handleWidth);
+      calcNormalWidth = restWidth / 5; // 物品名称, 型号, 所属仓库
+      calcLongWidth = restWidth / 5 * 2; // 资产类型
+    }
+    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
+      <div
+        title={text || '--'}
+        className={styles[styleText]}
+        style={{maxWidth: `${widthParam - 16}px`}}
+      >{text || '--'}</div>
+    )
+    return [
+      {
+        title: '物品名称',
+        dataIndex: 'goodsName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('goodsName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '型号',
+        dataIndex: 'modeName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('modeName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '所属仓库',
+        dataIndex: 'warehouseName',
+        width: calcNormalWidth,
+        render: TextOverflowDOM('warehouseName', calcNormalWidth),
+        sorter: true,
+      }, {
+        title: '库存数量',
+        dataIndex: 'inventoryNum',
+        sorter: true,
+        width: fiexedWidth,
+        render: (text, record) => {
+          const { inventoryNum, goodsUnit, threshold } = record;
+          let StockNum = <span />;
+          if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
+            StockNum = <span>--{goodsUnit || ''}</span>
+          } else if (inventoryNum < threshold) { // 库存紧张
+            StockNum = (<span className={styles.shortage}>
+              <span>{inventoryNum}{goodsUnit || ''}</span>
+              <span className={styles.config}>紧张</span>
+            </span>)
+          } else {
+            StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
+          }
+          return StockNum;
         }
-        return StockNum;
-      }
-    }, {
-      title: '对应资产类型',
-      dataIndex: 'assetsPath',
-      className: styles.assetsPath,
-      render: (text) => <div title={text} className={styles.assetsPath}>{text || '--'}</div>
-    }, {
-      title: '最低阈值',
-      dataIndex: 'threshold',
-      className: styles.threshold,
-      sorter: true,
-    }, {
-      title: '更多信息',
-      className: styles.moreInfo,
-      dataIndex: 'moreInfo',
-      render: (text, record) => {
-        const InfoContent = (
-          <div className={styles.infoContent}>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>厂家</span>
-              <span className={styles.info}>{record.devManufactorName || '--'}</span>
+      }, {
+        title: '对应资产类型',
+        dataIndex: 'assetsPath',
+        width: calcLongWidth,
+        render: TextOverflowDOM('assetsPath', calcLongWidth),
+      }, {
+        title: '最低阈值',
+        dataIndex: 'threshold',
+        width: fiexedWidth,
+        sorter: true,
+      }, {
+        title: '更多信息',
+        className: styles.moreInfo,
+        width: fiexedWidth,
+        dataIndex: 'moreInfo',
+        render: (text, record) => {
+          const InfoContent = (
+            <div className={styles.infoContent}>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>厂家</span>
+                <span className={styles.info}>{record.devManufactorName || '--'}</span>
+              </div>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>供货商</span>
+                <span className={styles.info}>{record.supplierName || '--'}</span>
+              </div>
+              <div className={styles.eachInfo}>
+                <span className={styles.name}>制造商</span>
+                <span className={styles.info}>{record.manufactorName || '--'}</span>
+              </div>
             </div>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>供货商</span>
-              <span className={styles.info}>{record.supplierName || '--'}</span>
-            </div>
-            <div className={styles.eachInfo}>
-              <span className={styles.name}>制造商</span>
-              <span className={styles.info}>{record.manufactorName || '--'}</span>
-            </div>
+          )
+          return (
+            <Popover
+              content={InfoContent}
+              title={<span className={styles.infoContentTitle}>更多信息</span>}
+              trigger="hover"
+            >
+              <button className={styles.trigButton}>查看</button>
+            </Popover>
+          )
+        }
+      }, {
+        title: '操作',
+        dataIndex: 'handle',
+        width: handleWidth,
+        render: (text, record) => (
+          <div className={styles.stockHandle}>
+            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
+            <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
+            <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
           </div>
         )
-        return (
-          <Popover
-            content={InfoContent}
-            title={<span className={styles.infoContentTitle}>更多信息</span>}
-            trigger="hover"
-          >
-            <button className={styles.trigButton}>查看</button>
-          </Popover>
-        )
       }
-    }, {
-      title: '操作',
-      dataIndex: 'handle',
-      render: (text, record) => (
-        <div className={styles.stockHandle}>
-          <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-          <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
-          <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
-        </div>
-      )
-    }
-  ];
+    ]
+  }
 
   render(){
     const { checkedStocks, stocksList, stocksListLoading } = this.props;
     return (
-      <div className={styles.sparePage}>
+      <div className={styles.sparePage} ref={(ref) => this.spareRef = ref}>
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
         <Table

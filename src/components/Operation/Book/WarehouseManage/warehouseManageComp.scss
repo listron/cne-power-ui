@@ -2,19 +2,13 @@
 
 .sparePage{
   table{
-    .assetsPath{
+    .goodsName, .modeName, .warehouseName, .assetsPath{
       @include overflowText();
-      word-break: break-all;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 280px;
     }
     .threshold{
       width: 92px;
     }
     .moreInfo{
-      width: 72px;
       .trigButton{
         border: none;
         cursor: pointer;
@@ -36,7 +30,6 @@
     .stockHandle{
       display: flex;
       justify-content: space-between;
-      width: 126px;
       .text{
         cursor: pointer;
         height: 18px;
@@ -45,6 +38,9 @@
         border:1px solid #199475;
         border-radius:4px;
         flex-basis: 32px;
+        &:last-child{
+          margin-right: 12px;
+        }
       }
     }
   }
