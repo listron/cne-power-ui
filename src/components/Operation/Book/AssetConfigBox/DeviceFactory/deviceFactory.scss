@@ -45,6 +45,9 @@
           .ant-input-search-icon{
             color:#199475;
           }
+          .ant-input-affix-wrapper .ant-input:not(:last-child) {
+            padding-right: 47px;
+        }
         }
       }
     }

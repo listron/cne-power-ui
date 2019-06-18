@@ -1,0 +1,40 @@
+@import '../../../../theme/theme.scss';
+
+.intelligentReport{
+  // position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  .contentBox{
+    @include contentBoxStyle();
+    .reportContent{
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .intelligentSearch{
+        display: flex;
+        width: 100%;
+        padding:24px 0px;  
+        background-color: #fff;
+        flex: 1;
+        .timeSearch,.typeSearch{
+          height: 40px;
+          line-height: 40px;
+          .text{
+            display: inline-block;
+            margin-left: 30px;
+          }
+        }
+      }
+      .iframeContent{
+        margin: 0 30px;
+        .iframeBody{
+          width: 100%;
+          height: 658px;
+          background: #fff;
+        }
+      }
+    }
+  }
+}
