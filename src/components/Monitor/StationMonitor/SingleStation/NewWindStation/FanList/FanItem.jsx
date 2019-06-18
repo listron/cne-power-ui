@@ -12,7 +12,6 @@ class FanItem extends React.Component {
   static propTypes = {
     fanList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
     cardPointParams: PropTypes.string,
     stationCode: PropTypes.string,
     deviceList: PropTypes.array,

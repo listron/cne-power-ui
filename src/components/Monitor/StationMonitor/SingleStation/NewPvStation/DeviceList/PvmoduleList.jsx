@@ -116,6 +116,7 @@ class PvmoduleList extends Component {
                             <span
                               style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
                               className={styles.commonStyle}
+                              key={i}
                             >
                               {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}
                             </span>)
