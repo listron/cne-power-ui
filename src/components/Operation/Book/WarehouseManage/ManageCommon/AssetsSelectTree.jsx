@@ -37,7 +37,10 @@ export default class AssetsSelectTree extends Component {
     const { assetsTree, value, originInsertInfo } = this.props;
     return (
       <div className={styles.assetsSelectTree}>
-        {(assetsTree.length === 0 || !!originInsertInfo) && <div className={styles.noDataText}>
+        {(assetsTree.length === 0 || !!originInsertInfo) && <div
+          className={styles.noDataText}
+          title={originInsertInfo ? originInsertInfo.assetsPath : '生产资产'}
+        >
           {originInsertInfo ? originInsertInfo.assetsPath : '生产资产'}
         </div>}
         {assetsTree.length > 0 && <Tree

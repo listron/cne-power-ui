@@ -135,22 +135,23 @@ export default class ToolReserve extends Component {
         dataIndex: 'moreInfo',
         width: moreInfoWidth,
         render: (text, record) => {
+          const { isEntry, entryTypeName, outReason, remarks } = record;
           const InfoContent = (
             <div className={styles.infoContent}>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>耗损类型(todo)</span>
-                <span className={styles.info}>{record.devManufactorName || '--'}</span>
-              </div>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>耗损原因(todo)</span>
-                <span className={styles.info}>{record.supplierName || '--'}</span>
-              </div>
+              {!(isEntry > 0) && <div className={styles.eachInfo}>
+                <span className={styles.name}>耗损类型</span>
+                <span className={styles.info}>{entryTypeName || '--'}</span>
+              </div>}
+              {!(isEntry > 0) && <div className={styles.eachInfo}>
+                <span className={styles.name}>耗损原因</span>
+                <span className={styles.info}>{outReason || '--'}</span>
+              </div>}
               <div className={styles.eachInfo}>
                 <span className={styles.name}>入库备注</span>
-                <span className={styles.info}>{record.manufactorName || '--'}</span>
+                <span className={styles.info}>{remarks || '--'}</span>
               </div>
             </div>
-          )
+          );
           return (
             <Popover
               content={InfoContent}

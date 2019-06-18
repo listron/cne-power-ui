@@ -172,12 +172,12 @@ class SpareInsert extends Component {
           </FormItem>
           <FormItem label="制造商">
             {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="30字以内" style={{width: 200}} />
             )}
           </FormItem>
           <FormItem label="供货商">
             {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="30字以内" style={{width: 200}} />
             )}
           </FormItem>
           <FormItem label="对应生产资产">

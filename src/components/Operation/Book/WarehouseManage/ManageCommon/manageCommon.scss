@@ -203,6 +203,7 @@
   background-color: #f8f8f8;
   max-height: 272px;
   min-width: 200px;
+  max-width: 440px;
   overflow-y: auto;
   margin-top: 5px;
   .noDataText{
@@ -211,6 +212,8 @@
     color: $lightColor;
     padding-left: 12px;
     cursor: not-allowed;
+    max-width: 440px;
+    @include overflowText;
   }
   @include scrollBar(4px);
 }

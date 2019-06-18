@@ -33,7 +33,7 @@ class MaterialPage extends Component {
     const { showSide, getReserveDetail, getReserveList, reserveParams, changeStore } = this.props;
     const { inventoryId } = record;
     showSide('reserve');
-    changeStore({ reserveInventoryId: inventoryId })
+    changeStore({ reserveInventoryId: inventoryId });
     getReserveDetail({ inventoryId }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
   }
