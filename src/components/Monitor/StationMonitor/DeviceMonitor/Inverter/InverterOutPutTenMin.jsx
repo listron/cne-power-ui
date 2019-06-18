@@ -72,7 +72,6 @@ class InverterOutPutTenMin extends Component {
           }
         },
         formatter: (param) => {
-          console.log(param)
           if (!param || (param.length === 0)){
             return '<div></div>';
           }
