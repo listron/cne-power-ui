@@ -89,7 +89,7 @@ function *getDeviceDetail({ deviceTypeCode, deviceCode }){ // 10s实时详情
 }
 
 function *getSeriesInverterTenMin({ deviceCode }) {
-  const startTime = moment().utc().subtract(72,'hours').format();
+  const startTime = moment().utc().subtract(720,'hours').format();
   const endTime = moment().utc().format();
   const tenMinUrl = `${APIBasePath}${monitor.seriesBranchTenMin}/${deviceCode}/${startTime}/${endTime}`;
   try {
