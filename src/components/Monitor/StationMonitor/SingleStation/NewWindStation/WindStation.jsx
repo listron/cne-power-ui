@@ -27,7 +27,6 @@ class WindStation extends Component {
     match: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
     deviceTypeFlow: PropTypes.object,
-    deviceTypeCode: PropTypes.string,
     resetSingleStationStore: PropTypes.func,
     fanList: PropTypes.object,
     singleStationData: PropTypes.object,
