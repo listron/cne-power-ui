@@ -174,7 +174,7 @@ function *setStockMax({ payload }) { // 设置备品备件阈值
 }
 
 function *importStockFile({ payload }) {// 导入备品备件/工器具/物资列表excel
-  const url = `${APIBasePath}${operation.setStockMax}`;
+  const url = `${APIBasePath}${operation.importStockFile}`;
   try {
     yield put({
       type: warehouseManageAction.changeStore,
