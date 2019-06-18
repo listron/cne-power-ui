@@ -26,31 +26,31 @@ class RealtimeSearch extends Component {
     stopRealtimeList: PropTypes.func,
   };
 
-  // componentDidUpdate(prevProps){
-  //   const { queryParam, changeRealtimeStore, filterDevices } = this.props;
-  //   const prevDevices = prevProps.filterDevices;
-  //   if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
-  //     changeRealtimeStore({
-  //       queryParam: {
-  //         ...queryParam,
-  //         deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-  //       }
-  //     });
-  //     this.selectedDevice([filterDevices[0]]);
-  //   } else if (
-  //     prevDevices.length > 0
-  //       && filterDevices.length > 0
-  //       && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
-  //   ) { // 设备类型切换
-  //     changeRealtimeStore({
-  //       queryParam: {
-  //         ...queryParam,
-  //         deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
-  //       }
-  //     });
-  //     this.selectedDevice([filterDevices[0]]);
-  //   }
-  // }
+  componentDidUpdate(prevProps){
+    const { queryParam, changeRealtimeStore, filterDevices } = this.props;
+    const prevDevices = prevProps.filterDevices;
+    if (prevDevices.length === 0 && filterDevices.length > 0) { // 得到初始设备数据
+      changeRealtimeStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    } else if (
+      prevDevices.length > 0
+        && filterDevices.length > 0
+        && prevDevices[0].deviceCode !== filterDevices[0].deviceCode
+    ) { // 设备类型切换
+      changeRealtimeStore({
+        queryParam: {
+          ...queryParam,
+          deviceFullCodes: [filterDevices[0]], // 默认选中第一个设备
+        }
+      });
+      this.selectedDevice([filterDevices[0]]);
+    }
+  }
 
   onStationTypeChange = (selectStationType) => { // 存储选中电站类型，并重置数据。
     const { changeRealtimeStore, queryParam, stopRealtimeChart, stopRealtimeList } = this.props;

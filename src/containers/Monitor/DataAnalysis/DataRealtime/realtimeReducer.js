@@ -41,7 +41,8 @@ const initState = immutable.fromJS({
   chartRealtime: {}, // chart图 - 所有历史数据
   listRealtime: {}, // 表格内 - 分页后的历史数据
 
-  exportTime: null, // 导出的开始时间
+  startTime: null, // 导出的开始时间
+  endTime: null, // 导出的结束时间
 });
 
 const dataRealtime = (state = initState, action) => {
