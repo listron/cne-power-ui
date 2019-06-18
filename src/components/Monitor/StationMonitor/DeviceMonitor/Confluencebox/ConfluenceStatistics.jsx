@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PowerProgress from '../DeviceMonitorCommon/PowerProgress';
 import { DeviceValueFormat } from '../../../../Common/UtilComponent';
 import { monitordataFormat, dataFormat } from '../../../../../utils/utilFunc';
@@ -12,6 +13,12 @@ const EachRecord = ({text, value, unit}) => (
   </div>
 )
 
+EachRecord.propTypes = {
+  text: PropTypes.string,
+  value: PropTypes.string,
+  unit: PropTypes.string,
+}
+
 function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
   const { devicePower, deviceCapacity, voltage, electricity, temperature, dispersionRatio } = deviceDetail;
   if (!subDeviceList.length && subDeviceList.electricityList) {
@@ -20,12 +27,12 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
   const seriesGroup = Math.ceil(subDeviceList.length / 4);
   const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
-    '500': { color: '#199475', backgroundColor: '#ceebe0'}, // 无通讯
-    '900': { color: '#199475', backgroundColor: '#ceebe0'}, // 未接入
+    '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
+    '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
     '802': { color: '#fff', backgroundColor: '#3e97d1'}, // 偏大 - 蓝
-    '400': { color: '#fff', backgroundColor: '#199475'}, // 正常 - 绿
+    '400': { color: '#199475', backgroundColor: '#ceebe0'}, // 正常 - 绿
     '801': { color: '#fff', backgroundColor: '#f9b600'}, // 偏小 - 橙
-    '803': { color: '#fff', backgroundColor: '#3e97d1'}, // 异常 - 红
+    '803': { color: '#fff', backgroundColor: '#a42b2c'}, // 异常 - 红
   };
 
   return (
@@ -60,6 +67,12 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
       </div>
     </div>
   )
+}
+
+
+ConfluenceStatistics.propTypes = {
+  deviceDetail: PropTypes.object,
+  subDeviceList: PropTypes.array,
 }
 
 export default ConfluenceStatistics;
