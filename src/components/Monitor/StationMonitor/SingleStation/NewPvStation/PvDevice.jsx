@@ -62,19 +62,20 @@ class PvDevice extends Component {
         const { deviceTypeFlow, deviceTypeCode } = this.props;
         const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
         const { choiceCode } = this.state;
+        const values =  deviceTypeList.length>1 ? choiceCode : ''; // 判断从单设备返回来数据显示code
         return (
             <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
                 <div className={styles.top}>
                     <div ref={'selectBody'}></div>
-                    {<Select
-                        value={choiceCode}
+                    { deviceTypeList && <Select
+                        value={values}
                         style={{ width: 140 }}
                         onChange={this.deviceSelect}
                         getPopupContainer={()=>this.refs.selectBody}
                     >
                         <Option value={'1'} key={'1'} >{'示意图'}</Option>
-                        {deviceTypeList.map((item) => {
-                            return <Option value={item.deviceTypeCode} key={item.deviceTypeCode}>{item.deviceTypeName}</Option>
+                        {deviceTypeList.map((item,key) => {
+                            return <Option value={item.deviceTypeCode} key={`${item.deviceTypeCode}_${key}`}>{item.deviceTypeName}</Option>
                         })}
                         <Option value={'0'} key={'0'}>{'电能表'}</Option>
                         <Option value={'203'} key={'203'}>{'气象站'}</Option>
