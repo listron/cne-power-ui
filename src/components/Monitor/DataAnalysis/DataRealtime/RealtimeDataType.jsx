@@ -60,7 +60,7 @@ class RealtimeDataType extends Component {
   exportRealtime = () => { // '导出实时数据excel'
     const { startTime, downLoadFile, queryParam } = this.props;
     const clickEndTime = moment(moment().format("YYYY-MM-DD hh:mm:ss"),'YYYY-MM-DD hh:mm:ss'); // 点击导出按钮时间
-    if (clickEndTime.diff(startTime, 'minute') >= 30) {
+    if (clickEndTime.diff(startTime, 'minute') > 30) {
       return message.warning('最多支持导出最近半小时数据');
     }
 
