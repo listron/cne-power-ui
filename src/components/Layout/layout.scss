@@ -84,13 +84,15 @@
       justify-content: space-around;
       background:#3f3f3f;
       border-right: solid 1px $promptColor;
-      border-bottom: solid 1px $promptColor;
-      .action {
-        height: 23px;
-        width: 20px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
+      //border-bottom: solid 1px $promptColor;
+      .iconfont {
+          font-family: "iconfont" !important;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          align-items: center;
+          cursor: pointer;
+          color: #999993;
       }
     }
     .menuList{
@@ -102,8 +104,16 @@
       background:#3f3f3f;
       border-right: solid 1px $promptColor;
       :global{
+        // .iconfont {
+        //   margin-right:5px;
+        // }
         .iconfont {
+          font-family: "iconfont" !important;
+          font-size: 16px;
+          font-style: normal;
           margin-right:5px;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
         .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
           background-color: #3f3f3f;
