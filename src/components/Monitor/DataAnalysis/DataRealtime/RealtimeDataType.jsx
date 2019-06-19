@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styles from './realtimeStyle.scss';
 import path from '../../../../constants/path';
+import { message } from 'antd';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -14,6 +15,7 @@ class RealtimeDataType extends Component {
     downloading: PropTypes.bool,
     realtimeType:  PropTypes.string,
     queryParam: PropTypes.object,
+    chartRealtime: PropTypes.object,
     listParam: PropTypes.object,
     changeRealtimeStore: PropTypes.func,
     downLoadFile: PropTypes.func,
@@ -21,17 +23,19 @@ class RealtimeDataType extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    endTime: PropTypes.string,
+    startTime: PropTypes.string,
   };
 
   showChart = () => { // 若已选测点=>终止当前请求启动图表定时请求,若未选测点则存储属性
-    const { changeRealtimeStore, queryParam, getRealtimeChart, stopRealtimeList } = this.props;
+    const { changeRealtimeStore, queryParam, getRealtimeChart, stopRealtimeList, chartRealtime } = this.props;
     const { devicePoints } = queryParam;
     if (devicePoints.length > 0) {
       stopRealtimeList();
       getRealtimeChart({ queryParam });
       changeRealtimeStore({
         realtimeType: 'chart',
-        chartRealtime: {}
+        // chartRealtime: {}
       });
     } else {
       changeRealtimeStore({ realtimeType: 'chart' });
@@ -42,7 +46,7 @@ class RealtimeDataType extends Component {
     const { changeRealtimeStore, queryParam, listParam, getRealtimeList, stopRealtimeChart } = this.props;
     const { devicePoints = [] } = queryParam;
     if (devicePoints.length > 0) {
-      stopRealtimeChart();
+      stopRealtimeChart(); 
       getRealtimeList({ queryParam, listParam });
       changeRealtimeStore({
         realtimeType: 'list',
@@ -54,7 +58,12 @@ class RealtimeDataType extends Component {
   }
 
   exportRealtime = () => { // '导出实时数据excel'
-    const { downLoadFile, queryParam } = this.props;
+    const { startTime, downLoadFile, queryParam } = this.props;
+    const clickEndTime = moment(); // 点击导出按钮时间
+    if (clickEndTime.diff(startTime, 'minute') > 30) {
+      return message.warning('最多支持导出最近半小时数据');
+    }
+
     const url = `${APIBasePath}${monitor.exportRealtime}`;
     const { deviceFullCodes, devicePoints } = queryParam;
     const timeZone = moment().zone() / (-60);
@@ -67,6 +76,8 @@ class RealtimeDataType extends Component {
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         timeZone,
+        startTime: moment(startTime).utc().format(), 
+        endTime: moment(clickEndTime).utc().format(),
       },
     })
   }
