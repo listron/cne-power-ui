@@ -96,11 +96,19 @@
     .menuList{
       display: flex;
       flex: 1;
+      max-height: calc(100vh - 99px);
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: auto;
       background:#fbfbfb;
       border-right: solid 1px $promptColor;
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 2px;
+        background-color: #ccc;
+      }
       :global{
         .iconfont {
           margin-right:5px;
