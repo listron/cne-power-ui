@@ -4,7 +4,6 @@ import styles from './detailCharts.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
 import { dataFormats } from '../../../../../../utils/utilFunc';
 import MonthPlanPower from './MonthPlanPower';
 import MonthPower from './MonthPower';

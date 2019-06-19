@@ -322,7 +322,7 @@ function *getTenMinDeviceData(action){ // 请求10min时序图数据信息
   try{
     const tenMinUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].tenMin}/${deviceCode}/${timeParam}`;
 
-    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    yield put({ type:deviceAction.CHANGE_DEVICE_MONITOR_STORE });
     const tmpTenMin = yield call(axios.get, tenMinUrl);
     if(tmpTenMin.data.code === "10000"){
       yield put({
@@ -354,7 +354,7 @@ function *getWeatherStationData(action){ // 请求气象站设备信息
     const detailUrl = `${path.basePaths.APIBasePath}${monitorPath[deviceTypeCode].detail}/${stationCode}`;
     // const alarmUrl = '/mock/monitor/deviceAlarm';
     const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警`
-    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    yield put({ type:deviceAction.CHANGE_DEVICE_MONITOR_STORE });
     const [tmpDetail,tmpAlarm] = yield all([
       call(axios.get, detailUrl),
       call(axios.get, alarmUrl),
@@ -391,7 +391,7 @@ function *getIntegrateData(action) { // 集电线路信息
     const devicesUrl = `${APIBasePath}${monitor.stationDeviceList}/${stationCode}/${deviceTypeCode}`;
     const detailUrl = `${APIBasePath}${monitor.integrateDetail}/${deviceCode}`;
     const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`;
-    yield put({ type:deviceAction.MONITOR_DEVICE_FETCH });
+    yield put({ type:deviceAction.CHANGE_DEVICE_MONITOR_STORE });
     const [ tmpDevices, tmpDetail, tmpAlarm ] = yield all([
       call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
@@ -419,7 +419,7 @@ function *getBoosterData(action) { // 升压站信息
     const devicesUrl = `${APIBasePath}${monitor.getBoosterstation}${stationCode}`;
     const detailUrl = `${APIBasePath}${monitor.boosterDetail}/${deviceCode}`;
     const alarmUrl = `${APIBasePath}${monitor.deviceAlarmData}/${deviceCode}/事件告警`
-    yield put({ type: deviceAction.MONITOR_DEVICE_FETCH });
+    yield put({ type: deviceAction.CHANGE_DEVICE_MONITOR_STORE });
     const [ tmpDevices, tmpDetail, tmpAlarm ] = yield all([
       call(axios.get, devicesUrl),
       call(axios.get, detailUrl),
@@ -450,7 +450,7 @@ function *getwindturbineData(action){ // 获取风机实时数据 (由于暂时�
     const detailUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.getFanList}/${stationCode}`; // 设备列表
     const pointUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.monitorPointData}/${deviceCode}`; // 测点数据
     const alarmUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.deviceAlarmData}/${deviceCode}/事件告警` //告警数据
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    yield put({type:deviceAction.CHANGE_DEVICE_MONITOR_STORE});
 
     const [windturbine, fanPoint,fanDetail, fanAlarm] = yield all([
       call(axios.get, windturbineUrl),
@@ -500,7 +500,7 @@ function *getSequencechartData(action){ // 获取风机图表数据(新功能中
   const { deviceCode, timeParam,}=payload;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencechart}/${deviceCode}/${timeParam}`;
   try{
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    yield put({type:deviceAction.CHANGE_DEVICE_MONITOR_STORE});
     const response = yield call(axios.get, windturbineUrl);
     if(response.data.code === '10000'){
       yield put({
@@ -519,7 +519,7 @@ function *getScatterpoint(action){ // 单风机散点图
   const { payload } = action;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.scatterpoint}`;
   try{
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    yield put({type:deviceAction.CHANGE_DEVICE_MONITOR_STORE});
     const response = yield call(axios.post, windturbineUrl,payload);
     if(response.data.code === '10000'){
       yield put({
@@ -546,11 +546,11 @@ function *getSequencediagram(action){ // 单风机时序图
   const { deviceFullCode, startTime,endTime,}=payload;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencediagram}/${deviceFullCode}/${startTime}/${endTime}`;
   try{
-    yield put({type:deviceAction.MONITOR_DEVICE_FETCH});
+    yield put({type:deviceAction.CHANGE_DEVICE_MONITOR_STORE});
     const response = yield call(axios.get, windturbineUrl,payload);
     if(response.data.code === '10000'){
       yield put({
-        type: deviceAction.GET_DEVICE_FETCH_SUCCESS,
+        type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
           sequencediagram: response.data.data || {},
           sequencediagramTime: moment().unix(),
@@ -598,12 +598,6 @@ function *stopWindDeviceCharts(action){ // 停止进程
 }
 
 export function* watchDeviceMonitor() {
-  // yield takeLatest(deviceAction.GET_DEVICE_DATA_SAGA, getDeviceMonitorData);
-  // yield takeLatest(deviceAction.GET_NORMAL_DEVICE_DATA_SAGA, getNormalDeviceData);
-  // yield takeLatest(deviceAction.GET_WEATHERSTATION_DATA_SAGA, getWeatherStationData);
-  // yield takeLatest(deviceAction.GET_DEVICE_MONITOR_TEN_MIN_DATA_SAGA, getTenMinDeviceData);
-  // yield takeLatest(deviceAction.getIntegrateData, getIntegrateData);
-  // yield takeLatest(deviceAction.getBoosterData, getBoosterData);
   yield takeLatest(deviceAction.getDevices, getDevices);
   yield takeLatest(deviceAction.getDeviceInfoMonitor, getDeviceInfoMonitor);
   yield takeLatest(deviceAction.getDeviceChartMonitor, getDeviceChartMonitor);
