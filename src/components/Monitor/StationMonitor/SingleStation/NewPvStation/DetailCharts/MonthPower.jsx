@@ -17,7 +17,7 @@ class MonthPower extends Component {
         powerTime: PropTypes.number,
         onChange: PropTypes.func,
         powerUnit: PropTypes.string,
-        // stationCode: PropTypes.number,
+        match: PropTypes.object,
     }
     constructor() {
         super();
@@ -35,7 +35,13 @@ class MonthPower extends Component {
         if (powerTime !== preTime || prevState.intervalTime !== intervalTime) {
             this.drawCharts(this.props);
         }
+        const { stationCode } = prevProps;
+        const nextStationCode = this.props.stationCode;
+        if (nextStationCode !== stationCode) {
+            this.setState({ intervalTime: 0 })
+        }
     }
+
 
     onChangeTimePower = (e) => { // 改变 日／月／年
         const { stationCode } = this.props;
@@ -116,7 +122,7 @@ class MonthPower extends Component {
     drawCharts = (params) => {
         let { powerData = [], powerUnit } = params;
         const { intervalTime } = this.state;
-        const xData=powerData.map(e => e.time)
+        const xData = powerData.map(e => e.time)
         const actualPower = powerData.map(e => chartPowerPoint(divideFormarts(e.actualPower, powerUnit), '--', 2, true));  // 发电量
         const filterMonthPower = powerData.filter(e => e.actualPower);
         const theoryPower = powerData.map(e => chartPowerPoint(divideFormarts(e.theoryPower, powerUnit), '--', 2, true)); // 计划发电量
@@ -186,7 +192,7 @@ class MonthPower extends Component {
                     type: 'shadow',
                 },
             },
-           
+
             calculable: false,
             xAxis: [
                 {
@@ -279,8 +285,8 @@ class MonthPower extends Component {
                 },
             ]
         }
-        if(intervalTime===0){
-            powerOption.dataZoom=[{
+        if (intervalTime === 0) {
+            powerOption.dataZoom = [{
                 type: 'slider',
                 show: true,
                 realtime: true,
@@ -311,11 +317,12 @@ class MonthPower extends Component {
 
     render() {
         const productionAnalysis = `#/statistical/stationaccount/production`;
+        const { intervalTime } = this.state;
         return (
             <div className={styles.powerDiagramBox} >
                 <div id="powerChart" style={{ display: 'flex', flex: 1 }} className={styles.powerChart}></div>
                 <div className={styles.powerRadio}>
-                    <RadioGroup defaultValue={0} size="small" onChange={this.onChangeTimePower} >
+                    <RadioGroup defaultValue={0} size="small" onChange={this.onChangeTimePower} value={intervalTime}>
                         <RadioButton value={0}>日</RadioButton>
                         <RadioButton value={1}>月</RadioButton>
                         <RadioButton value={2}>年</RadioButton>

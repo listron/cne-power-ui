@@ -141,16 +141,17 @@ class WindDevice extends Component {
   }
 
   render() {
-    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint, } = this.props;
+    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint,stations } = this.props;
     const { scatterpointTime, sequencediagramTime } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { deviceName, deviceModeCode } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
+    const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const breadCrumbData = {
       breadData: [{
         link: true,
-        name: singleStationData && singleStationData.stationName || '',
+        name: currentStation.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
       }, {
         link: false,

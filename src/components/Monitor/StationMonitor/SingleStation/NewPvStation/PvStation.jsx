@@ -73,6 +73,7 @@ class PvStation extends Component {
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOnceData(nextStationCode, nextStationType);
       this.props.changeSingleStationStore({ deviceTypeCode: '1' })
+      this.singelDeatil()
     }
   }
 
@@ -80,8 +81,6 @@ class PvStation extends Component {
     clearTimeout(this.timeOutId);
     this.props.resetSingleStationStore();
   }
-
-
 
   getTenSeconds = (stationCode, stationType) => { // 1min请求一次数据 单电站 工单列表  天气情况 
     this.props.getPvSingleStation({ stationCode });
@@ -91,7 +90,6 @@ class PvStation extends Component {
   }
 
   getOnceData = (stationCode, stationType) => { // 只请求一次数据
-
     const startTime = moment().subtract(1, 'days').format('YYYY-MM-DD'); // 查询昨天开始的未来7天的数据
     this.props.getWeatherList({ stationCode, dateReport: startTime }); // 天气
     this.props.getWorkList({
@@ -133,19 +131,23 @@ class PvStation extends Component {
     return list
   }
 
+  singelDeatil=()=>{ // 右侧单电站详情数据
+    const { stationCode } = this.props.match.params;
+    this.props.getCapabilityDiagram({  // 出力图
+      stationCode,
+      stationType: '1',
+      startTime: moment().startOf('day').utc().format(),
+      endTime: moment().endOf('day').utc().format()
+    });
+    this.getPowerDataTenMin({ stationCode, stationType: '1' }); // 发电量
+    this.props.monthplanpower({ stationCode }); // 月累计与计划发电量
+  }
+
   detailShow = () => { // 查看详情
     this.setState({ detailVisible: true })
-    const { stationCode } = this.props.match.params;
     const { queryFirst } = this.state;
     if (queryFirst) {
-      this.props.getCapabilityDiagram({  // 出力图
-        stationCode,
-        stationType: '1',
-        startTime: moment().startOf('day').utc().format(),
-        endTime: moment().endOf('day').utc().format()
-      });
-      this.getPowerDataTenMin({ stationCode, stationType: '1' }); // 发电量
-      this.props.monthplanpower({ stationCode }); // 月累计与计划发电量
+      this.singelDeatil()
       this.setState({ queryFirst: false })
     }
   }
