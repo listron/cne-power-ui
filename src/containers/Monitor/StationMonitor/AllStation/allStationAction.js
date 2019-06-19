@@ -9,5 +9,6 @@ export const allStationAction = {
   getRealMonitorPower: Symbol('getRealMonitorPower'), // 出力图和散点图
   stopRealCharstData: Symbol('stopRealCharstData'), // 停止计时器
   getPvChartsData: Symbol('getPvChartsData'), // 光伏图表
+  getPvRealData: Symbol('getPvRealData'), // 光伏实时数据
 }
 

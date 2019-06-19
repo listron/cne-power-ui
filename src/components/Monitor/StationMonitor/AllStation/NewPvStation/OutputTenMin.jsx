@@ -7,7 +7,8 @@ import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
-
+import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
+import { dataFormats } from '../../../../../utils/utilFunc';
 class OutputTenMin extends Component {
   static propTypes = {
     capabilityData: PropTypes.array,
@@ -20,7 +21,7 @@ class OutputTenMin extends Component {
     super(props);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.drawChart(this.props)
   }
 
@@ -29,17 +30,16 @@ class OutputTenMin extends Component {
   }
 
 
-  drawChart=(param)=>{
-    const { capabilityData, yAxisUnit,stationCode } = param;
+  drawChart = (param) => {
+    const { capabilityData, yAxisUnit, stationCode } = param;
     let yAxisType = `功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`));
     const lineColor = '#666';
-    const capabilityPower = capabilityData.map(e => (yAxisUnit === 'MW' ? (+e.stationPower) : (+e.stationPower * 1000)));
-    const capabilityRadiation = capabilityData.map(e => e.instantaneous);
+    const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
+    const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
-
     let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
@@ -59,10 +59,10 @@ class OutputTenMin extends Component {
       },
       grid: {
         show: false,
-        bottom:25,
-        left:'12%',
-        right:'14%',
-        top:32,
+        bottom: 25,
+        left: '12%',
+        right: '14%',
+        top: 32,
       },
       tooltip: {
         trigger: 'axis',
@@ -78,13 +78,21 @@ class OutputTenMin extends Component {
             backgroundColor: lineColor,
           }
         },
-        formatter: param => {
-          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-            ${param.map(e => `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${e.seriesName}: ${e.value || '--'}</div>`).join('')}
-          </div>`;
+        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+        padding: 0,
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+              ${item.seriesName} :  ${item.value}</div>`
+          });
+          return (
+            `<div class=${styles.tooltipBox}>
+                  <div class=${styles.axisValue}>${params[0].name}</div>
+                  <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+              </div>`
+          )
         },
-        extraCssText: 'background: rgba(0,0,0,0);',
       },
       color: ['#c57576', '#199475'],
       xAxis: {
@@ -92,7 +100,7 @@ class OutputTenMin extends Component {
         splitNumber: 4,
         boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
-          return moment(moment.utc(e.utc)).format('MM-DD HH:mm');
+          return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
         }),
         axisLine: {
           lineStyle: {
@@ -162,9 +170,9 @@ class OutputTenMin extends Component {
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
-          areaStyle: {
-            color: '#fff2f2',
-          },
+          // areaStyle: {
+          //   color: '#fff2f2',
+          // },
           axisTick: {
             show: false,
           },
@@ -183,12 +191,12 @@ class OutputTenMin extends Component {
         }
       ]
     }
-    capabilityDiagram.setOption(capabilityOption,'notMerge');
+    capabilityDiagram.setOption(capabilityOption, 'notMerge');
     capabilityDiagram.resize();
   }
 
 
-  
+
   render() {
     const { stationCode } = this.props;
     return (

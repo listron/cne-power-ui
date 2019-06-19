@@ -1,24 +1,24 @@
-import React, { useState, useEffect,Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
-import {divideFormarts,powerPoint} from '../../../PvCommon/PvDataformat';
+import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
-class DayPower extends Component{
+class DayPower extends Component {
     static propTypes = {
         powerTime: PropTypes.number,
-        onChange:PropTypes.func,
-        dayPowerData:PropTypes.array,
-        powerUnit:PropTypes.string,
+        onChange: PropTypes.func,
+        dayPowerData: PropTypes.array,
+        powerUnit: PropTypes.string,
     }
     constructor() {
         super();
-        this.state={
-            intervalTime:0,
+        this.state = {
+            intervalTime: 0,
         }
     }
     componentDidMount() {
@@ -34,27 +34,27 @@ class DayPower extends Component{
     }
 
 
-    drawCharts=(params)=>{
-        let { dayPowerData=[],powerUnit } = params;
-        const dayPower = dayPowerData.map(e => powerPoint(divideFormarts(e.dayPower, powerUnit), '--', 2, true));  // 发电量
+    drawCharts = (params) => {
+        let { dayPowerData = [], powerUnit, loading } = params;
+        const dayPower = dayPowerData.map(e => chartPowerPoint(divideFormarts(e.dayPower, powerUnit), '--', 2, true));  // 发电量
         const filterDayPower = dayPowerData.filter(e => e.dayPower);
-        const equipmentHours = dayPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等效时
+        const equipmentHours = dayPowerData.map(e => dataFormats(e.equipmentHours, '--', 2, true)); // 等日用小时
         const filterEquipmentHours = dayPowerData.filter(e => e.equipmentHours);
-        const instantaneous = dayPowerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 辐射值
+        const instantaneous = dayPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = dayPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterDayPower.length === 0 && filterEquipmentHours.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const chartsBox = document.getElementById('powerDiagram');
         const powerDiagram = echarts.init(chartsBox);
-        dayPowerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
+        loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
         const lineColor = '#dfdfdf';
-        const fontColor='#666';
+        const fontColor = '#666';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = {
             graphic: powerGraphic,
             color: color,
             title: {
-                text: '日发电量与等效时',
+                text: '日发电量与利用小时',
                 textStyle: {
                     color: '#000',
                     fontSize: 14,
@@ -72,10 +72,10 @@ class DayPower extends Component{
                 itemWidth: 10,
                 itemHeight: 5,
             },
-            grid:{
-                top:85,
-                left:'20%',
-                right:'10%',
+            grid: {
+                top: 85,
+                left: '20%',
+                right: '10%',
             },
             tooltip: {
                 trigger: 'axis',
@@ -121,6 +121,9 @@ class DayPower extends Component{
                     axisLabel: {
                         color: fontColor,
                         interval: 0,
+                        formatter: (value) => {
+                            return moment(value).format('MM-DD')
+                        }
                     },
                     axisTick: { show: false },
                     // boundaryGap: [true, true],
@@ -128,7 +131,7 @@ class DayPower extends Component{
             ],
             yAxis: [
                 {
-                    name: '等效时(h)',
+                    name: '利用小时(h)',
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
@@ -136,6 +139,7 @@ class DayPower extends Component{
                     },
                     nameTextStyle: {
                         color: fontColor,
+                        padding: [0, 10, 0,0 ],
                     },
                     axisLine: {
                         lineStyle: {
@@ -152,14 +156,14 @@ class DayPower extends Component{
                 }, {
                     name: `发电量(${powerUnit})`,
                     type: 'value',
-                    position:'left',
+                    position: 'left',
                     axisLabel: {
                         formatter: '{value}',
                         color: fontColor,
                     },
                     nameTextStyle: {
                         color: fontColor,
-                        padding: [0, 0, 0, 60],
+                        padding: [0, 0, 0, 50],
                     },
                     axisLine: {
                         lineStyle: {
@@ -173,7 +177,7 @@ class DayPower extends Component{
                         show: false,
                     }
                 }, {
-                    name: '辐射(MJ/m²)',
+                    name: '累计辐射(MJ/m²)',
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
@@ -200,10 +204,11 @@ class DayPower extends Component{
                 type: 'slider',
                 realtime: true,
                 filterMode: 'filter',
-                startValue: dayPower.length>0 && dayPower.length-7,
-                endValue: dayPower.length>0 && dayPower.length-1,
+                startValue: dayPower.length > 0 && dayPower.length - 7,
+                endValue: dayPower.length > 0 && dayPower.length - 1,
                 bottom: 15,
                 handleSize: '80%',
+                showDetail:false,
                 handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
                 backgroundColor: 'rgba(213,219,228,.8)',
                 // handleIcon:'none',
@@ -230,7 +235,7 @@ class DayPower extends Component{
                     yAxisIndex: 1,
                 },
                 {
-                    name: '日等效时',
+                    name: '日利用小时',
                     type: 'bar',
                     data: getDefaultData(equipmentHours),
                     color: '#c7ceb2',
@@ -238,7 +243,7 @@ class DayPower extends Component{
                     yAxisIndex: 0,
                 },
                 {
-                    name: '辐射',
+                    name: '累计辐射',
                     type: 'line',
                     data: getDefaultData(instantaneous),
                     color: '#f9b600',
@@ -250,7 +255,7 @@ class DayPower extends Component{
         powerDiagram.resize();
     }
 
-    render(){
+    render() {
         const productionAnalysis = `#/statistical/stationaccount/production`;
         return (
             <div id="powerDiagram" style={{ display: 'flex', flex: 1 }}></div>
@@ -260,4 +265,4 @@ class DayPower extends Component{
 }
 
 
-export  default  DayPower
+export default DayPower

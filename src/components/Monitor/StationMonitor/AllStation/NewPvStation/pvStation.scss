@@ -104,17 +104,17 @@
         // flex: 1;
         align-items: center;
         justify-content: space-between;
-        line-height: 51px;
+        line-height: 48px;
         border:1px dashed #dfdfdf;
         :global{
             .iconTab{
-               height: 54px;
-               width: 54px; 
+               height: 48px;
+               width: 55px; 
                background: #f1f1f1;
                color: #666;
                display:inline-block;
                text-align: center;
-               font-size: 20px; 
+               font-size: 16px; 
                cursor: pointer;
                &:hover{
                 background:$themeColor;
@@ -165,7 +165,14 @@
                             font-size: 14px;
                             position: absolute;
                             right:-5px;
+                            top:0;
                         }
+                    }
+                    .ascend{
+                        transform: rotate(90deg)
+                    }
+                    .descend{
+                        transform: rotate(-90deg)
                     }
                 }
             }
@@ -193,14 +200,15 @@
                 display: flex;
                 flex-direction: column;
                 overflow: hidden;
+                &:hover{
+                    box-shadow:0 0 6px 2px rgba(0,0,0,0.20);
+                }
                 a{
                     text-decoration: none;
                     color: $darkColor;
                 }
                 .linkBox{
-                    display: flex;
                     flex: 1;
-                    flex-direction: column;
                 }
                 .stationTop{
                     line-height: 34px;
@@ -208,7 +216,7 @@
                     justify-content: space-between;
                     padding: 0 12px;
                     .stationName{
-                        width:135px;
+                        width:100px;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -221,10 +229,13 @@
                         margin-left: 8px;
                     }
                 }
+                .changeNum{
+                    color: $themeColor;
+                }
                 .staionCenter{
                     display: flex;
                     justify-content: space-between;
-                    margin: 4px 12px;
+                    margin: 4px 8px;
                     line-height: 30px;
                     border-bottom: 1px solid #dfdfdf;
                     .column{
@@ -232,13 +243,13 @@
                     }
                     .staionCenterLeft{
                         .dataName{
-                            width:70px;
+                            width:60px;
                             margin-right: 6px;
                         }
                     }
                     .staionCenterRight{
                         .dataName{
-                            width:56px;
+                            width:70px;
                             margin-right: 6px;
                         }
                     }
@@ -255,7 +266,7 @@
                     border-top: 1px solid #dfdfdf;
                     margin: 0 12px;
                     .dataColumn{
-                        flex: 1;
+                        flex: 1 auto;
                         justify-content: center;
                         border-right: 1px solid #dfdfdf;
                         display: flex;
@@ -269,28 +280,24 @@
             }
             .normal,.interrupt{
                 cursor: pointer;
-                .changeNum{
-                    color: $themeColor;
-                }
                 .stationTop{
                     background:#f0f2f5;
                 }
                 .bottom{
                     .red{
                         color:#a42b2c;  
+                        margin-left: 4px;
                     }
                     .grey{
                         color:#666666;
+                        margin-left: 4px;
                     }
                 }
             }
            
             .normal{ // 正常的状态
-                &:hover{
-                    box-shadow:0 0 6px 0 rgba(0,0,0,0.20);
-                    .stationTop{
-                        background:#ceebe0;
-                    }
+                .stationTop{
+                    background:#ceebe0;
                 }
                 .stationName{
                     color: $themeColor;
@@ -298,25 +305,43 @@
 
             }
       
-            .interrupt { // 通讯中断
-                border: 1px solid #f9b600;
-                &:hover{
-                    box-shadow: 0 1px 6px 0#f9b600;
-                    .stationTop{
-                        background:#ceebe0;
+            .alarm{
+                .stationTop{
+                    background:#d01b31;
+                    color: #fff;
+                    .changeNum{
+                        color: #fff;
                     }
                 }
                 .stationName{
-                    color: #f9b600;
+                    color: #fff;
                 }
                 :global{
-                    .icon-outage{
-                        margin-left: 10px;
-                        color:#f9b600;
+                    .iconfont{
+                        margin-left: 4px;
                     }
                 }
             }
 
+            .interrupt { // 通讯中断
+                .stationTop{
+                    background:#e08031;
+                    color: #fff;
+                    .changeNum{
+                        color: #fff;
+                    }
+                }
+                .stationName{
+                    color: #fff;
+                }
+                :global{
+                    .iconfont{
+                        margin-left: 4px;
+                    }
+                }
+            }
+            
+            
             .notConnected { //  通讯中断
                 background: #f8f8f8;
                 cursor: default;
@@ -409,14 +434,16 @@
                 line-height: 20px;
                 z-index: 66;
             }
+            .show{
+                transform: translate(-180deg)
+            }
             :global{
                 .iconfont{
-                    background:#ffffff;
-                    width:14px;
-                    height:14px; 
+                    width: 14px;
+                    height: 18px;
                     border-radius: 50%;
-                    color: $themeColor;
-                    font-size: 12px;
+                    color: #fff;
+                    font-size: 13px;
                 }
             }
         }
@@ -495,9 +522,9 @@
             }
         }
     }
-     // 地图
-    .pvStationMap{
-        
+    
+    .pvStationMap{  // 地图
+        position: relative;
         .mapChart {
             display: flex;
             flex: 1;
@@ -510,6 +537,42 @@
                 color: #666;
             }
         }
+        .backChina{
+            position: absolute;
+            cursor: pointer;
+            right: 20px;
+            top: 20px;
+            z-index: 10;
+        }
+    }
+
+    .tooltipBox { // 提示框
+        width: 150px;
+        .axisValue {
+            border-bottom: 1px solid #dfdfdf;
+            padding: 0 30px 0 10px;
+            line-height: 26px;
+        }
+        .tooltipContainer {
+            padding: 10px 0;
+        }
+        .tooltipCont {
+            span {
+                display: inline-block;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                vertical-align: 2px;
+                margin: 0 4px 0 8px;
+            }
+        }
+    }
+
+    .noData {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
     }
      
 }

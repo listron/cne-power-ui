@@ -89,7 +89,6 @@
 }
 
 .alarmTable{
-  border-top: solid 1px $promptColor;
   padding: 0px 68px 48px 68px;
   .alarmTip{
     line-height: 20px;
@@ -100,6 +99,10 @@
       background-color: $promptColor;
       color: #fff;
     }
+  }
+  h3 {
+    font-weight: 700;
+    margin: 20px 0 0 0;
   }
   .tableHeader{
     display: flex;
@@ -178,28 +181,86 @@
   }
 }
 
+.devicePointsTable{ // 设备测点表格图
+  display: flex;
+  justify-content: space-around;
+  .pointsList, .eventsList{
+    flex-basis: 615px;
+    border: 1px solid $promptColor;
+    height: 240px;
+    h3{
+      padding-left: 8px;
+      margin-bottom: 0;
+      height: 32px;
+      line-height: 32px;
+      border-bottom: 1px solid $promptColor;
+      font-weight: 700;
+    }
+    .listBox{
+      height: 206px;
+      padding: 8px 0 8px 8px;
+      overflow-y: auto;
+      .noEvents{
+        display: block;
+        text-align: center;
+        line-height: 190px;
+      }
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 2px;
+        background:rgba(0,0,0,0.5);
+      }
+    }
+    .eachInfo{
+      height: 24px;
+      line-height: 24px;
+      color: $darkColor;
+      padding-left: 24px;
+    }
+  }
+  .pointsList .eachInfo{
+    display: flex;
+    justify-content: space-between;
+    .pointValue{
+      .value{
+        color: $themeColor;
+      }
+      .unit{
+        display: inline-block;
+        margin-left: 4px;
+        width: 72px;
+      }
+    }
+  }
+  .eventsList .eventDescribe{
+    margin-left: 30px;
+  }
+}
+
 .ycInfo, .yxInfo, .ymInfo{ // 升压站，集电线路yc,yx,ym
   display: flex;
   flex-direction: column;
+  padding: 0 48px;
   h3{
     margin-bottom: 0;
-    margin-left: 60px;
+    margin-left: 4px;
     height: 56px;
     line-height: 56px;
+    font-weight: 700;
   }
 }
 
 .ycInfo{
   flex: 1 0 50%;
-  border-right: 1px solid $promptColor;
   .ycList{
-    margin-left: 60px;
     margin-bottom: 20px;
+    border: 1px solid $promptColor;
   }
   .ycContent{
     overflow: auto;
     height: 240px;
-    width: 321px;
     &::-webkit-scrollbar {
       width: 6px;
       background-color: #f4f4f4;
@@ -212,7 +273,6 @@
   }
   .top, .eachYc{
     display: flex;
-    width: 315px;
     background-color: #f4f4f4;
     color: $darkColor;
     align-items: center;
@@ -242,10 +302,21 @@
     margin-left: 20px;
   }
   .yxList{
-    margin-right: 60px;
+    overflow: auto;
+    height: 274px;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
+    border: 1px solid $promptColor;
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background-color: #555;
+      opacity: .5;
+    }
   }
   .eachYx{
     flex: 0 0 33.33%;
@@ -273,8 +344,19 @@
   border-top: 1px solid $promptColor;
   height: 500px;
   .ymList{
-    margin-left: 56px;
     display: flex;
+    overflow: auto;
+    height: 274px;
+    border: 1px solid $promptColor;
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 3px;
+      background-color: #555;
+      opacity: .5;
+    }
   }
   .ymColumn{
     border-right: 1px dashed $promptColor; 

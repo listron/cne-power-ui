@@ -47,10 +47,10 @@ class BoosterHeader extends Component {
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
-    const { sonDevice, parentDevice } = deviceDetail;
+    const { manufacturer, deviceModeName } = deviceDetail;
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
-    const sonDeviceBaseInfo = PVStationTypes.find(e => sonDevice && sonDevice.deviceTypeCode === e.deviceTypeCode) || {};
-    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice && parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
+    let parentDevice = deviceDetail.parentDevice || {};
+    const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
       <div className={styles.deviceMonitorHeader} >
         {showDeviceChangeBox && <HeaderDeviceChange
@@ -62,9 +62,12 @@ class BoosterHeader extends Component {
           baseLinkPath={baseLinkPath}
           hideDeviceChange={this.hideDeviceChange}
         />}
-        <div className={styles.deviceName} onClick={this.showDeviceChange}>
-          <Icon type="swap" className={styles.swap} />
+        <div className={styles.deviceName}>
+          <Icon type="swap" className={styles.swap} onClick={this.showDeviceChange} />
           <span className={styles.name}>{deviceDetail.deviceName}</span>
+          {/* <span className={styles.status} >设备状态: { deviceStatusInfo && deviceStatusInfo.statusName || '--'}</span> */}
+          <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
+          <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
           {parentDevice && parentDevice.deviceTypeCode && <Link
@@ -77,14 +80,17 @@ class BoosterHeader extends Component {
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
           </Link>}
-          {sonDevice && sonDevice.deviceTypeCode && <Link
+          <Link to={`/monitor/singleStation/${stationCode}?showPart=301`} className={styles.backIcon}>
+            <Icon type="arrow-left" />
+          </Link>
+          {/* {sonDevice && sonDevice.deviceTypeCode && <Link
             to={`/monitor/singleStation/${stationCode}?showPart=${sonDevice.deviceTypeCode}`}
             className={styles.eachLink}
           >
             <span className={`${sonDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>{sonDevice.deviceTypeName}列表</span>
             <span className="iconfont icon-downstream linkIcon"></span>
-          </Link>}
+          </Link>} */}
         </div>
       </div>
     )

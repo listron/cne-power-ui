@@ -1,16 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
 import echarts from 'echarts';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
-function ConfluenceTenMin({ deviceTenMin, loading }) {
-  const echartBox = document.getElementById('confluence_monitor_tenMin');
-  const lineColor = '#666';
-  if(echartBox){
-    const confluenceChart = echarts.init(echartBox);
-    const HLNames = ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016'];
-    const HLColors = ['#e08031','#f9b600','#fbe6e3','#999999','#ceebe0','#f8e71c','#50e3c2','#c7ceb2','#7ed321','#d0021b','#024d22','#bd10e0','#8b572a','#9013fe','#45a0b3','#000d34',];
+class ConfluenceTenMin extends Component {
+  static propTypes = {
+    tenMinChartLoading: PropTypes.bool,
+    tenMinUnix: PropTypes.number,
+    deviceTenMin: PropTypes.array,
+  }
 
+  state = {
+    HLNames: ['HL001', 'HL002', 'HL003', 'HL004', 'HL005', 'HL006', 'HL007', 'HL008', 'HL009', 'HL010', 'HL011', 'HL012', 'HL013', 'HL014', 'HL015', 'HL016'],
+    HLColors: ['#e08031','#f9b600','#fbe6e3','#999999','#ceebe0','#f8e71c','#50e3c2','#c7ceb2','#7ed321','#d0021b','#024d22','#bd10e0','#8b572a','#9013fe','#45a0b3','#000d34'],
+  }
+
+  componentDidUpdate(prevProps){
+    const { tenMinUnix, tenMinChartLoading } = this.props;
+    const prevTenMinUnix = prevProps.tenMinUnix;
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading) { // 获得数据
+      this.renderChart();
+    }
+  }
+
+  renderChart = () => {
+    const { deviceTenMin, tenMinChartLoading } = this.props;
+    const { HLNames, HLColors } = this.state;
+    const echartBox = document.getElementById('confluence_monitor_tenMin');
+    const confluenceChart = echarts.init(echartBox);
+    if (tenMinChartLoading) {
+      confluenceChart.showLoading();
+      return;
+    } else {
+      confluenceChart.hideLoading();
+    }
+    const lineColor = '#666';
     let dispersionRatio = [], xTime = [], HLData = [], conflenceData = [];
     HLData.length = 16;
     HLData.fill([]);
@@ -142,7 +167,7 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
           },
         },
         {
-          name: '离散率',
+          name: '离散率(%)',
           nameTextStyle: {
             color: lineColor,
           },
@@ -189,11 +214,13 @@ function ConfluenceTenMin({ deviceTenMin, loading }) {
     };
     confluenceChart.setOption(option);
     confluenceChart.resize();
-    
   }
-  return (
-    <div id="confluence_monitor_tenMin" style={{height:"335px",marginTop: '20px'}}></div>
-  );
+
+  render(){
+    return (
+      <div id="confluence_monitor_tenMin" style={{height:"335px",marginTop: '20px'}} />
+    )
+  }
 }
 
 export default ConfluenceTenMin;

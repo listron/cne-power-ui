@@ -169,15 +169,18 @@ const menuData = [
           {
             name: '资产配置',
             path: 'assetsConfig',
-            rightKey: 'operation_book_sparePart',
+            defaultPath: true,
+            rightKey: 'operation_book_assetConfig',
           }, {
             name: '设备管理',
             path: 'deviceManage',
-            rightKey: 'operation_book_instrument',
+           
+            rightKey: 'operation_book_deviceManage',
           },{
             name: '设备台账',
             path: 'deviceAccount',
-            rightKey: 'operation_book_sparePart',
+         
+            rightKey: 'operation_book_deviceBook',
           }, {
             name: '仓库配置',
             path: 'warehouse',
@@ -185,11 +188,11 @@ const menuData = [
           },{
             name: '仓库管理',
             path: 'warehouseManage',
-            rightKey: 'operation_book_sparePart',
+            rightKey: 'operation_book_warehouseManage',
           }, {
-            name: '出入境记录',
-            path: 'immigrationRecords',
-            rightKey: 'operation_book_instrument',
+            name: '出入库记录',
+            path: 'stockRecords',
+            rightKey: 'operation_book_warehouseRecord',
           }
         ]
       }, {
@@ -292,6 +295,11 @@ const menuData = [
             name: '智能分析报告',
             path: 'intelligentAnalysis',
             rightKey: 'statistics_report_report',
+          },
+          {
+            name: '智能报表',
+            path: 'intelligentReport',
+            rightKey: 'statistics_report_table',
           },
         ]
       }
@@ -479,6 +487,11 @@ const menuData = [
             name: '功率曲线',
             path: 'powerCurve',
             rightKey: 'system_station_powercurve',
+          },
+          {
+            name: '气象站配置',
+            path: 'weatherStation',
+            rightKey: 'system_weatherConfig',
           }
         ]
       }, {
