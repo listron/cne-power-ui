@@ -164,3 +164,74 @@
     }
   }
 }
+
+.menuBoard{
+  width: 80px;
+  margin-left: 8px;
+  .boardIcon{
+    width: 18px;
+    height: 18px;
+    padding: 2px;
+    display: flex;
+    cursor: pointer;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .eachPart{
+      height: 6px;
+      width: 6px;
+      background-color: #fff;
+      border-radius: 1px;
+    }
+  }
+}
+
+.boardWrap{
+  background: url('/img/menuboard.png') no-repeat center / cover;
+  top: 59px;
+  .menuLinks{
+    display: flex;
+    .left, .middle, .right{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-right: 24px;
+    }
+    .right{
+      margin-right: 0;
+    }
+    .short, .long{
+      width: 364px;
+      height: 168px;
+      margin-bottom: 12px;
+    }
+    .short {
+      width: 176px;
+    }
+    .eachLink{
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .icon{
+        line-height: 120px;
+        font-size: 72px;
+      }
+      .text{
+        align-self: flex-start;
+        padding-left: 8px;
+        font-size: 24px;
+      }
+    }
+  }
+  :global{
+    .ant-modal-content{
+      background-color: transparent;
+    }
+    .ant-modal-body{
+      padding: 0;
+    }
+
+  }
+}
