@@ -12,21 +12,15 @@
 		"apiUrlReal": "http://cnedemoapi.chinacloudsites.cn"
 	},
 	"develop": {
-		"htUrl": "http://10.10.11.3",
-    "apiUrlReal": "http://10.10.11.224:80",
-		"signalrReal": "http://dev-api.cnecloud.cn"
+    "apiUrlReal": "http://10.10.15.51"
 	},
 	"local": {
-		"apiUrlReal": "http://localhost:802",
-		"signalrReal": "http://localhost:802"
+		"apiUrlReal": "http://localhost:802"
 	},
 	"test": {
-		"htUrl": "http://10.10.11.3",
-		"apiUrlReal": "http://10.10.15.51",
-		"signalrReal": "http://dev-api.cnecloud.cn"
+		"apiUrlReal": "http://10.10.15.83"
 	},
 	"official": {
-		"apiUrlReal": "http://pv-api.cnecloud.cn",
-		"signalrReal": "http://real-time.cnecloud.cn"
+		"apiUrlReal": "http://pv-api.cnecloud.cn"
 	}
 }
