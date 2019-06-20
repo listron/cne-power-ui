@@ -30,7 +30,7 @@ class Seriesinverter extends Component {
       stationCode,
       deviceCode,
       deviceTypeCode,
-      timeParam: '72',
+      timeParam: '720',
     };
     this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode });
     this.props.getDeviceChartMonitor(params);
@@ -47,7 +47,7 @@ class Seriesinverter extends Component {
         stationCode: nextStation,
         deviceCode: nextDevice,
         deviceTypeCode: nextType,
-        timeParam: '72',
+        timeParam: '720',
       };
       this.props.stopMonitor(); // 停止之前的定时器。
       this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType, });

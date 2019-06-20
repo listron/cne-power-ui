@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './inverter.scss';
 
-const SubConfluenceList = ({ subDeviceList, deviceDetail, stationCode }) => {
+const SubConfluenceList = ({ subDeviceList, stationCode }) => {
   const baseLinkPath = "/hidden/monitorDevice";
   const getStatusName = (value) => {
     let result = [];
@@ -59,6 +60,11 @@ const SubConfluenceList = ({ subDeviceList, deviceDetail, stationCode }) => {
       })}
     </div>
   )
+}
+
+SubConfluenceList.propTypes = {
+  subDeviceList: PropTypes.array,
+  stationCode: PropTypes.string
 }
 
 export default SubConfluenceList;
