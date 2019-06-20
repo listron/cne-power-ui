@@ -7,30 +7,33 @@ import styles from './inverter.scss';
 
 const SubConfluenceList = ({ subDeviceList, stationCode }) => {
   const baseLinkPath = "/hidden/monitorDevice";
-  const getStatusName = (value) => {
-    let result = [];
-    switch (value) {
-      case '100': result = [{ name: 'normal', text: '正常' }]; break;
-      case '200': result = [{ name: 'moreThanTen', text: '离散率>10%' }]; break;
-      case '300': result = [{ name: 'moreThanTwenty', text: '离散率>20%' }]; break;
-      case '500': result = [{ name: 'noContact', text: '无通讯' }]; break;
-      case '900': result = [{ name: 'noAccess', text: '未接入' }]; break;
-      default: result = [{ name: 'normal', text: '' }]; break;
-    }
-    return result;
+  const statusArr = { // 汇流箱状态
+    100: { name: 'normal', text: '正常', color: '#199475' },
+    200: { name: 'moreThanTen', text: '离散率>10%', color: '#f9b600' },
+    300: { name: 'moreThanTwenty', text: '离散率>20%', color: '#e08031' },
+    500: { name: 'noContact', text: '无通讯', color: '#666' },
+    900: { name: 'noAccess', text: '未接入', color: '#999' },
   }
 
+  const branchStatus = { // 支路电流状态
+    '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
+    '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
+    '802': { color: '#fff', backgroundColor: '#3e97d1'}, // 偏大 - 蓝
+    '400': { color: '#199475', backgroundColor: '#ceebe0'}, // 正常 - 绿
+    '801': { color: '#fff', backgroundColor: '#f9b600'}, // 偏小 - 橙
+    '803': { color: '#fff', backgroundColor: '#a42b2c'}, // 异常 - 红
+  };
   return (
     <div className={styles.subConfluence}>
       {subDeviceList.map((item, i) => {
-        const statusName = getStatusName(`${item.deviceStatus}`)[0].name;
-        const deviceStatus = item.deviceStatus;
-        const alarm = item.alarmNum && item.alarmNum > 0;
+        const { alarmNum, deviceStatus } = item;
+        const subInfo = deviceStatus.subInfo || []; // 每个汇流箱下支路信息。
+        const statusInfo = statusArr[deviceStatus] || {};
         const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
         const devicePower = dataFormats(item.devicePower, '--', 2);
         let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
         return (
-          <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
+          <div key={i} className={`${styles.singledeviceItem} ${styles[statusInfo.name]} ${alarmNum && styles.alarm} `}>
             <Link to={`${baseLinkPath}/${stationCode}/${item.deviceTypeCode}/${item.deviceCode}`}>
               <div className={`${styles.statusBox}`} >
                 <div className={styles.deviceItemIcon} >
@@ -47,13 +50,24 @@ const SubConfluenceList = ({ subDeviceList, stationCode }) => {
                   </div>
                 </div>
               </div>
-
               <div className={styles.deviceBlockFooter} >
                 <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
                 <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
-                <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
+                <div style={{color: statusInfo.color}}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
                 <div>温度：{dataFormats(item.temp, '--', 2)} ℃</div>
               </div>
+              {subInfo.length > 0 && <div className={styles.subBranch}>
+                {subInfo.map((branch, innerIndex) => {
+                  const { pointValue, pointStatus } = branch;
+                  return (
+                    <span
+                      key={innerIndex}
+                      className={styles.eachBranch}
+                      style={branchStatus[pointStatus]}
+                    >{dataFormats(pointValue, '--', 2)}</span>
+                  )
+                })}
+              </div>}
             </Link>
           </div>
         );
