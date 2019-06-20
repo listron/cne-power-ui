@@ -48,7 +48,7 @@ $arlam_color:#a42b2c;
     margin-right: 18px; 
     margin-bottom: 20px;
     width: 222px;
-    height: 121px;
+    // height: 121px;
     border-radius:4px;
     font-size: 12px;
     cursor: pointer;
@@ -130,6 +130,24 @@ $arlam_color:#a42b2c;
       }
       .dispersionRatio{
         color:#666666;
+      }
+    }
+    .subBranch{ // 汇流箱子集支路
+      display: flex;
+      flex-wrap: wrap;
+      padding: 4px;
+      .eachBranch{
+        flex-basis: 24px;
+        line-height: 16px;
+        border-radius: 2px;
+        margin-right: 2px;
+        margin-bottom: 2px;
+        &:nth-child(8n + 4) {
+          margin-right: 8px;
+        }
+        &:nth-child(8n) {
+          margin-right: 0;
+        }
       }
     }
   }

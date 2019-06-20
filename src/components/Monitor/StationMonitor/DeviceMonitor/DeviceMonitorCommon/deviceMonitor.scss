@@ -273,12 +273,14 @@
   }
   .top, .eachYc{
     display: flex;
-    background-color: #f4f4f4;
     color: $darkColor;
     align-items: center;
     .name, .value, .unit{
       flex: 1 0 80px;
       text-align: center;
+    }
+    .name{
+      padding-left: 4px;
     }
     .value{
       flex: 1 0 155px;
@@ -286,13 +288,14 @@
   }
   .top{
     height: 30px;
+    background-color: #f4f4f4;
     margin-bottom: 4px;
   }
   .eachYc{
     height: 40px;
+    background-color: #fff;
     &:hover{
-      color: #f9b600;
-      background-color: #fff;
+      background:#f0f9f5;
     }
   }
 }

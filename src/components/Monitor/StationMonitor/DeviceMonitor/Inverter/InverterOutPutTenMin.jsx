@@ -14,6 +14,10 @@ class InverterOutPutTenMin extends Component {
     deviceTenMin: PropTypes.array,
   }
 
+  componentDidMount(){
+    this.renderChart();
+  }
+
   componentDidUpdate(prevProps){
     const { tenMinUnix, tenMinChartLoading } = this.props;
     const prevTenMinUnix = prevProps.tenMinUnix;
