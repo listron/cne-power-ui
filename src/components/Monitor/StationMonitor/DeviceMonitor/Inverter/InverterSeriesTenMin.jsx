@@ -186,6 +186,19 @@ class InverterSeriesTenMin extends Component {
         ...hlSeries,
       ]
     };
+    time.length > 0 && (option.dataZoom = [
+      {
+        show: true,
+        zoomLock: true,
+        start: 90,
+        end: 100
+      }, {
+        type: 'inside',
+        start: 90,
+        zoomLock: true,
+        end: 100
+      }
+    ])
     seriesInverterChart.setOption(option);
     seriesInverterChart.resize();
   }

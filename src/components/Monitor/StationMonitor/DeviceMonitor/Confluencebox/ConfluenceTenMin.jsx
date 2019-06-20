@@ -212,6 +212,19 @@ class ConfluenceTenMin extends Component {
         ...HLNamesArr,
       ]
     };
+    deviceTenMin.length > 0 && (option.dataZoom = [
+      {
+        show: true,
+        zoomLock: true,
+        start: 90,
+        end: 100
+      }, {
+        type: 'inside',
+        start: 90,
+        zoomLock: true,
+        end: 100
+      }
+    ])
     confluenceChart.setOption(option);
     confluenceChart.resize();
   }
