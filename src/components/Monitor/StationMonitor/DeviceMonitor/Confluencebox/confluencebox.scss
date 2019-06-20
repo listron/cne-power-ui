@@ -50,8 +50,11 @@
     display: flex;
     width: 400px;
     flex-wrap: wrap;
-    margin-top: 18px;
-    margin-right: 4px;
+    &:before{ // 利用伪元素实现高度居中适配。
+      content: '';
+      width: 400px;
+      display: block;
+    }
     .eachCurrent{
       width: 40px;
       height: 24px;
@@ -59,7 +62,11 @@
       text-align: center;
       background:#ceebe0;
       border-radius:2px;
+      margin-right: 6px;
       color: $themeColor;
+      &:nth-child(4n){
+        margin-right: 20px;
+      }
     }
   }
 }

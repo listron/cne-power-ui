@@ -24,8 +24,6 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
   if (!subDeviceList.length && subDeviceList.electricityList) {
     subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
   }
-  const seriesGroup = Math.ceil(subDeviceList.length / 4);
-  const seriesGroupWidth = Math.ceil(seriesGroup / 2) * 200; 
   const statusColor = {
     '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
     '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
@@ -53,15 +51,12 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
           <EachRecord text="离散率" value={monitordataFormat(dispersionRatio, '--')} unit="%" />
         </div>
       </div>
-      <div className={styles.seriesCurrent} style={{width: `${seriesGroupWidth}px`}}>
+      <div className={styles.seriesCurrent}>
         {subDeviceList.map((e, i) => (
           <span
             className={styles.eachCurrent}
             key={i}
-            style={{
-              ...statusColor[e.pointStatus],
-              marginRight: (i + 1) % 4 === 0 ? '20px' : '6px'
-            }}
+            style={{ ...statusColor[e.pointStatus] }}
           >{dataFormat(e.pointValue, '--', 2)}</span>
         ))}
       </div>
