@@ -130,7 +130,7 @@ export default class HandleComponent extends Component {
     const { stockMaxValue } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
-      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading
+      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading, stocksList
     } = this.props;
     const { pageSize, pageNum, selectedWarehouse, selectedManufacturer } = tableParams;
     const insertDisable = checkedStocks.length > 1;
@@ -161,7 +161,7 @@ export default class HandleComponent extends Component {
             onClick={this.showStockMax}
           >设置阈值</Button>}
           <Button 
-            disabled={!(selectedWarehouse || selectedManufacturer)}
+            disabled={!(selectedWarehouse || selectedManufacturer) || stocksList.length === 0}
             onClick={this.exportStock}
             loading={exportInfoLoading}
           >导出</Button>
