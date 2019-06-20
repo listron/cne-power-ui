@@ -4,6 +4,7 @@ import { commonAction } from './commonAction';
 import Cookie from 'js-cookie';
 
 var initState = Immutable.fromJS({
+  screenAdreess: '', // 外链的大屏地址
   menuBoardRequired: [], // 需要配置全局菜单遮罩的企业数组
   menuBoardShow: false, // 全局菜单弹框
   enterpriseId: '',
