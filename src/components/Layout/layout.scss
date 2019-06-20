@@ -194,7 +194,7 @@
 }
 
 .boardWrap{
-  background: url('/img/menuboard.png') no-repeat center / cover;
+  background: url('/img/menuboard.png') no-repeat 0;
   top: 59px;
   .menuLinks{
     display: flex;
@@ -236,9 +236,14 @@
     .ant-modal-content{
       background-color: transparent;
     }
+    @media screen and (max-width: 1439px)  {
+      .ant-modal{
+        padding-bottom: 0;
+        top: 4%;
+      }
+    }
     .ant-modal-body{
       padding: 0;
     }
-
   }
 }

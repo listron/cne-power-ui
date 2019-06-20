@@ -68,8 +68,8 @@ class WarehouseManage extends Component {
       selectedMode: undefined,
       pageSize: 10,
       pageNum: 1,
-      sortField: 'goods_name',
-      sortMethod: 'desc',
+      sortField: '',
+      sortMethod: '',
     }
     const tabName = tabInfo[innerHTML];
     if (tabName) {

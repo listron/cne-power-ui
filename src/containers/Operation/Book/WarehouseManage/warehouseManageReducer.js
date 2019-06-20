@@ -34,8 +34,8 @@ const initState = Immutable.fromJS({
     selectedMode: undefined, // 型号
     pageSize: 10,
     pageNum: 1,
-    sortField: 'goods_name', // 物品名称：goods_name | 库存类型：goods_type |仓库名称：warehouse_name | 库存数量：inventory_num | 最低阈值：threshold | 厂家：devManufactorName | 供货商：supplier_name | 制造商：manufactor_name
-    sortMethod: 'desc', // "asc"：正序  "desc"：倒序
+    sortField: '', // 物品名称：goods_name | 库存类型：goods_type |仓库名称：warehouse_name | 库存数量：inventory_num | 最低阈值：threshold | 厂家：devManufactorName | 供货商：supplier_name | 制造商：manufactor_name
+    sortMethod: '', // "asc"：正序  "desc"：倒序
   },
   warehouseList: [], // 仓库列表
   manufacturerList: [], // 厂家列表
