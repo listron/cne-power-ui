@@ -53,8 +53,8 @@ class MaterialPage extends Component {
       descend: 'desc',
       ascend: 'asc',
     };
-    const sortField = field ? sortTemplete[field] : 'goods_name';
-    const sortMethod = order ? sortTemplete[order] : 'desc';
+    const sortField = field ? sortTemplete[field] : '';
+    const sortMethod = order ? sortTemplete[order] : '';
     const newParam = {
       ...tableParams,
       sortField,
