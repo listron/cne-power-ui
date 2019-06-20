@@ -6,7 +6,7 @@ import { dataFormat } from '../../../../../utils/utilFunc';
 export const YcPoints = ({ ycData = [] }) => {
   return (
     <section className={styles.ycInfo}>
-      <h3>YC/遥测量</h3>
+      <h3>遥测量(YC)</h3>
       <div className={styles.ycList}>
         <div className={styles.top}>
           <span className={styles.name}>名称</span>
@@ -43,7 +43,7 @@ export const YxPoints = ({ yxData = [] }) => {
   }
   return (
     <section className={styles.yxInfo}>
-      <h3>YX</h3>
+      <h3>遥信量(YX)</h3>
       <div className={styles.yxList}>
         {yxData.map(e => (
           <span key={e.pointName} className={styles.eachYx}>
