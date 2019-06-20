@@ -54,8 +54,8 @@ class DeviceMonitor extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    ...state.monitor.deviceMonitor.toJS(),
-    singleStationData: state.monitor.singleStation.get('singleStationData').toJS(),//获取面包屑电站名称
+  ...state.monitor.deviceMonitor.toJS(),
+  singleStationData: state.monitor.singleStation.get('singleStationData').toJS(),//获取面包屑电站名称
 });
 
 const mapDispatchToProps = (dispatch) => ({

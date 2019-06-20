@@ -8,6 +8,7 @@ import styles from './layout.scss';
 class MenuBoard extends Component{
 
   static propTypes = {
+    screenAdreess: PropTypes.string,
     menuBoardRequired: PropTypes.array,
     menuBoardShow: PropTypes.bool,
     changeCommonStore: PropTypes.func,
@@ -27,7 +28,7 @@ class MenuBoard extends Component{
       { text: '运维管理', path: '/operation/gps', icon: 'icon-control',  type: 'short', color: '#42bcf4'},
       { text: '高级分析', path: '/analysis/intelligentWarning/realtime', icon: 'icon-da',  type: 'short', color: '#da5534'},
 
-      { text: '监控大屏', path: 'https://screen.cnecloud.com', icon: 'icon-screen',  type: 'long', open: true, color: '#199475'}, // 新开大屏网页
+      { text: '监控大屏', icon: 'icon-screen',  type: 'long', open: true, color: '#199475'}, // 新开大屏网页
       { text: '统计报表', path: '/statistical/statement/currency', icon: 'icon-count',  type: 'short', color: '#298092'},
       { text: '主页', path: '/homepage', icon: 'icon-gohome',  type: 'short', color: '#525252', forbidden: true},
       { text: '系统管理', path: '/system/account/enterprise', icon: 'icon-goset',  type: 'long', color: '#2d8ab4'},
@@ -47,13 +48,13 @@ class MenuBoard extends Component{
   }
 
   jumpToPage = (info) => {
-    const { history, changeCommonStore } = this.props;
+    const { history, changeCommonStore, screenAdreess } = this.props;
     const { forbidden, open, path } = info;
     if (forbidden) {
       return;
     }
     if (open) {
-      window.open(path);
+      window.open(screenAdreess);
     } else {
       history.push(path);
       changeCommonStore({ menuBoardShow: false });
