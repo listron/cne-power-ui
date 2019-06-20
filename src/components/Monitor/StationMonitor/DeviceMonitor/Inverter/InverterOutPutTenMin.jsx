@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import echarts from 'echarts';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import styles from './inverter.scss';
+import { dataFormat } from '../../../../../utils/utilFunc';
 import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
 
 
@@ -31,29 +33,22 @@ class InverterOutPutTenMin extends Component {
       inverterChart.hideLoading();
     }
     const lineColor = '#666';
-    let powerLineData = [], radiationLineData = [], xTime = [];
+    let acPowerData = [], dcPowerData = [], radiationLineData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
-      //console.log(e.utc);
-      //xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
-      xTime.push(moment(moment.utc(e.utc).toDate()).local().format('YYYY-MM-DD HH:mm'));
-      powerLineData.push(e.stationPower);
+      xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm'));
+      acPowerData.push(e.acPower); // 交流侧功率
+      dcPowerData.push(e.dcPower); // 直流侧功率
       radiationLineData.push(e.instantaneous);
     });
     const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
     const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
     const inverterTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
+    const colorGroup = ['#3e97d1', '#a42b2c', '#f9b600'];
     const option = {
+      color: colorGroup,
       graphic: inverterTenMinGraphic,
-      // title: {
-      //   text: '时序图',
-      //   textStyle: {
-      //     color: lineColor,
-      //     fontSize: 14,
-      //   },
-      //   left: 60
-      // },
       legend: {
-        data:['功率','瞬时辐照'],
+        data:['直流侧功率', '交流侧功率', '瞬时辐照'],
         top: 24,
         itemWidth: 24,
         itemHeight: 6,
@@ -62,9 +57,6 @@ class InverterOutPutTenMin extends Component {
           fontSize: 12,
         }
       },
-      // tooltip: {
-      //   show: true,
-      // },
       tooltip: {
         trigger: 'axis',
         show: true,
@@ -80,32 +72,25 @@ class InverterOutPutTenMin extends Component {
           }
         },
         formatter: (param) => {
-          if(!param || param.length===0){
-            return <div></div>
+          if (!param || (param.length === 0)){
+            return '<div></div>';
           }
-          let irradiation='',power='';
-          const irradiationObj = param.find(e=>e.seriesName==='瞬时辐照');
-          const powerObj = param.find(e=>e.seriesName==='功率');
-          const tmpIrradiation = irradiationObj && !isNaN(irradiationObj.value);
-          const tmpPower = powerObj && !isNaN(powerObj.value);
-          if(tmpIrradiation){
-            irradiation = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> 瞬时辐照: ${irradiationObj.value}</div>`;
-          }
-          if(tmpPower){
-            power = `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #a42b2c; width:6px; height:6px; border-radius:100%;"></span> 功率: ${powerObj.value}</div>`;
-          }
-          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name}</div>
-            ${irradiation}${power}
-          </div>`;
+          const showTime = param[0] || {};
+          return `<div class=${styles.tooltip}>
+            <div class=${styles.header}>${showTime.name || ''}</div>
+            ${param.map((e, i) => (
+              `<div class=${styles.eachInfo}>
+                <span class=${styles.extraTip} style="color: ${colorGroup[i]}"></span>
+                <span class=${styles.name}>${e.seriesName}</span>
+                <span class=${styles.value}>${dataFormat(e.value, '--', 2)}</span>
+              </div>`
+            )).join('')}
+          </div>`
         },
-        extraCssText:'background: rgba(0,0,0,0);',
+        padding: 0
+        // extraCssText:'background: rgba(0,0,0,0);',
       },
       calculable: true,
-      // grid: {
-      //   top: 95,
-      //   containLabel: true,
-      // },
       xAxis: {
         type: 'category',
         data: xTime,
@@ -170,51 +155,36 @@ class InverterOutPutTenMin extends Component {
       ],
       series: [
         {
-          name: '功率',
+          name: '直流侧功率',
           type: 'line',
-          lineStyle: {
-            type: 'solid',
-            color: '#c57576',
-            width: 1,
-          },
-          itemStyle:{
-            opacity: 0,
-          },
-          areaStyle: {
-            normal: {
-              opacity: 0.2,
-            }
-          },
-          label: {
-            normal: {
-              show: false
-            }
-          },
           yAxisIndex: 0,
-          data: powerLineData,
-        },
-        {
+          data: dcPowerData,
+        }, {
+          name: '交流侧功率',
+          type: 'line',
+          yAxisIndex: 1,
+          data: acPowerData,
+        }, {
           name: '瞬时辐照',
           type: 'line',
-          lineStyle: {
-            type: 'dotted',
-            color: '#199475',
-            width: 1,
-          },
-          itemStyle:{
-            color: "#199475",
-            opacity: 0,
-          },
-          label: {
-            normal: {
-              show: false
-            }
-          },
           yAxisIndex: 1,
           data: radiationLineData,
         },
       ]
     };
+    deviceTenMin.length > 0 && (option.dataZoom = [
+      {
+        show: true,
+        zoomLock: true,
+        start: 90,
+        end: 100
+      }, {
+        type: 'inside',
+        start: 90,
+        zoomLock: true,
+        end: 100
+      }
+    ])
     inverterChart.setOption(option);
     inverterChart.resize();
   }
