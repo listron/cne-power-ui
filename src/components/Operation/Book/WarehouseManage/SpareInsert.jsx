@@ -6,6 +6,7 @@ import AddGood from './ManageCommon/AddGood';
 import AssetsSelectTree from './ManageCommon/AssetsSelectTree';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
+import { from } from '_array-flatten@2.1.2@array-flatten';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -34,8 +35,14 @@ class SpareInsert extends Component {
     changeStore: PropTypes.func,
   }
 
-  state = {
-    saveMode: '',
+  constructor(props){
+    super(props);
+    const { originInsertInfo } = props;
+    const inventoryNum = originInsertInfo ? originInsertInfo.inventoryNum : 0;
+    this.state = {
+      spareNumber: inventoryNum,
+      saveMode: '',
+    }
   }
 
   componentDidMount(){
@@ -47,8 +54,8 @@ class SpareInsert extends Component {
         goodsName: originInsertInfo.goodsName,
         manufactorId: originInsertInfo.manufactorId,
         modeId: originInsertInfo.modeId,
-        manufactorName: originInsertInfo.manufactorName,
-        supplierName: originInsertInfo.supplierName,
+        manufactorName: '',
+        supplierName: '',
         assetsIds: originInsertInfo.assetsIds,
       })
     }
@@ -56,16 +63,34 @@ class SpareInsert extends Component {
 
   componentDidUpdate(preProps){
     const preInsertStatus = preProps.insertStatus;
-    const { insertStatus, form, changeStore } = this.props;
+    const { insertStatus, form, changeStore, originInsertInfo } = this.props;
     if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
       const { saveMode } = this.state;
-      form.resetFields(); // form内数据需重置
-      if (saveMode === 'once') {
+      if (saveMode === 'once') { // 保存 => 清空form并返回
+        form.resetFields();
         this.backToList();
-      } else {
-        changeStore({ assetsTree: [] }); // 树清空
+      } else if (saveMode === 'more' && !!originInsertInfo) { // 继续添加+再入库 => 清除form可编辑项
+        this.recordSpareNum(); // 更新库存数量
+        form.setFieldsValue({
+          manufactorName: '',
+          supplierName: '',
+          entryNum: '',
+          price: '',
+          remarks: '',
+        })
+      } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
+        form.resetFields();
+        changeStore({ assetsTree: [] });
       }
     }
+  }
+
+  recordSpareNum = () => { // 调整当前库存数量
+    const { spareNumber } = this.state;
+    const { form } = this.props;
+    this.setState({
+      spareNumber: parseFloat(spareNumber) + parseFloat(form.getFieldValue('entryNum'))
+    })
   }
 
   backToList = () => {
@@ -105,12 +130,12 @@ class SpareInsert extends Component {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       const assetsIds = values.assetsIds[0];
-      insertWarehouse({ ...values, assetsIds });
+      !err && insertWarehouse({ ...values, assetsIds });
     })
   }
 
   render(){
-    const { saveMode } = this.state;
+    const { saveMode, spareNumber } = this.state;
     const {
       form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
@@ -194,7 +219,7 @@ class SpareInsert extends Component {
             })(
               <Input placeholder="30字以内" style={{width: 200}} />
             )}
-            <span className={styles.prompt}>当前库存量为{originInsertInfo ? originInsertInfo.inventoryNum : 0}</span>
+            {originInsertInfo && <span className={styles.prompt}>当前库存量为{spareNumber}</span>}
           </FormItem>
           <FormItem label="单价">
             {getFieldDecorator('price', {

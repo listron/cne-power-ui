@@ -93,19 +93,17 @@ export default class HandleComponent extends Component {
 
   exportTemplete = () => { // 导出模板
     const { downLoadFile, tabName } = this.props;
-    const url = `${APIBasePath}${operation.downloadStockTemplete}`;
     const stockTypeInfo = {
       spares: [101, '备品备件'],
       tools: [200, '工具'],
       materials: [300, '物资'],
     }
+    const url = `${APIBasePath}${operation.downloadStockTemplete}/${stockTypeInfo[tabName][0]}`;
     downLoadFile({
       url,
+      method: 'get',
       loadingName: 'exportTempleteLoading',
       fileName: `${stockTypeInfo[tabName][1]}导入模板.xlsx`,
-      params: {
-        goodsMaxType: stockTypeInfo[tabName][0],
-      },
     })
   }
 
@@ -161,7 +159,7 @@ export default class HandleComponent extends Component {
             onClick={this.showStockMax}
           >设置阈值</Button>}
           <Button 
-            disabled={!(selectedWarehouse || selectedManufacturer) || stocksList.length === 0}
+            disabled={!selectedWarehouse || stocksList.length === 0}
             onClick={this.exportStock}
             loading={exportInfoLoading}
           >导出</Button>
