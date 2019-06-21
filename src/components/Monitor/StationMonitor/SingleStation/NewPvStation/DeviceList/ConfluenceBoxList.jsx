@@ -253,9 +253,10 @@ class ConfluenceBoxList extends Component {
                         const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
                         const devicePower = dataFormats(item.devicePower, '--', 2);
                         let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                        const praentTypeCode=item.deviceCode.split('M')[1];
                         return (
                           <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
-                            <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}>
+                            <Link to={`${baseLinkPath}/${stationCode}/${praentTypeCode}/${item.deviceCode}`}>
                               <div className={`${styles.statusBox}`} >
                                 <div className={styles.deviceItemIcon} >
                                   {deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
