@@ -293,6 +293,7 @@ class InverterList extends Component {
                 <div className={styles.listWrap}>
                   {(deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
                     const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
+                    const deviceTypeCode = parentDeviceCode.split('M')[1];
                     return (
                       <div key={index}>
                         <div className={styles.parentDeviceName} >
