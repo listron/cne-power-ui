@@ -5,6 +5,7 @@ import { Icon, Button, Modal, Input } from 'antd';
 import moment from 'moment';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
+import WarningTip from '../../../../Common/WarningTip';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
 
@@ -36,6 +37,7 @@ export default class HandleComponent extends Component {
   state = {
     stockMaxValue: '',
     fileList: [],
+    deleteModalShow: false,
   }
 
   onPaginationChange = ({pageSize, currentPage}) => { // 翻页
@@ -63,8 +65,17 @@ export default class HandleComponent extends Component {
     showSide('insert');
   }
 
-  toDelete = () => {
+  showDelModal = () => {
+    this.setState({ deleteModalShow: true });
+  }
+
+  cancelDel = () => {
+    this.setState({ deleteModalShow: false });
+  }
+
+  toDel = () => {
     const { deleteWarehouseMaterial, checkedStocks } = this.props;
+    this.setState({ deleteModalShow: false });
     deleteWarehouseMaterial({ checkedStocks });
   }
 
@@ -125,12 +136,12 @@ export default class HandleComponent extends Component {
   toImport = () => this.props.changeStore({ importFileShow: true });
 
   render(){
-    const { stockMaxValue } = this.state;
+    const { stockMaxValue, deleteModalShow } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
       delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading, stocksList
     } = this.props;
-    const { pageSize, pageNum, selectedWarehouse, selectedManufacturer } = tableParams;
+    const { pageSize, pageNum, selectedWarehouse } = tableParams;
     const insertDisable = checkedStocks.length > 1;
     return (
       <div className={styles.handleRow}>
@@ -153,7 +164,7 @@ export default class HandleComponent extends Component {
               style={{ color: insertDisable ? '#dfdfdf' : '#666'}}
             >入库</span>
           </button>
-          <Button disabled={!(checkedStocks.length > 0)} onClick={this.toDelete} loading={delStockLoading}>删除</Button>
+          <Button disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</Button>
           {tabName === 'spares' && <Button
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
@@ -196,6 +207,7 @@ export default class HandleComponent extends Component {
           </div>
         </Modal>
         {importFileShow && <ImportFile {...this.props} />}
+        {deleteModalShow && <WarningTip onOK={this.toDel} onCancel={this.cancelDel} value="是否确认删除?" />}
       </div>
     )
   }

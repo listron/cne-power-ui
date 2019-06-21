@@ -179,7 +179,7 @@ class MaterialInsert extends Component {
             {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
               <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}} disabled={!!originInsertInfo}>
                 {manufacturerList.map(e => (
-                  <Option key={e.code} value={e.code}>{e.name}</Option>
+                  <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}
@@ -188,7 +188,7 @@ class MaterialInsert extends Component {
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
               <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
                 {insertModes.map(e => (
-                  <Option key={e.code} value={e.code}>{e.name}</Option>
+                  <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}

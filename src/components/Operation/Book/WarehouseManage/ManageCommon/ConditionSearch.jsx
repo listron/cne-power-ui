@@ -63,6 +63,7 @@ class ConditionSearch extends Component {
           value={selectedWarehouse}
           disabled={!(warehouseList.length > 0)}
         >
+          <Option key={undefined} value={undefined}>不限仓库</Option>
           {warehouseList.map(e => (
             <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
           ))}
@@ -72,9 +73,10 @@ class ConditionSearch extends Component {
           onChange={this.changeManufacturer}
           value={selectedManufacturer}
           disabled={!(manufacturerList.length > 0)}
-        >
+        > 
+          <Option key={undefined} value={undefined}>不限厂家</Option>
           {manufacturerList.map(e => (
-            <Option key={e.code} value={e.code}>{e.name}</Option>
+            <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
         </Select>
         <Select
@@ -83,8 +85,9 @@ class ConditionSearch extends Component {
           value={selectedMode}
           disabled={!(modeList.length > 0)}
         >
+          <Option key={undefined} value={undefined}>不限型号</Option>
           {modeList.map(e => (
-            <Option key={e.code} value={e.code}>{e.name}</Option>
+            <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
         </Select>
       </div>
