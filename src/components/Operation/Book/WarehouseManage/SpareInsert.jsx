@@ -189,8 +189,10 @@ class SpareInsert extends Component {
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
               <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {insertModes.map(e => (
-                  <Option key={e.id} value={e.id}>{e.name}</Option>
+                {!!originInsertInfo ?
+                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
+                  : insertModes.map(e => (
+                    <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}

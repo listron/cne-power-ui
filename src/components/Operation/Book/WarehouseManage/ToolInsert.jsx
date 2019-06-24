@@ -42,8 +42,7 @@ class ToolInsert extends Component {
   }
 
   componentDidMount(){
-    const { originInsertInfo, form, getGoodsList } = this.props; 
-    getGoodsList({ goodsMaxType: 200 });
+    const { originInsertInfo, form } = this.props;
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
         warehouseId: originInsertInfo.warehouseId,
@@ -100,6 +99,10 @@ class ToolInsert extends Component {
     this.props.getModes({ selectedManufacturer, formModes: true });
   }
 
+  refreshGoodList = (goodsMaxType) => {
+    this.props.getGoodsList({ goodsMaxType })
+  }
+
   insertSave = () => { // 保存
     this.setState({ saveMode: 'once' });
     this.saveInfo();
@@ -124,7 +127,7 @@ class ToolInsert extends Component {
       insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { manufactorId } = getFieldsValue(['manufactorId']);
+    const { manufactorId, goodsType } = getFieldsValue(['manufactorId', 'goodsType']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
@@ -156,7 +159,7 @@ class ToolInsert extends Component {
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!!originInsertInfo}>
+              <Select placeholder="请选择" style={{width: 200}} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -168,10 +171,11 @@ class ToolInsert extends Component {
               <AddGood
                 goodsList={goodsList}
                 addNewGood={addNewGood}
+                goodsType={goodsType}
                 addGoodName={addGoodName}
                 addGoodStatus={addGoodStatus}
                 tabName={tabName}
-                disabled={!!originInsertInfo}
+                disabled={!!originInsertInfo || !goodsType} // 未选物品类型不可添加物品
               />
             )}
           </FormItem>
@@ -187,8 +191,10 @@ class ToolInsert extends Component {
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
               <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {insertModes.map(e => (
-                  <Option key={e.id} value={e.id}>{e.name}</Option>
+                {!!originInsertInfo ?
+                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
+                  : insertModes.map(e => (
+                    <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}
