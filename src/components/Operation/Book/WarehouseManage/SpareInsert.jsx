@@ -6,7 +6,6 @@ import AddGood from './ManageCommon/AddGood';
 import AssetsSelectTree from './ManageCommon/AssetsSelectTree';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
-import { from } from '_array-flatten@2.1.2@array-flatten';
 
 const FormItem = Form.Item;
 const { Option } = Select;
