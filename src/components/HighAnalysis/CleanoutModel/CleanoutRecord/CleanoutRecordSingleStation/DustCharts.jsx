@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import echarts from 'echarts';
-import { Tabs, DatePicker  } from 'antd';
-import styles from '../../CleanWarning/cleanStyle.scss';
+import { Tabs, DatePicker } from 'antd';
+// import styles from '../../CleanWarning/cleanStyle.scss';
+import styles from './cleanoutRecordDetail.scss';
 import { dataFormat } from '../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
 
- const SingleChart = ({keyWord, data = [], id}) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
+const SingleChart = ({ keyWord, data = [], id }) => { // 灰尘影响charts图(全局 + 方阵特殊覆盖属性 )
   const chartBox = document.getElementById(id);
   if (chartBox) {
     const chartInitBox = echarts.init(chartBox);
@@ -34,7 +35,7 @@ const { RangePicker } = DatePicker;
         itemWidth: 5,
         itemHeight: 5,
       },
-      tooltip:{
+      tooltip: {
         trigger: 'axis',
         extraCssText: 'background-color: rgba(255, 255, 255); box-shadow:0 1px 4px 0 rgba(0,0,0,0.20); border-radius:2px;',
         padding: 0,
@@ -157,39 +158,39 @@ class DustEffectCharts extends Component {
     dustEffectInfo: PropTypes.object,
     totalEffects: PropTypes.array,
     matrixEffects: PropTypes.array,
-    getTotalDustEffect: PropTypes.func,
-    getMatrixDustEffect: PropTypes.func,
+    getStationDust: PropTypes.func,
+    getMatrixDust: PropTypes.func,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      startDay: moment().subtract(30, 'day'),
-      endDay: moment(),
+      startTime: moment().subtract(30, 'day'),
+      endTime: moment(),
     }
   }
 
-  timeSelect = (timeMoment,timeString) => {
-    const { dustEffectInfo, getTotalDustEffect, getMatrixDustEffect } = this.props;
+  timeSelect = (timeMoment, timeString) => {
+    const { singleStationCode, getMatrixDust, getStationDust } = this.props;
     const effectParam = {
-      stationCode: dustEffectInfo.stationCode,
-      startDay: timeString[0],
-      endDay: timeString[1],
+      stationCode: singleStationCode,
+      startTime: timeString[0],
+      endTime: timeString[1],
     }
-    getTotalDustEffect(effectParam);
-    getMatrixDustEffect(effectParam);
+    getMatrixDust(effectParam)
+    getStationDust(effectParam)
   }
 
   render() {
-    const { startDay, endDay } = this.state;
+    const { startTime, endTime } = this.state;
     const { totalEffects, matrixEffects } = this.props;
     return (
       <div className={styles.effectCharts}>
         <RangePicker
-          disabled 
-          defaultValue={[ startDay, endDay ]}
+          // disabled
+          defaultValue={[startTime, endTime]}
           onChange={this.timeSelect}
-          disabledDate={()=>false}
+          disabledDate={() => false}
         />
         <Tabs defaultActiveKey="1">
           <TabPane tab={<span>全局灰尘影响(基于系统效率/清洗板)</span>} key="1" forceRender={true}>
