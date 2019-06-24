@@ -1,5 +1,5 @@
 import { put, takeLatest, takeEvery, select, call, fork } from 'redux-saga/effects';
-import { examinerAction } from './warehouseManageReducer';
+import { examinerAction } from './examinerReducer';
 import path from '../../../../constants/path';
 import { message } from 'antd';
 import axios from 'axios';
