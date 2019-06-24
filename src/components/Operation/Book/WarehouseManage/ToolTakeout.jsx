@@ -43,7 +43,7 @@ class ToolTakeout extends Component {
   takeoutSave = () => {
     const { form, originTakeoutInfo, takeoutWarehouseMaterial } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      if (err) {
+      if (!err) {
         const { remarks, materialCodes, entryType } = values;
         const { inventoryId } = originTakeoutInfo;
         takeoutWarehouseMaterial({

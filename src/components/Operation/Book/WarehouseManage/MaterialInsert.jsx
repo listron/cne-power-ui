@@ -31,13 +31,18 @@ class MaterialInsert extends Component {
     changeStore: PropTypes.func,
   }
 
-  state = {
-    saveMode: '',
+  constructor(props){
+    super(props);
+    const { originInsertInfo } = props;
+    const inventoryNum = originInsertInfo ? originInsertInfo.inventoryNum : 0;
+    this.state = {
+      materialNumber: inventoryNum,
+      saveMode: '',
+    }
   }
 
   componentDidMount(){
-    const { originInsertInfo, form, getGoodsList } = this.props; 
-    getGoodsList({ goodsMaxType: 300 });
+    const { originInsertInfo, form } = this.props; 
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
         warehouseId: originInsertInfo.warehouseId,
@@ -45,23 +50,41 @@ class MaterialInsert extends Component {
         goodsName: originInsertInfo.goodsName,
         manufactorId: originInsertInfo.manufactorId,
         modeId: originInsertInfo.modeId,
-        manufactorName: originInsertInfo.manufactorName,
-        supplierName: originInsertInfo.supplierName,
-        assetsIds: originInsertInfo.assetsIds,
+        manufactorName: '',
+        supplierName: '',
       })
     }
   }
 
   componentDidUpdate(preProps){
     const preInsertStatus = preProps.insertStatus;
-    const { insertStatus, form } = this.props;
+    const { insertStatus, form, originInsertInfo } = this.props;
     if ( preInsertStatus === 'loading' && insertStatus === 'success') { // 保存操作请求成功
       const { saveMode } = this.state;
-      form.resetFields(); // form内数据需重置
-      if (saveMode === 'once') {
+      if (saveMode === 'once') { // 保存 => 清空form并返回
+        form.resetFields();
         this.backToList();
+      } else if (saveMode === 'more' && !!originInsertInfo) { // 继续添加+再入库 => 清除form可编辑项
+        this.recordMaterialNum(); // 更新库存数量
+        form.setFieldsValue({
+          manufactorName: '',
+          supplierName: '',
+          entryNum: '',
+          price: '',
+          remarks: '',
+        })
+      } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
+        form.resetFields();
       }
     }
+  }
+
+  recordMaterialNum = () => { // 调整当前库存数量
+    const { materialNumber } = this.state;
+    const { form } = this.props;
+    this.setState({
+      materialNumber: parseFloat(materialNumber) + parseFloat(form.getFieldValue('entryNum'))
+    })
   }
 
   backToList = () => {
@@ -73,6 +96,10 @@ class MaterialInsert extends Component {
 
   selectManufacturer = (selectedManufacturer) => { // 选择厂家
     this.props.getModes({ selectedManufacturer, formModes: true });
+  }
+
+  refreshGoodList = (goodsMaxType) => {
+    this.props.getGoodsList({ goodsMaxType })
   }
 
   insertSave = () => { // 保存
@@ -88,18 +115,18 @@ class MaterialInsert extends Component {
   saveInfo = () => {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      insertWarehouse({ ...values });
+      !err && insertWarehouse({ ...values });
     })
   }
 
   render(){
-    const { saveMode } = this.state;
+    const { saveMode, materialNumber } = this.state;
     const {
       form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes,
       insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { manufactorId } = getFieldsValue(['manufactorId']);
+    const { manufactorId, goodsType } = getFieldsValue(['manufactorId', 'goodsType']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
@@ -109,10 +136,11 @@ class MaterialInsert extends Component {
       callback();
     }
     const goodsInfo = [
-      { value: 201, label: '安全工器具' },
-      { value: 202, label: '检修工器具' },
-      { value: 203, label: '仪器仪表' },
+      { value: 301, label: '生活物资' },
+      { value: 302, label: '办公物资' },
+      { value: 303, label: '其他' },
     ];
+    
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
@@ -131,7 +159,7 @@ class MaterialInsert extends Component {
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!!originInsertInfo}>
+              <Select placeholder="请选择" style={{width: 200}} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -146,7 +174,8 @@ class MaterialInsert extends Component {
                 addGoodName={addGoodName}
                 addGoodStatus={addGoodStatus}
                 tabName={tabName}
-                disabled={!!originInsertInfo}
+                goodsType={goodsType}
+                disabled={!!originInsertInfo || !goodsType}
               />
             )}
           </FormItem>
@@ -154,7 +183,7 @@ class MaterialInsert extends Component {
             {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
               <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}} disabled={!!originInsertInfo}>
                 {manufacturerList.map(e => (
-                  <Option key={e.code} value={e.code}>{e.name}</Option>
+                  <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}
@@ -162,20 +191,22 @@ class MaterialInsert extends Component {
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
               <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {insertModes.map(e => (
-                  <Option key={e.code} value={e.code}>{e.name}</Option>
+                {!!originInsertInfo ?
+                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
+                  : insertModes.map(e => (
+                    <Option key={e.id} value={e.id}>{e.name}</Option>
                 ))}
               </Select>
             )}
           </FormItem>
           <FormItem label="制造商">
             {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="30字以内" style={{width: 200}} />
             )}
           </FormItem>
           <FormItem label="供货商">
             {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{width: 200}} disabled={!!originInsertInfo} />
+              <Input placeholder="30字以内" style={{width: 200}} />
             )}
           </FormItem>
           <FormItem label="入库数量">
@@ -187,7 +218,7 @@ class MaterialInsert extends Component {
             })(
               <Input placeholder="30字以内" style={{width: 200}} />
             )}
-            <span className={styles.prompt}>当前库存量为{originInsertInfo ? originInsertInfo.inventoryNum : 0}</span>
+            {originInsertInfo && <span className={styles.prompt}>当前库存量为{materialNumber}</span>}
           </FormItem>
           <FormItem label="单价">
             {getFieldDecorator('price', {
