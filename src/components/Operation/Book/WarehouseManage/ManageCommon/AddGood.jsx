@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Form, Select, Input, Button, Modal } from 'antd';
+import { Form, Select, Input, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
 
@@ -10,6 +10,7 @@ class AddGood extends Component {
 
   // 101:备品备件、201：安全工器具、202：检修工器具、203：仪器仪表、301：生活物资、302：办公物资、303：其他
   static propTypes = {
+    goodsType: PropTypes.number,
     tabName: PropTypes.string,
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
@@ -24,21 +25,30 @@ class AddGood extends Component {
   state = {
     saveMode: '', // 保存 || 继续添加
     addModalShow: false,
-    goodTypeInfo: {
-      spares: [
-        { value: 101, label: '备品备件' }
-      ],
-      tools: [
-        { value: 201, label: '安全工器具' },
-        { value: 202, label: '检修工器具' },
-        { value: 203, label: '仪器仪表' },
-      ],
-      materials: [
-        { value: 301, label: '生活物资' },
-        { value: 302, label: '办公物资' },
-        { value: 303, label: '其他' },
-      ]
-    }
+    goodTypeInfo: [
+      { value: 101, label: '备品备件' },
+      { value: 201, label: '安全工器具' },
+      { value: 202, label: '检修工器具' },
+      { value: 203, label: '仪器仪表' },
+      { value: 301, label: '生活物资' },
+      { value: 302, label: '办公物资' },
+      { value: 303, label: '其他' },
+    ],
+    // goodTypeInfo: {
+    //   spares: [
+    //     { value: 101, label: '备品备件' }
+    //   ],
+    //   tools: [
+    //     { value: 201, label: '安全工器具' },
+    //     { value: 202, label: '检修工器具' },
+    //     { value: 203, label: '仪器仪表' },
+    //   ],
+    //   materials: [
+    //     { value: 301, label: '生活物资' },
+    //     { value: 302, label: '办公物资' },
+    //     { value: 303, label: '其他' },
+    //   ]
+    // }
   }
 
   componentDidUpdate(preProps){
@@ -86,7 +96,7 @@ class AddGood extends Component {
 
   render(){
     const { addModalShow, saveMode, goodTypeInfo } = this.state;
-    const { form, goodsList, disabled, value, addGoodStatus, tabName } = this.props;
+    const { form, goodsList, disabled, value, addGoodStatus, tabName, goodsType } = this.props;
     const { getFieldDecorator } = form;
     return(
       <div className={styles.addGood}>
@@ -134,10 +144,10 @@ class AddGood extends Component {
                   required: true,
                   message: '请选择物品类型',
                 }],
-                initialValue: tabName === 'spares' ? 101 : null
+                initialValue: goodsType
               })(
-                <Select placeholder="请选择" style={{width: 200}}>
-                  {goodTypeInfo[tabName].map(e => (
+                <Select placeholder="请选择" style={{width: 200}} disabled>
+                  {goodTypeInfo.map(e => (
                     <Option key={e.value} value={e.value}>{e.label}</Option>
                   ))}
                 </Select>

@@ -125,6 +125,7 @@
         }
         .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
           background-color: #3f3f3f;
+	  flex-shrink: 0;
         }
         .ant-menu-item:hover{
           background-color: #ceebe0;

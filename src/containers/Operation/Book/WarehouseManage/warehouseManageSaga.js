@@ -296,7 +296,7 @@ function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 =
         type: warehouseManageAction.changeStore,
         payload: { insertStatus: 'success' },
       })
-      yield fork(getWarehouseManageList, { payload: { tableParams } });
+      yield fork(getWarehouseManageList, { payload: { ...tableParams } });
     } else { throw response.data }
   } catch (err) {
     yield put({
@@ -411,10 +411,16 @@ function *deleteReserveInfo({ payload }){ // 删除库存中某物资
   try {
     const response = yield call(axios.delete, url, { params: payload });
     if (response.data.code === '10000') { // 删除成功, 重新请求物资列表.
-      const { reserveInventoryId } = yield select(state => state.operation.warehouseManage.toJS());
+      const { reserveInventoryId, tableParams } = yield select(state => state.operation.warehouseManage.toJS());
       yield fork(getReserveList, {
         payload: {
           inventoryId: reserveInventoryId,
+        }
+      })
+      yield fork(getWarehouseManageList, {
+        payload: {
+          ...tableParams,
+          pageNum: 1,
         }
       })
     } else { throw response.data }
@@ -424,14 +430,20 @@ function *deleteReserveInfo({ payload }){ // 删除库存中某物资
 }
 
 function *recallReserveInfo({ payload }){ // 撤回库存中某物资的出库
-  const url = `${APIBasePath}${operation.recallReserveInfo}`;
+  const url = `${APIBasePath}${operation.recallReserveInfo}/${payload.materialCode}`;
   try {
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') { // 撤回后重新请求物资列表.
-      const { reserveInventoryId } = yield select(state => state.operation.warehouseManage.toJS());
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') { // 撤回后重新请求物资列表 + 主页列表.
+      const { reserveInventoryId, tableParams } = yield select(state => state.operation.warehouseManage.toJS());
       yield fork(getReserveList, {
         payload: {
           inventoryId: reserveInventoryId,
+        }
+      });
+      yield fork(getWarehouseManageList, {
+        payload: {
+          ...tableParams,
+          pageNum: 1,
         }
       })
     } else { throw response.data }
