@@ -19,7 +19,7 @@ class pvStationHeader extends React.Component {
     // 默认传过来的数据是 发电量是kW 装机容量 MW 实时功率 kW 小数根据数据计算
     const { pvMonitorStation, monitorPvUnit } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
-    const stationDataSummary = pvMonitorStation.stationDataSummary || {};
+    const { stationDataSummary = {} } = pvMonitorStation
     const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
     const stationUnitCount = stationDataSummary.stationUnitCount;
@@ -30,7 +30,7 @@ class pvStationHeader extends React.Component {
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationPower && stationCapacity) ? (stationPower / stationCapacity) * 100 : 0;
+    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     return (
       <div className={styles.headStation}>
         <div className={styles.leftIcon}></div>
