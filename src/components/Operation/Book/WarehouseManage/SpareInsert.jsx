@@ -22,14 +22,16 @@ class SpareInsert extends Component {
     warehouseList: PropTypes.array,
     insertModes: PropTypes.array,
     goodsList: PropTypes.array,
-    manufacturerList: PropTypes.array,
+    assetsManufac: PropTypes.array,
     assetsTree: PropTypes.array,
+    assetsManufac: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
     getModes: PropTypes.func,
     getAssetslist: PropTypes.func,
+    getAssetsManufacture: PropTypes.func,
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
   }
@@ -95,6 +97,7 @@ class SpareInsert extends Component {
   backToList = () => {
     this.props.changeStore({
       assetsTree: [], 
+      assetsManufac: [],
       originInsertInfo: null,
     }); // 树清空
     this.props.backList();
@@ -111,7 +114,20 @@ class SpareInsert extends Component {
     })
   }
 
+  selectAssets = (assetsIds) => {
+    this.props.changeStore({ assetsManufac: [] });
+    this.props.form.setFieldsValue({
+      assetsIds,
+      manufactorId: undefined, // 清除已选择的厂家
+      modeId: undefined, // 清除已选择的型号
+    });
+    this.props.getAssetsManufacture({ assetsIds });
+  }
+
   selectManufacturer = (selectedManufacturer) => { // 选择厂家
+    this.props.form.setFieldsValue({
+      modeId: undefined, // 清除已选择的型号
+    });
     this.props.getModes({ selectedManufacturer, formModes: true });
   }
 
@@ -136,10 +152,10 @@ class SpareInsert extends Component {
   render(){
     const { saveMode, spareNumber } = this.state;
     const {
-      form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
+      form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { manufactorId } = getFieldsValue(['manufactorId']);
+    const { manufactorId, assetsIds } = getFieldsValue(['manufactorId', 'assetsIds']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
@@ -148,6 +164,7 @@ class SpareInsert extends Component {
       isNaN(value) && callback('请填写数字');
       callback();
     }
+    console.log(assetsManufac)
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
@@ -176,11 +193,20 @@ class SpareInsert extends Component {
               />
             )}
           </FormItem>
+          <FormItem label="对应生产资产">
+            {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
+              <AssetsSelectTree assetsTree={assetsTree} originInsertInfo={originInsertInfo} onChange={this.selectAssets} />
+            )}
+          </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
-              <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}} disabled={!!originInsertInfo}>
-                {manufacturerList.map(e => (
-                  <Option key={e.id} value={e.id}>{e.name}</Option>
+              <Select placeholder="请选择"
+                onChange={this.selectManufacturer}
+                style={{width: 200}}
+                disabled={!!originInsertInfo || !assetsIds }
+              >
+                {assetsManufac.map(e => (
+                  <Option key={e.manufactorId} value={e.manufactorId}>{e.manufactorName}</Option>
                 ))}
               </Select>
             )}
@@ -204,11 +230,6 @@ class SpareInsert extends Component {
           <FormItem label="供货商">
             {getFieldDecorator('supplierName')(
               <Input placeholder="30字以内" style={{width: 200}} />
-            )}
-          </FormItem>
-          <FormItem label="对应生产资产">
-            {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
-              <AssetsSelectTree assetsTree={assetsTree} originInsertInfo={originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="入库数量">

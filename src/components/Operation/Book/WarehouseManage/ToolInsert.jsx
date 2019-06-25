@@ -96,6 +96,9 @@ class ToolInsert extends Component {
   }
 
   selectManufacturer = (selectedManufacturer) => { // 选择厂家
+    this.props.form.setFieldsValue({
+      modeId: undefined, // 清除已选择的型号
+    });
     this.props.getModes({ selectedManufacturer, formModes: true });
   }
 

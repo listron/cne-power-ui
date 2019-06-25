@@ -279,6 +279,27 @@ function *getAssetslist({ payload }) { // 生产资产树
   }
 }
 
+function *getAssetsManufacture({ payload }){ // 选定生产资产下的厂家列表
+  const url = `${APIBasePath}${operation.getDeviceFactorsList}`;
+  try {
+    const { assetsIds } = payload;
+    const response = yield call(axios.post, url, {
+      assetsIds,
+      orderField: '1',
+      orderMethod: 'desc'
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { assetsManufac: response.data.data.dataList || [] }
+      })
+    } else { throw response.data }
+  } catch (error) {
+    message.error('获取厂家列表失败，请重试')
+  }
+
+}
+
 function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 => 入库||再入库
   const url = `${APIBasePath}${operation.insertWarehouse}`;
   try {
@@ -463,6 +484,7 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
   yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
+  yield takeLatest(warehouseManageAction.getAssetsManufacture, getAssetsManufacture);
   yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);
   yield takeLatest(warehouseManageAction.getMaterialDetailsList, getMaterialDetailsList);
   yield takeLatest(warehouseManageAction.takeoutWarehouseMaterial, takeoutWarehouseMaterial);

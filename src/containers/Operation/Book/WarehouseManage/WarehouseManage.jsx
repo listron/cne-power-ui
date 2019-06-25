@@ -162,6 +162,7 @@ const mapDispatchToProps = (dispatch) => ({
   getGoodsList: payload => dispatch({ type: warehouseManageAction.getGoodsList, payload }),
   addNewGood: payload => dispatch({ type: warehouseManageAction.addNewGood, payload }),
   getAssetslist: payload => dispatch({ type: warehouseManageAction.getAssetslist, payload }),
+  getAssetsManufacture: payload => dispatch({ type: warehouseManageAction.getAssetsManufacture, payload }),
   insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
   getMaterialDetailsList: payload => dispatch({ type: warehouseManageAction.getMaterialDetailsList, payload }),
   takeoutWarehouseMaterial: payload => dispatch({ type: warehouseManageAction.takeoutWarehouseMaterial, payload }),
