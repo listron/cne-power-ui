@@ -11,6 +11,7 @@ const warehouseManageAction = {
   getGoodsList: Symbol('getMaterialList'),
   addNewGood: Symbol('addGoodSuccess'),
   getAssetslist: Symbol('getAssetslist'),
+  getAssetsManufacture: Symbol('getAssetsManufacture'),
   insertWarehouse: Symbol('insertWarehouse'),
   getMaterialDetailsList: Symbol('getMaterialDetailsList'),
   takeoutWarehouseMaterial: Symbol('takeoutWarehouseMaterial'),
@@ -50,6 +51,7 @@ const initState = Immutable.fromJS({
   addGoodStatus: 'normal', // 保存新增物品的状态: 'loading' ,'success';
   insertModes: [], // 入库的型号列表
   assetsTree: [], // 入库资产树
+  assetsManufac: [], // 指定生产资产下的厂家。 
   delStockLoading: false, // 删除库存loading状态
   maxSettingLoading: false, // 阈值设置loading
   exportInfoLoading: false, // 导出表格内容loading态
