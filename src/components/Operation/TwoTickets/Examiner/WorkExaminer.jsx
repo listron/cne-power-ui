@@ -1,0 +1,141 @@
+import React, { Component } from 'react';
+import { Table } from 'antd';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import CommonPagination from '../../../Common/CommonPagination';
+import styles from './examinerComp.scss';
+
+class WorkExaminer extends Component {
+
+  static propTypes = {
+    listLoading: PropTypes.bool,
+    stations: PropTypes.array,
+    settingList: PropTypes.array,
+    total: PropTypes.number,
+    tableParams: PropTypes.object,
+    getSettingList: PropTypes.func,
+    changeStore: PropTypes.func,
+    getSettedInfo: PropTypes.func,
+  }
+
+  tableChange = (pagination, filter, sorter) => {
+    const { field, order } = sorter;
+    const { tableParams, getSettingList, changeStore } = this.props;
+    const sortTemplete = {
+      stationName: 'station_name',
+      state: 'state',
+      createTime: 'create_time',
+    };
+    const sortField = field ? sortTemplete[field] : '';
+    const sortMethod = order ? sortTemplete[order] : '';
+    const newParam = {
+      ...tableParams,
+      sortField,
+      sortMethod,
+    }
+    changeStore({ tableParams: newParam });
+    getSettingList({ ...newParam });
+  }
+
+
+  checkStations = (selectedStation) => { // 电站选择
+    const { tableParams, changeStore, getSettingList } = this.props;
+    const newParams = {
+      tableParams,
+      selectedStation,
+      pageNum: 1, // 回到第一页。
+    }
+    changeStore({ tableParams: newParams });
+    getSettingList(tableParams);
+  }
+
+  workTicketColumn = () => {
+//     distributionId	Long	分配配置id
+// stationName	String	电站名称
+// state	Integer	状态标识（0:未设置，1:已设置）
+// createTime	String	设置时间
+// stationCode	Integer	电站编码
+    return [
+      {
+        title: '电站名称',
+        dataIndex: 'stationName',
+        sorter: true,
+      }, {
+        title: '设置时间',
+        dataIndex: 'createTime',
+        render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
+        sorter: true,
+      }, {
+        title: '状态',
+        dataIndex: 'state',
+        render: (text) => text > 0 ? <span className={styles.setted}>已设置</span> : <span className={styles.notSet}>未设置</span>,
+        sorter: true,
+      }, {
+        title: '操作',
+        dataIndex: 'handle',
+        render: (text, record) => {
+          const { state, distributionId } = record;
+          return (
+            <div className={styles.handler}>
+              <span
+                className="iconfont icon-edit"
+                onClick={() => {
+                  state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId)
+                }}
+              />
+              {state > 0 && <span
+                className="iconfont icon-look"
+                onClick={() => this.showDetail(distributionId)}
+              />}
+            </div>
+          )
+        }
+      }
+    ]
+  }
+
+  showEdit = (distributionId) => { // 展示编辑弹框
+    this.props.getSettedInfo({ distributionId, modalType: 'edit' });
+  }
+
+  showCreate = (distributionId) => { // 展示新设置弹框
+
+  }
+
+  showDetail = (distributionId) => { // 展示详情弹框
+    this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
+  }
+
+  render(){
+    const { stations, listLoading, settingList, total, tableParams } = this.props;
+    const { pageNum, pageSize } = tableParams;
+    return (
+      <div className={styles.workExaminer}>
+        <FilterCondition
+          option={['stationName']}
+          stations={stations}
+          onChange={this.checkStations}
+        />
+        <div className={styles.paginationRow}>
+          <CommonPagination
+            total={total}
+            pageSize={pageSize}
+            currentPage={pageNum}
+            onPaginationChange={this.onPaginationChange}
+          />
+        </div>
+        <Table
+          loading={listLoading}
+          onChange={this.tableChange}
+          columns={this.workTicketColumn()}
+          dataSource={settingList.map(e => ({ key: e.stationCode, ...e }))}
+          pagination={false}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+        />
+      </div>
+    )
+  }
+}
+
+export default WorkExaminer;

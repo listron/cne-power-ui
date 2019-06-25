@@ -1,50 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import SparePage from '../../../../components/Operation/Book/WarehouseManage/SparePage';
-// import ToolPage from '../../../../components/Operation/Book/WarehouseManage/ToolPage';
-// import MaterialPage from '../../../../components/Operation/Book/WarehouseManage/MaterialPage';
-
-// import SpareInsert from '../../../../components/Operation/Book/WarehouseManage/SpareInsert';
-// import SpareTakeout from '../../../../components/Operation/Book/WarehouseManage/SpareTakeout';
-// import SpareReserve from '../../../../components/Operation/Book/WarehouseManage/SpareReserve';
-
-// import ToolInsert from '../../../../components/Operation/Book/WarehouseManage/ToolInsert';
-// import ToolTakeout from '../../../../components/Operation/Book/WarehouseManage/ToolTakeout';
-// import ToolReserve from '../../../../components/Operation/Book/WarehouseManage/ToolReserve';
-
-// import MaterialInsert from '../../../../components/Operation/Book/WarehouseManage/MaterialInsert';
-// import MaterialTakeout from '../../../../components/Operation/Book/WarehouseManage/MaterialTakeout';
-// import MaterialReserve from '../../../../components/Operation/Book/WarehouseManage/MaterialReserve';
-
+import WorkExaminer from '../../../../components/Operation/TwoTickets/Examiner/WorkExaminer';
+import HandleExaminer from '../../../../components/Operation/TwoTickets/Examiner/HandleExaminer';
+import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
-// import { examinerAction } from './examinerReducer';
-// import { commonAction } from '../../../alphaRedux/commonAction';
+import { examinerAction } from './examinerReducer';
 import styles from './examiner.scss';
+// import { commonAction } from '../../../alphaRedux/commonAction';
 
 class Examiner extends Component {
 
   static propTypes = {
-    tabName: PropTypes.string,
-    sideKey: PropTypes.string,
+    editModalShow: PropTypes.bool,
+    detailModalShow: PropTypes.bool,
+    templateType: PropTypes.number,
     tableParams: PropTypes.object,
-    getWarehouses: PropTypes.func,
-    getManufactures: PropTypes.func,
-    getWarehouseManageList: PropTypes.func,
+    getSettingList: PropTypes.func,
+    getSettableNodes: PropTypes.func,
     changeStore: PropTypes.func,
     resetStore: PropTypes.func,
   }
-
-  state = {
-    sideTransform: 0,
-  }
   
   componentDidMount(){
-    const { tableParams } = this.props;
-    this.props.getWarehouses();
-    this.props.getManufactures();
-    this.props.getWarehouseManageList({ ...tableParams });
+    const { tableParams, getSettingList, getSettableNodes } = this.props;
+    getSettingList({ ...tableParams });
+    getSettableNodes();
   }
 
   componentWillUnmount(){
@@ -55,82 +37,48 @@ class Examiner extends Component {
     this.setState({ sideTransform });
   }
 
-  tabChange = (e) => { // 切换页面 重置请求数据
+  tabChange = (e) => { // 工作票 < = > 操作票
     const { innerHTML } = e.target;
+    const { changeStore, getSettableNodes, getSettingList } = this.props;
     const tabInfo = {
-      '备品备件': 'spares',
-      '工具器': 'tools',
-      '物资': 'materials',
+      '工作票': 1,
+      '操作票': 2,
     };
     const newTableParams = {
-      selectedWarehouse: undefined,
-      selectedManufacturer: undefined,
-      selectedMode: undefined,
-      pageSize: 10,
+      selectedStation: [],
+      sortField: '', //station_name state, create_time
+      sortMethod: '', // 排序规则 "asc"：正序  "desc"：倒序
       pageNum: 1,
-      sortField: '',
-      sortMethod: '',
+      pageSize: 10,
     }
     const tabName = tabInfo[innerHTML];
     if (tabName) {
-      this.props.changeStore({
-        tabName: tabInfo[innerHTML],
-        tableParams: {...newTableParams},
+      changeStore({
+        templateType: tabInfo[innerHTML],
+        tableParams: { ...newTableParams },
       });
-      this.props.getWarehouseManageList({ ...newTableParams });
+      getSettableNodes();
+      getSettingList({ ...newTableParams });
     }
-  }
-
-  showSide = (sideKey) => {
-    this.setState({ sideTransform: 100 });
-    this.props.changeStore({ sideKey });
-  }
-
-  backList = () => {
-    this.setState({ sideTransform: 0 });
-    this.props.changeStore({ sideKey: 'list' });
   }
   
   render(){
-    const { sideTransform } = this.state;
-    const { tabName, sideKey } = this.props;
+    const { templateType, editModalShow, detailModalShow } = this.props;
     return (
-      <div className={styles.warehouseManage}>
-        <CommonBreadcrumb  breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
-        <div className={styles.manageContainer}>
-          <div className={styles.listPage}>
-            {/* <div className={styles.listContent}>
-              <div className={styles.tabs} onClick={this.tabChange}>
-                <span className={tabName === 'spares' ? styles.active : styles.inactive}>备品备件</span>
-                <span className={tabName === 'tools' ? styles.active : styles.inactive}>工具器</span>
-                <span className={tabName === 'materials' ? styles.active : styles.inactive}>物资</span>
-              </div>
-              {tabName === 'spares' && <SparePage {...this.props} showSide={this.showSide} />}
-              {tabName === 'tools' && <ToolPage {...this.props} showSide={this.showSide} />}
-              {tabName === 'materials' && <MaterialPage {...this.props} showSide={this.showSide} />}
-            </div> */}
-            <Footer />
+      <div className={styles.examiner}>
+        <CommonBreadcrumb  breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} />
+        <div className={styles.examinerList}>
+          <div className={styles.listContent}>
+            <div className={styles.tabs} onClick={this.tabChange}>
+              <span className={templateType === 1 ? styles.active : styles.inactive}>工作票</span>
+              <span className={templateType === 2 ? styles.active : styles.inactive}>操作票</span>
+            </div>
+            {templateType === 1 && <WorkExaminer {...this.props} />}
+            {templateType === 2 && <HandleExaminer {...this.props} />}
           </div>
-          <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
-            {/* {{
-              spares: {
-                insert: <SpareInsert {...this.props} backList={this.backList} />,
-                takeout: <SpareTakeout {...this.props} backList={this.backList} />,
-                reserve: <SpareReserve {...this.props} backList={this.backList} />,
-              },
-              tools: {
-                insert: <ToolInsert {...this.props} backList={this.backList} />,
-                takeout: <ToolTakeout {...this.props} backList={this.backList} />,
-                reserve: <ToolReserve {...this.props} backList={this.backList} />,
-              },
-              materials: {
-                insert: <MaterialInsert {...this.props} backList={this.backList} />,
-                takeout: <MaterialTakeout {...this.props} backList={this.backList} />,
-                reserve: <MaterialReserve {...this.props} backList={this.backList} />,
-              }
-            }[tabName][sideKey]} */}
-            <Footer />
-          </div>
+          {/* editModalShow && <EditModal {...this.props} /> */}
+          {detailModalShow && <DetailModal {...this.props} />}
+          <Footer />
         </div>
       </div>
     )
@@ -138,13 +86,16 @@ class Examiner extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // ...state.operation.warehouseManage.toJS(),
-  // stations: state.common.get('stations').toJS(),
+  ...state.operation.examiner.toJS(),
+  stations: state.common.get('stations').toJS(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // resetStore: () => dispatch({ type: warehouseManageAction.resetStore }),
-  // changeStore: payload => dispatch({ type: warehouseManageAction.changeStore, payload }),
+  resetStore: () => dispatch({ type: examinerAction.resetStore }),
+  changeStore: payload => dispatch({ type: examinerAction.changeStore, payload }),
+  getSettingList: payload => dispatch({ type: examinerAction.getSettingList, payload }),
+  getSettedInfo: payload => dispatch({ type: examinerAction.getSettedInfo, payload }),
+  getSettableNodes: () => dispatch({ type: examinerAction.getSettableNodes }),
   // getWarehouses: () => dispatch({ type: warehouseManageAction.getWarehouses }),
   // getManufactures: () => dispatch({ type: warehouseManageAction.getManufactures }),
   // getModes: payload => dispatch({ type: warehouseManageAction.getModes, payload }),

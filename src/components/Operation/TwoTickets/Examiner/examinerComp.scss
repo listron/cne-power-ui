@@ -1,0 +1,45 @@
+@import '../../../../theme/theme.scss';
+
+.workExaminer{
+  .paginationRow{
+    display: flex;
+    justify-content: flex-end;
+    line-height: 60px;
+    height: 60px;
+  }
+  table { 
+    .setted {
+      color:#666666;
+    }
+    .notSet {
+      color:#f9b600;
+    }
+    .handler{
+      :global{
+        .iconfont{
+          cursor: pointer;
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+}
+
+.detailModal{
+
+  .eachInfo{
+    display: flex;
+    height: 40px;
+    align-items: center;
+    color: $darkColor;
+    .nodeName{
+      flex: 145px 0 0;
+      text-align: right;
+      margin-right: 16px;
+    }
+    .users{
+      flex: 1;
+      @include overflowText();
+    }
+  }
+}
