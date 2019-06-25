@@ -115,11 +115,11 @@ export default class DeviceAccountTable extends React.Component {
       title: '制造商',
       sorter: true,
       dataIndex: 'madeNames',
-      render: (madeNames) => <span>{madeNames || "--"}</span>
+      render: (madeNames) => <span>{madeNames.join('') || "--"}</span>
     }, {
       title: '供货商',
       dataIndex: 'supplierNames',
-      render: (supplierNames) => <span>{supplierNames || "--"}</span>
+      render: (supplierNames) => <span>{supplierNames.join('') || "--"}</span>
     }, {
       title: '查看备品备件',
       align:"center",

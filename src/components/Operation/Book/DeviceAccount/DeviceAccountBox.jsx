@@ -220,7 +220,7 @@ export default class DeviceAccountBox extends React.Component {
     if (regionOption) {
       // 在区域下的电站
       arr = stations.filter(cur =>
-        cur.regionName === regionOption && cur.stationType === 0
+        cur.regionName === regionOption
       )
     }
     return arr;
@@ -271,7 +271,6 @@ export default class DeviceAccountBox extends React.Component {
             holderText="请输入电站名称"
             value={stations.filter(e => e.stationCode === Number(stationCodesOption))}
             onOK={this.selectStation}
-            disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
           />
           <Select
             value={manufactorsOption === "" ? undefined : manufactorsOption}
