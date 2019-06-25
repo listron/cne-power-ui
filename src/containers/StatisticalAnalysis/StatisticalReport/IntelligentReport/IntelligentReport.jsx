@@ -49,17 +49,15 @@ class IntelligentReport extends Component {
           </Radio.Group>
         </div>
 
-        {dayStation &&
-        <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`}></iframe> }
+        {dayStation && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`}></iframe> }
 
-        {monthStation && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report? viewlet=report_month_station.cpt&__bypagesize__=false`}></iframe>}
+        {monthStation && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false`}></iframe>}
 
         {yearStation && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`}></iframe>}
 
-        {dayRegion &&
-        <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`}></iframe> }
+        {dayRegion && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`}></iframe> }
 
-        {yearRegion && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report? viewlet=report_month_region.cpt&__bypagesize__=false`}></iframe>}
+        {yearRegion && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false`}></iframe>}
 
         {monthRegion && <iframe id="reportFrame" width="1440" height="818" frameBorder="0"  src={`${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`}></iframe>}
 
