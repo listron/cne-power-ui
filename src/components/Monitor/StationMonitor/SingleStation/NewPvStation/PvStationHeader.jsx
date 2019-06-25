@@ -79,7 +79,7 @@ class PvStationHeader extends React.Component {
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationPower && stationCapacity) ? (stationPower / stationCapacity) * 100 : 0;
+    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     const rightHandler = localStorage.getItem('rightHandler');
     const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
