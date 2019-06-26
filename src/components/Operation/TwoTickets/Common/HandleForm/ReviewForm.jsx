@@ -75,7 +75,7 @@ class DefectReviewForm extends Component {
           <FormItem
             colon={false}
             label="驳回原因">
-            {getFieldDecorator('rejectReason', {
+            {getFieldDecorator('handleDesc', {
               rules: [{
                 required: true,
                 message: '请输入驳回原因'

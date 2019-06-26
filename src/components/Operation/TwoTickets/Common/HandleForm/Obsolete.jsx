@@ -33,7 +33,7 @@ class DefectCheckForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.dealForm}>
         <FormItem label="作废原因" colon={false}>
-          {getFieldDecorator('checkInfo', {
+          {getFieldDecorator('handleDesc', {
             rules: [{
               required: true,
               message: '请输入作废原因'

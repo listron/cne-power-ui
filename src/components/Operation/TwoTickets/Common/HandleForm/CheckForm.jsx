@@ -17,7 +17,7 @@ class DefectCheckForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.getDocketHandle({
+        this.props.onChange({
           handleResult: 1,
           ...values,
           annexImg:null,
@@ -36,7 +36,7 @@ class DefectCheckForm extends Component {
     return (
       <Form onSubmit={this.onSubmit} className={styles.dealForm}>
         <FormItem label="处理建议" colon={false}>
-          {getFieldDecorator('checkInfo', {
+          {getFieldDecorator('handleDesc', {
             rules: [{
               required: true,
               message: '请输入处理建议'

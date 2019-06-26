@@ -242,6 +242,7 @@ class TableList extends Component {
             'obsolete': '确定作废么',
             'complete': '确定消票么',
         }
+        console.log('type',type)
         this.setState({ showWarningTip: true, warningTipText: text[type] })
         if (docketId) { // 删除是比较特殊的
             this.setState({ delDocketId: docketId, operatType: 'del' })
@@ -255,7 +256,7 @@ class TableList extends Component {
         if (operatType === 'review') {
             type = handleResult === 1 ? 'send' : 'reject'
         }
-        this.delList(type)
+        this.delList(operatType)
         this.setState({ operateReasult: value })
     }
 
