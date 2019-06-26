@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
+import { apiUrlReal } from '../../config/apiConfig';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from './loginAction';
@@ -44,6 +45,15 @@ function *userNameLogin(action){
     yield put({ type: loginAction.CHANGE_LOGIN_STORE, params: {loginLoading: false}});
     if(response.data.code === '10000'){
       const { data } = response.data;
+      // axios.get('/menuBoardRequired.json').then((req) => { // 判定是否引入智能报表企业
+      //   const { menuBoardRequired } = req.data || {};
+      //   const menuBoardShow = menuBoardRequired.includes(`${data.enterpriseId}`);
+      //   if (menuBoardShow) { // 正泰
+      //     const iframe = document.createElement("iframe");
+      //     iframe.src = `${apiUrlReal}/decision/login/cross/domain?fine_username=${params.username}&fine_password=${params.password}&validity=-1&callback=callback`;
+      //     document.head.appendChild(iframe);
+      //   }
+      // })
       if(data.userEnterpriseStatus === 3) {//3启用状态
         data.access_token && Cookie.set('authData',JSON.stringify(data.access_token));
         data.access_token && localStorage.setItem('authData', data.access_token);

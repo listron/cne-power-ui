@@ -1,0 +1,139 @@
+@import '../../../../theme/theme.scss';
+
+.statusGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 28px 20px;
+
+    .text {
+        display: flex;
+        flex-direction: row;
+        margin-right: 16px;
+        color: $darkColor;
+
+        >span:first-child {
+            margin-right: 28px;
+        }
+    }
+
+    :global {
+        .ant-radio-button-wrapper {
+            padding: 0 8px;
+            color: $darkColor;
+        }
+
+        .ant-radio-button-wrapper-checked {
+            background-color: $themeColor;
+            border: 1px solid $themeColor;
+            color: #fff;
+        }
+    }
+}
+
+.flowTable {
+    .tableTop {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 28px;
+        margin-bottom: 20px;
+        align-items: center;
+
+        .commonButton {
+            background-color: #fff;
+            color: #199475;
+            border-color: #199475;
+            cursor: pointer;
+            margin-right: 8px;
+            line-height: 32px;
+            border: 1px solid #199475;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+            padding: 0 12px;
+
+            &:hover {
+                background-color: #199475;
+                color: #fff;
+            }
+        }
+
+        .disabled {
+            pointer-events: none;
+            color: rgba(0, 0, 0, 0.25);
+            background-color: #f5f5f5;
+            border-color: #d9d9d9;
+            text-shadow: none;
+            box-shadow: none;
+        }
+    }
+
+    .addplus {
+        height: 32px;
+        border: 1px solid $themeColor;
+        border-radius: 4px;
+        margin-right: 12px;
+        color: $themeColor;
+        background-color: #fff;
+        display: inline-block;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $themeColor;
+            color: #fff;
+        }
+
+        .add {
+            width: 30px;
+            height: 30px;
+            background-color: $themeColor;
+            color: #fff;
+            line-height: 34px;
+        }
+
+        .text {
+            margin: 0 4px;
+            line-height: 30px;
+        }
+    }
+
+    @mixin color() {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: keep-all;
+    }
+
+    .stationName {
+        @include color();
+        max-width: 175px;
+        min-width: 100px;
+    }
+
+    .dealUserNames {
+        @include color();
+        max-width: 150px;
+    }
+
+    .docketCode {
+        @include color();
+        max-width: 100px;
+    }
+    .docketName{
+      @include color();
+      max-width: 125px;
+    }
+    .createTime{
+        min-width: 134px;
+    }
+
+    :global {
+        .ant-table .ant-table-tbody>tr>td {
+            padding: 0 4px;
+        }
+        .ant-table-placeholder{
+            border: none
+        }
+    }
+}

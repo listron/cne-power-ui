@@ -149,12 +149,8 @@ class WeatherList extends Component {
                     <div className={styles.selectCondition}>
                         <FilterCondition
                             option={['stationName']}
-                            stations={stations}
+                            stations={stations.filter(e=>e.stationType===1)}
                             onChange={this.onChangeFilter}
-                        // defaultValue={{
-                        //     stationCodes,
-                        //     stationType
-                        // }}
                         />
                         <div className={styles.filterButton}>
                             <span className={styles.setStause}>设置状态</span>

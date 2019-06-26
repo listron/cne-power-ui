@@ -18,6 +18,7 @@ class FilteredItems extends Component {
     defectSource: PropTypes.array,
     defectSourceName: PropTypes.array,
     belongMatrixs: PropTypes.array,
+    docketTypes: PropTypes.array,
     warningLeveName: PropTypes.array,
     warningStatusName: PropTypes.array,
     warningLevel: PropTypes.array,
@@ -26,7 +27,7 @@ class FilteredItems extends Component {
     rangTime: PropTypes.array,
     endTime: PropTypes.array,
     onChangeFilter: PropTypes.func,
-    defectLevelName:PropTypes.array,
+    defectLevelName: PropTypes.array,
   }
 
   constructor(props) {
@@ -61,7 +62,7 @@ class FilteredItems extends Component {
     })
   }
 
-  
+
   onCancelStationType = () => {//取消电站类型
     const { onChangeFilter } = this.props;
     onChangeFilter({
@@ -124,6 +125,12 @@ class FilteredItems extends Component {
     onChangeFilter({ warningConfigName: warningConfigName.filter(e => e !== name), });
   }
 
+  onCancelDocketTypes = (types) => {
+    const { docketTypes, onChangeFilter } = this.props;
+    console.log('types', docketTypes, types)
+    onChangeFilter({ docketTypes: docketTypes.filter(e => types.some(m => +m === e.code)) });
+  }
+
   getDefectInfoArr = (defectTypes, selectedTypes) => {
     let defectInfoArr = [];
     defectTypes.forEach(e => {
@@ -140,8 +147,10 @@ class FilteredItems extends Component {
     return defectInfoArr;
   }
 
+
+
   resetAll = () => {//删除所有筛选条件
-    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus,warningConfigName,rangTime,endTime} = this.props;
+    const { onChangeFilter, createTimeEnd, createTimeStart, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, endTime, docketTypes } = this.props;
     const prams = {};
     createTimeEnd !== '' ? prams.createTimeEnd = '' : null;
     createTimeStart !== '' ? prams.createTimeStart = '' : null;
@@ -152,6 +161,7 @@ class FilteredItems extends Component {
     deviceTypeCode.length > 0 ? prams.deviceTypeCode = [] : null;
     defectTypeCode.length > 0 ? prams.defectTypeCode = [] : null;
     belongMatrixs.length > 0 ? prams.belongMatrixs = [] : null;
+    docketTypes.length > 0 ? prams.docketTypes = [] : null;
     warningLevel.length > 0 ? prams.warningLevel = [] : null;
     warningStatus.length > 0 ? prams.warningStatus = [] : null;
     warningConfigName.length > 0 ? prams.warningConfigName = [] : null;
@@ -184,8 +194,9 @@ class FilteredItems extends Component {
   }
 
   render() {
-    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, deviceTypes, defectTypes, defectSource, defectSourceName, belongMatrixs, warningLeveName,warningStatusName, warningLevel, warningStatus,warningConfigName,rangTime,endTime,defectLevelName } = this.props;
-    const levels =defectLevelName?defectLevelName: ['A级', 'B级', 'C级'];
+    const { createTimeStart, createTimeEnd, stationType, stationCodes, deviceTypeCode, defectTypeCode, defectLevel, stations, defectSource, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, endTime, docketTypes } = this.props;
+    const { docketTypeList, deviceTypes, defectTypes, defectSourceName, defectLevelName, warningLeveName, warningStatusName } = this.props;
+    const levels = defectLevelName ? defectLevelName : ['A级', 'B级', 'C级'];
     let defectSourceNames = defectSourceName ? defectSourceName : ['告警', '上报', '巡检', '预警',];
     let warningLeveNames = warningLeveName ? warningLeveName : ['一级', '二级', '三级', '四级'];
     let warningStatusNames = warningStatusName ? warningStatusName : ['自动解除', '手动解除', '转工单'];
@@ -199,27 +210,29 @@ class FilteredItems extends Component {
     })) || [];
 
     const warningLevelArray = warningLevel.map(e => ({
-      label: warningLeveNames[+e-1],
+      label: warningLeveNames[+e - 1],
       value: e,
     }))
     const warningStatusArray = warningStatus.map(e => ({
-      label: warningStatusNames[+e>0?+e-1:+e],
+      label: warningStatusNames[+e > 0 ? +e - 1 : +e],
       value: e,
     }))
 
     const selectedStationArr = this.dealStations()
     const selectedDeviceType = deviceTypes.filter(e => deviceTypeCode.some(m => +m === e.deviceTypeCode));
+    const selectedDocketType = docketTypeList.filter(e => docketTypes.some(m => `${m}` === `${e.code}`))
     const defectInfoArr = this.getDefectInfoArr(defectTypes, defectTypeCode); //选中的缺陷类型数组
     if (
       !createTimeStart &&
       !createTimeEnd &&
-      (!stationType || +stationType===2) &&
+      (!stationType || +stationType === 2) &&
       stationCodes.length === 0 &&
       defectLevel.length === 0 &&
       defectSource.length === 0 &&
       deviceTypeCode.length === 0 &&
       defectTypeCode.length === 0 &&
       belongMatrixs.length === 0 &&
+      docketTypes.length === 0 &&
       warningLevel.length === 0 &&
       warningStatus.length === 0 &&
       rangTime.length === 0 &&
@@ -232,10 +245,10 @@ class FilteredItems extends Component {
       <div className={styles.filteredItems}>
         <span>已选条件</span>
         {createTimeStart && <Tag className={styles.tag} closable onClose={this.onCancelStartTime}>开始 {createTimeStart}</Tag>}
-        {createTimeEnd  && <Tag className={styles.tag} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
-        {rangTime.length>0  && <Tag className={styles.tag} closable onClose={this.onCancelRangTime}>发生时间 {moment(rangTime[0]).format('YYYY-MM-DD')}~{moment(rangTime[1]).format('YYYY-MM-DD')}</Tag>}
-        {endTime.length>0  && <Tag className={styles.tag} closable onClose={this.onCancelRangEndTime}>结束时间 {moment(endTime[0]).format('YYYY-MM-DD')}~{moment(endTime[1]).format('YYYY-MM-DD')}</Tag>}
-        {stationType  && <Tag className={styles.tag} closable onClose={this.onCancelStationType}>{stationType === '0' ? '风电' : '光伏'}</Tag>}
+        {createTimeEnd && <Tag className={styles.tag} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
+        {rangTime.length > 0 && <Tag className={styles.tag} closable onClose={this.onCancelRangTime}>发生时间 {moment(rangTime[0]).format('YYYY-MM-DD')}~{moment(rangTime[1]).format('YYYY-MM-DD')}</Tag>}
+        {endTime.length > 0 && <Tag className={styles.tag} closable onClose={this.onCancelRangEndTime}>结束时间 {moment(endTime[0]).format('YYYY-MM-DD')}~{moment(endTime[1]).format('YYYY-MM-DD')}</Tag>}
+        {stationType && <Tag className={styles.tag} closable onClose={this.onCancelStationType}>{stationType === '0' ? '风电' : '光伏'}</Tag>}
         {stationCodes.length > 0 && selectedStationArr.map(e => {// 电站名称
           return (<Tag className={styles.tag} closable onClose={() => this.onCancelProvince(e.stationCode)} key={e.provinceName} >
             {`${e.provinceName} ${e.stationCode.length}`}
@@ -247,7 +260,7 @@ class FilteredItems extends Component {
         {defectSource.length > 0 && defectSourceArray.map(e => ( // 缺陷来源
           <Tag className={styles.tag} key={e.value} closable onClose={() => this.onCancelDefectSource(e.value)}>{e.label}</Tag>
         ))}
-        {deviceTypeCode.length > 0 && selectedDeviceType.map((e,index) => ( // 设备类型
+        {deviceTypeCode.length > 0 && selectedDeviceType.map((e, index) => ( // 设备类型
           <Tag className={styles.tag} closable onClose={() => this.onCancelDeviceType(e.deviceTypeCode)} key={index}>
             {e.deviceTypeName}
           </Tag>
@@ -276,7 +289,11 @@ class FilteredItems extends Component {
           <Tag className={styles.tag} key={e} closable onClose={() => this.onCancelWarnType(e)}>{e}</Tag>
         ))}
 
-
+        {docketTypes.length > 0 && selectedDocketType.map(e => (//  两票类型
+          <Tag className={styles.tag} closable onClose={() => this.onCancelDocketTypes(e)} key={e.id}>
+            {e.name}
+          </Tag>
+        ))}
         <span onClick={this.resetAll} className={styles.clearAll}>清空条件</span>
       </div>
     );

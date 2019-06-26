@@ -175,13 +175,58 @@ export default {
       deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
       attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
 
+      // 台账-仓库管理
+      getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
+      getManufactures: '/v3/manufactor/user/manufactors', // 所有厂家下拉项
+      getModes: '/v3/manufactor/user', // 所有厂家下拉项
+      getGoodsList: '/v3/goods/listByType', // 物品类别下所有物品列表下拉
+      getWarehouseManageList: '/v3/inventory/pageList', // 获取仓库管理下-备品备件/工器具/物资列表
+      insertWarehouse: '/v3/inventory/entry', // 备品备件/工器具/物资列表 => 入库||再入库
+      deleteWarehouseMaterial: '/v3/inventory/del', // 删除 备品备件/工器具/物资列表
+      takeoutWarehouseMaterial: '/v3/inventory/out', // 出库 备品备件/工器具/物资列表
+      setStockMax: '/v3/inventory/thresholdSet', // 设置库存阈值
+      exportStockFile: '/v3/inventory/export', // 导出备品备件/工器具/物资列表
+      downloadStockTemplete: '/v3/inventory/downLoad', // 下载导入模板
+      importStockFile: '/v3/inventory/importEntry', // 导入备品备件/工器具/物资列表
+      getMaterialDetailsList: '/v3/inventory/materialList', // 指定物资内所有物品列表(编码+物资名)
+      getReserveDetail: '/v3/inventory/inventoryInfo', // 获取某库存详情
+      getReserveList: '/v3/inventory/inventoryInfoPageList', // 获取某库存信息列表
+      deleteReserveInfo: '/v3/inventory/record/del', // 删除库存中某物资
+      recallReserveInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
       // 台账-出入库记录
       warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
       warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
       inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
       outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
       inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
-      outRecordList: "/v3/inventory/outRecord/pageList" // 出库记录分页查询
+      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
+
+      // 两票 - 审核人设置
+      getSettingList: '/v3/workflow/station/distribution/pageList', // 获取设置列表
+      getSettableNodes: '/v3/workflow/template', // 获取可配置属性节点
+      createSettedInfo: '/v3/workflow/station/distribution/add', // 生成已配置电站信息
+      editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
+      getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
+      getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
+      // 两票管理 
+      getDocketList:'/v3/docket/pageList', //列表
+      getDocketStatus:'/v3/docket/state/total', //票据状态及总数
+      getDocketType:'/v3/docket/typeList',//票据类型
+      getNewImg:'/v3/docket/imgs/new',// 票据最新图片查看
+      getNewImgDown:'/v3/docket/downloadImgs/new',//票据最新图片下载
+      stopNodes:'/v3/workflow/template',
+      addDocket:'/v3/docket/add', // 新建工作/操作票
+      noDistribution:'/v3/workflow/station/distribution/noDistribution',//获取未分配人员电站
+      getDocketDetail:'/v3/docket/detail', // 工作票详情
+      nodeImg:'/v3/docket/imgs',// 节点图片
+      downloadImgs:'/v3/docket/downloadImgs',// 下载节点图片
+      getDocketHandle:'/v3/docket/handle',//审核/执行/消票 票据
+      newImg:'/v3/docket/imgs/new',// 最新节点图片
+      downNewImgs:'/v3/docket/downloadImgs/new',// 票据最新图片下载
+      handleBatch:'/v3/docket/handleBatch', // 批量审核/执行/消票 票据
+      stopBatch:'/v3/docket/stopBatch', // 批量终止票据（作废）
+      delDocket:'/v3/docket/del',// 票据删除
+
     },
     system: {
       //系统管理

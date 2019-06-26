@@ -382,6 +382,7 @@ function* getGoodsDelList(action) { // 物品删除
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
