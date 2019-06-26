@@ -17,6 +17,8 @@ import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 
 import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
+import  workFlow  from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
+import  operateFlow  from './TwoTickets/OperateFlow/operateFlowReducer'; // 两票 - 操作票
 
 const operationReducer = combineReducers({
   defect,
@@ -34,6 +36,8 @@ const operationReducer = combineReducers({
   intelligentExpert,
   deviceAccount,
   examiner,
+  workFlow,
+  operateFlow,
 });
 
 

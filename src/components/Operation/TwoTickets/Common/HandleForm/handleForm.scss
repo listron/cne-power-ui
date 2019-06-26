@@ -1,0 +1,124 @@
+@import '../../../../../theme/theme';
+.handleForm {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .title {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 24px;
+    align-items: flex-start;
+    .border {
+      display: flex;
+      flex: 1;
+      height: 16px;
+      border-bottom: 1px #f1f1f1 solid;
+    }
+    .text {
+      background-color: #f8f8f8;
+      color: rgba(0,0,0,0.85);
+      font-weight: 700;
+      border:1px solid #f1f1f1;
+      border-radius:4px;
+      width:95px;
+      height:30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+.dealForm {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  flex-shrink: 0;
+  :global {
+    .ant-form-item {
+      display: flex;
+      .ant-form-item-label {
+        width: 76px;
+        margin-right: 12px;
+        display: flex;
+        justify-content: flex-end;
+        label {
+          color: $darkColor;
+        }
+      }
+      .ant-form-item-children {
+        display: flex
+      }
+    }
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+      color: $darkColor;
+    }
+    .ant-radio-button-wrapper-checked {
+      background-color: $themeColor;
+      border: 1px solid $themeColor;
+      color: #fff;
+    }
+    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+      color:$promptColor;
+    }
+    input:-moz-placeholder, textarea:-moz-placeholder {
+      color: $promptColor;
+    }
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+      color: $promptColor;
+    }
+  }
+  .addImg {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: -65px;
+    .maxTip {
+      width: 65px;
+      color: $promptColor;
+      font-family: MicrosoftYaHei;
+    }
+  }
+  .dealResult {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 18px;
+    align-items: center;
+    .reviewTitle {
+      color: $darkColor;
+      width: 64px;
+      margin-right: 24px;
+      display: flex;
+      justify-content: flex-end;
+      >span:first-child {
+        display: inline-block;
+        margin-right: 24px;
+      }
+    }
+    :global {
+      button {
+        margin-right: 12px;
+      }
+      .ant-form-item-required:before{
+        margin-left: 0px;
+      }
+    }
+  }
+  .actionBar {
+    margin-left: 88px;
+    .cancelBtn {
+      background-color: #f1f1f1;
+      color: $darkColor;
+      margin-right: 10px;
+      border: none;
+    }
+    button {
+      width: 98px;
+      &:hover {
+        background-color: $themeColor;
+        box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
+        color: #fff;
+      }
+    }
+  }
+}

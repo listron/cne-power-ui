@@ -16,10 +16,10 @@ const twoTickets = [
     component: lazy(() => import('../../containers/Operation/TwoTickets/Examiner/Examiner')),
   }, { // 两票管理>工作票
     path: '/operation/twoTickets/workflow',
-    component: lazy(() => import('../../components/Common/Building/Building')),
-    // component: lazy(() => import('../../containers/Operation/TwoTickets/WorkFlow/WorkFlow')),
+    // component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/TwoTickets/WorkFlow/WorkFlow')),
   }, { // 第二种工作票
-    path: '/operation/twoTickets/typetwo',
+    path: '/operation/twoTickets/operateflow',
     component: lazy(() => import('../../components/Common/Building/Building')),
   },
 ];
