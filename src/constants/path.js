@@ -211,7 +211,7 @@ export default {
       createSettedInfo: '/v3/workflow/station/distribution/add', // 生成已配置电站信息
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
-      getSettableUsers: '/api/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
+      getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
 
     },
     system: {//系统管理

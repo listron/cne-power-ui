@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import WorkExaminer from '../../../../components/Operation/TwoTickets/Examiner/WorkExaminer';
 import HandleExaminer from '../../../../components/Operation/TwoTickets/Examiner/HandleExaminer';
 import DetailModal from '../../../../components/Operation/TwoTickets/Examiner/DetailModal';
+import EditModal from '../../../../components/Operation/TwoTickets/Examiner/EditModal';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import Footer from '../../../../components/Common/Footer';
 import { examinerAction } from './examinerReducer';
 import styles from './examiner.scss';
-// import { commonAction } from '../../../alphaRedux/commonAction';
 
 class Examiner extends Component {
 
@@ -64,6 +64,7 @@ class Examiner extends Component {
   
   render(){
     const { templateType, editModalShow, detailModalShow } = this.props;
+    // WorkExaminer 与 HandleExaminer组件，现完全相同，为防止后期表格或操作异化，暂作两个复制组件
     return (
       <div className={styles.examiner}>
         <CommonBreadcrumb  breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} />
@@ -76,7 +77,7 @@ class Examiner extends Component {
             {templateType === 1 && <WorkExaminer {...this.props} />}
             {templateType === 2 && <HandleExaminer {...this.props} />}
           </div>
-          {/* editModalShow && <EditModal {...this.props} /> */}
+          {editModalShow && <EditModal {...this.props} />}
           {detailModalShow && <DetailModal {...this.props} />}
           <Footer />
         </div>
@@ -96,31 +97,9 @@ const mapDispatchToProps = (dispatch) => ({
   getSettingList: payload => dispatch({ type: examinerAction.getSettingList, payload }),
   getSettedInfo: payload => dispatch({ type: examinerAction.getSettedInfo, payload }),
   getSettableNodes: () => dispatch({ type: examinerAction.getSettableNodes }),
-  // getWarehouses: () => dispatch({ type: warehouseManageAction.getWarehouses }),
-  // getManufactures: () => dispatch({ type: warehouseManageAction.getManufactures }),
-  // getModes: payload => dispatch({ type: warehouseManageAction.getModes, payload }),
-  // getWarehouseManageList: payload => dispatch({ type: warehouseManageAction.getWarehouseManageList, payload }),
-  // deleteWarehouseMaterial: payload => dispatch({ type: warehouseManageAction.deleteWarehouseMaterial, payload }),
-  // downLoadFile: payload => dispatch({
-  //   type: commonAction.downLoadFile,
-  //   payload: {
-  //     ...payload,
-  //     actionName: warehouseManageAction.changeStore
-  //   }
-  // }),
-  // setStockMax: payload => dispatch({ type: warehouseManageAction.setStockMax, payload }),
-  // importStockFile: payload => dispatch({ type: warehouseManageAction.importStockFile, payload }),
-  // getGoodsList: payload => dispatch({ type: warehouseManageAction.getGoodsList, payload }),
-  // addNewGood: payload => dispatch({ type: warehouseManageAction.addNewGood, payload }),
-  // getAssetslist: payload => dispatch({ type: warehouseManageAction.getAssetslist, payload }),
-  // getAssetsManufacture: payload => dispatch({ type: warehouseManageAction.getAssetsManufacture, payload }),
-  // insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
-  // getMaterialDetailsList: payload => dispatch({ type: warehouseManageAction.getMaterialDetailsList, payload }),
-  // takeoutWarehouseMaterial: payload => dispatch({ type: warehouseManageAction.takeoutWarehouseMaterial, payload }),
-  // getReserveDetail: payload => dispatch({ type: warehouseManageAction.getReserveDetail, payload }),
-  // getReserveList: payload => dispatch({ type: warehouseManageAction.getReserveList, payload }),
-  // deleteReserveInfo: payload => dispatch({ type: warehouseManageAction.deleteReserveInfo, payload }),
-  // recallReserveInfo: payload => dispatch({ type: warehouseManageAction.recallReserveInfo, payload }),
+  getSettableUsers: payload => dispatch({ type: examinerAction.getSettableUsers, payload }),
+  createSettedInfo: payload => dispatch({ type: examinerAction.createSettedInfo, payload }),
+  editSettedInfo: payload => dispatch({ type: examinerAction.editSettedInfo, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Examiner);

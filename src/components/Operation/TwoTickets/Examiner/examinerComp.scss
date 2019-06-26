@@ -26,7 +26,6 @@
 }
 
 .detailModal{
-
   .eachInfo{
     display: flex;
     height: 40px;
@@ -40,6 +39,35 @@
     .users{
       flex: 1;
       @include overflowText();
+    }
+  }
+}
+
+.editModal{
+  .formPart{
+    :global{
+      .ant-form-item{
+        display: flex;
+        margin-bottom: 8px;
+        .ant-form-item-label{
+          flex: 145px 0 0;
+          text-align: right;
+          margin-right: 16px;
+        }
+        .ant-form-explain{
+          margin-left: 12px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+  .editHandle{
+    display: flex;
+    .holder{
+      flex: 160px 0 0;
+    }
+    .cancelButton{
+      margin-right: 36px;
     }
   }
 }

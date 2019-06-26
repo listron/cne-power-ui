@@ -50,57 +50,50 @@ class WorkExaminer extends Component {
     getSettingList(tableParams);
   }
 
-  workTicketColumn = () => {
-//     distributionId	Long	分配配置id
-// stationName	String	电站名称
-// state	Integer	状态标识（0:未设置，1:已设置）
-// createTime	String	设置时间
-// stationCode	Integer	电站编码
-    return [
-      {
-        title: '电站名称',
-        dataIndex: 'stationName',
-        sorter: true,
-      }, {
-        title: '设置时间',
-        dataIndex: 'createTime',
-        render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
-        sorter: true,
-      }, {
-        title: '状态',
-        dataIndex: 'state',
-        render: (text) => text > 0 ? <span className={styles.setted}>已设置</span> : <span className={styles.notSet}>未设置</span>,
-        sorter: true,
-      }, {
-        title: '操作',
-        dataIndex: 'handle',
-        render: (text, record) => {
-          const { state, distributionId } = record;
-          return (
-            <div className={styles.handler}>
-              <span
-                className="iconfont icon-edit"
-                onClick={() => {
-                  state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId)
-                }}
-              />
-              {state > 0 && <span
-                className="iconfont icon-look"
-                onClick={() => this.showDetail(distributionId)}
-              />}
-            </div>
-          )
-        }
+  workTicketColumn = () => ([ // 表头生成
+    {
+      title: '电站名称',
+      dataIndex: 'stationName',
+      sorter: true,
+    }, {
+      title: '设置时间',
+      dataIndex: 'createTime',
+      render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
+      sorter: true,
+    }, {
+      title: '状态',
+      dataIndex: 'state',
+      render: (text) => text > 0 ? <span className={styles.setted}>已设置</span> : <span className={styles.notSet}>未设置</span>,
+      sorter: true,
+    }, {
+      title: '操作',
+      dataIndex: 'handle',
+      render: (text, record) => {
+        const { state, distributionId } = record;
+        return (
+          <div className={styles.handler}>
+            <span
+              className="iconfont icon-edit"
+              onClick={() => {
+                state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId)
+              }}
+            />
+            {state > 0 && <span
+              className="iconfont icon-look"
+              onClick={() => this.showDetail(distributionId)}
+            />}
+          </div>
+        )
       }
-    ]
-  }
+    }
+  ])
 
   showEdit = (distributionId) => { // 展示编辑弹框
-    this.props.getSettedInfo({ distributionId, modalType: 'edit' });
+    this.props.getSettedInfo({ distributionId, modalType: 'editModalShow' });
   }
 
-  showCreate = (distributionId) => { // 展示新设置弹框
-
+  showCreate = (handleDistributionId) => { // 展示新设置弹框
+    this.props.changeStore({ editModalShow: true, handleDistributionId });
   }
 
   showDetail = (distributionId) => { // 展示详情弹框

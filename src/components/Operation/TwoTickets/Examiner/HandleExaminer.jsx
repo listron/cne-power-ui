@@ -1,53 +1,31 @@
 import React, { Component } from 'react';
-// import ConditionSearch from './ManageCommon/ConditionSearch';
-// import HandleComponent from './ManageCommon/HandleComponents';
-import { Table, Popover } from 'antd';
+import { Table } from 'antd';
+import moment from 'moment';
 import PropTypes from 'prop-types';
+import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import CommonPagination from '../../../Common/CommonPagination';
 import styles from './examinerComp.scss';
 
-class HandleExaminer extends Component {
+class HandleExaminer extends Component { // 这个页面其实没啥用···只是为了防止工作票和操作票后期列表异化。
 
   static propTypes = {
-    checkedStocks: PropTypes.array,
-    stocksList: PropTypes.array,
-    stocksListLoading: PropTypes.bool,
+    listLoading: PropTypes.bool,
+    stations: PropTypes.array,
+    settingList: PropTypes.array,
+    total: PropTypes.number,
     tableParams: PropTypes.object,
-    reserveParams: PropTypes.object,
+    getSettingList: PropTypes.func,
     changeStore: PropTypes.func,
-    showSide: PropTypes.func,
-    getReserveDetail: PropTypes.func,
-    getReserveList: PropTypes.func,
-    getWarehouseManageList: PropTypes.func,
-  }
-
-  state = {
-    highlightId: null,
-  }
-
-  onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
-    this.props.changeStore({ checkedStocks });
-  }
-
-  getReserveDetail = (record) => { // 操作 - 查看库存
-    const { showSide, getReserveDetail, getReserveList, reserveParams, changeStore } = this.props;
-    const { inventoryId } = record;
-    showSide('reserve');
-    changeStore({ reserveInventoryId: inventoryId })
-    getReserveDetail({ inventoryId: `${inventoryId}` }); // 库存详情
-    getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
+    getSettedInfo: PropTypes.func,
   }
 
   tableChange = (pagination, filter, sorter) => {
     const { field, order } = sorter;
-    const { tableParams, getWarehouseManageList, changeStore } = this.props;
+    const { tableParams, getSettingList, changeStore } = this.props;
     const sortTemplete = {
-      goodsName: 'goods_name',
-      modeName: 'mode_name',
-      warehouseName: 'warehouse_name',
-      inventoryNum: 'inventory_num',
-      threshold: 'threshold',
-      descend: 'desc',
-      ascend: 'asc',
+      stationName: 'station_name',
+      state: 'state',
+      createTime: 'create_time',
     };
     const sortField = field ? sortTemplete[field] : '';
     const sortMethod = order ? sortTemplete[order] : '';
@@ -57,155 +35,97 @@ class HandleExaminer extends Component {
       sortMethod,
     }
     changeStore({ tableParams: newParam });
-    getWarehouseManageList({ ...newParam });
+    getSettingList({ ...newParam });
   }
 
-  toInsert = (record) => { // 操作 - 再入库
-    const { changeStore, showSide } = this.props;
-    changeStore({ originInsertInfo: record });
-    showSide('insert');
-  }
 
-  toTakeout = (record) => { // 操作 - 出库
-    const { changeStore, showSide } = this.props;
-    changeStore({ originTakeoutInfo: record });
-    showSide('takeout');
-  }
-
-  spareColumn = () => {
-    const spareRef = this.spareRef;
-    const selectWidth = 60; // 选框宽度
-    const fiexedWidth = 95; // 库存数量 = 最低阈值 = 更多信息
-    const handleWidth = 140; // 操作
-    let calcNormalWidth = 100, calcLongWidth = 200;
-    if (spareRef) { // 样式对齐，防止文字过多错行。
-      const { clientWidth } = spareRef;
-      const restWidth = (clientWidth - selectWidth - fiexedWidth * 3 - handleWidth);
-      calcNormalWidth = restWidth / 5; // 物品名称, 型号, 所属仓库
-      calcLongWidth = restWidth / 5 * 2; // 资产类型
+  checkStations = (selectedStation) => { // 电站选择
+    const { tableParams, changeStore, getSettingList } = this.props;
+    const newParams = {
+      tableParams,
+      selectedStation,
+      pageNum: 1, // 回到第一页。
     }
-    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
-      <div
-        title={text || '--'}
-        className={styles[styleText]}
-        style={{maxWidth: `${widthParam - 16}px`}}
-      >{text || '--'}</div>
-    )
-    return [
-      {
-        title: '物品名称',
-        dataIndex: 'goodsName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('goodsName', calcNormalWidth),
-        sorter: true,
-      }, {
-        title: '型号',
-        dataIndex: 'modeName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('modeName', calcNormalWidth),
-        sorter: true,
-      }, {
-        title: '所属仓库',
-        dataIndex: 'warehouseName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('warehouseName', calcNormalWidth),
-        sorter: true,
-      }, {
-        title: '库存数量',
-        dataIndex: 'inventoryNum',
-        sorter: true,
-        width: fiexedWidth,
-        render: (text, record) => {
-          const { inventoryNum, goodsUnit, threshold } = record;
-          let StockNum = <span />;
-          if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
-            StockNum = <span>--{goodsUnit || ''}</span>
-          } else if (inventoryNum < threshold) { // 库存紧张
-            StockNum = (<span className={styles.shortage}>
-              <span>{inventoryNum}{goodsUnit || ''}</span>
-              <span className={styles.config}>紧张</span>
-            </span>)
-          } else {
-            StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
-          }
-          return StockNum;
-        }
-      }, {
-        title: '对应资产类型',
-        dataIndex: 'assetsPath',
-        width: calcLongWidth,
-        render: TextOverflowDOM('assetsPath', calcLongWidth),
-      }, {
-        title: '最低阈值',
-        dataIndex: 'threshold',
-        width: fiexedWidth,
-        sorter: true,
-      }, {
-        title: '更多信息',
-        className: styles.moreInfo,
-        width: fiexedWidth,
-        dataIndex: 'moreInfo',
-        render: (text, record) => {
-          const InfoContent = (
-            <div className={styles.infoContent}>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>厂家</span>
-                <span className={styles.info}>{record.devManufactorName || '--'}</span>
-              </div>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>供货商</span>
-                <span className={styles.info}>{record.supplierName || '--'}</span>
-              </div>
-              <div className={styles.eachInfo}>
-                <span className={styles.name}>制造商</span>
-                <span className={styles.info}>{record.manufactorName || '--'}</span>
-              </div>
-            </div>
-          )
-          return (
-            <Popover
-              content={InfoContent}
-              title={<span className={styles.infoContentTitle}>更多信息</span>}
-              trigger="hover"
-            >
-              <button className={styles.trigButton}>查看</button>
-            </Popover>
-          )
-        }
-      }, {
-        title: '操作',
-        dataIndex: 'handle',
-        width: handleWidth,
-        render: (text, record) => (
-          <div className={styles.stockHandle}>
-            <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>
-            <span className={styles.text} onClick={() => this.toTakeout(record)}>出库</span>
-            <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
+    changeStore({ tableParams: newParams });
+    getSettingList(tableParams);
+  }
+
+  workTicketColumn = () => ([ // 表头生成
+    {
+      title: '电站名称',
+      dataIndex: 'stationName',
+      sorter: true,
+    }, {
+      title: '设置时间',
+      dataIndex: 'createTime',
+      render: text => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
+      sorter: true,
+    }, {
+      title: '状态',
+      dataIndex: 'state',
+      render: (text) => text > 0 ? <span className={styles.setted}>已设置</span> : <span className={styles.notSet}>未设置</span>,
+      sorter: true,
+    }, {
+      title: '操作',
+      dataIndex: 'handle',
+      render: (text, record) => {
+        const { state, distributionId } = record;
+        return (
+          <div className={styles.handler}>
+            <span
+              className="iconfont icon-edit"
+              onClick={() => {
+                state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId)
+              }}
+            />
+            {state > 0 && <span
+              className="iconfont icon-look"
+              onClick={() => this.showDetail(distributionId)}
+            />}
           </div>
         )
       }
-    ]
+    }
+  ])
+
+  showEdit = (distributionId) => { // 展示编辑弹框
+    this.props.getSettedInfo({ distributionId, modalType: 'editModalShow' });
+  }
+
+  showCreate = (handleDistributionId) => { // 展示新设置弹框
+    this.props.changeStore({ editModalShow: true, handleDistributionId });
+  }
+
+  showDetail = (distributionId) => { // 展示详情弹框
+    this.props.getSettedInfo({ distributionId, modalType: 'detailModalShow' });
   }
 
   render(){
-    const { checkedStocks, stocksList, stocksListLoading } = this.props;
+    const { stations, listLoading, settingList, total, tableParams } = this.props;
+    const { pageNum, pageSize } = tableParams;
     return (
-      <div className={styles.sparePage} ref={(ref) => this.spareRef = ref}>
-        表格页面 = 操作表格
-        {/* <ConditionSearch {...this.props} /> */}
-        {/* <HandleComponent {...this.props} /> */}
-        {/* <Table
-          loading={stocksListLoading}
+      <div className={styles.workExaminer}>
+        <FilterCondition
+          option={['stationName']}
+          stations={stations}
+          onChange={this.checkStations}
+        />
+        <div className={styles.paginationRow}>
+          <CommonPagination
+            total={total}
+            pageSize={pageSize}
+            currentPage={pageNum}
+            onPaginationChange={this.onPaginationChange}
+          />
+        </div>
+        <Table
+          loading={listLoading}
           onChange={this.tableChange}
-          rowSelection={{
-            selectedRowKeys: checkedStocks.map(e => e.key),
-            onChange: this.onTableRowSelect
-          }}
-          columns={this.spareColumn()}
-          dataSource={stocksList.map(e => ({ key: e.inventoryId, ...e }))}
+          columns={this.workTicketColumn()}
+          dataSource={settingList.map(e => ({ key: e.stationCode, ...e }))}
           pagination={false}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        /> */}
+        />
       </div>
     )
   }

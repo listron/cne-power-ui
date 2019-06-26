@@ -1,32 +1,31 @@
 import React, { Component } from 'react';
-import { Modal, Upload, Button, message, Select, Checkbox } from 'antd';
+import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './examinerComp.scss';
-const { Option } = Select;
 
 export default class DetailModal extends Component {
 
   static propTypes = {
+    handleDistributionId: PropTypes.number,
     detailModalShow: PropTypes.bool,
     settedDetail: PropTypes.array,
+    settingList: PropTypes.array,
     changeStore: PropTypes.func,
-  }
-
-  state = {
-
   }
 
   hideDetail = () => this.props.changeStore({
     detailModalShow: false,
+    handleDistributionId: null,
     settedDetail: null
   });
 
   render(){
-    const { detailModalShow, settedDetail } = this.props;
+    const { detailModalShow, settedDetail, handleDistributionId, settingList } = this.props;
+    const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
     return (
       <Modal
         visible={detailModalShow}
-        title="审核人设置"
+        title={`${currentInfo.stationName || ''}电站——审核人设置`}
         onCancel={this.hideDetail}
         footer={null}
       >
