@@ -242,7 +242,6 @@ class TableList extends Component {
             'obsolete': '确定作废么',
             'complete': '确定消票么',
         }
-        console.log('type',type)
         this.setState({ showWarningTip: true, warningTipText: text[type] })
         if (docketId) { // 删除是比较特殊的
             this.setState({ delDocketId: docketId, operatType: 'del' })
@@ -252,11 +251,11 @@ class TableList extends Component {
     batchChange = (value) => { //  批量操作·(确定)
         const { operatType } = this.state;
         const { handleResult } = value;
-        let type = "obsolete";
+        let type = operatType;
         if (operatType === 'review') {
             type = handleResult === 1 ? 'send' : 'reject'
         }
-        this.delList(operatType)
+        this.delList(type)
         this.setState({ operateReasult: value })
     }
 
