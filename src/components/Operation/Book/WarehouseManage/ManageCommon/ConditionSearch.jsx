@@ -7,6 +7,7 @@ const { Option } = Select;
 class ConditionSearch extends Component {
 
   static propTypes = {
+    tabName: PropTypes.string,
     warehouseList: PropTypes.array,
     manufacturerList: PropTypes.array,
     modeList: PropTypes.array,
@@ -52,7 +53,7 @@ class ConditionSearch extends Component {
   }
 
   render(){
-    const { warehouseList = [], manufacturerList = [], modeList = [], tableParams = {} } = this.props;
+    const { warehouseList = [], manufacturerList = [], modeList = [], tableParams = {}, tabName } = this.props;
     const { selectedWarehouse, selectedManufacturer, selectedMode } = tableParams;
     return (
       <div className={styles.conditionSearch}>
@@ -68,7 +69,7 @@ class ConditionSearch extends Component {
             <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
           ))}
         </Select>
-        <Select
+        {tabName === 'spares' && <Select
           placeholder="请选择厂家"
           onChange={this.changeManufacturer}
           value={selectedManufacturer}
@@ -78,8 +79,8 @@ class ConditionSearch extends Component {
           {manufacturerList.map(e => (
             <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
-        </Select>
-        <Select
+        </Select>}
+        {tabName === 'spares' && <Select
           placeholder="请选择型号"
           onChange={this.changeMode}
           value={selectedMode}
@@ -89,7 +90,7 @@ class ConditionSearch extends Component {
           {modeList.map(e => (
             <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
-        </Select>
+        </Select>}
       </div>
     )
   }
