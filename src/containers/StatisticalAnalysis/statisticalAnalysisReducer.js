@@ -21,7 +21,7 @@ const statisticalAnalysisReducer = combineReducers({
   manufacturers,
   customize,
   scoreAnalysis,
-  intelligentAnalysisReducer
+  intelligentAnalysisReducer,
 });
 
 export default statisticalAnalysisReducer;

@@ -51,9 +51,10 @@ class WeatherList extends Component {
         const { editList } = this.props;
         const { stationCode,weatherConfigId } = editList;
         const { subordinateStationCode } = this.state;
+        const useWeatherConfigId=weatherConfigId ? weatherConfigId:''
         this.props.getEditWeather({
             stationCode,
-            weatherConfigId,
+            weatherConfigId:useWeatherConfigId,
             subordinateStationCode: subordinateStationCode || editList.subordinateStationCode,
         });
         this.setState({
