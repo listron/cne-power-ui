@@ -70,6 +70,7 @@ class ImgUploader extends Component {
     onChange && onChange(imgList);
     editFileList && this.setState({fileList:editFileList})
   }
+  
   beforeUpload = (file,fileList) => {
     const isIMG = /^image/.test(file.type);
     const { limitSize, max, data} = this.props;
