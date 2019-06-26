@@ -1,4 +1,4 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
@@ -6,7 +6,8 @@ import { workFlowAction } from './workFlowAction';
 
 function* getFlowList(action) {
     const { payload } = action;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketList}`
+    const flowListUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketList}`;
+    const flowStatusUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`
     const { listQueryParams, commonQueryParams } = payload;
     const startTime = commonQueryParams.createTimeStart;
     const endTime = commonQueryParams.createTimeEnd;
@@ -18,9 +19,12 @@ function* getFlowList(action) {
                 loading: true
             }
         });
-        const response = yield call(axios.post, url, { ...listQueryParams, ...commonQueryParams, startTime, endTime, IsMy });
-        if (response.data.code === '10000') {
-            const totalNum = response.data.data && response.data.data.pageDate.pageCount || 0;
+        const [flowList, flowStatus] = yield all(
+            [call(axios.post, flowListUrl, { ...listQueryParams, ...commonQueryParams, startTime, endTime, IsMy }),
+            call(axios.post, flowStatusUrl, { ...commonQueryParams, startTime, endTime, IsMy }),
+            ]);
+        if (flowList.data.code === '10000' && flowStatus.data.code === '10000') {
+            const totalNum = flowList.data.data && flowList.data.data.pageDate.pageCount || 0;
             let { pageNum, pageSize } = payload.listQueryParams;
             const maxPage = Math.ceil(totalNum / pageSize);
             if (totalNum === 0) {
@@ -31,15 +35,16 @@ function* getFlowList(action) {
             yield put({
                 type: workFlowAction.changeWorkFlowStore,
                 payload: {
-                    docketList: response.data.data.pageDate.dataList || [],
+                    docketList: flowList.data.data.pageDate.dataList || [],
                     totalNum,
                     listQueryParams: {
                         ...payload.listQueryParams,
                         pageNum,
                     },
                     commonQueryParams: payload.commonQueryParams,
-                    currentRoles: response.data.data.currentRoles || {},
-                    loading: false
+                    currentRoles: flowList.data.data.currentRoles || {},
+                    loading: false,
+                    statusList: flowStatus.data.data || [],
                 },
             });
         } else { throw response.data }
@@ -57,33 +62,6 @@ function* getFlowList(action) {
                     pageNum: 1,
                 },
                 commonQueryParams: payload.listQueryParams,
-            },
-        });
-    }
-}
-
-function* getDocketStatus(action) { // 状态
-    const { payload } = action;
-    const startTime = payload.createTimeStart;
-    const endTime = payload.createTimeEnd;
-    const IsMy = payload.handleUser ? 1 : 0;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`
-    try {
-        const response = yield call(axios.post, url, { ...payload, startTime, endTime,IsMy });
-        if (response.data.code === '10000') {
-            yield put({
-                type: workFlowAction.changeWorkFlowStore,
-                payload: {
-                    statusList: response.data.data || [],
-                },
-            });
-        } else { throw response.data }
-    } catch (e) {
-        console.log(e);
-        yield put({
-            type: workFlowAction.changeWorkFlowStore,
-            payload: {
-                statusList: [],
             },
         });
     }
@@ -219,6 +197,13 @@ function* addDockect(action) {
                     listQueryParams,
                 },
             });
+            yield put({
+                type: workFlowAction.getFlowList,
+                payload: {
+                    commonQueryParams,
+                    listQueryParams,
+                },
+            });
         } else { throw response.data }
     } catch (e) {
         console.log(e);
@@ -279,8 +264,8 @@ function* getDocketDetail(action) {
 
 function* getNodeImg(action) { // 节点图片
     const { payload } = action;
-    const { docketId, nodeCode } = payload;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.nodeImg}/${docketId}/${nodeCode}`;
+    const { docketId, taskId } = payload;
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.nodeImg}/${docketId}/${taskId}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
@@ -442,7 +427,6 @@ function* delDocket(action) {
 
 export function* watchWorkFlow() {
     yield takeLatest(workFlowAction.getFlowList, getFlowList);
-    yield takeLatest(workFlowAction.getDocketStatus, getDocketStatus);
     yield takeLatest(workFlowAction.getStopRight, getStopRight);
     yield takeLatest(workFlowAction.getDocketTypeList, getDocketTypeList);
     yield takeLatest(workFlowAction.getDefectList, getDefectList);

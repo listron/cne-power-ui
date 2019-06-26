@@ -2,7 +2,6 @@ export const workFlowAction = {
     changeWorkFlowStore: Symbol('changeWorkFlowStore'), // 替换reducer参数
     resetStore: Symbol('resetStore'), // 发起重置数据请求
     getFlowList: Symbol('getFlowList'), 
-    getDocketStatus: Symbol('getDocketStatus'), 
     getStopRight: Symbol('getStopRight'), 
     getDocketTypeList: Symbol('getDocketTypeList'), 
     getDefectList: Symbol('getDefectList'), 

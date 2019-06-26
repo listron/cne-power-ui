@@ -34,6 +34,7 @@ class TableList extends Component {
             selectedRows: [],
             review: false, // 审核
             complete: false, // 消票
+            obsolete: false, //作废
             showImgModal: false,
             currentImgIndex: 0,
             downloadHref: '',
@@ -61,25 +62,31 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => {  // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
-        const { userId } = this.props;
-        const dealUserIds = [], dealRoleIds = [];
-        record.forEach(e => { 
-            if(e.dealUserIds)  dealUserIds.push(e.dealUserIds.split(',')) });
-        record.forEach(e => {
-            if (e.dealRoleIds) {
-                dealRoleIds.push(e.dealRoleIds.split(','))
+        if (keys.length > 0) {
+            const { userId } = this.props;
+            const dealUserIds = [], dealRoleIds = [];
+            record.forEach(e => {
+                if (e.dealUserIds) dealUserIds.push(e.dealUserIds.split(','))
+            });
+            record.forEach(e => {
+                if (e.dealRoleIds) {
+                    dealRoleIds.push(e.dealRoleIds.split(','))
+                }
+            });
+            const right = dealUserIds.every(e => e.includes(userId))
+            const stateCode = [...new Set(record.map(e => e.stateCode))];
+            let review = false, complete = false;
+            if (stateCode.length > 1 || !right) {
+                review = false; complete = false;
+            } else {
+                if (stateCode[0] === '101') { review = true; complete = false }
+                if (stateCode[0] === '103') { review = false; complete = true; }
             }
-        });
-        const right = dealUserIds.every(e => e.includes(userId))
-        const stateCode = [...new Set(record.map(e => e.stateCode))];
-        let review = false, complete = false;
-        if (stateCode.length > 1 || !right) {
-            review = false; complete = false;
+            this.setState({ review, complete, obsolete: true })
         } else {
-            if (stateCode.length > 0 && stateCode[0] === '101') { review = true; complete = false }
-            if (stateCode.length > 0 && stateCode[0] === '103') { review = false; complete = true; }
+            this.setState({ review: false, complete: false, obsolete: false })
         }
-        this.setState({ review, complete, })
+
     }
 
     onShowDetail = (value) => {
@@ -88,17 +95,18 @@ class TableList extends Component {
 
     onConfirmWarningTip = () => { // 删除  作废  消票  审核
         const { operatType, operateReasult, selectedRows, nodeCode, delDocketId } = this.state;
-        const taskIds = selectedRows.map(e => e.taskId)
+        const taskIds = selectedRows.map(e => e.taskId);
+        const docketIds = selectedRows.map(e => e.docketId);
         if (operatType === 'review' || operatType === 'complete') { // 审核 消票 
             this.props.handleBatch({ taskIds, ...operateReasult })
         }
         if (operatType === 'obsolete') { // 作废
-            this.props.stopBatch({ taskIds, nodeCode, ...operateReasult })
+            this.props.stopBatch({ docketIds, nodeCode, ...operateReasult })
         }
         if (operatType === 'del') { // 删除
             this.props.delDocket({ docketId: delDocketId })
         }
-        this.setState({ showWarningTip: false })
+        this.setState({ showWarningTip: false, batchVisible: false, selectedRows: [] })
     }
 
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
@@ -127,7 +135,6 @@ class TableList extends Component {
     }
 
     addWorkFlow = () => {
-        console.log('进入测试')
         this.props.changeWorkFlowStore({ showPage: 'add' })
     }
 
@@ -198,7 +205,6 @@ class TableList extends Component {
                 title: '审核人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
-                sorter: true,
                 render: (text) => {
                     return <div className={styles.dealUserNames} title={text}>{text}</div>
                 }
@@ -206,7 +212,6 @@ class TableList extends Component {
                 title: '照片',
                 dataIndex: 'picture',
                 key: 'picture',
-                sorter: true,
                 render: (text, record) => (
                     <i className="iconfont icon-todo" onClick={() => { this.showImgs(record) }} />
                 )
@@ -256,9 +261,9 @@ class TableList extends Component {
 
 
     render() {
-        const { totalNum, loading, docketList, stopRight, newImg, listQueryParams,downLoadFile } = this.props;
-        const { selectedRows, review, complete, currentImgIndex, showImgModal, downloadHref } = this.state;
-        const docketId = selectedRows.map(e => e.docketId)
+        const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile } = this.props;
+        const { selectedRows, review, complete, obsolete, currentImgIndex, showImgModal, downloadHref } = this.state;
+        const docketId = selectedRows.map(e => e.docketId);
         const { showWarningTip, warningTipText, operatType } = this.state;
         const { pageSize, pageNum, } = listQueryParams;
         const rowSelection = {
@@ -296,7 +301,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('complete') }}>消票</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${!e.isAbleOper && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${!obsolete && !e.isAbleOpe && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode) }} key={e.nodeCode}  >
                                     {e.nodeName}
                                 </div>

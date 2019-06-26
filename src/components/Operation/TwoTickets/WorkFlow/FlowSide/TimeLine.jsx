@@ -27,15 +27,14 @@ class TimeLine extends Component {
             showImgModal: false,
             currentImgIndex: 0,
             images: [],
-            nodeCode: ''
+            taskId: null
         }
     }
 
 
-    showImgs = (docketId, item) => { // 查看图片详情
-        const { nodeCode } = item;
-        this.props.getNodeImg({ docketId, nodeCode })
-        this.setState({ showImgModal: true, nodeCode: nodeCode });
+    showImgs = (docketId, taskId) => { // 查看图片详情
+        this.props.getNodeImg({ docketId,taskId })
+        this.setState({ showImgModal: true, taskId });
     }
 
     closeImgs = () => { // 关闭图片
@@ -49,9 +48,8 @@ class TimeLine extends Component {
     }
 
     download = (docketId,item) => {
-        const { downLoadFile } = this.props;
-        const { nodeCode } = item;
-        const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${nodeCode}`
+        const { downLoadFile,taskId } = this.props;
+        const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${taskId}`
         downLoadFile({
             url: downloadHref,
             fileName:'票据附件',
@@ -60,7 +58,7 @@ class TimeLine extends Component {
     }
 
     renderItem = (docketId, item, length, index) => {
-        const { operWinType } = this.props;
+        const { operWinType, taskId} = this.props;
         return (
             <div className={styles.processItem} key={index}>
                 <img src={item.iconImg} className={styles.iconImg} />
@@ -68,12 +66,12 @@ class TimeLine extends Component {
                 <div className={styles.linebox}>
                     <div className={styles.lineBasic}>
                         <div className={styles.flowName}>{item.nodeName}</div>
-                        <div className={styles.operateTime}>{moment(item.handleTime).format("YYYY-MM-DD HH:MM:SS")}</div>
+                        <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format("YYYY-MM-DD HH:MM:SS")}</div>
                         <div className={styles.operateUser}>{item.handleUser}</div>
                         {item.isUploadImg &&
                             <div className={styles.imgDownLoad}>
-                                <div onClick={() => this.showImgs(docketId, item)} className={styles.imgList}> 票据附件</div> 
-                                <div onClick={()=>this.download(docketId,item)} className={styles.imgList}> 下载</div>
+                                <div onClick={() => this.showImgs(docketId, taskId)} className={styles.imgList}> 票据附件</div> 
+                                <div onClick={()=>this.download(docketId,taskId)} className={styles.imgList}> 下载</div>
                             </div>
                         }
                     </div>
@@ -86,8 +84,8 @@ class TimeLine extends Component {
                                         <div>处理建议:{e.handleDesc}</div>
                                     </div>
                                     <div className={styles.bottomCont}>
-                                        <div>{e.handleTime}</div>
-                                        <div>{e.handleUser}</div>
+                                        <div className={styles.operateTime} >{item.handleTime && moment(item.handleTime).format("YYYY-MM-DD HH:MM:SS")}</div>
+                                        <div className={styles.operateUser}>{e.handleUser}</div>
                                     </div>
                                 </div>)
                             })}

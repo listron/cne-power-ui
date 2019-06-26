@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from './workFlowSide.scss';
-import { Radio, Form, Icon } from 'antd';
 import CreateFlow from './CreateFlow';
 import BaseInfo from './BaseInfo';
 import TimeLine from './TimeLine';
@@ -35,7 +34,6 @@ class DeatilFlow extends Component {
     render() {
         const { docketDetail = {}, docketId,downLoadFile } = this.props;
         const { distributionInfo = [], docketInfo = {}, docketProcess = [], defectInfo } = docketDetail;
-        console.log('docketDetail', docketDetail)
         const { operTitle, operWinType,taskId } = docketInfo;
         const lastChild = docketProcess && docketProcess[docketProcess.length - 1] || [];
         const right = lastChild.length > 0 && lastChild.childProcess ? lastChild.childProcess.isAbleOper : lastChild.isAbleOper; // 0 没有操作权限 1 有操作权限
@@ -44,10 +42,9 @@ class DeatilFlow extends Component {
             <div className={styles.detailFlow}>
                 <div className={styles.content}>
                     <div className={styles.basic}>
-                    <CreateFlow {...this.props} reject={true} />
-                        {/* {defectInfo ?
+                        {defectInfo ?
                             <CreateFlow {...this.props} reject={true} />
-                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} />} */}
+                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} />}
                     </div>
                     <div className={styles.right}>
                         <div className={styles.timeLines}>
@@ -56,6 +53,7 @@ class DeatilFlow extends Component {
                                 getNodeImg={this.props.getNodeImg}
                                 nodeImg={this.props.nodeImg}
                                 docketId={this.props.docketId}
+                                taskId={taskId}
                                 operWinType={operWinType}
                                 downLoadFile={downLoadFile}
                             />

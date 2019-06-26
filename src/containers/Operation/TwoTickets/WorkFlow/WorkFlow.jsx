@@ -30,7 +30,6 @@ class WorkFlow extends Component {
 
     render() {
         const { showPage } = this.props;
-        console.log('tets',showPage)
         return (
             <div className={styles.workflow}>
                 <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} />
@@ -67,7 +66,6 @@ const mapDispatchToProps = (dispatch) => ({
     changeWorkFlowStore: payload => dispatch({ type: workFlowAction.changeWorkFlowStore, payload }),
     resetStore: () => dispatch({ type: workFlowAction.resetStore }),
     getFlowList: payload => dispatch({ type: workFlowAction.getFlowList, payload }),
-    getDocketStatus: payload => dispatch({ type: workFlowAction.getDocketStatus, payload }),
     getStopRight: payload => dispatch({ type: workFlowAction.getStopRight, payload }),
     getDocketTypeList: payload => dispatch({ type: workFlowAction.getDocketTypeList, payload }),
     getDefectList: payload => dispatch({ type: workFlowAction.getDefectList, payload }),

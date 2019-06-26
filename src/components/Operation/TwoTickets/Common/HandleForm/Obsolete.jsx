@@ -16,7 +16,7 @@ class DefectCheckForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.getDocketHandle({
+        this.props.onChange({
           handleResult: 1,
           ...values,
         })

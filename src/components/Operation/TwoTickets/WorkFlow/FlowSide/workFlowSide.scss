@@ -262,6 +262,13 @@
           .imgDownLoad{
             display: flex;
           }
+          .operateTime {
+            color: $darkColor;
+            margin-right: 12px;
+        }
+        .operateUser {
+            color: $darkColor;
+        }
           .lineBasic {
               display: flex;
               flex-direction: row;
@@ -271,13 +278,7 @@
                   color: $darkColor;
                   margin-right: 24px;
               }
-              .operateTime {
-                  color: $darkColor;
-                  margin-right: 12px;
-              }
-              .operateUser {
-                  color: $darkColor;
-              }
+              
               .imgList{
                  line-height: 18px;
                  color: $themeColor;

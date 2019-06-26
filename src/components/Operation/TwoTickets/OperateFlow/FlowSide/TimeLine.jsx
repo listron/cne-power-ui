@@ -19,6 +19,8 @@ class TimeLine extends Component {
         handleData: PropTypes.object,
         nodeImg: PropTypes.array,
         getNodeImg: PropTypes.func,
+        downLoadFile: PropTypes.func,
+        taskId: PropTypes.number,
     }
 
     constructor(props) {
@@ -49,9 +51,8 @@ class TimeLine extends Component {
     }
 
     download = (docketId,item) => {
-        const { downLoadFile } = this.props;
-        const { nodeCode } = item;
-        const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${nodeCode}`
+        const { downLoadFile,taskId } = this.props;
+        const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${taskId}`
         downLoadFile({
             url: downloadHref,
             fileName:'票据附件',

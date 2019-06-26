@@ -13,6 +13,8 @@ class DeatilFlow extends Component {
         stations: PropTypes.array,
         docketDetail: PropTypes.object,
         getDocketHandle: PropTypes.func,
+        getNodeImg: PropTypes.func,
+        nodeImg: PropTypes.array,
     }
 
 
@@ -35,19 +37,17 @@ class DeatilFlow extends Component {
     render() {
         const { docketDetail = {}, docketId,downLoadFile } = this.props;
         const { distributionInfo = [], docketInfo = {}, docketProcess = [], defectInfo } = docketDetail;
-        console.log('docketDetail', docketDetail)
         const { operTitle, operWinType,taskId } = docketInfo;
         const lastChild = docketProcess && docketProcess[docketProcess.length - 1] || [];
         const right = lastChild.length > 0 && lastChild.childProcess ? lastChild.childProcess.isAbleOper : lastChild.isAbleOper; // 0 没有操作权限 1 有操作权限
-        console.log('操作权限', right)
+        console.log('操作权限',right)
         return (
             <div className={styles.detailFlow}>
                 <div className={styles.content}>
                     <div className={styles.basic}>
-                    <CreateFlow {...this.props} reject={true} />
-                        {/* {defectInfo ?
+                        {defectInfo ?
                             <CreateFlow {...this.props} reject={true} />
-                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} />} */}
+                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} />}
                     </div>
                     <div className={styles.right}>
                         <div className={styles.timeLines}>
@@ -58,6 +58,7 @@ class DeatilFlow extends Component {
                                 docketId={this.props.docketId}
                                 operWinType={operWinType}
                                 downLoadFile={downLoadFile}
+                                taskId={taskId}
                             />
                         </div>
                         <div className={styles.form}>

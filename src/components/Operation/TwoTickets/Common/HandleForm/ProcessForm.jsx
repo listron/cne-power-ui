@@ -34,6 +34,7 @@ class DefectProcessForm extends Component {
         })
         this.props.onChange({
           handleResult:1,
+          handleDesc:'',
           ...values,
           annexImg,
           otherImg,

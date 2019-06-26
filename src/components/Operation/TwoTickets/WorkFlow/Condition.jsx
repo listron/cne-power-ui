@@ -30,8 +30,7 @@ class Condition extends Component {
     }
 
     componentDidMount() {
-        const { getDocketStatus, commonQueryParams, getDocketTypeList } = this.props;
-        getDocketStatus(commonQueryParams);
+        const { getDocketTypeList } = this.props;
         getDocketTypeList()
     }
 
