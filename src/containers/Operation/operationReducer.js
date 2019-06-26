@@ -16,6 +16,8 @@ import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
 
+import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
+
 const operationReducer = combineReducers({
   defect,
   inspect,
@@ -31,6 +33,7 @@ const operationReducer = combineReducers({
   warehouseManage,
   intelligentExpert,
   deviceAccount,
+  examiner,
 });
 
 

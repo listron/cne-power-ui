@@ -164,7 +164,6 @@ class SpareInsert extends Component {
       isNaN(value) && callback('请填写数字');
       callback();
     }
-    console.log(assetsManufac)
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>

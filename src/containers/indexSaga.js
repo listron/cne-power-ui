@@ -91,6 +91,7 @@ import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccount
 import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
 import { watchWarehouseManage } from './Operation/Book/WarehouseManage/warehouseManageSaga';
 import { watchStockRecords } from "./Operation/Book/StockRecords/stockRecordsSaga";
+import { watchExaminer } from "./Operation/TwoTickets/Examiner/examinerSaga";
 
 // root saga
 export default function* rootSaga() {
@@ -188,5 +189,6 @@ export default function* rootSaga() {
     watchWarehouse(),//仓库配置
     watchWarehouseManage(), // 仓库管理
     watchStockRecords(),//出入库记录
+    watchExaminer(), // 两票 -审核人
   ])
 }

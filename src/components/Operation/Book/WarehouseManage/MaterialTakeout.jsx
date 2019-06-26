@@ -98,14 +98,14 @@ class MaterialTakeout extends Component {
             )}
           </FormItem>
           <FormItem label="厂家">
-            {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称'))(
+            {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
               <Select style={{width: 200}} disabled>
                 <Option value={originTakeoutInfo.devManufactorName}>{originTakeoutInfo.devManufactorName}</Option>
               </Select>
             )}
           </FormItem>
           <FormItem label="型号">
-            {getFieldDecorator('modeName', requireInfoFun('无型号'))(
+            {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
               <Select style={{width: 200}} disabled>
                 <Option value={originTakeoutInfo.modeName}>{originTakeoutInfo.modeName}</Option>
               </Select>

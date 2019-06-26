@@ -127,11 +127,12 @@ function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
       goodsMaxType: stockTypeCodes[tabName],
       inventoryIds: checkedStocks.map(e => e.inventoryId).join(','),
     })
-    yield put({
-      type: warehouseManageAction.changeStore,
-      payload: { delStockLoading: false }
-    })
+    
     if (response.data.code === '10000') { // 删除成功后重新请求列表数据
+      yield put({
+        type: warehouseManageAction.changeStore,
+        payload: { delStockLoading: false, checkedStocks: [] }
+      })
       yield fork(getWarehouseManageList, {
         payload: {
           ...tableParams,
@@ -140,6 +141,10 @@ function *deleteWarehouseMaterial({ payload }) { // 删除选中项库存
       })
     } else { throw response.data }
   } catch(error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { delStockLoading: false }
+    })
     message.error(`删除失败,${error.message}`);
     console.log(error);
   }
@@ -284,7 +289,7 @@ function *getAssetsManufacture({ payload }){ // 选定生产资产下的厂家�
   try {
     const { assetsIds } = payload;
     const response = yield call(axios.post, url, {
-      assetsIds,
+      assetsId: assetsIds[assetsIds.length - 1],
       orderField: '1',
       orderMethod: 'desc'
     });

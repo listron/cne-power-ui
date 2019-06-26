@@ -151,12 +151,16 @@ const menuData = [
         rightKey: 'operation_twoTicket',
         children: [
           {
-            name: '第一种工作票',
-            path: 'typeone',
+            name: '审核人设置',
+            path: 'examiner',
             rightKey: 'operation_twoTicket',
           }, {
-            name: '第二种工作票',
-            path: 'typetwo',
+            name: '工作票',
+            path: 'workflow',
+            rightKey: 'operation_twoTicket',
+          }, {
+            name: '操作票',
+            path: 'operateflow',
             rightKey: 'operation_twoTicket',
           }
         ]

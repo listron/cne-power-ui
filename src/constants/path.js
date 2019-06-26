@@ -199,7 +199,16 @@ export default {
       inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
       outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
       inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
-      outRecordList: "/v3/inventory/outRecord/pageList" // 出库记录分页查询
+      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
+
+      // 两票 - 审核人设置
+      getSettingList: '/v3/workflow/station/distribution/pageList', // 获取设置列表
+      getSettableNodes: '/v3/workflow/template', // 获取可配置属性节点
+      createSettedInfo: '/v3/workflow/station/distribution/add', // 生成已配置电站信息
+      editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
+      getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
+      getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
+
     },
     system: {
       //系统管理
