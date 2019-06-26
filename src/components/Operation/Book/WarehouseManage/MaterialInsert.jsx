@@ -25,7 +25,6 @@ class MaterialInsert extends Component {
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
-    getModes: PropTypes.func,
     getAssetslist: PropTypes.func,
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
@@ -48,8 +47,8 @@ class MaterialInsert extends Component {
         warehouseId: originInsertInfo.warehouseId,
         goodsType: parseInt(originInsertInfo.goodsType),
         goodsName: originInsertInfo.goodsName,
-        manufactorId: originInsertInfo.manufactorId,
-        modeId: originInsertInfo.modeId,
+        devManufactorName: originInsertInfo.devManufactorName,
+        modeName: originInsertInfo.modeName,
         manufactorName: '',
         supplierName: '',
       })
@@ -94,13 +93,6 @@ class MaterialInsert extends Component {
     this.props.backList();
   }
 
-  selectManufacturer = (selectedManufacturer) => { // 选择厂家
-    this.props.form.setFieldsValue({
-      modeId: undefined, // 清除已选择的型号
-    });
-    this.props.getModes({ selectedManufacturer, formModes: true });
-  }
-
   refreshGoodList = (goodsMaxType) => {
     this.props.getGoodsList({ goodsMaxType })
   }
@@ -125,11 +117,11 @@ class MaterialInsert extends Component {
   render(){
     const { saveMode, materialNumber } = this.state;
     const {
-      form, tabName, warehouseList, manufacturerList, addNewGood, goodsList, addGoodName, insertModes,
+      form, tabName, warehouseList, addNewGood, goodsList, addGoodName,
       insertStatus, originInsertInfo, addGoodStatus
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
-    const { manufactorId, goodsType } = getFieldsValue(['manufactorId', 'goodsType']);
+    const { goodsType } = getFieldsValue(['goodsType']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
@@ -183,23 +175,13 @@ class MaterialInsert extends Component {
             )}
           </FormItem>
           <FormItem label="厂家">
-            {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
-              <Select placeholder="请选择" onChange={this.selectManufacturer} style={{width: 200}} disabled={!!originInsertInfo}>
-                {manufacturerList.map(e => (
-                  <Option key={e.id} value={e.id}>{e.name}</Option>
-                ))}
-              </Select>
+            {getFieldDecorator('devManufactorName', requireInfoFun('请选择厂家'))(
+              <Input placeholder="请输入..." style={{width: 200}} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="型号">
-            {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {!!originInsertInfo ?
-                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
-                  : insertModes.map(e => (
-                    <Option key={e.id} value={e.id}>{e.name}</Option>
-                ))}
-              </Select>
+            {getFieldDecorator('modeName', requireInfoFun('请选择型号'))(
+              <Input placeholder="请输入..." style={{width: 200}} disabled={!!originInsertInfo} />
             )}
           </FormItem>
           <FormItem label="制造商">
