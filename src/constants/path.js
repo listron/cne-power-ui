@@ -208,6 +208,24 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
+      // 两票管理 
+      getDocketList:'/v3/docket/pageList', //列表
+      getDocketStatus:'/v3/docket/state/total', //票据状态及总数
+      getDocketType:'/v3/docket/typeList',//票据类型
+      getNewImg:'/v3/docket/imgs/new',// 票据最新图片查看
+      getNewImgDown:'/v3/docket/downloadImgs/new',//票据最新图片下载
+      stopNodes:'/v3/workflow/template',
+      addDocket:'/v3/docket/add', // 新建工作/操作票
+      noDistribution:'/v3/workflow/station/distribution/noDistribution',//获取未分配人员电站
+      getDocketDetail:'/v3/docket/detail', // 工作票详情
+      nodeImg:'/v3/docket/imgs',// 节点图片
+      downloadImgs:'/v3/docket/downloadImgs',// 下载节点图片
+      getDocketHandle:'/v3/docket/handle',//审核/执行/消票 票据
+      newImg:'/v3/docket/imgs/new',// 最新节点图片
+      downNewImgs:'/v3/docket/downloadImgs/new',// 票据最新图片下载
+      handleBatch:'/v3/docket/handleBatch', // 批量审核/执行/消票 票据
+      stopBatch:'/v3/docket/stopBatch', // 批量终止票据（作废）
+      delDocket:'/v3/docket/del',// 票据删除
 
     },
     system: {
