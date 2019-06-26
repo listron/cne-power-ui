@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Form, Select, Button } from 'antd';
+import { Icon, Form, Select, Button, Input } from 'antd';
 import PropTypes from 'prop-types';
 import MaterialDetailsList from './ManageCommon/MaterialDetailsList';
 import InputLimit from '../../../Common/InputLimit';
@@ -99,16 +99,12 @@ class MaterialTakeout extends Component {
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
-              <Select style={{width: 200}} disabled>
-                <Option value={originTakeoutInfo.devManufactorName}>{originTakeoutInfo.devManufactorName}</Option>
-              </Select>
+              <Input style={{width: 200}} disabled />
             )}
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
-              <Select style={{width: 200}} disabled>
-                <Option value={originTakeoutInfo.modeName}>{originTakeoutInfo.modeName}</Option>
-              </Select>
+              <Input style={{width: 200}} disabled />
             )}
           </FormItem>
           <FormItem label="物资编码" className={styles.materialCodes}>
