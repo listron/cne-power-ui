@@ -57,22 +57,29 @@ class IntelligentReport extends Component {
           </div>
           <div className={styles.iframeContent}>
             {dayStation &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`}></iframe> }
-  
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_station.cpt&__bypagesize__=false`}></iframe> }
             {monthStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_station.cpt&__bypagesize__=false`
+            }></iframe>}
             
             {yearStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_station.cpt&__bypagesize__=false`
+            }></iframe>}
             
             {dayRegion &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`}></iframe> }
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_region.cpt&__bypagesize__=false`}></iframe> }
   
             {monthRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_region.cpt&__bypagesize__=false`}></iframe>}
 
             {yearRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={`${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_region.cpt&__bypagesize__=false`}></iframe>}
           </div>
           <Footer />
           </div>
@@ -83,3 +90,17 @@ class IntelligentReport extends Component {
 }
 
 export default IntelligentReport;
+
+// dayStation && `${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`
+
+// monthStation && `${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false`
+
+// yearStation && `${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`
+
+// dayRegion && `${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`
+
+// monthRegion && `${apiUrlReal}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false`
+
+// yearRegion && `${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`
+
+
