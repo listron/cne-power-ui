@@ -196,13 +196,16 @@ class BoxTransformerList extends Component {
             {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
               (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
                 const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
-                const praentTypeCode=parentDeviceCode.split('M')[1];
+                const praentTypeCode = parentDeviceCode && parentDeviceCode.split('M')[1] || '';
                 return (<div key={index}>
                   <div className={styles.parentDeviceName} >
-                    <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
+                    {parentDeviceCode && <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
                       <i className={'iconfont icon-jidian'}></i>
                       {parentDeviceName}
-                    </Link>
+                    </Link> || <div  className={styles.underlin}>
+                        <i className={'iconfont icon-jidian'}></i>
+                        {parentDeviceName}
+                      </div>}
                   </div>
                   <div className={styles.singledeviceItemBox}>
                     {list.map((item, i) => {
