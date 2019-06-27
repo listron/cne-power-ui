@@ -192,6 +192,7 @@ export default {
       getReserveList: '/v3/inventory/inventoryInfoPageList', // 获取某库存信息列表
       deleteReserveInfo: '/v3/inventory/record/del', // 删除库存中某物资
       recallReserveInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
+      getWarehouseStationType: '/v3/warehouse/stationType', // 仓库所属电站类型
       // 台账-出入库记录
       warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
       warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
