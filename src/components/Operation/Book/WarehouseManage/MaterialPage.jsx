@@ -94,11 +94,7 @@ class MaterialPage extends Component {
         style={{maxWidth: `${widthParam - 16}px`}}
       >{text || '--'}</div>
     );
-    const goodsInitTypes = {
-      201: '安全工器具',
-      202: '检修工器具',
-      203: '仪器仪表',
-    };
+    const goodsInitTypes = { 301: '生活物资' , 302: '办公物资', 303: '其他' };
     return [
       {
         title: '物品名称',
