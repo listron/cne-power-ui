@@ -68,7 +68,7 @@ class PvmoduleList extends Component {
     this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
   }
   render() {
-    
+
     const { pvmoduleList, loading, pvLevelNums, deviceTypeCode } = this.props;
     const { pvLevelStatus } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
@@ -86,32 +86,32 @@ class PvmoduleList extends Component {
           {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
             <React.Fragment>
               <div className={styles.pvmoduleListTop}>
-                { 
+                {
                   pvStatus.map(item => {
-                  return (
-                    <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.pointStatus && styles.active}`} key={item.name}
-                      onClick={() => { this.buttonClick(item.pointStatus) }}>
-                      {pvLevelStatus !== item.pointStatus && <i className={'iconfont icon-goon'}></i>}
-                      {pvLevelStatus === item.pointStatus && <i className={'iconfont icon-done'}></i>}
-                      {item.text} {dataFormats(pvLevelNums[item.useName],'--',0) }
-                    </p>)
-                })}
+                    return (
+                      <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.pointStatus && styles.active}`} key={item.name}
+                        onClick={() => { this.buttonClick(item.pointStatus) }}>
+                        {pvLevelStatus !== item.pointStatus && <i className={'iconfont icon-goon'}></i>}
+                        {pvLevelStatus === item.pointStatus && <i className={'iconfont icon-done'}></i>}
+                        {item.text} {dataFormats(pvLevelNums[item.useName], '--', 0)}
+                      </p>)
+                  })}
               </div>
               <div className={styles.pvmoduleCont}>
                 {(tmpPvmoduleList.length > 0 ? tmpPvmoduleList.map((item, index) => {
                   const { deviceCode, deviceName } = item;
-                  const parentTypeCode = deviceCode.split('M')[1];
+                  const parentTypeCode = deviceCode && deviceCode.split('M')[1] || '';
                   return (
                     <div key={index} className={styles.pvmoduleItem} >
                       <div className={styles.deviceName} >
                         <i className="iconfont icon-nb" ></i>
-                        <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
+                        {deviceCode && <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
                           {deviceName}
-                        </Link>
+                        </Link> ||  deviceName}
                       </div>
                       <div className={styles.singlePvmodule}>
                         {item.electricityList.map((e, i) => {
-                          const colorStatus=this.pointStatus[e.pointStatus];
+                          const colorStatus = this.pointStatus[e.pointStatus];
                           return (
                             <span
                               style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
