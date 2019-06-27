@@ -9,6 +9,7 @@ import WarningTip from '../../../../components/Common/WarningTip';
 
 class PointManageHandle extends Component {
   static propTypes = {
+    exportLoading: PropTypes.bool,
     stationCode: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
@@ -22,6 +23,7 @@ class PointManageHandle extends Component {
     getStationDeviceTypes: PropTypes.func,
     changeCommonStore: PropTypes.func,
     changePointManageStore: PropTypes.func,
+    exportPoints: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -75,6 +77,17 @@ class PointManageHandle extends Component {
     })
     this.deletePointList()
   }
+
+  toExport = () => {
+    const { exportPoints, stationCode } = this.props;
+    exportPoints({
+      url: `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`,
+      method: 'get',
+      loadingName: 'exportLoading',
+      fileName: '电站测电表.xlsx',
+    })
+  }
+
   deletePointList = () => {
     const { deletePointList, stationCode } = this.props;
     deletePointList({ stationCode });
@@ -82,11 +95,11 @@ class PointManageHandle extends Component {
 
 
   render() {
-    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode } = this.props;
+    const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading } = this.props;
     const { showWarningTip, warningTipText, } = this.state;
     const selectedStationInfo = stationPointStatusList.find(e => e.stationCode === stationCode);
     const pointForbidClear = !selectedStationInfo || selectedStationInfo.alarmStatus === 1; // 未找到电站或电站已导入告警，不可清除
-    const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
+    // const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`;
     return (
       <div className={styles.pointManageHandle}>
         <div className={styles.leftHandler}>
@@ -98,7 +111,12 @@ class PointManageHandle extends Component {
             uploadExtraData={['stationCode']}
             loadedCallback={this.getUpdatePointList}
           />
-          <Button disabled={pointList.length === 0} className={styles.exportInfo} href={downloadHref} download={downloadHref}>导出测点表</Button>
+          <Button
+            disabled={pointList.length === 0}
+            className={styles.exportInfo}
+            loading={exportLoading}
+            onClick={this.toExport}
+          >导出测点表</Button>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
           <Button disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</Button>
         </div>

@@ -161,7 +161,7 @@ const mapDispatchToProps = (dispatch) => ({
   importStockFile: payload => dispatch({ type: warehouseManageAction.importStockFile, payload }),
   getGoodsList: payload => dispatch({ type: warehouseManageAction.getGoodsList, payload }),
   addNewGood: payload => dispatch({ type: warehouseManageAction.addNewGood, payload }),
-  getAssetslist: payload => dispatch({ type: warehouseManageAction.getAssetslist, payload }),
+  getWarehouseStationType: payload => dispatch({ type: warehouseManageAction.getWarehouseStationType, payload }),
   getAssetsManufacture: payload => dispatch({ type: warehouseManageAction.getAssetsManufacture, payload }),
   insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
   getMaterialDetailsList: payload => dispatch({ type: warehouseManageAction.getMaterialDetailsList, payload }),

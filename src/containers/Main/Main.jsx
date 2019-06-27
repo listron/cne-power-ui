@@ -22,7 +22,7 @@ const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
-    screenAdreess: PropTypes.string,
+    screenAddress: PropTypes.string,
     userFullName: PropTypes.string,
     userLogo: PropTypes.string,
     username: PropTypes.string,
@@ -59,8 +59,8 @@ class Main extends Component {
         this.props.getMonitorDataUnit(); // 请求企业的数据单位
         axios.get('/menuBoardRequired.json').then((req) => { // 需菜单遮罩企业添加入commonReducer
           const { data } = req || {};
-          const { menuBoardRequired, screenAdreess } = data || {};
-          this.props.changeCommonStore({ menuBoardRequired, screenAdreess });
+          const { menuBoardRequired, screenAddress } = data || {};
+          this.props.changeCommonStore({ menuBoardRequired, screenAddress });
         })
       }
     }
@@ -87,10 +87,10 @@ class Main extends Component {
       this.props.getMonitorDataUnit();
       axios.get('/menuBoardRequired.json').then((req) => { // 根据企业判定是否展示菜单遮罩
         const { data } = req || {};
-        const { menuBoardRequired, screenAdreess } = data || {};
+        const { menuBoardRequired, screenAddress } = data || {};
         const enterpriseId = Cookie.get('enterpriseId');
         const menuBoardShow = menuBoardRequired.includes(enterpriseId);
-        this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAdreess });
+        this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAddress });
       })
     }
   }
@@ -141,7 +141,7 @@ class Main extends Component {
               <LogoInfo />
               <MenuBoard
                 changeCommonStore={this.props.changeCommonStore}
-                screenAdreess={this.props.screenAdreess}
+                screenAddress={this.props.screenAddress}
                 menuBoardRequired={this.props.menuBoardRequired}
                 menuBoardShow={this.props.menuBoardShow}
               />

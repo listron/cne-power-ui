@@ -11,8 +11,8 @@ import RecordDetailTable from './RecordDetailTable.jsx';
 import ChangeStation from '../../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import TransitionContainer from '../../../../../components/Common/TransitionContainer';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
-import DustCharts from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
-// import DustCharts from './DustCharts';
+// import DustCharts from '../../../CleanoutModel/CleanWarning/DustEffectCharts';
+import DustCharts from './DustCharts';
 
 import moment from 'moment';
 const TabPane = Tabs.TabPane;
@@ -143,37 +143,37 @@ class CleanoutRecordDetail extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.CleanoutRecordDetail}>
-         
-            <div className={styles.detailMain}>
-              <div className={styles.detailTop}>
-                {showStationSelect &&
-                  <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
-                }
-                <div className={styles.topInfoShow}>
-                  <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
-                    <Icon className={styles.icon} type="swap" />
-                  </div>
-                  <div className={styles.status}>
-                    <h3>{cleanStationName}--{provinceName}</h3>
-                  </div>
+
+          <div className={styles.detailMain}>
+            <div className={styles.detailTop}>
+              {showStationSelect &&
+                <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/analysis/cleanout/record" hideStationChange={this.hideStationChange} />
+              }
+              <div className={styles.topInfoShow}>
+                <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
+                  <Icon className={styles.icon} type="swap" />
                 </div>
-                <span className={styles.handleArea} >
-                  <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
-                  <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
-                </span>
-                {showDirtModal ? <Modal
-                  visible={this.state.showDirtModal}
-                  footer={null}
-                  centered
-                  width={1220}
-                  maskClosable={true}
-                  closable={false}
-                  onCancel={this.closeDirtModal}
-                  wrapClassName={'dirtEffBox'}
-                  style={{ height: 410 }}
-                >
-                  <DustCharts {...this.props} />
-                  {/*<div className={styles.dirtBox}>
+                <div className={styles.status}>
+                  <h3>{cleanStationName}--{provinceName}</h3>
+                </div>
+              </div>
+              <span className={styles.handleArea} >
+                <span className={styles.dirtEff} onClick={this.showDirtModal}>灰尘影响</span>
+                <Icon type="arrow-left" className={styles.backIcon} onClick={this.backToList} />
+              </span>
+              {showDirtModal ? <Modal
+                visible={this.state.showDirtModal}
+                footer={null}
+                centered
+                width={1220}
+                maskClosable={true}
+                closable={false}
+                onCancel={this.closeDirtModal}
+                wrapClassName={'dirtEffBox'}
+                style={{ height: 410 }}
+              >
+                <DustCharts {...this.props} />
+                {/*<div className={styles.dirtBox}>
               <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
               <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
                 <TabPane tab="全局灰尘影响(基于系统故障)" key="1">
@@ -189,36 +189,36 @@ class CleanoutRecordDetail extends Component {
               </Tabs>
             </div> */}
 
-                </Modal> : ''}
-              </div>
-              <div className={styles.statisticData}>
-                <div className={styles.statisticTarget}>
-                  <div className={styles.numberColor}>{cleanProfit}</div>
-                  <div>累计清洗收益(万kWh)</div>
-                </div>
-                <div className={styles.statisticTarget}>
-                  <div className={styles.numberColor}>{handCleanNum}</div>
-                  <div>人工清洗次数(次)</div>
-                </div>
-                <div className={styles.statisticTarget}>
-                  <div className={styles.numberColor}>{cleanCycle}</div>
-                  <div>平均清洗周期(天)</div></div>
-                <div className={styles.statisticTarget}>
-                  <div className={styles.numberColor}>{cleanTime}</div>
-                  <div>平均清洗用时(天)</div></div>
-              </div>
-              <div className={styles.filterData}>
-                <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
-                  <Radio.Button value={0}>全部</Radio.Button>
-                  <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
-                  <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
-                </Radio.Group>
-                <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
-              </div>
-              <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
+              </Modal> : ''}
             </div>
+            <div className={styles.statisticData}>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanProfit}</div>
+                <div>累计清洗收益(万kWh)</div>
+              </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{handCleanNum}</div>
+                <div>人工清洗次数(次)</div>
+              </div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanCycle}</div>
+                <div>平均清洗周期(天)</div></div>
+              <div className={styles.statisticTarget}>
+                <div className={styles.numberColor}>{cleanTime}</div>
+                <div>平均清洗用时(天)</div></div>
+            </div>
+            <div className={styles.filterData}>
+              <Radio.Group value={this.props.cleanType} buttonStyle="solid" onChange={this.radioChange}>
+                <Radio.Button value={0}>全部</Radio.Button>
+                <Radio.Button value={1}>人工{handCleanNum}</Radio.Button>
+                <Radio.Button value={2}>下雨{rainCleanNum}</Radio.Button>
+              </Radio.Group>
+              <Pagination total={detailtotal} pageSize={detailPageSize} currentPage={detailPageNum} onPaginationChange={this.onPaginationChange} />
+            </div>
+            <RecordDetailTable {...this.props} onShowSideChange={this.onShowSideChange} />
+          </div>
 
-         
+
         </div>
         <TransitionContainer
           show={showSidePage === 'recordPlan'}

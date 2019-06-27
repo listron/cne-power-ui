@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Select, Form } from 'antd';
+import { Modal, Button, Select, Form, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './examinerComp.scss';
 
@@ -70,6 +70,10 @@ class EditModal extends Component {
     })
   }
 
+  removeSelect = (nodeCode) => {
+    this.props.form.setFieldsValue({ [nodeCode]: [] })
+  }
+
   render(){
     const { editModalShow, settableNodes, handleDistributionId, settingList, form, userGather, editLoading } = this.props;
     const { getFieldDecorator } = form;
@@ -86,12 +90,22 @@ class EditModal extends Component {
             {settableNodes.map(eachNode => {
               const { nodeCode, nodeName, isRequire } = eachNode;
               const codeUserData = userGather[nodeCode] || [];
+              const nodeValues = form.getFieldValue(nodeCode) || [];
               return (
                 <FormItem label={`${nodeName}`} key={nodeCode}>
                   {getFieldDecorator(nodeCode, {
                     rules: [{ required: !isRequire, message: `请选择` }],
                   })(
-                    <Select placeholder="请选择" style={{width: 200}} mode="multiple">
+                    <Select
+                      placeholder="请选择"
+                      style={{width: 200}}
+                      maxTagCount={nodeValues.length > 1 ? 0 : 1}
+                      mode="multiple"
+                      maxTagPlaceholder={<div>
+                        <span>已选{nodeValues.length}/{codeUserData.length}</span>
+                        <Icon type="close" onClick={() => this.removeSelect(nodeCode)} />
+                      </div>}
+                    >
                       {codeUserData.map(user => (
                         <Option key={user.userId} value={user.userId}>{user.username}</Option>
                       ))}
