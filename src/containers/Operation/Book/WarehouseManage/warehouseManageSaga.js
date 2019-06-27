@@ -3,6 +3,7 @@ import { warehouseManageAction } from './warehouseManageReducer';
 import path from '../../../../constants/path';
 import { message } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 const { basePaths, APISubPaths } = path;
 const { APIBasePath } = basePaths;
 const { operation } = APISubPaths;
@@ -266,17 +267,36 @@ function *addNewGood({ payload }) { // 新增物品
   }
 }
 
-function *getAssetslist({ payload }) { // 生产资产树
+function *getWarehouseStationType({ payload }) { // 获取生产资产树 => 先获取仓库所属电站类型
+  const url = `${APIBasePath}${operation.getWarehouseStationType}/${payload.warehouseId}`;
+  try {
+    const response = yield call(axios.get, url);
+    const responseData = response.data;
+    const typeInfo = responseData.data;
+    if (responseData.code === '10000' && typeInfo.length === 1 && typeInfo.some(e => e === 0 || e === 1)) {
+      yield fork(getAssetList, { stationType: typeInfo[0] });
+    } else { throw responseData }
+  } catch(error) {
+    message.error('所选仓库不符合入库要求, 无法获取到生产资产');
+  }
+}
+
+function *getAssetList({ stationType }){
   const url = `${APIBasePath}${operation.getAssetTree}`;
   try {
-    const response = yield call(axios.post, url, payload);
-    if (response.data.code === '10000') {
+    const response = yield call(axios.post, url, {
+      stationType,
+      assetsParentId: 0,
+      nowTime: moment().utc().format(),
+    })
+    if (response.data.code === '10000'){
       yield put({
         type: warehouseManageAction.fetchSuccess,
         payload: { assetsTree: response.data.data || [] }
       })
     } else { throw response.data }
-  } catch(error) {
+  } catch (error) {
+    message.error(`获取生产资产失败, ${error.message}`)
     yield put({
       type: warehouseManageAction.changeStore,
       payload: { assetsTree: [] }
@@ -488,7 +508,7 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.importStockFile, importStockFile);
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
-  yield takeLatest(warehouseManageAction.getAssetslist, getAssetslist);
+  yield takeLatest(warehouseManageAction.getWarehouseStationType, getWarehouseStationType);
   yield takeLatest(warehouseManageAction.getAssetsManufacture, getAssetsManufacture);
   yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);
   yield takeLatest(warehouseManageAction.getMaterialDetailsList, getMaterialDetailsList);

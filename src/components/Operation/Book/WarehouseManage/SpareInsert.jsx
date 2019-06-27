@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Form, Select, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import AddGood from './ManageCommon/AddGood';
 import AssetsSelectTree from './ManageCommon/AssetsSelectTree';
 import InputLimit from '../../../Common/InputLimit';
@@ -18,7 +17,6 @@ class SpareInsert extends Component {
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
     originInsertInfo: PropTypes.object, // 是否编辑状态唯一标识。null: 新入库, object: 编辑信息
-    stations: PropTypes.array,
     warehouseList: PropTypes.array,
     insertModes: PropTypes.array,
     goodsList: PropTypes.array,
@@ -30,7 +28,7 @@ class SpareInsert extends Component {
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
     getModes: PropTypes.func,
-    getAssetslist: PropTypes.func,
+    getWarehouseStationType: PropTypes.func,
     getAssetsManufacture: PropTypes.func,
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
@@ -104,14 +102,8 @@ class SpareInsert extends Component {
   }
 
   selectWarehouse = (warehouseId) => { // 仓库 => 下物品 + 所有生产资产
-    const { warehouseList, stations, getAssetslist } = this.props;
-    const { stationName } = warehouseList.find(e => e.warehouseId === warehouseId) || {};
-    const { stationType = 1 } = stations.find(e => e.stationName === stationName) || {};
-    getAssetslist({
-      stationType,
-      assetsParentId: 0,
-      nowTime: moment().utc().format(),
-    })
+    const { getWarehouseStationType } = this.props;
+    getWarehouseStationType({ warehouseId });
   }
 
   selectAssets = (assetsIds) => {
