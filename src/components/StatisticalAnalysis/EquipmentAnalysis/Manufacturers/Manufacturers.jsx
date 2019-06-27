@@ -18,6 +18,7 @@ class Manufacturers extends Component {
     faultHoursList: PropTypes.array,
     deviceCapacityList: PropTypes.array,
     selectOption: PropTypes.string,
+    loading: PropTypes.bool,
   }
 
   constructor(props, context) {
@@ -31,15 +32,15 @@ class Manufacturers extends Component {
   }
 
   render() {
-    const { conversioneffList, faultNumList, faultHoursList, deviceCapacityList, selectOption } = this.props;
+    const { conversioneffList, faultNumList, faultHoursList, deviceCapacityList, selectOption, loading } = this.props;
     return (
       <div className={styles.manufacturers}>
         <Search {...this.props} />
         <div className={styles.manuCont}>
-          <Charts graphId={"conversioneff"} type={"conversioneff"} data={conversioneffList} selectOption={selectOption} />
-          <Charts graphId={"faultHours"} type={"faultHours"} data={faultHoursList} selectOption={selectOption} />
-          <Charts graphId={"faultNum"} type={"faultNum"} data={faultNumList} selectOption={selectOption} />
-          <Charts graphId={"deviceCapacity"} type={"deviceCapacity"} data={deviceCapacityList} selectOption={selectOption} />
+          <Charts type={"conversioneff"} data={conversioneffList} selectOption={selectOption} loading={loading} />
+          <Charts type={"faultHours"} data={faultHoursList} selectOption={selectOption} loading={loading} />
+          <Charts type={"faultNum"} data={faultNumList} selectOption={selectOption} loading={loading} />
+          <Charts type={"deviceCapacity"} data={deviceCapacityList} selectOption={selectOption} loading={loading} />
         </div>
       </div>
     )
