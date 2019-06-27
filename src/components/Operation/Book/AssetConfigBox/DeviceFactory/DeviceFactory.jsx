@@ -50,8 +50,8 @@ class DeviceFactory extends React.Component {
     }
   }
   componentDidMount() {
-    const{getDeviceFactorsList,pageNum,pageSize}=this.props;
-   getDeviceFactorsList({ orderField: '1', orderMethod: 'desc',pageNum,pageSize })
+    const { getDeviceFactorsList, pageNum, pageSize } = this.props;
+    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum, pageSize })
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
@@ -84,13 +84,16 @@ class DeviceFactory extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, manufactorId) {
-    const { deviceFactorsList ,editDeviceFactors} = this.props;
+    const { deviceFactorsList, editDeviceFactors } = this.props;
     form.validateFields((error, row) => {
+      console.log('row: ', row);
       if (error) {
         return;
       }
       if (!error) {
-       editDeviceFactors({ manufactorId, assetsIds: row.assetsNames.assetsIds, manufactorName: row.manufactorName })
+        const { assetsNames } = row;
+        let assetsIds = assetsNames.length ? assetsNames : assetsNames.assetsIds;
+        editDeviceFactors({ manufactorId, assetsIds: assetsIds, manufactorName: row.manufactorName })
       }
 
       const newData = [...deviceFactorsList];
@@ -156,14 +159,16 @@ class DeviceFactory extends React.Component {
     getDeviceFactorsList({ ...params, ...value })
   }
   changeSelctNode = (data) => {
+    console.log('data: ', data);
 
 
   }
   queryDataType = (value) => {
+    console.log('value: ', value);
     this.props.getAssetTree({ stationType: value })
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType } = this.props;
     const components = {
       body: {
         row: EditableFormRow,
@@ -172,7 +177,7 @@ class DeviceFactory extends React.Component {
           return (<EditableContext.Consumer>
             {form => {
 
-              return <EditableCell form={form} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} />
+              return <EditableCell form={form} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} multiple={true} />
             }}
           </EditableContext.Consumer>)
         },
@@ -271,7 +276,7 @@ class DeviceFactory extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} />
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
