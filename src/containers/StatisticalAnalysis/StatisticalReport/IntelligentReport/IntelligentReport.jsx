@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Radio } from 'antd';
 import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 import styles from './intelligentReport.scss';
 import Footer from '../../../../components/Common/Footer/index';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -21,6 +22,14 @@ class IntelligentReport extends Component {
       timeValue: '',
       typeValue: '',
       iframeType // 特殊指定路径时，使用特殊路径展示。= > 说白了就是给知道路径的人测试的····
+    }
+  }
+
+  componentDidUpdate(){ // iframe cookie写入
+    const reportFrame = window.frames['reportFrame'];
+    if (reportFrame) {
+      let frameDoc = reportFrame.document;
+      frameDoc.cookie = `username=${Cookie.get('username')}`;
     }
   }
 
@@ -67,35 +76,35 @@ class IntelligentReport extends Component {
           </div>
           <div className={styles.iframeContent}>
             {dayStation &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_station.cpt&__bypagesize__=false`}></iframe> }
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportDayStation.cpt&__bypagesize__=false`}></iframe> }
             {monthStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_station.cpt&__bypagesize__=false`
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportMonthStation.cpt&__bypagesize__=false`
             }></iframe>}
             
             {yearStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_station.cpt&__bypagesize__=false`
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportYearStation.cpt&__bypagesize__=false`
             }></iframe>}
             
             {dayRegion &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_region.cpt&__bypagesize__=false`}></iframe> }
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportDayRegion.cpt&__bypagesize__=false`}></iframe> }
   
             {monthRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_region.cpt&__bypagesize__=false`}></iframe>}
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportMonthRegion.cpt&__bypagesize__=false`}></iframe>}
 
             {yearRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false` :
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_region.cpt&__bypagesize__=false`}></iframe>}
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportYearRegion.cpt&__bypagesize__=false`}></iframe>}
           </div>
           <Footer />
           </div>
