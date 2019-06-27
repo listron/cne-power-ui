@@ -119,6 +119,13 @@ const mapDispatchToProps = (dispatch) => ({
       resultName: 'allStationBaseInfo'
     } 
   }),
+  exportPoints: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: pointManageAction.GET_POINT_MANAGE_FETCH_SUCCESS
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PointManage);

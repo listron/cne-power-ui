@@ -25,7 +25,6 @@ class MaterialInsert extends Component {
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
     getGoodsList: PropTypes.func,
-    getAssetslist: PropTypes.func,
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
   }
