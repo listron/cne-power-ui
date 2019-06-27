@@ -34,10 +34,10 @@ class BoxtransformerTenMin extends Component {
     let powerLineData = [], instantaneousData = [], xTime = [];
     deviceTenMin.length > 0 && deviceTenMin.forEach(e=>{
       xTime.push(moment(e.utc).format('YYYY-MM-DD HH:mm:ss'));
-      powerLineData.push(e.stationPower);
+      powerLineData.push(e.acPower);
       instantaneousData.push(e.instantaneous);
     });
-    const filterStationPower = deviceTenMin.filter(e=>e.stationPower);
+    const filterStationPower = deviceTenMin.filter(e=>e.acPower);
     const filterInstantaneous = deviceTenMin.filter(e=>e.instantaneous);
     const boxtransformerTenMinGraphic = (filterStationPower.length===0 && filterInstantaneous.length===0) ? showNoData : hiddenNoData;
     const option = {

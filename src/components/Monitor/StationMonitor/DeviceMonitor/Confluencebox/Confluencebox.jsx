@@ -21,7 +21,7 @@ class Confluencebox extends Component {
 
   componentDidMount() {
     const { deviceCode, deviceTypeCode, stationCode } = this.props.match.params;
-    const startTime = moment().utc().subtract(72,'hours').format();
+    const startTime = moment().utc().subtract(720,'hours').format();
     const endTime = moment().utc().format();
     const params = {
       stationCode,
@@ -40,7 +40,7 @@ class Confluencebox extends Component {
     const nextType = nextParams.deviceTypeCode;
     const nextStation = nextParams.stationCode;
     if( nextDevice !== deviceCode ){
-      const startTime = moment().subtract(72,'hours').utc().format();
+      const startTime = moment().subtract(720,'hours').utc().format();
       const endTime = moment().utc().format();
       const params = {
         stationCode: nextStation,

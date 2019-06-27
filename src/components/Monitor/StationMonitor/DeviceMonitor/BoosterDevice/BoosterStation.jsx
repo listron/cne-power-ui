@@ -99,8 +99,8 @@ class BoosterStation extends Component {
             <YcPoints ycData={pointData.YC} />
             <YxPoints yxData={pointData.YX} />
           </div>
-          <YmPoints data={pointData.YM} />
-          <YmPoints data={pointData.YCS} name="YCS" />
+          {/* <YmPoints data={pointData.YM} /> */}
+          {/* <YmPoints data={pointData.YCS} name="YCS" /> */}
           <DeviceAlarmTable
             deviceAlarmList={deviceAlarmList}
             deviceDetail={boosterDetail}
