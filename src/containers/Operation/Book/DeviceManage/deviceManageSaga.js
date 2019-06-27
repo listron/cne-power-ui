@@ -611,7 +611,7 @@ function* getDeviceFactors(action) {
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
-          ...payload,
+          // ...payload,
           deviceFactorsList: response.data.data.dataList || [],
           total
         }
@@ -681,12 +681,13 @@ function* addDeviceModes(action) {
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
           ...payload,
-          addmodeId: response.data.data.modeId || ""
+          addmodeId: response.data.data.deviceModeCode || ""
         }
       });
       const payload = yield select(state => ({
         manufactorId: state.operation.deviceManage.get("manufactorId"),
-        assetsId: "0"
+        deviceTypeCode: state.operation.deviceManage.get("deviceTypeCode"),
+        assetsId: ""
       }));
       yield put({
         type: deviceManageAction.getfactorsDeviceMode,

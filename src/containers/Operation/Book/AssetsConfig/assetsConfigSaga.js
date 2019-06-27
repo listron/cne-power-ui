@@ -9,7 +9,7 @@ const operation = Path.APISubPaths.operation;
 
 function* getAssetTree(action) {  // 生产资产树
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getAssetTree}`;
+  const url = `${APIBasePath}${operation.getAssetTree}`;
   // const url = `/mock/v3/ledger/assetslist`;
   const nowTime = moment().utc().format();
   try {
@@ -35,7 +35,7 @@ function* getAssetTree(action) {  // 生产资产树
 }
 function* getNodeDetail(action) {  // 生产资产树详情
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getNodeDetail}`;
+  const url = `${APIBasePath}${operation.getNodeDetail}`;
   // const url = `/mock/v3/ledger/detail`;
   const nowTime = moment().utc().format();
   try {
@@ -49,15 +49,15 @@ function* getNodeDetail(action) {  // 生产资产树详情
         },
       });
     } else {
-      message.error( response.data.message)
+      message.error(response.data.message)
       throw response.data
     }
   } catch (e) {
     console.log(e);
-  
+
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: {  loading: false,  },
+      payload: { loading: false, },
     })
   }
 }
@@ -80,17 +80,22 @@ function* addAssetNode(action) { //台账增加生产资产节点
         stationType: state.operation.assetsConfig.get('stationType'),
         assetsParentId: state.operation.assetsConfig.get('assetsParentId'),
         // assetsParentId:'0',
-        nowTime:moment().utc().format(),
+        nowTime: moment().utc().format(),
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload:{...payload,  assetsParentId:'0',},
-      })   
+        payload: { ...payload, assetsParentId: '0', },
+      })
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })  
-    }else{
+      })
+    } else if (response.data.code === '60015') {
+      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系')
+
+    } else if (response.data.code === '60016') {
+      message.warning('资产中存在该设备类型名称,请重新输入')
+    } else {
       message.error(`添加生产节点失败!${response.data.message}`);
       throw response.data
     }
@@ -119,17 +124,17 @@ function* deleteAssetNode(action) { //台账删除生产资产树
         stationType: state.operation.assetsConfig.get('stationType'),
         assetsParentId: state.operation.assetsConfig.get('assetsParentId'),
         // assetsParentId:'0',
-        nowTime:moment().utc().format(),
+        nowTime: moment().utc().format(),
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload:{...payload,  assetsParentId:'0',},
-      })   
+        payload: { ...payload, assetsParentId: '0', },
+      })
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })  
-    }else{
+      })
+    } else {
       message.error(`编辑生产节点失败!${response.data.message}`);
       throw response.data
     }
@@ -160,17 +165,22 @@ function* editAssetNode(action) { //台账编辑生产资产节点
         stationType: state.operation.assetsConfig.get('stationType'),
         assetsParentId: state.operation.assetsConfig.get('assetsParentId'),
         // assetsParentId:'0',
-        nowTime:moment().utc(),
+        nowTime: moment().utc(),
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload:{...payload,  assetsParentId:'0',},
-      })   
+        payload: { ...payload, assetsParentId: '0', },
+      })
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })  
-    }else{
+      })
+    } else if (response.data.code === '60015') {
+      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系')
+
+    } else if (response.data.code === '60016') {
+      message.warning('资产中存在该设备类型名称,请重新输入')
+    } else {
       message.error(`编辑生产节点失败!${response.data.message}`);
       throw response.data
     }
@@ -184,7 +194,7 @@ function* editAssetNode(action) { //台账编辑生产资产节点
 }
 function* getDeviceFactorsList(action) { //获取设备厂家列表
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceFactorsList}`;
+  const url = `${APIBasePath}${operation.getDeviceFactorsList}`;
   // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
@@ -236,13 +246,13 @@ function* addDeviceFactors(action) { //新建设备厂家
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageNum: state.operation.assetsConfig.get('pageNum'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
-        
+
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })   
-    }else{
+      })
+    } else {
       message.error(`新增设备厂家失败!${response.data.message}`);
       throw response.data
     }
@@ -269,18 +279,18 @@ function* editDeviceFactors(action) { //编辑设备厂家
         },
       });
       const payload = yield select(state => ({
-      
+
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageSize:state.operation.assetsConfig.get('pageSize'),
-        pageNum:state.operation.assetsConfig.get('pageNum'),
-      
+        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageNum: state.operation.assetsConfig.get('pageNum'),
+
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })   
-    }else{
+      })
+    } else {
       message.error(`编辑设备厂家失败!${response.data.message}`);
       throw response.data
     }
@@ -308,14 +318,14 @@ function* deleteDeviceFactors(action) { //删除设备厂家
       const payload = yield select(state => ({
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageSize:state.operation.assetsConfig.get('pageSize'),
-        pageNum:state.operation.assetsConfig.get('pageNum'),
+        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageNum: state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })   
-    }else{
+      })
+    } else {
       message.error(`删除设备厂家失败!${response.data.message}`);
       throw response.data
     }
@@ -329,12 +339,12 @@ function* deleteDeviceFactors(action) { //删除设备厂家
 }
 function* getDeviceModesList(action) { //获取设备型号列表
   const { payload } = action;
-  const url =`${APIBasePath}${operation.getDeviceModesList}`;
+  const url = `${APIBasePath}${operation.getDeviceModesList}`;
   // const url = `/mock/v3/ledger/devicemodes/list`;
   try {
     const response = yield call(axios.post, url, { ...payload, });
     if (response.data.code === '10000') {
-      
+
       const total = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
@@ -379,9 +389,9 @@ function* addDeviceModes(action) { //新建设备型号
       const payload = yield select(state => ({
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageSize:state.operation.assetsConfig.get('pageSize'),
-        pageNum:state.operation.assetsConfig.get('pageNum'),
-      
+        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageNum: state.operation.assetsConfig.get('pageNum'),
+
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
@@ -414,12 +424,12 @@ function* editDeviceModes(action) { //编辑设备型号
         },
       });
       const payload = yield select(state => ({
-      
+
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageSize:state.operation.assetsConfig.get('pageSize'),
-        pageNum:state.operation.assetsConfig.get('pageNum'),
-       
+        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageNum: state.operation.assetsConfig.get('pageNum'),
+
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
@@ -442,7 +452,7 @@ function* deleteDeviceModes(action) { //删除设备型号
   const url = `${APIBasePath}${operation.deleteDeviceModes}?modeId=${payload.modeId}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try {
-    const response = yield call(axios.delete, url,payload);
+    const response = yield call(axios.delete, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
@@ -453,8 +463,8 @@ function* deleteDeviceModes(action) { //删除设备型号
       const payload = yield select(state => ({
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
-        pageSize:state.operation.assetsConfig.get('pageSize'),
-        pageNum:state.operation.assetsConfig.get('pageNum'),
+        pageSize: state.operation.assetsConfig.get('pageSize'),
+        pageNum: state.operation.assetsConfig.get('pageNum'),
       }));
       yield put({
         type: assetConfigAction.getDeviceModesList,
