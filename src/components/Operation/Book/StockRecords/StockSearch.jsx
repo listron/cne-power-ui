@@ -107,8 +107,8 @@ class StockSearch extends Component {
       params: {
         warehouseId,
         goodsType,
-        startTime: moment(startTime).utc().format(), 
-        endTime: moment(endTime).utc().format(),
+        startTime: startTime ? moment(startTime).utc().format() : null, 
+        endTime: endTime ? moment(endTime).utc().format() : null, 
         timeZone
       }
     })
@@ -125,8 +125,8 @@ class StockSearch extends Component {
       params: {
         warehouseId,
         goodsType,
-        startTime: moment(startTime).utc().format(), 
-        endTime: moment(endTime).utc().format(),
+        startTime: startTime ? moment(startTime).utc().format() : null, 
+        endTime: endTime ? moment(endTime).utc().format() : null,
         timeZone
       }
     })
