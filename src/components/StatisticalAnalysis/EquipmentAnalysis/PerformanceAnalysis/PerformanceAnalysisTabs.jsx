@@ -55,8 +55,7 @@ class PerformanceAnalysisTabs extends Component {
     if (data.length > 0) {
       return (
         <div>
-          <span className="iconfont icon-ha">
-          </span>
+          <span className="iconfont icon-ha" />
           建议检查无数据设备传输状态,无数据设备有:
         <span className={styles.fontColor}>
             {data.slice(0, 5).map((e, i) => {
@@ -73,9 +72,8 @@ class PerformanceAnalysisTabs extends Component {
 
   render() {
     const TabPane = Tabs.TabPane;
-    const { targetTabs } = this.props;
+    const { targetTabs,loading } = this.props;
     const { contrastSwitch, contrastEndDate, conversionAvgRate, conversioneffData, faultTimeData, faultNumData, lostPowerData, availabilityData, hourData, contrastAvgRate, contrastConversionAvgRate, conversioneffContrastData, faultTimeContrastData, faultNumContrastData, lostPowerContrastData, availabilityContrastData, hourContrastData, conversDeviceNames, hourDeviceNames, availabilityDeviceNames, lostPowerDeviceNames, faultNumDeviceNames, faultTimeDeviceNames, conversionNullValue, hourNullValue, faultNumNullvalue, faultTimeNullValue } = this.props;
-
     //转化效率
     let xData = conversioneffData.map(e => e.deviceName) || [];
     let haveSliderConver = xData.length > 20;
@@ -282,6 +280,7 @@ class PerformanceAnalysisTabs extends Component {
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderContrastCon : haveSliderConver}
                   hasData={contrastSwitch && contrastEndDate ? contrastConversionHasData : conversionHasData}
                   deviceNames={contrastSwitch && contrastEndDate ? conversDeviceNames : []}
+                  loading={loading}
                 />
               </div>
               <div className={styles.textStyle}>
@@ -294,6 +293,7 @@ class PerformanceAnalysisTabs extends Component {
                   graphId={'hours'}
                   title={'等效小时数'}
                   data={hoursData}
+                  loading={loading}
                   deviceNames={contrastSwitch && contrastEndDate ? hourDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastHour : haveSliderHour}
                   hasData={contrastSwitch && contrastEndDate ? contrastHoursHasData : hoursHasData} />
@@ -309,6 +309,7 @@ class PerformanceAnalysisTabs extends Component {
                 <PerformanceCharts
                   graphId={'availability'}
                   title={'可利用率'}
+                  loading={loading}
                   data={availabilityAnalysis}
                   deviceNames={contrastSwitch && contrastEndDate ? availabilityDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
@@ -327,6 +328,7 @@ class PerformanceAnalysisTabs extends Component {
                 <PerformanceCharts
                   graphId={'lostPower'}
                   title={'损失电量'}
+                  loading={loading}
                   data={lossPowerAnalysis}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
                   deviceNames={contrastSwitch && contrastEndDate ? lostPowerDeviceNames : []}
@@ -340,6 +342,7 @@ class PerformanceAnalysisTabs extends Component {
                 <PerformanceCharts
                   graphId={'faultNum'}
                   title={'设备故障次数'}
+                  loading={loading}
                   data={faultNumAnalysis}
                   deviceNames={contrastSwitch && contrastEndDate ? faultNumDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
@@ -356,6 +359,7 @@ class PerformanceAnalysisTabs extends Component {
                 <PerformanceCharts
                   graphId={'faultTime'}
                   title={'设备故障时长'}
+                  loading={loading}
                   data={faultTimeAnalysis}
                   deviceNames={contrastSwitch && contrastEndDate ? faultTimeDeviceNames : []}
                   hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
