@@ -47,7 +47,7 @@ function* getFlowList(action) {
                     statusList: flowStatus.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw flowList.data }
     } catch (e) {
         console.log(e);
         yield put({
@@ -62,6 +62,7 @@ function* getFlowList(action) {
                     pageNum: 1,
                 },
                 commonQueryParams: payload.listQueryParams,
+                statusList:[],
             },
         });
     }
