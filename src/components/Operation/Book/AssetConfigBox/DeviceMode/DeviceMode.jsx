@@ -95,9 +95,9 @@ class DeviceMode extends React.Component {
     this.setState({ editingKey: '' });
   };
   save(form, modeId) {
-    const { deviceModesList ,  checkedAssetId,checkedManufactor} = this.props;
+    const { deviceModesList, checkedAssetId, checkedManufactor } = this.props;
     form.validateFields((error, row) => {
-      
+
       row.manufactorId = row.manufactorName;
       if (error) {
         return;
@@ -133,9 +133,9 @@ class DeviceMode extends React.Component {
     });
   }
   edit(record) {
-    
+
     let modeId = record.modeId;
-    
+
     this.setState({ editingKey: modeId });
     this.props.getDeviceFactorsList({
       assetsId: record.assetsId,
@@ -143,10 +143,10 @@ class DeviceMode extends React.Component {
       orderMethod: 'desc'
     })
     this.props.changeAssetConfigStore({
-      checkedName:record.assetsName ? record.assetsName.replace(/,/g, '/'):'',
-      checkedAssetId:record.assetsId ? record.assetsId.split() : [],
-     
-      checkedManufactor:record.manufactorId?record.manufactorId:'',
+      checkedName: record.assetsName ? record.assetsName.replace(/,/g, '/') : '',
+      checkedAssetId: record.assetsId ? record.assetsId.split() : [],
+
+      checkedManufactor: record.manufactorId ? record.manufactorId : '',
 
     })
 
@@ -172,10 +172,10 @@ class DeviceMode extends React.Component {
     const { validateFieldsAndScroll, resetFields } = this.props.form;
     validateFieldsAndScroll(['addDeviceModeName', 'assetsId', 'manufactorId'], (err, values) => {
       if (!err) {
-        this.props.addDeviceModes({ 
-          manufactorId:values.manufactorId,
-          deviceModeName:values.addDeviceModeName, 
-          assetsId: values.assetsId.assetsIds.join() 
+        this.props.addDeviceModes({
+          manufactorId: values.manufactorId,
+          deviceModeName: values.addDeviceModeName,
+          assetsId: values.assetsId.assetsIds.join()
         })
         //请求全部厂家
         this.props.getDeviceFactorsList({
@@ -208,7 +208,7 @@ class DeviceMode extends React.Component {
   selectManufactor = (value, option) => {
   }
   changeSelctNode = (data) => {
-    
+
     this.setState({
       assetsIds: data.assetsIds
     })
@@ -220,30 +220,30 @@ class DeviceMode extends React.Component {
 
   }
   changeNode = (data) => {
-    
+
     // 
-    const {getDeviceFactorsList,}=this.props;
+    const { getDeviceFactorsList, } = this.props;
     getDeviceFactorsList({
       assetsId: data.assetsIds.join(),
       orderField: '1',
       orderMethod: 'desc'
     })
     this.props.changeAssetConfigStore({
-      checkedName:data.checkedName,
-      checkedAssetId:data.assetsIds,
+      checkedName: data.checkedName,
+      checkedAssetId: data.assetsIds,
 
     })
 
 
-  
-   
+
+
 
   }
   queryDataType = (value) => {
     this.props.getAssetTree({ stationType: value })
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, deviceModesList, assetList, stationTypeCount } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
 
     const components = {
       body: {
@@ -252,7 +252,7 @@ class DeviceMode extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell {...this.props} form={form} {...rest[0]} devicefactorslist={deviceFactorsList}  changeNode={this.changeNode} assetlist={assetList}  stationtypecount={stationTypeCount} querydatatype={this.queryDataType}  />
+              return <EditableCell {...this.props} form={form} {...rest[0]} devicefactorslist={deviceFactorsList} changeNode={this.changeNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} />
             }}
           </EditableContext.Consumer>)
         },
@@ -273,11 +273,17 @@ class DeviceMode extends React.Component {
         editable: true,
         render: (text) => <span title={text}>{text}</span>
       }, {
+        title: '电站类型',
+        dataIndex: 'stationType',
+        sorter: true,
+        editable: true,
+        render: (text) => <span >{text === '0' ? '风电' : '光伏'}</span>
+      }, {
         title: '生产资产',
         dataIndex: 'assetsName',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text?text.replace(/,/g, '/'):''}>{text?text.replace(/,/g, '/'):'--'}</span>
+        render: (text) => <span title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</span>
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',
@@ -354,7 +360,7 @@ class DeviceMode extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} assetsIds={this.state.assetsIds} resetValue={this.state.resetValue} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} assetsIds={this.state.assetsIds} resetValue={this.state.resetValue} />
                 )}
               </FormItem>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">

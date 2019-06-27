@@ -35,18 +35,14 @@ class DeviceManageSearch extends Component {
   selectStation = stations => {
     const {
       getStationDeviceTypes,
-      getStationDeviceType,
       getDeviceList,
       queryParams,
       changeDeviceManageStore
     } = this.props;
-    // getStationDeviceTypes({
-    //之前的获取电站下设备类型接口
-    //   stationCodes: stations[0].stationCode
-    // });
-    getStationDeviceType({
-      stationCode: stations[0].stationCode
+    getStationDeviceTypes({
+      stationCodes: stations[0].stationCode
     });
+
     getDeviceList({
       ...queryParams,
       stationCode: stations[0].stationCode,
@@ -120,9 +116,9 @@ class DeviceManageSearch extends Component {
       deviceFactorsList,
       manufactorId,
       factorsDeviceModeData,
-      stationDevices
+
     } = this.props;
-    const typeSelectDisable = stationDevices.length === 0;
+    const typeSelectDisable = stationDeviceTypes.length === 0;
     const modelSelectDisable = factorsDeviceModeData.length === 0;
     return (
       <div className={styles.deviceManageSearch}>
@@ -136,15 +132,15 @@ class DeviceManageSearch extends Component {
         <Select
           className={styles.typeSelect}
           onChange={this.selectDeviceType}
-          value={deviceTypeCode}
+          // value={deviceTypeCode}
           placeholder="请选择设备类型"
           disabled={typeSelectDisable}
         >
           <Option key={null} value={null}>
             {"全部设备类型"}
           </Option>
-          {/* {stationDeviceTypes.map(e => { */}
-          {stationDevices.map(e => {
+          {stationDeviceTypes.map(e => {
+
             if (!e) {
               return null;
             }

@@ -55,9 +55,9 @@ class StationSelect extends Component {
       stationTypeCount: props.stationTypeCount
     }
   }
-  componentWillReceiveProps(nextProps){
-    const { resetValue} = nextProps;
-    if(resetValue &&this.props.resetValue===false){
+  componentWillReceiveProps(nextProps) {
+    const { resetValue } = nextProps;
+    if (resetValue && this.props.resetValue === false) {
       this.setState({
         assetsIds: [],
         checkedName: '',
@@ -70,7 +70,7 @@ class StationSelect extends Component {
       assetsIds: value,
       checkedName: name,
     })
-    this.props.onChange({ assetsIds: value,checkedName:name, });
+    this.props.onChange({ assetsIds: value, checkedName: name, });
   }
   getNodeNum = (data) => {//统计树的所有节点
     let numArr = [];
@@ -108,7 +108,7 @@ class StationSelect extends Component {
   }
   render() {
     const { multiple, assetList, } = this.props;
-    const { visiableModal,  stationType, assetsIds,checkedName, stationTypeCount } = this.state;
+    const { visiableModal, stationType, assetsIds, checkedName, stationTypeCount } = this.state;
     return (
       <div className={styles.stationSelect}>
         {

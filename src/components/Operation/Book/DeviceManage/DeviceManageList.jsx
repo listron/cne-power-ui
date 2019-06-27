@@ -64,8 +64,7 @@ class DeviceManageList extends Component {
     changeDeviceManageStore({ showPage: "detail" });
     getDevicePartInfo({
       deviceFullcode: record.deviceFullCode,
-      orderField,
-      orderMethod
+
     });
   };
   showDeviceEdit = record => {
@@ -192,14 +191,14 @@ class DeviceManageList extends Component {
                   className="iconfont icon-edit"
                 />
               ) : (
-                <span
-                  className={styles.edit}
-                  title="编辑"
-                  style={{ cursor: "pointer" }}
-                  className="iconfont icon-edit"
-                  onClick={() => this.showDeviceEdit(record)}
-                />
-              )}
+                  <span
+                    className={styles.edit}
+                    title="编辑"
+                    style={{ cursor: "pointer" }}
+                    className="iconfont icon-edit"
+                    onClick={() => this.showDeviceEdit(record)}
+                  />
+                )}
               <span
                 title="删除"
                 className="iconfont icon-del"
