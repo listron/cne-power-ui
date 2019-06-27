@@ -77,7 +77,8 @@ class IntelligentReport extends Component {
           <div className={styles.iframeContent}>
             {dayStation &&
             <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              'http://www.baidu.com'}></iframe> }
+              iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false` :
+              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportDayStation.cpt&__bypagesize__=false`}></iframe> }
             {monthStation && 
             <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
               iframeType ? `${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false` :
