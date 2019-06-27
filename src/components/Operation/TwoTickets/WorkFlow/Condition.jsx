@@ -43,7 +43,6 @@ class Condition extends Component {
     filterCondition = (value) => {
         let { listQueryParams, commonQueryParams } = this.props;
         this.props.getFlowList({ listQueryParams, commonQueryParams: { ...commonQueryParams, ...value } })
-        this.props.getDocketStatus({ ...commonQueryParams, ...value })
     }
 
     render() {
