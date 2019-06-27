@@ -45,7 +45,7 @@ class FilteredItems extends Component {
   onCancelProvince = (cancelStations) => {//删除某省电站
     const { stationCodes, onChangeFilter } = this.props;
     const newStationCode = stationCodes.split(',').filter(code=>
-      !cancelStations.some(station=>station.get('stationCode').toString()===code)
+      !cancelStations.some(station=>`${station.get('stationCode')}`===code)
     );
     onChangeFilter({
       stationCodes: newStationCode.join(','),
@@ -113,11 +113,12 @@ class FilteredItems extends Component {
     const tmpSelectedDeviceType = deviceTypeCode.split(',');//选中设备类型的数组
     const tmpSelectedStation = stationCodes.split(',');//选中电站的数组
     const tmpSelectedDefectType = defectTypeCode.split(',')//选中缺陷类型的数组
+    console.log('selectedStation',selectedStation)
     const selectedStation = stations.filter(e=>
       tmpSelectedStation.some(m=>
-        m === e.get('stationCode').toString()
+        m ===`${e.get('stationCode')}`
       )).groupBy(item=>item.get('provinceCode')).toList();//选中电站详情,按省分组
-    const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===e.get('deviceTypeCode').toString()));//选中的设备类型详情
+    const selectedDeviceType = deviceTypes.filter(e=>tmpSelectedDeviceType.some(m=>m===`${e.get('deviceTypeCode')}`));//选中的设备类型详情
     const defectInfoArr = this.getDefectInfoArr(defectTypes.toJS(), tmpSelectedDefectType); //选中的缺陷类型数组
     if(createTimeStart===''&&createTimeEnd===''&&stationType==='2'&&stationCodes===''&&deviceTypeCode===''&&defectLevel==='0'&&defectTypeCode==='') {
       return null;
@@ -140,12 +141,12 @@ class FilteredItems extends Component {
         {createTimeEnd !== '' && <Tag style={style} closable onClose={this.onCancelEndTime}>结束 {createTimeEnd}</Tag>}
         {stationType !== '2' && <Tag style={style} closable onClose={this.onCancelStationType}>{stationType === '0'?'风电':'光伏'}</Tag>}
         {selectedStation.size > 0 && selectedStation.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']) && e.getIn([0, 'provinceCode']).toString()} >
+          <Tag style={style} closable onClose={()=>this.onCancelProvince(e)} key={e.getIn([0, 'provinceCode']) && `${e.getIn([0, 'provinceCode'])}`} >
             {`${e.getIn([0, 'provinceName'])} ${e.size}`}
           </Tag>
         ))}
         {selectedDeviceType.size > 0 && selectedDeviceType.map(e=>(
-          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(e.get('deviceTypeCode').toString())} key={e.get('deviceTypeCode').toString()}>
+          <Tag style={style} closable onClose={()=>this.onCancelDeviceType(`${e.get('deviceTypeCode')}`)} key={`${e.get('deviceTypeCode')}`}>
             {e.get('deviceTypeName')}
           </Tag>
         ))}

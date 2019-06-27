@@ -1,18 +1,45 @@
 import React, { Component } from "react";
 import { Radio } from 'antd';
+import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
+import axios from 'axios';
 import styles from './intelligentReport.scss';
 import Footer from '../../../../components/Common/Footer/index';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { apiUrlReal } from '../../../../config/apiConfig';
 
 class IntelligentReport extends Component {
+
+  static propTypes = {
+    location: PropTypes.object,
+  }
+
   constructor(props){
     super(props);
+    const { search } = props.location;
+    const searchData = search.replace('?', '').split('&').filter(e => e.includes('iframe'));
+    const iframeType = searchData.length > 0;
+    let reportBasePath = apiUrlReal;
+    axios.get('/menuBoardRequired.json').then((req) => {
+      const { data } = req || {};
+      reportBasePath = data.reportAddress || apiUrlReal;
+    })
     this.state = {
       timeValue: '',
       typeValue: '',
+      reportBasePath,
+      iframeType // 特殊指定路径时，使用特殊路径展示。= > 说白了就是给知道路径的人测试的····
     }
   }
+
+  componentDidUpdate(){ // iframe cookie写入
+    const reportFrame = window.frames['reportFrame'];
+    if (reportFrame) {
+      let frameDoc = reportFrame.document;
+      frameDoc.cookie = `username=${Cookie.get('username')}`;
+    }
+  }
+
   onTimeChange = (e) => { // 时间维度选择
     this.setState({
       timeValue: e.target.value
@@ -25,14 +52,13 @@ class IntelligentReport extends Component {
   }
 
   render() {
-    const { timeValue, typeValue } = this.state;
+    const { timeValue, typeValue, iframeType, reportBasePath } = this.state;
     const dayStation = timeValue === 'day' && typeValue === 'station';
     const monthStation = timeValue === 'month' && typeValue === 'station';
     const yearStation = timeValue === 'year' && typeValue === 'station';
     const dayRegion = timeValue === 'day' && typeValue === 'region';
     const yearRegion = timeValue === 'month' && typeValue === 'region';
     const monthRegion = timeValue === 'year' && typeValue === 'region';
-
     return (
       <div className={styles.intelligentReport}>
         <CommonBreadcrumb breadData={[{ name: '智能报表' }]} style={{ marginLeft: '40px' }} />
@@ -57,29 +83,35 @@ class IntelligentReport extends Component {
           </div>
           <div className={styles.iframeContent}>
             {dayStation &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_station.cpt&__bypagesize__=false`}></iframe> }
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportDayStation.cpt&__bypagesize__=false`}></iframe> }
             {monthStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_station.cpt&__bypagesize__=false`
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportMonthStation.cpt&__bypagesize__=false`
             }></iframe>}
             
             {yearStation && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_station.cpt&__bypagesize__=false`
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportYearStation.cpt&__bypagesize__=false`
             }></iframe>}
             
             {dayRegion &&
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_day_region.cpt&__bypagesize__=false`}></iframe> }
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportDayRegion.cpt&__bypagesize__=false`}></iframe> }
   
             {monthRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_month_region.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportMonthRegion.cpt&__bypagesize__=false`}></iframe>}
 
             {yearRegion && 
-            <iframe id="reportFrame" className={styles.iframeBody} frameBorder="0" src={
-              `${apiUrlReal}/webroot/auth.html?url=${apiUrlReal}/webroot/decision/view/report?viewlet=HZ_EPower_Report/report_year_region.cpt&__bypagesize__=false`}></iframe>}
+            <iframe id="reportFrame" name="reportFrame" className={styles.iframeBody} frameBorder="0" src={
+              iframeType ? `${reportBasePath}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false` :
+              `${reportBasePath}/webroot/auth.html?url=${reportBasePath}/webroot/decision/view/report?viewlet=HZ_EPower_Report/reportYearRegion.cpt&__bypagesize__=false`}></iframe>}
           </div>
           <Footer />
           </div>
@@ -90,17 +122,4 @@ class IntelligentReport extends Component {
 }
 
 export default IntelligentReport;
-
-// dayStation && `${apiUrlReal}/decision/view/report?viewlet=report_day_station.cpt&__bypagesize__=false`
-
-// monthStation && `${apiUrlReal}/decision/view/report?viewlet=report_month_station.cpt&__bypagesize__=false`
-
-// yearStation && `${apiUrlReal}/decision/view/report?viewlet=report_year_station.cpt&__bypagesize__=false`
-
-// dayRegion && `${apiUrlReal}/decision/view/report?viewlet=report_day_region.cpt&__bypagesize__=false`
-
-// monthRegion && `${apiUrlReal}/decision/view/report?viewlet=report_month_region.cpt&__bypagesize__=false`
-
-// yearRegion && `${apiUrlReal}/decision/view/report?viewlet=report_year_region.cpt&__bypagesize__=false`
-
 

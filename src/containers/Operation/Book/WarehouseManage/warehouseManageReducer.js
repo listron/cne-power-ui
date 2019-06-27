@@ -10,7 +10,7 @@ const warehouseManageAction = {
   setStockMax: Symbol('setStockMax'),
   getGoodsList: Symbol('getMaterialList'),
   addNewGood: Symbol('addGoodSuccess'),
-  getAssetslist: Symbol('getAssetslist'),
+  getWarehouseStationType: Symbol('getWarehouseStationType'),
   getAssetsManufacture: Symbol('getAssetsManufacture'),
   insertWarehouse: Symbol('insertWarehouse'),
   getMaterialDetailsList: Symbol('getMaterialDetailsList'),

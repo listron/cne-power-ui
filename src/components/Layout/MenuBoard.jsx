@@ -9,7 +9,7 @@ import styles from './layout.scss';
 class MenuBoard extends Component{
 
   static propTypes = {
-    screenAdreess: PropTypes.string,
+    screenAddress: PropTypes.string,
     menuBoardRequired: PropTypes.array,
     menuBoardShow: PropTypes.bool,
     changeCommonStore: PropTypes.func,
@@ -50,10 +50,10 @@ class MenuBoard extends Component{
   }
 
   jumpToPage = (info) => {
-    const { history, changeCommonStore, screenAdreess } = this.props;
+    const { history, changeCommonStore, screenAddress } = this.props;
     const { open, path, right } = info;
     if (open) { // 直接新开页面
-      window.open(screenAdreess);
+      window.open(screenAddress);
     } else if (this.state.rightMenu.includes(right)) { // 有权限，跳转页面
       history.push(path);
       changeCommonStore({ menuBoardShow: false });
