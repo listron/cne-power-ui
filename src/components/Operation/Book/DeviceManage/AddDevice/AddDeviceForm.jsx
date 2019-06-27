@@ -163,7 +163,7 @@ class AddDeviceForm extends Component {
     });
   };
 
-  changeDeviceMode = () => {};
+  changeDeviceMode = () => { };
   preConnectDevice = deviceTypeCode => {
     let preDeviceName = "";
     switch (deviceTypeCode) {
@@ -189,9 +189,11 @@ class AddDeviceForm extends Component {
     return preDeviceName;
   };
   changeFactors = value => {
+    const deviceTypeCode = this.props.form.getFieldValue("deviceTypeCode");
     this.props.getfactorsDeviceMode({
       manufactorId: value,
-      assetsId: ""
+      assetsId: "",
+      deviceTypeCode
     });
   };
   render() {
@@ -219,8 +221,8 @@ class AddDeviceForm extends Component {
     const selectDeviceTypeName =
       typeof selectdeviceType === "number"
         ? stationDevices.filter(
-            (e, i) => e.deviceTypeCode === selectdeviceType
-          )[0].deviceTypeName
+          (e, i) => e.deviceTypeCode === selectdeviceType
+        )[0].deviceTypeName
         : selectdeviceType;
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202，集中式逆变器：201
     const modelSelectDisable = deviceModels.length === 0;
