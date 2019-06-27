@@ -18,6 +18,9 @@
       position: absolute;
       top: 68%;
       right: 10%;
+      button{
+        margin-right:4px;
+      }
     }
     .formatStyle {
       // width: 150px;
@@ -51,13 +54,16 @@
         height: 40px;
         align-items: center;
         .text {
-          flex: 0 0 80px;
           text-align: right;
           margin-right: 8px;
+          margin-left: 16px;
         }
       }
+      .buttonBox{
+        margin-left: 10px;
+      }
       .buttonStyle {
-        margin-left: 56px;
+        margin-left: 10px;
         line-height: 32px;
         height: 32px;
         margin-top: 3px;

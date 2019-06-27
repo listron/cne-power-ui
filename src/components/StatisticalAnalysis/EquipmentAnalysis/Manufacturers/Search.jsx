@@ -123,18 +123,14 @@ class Search extends Component {
     const treeProps = this.getTreeProps();
     return (
       <div className={styles.search}>
+        <div ref={'searchBox'} className={styles.searchBox}></div>
         <div className={styles.condition}>
           <span>条件查询</span>
-          <Select defaultValue={deviceTypeNameLike} style={{ width: 200, marginLeft: 15 }}  >
+          <Select defaultValue={deviceTypeNameLike} style={{ width: 200, marginLeft: 15 }}
+            getPopupContainer={() => this.refs.searchBox}
+          >
             <Option value="逆变器">逆变器</Option>
           </Select>
-          {/* <RangePicker
-            defaultValue={[moment(currentYearDay, 'YYYY-MM-DD'), moment(moment(), 'YYYY-MM-DD')]}
-            format={'YYYY-MM-DD'}
-            style={{ marginLeft: 15, marginRight: 15 }}
-            onChange={this.timeSelect}
-            disabledDate={this.disabledDate}
-          /> */}
           <MonthPicker
             defaultValue={moment(moment(), 'YYYY-MM')}
             format={'YYYY-MM'}
@@ -142,6 +138,7 @@ class Search extends Component {
             onChange={this.timeSelect}
             disabledDate={this.disabledDate}
             allowClear={false}
+            getCalendarContainer={() => this.refs.searchBox}
           />
           <StationSelect
             data={stations.filter(e => e.stationType === 1)}
@@ -153,6 +150,7 @@ class Search extends Component {
         <div className={styles.antherCondition}>
           <span>厂家型号</span>
           <Select defaultValue="manufacturer" style={{ width: 200, marginLeft: 15 }} onChange={this.changeType}
+           getPopupContainer={() => this.refs.searchBox}
           >
             <Option value="manufacturer">按厂家</Option>
             <Option value="deviceMode">按型号</Option>
@@ -166,10 +164,9 @@ class Search extends Component {
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             treeCheckStrictly={true}
             value={optionValue}
-          // disabled={treeData.length > 0 ? false : true}
+            getPopupContainer={() => this.refs.searchBox}
           />
         </div>
-
       </div>
     )
   }

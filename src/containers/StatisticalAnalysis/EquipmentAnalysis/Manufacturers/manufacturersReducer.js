@@ -2,9 +2,10 @@ import Immutable from 'immutable';
 import { manufacturersAction } from './manufacturersAction';
 import moment from 'moment';
 
-const startDate = moment(moment()).startOf('month').format('YYYY-MM-DD');
-const endDate = moment(moment()).endOf('month').format('YYYY-MM-DD');
+const startDate = moment().startOf('month').format('YYYY-MM-DD');
+const endDate = moment().endOf('month').format('YYYY-MM-DD');
 var initState = Immutable.fromJS({
+  loading:false, //  图表的loading
   manufacturerList: [],
   devicemodeList: [],
   stationCode: [], // 电站编码
@@ -26,7 +27,7 @@ const ManufacturersReducer = (state = initState, action) => {
   switch (action.type) {
     case manufacturersAction.changeManufacturersStore:
       return state.merge(Immutable.fromJS(action.payload))
-    case manufacturersAction.RESET_STORE:
+    case manufacturersAction.resetStore:
       return initState
   }
   return state;

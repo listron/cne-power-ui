@@ -25,9 +25,10 @@ class AllDeviceCurve extends Component {
   onChangeFilter=(value)=>{
     const{stationCode,deviceFullCode,startTime,endTime,getAllDeviceCurveData,getPowerdeviceList,deviceShowType}=this.props;
     const params={stationCode,deviceFullCode,startTime,endTime};
-  
-   getAllDeviceCurveData({...params, ...value})
-   getPowerdeviceList({...params, ...value})
+    if(stationCode && deviceFullCode.length>0){
+      getAllDeviceCurveData({...params, ...value})
+      getPowerdeviceList({...params, ...value})
+    }
   }
   render() {
     const{deviceShowType}=this.props;
