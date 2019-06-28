@@ -28,7 +28,10 @@ class IntegrateLine extends Component {
     const nextType = nextParams.deviceTypeCode;
     if( nextDevice !== deviceCode ){ // 集电线路电站切换
       this.props.stopMonitor();
-      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType });
+      this.props.getDeviceInfoMonitor({
+        deviceCode: nextDevice,
+        deviceTypeCode: nextType,
+      });
     }
   }
 

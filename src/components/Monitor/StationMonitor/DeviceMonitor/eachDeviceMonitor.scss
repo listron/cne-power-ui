@@ -67,6 +67,7 @@
         .eachLink {
           line-height: 65px;
           margin-right: 28px;
+          cursor: pointer;
           .linkName {
             color: $themeColor;
           }
