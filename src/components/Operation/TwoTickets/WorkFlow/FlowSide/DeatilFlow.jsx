@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './workFlowSide.scss';
 import { Radio, Form, Icon } from 'antd';
 import CreateFlow from './CreateFlow';
@@ -15,32 +15,35 @@ class DeatilFlow extends Component {
         getDocketHandle: PropTypes.func,
         getNodeImg: PropTypes.func,
         nodeImg: PropTypes.array,
+        changeWorkFlowStore: PropTypes.func,
+        getDocketDetail: PropTypes.func,
+        docketId: PropTypes.number,
+        downLoadFile: PropTypes.func,
     }
 
 
     constructor() {
-        super()
+        super();
         this.state = {
-        }
+        };
     }
 
     componentDidMount() {
         const { docketId } = this.props;
-        this.props.getDocketDetail({ docketId })
+        this.props.getDocketDetail({ docketId });
     }
 
-    componentWillUnmount(){
-        this.props.changeWorkFlowStore({docketDetail:{},docketId:null})
+    componentWillUnmount() {
+        this.props.changeWorkFlowStore({ docketDetail: {}, docketId: null });
     }
 
 
     render() {
-        const { docketDetail = {}, docketId,downLoadFile } = this.props;
+        const { docketDetail = {}, downLoadFile } = this.props;
         const { distributionInfo = [], docketInfo = {}, docketProcess = [], defectInfo } = docketDetail;
-        const { operTitle, operWinType,taskId } = docketInfo;
-        const lastChild = docketProcess && docketProcess[docketProcess.length - 1] || [];
-        const right = lastChild.length > 0 && lastChild.childProcess ? lastChild.childProcess.isAbleOper : lastChild.isAbleOper; // 0 没有操作权限 1 有操作权限
-        console.log('操作权限',right)
+        const { operTitle, operWinType, taskId } = docketInfo;
+        const lastChild = docketProcess && docketProcess[docketProcess.length - 1] || {};
+        const right = lastChild.childProcess ? lastChild.childProcess[lastChild.childProcess.length - 1].isAbleOper : lastChild.isAbleOper; // 0 没有操作权限 1 有操作权限
         return (
             <div className={styles.detailFlow}>
                 <div className={styles.content}>
@@ -73,8 +76,7 @@ class DeatilFlow extends Component {
 
                 </div>
             </div>
-
-        )
+        );
     }
 }
 
