@@ -36,6 +36,7 @@ import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRe
 import { watchMonitorHistoryWarning } from './Monitor/Alarm/HistoryWarning/historyWarningSaga';
 import { watchDataHistoryMonitor } from './Monitor/DataAnalysis/DataHistory/historySaga'; // 数据分析 - 历史趋势
 import { watchDataRealtimeMonitor } from './Monitor/DataAnalysis/DataRealtime/realtimeSaga'; // 数据分析 - 实时数据
+import { watchDataExport } from './Monitor/DataAnalysis/DataExport/dataExportSaga'; // 数据分析 - 数据导出
 import { watchAllDeviceCurve } from './Monitor/PowerCurve/AllDeviceCurve/allDeviceCurveSaga'; // 多设备功率曲线
 import { watchSingleDeviceCurve } from './Monitor/PowerCurve/SingleDeviceCurve/singleDeviceCurveSaga'; // 单设备功率曲线
 
@@ -132,6 +133,7 @@ export default function* rootSaga() {
     watchMonitorHistoryWarning(),
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
+    watchDataExport(), // 数据分析 - 数据导出
     watchAllDeviceCurve(),//功率曲线
     watchSingleDeviceCurve(),//单风机功率曲线
     watchMonitorPowerReport(),//报表--电量
