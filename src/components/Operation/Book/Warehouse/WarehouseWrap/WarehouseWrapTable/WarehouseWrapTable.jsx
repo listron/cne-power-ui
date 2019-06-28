@@ -45,7 +45,6 @@ class WarehouseWrapTable extends Component {
   // 批量选中
   onSelectChange = selectedRowKeys => {
     const { onSelectedRowKeys } = this.props;
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({
       selectedRowKeys
     }, () => {
@@ -170,7 +169,7 @@ class WarehouseWrapTable extends Component {
         title: '电站名称',
         dataIndex: 'stationName',
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span className={styles.stationName} title={text}>{text}</span>
       }, {
         title: '创建时间',
         dataIndex: 'createTime',

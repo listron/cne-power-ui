@@ -129,18 +129,20 @@ class WarehouseWrap extends Component {
         // 点击的table后面的删除按钮
         if (selectedRowKeys) {
           return this.setState({
-            showWarningTip: false,
             selectedRowKeys: ""
           });
         }
         // 点击的批量删除
         return this.setState({
-          showWarningTip: false,
           selectData: ""
         });
       }
     };
-    getWarehouseDelList(params);
+    this.setState({
+      showWarningTip: false,
+    }, () => {
+      getWarehouseDelList(params);
+    });
   };
 
   // 添加
@@ -221,10 +223,6 @@ class WarehouseWrap extends Component {
                       onOK={this.selectStation}
                       multiple={true}
                       stationShowNumber={true}
-                      disabledStation={stations
-                        .toJS()
-                        .filter(e => e.isConnected === 0)
-                        .map(e => e.stationCode)}
                     />
                   )}
                 </FormItem>

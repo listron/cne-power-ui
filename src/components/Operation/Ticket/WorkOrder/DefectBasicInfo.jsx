@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './workOrder.scss';
 import { getLevel, getSource } from '../../../../constants/ticket';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Icon } from 'antd';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
@@ -17,8 +17,8 @@ class DefectBasicInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dealVisible: false
-    }
+      dealVisible: false,
+    };
   }
 
   componentDidMount() {
@@ -30,27 +30,28 @@ class DefectBasicInfo extends Component {
     const defectId = this.props.basicInfo.defectId || '';
     if (defectId !== prevDefectId) {
       const { defectTypeCode, deviceTypeCode } = this.props.basicInfo;
-      this.props.getKnowledgebase({ deviceTypeCodes:[deviceTypeCode], faultTypeIds: [defectTypeCode] })
+      this.props.getKnowledgebase({ deviceTypeCodes: [deviceTypeCode], faultTypeIds: [defectTypeCode] });
     }
   }
 
 
   showModal = () => {
-    this.setState({ dealVisible: true })
+    this.setState({ dealVisible: true });
   }
 
   modalCancle = () => {
-    this.setState({ dealVisible: false })
+    this.setState({ dealVisible: false });
   }
 
-  knowledegeBask=(knowledgeBaseId)=>{
-    this.props.likeKnowledgebase({knowledgeBaseId})
+  knowledegeBask = (knowledgeBaseId) => {
+    this.props.likeKnowledgebase({ knowledgeBaseId });
   }
 
   render() {
     const info = this.props.basicInfo;
-    let images = info.photoAddress ? info.photoAddress.split(',') : [];
+    const images = info.photoAddress ? info.photoAddress.split(',') : [];
     const { knowledgebaseList } = this.props;
+    const { liked } = knowledgebaseList;
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
@@ -83,7 +84,7 @@ class DefectBasicInfo extends Component {
             <ImgUploader editable={false} data={images.map(item => ({
               uid: item,
               rotate: 0,
-              thumbUrl: `${item}?${Math.random()}`
+              thumbUrl: `${item}?${Math.random()}`,
             }))}
             />
           </div>
@@ -121,11 +122,16 @@ class DefectBasicInfo extends Component {
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
-                <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
-                    点赞 <i  className="iconfont icon-edit" ></i>
-                </div>
+                {liked === 0 ?
+                  <div className={styles.like} onClick={() => { this.knowledegeBask(list.knowledgeBaseId); }}>
+                    点赞 <Icon type="like" />
+                  </div> :
+                  <div className={styles.liked} disabled>
+                    已点赞 <Icon type="like" />
+                  </div>
+                }
               </div>
-              )
+              );
             })}
           </div>
 
