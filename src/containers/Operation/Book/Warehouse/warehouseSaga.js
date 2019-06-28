@@ -165,6 +165,7 @@ function* getWarehouseDelList(action) { // 仓库删除
         payload: paramsList,
       });
     }else {
+      message.error(response.data.message);
       throw response.data
     }
   } catch (e) {
