@@ -109,10 +109,10 @@ function *getDataExportList({ payload = {} }) { // 数据导出任务列表
 }
 
 function *getDataExport({ payload = {} }) { // 生成导出任务
-  const { queryParams } = payload;
+  const { queryParams, deviceTypeCode } = payload;
   const url = `${APIBasePath}${monitor.getDataExport}`;
   try{
-    const { devicePoints, startTime, endTime, deviceFullCodes } = queryParams;
+    const { devicePointCodes, startTime, endTime, deviceFullCodes } = queryParams;
     const tmpPayload = { queryParams, tableLoading: true };
     yield put({
       type: dataExportAction.changeDataExportStore,
@@ -123,8 +123,9 @@ function *getDataExport({ payload = {} }) { // 生成导出任务
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
-      devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      devicePointCodes: devicePointCodes.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
       enterpriseId: Cookie.get('enterpriseId'),
+      deviceTypeCode
     });
     if(response.data.code === '10000'){
       yield put({

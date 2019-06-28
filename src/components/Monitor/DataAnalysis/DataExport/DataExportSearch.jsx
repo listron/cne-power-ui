@@ -27,8 +27,9 @@ class DataExportSearch extends Component{
     getDataExport: PropTypes.func,
     recordedMinuteEnd: PropTypes.object,
     devicePointCodes: PropTypes.array,
-    dataType: PropTypes.array,
+    dataTypes: PropTypes.array,
     timeZone: PropTypes.string,
+    pointsSeleted: PropTypes.array,
   };
 
   constructor(props){
@@ -73,25 +74,28 @@ class DataExportSearch extends Component{
     const { stationCode } = selectedStationInfo[0];
     getAvailableDeviceType({ stationCode });
     changeDataExportStore({ 
-      deviceTypeCode: null,
       queryParams: {
         ...queryParams,
         stationCode,
         deviceFullCodes: [],
-        devicePoints: [],
+        devicePointCodes: [],
+        pointsSeleted: [],
       },
+      deviceTypeCode: null,
     });
   }
 
   selectDeviceType = (deviceTypeCode) => { // 选择设备类型
+    console.log('deviceTypeCode: ', deviceTypeCode);
     const { changeDataExportStore, queryParams } = this.props;
     changeDataExportStore({
-      deviceTypeCode,
       queryParams:{
         ...queryParams,
         deviceFullCodes: [],
-        devicePoints: [],
-      }
+        devicePointCodes: [],
+        pointsSeleted: [],
+      },
+      deviceTypeCode,
     })
   }
 
@@ -102,8 +106,8 @@ class DataExportSearch extends Component{
       queryParams:{
         ...queryParams,
         deviceFullCodes: devices,
-        devicePoints: [],
-        currentPointArr: [],
+        devicePointCodes: [],
+        pointsSeleted: [],
       }
     })
     getPointInfo({
@@ -199,7 +203,8 @@ class DataExportSearch extends Component{
       ...queryParams,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
-      devicePoints: [],
+      devicePointCodes: [],
+      pointsSeleted: [],
     }
     if (interval === 10) { // 由秒级数据切换至10min数据
       changeDataExportStore({
@@ -233,7 +238,7 @@ class DataExportSearch extends Component{
 
   exportDataFetch = (params) => {
     const { changeDataExportStore, queryParams } = this.props;
-    const { devicePoints } = queryParams;
+    const { devicePointCodes } = queryParams;
     const tmpPayload = { queryParams: {
       ...queryParams,
       ...params
@@ -243,45 +248,48 @@ class DataExportSearch extends Component{
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
       changeDataExportStore(tmpPayload);
-    }else if (devicePoints.length > 0) { // 已选测点，重新请求
+    }else if (devicePointCodes.length > 0) { // 已选测点，重新请求
       changeDataExportStore(tmpPayload);
     }else{ // 未选时间，暂存信息
       changeDataExportStore(tmpPayload);
     }
   }
 
-  changeDataType = (dataType) => { // 选择数据类型
+  changeDataType = (dataTypes) => { // 选择数据类型
     const { changeDataExportStore, queryParams } = this.props;
     changeDataExportStore({
       queryParams:{
         ...queryParams,
-        dataType
+        dataTypes
       }
     })
   }
 
   maxTagPlaceholder = () => { // 显示数据类型已选数和总数
     const { queryParams } = this.props;
-    const { dataType = [] } = queryParams;
-    if (dataType.length > 0) {
-      return <div>已选{this.state.checkedDevice.length}/{ dataType.length}</div>
+    const { dataTypes = [] } = queryParams;
+    if (dataTypes.length > 0) {
+      return <div>已选{dataTypes.length}/4</div>
     }
   }
 
   reset = () => { // 重置
     const { getDataExport, queryParams } = this.props;
     getDataExport({
-      ...queryParams,
-      stationCode: null,
-      deviceFullCodes: [],
-      devicePoints: [],
-      timeInterval: 10, 
-      startTime: moment().subtract(1, 'month').startOf('day'),
-      endTime: moment().subtract(1, 'month').endOf('day'),
-      devicePointCodes: [], 
-      dataType: [],
-      timeZone: null,
-      deviceTypeCode: '', 
+      queryParams: {
+        ...queryParams,
+        stationCode: null,
+        deviceFullCodes: [],
+        devicePointCodes: [],
+        timeInterval: 10, 
+        startTime: moment().subtract(1, 'month').startOf('day'),
+        endTime: moment().subtract(1, 'month').endOf('day'),
+        devicePointCodes: [], 
+        dataTypes: [],
+        timeZone: null,
+        deviceTypeCode: '', 
+        pointsSeleted: [],
+      }
     })
   }
 
@@ -296,18 +304,17 @@ class DataExportSearch extends Component{
   }
 
   confirmWarningTip = () => { // 确定
-    const { getDataExport, queryParams, deviceTypeCode, devicePointCodes, dataType} = this.props;
-
+    const { getDataExport, queryParams, deviceTypeCode } = this.props;
     this.setState({
       showWarningTip: false
     })
 
     getDataExport({
-      ...queryParams,
-      devicePointCodes, 
-      dataType,
-      timeZone: moment().zone() / (-60),
-      deviceTypeCode, 
+      deviceTypeCode,
+      queryParams: {
+        ...queryParams,
+        timeZone: moment().zone() / (-60),
+      }
     })
   }
 
@@ -320,8 +327,8 @@ class DataExportSearch extends Component{
   render(){
     const { showWarningTip, warningTipText } = this.state;
     const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo } = this.props;
-    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataType } = queryParams;
-    console.log('dataType: ', dataType);
+    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes } = queryParams;
+    console.log('dataTypes: ', dataTypes);
     return (
       <div className={styles.dataExportSearch}>
         <div className={styles.dataExportTop}>
@@ -431,11 +438,11 @@ class DataExportSearch extends Component{
                   onChange={this.changeDataType}
                   mode="multiple"
                   placeholder="选择数据类型"
-                  value={dataType}
+                  value={dataTypes}
                   style={{ width: '198px' }}
-                  // maxTagCount={0}
-                  // maxTagPlaceholder={this.maxTagPlaceholder}
-                  // filterOption={[]}
+                  maxTagCount={0}
+                  maxTagPlaceholder={this.maxTagPlaceholder}
+                  filterOption={[]}
                   // open={false}
                 >
                   <Option value="1" key="1">平均值</Option>

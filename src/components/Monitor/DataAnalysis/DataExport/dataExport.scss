@@ -140,6 +140,14 @@
     .pointTree{
       position: relative;
       width: 200px;
+      .pointNum{
+        border: 1px solid #d9d9d9;
+        width: 198px;
+        display: flex;
+        line-height: 30px;
+        border-radius: 4px;
+        padding-left: 10px;
+      }
       .filterIcon{
         position: absolute;
         z-index: 10;

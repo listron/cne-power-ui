@@ -22,7 +22,7 @@ class DataExportList extends Component{
     status: PropTypes.num,
     devicePointCodes: PropTypes.array,
     duration: PropTypes.string,
-    dataType: PropTypes.array,
+    dataTypes: PropTypes.array,
     getDataExport: PropTypes.func,
     getAgainDataExport: PropTypes.func,
   }
@@ -158,15 +158,14 @@ class DataExportList extends Component{
         title: '操作',
         dataIndex: 'downloadAddress',
         className: 'downloadAddress',
-        render: (text) => <span title={text}>{text}</span>
-        // render: (text, record, index) => (
-        //   <span>
-        //     {status === 1 && <span></span>}
-        //     {status === 2 && <span className={styles.exportBtn} onClick={()=>this.onExport(record, index)}>下载到本地</span>}
-        //     {status === 3 && <span className={styles.renewal} onClick={()=>this.onRenewal(record, index)}>重新生成任务</span>}
-        //   </span>
-        // )
-      },
+        render: (text, record, index) => (
+            <span>
+              {record.status === 1 && <span></span>}
+              {record.status === 2 && <span className={styles.exportBtn} onClick={()=>this.onExport(record, index)}>下载到本地</span>}
+              {record.status === 3 && <span className={styles.renewal} onClick={()=>this.onRenewal(record, index)}>重新生成任务</span>}
+            </span>
+          )
+        },
     ]
 
     return(
