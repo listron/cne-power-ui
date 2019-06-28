@@ -13,6 +13,8 @@ class BoxtransformerHeader extends Component {
     stationCode: PropTypes.string,
     deviceTypeCode: PropTypes.string,
     deviceDetail: PropTypes.object,
+    history: PropTypes.object,
+    resetDeviceStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -44,6 +46,12 @@ class BoxtransformerHeader extends Component {
     });
   }
 
+  toParentDevice = (url) => {
+    const { resetDeviceStore, history } = this.props;
+    resetDeviceStore();
+    history.push(url);
+  }
+
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
@@ -64,16 +72,18 @@ class BoxtransformerHeader extends Component {
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
-          {parentDeviceTypeCode && parentDeviceCode && <Link
-            to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`}
+          {parentDeviceTypeCode && parentDeviceCode && <span
             className={styles.eachLink}
+            onClick={() => this.toParentDevice(
+              `/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`
+            )}
           >
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice.deviceTypeName}{parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>}
+          </span>}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
             <Icon type="arrow-left" />
           </Link>

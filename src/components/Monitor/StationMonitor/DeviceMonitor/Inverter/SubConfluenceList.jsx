@@ -5,7 +5,7 @@ import { Progress } from 'antd';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './inverter.scss';
 
-const SubConfluenceList = ({ subDeviceList, stationCode }) => {
+const SubConfluenceList = ({ subDeviceList = [], stationCode }) => {
   const baseLinkPath = "/hidden/monitorDevice";
   const statusArr = { // 汇流箱状态
     100: { name: 'normal', text: '正常', color: '#199475' },
