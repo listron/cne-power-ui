@@ -21,14 +21,12 @@ const initState = immutable.fromJS({
   total:0,
   orderField:'',//排序方式
   orderType:'0',//'0'是正序，'1'是倒序
-
+  chartLoading:false, // 图表loading
 
 });
 
 const allDeviceCurveReducer = (state = initState, action) => {
   switch (action.type) {
-    case allDeviceCurveAction.GET_ALLDEVICECURVE_SUCCESS :
-      return state.merge(immutable.fromJS(action.payload));
     case allDeviceCurveAction.changeAllDeviceStore:
       return state.merge(immutable.fromJS(action.payload));
     case allDeviceCurveAction.RESET_ALLDEVICECURVE:

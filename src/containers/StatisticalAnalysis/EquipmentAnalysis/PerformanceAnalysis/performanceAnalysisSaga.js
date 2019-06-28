@@ -4,6 +4,7 @@ import Path from '../../../../constants/path';
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
 const { basePaths, commonPaths, APISubPaths } = Path;
 const { APIBasePath } = basePaths;
+
 function* getEquipmentSelection(action){
   const { payload } = action;
   const url = '';
@@ -14,6 +15,7 @@ function* getEquipmentSelection(action){
     console.log(error);
   }
 }
+
 function* getDeviceModels(action) { // 新共用接口，获取电站设备类型下设备型号
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getDeviceModel}`;
   const { payload } = action;
@@ -40,6 +42,7 @@ function* getDeviceModels(action) { // 新共用接口，获取电站设备类�
     console.log(e);
   }
 }
+
 function* getEleDeviceData(action) { // 查询集电线路下的设备型号和设备类型数据
   const { payload } = action;
   const url =  `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleDeviceData}/${payload.deviceFullCode}`;
@@ -59,9 +62,9 @@ function* getEleDeviceData(action) { // 查询集电线路下的设备型号和�
     console.log(e);
   }
 }
+
 function* getEleLineCode(action) {//集电线路
   const { payload } = action;
-    //const url = '';
     const url= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getEleLineCode}/${payload.stationCode}/${payload.deviceTypeCode}`
     try{
       yield put({ type:performanceAnalysisAction.PERFORMANCEANALYSIS_FETCH  });
@@ -78,6 +81,7 @@ function* getEleLineCode(action) {//集电线路
       console.log(e);
     }
 }
+
 function* getPerformance(action) {
   const { payload } = action;
     //const conversioneffUrl = '/mock/performance/deviceanalysis/conversioneff';
@@ -121,9 +125,9 @@ function* getPerformance(action) {
       console.log(e);
     }
 }
+
 function* getFault(action) {
   const { payload } = action;
-    //const url = '';
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailability}`
     const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHours}`
     try{
@@ -163,9 +167,9 @@ function* getFault(action) {
       console.log(e);
     }
 }
+
 function* getPerformanceContrast(action) {
   const { payload } = action;
-    //const url = '';
     const conversioneffUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getconversioneffContrast}`
     const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHoursContrast}`
     const availabilityUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailabilityContrast}`
@@ -212,9 +216,9 @@ function* getPerformanceContrast(action) {
       console.log(e);
     }
 }
+
 function* getFaultContrast(action) {
   const { payload } = action;
-  //const url = '';
   const lostPowerUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getAvailabilityContrast}`
   const hoursUrl= `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getHoursContrast}`
   try{
@@ -268,5 +272,4 @@ export function* watchPerformanceAnalysisSaga() {
   yield takeLatest(performanceAnalysisAction.getFaultContrast, getFaultContrast);
   yield takeEvery(performanceAnalysisAction.getDeviceModels, getDeviceModels);
   yield takeEvery(performanceAnalysisAction.getEleDeviceData, getEleDeviceData);
- 
 }

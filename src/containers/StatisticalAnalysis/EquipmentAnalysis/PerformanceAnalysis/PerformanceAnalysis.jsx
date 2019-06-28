@@ -7,18 +7,17 @@ import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PerformanceAnalysisFilter from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisFilter';
 import PerformanceAnalysisTabs from '../../../../components/StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/PerformanceAnalysisTabs';
 import Footer from '../../../../components/Common/Footer';
-// import PlanCompletionRate from '../../../../components/StatisticalAnalysis/StationAnalysis/CommonGraphs/PlanCompletionRate';
 import { performanceAnalysisAction } from "./performanceAnalysisAction";
-import { Tabs } from 'antd';
 import Cookie from 'js-cookie';
-
-// import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
-
 
 class PerformanceAnalysis extends Component {
   static propTypes = {
     changePerformanceAnalysisStore: PropTypes.func,
     targetTabs: PropTypes.string,
+    getPerformanceContrast: PropTypes.func,
+    getFaultContrast: PropTypes.func,
+    getPerformance: PropTypes.func,
+    getFault: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -29,6 +28,7 @@ class PerformanceAnalysis extends Component {
   componentWillUnmount() {
     this.props.resetStore();
   }
+
   queryData = (activeKey) => {
     const { contrastSwitch, stationCode, deviceTypeCode, endDate, startDate } = this.props;
     this.props.changePerformanceAnalysisStore({ targetTabs: activeKey })
@@ -53,26 +53,13 @@ class PerformanceAnalysis extends Component {
     }
   }
   render() {
-
-    const TabPane = Tabs.TabPane;
-   
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '性能分析'
-        }
-      ]
-    }
-
     return (
       <div className={styles.PerformanceAnalysisContainerBox}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }}></CommonBreadcrumb>
-        {/*   <TimeSelect onChange={(time)=>console.log(time)} /> */}
+        <CommonBreadcrumb breadData={[{ name: '性能分析' }]} style={{ marginLeft: '38px' }}></CommonBreadcrumb>
         <div className={styles.PerformanceAnalysisContainer}>
           <div className={styles.PerformanceAnalysisMain}>
             <PerformanceAnalysisFilter {...this.props} />
             <PerformanceAnalysisTabs {...this.props} />
-
           </div>
         </div>
         <Footer />
@@ -90,30 +77,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
   changePerformanceAnalysisStore: payload => dispatch({ type: performanceAnalysisAction.CHANGE_PERFORMANCEANALYSIS_STORE, payload }),
-  // getStationDeviceTypes: params => dispatch({
-  //   type: commonAction.getStationDeviceTypes,
-  //   payload: {
-  //     params,
-  //     deviceTypeAction: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-  //     resultName: 'deviceTypes'
-  //   }
-  // }),
-  // getDeviceModel: params => dispatch({
-  //   type: commonAction.getDeviceModel,
-  //   payload: {
-  //     params,
-  //     actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-  //     resultName: 'deviceModels'
-  //   }
-  // }),
-  // getDeviceModelother: params => dispatch({
-  //   type: commonAction.getDeviceModel,
-  //   payload: {
-  //     params,
-  //     actionName: performanceAnalysisAction.GET_PERFORMANCEANALYSIS_FETCH_SUCCESS,
-  //     resultName: 'deviceModelOther'
-  //   }
-  // }),
   getDeviceModels: payload => dispatch({ type: performanceAnalysisAction.getDeviceModels, payload }),
   getEquipmentSelection: payload => dispatch({ type: performanceAnalysisAction.getEquipmentSelection, payload }),
   getEleLineCode: payload => dispatch({ type: performanceAnalysisAction.getEleLineCode, payload }),
@@ -124,8 +87,6 @@ const mapDispatchToProps = (dispatch) => ({
   getStationDeviceType: payload => dispatch({ type: commonAction.getStationDeviceType, payload }),
   resetStore: () => dispatch({ type: performanceAnalysisAction.resetStore }),
   getEleDeviceData: payload => dispatch({ type: performanceAnalysisAction.getEleDeviceData, payload }),
-  
-
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PerformanceAnalysis);
