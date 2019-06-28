@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
-import PvStationHeader from './PvStationHeader';;
+import PvStationHeader from './PvStationHeader';
 import PvStationCont from './PvStationCont';
 import PvDevice from './PvDevice';
 import styles from './pvStation.scss';
@@ -73,7 +73,7 @@ class PvStation extends Component {
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOnceData(nextStationCode, nextStationType);
       this.props.changeSingleStationStore({ deviceTypeCode: '1' })
-      this.singelDeatil()
+      this.singelDeatil(nextStationCode)
     }
   }
 
@@ -104,15 +104,15 @@ class PvStation extends Component {
   getPowerDataTenMin = (value) => { // 默认请求intervalTime = 0 的日数据
     const { stationCode, intervalTime = 0 } = value;
     let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD')// 默认是6天前;
-    let endTime=moment().subtract(1, 'day').format('YYYY-MM-DD');
+    let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
     if (intervalTime === 1) {
-      startTime =  moment().startOf('year').format('YYYY-MM-DD');
-      endTime=moment().endOf('year').format('YYYY-MM-DD');
+      startTime = moment().startOf('year').format('YYYY-MM-DD');
+      endTime = moment().endOf('year').format('YYYY-MM-DD');
     } else if (intervalTime === 2) {
       startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
     }
     this.props.changeSingleStationStore({ powerData: [] })
-    this.props.getPvMonitorPower({   stationCode, intervalTime, startTime, endTime   });
+    this.props.getPvMonitorPower({ stationCode, intervalTime, startTime, endTime });
   }
 
   getDeviceTypeFlow = (deviceTypeFlow, list = []) => { // 流程图
@@ -131,8 +131,7 @@ class PvStation extends Component {
     return list
   }
 
-  singelDeatil=()=>{ // 右侧单电站详情数据
-    const { stationCode } = this.props.match.params;
+  singelDeatil = (stationCode) => { // 右侧单电站详情数据
     this.props.getCapabilityDiagram({  // 出力图
       stationCode,
       stationType: '1',
@@ -145,9 +144,10 @@ class PvStation extends Component {
 
   detailShow = () => { // 查看详情
     this.setState({ detailVisible: true })
+    const { stationCode } = this.props.match.params;
     const { queryFirst } = this.state;
     if (queryFirst) {
-      this.singelDeatil()
+      this.singelDeatil(stationCode)
       this.setState({ queryFirst: false })
     }
   }
