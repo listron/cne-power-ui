@@ -39,12 +39,12 @@ class SelectModal extends Component {
     this.setState({ checkedKeys: nextProps.assetsIds });
   }
   onCheck = (checkedKeys, e) => {
-    const {multiple}=this.props;
+    const { multiple } = this.props;
     let dataRef = e.node.props.dataRef;
     let { assetsNames, assetsName } = dataRef;
-    let parentNodeName=assetsNames.replace(/,/g,'/');
-    
-    this.setState({ checkedKeys: multiple?checkedKeys.checked:checkedKeys, checkedName: `${parentNodeName}/${assetsName}` });
+    let parentNodeName = assetsNames.replace(/,/g, '/');
+
+    this.setState({ checkedKeys: multiple ? checkedKeys.checked : checkedKeys, checkedName: `${parentNodeName}/${assetsName}` });
   }
   showModal = () => {
     this.props.showModal();
@@ -66,7 +66,7 @@ class SelectModal extends Component {
   renderTreeNodes = data => data.map((item) => {
     if (item.childernNodes) {
       return (
-        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isBuild === 1 || item.isMain === 1 || item.assetsType === 1}  >
+        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1}  >
           {this.renderTreeNodes(item.childernNodes)}
         </TreeNode>
       );
@@ -74,9 +74,9 @@ class SelectModal extends Component {
     return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} ></TreeNode>;
   })
   render() {
-    const { visiable, sourceData, stationType, multiple,stationTypeCount } = this.props;
-    const {checkedKeys}=this.state;
-    
+    const { visiable, sourceData, stationType, multiple, stationTypeCount } = this.props;
+    const { checkedKeys } = this.state;
+
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -91,7 +91,7 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
-           {stationTypeCount&& <div className={styles.titleType} >
+            {stationTypeCount && <div className={styles.titleType} >
               <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryDataType(1) }} >光伏</div>
               <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryDataType(0) }}>风电</div>
             </div>}
@@ -103,9 +103,9 @@ class SelectModal extends Component {
               // defaultExpandAll={true}
               onCheck={this.onCheck}
               onSelect={this.onCheck}
-              selectedKeys={multiple?[]:checkedKeys}
+              selectedKeys={multiple ? [] : checkedKeys}
               blockNode={false}
-              
+
             >
               {this.renderTreeNodes(sourceData)}
             </Tree>
