@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
   })
 }
 const mapDispatchToProps = (dispatch) => ({
-  changeManufacturersStore: payload => dispatch({ type: manufacturersAction.changeManufacturersStoreSaga, payload }),
+  changeManufacturersStore: payload => dispatch({ type: manufacturersAction.changeManufacturersStore, payload }),
   resetStore: () => dispatch({ type: manufacturersAction.resetStore }),
   getManufacturer: payload => dispatch({ type: manufacturersAction.getManufacturer, payload }),
   getDevicemode: payload => dispatch({ type: manufacturersAction.getDevicemode, payload }),

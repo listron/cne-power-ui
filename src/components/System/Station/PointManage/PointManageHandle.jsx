@@ -30,7 +30,7 @@ class PointManageHandle extends Component {
     this.state = {
       showWarningTip: false,
       warningTipText: '确定要删除?',
-    }
+    };
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => {
@@ -39,7 +39,7 @@ class PointManageHandle extends Component {
       ...queryParams,
       pageNum: currentPage,
       pageSize,
-    })
+    });
   }
 
   getUpdatePointList = ({ file, selectedStation }) => { // 上传成功后重新请求列表
@@ -56,26 +56,26 @@ class PointManageHandle extends Component {
     });
     changePointManageStore({
       deviceModels: []
-    })
+    });
   }
 
   deletePoint = () => {
     this.setState({
       showWarningTip: true,
       //deleteInfo: record,
-    })
+    });
   }
 
   cancelWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
+    });
   }
   confirmWarningTip = () => {
     this.setState({
       showWarningTip: false,
-    })
-    this.deletePointList()
+    });
+    this.deletePointList();
   }
 
   toExport = () => {
@@ -84,15 +84,14 @@ class PointManageHandle extends Component {
       url: `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`,
       method: 'get',
       loadingName: 'exportLoading',
-      fileName: '电站测电表.xlsx',
-    })
+      fileName: '电站测点表.xlsx',
+    });
   }
 
   deletePointList = () => {
     const { deletePointList, stationCode } = this.props;
     deletePointList({ stationCode });
   }
-
 
   render() {
     const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading } = this.props;

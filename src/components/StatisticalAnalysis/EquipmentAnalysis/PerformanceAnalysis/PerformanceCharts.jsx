@@ -36,6 +36,7 @@ class PerformanceCharts extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
   }
+
   getYaxisName = (title) => {
     let result = " ";
     switch (title) {
@@ -57,14 +58,11 @@ class PerformanceCharts extends React.Component {
       case "设备故障时长":
         result = "故障时长(h)";
         break;
-
-
       default:
         result = " ";
     }
     return result;
   };
-
 
   getColor = (title) => {
     let result = '';
@@ -150,7 +148,7 @@ class PerformanceCharts extends React.Component {
   }
 
   drawChart = (params) => {
-    const { graphId, title, data, hasData, hasSlider, deviceNames } = params;
+    const { graphId, title, data, hasData, hasSlider, deviceNames, loading } = params;
     const targetChart = echarts.init(document.getElementById(graphId));
     let seriesData = [];
     const lineData = data && data.yData.lineData;
@@ -179,7 +177,7 @@ class PerformanceCharts extends React.Component {
 
       seriesData.push(json);
     }
-    (data && data.xData.length > 0) ? targetChart.hideLoading() : targetChart.showLoading('default', { color: '#199475' });
+    loading ? targetChart.showLoading('default', { color: '#199475' }) : targetChart.hideLoading();
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,

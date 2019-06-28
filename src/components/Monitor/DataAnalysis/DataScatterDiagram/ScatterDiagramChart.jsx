@@ -35,16 +35,11 @@ class ScatterDiagramChart extends Component{
     const xCurrentPoint = pointsInfo.find(e =>{ // 选中x轴devicePointName
       return e.devicePointCode === logPointX;
     }) || {};
-
     const yCurrentPoint = pointsInfo.find(e =>{ // 选中y轴devicePointName
       return e.devicePointCode === logPointY;
     }) || {};
     const monitorScatter = echarts.init(document.getElementById('monitorScatterDiagram'));
-    if (chartLoading) { // loading态控制。
-      monitorScatter.showLoading()
-    } else {
-      monitorScatter.hideLoading()
-    }
+    chartLoading ? monitorScatter.showLoading('default', { color: '#199475' }) : monitorScatter.hideLoading();
     const scatterData = scatterDiagramCharts.map(e => [e.xData, e.yData,moment(e.time).format('YYYY-MM-DD HH:mm:ss'),e.xUnit,e.yUnit]);
     let color = ['#199475'];
     const lineColor = '#f1f1f1';

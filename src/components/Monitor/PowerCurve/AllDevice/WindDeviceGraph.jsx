@@ -19,22 +19,39 @@ class WindDeviceGraph extends Component {
   constructor(props, context) {
     super(props, context)
   }
+
   componentWillReceiveProps(nextProps) {
     const theoryPowers = nextProps.allData || {};
-    const { stationCode, startTime, endTime, checkedAll } = nextProps;
+    const { stationCode, startTime, endTime, checkedAll, chartLoading } = nextProps;
     const beginTime = moment(startTime).format('YYYY-MM-DD');
     const stopTime = moment(endTime).format('YYYY-MM-DD');
-    this.drawChart(theoryPowers, checkedAll, stationCode, beginTime, stopTime)
+    this.drawChart({
+      dataList: theoryPowers,
+      checkedAll,
+      stationCode,
+      startTime: beginTime,
+      endTime: stopTime,
+      chartLoading
+    })
   }
+
   onChange = (checked) => {
-    const { stationCode, startTime, endTime } = this.props;
+    const { stationCode, startTime, endTime, chartLoading } = this.props;
     const beginTime = moment(startTime).format('YYYY-MM-DD');
     const stopTime = moment(endTime).format('YYYY-MM-DD');
     this.props.changeAllDeviceStore({
       checkedAll: checked
     })
-    this.drawChart((this.props.allData || {}), checked, stationCode, beginTime, stopTime)
+    this.drawChart({
+      dataList: (this.props.allData || {}),
+      checkedAll: checked,
+      stationCode,
+      startTime: beginTime,
+      endTime: stopTime,
+      chartLoading
+    })
   }
+
   changeSelect = (checked) => {
     const { actualDataList = [], theoryDataList = [] } = this.props.allData;
     const list = [];
@@ -54,6 +71,7 @@ class WindDeviceGraph extends Component {
     return select
 
   }
+
   compare = (key) => {
     return (a, b) => {
       let val1 = +a[key];
@@ -67,7 +85,7 @@ class WindDeviceGraph extends Component {
       }
     }
   }
-  drawChart = (dataList, checkedAll, stationCode, startTime, endTime) => {
+  drawChart = ({dataList, checkedAll, stationCode, startTime, endTime,chartLoading}) => {
     const { actualDataList = [], theoryDataList = [] } = dataList;
     const list = [];
     theoryDataList.map(item => {
@@ -78,6 +96,7 @@ class WindDeviceGraph extends Component {
     })
     const params = [...actualDataList, ...list];
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
+    chartLoading ? powercurveChart.showLoading('default', { color: '#199475' }) : powercurveChart.hideLoading();
     const filterDeviceName = params.map(e => e.deviceName);
     const filterPowerAvg = params.map((e, i) => {
       return e.dataList.map((item, i) => {
@@ -87,17 +106,13 @@ class WindDeviceGraph extends Component {
     const hasData = filterPowerAvg.length > 0 ? filterPowerAvg.reduce((pre, next) => {
       return pre.concat(next)
     }) : [];
-
-    const inverterTenMinGraphic = (filterDeviceName.length === 0 && hasData.length === 0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = ( hasData.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
-    let color = ['#a42b2c', '#0e6650', '#de930c', '#004a79', '#6a3302', '#b00016', '#2d5600', '#006a6c'];
-
     params.forEach((e, i) => {
       e.dataList.sort(this.compare('windSpeedCenter'))
     })
     const option = {
       graphic: inverterTenMinGraphic,
-      // color: color,
       legend: {
         show: true,
         left: '10%',
@@ -269,7 +284,7 @@ class WindDeviceGraph extends Component {
     return (
       <div className={styles.graphStyle}>
         <div id="powerCurveChart" className={styles.powerCurveChart}></div>
-        <div className={styles.switchStyle}> <Switch checked={checkedAll} onChange={this.onChange} />全部显示</div>
+        <div className={styles.switchStyle}> <Switch checked={checkedAll} onChange={this.onChange} /> 全部显示</div>
       </div>
     )
   }

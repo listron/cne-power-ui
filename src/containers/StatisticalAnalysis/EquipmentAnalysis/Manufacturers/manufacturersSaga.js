@@ -4,20 +4,6 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { manufacturersAction } from './manufacturersAction';
 
-function* changeManufacturersStore(action) { // 存储payload指定参数，替换reducer-store属性。
-  const { payload } = action;
-  yield put({
-    type: manufacturersAction.changeManufacturersStore,
-    payload,
-  })
-}
-
-function* resetStore() {
-  yield put({
-    type: manufacturersAction.RESET_STORE
-  })
-}
-
 function* getManufacturer(action) { // 获取生产厂家
   const { payload } = action;
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getManufacturer}`
@@ -97,16 +83,23 @@ function* getChartsData(action) { // 获取图表数据
   // const url='/mock/performance/deviceanalysis/stationcontrastmore';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getStationcontrastmore}`
   try {
+    yield put({
+      type: manufacturersAction.changeManufacturersStore,
+      payload: {
+        ...payload,
+        loading: true,
+      },
+    });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: manufacturersAction.changeManufacturersStore,
         payload: {
-          ...payload,
+          loading: false,
           conversioneffList: response.data.data.conversioneffList || [],
           faultNumList: response.data.data.faultNumList || [],
           faultHoursList: response.data.data.faultHoursList || [],
-          deviceCapacityList: response.data.data.deviceCapacityList || [],         
+          deviceCapacityList: response.data.data.deviceCapacityList || [],
         },
       });
     } else { throw response.data }
@@ -115,7 +108,7 @@ function* getChartsData(action) { // 获取图表数据
     yield put({
       type: manufacturersAction.changeManufacturersStore,
       payload: {
-        ...payload,
+        loading: false,
         chartsData: []
       },
     });
@@ -127,8 +120,6 @@ function* getChartsData(action) { // 获取图表数据
 
 
 export function* watchManufacturers() {
-  yield takeLatest(manufacturersAction.changeManufacturersStoreSaga, changeManufacturersStore);
-  yield takeLatest(manufacturersAction.resetStore, resetStore);
   yield takeLatest(manufacturersAction.getDevicecontrast, getDevicecontrast);
   yield takeLatest(manufacturersAction.getManufacturer, getManufacturer);
   yield takeLatest(manufacturersAction.getDevicemode, getDevicemode);

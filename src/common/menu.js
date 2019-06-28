@@ -153,15 +153,15 @@ const menuData = [
           {
             name: '审核人设置',
             path: 'examiner',
-            rightKey: 'operation_twoTicket',
+            rightKey: 'operation_twoTicket_config',
           }, {
             name: '工作票',
             path: 'workflow',
-            rightKey: 'operation_twoTicket',
+            rightKey: 'operation_twoTicket_work',
           }, {
             name: '操作票',
             path: 'operateflow',
-            rightKey: 'operation_twoTicket',
+            rightKey: 'operation_twoTicket_operation',
           }
         ]
       }, {
