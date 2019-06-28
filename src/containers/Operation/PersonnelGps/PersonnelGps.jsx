@@ -20,6 +20,12 @@ class PersonnelGps extends Component {
    this.stationInterval=setInterval(() => this.props.getPersonnelGpsData(), 180000)
   }
 
+  componentWillUnmount(){
+    if (this.stationInterval) {
+      clearInterval(this.stationInterval);
+    }
+  }
+
   render() {
     const{personnelGpsData}=this.props;
     let data = [];

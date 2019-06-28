@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styles from './deviceManage.scss';
 import { deviceManageAction } from './deviceManageAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
-import { stationManageAction } from '../StationManage/stationManageAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import DeviceSide from '../../../../components/System/Station/DeviceManage/DeviceSide';
@@ -146,6 +145,13 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
       resultName: 'allStationBaseInfo'
+    }
+  }),
+  exportPoints: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS
     }
   }),
   changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
