@@ -12,6 +12,7 @@ class PointSelect extends Component {
     reRenderTree: PropTypes.number,
     queryParams: PropTypes.object,
     pointInfo: PropTypes.array,
+    currentPointArr: PropTypes.array,
     changeDataExportStore: PropTypes.func,
     getDataExport: PropTypes.func,
   }
@@ -23,7 +24,7 @@ class PointSelect extends Component {
       halfCheckedKeys: [],
       expandedKeys: [],
       // checkedDevice: [], // 暂存的测点code
-      currentPointArr: [], // 暂存的测点数组
+      // currentPointArr: [], // 暂存的测点数组
     }
   }
 
@@ -56,15 +57,23 @@ class PointSelect extends Component {
   // }
 
   clearDevice = () => { // 清空测点
-    this.setState({ 
-      // checkedDevice: [], 
-      currentPointArr: [] }
-  )}
+    // this.setState({ 
+    //   // checkedDevice: [], 
+    //   currentPointArr: [] })
+    const { changeDataExportStore, currentPointArr } = this.props;
+    changeDataExportStore({
+      currentPointArr: []
+    })
+}
 
   cancelChecked = (devicePointCode) => { // 取消单个选中设备。
-    const { currentPointArr } = this.state;
+    // const { currentPointArr } = this.state;
+    const { changeDataExportStore, currentPointArr } = this.props;
     const newDevices = currentPointArr.filter(e => e.devicePointCode !== devicePointCode);
-    this.setState({ currentPointArr: newDevices });
+    // this.setState({ currentPointArr: newDevices });
+    changeDataExportStore({
+      currentPointArr: newDevices
+    })
   }
 
   showModal = () => { // 显示模态框
@@ -90,10 +99,10 @@ class PointSelect extends Component {
   }
 
   pointSelect = (selectedKeys, { halfCheckedKeys }) => {
-    const { 
-      // checkedDevice, 
-      currentPointArr } = this.state;
-    const { pointInfo, getDataExport, queryParams, changeDataExportStore, checkedPointArr } = this.props;
+    // const { 
+    //   // checkedDevice, 
+    //   currentPointArr } = this.state;
+    const { pointInfo, getDataExport, queryParams, changeDataExportStore, checkedPointArr, currentPointArr = [] } = this.props;
     const { startTime, endTime, timeInterval } = queryParams;
     
     const currentPointInfo = pointInfo.find(e => { // 找到相同id的测点,添加到数组里，用于在模态框中遍历出来测点名称
@@ -102,7 +111,6 @@ class PointSelect extends Component {
     console.log('currentPointInfo: ', currentPointInfo);
 
     currentPointArr.push(currentPointInfo);
-    console.log('currentPointArr: ', currentPointArr.devicePointId);
     const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
     if (valideKeys.length > 30) {
       const preHalfCheckedKeys = this.state.halfCheckedKeys;
@@ -121,28 +129,27 @@ class PointSelect extends Component {
       devicePoints: selectedKeys,
       // devicePoints: currentPointArr.devicePointId,
     };
-    console.log('newQueryParam: ', newQueryParam);
 
     const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
     if (startTime.isBefore(tmpAllowedEnd, 's')) {
       message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
       changeDataExportStore({
-        queryParam: newQueryParam,
-        checkedPointArr: currentPointArr
+        queryParams: newQueryParam,
+        // checkedPointArr: currentPointArr
       })
-    } 
-    // else {
-    //   getDataExport({
-    //     queryParam: newQueryParam,
-    //     checkedPointArr: currentPointArr
-    //   })
-    // }
+    }else {
+      changeDataExportStore({
+        queryParams: newQueryParam,
+        // checkedPointArr: currentPointArr
+      })
+    }
   }
 
   maxTagPlaceholder = () => { // 显示测点已选数和总数
-    const { pointInfo = [] } = this.props;
+    const { pointInfo = [], currentPointArr } = this.props;
+    console.log('currentPointArr: ', currentPointArr);
     // const { checkedDevice } = this.state;
-    const { currentPointArr } = this.state;
+    // const { currentPointArr } = this.state;
     return <div>已选{currentPointArr.length}/{ pointInfo.length}</div>
   }
 
@@ -200,10 +207,12 @@ class PointSelect extends Component {
 
 
   render() {
-    const { halfCheckedKeys, expandedKeys, checkedDevice, currentPointArr } = this.state;
-    const { queryParams } = this.props;
+    const { halfCheckedKeys, expandedKeys, checkedDevice, 
+      // currentPointArr 
+    } = this.state;
+    const { queryParams, currentPointArr } = this.props;
     const { devicePoints } = queryParams;
-    // console.log('queryParams: ', queryParams);
+    console.log('devicePoints: ', devicePoints);
     return (
       <div className={styles.pointSelect}>
         <div className={styles.pointTree} onClick={this.showModal}>
@@ -245,7 +254,7 @@ class PointSelect extends Component {
               {this.renderTreeNodes()}
             </Tree>
           
-            <div className={styles.checkedList}>
+            {/* <div className={styles.checkedList}>
               <div className={styles.top}>
                 <span>已选测点 {currentPointArr.length}个</span>
                 <span className={styles.clear} onClick={this.clearDevice}>清空</span>
@@ -258,7 +267,7 @@ class PointSelect extends Component {
                   </span>
                 ))}
               </div>
-            </div>
+            </div> */}
           </Modal>
           </div>
       </div>

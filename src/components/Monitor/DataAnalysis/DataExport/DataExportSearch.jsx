@@ -103,6 +103,7 @@ class DataExportSearch extends Component{
         ...queryParams,
         deviceFullCodes: devices,
         devicePoints: [],
+        currentPointArr: [],
       }
     })
     getPointInfo({
@@ -249,23 +250,26 @@ class DataExportSearch extends Component{
     }
   }
 
-  changeDataTypes = (dataType) => { // 选择数据类型
-    console.log('dataType: ', dataType);
-    const { changeDataExportStore } = this.props;
+  changeDataType = (dataType) => { // 选择数据类型
+    const { changeDataExportStore, queryParams } = this.props;
     changeDataExportStore({
-      dataType
+      queryParams:{
+        ...queryParams,
+        dataType
+      }
     })
   }
 
   maxTagPlaceholder = () => { // 显示数据类型已选数和总数
-    const { dataType = [] } = this.props;
+    const { queryParams } = this.props;
+    const { dataType = [] } = queryParams;
     if (dataType.length > 0) {
       return <div>已选{this.state.checkedDevice.length}/{ dataType.length}</div>
     }
   }
 
   reset = () => { // 重置
-    const { getDataExport, queryParams, deviceTypeCode, devicePointCodes, dataType } = this.props;
+    const { getDataExport, queryParams } = this.props;
     getDataExport({
       ...queryParams,
       stationCode: null,
@@ -274,10 +278,10 @@ class DataExportSearch extends Component{
       timeInterval: 10, 
       startTime: moment().subtract(1, 'month').startOf('day'),
       endTime: moment().subtract(1, 'month').endOf('day'),
-      deviceTypeCode: '', 
       devicePointCodes: [], 
       dataType: [],
-      timeZone: null
+      timeZone: null,
+      deviceTypeCode: '', 
     })
   }
 
@@ -292,19 +296,18 @@ class DataExportSearch extends Component{
   }
 
   confirmWarningTip = () => { // 确定
-    const { getDataExport, queryParams, deviceTypeCode, devicePointCodes, dataType, timeZone} = this.props;
-    console.log('dataType: ', dataType);
+    const { getDataExport, queryParams, deviceTypeCode, devicePointCodes, dataType} = this.props;
 
     this.setState({
       showWarningTip: false
     })
 
     getDataExport({
-      queryParams,
-      deviceTypeCode, 
+      ...queryParams,
       devicePointCodes, 
       dataType,
       timeZone: moment().zone() / (-60),
+      deviceTypeCode, 
     })
   }
 
@@ -316,9 +319,9 @@ class DataExportSearch extends Component{
 
   render(){
     const { showWarningTip, warningTipText } = this.state;
-    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo, dataType } = this.props;
+    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo } = this.props;
+    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataType } = queryParams;
     console.log('dataType: ', dataType);
-    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode } = queryParams;
     return (
       <div className={styles.dataExportSearch}>
         <div className={styles.dataExportTop}>
@@ -425,7 +428,7 @@ class DataExportSearch extends Component{
             <div className={styles.dataTypes}>
               <span className={styles.text}>数据类型</span>
                 <Select
-                  onChange={this.changeDataTypes}
+                  onChange={this.changeDataType}
                   mode="multiple"
                   placeholder="选择数据类型"
                   value={dataType}

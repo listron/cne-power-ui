@@ -23,7 +23,6 @@ class DataExportList extends Component{
     devicePointCodes: PropTypes.array,
     duration: PropTypes.string,
     dataType: PropTypes.array,
-    deviceTypeCode: PropTypes.number, // 选中的设备类型
     getDataExport: PropTypes.func,
     getAgainDataExport: PropTypes.func,
   }
@@ -81,17 +80,13 @@ class DataExportList extends Component{
   }
 
   confirmWarningTip = () => { // 确定
-    const { getDataExport, queryParams, deviceTypeCode, devicePointCodes, dataType } = this.props;
-
+    const { getDataExport, queryParams } = this.props;
     this.setState({
       showWarningTip: false
     })
 
     getDataExport({
-      queryParams,
-      deviceTypeCode, 
-      devicePointCodes, 
-      dataType
+      queryParams
     })
   }
 

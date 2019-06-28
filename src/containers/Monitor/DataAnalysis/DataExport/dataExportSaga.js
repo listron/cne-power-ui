@@ -110,10 +110,14 @@ function *getDataExportList({ payload = {} }) { // 数据导出任务列表
 
 function *getDataExport({ payload = {} }) { // 生成导出任务
   const { queryParams } = payload;
-  console.log('queryParams: ', queryParams);
   const url = `${APIBasePath}${monitor.getDataExport}`;
   try{
     const { devicePoints, startTime, endTime, deviceFullCodes } = queryParams;
+    const tmpPayload = { queryParams, tableLoading: true };
+    yield put({
+      type: dataExportAction.changeDataExportStore,
+      payload: tmpPayload
+    })
     const response = yield call(axios.post, url, {
       ...queryParams,
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),

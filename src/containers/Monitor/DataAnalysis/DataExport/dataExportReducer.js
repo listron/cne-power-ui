@@ -6,19 +6,20 @@ const initState = immutable.fromJS({
   tableLoading: false, // 列表请求的loading
   selectStationType: null, // 选中的电站类型
   stationDeviceTypes: [], // 电站下可选设备类型
-  deviceTypeCode: null, // 选中的设备类型
   intervalInfo: [10,5], // 默认支持的时间间隔5s,10min
   reRenderTree: null, // 记录属性控件生成时间
   pointInfo: [], // 选中设备内可选测点信息
   checkedPointArr: [], // 选中的测点信息
   partDataExport: {}, // 表格内 - 分页后的历史数据
   // status: null, // 1生成中；2已生成；3失败
+  currentPointArr: [], // 暂存的测点信息
   devicePointCodes: [], // 设备测点数组
   duration: '', // 时间段
   taskId: '', // 行id
-  dataType: [], // 数据类型(1：平均值（差值），2：最大值（结束值）3：最小值（开始值） 4：瞬时值)
-  timeZone: null, // 时区
+  deviceTypeCode: null, // 选中的设备类型
   queryParams: {
+    timeZone:  moment().zone() / (-60), // 时区
+    dataType: [], // 数据类型(1：平均值（差值），2：最大值（结束值）3：最小值（开始值） 4：瞬时值)
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备
     devicePoints: [], // 选中的测点
