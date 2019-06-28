@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './workOrder.scss';
 import { getLevel, getSource } from '../../../../constants/ticket';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Icon } from 'antd';
 
 class DefectBasicInfo extends Component {
   static propTypes = {
@@ -51,6 +51,7 @@ class DefectBasicInfo extends Component {
     const info = this.props.basicInfo;
     let images = info.photoAddress ? info.photoAddress.split(',') : [];
     const { knowledgebaseList } = this.props;
+    let { liked } = knowledgebaseList;
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
@@ -121,9 +122,14 @@ class DefectBasicInfo extends Component {
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
-                <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
-                    点赞 <i  className="iconfont icon-edit" ></i>
-                </div>
+                {liked === 0 ? 
+                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                    点赞 <Icon type="like" />
+                  </div> :
+                  <div className={styles.liked} disabled>
+                    已点赞 <Icon type="like" />
+                  </div>
+                }
               </div>
               )
             })}

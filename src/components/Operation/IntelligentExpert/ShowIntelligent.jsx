@@ -40,7 +40,7 @@ class ShowIntelligent extends Component {
 
   render(){
     const { intelligentDetail = {} } = this.props;
-    let { deviceTypeName, faultName, faultDescription, checkItems, processingMethod, requiredTools, remark, recorder, updateTime, likeCount } = intelligentDetail;
+    let { deviceTypeName, faultName, faultDescription, checkItems, processingMethod, requiredTools, remark, recorder, updateTime, likeCount, liked } = intelligentDetail;
     const rightHandler = localStorage.getItem('rightHandler') || '';
     const editRight = rightHandler.split(',').includes('operation_experience_edit');
     return (
@@ -90,7 +90,10 @@ class ShowIntelligent extends Component {
             <span className={styles.title}>点赞数</span>
             <span>{likeCount || '无'}</span>
           </div>
+          {liked === 0 ? 
           <Button className={styles.likeBtn} onClick={this.likeBtn}>点赞<Icon type="like" /></Button>
+          : 
+          <Button className={styles.likedBtn} disabled>已点赞<Icon type="like" /></Button>}
         </div>
       </div>
     )

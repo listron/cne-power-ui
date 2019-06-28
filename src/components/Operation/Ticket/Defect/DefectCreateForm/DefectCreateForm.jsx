@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import { Form, Input, Button, Select, Switch, Radio, Cascader,Modal } from 'antd';
+import { Form, Input, Button, Select, Switch, Radio, Cascader,Modal, Icon } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import styles from './defectCreateForm.scss';
 import InputLimit from '../../../../Common/InputLimit';
@@ -189,7 +189,8 @@ class TmpForm extends Component {
 
 
   render() {
-    let { stations, deviceTypes, defectTypes, defectDetail, container, commonList,knowledgebaseList} = this.props;
+    let { stations, deviceTypes, defectTypes, defectDetail, container, commonList, knowledgebaseList} = this.props;
+    let { liked } = knowledgebaseList;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
@@ -427,9 +428,14 @@ class TmpForm extends Component {
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
-                <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
-                    点赞 <i  className="iconfont icon-edit" ></i>
-                </div>
+                {liked === 0 ? 
+                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                    点赞 <Icon type="like" />
+                  </div> :
+                  <div className={styles.liked} disabled>
+                    已点赞 <Icon type="like" />
+                  </div>
+                }
               </div>
               )
             })}
