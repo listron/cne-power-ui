@@ -13,6 +13,8 @@ class InverterHeader extends Component {
     stationCode: PropTypes.string,
     deviceTypeCode: PropTypes.string,
     deviceDetail: PropTypes.object,
+    history: PropTypes.object,
+    resetDeviceStore: PropTypes.func,
   }
 
   constructor(props) {
@@ -44,6 +46,12 @@ class InverterHeader extends Component {
     })
   }
 
+  toParentDevice = (url) => {
+    const { resetDeviceStore, history } = this.props;
+    resetDeviceStore();
+    history.push(url);
+  }
+
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
@@ -64,13 +72,18 @@ class InverterHeader extends Component {
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
-          {(parentDeviceTypeCode && parentDeviceCode && <Link to={`/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`} className={styles.eachLink}>
+          {(parentDeviceTypeCode && parentDeviceCode && <span
+            onClick={() => this.toParentDevice(
+              `/hidden/monitorDevice/${stationCode}/${parentDeviceTypeCode}/${parentDeviceCode}`
+            )}
+            className={styles.eachLink}
+          >
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
             <span className={styles.linkName}>
               {parentDevice.deviceTypeName}{parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>)}
+          </span>)}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
             <Icon type="arrow-left" />
           </Link>

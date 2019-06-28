@@ -13,6 +13,8 @@ class IntegrateHeader extends Component {
     stationCode: PropTypes.string,
     deviceTypeCode: PropTypes.string,
     deviceDetail: PropTypes.object,
+    getDeviceInfoMonitor: PropTypes.func,
+    stopMonitor: PropTypes.func,
   }
 
   constructor(props) {
@@ -44,6 +46,12 @@ class IntegrateHeader extends Component {
     });
   }
 
+  toParentDevice = (url) => {
+    const { resetDeviceStore, history } = this.props;
+    resetDeviceStore();
+    history.push(url);
+  }
+
   render() {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
@@ -69,8 +77,10 @@ class IntegrateHeader extends Component {
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
         </div>
         <div className={styles.linkTo}>
-          {parentDevice && parentDevice.deviceTypeCode && <Link
-            to={`/hidden/monitorDevice/${stationCode}/${parentDevice.deviceTypeCode}/${parentDevice.deviceCode}`}
+          {parentDevice && parentDevice.deviceTypeCode && <span
+            onClick={() => this.toParentDevice(
+              `/hidden/monitorDevice/${stationCode}/${parentDevice.deviceTypeCode}/${parentDevice.deviceCode}`
+            )}
             className={styles.eachLink}
           >
             <span className={parentDeviceBaseInfo && `${parentDeviceBaseInfo.icon} linkIcon`}></span>
@@ -78,7 +88,7 @@ class IntegrateHeader extends Component {
               {parentDevice.deviceTypeName}{parentDevice.deviceName}详情
             </span>
             <span className="iconfont icon-upstream linkIcon"></span>
-          </Link>}
+          </span>}
           <Link to={`/monitor/singleStation/${stationCode}?showPart=${deviceDetail.deviceTypeCode}`} className={styles.backIcon}>
             <Icon type="arrow-left" />
           </Link>
