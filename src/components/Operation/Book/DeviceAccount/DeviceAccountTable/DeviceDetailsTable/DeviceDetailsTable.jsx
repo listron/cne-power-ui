@@ -99,44 +99,45 @@ export default class DeviceDetailsTable extends React.Component {
       title: '规格/型号',
       dataIndex: 'goodsModeName',
       sorter: true,
+      render: (goodsModeName) => <span className={styles.goodsModeName} title={goodsModeName}>{goodsModeName}</span>
     }, {
       title: '所属仓库',
       dataIndex: 'warehouseName',
       sorter: true,
     }, {
       title: '库存数量',
-      dataIndex: 'num',
+      dataIndex: 'inventoryNum',
       sorter: true,
-      render: (num, record) => {
-        if(Number(num) <= record.inventoryNum) {
+      render: (inventoryNum, record) => {
+        if(Number(inventoryNum) <= record.num) {
           return (
-            <span style={{color: "#f9b600"}}>
-              <span style={{marginRight: "5px"}}>{`${Number(num)}${record.unit}`}</span>
+            <span style={{color: '#f9b600'}}>
+              <span style={{marginRight: '5px'}}>{`${Number(inventoryNum)}${record.unit}`}</span>
               <sup>low</sup>
             </span>
           );
         }
-        return <span>{Number(num)}</span>;
+        return <span>{Number(inventoryNum)}</span>;
       }
     }, {
       title: '对应资产',
-      dataIndex: 'manufactorName',
-      render: (manufactorName) => <span>{manufactorName || "--"}</span>
+      dataIndex: 'assetsName',
+      render: (assetsName) => <span className={styles.assetsName} title={assetsName}>{assetsName || '--'}</span>
     }, {
       title: '厂家',
       sorter: true,
       dataIndex: 'madeNames',
-      render: (madeNames) => <span>{madeNames || "--"}</span>
+      render: (madeNames) => <span className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</span>
     }, {
       title: '供货商',
       dataIndex: 'supplierNames',
-      render: (supplierNames) => <span>{supplierNames || "--"}</span>
+      render: (supplierNames) => <span className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</span>
     }];
     return (
       <Modal
         visible={detailsFlag}
         footer={null}
-        width={1048}
+        width={1250}
         onCancel={this.handleCancel}
       >
         <div className={styles.deviceDetailsTable}>
