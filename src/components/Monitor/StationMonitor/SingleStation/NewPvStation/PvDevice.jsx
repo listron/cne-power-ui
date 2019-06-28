@@ -55,9 +55,6 @@ class PvDevice extends Component {
         this.props.changeSingleStationStore({ deviceTypeCode: '1' });
     }
 
-
-
-
     render() {
         const { deviceTypeFlow, deviceTypeCode } = this.props;
         const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
