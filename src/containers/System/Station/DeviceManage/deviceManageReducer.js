@@ -4,6 +4,7 @@ import { deviceManageAction } from './deviceManageAction';
 
 const initState = Immutable.fromJS({
   loading: false,
+  exportLoading: false, // 导出设备表loading
   stationCode: null, // 选中的电站
   deviceTypeCode: null, // 选中的设备类型
   deviceModeCode: null, // 选中的设备型号
