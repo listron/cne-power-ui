@@ -6,13 +6,13 @@
 		"logoText": "",
 		"needLogin": true,
 		"biUriPrefix": "/bi/",
-		"environment": "test"
+		"environment": "develop"
 	},
 	"demo": {
 		"apiUrlReal": "http://cnedemoapi.chinacloudsites.cn"
 	},
 	"develop": {
-    "apiUrlReal": "http://10.10.15.51"
+		"apiUrlReal": "http://10.10.15.51"
 	},
 	"local": {
 		"apiUrlReal": "http://localhost:802"

@@ -132,7 +132,6 @@ class PvStation extends Component {
   }
 
   singelDeatil = (stationCode) => { // 右侧单电站详情数据
-    console.log('stationCode', stationCode)
     this.props.getCapabilityDiagram({  // 出力图
       stationCode,
       stationType: '1',
