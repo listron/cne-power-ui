@@ -84,7 +84,7 @@ class PointManageHandle extends Component {
       url: `${path.basePaths.APIBasePath}${path.APISubPaths.system.downloadPointInfo}?stationCode=${stationCode}`,
       method: 'get',
       loadingName: 'exportLoading',
-      fileName: '电站测电表.xlsx',
+      fileName: '电站测点表.xlsx',
     })
   }
 
@@ -92,7 +92,6 @@ class PointManageHandle extends Component {
     const { deletePointList, stationCode } = this.props;
     deletePointList({ stationCode });
   }
-
 
   render() {
     const { pageSize, pageNum, totalNum, pointList, allStationBaseInfo, stationPointStatusList, stationCode, exportLoading } = this.props;
