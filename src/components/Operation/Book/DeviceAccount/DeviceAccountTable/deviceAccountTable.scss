@@ -1,6 +1,29 @@
-.DeviceAccountTable{
+@mixin omit($w) {
+  width: $w;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+
+.DeviceAccountTable {
   width: 100%;
-  .noData{
+
+  .madeNames {
+    @include omit(180px);
+  }
+
+  .manufactorName {
+    @include omit(180px);
+  }
+
+  .supplierNames{
+    @include omit(180px);
+  }
+
+  .noData {
     display: flex;
     justify-content: center;
     flex: 1;

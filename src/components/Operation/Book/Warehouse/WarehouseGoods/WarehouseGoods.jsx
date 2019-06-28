@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, Icon, Tree, Form, Row, Col, Input } from "antd";
-import CommonBreadcrumb from "../../../../../components/Common/CommonBreadcrumb";
-import CommonPagination from "../../../../Common/CommonPagination";
-import WarehouseGoodsTable from "./WarehouseGoodsTable/WarehouseGoodsTable";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Icon, Tree, Form, Row, Col, Input } from 'antd';
+import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
+import CommonPagination from '../../../../Common/CommonPagination';
+import WarehouseGoodsTable from './WarehouseGoodsTable/WarehouseGoodsTable';
 
-import styles from "./warehouseGoods.scss";
+import styles from './warehouseGoods.scss';
 
 const { TreeNode } = Tree;
 const FormItem = Form.Item;
@@ -24,25 +24,25 @@ class WarehouseGoods extends Component {
     getGoodsAddList: PropTypes.func,
     goodsAddLoading: PropTypes.bool,
     sortField: PropTypes.string,
-    sortMethod: PropTypes.string
+    sortMethod: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      addFlag: false
+      addFlag: false,
     };
   }
 
   componentDidMount() {
     const { getGoodsList } = this.props;
     const params = {
-      goodsType: "",
-      goodsName: "",
+      goodsType: '',
+      goodsName: '',
       pageNum: 1,
       pageSize: 10,
-      sortField: "",
-      sortMethod: ""
+      sortField: '',
+      sortMethod: '',
     };
     getGoodsList(params);
   }
@@ -50,15 +50,15 @@ class WarehouseGoods extends Component {
   onSelect = selectedKeys => {
     const { getGoodsList } = this.props;
     // 判断如果为空不发送请求
-    if (selectedKeys.join("") !== "") {
+    if (selectedKeys.join('') !== '') {
       // 参数
       const params = {
-        goodsType: selectedKeys.join("") === "100" ? "" : selectedKeys.join(""),
-        goodsName: "",
+        goodsType: selectedKeys.join('') === '100' ? '' : selectedKeys.join(''),
+        goodsName: '',
         pageNum: 1,
         pageSize: 10,
-        sortField: "",
-        sortMethod: ""
+        sortField: '',
+        sortMethod: '',
       };
       getGoodsList(params);
     }
@@ -66,7 +66,7 @@ class WarehouseGoods extends Component {
 
   onAddFunc = () => {
     this.setState({
-      addFlag: true
+      addFlag: true,
     });
   };
 
@@ -77,7 +77,7 @@ class WarehouseGoods extends Component {
       goodsType,
       goodsName,
       sortField,
-      sortMethod
+      sortMethod,
     } = this.props;
     const params = {
       goodsType,
@@ -85,14 +85,14 @@ class WarehouseGoods extends Component {
       pageNum: currentPage,
       pageSize,
       sortField,
-      sortMethod
+      sortMethod,
     };
     getGoodsList(params);
   };
 
   closeFunc = () => {
     this.setState({
-      addFlag: false
+      addFlag: false,
     });
   };
 
@@ -108,10 +108,10 @@ class WarehouseGoods extends Component {
         goodsType,
         func: () => {
           form.setFieldsValue({
-            goodsName: "",
-            goodsUnit: ""
+            goodsName: '',
+            goodsUnit: '',
           });
-        }
+        },
       };
       getGoodsAddList(params);
     });
@@ -125,7 +125,7 @@ class WarehouseGoods extends Component {
       pageSize,
       goodsType,
       sortField,
-      sortMethod
+      sortMethod,
     } = this.props;
     const params = {
       goodsType,
@@ -133,7 +133,7 @@ class WarehouseGoods extends Component {
       pageNum,
       pageSize,
       sortField,
-      sortMethod
+      sortMethod,
     };
     getGoodsList(params);
   };
@@ -143,26 +143,26 @@ class WarehouseGoods extends Component {
       form,
       goodsData: {
         isAbleOper,
-        pageData: { pageCount }
+        pageData: { pageCount },
       },
       pageNum,
       pageSize,
-      goodsAddLoading
+      goodsAddLoading,
     } = this.props;
     const { addFlag } = this.state;
     const { getFieldDecorator } = form;
     return (
       <div className={styles.warehouseGoods}>
         <CommonBreadcrumb
-          breadData={[{ name: "目录" }]}
-          style={{ marginLeft: "38px" }}
+          breadData={[{ name: '目录' }]}
+          style={{ marginLeft: '38px' }}
         />
         <div className={styles.warehouseGoodsCenter}>
           <div className={styles.goodsLeft}>
             <Tree
-              defaultExpandedKeys={["100", "100"]}
-              defaultSelectedKeys={["100", "100"]}
-              defaultCheckedKeys={["100", "100"]}
+              defaultExpandedKeys={['100', '100']}
+              defaultSelectedKeys={['100', '100']}
+              defaultCheckedKeys={['100', '100']}
               onSelect={this.onSelect}
             >
               <TreeNode title="仓库资产" key="100">
@@ -175,6 +175,7 @@ class WarehouseGoods extends Component {
                 <TreeNode title="物资管理" key="300">
                   <TreeNode title="生活物资" key="301" />
                   <TreeNode title="办公物资" key="302" />
+                  <TreeNode title="其他" key="303" />
                 </TreeNode>
               </TreeNode>
             </Tree>
@@ -204,22 +205,22 @@ class WarehouseGoods extends Component {
                     <Row>
                       <Col>
                         <FormItem label="物品名称">
-                          {getFieldDecorator("goodsName", {
+                          {getFieldDecorator('goodsName', {
                             rules: [
-                              { required: true, message: "请输入物品名称" }
-                            ]
+                              { required: true, message: '请输入物品名称' },
+                            ],
                           })(<Input maxLength={30} placeholder="30字以内" />)}
                         </FormItem>
                         <FormItem label="计量单位">
-                          {getFieldDecorator("goodsUnit", {
+                          {getFieldDecorator('goodsUnit', {
                             rules: [
-                              { required: true, message: "请输入计量单位" }
-                            ]
+                              { required: true, message: '请输入计量单位' },
+                            ],
                           })(<Input maxLength={6} placeholder="6字以内" />)}
                         </FormItem>
                         <Button
                           loading={goodsAddLoading}
-                          style={{ minWidth: "68px", marginTop: "4px" }}
+                          style={{ minWidth: '68px', marginTop: '4px' }}
                           htmlType="submit"
                         >
                           添加
@@ -238,7 +239,7 @@ class WarehouseGoods extends Component {
                   onSearch={value => {
                     return this.searchGoodsFunc(value);
                   }}
-                  style={{ width: 200, height: 32, marginTop: "4px" }}
+                  style={{ width: 200, height: 32, marginTop: '4px' }}
                 />
               </div>
               <CommonPagination

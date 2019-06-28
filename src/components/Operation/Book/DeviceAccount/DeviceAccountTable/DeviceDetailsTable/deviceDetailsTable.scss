@@ -1,13 +1,40 @@
-.deviceDetailsTable{
+@mixin omit($w) {
+  width: $w;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+.deviceDetailsTable {
   width: 100%;
   min-height: 510px;
-  .deviceDetailsTop{
+
+  .goodsModeName {
+    @include omit(180px);
+  }
+
+  .madeNames {
+    @include omit(180px);
+  }
+
+  .supplierNames {
+    @include omit(180px);
+  }
+
+  .assetsName{
+    @include omit(180px);
+  }
+
+  .deviceDetailsTop {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 20px  0 10px 0;
+    padding: 20px 0 10px 0;
   }
-  .noData{
+
+  .noData {
     display: flex;
     justify-content: center;
     flex: 1;
