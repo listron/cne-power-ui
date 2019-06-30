@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./deviceMode.scss";
-import EditableCell from "./EditableCell";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './deviceMode.scss';
+import EditableCell from './EditableCell';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import { Button, Table, Form, Input, Icon, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
@@ -14,7 +14,7 @@ const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
     <tr {...props} />
-  </EditableContext.Provider>)
+  </EditableContext.Provider>);
 };
 const EditableFormRow = Form.create()(EditableRow);
 class DeviceMode extends React.Component {
@@ -37,7 +37,7 @@ class DeviceMode extends React.Component {
     assetList: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
@@ -46,36 +46,36 @@ class DeviceMode extends React.Component {
       editingKey: '',
       assetsIds: [],
       resetValue: false,
-    }
+    };
   }
   componentDidMount() {
     //获取设备厂家列表供select选择厂家
 
     this.props.getDeviceFactorsList({
       orderField: '1',
-      orderMethod: 'desc'
-    })
+      orderMethod: 'desc',
+    });
     this.props.getDeviceModesList({
       orderField: '1',
       orderMethod: 'desc',
       pageSize: 10,
       pageNum: 1,
-    })
+    });
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
       deviceModeName: '',
-      orderField: '1',//排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
-      orderMethod: 'desc',//排序方式（“asc”：升序，”desc“:降序）
-      pageNum: 1,//页码
-      pageSize: 10,//每页记录数
+      orderField: '1', //排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
+      orderMethod: 'desc', //排序方式（“asc”：升序，”desc“:降序）
+      pageNum: 1, //页码
+      pageSize: 10, //每页记录数
       total: 0,
-    })
+    });
 
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   }
   onConfirmWarningTip = () => {
@@ -88,7 +88,7 @@ class DeviceMode extends React.Component {
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {
-    this.changFilter({ pageNum: currentPage, pageSize })
+    this.changFilter({ pageNum: currentPage, pageSize });
   }
   isEditing = record => record.modeId === this.state.editingKey;
   cancel = () => {
@@ -107,8 +107,8 @@ class DeviceMode extends React.Component {
           modeId,
           deviceModeName: row.deviceModeName,
           assetsId: checkedAssetId.join(),
-          manufactorId: checkedManufactor
-        })
+          manufactorId: checkedManufactor,
+        });
       }
 
       const newData = [...deviceModesList];
@@ -134,21 +134,21 @@ class DeviceMode extends React.Component {
   }
   edit(record) {
 
-    let modeId = record.modeId;
+    const modeId = record.modeId;
 
     this.setState({ editingKey: modeId });
     this.props.getDeviceFactorsList({
       assetsId: record.assetsId,
       orderField: '1',
-      orderMethod: 'desc'
-    })
+      orderMethod: 'desc',
+    });
     this.props.changeAssetConfigStore({
       checkedName: record.assetsName ? record.assetsName.replace(/,/g, '/') : '',
       checkedAssetId: record.assetsId ? record.assetsId.split() : [],
 
       checkedManufactor: record.manufactorId ? record.manufactorId : '',
 
-    })
+    });
 
 
   }
@@ -157,16 +157,16 @@ class DeviceMode extends React.Component {
       showWarningTip: true,
       warningTipText: '确认删除?',
       tableRecord: record,
-    })
+    });
   }
   changFilter = (value) => {
     const { getDeviceModesList, orderField, orderMethod, pageNum, pageSize, deviceModeName } = this.props;
     const params = { orderField, orderMethod, pageNum, pageSize, deviceModeName };
-    getDeviceModesList({ ...params, ...value })
+    getDeviceModesList({ ...params, ...value });
   }
   showEditTable = (record) => {
     const { isSaveStyle } = this.state;
-    this.setState({ isSaveStyle: !isSaveStyle })
+    this.setState({ isSaveStyle: !isSaveStyle });
   }
   submitForm = (e) => {
     const { validateFieldsAndScroll, resetFields } = this.props.form;
@@ -175,22 +175,22 @@ class DeviceMode extends React.Component {
         this.props.addDeviceModes({
           manufactorId: values.manufactorId,
           deviceModeName: values.addDeviceModeName,
-          assetsId: values.assetsId.assetsIds.join()
-        })
+          assetsId: values.assetsId.assetsIds.join(),
+        });
         //请求全部厂家
         this.props.getDeviceFactorsList({
           orderField: '1',
-          orderMethod: 'desc'
-        })
-        this.setState({ assetsIds: [], resetValue: true })
-        resetFields()
+          orderMethod: 'desc',
+        });
+        this.setState({ assetsIds: [], resetValue: true });
+        resetFields();
       }
     });
   }
   searchFactory = (value) => {
     this.changFilter({
       deviceModeName: value,
-    })
+    });
   }
   tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
@@ -203,36 +203,36 @@ class DeviceMode extends React.Component {
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    this.changFilter({ orderField, orderMethod })
+    this.changFilter({ orderField, orderMethod });
   }
   selectManufactor = (value, option) => {
   }
   changeSelctNode = (data) => {
 
     this.setState({
-      assetsIds: data.assetsIds
-    })
+      assetsIds: data.assetsIds,
+    });
     this.props.getDeviceFactorsList({
       assetsId: data.assetsIds.join(),
       orderField: '1',
-      orderMethod: 'desc'
-    })
+      orderMethod: 'desc',
+    });
 
   }
   changeNode = (data) => {
 
     // 
-    const { getDeviceFactorsList, } = this.props;
+    const { getDeviceFactorsList } = this.props;
     getDeviceFactorsList({
       assetsId: data.assetsIds.join(),
       orderField: '1',
-      orderMethod: 'desc'
-    })
+      orderMethod: 'desc',
+    });
     this.props.changeAssetConfigStore({
       checkedName: data.checkedName,
       checkedAssetId: data.assetsIds,
 
-    })
+    });
 
 
 
@@ -240,7 +240,7 @@ class DeviceMode extends React.Component {
 
   }
   queryDataType = (value) => {
-    this.props.getAssetTree({ stationType: value })
+    this.props.getAssetTree({ stationType: value });
   }
   render() {
     const { pageSize, pageNum, total, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
@@ -252,9 +252,9 @@ class DeviceMode extends React.Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell {...this.props} form={form} {...rest[0]} devicefactorslist={deviceFactorsList} changeNode={this.changeNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} />
+              return <EditableCell {...this.props} form={form} {...rest[0]} devicefactorslist={deviceFactorsList} changeNode={this.changeNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} />;
             }}
-          </EditableContext.Consumer>)
+          </EditableContext.Consumer>);
         },
       },
     };
@@ -265,41 +265,40 @@ class DeviceMode extends React.Component {
         title: '编码',
         dataIndex: 'deviceModeCode',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '设备型号',
         dataIndex: 'deviceModeName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '电站类型',
         dataIndex: 'stationType',
         sorter: true,
-        editable: true,
-        render: (text) => <span >{text === '0' ? '风电' : '光伏'}</span>
+        render: (text) => <span >{text === '0' ? '风电' : '光伏'}</span>,
       }, {
         title: '生产资产',
         dataIndex: 'assetsName',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</span>
+        render: (text) => <span title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</span>,
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '操作',
         render: (text, record, index) => {
@@ -312,14 +311,14 @@ class DeviceMode extends React.Component {
                   return (<a
                     onClick={() => this.save(form, record.modeId)}
                     style={{ marginRight: 8 }}>
-                    <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)
+                    <span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-doned'} ></span></a>);
                 }}
               </EditableContext.Consumer>)
-              : <a disabled={editingKey !== ''} onClick={() => this.edit(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"}></span></a>
+              : <a disabled={editingKey !== ''} onClick={() => this.edit(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
             }
             <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)}></span>
-          </div>)
-        }
+          </div>);
+        },
       },
     ].map((col) => {
       if (!col.editable) {
@@ -346,7 +345,7 @@ class DeviceMode extends React.Component {
                   rules: [{
                     required: true,
                     message: '请输入30字以内的设备厂家',
-                    type: "string",
+                    type: 'string',
                     max: 30,
                   }],
                 })(
@@ -360,7 +359,7 @@ class DeviceMode extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} assetsIds={this.state.assetsIds} resetValue={this.state.resetValue} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} resetValue={this.state.resetValue} />
                 )}
               </FormItem>
               <FormItem className={styles.formItemStyle} colon={false} label="所属厂家">
@@ -418,7 +417,7 @@ class DeviceMode extends React.Component {
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
       </div>
-    )
+    );
   }
 }
-export default Form.create()(DeviceMode)
+export default Form.create()(DeviceMode);
