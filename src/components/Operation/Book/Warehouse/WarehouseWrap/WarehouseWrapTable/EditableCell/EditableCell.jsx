@@ -29,7 +29,6 @@ class EditableCell extends React.Component {
         onOK={this.selectStation}
         multiple={true}
         stationShowNumber={true}
-        disabledStation={stations.toJS().filter(e => e.isConnected === 0).map(e => e.stationCode)}
       />
     );
   };

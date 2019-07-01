@@ -89,7 +89,7 @@ class FilterCondition extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props); // 这个props.[paramsName] && .... 这个写法有点差啊····反复读取props还做两次计算~
     this.state = {
       showFilter: '',
       createTimeEnd: props.defaultValue && props.defaultValue.createTimeEnd || '', //结束时间
@@ -99,16 +99,16 @@ class FilterCondition extends Component {
       defectLevel: props.defaultValue && props.defaultValue.defectLevel || [], //缺陷级别
       defectSource: props.defaultValue && props.defaultValue.defectSource || [], // 缺陷来源
       deviceTypeCode: props.defaultValue && props.defaultValue.deviceTypeCode || [], // 设备类型
-      defectTypeCode: props.defaultValue && props.defaultValue.defectTypeCode || [],//缺陷类型
-      belongMatrixs: props.defaultValue && props.defaultValue.belongMatrixs || [],//所属方阵
+      defectTypeCode: props.defaultValue && props.defaultValue.defectTypeCode || [], //缺陷类型
+      belongMatrixs: props.defaultValue && props.defaultValue.belongMatrixs || [], //所属方阵
       handleUser: props.defaultValue && props.defaultValue.handleUser || [], // 操作人
-      warningLevel: props.defaultValue && props.defaultValue.warningLevel || [],//告警级别
-      warningStatus: props.defaultValue && props.defaultValue.warningStatus || [],//
-      warningConfigName: props.defaultValue && props.defaultValue.warningConfigName || [],//告警类型
-      rangTime: props.defaultValue && props.defaultValue.rangTime || [],// 时间段
-      endTime: props.defaultValue && props.defaultValue.endTime || [],// 结束时间段
+      warningLevel: props.defaultValue && props.defaultValue.warningLevel || [], //告警级别
+      warningStatus: props.defaultValue && props.defaultValue.warningStatus || [], //
+      warningConfigName: props.defaultValue && props.defaultValue.warningConfigName || [], //告警类型
+      rangTime: props.defaultValue && props.defaultValue.rangTime || [], // 时间段
+      endTime: props.defaultValue && props.defaultValue.endTime || [], // 结束时间段
       handleUser: props.defaultValue && props.defaultValue.handleUser || '',
-      docketTypes: props.defaultValue && props.defaultValue.docketTypes || [],// 两票类型
+      docketTypes: props.defaultValue && props.defaultValue.docketTypes || [], // 两票类型
     };
   }
 
@@ -116,12 +116,12 @@ class FilterCondition extends Component {
     const { showFilter } = this.state;
     if (showFilter === filterText) {
       this.setState({
-        showFilter: ''
-      })
+        showFilter: '',
+      });
     } else {
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   }
 
@@ -136,14 +136,13 @@ class FilterCondition extends Component {
       return {
         state,
         ...change
-      }
-    })
-    
+      };
+    });
     const { onChange } = this.props;
-    onChange && onChange({ ...change })
+    onChange && onChange({ ...change });
   }
 
-  getDefaultName = (type) => {  //匹配
+  getDefaultName = (type) => { //匹配
     let result = "";
     switch (type) {
       case 'time': result = '发生时间'; break;

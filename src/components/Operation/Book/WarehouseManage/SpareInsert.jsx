@@ -22,7 +22,6 @@ class SpareInsert extends Component {
     goodsList: PropTypes.array,
     assetsManufac: PropTypes.array,
     assetsTree: PropTypes.array,
-    assetsManufac: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
@@ -41,11 +40,11 @@ class SpareInsert extends Component {
     this.state = {
       spareNumber: inventoryNum,
       saveMode: '',
-    }
+    };
   }
 
   componentDidMount(){
-    const { originInsertInfo, form, getGoodsList } = this.props; 
+    const { originInsertInfo, form, getGoodsList } = this.props;
     getGoodsList({ goodsMaxType: 101 });
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
@@ -56,7 +55,7 @@ class SpareInsert extends Component {
         manufactorName: '',
         supplierName: '',
         assetsIds: originInsertInfo.assetsIds,
-      })
+      });
     }
   }
 
@@ -76,7 +75,7 @@ class SpareInsert extends Component {
           entryNum: '',
           price: '',
           remarks: '',
-        })
+        });
       } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
         form.resetFields();
         changeStore({ assetsTree: [] });
@@ -88,13 +87,13 @@ class SpareInsert extends Component {
     const { spareNumber } = this.state;
     const { form } = this.props;
     this.setState({
-      spareNumber: parseFloat(spareNumber) + parseFloat(form.getFieldValue('entryNum'))
-    })
+      spareNumber: parseFloat(spareNumber) + parseFloat(form.getFieldValue('entryNum')),
+    });
   }
 
   backToList = () => {
     this.props.changeStore({
-      assetsTree: [], 
+      assetsTree: [],
       assetsManufac: [],
       originInsertInfo: null,
     }); // 树清空
@@ -136,15 +135,17 @@ class SpareInsert extends Component {
   saveInfo = () => {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      const assetsIds = values.assetsIds[0];
+      const assetsTotal = values.assetsIds[0] || '';
+      const assetsArr = assetsTotal.split(',').filter(e => !!e);
+      const assetsIds = assetsArr[assetsArr.length - 1];
       !err && insertWarehouse({ ...values, assetsIds });
-    })
+    });
   }
 
   render(){
     const { saveMode, spareNumber } = this.state;
     const {
-      form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
+      form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus,
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId, assetsIds } = getFieldsValue(['manufactorId', 'assetsIds']);
@@ -155,7 +156,7 @@ class SpareInsert extends Component {
       !value && callback(`请填写${text}`);
       isNaN(value) && callback('请填写数字');
       callback();
-    }
+    };
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
@@ -196,7 +197,7 @@ class SpareInsert extends Component {
                 style={{width: 200}}
                 disabled={!!originInsertInfo || !assetsIds }
               >
-                {!!originInsertInfo ? 
+                {!!originInsertInfo ?
                   <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option> // 编辑态, id展示为name
                   : assetsManufac.map(e => (
                     <Option key={e.manufactorId} value={e.manufactorId}>{e.manufactorName}</Option>
@@ -207,7 +208,7 @@ class SpareInsert extends Component {
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
               <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {!!originInsertInfo ? 
+                {!!originInsertInfo ?
                   <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
                   : insertModes.map(e => (
                     <Option key={e.id} value={e.id}>{e.name}</Option>
@@ -226,7 +227,7 @@ class SpareInsert extends Component {
             )}
           </FormItem>
           <FormItem label="入库数量">
-            {getFieldDecorator('entryNum',{
+            {getFieldDecorator('entryNum', {
               rules: [{
                 required: true,
                 validator: numValidator('入库数量'),
@@ -265,7 +266,7 @@ class SpareInsert extends Component {
           >保存并继续添加</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 
