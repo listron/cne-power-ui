@@ -10,7 +10,7 @@ const examinerAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-}
+};
 
 const initState = Immutable.fromJS({
   templateType: 1, // tab页控制 1-工作票, 2-操作票
