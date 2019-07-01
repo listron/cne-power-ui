@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceMode.scss';
-import EditMode from './EditMode';
+import EditableCell from './EditableCell';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import { Button, Table, Form, Input, Icon, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
@@ -10,6 +10,13 @@ import moment from 'moment';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const EditableContext = React.createContext();
+const EditableRow = ({ form, index, ...props }) => {
+  return (<EditableContext.Provider value={form}>
+    <tr {...props} />
+  </EditableContext.Provider>);
+};
+const EditableFormRow = Form.create()(EditableRow);
 class DeviceMode extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
@@ -36,13 +43,14 @@ class DeviceMode extends React.Component {
       warningTipText: '',
       tableRecord: {},
       isSaveStyle: false,
+      editingKey: '',
       assetsIds: [],
       resetValue: false,
-      showEditModeModal: false,
     };
   }
   componentDidMount() {
     //获取设备厂家列表供select选择厂家
+
     this.props.getDeviceFactorsList({
       orderField: '1',
       orderMethod: 'desc',
@@ -82,7 +90,10 @@ class DeviceMode extends React.Component {
   onPaginationChange = ({ currentPage, pageSize }) => {
     this.changFilter({ pageNum: currentPage, pageSize });
   }
-
+  isEditing = record => record.modeId === this.state.editingKey;
+  cancel = () => {
+    this.setState({ editingKey: '' });
+  };
   save(form, modeId) {
     const { deviceModesList, checkedAssetId, checkedManufactor } = this.props;
     form.validateFields((error, row) => {
@@ -99,13 +110,33 @@ class DeviceMode extends React.Component {
           manufactorId: checkedManufactor,
         });
       }
+
+      const newData = [...deviceModesList];
+
+      const index = newData.findIndex(item => modeId === item.modeId);
+
+      if (index > -1) {
+        const item = newData[index];
+
+
+        newData.splice(index, 1, {
+          ...item,
+        });
+
+        // this.props.changeAssetConfigStore({ deviceModesList: newData })
+        this.setState({ editingKey: '' });
+      } else {
+        newData.push(row);
+        // this.props.changeAssetConfigStore({ deviceModesList: newData })
+        this.setState({ editingKey: '' });
+      }
     });
   }
-  editMode(record) {
-    this.setState({
-      showEditModeModal: true,
-      tableRecord: record,
-    });
+  edit(record) {
+
+    const modeId = record.modeId;
+
+    this.setState({ editingKey: modeId });
     this.props.getDeviceFactorsList({
       assetsId: record.assetsId,
       orderField: '1',
@@ -114,8 +145,12 @@ class DeviceMode extends React.Component {
     this.props.changeAssetConfigStore({
       checkedName: record.assetsName ? record.assetsName.replace(/,/g, '/') : '',
       checkedAssetId: record.assetsId ? record.assetsId.split() : [],
+
       checkedManufactor: record.manufactorId ? record.manufactorId : '',
+
     });
+
+
   }
   deleteDeviceMode = (record) => {
     this.setState({
@@ -129,7 +164,10 @@ class DeviceMode extends React.Component {
     const params = { orderField, orderMethod, pageNum, pageSize, deviceModeName };
     getDeviceModesList({ ...params, ...value });
   }
-
+  showEditTable = (record) => {
+    const { isSaveStyle } = this.state;
+    this.setState({ isSaveStyle: !isSaveStyle });
+  }
   submitForm = (e) => {
     const { validateFieldsAndScroll, resetFields } = this.props.form;
     validateFieldsAndScroll(['addDeviceModeName', 'assetsId', 'manufactorId'], (err, values) => {
@@ -171,6 +209,7 @@ class DeviceMode extends React.Component {
   selectManufactor = (value, option) => {
   }
   changeSelctNode = (data) => {
+
     this.setState({
       assetsIds: data.assetsIds,
     });
@@ -182,6 +221,8 @@ class DeviceMode extends React.Component {
 
   }
   changeNode = (data) => {
+
+    // 
     const { getDeviceFactorsList } = this.props;
     getDeviceFactorsList({
       assetsId: data.assetsIds.join(),
@@ -191,20 +232,35 @@ class DeviceMode extends React.Component {
     this.props.changeAssetConfigStore({
       checkedName: data.checkedName,
       checkedAssetId: data.assetsIds,
+
     });
+
+
+
+
+
   }
   queryDataType = (value) => {
     this.props.getAssetTree({ stationType: value });
   }
-  cancleModal = () => {
-    this.setState({
-      showEditModeModal: false,
-    });
-  }
   render() {
     const { pageSize, pageNum, total, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
-    const { getFieldDecorator } = this.props.form;
-    const { showWarningTip, warningTipText, showEditModeModal, tableRecord } = this.state;
+
+    const components = {
+      body: {
+        row: EditableFormRow,
+        // cell: EditableCell,
+        cell: (...rest) => {
+          return (<EditableContext.Consumer>
+            {form => {
+              return <EditableCell {...this.props} form={form} {...rest[0]} devicefactorslist={deviceFactorsList} changeNode={this.changeNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} />;
+            }}
+          </EditableContext.Consumer>);
+        },
+      },
+    };
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { showWarningTip, warningTipText, isSaveStyle } = this.state;
     const columns = [
       {
         title: '编码',
@@ -247,15 +303,39 @@ class DeviceMode extends React.Component {
       }, {
         title: '操作',
         render: (text, record, index) => {
+          const { editingKey } = this.state;
+          const editable = this.isEditing(record);
           return (<div>
-            <a onClick={() => this.editMode(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
-
+            {editable ?
+              (<EditableContext.Consumer>
+                {form => {
+                  return (<a
+                    onClick={() => this.save(form, record.modeId)}
+                    style={{ marginRight: 8 }}>
+                    <span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-doned'} ></span></a>);
+                }}
+              </EditableContext.Consumer>)
+              : <a disabled={editingKey !== ''} onClick={() => this.edit(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
+            }
             <span title="删除" className="iconfont icon-del" onClick={() => this.deleteDeviceMode(record)}></span>
           </div>);
         },
       },
-
-    ];
+    ].map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          type: col.dataIndex === 'deviceModeName' ? 'text' : (col.dataIndex === 'assetsName' ? 'modal' : 'select'),
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: this.isEditing(record),
+        }),
+      };
+    });
     return (
       <div className={styles.deviceMode}>
         <div className={styles.title}>
@@ -298,9 +378,11 @@ class DeviceMode extends React.Component {
                     {deviceFactorsList.map(e => (<Option key={e.manufactorCode} value={e.manufactorId}>
                       {e.manufactorName}
                     </Option>))}
+
                   </Select>
                 )}
               </FormItem>
+
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
             </Form>
           </div>
@@ -317,14 +399,17 @@ class DeviceMode extends React.Component {
             </div>
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
-          <Table
-            loading={false}
-            dataSource={deviceModesList}
-            columns={columns}
-            pagination={false}
-            onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          />
+          <EditableContext.Provider value={this.props.form}>
+            <Table
+              loading={false}
+              dataSource={deviceModesList}
+              components={components}
+              columns={columns}
+              pagination={false}
+              onChange={this.tableChange}
+              locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            />
+          </EditableContext.Provider>
         </div>
         {showWarningTip && <WarningTip
           style={{ marginTop: '350px', width: '240px', height: '88px' }}
@@ -332,7 +417,6 @@ class DeviceMode extends React.Component {
           hiddenCancel={false}
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
-        {showEditModeModal && <EditMode {...this.props} showModal={showEditModeModal} cancleModal={this.cancleModal} queryDataType={this.queryDataType} tableRecord={tableRecord} />}
       </div>
     );
   }

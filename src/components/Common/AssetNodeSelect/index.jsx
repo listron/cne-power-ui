@@ -56,10 +56,10 @@ class StationSelect extends Component {
       stationTypeCount: props.stationTypeCount,
     };
   }
-  // componentDidMount() {//确保电站类型，和下面的数据数对应。
-  //   const { stationType, queryDataType } = this.props;
-  //   queryDataType(stationType);
-  // }
+  componentDidMount() {//确保电站类型，和下面的数据数对应。
+    const { stationType, queryDataType } = this.props;
+    queryDataType(stationType);
+  }
   componentWillReceiveProps(nextProps) {
     const { resetValue } = nextProps;
     if (resetValue && this.props.resetValue === false) {
