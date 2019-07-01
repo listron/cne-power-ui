@@ -45,7 +45,7 @@ class Examiner extends Component {
       '操作票': 2,
     };
     const newTableParams = {
-      selectedStation: [],
+      stationCodes: [],
       sortField: '', //station_name state, create_time
       sortMethod: '', // 排序规则 "asc"：正序  "desc"：倒序
       pageNum: 1,

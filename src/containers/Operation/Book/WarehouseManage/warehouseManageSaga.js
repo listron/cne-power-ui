@@ -199,11 +199,11 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
       processData: false,
       contentType: false,
     });
-    yield put({
-      type: warehouseManageAction.changeStore,
-      payload: { importLoading: false },
-    });
     if (response.data.code === '10000') { // 导入成功刷新列表
+      yield put({
+        type: warehouseManageAction.changeStore,
+        payload: { importLoading: false, importFileShow: false },
+      });
       yield fork(getWarehouseManageList, {
         payload: {
           ...tableParams,
@@ -212,6 +212,10 @@ function *importStockFile({ payload }) {// 导入备品备件/工器具/物资�
       });
     } else { throw response.data; }
   } catch (error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { importLoading: false },
+    });
     message.error(`导入失败, ${error.message}`);
   }
 }
@@ -521,4 +525,3 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.deleteReserveInfo, deleteReserveInfo);
   yield takeLatest(warehouseManageAction.recallReserveInfo, recallReserveInfo);
 }
-

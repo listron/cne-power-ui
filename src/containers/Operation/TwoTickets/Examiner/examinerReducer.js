@@ -15,7 +15,7 @@ const examinerAction = {
 const initState = Immutable.fromJS({
   templateType: 1, // tab页控制 1-工作票, 2-操作票
   tableParams: {
-    selectedStation: [],
+    stationCodes: [],
     sortField: '', //station_name state, create_time
     sortMethod: '', // 排序规则 "asc"：正序  "desc"：倒序
     pageNum: 1,

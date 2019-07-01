@@ -39,15 +39,15 @@ class WorkExaminer extends Component {
   }
 
 
-  checkStations = (selectedStation) => { // 电站选择
+  checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
     const newParams = {
       tableParams,
-      selectedStation,
+      stationCodes,
       pageNum: 1, // 回到第一页。
     };
     changeStore({ tableParams: newParams });
-    getSettingList(tableParams);
+    getSettingList(newParams);
   }
 
   workTicketColumn = () => ([ // 表头生成
