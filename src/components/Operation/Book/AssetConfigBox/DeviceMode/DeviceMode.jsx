@@ -200,6 +200,7 @@ class DeviceMode extends React.Component {
       manufactorName: '3',
       createTime: '4',
       operateUser: '5',
+      stationType: '6',
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
