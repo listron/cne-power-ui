@@ -44,7 +44,10 @@ class Boxtransformer extends Component {
         timeParam: '72',
       };
       this.props.stopMonitor(); // 停止之前的定时器。
-      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType, });
+      this.props.getDeviceInfoMonitor({
+        deviceCode: nextDevice,
+        deviceTypeCode: nextType,
+      });
       this.props.getDeviceChartMonitor(params);
     }
   }

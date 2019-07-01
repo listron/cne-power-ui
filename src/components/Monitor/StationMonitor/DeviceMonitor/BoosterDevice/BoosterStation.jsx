@@ -40,7 +40,10 @@ class BoosterStation extends Component {
     const nextType = nextParams.deviceTypeCode;
     if( nextDevice !== deviceCode ){ // 升压站内设备切换
       this.props.stopMonitor();
-      this.props.getDeviceInfoMonitor({ deviceCode, deviceTypeCode: nextType });
+      this.props.getDeviceInfoMonitor({
+        deviceCode: nextDevice,
+        deviceTypeCode: nextType,
+      });
     }
   }
 
