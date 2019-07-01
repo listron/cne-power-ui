@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlowSide.scss';
+import styles from './workFlow.scss';
 import { Radio, Form, Icon } from 'antd';
-import CreateFlow from '../../Common/CreateFlow';
-import DeatilFlow from '../../Common/DeatilFlow';
+import CreateFlow from '../Common/CreateFlow';
+import DeatilFlow from '../Common/DeatilFlow';
 
 
 class WorkFlowSide extends Component {
     static propTypes = {
         stations: PropTypes.array,
         form: PropTypes.object,
+        docketDetail: PropTypes.object,
         showPage: PropTypes.string,
         changeWorkFlowStore: PropTypes.func,
-    }
-
-
-    constructor() {
-        super();
-        this.state = {
-        };
-
     }
 
     onCancelEdit = () => {
@@ -36,8 +29,8 @@ class WorkFlowSide extends Component {
                     <div className={styles.text}>{showPage === 'add' ? '新建' : operTitle}</div>
                     <Icon type="arrow-left" className={styles.backIcon} onClick={this.onCancelEdit} />
                 </div>
-                {showPage === 'add' && <CreateFlow {...this.props} />}
-                {showPage === 'detail' && <DeatilFlow {...this.props} />}
+                {showPage === 'add' && <CreateFlow {...this.props} type={'work'} />}
+                {showPage === 'detail' && <DeatilFlow {...this.props} type={'work'} />}
             </div>
         );
     }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlowSide.scss';
+import styles from './index.scss';
 import { Form, Icon, Select, Button } from 'antd';
-import StationSelect from '../../../../Common/StationSelect';
-import InputLimit from '../../../../Common/InputLimit';
-import ImgUploader from '../../../../Common/Uploader/ImgUploader';
-import pathConfig from '../../../../../constants/path';
+import StationSelect from '../../../Common/StationSelect/index';
+import InputLimit from '../../../Common/InputLimit/index';
+import ImgUploader from '../../../Common/Uploader/ImgUploader';
+import pathConfig from '../../../../constants/path';
 import DefectLIst from './DefectLIst';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -20,6 +20,8 @@ class CreateFlow extends Component {
     noDistributeList: PropTypes.array,
     changeWorkFlowStore: PropTypes.func,
     addDockect: PropTypes.func,
+    docketTypeList: PropTypes.array,
+    docketDetail: PropTypes.object,
   }
 
   constructor() {
@@ -81,7 +83,7 @@ class CreateFlow extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { stations, docketTypeList, noDistributeList, docketDetail, reject } = this.props;
+    const { stations, docketTypeList, noDistributeList, docketDetail, reject, type } = this.props;
     const { docketInfo = {}, defectInfo, distributionInfo = [] } = docketDetail;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
@@ -100,6 +102,7 @@ class CreateFlow extends Component {
         thumbUrl: `${item.imgUrl}`,
       };
     });
+    const textName = type === 'work' ? '工作票' : '操作票';
     return (
       <div className={styles.workflow}>
         <Form className={styles.flowForm}>
@@ -114,7 +117,7 @@ class CreateFlow extends Component {
                 onOK={this.onStationSelected} />
             )}
           </FormItem>
-          <FormItem label="工作票类型" colon={false}>
+          {type === 'work' && <FormItem label="工作票类型" colon={false}>
             {getFieldDecorator('docketType', {
               rules: [{ required: true, message: '请选择' }],
               initialValue: docketInfo.docketType,
@@ -125,11 +128,11 @@ class CreateFlow extends Component {
                 })}
               </Select>
             )}
-          </FormItem>
-          <FormItem label="工作票编号" colon={false}>
+          </FormItem>}
+          <FormItem label={`${textName}编号`} colon={false}>
             {getFieldDecorator('docketCode', {
               rules: [{
-                required: true, message: '请输入工作票编号(数字、字母及组合)',
+                required: true, message: `请输入${textName}编号(数字、字母及组合)`,
                 pattern: /[a-zA-Z0-9]{1,30}/,
               }],
               initialValue: docketInfo.docketCode,
@@ -137,7 +140,7 @@ class CreateFlow extends Component {
               <InputLimit placeholder="请输入数字、字母及组合" size={30} height={64} width={300} />
             )}
           </FormItem>
-          <FormItem label="工作票名称" colon={false}>
+          <FormItem label={`${textName}票名`} colon={false}>
             {getFieldDecorator('docketName', {
               rules: [{ required: false, message: '请输入', max: 50 }],
               initialValue: docketInfo.docketName,
@@ -156,7 +159,7 @@ class CreateFlow extends Component {
                 {...this.props} />
             )}
           </FormItem>
-          <FormItem label="工作票附件" colon={false}>
+          <FormItem label={`${textName}附件`} colon={false}>
             <div className={styles.addImg}>
               <div className={styles.maxTip}>最多4张</div>
               {getFieldDecorator('annexImg', {

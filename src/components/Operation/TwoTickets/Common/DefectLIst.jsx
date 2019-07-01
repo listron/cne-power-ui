@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styles from './workFlowSide.scss';
-import FilterCondition from '../../../../Common/FilterCondition/FilterCondition';
-import CommonPagination from '../../../../Common/CommonPagination';
-import { getLevel, getStatus, getDefectSortField } from '../../../../../constants/ticket';
+import styles from './index.scss';
+import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
+import CommonPagination from '../../../Common/CommonPagination/index';
+import { getLevel, getStatus, getDefectSortField } from '../../../../constants/ticket';
 import { Table, Modal, Button } from 'antd';
 
 

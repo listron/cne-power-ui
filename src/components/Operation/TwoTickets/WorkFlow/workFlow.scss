@@ -1,35 +1,6 @@
 @import '../../../../theme/theme.scss';
 
-.statusGroup {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px 28px 20px;
 
-    .text {
-        display: flex;
-        flex-direction: row;
-        margin-right: 16px;
-        color: $darkColor;
-
-        >span:first-child {
-            margin-right: 28px;
-        }
-    }
-
-    :global {
-        .ant-radio-button-wrapper {
-            padding: 0 8px;
-            color: $darkColor;
-        }
-
-        .ant-radio-button-wrapper-checked {
-            background-color: $themeColor;
-            border: 1px solid $themeColor;
-            color: #fff;
-        }
-    }
-}
 
 .flowTable {
     .tableTop {
@@ -131,6 +102,72 @@
         }
         .ant-table-placeholder{
             border: none
+        }
+    }
+}
+
+.workflowDeatil {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    z-index: 1;
+    flex-direction: column;
+    background: #fff;
+    .header {
+      line-height: 64px;
+      display: flex;
+      padding-left: 32px;
+      align-items: center;
+      border-bottom: solid 1px #dfdfdf;
+      justify-content: space-between;
+      .text {
+          font-size: 18px;
+          color: #666;
+          letter-spacing: 4px;
+      }
+      .backIcon {
+          color: #666;
+          font-size: 20px;
+          border-left: 1px solid #dfdfdf;
+          height: 100%;
+          line-height: 64px;
+          width: 64px;
+          cursor: pointer;
+      }
+  }
+}
+
+.condition{
+    display: flex;
+    flex-direction: column;
+    .statusGroup {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px 28px 20px;
+    
+        .text {
+            display: flex;
+            flex-direction: row;
+            margin-right: 16px;
+            color: $darkColor;
+    
+            >span:first-child {
+                margin-right: 28px;
+            }
+        }
+    
+        :global {
+            .ant-radio-button-wrapper {
+                padding: 0 8px;
+                color: $darkColor;
+            }
+    
+            .ant-radio-button-wrapper-checked {
+                background-color: $themeColor;
+                border: 1px solid $themeColor;
+                color: #fff;
+            }
         }
     }
 }

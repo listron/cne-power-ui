@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlowSide.scss';
+import styles from './index.scss';
 import moment from 'moment';
-import ImgListModal from '../../../../Common/Uploader/ImgListModal';
-import path from '../../../../../constants/path';
+import ImgListModal from '../../../Common/Uploader/ImgListModal';
+import path from '../../../../constants/path';
 
 /*
   时间线组件：
@@ -18,6 +18,9 @@ class TimeLine extends Component {
         handleData: PropTypes.object,
         nodeImg: PropTypes.array,
         getNodeImg: PropTypes.func,
+        downLoadFile: PropTypes.func,
+        taskId: PropTypes.number,
+        docketId: PropTypes.number,
     }
 
     constructor(props) {
@@ -46,8 +49,8 @@ class TimeLine extends Component {
         });
     }
 
-    download = (docketId, item) => {
-        const { downLoadFile, taskId } = this.props;
+    download = () => {
+        const { downLoadFile, taskId, docketId } = this.props;
         const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${taskId}`;
         downLoadFile({
             url: downloadHref,
@@ -70,7 +73,7 @@ class TimeLine extends Component {
                         {item.isUploadImg &&
                             <div className={styles.imgDownLoad}>
                                 <div onClick={() => this.showImgs(docketId, taskId)} className={styles.imgList}> 票据附件</div>
-                                <div onClick={() => this.download(docketId, taskId)} className={styles.imgList}> 下载</div>
+                                <div onClick={this.download} className={styles.imgList}> 下载</div>
                             </div>
                         }
                     </div>
