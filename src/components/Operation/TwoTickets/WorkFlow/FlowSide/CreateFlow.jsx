@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styles from "./workFlowSide.scss";
-import { Form, Icon, Select, Button } from "antd";
-import StationSelect from "../../../../Common/StationSelect";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styles from './workFlowSide.scss';
+import { Form, Icon, Select, Button } from 'antd';
+import StationSelect from '../../../../Common/StationSelect';
 import InputLimit from '../../../../Common/InputLimit';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
 import pathConfig from '../../../../../constants/path';
@@ -23,50 +23,50 @@ class CreateFlow extends Component {
   }
 
   constructor() {
-    super()
+    super();
     this.state = {
       defectVisible: false,
-      selectedRows: {}
-    }
+      selectedRows: {},
+    };
   }
 
   componentDidMount() {
-    this.props.getDocketTypeList()
-    this.props.noDistributionList()
+    this.props.getDocketTypeList();
+    this.props.noDistributionList();
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
     const { form, docketId } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        let { stationCode } = values.stations[0];
+        const { stationCode } = values.stations[0];
         const { docketType, docketCode, docketName, defectList = {} } = values;
-        let annexImg = values.annexImg.map(e => {
+        const annexImg = values.annexImg.map(e => {
           return {
             imgUrl: e.response,
             rotate: e.rotate,
-          }
-        })
-        let otherImg = values.otherImg.map(e => {
+          };
+        });
+        const otherImg = values.otherImg.map(e => {
           return {
             imgUrl: e.response,
             rotate: e.rotate,
-          }
-        })
-        const { defectId = '' } = defectList
-        let params = {
+          };
+        });
+        const { defectId = '' } = defectList;
+        const params = {
           templateType: 1,
           stationCode,
           docketType,
           docketCode,
           docketName,
-          defectId,  // 缺陷工单ID
+          defectId, // 缺陷工单ID
           annexImg,
           otherImg,
           isContinueAdd,
           docketId,
         };
-        this.props.addDockect(params)
+        this.props.addDockect(params);
         if (isContinueAdd) {
           this.props.form.resetFields();
         }
@@ -75,8 +75,8 @@ class CreateFlow extends Component {
   }
 
   linkDefectData = (value) => { // 关联工单之后的数据
-    const { defectVisible, selectedRows = {} } = value
-    this.setState({ defectVisible, selectedRows })
+    const { defectVisible, selectedRows = {} } = value;
+    this.setState({ defectVisible, selectedRows });
   }
 
   render() {
@@ -91,14 +91,14 @@ class CreateFlow extends Component {
         uid: i,
         rotate: item.rotate,
         thumbUrl: `${item.imgUrl}`,
-      }
+      };
     });
     const otherImgDescribe = otherImg.map((item, i) => {
       return {
         uid: `${item.imgUrl}_${i}`,
         rotate: item.rotate,
-        thumbUrl: `${item.imgUrl}`
-      }
+        thumbUrl: `${item.imgUrl}`,
+      };
     });
     return (
       <div className={styles.workflow}>
@@ -119,9 +119,9 @@ class CreateFlow extends Component {
               rules: [{ required: true, message: '请选择' }],
               initialValue: docketInfo.docketType,
             })(
-              <Select placeholder={'请选择'} style={{ width: 198, }} >
+              <Select placeholder={'请选择'} style={{ width: 198 }} >
                 {docketTypeList.map((e, index) => {
-                  return (<Option value={e.code} key={index}>{e.name}</Option>)
+                  return (<Option value={e.code} key={index}>{e.name}</Option>);
                 })}
               </Select>
             )}
@@ -139,7 +139,7 @@ class CreateFlow extends Component {
           </FormItem>
           <FormItem label="工作票名称" colon={false}>
             {getFieldDecorator('docketName', {
-              rules: [{ required: false, message: '请输入', max: 50, }],
+              rules: [{ required: false, message: '请输入', max: 50 }],
               initialValue: docketInfo.docketName,
             })(
               <InputLimit placeholder="不超过50个汉字" size={50} height={64} width={300} />
@@ -193,7 +193,7 @@ class CreateFlow extends Component {
                 return (<div className={styles.basicItem} key={e.nodeCode}>
                   <div className={styles.nodeName}>{e.nodeName}</div>
                   <span className={styles.userNames}>{e.userNames || '--'}</span>
-                </div>)
+                </div>);
               })
             }
           </React.Fragment>
@@ -203,8 +203,8 @@ class CreateFlow extends Component {
           </div>
         </Form>
       </div>
-    )
+    );
   }
 }
 
-export default Form.create()(CreateFlow)
+export default Form.create()(CreateFlow);
