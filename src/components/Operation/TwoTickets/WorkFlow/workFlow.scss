@@ -104,18 +104,15 @@
         overflow: hidden;
         word-break: keep-all;
     }
-
     .stationName {
         @include color();
         max-width: 175px;
         min-width: 100px;
     }
-
     .dealUserNames {
         @include color();
         max-width: 150px;
     }
-
     .docketCode {
         @include color();
         max-width: 100px;

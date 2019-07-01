@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './powerLost.scss';
-import { Table } from "antd";
+import { Table } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../utils/utilFunc';
@@ -27,11 +27,11 @@ class TableList extends Component {
     pageSize: PropTypes.number,
   }
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
-    this.props.changePowerLostStore({ pageNum: currentPage, pageSize, })
-    this.props.onChangeFilter({ pageNum: currentPage, pageSize })
+    this.props.changePowerLostStore({ pageNum: currentPage, pageSize });
+    this.props.onChangeFilter({ pageNum: currentPage, pageSize });
   }
   ontableSort = (pagination, filter, sorter) => {
-    const { onChangeFilter, } = this.props;
+    const { onChangeFilter } = this.props;
     const { field, order } = sorter;
     const sortInfo = {
       regionName: '0',
@@ -46,12 +46,12 @@ class TableList extends Component {
       limitGen: '9',
       limitTime: '10',
       faultGen: '11',
-      faultTime: '12'
+      faultTime: '12',
     };
     const sortField = sortInfo[field] ? sortInfo[field] : '';
     const sortMethod = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    this.props.changePowerLostStore({ sortField, sortMethod })
-    onChangeFilter({ sortField, sortMethod })
+    this.props.changePowerLostStore({ sortField, sortMethod });
+    onChangeFilter({ sortField, sortMethod });
   }
 
   initMonthColumn = () => {
@@ -59,158 +59,172 @@ class TableList extends Component {
 
     const filterShow = [
       {
-        title: "区域",
-        dataIndex: "regionName",
+        title: '区域',
+        dataIndex: 'regionName',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.regionName} title={text}>{text}</div>;
+        },
         // width:40,
       },
       {
-        title: "电站名称",
-        dataIndex: "stationName",
+        title: '电站名称',
+        dataIndex: 'stationName',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.stationName} title={text}>{text}</div>;
+        },
       },
       {
-        title: "设备名称",
-        dataIndex: "deviceName",
+        title: '设备名称',
+        dataIndex: 'deviceName',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.deviceName} title={text}>{text}</div>;
+        },
       },
       {
-        title: "风机型号",
-        dataIndex: "deviceModeName",
+        title: '风机型号',
+        dataIndex: 'deviceModeName',
         sorter: true,
+        render: (text) => {
+          return <div className={styles.deviceModeName} title={text}>{text}</div>;
+        },
       },
     ];
     const show = filterShow.slice(0, filterTable);
     const columns = [
       {
-        title: "统计时段",
-        dataIndex: "date",
+        title: '统计时段',
+        dataIndex: 'date',
         sorter: true,
-        render(text){return text.replace(',','-')}
+        render(text) { return text.replace(',', '-'); },
       },
       {
         title: () => <TableColumnTitle title="限电时长" unit="h" />,
-        dataIndex: "limitHour",
+        dataIndex: 'limitHour',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="限电损失电量" unit="万kWh" />,
-        dataIndex: "limitpower",
+        dataIndex: 'limitpower',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="维护时长" unit="h" />,
-        dataIndex: "weihuHour",
+        dataIndex: 'weihuHour',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="风电维护损失电量" unit="万kWh" />,
-        dataIndex: "weihupower",
+        dataIndex: 'weihupower',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="技术待命时长" unit="h" />,
-        dataIndex: "resourceValue",
+        dataIndex: 'resourceValue',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="技术待命损失电量" unit="万kWh" />,
-        dataIndex: "resourceRate",
+        dataIndex: 'resourceRate',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="远程停机时长" unit="h" />,
-        dataIndex: "equivalentHours",
+        dataIndex: 'equivalentHours',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
       {
         title: () => <TableColumnTitle title="远程停机损失电量" unit="万kWh" />,
-        dataIndex: "pr",
+        dataIndex: 'pr',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       }, {
         title: () => <TableColumnTitle title="电网故障时长" unit="h" />,
-        dataIndex: "lostPower",
+        dataIndex: 'lostPower',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
-      },{
+        className: styles.numRight,
+      }, {
         title: () => <TableColumnTitle title="电网故障损失电量" unit="万kWh" />,
-        dataIndex: "limitPowerHours",
+        dataIndex: 'limitPowerHours',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
 
-      },{
+      }, {
         title: () => <TableColumnTitle title="故障停机时长" unit="h" />,
-        dataIndex: "guzhangHours",
+        dataIndex: 'guzhangHours',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
 
-      },{
+      }, {
         title: () => <TableColumnTitle title="故障停机损失电量" unit="万kWh" />,
-        dataIndex: "guazhangpower",
+        dataIndex: 'guazhangpower',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
 
-      },{
+      }, {
         title: () => <TableColumnTitle title="就地停机时长" unit="h" />,
-        dataIndex: "jiudihour",
+        dataIndex: 'jiudihour',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
 
-      },{
+      }, {
         title: () => <TableColumnTitle title="就地停机损失电量" unit="万kWh" />,
-        dataIndex: "jiudipower",
+        dataIndex: 'jiudipower',
         sorter: true,
         render(text) { return numWithComma(dataFormats(text, '--', 2, true)); },
-        className:styles.numRight
+        className: styles.numRight,
       },
     ];
     columns.unshift(...show);
-    return columns
+    return columns;
   }
 
 
   render() {
-    const { total, pageSize, pageNum, powerLostList,loading } = this.props;
+    const { total, pageSize, pageNum, powerLostList, loading } = this.props;
     const columns = this.initMonthColumn();
     const dataSource = powerLostList.map((e, i) => ({
       ...e, key: i,
-      
-    }))
+
+    }));
     return (
       <React.Fragment>
         <div className={styles.tableHeader}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <Table 
+        <Table
           loading={loading}
           columns={columns}
           dataSource={dataSource}
           onChange={this.ontableSort}
-          scroll={{ x: 1440 }}
+          scroll={{ x: 2235 }}
+          className={styles.tableStyles}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           pagination={false} />
       </React.Fragment>
-    )
+    );
   }
 }
 

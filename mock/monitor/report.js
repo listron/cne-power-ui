@@ -1,104 +1,104 @@
 
-let arr1 = Array(10).fill(1);
-let arr2 = Array(12).fill(1);
+const arr1 = Array(10).fill(1);
+const arr2 = Array(12).fill(1);
 
 module.exports = [
   { // 区域
     api: '/mock/v3/wind/report/fan/region',
     method: 'get',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": arr1.map((e, i) => `test${i + 1}`),
-      "serviceCode": "3.0"
+      'code': '10000',
+      'message': '请求成功',
+      'data': arr1.map((e, i) => `test${i + 1}`),
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { // 电站
     api: '/mock/v3/wind/report/fan/station',
     method: 'get',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": arr1.map((e, i) => {
+      'code': '10000',
+      'message': '请求成功',
+      'data': arr1.map((e, i) => {
         return {
           regionName: `test${i + 1}`,
           stationData: arr1.map((item, key) => {
             return {
-              stationCode: Math.random()*100000,
-              stationName: `电站${key + 1}`
-            }
-          })
-        }
+              stationCode: Math.random() * 100000,
+              stationName: `电站${key + 1}`,
+            };
+          }),
+        };
       }),
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { // 型号
     api: '/mock/v3/wind/report/fan/devicemode',
     method: 'get',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": arr1.map((e, i) => {
+      'code': '10000',
+      'message': '请求成功',
+      'data': arr1.map((e, i) => {
         return {
-          regionName: `test${i+1}`,
+          regionName: `test${i + 1}`,
           stationData: arr1.map((value, index) => {
             return {
-              stationCode: Math.random()*10000,
+              stationCode: Math.random() * 10000,
               stationName: `电站${index + 1}`,
-              deviceModeData:arr1.map((item, key) => {
+              deviceModeData: arr1.map((item, key) => {
                 return {
-                  deviceModeCode: Math.random()*100000,
-                  deviceModeName: `设备型号${key + 1}`
-                }
-              })
-            }
-          })
-        }
+                  deviceModeCode: Math.random() * 100000,
+                  deviceModeName: `设备型号${key + 1}`,
+                };
+              }),
+            };
+          }),
+        };
 
-       
+
       }),
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { // 设备（风机）
     api: '/mock/v3/wind/report/fan/device',
     method: 'get',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": arr1.map((e, i) => {
+      'code': '10000',
+      'message': '请求成功',
+      'data': arr1.map((e, i) => {
         return {
-          regionName: `test${i+1}`,
+          regionName: `test${i + 1}`,
           stationData: arr1.map((value, index) => {
             return {
-              stationCode: Math.random()*100000,
+              stationCode: Math.random() * 100000,
               stationName: `电站${index + 1}`,
-              deviceData:arr1.map((item, key) => {
+              deviceData: arr1.map((item, key) => {
                 return {
-                  deviceCode: Math.random()*100000,
-                  deviceName: `设备${key + 1}`
-                }
-              })
-            }
-          })
-        }
+                  deviceCode: Math.random() * 100000,
+                  deviceName: `设备${key + 1}`,
+                };
+              }),
+            };
+          }),
+        };
       }),
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
 
   { //电量报表
     api: '/mock/v3/wind/report/fan/gen',
     method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": {
+      'code': '10000',
+      'message': '请求成功',
+      'data': {
         pageCount: 12,
         dataList: arr2.map((e, i) => ({
           time: '2019-04-05',
@@ -115,19 +115,19 @@ module.exports = [
           limitTime: '限电时长',
           faultGen: '故障损失电量',
           faultTime: '故障时长',
-        }))
+        })),
       },
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { //设备状态报表汇总
     api: '/mock/v3/wind/report/fan/devicestatus',
     method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": {
+      'code': '10000',
+      'message': '请求成功',
+      'data': {
         pageCount: 12,
         dataList: arr2.map((e, i) => ({
           time: '2019-04-05',
@@ -139,19 +139,19 @@ module.exports = [
           num: i + 1,
           statusTime: i + 1,
           statusHours: '状态小时数',
-        }))
+        })),
       },
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { //设备状态报表明细
     api: '/mock/v3/wind/report/fan/devicestatus/detail',
     method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": {
+      'code': '10000',
+      'message': '请求成功',
+      'data': {
         pageCount: 12,
         dataList: arr2.map((e, i) => ({
           regionName: `test${i + 1}`,
@@ -163,19 +163,19 @@ module.exports = [
           statusTime: i + 1,
           statusHours: '状态小时数',
           statusDescribe: '状态描述',
-        }))
+        })),
       },
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { //故障报表汇总
     api: '/mock/v3/wind/report/fan/devicefault',
     method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": {
+      'code': '10000',
+      'message': '请求成功',
+      'data': {
         pageCount: 12,
         dataList: arr2.map((e, i) => ({
           regionName: `test${i + 1}`,
@@ -188,19 +188,19 @@ module.exports = [
           faultTime: i + 1,
           faultHours: '故障小时数',
           faultGen: '损失电量',
-        }))
+        })),
       },
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
   { //故障报表明细
     api: '/mock/v3/wind/report/fan/devicefault/detail',
     method: 'post',
     response: {
-      "code": "10000",
-      "message": "请求成功",
-      "data": {
+      'code': '10000',
+      'message': '请求成功',
+      'data': {
         pageCount: 12,
         dataList: arr2.map((e, i) => ({
           regionName: `test${i + 1}`,
@@ -215,12 +215,12 @@ module.exports = [
           happenTime: '2019-04-05',
           faultTime: i + 1,
           faultHours: '故障小时数',
-        }))
+        })),
       },
-      "serviceCode": "3.0"
+      'serviceCode': '3.0',
     },
-    error: {}
+    error: {},
   },
 
 
-]
+];
