@@ -213,6 +213,13 @@ const mapDispatchToProps = dispatch => ({
         resultName: "allStationBaseInfo"
       }
     }),
+    exportPoints: payload => dispatch({
+      type: commonAction.downLoadFile,
+      payload: {
+        ...payload,
+        actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS
+      }
+    }),
   changeCommonStore: payload =>
     dispatch({ type: commonAction.changeCommonStore, payload }),
   addDeviceDetail: payload =>
