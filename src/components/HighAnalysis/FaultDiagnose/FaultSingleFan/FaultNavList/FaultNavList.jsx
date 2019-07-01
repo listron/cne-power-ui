@@ -1,8 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Icon } from "antd";
-import styles from "./faultNavList.scss";
-import moment from "../../FaultAllFan/FaultNavList/FaultNavList";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Icon } from 'antd';
+import moment from 'moment';
+
+import styles from './faultNavList.scss';
+
 
 export default class FaultNavList extends React.Component {
   static propTypes = {
