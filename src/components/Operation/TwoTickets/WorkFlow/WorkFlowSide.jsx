@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './workFlowSide.scss';
 import { Radio, Form, Icon } from 'antd';
-import CreateFlow from './CreateFlow';
-import DeatilFlow from './DeatilFlow';
+import CreateFlow from '../../Common/CreateFlow';
+import DeatilFlow from '../../Common/DeatilFlow';
 
 
 class WorkFlowSide extends Component {
@@ -11,22 +11,23 @@ class WorkFlowSide extends Component {
         stations: PropTypes.array,
         form: PropTypes.object,
         showPage: PropTypes.string,
+        changeWorkFlowStore: PropTypes.func,
     }
 
 
     constructor() {
-        super()
+        super();
         this.state = {
-        }
+        };
 
     }
 
     onCancelEdit = () => {
-        this.props.changeWorkFlowStore({ showPage: 'list' })
-    }
+        this.props.changeWorkFlowStore({ showPage: 'list' });
+    };
 
     render() {
-        const { showPage, docketDetail = {}, } = this.props;
+        const { showPage, docketDetail = {} } = this.props;
         const { docketInfo = {} } = docketDetail;
         const { operTitle } = docketInfo;
         return (
@@ -38,8 +39,7 @@ class WorkFlowSide extends Component {
                 {showPage === 'add' && <CreateFlow {...this.props} />}
                 {showPage === 'detail' && <DeatilFlow {...this.props} />}
             </div>
-
-        )
+        );
     }
 }
 

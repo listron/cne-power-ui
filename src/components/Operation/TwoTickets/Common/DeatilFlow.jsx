@@ -58,9 +58,9 @@ class DeatilFlow extends Component {
                                 processData={docketProcess}
                                 getNodeImg={this.props.getNodeImg}
                                 nodeImg={this.props.nodeImg}
-                                docketId={this.props.docketId}
                                 operWinType={operWinType}
                                 downLoadFile={downLoadFile}
+                                docketId={this.props.docketId}
                                 taskId={taskId}
                             />
                         </div>
