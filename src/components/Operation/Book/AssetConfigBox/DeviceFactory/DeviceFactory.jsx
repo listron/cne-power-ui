@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceFactory.scss';
 import EditFactors from './EditFactors';
-import { Button, Table, Form, Input, Icon } from 'antd';
+import { Button, Table, Form, Input, Icon, message } from 'antd';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
@@ -88,11 +88,17 @@ class DeviceFactory extends React.Component {
   }
 
   deleteFactory = (record) => {
+    const { isBuild } = record;
+    if (isBuild) {
+      return message.warning('内置厂家不能删除');
+    }
     this.setState({
       showWarningTip: true,
       warningTipText: '确认删除?',
       tableRecord: record,
     });
+
+
   }
   submitForm = (e) => {
     const { validateFieldsAndScroll, resetFields } = this.props.form;

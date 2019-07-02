@@ -29,7 +29,8 @@ class EditFactors extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { showModal, assetList, stationTypeCount, queryDataType, cancleModal, tableRecord } = this.props;
-    const { manufactorName, assetsDatas } = tableRecord;
+    const { manufactorName, assetsDatas, isBuild } = tableRecord;
+    console.log('isBuild: ', isBuild);
     const pv = assetsDatas && assetsDatas.filter((e) => e.stationType === 1).map((e) => (e.assetsIds));
     const wind = assetsDatas && assetsDatas.filter((e) => e.stationType === 0).map((e) => (e.assetsIds));
     const stationType = pv.length ? 1 : 0;
@@ -59,7 +60,7 @@ class EditFactors extends React.Component {
                   { message: '请输入设备厂家名称', required: true },
                 ],
               })(
-                <Input placeholder="请输入..." />
+                isBuild ? <span>manufactorName</span> : <Input placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem label="生产资产" colon={false} >

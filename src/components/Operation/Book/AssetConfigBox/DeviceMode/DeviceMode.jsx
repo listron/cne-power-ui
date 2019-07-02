@@ -83,24 +83,7 @@ class DeviceMode extends React.Component {
     this.changFilter({ pageNum: currentPage, pageSize });
   }
 
-  save(form, modeId) {
-    const { deviceModesList, checkedAssetId, checkedManufactor } = this.props;
-    form.validateFields((error, row) => {
 
-      row.manufactorId = row.manufactorName;
-      if (error) {
-        return;
-      }
-      if (!error) {
-        this.props.editDeviceModes({
-          modeId,
-          deviceModeName: row.deviceModeName,
-          assetsId: checkedAssetId.join(),
-          manufactorId: checkedManufactor,
-        });
-      }
-    });
-  }
   editMode(record) {
     this.setState({
       showEditModeModal: true,
@@ -179,20 +162,8 @@ class DeviceMode extends React.Component {
       orderField: '1',
       orderMethod: 'desc',
     });
+  }
 
-  }
-  changeNode = (data) => {
-    const { getDeviceFactorsList } = this.props;
-    getDeviceFactorsList({
-      assetsId: data.assetsIds.join(),
-      orderField: '1',
-      orderMethod: 'desc',
-    });
-    this.props.changeAssetConfigStore({
-      checkedName: data.checkedName,
-      checkedAssetId: data.assetsIds,
-    });
-  }
   queryDataType = (value) => {
     this.props.getAssetTree({ stationType: value });
   }

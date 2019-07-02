@@ -32,18 +32,14 @@ class EditMode extends React.Component {
       const { modeId } = tableRecord;
 
       if (!err) {
-        this.props.editDeviceModes({ modeId, deviceModeName: values.editDeviceMode, assetsId: values.eidtAssetIds.assetsIds.join(), manufactorId: values.eidtFactor });
+        this.props.editDeviceModes({ 
+          modeId, 
+          deviceModeName: values.editDeviceMode, 
+          assetsId: values.eidtAssetIds.assetsIds.join(), 
+          manufactorId: values.eidtFactor });
         this.props.cancleModal();
-
       }
-      // if (!error) {
-      //   this.props.editDeviceModes({
-      //     modeId,
-      //     deviceModeName: row.deviceModeName,
-      //     assetsId: checkedAssetId.join(),
-      //     manufactorId: checkedManufactor,
-      //   });
-      // }
+     
     });
   }
   render() {
