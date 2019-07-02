@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Radio, Popover, Icon } from "antd";
+import { Table, Radio, Popover, Icon } from 'antd';
 import moment from 'moment';
-import styles from "./record.scss";
+import styles from './record.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 
 class StockList extends Component {
@@ -14,7 +14,7 @@ class StockList extends Component {
     getInRecordList: PropTypes.func,
     getOutRecordList: PropTypes.func,
     stockRecordsStore: PropTypes.func,
-    listParams:PropTypes.object,
+    listParams: PropTypes.object,
     tableType: PropTypes.string,
     inRecordListData: PropTypes.array,
     outRecordListData: PropTypes.array,
@@ -23,13 +23,13 @@ class StockList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: "",
+      visible: '',
     };
   }
 
   componentDidMount(){
     const { getInRecordList, listParams } = this.props;
-    getInRecordList(listParams)
+    getInRecordList(listParams);
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
@@ -38,16 +38,16 @@ class StockList extends Component {
       ...listParams,
       pageSize,
       pageNum: currentPage,
-    }
+    };
     stockRecordsStore({
-      ...newParams
-    })
+      ...newParams,
+    });
     tableType === 'inRecord' && getInRecordList({
-      ...newParams
-    })
+      ...newParams,
+    });
     tableType === 'outRecord' && getOutRecordList({
-      ...newParams
-    })
+      ...newParams,
+    });
   }
 
   inColumns = () => { // 展示入库列表
