@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./deviceFactory.scss";
-import EditableCell from "./EditableCell";
-import { Button, Table, Form, Input, Icon } from 'antd';
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './deviceFactory.scss';
+import EditFactors from './EditFactors';
+import { Button, Table, Form, Input, Icon, message } from 'antd';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
@@ -11,13 +11,7 @@ import moment from 'moment';
 
 
 const FormItem = Form.Item;
-const EditableContext = React.createContext();
-const EditableRow = ({ form, index, ...props }) => {
-  return (<EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>)
-};
-const EditableFormRow = Form.create()(EditableRow);
+
 class DeviceFactory extends React.Component {
   static propTypes = {
     changeAssetConfigStore: PropTypes.func,
@@ -39,7 +33,7 @@ class DeviceFactory extends React.Component {
 
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
@@ -47,28 +41,29 @@ class DeviceFactory extends React.Component {
       isSaveStyle: false,
       editingKey: '',
       resetValue: false,
-    }
+      showEditFactorModal: false,
+    };
   }
   componentDidMount() {
     const { getDeviceFactorsList, pageNum, pageSize } = this.props;
-    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum, pageSize })
+    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum, pageSize });
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
-      manufactorName: '',//设备厂家名称(模糊查询)
-      orderField: '1',//排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
-      orderMethod: 'desc',//排序方式（“asc”：升序，”desc“:降序）
-      pageNum: 1,//页码
-      pageSize: 10,//每页记录数
+      manufactorName: '', //设备厂家名称(模糊查询)
+      orderField: '1', //排序字段（1：编码，2：设备厂家，3：创建时间，4：操作人）
+      orderMethod: 'desc', //排序方式（“asc”：升序，”desc“:降序）
+      pageNum: 1, //页码
+      pageSize: 10, //每页记录数
       total: 0,
-    })
+    });
   }
   onPaginationChange = ({ currentPage, pageSize }) => {
-    this.changFilter({ pageNum: currentPage, pageSize })
+    this.changFilter({ pageNum: currentPage, pageSize });
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   }
   onConfirmWarningTip = () => {
@@ -79,67 +74,46 @@ class DeviceFactory extends React.Component {
     });
     this.props.deleteDeviceFactors({ manufactorId });
   }
-  isEditing = record => record.manufactorId === this.state.editingKey;
-  cancel = () => {
-    this.setState({ editingKey: '' });
-  };
+
+
   save(form, manufactorId) {
     const { deviceFactorsList, editDeviceFactors } = this.props;
     form.validateFields((error, row) => {
-      console.log('row: ', row);
-      if (error) {
-        return;
-      }
       if (!error) {
         const { assetsNames } = row;
-        let assetsIds = assetsNames.length ? assetsNames : assetsNames.assetsIds;
-        editDeviceFactors({ manufactorId, assetsIds: assetsIds, manufactorName: row.manufactorName })
-      }
-
-      const newData = [...deviceFactorsList];
-      const index = newData.findIndex(item => manufactorId === item.manufactorId);
-      if (index > -1) {
-        const item = newData[index];
-
-
-
-        newData.splice(index, 1, {
-          ...item,
-          // ...row,
-        });
-        this.props.changeAssetConfigStore({ deviceFactorsList: newData })
-        this.setState({ data: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.props.changeAssetConfigStore({ deviceFactorsList: newData })
-        this.setState({ data: newData, editingKey: '' });
+        const assetsIds = assetsNames.length ? assetsNames : assetsNames.assetsIds;
+        editDeviceFactors({ manufactorId, assetsIds: assetsIds, manufactorName: row.manufactorName });
       }
     });
   }
-  edit(key) {
-    this.setState({ editingKey: key });
-  }
+
   deleteFactory = (record) => {
+    const { isBuild } = record;
+    if (isBuild) {
+      return message.warning('内置厂家不能删除');
+    }
     this.setState({
       showWarningTip: true,
       warningTipText: '确认删除?',
       tableRecord: record,
-    })
+    });
+
+
   }
   submitForm = (e) => {
     const { validateFieldsAndScroll, resetFields } = this.props.form;
     validateFieldsAndScroll(['manufactorName', 'assetsIds'], (err, values) => {
       if (!err) {
-        this.props.addDeviceFactors({ manufactorName: values.manufactorName, assetsIds: values.assetsIds.assetsIds })
-        this.setState({ resetValue: true })
-        resetFields()
+        this.props.addDeviceFactors({ manufactorName: values.manufactorName, assetsIds: values.assetsIds.assetsIds });
+        this.setState({ resetValue: true });
+        resetFields();
       }
     });
   }
   searchFactory = (value) => {
     this.changFilter({
       manufactorName: value,
-    })
+    });
   }
   tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
@@ -151,106 +125,75 @@ class DeviceFactory extends React.Component {
     };
     const orderField = sortInfo[field] ? sortInfo[field] : '';
     const orderMethod = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
-    this.changFilter({ orderField, orderMethod })
+    this.changFilter({ orderField, orderMethod });
   }
   changFilter = (value) => {
     const { getDeviceFactorsList, orderField, orderMethod, pageNum, pageSize, manufactorName } = this.props;
     const params = { orderField, orderMethod, pageNum, pageSize, manufactorName };
-    getDeviceFactorsList({ ...params, ...value })
+    getDeviceFactorsList({ ...params, ...value });
   }
-  changeSelctNode = (data) => {
-    console.log('data: ', data);
 
-
-  }
   queryDataType = (value) => {
-    console.log('value: ', value);
-    this.props.getAssetTree({ stationType: value })
+
+    this.props.getAssetTree({ stationType: value });
+  }
+  editFactors = (record) => {
+    this.setState({
+      showEditFactorModal: true,
+      tableRecord: record,
+    });
+
+  }
+  cancleModal = () => {
+    this.setState({
+      showEditFactorModal: false,
+    });
   }
   render() {
     const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType } = this.props;
-    const components = {
-      body: {
-        row: EditableFormRow,
-        // cell: EditableCell,
-        cell: (...rest) => {
-          return (<EditableContext.Consumer>
-            {form => {
-
-              return <EditableCell form={form} {...rest[0]} onChange={this.changeSelctNode} assetlist={assetList} stationtypecount={stationTypeCount} querydatatype={this.queryDataType} multiple={true} />
-            }}
-          </EditableContext.Consumer>)
-        },
-      },
-    };
-
-    const { getFieldDecorator, } = this.props.form;
-    const { showWarningTip, warningTipText } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const { showWarningTip, warningTipText, showEditFactorModal, tableRecord } = this.state;
     const columns = [
       {
         title: '编码',
         dataIndex: 'manufactorCode',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '生产资产',
         dataIndex: 'assetsNames',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text.join(',')}</span>
+        render: (text) => <span title={text}>{text.join(',')}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '操作',
         render: (text, record, index) => {
-          const { editingKey } = this.state;
-          const editable = this.isEditing(record);
           return (<div>
-            {editable ?
-              (<EditableContext.Consumer>
-                {form => {
-                  return (<a
-                    onClick={() => this.save(form, record.manufactorId)}
-                    style={{ marginRight: 8 }}>
-                    <span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-doned"} ></span></a>)
-                }}
-              </EditableContext.Consumer>)
-              : <a disabled={editingKey !== ''} onClick={() => this.edit(record.manufactorId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"}></span></a>
-            }
-            <span title="删除" className={"iconfont icon-del"} onClick={() => this.deleteFactory(record)}></span>
-          </div>)
-        }
+            <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
+
+            <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span>
+          </div>);
+        },
 
       },
-    ].map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-      return {
-        ...col,
-        onCell: record => ({
-          record,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          type: col.dataIndex === 'manufactorName' ? 'text' : 'select',
-          editing: this.isEditing(record),
-        }),
-      };
-    });
+    ];
+
     return (
       <div className={styles.deviceFactory}>
         <div className={styles.title}>
@@ -262,7 +205,7 @@ class DeviceFactory extends React.Component {
                   rules: [{
                     required: true,
                     message: '请输入30字以内的设备厂家',
-                    type: "string",
+                    type: 'string',
                     max: 30,
                   }],
                 })(
@@ -294,30 +237,27 @@ class DeviceFactory extends React.Component {
                 onSearch={this.searchFactory}
               />
             </div>
-
             <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
           </div>
-          <EditableContext.Provider value={this.props.form}>
-            <Table
-              loading={false}
-              components={components}
-              dataSource={deviceFactorsList.map((e, i) => {
-                e.assetsNames = [];
-                e.assetsIds = [];
-                e.isBuild = [];
-                e.assetsDatas.forEach((item, index) => {
-                  e.assetsNames.push(item.assetsNames.replace(/,/g, '/'));
-                  e.assetsIds.push(item.assetsIds);
-                  e.isBuild.push(item.isBuild);
-                })
-                return { ...e }
-              })}
-              onChange={this.tableChange}
-              columns={columns}
-              pagination={false}
-              locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-            />
-          </EditableContext.Provider>
+
+          <Table
+            loading={false}
+            dataSource={deviceFactorsList.map((e, i) => {
+              e.assetsNames = [];
+              e.assetsIds = [];
+              e.isBuild = [];
+              e.assetsDatas.forEach((item, index) => {
+                e.assetsNames.push(item.assetsNames.replace(/,/g, '/'));
+                e.assetsIds.push(item.assetsIds);
+                e.isBuild.push(item.isBuild);
+              });
+              return { ...e };
+            })}
+            onChange={this.tableChange}
+            columns={columns}
+            pagination={false}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          />
         </div>
         {showWarningTip && <WarningTip
           style={{ marginTop: '350px', width: '240px', height: '88px' }}
@@ -325,9 +265,10 @@ class DeviceFactory extends React.Component {
           hiddenCancel={false}
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
+        {showEditFactorModal && <EditFactors {...this.props} showModal={showEditFactorModal} cancleModal={this.cancleModal} queryDataType={this.queryDataType} tableRecord={tableRecord} />}
       </div>
-    )
+    );
   }
 }
 
-export default Form.create()(DeviceFactory)
+export default Form.create()(DeviceFactory);

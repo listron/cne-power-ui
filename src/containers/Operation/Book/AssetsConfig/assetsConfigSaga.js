@@ -7,7 +7,7 @@ import moment from 'moment';
 const APIBasePath = Path.basePaths.APIBasePath;
 const operation = Path.APISubPaths.operation;
 
-function* getAssetTree(action) {  // 生产资产树
+function* getAssetTree(action) { // 生产资产树
   const { payload } = action;
   const url = `${APIBasePath}${operation.getAssetTree}`;
   // const url = `/mock/v3/ledger/assetslist`;
@@ -23,17 +23,17 @@ function* getAssetTree(action) {  // 生产资产树
         },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false, assetList: [] },
-    })
+    });
   }
 }
-function* getNodeDetail(action) {  // 生产资产树详情
+function* getNodeDetail(action) { // 生产资产树详情
   const { payload } = action;
   const url = `${APIBasePath}${operation.getNodeDetail}`;
   // const url = `/mock/v3/ledger/detail`;
@@ -49,16 +49,16 @@ function* getNodeDetail(action) {  // 生产资产树详情
         },
       });
     } else {
-      message.error(response.data.message)
-      throw response.data
+      message.error(response.data.message);
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
 
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { loading: false, },
-    })
+      payload: { loading: false },
+    });
   }
 }
 function* addAssetNode(action) { //台账增加生产资产节点
@@ -84,27 +84,27 @@ function* addAssetNode(action) { //台账增加生产资产节点
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload: { ...payload, assetsParentId: '0', },
-      })
+        payload: { ...payload, assetsParentId: '0' },
+      });
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })
+      });
     } else if (response.data.code === '60015') {
-      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系')
+      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系');
 
     } else if (response.data.code === '60016') {
-      message.warning('资产中存在该设备类型名称,请重新输入')
+      message.warning('资产中存在该设备类型名称,请重新输入');
     } else {
       message.error(`添加生产节点失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* deleteAssetNode(action) { //台账删除生产资产树
@@ -112,7 +112,7 @@ function* deleteAssetNode(action) { //台账删除生产资产树
   const url = `${APIBasePath}${operation.deleteAssetNode}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
@@ -128,22 +128,22 @@ function* deleteAssetNode(action) { //台账删除生产资产树
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload: { ...payload, assetsParentId: '0', },
-      })
+        payload: { ...payload, assetsParentId: '0' },
+      });
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })
+      });
     } else {
       message.error(`编辑生产节点失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* editAssetNode(action) { //台账编辑生产资产节点
@@ -169,27 +169,27 @@ function* editAssetNode(action) { //台账编辑生产资产节点
       }));
       yield put({
         type: assetConfigAction.getAssetTree,
-        payload: { ...payload, assetsParentId: '0', },
-      })
+        payload: { ...payload, assetsParentId: '0' },
+      });
       yield put({
         type: assetConfigAction.getNodeDetail,
         payload,
-      })
+      });
     } else if (response.data.code === '60015') {
-      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系')
+      message.warning('请先解除设备厂家,设备型号和生产资产的关联关系');
 
     } else if (response.data.code === '60016') {
-      message.warning('资产中存在该设备类型名称,请重新输入')
+      message.warning('资产中存在该设备类型名称,请重新输入');
     } else {
       message.error(`编辑生产节点失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* getDeviceFactorsList(action) { //获取设备厂家列表
@@ -197,10 +197,11 @@ function* getDeviceFactorsList(action) { //获取设备厂家列表
   const url = `${APIBasePath}${operation.getDeviceFactorsList}`;
   // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
       const total = response.data.data.pageCount || 0;
-      let { pageNum, pageSize } = payload;
+      let { pageNum } = payload;
+      const { pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
         pageNum = 1;
@@ -217,14 +218,14 @@ function* getDeviceFactorsList(action) { //获取设备厂家列表
         },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* addDeviceFactors(action) { //新建设备厂家
@@ -251,17 +252,17 @@ function* addDeviceFactors(action) { //新建设备厂家
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })
+      });
     } else {
       message.error(`新增设备厂家失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* editDeviceFactors(action) { //编辑设备厂家
@@ -275,11 +276,11 @@ function* editDeviceFactors(action) { //编辑设备厂家
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
         payload: {
-          ...payload,
+          // ...payload,
         },
       });
       const payload = yield select(state => ({
-
+        manufactorName: state.operation.assetsConfig.get('manufactorName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
@@ -289,17 +290,17 @@ function* editDeviceFactors(action) { //编辑设备厂家
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })
+      });
     } else {
       message.error(`编辑设备厂家失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* deleteDeviceFactors(action) { //删除设备厂家
@@ -307,7 +308,7 @@ function* deleteDeviceFactors(action) { //删除设备厂家
   const url = `${APIBasePath}${operation.deleteDeviceFactors}`;
   // const url =`/mock/v3/ledger/assetslist`;
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
@@ -316,6 +317,7 @@ function* deleteDeviceFactors(action) { //删除设备厂家
         },
       });
       const payload = yield select(state => ({
+        manufactorName: state.operation.assetsConfig.get('manufactorName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
@@ -324,17 +326,17 @@ function* deleteDeviceFactors(action) { //删除设备厂家
       yield put({
         type: assetConfigAction.getDeviceFactorsList,
         payload,
-      })
+      });
     } else {
       message.error(`删除设备厂家失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* getDeviceModesList(action) { //获取设备型号列表
@@ -342,11 +344,12 @@ function* getDeviceModesList(action) { //获取设备型号列表
   const url = `${APIBasePath}${operation.getDeviceModesList}`;
   // const url = `/mock/v3/ledger/devicemodes/list`;
   try {
-    const response = yield call(axios.post, url, { ...payload, });
+    const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
 
       const total = response.data.data.pageCount || 0;
-      let { pageNum, pageSize } = payload;
+      let { pageNum } = payload;
+      const { pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
       if (total === 0) { // 总数为0时，展示0页
         pageNum = 1;
@@ -362,14 +365,14 @@ function* getDeviceModesList(action) { //获取设备型号列表
         },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* addDeviceModes(action) { //新建设备型号
@@ -396,17 +399,17 @@ function* addDeviceModes(action) { //新建设备型号
       yield put({
         type: assetConfigAction.getDeviceModesList,
         payload,
-      })
+      });
     } else {
       message.error(`添加设备型号失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* editDeviceModes(action) { //编辑设备型号
@@ -420,11 +423,11 @@ function* editDeviceModes(action) { //编辑设备型号
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
         payload: {
-          ...payload,
+          // ...payload,
         },
       });
       const payload = yield select(state => ({
-
+        deviceModeName: state.operation.assetsConfig.get('deviceModeName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
@@ -434,17 +437,17 @@ function* editDeviceModes(action) { //编辑设备型号
       yield put({
         type: assetConfigAction.getDeviceModesList,
         payload,
-      })
+      });
     } else {
       message.error(`编辑设备型号失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 function* deleteDeviceModes(action) { //删除设备型号
@@ -457,10 +460,11 @@ function* deleteDeviceModes(action) { //删除设备型号
       yield put({
         type: assetConfigAction.changeAssetConfigStore,
         payload: {
-          ...payload,
+          // ...payload,
         },
       });
       const payload = yield select(state => ({
+        deviceModeName: state.operation.assetsConfig.get('deviceModeName'),
         orderField: state.operation.assetsConfig.get('orderField'),
         orderMethod: state.operation.assetsConfig.get('orderMethod'),
         pageSize: state.operation.assetsConfig.get('pageSize'),
@@ -469,17 +473,17 @@ function* deleteDeviceModes(action) { //删除设备型号
       yield put({
         type: assetConfigAction.getDeviceModesList,
         payload,
-      })
+      });
     } else {
       message.error(`删除设备型号失败!${response.data.message}`);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
       payload: { ...payload, loading: false },
-    })
+    });
   }
 }
 

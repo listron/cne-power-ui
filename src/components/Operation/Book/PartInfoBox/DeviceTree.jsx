@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Tree } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Tree } from 'antd';
 const { TreeNode } = Tree;
 
 class DeviceTree extends React.Component {
@@ -16,15 +16,15 @@ class DeviceTree extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      selectedKeys: []
+      selectedKeys: [],
     };
   }
   onLoadData = treeNode => {
     const selectTreeTitle = treeNode.props.title;
-    const deviceCategory = ["集电线路", "升压站", "未分组"];
+    const deviceCategory = ['集电线路', '升压站', '未分组'];
     const dataRef = treeNode.props.eventKey;
-    const deviceCode = dataRef ? dataRef.split("_")[0] : "";
-    const type = dataRef ? dataRef.split("_")[1] : "";
+    const deviceCode = dataRef ? dataRef.split('_')[0] : '';
+    const type = dataRef ? dataRef.split('_')[1] : '';
     const { stationCode } = this.props;
     return new Promise(resolve => {
       if (treeNode.props.children.length > 0) {
@@ -39,7 +39,7 @@ class DeviceTree extends React.Component {
         this.props.getDeviceTypeList({
           stationCode,
           deviceCode: deviceCode,
-          type: type
+          type: type,
         });
         resolve();
       }, 1000);
@@ -47,38 +47,38 @@ class DeviceTree extends React.Component {
   };
 
   selectNode = (selectedKeys, e) => {
-    console.log('e: ', e);
+
     const { selected } = e;
     this.setState({ selectedKeys });
     const { changePartInfoStore, getDeviceComList } = this.props;
-    let selectData = selectedKeys.join();
-    let deviceCode = selectData.split("_")[0];
-    let type = selectData.split("_")[1];
-    let deviceName = selectData.split("_")[2];
+    const selectData = selectedKeys.join();
+    const deviceCode = selectData.split('_')[0];
+    const type = selectData.split('_')[1];
+    const deviceName = selectData.split('_')[2];
     const { stationCode } = this.props;
     selected && getDeviceComList({
       //获得设备的部件列表
       // deviceCode:'2M201M1M19',
       deviceCode,
-      orderField: "1",
-      orderMethod: "desc"
+      orderField: '1',
+      orderMethod: 'desc',
     });
 
 
-    let brotherNode = this.filterNode(type, deviceCode);
+    const brotherNode = this.filterNode(type, deviceCode);
     changePartInfoStore({
       stationCode,
       deviceCode,
       type,
       deviceName,
-      brotherNode
+      brotherNode,
     });
   };
   filterNode = (type, deviceCode) => {
     const { collectorDevices, boostDevices, undefinedDevices } = this.props;
-    return type === "1"
+    return type === '1'
       ? this.filterArr(collectorDevices, deviceCode)
-      : type === "2"
+      : type === '2'
         ? this.filterArr(boostDevices, deviceCode)
         : this.filterArr(undefinedDevices, deviceCode);
   };
@@ -120,6 +120,9 @@ class DeviceTree extends React.Component {
     });
   render() {
     const { undefinedDevices, boostDevices, collectorDevices } = this.props;
+
+    // 
+    // 
     const { selectedKeys } = this.state;
 
     return (
@@ -133,9 +136,9 @@ class DeviceTree extends React.Component {
           selectedKeys={selectedKeys}
         >
           <TreeNode
-            title={"集电线路"}
-            key={`集电线路`}
-            dataRef={"1"}
+            title={'集电线路'}
+            key={'集电线路'}
+            dataRef={'1'}
             selectable={false}
           >
             {this.renderTreeNodes(collectorDevices)}
@@ -150,9 +153,9 @@ class DeviceTree extends React.Component {
           selectedKeys={selectedKeys}
         >
           <TreeNode
-            title={"升压站"}
-            key={`升压站`}
-            dataRef={"2"}
+            title={'升压站'}
+            key={'升压站'}
+            dataRef={'2'}
             selectable={false}
           >
             {this.renderTreeNodes(boostDevices)}
@@ -167,9 +170,9 @@ class DeviceTree extends React.Component {
           onSelect={this.selectNode}
         >
           <TreeNode
-            title={"未分组"}
-            key={`未分组`}
-            dataRef={"3"}
+            title={'未分组'}
+            key={'未分组'}
+            dataRef={'3'}
             selectable={false}
           >
             {this.renderTreeNodes(undefinedDevices)}

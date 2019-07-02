@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./assetStructure.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './assetStructure.scss';
 import { Radio, Button, Table, Tree } from 'antd';
-import AddNodeFrom from "./AddNodeFrom";
-import EditNodeFrom from "./EditNodeFrom";
+import AddNodeFrom from './AddNodeFrom';
+import EditNodeFrom from './EditNodeFrom';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 
@@ -23,14 +23,15 @@ class AssetStructure extends React.Component {
 
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       addNode: false,
       editNode: false,
       showWarningTip: false,
       warningTipText: '',
       tableRecord: {},
-    }
+      assetsType: null,
+    };
   }
   componentDidMount() {
     const { stationType } = this.props;
@@ -39,7 +40,7 @@ class AssetStructure extends React.Component {
   }
   onCancelWarningTip = () => {//信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   }
   onConfirmWarningTip = () => {
@@ -52,51 +53,48 @@ class AssetStructure extends React.Component {
     this.props.deleteAssetNode({ stationType, assetsId });
   }
   getTreeData = (value) => {
-    assetsParentId
+
     const { stationType, assetsParentId } = this.props;
-    const params = { stationType, assetsParentId }
-    this.props.getNodeDetail({ ...params, ...value })
+    const params = { stationType, assetsParentId };
+    this.props.getNodeDetail({ ...params, ...value });
   }
   queryType = (active) => {
-    const { changeAssetConfigStore, } = this.props;
-    changeAssetConfigStore({ stationType: active, });
+    const { changeAssetConfigStore } = this.props;
+    changeAssetConfigStore({ stationType: active });
     this.props.getAssetTree({ stationType: active });
 
   }
   addDevice = () => {
     this.setState({
-      addNode: true
-    })
+      addNode: true,
+    });
   }
   closeAddFrom = () => {
     this.setState({
-      addNode: false
-    })
+      addNode: false,
+    });
   }
   closeEditFrom = () => {
     this.setState({
-      editNode: false
-    })
+      editNode: false,
+    });
   }
   formatAsset = (data = []) => {
     const formatAssetData = [];
     data.forEach((e, i) => {
-    })
-    return formatAssetData
+    });
+    return formatAssetData;
   }
 
   selectNode = (selectedKeys, e) => {
-
-
     const { node } = e;
     const { props } = node;
     const tableData = props ? props.dataRef : {};
-
+    console.log('tableData: ', tableData);
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
-
+    const assetsType = tableData.assetsType;
     const isBuild = tableData.isBuild;
-
     //当前节点所处第几级
     const currentLeavel = assetsParentId.split(',').length - 1;
 
@@ -105,23 +103,24 @@ class AssetStructure extends React.Component {
 
     //保留当前节点的id和name，供编辑节点和新建节点使用
 
-    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, childrenNum, isBuild })
+    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, childrenNum, isBuild });
     //请求选中节点的详情
     this.getTreeData({ assetsParentId });
 
     //编辑节点from显示,生产资产节点不可编辑
-    let editNode = (currentLeavel !== 0 && selectedKeys.length > 0) ? true : false;
+    const editNode = (currentLeavel !== 0 && selectedKeys.length > 0) ? true : false;
     this.setState({
-      editNode
-    })
-    currentLeavel === 5 && this.setState({ addNode: false })
+      editNode,
+      assetsType,
+    });
+    currentLeavel === 5 && this.setState({ addNode: false });
   }
   deleteNode = (record) => {
     this.setState({
       tableRecord: record,
       showWarningTip: true,
       warningTipText: '确认删除此节点吗?',
-    })
+    });
   }
   renderTreeNodes = data => data.map((item) => {
     if (item.childernNodes) {
@@ -135,58 +134,58 @@ class AssetStructure extends React.Component {
   })
 
   render() {
-    const { stationType, stationTypeCount, assetList, childrenNodeDetail, } = this.props;
-    const { addNode, editNode, showWarningTip, warningTipText } = this.state;
+    const { stationType, stationTypeCount, assetList, childrenNodeDetail } = this.props;
+    const { addNode, editNode, showWarningTip, warningTipText, assetsType } = this.state;
     const columns = [
       {
         title: '编码',
         dataIndex: 'assetsCode',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '节点名称',
         dataIndex: 'assetsName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '节点类型',
         dataIndex: 'assetsType',
-        render: (text) => <span title={text}>{text === 1 ? '系统' : text === 2 ? '设备' : '部件'}</span>
+        render: (text) => <span title={text}>{text === 1 ? '系统' : text === 2 ? '设备' : '部件'}</span>,
       }, {
         title: '计量单位',
         dataIndex: 'assetsUnit',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>
+        render: (text) => <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
-        render: (text) => <span title={text ? text : '系统'}>{text ? text : '系统'}</span>
+        render: (text) => <span title={text ? text : '系统'}>{text ? text : '系统'}</span>,
       }, {
         title: '操作',
         render: (text, record, index) => {
-          return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : ''
-        }
+          return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : '';
+        },
       },
 
     ];
     return (
       <div className={styles.box}>
         <div className={styles.titleType} >
-          {(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ? <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1) }} >光伏</div> : ''}
-          {(stationTypeCount === 'wind' || stationTypeCount === 'multiple') ? <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0) }}>风电</div> : ''}
+          {(stationTypeCount === 'pv' || stationTypeCount === 'multiple') ? <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryType(1); }} >光伏</div> : ''}
+          {(stationTypeCount === 'wind' || stationTypeCount === 'multiple') ? <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryType(0); }}>风电</div> : ''}
         </div>
         <div className={styles.container}>
           <div className={styles.leftTree}>
             <Tree
               autoExpandParent={true}
-              defaultExpandedKeys={["0"]}
-              defaultSelectedKeys={["0"]}
+              defaultExpandedKeys={['0']}
+              defaultSelectedKeys={['0']}
               onCheck={this.onCheck}
               blockNode={false}
               onSelect={this.selectNode}
             >
-              <TreeNode title="生产资产" key="0" dataRef={{ "assetsId": '0' }}>
+              <TreeNode title="生产资产" key="0" dataRef={{ 'assetsId': '0' }}>
                 {this.renderTreeNodes(assetList)}
               </TreeNode>
             </Tree>
@@ -196,7 +195,7 @@ class AssetStructure extends React.Component {
             {
               addNode && <AddNodeFrom {...this.props} closeFrom={this.closeAddFrom} />
             }
-            {editNode && <EditNodeFrom {...this.props} closeFrom={this.closeEditFrom} />}
+            {editNode && <EditNodeFrom {...this.props} closeFrom={this.closeEditFrom} assetsType={assetsType} />}
             {
               <Table
                 loading={false}
@@ -218,8 +217,8 @@ class AssetStructure extends React.Component {
         </div>
 
       </div>
-    )
+    );
   }
 }
-export default (AssetStructure)
+export default (AssetStructure);
 
