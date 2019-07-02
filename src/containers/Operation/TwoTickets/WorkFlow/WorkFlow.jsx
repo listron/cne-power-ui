@@ -9,7 +9,7 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import TableList from '../../../../components/Operation/TwoTickets/WorkFlow/TableList';
 import Condition from '../../../../components/Operation/TwoTickets/WorkFlow/Condition';
-import WorkFlowSide from '../../../../components/Operation/TwoTickets/WorkFlow/FlowSide/WorkFlowSide';
+import WorkFlowSide from '../../../../components/Operation/TwoTickets/WorkFlow/WorkFlowSide';
 
 class WorkFlow extends Component {
     static propTypes = {

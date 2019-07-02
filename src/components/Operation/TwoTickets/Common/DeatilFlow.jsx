@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlowSide.scss';
+import styles from './index.scss';
 import { Radio, Form, Icon } from 'antd';
 import CreateFlow from './CreateFlow';
 import BaseInfo from './BaseInfo';
 import TimeLine from './TimeLine';
-import HandleForm from '../../Common//HandleForm/HandleForm';
+import HandleForm from './HandleForm/HandleForm';
 
 
 class DeatilFlow extends Component {
@@ -19,6 +19,7 @@ class DeatilFlow extends Component {
         getDocketDetail: PropTypes.func,
         docketId: PropTypes.number,
         downLoadFile: PropTypes.func,
+        type: PropTypes.string,
     }
 
 
@@ -39,7 +40,7 @@ class DeatilFlow extends Component {
 
 
     render() {
-        const { docketDetail = {}, downLoadFile } = this.props;
+        const { docketDetail = {}, downLoadFile, type } = this.props;
         const { distributionInfo = [], docketInfo = {}, docketProcess = [], defectInfo } = docketDetail;
         const { operTitle, operWinType, taskId } = docketInfo;
         const lastChild = docketProcess && docketProcess[docketProcess.length - 1] || {};
@@ -50,7 +51,7 @@ class DeatilFlow extends Component {
                     <div className={styles.basic}>
                         {defectInfo ?
                             <CreateFlow {...this.props} reject={true} />
-                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} />}
+                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} type={type} />}
                     </div>
                     <div className={styles.right}>
                         <div className={styles.timeLines}>
@@ -58,9 +59,9 @@ class DeatilFlow extends Component {
                                 processData={docketProcess}
                                 getNodeImg={this.props.getNodeImg}
                                 nodeImg={this.props.nodeImg}
-                                docketId={this.props.docketId}
                                 operWinType={operWinType}
                                 downLoadFile={downLoadFile}
+                                docketId={this.props.docketId}
                                 taskId={taskId}
                             />
                         </div>
