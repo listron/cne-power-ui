@@ -10,6 +10,8 @@ const warehouseManageAction = {
   setStockMax: Symbol('setStockMax'),
   getGoodsList: Symbol('getMaterialList'),
   addNewGood: Symbol('addGoodSuccess'),
+  addNewManu: Symbol('addNewManu'),
+  addNewType: Symbol('addNewType'),
   getWarehouseStationType: Symbol('getWarehouseStationType'),
   getAssetsManufacture: Symbol('getAssetsManufacture'),
   insertWarehouse: Symbol('insertWarehouse'),
@@ -22,7 +24,7 @@ const warehouseManageAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-}
+};
 
 const initState = Immutable.fromJS({
   tabName: 'spares', // tab页控制 spares-备品, tools-工具, materials-物资
@@ -49,6 +51,10 @@ const initState = Immutable.fromJS({
   originInsertInfo: null, // 入库对象基础信息(新入库null, 再入库{...})
   addGoodName: '', // 新添加物品的名称
   addGoodStatus: 'normal', // 保存新增物品的状态: 'loading' ,'success';
+  addManufactorId: '', // 新增厂家id
+  addManuStatus: 'normal', // 厂家新增的状态: 'loading' ,'success';
+  adddModeName: '', // 新增型号name
+  addTypeStatus: 'normal', // 新增型号状态: 'loading' ,'success';
   insertModes: [], // 入库的型号列表
   assetsTree: [], // 入库资产树
   assetsManufac: [], // 指定生产资产下的厂家。 
