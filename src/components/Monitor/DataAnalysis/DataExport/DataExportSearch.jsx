@@ -120,7 +120,7 @@ class DataExportSearch extends Component{
     const { queryParams, changeDataExportStore } = this.props;
     const { endTime } = queryParams
     if (moment().isBefore(startTime, 's')) {
-      startTime
+      startTime = moment()
     }else if(endTime.isBefore(startTime,'s')){
       startTime = moment(endTime)
     }
