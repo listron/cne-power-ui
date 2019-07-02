@@ -49,9 +49,10 @@ class DeatilFlow extends Component {
             <div className={styles.detailFlow}>
                 <div className={styles.content}>
                     <div className={styles.basic}>
-                        {defectInfo ?
-                            <CreateFlow {...this.props} reject={true} />
-                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} type={type} />}
+                        {operWinType !== 0 ?
+                            <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} type={type} />
+                            : <CreateFlow {...this.props} reject={true} />
+                        }
                     </div>
                     <div className={styles.right}>
                         <div className={styles.timeLines}>

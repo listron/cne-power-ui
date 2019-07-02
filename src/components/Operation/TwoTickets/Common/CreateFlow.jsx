@@ -82,7 +82,7 @@ class CreateFlow extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
     const { stations, docketTypeList, noDistributeList, docketDetail, reject, type } = this.props;
     const { docketInfo = {}, defectInfo, distributionInfo = [] } = docketDetail;
     const currentStations = getFieldValue('stations'); // 电站

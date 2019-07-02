@@ -73,6 +73,7 @@ class TableList extends Component {
                     dealRoleIds.push(e.dealRoleIds.split(','));
                 }
             });
+
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
             let review = false, complete = false;
