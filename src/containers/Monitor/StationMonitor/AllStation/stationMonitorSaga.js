@@ -269,7 +269,7 @@ function* monthPower(action) { // 多电站月发电量与等效时图
 function* monthplanpower(action) { // 多电站月累计与计划发电量图
   const { payload } = action;
   const { regionName } = payload;
-  const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+  const endDate = moment().endOf('year').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/monthPlanpower`;
