@@ -1,8 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import eCharts from "echarts";
-import { allFansOptions } from "../chartsConfig/chartsConfig";
-import styles from "./allFans.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import eCharts from 'echarts';
+import { allFansOptions } from '../chartsConfig/chartsConfig';
+
+import styles from './allFans.scss';
 
 export default class AllFans extends React.Component {
   static propTypes = {
@@ -16,17 +17,17 @@ export default class AllFans extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    const  {
+    const {
       allFansCharts,
       props: {
         allFanResultList,
         allLoading,
         faultInfo: {
-          endTime
+          endTime,
         },
         faultDate,
-        allTimeCompare: currentAllTimeCompare
-      }
+        allTimeCompare: currentAllTimeCompare,
+      },
     } = this;
     const { allTimeCompare } = prevProps;
     const myChart = eCharts.init(allFansCharts);

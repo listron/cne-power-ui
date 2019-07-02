@@ -1,37 +1,37 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Form, Table} from 'antd';
-import moment from "moment";
-import EditableCell from "./EditableCell/EditableCell";
+import moment from 'moment';
+import EditableCell from './EditableCell/EditableCell';
 
-import styles from "./warehouseGoodsTable.scss";
-import WarningTip from "../../../../../Common/WarningTip";
+import styles from './warehouseGoodsTable.scss';
+import WarningTip from '../../../../../Common/WarningTip';
 
-const defaultTime = "YYYY-MM-DD HH:mm:ss";
+const defaultTime = 'YYYY-MM-DD HH:mm:ss';
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
     <tr {...props} />
-  </EditableContext.Provider>)
+  </EditableContext.Provider>);
 };
 const EditableFormRow = Form.create()(EditableRow);
 
 const data = [];
 for (let i = 0; i < 10; i++) {
   data.push({
-    key: ["82"],
+    key: ['82'],
     name: `Edrward ${i}`,
     age: 32,
     address: `London Park no. ${i}`,
-    author: "哈哈",
-    createTime: "2018-08-08",
-    modeId: i
+    author: '哈哈',
+    createTime: '2018-08-08',
+    modeId: i,
   });
 }
 
 class WarehouseGoodsTable extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
     form: PropTypes.object,
     goodsData: PropTypes.object,
     getGoodsDelList: PropTypes.func,
@@ -65,15 +65,15 @@ class WarehouseGoodsTable extends Component {
   onConfirmWarningTip = () => {
     const {
       tableRecord: {
-        goodsId
-      }
+        goodsId,
+      },
     } = this.state;
     const {
       getGoodsDelList,
       pageNum,
       pageSize,
       goodsName,
-      goodsType
+      goodsType,
     } = this.props;
     // 参数
     const params = {
@@ -87,7 +87,7 @@ class WarehouseGoodsTable extends Component {
           warningTipText: '',
           tableRecord: {},
         });
-      }
+      },
     };
     this.setState({
       showWarningTip: false,
@@ -103,21 +103,21 @@ class WarehouseGoodsTable extends Component {
       goodsName,
       pageNum,
       pageSize,
-      goodsType
+      goodsType,
     } = this.props;
     // 根据字段匹配
     const fieldData = {
-      goodsType: "goods_type",
-      createTime: "create_time",
+      goodsType: 'goods_type',
+      createTime: 'create_time',
     };
     // 参数
-    const params =  {
+    const params = {
       goodsName,
       pageNum,
       pageSize,
       goodsType,
-      sortField: field ? fieldData[field] : "",
-      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+      sortField: field ? fieldData[field] : '',
+      sortMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
     };
     getGoodsList(params);
   };
@@ -133,7 +133,7 @@ class WarehouseGoodsTable extends Component {
         goodsName: searchName,
         pageNum,
         pageSize,
-        goodsType
+        goodsType,
       } = this.props;
       const { goodsName, goodsUnit } = fieldsValue;
       // 参数
@@ -146,8 +146,8 @@ class WarehouseGoodsTable extends Component {
         searchName,
         goodsType,
         func: () => {
-          this.setState({ editingKey: "" });
-        }
+          this.setState({ editingKey: '' });
+        },
       };
       getGoodsUpdateList(params);
 
@@ -174,14 +174,14 @@ class WarehouseGoodsTable extends Component {
       goodsData: {
         isAbleOper,
         pageData: {
-          dataList
-        }
+          dataList,
+        },
       },
-      goodsListLoading
+      goodsListLoading,
     } = this.props;
     const {
       showWarningTip,
-      warningTipText
+      warningTipText,
     } = this.state;
     const components = {
       body: {
@@ -189,9 +189,9 @@ class WarehouseGoodsTable extends Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} {...rest[0]} />
+              return <EditableCell form={form} {...rest[0]} />;
             }}
-          </EditableContext.Consumer>)
+          </EditableContext.Consumer>);
         },
       },
     };
@@ -200,20 +200,20 @@ class WarehouseGoodsTable extends Component {
         title: '物品名称',
         dataIndex: 'goodsName',
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '计量单位',
         dataIndex: 'goodsUnit',
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>,
       }, {
         title: '操作人',
         dataIndex: 'user',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '操作',
         render: (text, record) => {
@@ -228,17 +228,17 @@ class WarehouseGoodsTable extends Component {
                       <a
                         onClick={() => this.save(form, record.goodsId)}
                         style={{ marginRight: 8 }}>
-                        <span style={{marginRight: '4px'}} title="编辑" className={"iconfont icon-doned"} />
+                        <span style={{marginRight: '4px'}} title="编辑" className={'iconfont icon-doned'} />
                       </a>
-                    )
+                    );
                   }}
                 </EditableContext.Consumer>)
-                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
+                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.goodsId)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} /></a>
               }
-              <span title="删除" style={{cursor: "pointer"}} className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
+              <span title="删除" style={{cursor: 'pointer'}} className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
             </div>
-          )
-        }
+          );
+        },
       },
     ].map((col) => {
       if (!col.editable) {
@@ -248,7 +248,7 @@ class WarehouseGoodsTable extends Component {
         ...col,
         onCell: record => ({
           record,
-          type: col.dataIndex  === 'goodsName' ? 'goodsName' : 'goodsUnit',
+          type: col.dataIndex === 'goodsName' ? 'goodsName' : 'goodsUnit',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
@@ -260,24 +260,24 @@ class WarehouseGoodsTable extends Component {
       {
         title: '物品名称',
         dataIndex: 'goodsName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '物品类型',
         dataIndex: 'goodsType',
         sorter: true,
-        render: (text, record) => <span title={record.goodsTypeName}>{record.goodsTypeName}</span>
-      },{
+        render: (text, record) => <span title={record.goodsTypeName}>{record.goodsTypeName}</span>,
+      }, {
         title: '计量单位',
         dataIndex: 'goodsUnit',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
-        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>,
       }, {
         title: '操作人',
         dataIndex: 'user',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }];
     return (
       <div className={styles.warehouseGoodsTable}>
@@ -289,7 +289,7 @@ class WarehouseGoodsTable extends Component {
             columns={isAbleOper === 0 ? columnsEdit : columnsUnEdit}
             pagination={false}
             onChange={this.tableChange}
-            rowKey={(record) => record.goodsId || "key"}
+            rowKey={(record) => record.goodsId || 'key'}
             locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
           />
         </EditableContext.Provider>
@@ -300,7 +300,7 @@ class WarehouseGoodsTable extends Component {
           onOK={this.onConfirmWarningTip}
           value={warningTipText} />}
       </div>
-    )
+    );
   }
 }
 

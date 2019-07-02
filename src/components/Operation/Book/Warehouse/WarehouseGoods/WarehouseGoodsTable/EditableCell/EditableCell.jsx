@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 import { Form, Input } from 'antd';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -18,7 +18,7 @@ class EditableCell extends React.Component {
   getInput = () => {
     const { type } = this.props;
     if (type === 'goodsName') {
-      return <Input maxLength={30} placeholder="物品名称" />
+      return <Input maxLength={30} placeholder="物品名称" />;
     }
     return (
       <Input maxLength={6} placeholder="计量单位" />
@@ -59,4 +59,4 @@ class EditableCell extends React.Component {
     );
   }
 }
-export default (EditableCell)
+export default (EditableCell);

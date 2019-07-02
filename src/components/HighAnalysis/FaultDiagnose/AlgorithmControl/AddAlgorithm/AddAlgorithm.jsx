@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
-import { Icon, Form, Row, Col, Button, DatePicker, Select} from "antd";
-import CancelModal from "./CancelModal/CancelModal";
-import SureModal from "./SureModal/SureModal";
-import StationSelect from "../../../../Common/StationSelect/index";
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import { Icon, Form, Row, Col, Button, DatePicker, Select} from 'antd';
+import CancelModal from './CancelModal/CancelModal';
+import SureModal from './SureModal/SureModal';
+import StationSelect from '../../../../Common/StationSelect/index';
 
-import styles from "./addAlgorithm.scss";
+import styles from './addAlgorithm.scss';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -34,20 +34,20 @@ class AddAlgorithm extends React.Component {
       actionDiffTime: 90, // 训练时长
       endDiffTime: 7, // 检测时长
       downLink: {
-        modal: "",
-        selectStationName: "",
-        actionTime: "",
-        startTime:"",
-        endTime:""
-      } //保存下发数据
+        modal: '',
+        selectStationName: '',
+        actionTime: '',
+        startTime: '',
+        endTime: '',
+      }, //保存下发数据
     };
-    this.actionTime = "";
-    this.endTime = "";
-    this.nowTime = "";
+    this.actionTime = '';
+    this.endTime = '';
+    this.nowTime = '';
   }
 
   componentDidMount() {
-    const {getAlgoOptionList,} = this.props;
+    const {getAlgoOptionList} = this.props;
     getAlgoOptionList();
   }
 
@@ -65,12 +65,12 @@ class AddAlgorithm extends React.Component {
       this.setState({
         actionAndEndTime: false,
         actionAndEndDisabledDate: date,
-        actionDiffTime: this.nowTime.diff(this.actionTime, "days"),
-        endDiffTime: this.endTime.diff(this.nowTime, "days") + 1
+        actionDiffTime: this.nowTime.diff(this.actionTime, 'days'),
+        endDiffTime: this.endTime.diff(this.nowTime, 'days') + 1,
       }, () => {
         form.setFieldsValue({
           actionTime: this.actionTime,
-          endTime: this.endTime
+          endTime: this.endTime,
         });
       });
     }
@@ -82,7 +82,7 @@ class AddAlgorithm extends React.Component {
       }, () => {
         form.setFieldsValue({
           actionTime: null,
-          endTime: null
+          endTime: null,
         });
       });
     }
@@ -91,15 +91,15 @@ class AddAlgorithm extends React.Component {
   onActionChange = (date) => {
     this.actionTime = moment(date);
     this.setState({
-      actionDiffTime: this.nowTime.diff(this.actionTime, "days"),
-    })
+      actionDiffTime: this.nowTime.diff(this.actionTime, 'days'),
+    });
   };
 
   onEndChange = (date) => {
     this.endTime = moment(date);
     this.setState({
-      endDiffTime: this.endTime.diff(this.nowTime, "days") + 1
-    })
+      endDiffTime: this.endTime.diff(this.nowTime, 'days') + 1,
+    });
   };
 
   cancelFunc = () => {
@@ -108,13 +108,13 @@ class AddAlgorithm extends React.Component {
 
   cancelModalFunc = (flag) => {
     this.setState({
-      cancelFlag: flag
+      cancelFlag: flag,
     });
   };
 
   sureModalFunc = (flag) => {
     this.setState({
-      sureFlag: flag
+      sureFlag: flag,
     });
   };
 
@@ -128,7 +128,7 @@ class AddAlgorithm extends React.Component {
         endTime: null,
         startTime: null,
         modal: 1,
-        selectStationName: [""]
+        selectStationName: [''],
       });
     });
   };
@@ -143,7 +143,7 @@ class AddAlgorithm extends React.Component {
         selectStationName,
         actionTime,
         startTime,
-        endTime
+        endTime,
       } = fieldsValue;
       this.setState({
         sureFlag: true,
@@ -152,8 +152,8 @@ class AddAlgorithm extends React.Component {
           selectStationName,
           actionTime,
           startTime,
-          endTime
-        }
+          endTime,
+        },
       });
     });
   };
@@ -166,7 +166,7 @@ class AddAlgorithm extends React.Component {
       actionAndEndDisabledDate,
       actionDiffTime,
       endDiffTime,
-      downLink
+      downLink,
     } = this.state;
     const { form, stations, algoOptionList } = this.props;
     const { getFieldDecorator } = form;
@@ -194,7 +194,7 @@ class AddAlgorithm extends React.Component {
                     <FormItem label="算法模型">
                       {getFieldDecorator('modal', {
                         rules: [{ required: true, message: '请输入算法模型'}],
-                        initialValue: 1
+                        initialValue: 1,
                       })(<Select style={{ width: 200 }}>
                           {optionItem}
                       </Select>
@@ -246,7 +246,7 @@ class AddAlgorithm extends React.Component {
                           placeholder="请选择时间"
                         />)}
                     </FormItem>
-                    <FormItem style={{color: "#999999"}}>
+                    <FormItem style={{color: '#999999'}}>
                       {(!actionAndEndTime) && (`（训练时长${actionDiffTime}天）`)}
                     </FormItem>
                   </Col>
@@ -264,12 +264,12 @@ class AddAlgorithm extends React.Component {
                           placeholder="请选择时间"
                       />)}
                     </FormItem>
-                    <FormItem style={{color: "#999999"}}>
+                    <FormItem style={{color: '#999999'}}>
                       {(!actionAndEndTime) && (`（检测时长${endDiffTime}天）`)}
                     </FormItem>
                   </Col>
                 </Row>
-                <Row style={{display:"flex", paddingLeft: 110}}>
+                <Row style={{display: 'flex', paddingLeft: 110}}>
                   <Col>
                     <Button style={{ width: '88px' }} onClick={this.handlerResetForm}>
                       重置

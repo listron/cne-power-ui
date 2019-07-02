@@ -1,7 +1,7 @@
 import {put, takeEvery, call} from 'redux-saga/effects';
 import { faultWarnAction } from './faultWarnAction';
-import Path from "../../../../constants/path";
-import axios from "axios";
+import Path from '../../../../constants/path';
+import axios from 'axios';
 
 /***
  * 解析公共头APIBasePath
@@ -14,8 +14,8 @@ const {
   },
   APISubPaths: {
     highAnalysis: {
-      warnSummary
-    }
+      warnSummary,
+    },
   }} = Path;
 
 function* getFaultWarnList() { // 获取多风场故障预警汇总列表。
@@ -24,8 +24,8 @@ function* getFaultWarnList() { // 获取多风场故障预警汇总列表。
     yield put({
       type: faultWarnAction.changeFaultWarnStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -42,8 +42,8 @@ function* getFaultWarnList() { // 获取多风场故障预警汇总列表。
     yield put({
       type: faultWarnAction.changeFaultWarnStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }

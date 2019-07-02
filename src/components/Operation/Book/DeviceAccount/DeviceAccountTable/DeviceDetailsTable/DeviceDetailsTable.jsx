@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Table, Modal } from "antd";
-import CommonPagination from "../../../../../Common/CommonPagination/index";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table, Modal } from 'antd';
+import CommonPagination from '../../../../../Common/CommonPagination/index';
 
-import styles from "./deviceDetailsTable.scss";
+import styles from './deviceDetailsTable.scss';
 
 export default class DeviceDetailsTable extends React.Component {
   static propTypes = {
@@ -27,7 +27,7 @@ export default class DeviceDetailsTable extends React.Component {
       assetsIdDetails,
       orderFieldDetails,
       orderMethodDetails,
-      getDeviceAttachments
+      getDeviceAttachments,
     } = this.props;
     // 参数
     const params = {
@@ -36,7 +36,7 @@ export default class DeviceDetailsTable extends React.Component {
       orderField: orderFieldDetails,
       orderMethod: orderMethodDetails,
       pageNum: currentPage,
-      pageSize: pageSize
+      pageSize: pageSize,
     };
     // 接口
     getDeviceAttachments(params);
@@ -56,25 +56,25 @@ export default class DeviceDetailsTable extends React.Component {
       assetsIdDetails,
       getDeviceAttachments,
       pageNumDetails,
-      pageSizeDetails
+      pageSizeDetails,
     } = this.props;
     const { field, order } = sorter;
     // 根据字段匹配参数
     const sortField = {
-      goodsName: "1",
-      goodsModeName: "2",
-      warehouseName: "3",
-      num: "4",
-      madeName: "5",
+      goodsName: '1',
+      goodsModeName: '2',
+      warehouseName: '3',
+      num: '4',
+      madeName: '5',
     };
     // 参数
     const params = {
       modeId: modeIdDetails,
       assetsId: assetsIdDetails,
-      orderField: field ? sortField[field] : "",
-      orderMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : ""),
+      orderField: field ? sortField[field] : '',
+      orderMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
       pageNum: pageNumDetails,
-      pageSize: pageSizeDetails
+      pageSize: pageSizeDetails,
     };
     // 接口
     getDeviceAttachments(params);
@@ -85,9 +85,9 @@ export default class DeviceDetailsTable extends React.Component {
       loading,
       pageSizeDetails,
       pageNumDetails,
-      attachmentsList:{
+      attachmentsList: {
         dataList,
-        pageCount
+        pageCount,
       },
       detailsFlag,
     } = this.props;
@@ -95,11 +95,11 @@ export default class DeviceDetailsTable extends React.Component {
       title: '物品名称',
       dataIndex: 'goodsName',
       sorter: true,
-    },{
+    }, {
       title: '规格/型号',
       dataIndex: 'goodsModeName',
       sorter: true,
-      render: (goodsModeName) => <span className={styles.goodsModeName} title={goodsModeName}>{goodsModeName}</span>
+      render: (goodsModeName) => <span className={styles.goodsModeName} title={goodsModeName}>{goodsModeName}</span>,
     }, {
       title: '所属仓库',
       dataIndex: 'warehouseName',
@@ -118,20 +118,20 @@ export default class DeviceDetailsTable extends React.Component {
           );
         }
         return <span>{Number(inventoryNum)}</span>;
-      }
+      },
     }, {
       title: '对应资产',
       dataIndex: 'assetsName',
-      render: (assetsName) => <span className={styles.assetsName} title={assetsName}>{assetsName || '--'}</span>
+      render: (assetsName) => <span className={styles.assetsName} title={assetsName}>{assetsName || '--'}</span>,
     }, {
       title: '厂家',
       sorter: true,
       dataIndex: 'madeNames',
-      render: (madeNames) => <span className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</span>
+      render: (madeNames) => <span className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</span>,
     }, {
       title: '供货商',
       dataIndex: 'supplierNames',
-      render: (supplierNames) => <span className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</span>
+      render: (supplierNames) => <span className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</span>,
     }];
     return (
       <Modal
@@ -155,6 +155,6 @@ export default class DeviceDetailsTable extends React.Component {
           />
         </div>
       </Modal>
-    )
+    );
   }
 }

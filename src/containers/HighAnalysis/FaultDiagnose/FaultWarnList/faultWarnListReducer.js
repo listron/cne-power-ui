@@ -7,18 +7,18 @@ const initState = Immutable.fromJS({
   algoModelData: { // 获取单风场故障预警汇总-按模型
     largeSizeList: [],
     natureList: [],
-    healthList: []
+    healthList: [],
   },
   listViewData: {// 获取单风场故障预警汇总-按列表
     totalSize: 0,
-    resultList: []
+    resultList: [],
   },
   fanListData: [], // 获取单风场故障预警汇总-按风机
-  singleStationCode: "", //电站编码
+  singleStationCode: '', //电站编码
   pageNum: 1,
   pageSize: 10,
-  sortField: "",
-  sortMethod: "",
+  sortField: '',
+  sortMethod: '',
 });
 
 
@@ -29,7 +29,7 @@ const fetchWarnListReducer = (state = initState, action) => {
     case faultWarnListAction.fetchWarnListSuccess:
       return state.merge(Immutable.fromJS(action.payload));
     case faultWarnListAction.resetStore:
-      return initState
+      return initState;
   }
   return state;
 };

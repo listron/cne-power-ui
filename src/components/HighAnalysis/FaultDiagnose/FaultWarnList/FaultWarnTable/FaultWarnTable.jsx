@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Table } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
-import styles from "./faultWarnTable.scss";
-import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
+import styles from './faultWarnTable.scss';
+import { dateArrFormat } from '../../formatDateUtils/formatDateUtils';
 
 export default class FaultWarnTable extends React.Component {
   static propTypes = {
@@ -28,7 +28,7 @@ export default class FaultWarnTable extends React.Component {
     const {
       match: {params: {fanWarnId: currentSingleStationCode}},
       getList,
-      getAlgoModel
+      getAlgoModel,
     } = this.props;
     const { match: {params: {fanWarnId: nextSingleStationCode}} } = nextProps;
     const params = {
@@ -47,14 +47,14 @@ export default class FaultWarnTable extends React.Component {
       getList,
       singleStationCode,
       sortField,
-      sortMethod
+      sortMethod,
     } = this.props;
     const params = {
       stationCode: singleStationCode,
       pageNum: currentPage,
       pageSize,
       sortField,
-      sortMethod
+      sortMethod,
     };
     getList(params);
   };
@@ -63,19 +63,19 @@ export default class FaultWarnTable extends React.Component {
     const {
       history,
       match: {
-        params:{
-          fanWarnId
-        }
+        params: {
+          fanWarnId,
+        },
       },
     } = this.props;
     const { taskId, deviceName, deviceFullCode, algorithmName } = data;
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
-    localStorage.setItem("taskId", taskId);
-    localStorage.setItem("faultHistory", "");
-    localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullCode);
-    localStorage.setItem("deviceFullName", algorithmName);
+    localStorage.setItem('taskId', taskId);
+    localStorage.setItem('faultHistory', '');
+    localStorage.setItem('deviceName', deviceName);
+    localStorage.setItem('deviceFullCode', deviceFullCode);
+    localStorage.setItem('deviceFullName', algorithmName);
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
@@ -83,24 +83,24 @@ export default class FaultWarnTable extends React.Component {
     const { singleStationCode, pageNum, pageSize, getList} = this.props;
     // 根据字段匹配排序字段
     const sortName = {
-      deviceName: "device_name",
-      predictionDate: "prediction_date",
-      algorithmName: "algorithm_name"
+      deviceName: 'device_name',
+      predictionDate: 'prediction_date',
+      algorithmName: 'algorithm_name',
     };
     const params = {
       stationCode: singleStationCode,
       pageNum,
       pageSize,
-      sortField: field ? sortName[field] : "",
-      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+      sortField: field ? sortName[field] : '',
+      sortMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
     };
-    getList(params)
+    getList(params);
   };
 
   render() {
     const { loading, listViewData: {
       totalSize,
-      resultList
+      resultList,
     }, pageSize, pageNum } = this.props;
     const columns = [{
       title: '风机名称',
@@ -126,12 +126,12 @@ export default class FaultWarnTable extends React.Component {
     }, {
       title: '预警结果',
       dataIndex: 'result',
-      align:"center",
+      align: 'center',
       render: (text, record) => (
-        <span style={{cursor: "pointer"}}>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
+        <span style={{cursor: 'pointer'}}>
+          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
         </span>
-      )
+      ),
     }];
     return (
       <div className={styles.faultWarnTable}>

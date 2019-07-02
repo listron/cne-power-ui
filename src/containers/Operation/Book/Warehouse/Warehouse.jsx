@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import WarehouseGoods from '../../../../components/Operation/Book/Warehouse/WarehouseGoods/WarehouseGoods';
 import WarehouseWrap from '../../../../components/Operation/Book/Warehouse/WarehouseWrap/WarehouseWrap';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import { warehouseAction } from "./warehouseAction.js";
+import { warehouseAction } from './warehouseAction.js';
 import Footer from '../../../../components/Common/Footer';
 
-import styles from "./warehouse.scss";
+import styles from './warehouse.scss';
 
 class Warehouse extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      type: 1 // 类型：仓库/物品
+      type: 1, // 类型：仓库/物品
     };
   }
 
@@ -29,14 +29,14 @@ class Warehouse extends Component {
   // 仓库
   warehouseFunc = () => {
     this.setState({
-      type: 1
+      type: 1,
     });
   };
 
   // 仓库
   goodsFunc = () => {
     this.setState({
-      type: 2
+      type: 2,
     });
   };
 
@@ -44,19 +44,19 @@ class Warehouse extends Component {
     const { type } = this.state;
     return (
       <div className={styles.warehouseWrap}>
-        <CommonBreadcrumb breadData={[{name:'仓库配置'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{name: '仓库配置'}]} style={{marginLeft: '38px'}} />
         <div className={styles.warehouseCenter}>
           <div className={styles.warehouseBox}>
             <div className={styles.warehouseDiv}>
               <div className={styles.warehouseTabs}>
                 <button
-                  onClick={() => {return this.warehouseFunc()}}
+                  onClick={() => {return this.warehouseFunc();}}
                   className={type === 1 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   仓库
                 </button>
                 <button
-                  onClick={() => {return this.goodsFunc()}}
+                  onClick={() => {return this.goodsFunc();}}
                   className={type === 2 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   物品
@@ -68,14 +68,14 @@ class Warehouse extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return ({
     ...state.operation.warehouse.toJS(),
     stations: state.common.get('stations'),
-  })
+  });
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch) => ({
   getGoodsDelList: payload => dispatch({ type: warehouseAction.getGoodsDelList, payload }),
   getGoodsUpdateList: payload => dispatch({ type: warehouseAction.getGoodsUpdateList, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Warehouse)
+export default connect(mapStateToProps, mapDispatchToProps)(Warehouse);
