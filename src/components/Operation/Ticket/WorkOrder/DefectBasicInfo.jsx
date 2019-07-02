@@ -51,7 +51,6 @@ class DefectBasicInfo extends Component {
     const info = this.props.basicInfo;
     let images = info.photoAddress ? info.photoAddress.split(',') : [];
     const { knowledgebaseList } = this.props;
-    let { liked } = knowledgebaseList;
     return (
       <div className={styles.basicInfo}>
         <div className={styles.title}>
@@ -122,13 +121,14 @@ class DefectBasicInfo extends Component {
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
-                {liked === 0 ? 
-                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
-                    点赞 <Icon type="like" />
-                  </div> :
+                {list.liked ?
                   <div className={styles.liked} disabled>
                     已点赞 <Icon type="like" />
                   </div>
+                  :
+                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
+                    点赞 <Icon type="like" />
+                  </div> 
                 }
               </div>
               )
