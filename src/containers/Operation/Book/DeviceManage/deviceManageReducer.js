@@ -4,6 +4,7 @@ import { deviceManageAction } from './deviceManageAction';
 
 const initState = Immutable.fromJS({
   selectType: 'deviceInfo',
+  exportLoading: false, // 导出设备表loading
   loading: false,
   stationCode: null, // 选中的电站
   deviceType: null,//筛选设备类型，为了和新增设备类型的分开

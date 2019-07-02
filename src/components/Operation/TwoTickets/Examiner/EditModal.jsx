@@ -25,9 +25,9 @@ class EditModal extends Component {
   componentDidMount(){
     const { settedDetail, form } = this.props;
     if (settedDetail) { // 编辑态
-      let setValues = {};
-      settedDetail.map(e => {
-        const userIds = e.userIds || '';
+      const setValues = {};
+      settedDetail.forEach(e => {
+        const userIds = `${e.userIds}` || '';
         setValues[e.nodeCode] = userIds.split(',').filter(e => !!e);
       });
       form.setFieldsValue({ ...setValues });
@@ -45,11 +45,11 @@ class EditModal extends Component {
   cancelEdit = () => this.props.changeStore({ // 返回页面，重置数据
     editModalShow: false,
     handleDistributionId: null,
-    settedDetail: null
+    settedDetail: null,
   });
 
   saveEdit = () => { // 保存
-    const { form,  } = this.props;
+    const { form } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err){
         const { createSettedInfo, editSettedInfo, settedDetail, handleDistributionId, settingList } = this.props;
@@ -57,21 +57,21 @@ class EditModal extends Component {
         const nodeDatas = valueArr.map(e => ({
           nodeCode: e[0],
           dealUsers: e[1].join(','),
-        }))
+        }));
         const currentInfo = settingList.find(e => e.distributionId === handleDistributionId) || {};
         settedDetail ? editSettedInfo({ // 编辑
           distributionId: handleDistributionId,
-          nodeDatas
+          nodeDatas,
         }) : createSettedInfo({ // 新增
           stationCode: currentInfo.stationCode,
-          nodeDatas, 
+          nodeDatas,
         });
       }
-    })
+    });
   }
 
   removeSelect = (nodeCode) => {
-    this.props.form.setFieldsValue({ [nodeCode]: [] })
+    this.props.form.setFieldsValue({ [nodeCode]: [] });
   }
 
   render(){
@@ -93,8 +93,8 @@ class EditModal extends Component {
               const nodeValues = form.getFieldValue(nodeCode) || [];
               return (
                 <FormItem label={`${nodeName}`} key={nodeCode}>
-                  {getFieldDecorator(nodeCode, {
-                    rules: [{ required: !isRequire, message: `请选择` }],
+                  {getFieldDecorator(`${nodeCode}`, {
+                    rules: [{ required: !isRequire, message: '请选择' }],
                   })(
                     <Select
                       placeholder="请选择"
@@ -107,12 +107,12 @@ class EditModal extends Component {
                       </div>}
                     >
                       {codeUserData.map(user => (
-                        <Option key={user.userId} value={user.userId}>{user.username}</Option>
+                        <Option key={`${user.userId}`} value={`${user.userId}`}>{user.username}</Option>
                       ))}
                     </Select>
                   )}
                 </FormItem>
-              )
+              );
             })}
           </Form>
           <div className={styles.editHandle}>
@@ -122,7 +122,7 @@ class EditModal extends Component {
           </div>
         </div>
       </Modal>
-    )
+    );
   }
 }
 

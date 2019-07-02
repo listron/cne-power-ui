@@ -16,7 +16,7 @@ export default class DetailModal extends Component {
   hideDetail = () => this.props.changeStore({
     detailModalShow: false,
     handleDistributionId: null,
-    settedDetail: null
+    settedDetail: null,
   });
 
   render(){
@@ -38,6 +38,6 @@ export default class DetailModal extends Component {
           ))}
         </div>
       </Modal>
-    )
+    );
   }
 }

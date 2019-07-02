@@ -54,6 +54,7 @@ export default class ImportFile extends Component {
       <Modal
         visible={importFileShow}
         title="批量导入库存"
+        maskClosable={false}
         onCancel={this.hideImportModal}
         footer={null}
         width={625}
@@ -105,6 +106,6 @@ export default class ImportFile extends Component {
           </div>
         </div>
       </Modal>
-    )
+    );
   }
 }

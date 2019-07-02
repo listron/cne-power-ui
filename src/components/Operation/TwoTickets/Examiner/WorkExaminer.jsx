@@ -33,21 +33,21 @@ class WorkExaminer extends Component {
       ...tableParams,
       sortField,
       sortMethod,
-    }
+    };
     changeStore({ tableParams: newParam });
     getSettingList({ ...newParam });
   }
 
 
-  checkStations = (selectedStation) => { // 电站选择
+  checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
     const newParams = {
       tableParams,
-      selectedStation,
+      stationCodes,
       pageNum: 1, // 回到第一页。
-    }
+    };
     changeStore({ tableParams: newParams });
-    getSettingList(tableParams);
+    getSettingList(newParams);
   }
 
   workTicketColumn = () => ([ // 表头生成
@@ -75,7 +75,7 @@ class WorkExaminer extends Component {
             <span
               className="iconfont icon-edit"
               onClick={() => {
-                state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId)
+                state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId);
               }}
             />
             {state > 0 && <span
@@ -83,9 +83,9 @@ class WorkExaminer extends Component {
               onClick={() => this.showDetail(distributionId)}
             />}
           </div>
-        )
-      }
-    }
+        );
+      },
+    },
   ])
 
   showEdit = (distributionId) => { // 展示编辑弹框
@@ -127,7 +127,7 @@ class WorkExaminer extends Component {
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
-    )
+    );
   }
 }
 
