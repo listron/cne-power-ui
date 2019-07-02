@@ -36,7 +36,7 @@ class ToolInsert extends Component {
     this.state = {
       toolNumber: inventoryNum,
       saveMode: '',
-    }
+    };
   }
 
   componentDidMount(){
@@ -44,14 +44,14 @@ class ToolInsert extends Component {
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
         warehouseId: originInsertInfo.warehouseId,
-        goodsType: parseInt(originInsertInfo.goodsType),
+        goodsType: parseInt(originInsertInfo.goodsType, 10),
         goodsName: originInsertInfo.goodsName,
         devManufactorName: originInsertInfo.devManufactorName,
         modeName: originInsertInfo.modeName,
         manufactorName: '',
         supplierName: '',
         assetsIds: originInsertInfo.assetsIds,
-      })
+      });
     }
   }
 
@@ -71,7 +71,7 @@ class ToolInsert extends Component {
           entryNum: '',
           price: '',
           remarks: '',
-        })
+        });
       } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
         form.resetFields();
       }
@@ -82,8 +82,8 @@ class ToolInsert extends Component {
     const { toolNumber } = this.state;
     const { form } = this.props;
     this.setState({
-      toolNumber: parseFloat(toolNumber) + parseFloat(form.getFieldValue('entryNum'))
-    })
+      toolNumber: parseFloat(toolNumber) + parseFloat(form.getFieldValue('entryNum')),
+    });
   }
 
   backToList = () => {
@@ -94,7 +94,7 @@ class ToolInsert extends Component {
   }
 
   refreshGoodList = (goodsMaxType) => {
-    this.props.getGoodsList({ goodsMaxType })
+    this.props.getGoodsList({ goodsMaxType });
   }
 
   insertSave = () => { // 保存
@@ -111,14 +111,14 @@ class ToolInsert extends Component {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       !err && insertWarehouse({ ...values });
-    })
+    });
   }
 
   render(){
     const { saveMode, toolNumber } = this.state;
     const {
       form, tabName, warehouseList, addNewGood, goodsList, addGoodName,
-      insertStatus, originInsertInfo, addGoodStatus
+      insertStatus, originInsertInfo, addGoodStatus,
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { goodsType } = getFieldsValue(['goodsType']);
@@ -129,7 +129,7 @@ class ToolInsert extends Component {
       !value && callback(`请填写${text}`);
       isNaN(value) && callback('请填写数字');
       callback();
-    }
+    };
     const goodsInfo = [
       { value: 201, label: '安全工器具' },
       { value: 202, label: '检修工器具' },
@@ -194,7 +194,7 @@ class ToolInsert extends Component {
             )}
           </FormItem>
           <FormItem label="入库数量">
-            {getFieldDecorator('entryNum',{
+            {getFieldDecorator('entryNum', {
               rules: [{
                 required: true,
                 validator: numValidator('入库数量'),
@@ -233,7 +233,7 @@ class ToolInsert extends Component {
           >保存并继续添加</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 
