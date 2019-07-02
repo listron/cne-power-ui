@@ -10,13 +10,11 @@ const initState = immutable.fromJS({
   reRenderTree: null, // 记录属性控件生成时间
   pointInfo: [], // 选中设备内可选测点信息
   partDataExport: {}, // 表格内 - 分页后的历史数据
-  // status: null, // 1生成中；2已生成；3失败
-
-  pointsSeleted: [], // 确认时候 => 选中的测点
-  
-  // devicePointCodes: [], // 设备测点数组
   duration: '', // 时间段
   taskId: '', // 行id
+  pointsSeleted: [], // 确认时候 => 选中的测点
+  recordedMinuteStart: moment().subtract(1, 'month').startOf('day'), // 记录10min起始时间
+  recordedMinuteEnd: moment().subtract(1, 'month').endOf('day'), // 记录10min终止时间
   deviceTypeCode: null, // 选中的设备类型
   queryParams: {
     timeZone:  moment().zone() / (-60), // 时区
@@ -24,9 +22,9 @@ const initState = immutable.fromJS({
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备
     devicePointCodes: [], // 选中的测点
-    timeInterval: 10, // 数据时间间隔：1-1s,5-5s,10-10min
+    timeInterval: null, // 数据时间间隔：1-1s,5-5s,10-10min
     startTime: moment().subtract(1, 'month').startOf('day'),
-    endTime: moment().subtract(1, 'month').endOf('day'),
+    endTime: moment().subtract(1, 'month').endOf('day'), 
   },
   listParam: {
     pageNum: 1, // 当前页码（从1开始）

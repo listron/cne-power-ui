@@ -30,6 +30,7 @@ class DataExportSearch extends Component{
     dataTypes: PropTypes.array,
     timeZone: PropTypes.string,
     pointsSeleted: PropTypes.array,
+    pointInfo: PropTypes.array,
   };
 
   constructor(props){
@@ -86,7 +87,6 @@ class DataExportSearch extends Component{
   }
 
   selectDeviceType = (deviceTypeCode) => { // 选择设备类型
-    console.log('deviceTypeCode: ', deviceTypeCode);
     const { changeDataExportStore, queryParams } = this.props;
     changeDataExportStore({
       queryParams:{
@@ -117,25 +117,35 @@ class DataExportSearch extends Component{
   }
 
   startChange = (startTime) => { // 选择开始时间
-    const { queryParams } = this.props;
+    const { queryParams, changeDataExportStore } = this.props;
     const { endTime } = queryParams
     if (moment().isBefore(startTime, 's')) {
-      startTime = moment();
+      startTime
     }else if(endTime.isBefore(startTime,'s')){
       startTime = moment(endTime)
     }
-    this.exportDataFetch({startTime});
+    changeDataExportStore({
+      queryParams: {
+        ...queryParams,
+        startTime
+      }
+    })
   }
 
   endChange = (endTime) => { // 选择结束时间
-    const { queryParams } = this.props;
+    const { queryParams, changeDataExportStore } = this.props;
     const { startTime } = queryParams;
     if(moment().isBefore(endTime, 's')) {
-      endTime = moment();
+      endTime = moment()
     }else if(endTime.isBefore(startTime, 's')){
       endTime = moment(startTime)
     }
-    this.exportDataFetch({endTime});
+    changeDataExportStore({
+      queryParams: {
+        ...queryParams,
+        endTime
+      }
+    })
   }
 
   createTimeArr = (start, end) => {
@@ -146,54 +156,20 @@ class DataExportSearch extends Component{
     return timeArr;
   }
 
-  disableStartDate = (date) => { // 不可选的开始日期。
+  disabledStartDate = (date) => { // 不可选的开始日期。
     const { queryParams } = this.props;
     const { endTime } = queryParams;
-    return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
-  }
-  
-  disableStartTime = (time) => {
-    const { queryParams } = this.props;
-    const { endTime } = queryParams;
-    if (endTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
-      const endHour = endTime.hour();
-      const endMinute = endTime.minute();
-      const endSecond = endTime.second();
-      const disabledHours = this.createTimeArr(endHour + 1, 24);
-      const disabledMinutes = this.createTimeArr(time.hour() === endHour? endMinute + 1 : 60, 60);
-      const disabledSeconds = this.createTimeArr((time.hour() === endHour && time.minute() === endMinute)? endSecond : 60, 60);
-      return {
-        disabledHours: () => disabledHours,
-        disabledMinutes: () => disabledMinutes,
-        disabledSeconds: () => disabledSeconds,
-      }
+    if (endTime) {
+      return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
     }
-    return;
   }
 
-  disableEndDate = (date) => {
+  disabledEndDate = (date) => {
     const { queryParams } = this.props;
     const { startTime } = queryParams;
-    return moment().isBefore(date,'D') || date.isBefore(startTime,'D') // || date.isAfter(disableEnd, 'D');
-  }
-
-  disableEndTime = (time) => {
-    const { queryParams } = this.props;
-    const { startTime } = queryParams;
-    if (startTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
-      const startHour = startTime.hour();
-      const startMinute = startTime.minute();
-      const startSecond = startTime.second();
-      const disabledHours = this.createTimeArr(0, startHour);
-      const disabledMinutes = this.createTimeArr(0, time.hour() === startHour? startMinute : 0);
-      const disabledSeconds = this.createTimeArr(0, (time.hour() === startHour && time.minute() === startMinute)? startSecond + 1 : 0);
-      return {
-        disabledHours: () => disabledHours,
-        disabledMinutes: () => disabledMinutes,
-        disabledSeconds: () => disabledSeconds,
-      }
+    if (startTime) {
+      return moment().isBefore(date,'D') || date.isBefore(startTime,'D') // || date.isAfter(disableEnd, 'D');
     }
-    return;
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
@@ -219,7 +195,6 @@ class DataExportSearch extends Component{
         timeInterval: interval,
       });
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
-      message.info('请重新选择设备和时间');
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
@@ -232,26 +207,7 @@ class DataExportSearch extends Component{
         timeInterval: interval,
       });
     } else { // 秒级数据( 1s与5s)切换
-      this.historyDataFetch({ timeInterval });
-    }
-  }
-
-  exportDataFetch = (params) => {
-    const { changeDataExportStore, queryParams } = this.props;
-    const { devicePointCodes } = queryParams;
-    const tmpPayload = { queryParams: {
-      ...queryParams,
-      ...params
-    }}
-    const { startTime, endTime, timeInterval } = tmpPayload.queryParams;
-    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
-      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
-      changeDataExportStore(tmpPayload);
-    }else if (devicePointCodes.length > 0) { // 已选测点，重新请求
-      changeDataExportStore(tmpPayload);
-    }else{ // 未选时间，暂存信息
-      changeDataExportStore(tmpPayload);
+      changeDataExportStore({ timeInterval });
     }
   }
 
@@ -265,7 +221,7 @@ class DataExportSearch extends Component{
     })
   }
 
-  maxTagPlaceholder = () => { // 显示数据类型已选数和总数
+  maxTagPlaceholderTen = () => { // 数据间隔为10->显示数据类型已选数和总数
     const { queryParams } = this.props;
     const { dataTypes = [] } = queryParams;
     if (dataTypes.length > 0) {
@@ -273,35 +229,42 @@ class DataExportSearch extends Component{
     }
   }
 
+  maxTagPlaceholderFive = () => { // 数据间隔为5->显示数据类型已选数和总数
+    const { queryParams } = this.props;
+    const { dataTypes = [] } = queryParams;
+    if (dataTypes.length > 0) {
+      return <div>已选{dataTypes.length}/1</div>
+    }
+  }
+
   reset = () => { // 重置
-    const { getDataExport, queryParams } = this.props;
-    getDataExport({
+    const { changeDataExportStore, queryParams } = this.props;
+    changeDataExportStore({
       queryParams: {
         ...queryParams,
         stationCode: null,
         deviceFullCodes: [],
         devicePointCodes: [],
-        timeInterval: 10, 
+        timeInterval: null, 
         startTime: moment().subtract(1, 'month').startOf('day'),
-        endTime: moment().subtract(1, 'month').endOf('day'),
-        devicePointCodes: [], 
+        endTime: moment().subtract(1, 'month').endOf('day'), 
         dataTypes: [],
         timeZone: null,
-        deviceTypeCode: '', 
-        pointsSeleted: [],
-      }
+      },
+      deviceTypeCode: '', 
+      pointsSeleted: [],
+      pointInfo: [],
     })
   }
 
   generate = () => { // 生成任务
     const { inputEdited } = this.state;
-    
     if(!inputEdited){
-      this.setState({
-        showWarningTip: true,
-      })
+        this.setState({
+          showWarningTip: true,
+        })
+      }
     }
-  }
 
   confirmWarningTip = () => { // 确定
     const { getDataExport, queryParams, deviceTypeCode } = this.props;
@@ -326,9 +289,14 @@ class DataExportSearch extends Component{
 
   render(){
     const { showWarningTip, warningTipText } = this.state;
-    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo } = this.props;
-    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes } = queryParams;
-    console.log('dataTypes: ', dataTypes);
+    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo, pointInfo } = this.props;
+    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes, devicePointCodes } = queryParams;
+    const deviceFullCodesStatus = deviceFullCodes.length > 0;
+    const devicePointCodesStatus = devicePointCodes.length > 0;
+    const dataTypesStatus = dataTypes.length > 0;
+    const showGenerateBtn = !!stationCode && !!deviceTypeCode && deviceFullCodesStatus && devicePointCodesStatus && !!timeInterval && dataTypesStatus;
+    const showResetBtn = !!stationCode || !!deviceTypeCode || deviceFullCodesStatus || devicePointCodesStatus || !!timeInterval || dataTypesStatus;
+    
     return (
       <div className={styles.dataExportSearch}>
         <div className={styles.dataExportTop}>
@@ -339,7 +307,7 @@ class DataExportSearch extends Component{
               holderText={'请输入关键字快速查询'}
               data={stations}
               onOK={this.selectStation}
-              value={stationCode}
+              value={stationCode?stationCode:[]}
               disabledStation={stations.filter(e => e.isConnected === 0).map(e => e.stationCode)}
             />
           </div>
@@ -367,7 +335,6 @@ class DataExportSearch extends Component{
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
-              // max={timeInterval === 10 ? 5 : 2}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
@@ -382,79 +349,82 @@ class DataExportSearch extends Component{
           <div className={styles.startSelect}>
             <span className={styles.text}>开始时间</span>
             <DatePicker
+              disabledDate={this.disabledStartDate}
               allowClear={false}
               showToday={false}
-              format="YYYY-MM-DD HH:mm:ss"
-              onChange={this.startChange}
-              value={startTime}
-              disabledDate={this.disableStartDate}
-              disabledTime={this.disableStartTime}
-              dropdownClassName={styles.exportRangeDropdown}
-              renderExtraFooter={() => (
-                <span className={styles.infoTip}>
-                  {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}
-                </span>
-              )}
               showTime
-           />
+              format="YYYY-MM-DD HH:mm:ss"
+              value={startTime}
+              placeholder="开始时间"
+              onChange={this.startChange}
+            />
           </div>
 
           <div className={styles.endSelect}>
-              <span className={styles.text}>结束时间</span>
-              <DatePicker 
-                allowClear={false}
-                showToday={false}
-                format="YYYY-MM-DD HH:mm:ss"
-                onChange={this.endChange}
-                value={endTime}
-                disabledDate={this.disableEndDate}
-                disabledTime={this.disableEndTime}
-                dropdownClassName={styles.exportRangeDropdown}
-                renderExtraFooter={() => (
-                  <span className={styles.infoTip}>
-                    {timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过2天'}
-                  </span>
-                )}
-                showTime
-              />
-            </div>
+            <span className={styles.text}>结束时间</span>
+            <DatePicker
+              disabledDate={this.disabledEndDate}
+              allowClear={false}
+              showToday={false}
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              value={endTime}
+              placeholder="结束时间"
+              onChange={this.endChange}
+            />
+          </div>
 
-            <div className={styles.intervalSelect}>
-              <span className={styles.text}>数据间隔</span>
+          <div className={styles.intervalSelect}>
+            <span className={styles.text}>数据间隔</span>
+            <Select
+              placeholder="请选择"
+              onChange={this.selectTimeSpace}
+              value={!timeInterval ? undefined: timeInterval}
+            >
+              {intervalInfo.map(e => (
+                <Option className={styles.intervalText} key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className={styles.dataTypes}>
+            <span className={styles.text}>数据类型</span>
+            {timeInterval === 10 ?
               <Select
-                onChange={this.selectTimeSpace}
-                value={timeInterval}
-                placeholder="数据间隔时间"
+                onChange={this.changeDataType}
+                mode="multiple"
+                placeholder="可多选"
+                value={dataTypes}
+                style={{ width: '198px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholderTen}
+                filterOption={[]}
               >
-                {intervalInfo.map(e => (
-                  <Option key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
-                ))}
+                <Option value="1" key="1">平均值</Option>
+                <Option value="2" key="2">最大值</Option>
+                <Option value="3" key="3">最小值</Option>
+                <Option value="4" key="4">瞬时值</Option>
+              </Select> :
+              <Select
+                onChange={this.changeDataType}
+                mode="multiple"
+                placeholder="可多选"
+                value={dataTypes}
+                style={{ width: '198px' }}
+                maxTagCount={0}
+                maxTagPlaceholder={this.maxTagPlaceholderFive}
+                filterOption={[]}
+              >
+                <Option value="4" key="4">瞬时值</Option>
               </Select>
-            </div>
-
-            <div className={styles.dataTypes}>
-              <span className={styles.text}>数据类型</span>
-                <Select
-                  onChange={this.changeDataType}
-                  mode="multiple"
-                  placeholder="选择数据类型"
-                  value={dataTypes}
-                  style={{ width: '198px' }}
-                  maxTagCount={0}
-                  maxTagPlaceholder={this.maxTagPlaceholder}
-                  filterOption={[]}
-                  // open={false}
-                >
-                  <Option value="1" key="1">平均值</Option>
-                  <Option value="2" key="2">最大值</Option>
-                  <Option value="3" key="3">最小值</Option>
-                  <Option value="4" key="4">瞬时值</Option>
-                </Select>
+              }
             </div>
           </div>
           <div className={styles.dataExportBottom}>
+            {showResetBtn ?
              <Button className={styles.reset} onClick={this.reset}>重置</Button>
-             <Button className={styles.generate} onClick={this.generate}>生成任务</Button>
+            : ''}
+             <Button className={styles.generate} onClick={this.generate} disabled={!showGenerateBtn}>生成任务</Button>
           </div>
         </div>
     )

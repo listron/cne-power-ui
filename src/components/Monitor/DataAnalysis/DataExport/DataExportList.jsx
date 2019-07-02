@@ -3,12 +3,9 @@ import path from '../../../../constants/path';
 import styles from './dataExport.scss';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import WarningTip from './WarningTip/index';
 import CommonPagination from '../../../Common/CommonPagination';
-
-const { APIBasePath } = path.basePaths;
-const { monitor } = path.APISubPaths;
 
 class DataExportList extends Component{
   static propTypes = {
@@ -57,11 +54,7 @@ class DataExportList extends Component{
       ...newParam
     })
   }
-
-  onExport = () => {
-    
-  }
-
+  
   onRenewal = (record, index) => { // 重新生成任务
     const { inputEdited } = this.state;
     const { getAgainDataExport, getDataExportList, listParam } = this.props;
@@ -161,7 +154,7 @@ class DataExportList extends Component{
         render: (text, record, index) => (
             <span>
               {record.status === 1 && <span></span>}
-              {record.status === 2 && <span className={styles.exportBtn} onClick={()=>this.onExport(record, index)}>下载到本地</span>}
+              {record.status === 2 && <Button className={styles.downloadStyle} href={text} download={text} target="_blank">下载到本地</Button>}
               {record.status === 3 && <span className={styles.renewal} onClick={()=>this.onRenewal(record, index)}>重新生成任务</span>}
             </span>
           )
@@ -172,6 +165,7 @@ class DataExportList extends Component{
       <div className={styles.dataExportList}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         <div className={styles.pagination}>
+          <div className={styles.text}>只保留最近3天的任务列表，请及时下载</div>
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

@@ -142,12 +142,16 @@ function *getDataExport({ payload = {} }) { // 生成导出任务
     } else { throw response.data }
   }catch(e) {
     message.error('获取数据失败!');
+    yield put({
+      type: dataExportAction.changeDataExportStore,
+      payload: { tableLoading: false }
+    })
     console.log(e);
   }
 }
 
 function *getAgainDataExport({ payload = {} }) { // 重新生成导出任务
-  const { queryParams, taskId } = payload;
+  const { taskId } = payload;
   const url =`${APIBasePath}${monitor.getDataExport}/${taskId}`;
   try{
     const response = yield call(axios.put, url);

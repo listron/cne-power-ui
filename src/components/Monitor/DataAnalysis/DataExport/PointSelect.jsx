@@ -3,7 +3,7 @@ import { message, Modal, Tree } from 'antd';
 import styles from './dataExport.scss';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
 import { runInThisContext } from 'vm';
 const { TreeNode } = Tree;
 
@@ -22,41 +22,56 @@ class PointSelect extends Component {
     this.state = {
       visible: false,
       halfCheckedKeys: [],
-      expandedKeys: [],
-      selectedtags: props.pointsSeleted || [],
+      selectedtags: [], // props.pointsSeleted || [],
+      checkPoint:[],
     }
+    this.arrTree = []; // 备份选中的测点
   }
 
   componentWillReceiveProps(nextProps) {
-    const { reRenderTree } = nextProps;
-    const preReRenderTree = this.props.reRenderTree;
-    if (reRenderTree !== preReRenderTree) {
-      this.setState({
-        expandedKeys: []
+    const { pointsSeleted } = nextProps;
+    const prepointsSeleted = this.props.pointsSeleted;
+    if (pointsSeleted !== prepointsSeleted && pointsSeleted.length) {
+      this.setState({checkPoint: pointsSeleted})
+    }
+  }
+
+  componentDidUpdate(prevProps){ // 默认选中测点
+    const { pointInfo = [], changeDataExportStore, queryParams } = this.props;
+    const prevPoints = prevProps.pointInfo;
+    const checkedPoint = pointInfo.filter(e => e.isChecked >= 1).map(e => ({
+      key: e.devicePointId,
+      title: e.devicePointName
+    }))
+    const prevPoint = prevPoints.length && prevPoints[0] && prevPoints[0].devicePointCode; 
+    const pointInfos = pointInfo.length && pointInfo[0] && pointInfo[0].devicePointCode; 
+
+    if (prevPoints.length === 0 && pointInfo.length > 0) { // 得到初始测点数据
+      this.arrTree = checkedPoint; // 备份选中的测点
+      changeDataExportStore({
+        queryParams: {
+          ...queryParams,
+          devicePointCodes: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointCode), // 默认选中测点
+        },
+        pointsSeleted: checkedPoint
+      })
+    }
+    else if(!!prevPoint && !!pointInfos && prevPoints[0].devicePointCode !== pointInfo[0].devicePointCode){ // 设备数据切换
+      changeDataExportStore({
+        queryParams: {
+          ...queryParams,
+          devicePointCodes: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointCode), // 默认选中测点
+        },
+        pointsSeleted: checkedPoint
       })
     }
   }
 
-  // componentDidUpdate(prevProps){ // 默认选中测点
-  //   const { pointInfo, changeDataExportStore, queryParams } = this.props;
-  //   const prevPoints = prevProps.pointInfo;
-  //   if (prevPoints.length === 0 && pointInfo.length > 0) { // 得到初始测点数据
-  //     changeDataExportStore({
-  //       ...queryParams,
-  //       devicePointCodes: pointInfo.isChecked(1) // 默认选中测点
-  //     })
-  //     this.pointSelect(pointInfo.isChecked(1));
-  //   }else if(prevPoints.length > 0 && pointInfo.length > 0 && prevPoints[0].devicePointCode === pointInfo[0].devicePointCode){ // 设备数据切换
-  //     changeDataExportStore({
-  //       ...queryParams,
-  //       devicePointCodes: pointInfo.isChecked(1) // 默认选中测点
-  //     })
-  //     this.pointSelect(pointInfo.isChecked(1));
-  //   }
-  // }
-
   clearDevice = () => { // 清空测点
     const { changeDataExportStore } = this.props;
+    this.setState({
+      checkPoint: []
+    })
     changeDataExportStore({
       pointsSeleted: []
     })
@@ -64,43 +79,59 @@ class PointSelect extends Component {
 
   cancelChecked = (devicePointCode) => { // 取消单个选中设备。
     const { changeDataExportStore, pointsSeleted } = this.props;
-    const newDevices = pointsSeleted.filter(e => e.devicePointCode !== devicePointCode);
+    const newPoint = pointsSeleted.filter(e => {
+      if (e.key !== devicePointCode) {
+        return true
+      }
+    });
     changeDataExportStore({
-      pointsSeleted: newDevices
+      pointsSeleted: newPoint
     })
   }
 
   showModal = () => { // 显示模态框
-    this.setState({
-      visible: true,
-    });
+    const { pointInfo } = this.props;
+    if (pointInfo.length !== 0) {
+      this.setState({
+        visible: true,
+      });
+    }
   };
 
-  handleOk = e => { // 关闭模态框
+  handleOk = e => { // 确认模态框
+    const { changeDataExportStore,  queryParams } = this.props;
+    const { selectedtags, checkPoint } = this.state;
+    const pointsSeleted = checkPoint;
     this.setState({
       visible: false,
     });
+    changeDataExportStore({
+      queryParams: {
+        ...queryParams,
+        devicePointCodes: selectedtags
+      },
+        pointsSeleted
+    })
   };
 
   handleCancel = e => { // 关闭模态框
+    const { pointsSeleted } = this.props;
+    this.setState({
+      checkPoint: pointsSeleted,
+    });
     this.setState({
       visible: false,
+    }, () => { // 当选中的测点被清除时，将备份的测点赋值给之前的选中测点数组
+      if (pointsSeleted.length === 0) {
+        const { changeDataExportStore } = this.props;
+        changeDataExportStore({
+          pointsSeleted: this.arrTree
+        })
+      }
     });
   };
 
-  expandTree = (expandedKeys) => {
-    this.setState({ expandedKeys });
-  }
-
-  pointSelect = (selectedKeys, { checkedNodes, halfCheckedKeys }) => { 
-    const { queryParams, changeDataExportStore } = this.props;
-    const { startTime, endTime, timeInterval } = queryParams;
-    const { selectedtags } = this.state;
-    const pointsSeleted = checkedNodes.map(e => ({
-      key:e.key,
-      title: e.props.title
-    }))
-
+  pointSelect = (selectedKeys, { checkedNodes = [], halfCheckedKeys }) => { // 选择测点
     const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
     if (valideKeys.length > 30) {
       const preHalfCheckedKeys = this.state.halfCheckedKeys;
@@ -110,35 +141,17 @@ class PointSelect extends Component {
       });
       return;
     }
-    
+
+    const checkPoint = checkedNodes.map(e => ({
+      key: e.key,
+      title: e.props.title
+    }))
+
     this.setState({
       halfCheckedKeys,
-      selectedtags
+      selectedtags: selectedKeys,
+      checkPoint
     })
-    const newQueryParam = {
-      ...queryParams,
-      devicePointCodes: selectedKeys,
-    };
-    console.log('newQueryParam: ', newQueryParam);
-    
-    changeDataExportStore({
-      queryParams: newQueryParam,
-      pointsSeleted
-    })
-
-    const tmpAllowedEnd = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
-      message.error(`${timeInterval === 10 ? '时间选择范围不可超过1个月' : '时间选择范围不可超过1天'}`);
-      changeDataExportStore({
-        queryParams: newQueryParam,
-        pointsSeleted
-      })
-    }else {
-      changeDataExportStore({
-        queryParams: newQueryParam,
-        pointsSeleted
-      })
-    }
   }
 
   renderTreeNodes = () => { // 数据分组并基于分组渲染节点。
@@ -193,15 +206,16 @@ class PointSelect extends Component {
     return PointsNodes;
   }
 
-
   render() {
-    const { halfCheckedKeys, expandedKeys } = this.state;
-    const { queryParams, pointsSeleted, pointInfo } = this.props;
-    const { devicePointCodes } = queryParams;
-    return (
+    const { halfCheckedKeys, checkPoint, visible } = this.state;
+    const { pointsSeleted, pointInfo } = this.props;
+      return (
       <div className={styles.pointSelect}>
         <div className={styles.pointTree} onClick={this.showModal}>
-          <span className={styles.pointNum}>已选{pointsSeleted.length}/{pointInfo.length}</span>
+          <Input disabled={pointInfo.length === 0} />
+          {pointsSeleted.length !== 0 ? 
+            <span className={styles.pointNumDark}>已选{pointsSeleted.length}/{pointInfo.length}</span>
+          : <span className={styles.pointNumLight}>已选{pointsSeleted.length}/{pointInfo.length}</span>}
           <div className={styles.filterIcon}>
             <i className="iconfont icon-filter" />
           </div>
@@ -209,40 +223,40 @@ class PointSelect extends Component {
         <div className={styles.checkPoint}>
           <Modal
             title="请选择测点"
-            visible={this.state.visible}
+            visible={visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             >
             <Tree
               multiple
               checkable
+              className={styles.pointTrees}
               onCheck={this.pointSelect}
               onExpand={this.expandTree}
-              expandedKeys={expandedKeys}
               checkedKeys={{
-                checked: pointsSeleted.map(e => e.key),
+                checked: checkPoint.map(e => e.key),
                 halfChecked: halfCheckedKeys
               }}
               >
               {this.renderTreeNodes()}
             </Tree>
-          
+        
             <div className={styles.checkedList}>
               <div className={styles.top}>
-                <span>已选测点 {pointsSeleted.length}个</span>
+                <span>已选测点 {checkPoint.length}个</span>
                 <span className={styles.clear} onClick={this.clearDevice}>清空</span>
               </div>
               <div className={styles.checkedInfo}>
-                {pointsSeleted.map((e, index) => (
-                  <span key={e.devicePointCode + index} className={styles.eachDevice}>
+                {checkPoint.map((e, index) => (
+                  <span key={e.key + index} className={styles.eachDevice}>
                     <span className={styles.name}>{e.title}</span>
-                    <span className={styles.cancel} onClick={() => this.cancelChecked(e.devicePointCode)}>X</span>
+                    <span className={styles.cancel} onClick={() => this.cancelChecked(e.key)}>X</span>
                   </span>
                 ))}
               </div>
             </div>
           </Modal>
-          </div>
+        </div>
       </div>
     )
   }
