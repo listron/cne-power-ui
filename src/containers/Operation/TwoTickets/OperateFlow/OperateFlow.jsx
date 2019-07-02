@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './operateFlow.scss';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { operateFlowAction } from './operateFlowAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Header from '../../../../components/Common/CommonBreadcrumb';
@@ -9,7 +9,7 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import TableList from '../../../../components/Operation/TwoTickets/OperateFlow/TableList';
 import Condition from '../../../../components/Operation/TwoTickets/OperateFlow/Condition';
-import WorkFlowSide from '../../../../components/Operation/TwoTickets/OperateFlow/FlowSide/WorkFlowSide';
+import WorkFlowSide from '../../../../components/Operation/TwoTickets/OperateFlow/WorkFlowSide';
 
 class OperateFlow extends Component {
     static propTypes = {
@@ -18,19 +18,18 @@ class OperateFlow extends Component {
     }
 
     constructor() {
-        super()
+        super();
         this.state = {
-        }
+        };
 
     }
 
-    componentWillUnmount(){
-        this.props.resetStore()
+    componentWillUnmount() {
+        this.props.resetStore();
     }
 
     render() {
         const { showPage } = this.props;
-        console.log('tets',showPage)
         return (
             <div className={styles.workflow}>
                 <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} />
@@ -51,25 +50,24 @@ class OperateFlow extends Component {
                 </div>
                 <Footer />
             </div>
-        )
+        );
     }
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        ...state.operation.workFlow.toJS(),
+        ...state.operation.operateFlow.toJS(),
         stations: state.common.get('stations').toJS(),
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
-    changeWorkFlowStore: payload => dispatch({ type: operateFlowAction.changeWorkFlowStore, payload }),
+    changeFlowStore: payload => dispatch({ type: operateFlowAction.changeFlowStore, payload }),
     resetStore: () => dispatch({ type: operateFlowAction.resetStore }),
     getFlowList: payload => dispatch({ type: operateFlowAction.getFlowList, payload }),
     getDocketStatus: payload => dispatch({ type: operateFlowAction.getDocketStatus, payload }),
     getStopRight: payload => dispatch({ type: operateFlowAction.getStopRight, payload }),
-    getDocketTypeList: payload => dispatch({ type: operateFlowAction.getDocketTypeList, payload }),
     getDefectList: payload => dispatch({ type: operateFlowAction.getDefectList, payload }),
     addDockect: payload => dispatch({ type: operateFlowAction.addDockect, payload }),
     noDistributionList: payload => dispatch({ type: operateFlowAction.noDistributionList, payload }),
@@ -83,10 +81,11 @@ const mapDispatchToProps = (dispatch) => ({
     downLoadFile: payload => dispatch({
         type: commonAction.downLoadFile,
         payload: {
-          ...payload,
-          actionName: operateFlowAction.changeWorkFlowStore
-        }
-      })
-})
+            ...payload,
+            actionName: operateFlowAction.changeFlowStore,
+        },
+    }),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(OperateFlow)
+    ;

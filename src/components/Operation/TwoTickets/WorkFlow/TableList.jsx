@@ -18,7 +18,7 @@ class TableList extends Component {
         getFlowList: PropTypes.func,
         listQueryParams: PropTypes.object,
         commonQueryParams: PropTypes.object,
-        changeWorkFlowStore: PropTypes.func,
+        changeFlowStore: PropTypes.func,
         getStopRight: PropTypes.func,
         getNewImg: PropTypes.func,
         handleBatch: PropTypes.func,
@@ -91,7 +91,7 @@ class TableList extends Component {
     }
 
     onShowDetail = (value) => {
-        this.props.changeWorkFlowStore({ showPage: 'detail', docketId: value.docketId });
+        this.props.changeFlowStore({ showPage: 'detail', docketId: value.docketId });
     }
 
     onConfirmWarningTip = () => { // 删除  作废  消票  审核
@@ -136,7 +136,7 @@ class TableList extends Component {
     }
 
     addWorkFlow = () => {
-        this.props.changeWorkFlowStore({ showPage: 'add' });
+        this.props.changeFlowStore({ showPage: 'add' });
     }
 
     showImgs = (record) => { // 查看图片详情

@@ -67,7 +67,8 @@ class TimeLine extends Component {
                 <div className={`${styles.line} ${operWinType && length - 1 === index && styles.dashedLine} ${!operWinType && length - 1 === index && styles.noLine}`} ></div>
                 <div className={styles.linebox}>
                     <div className={styles.flowName}>{item.nodeName}</div>
-                    {!item.childProcess &&
+                    {/* 什么鬼设计  先去判断是否有子集 没有子集，且当前操作已完成的状态 */}
+                    {!item.childProcess && item.handleResult &&
                         <div className={styles.lineBasic}>
                             <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
                             <div className={styles.operateUser}>{item.handleUser}</div>

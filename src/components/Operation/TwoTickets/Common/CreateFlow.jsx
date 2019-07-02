@@ -18,7 +18,6 @@ class CreateFlow extends Component {
     getDocketTypeList: PropTypes.func,
     noDistributionList: PropTypes.func,
     noDistributeList: PropTypes.array,
-    changeWorkFlowStore: PropTypes.func,
     addDockect: PropTypes.func,
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
@@ -38,7 +37,7 @@ class CreateFlow extends Component {
   }
 
   onDefectCreate = (isContinueAdd) => { // 保存的状态
-    const { form, docketId } = this.props;
+    const { form, docketId, type } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { stationCode } = values.stations[0];
@@ -57,7 +56,7 @@ class CreateFlow extends Component {
         });
         const { defectId = '' } = defectList;
         const params = {
-          templateType: 1,
+          templateType: type === 'work' ? 1 : 2,
           stationCode,
           docketType,
           docketCode,
@@ -140,7 +139,7 @@ class CreateFlow extends Component {
               <InputLimit placeholder="请输入数字、字母及组合" size={30} height={64} width={300} />
             )}
           </FormItem>
-          <FormItem label={`${textName}票名`} colon={false}>
+          <FormItem label={`${textName}名称`} colon={false}>
             {getFieldDecorator('docketName', {
               rules: [{ required: false, message: '请输入', max: 50 }],
               initialValue: docketInfo.docketName,
