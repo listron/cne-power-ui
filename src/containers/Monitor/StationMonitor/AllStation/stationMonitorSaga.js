@@ -75,6 +75,7 @@ function* getCapabilityDiagram(action) { //获取出力图数据
       type: allStationAction.changeMonitorstationStore,
       payload: {
         capabilityLoading: true,
+        capabilityDataTime: null
       }
     })
     const response = yield call(axios.get, url);
@@ -99,18 +100,26 @@ function* getCapabilityDiagram(action) { //获取出力图数据
   }
 }
 
-function* getMonitorPower(action) { //获取理论发电量 实际发电量数据
+function* getMonitorPower(action) { //获取理论发电量 实际发电量数据(风电)
   const { payload } = action;
   const { intervalTime, startTime, endTime } = payload;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindMonitorPower}/${intervalTime}/${startTime}/${endTime}/${-1}`;
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        powerLoading: true,
+        powerTime: null,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
           powerData: response.data.data || [],
-          powerTime: moment().unix()
+          powerTime: moment().unix(),
+          powerLoading: false,
         }
       })
     } else { throw response.data }
@@ -120,15 +129,25 @@ function* getMonitorPower(action) { //获取理论发电量 实际发电量数�
       type: allStationAction.changeMonitorstationStore,
       payload: {
         powerData: [],
+        powerTime: moment().unix(),
+        powerLoading: false,
       }
     });
   }
 }
 
-function* getMonitorScatter(action) { // 等效小时数
+function* getMonitorScatter(action) { // 等效小时数(风电)
   const localDate = moment().format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getWindScatter}/${localDate}}`
   try {
+    yield put({
+      type: allStationAction.changeMonitorstationStore,
+      payload: {
+        scatterData: {},
+        scatterTime: null,
+        scatterLoading: true,
+      }
+    })
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
@@ -136,6 +155,7 @@ function* getMonitorScatter(action) { // 等效小时数
         payload: {
           scatterData: response.data.data || {},
           scatterTime: moment().unix(),
+          scatterLoading: false,
         }
       })
     } else { throw response.data }
@@ -145,29 +165,30 @@ function* getMonitorScatter(action) { // 等效小时数
       type: allStationAction.changeMonitorstationStore,
       payload: {
         powerData: [],
+        scatterTime: moment().unix(),
+        scatterLoading: false,
       }
     });
   }
 }
 
-function* getRealChartsData(action) { // 获取出力图和日等效利用小时散点数
+function* getRealChartsData(action) { // 获取出力图和日等效利用小时散点数(风电)
   const { payload } = action;
   const { capability } = payload;
   yield fork(getCapabilityDiagram, { ...capability });
   yield fork(getMonitorScatter);
   yield delay(3600000); // 阻塞1小时
-  // yield delay(10000); // 阻塞10秒
   realChartsInterval = yield fork(getRealChartsData, action);
 }
 
-function* getRealMonitorPower(action) {
+
+function* getRealMonitorPower(action) { // (风电)
   yield fork(getMonitorPower, action);
   yield delay(3600000); // 阻塞1小时
-  // yield delay(10000); // 阻塞10秒
   realPowerInterval = yield fork(getRealMonitorPower, action);
 }
 
-function* stopRealCharstData(action) {
+function* stopRealCharstData(action) { // (风电)
   const { payload } = action;
   if (realChartsInterval) {
     yield put({
@@ -190,7 +211,9 @@ function* stopRealCharstData(action) {
   }
 }
 
-function* dayPower(action) { // 多电站日发电量与等效时图
+
+// =====================光伏======================
+function* dayPower(action) { // 多电站日发电量与等效时图(光伏)
   const { payload } = action;
   const { regionName } = payload;
   const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -202,6 +225,7 @@ function* dayPower(action) { // 多电站日发电量与等效时图
       type: allStationAction.changeMonitorstationStore,
       payload: {
         dayPowerLoading: true,
+        dayPowerTime: null,
       }
     })
     const response = yield call(axios.get, url);
@@ -228,7 +252,7 @@ function* dayPower(action) { // 多电站日发电量与等效时图
   }
 }
 
-function* monthPower(action) { // 多电站月发电量与等效时图
+function* monthPower(action) { // 多电站月发电量与等效时图(光伏)
   const { payload } = action;
   const { regionName } = payload;
   const endDate = moment().endOf('year').format('YYYY-MM-DD');
@@ -266,10 +290,10 @@ function* monthPower(action) { // 多电站月发电量与等效时图
   }
 }
 
-function* monthplanpower(action) { // 多电站月累计与计划发电量图
+function* monthplanpower(action) { // 多电站月累计与计划发电量图(光伏)
   const { payload } = action;
   const { regionName } = payload;
-  const endDate = moment().subtract(1, 'days').format('YYYY-MM-DD');
+  const endDate = moment().endOf('year').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/${regionName}`;
   // const url=`/mock/api/v3/monitor/monthPlanpower`;
@@ -310,7 +334,7 @@ function* getPvChartsData(action) { // 光伏电站的图表
   yield fork(monthplanpower, action);
 }
 
-function* getPvMonitorStation(action) {//获取所有/风/光电站信息
+function* getPvMonitorStation(action) {//获取所有光电站信息
   const { payload } = action;
   const { regionName } = payload;
   const utcTime = moment.utc().format();
@@ -342,7 +366,7 @@ function* getPvMonitorStation(action) {//获取所有/风/光电站信息
   }
 }
 
-function* getPvCapabilitydiagrams(action) {
+function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
   const { payload } = action;
   const { regionName } = payload;
   let startTime = moment().startOf('day').utc().format();
@@ -394,7 +418,7 @@ function* getPvRealData(action) { // 获取光伏的数据
   realPvtimeInterval = yield fork(getPvRealData, { ...action, firtQuery: false, waiting: true });
 }
 
-function* stopRealMonitorData() { // 停止数据定时请求并清空数据
+function* stopRealMonitorData() { // 停止数据定时请求并清空数据(光伏)
   if (realtimeInterval) {
     yield put({
       type: allStationAction.changeMonitorstationStore,

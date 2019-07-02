@@ -21,16 +21,16 @@ class PointScatter extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { scatterpointTime } = this.props;
+        const { scatterpointTime, loading } = this.props;
         const preTime = prevProps.scatterpointTime;
-        if (scatterpointTime !== preTime) { // 数据重新请求后重绘。
+        if (scatterpointTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
 
     drawCharts = (params) => {
-        const { scatterData = {}, type, } = params;
+        const { scatterData = {}, type, loading } = params;
         let needData = [];
         if (type === 'windDevice') {
             needData = [
@@ -59,7 +59,7 @@ class PointScatter extends Component {
         const lineColor = '#666';
         const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
-        scatterData.monthsChart ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
+        loading ? SpeedScatterGraph.showLoading('default', { color: '#199475' }) : SpeedScatterGraph.hideLoading();
         const scatterOption = {
             graphic: Graphic,
             color: ['#c7ceb2', '#199475', '#e08031'],
