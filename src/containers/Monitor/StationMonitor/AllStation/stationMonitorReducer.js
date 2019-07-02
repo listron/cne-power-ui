@@ -15,6 +15,7 @@ var initState = Immutable.fromJS({
   scatterTime: null,// 等效小时时间
   capabilityDataTime: null,//出力图时间
   powerTime: null,//发电量时间
+  powerLoading: false, //发电量 loading
   capabilityLoading: false,// 出力图的loading
   regionName: '全部区域', // 区域名称
   pvCapabilitydiagramsData: [],// 光伏电站的图表数据

@@ -24,17 +24,17 @@ class MonthPlanPower extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { monthPlanPower } = this.props;
+        const { monthPlanPower, loading } = this.props;
         const { monthPlanPowerTime } = monthPlanPower;
         const preTime = prevProps.monthPlanPower.monthPlanPowerTime;
-        if (monthPlanPowerTime !== preTime) { // 数据重新请求后重绘。
+        if (monthPlanPowerTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
     drawCharts = (params) => {
         let { monthPlanPower = {}, powerUnit } = params;
-        const { monthPlanPowerData = [], monthPlanPowerLoading } = monthPlanPower;
+        const { monthPlanPowerData = [], loading } = monthPlanPower;
         const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 月发电量
         const filterMonthPower = monthPlanPowerData.filter(e => e.dayPower);
         const monthPlanPowers = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 月计划发电量
@@ -45,7 +45,7 @@ class MonthPlanPower extends Component {
         ) ? showNoData : hiddenNoData;
         const chartsBox = document.getElementById('monthPlanPowerChart');
         const powerDiagram = echarts.init(chartsBox);
-        monthPlanPowerLoading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
+        loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
         let color = color = ['#ceebe0', '#fbe6e3', '#f9b600'];

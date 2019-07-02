@@ -30,7 +30,7 @@ class DetailCharts extends Component {
 
     render() {
         const { alarmNum, monitorPvUnit, detailVisible, workList } = this.props;
-        const { powerUnit, realTimePowerUnit} = monitorPvUnit;
+        const { powerUnit, realTimePowerUnit } = monitorPvUnit;
         const { stationCode } = this.props.match.params;
         return (
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts}`}>
@@ -57,9 +57,9 @@ class DetailCharts extends Component {
                         yAxisUnit={realTimePowerUnit}
                         capabilityDataTime={this.props.capabilityDataTime}
                         loading={this.props.capabilityLoading}
-                        capabilityData={this.props.capabilityData} 
+                        capabilityData={this.props.capabilityData}
                         onChange={this.props.getCapabilityDiagram}
-                        />
+                    />
                 </div>
                 <div className={styles.chartsBox}>
                     <MonthPower
@@ -75,6 +75,7 @@ class DetailCharts extends Component {
                     <MonthPlanPower
                         monthPlanPower={this.props.monthPlanPower}
                         powerUnit={powerUnit}
+                        loading={this.props.monthPlanPowerLoading}
                     />
                 </div>
 
