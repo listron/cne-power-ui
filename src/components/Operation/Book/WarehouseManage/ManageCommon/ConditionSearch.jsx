@@ -22,7 +22,7 @@ class ConditionSearch extends Component {
     const newParams = {
       ...tableParams,
       selectedWarehouse,
-      pageNum: 1
+      pageNum: 1,
     };
     changeStore({ tableParams: newParams, checkedStocks: [] });
     getWarehouseManageList(newParams);
@@ -37,7 +37,7 @@ class ConditionSearch extends Component {
       pageNum: 1,
     };
     changeStore({ tableParams: newParams, checkedStocks: [] });
-    getModes({ selectedManufacturer });
+    !!selectedManufacturer && getModes({ selectedManufacturer });
     getWarehouseManageList(newParams);
   }
 
@@ -64,7 +64,7 @@ class ConditionSearch extends Component {
           value={selectedWarehouse}
           disabled={!(warehouseList.length > 0)}
         >
-          <Option key={undefined} value={undefined}>不限仓库</Option>
+          <Option key={null} value={null}>不限仓库</Option>
           {warehouseList.map(e => (
             <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
           ))}
@@ -74,8 +74,8 @@ class ConditionSearch extends Component {
           onChange={this.changeManufacturer}
           value={selectedManufacturer}
           disabled={!(manufacturerList.length > 0)}
-        > 
-          <Option key={undefined} value={undefined}>不限厂家</Option>
+        >
+          <Option key={null} value={null}>不限厂家</Option>
           {manufacturerList.map(e => (
             <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
@@ -86,13 +86,13 @@ class ConditionSearch extends Component {
           value={selectedMode}
           disabled={!(modeList.length > 0)}
         >
-          <Option key={undefined} value={undefined}>不限型号</Option>
+          <Option key={null} value={null}>不限型号</Option>
           {modeList.map(e => (
             <Option key={e.id} value={e.id}>{e.name}</Option>
           ))}
         </Select>}
       </div>
-    )
+    );
   }
 }
 
