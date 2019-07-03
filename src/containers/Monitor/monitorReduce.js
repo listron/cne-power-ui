@@ -42,7 +42,6 @@ const monitorReducer = combineReducers({
   dataRealtime,
   dataScatterDiagram,
   alarmCount,
-  dataExport,
 });
 
 export default monitorReducer;

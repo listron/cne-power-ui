@@ -96,7 +96,6 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
     const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
-    console.log('devicePoints: ', devicePoints);
     const tmpPayload = { queryParam, chartLoading: true };
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
