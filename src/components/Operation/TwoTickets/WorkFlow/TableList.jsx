@@ -18,7 +18,7 @@ class TableList extends Component {
         getFlowList: PropTypes.func,
         listQueryParams: PropTypes.object,
         commonQueryParams: PropTypes.object,
-        changeWorkFlowStore: PropTypes.func,
+        changeFlowStore: PropTypes.func,
         getStopRight: PropTypes.func,
         getNewImg: PropTypes.func,
         handleBatch: PropTypes.func,
@@ -62,6 +62,7 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
+        console.log('record', record)
         if (keys.length > 0) {
             const { userId } = this.props;
             const dealUserIds = [], dealRoleIds = [];
@@ -73,6 +74,7 @@ class TableList extends Component {
                     dealRoleIds.push(e.dealRoleIds.split(','));
                 }
             });
+
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
             let review = false, complete = false;
@@ -90,7 +92,7 @@ class TableList extends Component {
     }
 
     onShowDetail = (value) => {
-        this.props.changeWorkFlowStore({ showPage: 'detail', docketId: value.docketId });
+        this.props.changeFlowStore({ showPage: 'detail', docketId: value.docketId });
     }
 
     onConfirmWarningTip = () => { // 删除  作废  消票  审核
@@ -135,7 +137,7 @@ class TableList extends Component {
     }
 
     addWorkFlow = () => {
-        this.props.changeWorkFlowStore({ showPage: 'add' });
+        this.props.changeFlowStore({ showPage: 'add' });
     }
 
     showImgs = (record) => { // 查看图片详情
@@ -202,7 +204,7 @@ class TableList extends Component {
                 key: 'stateDesc',
                 sorter: true,
             }, {
-                title: '审核人',
+                title: '操作人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
                 render: (text) => {

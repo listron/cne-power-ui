@@ -21,6 +21,7 @@ const twoTickets = [
   }, { // 第二种工作票
     path: '/operation/twoTickets/operateflow',
     component: lazy(() => import('../../components/Common/Building/Building')),
+    // component: lazy(() => import('../../containers/Operation/TwoTickets/OperateFlow/OperateFlow')),
   },
 ];
 
@@ -58,7 +59,7 @@ const runningReport = [
     path: '/operation/running/monthReport',
     component: lazy(() => import('../../components/Common/Building/Building')),
   },
-]
+];
 
 export const operationRoute = [
   { // 运维管理-工单-员工定位
@@ -73,5 +74,5 @@ export const operationRoute = [
   { // 运维管理-智能专家库
     path: '/operation/intelligentExpert',
     component: lazy(() => import('../../containers/Operation/IntelligentExpert/IntelligentExpert')),
-  }
+  },
 ];

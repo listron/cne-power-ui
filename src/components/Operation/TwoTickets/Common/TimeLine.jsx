@@ -49,8 +49,8 @@ class TimeLine extends Component {
         });
     }
 
-    download = () => {
-        const { downLoadFile, taskId, docketId } = this.props;
+    download = (docketId, taskId) => {
+        const { downLoadFile } = this.props;
         const downloadHref = `${path.basePaths.APIBasePath}${path.APISubPaths.operation.downloadImgs}/${docketId}/${taskId}`;
         downLoadFile({
             url: downloadHref,
@@ -60,35 +60,50 @@ class TimeLine extends Component {
     }
 
     renderItem = (docketId, item, length, index) => {
-        const { operWinType, taskId } = this.props;
+        const { operWinType } = this.props;
         return (
             <div className={styles.processItem} key={index}>
                 <img src={item.iconImg} className={styles.iconImg} />
                 <div className={`${styles.line} ${operWinType && length - 1 === index && styles.dashedLine} ${!operWinType && length - 1 === index && styles.noLine}`} ></div>
                 <div className={styles.linebox}>
-                    <div className={styles.lineBasic}>
-                        <div className={styles.flowName}>{item.nodeName}</div>
-                        <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
-                        <div className={styles.operateUser}>{item.handleUser}</div>
-                        {item.isUploadImg &&
-                            <div className={styles.imgDownLoad}>
-                                <div onClick={() => this.showImgs(docketId, taskId)} className={styles.imgList}> 票据附件</div>
-                                <div onClick={this.download} className={styles.imgList}> 下载</div>
-                            </div>
-                        }
-                    </div>
+                    <div className={styles.flowName}>{item.nodeName}</div>
+                    {/* 什么鬼设计  先去判断是否有子集 没有子集，且当前操作已完成的状态 */}
+                    {!item.childProcess && item.handleResult &&
+                        <div className={styles.lineBasic}>
+                            <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                            <div className={styles.operateUser}>{item.handleUser}</div>
+                            {item.isUploadImg &&
+                                <div className={styles.imgDownLoad}>
+                                    <div onClick={() => this.showImgs(docketId, item.taskId)} className={styles.imgList}> 票据附件</div>
+                                    <div onClick={() => this.download(docketId, item.taskId)} className={styles.imgList}> 下载</div>
+                                </div>
+                            }
+                        </div>
+                        || ''
+                    }
                     {item.childProcess &&
                         <div className={styles.advise}>
                             {item.childProcess.map((e, index) => {
                                 return (<div key={index}>
-                                    <div className={styles.topCont}>
-                                        <div className={styles.status}>{e.handleResult === 1 ? '通过' : '驳回'}</div>
-                                        <div>处理建议:{e.handleDesc}</div>
-                                    </div>
-                                    <div className={styles.bottomCont}>
-                                        <div className={styles.operateTime} >{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
-                                        <div className={styles.operateUser}>{e.handleUser}</div>
-                                    </div>
+                                    {e.handleResult &&
+                                        <React.Fragment>
+                                            <div className={styles.bottomCont}>
+                                                <div className={styles.operateTime}>{e.handleTime && moment(e.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                                                <div className={styles.operateUser}>{e.nodeName} : {e.handleUser}</div>
+                                                {e.isUploadImg &&
+                                                    <div className={styles.imgDownLoad}>
+                                                        <div onClick={() => this.showImgs(docketId, e.taskId)} className={styles.imgList}> 票据附件</div>
+                                                        <div onClick={() => this.download(docketId, e.taskId)} className={styles.imgList}> 下载</div>
+                                                    </div>
+                                                    || ''
+                                                }
+                                            </div>
+                                            <div className={styles.topCont}>
+                                                <div className={styles.status}>{e.handleResult === 1 ? '通过' : '驳回'}</div>
+                                                <div>处理建议:{e.handleDesc}</div>
+                                            </div>
+                                        </React.Fragment>
+                                        || ''}
                                 </div>);
                             })}
                         </div>

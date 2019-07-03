@@ -7,17 +7,17 @@ import { workFlowAction } from './workFlowAction';
 function* getFlowList(action) {
     const { payload } = action;
     const flowListUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketList}`;
-    const flowStatusUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`
+    const flowStatusUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`;
     const { listQueryParams, commonQueryParams } = payload;
-    const startTime = commonQueryParams.createTimeStart;
-    const endTime = commonQueryParams.createTimeEnd;
+    const startTime = commonQueryParams.createTimeStart || null;
+    const endTime = commonQueryParams.createTimeEnd || null;
     const IsMy = commonQueryParams.handleUser ? 1 : 0;
     try {
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
-                loading: true
-            }
+                loading: true,
+            },
         });
         const [flowList, flowStatus] = yield all(
             [call(axios.post, flowListUrl, { ...listQueryParams, ...commonQueryParams, startTime, endTime, IsMy }),
@@ -33,7 +33,7 @@ function* getFlowList(action) {
                 pageNum = maxPage;
             }
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     docketList: flowList.data.data.pageDate.dataList || [],
                     totalNum,
@@ -47,11 +47,11 @@ function* getFlowList(action) {
                     statusList: flowStatus.data.data || [],
                 },
             });
-        } else { throw flowList.data }
+        } else { throw flowList.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 docketList: [],
                 totalNum: 0,
@@ -62,7 +62,7 @@ function* getFlowList(action) {
                     pageNum: 1,
                 },
                 commonQueryParams: payload.listQueryParams,
-                statusList:[],
+                statusList: [],
             },
         });
     }
@@ -70,22 +70,22 @@ function* getFlowList(action) {
 
 function* getStopRight(action) {
     const { payload } = action;
-    const { templateType } = payload
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.stopNodes}/${templateType}/stopNodes`
+    const { templateType } = payload;
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.stopNodes}/${templateType}/stopNodes`;
     try {
         const response = yield call(axios.get, url, payload);
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     stopRight: response.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 stopRight: [],
             },
@@ -94,21 +94,21 @@ function* getStopRight(action) {
 }
 
 function* getDocketTypeList(action) {
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketType}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketType}`;
     try {
         const response = yield call(axios.get, url);
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     docketTypeList: response.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 docketTypeList: [],
             },
@@ -116,18 +116,18 @@ function* getDocketTypeList(action) {
     }
 }
 
-function* getDefectList(action) {  // 缺陷列表
+function* getDefectList(action) { // 缺陷列表
     const { payload } = action;
     const { queryList, defeactData } = payload;
-    let url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectList;
+    const url = Path.basePaths.APIBasePath + Path.APISubPaths.ticket.getDefectList;
     yield put({
-        type: workFlowAction.changeWorkFlowStore,
+        type: workFlowAction.changeFlowStore,
         payload: {
             defeactData: {
                 ...defeactData,
                 defectLoading: true,
-            }
-        }
+            },
+        },
     });
     try {
         const response = yield call(axios.post, url, queryList);
@@ -141,7 +141,7 @@ function* getDefectList(action) {  // 缺陷列表
                 pageNum = maxPage;
             }
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     defeactData: {
                         total,
@@ -149,25 +149,25 @@ function* getDefectList(action) {  // 缺陷列表
                         pageSize,
                         defectList: response.data.data.defectList,
                         defectLoading: false,
-                    }
+                    },
 
-                }
+                },
             });
         } else {
-            throw response.data
+            throw response.data;
         }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 defeactData: {
                     total: 0,
                     pageNum: 1,
                     defectList: [],
                     defectLoading: false,
-                }
-            }
+                },
+            },
         });
     }
 }
@@ -175,21 +175,20 @@ function* getDefectList(action) {  // 缺陷列表
 function* addDockect(action) {
     const { payload } = action;
     const { isContinueAdd } = payload;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.addDocket}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.addDocket}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
             message.success('添加成功');
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
             const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
-            console.log('commonQueryParams', commonQueryParams, listQueryParams)
             if (!isContinueAdd) { // 保持并继续添加
                 yield put({
-                    type: workFlowAction.changeWorkFlowStore,
+                    type: workFlowAction.changeFlowStore,
                     payload: {
                         showPage: 'list',
-                    }
-                })
+                    },
+                });
             }
             yield put({
                 type: workFlowAction.getFlowList,
@@ -205,7 +204,7 @@ function* addDockect(action) {
                     listQueryParams,
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         message.error(e.message);
@@ -220,16 +219,16 @@ function* noDistributionList(action) {
         const response = yield call(axios.post, url, { templateType });
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     noDistributeList: response.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 noDistributeList: [],
             },
@@ -246,16 +245,16 @@ function* getDocketDetail(action) {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     docketDetail: response.data.data || {},
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 docketDetail: {},
             },
@@ -271,16 +270,16 @@ function* getNodeImg(action) { // 节点图片
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     nodeImg: response.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 nodeImg: [],
             },
@@ -290,7 +289,7 @@ function* getNodeImg(action) { // 节点图片
 
 function* getDocketHandle(action) { // 审核/执行/消票 票据
     const { payload } = action;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketHandle}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketHandle}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
@@ -298,11 +297,11 @@ function* getDocketHandle(action) { // 审核/执行/消票 票据
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
             const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     showPage: 'list',
-                }
-            })
+                },
+            });
             yield put({
                 type: workFlowAction.getFlowList,
                 payload: {
@@ -310,14 +309,14 @@ function* getDocketHandle(action) { // 审核/执行/消票 票据
                     listQueryParams,
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         message.error(e.message);
     }
 }
 
-function* getNewImg(action) {  // 最新图片
+function* getNewImg(action) { // 最新图片
     const { payload } = action;
     const { docketId } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.newImg}/${docketId}`;
@@ -325,16 +324,16 @@ function* getNewImg(action) {  // 最新图片
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     newImg: response.data.data || [],
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         yield put({
-            type: workFlowAction.changeWorkFlowStore,
+            type: workFlowAction.changeFlowStore,
             payload: {
                 newImg: [],
             },
@@ -344,7 +343,7 @@ function* getNewImg(action) {  // 最新图片
 
 function* handleBatch(action) {
     const { payload } = action;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.handleBatch}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.handleBatch}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
@@ -352,11 +351,11 @@ function* handleBatch(action) {
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
             const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     showPage: 'list',
-                }
-            })
+                },
+            });
             yield put({
                 type: workFlowAction.getFlowList,
                 payload: {
@@ -364,7 +363,7 @@ function* handleBatch(action) {
                     listQueryParams,
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         message.error(e.message);
@@ -373,7 +372,7 @@ function* handleBatch(action) {
 
 function* stopBatch(action) {
     const { payload } = action;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.stopBatch}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.stopBatch}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
@@ -381,11 +380,11 @@ function* stopBatch(action) {
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
             const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
             yield put({
-                type: workFlowAction.changeWorkFlowStore,
+                type: workFlowAction.changeFlowStore,
                 payload: {
                     showPage: 'list',
-                }
-            })
+                },
+            });
             yield put({
                 type: workFlowAction.getFlowList,
                 payload: {
@@ -393,7 +392,7 @@ function* stopBatch(action) {
                     listQueryParams,
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         message.error(e.message);
@@ -403,7 +402,7 @@ function* stopBatch(action) {
 function* delDocket(action) {
     const { payload } = action;
     const { docketId } = payload;
-    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.delDocket}/${docketId}`
+    const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.delDocket}/${docketId}`;
     try {
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
@@ -417,7 +416,7 @@ function* delDocket(action) {
                     listQueryParams,
                 },
             });
-        } else { throw response.data }
+        } else { throw response.data; }
     } catch (e) {
         console.log(e);
         message.error(e.message);

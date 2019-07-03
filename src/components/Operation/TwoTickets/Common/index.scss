@@ -226,6 +226,8 @@
       }
       .linebox{
         margin-left: 28px;
+        display: flex;
+        margin-bottom: 16px;
       }
       .imgDownLoad{
         display: flex;
@@ -237,37 +239,41 @@
       .operateUser {
         color: $darkColor;
       }
+      .flowName {
+        color: $darkColor;
+        margin-right: 12px;
+        flex-shrink: 0;
+      }
       .lineBasic {
         display: flex;
         flex-direction: row;
         margin-bottom: 12px;
-
-        .flowName {
-          color: $darkColor;
-          margin-right: 24px;
-        }
-
         .imgList{
-          line-height: 18px;
+          line-height: 21px;
+          height: 21px;
+          width: 66px;
           color: $themeColor;
           padding: 0 4px;
           border: 1px solid $themeColor;
           border-radius:4px;
           margin-left: 12px;
           cursor: pointer;
+          text-align: center;
         }
       }
       .advise {
-        margin-left: 80px;
         .topCont{
           display: flex;
           .status{
             border: 1px solid #999;
             border-radius: 4px;
             width: 48px;
-            line-height: 18px;
+            line-height: 21px;
             margin-right: 4px;
             text-align: center;
+            flex-shrink: 0;
+            height: 21px;
+
           }
         }
         .bottomCont{

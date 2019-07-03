@@ -15,7 +15,7 @@ class DeatilFlow extends Component {
         getDocketHandle: PropTypes.func,
         getNodeImg: PropTypes.func,
         nodeImg: PropTypes.array,
-        changeWorkFlowStore: PropTypes.func,
+        changeFlowStore: PropTypes.func,
         getDocketDetail: PropTypes.func,
         docketId: PropTypes.number,
         downLoadFile: PropTypes.func,
@@ -35,7 +35,7 @@ class DeatilFlow extends Component {
     }
 
     componentWillUnmount() {
-        this.props.changeWorkFlowStore({ docketDetail: {}, docketId: null });
+        this.props.changeFlowStore({ docketDetail: {}, docketId: null });
     }
 
 
@@ -49,9 +49,10 @@ class DeatilFlow extends Component {
             <div className={styles.detailFlow}>
                 <div className={styles.content}>
                     <div className={styles.basic}>
-                        {defectInfo ?
-                            <CreateFlow {...this.props} reject={true} />
-                            : <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} type={type} />}
+                        {operWinType !== 0 ?
+                            <BaseInfo docketInfo={docketInfo} distributionInfo={distributionInfo} type={type} />
+                            : <CreateFlow {...this.props} reject={true} />
+                        }
                     </div>
                     <div className={styles.right}>
                         <div className={styles.timeLines}>
