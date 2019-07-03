@@ -94,6 +94,7 @@ class DataExportList extends Component{
     const { tableLoading, listParam, partDataExport } = this.props;
     const { pageNum, pageSize } = listParam;
     const { totalCount = 0, dataList = [] } = partDataExport;
+    console.log('partDataExport: ', partDataExport);
 
     const columns = [
       {
@@ -175,7 +176,7 @@ class DataExportList extends Component{
         </div>
         <Table 
          loading={tableLoading}
-         dataSource={dataList.map((e, i) => ({...e, key: i}))}
+         dataSource={dataList && dataList.map((e, i) => ({...e, key: i}))}
          columns={columns}
          pagination={false}
          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
