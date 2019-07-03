@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import eCharts from "echarts";
+import React from 'react';
+import PropTypes from 'prop-types';
+import eCharts from 'echarts';
 
-import styles from "./dataZoom.scss";
+import styles from './dataZoom.scss';
 
 /**
  * 说明：该组件只显示一个dataZoom，不显示x轴，y轴，
@@ -31,12 +31,12 @@ export default class DataZoom extends React.Component {
       xAxisData,
       onChange,
       paramsStart,
-      paramsEnd
+      paramsEnd,
     } = this.props;
     const {
       xAxisData: xAxisDataPrev,
       paramsStart: paramsStartPrev,
-      paramsEnd: paramsEndPrev
+      paramsEnd: paramsEndPrev,
     } = prevProps;
     const { dataZoom } = this;
     const myChart = eCharts.init(dataZoom);
@@ -73,10 +73,10 @@ export default class DataZoom extends React.Component {
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.6)',
             shadowOffsetX: 2,
-            shadowOffsetY: 2
-          }
+            shadowOffsetY: 2,
+          },
         }],
-        series: []
+        series: [],
       });
       myChart.off('datazoom'); // 记录bug找了2小时，关闭上一次，否则会拿不到paramsStart和paramsEnd。
       myChart.on('datazoom', (params) => {
@@ -91,7 +91,7 @@ export default class DataZoom extends React.Component {
           // 把参数传出去
           onChange(start, end, params.start, params.end);
         }
-      })
+      });
     }
   }
 

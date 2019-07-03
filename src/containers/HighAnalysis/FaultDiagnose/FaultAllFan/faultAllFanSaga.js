@@ -1,9 +1,9 @@
 import {call, put, takeEvery} from 'redux-saga/effects';
 import {faultAllFanAction} from './faultAllFanAction.js';
-import Path from "../../../../constants/path";
-import axios from "axios";
-import { message } from "antd";
-import moment from "moment";
+import Path from '../../../../constants/path';
+import axios from 'axios';
+import { message } from 'antd';
+import moment from 'moment';
 
 /***
  * 解析公共头APIBasePath
@@ -22,8 +22,8 @@ const {
       similarityList,
       allFanResult,
       tenMinutesLine,
-      faultInfo
-    }
+      faultInfo,
+    },
   }} = Path;
 
 function* getResetTask(action) { // 重新执行
@@ -33,12 +33,12 @@ function* getResetTask(action) { // 重新执行
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
-      message.success("重新执行成功");
+      message.success('重新执行成功');
     }else {
       message.error(response.data.message);
     }
@@ -47,8 +47,8 @@ function* getResetTask(action) { // 重新执行
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -60,82 +60,82 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       // 结束日期和结束列表
       const { endTime, deviceDatas } = response.data.data;
       // 故障日期时间
-      const dateArr = deviceDatas && deviceDatas[0].date && deviceDatas[0].date.split(",");
+      const dateArr = deviceDatas && deviceDatas[0].date && deviceDatas[0].date.split(',');
       // 判断如果deviceDatas有数据
       const timeValue = deviceDatas && deviceDatas[0].date ? dateArr[dateArr.length - 1] : endTime;
       // 发电机前驱温度
-      const  preParams = {
+      const preParams = {
         stationCode: response.data.data.stationCode,
-        pointCode: "GN010", //前驱测点-固定字段
+        pointCode: 'GN010', //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(timeValue).subtract(1,'months').utc().format(),
-        endTime: moment(timeValue).add(1, "days").utc().format(),
-        queryFlag: true // 判断是否重新存贮时间轴
+        startTime: moment(timeValue).subtract(1, 'months').utc().format(),
+        endTime: moment(timeValue).add(1, 'days').utc().format(),
+        queryFlag: true, // 判断是否重新存贮时间轴
       };
       // 发电机后驱温度
-      const  afterParams = {
+      const afterParams = {
         stationCode: response.data.data.stationCode,
-        pointCode: "GN011", //前驱测点-固定字段
+        pointCode: 'GN011', //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(timeValue).subtract(1,'months').utc().format(),
-        endTime: moment(timeValue).add(1, "days").utc().format(),
-        queryFlag: true // 判断是否重新存贮时间轴
+        startTime: moment(timeValue).subtract(1, 'months').utc().format(),
+        endTime: moment(timeValue).add(1, 'days').utc().format(),
+        queryFlag: true, // 判断是否重新存贮时间轴
       };
       // 发电机温度差
       const diffParams = {
         stationCode: response.data.data.stationCode,
-        pointCode: "GN010-GN011", //前驱测点-固定字段
+        pointCode: 'GN010-GN011', //前驱测点-固定字段
         deviceFullcodes: [], // 默认传空代表所有风机
-        startTime: moment(timeValue).subtract(1,'months').utc().format(),
-        endTime: moment(timeValue).add(1, "days").utc().format(),
-        queryFlag: true // 判断是否重新存贮时间轴
+        startTime: moment(timeValue).subtract(1, 'months').utc().format(),
+        endTime: moment(timeValue).add(1, 'days').utc().format(),
+        queryFlag: true, // 判断是否重新存贮时间轴
       };
       // 单机自适应
       const aloneParams = {
         taskId: response.data.data.taskId,
         // 取数组的第一条
-        deviceFullCode: response.data.data.deviceDatas[0].deviceFullcode
+        deviceFullCode: response.data.data.deviceDatas[0].deviceFullcode,
       };
       // 相似性热图和所有风机
       const heatAndFansParams = {
         taskId: response.data.data.taskId,
-        date: timeValue
+        date: timeValue,
       };
       // 任务执行失败不请求接口
       if (response.data.data.status !== 4) {
         yield put({
           type: faultAllFanAction.getTenMinutesDiff,
-          payload: diffParams
+          payload: diffParams,
         });
         yield put({
           type: faultAllFanAction.getTenMinutesAfter,
-          payload: afterParams
+          payload: afterParams,
         });
         yield put({
           type: faultAllFanAction.getTenMinutesBefore,
-          payload: preParams
+          payload: preParams,
         });
         // 判断当前type === 1 再发请求
         if (Number(response.data.data.deviceDatas[0].type) === 1) {
           yield put({
             type: faultAllFanAction.getAllFanResultList,
-            payload: heatAndFansParams
+            payload: heatAndFansParams,
           });
           yield put({
             type: faultAllFanAction.getStandAloneList,
-            payload: aloneParams
+            payload: aloneParams,
           });
           yield put({
             type: faultAllFanAction.getSimilarityList,
-            payload: heatAndFansParams
+            payload: heatAndFansParams,
           });
         }
       }
@@ -147,7 +147,7 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
           deviceName: response.data.data.deviceDatas[0].deviceName,
           faultDate: timeValue,
           faultDateList: response.data.data.deviceDatas[0].date,
-          faultInfoMessage: response.data.data.executeMessage || "",
+          faultInfoMessage: response.data.data.executeMessage || '',
           loading: false,
         },
       });
@@ -157,8 +157,8 @@ function* getFaultInfo(action) { // 获取故障预警任务详情
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -174,8 +174,8 @@ function* getFaultReport(action) { // 获取历史预警报告
         pageSize: payload.pageSize ? payload.pageSize : 10,
         pageNum: payload.pageNum ? payload.pageNum : 1,
         sortField: payload.sortField,
-        sortMethod: payload.sortMethod
-      }
+        sortMethod: payload.sortMethod,
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -192,8 +192,8 @@ function* getFaultReport(action) { // 获取历史预警报告
     yield put({
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -206,8 +206,8 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        aloneLoading: true
-      }
+        aloneLoading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -217,7 +217,7 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
           aloneTimeCompare: moment().unix(),
           standAloneList: response.data.data || [],
           loading: false,
-          aloneLoading: false
+          aloneLoading: false,
         },
       });
     }
@@ -227,8 +227,8 @@ function* getStandAloneList(action) { // 获取单风机自适应模块检测结
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        aloneLoading: false
-      }
+        aloneLoading: false,
+      },
     });
   }
 }
@@ -241,8 +241,8 @@ function* getSimilarityList(action) { // 获取风机相似性结果
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        heatLoading: true
-      }
+        heatLoading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -252,7 +252,7 @@ function* getSimilarityList(action) { // 获取风机相似性结果
           heatTimeCompare: moment().unix(),
           similarityList: response.data.data || [],
           loading: false,
-          heatLoading: false
+          heatLoading: false,
         },
       });
     }
@@ -262,8 +262,8 @@ function* getSimilarityList(action) { // 获取风机相似性结果
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        heatLoading: false
-      }
+        heatLoading: false,
+      },
     });
   }
 }
@@ -276,8 +276,8 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        allLoading: true
-      }
+        allLoading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -287,14 +287,14 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
           allTimeCompare: moment().unix(),
           allFanResultList: response.data.data || {
             cfResidual: {
-              residual: []
+              residual: [],
             },
             cfStd1: [],
             cfStd2: [],
-            cfStd3 : []
+            cfStd3: [],
           },
           loading: false,
-          allLoading: false
+          allLoading: false,
         },
       });
     }
@@ -304,8 +304,8 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        allLoading: false
-      }
+        allLoading: false,
+      },
     });
   }
 }
@@ -313,7 +313,7 @@ function* getAllFanResultList(action) { // 获取多机协同模块检测结果-
 // 温度处理时间
 function dateFunc(arr) {
   return arr[0].dataList && arr[0].dataList.map(cur => {
-    return moment(cur.timeStamp).format("YYYY-MM-DD HH:mm:ss");
+    return moment(cur.timeStamp).format('YYYY-MM-DD HH:mm:ss');
   });
 }
 
@@ -325,7 +325,7 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
     deviceFullcodes, // 默认传空代表所有风机
     startTime,
     endTime,
-    queryFlag
+    queryFlag,
   } } = action;
   // 参数
   const params = {
@@ -341,8 +341,8 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        preLoading: true
-      }
+        preLoading: true,
+      },
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
@@ -365,7 +365,7 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
           tenMinutesBeforeList: response.data.data || [],
           beforeTimeData: dateFunc(beforeTimeData),
           loading: false,
-          preLoading: false
+          preLoading: false,
         },
       });
     }
@@ -375,8 +375,8 @@ function* getTenMinutesBefore(action) { // 获取风机10分钟数据-前驱温�
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        preLoading: false
-      }
+        preLoading: false,
+      },
     });
   }
 }
@@ -405,8 +405,8 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        afterLoading: true
-      }
+        afterLoading: true,
+      },
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
@@ -429,7 +429,7 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
           tenMinutesAfterList: response.data.data || [],
           afterTimeData: dateFunc(afterTimeData),
           loading: false,
-          afterLoading: false
+          afterLoading: false,
         },
       });
     }
@@ -439,8 +439,8 @@ function* getTenMinutesAfter(action) { // 获取风机10分钟数据-后驱温�
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        afterLoading: true
-      }
+        afterLoading: true,
+      },
     });
   }
 }
@@ -453,7 +453,7 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
     deviceFullcodes, // 默认传空代表所有风机
     startTime,
     endTime,
-    queryFlag
+    queryFlag,
   } } = action;
   // 参数
   const params = {
@@ -461,7 +461,7 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
     pointCode, //前驱测点-固定字段
     deviceFullcodes, // 默认传空代表所有风机
     startTime,
-    endTime
+    endTime,
   };
   const url = `${APIBasePath}${tenMinutesLine}`;
   try {
@@ -469,8 +469,8 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: true,
-        diffLoading: true
-      }
+        diffLoading: true,
+      },
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
@@ -493,7 +493,7 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
           tenMinutesDiffList: response.data.data || [],
           diffTimeData: dateFunc(diffTimeData),
           loading: false,
-          diffLoading: false
+          diffLoading: false,
         },
       });
     }
@@ -503,8 +503,8 @@ function* getTenMinutesDiff(action) { // 获取风机10分钟数据-温度差
       type: faultAllFanAction.changeFaultAllFanStore,
       payload: {
         loading: false,
-        diffLoading: false
-      }
+        diffLoading: false,
+      },
     });
   }
 }

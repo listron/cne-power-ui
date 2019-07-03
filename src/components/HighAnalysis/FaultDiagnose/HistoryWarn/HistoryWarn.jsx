@@ -1,21 +1,21 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import ModalFilter from '../Filter/Modal/ModalFilter';
 import DateFilter from '../Filter/Date/DateFilter';
 import FilteredItems from './FilteredItems/FilteredItems';
 import HistoryWarnTable from './HistoryWarnTable/HistoryWarnTable';
-import styles from "./historyWarn.scss";
-import StationSelect from "../../../Common/StationSelect/index";
-import DeviceSelect from "../../../Common/DeviceSelect/index";
-import {Button, Icon} from "antd";
-import CommonPagination from "../../../Common/CommonPagination/index";
+import styles from './historyWarn.scss';
+import StationSelect from '../../../Common/StationSelect/index';
+import DeviceSelect from '../../../Common/DeviceSelect/index';
+import {Button, Icon} from 'antd';
+import CommonPagination from '../../../Common/CommonPagination/index';
 
 export default class HistoryWarn extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stations: PropTypes.object,
     stationCode: PropTypes.number,
-    deviceTypeCode:PropTypes.number,
+    deviceTypeCode: PropTypes.number,
     queryParam: PropTypes.object,
     onChangeFilter: PropTypes.func,
     selectDeviceCode: PropTypes.array,
@@ -35,7 +35,7 @@ export default class HistoryWarn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showFilter: ""
+      showFilter: '',
     };
   }
 
@@ -45,12 +45,12 @@ export default class HistoryWarn extends React.Component {
       stationCode: null,
       deviceFullCodes: [],
       algorithmIds: [],
-      startTime: "",
-      endTime: "",
+      startTime: '',
+      endTime: '',
       pageSize: 10,
       pageNum: 1,
-      sortField: "",
-      sortMethod: ""
+      sortField: '',
+      sortMethod: '',
     };
     // 算法列表
     getAlgoOptionList();
@@ -62,12 +62,12 @@ export default class HistoryWarn extends React.Component {
     const { showFilter } = this.state;
     if(showFilter === filterText){
       this.setState({
-        showFilter: ''
-      })
+        showFilter: '',
+      });
     }else{
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   };
 
@@ -76,8 +76,8 @@ export default class HistoryWarn extends React.Component {
     const { changeHistoryWarnStore } = this.props;
     changeHistoryWarnStore({
       deviceFullCode,
-      selectDeviceCode: selectDevice
-    })
+      selectDeviceCode: selectDevice,
+    });
   };
 
   onPaginationChange = ({ currentPage, pageSize }) => {
@@ -86,7 +86,7 @@ export default class HistoryWarn extends React.Component {
     } = this.props;
     onChangeFilter({
       pageSize,
-      pageNum: currentPage
+      pageNum: currentPage,
     });
   };
 
@@ -114,12 +114,12 @@ export default class HistoryWarn extends React.Component {
     const {
       onChangeFilter,
       stationCode,
-      selectDeviceCode
+      selectDeviceCode,
     } = this.props;
 
     onChangeFilter({
       stationCode,
-      selectDeviceCode
+      selectDeviceCode,
     });
   };
 
@@ -131,7 +131,7 @@ export default class HistoryWarn extends React.Component {
       stationCode,
       selectDeviceCode,
       faultWarnHistoryData: {
-        count
+        count,
       },
       pageSize,
       pageNum,
@@ -141,10 +141,10 @@ export default class HistoryWarn extends React.Component {
         <div className={styles.topSearch}>
           <span>筛选条件</span>
           <Button onClick={()=>this.onFilterShowChange('modal')}>
-            算法模型<Icon type={showFilter ==='modal' ? "up" : "down"} />
+            算法模型<Icon type={showFilter ==='modal' ? 'up' : 'down'} />
           </Button>
           <Button onClick={()=>this.onFilterShowChange('time')}>
-            检测日期<Icon type={showFilter ==='time' ? "up" : "down"} />
+            检测日期<Icon type={showFilter ==='time' ? 'up' : 'down'} />
           </Button>
         </div>
         <div className={styles.filterBox}>

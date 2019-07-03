@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./historyWarnTable.scss";
-import {Table} from "antd";
-import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './historyWarnTable.scss';
+import {Table} from 'antd';
+import { dateArrFormat } from '../../formatDateUtils/formatDateUtils';
 
 export default class HistoryWarnTable extends React.Component {
   static propTypes = {
@@ -27,11 +27,11 @@ export default class HistoryWarnTable extends React.Component {
     const { taskId, deviceName, deviceFullcode, stationCode, algorithmName } = data;
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${stationCode}`);
-    localStorage.setItem("taskId", taskId);
-    localStorage.setItem("faultHistory", "1");
-    localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullcode);
-    localStorage.setItem("deviceFullName", algorithmName);
+    localStorage.setItem('taskId', taskId);
+    localStorage.setItem('faultHistory', '1');
+    localStorage.setItem('deviceName', deviceName);
+    localStorage.setItem('deviceFullCode', deviceFullcode);
+    localStorage.setItem('deviceFullName', algorithmName);
   };
 
 
@@ -39,8 +39,8 @@ export default class HistoryWarnTable extends React.Component {
     const { field, order } = sorter;
     const { onChangeFilter } = this.props;
     onChangeFilter({
-      sortField: field ? field : "",
-      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+      sortField: field ? field : '',
+      sortMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
     });
   };
 
@@ -52,7 +52,7 @@ export default class HistoryWarnTable extends React.Component {
       title: '电站名称',
       dataIndex: 'stationName',
       sorter: true,
-    },{
+    }, {
       title: '风机名称',
       dataIndex: 'deviceName',
       sorter: true,
@@ -61,8 +61,8 @@ export default class HistoryWarnTable extends React.Component {
       dataIndex: 'predictionDate',
       sorter: true,
       render: (predictionDate) => {
-        return <span>{dateArrFormat(predictionDate)}</span>
-      }
+        return <span>{dateArrFormat(predictionDate)}</span>;
+      },
     }, {
       title: '算法模型',
       dataIndex: 'algorithmName',
@@ -76,12 +76,12 @@ export default class HistoryWarnTable extends React.Component {
     }, {
       title: '预期结果',
       dataIndex: 'result',
-      align:"center",
+      align: 'center',
       render: (text, record) => (
-        <span style={{cursor: "pointer"}}>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
+        <span style={{cursor: 'pointer'}}>
+          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record); }} />
         </span>
-      )
+      ),
     }];
     return (
       <div className={styles.historyWarnTable}>

@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
-import styles from "./historyWarn.scss";
+import styles from './historyWarn.scss';
 import Footer from '../../../../components/Common/Footer';
 import HistoryWarnMain from '../../../../components/HighAnalysis/FaultDiagnose/HistoryWarn/HistoryWarn';
-import {connect} from "react-redux";
-import { historyWarnAction } from "./historyWarnAction";
-import {algorithmControlAction} from "../AlgorithmControl/algorithmControlAction";
+import {connect} from 'react-redux';
+import { historyWarnAction } from './historyWarnAction';
+import {algorithmControlAction} from '../AlgorithmControl/algorithmControlAction';
 
 class HistoryWarn extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     stationCode: PropTypes.number,
-    deviceTypeCode:PropTypes.number,
+    deviceTypeCode: PropTypes.number,
     getFaultWarnHistory: PropTypes.func,
     changeHistoryWarnStore: PropTypes.func,
     pageSize: PropTypes.number,
@@ -44,7 +44,7 @@ class HistoryWarn extends React.Component {
       sortField,
       sortMethod,
       stationCode,
-      algorithmModalName
+      algorithmModalName,
     } = this.props;
     const newParams = {
       stationCode,
@@ -57,7 +57,7 @@ class HistoryWarn extends React.Component {
       sortField,
       sortMethod,
       algorithmModalName,
-      ...params
+      ...params,
     };
     getFaultWarnHistory(newParams);
   };
@@ -65,7 +65,7 @@ class HistoryWarn extends React.Component {
   render() {
     return (
       <div className={styles.faultWarnList}>
-        <CommonBreadcrumb breadData={[{name:'历史预警'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{name: '历史预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnListContainer}>
           <div className={styles.faultWarnListContent}>
             <HistoryWarnMain onChangeFilter={this.onChangeFilter} {...this.props} />
@@ -81,7 +81,7 @@ const mapStateToProps = (state) => {
     ...state.highAanlysisReducer.historyWarnReducer.toJS(),
     algoOptionList: state.highAanlysisReducer.algorithm.get('algoOptionList').toJS(),
     stations: state.common.get('stations'),
-  }
+  };
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: historyWarnAction.resetStore }),
@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch) => ({
   getFaultWarnHistory: payload => dispatch({ type: historyWarnAction.getFaultWarnHistory, payload }),
   getAlgoOptionList: payload => dispatch({ type: algorithmControlAction.getAlgoOptionList, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryWarn)
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryWarn);

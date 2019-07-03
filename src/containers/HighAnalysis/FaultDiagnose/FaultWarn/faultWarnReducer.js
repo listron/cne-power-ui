@@ -3,7 +3,7 @@ import { faultWarnAction } from './faultWarnAction.js';
 
 const initState = Immutable.fromJS({
   loading: false,
-  faultWarnList: [] // 多风场故障预警汇总列表
+  faultWarnList: [], // 多风场故障预警汇总列表
 });
 
 
@@ -14,7 +14,7 @@ const faultWarnReducer = (state = initState, action) => {
     case faultWarnAction.faultWarnFetchSuccess:
       return state.merge(Immutable.fromJS(action.payload));
     case faultWarnAction.resetStore:
-      return initState
+      return initState;
   }
   return state;
 };

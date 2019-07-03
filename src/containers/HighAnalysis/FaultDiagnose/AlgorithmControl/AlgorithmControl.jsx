@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./algorithmControl.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Icon, Button } from "antd";
+import { Icon, Button } from 'antd';
 import { algorithmControlAction } from './algorithmControlAction.js';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import AlgorithmModal from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/AlgorithmModal/AlgorithmModal';
@@ -10,9 +9,11 @@ import ListView from '../../../../components/HighAnalysis/FaultDiagnose/Algorith
 import AddAlgorithm from '../../../../components/HighAnalysis/FaultDiagnose/AlgorithmControl/AddAlgorithm/AddAlgorithm';
 import Footer from '../../../../components/Common/Footer';
 
+import styles from './algorithmControl.scss';
+
 class AlgorithmControl extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
     getInspectIdList: PropTypes.func,
     changeAlgorithmControlStore: PropTypes.func,
     viewType: PropTypes.string,
@@ -34,7 +35,7 @@ class AlgorithmControl extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      pageFlag: true // 展示新建页/table页
+      pageFlag: true, // 展示新建页/table页
     };
   }
 
@@ -50,7 +51,7 @@ class AlgorithmControl extends Component {
 
   onAddControlFunc = (flag) => {
     this.setState({
-      pageFlag: flag
+      pageFlag: flag,
     });
   };
 
@@ -67,7 +68,7 @@ class AlgorithmControl extends Component {
       sortMethod,
       stationCode,
       stationCodes,
-      algorithmModalName
+      algorithmModalName,
     } = this.props;
     // 新的参数
     const newParams = {
@@ -82,7 +83,7 @@ class AlgorithmControl extends Component {
       stationCode,
       stationCodes,
       algorithmModalName,
-      ...params
+      ...params,
     };
     getListView(newParams);
   };
@@ -92,7 +93,7 @@ class AlgorithmControl extends Component {
     const { changeAlgorithmControlStore } = this.props;
     // 展示算法
     changeAlgorithmControlStore({
-      viewType: "algorithm"
+      viewType: 'algorithm',
     });
   };
 
@@ -104,18 +105,18 @@ class AlgorithmControl extends Component {
     } = this.props;
     // 展示列表视图
     changeAlgorithmControlStore({
-      viewType: "list"
+      viewType: 'list',
     });
     const listParams = {
-      stationCode:null,
+      stationCode: null,
       algorithmIds: algorithmModalId,
-      startTime:"",
-      endTime:"",
-      status:null,
-      pageSize:null,
-      pageNum:null,
-      sortField:"",
-      sortMethod:""
+      startTime: '',
+      endTime: '',
+      status: null,
+      pageSize: null,
+      pageNum: null,
+      sortField: '',
+      sortMethod: '',
     };
     // 列表
     getListView(listParams);
@@ -125,27 +126,27 @@ class AlgorithmControl extends Component {
     const { pageFlag } = this.state;
     const { viewType } = this.props;
     const checkStyle = {
-      color: "#ffffff",
-      backgroundColor: "#199475"
+      color: '#ffffff',
+      backgroundColor: '#199475',
     };
     const UnCheckStyle = {
-      color: "#666666",
-      backgroundColor: "#ffffff"
+      color: '#666666',
+      backgroundColor: '#ffffff',
     };
     return (
       <div className={styles.controlBox}>
-        <CommonBreadcrumb breadData={[{name:'算法控制台'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{name: '算法控制台'}]} style={{marginLeft: '38px'}} />
         {pageFlag ? [
           <div className={styles.controlType} key="controlType">
             <div
-              style={viewType === "algorithm" ? checkStyle : UnCheckStyle}
+              style={viewType === 'algorithm' ? checkStyle : UnCheckStyle}
               onClick={this.showAlgorithmFunc}
             >
               <i className="iconfont icon-grid" />
               <span>算法模型</span>
             </div>
             <div
-              style={viewType === "list" ? checkStyle : UnCheckStyle}
+              style={viewType === 'list' ? checkStyle : UnCheckStyle}
               onClick={this.showListViewFunc}
             >
               <i className="iconfont icon-table" />
@@ -154,25 +155,25 @@ class AlgorithmControl extends Component {
           </div>,
           <div className={styles.controlContainer} key="controlContainer">
             <div className={styles.controlBox}>
-            {(viewType === "algorithm") && (
-              <Button className={styles.addControl} onClick={() => {return this.onAddControlFunc(false)}}>
+            {(viewType === 'algorithm') && (
+              <Button className={styles.addControl} onClick={() => {return this.onAddControlFunc(false);}}>
                 <Icon type="plus" />
                 <span className={styles.text}>添加</span>
               </Button>
             )}
           <div>
           {
-            viewType === "algorithm" ?
+            viewType === 'algorithm' ?
             <AlgorithmModal onChangeFilter={this.onChangeFilter} {...this.props} />
             : <ListView onAddControlFunc={this.onAddControlFunc} onChangeFilter={this.onChangeFilter} {...this.props} />
           }
           </div>
           </div>
-          </div>
+          </div>,
         ]: <AddAlgorithm onAddControlFunc={this.onAddControlFunc} {...this.props} />}
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -180,7 +181,7 @@ const mapStateToProps = (state) => {
     ...state.highAanlysisReducer.algorithm.toJS(),
     deviceTypes: state.common.get('deviceTypes'),
     stations: state.common.get('stations'),
-  })
+  });
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: algorithmControlAction.resetStore }),
@@ -191,4 +192,4 @@ const mapDispatchToProps = (dispatch) => ({
   getListView: payload => dispatch({ type: algorithmControlAction.getListView, payload }),
   getTaskStatusStat: payload => dispatch({ type: algorithmControlAction.getTaskStatusStat, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl)
+export default connect(mapStateToProps, mapDispatchToProps)(AlgorithmControl);

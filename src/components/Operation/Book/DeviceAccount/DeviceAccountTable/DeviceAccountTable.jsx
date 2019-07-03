@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Table } from "antd";
-import DeviceDetailsTable from "./DeviceDetailsTable/DeviceDetailsTable";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table } from 'antd';
+import DeviceDetailsTable from './DeviceDetailsTable/DeviceDetailsTable';
 
-import styles from "./deviceAccountTable.scss";
+import styles from './deviceAccountTable.scss';
 
 export default class DeviceAccountTable extends React.Component {
   static propTypes = {
@@ -22,14 +22,14 @@ export default class DeviceAccountTable extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      detailsFlag: false
+      detailsFlag: false,
     };
   }
 
   // 关闭弹窗
   onCancelFunc = () => {
     this.setState({
-      detailsFlag: false
+      detailsFlag: false,
     });
   };
 
@@ -41,13 +41,13 @@ export default class DeviceAccountTable extends React.Component {
     const params = {
       modeId,
       assetsId,
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     this.setState({
-      detailsFlag: true
+      detailsFlag: true,
     }, () => {
       // 接口
       getDeviceAttachments(params);
@@ -63,26 +63,26 @@ export default class DeviceAccountTable extends React.Component {
       manufactorId,
       modeId,
       pageNum,
-      pageSize
+      pageSize,
     } = this.props;
     const { field, order } = sorter;
     // 匹配排序字段
     const sortField = {
-      assetsName: "1",
-      deviceModeName: "2",
-      num: "3",
-      manufactorName: "4",
-      madeNames: "5",
+      assetsName: '1',
+      deviceModeName: '2',
+      num: '3',
+      manufactorName: '4',
+      madeNames: '5',
     };
     const params = {
       regionName,
       stationCodes,
       manufactorId,
       modeId,
-      orderField: field ? sortField[field] : "",
-      orderMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : ""),
+      orderField: field ? sortField[field] : '',
+      orderMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
       pageNum,
-      pageSize
+      pageSize,
     };
     // 接口
     getDeviceAccountList(params);
@@ -93,7 +93,7 @@ export default class DeviceAccountTable extends React.Component {
     const {
       loading,
       deviceAccountList: {
-        dataList
+        dataList,
       }} = this.props;
     const columns = [{
       title: '资产名称',
@@ -111,7 +111,7 @@ export default class DeviceAccountTable extends React.Component {
       title: '厂家',
       dataIndex: 'manufactorName',
       sorter: true,
-      render: (manufactorName) => <span className={styles.manufactorName} title={manufactorName}>{manufactorName}</span>
+      render: (manufactorName) => <span className={styles.manufactorName} title={manufactorName}>{manufactorName}</span>,
     }, {
       title: '制造商',
       sorter: true,
@@ -126,7 +126,7 @@ export default class DeviceAccountTable extends React.Component {
       align: 'center',
       render: (text, record) => (
         <span style={{cursor: 'pointer'}}>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record)}} />
+          <i className="iconfont icon-look" onClick={() => {this.onShowDetail(record);}} />
         </span>
       ),
     }];
@@ -143,6 +143,6 @@ export default class DeviceAccountTable extends React.Component {
         />
         <DeviceDetailsTable onCancelFunc={this.onCancelFunc} detailsFlag={detailsFlag} {...this.props} />
       </div>
-    )
+    );
   }
 }

@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { Icon } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Icon } from 'antd';
 import ChangeStation from '../../../Monitor/StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
-import FaultWarnAlgorithm from "./FaultWarnAlgorithm/FaultWarnAlgorithm";
-import FaultWarnFan from "./FaultWarnFan/FaultWarnFan";
-import FaultWarnTable from "./FaultWarnTable/FaultWarnTable";
-import styles from "./faultWarnList.scss";
+import FaultWarnAlgorithm from './FaultWarnAlgorithm/FaultWarnAlgorithm';
+import FaultWarnFan from './FaultWarnFan/FaultWarnFan';
+import FaultWarnTable from './FaultWarnTable/FaultWarnTable';
+import styles from './faultWarnList.scss';
 
 
 export default class FaultWarn extends React.Component {
@@ -26,7 +26,7 @@ export default class FaultWarn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPage: "modal", // 风场选择
+      showPage: 'modal', // 风场选择
       showStationSelect: false, //控制电场选择
     };
   }
@@ -43,7 +43,7 @@ export default class FaultWarn extends React.Component {
 
   hideStationChange = () => {
     this.setState({
-      showStationSelect: false
+      showStationSelect: false,
     });
   };
 
@@ -51,13 +51,13 @@ export default class FaultWarn extends React.Component {
     const {
       singleStationCode,
       getAlgoModel,
-      onChangeFilter
+      onChangeFilter,
     } = this.props;
     const algoParams = {
-      stationCode: singleStationCode
+      stationCode: singleStationCode,
     };
     onChangeFilter({
-      viewType: 1 //展示算法
+      viewType: 1, //展示算法
     });
     getAlgoModel(algoParams);
   };
@@ -66,13 +66,13 @@ export default class FaultWarn extends React.Component {
     const {
       onChangeFilter,
       singleStationCode,
-      getFanList
+      getFanList,
     } = this.props;
     const fanParams = {
-      stationCode: singleStationCode
+      stationCode: singleStationCode,
     };
     onChangeFilter({
-      viewType: 2 //展示风机
+      viewType: 2, //展示风机
     });
     getFanList(fanParams);
   };
@@ -81,17 +81,17 @@ export default class FaultWarn extends React.Component {
     const {
       singleStationCode,
       getList,
-      onChangeFilter
+      onChangeFilter,
     } = this.props;
     const listParams = {
       stationCode: singleStationCode,
       pageSize: 10,
       pageNum: 1,
-      sortField: "prediction_date",
-      sortMethod: "desc",
+      sortField: 'prediction_date',
+      sortMethod: 'desc',
     };
     onChangeFilter({
-      viewType: 3 //展示列表
+      viewType: 3, //展示列表
     });
     getList(listParams);
   };
@@ -101,7 +101,7 @@ export default class FaultWarn extends React.Component {
       algoModelData: {
         healthList,
         largeSizeList,
-        natureList
+        natureList,
     }} = this.props;
     const arr = []; //保存有故障的
     healthList.forEach(item => {
@@ -124,7 +124,7 @@ export default class FaultWarn extends React.Component {
 
   allFansWarnNum = () => {
     const { stations, singleStationCode } = this.props;
-    const faultAllWarnList = JSON.parse(localStorage.getItem("faultAllWarnList"));
+    const faultAllWarnList = JSON.parse(localStorage.getItem('faultAllWarnList'));
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
     // 判断当前风场的名字和存储的名字相等取出故障数量和总数量
@@ -164,17 +164,17 @@ export default class FaultWarn extends React.Component {
           <div className={styles.titleRight}>
             <div
               style={viewType === 1 ?
-                { backgroundColor: "#199475" }
-                : { backgroundColor: "#ffffff" }}
+                { backgroundColor: '#199475' }
+                : { backgroundColor: '#ffffff' }}
               onClick={this.clickModalType}
             >
               <div
                 className={styles.iconBgc}
-                style={viewType === 1 ? { color: "#ffffff" } : { color: "#595959" }}
+                style={viewType === 1 ? { color: '#ffffff' } : { color: '#595959' }}
               >
                 <i className="iconfont icon-grid" />
               </div>
-              <div style={viewType === 1 ? { color: "#ffffff" } : { color: "#595959" }}>
+              <div style={viewType === 1 ? { color: '#ffffff' } : { color: '#595959' }}>
                 算法模型
               </div>
               <div className={styles.num}>
@@ -182,31 +182,31 @@ export default class FaultWarn extends React.Component {
               </div>
             </div>
             <div
-              style={viewType === 2 ? { backgroundColor: "#199475" } : { backgroundColor: "#ffffff" }}
+              style={viewType === 2 ? { backgroundColor: '#199475' } : { backgroundColor: '#ffffff' }}
               onClick={this.clickFanType}
             >
               <div
                 className={styles.iconBgc}
-                style={viewType === 2 ? { color: "#ffffff" } : { color: "#595959" }}
+                style={viewType === 2 ? { color: '#ffffff' } : { color: '#595959' }}
               >
                 <i className="iconfont icon-windlogo" />
               </div>
-              <div style={viewType === 2 ? { color: "#ffffff" } : { color: "#595959" }}>
+              <div style={viewType === 2 ? { color: '#ffffff' } : { color: '#595959' }}>
                 风机
               </div>
               {this.allFansWarnNum()}
             </div>
             <div
-              style={viewType === 3 ? { backgroundColor: "#199475" } : { backgroundColor: "#ffffff" }}
+              style={viewType === 3 ? { backgroundColor: '#199475' } : { backgroundColor: '#ffffff' }}
               onClick={this.clickListType}
             >
               <div
-                style={viewType === 3 ? { color: "#ffffff" } : { color: "#595959" }}
+                style={viewType === 3 ? { color: '#ffffff' } : { color: '#595959' }}
                 className={styles.iconBgc}
               >
                 <i className="iconfont icon-table" />
               </div>
-              <div style={viewType === 3 ? { color: "#ffffff" } : { color: "#595959" }}>
+              <div style={viewType === 3 ? { color: '#ffffff' } : { color: '#595959' }}>
                 列表视图
               </div>
             </div>

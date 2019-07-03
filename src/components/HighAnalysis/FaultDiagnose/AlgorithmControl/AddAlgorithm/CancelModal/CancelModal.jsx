@@ -1,15 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Modal, Icon } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Icon } from 'antd';
 
-import styles from "./cancelModal.scss"
+import styles from './cancelModal.scss';
 
 export default class CancelModal extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     cancelFlag: PropTypes.bool,
     onAddControlFunc: PropTypes.func,
-    cancelModalFunc: PropTypes.func
+    cancelModalFunc: PropTypes.func,
   };
 
   constructor(props) {
