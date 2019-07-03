@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Select, AutoComplete, message, Icon } from 'antd';
-import AssetNodeModal from './AssetNodeModal'
+import AssetNodeModal from './AssetNodeModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
@@ -26,7 +26,7 @@ const Option = Select.Option;
 class StationSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
-    assetsIds: PropTypes.array,
+    // assetsIds: PropTypes.array,
     visiable: PropTypes.bool,
     assetList: PropTypes.array,
     stationType: PropTypes.number,
@@ -40,7 +40,8 @@ class StationSelect extends Component {
     disabled: false,
     data: [],
     disabledStation: [],
-    assetsIds: [],
+    // assetsIds: [],
+    assetsIds: { pv: [], wind: [] },
     visiableModal: false,
     stationType: 1,
     stationTypeCount: 'single',
@@ -52,71 +53,86 @@ class StationSelect extends Component {
       assetList: props.assetList,
       stationType: props.stationType,
       checkedName: props.checkedName,
-      stationTypeCount: props.stationTypeCount
-    }
+      stationTypeCount: props.stationTypeCount,
+    };
   }
-  componentWillReceiveProps(nextProps){
-    const { resetValue} = nextProps;
-    if(resetValue &&this.props.resetValue===false){
+  componentDidMount() {//确保电站类型，和下面的数据数对应。
+    const { stationType, queryDataType } = this.props;
+    queryDataType(stationType);
+  }
+  componentWillReceiveProps(nextProps) {
+    const { resetValue } = nextProps;
+    if (resetValue && this.props.resetValue === false) {
       this.setState({
-        assetsIds: [],
+        // assetsIds: [],
+        assetsIds: { pv: [], wind: [] },
         checkedName: '',
-      })
+      });
     }
   }
   onModalHandelOK = (value, name) => {
+
+    const { pv, wind } = value;
+    const check = [...new Set(pv.concat(wind))];
+
     this.setState({
       visiableModal: false,
       assetsIds: value,
       checkedName: name,
-    })
-    this.props.onChange({ assetsIds: value });
+    });
+    this.props.onChange({ assetsIds: check, checkedName: name });
   }
   getNodeNum = (data) => {//统计树的所有节点
-    let numArr = [];
+    const numArr = [];
     data.forEach((e, i) => {
       if (e && e.childernNodes) {
-        numArr.push(...this.getNodeNum(e.childernNodes))
+        numArr.push(...this.getNodeNum(e.childernNodes));
       }
       if (e && e.assetsId) {
-        numArr.push(e.assetsId)
+        numArr.push(e.assetsId);
       }
-    })
-    return numArr
+    });
+    return numArr;
   }
   hideModal = () => {
-    this.setState({ visiableModal: false })
+    this.setState({ visiableModal: false });
   }
   showModal = () => {
     this.setState({ visiableModal: true });
   }
   queryDataType = (value) => {
-    this.setState({ stationType: value })
-    this.props.queryDataType(value)
+    this.setState({ stationType: value });
+    this.props.queryDataType(value);
   }
   maxTagPlaceholder = () => {//显示已选中条数
-    const { assetList, multiple, } = this.props;
+    const { assetList, multiple } = this.props;
+    const { assetsIds, checkedName } = this.state;
+    const { pv, wind } = assetsIds;
+    const selecLen = [...new Set(pv.concat(wind))].length;
     if (multiple) {
-      let count = this.getNodeNum(assetList).length;
-      return <div>已选{this.state.assetsIds.length}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>
+      const count = this.getNodeNum(assetList).length;
+      return <div>已选{selecLen}/{count}<span onClick={this.clearList}><Icon type="close" /></span></div>;
     }
-    return <div>{this.state.checkedName}</div>
-
+    return checkedName && <div>{checkedName}</div>;
   }
   clearList = () => {
-    this.setState({ assetsIds: [] });
+    // this.setState({ assetsIds: [] });
+    this.setState({ assetsIds: { pv: [], wind: [] } });
   }
   render() {
-    const { multiple, assetList, } = this.props;
-    const { visiableModal,  stationType, assetsIds,checkedName, stationTypeCount } = this.state;
+    const { multiple, assetList } = this.props;
+    const { visiableModal, stationType, assetsIds, checkedName, stationTypeCount } = this.state;
+    const { pv, wind } = assetsIds;
+    const selecLen = [...new Set(pv.concat(wind))];
     return (
       <div className={styles.stationSelect}>
         {
-          <span onClick={this.showModal}>
+          <span className={styles.selectStyle} onClick={this.showModal}>
             {multiple ? <Select
               mode="multiple"
               placeholder="选择节点"
-              value={assetsIds}
+              // value={assetsIds}
+              value={selecLen}
               onChange={this.handleChange}
               style={{ width: '198px' }}
               maxTagCount={0}
@@ -139,6 +155,8 @@ class StationSelect extends Component {
           multiple={multiple}
           {...this.props}
           assetsIds={assetsIds}
+          pv={pv}
+          wind={wind}
           sourceData={assetList}
           stationType={stationType}
           handleOK={this.onModalHandelOK}
@@ -149,7 +167,7 @@ class StationSelect extends Component {
           stationTypeCount={stationTypeCount}
         />
       </div>
-    )
+    );
 
   }
 }

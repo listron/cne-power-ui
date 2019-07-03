@@ -99,7 +99,7 @@ export default class DeviceAccountTable extends React.Component {
       title: '资产名称',
       dataIndex: 'assetsName',
       sorter: true,
-    },{
+    }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
@@ -111,23 +111,24 @@ export default class DeviceAccountTable extends React.Component {
       title: '厂家',
       dataIndex: 'manufactorName',
       sorter: true,
+      render: (manufactorName) => <span className={styles.manufactorName} title={manufactorName}>{manufactorName}</span>
     }, {
       title: '制造商',
       sorter: true,
       dataIndex: 'madeNames',
-      render: (madeNames) => <span>{madeNames || "--"}</span>
+      render: (madeNames) => <span className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</span>,
     }, {
       title: '供货商',
       dataIndex: 'supplierNames',
-      render: (supplierNames) => <span>{supplierNames || "--"}</span>
+      render: (supplierNames) => <span className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</span>,
     }, {
       title: '查看备品备件',
-      align:"center",
+      align: 'center',
       render: (text, record) => (
-        <span style={{cursor: "pointer"}}>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record) }} />
+        <span style={{cursor: 'pointer'}}>
+          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record)}} />
         </span>
-      )
+      ),
     }];
     return (
       <div className={styles.DeviceAccountTable}>

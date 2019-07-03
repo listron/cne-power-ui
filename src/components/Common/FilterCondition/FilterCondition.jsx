@@ -15,11 +15,12 @@ import WarningStatusFilter from './WarningStatusFilter';
 import AlarmTypeFilter from './AlarmTypeFilter';
 import RangeDateFilter from './RangeDateFilter';
 import RangeEndTimeFilter from './RangeEndTimeFilter';
+import DocketType from './DocketType';
 import styles from './filterCondition.scss';
 
 /** 
  * 1 option  选项  array  option=['time','stationType']
- *    time   发生时间         返回的结果是 createTimeStart="2018-12-21" createTimeEnd="2018-12-29" 
+ *    time   发生时间         createTimeStart="2018-12-21" createTimeEnd="2018-12-29" 
       stationType  电站类型   返回的结果是 stationType ''不限 '0'风电 '1' 光伏  如果规定为2 需要手动在传参数的时候进行修改
       stationName  电站名称   返回的结果是 stationCodes=['360','380']
       deviceType   设备类型   返回的结果是 deviceTypeCode=['','']
@@ -84,10 +85,11 @@ class FilterCondition extends Component {
     warningLevel: PropTypes.array, // 告警级别
     warningStatus: PropTypes.array, // 处理结果
     defaultValue: PropTypes.object, // 默认数据
+    docketTypeList: PropTypes.array, // 两票
   }
 
   constructor(props) {
-    super(props);
+    super(props); // 这个props.[paramsName] && .... 这个写法有点差啊····反复读取props还做两次计算~
     this.state = {
       showFilter: '',
       createTimeEnd: props.defaultValue && props.defaultValue.createTimeEnd || '', //结束时间
@@ -97,15 +99,16 @@ class FilterCondition extends Component {
       defectLevel: props.defaultValue && props.defaultValue.defectLevel || [], //缺陷级别
       defectSource: props.defaultValue && props.defaultValue.defectSource || [], // 缺陷来源
       deviceTypeCode: props.defaultValue && props.defaultValue.deviceTypeCode || [], // 设备类型
-      defectTypeCode: props.defaultValue && props.defaultValue.defectTypeCode || [],//缺陷类型
-      belongMatrixs: props.defaultValue && props.defaultValue.belongMatrixs || [],//所属方阵
+      defectTypeCode: props.defaultValue && props.defaultValue.defectTypeCode || [], //缺陷类型
+      belongMatrixs: props.defaultValue && props.defaultValue.belongMatrixs || [], //所属方阵
       handleUser: props.defaultValue && props.defaultValue.handleUser || [], // 操作人
-      warningLevel: props.defaultValue && props.defaultValue.warningLevel || [],//告警级别
-      warningStatus: props.defaultValue && props.defaultValue.warningStatus || [],//
-      warningConfigName: props.defaultValue && props.defaultValue.warningConfigName || [],//告警类型
-      rangTime: props.defaultValue && props.defaultValue.rangTime || [],// 时间段
-      endTime: props.defaultValue && props.defaultValue.endTime || [],// 结束时间段
-      handleUser: props.defaultValue && props.defaultValue.handleUser || ''
+      warningLevel: props.defaultValue && props.defaultValue.warningLevel || [], //告警级别
+      warningStatus: props.defaultValue && props.defaultValue.warningStatus || [], //
+      warningConfigName: props.defaultValue && props.defaultValue.warningConfigName || [], //告警类型
+      rangTime: props.defaultValue && props.defaultValue.rangTime || [], // 时间段
+      endTime: props.defaultValue && props.defaultValue.endTime || [], // 结束时间段
+      handleUser: props.defaultValue && props.defaultValue.handleUser || '',
+      docketTypes: props.defaultValue && props.defaultValue.docketTypes || [], // 两票类型
     };
   }
 
@@ -113,12 +116,12 @@ class FilterCondition extends Component {
     const { showFilter } = this.state;
     if (showFilter === filterText) {
       this.setState({
-        showFilter: ''
-      })
+        showFilter: '',
+      });
     } else {
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   }
 
@@ -133,13 +136,13 @@ class FilterCondition extends Component {
       return {
         state,
         ...change
-      }
-    })
+      };
+    });
     const { onChange } = this.props;
-    onChange && onChange({ ...change })
+    onChange && onChange({ ...change });
   }
 
-  getDefaultName = (type) => {  //匹配
+  getDefaultName = (type) => { //匹配
     let result = "";
     switch (type) {
       case 'time': result = '发生时间'; break;
@@ -157,6 +160,7 @@ class FilterCondition extends Component {
       case 'myJoin': result = '参与的'; break;
       case 'rangeTime': result = '发生时间'; break;
       case 'endTime': result = '结束时间'; break;
+      case 'docketType': result = '两票类型'; break;
       default: result = ""; break;
     }
     return result
@@ -165,12 +169,8 @@ class FilterCondition extends Component {
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime } = this.state;
-    const { stations, option, deviceTypes, defectTypes, defectSourceName, defectLevelName, matrixList, username, warningLevelName, warningStatusName } = this.props;
-    const defectTypesArr = defectTypes || [];
-    const stationsArr = stations || [];
-    const deviceTypesArr = deviceTypes || [];
-    const matrixListArr = matrixList || [];
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime,docketTypes } = this.state;
+    const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [] } = this.props;
     const windStations = stations.map(e => e.stationType === 0);
     const pvStations = stations.map(e => e.stationType === 1)
     const hasSelectStation = windStations.length > 0 && pvStations.length > 0;
@@ -223,7 +223,7 @@ class FilterCondition extends Component {
             <StationFilter
               stationCodes={stationCodes}
               onChangeFilter={this.onChangeFilter}
-              stations={stationsArr}
+              stations={stations}
             />}
           {showFilter === 'defectLevel' &&
             <DefectLevelFilter
@@ -241,20 +241,20 @@ class FilterCondition extends Component {
 
           {showFilter === 'deviceType' &&
             <DeviceTypeFilter
-              deviceTypes={deviceTypesArr}
+              deviceTypes={deviceTypes}
               deviceTypeCode={deviceTypeCode}
               onChangeFilter={this.onChangeFilter}
             />}
           {showFilter === 'defectType' &&
             <DefectTypeFilter
-              defectTypes={defectTypesArr}
+              defectTypes={defectTypes}
               defectTypeCode={defectTypeCode}
               onChangeFilter={this.onChangeFilter}
 
             />}
           {showFilter === 'belongMatrixs' &&
             <BelongMatrixs
-              matrixList={matrixListArr}
+              matrixList={matrixList}
               belongMatrixs={belongMatrixs}
               onChangeFilter={this.onChangeFilter}
             />}
@@ -275,15 +275,21 @@ class FilterCondition extends Component {
               warningConfigName={warningConfigName}
               onChangeFilter={this.onChangeFilter}
             />}
-
+          {showFilter === 'docketType' &&
+            <DocketType
+              docketTypeList={docketTypeList}
+              docketTypes={docketTypes}
+              onChangeFilter={this.onChangeFilter}
+            />}
 
         </div>
         {/* 删选条件 */}
         <FilteredItems
           {...this.state}
-          stations={stationsArr}
-          deviceTypes={deviceTypesArr}
-          defectTypes={defectTypesArr}
+          stations={stations}
+          deviceTypes={deviceTypes}
+          defectTypes={defectTypes}
+          docketTypeList={docketTypeList}
           onChangeFilter={this.onChangeFilter}
           defectSourceName={defectSourceName}
           defectLevelName={defectLevelName}

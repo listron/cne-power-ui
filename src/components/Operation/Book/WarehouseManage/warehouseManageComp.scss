@@ -1,0 +1,204 @@
+@import '../../../../theme/theme.scss';
+
+.sparePage, .toolPage, .materialPage{ // 备品备件 工器具 物资主页面公用样式
+  table{
+    .goodsName, .modeName, .warehouseName, .assetsPath, .goodsType, .warehouseName, .devManufactorName, .supplierName, .manufactorName{
+      @include overflowText();
+    }
+    .threshold{
+      width: 92px;
+    }
+    .moreInfo{
+      .trigButton{
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        &:focus{
+          outline: none;
+          color:#e08031;
+        }
+      }
+    }
+    .shortage{
+      color:#f9b600;
+      .config{
+        font-size:10px;
+        position: relative;
+        bottom: 10px;
+      }
+    }
+    .stockHandle{
+      display: flex;
+      justify-content: space-between;
+      .text{
+        cursor: pointer;
+        height: 18px;
+        line-height: 16px;
+        text-align: center;
+        border:1px solid #199475;
+        border-radius:4px;
+        flex-basis: 32px;
+        &:last-child{
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 8px;
+    }
+  }
+}
+
+.infoContentTitle{
+  font-weight: 700;
+  color: #000;
+}
+.infoContent{
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  width: 296px;
+  overflow-y: auto;
+  .eachInfo{
+    display: flex;
+    flex-basis: 21px;
+  }
+  .name{
+    flex-basis: 56px;
+    font-weight: 700;
+    text-align: right;
+    margin-right: 12px;
+    color: #000;
+  }
+  .info{
+    flex: 1;
+  }
+  &::-webkit-scrollbar{
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $themeColor;
+    border-radius: 3px;
+  }
+}
+
+.insert, .takeout, .reserve{
+  background-color: #fff;
+  height: 100%;
+  padding-bottom: 24px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $promptColor;
+    .text{
+      font-size: 18px;
+      font-weight: 550;
+      color: #000;
+      padding-left: 30px;
+    }
+    .backIcon{
+      font-size: 24px;
+      flex-basis: 64px;
+      height: 64px;
+      line-height: 64px;
+      color: $lightColor;
+      border-left: 1px solid $promptColor;
+    }
+  }
+  .handlePart{
+    display: flex;
+    .holder{
+      flex-basis: 35%;
+    }
+    button{
+      margin-right: 12px;
+    }
+  }
+  .formPart{
+    .prompt{
+      margin-left: 8px;
+    }
+    .materialCodes{
+      :global{
+        .ant-form-explain{
+          align-self: flex-start;
+          margin-top: 10px;
+        }
+      }
+    }
+    :global{
+      .ant-form-item{
+        display: flex;
+        margin-bottom: 4px;
+      }
+      .ant-form-item-label{
+        flex-basis: 35%;
+        label::after{
+          content: '';
+        }
+      }
+      .ant-form-item-control-wrapper{
+        flex-basis: 64%;
+      }
+      .ant-form-item-control{
+        display: flex;
+        align-items: center;
+      }
+      .ant-form-explain{
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.reserve{ // 库存表格 统一样式
+  .pagination{
+    display: flex;
+    justify-content: flex-end;
+    height: 48px;
+    line-height: 48px;
+    align-items: center;
+  }
+  .trigButton{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    &:focus{
+      outline: none;
+      color:#e08031;
+    }
+  }
+  table{
+    .supplierName, .manufactorName, .remarks{
+      @include overflowText();
+    }
+    .inWarehouse, .outWarehouse{
+      padding: 2px;
+      border-radius: 4px;
+      background-color: rgb(199, 206, 178);
+      color: #fff;
+    }
+    .inWarehouse{
+      background-color: $themeColor;
+    }
+    .handle{
+      cursor: pointer;
+      padding-right: 24px;
+    }
+  }
+  :global{
+    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+      padding: 0 8px;
+    }
+    .ant-table .ant-table-thead, .ant-table .ant-table-tbody{
+      :local{
+        .materialCode{
+          padding-left: 24px;
+        }
+      }
+    }
+  }
+}

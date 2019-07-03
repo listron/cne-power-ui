@@ -23,6 +23,8 @@ import { watchDeviceManage } from './System/Station/DeviceManage/deviceManageSag
 import { watchPointManage } from './System/Station/PointManage/pointManageSaga';
 import { watchAlarmManage } from './System/Station/AlarmManage/alarmManageSaga';
 import { watchPowerCurve } from './System/Station/PowerCurve/powerCurveSaga';
+import { watchWeatherStation } from './System/Station/WeatherStationConf/weatherStationSaga';
+
 
 import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStation/singleStationSaga';
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
@@ -88,9 +90,11 @@ import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManag
 import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
 import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
 import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+import { watchWarehouseManage } from './Operation/Book/WarehouseManage/warehouseManageSaga';
 import { watchStockRecords } from "./Operation/Book/StockRecords/stockRecordsSaga";
-
-
+import { watchExaminer } from "./Operation/TwoTickets/Examiner/examinerSaga";
+import { watchOperateFlow } from "./Operation/TwoTickets/OperateFlow/operateFlowSaga";
+import { watchWorkFlow } from "./Operation/TwoTickets/WorkFlow/workFlowSaga";
 
 // root saga
 export default function* rootSaga() {
@@ -117,6 +121,7 @@ export default function* rootSaga() {
     watchPointManage(),
     watchAlarmManage(),
     watchPowerCurve(),
+    watchWeatherStation(),
     // system-production
     watchPlan(),
     watchWarning(), //预警配置
@@ -186,6 +191,10 @@ export default function* rootSaga() {
     watchBookPartsInfo(),//组件信息
     watchDeviceAccount(),//设备台账
     watchWarehouse(),//仓库配置
+    watchWarehouseManage(), // 仓库管理
     watchStockRecords(),//出入库记录
+    watchExaminer(), // 两票 -审核人
+    watchOperateFlow(),//两票 -操作票
+    watchWorkFlow(),////两票 -工作票
   ])
 }

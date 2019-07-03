@@ -1,49 +1,94 @@
 @import '../../../../../theme/theme.scss';
-.deviceFactory{
+
+.test {
+  .nextButton {
+    margin-left: 194px;
+    width: 200px;
+  }
+
+  :global {
+    .ant-form {
+      .ant-form-item {
+        display: flex;
+
+        .ant-form-item-label {
+          display: flex;
+          flex: 1;
+          justify-content: flex-end;
+        }
+
+        .ant-form-item-control-wrapper {
+          display: flex;
+          flex: 2;
+        }
+      }
+    }
+  }
+}
+
+
+.deviceFactory {
   display: flex;
   flex-direction: column;
-  flex:1;
-  .title{
+  flex: 1;
+
+  .title {
     display: flex;
     height: 60px;
     justify-content: space-between;
     align-items: center;
     background: #f0f2f5;
-    .editPart,.formItemStyle{
+
+    .editPart,
+    .formItemStyle {
       display: flex;
       margin: 0 12px 0 14px;
-      .addButton{
+
+      .addButton {
         margin: 4px auto;
       }
     }
-    
-   
+
+
   }
-  .tableStyles{
+
+  .tableStyles {
     display: flex;
     flex-direction: column;
-    flex:1;
-    :global{
-      .icon-edit,.icon-del,icon-doned{
+    flex: 1;
+
+    :global {
+
+      .icon-edit,
+      .icon-del,
+      icon-doned {
         font-size: 20px;
-        &:hover{
-          color:#199475
+
+        &:hover {
+          color: #199475
         }
       }
-     
+
     }
-    .paginationStyle{
+
+    .paginationStyle {
       display: flex;
       height: 48px;
       line-height: 48px;
-      border:1px solid #e1e2e2;
+      border: 1px solid #e1e2e2;
       justify-content: space-between;
-      .rightSeach{
+
+      .rightSeach {
         margin-left: 28px;
         width: 200px;
-        :global{
-          .ant-input-search-icon{
-            color:#199475;
+
+        :global {
+          .ant-input-search-icon {
+            color: #199475;
+          }
+
+          .ant-input-affix-wrapper .ant-input:not(:last-child) {
+            padding-right: 47px;
           }
         }
       }

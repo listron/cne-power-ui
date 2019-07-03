@@ -31,3 +31,11 @@
   text-align: right;
   margin-right: 4px;
 }
+
+.tableStyles {
+  :global {
+    .ant-table-placeholder{
+      border: none
+    }
+  }
+}

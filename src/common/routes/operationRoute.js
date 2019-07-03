@@ -11,11 +11,15 @@ const ticket = [
 ];
 
 const twoTickets = [
-  { // 两票管理>第一种工作票
-    path: '/operation/twoTickets/typeone',
-    component: lazy(() => import('../../components/Common/Building/Building')),
+  { // 审核人设置
+    path: '/operation/twoTickets/examiner',
+    component: lazy(() => import('../../containers/Operation/TwoTickets/Examiner/Examiner')),
+  }, { // 两票管理>工作票
+    path: '/operation/twoTickets/workflow',
+    // component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/TwoTickets/WorkFlow/WorkFlow')),
   }, { // 第二种工作票
-    path: '/operation/twoTickets/typetwo',
+    path: '/operation/twoTickets/operateflow',
     component: lazy(() => import('../../components/Common/Building/Building')),
   },
 ];
@@ -27,8 +31,8 @@ const book = [
     component: lazy(() => import('../../containers/Operation/Book/AssetsConfig/AssetsConfig')),
   }, { // 设备管理
     path: '/operation/book/deviceManage',
-    component: lazy(() => import('../../components/Common/Building/Building')),
-    // component: lazy(() => import('../../containers/Operation/Book/DeviceManage/DeviceManage')),
+    // component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/Book/DeviceManage/DeviceManage')),
   }, { // 设备台账
     path: '/operation/book/deviceAccount',
     component: lazy(() => import('../../containers/Operation/Book/DeviceAccount/DeviceAccount')),
@@ -38,7 +42,7 @@ const book = [
     component: lazy(() => import('../../containers/Operation/Book/Warehouse/Warehouse')),
   }, { // 仓库管理
     path: '/operation/book/warehouseManage',
-    component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/Book/WarehouseManage/WarehouseManage')),
   }, { // 出入库记录
     path: '/operation/book/stockRecords',
     // component: lazy(() => import('../../components/Common/Building/Building')),

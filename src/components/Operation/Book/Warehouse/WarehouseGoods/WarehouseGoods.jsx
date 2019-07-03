@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Button, Icon, Tree, Form, Row, Col, Input} from 'antd';
+import { Button, Icon, Tree, Form, Row, Col, Input } from 'antd';
 import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
-import CommonPagination from "../../../../Common/CommonPagination";
-import WarehouseGoodsTable from "./WarehouseGoodsTable/WarehouseGoodsTable";
+import CommonPagination from '../../../../Common/CommonPagination';
+import WarehouseGoodsTable from './WarehouseGoodsTable/WarehouseGoodsTable';
 
-import styles from "./warehouseGoods.scss";
+import styles from './warehouseGoods.scss';
 
 const { TreeNode } = Tree;
 const FormItem = Form.Item;
@@ -13,8 +13,8 @@ const Search = Input.Search;
 
 class WarehouseGoods extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
-    getGoodsList:PropTypes.func,
+    resetStore: PropTypes.func,
+    getGoodsList: PropTypes.func,
     form: PropTypes.object,
     goodsData: PropTypes.object,
     pageSize: PropTypes.number,
@@ -30,35 +30,35 @@ class WarehouseGoods extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addFlag: false
+      addFlag: false,
     };
   }
 
   componentDidMount() {
     const { getGoodsList } = this.props;
     const params = {
-      goodsType: "",
-      goodsName: "",
+      goodsType: '',
+      goodsName: '',
       pageNum: 1,
       pageSize: 10,
-      sortField: "",
-      sortMethod: "",
+      sortField: '',
+      sortMethod: '',
     };
     getGoodsList(params);
   }
 
-  onSelect = (selectedKeys) => {
+  onSelect = selectedKeys => {
     const { getGoodsList } = this.props;
     // 判断如果为空不发送请求
-    if (selectedKeys.join("") !== "") {
+    if (selectedKeys.join('') !== '') {
       // 参数
       const params = {
-        goodsType: selectedKeys.join("") === "100" ? "" : selectedKeys.join(""),
-        goodsName: "",
+        goodsType: selectedKeys.join('') === '100' ? '' : selectedKeys.join(''),
+        goodsName: '',
         pageNum: 1,
         pageSize: 10,
-        sortField: "",
-        sortMethod: "",
+        sortField: '',
+        sortMethod: '',
       };
       getGoodsList(params);
     }
@@ -66,8 +66,8 @@ class WarehouseGoods extends Component {
 
   onAddFunc = () => {
     this.setState({
-      addFlag: true
-    })
+      addFlag: true,
+    });
   };
 
   // 分页
@@ -92,40 +92,33 @@ class WarehouseGoods extends Component {
 
   closeFunc = () => {
     this.setState({
-      addFlag: false
-    })
+      addFlag: false,
+    });
   };
 
   handleSend = event => {
     event.preventDefault();
-    const {
-      form,
-      getGoodsAddList,
-      goodsType,
-    } = this.props;
+    const { form, getGoodsAddList, goodsType } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      const {
-        goodsUnit,
-        goodsName,
-      } = fieldsValue;
+      const { goodsUnit, goodsName } = fieldsValue;
       const params = {
         goodsUnit,
         goodsName,
         goodsType,
         func: () => {
           form.setFieldsValue({
-            goodsName: "",
-            goodsUnit: ""
+            goodsName: '',
+            goodsUnit: '',
           });
-        }
+        },
       };
       getGoodsAddList(params);
     });
   };
 
   // 搜索
-  searchGoodsFunc = (value) => {
+  searchGoodsFunc = value => {
     const {
       getGoodsList,
       pageNum,
@@ -150,19 +143,20 @@ class WarehouseGoods extends Component {
       form,
       goodsData: {
         isAbleOper,
-        pageData: {
-          pageCount
-        }
+        pageData: { pageCount },
       },
       pageNum,
       pageSize,
-      goodsAddLoading
+      goodsAddLoading,
     } = this.props;
     const { addFlag } = this.state;
     const { getFieldDecorator } = form;
     return (
       <div className={styles.warehouseGoods}>
-        <CommonBreadcrumb breadData={[{name:'目录'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb
+          breadData={[{ name: '目录' }]}
+          style={{ marginLeft: '38px' }}
+        />
         <div className={styles.warehouseGoodsCenter}>
           <div className={styles.goodsLeft}>
             <Tree
@@ -181,14 +175,20 @@ class WarehouseGoods extends Component {
                 <TreeNode title="物资管理" key="300">
                   <TreeNode title="生活物资" key="301" />
                   <TreeNode title="办公物资" key="302" />
+                  <TreeNode title="其他" key="303" />
                 </TreeNode>
               </TreeNode>
             </Tree>
           </div>
           <div className={styles.goodsRight}>
-            {(isAbleOper === 0) && (
+            {isAbleOper === 0 && (
               <div className={styles.goodsBtn}>
-                <Button className={styles.addControl} onClick={() => {return this.onAddFunc()}}>
+                <Button
+                  className={styles.addControl}
+                  onClick={() => {
+                    return this.onAddFunc();
+                  }}
+                >
                   <Icon type="plus" />
                   <span className={styles.text}>添加</span>
                 </Button>
@@ -197,7 +197,8 @@ class WarehouseGoods extends Component {
             {(isAbleOper === 1 ? false : addFlag) && (
               <div className={styles.goodsAdd}>
                 <div className={styles.goodsTitle}>
-                  <span>添加</span><Icon onClick={() => this.closeFunc()} type="close" />
+                  <span>添加</span>
+                  <Icon onClick={() => this.closeFunc()} type="close" />
                 </div>
                 <div className={styles.goodsCenter}>
                   <Form onSubmit={this.handleSend} layout="inline">
@@ -205,19 +206,23 @@ class WarehouseGoods extends Component {
                       <Col>
                         <FormItem label="物品名称">
                           {getFieldDecorator('goodsName', {
-                            rules: [{ required: true, message: '请输入物品名称'}],
-                          })(
-                            <Input maxLength={30} placeholder="30字以内" />
-                          )}
+                            rules: [
+                              { required: true, message: '请输入物品名称' },
+                            ],
+                          })(<Input maxLength={30} placeholder="30字以内" />)}
                         </FormItem>
                         <FormItem label="计量单位">
                           {getFieldDecorator('goodsUnit', {
-                            rules: [{ required: true, message: '请输入计量单位'}],
-                          })(
-                            <Input maxLength={6} placeholder="6字以内" />
-                          )}
+                            rules: [
+                              { required: true, message: '请输入计量单位' },
+                            ],
+                          })(<Input maxLength={6} placeholder="6字以内" />)}
                         </FormItem>
-                        <Button loading={goodsAddLoading} style={{ minWidth: '68px', marginTop: "4px" }} htmlType="submit">
+                        <Button
+                          loading={goodsAddLoading}
+                          style={{ minWidth: '68px', marginTop: '4px' }}
+                          htmlType="submit"
+                        >
                           添加
                         </Button>
                       </Col>
@@ -227,19 +232,28 @@ class WarehouseGoods extends Component {
               </div>
             )}
             <div className={styles.goodsSearch}>
-              <Search
-                allowClear
-                placeholder="请输入物品名称"
-                onSearch={(value) => {return this.searchGoodsFunc(value)}}
-                style={{ width: 200, height: 32, marginTop: "4px" }}
+              <div className={styles.rightSeach}>
+                <Search
+                  allowClear
+                  placeholder="请输入物品名称"
+                  onSearch={value => {
+                    return this.searchGoodsFunc(value);
+                  }}
+                  style={{ width: 200, height: 32, marginTop: '4px' }}
+                />
+              </div>
+              <CommonPagination
+                pageSize={pageSize}
+                currentPage={pageNum}
+                total={pageCount}
+                onPaginationChange={this.onPaginationChange}
               />
-              <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} />
             </div>
             <WarehouseGoodsTable {...this.props} />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

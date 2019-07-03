@@ -84,13 +84,16 @@ class WarehouseGoodsTable extends Component {
       goodsType,
       func: () => {
         this.setState({
-          showWarningTip: false,
           warningTipText: '',
           tableRecord: {},
         });
       }
     };
-    getGoodsDelList(params);
+    this.setState({
+      showWarningTip: false,
+    }, () => {
+      getGoodsDelList(params);
+    });
   };
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序

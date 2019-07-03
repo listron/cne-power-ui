@@ -12,6 +12,8 @@ export const showNoData = [//显示“暂无数据”
     }
   }
 ];
+
+
 export const hiddenNoData = [//隐藏暂无数据
   {
     type: 'text',
@@ -26,5 +28,3 @@ export const hiddenNoData = [//隐藏暂无数据
     }
   }
 ];
- // upload test
- // a

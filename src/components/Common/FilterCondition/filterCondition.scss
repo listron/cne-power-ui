@@ -136,6 +136,7 @@
         height: 19px;
         border-bottom: none;
         cursor: pointer;
+        word-break: keep-all;
     }
     .selected {
         display: inline-block;
@@ -175,6 +176,7 @@
         height: 19px;
         border-bottom: none;
         cursor: pointer;
+        word-break: keep-all;
     }
     .selected {
         display: inline-block;

@@ -238,8 +238,8 @@ class ScatterDiagramSearch extends Component{
           </Select>
           </div>
           <div className={styles.rightHandle}>
-            <Button className={styles.searchInfo} onClick={this.searchPointList} disabled={!xPoint || !yPoint}>查询</Button>
-            {scatterDiagramType === 'list' &&<Button className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0 }>导出</Button> }
+            <Button type="default" className={styles.searchInfo} onClick={this.searchPointList} disabled={!xPoint || !yPoint}>查询</Button>
+            {scatterDiagramType === 'list' &&<Button  type="default" className={styles.exportPoint} onClick={this.exportPointList} disabled={dataList.length === 0 }>导出</Button> }
           </div>
         </div>
       </div>

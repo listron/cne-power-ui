@@ -123,7 +123,10 @@ function *getChartScatterDiagram({ payload = {} }){ // 获取散点图echarts数
     const deviceInfo = deviceFullCode[0] || {};
     yield put({
       type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { chartLoading: true }
+      payload: { 
+        chartLoading: true,
+        chartTime: null, 
+       }
     })
     const response = yield call(axios.post, url, {
       ...queryParam,
@@ -148,7 +151,7 @@ function *getChartScatterDiagram({ payload = {} }){ // 获取散点图echarts数
     message.error("获取图表数据失败!");
     yield put({
       type: scatterDiagramAction.CHANGE_SCATTERDIAGRAM_STORE,
-      payload: { tableLoading: false }
+      payload: { tableLoading: false, chartTime: moment().unix(),  }
     })
     console.log(e);
   }

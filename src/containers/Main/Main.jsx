@@ -8,21 +8,21 @@ import styles from './style.scss';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import FixedHelper from '../../components/Common/FixedHelper/FixedHelper'; 暂不实现。
 import { commonAction } from '../alphaRedux/commonAction';
 import { loginAction } from '../Login/loginAction';
 import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import TopMenu from '../../components/Layout/TopMenu';
 import SideMenu from '../../components/Layout/SideMenu';
+import MenuBoard from '../../components/Layout/MenuBoard';
 import LogoInfo from '../../components/Layout/LogoInfo';
 import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
-// import Loadable from 'react-loadable';
 
 const Login = lazy(() => import('../Login/LoginLayout'));
 
 class Main extends Component {
   static propTypes = {
+    screenAddress: PropTypes.string,
     userFullName: PropTypes.string,
     userLogo: PropTypes.string,
     username: PropTypes.string,
@@ -31,10 +31,13 @@ class Main extends Component {
     login: PropTypes.object,
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
+    menuBoardShow: PropTypes.bool,
+    menuBoardRequired: PropTypes.array,
     changeLoginStore: PropTypes.func,
     getMonitorDataUnit: PropTypes.func,
     resetCommonStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
+    changeCommonStore: PropTypes.func,
   };
 
   constructor(props) {
@@ -53,8 +56,12 @@ class Main extends Component {
       if (authData) {
         this.props.getStations();
         this.props.getDeviceTypes();
-        //请求企业的数据单位
-        this.props.getMonitorDataUnit();
+        this.props.getMonitorDataUnit(); // 请求企业的数据单位
+        axios.get('/menuBoardRequired.json').then((req) => { // 需菜单遮罩企业添加入commonReducer
+          const { data } = req || {};
+          const { menuBoardRequired, screenAddress } = data || {};
+          this.props.changeCommonStore({ menuBoardRequired, screenAddress });
+        })
       }
     }
   }
@@ -74,10 +81,17 @@ class Main extends Component {
       //   refresh_token:refreshToken
       // })
     }
-    if (nextProps.login.size > 0 && this.props.login.size === 0) {
+    if (nextProps.login.size > 0 && this.props.login.size === 0) { // 登录成功
       this.props.getStations();
       this.props.getDeviceTypes();
       this.props.getMonitorDataUnit();
+      axios.get('/menuBoardRequired.json').then((req) => { // 根据企业判定是否展示菜单遮罩
+        const { data } = req || {};
+        const { menuBoardRequired, screenAddress } = data || {};
+        const enterpriseId = Cookie.get('enterpriseId');
+        const menuBoardShow = menuBoardRequired.includes(enterpriseId);
+        this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAddress });
+      })
     }
   }
   componentWillUnmount() {
@@ -86,7 +100,7 @@ class Main extends Component {
   }
 
   logout = () => { // 删除登录凭证并退出。
-    Cookie.remove('authData');
+    Cookie.remove('authData'); // 这一堆cookie看着都烦。有空赶紧进行集合+优化。
     Cookie.remove('enterpriseId');
     Cookie.remove('enterpriseName');
     Cookie.remove('enterpriseLogo');
@@ -125,8 +139,13 @@ class Main extends Component {
           {!isHomePage && <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <LogoInfo />
-              <div className={styles.logo}></div>
-              <TopMenu />
+              <MenuBoard
+                changeCommonStore={this.props.changeCommonStore}
+                screenAddress={this.props.screenAddress}
+                menuBoardRequired={this.props.menuBoardRequired}
+                menuBoardShow={this.props.menuBoardShow}
+              />
+              {!this.props.menuBoardShow && <TopMenu />}
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
@@ -149,7 +168,6 @@ class Main extends Component {
               </Switch>
             </main>
           </div>
-          {/* <FixedHelper /> */}
           <Modal
             title=""
             visible={!userRight && !rightMenu}
@@ -185,9 +203,12 @@ const mapStateToProps = (state) => {
   return ({
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
-    username: state.common.get('username'),
-    userFullName: state.common.get('userFullName'),
-    userLogo: state.common.get('userLogo'),
+    ...state.common.toJS(),
+    // username: state.common.get('username'),
+    // userFullName: state.common.get('userFullName'),
+    // userLogo: state.common.get('userLogo'),
+    // menuBoardShow: state.common.get('menuBoardShow'),
+    // menuBoardRequired: state.common.get('menuBoardRequired').toJS(),
   });
 }
 
@@ -198,6 +219,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
   resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
+  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload })
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 

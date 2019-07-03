@@ -37,16 +37,16 @@ class DeviceFilter extends Component {
   }
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getDeviceModel, changeAllDeviceStore } = this.props;
-    const { stationCode } = selectedStationInfo[0];
+    const stationCode = selectedStationInfo.length > 0 && selectedStationInfo[0].stationCode || null;
     getDeviceModel({ // 风电设备类型下的设备编号
       stationCodes: stationCode,
       deviceTypeCode: 101,
     });
-
     changeAllDeviceStore({
       stationCode, deviceTypeCode: 101, deviceFullCode: [], selectdeviceCode: []
     })
   }
+
   seekDeviceData = () => {//查询按钮
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, changeAllDeviceStore } = this.props;
     const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format(), };
@@ -129,7 +129,7 @@ class DeviceFilter extends Component {
           <div className={styles.typeSelect}>
             <span className={styles.text}>选择设备</span>
             <DeviceSelect
-              disabled={+stationCode ? false : true}
+              disabled={stationCode ? false : true}
               stationCode={+stationCode}
               deviceTypeCode={101}
               style={{ width: 'auto', minWidth: '198px' }}
@@ -148,12 +148,15 @@ class DeviceFilter extends Component {
               format={'YYYY/MM/DD '}
               disabledDate={this.disabledDate}
               onChange={this.timeChange}
+              style={{ width: 240 }}
             />
           </div>
-          <Button className={styles.buttonStyle} disabled={selectdeviceCode.length > 0 ? false : true} onClick={this.seekDeviceData}>查询</Button>
-          {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList}
-            disabled={powerCurveListData.length === 0}
-          >导出</Button> : ''}
+          <div className={styles.buttonBox}>
+            <Button className={styles.buttonStyle} disabled={selectdeviceCode.length > 0 ? false : true} onClick={this.seekDeviceData}>查询</Button>
+            {deviceShowType === 'list' ? <Button className={styles.buttonStyle} onClick={this.exportList}
+              disabled={powerCurveListData.length === 0}
+            >导出</Button> : ''}
+          </div>
         </div>
         <div className={styles.showType}>
           <div className={styles.tabIcons}>

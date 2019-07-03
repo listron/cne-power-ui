@@ -37,7 +37,7 @@ const menuData = [
         iconStyle: 'icon-monitoring',
         path: 'powercurve',
         rightKey: 'monitor_powerCurve',
-      },{
+      }, {
         name: '数据分析',
         iconStyle: 'icon-da',
         path: 'data',
@@ -47,7 +47,7 @@ const menuData = [
             name: '散点图',
             path: 'scatterDiagram',
             rightKey: 'dataAnalysis_scatterPlot',
-          },{
+          }, {
             name: '历史趋势',
             path: 'history',
             rightKey: 'dataAnalysis_historyTrend',
@@ -83,8 +83,8 @@ const menuData = [
             name: '损失电量',
             path: 'powerLost',
             rightKey: 'reportQuery_powerLost',
-          }
-        ]
+          },
+        ],
       }, {
         name: '告警',
         iconStyle: 'icon-alarm1',
@@ -118,7 +118,7 @@ const menuData = [
           //   rightKey: 'monitor_alarm_statistics',
           // }
         ],
-      }
+      },
     ],
   }, {
     name: '运维管理',
@@ -147,7 +147,7 @@ const menuData = [
             path: 'statistics',
             rightKey: 'operation_worklist_statistics',
           },
-        ]
+        ],
       }, {
         name: '两票管理',
         path: 'twoTickets',
@@ -155,15 +155,19 @@ const menuData = [
         rightKey: 'operation_twoTicket',
         children: [
           {
-            name: '第一种工作票',
-            path: 'typeone',
-            rightKey: 'operation_twoTicket',
+            name: '审核人设置',
+            path: 'examiner',
+            rightKey: 'operation_twoTicket_config',
           }, {
-            name: '第二种工作票',
-            path: 'typetwo',
-            rightKey: 'operation_twoTicket',
-          }
-        ]
+            name: '工作票',
+            path: 'workflow',
+            rightKey: 'operation_twoTicket_work',
+          }, {
+            name: '操作票',
+            path: 'operateflow',
+            rightKey: 'operation_twoTicket_operation',
+          },
+        ],
       }, {
         name: '台账',
         path: 'book',
@@ -178,18 +182,16 @@ const menuData = [
           }, {
             name: '设备管理',
             path: 'deviceManage',
-           
             rightKey: 'operation_book_deviceManage',
-          },{
+          }, {
             name: '设备台账',
             path: 'deviceAccount',
-         
             rightKey: 'operation_book_deviceBook',
           }, {
             name: '仓库配置',
             path: 'warehouse',
             rightKey: 'operation_book_warehouseConfig',
-          },{
+          }, {
             name: '仓库管理',
             path: 'warehouseManage',
             rightKey: 'operation_book_warehouseManage',
@@ -197,8 +199,8 @@ const menuData = [
             name: '出入库记录',
             path: 'stockRecords',
             rightKey: 'operation_book_warehouseRecord',
-          }
-        ]
+          },
+        ],
       }, {
         name: '电站运行',
         path: 'running',
@@ -213,14 +215,14 @@ const menuData = [
             name: '月报',
             path: 'monthReport',
             rightKey: 'operation_running_monthly',
-          }
-        ]
+          },
+        ],
       }, {
         name: '智能专家库',
         path: 'intelligentExpert',
         iconStyle: 'icon-gd4',
         rightKey: 'operation_experience',
-      }
+      },
     ],
   },
   {
@@ -259,8 +261,8 @@ const menuData = [
             name: '电站对比',
             path: 'contrast',
             rightKey: 'statistics_station_comparation',
-          }
-        ]
+          },
+        ],
       }, {
         name: '设备分析',
         path: 'equipment',
@@ -275,13 +277,12 @@ const menuData = [
             name: '设备对比',
             path: 'manufacturers',
             rightKey: 'statistics_device',
-          },
-          {
+          }, {
             name: '自定义对比',
             path: 'customize',
             rightKey: 'statistics_device',
-          }
-        ]
+          },
+        ],
 
       }, {
         name: '统计报表',
@@ -303,11 +304,11 @@ const menuData = [
           {
             name: '智能报表',
             path: 'intelligentReport',
-            rightKey: 'statistics_report_report',
+            rightKey: 'statistics_report_table',
           },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
   {
     name: '高级分析',
@@ -336,16 +337,16 @@ const menuData = [
             name: '已转工单',
             path: 'transfer',
             rightKey: 'analysis_intelligentWarning_worklist',
-          },{
+          }, {
             name: '手动解除',
             path: 'handleremove',
             rightKey: 'analysis_intelligentWarning_remove',
-          },{
+          }, {
             name: '历史预警',
             path: 'historywarning',
             rightKey: 'analysis_intelligentWarning_history',
-          }
-        ]
+          },
+        ],
       },
       {
         name: '清洗模型',
@@ -365,8 +366,7 @@ const menuData = [
             path: 'record',
             rightKey: 'analysis_cleanModel',
           },
-
-        ]
+        ],
       },
       {
         name: '低效组串预警',
@@ -390,8 +390,8 @@ const menuData = [
             name: '历史预警',
             path: 'history',
             rightKey: 'analysis_inefficientDetect',
-          }
-        ]
+          },
+        ],
       },
       {
         name: '偏航对风分析',
@@ -408,8 +408,8 @@ const menuData = [
             name: '预测事件配置',
             path: 'config',
             rightKey: 'analysis_yaw',
-          }
-        ]
+          },
+        ],
       },
       {
         name: '风机预警',
@@ -422,18 +422,18 @@ const menuData = [
             path: 'faultWarn',
             defaultPath: true,
             rightKey: 'analysis_turbineFDD_recent',
-          },{
+          }, {
             name: '历史预警',
             path: 'historyWarn',
             rightKey: 'analysis_turbineFDD_history',
-          },{
+          }, {
             name: '算法控制台',
             path: 'algorithmControl',
             rightKey: 'analysis_turbineFDD_console',
-          }
-        ]
-      }
-    ]
+          },
+        ],
+      },
+    ],
   }, {
     name: '系统管理',
     path: 'system',
@@ -462,8 +462,8 @@ const menuData = [
             name: '角色',
             path: 'role',
             rightKey: 'system_account_role',
-          }
-        ]
+          },
+        ],
       }, {
         name: '电站管理',
         iconStyle: 'icon-elecmanage',
@@ -491,8 +491,13 @@ const menuData = [
             name: '功率曲线',
             path: 'powerCurve',
             rightKey: 'system_station_powercurve',
-          }
-        ]
+          },
+          {
+            name: '气象站配置',
+            path: 'weatherStation',
+            rightKey: 'system_weatherConfig',
+          },
+        ],
       }, {
         name: '计划配置',
         iconStyle: 'icon-planed',
@@ -512,11 +517,11 @@ const menuData = [
             path: 'warning',
             rightKey: 'system_config_warning',
           },
-        ]
-      }
+        ],
+      },
     ],
-  }
-]
+  },
+];
 
 function formatter(data, parentPath = '/') {
   return data.map(item => {

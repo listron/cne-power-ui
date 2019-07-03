@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table, Radio } from 'antd';
 import styles from '../deviceSide.scss';
+import moment from 'moment';
 
 
 class RecordTable extends React.Component {
@@ -27,13 +28,13 @@ class RecordTable extends React.Component {
     super(props, context)
   }
   changeTableData = (e) => {
-    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning ,deviceFullcode, orderField,
-      orderMethod,} = this.props;
+    const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning, deviceFullcode, orderField,
+      orderMethod, } = this.props;
     const value = e.target.value;
     this.props.changeTableFilter(value);
-    value === 'part' ? getDevicePartInfo({ deviceFullcode,orderMethod:'desc',orderField:'1'}): 
-    value === 'record' ? getDevicefixRecord({deviceFullcode,orderMethod,orderField}) : 
-    getDevicehistoryWarning({deviceFullcode,orderMethod,orderField});
+    value === 'part' ? getDevicePartInfo({ deviceFullcode }) :
+      value === 'record' ? getDevicefixRecord({ deviceFullcode, orderMethod, orderField: '2' }) :
+        getDevicehistoryWarning({ deviceFullcode, orderMethod, orderField: '2' });
   }
 
   formate = (data) => {
@@ -44,7 +45,7 @@ class RecordTable extends React.Component {
         this.formate(e.assetsData);
       } else {
         e.assetsData = e.partsData;
-        e.partsData&&e.partsData.forEach((e,i)=>{
+        e.partsData && e.partsData.forEach((e, i) => {
           e.key = e.partsModeName;
         })
       }
@@ -52,12 +53,18 @@ class RecordTable extends React.Component {
     })
     return data
   }
+  timeFormate = (text) => {
+    return text ? <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span> : '--'
+  }
 
 
 
   render() {
     const { tableFilter, historyWarningData, fixRecordData, partInfoData } = this.props;
     const partInfoDataFormate = this.formate(partInfoData);
+
+    const level = ['一级', '二级', '三级', '四级'];
+    const defactlevel = ['A级', 'B级', 'C级', 'C级'];
     const partColumns = [
       {
         title: '部件名称',
@@ -66,79 +73,83 @@ class RecordTable extends React.Component {
       }, {
         title: '部件型号',
         dataIndex: 'partsModeName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       }, {
         title: '厂家',
         dataIndex: 'manufactorName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       }, {
         title: '制造商',
         dataIndex: 'madeName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       }, {
         title: '供应商',
         dataIndex: 'supplierName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       }
     ]
     const fixRecordColumns = [
       {
         title: '缺陷级别',
+        dataIndex: 'defectLevel',
+        render: (text, record, index) => {
+          return text ? defactlevel[text - 1] : '--'
+        },
+      }, {
+        title: '缺陷描述',
+        dataIndex: 'defectDescribe',
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
+      }, {
+        title: '处理过程',
+        dataIndex: 'defectSolveInfo',
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
+      }, {
+        title: '更换部件',
+        dataIndex: 'replaceParts',
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
+      }, {
+        title: '资产编码',
         dataIndex: 'assetsCode',
         render: (text) => <span title={text}>{text}</span>
       }, {
-        title: '缺陷描述',
-        dataIndex: 'assetsName',
-        render: (text) => <span title={text}>{text}</span>
-      }, {
-        title: '处理过程',
-        dataIndex: 'assetsType',
-        render: (text) => <span title={text}>{text}</span>
-      }, {
-        title: '更换部件',
-        dataIndex: 'assetsUnit',
-        render: (text) => <span title={text}>{text}</span>
-      }, {
-        title: '资产编码',
-        dataIndex: 'createTime',
-        render: (text) => <span title={text}>{text}</span>
-      }, {
         title: '发生时间',
-        dataIndex: 'begintime',
-        render: (text) => <span title={text}>{text}</span>
+        dataIndex: 'createTime',
+        render: (text) => this.timeFormate(text)
       }, {
         title: '完成时间',
-        dataIndex: 'endTime',
-        render: (text) => <span title={text}>{text}</span>
+        dataIndex: 'finishTime',
+        render: (text) => this.timeFormate(text)
       }
     ];
     const historyWarningColumns = [
       {
         title: '告警级别',
         dataIndex: 'warningLevel',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text, record, index) => {
+          return text ? level[text - 1] : '--'
+        },
       }, {
         title: '告警类型',
         dataIndex: 'warningConfigName',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={'事件告警'}>{text ? '事件告警' : '--'}</span>
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'startTime',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => this.timeFormate(text)
       }, {
         title: '完成时间',
-        dataIndex: 'timeOn',
-        key: 'endTime',
-        render: (text) => <span title={text}>{text}</span>
+        dataIndex: 'finishTime',
+
+        render: (text) => this.timeFormate(text)
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text ? text : '--'}</span>
       },
     ];
     return (

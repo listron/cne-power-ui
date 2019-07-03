@@ -40,3 +40,10 @@ $warnColor:#a42b2c; // 故障color
   padding: 24px 24px 0;
   background:#ececec;
 }
+
+@mixin overflowText() {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

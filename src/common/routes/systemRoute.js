@@ -23,6 +23,7 @@ const station = [
   }, { // 系统管理-电站管理-设备
     path: '/system/station/deviceManage',
     component: lazy(() => import('../../containers/System/Station/DeviceManage/DeviceManage')),
+    // component: lazy(() => import('../../containers/Operation/Book/DeviceManage/DeviceManage')),
   }, { // 系统管理-电站管理-测点
     path: '/system/station/pointManage',
     component: lazy(() => import('../../containers/System/Station/PointManage/PointManage')),
@@ -32,6 +33,9 @@ const station = [
   }, { // 系统管理-电站管理-功率曲线
     path: '/system/station/powerCurve',
     component: lazy(() => import('../../containers/System/Station/PowerCurve/PowerCurve')),
+  }, { // 系统管理-电站管理-气象站配置
+    path: '/system/station/weatherStation',
+    component: lazy(() => import('../../containers/System/Station/WeatherStationConf/WeatherStationConf')),
   }
 ];
 
