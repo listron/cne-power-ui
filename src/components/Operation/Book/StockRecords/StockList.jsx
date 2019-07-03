@@ -33,15 +33,12 @@ class StockList extends Component {
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
-    console.log('currentPage: ', currentPage);
-    console.log('pageSize: ', pageSize);
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams, tableType } = this.props;
     const newParams = {
       ...listParams,
       pageSize,
       pageNum: currentPage,
     };
-    console.log('newParams: ', newParams);
     stockRecordsStore({
       ...newParams,
     });
