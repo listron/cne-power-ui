@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Tooltip, Icon } from 'antd';
-import styles from "./faultWarnFan.scss";
-import { dateArrFormat } from "../../formatDateUtils/formatDateUtils";
+import styles from './faultWarnFan.scss';
+import { dateArrFormat } from '../../formatDateUtils/formatDateUtils';
 
 export default class FaultWarnFan extends React.Component {
   static propTypes = {
@@ -36,17 +36,17 @@ export default class FaultWarnFan extends React.Component {
     const {
       history,
       match: {
-        params:{
-          fanWarnId
-        }
+        params: {
+          fanWarnId,
+        },
       },
     } = this.props;
     // 跳到单风机详情图表展示
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
-    localStorage.setItem("taskId", taskId);
-    localStorage.setItem("faultHistory", "2");
-    localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullCode);
+    localStorage.setItem('taskId', taskId);
+    localStorage.setItem('faultHistory', '2');
+    localStorage.setItem('deviceName', deviceName);
+    localStorage.setItem('deviceFullCode', deviceFullCode);
   };
 
   detailsFanFunc = (e, algorithmName, taskId, deviceName, deviceFullcode) => {
@@ -54,37 +54,37 @@ export default class FaultWarnFan extends React.Component {
     const {
       history,
       match: {
-        params:{
-          fanWarnId
-        }
+        params: {
+          fanWarnId,
+        },
       },
     } = this.props;
     history.push(`/hidden/analysis/single/fan/${fanWarnId}`);
-    localStorage.setItem("taskId", taskId);
-    localStorage.setItem("faultHistory", "2");
-    localStorage.setItem("deviceName", deviceName);
-    localStorage.setItem("deviceFullCode", deviceFullcode);
-    localStorage.setItem("deviceFullName", algorithmName);
+    localStorage.setItem('taskId', taskId);
+    localStorage.setItem('faultHistory', '2');
+    localStorage.setItem('deviceName', deviceName);
+    localStorage.setItem('deviceFullCode', deviceFullcode);
+    localStorage.setItem('deviceFullName', algorithmName);
   };
 
   titleFunc = (data, taskId, deviceName, deviceFullcode) => {
     return data && data.map((cur, index) => {
       return (
         <div
-          onClick={(e) => {return this.detailsFanFunc(e, cur.algorithmName, taskId, deviceName, deviceFullcode)}}
+          onClick={(e) => {return this.detailsFanFunc(e, cur.algorithmName, taskId, deviceName, deviceFullcode);}}
           style={{
-            textDecoration: "underline",
-            display: "flex",
-            minWidth: "280px",
-            cursor: "pointer",
-            justifyContent: "space-between"
+            textDecoration: 'underline',
+            display: 'flex',
+            minWidth: '280px',
+            cursor: 'pointer',
+            justifyContent: 'space-between',
           }}
           key={`${cur.algorithmName}${index}`}
         >
           <span>{cur.algorithmName}</span>
           <span>{dateArrFormat(cur.predictionDate)}</span>
         </div>
-      )
+      );
     });
   };
 
@@ -92,13 +92,13 @@ export default class FaultWarnFan extends React.Component {
     const { fanListData } = this.props;
     const item = fanListData && fanListData.map((cur, index) => {
       return (
-        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName, cur.deviceFullcode)}}>
+        <div className={styles.fanItem} key={cur.taskId + index} onClick={() => {return this.detailsFunc(cur.taskId, cur.deviceName, cur.deviceFullcode);}}>
           <div className={styles.fanItemTop}>
             <div>
               {cur.deviceName}
             </div>
             <div className={cur.warningCount ? styles.warnItem : styles.successItem}>
-              {cur.warningCount ? `预警${cur.warningCount}` : "正常"}
+              {cur.warningCount ? `预警${cur.warningCount}` : '正常'}
             </div>
           </div>
           <div className={styles.fanItemBottom}>
@@ -106,7 +106,7 @@ export default class FaultWarnFan extends React.Component {
                 <span className={styles.grayColor}>大部件</span>
               </div>: <div>
               <Tooltip
-                overlayStyle={{maxWidth: "500px"}}
+                overlayStyle={{maxWidth: '500px'}}
                 placement="bottomLeft"
                 title={this.titleFunc(cur.largeWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
               >
@@ -121,7 +121,7 @@ export default class FaultWarnFan extends React.Component {
               <span className={styles.grayColor}>性能预警</span>
             </div> : <div>
                 <Tooltip
-                  overlayStyle={{maxWidth: "500px"}}
+                  overlayStyle={{maxWidth: '500px'}}
                   placement="bottomLeft"
                   title={this.titleFunc(cur.performanceWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
                 >
@@ -136,7 +136,7 @@ export default class FaultWarnFan extends React.Component {
               <span className={styles.grayColor}>设备健康</span>
             </div> : <div>
                 <Tooltip
-                  overlayStyle={{maxWidth: "500px"}}
+                  overlayStyle={{maxWidth: '500px'}}
                   placement="bottomLeft"
                   title={this.titleFunc(cur.healthWarnings, cur.taskId, cur.deviceName, cur.deviceFullcode)}
                 >

@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./faultAllFan.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './faultAllFan.scss';
 import Footer from '../../../../components/Common/Footer';
 import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan';
-import {faultAllFanAction} from "./faultAllFanAction";
-import {connect} from "react-redux";
-import {commonAction} from "../../../alphaRedux/commonAction";
-import {algorithmControlAction} from "../AlgorithmControl/algorithmControlAction";
+import {faultAllFanAction} from './faultAllFanAction';
+import {connect} from 'react-redux';
+import {commonAction} from '../../../alphaRedux/commonAction';
+import {algorithmControlAction} from '../AlgorithmControl/algorithmControlAction';
 
 class FaultAllFan extends React.Component {
   static propTypes = {
@@ -27,18 +27,18 @@ class FaultAllFan extends React.Component {
       getFaultInfo,
       match: {
         params: {
-          stationCode
-        }
-      }
+          stationCode,
+        },
+      },
     } = this.props;
     // 调用任务详情
-    const taskId = localStorage.getItem("taskId");
+    const taskId = localStorage.getItem('taskId');
     const params = {
       taskId,
       stationCode,
-      deviceFullcode: ""
+      deviceFullcode: '',
     };
-    getFaultInfo(params)
+    getFaultInfo(params);
   }
 
   componentWillUnmount() {
@@ -56,8 +56,8 @@ class FaultAllFan extends React.Component {
       history,
       match: {
         params: {
-          stationCode
-        }
+          stationCode,
+        },
       },
     } = this.props;
     history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
@@ -67,29 +67,29 @@ class FaultAllFan extends React.Component {
     const {
       history,
       getListView,
-      changeAlgorithmControlStore
+      changeAlgorithmControlStore,
     } = this.props;
     const listParams = {
-      stationCode:null,
+      stationCode: null,
       algorithmIds: [],
-      startTime:"",
-      endTime:"",
-      status:null,
-      pageSize:null,
-      pageNum:null,
-      sortField:"",
-      sortMethod:""
+      startTime: '',
+      endTime: '',
+      status: null,
+      pageSize: null,
+      pageNum: null,
+      sortField: '',
+      sortMethod: '',
     };
-    history.push(`/analysis/faultDiagnose/algorithmControl`);
+    history.push('/analysis/faultDiagnose/algorithmControl');
     changeAlgorithmControlStore({
-      viewType: "list"
+      viewType: 'list',
     });
     // 列表
     getListView(listParams);
   };
 
   render() {
-    const faultWarnNum = localStorage.getItem("faultWarnNum");
+    const faultWarnNum = localStorage.getItem('faultWarnNum');
     return (
       <div className={styles.faultAllFan}>
         <div className={styles.AllFanContent}>
@@ -115,7 +115,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.faultAllFan.toJS(),
     stations: state.common.get('stations'),
-  }
+  };
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultAllFanAction.resetStore }),
@@ -135,8 +135,8 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.downLoadFile,
     payload: {
       ...payload,
-      actionName: faultAllFanAction.changeFaultAllFanStore
-    }
-  })
+      actionName: faultAllFanAction.changeFaultAllFanStore,
+    },
+  }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(FaultAllFan)
+export default connect(mapStateToProps, mapDispatchToProps)(FaultAllFan);

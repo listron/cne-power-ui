@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import eCharts from "echarts";
-import { heatTemperatureOptions } from "../chartsConfig/chartsConfig";
-import styles from "./heatMap.scss";
-import moment from "../PreTemperature/PreTemperature";
+import React from 'react';
+import PropTypes from 'prop-types';
+import eCharts from 'echarts';
+import { heatTemperatureOptions } from '../chartsConfig/chartsConfig';
+
+import styles from './heatMap.scss';
 
 
 
@@ -19,17 +19,17 @@ export default class HeatMap extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    const  {
+    const {
       heatChart,
       props: {
         similarityList,
         faultInfo: {
-          endTime
+          endTime,
         },
         faultDate,
         heatLoading,
-        heatTimeCompare: currentHeatTimeCompare
-      }
+        heatTimeCompare: currentHeatTimeCompare,
+      },
     } = this;
     const { heatTimeCompare } = prevProps;
     const myChart = eCharts.init(heatChart);

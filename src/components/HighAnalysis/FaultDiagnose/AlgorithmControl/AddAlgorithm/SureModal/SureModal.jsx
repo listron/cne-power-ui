@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Modal, Icon } from "antd";
-import moment from "moment";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Icon } from 'antd';
+import moment from 'moment';
 
-import styles from "./sureModal.scss"
+import styles from './sureModal.scss';
 
-const defaultDate = "YYYY-MM-DD";
+const defaultDate = 'YYYY-MM-DD';
 
 export default class SureModal extends React.Component {
   static propTypes = {
@@ -42,8 +42,8 @@ export default class SureModal extends React.Component {
         selectStationName,
         actionTime,
         startTime,
-        endTime
-      }
+        endTime,
+      },
     } = this.props;
     const params = {
       algorithmId: modal,
@@ -58,25 +58,25 @@ export default class SureModal extends React.Component {
         sureModalFunc(false);
         // 返回原来界面
         onAddControlFunc(true);
-      }
+      },
     };
     getAddWarnTask(params);
   };
 
   modalFunc = () => {
     const {
-      downLink:{
-        modal
+      downLink: {
+        modal,
       },
-      algoOptionList
+      algoOptionList,
     } = this.props;
-    let name = "";
+    let name = '';
     for (let i = 0; i < algoOptionList.length; i++) {
       if (algoOptionList[i].algorithmId === modal) {
         name = algoOptionList[i].algorithmName;
       }
     }
-    return name || "";
+    return name || '';
   };
 
   render() {
@@ -87,10 +87,10 @@ export default class SureModal extends React.Component {
         selectStationName,
         actionTime,
         startTime,
-        endTime
+        endTime,
       },
       actionDiffTime,
-      endDiffTime
+      endDiffTime,
     } = this.props;
     return (
       <Modal
@@ -110,7 +110,7 @@ export default class SureModal extends React.Component {
             </div>
             <div>
               <span>电站名称：</span>
-              <span>{selectStationName.length !== 0 ? selectStationName[0].stationName : ""}</span>
+              <span>{selectStationName.length !== 0 ? selectStationName[0].stationName : ''}</span>
             </div>
             <div>
               <span>检测开始日期：</span>

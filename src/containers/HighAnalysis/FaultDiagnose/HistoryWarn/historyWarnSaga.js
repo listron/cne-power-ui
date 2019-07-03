@@ -1,7 +1,7 @@
 import {put, takeEvery, call} from 'redux-saga/effects';
 import { historyWarnAction } from './historyWarnAction';
-import Path from "../../../../constants/path";
-import axios from "axios";
+import Path from '../../../../constants/path';
+import axios from 'axios';
 
 /***
  * 解析公共头APIBasePath
@@ -14,8 +14,8 @@ const {
   },
   APISubPaths: {
     highAnalysis: {
-      warnHistory
-    }
+      warnHistory,
+    },
   }} = Path;
 
 function* getFaultWarnHistory(action) { // 获取历史预警列表。
@@ -29,9 +29,9 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
     pageNum,
     sortField,
     sortMethod,
-    algorithmModalName
+    algorithmModalName,
   } } = action;
-  let deviceFullCodes = []; // 保存多个风机全编码
+  const deviceFullCodes = []; // 保存多个风机全编码
   selectDeviceCode && selectDeviceCode.map(cur => {
     deviceFullCodes.push(cur.deviceCode);
   });
@@ -39,12 +39,12 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
     stationCode: stationCode || null,
     deviceFullCodes,
     algorithmIds: algorithmModalId || [],
-    startTime: createTimeStart || "",
-    endTime: createTimeEnd || "",
+    startTime: createTimeStart || '',
+    endTime: createTimeEnd || '',
     pageSize,
     pageNum,
     sortField,
-    sortMethod
+    sortMethod,
   };
   const url = `${APIBasePath}${warnHistory}`;
   try {
@@ -53,8 +53,8 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
       type: historyWarnAction.changeHistoryWarnStore,
       payload: {
         loading: true,
-        createTimeStart: createTimeStart || "",
-        createTimeEnd : createTimeEnd || "",
+        createTimeStart: createTimeStart || '',
+        createTimeEnd: createTimeEnd || '',
         algorithmModalId: algorithmModalId || [],
         stationCode,
         pageSize: pageSize || 10,
@@ -62,8 +62,8 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
         sortField: sortField,
         sortMethod: sortMethod,
         selectDeviceCode: selectDeviceCode,
-        algorithmModalName : algorithmModalName || []
-      }
+        algorithmModalName: algorithmModalName || [],
+      },
     });
     const response = yield call(axios.post, url, params);
     if (response.data.code === '10000') {
@@ -80,8 +80,8 @@ function* getFaultWarnHistory(action) { // 获取历史预警列表。
     yield put({
       type: historyWarnAction.changeHistoryWarnStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }

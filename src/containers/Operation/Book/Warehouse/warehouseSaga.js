@@ -1,8 +1,8 @@
 import {put, takeLatest, call} from 'redux-saga/effects';
 import { warehouseAction } from './warehouseAction';
-import Path from "../../../../constants/path";
-import axios from "axios";
-import { message } from "antd";
+import Path from '../../../../constants/path';
+import axios from 'axios';
+import { message } from 'antd';
 
 /***
  * 解析公共头APIBasePath
@@ -22,8 +22,8 @@ const {
       goodsList,
       goodsAdd,
       goodsDel,
-      goodsUpdate
-    }
+      goodsUpdate,
+    },
   }} = Path;
 
 function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
@@ -40,7 +40,7 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
         warehouseName: payload.warehouseName,
         sortField: payload.sortField,
         sortMethod: payload.sortMethod,
-      }
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -53,7 +53,7 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -62,7 +62,7 @@ function* getWarehouseList(action) { // 仓库列表分页查询 || 模糊搜索
       payload: {
         loading: false,
         warehouseListLoading: false,
-      }
+      },
     });
   }
 }
@@ -72,13 +72,13 @@ function* getWarehouseAddList(action) { // 仓库添加
     payload: {
       func,
       warehouseName,
-      stationCodes
-    }
+      stationCodes,
+    },
   } = action;
   // 添加的参数
   const paramsAdd = {
     warehouseName,
-    stationCodes
+    stationCodes,
   };
   const url = `${APIBasePath}${warehouseAdd}`;
   try {
@@ -87,17 +87,17 @@ function* getWarehouseAddList(action) { // 仓库添加
       payload: {
         loading: true,
         warehouseAddLoading: true,
-      }
+      },
     });
     const response = yield call(axios.post, url, paramsAdd);
     if (response.data.code === '10000') {
       // 添加完之后在调用仓库列表
       const paramsList = {
-        warehouseName: "",
+        warehouseName: '',
         pageNum: 1,
         pageSize: 10,
-        sortField: "",
-        sortMethod: "",
+        sortField: '',
+        sortMethod: '',
       };
       // 添加成功清空input的值
       func();
@@ -113,7 +113,7 @@ function* getWarehouseAddList(action) { // 仓库添加
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -122,7 +122,7 @@ function* getWarehouseAddList(action) { // 仓库添加
       payload: {
         loading: false,
         warehouseAddLoading: false,
-      }
+      },
     });
   }
 }
@@ -136,8 +136,8 @@ function* getWarehouseDelList(action) { // 仓库删除
       pageSize,
       sortField,
       sortMethod,
-      func
-    }
+      func,
+    },
   } = action;
   const url = `${APIBasePath}${warehouseDel}?warehouseIds=${warehouseIds}`;
   try {
@@ -145,7 +145,7 @@ function* getWarehouseDelList(action) { // 仓库删除
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.delete, url);
     if (response.data.code === '10000') {
@@ -157,7 +157,7 @@ function* getWarehouseDelList(action) { // 仓库删除
         sortField,
         sortMethod,
       };
-      message.success("删除成功");
+      message.success('删除成功');
       // 删除成功之后关闭
       func();
       yield put({
@@ -166,15 +166,15 @@ function* getWarehouseDelList(action) { // 仓库删除
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -190,8 +190,8 @@ function* getWarehouseUpdateList(action) { // 仓库更新
       searchName,
       sortField,
       sortMethod,
-      func
-    }
+      func,
+    },
   } = action;
   // 更新需要的参数
   const paramsUpdate = {
@@ -205,7 +205,7 @@ function* getWarehouseUpdateList(action) { // 仓库更新
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.put, url, paramsUpdate);
     if (response.data.code === '10000') {
@@ -225,15 +225,15 @@ function* getWarehouseUpdateList(action) { // 仓库更新
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -253,7 +253,7 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
         goodsType: payload.goodsType,
         sortField: payload.sortField,
         sortMethod: payload.sortMethod,
-      }
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -266,7 +266,7 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -275,7 +275,7 @@ function* getGoodsList(action) { // 物品（物资）清单分页列表
       payload: {
         loading: false,
         goodsListLoading: false,
-      }
+      },
     });
   }
 }
@@ -286,14 +286,14 @@ function* getGoodsAddList(action) { // 物品添加
       goodsUnit,
       goodsName,
       goodsType,
-      func
-    }
+      func,
+    },
   } = action;
   // 添加的参数
   const paramsAdd = {
     goodsUnit,
     goodsName,
-    goodsType
+    goodsType,
   };
   const url = `${APIBasePath}${goodsAdd}`;
   try {
@@ -302,18 +302,18 @@ function* getGoodsAddList(action) { // 物品添加
       payload: {
         loading: true,
         goodsAddLoading: true,
-      }
+      },
     });
     const response = yield call(axios.post, url, paramsAdd);
     if (response.data.code === '10000') {
       // 添加完之后在调用物品列表
       const paramsList = {
-        goodsName: "",
+        goodsName: '',
         goodsType,
         pageNum: 1,
         pageSize: 10,
-        sortField: "",
-        sortMethod: "",
+        sortField: '',
+        sortMethod: '',
       };
       // 添加成功清空input的值
       func();
@@ -325,11 +325,11 @@ function* getGoodsAddList(action) { // 物品添加
         type: warehouseAction.warehouseFetchSuccess,
         payload: {
           goodsAddLoading: false,
-        }
+        },
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -338,7 +338,7 @@ function* getGoodsAddList(action) { // 物品添加
       payload: {
         loading: false,
         goodsAddLoading: false,
-      }
+      },
     });
   }
 }
@@ -353,8 +353,8 @@ function* getGoodsDelList(action) { // 物品删除
       goodsType,
       sortField,
       sortMethod,
-      func
-    }
+      func,
+    },
   } = action;
   const url = `${APIBasePath}${goodsDel}?goodsIds=${goodsId}`;
   try {
@@ -362,7 +362,7 @@ function* getGoodsDelList(action) { // 物品删除
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.delete, url);
     if (response.data.code === '10000') {
@@ -375,7 +375,7 @@ function* getGoodsDelList(action) { // 物品删除
         sortField,
         sortMethod,
       };
-      message.success("删除成功");
+      message.success('删除成功');
       // 添加成功清空input的值
       func();
       yield put({
@@ -384,15 +384,15 @@ function* getGoodsDelList(action) { // 物品删除
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -409,22 +409,22 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
       goodsType,
       sortField,
       sortMethod,
-      func
-    }
+      func,
+    },
   } = action;
   const url = `${APIBasePath}${goodsUpdate}`;
   // 修改参数
   const paramsUpdate = {
     goodsId,
     goodsName,
-    goodsUnit
+    goodsUnit,
   };
   try {
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.put, url, paramsUpdate);
     if (response.data.code === '10000') {
@@ -445,15 +445,15 @@ function* getGoodsUpdateList(action) { // 物品（物资）修改
       });
     }else {
       message.error(response.data.message);
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
     yield put({
       type: warehouseAction.warehouseFetchSuccess,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }

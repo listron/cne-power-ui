@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./listView.scss";
-import { Button, Icon, Radio } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './listView.scss';
+import { Button, Icon, Radio } from 'antd';
 import DateFilter from '../../Filter/Date/DateFilter';
 import StationFilter from '../../Filter/Station/StationFilter';
 import ModalFilter from '../../Filter/Modal/ModalFilter';
 import FilteredItems from '../../Filter/FilterItems/FilteredItems';
-import CommonPagination from "../../../../Common/CommonPagination";
-import ListViewTable from "./ListViewTable/ListViewTable";
+import CommonPagination from '../../../../Common/CommonPagination';
+import ListViewTable from './ListViewTable/ListViewTable';
 
 export default class ListView extends React.Component {
   static propTypes = {
@@ -28,7 +28,7 @@ export default class ListView extends React.Component {
     super(props);
     this.state = {
       showFilter: '', // 筛选条件判断
-      status: "0", // 状态
+      status: '0', // 状态
     };
   }
   componentDidMount() {
@@ -43,12 +43,12 @@ export default class ListView extends React.Component {
     const { showFilter } = this.state;
     if(showFilter === filterText){
       this.setState({
-        showFilter: ''
-      })
+        showFilter: '',
+      });
     }else{
       this.setState({
-        showFilter: filterText
-      })
+        showFilter: filterText,
+      });
     }
   };
 
@@ -56,7 +56,7 @@ export default class ListView extends React.Component {
     const { onChangeFilter } = this.props;
     onChangeFilter({
       pageSize,
-      pageNum: currentPage
+      pageNum: currentPage,
     });
   };
 
@@ -64,7 +64,7 @@ export default class ListView extends React.Component {
     const { onChangeFilter } = this.props;
     onChangeFilter({
       status: e.target.value,
-      pageNum: 1
+      pageNum: 1,
     });
   };
 
@@ -74,15 +74,15 @@ export default class ListView extends React.Component {
       pageSize,
       pageNum,
       algoListView: {
-        count
+        count,
       },
       status,
       taskStatusStat: {
         pending,
         processing,
         finished,
-        failed
-      }
+        failed,
+      },
     } = this.props;
     return (
       <div className={styles.listView}>
@@ -90,23 +90,23 @@ export default class ListView extends React.Component {
           <div className={styles.topSearch}>
             <span className={styles.text}>筛选条件</span>
             <Button onClick={()=>this.onFilterShowChange('modal')}>
-              算法模型<Icon type={showFilter ==='modal' ? "up" : "down"} />
+              算法模型<Icon type={showFilter ==='modal' ? 'up' : 'down'} />
             </Button>
             <Button onClick={()=>this.onFilterShowChange('stationName')}>
-              电站名称<Icon type={showFilter ==='stationName' ? "up" : "down"} />
+              电站名称<Icon type={showFilter ==='stationName' ? 'up' : 'down'} />
             </Button>
             <Button onClick={()=>this.onFilterShowChange('time')}>
-              检测日期<Icon type={showFilter ==='time' ? "up" : "down"} />
+              检测日期<Icon type={showFilter ==='time' ? 'up' : 'down'} />
             </Button>
           </div>
           <div className={styles.statusGroup}>
             <div className={styles.text}><span>状</span><span>态</span></div>
             <Radio.Group value={status} buttonStyle="solid" onChange={this.handleStatusChange}>
               <Radio.Button value="0">全部</Radio.Button>
-              <Radio.Button value="1">{`待执行 ${pending || ""}`}</Radio.Button>
-              <Radio.Button value="2">{`执行中 ${processing || ""}`}</Radio.Button>
-              <Radio.Button value="3">{`已完成 ${finished || ""}`}</Radio.Button>
-              <Radio.Button value="4">{`执行失败 ${failed || ""}`}</Radio.Button>
+              <Radio.Button value="1">{`待执行 ${pending || ''}`}</Radio.Button>
+              <Radio.Button value="2">{`执行中 ${processing || ''}`}</Radio.Button>
+              <Radio.Button value="3">{`已完成 ${finished || ''}`}</Radio.Button>
+              <Radio.Button value="4">{`执行失败 ${failed || ''}`}</Radio.Button>
             </Radio.Group>
           </div>
         </div>
