@@ -75,19 +75,18 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
   const url = `${APIBasePath}${monitor.getAllHistory}`; // '/mock/monitor/dataAnalysis/allHistory';
   try{
     const { devicePoints, startTime, endTime, deviceFullCodes } = queryParam;
-    console.log('devicePoints: ', devicePoints);
     const tmpPayload = { queryParam, chartLoading: true };
     yield put({
       type: historyAction.CHANGE_HISTORY_STORE,
       payload: tmpPayload
     })
     const response = yield call(axios.post, url, {
-    //   ...queryParam,
-    //   deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-    //   startTime: moment(startTime).utc().format(),
-    //   endTime: moment(endTime).utc().format(),
+      ...queryParam,
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
       devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
-    //   enterpriseId: Cookie.get('enterpriseId'),
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     if (response.data.code === '10000') {
       yield put({

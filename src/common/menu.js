@@ -58,7 +58,7 @@ const menuData = [
           }, {
             name: '数据导出',
             path: 'dataExport',
-            rightKey: 'dataAnalysis_historyTrend', // 'dataAnalysis_dataExport',
+            rightKey: 'dataAnalysis_dataExport',
           }
         ]
       }, {
