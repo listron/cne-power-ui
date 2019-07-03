@@ -20,8 +20,8 @@ const twoTickets = [
     component: lazy(() => import('../../containers/Operation/TwoTickets/WorkFlow/WorkFlow')),
   }, { // 第二种工作票
     path: '/operation/twoTickets/operateflow',
-    component: lazy(() => import('../../components/Common/Building/Building')),
-    // component: lazy(() => import('../../containers/Operation/TwoTickets/OperateFlow/OperateFlow')),
+    // component: lazy(() => import('../../components/Common/Building/Building')),
+    component: lazy(() => import('../../containers/Operation/TwoTickets/OperateFlow/OperateFlow')),
   },
 ];
 

@@ -70,7 +70,7 @@ class TimeLine extends Component {
                     {/* 什么鬼设计  先去判断是否有子集 没有子集，且当前操作已完成的状态 */}
                     {!item.childProcess && item.handleResult &&
                         <div className={styles.lineBasic}>
-                            <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                            <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                             <div className={styles.operateUser}>{item.handleUser}</div>
                             {item.isUploadImg &&
                                 <div className={styles.imgDownLoad}>
@@ -88,7 +88,7 @@ class TimeLine extends Component {
                                     {e.handleResult &&
                                         <React.Fragment>
                                             <div className={styles.bottomCont}>
-                                                <div className={styles.operateTime}>{e.handleTime && moment(e.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                                                <div className={styles.operateTime}>{e.handleTime && moment(e.handleTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div className={styles.operateUser}>{e.nodeName} : {e.handleUser}</div>
                                                 {e.isUploadImg &&
                                                     <div className={styles.imgDownLoad}>
