@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./assetStructure.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './assetStructure.scss';
 
-import { Button, Input, Form,  Select,  TreeSelect,message } from 'antd';
+import { Button, Input, Form, Select, TreeSelect, message } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TreeNode = TreeSelect.TreeNode;
@@ -23,49 +23,49 @@ class EditNodeFrom extends React.Component {
     form: PropTypes.object,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   submitForm = (e) => {
-    const{stationType,assetsId,childrenNum}=this.props;
-    const assetsParentId=assetsId;//把被选中的当前节点，更换成后台要的字段。
+    const { stationType, assetsId, childrenNum } = this.props;
+    const assetsParentId = assetsId;//把被选中的当前节点，更换成后台要的字段。
     this.props.form.validateFieldsAndScroll((err, values) => {
       //当前父节点所处的第几级+下面还有多少子节点，
       //父节点可以通过id长度来判断，
-      const parentLeavel=values.assetsId.split(',').length;
-      const maxNum=parentLeavel+childrenNum;
+      const parentLeavel = values.assetsId.split(',').length;
+      const maxNum = parentLeavel + childrenNum;
       if (!err) {
-        maxNum<7?this.props.editAssetNode({...values,stationType,assetsParentId}): message.error('超出六级，重新选择')
+        maxNum < 7 ? this.props.editAssetNode({ ...values, stationType, assetsParentId }) : message.error('超出六级，重新选择');
       }
     });
   }
-  recoveryForm=()=>{
-    const {assetsId,assetsName}=this.props;
-    let assetsIdArr=assetsId.split(',');
+  recoveryForm = () => {
+    const { assetsId, assetsName } = this.props;
+    const assetsIdArr = assetsId.split(',');
     assetsIdArr.pop();
-    const assetsParentId=assetsIdArr.toString();
+    const assetsParentId = assetsIdArr.toString();
     this.props.form.setFieldsValue({
-      assetsId:assetsParentId,
-      assetsName
-    })
+      assetsId: assetsParentId,
+      assetsName,
+    });
   }
   closeFrom = () => {
     this.props.closeFrom();
   }
-  parentFunc=(rule,value,callback)=>{
-    if (value==='父级名称') {
-      rule.message='不能子节点名称相同'
+  parentFunc = (rule, value, callback) => {
+    if (value === '父级名称') {
+      rule.message = '不能子节点名称相同';
       callback(rule.message);
       return;
     }
     callback();
   }
-  childrenFunc=(rule,value,callback)=>{
-    if (value==='父级名称') {
-      rule.message='不能父级名称相同'
+  childrenFunc = (rule, value, callback) => {
+    if (value === '父级名称') {
+      rule.message = '不能父级名称相同';
       callback(rule.message);
       return;
-    }else if(value.length>30){
-      rule.message='不能超过30字';
+    } else if (value.length > 30) {
+      rule.message = '不能超过30字';
       callback(rule.message);
     }
     callback();
@@ -81,14 +81,14 @@ class EditNodeFrom extends React.Component {
     return <TreeNode title={item.assetsName} key={item.assetName} value={item.assetsId} />;
   })
   render() {
-    const { getFieldDecorator} = this.props.form;
-    const { assetList ,assetsName,assetsId,childrenNum} = this.props;
+    const { getFieldDecorator } = this.props.form;
+    const { assetList, assetsName, assetsId, childrenNum, assetsType } = this.props;
     //childrenNum为当前节点的子节点数。
     //assetsId是当前节点所有的父节点+当前节点id,去除最后一项得到父节点id
-     //assetsParentId是当前选中节点的父节点Id
-    let assetsIdArr=assetsId.split(',');
+    //assetsParentId是当前选中节点的父节点Id
+    const assetsIdArr = assetsId.split(',');
     assetsIdArr.pop();
-    const assetsParentId=assetsIdArr.toString();
+    const assetsParentId = assetsIdArr.toString();
     return (
       <div className={styles.editNodeFrom}>
         <div className={styles.title}>
@@ -99,17 +99,17 @@ class EditNodeFrom extends React.Component {
             <Form className={styles.editPart}>
               <FormItem className={styles.formItemStyle} colon={false} label="父节点名称">
                 {getFieldDecorator('assetsId', {
-                  initialValue:`${assetsParentId}`,
+                  initialValue: `${assetsParentId}`,
                   rules: [{
                     required: true,
                     message: '请输入缺陷描述',
-                    validator:this.parentFunc
+                    validator: this.parentFunc,
                   }],
                 })(
                   <TreeSelect
                     // showSearch
                     style={{ width: 194 }}
-                   
+
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                     placeholder="请输入父节点"
                     // allowClear
@@ -126,8 +126,8 @@ class EditNodeFrom extends React.Component {
 
               <FormItem label="节点名称" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsName', {
-                 initialValue:assetsName ,
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30,validator:this.childrenFunc }],
+                  initialValue: assetsName,
+                  rules: [{ required: true, message: '请正确填写,不超过30字', type: 'string', max: 30, validator: this.childrenFunc }],
                 })(
                   <Input disabled={!this.props.isBuild} placeholder="30字以内" />
                 )}
@@ -135,24 +135,25 @@ class EditNodeFrom extends React.Component {
 
               <FormItem label="分类" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsType', {
-                  rules: [{ required: true, message: '请正确填写,不超过30字', type: "string", max: 30, }],
+                  initialValue: assetsType,
+                  rules: [{ required: true, message: '请正确填写,不超过30字', type: 'string', max: 30 }],
                 })(
                   <Select style={{ width: 194 }}>
-                    <Option value="1">系统</Option>
-                    <Option value="2">设备</Option>
-                    <Option value="3">部件</Option>
+                    <Option value={1}>系统</Option>
+                    <Option value={2}>设备</Option>
+                    <Option value={3}>部件</Option>
                   </Select>
                 )}
               </FormItem>
               <FormItem label="计量单位" colon={false} className={styles.formItemStyle}>
                 {getFieldDecorator('assetsUnit', {
-                  rules: [{  message: '请填写正确的计量单位6字以内', type: "string", max: 6, }],
+                  rules: [{ message: '请填写正确的计量单位6字以内', type: 'string', max: 6 }],
                 })(
                   <Input placeholder="6字以内" />
                 )}
               </FormItem>
               <div className={styles.editSaveButton}>
-              {/*这里恢复是设置父节点和节点名为初始值，setFieldsValue */}
+                {/*这里恢复是设置父节点和节点名为初始值，setFieldsValue */}
                 <Button className={styles.restore} onClick={this.recoveryForm} >恢复</Button>
                 <Button className={styles.saveButton} onClick={this.submitForm} >保存</Button>
               </div>
@@ -163,7 +164,7 @@ class EditNodeFrom extends React.Component {
 
       </div>
 
-    )
+    );
   }
 }
-export default Form.create()(EditNodeFrom)
+export default Form.create()(EditNodeFrom);

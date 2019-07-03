@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./partInfoBox.scss";
-import ShowAddPartsModeModal from "./ShowAddPartsModeModal";
-import ShowAddFactor from "./ShowAddFactor";
-import { Button, Table, Icon, Input, Form, Select, TreeSelect } from "antd";
-import WarningTip from "../../../../components/Common/WarningTip";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './partInfoBox.scss';
+import ShowAddPartsModeModal from './ShowAddPartsModeModal';
+import ShowAddFactor from './ShowAddFactor';
+import { Button, Table, Icon, Input, Form, Select, TreeSelect } from 'antd';
+import WarningTip from '../../../../components/Common/WarningTip';
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,52 +22,52 @@ class EditPartsInfo extends React.Component {
     detailPartInfo: PropTypes.object,
     partsFactorsList: PropTypes.array,
     factorsPartsMode: PropTypes.array,
-    partAssetsTree: PropTypes.array
+    partAssetsTree: PropTypes.array,
   };
   constructor(props, context) {
     super(props, context);
     this.state = {
       showWarningTip: false,
-      warningTipText: "退出后信息无法保存!"
+      warningTipText: '退出后信息无法保存!',
     };
   }
   onChangeAssets = value => {
     const { getPartsFactorsList, deviceTypeCode } = this.props;
     getPartsFactorsList({
       deviceTypeCode: deviceTypeCode,
-      orderField: "1",
-      orderMethod: "desc",
-      assetsIds: value
+      orderField: '1',
+      orderMethod: 'desc',
+      assetsIds: value,
     });
   };
   backToList = () => {
-    this.props.changePartInfoStore({ showPage: "list" });
-    this.props.onShowSideChange("list");
+    this.props.changePartInfoStore({ showPage: 'list' });
+    this.props.onShowSideChange('list');
   };
   showAddPartsMode = () => {
     this.setState({
-      showAddPartsMode: true
+      showAddPartsMode: true,
     });
   };
   cancleDeviceModeModal = () => {
     this.setState({
-      showAddPartsMode: false
+      showAddPartsMode: false,
     });
   };
   showAddfactors = () => {
     this.setState({
-      showAddfactorsModal: true
+      showAddfactorsModal: true,
     });
   };
   cancleFactorModal = () => {
     this.setState({
-      showAddfactorsModal: false
+      showAddfactorsModal: false,
     });
   };
   changeFactors = value => {
     this.props.getfactorsPartsMode({
       manufactorId: value,
-      assetsId: ""
+      assetsId: '',
     });
   };
   submitForm = () => {
@@ -75,16 +75,16 @@ class EditPartsInfo extends React.Component {
       if (!err) {
         this.props.editPartInfo({
           ...values,
-          partsId: this.props.partsId
+          partsId: this.props.partsId,
         });
-        this.props.changePartInfoStore({ showPage: "list" });
+        this.props.changePartInfoStore({ showPage: 'list' });
       }
     });
   };
   renderTreeNodes = data =>
     data.map(item => {
       const selectType = item.assetsType;
-      let isable = selectType ? selectType === 3 : false;
+      const isable = selectType ? selectType === 3 : false;
       if (item.assetsData) {
         return (
           <TreeNode
@@ -107,11 +107,11 @@ class EditPartsInfo extends React.Component {
       );
     });
   render() {
-    let {
+    const {
       partsFactorsList,
       partAssetsTree,
       factorsPartsMode,
-      detailPartInfo
+      detailPartInfo,
     } = this.props;
     const {
       stationName,
@@ -123,17 +123,19 @@ class EditPartsInfo extends React.Component {
       assetsIds,
       partsModeId,
       manufactorId,
-      partsModeName
+      partsModeName,
     } = detailPartInfo;
+    console.log('detailPartInfo: ', detailPartInfo);
+    console.log('assetsIds: ', assetsIds);
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    let {
+    const {
       showWarningTip,
       warningTipText,
       showAddPartsMode,
-      showAddfactorsModal
+      showAddfactorsModal,
     } = this.state;
-    let manufacturerValue = getFieldValue("manufactorId");
+    const manufacturerValue = getFieldValue('manufactorId');
     //新加的厂家应该反回一个Id，如果有则赋值给厂家，当先添加组件型号时，拿到选择的厂家，然后赋值。
     return (
       <div className={styles.editDevice}>
@@ -158,30 +160,30 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("stationCode")(<span>{stationName}</span>)}
+            {getFieldDecorator('stationCode')(<span>{stationName}</span>)}
           </FormItem>
           <FormItem
             label="上级设备"
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("deviceCodes")(<span>{deviceName}</span>)}
+            {getFieldDecorator('deviceCodes')(<span>{deviceName}</span>)}
           </FormItem>
           <FormItem
             label="部件名称"
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("partsName", {
+            {getFieldDecorator('partsName', {
               initialValue: partsName,
               rules: [
                 {
                   required: true,
-                  message: "请正确填写,不超过30字",
-                  type: "string",
-                  max: 30
-                }
-              ]
+                  message: '请正确填写,不超过30字',
+                  type: 'string',
+                  max: 30,
+                },
+              ],
             })(<Input placeholder="不超过30字" />)}
           </FormItem>
           <FormItem
@@ -189,21 +191,21 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("assetsId", {
+            {getFieldDecorator('assetsId', {
               initialValue: assetsIds,
-              rules: [{ required: true, message: "请正确填写,不超过30字" }]
+              rules: [{ required: true, message: '请正确填写,不超过30字' }],
             })(
               <TreeSelect
                 style={{ width: 194 }}
-                dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 placeholder="请输入父节点"
                 onChange={this.onChangeAssets}
               >
                 <TreeNode
                   title="生产资产"
                   key="0"
-                  value={"0"}
-                  // selectable={false}
+                  value={'0'}
+                // selectable={false}
                 >
                   {this.renderTreeNodes(partAssetsTree)}
                 </TreeNode>
@@ -216,9 +218,9 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("manufactorId", {
+            {getFieldDecorator('manufactorId', {
               initialValue: manufactorId,
-              rules: [{ required: true, message: "请选择部件厂家" }]
+              rules: [{ required: true, message: '请选择部件厂家' }],
             })(
               <Select
                 className={styles.modelSelect}
@@ -226,19 +228,19 @@ class EditPartsInfo extends React.Component {
                 onChange={this.changeFactors}
                 disabled={partsFactorsList.length === 0}
               >
-                <Option key={"all"} value={""}>
+                <Option key={'all'} value={''}>
                   请选择部件厂家
                 </Option>
                 {partsFactorsList.map((e, i) => {
                   if (!e) {
                     return null;
-                  } else {
-                    return (
-                      <Option key={e.manufactorCode} value={e.manufactorId}>
-                        {e.manufactorName}
-                      </Option>
-                    );
                   }
+                  return (
+                    <Option key={e.manufactorCode} value={e.manufactorId}>
+                      {e.manufactorName}
+                    </Option>
+                  );
+
                 })}
               </Select>
             )}
@@ -254,9 +256,9 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("modeId", {
+            {getFieldDecorator('modeId', {
               initialValue: partsModeId,
-              rules: [{ required: true, message: "请选择部件型号" }]
+              rules: [{ required: true, message: '请选择部件型号' }],
             })(
               <Select
                 className={styles.modelSelect}
@@ -264,19 +266,19 @@ class EditPartsInfo extends React.Component {
                 onChange={this.changeDeviceMode}
                 disabled={false}
               >
-                <Option key={"all"} value={""}>
+                <Option key={'all'} value={''}>
                   请选择部件型号
                 </Option>
                 {factorsPartsMode.map((e, i) => {
                   if (!e) {
                     return null;
-                  } else {
-                    return (
-                      <Option key={e.modeId} value={e.modeId}>
-                        {e.deviceModeName}
-                      </Option>
-                    );
                   }
+                  return (
+                    <Option key={e.modeId} value={e.modeId}>
+                      {e.deviceModeName}
+                    </Option>
+                  );
+
                 })}
               </Select>
             )}
@@ -289,11 +291,11 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("batchNumber", {
+            {getFieldDecorator('batchNumber', {
               initialValue: batchNumber,
               rules: [
-                { message: "请正确填写,不超过30字", type: "string", max: 30 }
-              ]
+                { message: '请正确填写,不超过30字', type: 'string', max: 30 },
+              ],
             })(<Input placeholder="不超过30字" />)}
           </FormItem>
           <FormItem
@@ -301,11 +303,11 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("madeName", {
+            {getFieldDecorator('madeName', {
               initialValue: madeName,
               rules: [
-                { message: "请正确填写,不超过30字", type: "string", max: 30 }
-              ]
+                { message: '请正确填写,不超过30字', type: 'string', max: 30 },
+              ],
             })(<Input placeholder="不超过30字" />)}
           </FormItem>
           <FormItem
@@ -313,11 +315,11 @@ class EditPartsInfo extends React.Component {
             colon={false}
             className={styles.formItemStyle}
           >
-            {getFieldDecorator("supplierName", {
+            {getFieldDecorator('supplierName', {
               initialValue: supplierName,
               rules: [
-                { message: "请正确填写,不超过30字", type: "string", max: 30 }
-              ]
+                { message: '请正确填写,不超过30字', type: 'string', max: 30 },
+              ],
             })(<Input placeholder="不超过30字" />)}
           </FormItem>
           <div className={styles.submitStyle}>

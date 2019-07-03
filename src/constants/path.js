@@ -194,12 +194,12 @@ export default {
       recallReserveInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
       getWarehouseStationType: '/v3/warehouse/stationType', // 仓库所属电站类型
       // 台账-出入库记录
-      warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
-      warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
-      inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
-      outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
-      inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
-      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
+      warehouseName: '/v3/warehouse/list', // 用户权限下仓库下拉列表
+      warehouseType: '/v3/manufactor/user', // 规格/型号下拉列表
+      inRecordExport: '/v3/inventory/inRecord/export', // 入库导出
+      outRecordExport: '/v3/inventory/outRecord/export', // 出库导出
+      inRecordList: '/v3/inventory/inRecord/pageList', // 入库记录分页查询
+      outRecordList: '/v3/inventory/outRecord/pageList', // 出库记录分页查询
 
       // 两票 - 审核人设置
       getSettingList: '/v3/workflow/station/distribution/pageList', // 获取设置列表

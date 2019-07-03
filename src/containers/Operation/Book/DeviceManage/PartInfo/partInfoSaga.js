@@ -1,9 +1,9 @@
-import { call, put, takeLatest, select } from "redux-saga/effects";
-import axios from "axios";
-import { message } from "antd";
-import Path from "../../../../../constants/path";
-import { partInfoAction } from "./partInfoAction";
-import moment from "moment";
+import { call, put, takeLatest, select } from 'redux-saga/effects';
+import axios from 'axios';
+import { message } from 'antd';
+import Path from '../../../../../constants/path';
+import { partInfoAction } from './partInfoAction';
+import moment from 'moment';
 const APIBasePath = Path.basePaths.APIBasePath;
 const operation = Path.APISubPaths.operation;
 
@@ -12,25 +12,26 @@ function* getDeviceTypeList(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getDeviceTypeList}/${
     payload.stationCode
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/devicetype/stationCode`;
-  const { deviceCode, type } = payload;
+  const { deviceCode, type, stationCode } = payload;
   try {
     const response = yield call(axios.get, url, { params: { ...payload } });
-    if (response.data.code === "10000") {
-      let collecto = response.data.data.collectorDevices || []; //获取当前集电线路请求的结果
-      let boost = response.data.data.boostDevices || []; //获取当前升压站请求的结果
-      let noType = response.data.data.undefinedDevices || []; //获取当前未分类请求的结果
 
-      let curCollecto = collecto.map((e, i) => {
+    if (response.data.code === '10000') {
+      const collecto = response.data.data.collectorDevices || []; //获取当前集电线路请求的结果
+      const boost = response.data.data.boostDevices || []; //获取当前升压站请求的结果
+      const noType = response.data.data.undefinedDevices || []; //获取当前未分类请求的结果
+
+      const curCollecto = collecto.map((e, i) => {
         //当前请求的数据处理，加一个children，
         return { ...e, children: [] };
       });
-      let curBoost = boost.map((e, i) => {
+      const curBoost = boost.map((e, i) => {
         //当前请求的数据处理，加一个children，
         return { ...e, children: [] };
       });
-      let curNoType = noType.map((e, i) => {
+      const curNoType = noType.map((e, i) => {
         //当前请求的数据处理，加一个children，
         return { ...e, children: [] };
       });
@@ -48,32 +49,32 @@ function* getDeviceTypeList(action) {
         });
         return data;
       };
-      let getPreTreeData = yield select(state => ({
+      const getPreTreeData = yield select(state => ({
         //拿到上一次的值
         collectorDevices: state.operation.partInfo
-          .get("collectorDevices")
+          .get('collectorDevices')
           .toJS(),
-        boostDevices: state.operation.partInfo.get("boostDevices").toJS(),
+        boostDevices: state.operation.partInfo.get('boostDevices').toJS(),
         undefinedDevices: state.operation.partInfo
-          .get("undefinedDevices")
-          .toJS()
+          .get('undefinedDevices')
+          .toJS(),
       }));
       // console.log("getPreTreeData: ", getPreTreeData);
       // console.log('payload: ', payload);
 
       let collectorDevices =
-        type === "1"
+        type === '1'
           ? findFunc(getPreTreeData.collectorDevices, deviceCode, curCollecto)
           : getPreTreeData.collectorDevices;
       let boostDevices =
-        type === "2"
+        type === '2'
           ? findFunc(getPreTreeData.boostDevices, deviceCode, curBoost)
           : getPreTreeData.boostDevices;
       let undefinedDevices =
-        type === "3"
+        type === '3'
           ? findFunc(getPreTreeData.undefinedDevices, deviceCode, curNoType)
           : getPreTreeData.undefinedDevices;
-      if (type === "0") {
+      if (type === '0') {
         collectorDevices = curCollecto;
         boostDevices = curBoost;
         undefinedDevices = curNoType;
@@ -84,11 +85,15 @@ function* getDeviceTypeList(action) {
         type: partInfoAction.changePartInfoStore,
         payload: {
           // ...payload,
+          loading: false,
           collectorDevices: collectorDevices || [],
           boostDevices: boostDevices || [],
-          undefinedDevices: undefinedDevices || []
-        }
+          undefinedDevices: undefinedDevices || [],
+        },
       });
+
+
+
     } else {
       throw response.data;
     }
@@ -96,7 +101,7 @@ function* getDeviceTypeList(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { loading: false }
+      payload: { loading: false },
     });
   }
 }
@@ -108,13 +113,13 @@ function* getDeviceComList(action) {
 
   try {
     const response = yield call(axios.post, url, { ...payload });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           // ...payload,
-          deviceComList: response.data.data || []
-        }
+          deviceComList: response.data.data || [],
+        },
       });
     } else {
       message.error(`获取组件列表失败!${response.data.message}`);
@@ -124,7 +129,7 @@ function* getDeviceComList(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -139,19 +144,19 @@ function* addPartInfo(action) {
 
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
-        payload: {}
+        payload: {},
       });
       const payload = yield select(state => ({
-        deviceCode: state.operation.partInfo.get("deviceCode"),
-        orderField: state.operation.partInfo.get("orderField"),
-        orderMethod: state.operation.partInfo.get("orderMethod")
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
       }));
       yield put({
         type: partInfoAction.getDeviceComList,
-        payload
+        payload,
       });
     } else {
       message.error(`新增组件失败!${response.data.message}`);
@@ -162,7 +167,7 @@ function* addPartInfo(action) {
 
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { loading: false }
+      payload: { loading: false },
     });
   }
 }
@@ -176,19 +181,19 @@ function* editPartInfo(action) {
     .format();
   try {
     const response = yield call(axios.put, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
-        payload: {}
+        payload: {},
       });
       const payload = yield select(state => ({
-        deviceCode: state.operation.partInfo.get("deviceCode"),
-        orderField: state.operation.partInfo.get("orderField"),
-        orderMethod: state.operation.partInfo.get("orderMethod")
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
       }));
       yield put({
         type: partInfoAction.getDeviceComList,
-        payload
+        payload,
       });
     } else {
       message.error(`编辑组件失败!${response.data.message}`);
@@ -198,7 +203,7 @@ function* editPartInfo(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { loading: false }
+      payload: { loading: false },
     });
   }
 }
@@ -209,13 +214,13 @@ function* getDetailPartInfo(action) {
   // const url = `/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.get, url);
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          detailPartInfo: response.data.data || {}
-        }
+          detailPartInfo: response.data.data || {},
+        },
       });
     } else {
       throw response.data;
@@ -224,7 +229,7 @@ function* getDetailPartInfo(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -235,21 +240,21 @@ function* deletePartInfo(action) {
   // const url = `/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.delete, url, { data: payload });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
-          ...payload
-        }
+          ...payload,
+        },
       });
       const payload = yield select(state => ({
-        deviceCode: state.operation.partInfo.get("deviceCode"),
-        orderField: state.operation.partInfo.get("orderField"),
-        orderMethod: state.operation.partInfo.get("orderMethod")
+        deviceCode: state.operation.partInfo.get('deviceCode'),
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
       }));
       yield put({
         type: partInfoAction.getDeviceComList,
-        payload
+        payload,
       });
     } else {
       throw response.data;
@@ -258,7 +263,7 @@ function* deletePartInfo(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -272,13 +277,13 @@ function* getPartsAssetTree(action) {
     .format();
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          assetList: response.data.data || []
-        }
+          assetList: response.data.data || [],
+        },
       });
     } else {
       throw response.data;
@@ -287,7 +292,7 @@ function* getPartsAssetTree(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false, assetList: [] }
+      payload: { ...payload, loading: false, assetList: [] },
     });
   }
 }
@@ -296,17 +301,17 @@ function* getDevicePartInfo(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getDevicePartInfo}/${
     payload.deviceFullcode
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/device/parts/list/deviceFullcode`;
   try {
     const response = yield call(axios.get, url);
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          partInfoTree: response.data.data || []
-        }
+          partInfoTree: response.data.data || [],
+        },
       });
     } else {
       throw response.data;
@@ -315,7 +320,7 @@ function* getDevicePartInfo(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -326,13 +331,13 @@ function* getPartsFactorsList(action) {
   // const url = `/mock/v3/ledger/devicemanufactors/list`;
   try {
     const response = yield call(axios.post, url, { ...payload });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          partsFactorsList: response.data.data.dataList || []
-        }
+          partsFactorsList: response.data.data.dataList || [],
+        },
       });
     } else {
       throw response.data;
@@ -341,7 +346,7 @@ function* getPartsFactorsList(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -350,13 +355,13 @@ function* getfactorsPartsMode(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${
     payload.manufactorId
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
     const response = yield call(axios.get, url, { params: { ...payload } });
-    if (response.data.code === "10000") {
-      let allMode = response.data.data || [];
-      let modaArr = [];
+    if (response.data.code === '10000') {
+      const allMode = response.data.data || [];
+      const modaArr = [];
       allMode.forEach((e, i) => {
         e.modeDatas &&
           e.modeDatas.forEach((item, index) => {
@@ -367,8 +372,8 @@ function* getfactorsPartsMode(action) {
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          factorsPartsMode: modaArr
-        }
+          factorsPartsMode: modaArr,
+        },
       });
     } else {
       throw response.data;
@@ -377,7 +382,7 @@ function* getfactorsPartsMode(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -391,23 +396,23 @@ function* addPartsFactors(action) {
   // const url =`/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          addmanufactorId: response.data.data.manufactorId || ""
-        }
+          addmanufactorId: response.data.data.manufactorId || '',
+        },
       });
       const payload = yield select(state => ({
-        orderField: state.operation.partInfo.get("orderField"),
-        orderMethod: state.operation.partInfo.get("orderMethod"),
-        deviceTypeCode: state.operation.partInfo.get("deviceTypeCode"),
-        assetsIds: state.operation.partInfo.get("assetsIds")
+        orderField: state.operation.partInfo.get('orderField'),
+        orderMethod: state.operation.partInfo.get('orderMethod'),
+        deviceTypeCode: state.operation.partInfo.get('deviceTypeCode'),
+        assetsIds: state.operation.partInfo.get('assetsIds'),
       }));
       yield put({
         type: partInfoAction.getPartsFactorsList,
-        payload
+        payload,
       });
     } else {
       message.error(`新增组件厂家失败!${response.data.message}`);
@@ -417,7 +422,7 @@ function* addPartsFactors(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -431,21 +436,21 @@ function* addPartsModes(action) {
   // const url =`/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          addmodeId: response.data.data.modeId || ""
-        }
+          addmodeId: response.data.data.modeId || '',
+        },
       });
       const payload = yield select(state => ({
-        manufactorId: state.operation.partInfo.get("manufactorId"),
-        assetsId: state.operation.partInfo.get("assetsId")
+        manufactorId: state.operation.partInfo.get('manufactorId'),
+        assetsId: state.operation.partInfo.get('assetsId'),
       }));
       yield put({
         type: partInfoAction.getfactorsPartsMode,
-        payload
+        payload,
       });
     } else {
       message.error(`添加设备型号失败!${response.data.message}`);
@@ -455,7 +460,7 @@ function* addPartsModes(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }
@@ -469,10 +474,10 @@ function* copyPartInfo(action) {
     .format();
   try {
     const response = yield call(axios.post, url, { ...payload, nowTime });
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
-        payload: {}
+        payload: {},
       });
     } else {
       message.error(`新增组件失败!${response.data.message}`);
@@ -483,7 +488,7 @@ function* copyPartInfo(action) {
 
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { loading: false }
+      payload: { loading: false },
     });
   }
 }
@@ -492,17 +497,17 @@ function* getPartAssetsTree(action) {
   const { payload } = action;
   const url = `${APIBasePath}${operation.getPartAssetsTree}/${
     payload.deviceFullcode
-  }`;
+    }`;
   // const url = `/mock/v3/ledger/assetslist`;
   try {
     const response = yield call(axios.get, url);
-    if (response.data.code === "10000") {
+    if (response.data.code === '10000') {
       yield put({
         type: partInfoAction.changePartInfoStore,
         payload: {
           ...payload,
-          partAssetsTree: response.data.data || []
-        }
+          partAssetsTree: response.data.data || [],
+        },
       });
     } else {
       throw response.data;
@@ -511,7 +516,7 @@ function* getPartAssetsTree(action) {
     console.log(e);
     yield put({
       type: partInfoAction.changePartInfoStore,
-      payload: { ...payload, loading: false }
+      payload: { ...payload, loading: false },
     });
   }
 }

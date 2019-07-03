@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, Input, Form, Select, DatePicker } from "antd";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Input, Form, Select, DatePicker } from 'antd';
 
-import styles from "../deviceSide.scss";
-import WindInstallDate from "../AddDevice/WindInstallDate";
-import WindMeasurement from "../AddDevice/WindMeasurement";
-import EditConflunce from "./EditConflunce";
-import moment from "moment";
+import styles from '../deviceSide.scss';
+import WindInstallDate from '../AddDevice/WindInstallDate';
+import WindMeasurement from '../AddDevice/WindMeasurement';
+import EditConflunce from './EditConflunce';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -18,7 +18,7 @@ class EditDeviceForm extends Component {
     pvDeviceModels: PropTypes.array,
     stationDeviceDetail: PropTypes.object,
     connectDevice: PropTypes.array,
-    stationDeviceTypes: PropTypes.array
+    stationDeviceTypes: PropTypes.array,
   };
   constructor(props, context) {
     super(props, context);
@@ -30,8 +30,8 @@ class EditDeviceForm extends Component {
     const { deviceTypeCode } = stationDeviceDetail;
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        if (deviceTypeCode === "202" || deviceTypeCode === "206") {
-          let branchCountArr = [];
+        if (deviceTypeCode === '202' || deviceTypeCode === '206') {
+          const branchCountArr = [];
           for (let i = 0; i < values.branchCount; i++) {
             branchCountArr.push(i + 1);
           }
@@ -41,8 +41,8 @@ class EditDeviceForm extends Component {
             });
           }
 
-          if (typeof values.componentMode === "string") {
-            let filterMode = pvDeviceModels.filter(
+          if (typeof values.componentMode === 'string') {
+            const filterMode = pvDeviceModels.filter(
               (e, i) => e.deviceModeName === values.componentMode
             );
             if (filterMode.length > 0) {
@@ -53,39 +53,39 @@ class EditDeviceForm extends Component {
           values.map = {
             componentMode: +values.componentMode,
             branchCount: +values.branchCount,
-            connectedBranches: values.connectedBranches
+            connectedBranches: values.connectedBranches,
           };
         }
-        if (deviceTypeCode === "304") {
+        if (deviceTypeCode === '304') {
           values.map = { belongMatrix: values.belongMatrix };
-        } else if (deviceTypeCode === "101") {
+        } else if (deviceTypeCode === '101') {
           values.map = {
             altitude: values.altitude,
             assemblyTime: values.assemblyTime
-              ? moment(values.assemblyTime).format("YYYY-MM-DD")
+              ? moment(values.assemblyTime).format('YYYY-MM-DD')
               : null,
             ongridTime: values.ongridTime
-              ? moment(values.ongridTime).format("YYYY-MM-DD")
+              ? moment(values.ongridTime).format('YYYY-MM-DD')
               : null,
             warrantyBegintime: values.warrantyBegintime
-              ? moment(values.warrantyBegintime).format("YYYY-MM-DD")
+              ? moment(values.warrantyBegintime).format('YYYY-MM-DD')
               : null,
             warrantyEndtime: values.warrantyEndtime
-              ? moment(values.warrantyEndtime).format("YYYY-MM-DD")
+              ? moment(values.warrantyEndtime).format('YYYY-MM-DD')
               : null,
             scrapTime: values.scrapTime
-              ? moment(values.scrapTime).format("YYYY-MM-DD")
+              ? moment(values.scrapTime).format('YYYY-MM-DD')
               : null,
-            hubHeight: values.hubHeight
+            hubHeight: values.hubHeight,
           };
-        } else if (deviceTypeCode === "501") {
+        } else if (deviceTypeCode === '501') {
           values.map = {
             altitude: values.altitude,
             towerAssemblyTime: moment(values.towerAssemblyTime).format(
-              "YYYY-MM-DD"
+              'YYYY-MM-DD'
             ),
             towerHeight: values.towerHeight,
-            windMeasurementEquipment: values.windMeasurementEquipment
+            windMeasurementEquipment: values.windMeasurementEquipment,
           };
         }
         values.stationCode = stationDeviceDetail.stationCode;
@@ -99,28 +99,28 @@ class EditDeviceForm extends Component {
         this.props.editDeviceDetail({ ...values });
       }
     });
-    this.props.changeDeviceManageStore({ showPage: "detail" });
+    this.props.changeDeviceManageStore({ showPage: 'detail' });
   };
   preConnectDevice = deviceTypeCode => {
-    let preDeviceName = "";
+    let preDeviceName = '';
     switch (deviceTypeCode) {
-      case "101":
-        preDeviceName = "集电线路";
+      case '101':
+        preDeviceName = '集电线路';
         break;
-      case "202":
-        preDeviceName = "逆变器";
+      case '202':
+        preDeviceName = '逆变器';
         break;
-      case "304":
-        preDeviceName = "集电线路";
+      case '304':
+        preDeviceName = '集电线路';
         break;
-      case "207":
-        preDeviceName = "箱变";
+      case '207':
+        preDeviceName = '箱变';
         break;
-      case "206":
-        preDeviceName = "交流汇流箱";
+      case '206':
+        preDeviceName = '交流汇流箱';
         break;
-      case "201":
-        preDeviceName = "箱变";
+      case '201':
+        preDeviceName = '箱变';
         break;
     }
     return preDeviceName;
@@ -134,7 +134,7 @@ class EditDeviceForm extends Component {
       selectdeviceType,
       stationDeviceDetail,
       pvDeviceModels,
-      connectDevice
+      connectDevice,
     } = this.props;
 
     const {
@@ -144,25 +144,31 @@ class EditDeviceForm extends Component {
       deviceTypeCode,
       deviceTypeName,
       deviceFullCode,
-      connectTime
+      connectTime,
+      map,
     } = stationDeviceDetail;
+    const madeName = map ? map.madeName : '';
+    console.log('madeName: ', madeName);
+    const supplierName = map ? map.supplierName : '';
+    console.log('supplierName: ', supplierName);
+    console.log('stationDeviceDetail: ', stationDeviceDetail);
     const selectDeviceTypeName =
-      typeof selectdeviceType === "number"
+      typeof selectdeviceType === 'number'
         ? stationDeviceTypes.filter(
-            (e, i) => e.deviceTypeCode === selectdeviceType
-          )[0].deviceTypeName
+          (e, i) => e.deviceTypeCode === selectdeviceType
+        )[0].deviceTypeName
         : selectdeviceType;
     //101是风电机组，箱变304，测风塔501，组串式逆变器、汇流箱：206、202
-    const isShow = ["202", "206", "304", "101", "201", "207"].includes(
+    const isShow = ['202', '206', '304', '101', '201', '207'].includes(
       stationDeviceDetail.deviceTypeCode
     ); //特殊设备通用的，看产品文档备注，关联设备，额定，装机，经纬度
-    const isShowComponent = ["501", "202", "206", "304", "101"].includes(
+    const isShowComponent = ['501', '202', '206', '304', '101'].includes(
       stationDeviceDetail.deviceTypeCode
     ); //显示组件
-    const isMeteorology = ["203", "501"].includes(
+    const isMeteorology = ['203', '501'].includes(
       stationDeviceDetail.deviceTypeCode
     ); //测风塔和气象站呈现经纬度
-    const isTemplateMachine = ["201", "304", "206"].includes(
+    const isTemplateMachine = ['201', '304', '206'].includes(
       stationDeviceDetail.deviceTypeCode
     ); //是否呈现样板机的设备
     return (
@@ -175,47 +181,47 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("stationCode", {
-                  initialValue: stationDeviceDetail.stationCode
-                })(<span>{stationName ? stationName : "--"}</span>)}
+                {getFieldDecorator('stationCode', {
+                  initialValue: stationDeviceDetail.stationCode,
+                })(<span>{stationName ? stationName : '--'}</span>)}
               </FormItem>
               <FormItem
                 label="设备类型"
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("deviceTypeCode", {
-                  initialValue: stationDeviceDetail.deviceTypeCode
+                {getFieldDecorator('deviceTypeCode', {
+                  initialValue: stationDeviceDetail.deviceTypeCode,
                 })(<span>{deviceTypeName}</span>)}
               </FormItem>
-              {deviceTypeCode === "509" ? (
+              {deviceTypeCode === '509' ? (
                 <FormItem
                   label="设备名称"
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("deviceName", {
-                    initialValue: stationDeviceDetail.deviceName
+                  {getFieldDecorator('deviceName', {
+                    initialValue: stationDeviceDetail.deviceName,
                   })(<span>{stationDeviceDetail.deviceName}</span>)}
                 </FormItem>
               ) : (
-                <FormItem
-                  label="设备名称"
-                  colon={false}
-                  className={styles.formItemStyle}
-                >
-                  {getFieldDecorator("deviceName", {
-                    initialValue: stationDeviceDetail.deviceName
-                  })(<Input placeholder="不超过30字" />)}
-                </FormItem>
-              )}
+                  <FormItem
+                    label="设备名称"
+                    colon={false}
+                    className={styles.formItemStyle}
+                  >
+                    {getFieldDecorator('deviceName', {
+                      initialValue: stationDeviceDetail.deviceName,
+                    })(<Input placeholder="不超过30字" />)}
+                  </FormItem>
+                )}
               <FormItem
                 label="设备型号"
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("deviceModeCode", {
-                  initialValue: stationDeviceDetail.deviceModeCode
+                {getFieldDecorator('deviceModeCode', {
+                  initialValue: stationDeviceDetail.deviceModeCode,
                 })(<span>{deviceModeName}</span>)}
               </FormItem>
               <FormItem
@@ -223,8 +229,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("manufacturer", {
-                  initialValue: stationDeviceDetail.manufacturer
+                {getFieldDecorator('manufacturer', {
+                  initialValue: stationDeviceDetail.manufacturer,
                 })(<span>{manufacturer}</span>)}
               </FormItem>
               <FormItem
@@ -232,8 +238,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("lotNumber", {
-                  initialValue: stationDeviceDetail.lotNumber
+                {getFieldDecorator('lotNumber', {
+                  initialValue: stationDeviceDetail.lotNumber,
                 })(<Input placeholder="不超过30字" />)}
               </FormItem>
             </div>
@@ -244,14 +250,14 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("parentDeviceFullcode", {
-                    initialValue: stationDeviceDetail.pareneDeviceName
+                  {getFieldDecorator('parentDeviceFullcode', {
+                    initialValue: stationDeviceDetail.pareneDeviceName,
                   })(
                     <Select
                       placeholder="请选择关联设备"
                       disabled={connectDevice.length === 0}
                     >
-                      <Option key={"all"} value={""}>
+                      <Option key={'all'} value={''}>
                         请选择关联设备
                       </Option>
                       {connectDevice.map((e, i) => {
@@ -266,7 +272,7 @@ class EditDeviceForm extends Component {
                       })}
                     </Select>
                   )}
-                  <span> {this.preConnectDevice(deviceTypeCode + "")}</span>
+                  <span> {this.preConnectDevice(deviceTypeCode + '')}</span>
                 </FormItem>
               )}
               {isTemplateMachine && (
@@ -275,16 +281,16 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("templateMachine", {
+                  {getFieldDecorator('templateMachine', {
                     initialValue:
                       stationDeviceDetail.templateMachine ||
-                      +stationDeviceDetail.templateMachine === 0
+                        +stationDeviceDetail.templateMachine === 0
                         ? stationDeviceDetail.templateMachine
-                        : ""
+                        : '',
                   })(
                     <Select>
-                      <Option value={"1"}>是</Option>
-                      <Option value={"0"}>否</Option>
+                      <Option value={'1'}>是</Option>
+                      <Option value={'0'}>否</Option>
                     </Select>
                   )}
                 </FormItem>
@@ -295,14 +301,14 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("ratedPower", {
+                  {getFieldDecorator('ratedPower', {
                     initialValue: stationDeviceDetail.ratedPower,
                     rules: [
                       {
                         pattern: /^\d+([.]\d{1,2})?$/,
-                        message: "保留小数点后两位"
-                      }
-                    ]
+                        message: '保留小数点后两位',
+                      },
+                    ],
                   })(<Input placeholder="保留小数点后两位" />)}
                   <span className={styles.unitStyle}>kW</span>
                 </FormItem>
@@ -313,14 +319,14 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("deviceCapacity", {
+                  {getFieldDecorator('deviceCapacity', {
                     initialValue: stationDeviceDetail.deviceCapacity,
                     rules: [
                       {
                         pattern: /^\d+([.]\d{1,2})?$/,
-                        message: "保留小数点后两位"
-                      }
-                    ]
+                        message: '保留小数点后两位',
+                      },
+                    ],
                   })(<Input placeholder="保留小数点后两位" />)}
                   <span className={styles.unitStyle}>kW</span>
                 </FormItem>
@@ -331,8 +337,8 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("longitude", {
-                    initialValue: stationDeviceDetail.longitude
+                  {getFieldDecorator('longitude', {
+                    initialValue: stationDeviceDetail.longitude,
                   })(<Input placeholder="请输入..." />)}
                   <span className={styles.unitStyle}>°</span>
                 </FormItem>
@@ -343,8 +349,8 @@ class EditDeviceForm extends Component {
                   colon={false}
                   className={styles.formItemStyle}
                 >
-                  {getFieldDecorator("latitude", {
-                    initialValue: stationDeviceDetail.latitude
+                  {getFieldDecorator('latitude', {
+                    initialValue: stationDeviceDetail.latitude,
                   })(<Input placeholder="请输入..." />)}
                   <span className={styles.unitStyle}>°</span>
                 </FormItem>
@@ -356,8 +362,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("madeName", {
-                  initialValue: stationDeviceDetail.madeName
+                {getFieldDecorator('madeName', {
+                  initialValue: madeName,
                 })(<Input placeholder="请输入..." />)}
               </FormItem>
               <FormItem
@@ -365,8 +371,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("supplierName", {
-                  initialValue: stationDeviceDetail.supplierName
+                {getFieldDecorator('supplierName', {
+                  initialValue: supplierName,
                 })(<Input placeholder="请输入..." />)}
               </FormItem>
               <FormItem
@@ -374,8 +380,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("deviceFullCode", {
-                  initialValue: stationDeviceDetail.deviceFullCode
+                {getFieldDecorator('deviceFullCode', {
+                  initialValue: stationDeviceDetail.deviceFullCode,
                 })(<span>{deviceFullCode}</span>)}
               </FormItem>
               <FormItem
@@ -383,12 +389,12 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("enableDisplay", {
-                  initialValue: stationDeviceDetail.enableDisplay
+                {getFieldDecorator('enableDisplay', {
+                  initialValue: stationDeviceDetail.enableDisplay,
                 })(
                   <Select>
-                    <Option value={"1"}>是</Option>
-                    <Option value={"0"}>否</Option>
+                    <Option value={'1'}>是</Option>
+                    <Option value={'0'}>否</Option>
                   </Select>
                 )}
               </FormItem>
@@ -397,8 +403,8 @@ class EditDeviceForm extends Component {
                 colon={false}
                 className={styles.formItemStyle}
               >
-                {getFieldDecorator("connectTime", {
-                  initialValue: stationDeviceDetail.connectTime
+                {getFieldDecorator('connectTime', {
+                  initialValue: stationDeviceDetail.connectTime,
                 })(<span>{connectTime}</span>)}
               </FormItem>
               {!isShowComponent && (
@@ -410,32 +416,32 @@ class EditDeviceForm extends Component {
           </div>
           {isShowComponent && (
             <div className={styles.rightContainer}>
-              {deviceTypeCode === "501" && (
+              {deviceTypeCode === '501' && (
                 <WindMeasurement
                   stationDeviceDetail={stationDeviceDetail}
                   form={form}
                 />
               )}
-              {deviceTypeCode === "304" && (
+              {deviceTypeCode === '304' && (
                 <div className={styles.rightStyles}>
                   <FormItem
                     label="所属方阵"
                     colon={false}
                     className={styles.formItemStyle}
                   >
-                    {getFieldDecorator("belongMatrix", {
-                      initialValue: stationDeviceDetail.map.belongMatrix
+                    {getFieldDecorator('belongMatrix', {
+                      initialValue: stationDeviceDetail.map.belongMatrix,
                     })(<Input placeholder="不超过30字" />)}
                   </FormItem>
                 </div>
               )}
-              {deviceTypeCode === "101" && (
+              {deviceTypeCode === '101' && (
                 <WindInstallDate
                   stationDeviceDetail={stationDeviceDetail}
                   form={form}
                 />
               )}
-              {(deviceTypeCode === "206" || deviceTypeCode === "202") && (
+              {(deviceTypeCode === '206' || deviceTypeCode === '202') && (
                 <EditConflunce
                   stationDeviceDetail={stationDeviceDetail}
                   pvDeviceModels={pvDeviceModels}

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from "./powerReport.scss";
+import styles from './powerReport.scss';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { powerReportAction } from './powerReportAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
@@ -21,35 +21,35 @@ class PowerReport extends Component {
     selectStationType: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
-    this.props.getRegionStationDevice()
-    this.props.getStationDevicemode()
-    this.props.getRegionStation()
-    this.props.getRegion()
+    this.props.getRegionStationDevice();
+    this.props.getStationDevicemode();
+    this.props.getRegionStation();
+    this.props.getRegion();
   }
   componentWillUnmount() {
-    this.props.resetPowerReportStore()
+    this.props.resetPowerReportStore();
   }
-  checkWind = () => this.props.changePowerReportStore({selectStationType:'0'}) // 选中风电站
+  checkWind = () => this.props.changePowerReportStore({ selectStationType: '0' }) // 选中风电站
 
-  checkPv = () => this.props.changePowerReportStore({selectStationType:'1'}) // 选中光伏电站
+  checkPv = () => this.props.changePowerReportStore({ selectStationType: '1' }) // 选中光伏电站
   render() {
     const { stationTypeCount, selectStationType } = this.props;
     const breadCrumbData = {
       breadData: [
         {
           name: '报告查询-电量报表',
-        }
+        },
       ],
     };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
-           
+
             {/*
              {stationTypeCount === 'multiple' &&
               <div className={styles.typeCheck}>
@@ -62,16 +62,16 @@ class PowerReport extends Component {
            {selectStationType === '1' && <PowerReportContainer {...this.props} />}
            
           */}
-          
-           <PowerReportContainer {...this.props} />
-             
-          
+
+            <PowerReportContainer {...this.props} />
+
+
 
           </div>
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -81,8 +81,8 @@ const mapStateToProps = (state) => {
     deviceTypes: state.common.get('deviceTypes').toJS(),
     stationTypeCount: state.common.get('stationTypeCount'),
 
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changePowerReportStore: payload => dispatch({ type: powerReportAction.changePowerReportStore, payload }),
   resetPowerReportStore: payload => dispatch({ type: powerReportAction.resetPowerReportStore, payload }),
@@ -91,7 +91,7 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.downLoadFile, payload: {
       ...payload,
       actionName: powerReportAction.changePowerReportStore,
-    }
+    },
   }),
   getRegion: params => dispatch({ //获取用户权限的电站区域
     type: commonAction.getRegion,
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: powerReportAction.changePowerReportStore,
       resultName: 'regionData',
-    }
+    },
   }),
   getRegionStation: params => dispatch({ // //获取用户权限的电站区域下的电站
     type: commonAction.getRegionStation,
@@ -107,7 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: powerReportAction.changePowerReportStore,
       resultName: 'regionStationData',
-    }
+    },
   }),
   getStationDevicemode: params => dispatch({ //获取用户权限的电站区域下的电站下的对应型号
     type: commonAction.getStationDevicemode,
@@ -115,7 +115,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: powerReportAction.changePowerReportStore,
       resultName: 'stationDevicemodeData',
-    }
+    },
   }),
   getRegionStationDevice: params => dispatch({ //获取用户权限的电站区域下电站下的对应设备
     type: commonAction.getRegionStationDevice,
@@ -123,8 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       actionName: powerReportAction.changePowerReportStore,
       resultName: 'regionStationDeviceData',
-    }
+    },
   }),
 
-})
-export default connect(mapStateToProps, mapDispatchToProps)(PowerReport)
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PowerReport);
