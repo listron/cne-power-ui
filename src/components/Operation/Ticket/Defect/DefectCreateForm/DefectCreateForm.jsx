@@ -190,7 +190,6 @@ class TmpForm extends Component {
 
   render() {
     let { stations, deviceTypes, defectTypes, defectDetail, container, commonList, knowledgebaseList} = this.props;
-    let { liked } = knowledgebaseList;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
@@ -428,13 +427,14 @@ class TmpForm extends Component {
                 <div className={styles.column}>
                   <div className={styles.text}>点赞数</div>  <div> {list.likeCount}</div>
                 </div>
-                {liked === 0 ? 
-                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId)}}>
-                    点赞 <Icon type="like" />
-                  </div> :
-                  <div className={styles.liked} disabled>
-                    已点赞 <Icon type="like" />
-                  </div>
+                {list.liked ?
+                 <div className={styles.liked} disabled>
+                 已点赞 <Icon type="like" />
+               </div>
+                   :
+                  <div className={styles.like} onClick={()=>{this.knowledegeBask(list.knowledgeBaseId);}}>
+                  点赞 <Icon type="like" />
+                </div>
                 }
               </div>
               )

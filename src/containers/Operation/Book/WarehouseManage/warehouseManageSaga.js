@@ -270,6 +270,69 @@ function *addNewGood({ payload }) { // 新增物品
   }
 }
 
+function *addNewManu({ payload }) { // 新增厂家
+  const url = `${APIBasePath}${operation.addDeviceFactors}`;
+  try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addManuStatus: 'loading' },
+    });
+    const response = yield call(axios.post, url, {
+      ...payload,
+      nowTime: moment().utc().format(),
+    });
+    if (response.data.code === '10000') { // 添加成功, 重新请求内外部厂家列表
+      yield call(getAssetsManufacture, { payload });
+      yield put({ // 厂家列表更新后,关闭弹框
+        type: warehouseManageAction.fetchSuccess,
+        payload: {
+          addManufactorId: response.data.data.manufactorId,
+          addManuStatus: 'success',
+        },
+      });
+    } else { throw response.data; }
+  } catch(error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addManuStatus: 'normal' },
+    });
+    message.error(`新增厂家失败,${error.message}`);
+  }
+}
+
+function *addNewType({ payload }) { // 新增型号
+  const url = `${APIBasePath}${operation.addDeviceModes}`;
+  try {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addTypeStatus: 'loading' },
+    });
+    const response = yield call(axios.post, url, {
+      ...payload,
+      nowTime: moment().utc().format(),
+    });
+    if (response.data.code === '10000') { // 重新请求厂家下型号
+      yield call(getModes, { payload: {
+        selectedManufacturer: payload.manufactorId,
+        formModes: true,
+      }});
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: {
+          adddModeName: payload.deviceModeName,
+          addTypeStatus: 'success',
+        },
+      });
+    } else { throw response.data; }
+  } catch(error) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { addTypeStatus: 'normal' },
+    });
+    message.error(`新增型号失败,${error.message}`);
+  }
+}
+
 function *getWarehouseStationType({ payload }) { // 获取生产资产树 => 先获取仓库所属电站类型
   const url = `${APIBasePath}${operation.getWarehouseStationType}/${payload.warehouseId}`;
   try {
@@ -515,6 +578,8 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.importStockFile, importStockFile);
   yield takeLatest(warehouseManageAction.getGoodsList, getGoodsList);
   yield takeLatest(warehouseManageAction.addNewGood, addNewGood);
+  yield takeLatest(warehouseManageAction.addNewManu, addNewManu);
+  yield takeLatest(warehouseManageAction.addNewType, addNewType);
   yield takeLatest(warehouseManageAction.getWarehouseStationType, getWarehouseStationType);
   yield takeLatest(warehouseManageAction.getAssetsManufacture, getAssetsManufacture);
   yield takeLatest(warehouseManageAction.insertWarehouse, insertWarehouse);

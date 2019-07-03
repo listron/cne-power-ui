@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./partInfoBox.scss";
-import DetailPartsInfo from "./DetailPartsInfo";
-import DeviceTree from "./DeviceTree";
-import CopyParts from "./CopyParts";
-import { Button, Table, Upload, message } from "antd";
-import StationSelect from "../../../Common/StationSelect";
-import WarningTip from "../../../Common/WarningTip";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './partInfoBox.scss';
+import DetailPartsInfo from './DetailPartsInfo';
+import DeviceTree from './DeviceTree';
+import CopyParts from './CopyParts';
+import { Button, Table, Upload, message } from 'antd';
+import StationSelect from '../../../Common/StationSelect';
+import WarningTip from '../../../Common/WarningTip';
 
-import path from "../../../../constants/path";
-import moment from "moment";
-import Cookie from "js-cookie";
+import path from '../../../../constants/path';
+import moment from 'moment';
+import Cookie from 'js-cookie';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -28,7 +28,7 @@ class PartInfoBox extends React.Component {
     deviceComList: PropTypes.array,
     detailPartsRecord: PropTypes.object,
     stationName: PropTypes.string,
-    deviceCode: PropTypes.string
+    deviceCode: PropTypes.string,
   };
   constructor(props, context) {
     super(props, context);
@@ -37,47 +37,63 @@ class PartInfoBox extends React.Component {
       detailPartsInfo: {},
       showCopyParts: false,
       showWarningTip: false,
-      warningTipText: "",
-      tableRecord: {}
+      warningTipText: '',
+      tableRecord: {},
+      test: false,
     };
+  }
+  componentDidUpdate(nextProps) {
+
+    const { stationCode } = nextProps;
+    const preStationCode = this.props.stationCode;
+    if (preStationCode !== stationCode) {
+      this.setState({
+        test: true,
+      });
+    }
   }
   onCancelWarningTip = () => {
     //删除信息提示栏隐藏
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
   };
   onConfirmWarningTip = () => {
     const { tableRecord } = this.state;
     this.setState({
-      showWarningTip: false
+      showWarningTip: false,
     });
     this.props.deletePartInfo({
-      partsId: tableRecord.partsId
+      partsId: tableRecord.partsId,
     });
   };
   selectStation = stations => {
     const { getDeviceTypeList, changePartInfoStore } = this.props;
-    let stationCode = stations.length > 0 && stations[0].stationCode;
-    let stationName = stations.length > 0 && stations[0].stationName;
+    const stationCode = stations.length > 0 && stations[0].stationCode;
+    const stationName = stations.length > 0 && stations[0].stationName;
+    if (stationCode !== this.props.stationCode) {
+      this.setState({
+        test: false,
+      });
+      getDeviceTypeList({
+        stationCode,
+        deviceCode: '',
+        type: '0',
+      });
+      changePartInfoStore({
+        stationCode,
+        stationName,
+      });
+    }
 
-    getDeviceTypeList({
-      stationCode,
-      deviceCode: "",
-      type: "0"
-    });
-    changePartInfoStore({
-      stationCode,
-      stationName
-    });
   };
   beforeUpload = file => {
     const isExcel =
       file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-      file.type === "application/vnd.ms-excel";
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+      file.type === 'application/vnd.ms-excel';
     if (!isExcel) {
-      message.error("You can only upload Excel file!");
+      message.error('You can only upload Excel file!');
     }
     return isExcel;
   };
@@ -86,28 +102,28 @@ class PartInfoBox extends React.Component {
     const url = `${APIBasePath}${operation.exportParts}`;
     downLoadFile({
       url,
-      fileName: `导出电站组件.xlsx`,
+      fileName: '导出电站组件.xlsx',
       params: {
         stationCode,
         nowTime: moment()
           .utc()
-          .format()
-      }
+          .format(),
+      },
     });
   };
   addPartsInfo = () => {
     const { getPartAssetsTree, getPartsFactorsList, deviceCode } = this.props;
-    let deviceTypeCode = deviceCode.split("M")[1];
-    this.props.changePartInfoStore({ showPage: "add" });
+    const deviceTypeCode = deviceCode.split('M')[1];
+    this.props.changePartInfoStore({ showPage: 'add' });
     getPartAssetsTree({
       //这个接口用于生产资产树
-      deviceFullcode: deviceCode
+      deviceFullcode: deviceCode,
     });
     getPartsFactorsList({
       // deviceTypeCode: 202,
       deviceTypeCode: deviceTypeCode,
-      orderField: "1",
-      orderMethod: "desc"
+      orderField: '1',
+      orderMethod: 'desc',
     });
   };
   editParts = record => {
@@ -115,62 +131,62 @@ class PartInfoBox extends React.Component {
       getPartAssetsTree,
       getDetailPartInfo,
       getPartsFactorsList,
-      deviceCode
+      deviceCode,
     } = this.props;
-    let deviceTypeCode = deviceCode.split("M")[1];
+    const deviceTypeCode = deviceCode.split('M')[1];
     getPartAssetsTree({
       //这个接口用于生产资产树
-      deviceFullcode: deviceCode
+      deviceFullcode: deviceCode,
     });
     getPartsFactorsList({
       deviceTypeCode: deviceTypeCode,
-      orderField: "1",
-      orderMethod: "desc"
+      orderField: '1',
+      orderMethod: 'desc',
     });
     getDetailPartInfo({
-      partsId: record.partsId
+      partsId: record.partsId,
     });
 
     this.props.changePartInfoStore({
-      showPage: "edit"
+      showPage: 'edit',
     });
   };
   deleteParts = record => {
     this.setState({
       tableRecord: record,
       showWarningTip: true,
-      warningTipText: "确认删除吗?"
+      warningTipText: '确认删除吗?',
     });
   };
   showDetailParts = record => {
     this.setState({
-      showDetailParts: true
+      showDetailParts: true,
       // detailPartsInfo: record
     });
     this.props.getDetailPartInfo({
-      partsId: record.partsId
+      partsId: record.partsId,
     });
   };
   cancleDetailModal = () => {
     this.setState({
-      showDetailParts: false
+      showDetailParts: false,
     });
   };
 
   copyComponent = () => {
     const { getDevicePartInfo, deviceCode } = this.props;
     this.setState({
-      showCopyParts: true
+      showCopyParts: true,
     });
     getDevicePartInfo({
-      deviceFullcode: deviceCode
+      deviceFullcode: deviceCode,
       // orderField: "1",
       // orderMethod: "desc"
     });
   };
   closeComParts = () => {
     this.setState({
-      showCopyParts: false
+      showCopyParts: false,
     });
   };
 
@@ -180,21 +196,22 @@ class PartInfoBox extends React.Component {
       deviceComList,
       stationCode,
       stationName,
-      deviceCode
+      deviceCode,
     } = this.props;
-    let {
+    const {
       showDetailParts,
       showCopyParts,
       showWarningTip,
-      warningTipText
+      warningTipText,
+      test,
     } = this.state;
 
-    let disableClick = !(stationCode && deviceCode);
+    const disableClick = !(stationCode && deviceCode);
 
     const columns = [
       {
-        title: "部件名称",
-        dataIndex: "partsName",
+        title: '部件名称',
+        dataIndex: 'partsName',
         render: (text, record, index) => (
           <span
             className={styles.comName}
@@ -203,37 +220,37 @@ class PartInfoBox extends React.Component {
           >
             {text}
           </span>
-        )
+        ),
       },
       {
-        title: "部件型号",
-        dataIndex: "partsModeName",
-        render: text => <span title={text}>{text}</span>
+        title: '部件型号',
+        dataIndex: 'partsModeName',
+        render: text => <span title={text}>{text}</span>,
       },
       {
-        title: "资产结构",
-        dataIndex: "assetsName",
+        title: '资产结构',
+        dataIndex: 'assetsName',
         render: text => (
-          <span title={text.replace(/,/g, ">")}>{text.replace(/,/g, ">")}</span>
-        )
+          <span title={text.replace(/,/g, '>')}>{text.replace(/,/g, '>')}</span>
+        ),
       },
       {
-        title: "厂家",
-        dataIndex: "manufactorName",
-        render: text => <span title={text}>{text}</span>
+        title: '厂家',
+        dataIndex: 'manufactorName',
+        render: text => <span title={text}>{text}</span>,
       },
       {
-        title: "制造商",
-        dataIndex: "madeName",
-        render: text => <span title={text}>{text}</span>
+        title: '制造商',
+        dataIndex: 'madeName',
+        render: text => <span title={text}>{text}</span>,
       },
       {
-        title: "供货商",
-        dataIndex: "supplierName",
-        render: text => <span title={text}>{text}</span>
+        title: '供货商',
+        dataIndex: 'supplierName',
+        render: text => <span title={text}>{text}</span>,
       },
       {
-        title: "操作",
+        title: '操作',
         render: (text, record, index) => {
           return (
             <div>
@@ -249,40 +266,40 @@ class PartInfoBox extends React.Component {
               />
             </div>
           );
-        }
-      }
+        },
+      },
     ];
     const downloadTemplet = `${path.basePaths.originUri}${
       path.APISubPaths.operation.downloadPartInfoTemplet
-    }`;
+      }`;
     const url = `${APIBasePath}${operation.importParts}`;
-    const authData = localStorage.getItem("authData") || "";
+    const authData = localStorage.getItem('authData') || '';
     const uploadProps = {
       showUploadList: false,
-      name: "file",
+      name: 'file',
       action: url,
       headers: {
-        Authorization: "bearer " + authData
+        Authorization: 'bearer ' + authData,
       },
       beforeUpload: this.beforeUpload,
       data: {
         stationCode: this.props.stationCode,
         nowTime: moment()
           .utc()
-          .format()
+          .format(),
       },
       onChange: info => {
-        if (info.file.status === "done") {
-          if (info.file.response.code === "10000") {
+        if (info.file.status === 'done') {
+          if (info.file.response.code === '10000') {
             message.success(`${info.file.name} 导入完成`);
             //请求数据，把导入的组件刷新出来。
           } else {
             message.error(info.file.response.message);
           }
-        } else if (info.file.status === "error") {
+        } else if (info.file.status === 'error') {
           message.error(`${info.file.name} 导入失败，请重新导入.`);
         }
-      }
+      },
     };
     return (
       <div className={styles.partInfoBox}>
@@ -328,8 +345,8 @@ class PartInfoBox extends React.Component {
         </div>
         <div className={styles.conatainer}>
           <div className={styles.leftTree}>
-            {stationName ? stationName : "请选择电站选择"}
-            {stationName ? <DeviceTree {...this.props} /> : ""}
+            {stationName ? stationName : '请选择电站选择'}
+            {stationName && test ? <DeviceTree {...this.props} /> : ''}
           </div>
           <div className={styles.right}>
             <div className={styles.addParts}>
@@ -357,12 +374,12 @@ class PartInfoBox extends React.Component {
               locale={{
                 emptyText: (
                   <img width="223" height="164" src="/img/nodata.png" />
-                )
+                ),
               }}
             />
             {showWarningTip && (
               <WarningTip
-                style={{ marginTop: "350px", width: "210px", height: "80px" }}
+                style={{ marginTop: '350px', width: '210px', height: '80px' }}
                 onCancel={this.onCancelWarningTip}
                 hiddenCancel={false}
                 onOK={this.onConfirmWarningTip}
