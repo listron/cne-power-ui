@@ -190,7 +190,7 @@ class TableList extends Component {
                 key: 'stateDesc',
                 sorter: true,
             }, {
-                title: '审核人',
+                title: '操作人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
                 render: (text) => {

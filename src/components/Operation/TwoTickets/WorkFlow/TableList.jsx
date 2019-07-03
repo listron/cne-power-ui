@@ -62,6 +62,7 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
+        console.log('record', record)
         if (keys.length > 0) {
             const { userId } = this.props;
             const dealUserIds = [], dealRoleIds = [];
@@ -203,7 +204,7 @@ class TableList extends Component {
                 key: 'stateDesc',
                 sorter: true,
             }, {
-                title: '审核人',
+                title: '操作人',
                 dataIndex: 'dealUserNames',
                 key: 'dealUserNames',
                 render: (text) => {
