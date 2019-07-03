@@ -30,7 +30,7 @@ class FilteredItems extends Component {
     const { onChangeFilter } = this.props;
     onChangeFilter({
       createTimeEnd: '',
-    })
+    });
   };
 
   onCancelAlgorithm = (e) => { //取消算法模型
@@ -49,8 +49,8 @@ class FilteredItems extends Component {
     }
     onChangeFilter({
       algorithmModalId,
-      algorithmModalName
-    })
+      algorithmModalName,
+    });
   };
 
   onCancelProvince = (cancelStations) => {//删除某省电站
@@ -70,7 +70,7 @@ class FilteredItems extends Component {
       createTimeEnd: '',
       stationCodes: '',
       algorithmModalId: [],
-      algorithmModalName: []
+      algorithmModalName: [],
     });
   };
 

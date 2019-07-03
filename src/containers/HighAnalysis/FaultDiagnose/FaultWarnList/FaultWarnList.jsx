@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import FaultWarnMainList from '../../../../components/HighAnalysis/FaultDiagnose/FaultWarnList/FaultWarnList';
-import styles from "./faultWarnList.scss";
+import styles from './faultWarnList.scss';
 import Footer from '../../../../components/Common/Footer';
-import {faultWarnListAction} from "./faultWarnListAction";
-import {connect} from "react-redux";
+import {faultWarnListAction} from './faultWarnListAction';
+import {connect} from 'react-redux';
 
 class FaultWarnList extends React.Component {
   static propTypes = {
@@ -28,7 +28,7 @@ class FaultWarnList extends React.Component {
   componentDidMount() {
     const {
       match: {params: { fanWarnId }},
-      getAlgoModel
+      getAlgoModel,
     } = this.props;
     const params = {
       stationCode: fanWarnId,
@@ -49,7 +49,7 @@ class FaultWarnList extends React.Component {
   render() {
     return (
       <div className={styles.faultWarnList}>
-        <CommonBreadcrumb breadData={[{name:'故障预警'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{name: '故障预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnListContainer}>
           <div className={styles.faultWarnListContent}>
             <FaultWarnMainList onChangeFilter={this.onChangeFilter} {...this.props} />
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.faultWarnList.toJS(),
     stations: state.common.get('stations'),
-  }
+  };
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultWarnListAction.resetStore }),
@@ -73,4 +73,4 @@ const mapDispatchToProps = (dispatch) => ({
   getList: payload => dispatch({ type: faultWarnListAction.getList, payload }),
   getFanList: payload => dispatch({ type: faultWarnListAction.getFanList, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(FaultWarnList)
+export default connect(mapStateToProps, mapDispatchToProps)(FaultWarnList);

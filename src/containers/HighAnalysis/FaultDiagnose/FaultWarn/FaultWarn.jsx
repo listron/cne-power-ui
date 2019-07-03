@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./faultWarn.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './faultWarn.scss';
 import PropTypes from 'prop-types';
 import { faultWarnAction } from './faultWarnAction.js';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -9,8 +9,8 @@ import Footer from '../../../../components/Common/Footer';
 
 class FaultWarn extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
-    getFaultWarnList:PropTypes.func
+    resetStore: PropTypes.func,
+    getFaultWarnList: PropTypes.func,
   };
 
   constructor(props, context) {
@@ -30,7 +30,7 @@ class FaultWarn extends Component {
   render() {
     return (
       <div className={styles.faultWarnBox}>
-        <CommonBreadcrumb breadData={[{name:'故障预警'}]} style={{marginLeft:'38px'}} />
+        <CommonBreadcrumb breadData={[{name: '故障预警'}]} style={{marginLeft: '38px'}} />
         <div className={styles.faultWarnContainer}>
           <div className={styles.faultWarnContent}>
             <FaultWarnMain {...this.props} />
@@ -38,17 +38,17 @@ class FaultWarn extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
   return ({
     ...state.highAanlysisReducer.faultWarn.toJS(),
     stations: state.common.get('stations').toJS(),
-  })
+  });
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultWarnAction.resetStore }),
   getFaultWarnList: () => dispatch({ type: faultWarnAction.getFaultWarnList }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(FaultWarn)
+export default connect(mapStateToProps, mapDispatchToProps)(FaultWarn);

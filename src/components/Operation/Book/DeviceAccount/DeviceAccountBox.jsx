@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import CommonPagination from "../../../Common/CommonPagination/index";
-import StationSelect from "../../../Common/StationSelect/index";
-import DeviceAccountTable from "./DeviceAccountTable/DeviceAccountTable";
+import CommonPagination from '../../../Common/CommonPagination/index';
+import StationSelect from '../../../Common/StationSelect/index';
+import DeviceAccountTable from './DeviceAccountTable/DeviceAccountTable';
 
-import styles from "./deviceAccountBox.scss";
+import styles from './deviceAccountBox.scss';
 
 const { Option } = Select;
 
@@ -34,26 +34,26 @@ export default class DeviceAccountBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      regionOption: "", // 电站区域
-      stationCodesOption: "", // 电站
-      manufactorsOption: "", // 厂家
-      modeOption: "", // 设备型号
+      regionOption: '', // 电站区域
+      stationCodesOption: '', // 电站
+      manufactorsOption: '', // 厂家
+      modeOption: '', // 设备型号
     };
   }
 
   componentDidMount() {
     const { getRegion, getDeviceAccountList } = this.props;
     const params = {
-      regionName: "",
+      regionName: '',
       stationCodes: [],
-      manufactorId: "",
-      modeId: "",
-      deviceTypeCode: "",
+      manufactorId: '',
+      modeId: '',
+      deviceTypeCode: '',
       assetIds: [],
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     // 接口
     getRegion();
@@ -69,19 +69,19 @@ export default class DeviceAccountBox extends React.Component {
       manufactorId,
       modeId,
       orderField,
-      orderMethod
+      orderMethod,
     } = this.props;
     const params = {
       regionName,
       stationCodes,
       manufactorId,
       modeId,
-      deviceTypeCode: "",
+      deviceTypeCode: '',
       assetIds: [],
       orderField,
       orderMethod,
       pageNum: currentPage,
-      pageSize: pageSize
+      pageSize: pageSize,
     };
     // 接口
     getDeviceAccountList(params);
@@ -93,20 +93,20 @@ export default class DeviceAccountBox extends React.Component {
     const params = {
       regionName: value,
       stationCodes: [],
-      manufactorId: "",
-      modeId: "",
-      deviceTypeCode: "",
+      manufactorId: '',
+      modeId: '',
+      deviceTypeCode: '',
       assetIds: [],
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     this.setState({
       regionOption: value,
-      stationCodesOption: "", // 电站
-      manufactorsOption: "", // 厂家
-      modeOption: "", // 设备型号
+      stationCodesOption: '', // 电站
+      manufactorsOption: '', // 厂家
+      modeOption: '', // 设备型号
     }, () => {
       // 接口
       getDeviceAccountList(params);
@@ -118,29 +118,29 @@ export default class DeviceAccountBox extends React.Component {
     const {
       getStationsManufactorsList,
       getDeviceAccountList,
-      regionName
+      regionName,
     } = this.props;
     // 厂家列表
     const paramsManufactors = {
-      stationCodes: [`${value[0].stationCode}`]
+      stationCodes: [`${value[0].stationCode}`],
     };
     // table列表
     const paramsList = {
       regionName,
       stationCodes: [`${value[0].stationCode}`],
-      manufactorId: "",
-      modeId: "",
-      deviceTypeCode: "",
+      manufactorId: '',
+      modeId: '',
+      deviceTypeCode: '',
       assetIds: [],
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     this.setState({
       stationCodesOption: `${value[0].stationCode}`,
-      manufactorsOption: "", // 厂家
-      modeOption: "", // 设备型号
+      manufactorsOption: '', // 厂家
+      modeOption: '', // 设备型号
     }, () => {
       // 接口
       getDeviceAccountList(paramsList);
@@ -154,28 +154,28 @@ export default class DeviceAccountBox extends React.Component {
       getDeviceModeList,
       getDeviceAccountList,
       regionName,
-      stationCodes
+      stationCodes,
     } = this.props;
     // 设备型号列表
     const paramsMode = {
       manufactorId: value,
-      modeOption: "", // 设备型号
+      modeOption: '', // 设备型号
     };
     // table列表
     const paramsList = {
       regionName,
       stationCodes,
       manufactorId: value,
-      modeId: "",
-      deviceTypeCode: "",
+      modeId: '',
+      deviceTypeCode: '',
       assetIds: [],
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     this.setState({
-      manufactorsOption: value
+      manufactorsOption: value,
     }, () => {
       // 接口
       getDeviceAccountList(paramsList);
@@ -189,7 +189,7 @@ export default class DeviceAccountBox extends React.Component {
       getDeviceAccountList,
       regionName,
       stationCodes,
-      manufactorId
+      manufactorId,
     } = this.props;
     // table列表
     const params = {
@@ -197,12 +197,12 @@ export default class DeviceAccountBox extends React.Component {
       stationCodes,
       manufactorId,
       modeId: value,
-      deviceTypeCode: "",
+      deviceTypeCode: '',
       assetIds: [],
-      orderField: "",
-      orderMethod: "",
+      orderField: '',
+      orderMethod: '',
       pageNum: 1,
-      pageSize: 10
+      pageSize: 10,
     };
     this.setState({
       modeOption: value, // 设备型号
@@ -221,7 +221,7 @@ export default class DeviceAccountBox extends React.Component {
       // 在区域下的电站
       arr = stations.filter(cur =>
         cur.regionName === regionOption
-      )
+      );
     }
     return arr;
   };
@@ -233,10 +233,10 @@ export default class DeviceAccountBox extends React.Component {
       stationsManufactorsList,
       deviceModeList,
       deviceAccountList: {
-        pageCount
+        pageCount,
       },
       pageSize,
-      pageNum
+      pageNum,
     } = this.props;
     const { regionOption, stationCodesOption, manufactorsOption, modeOption } = this.state;
     // 区域
@@ -259,13 +259,13 @@ export default class DeviceAccountBox extends React.Component {
           <span>筛选条件</span>
           <Select
             placeholder="请选择区域"
-            style={{ width: 140, paddingTop: "3px", margin: "0 10px" }}
+            style={{ width: 140, paddingTop: '3px', margin: '0 10px' }}
             onChange={this.handleRegionChange}
           >
             {regionItem}
           </Select>
           <StationSelect
-            disabled={regionOption === ""}
+            disabled={regionOption === ''}
             data={this.regionStationFilter()}
             style={{ width: '200px' }}
             holderText="请输入电站名称"
@@ -273,19 +273,19 @@ export default class DeviceAccountBox extends React.Component {
             onOK={this.selectStation}
           />
           <Select
-            value={manufactorsOption === "" ? undefined : manufactorsOption}
-            disabled={stationCodesOption === ""}
+            value={manufactorsOption === '' ? undefined : manufactorsOption}
+            disabled={stationCodesOption === ''}
             placeholder="请选择厂家"
-            style={{ width: 180, paddingTop: "3px", marginLeft:"10px" }}
+            style={{ width: 180, paddingTop: '3px', marginLeft: '10px' }}
             onChange={this.handleManufactorsChange}
           >
             {manufactorsItem}
           </Select>
           <Select
-            value={modeOption === "" ? undefined : modeOption}
-            disabled={manufactorsOption === ""}
+            value={modeOption === '' ? undefined : modeOption}
+            disabled={manufactorsOption === ''}
             placeholder="请选择设备型号"
-            style={{ width: 180, paddingTop: "3px", marginLeft:"10px" }}
+            style={{ width: 180, paddingTop: '3px', marginLeft: '10px' }}
             onChange={this.handleDeviceModeChange}
           >
             {deviceModeItem}
@@ -296,6 +296,6 @@ export default class DeviceAccountBox extends React.Component {
         </div>
         <DeviceAccountTable {...this.props} />
       </div>
-    )
+    );
   }
 }

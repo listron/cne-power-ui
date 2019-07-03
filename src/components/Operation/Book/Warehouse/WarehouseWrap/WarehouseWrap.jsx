@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Input, Form, Col, Row, Button } from "antd";
-import CommonPagination from "../../../../Common/CommonPagination";
-import StationSelect from "../../../../Common/StationSelect/index";
-import WarehouseWrapTable from "./WarehouseWrapTable/WarehouseWrapTable";
-import WarningTip from "../../../../Common/WarningTip";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Input, Form, Col, Row, Button } from 'antd';
+import CommonPagination from '../../../../Common/CommonPagination';
+import StationSelect from '../../../../Common/StationSelect/index';
+import WarehouseWrapTable from './WarehouseWrapTable/WarehouseWrapTable';
+import WarningTip from '../../../../Common/WarningTip';
 
 const Search = Input.Search;
 const FormItem = Form.Item;
-import styles from "./warehouseWrap.scss";
+import styles from './warehouseWrap.scss';
 
 class WarehouseWrap extends Component {
   static propTypes = {
@@ -25,27 +25,27 @@ class WarehouseWrap extends Component {
     getWarehouseDelList: PropTypes.func,
     warehouseAddLoading: PropTypes.bool,
     sortField: PropTypes.string,
-    sortMethod: PropTypes.string
+    sortMethod: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedRowKeys: "",
-      selectData: "",
+      selectedRowKeys: '',
+      selectData: '',
       showWarningTip: false,
-      warningTipText: ""
+      warningTipText: '',
     };
   }
 
   componentDidMount() {
     const { getWarehouseList } = this.props;
     const params = {
-      warehouseName: "",
+      warehouseName: '',
       pageNum: 1,
       pageSize: 10,
-      sortField: "",
-      sortMethod: ""
+      sortField: '',
+      sortMethod: '',
     };
     getWarehouseList(params);
   }
@@ -55,14 +55,14 @@ class WarehouseWrap extends Component {
       getWarehouseList,
       warehouseName,
       sortField,
-      sortMethod
+      sortMethod,
     } = this.props;
     const params = {
       warehouseName,
       pageNum: currentPage,
       pageSize,
       sortField,
-      sortMethod
+      sortMethod,
     };
     getWarehouseList(params);
   };
@@ -70,8 +70,8 @@ class WarehouseWrap extends Component {
   // 批量选中的数据
   onSelectedRowKeys = data => {
     this.setState({
-      selectedRowKeys: data.join(","),
-      selectData: data.join(",")
+      selectedRowKeys: data.join(','),
+      selectData: data.join(','),
     });
   };
 
@@ -82,13 +82,13 @@ class WarehouseWrap extends Component {
     if (selectData) {
       this.setState({
         showWarningTip: false,
-        selectedRowKeys: selectData
+        selectedRowKeys: selectData,
       });
     }
     if (!selectData) {
       this.setState({
         showWarningTip: false,
-        selectedRowKeys: ""
+        selectedRowKeys: '',
       });
     }
   };
@@ -98,12 +98,12 @@ class WarehouseWrap extends Component {
     const {
       showWarningTip,
       warningTipText,
-      tableRecord: { warehouseId }
+      tableRecord: { warehouseId },
     } = data;
     this.setState({
       showWarningTip,
       warningTipText,
-      selectedRowKeys: `${warehouseId}`
+      selectedRowKeys: `${warehouseId}`,
     });
   };
 
@@ -116,7 +116,7 @@ class WarehouseWrap extends Component {
       pageSize,
       sortField,
       sortMethod,
-      getWarehouseDelList
+      getWarehouseDelList,
     } = this.props;
     const params = {
       warehouseIds: `${selectedRowKeys}` || selectData,
@@ -129,14 +129,14 @@ class WarehouseWrap extends Component {
         // 点击的table后面的删除按钮
         if (selectedRowKeys) {
           return this.setState({
-            selectedRowKeys: ""
+            selectedRowKeys: '',
           });
         }
         // 点击的批量删除
         return this.setState({
-          selectData: ""
+          selectData: '',
         });
-      }
+      },
     };
     this.setState({
       showWarningTip: false,
@@ -157,13 +157,13 @@ class WarehouseWrap extends Component {
       });
       const params = {
         warehouseName,
-        stationCodes: stationCodes.join(","),
+        stationCodes: stationCodes.join(','),
         func: () => {
           form.setFieldsValue({
-            warehouseName: "",
-            stationName: []
+            warehouseName: '',
+            stationName: [],
           });
-        }
+        },
       };
       getWarehouseAddList(params);
     });
@@ -175,7 +175,7 @@ class WarehouseWrap extends Component {
     const params = {
       warehouseName: value,
       pageSize,
-      pageNum
+      pageNum,
     };
     getWarehouseList(params);
   };
@@ -186,7 +186,7 @@ class WarehouseWrap extends Component {
     if (selectData) {
       this.setState({
         showWarningTip: true,
-        warningTipText: "确认删除?"
+        warningTipText: '确认删除?',
       });
     }
   };
@@ -198,7 +198,7 @@ class WarehouseWrap extends Component {
       warehouseData: { pageCount },
       pageSize,
       pageNum,
-      warehouseAddLoading
+      warehouseAddLoading,
     } = this.props;
     const { showWarningTip, warningTipText } = this.state;
     const { getFieldDecorator } = form;
@@ -209,17 +209,17 @@ class WarehouseWrap extends Component {
             <Row>
               <Col>
                 <FormItem label="添加仓库名称">
-                  {getFieldDecorator("warehouseName", {
-                    rules: [{ required: true, message: "请输入仓库名称" }]
+                  {getFieldDecorator('warehouseName', {
+                    rules: [{ required: true, message: '请输入仓库名称' }],
                   })(<Input placeholder="30字以内" maxLength={30} />)}
                 </FormItem>
                 <FormItem label="电站名称">
-                  {getFieldDecorator("stationName", {
-                    rules: [{ required: true, message: "请输入电站名称" }]
+                  {getFieldDecorator('stationName', {
+                    rules: [{ required: true, message: '请输入电站名称' }],
                   })(
                     <StationSelect
                       data={stations.toJS()}
-                      style={{ width: "200px" }}
+                      style={{ width: '200px' }}
                       onOK={this.selectStation}
                       multiple={true}
                       stationShowNumber={true}
@@ -228,7 +228,7 @@ class WarehouseWrap extends Component {
                 </FormItem>
                 <Button
                   loading={warehouseAddLoading}
-                  style={{ minWidth: "68px", marginTop: "4px" }}
+                  style={{ minWidth: '68px', marginTop: '4px' }}
                   htmlType="submit"
                 >
                   添加
@@ -243,13 +243,13 @@ class WarehouseWrap extends Component {
               onSearch={value => {
                 return this.searchFunc(value);
               }}
-              style={{ width: 200, height: 32, marginTop: "4px" }}
+              style={{ width: 200, height: 32, marginTop: '4px' }}
             />
           </div>
         </div>
         <div className={styles.warehouseHandle}>
           <Button
-            style={{ width: "90px" }}
+            style={{ width: '90px' }}
             onClick={() => {
               return this.selectDelFunc();
             }}
@@ -270,7 +270,7 @@ class WarehouseWrap extends Component {
         />
         {showWarningTip && (
           <WarningTip
-            style={{ marginTop: "350px", width: "240px", height: "88px" }}
+            style={{ marginTop: '350px', width: '240px', height: '88px' }}
             onCancel={this.onCancelWarningTip}
             hiddenCancel={false}
             onOK={this.onConfirmWarningTip}

@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./faultSingleFan.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './faultSingleFan.scss';
 import Footer from '../../../../components/Common/Footer';
 import FaultSingleFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan';
-import {faultSingleFanAction} from "./faultSingleFanAction";
-import {connect} from "react-redux";
-import {faultWarnListAction} from "../FaultWarnList/faultWarnListAction";
+import {faultSingleFanAction} from './faultSingleFanAction';
+import {connect} from 'react-redux';
+import {faultWarnListAction} from '../FaultWarnList/faultWarnListAction';
 
 class FaultSingleFan extends React.Component {
   static propTypes = {
@@ -28,33 +28,33 @@ class FaultSingleFan extends React.Component {
     } = this.props;
     const stationCode = this.getPortfolioCode();
     // 调用任务详情
-    const taskId = localStorage.getItem("taskId");
+    const taskId = localStorage.getItem('taskId');
     // 单风机设备全编码
-    const deviceFullcode = localStorage.getItem("deviceFullCode");
+    const deviceFullcode = localStorage.getItem('deviceFullCode');
     const params = {
       taskId,
       stationCode,
-      deviceFullcode
+      deviceFullcode,
     };
-    getFaultInfo(params)
+    getFaultInfo(params);
   }
 
   componentWillUnmount() {
     const { resetStore } = this.props;
     resetStore();
     // 移除
-    localStorage.removeItem("deviceFullName");
+    localStorage.removeItem('deviceFullName');
   }
 
   onChangeFilter = (params) => {
     const { changeSingleFanStore } = this.props;
     changeSingleFanStore({
-      ...params
+      ...params,
     });
   };
 
   getPortfolioCode = () => {
-    let arr = window.location.href.split('/');
+    const arr = window.location.href.split('/');
     return arr[arr.length - 1];
   };
 
@@ -62,7 +62,7 @@ class FaultSingleFan extends React.Component {
     const {
       history,
       getList,
-      changeWarnListStore
+      changeWarnListStore,
     } = this.props;
     const stationCode = this.getPortfolioCode();
     // 返回列表需要的参数
@@ -70,12 +70,12 @@ class FaultSingleFan extends React.Component {
       stationCode: `${stationCode}`,
       pageSize: 10,
       pageNum: 1,
-      sortField: "prediction_date",
-      sortMethod: "desc",
+      sortField: 'prediction_date',
+      sortMethod: 'desc',
     };
     history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
     changeWarnListStore({
-      viewType: 3 //展示列表
+      viewType: 3, //展示列表
     });
     getList(listParams);
   };
@@ -84,7 +84,7 @@ class FaultSingleFan extends React.Component {
     const {
       history,
       getFanList,
-      changeWarnListStore
+      changeWarnListStore,
     } = this.props;
     const stationCode = this.getPortfolioCode();
     // 返回列表需要的参数
@@ -93,36 +93,36 @@ class FaultSingleFan extends React.Component {
     };
     history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
     changeWarnListStore({
-      viewType: 2 //展示列表
+      viewType: 2, //展示列表
     });
     getFanList(fansParams);
   };
 
   callBackHistory = () => {
     const {
-      history
+      history,
     } = this.props;
-    history.push(`/analysis/faultDiagnose/historyWarn`);
+    history.push('/analysis/faultDiagnose/historyWarn');
   };
 
   render() {
-    const faultHistory = localStorage.getItem("faultHistory");
+    const faultHistory = localStorage.getItem('faultHistory');
     return (
       <div className={styles.faultSingleFan}>
         <div className={styles.singleFanContent}>
-          {(!faultHistory || faultHistory === "") && (
+          {(!faultHistory || faultHistory === '') && (
             <div className={styles.title}>
               <div>故障预警</div>
               <div onClick={this.callBackList}>返回列表视图</div>
             </div>
           )}
-          {faultHistory === "1" && (
+          {faultHistory === '1' && (
             <div className={styles.title}>
               <div>历史预警</div>
               <div onClick={this.callBackHistory}>返回历史预警</div>
             </div>
           )}
-          {faultHistory === "2" && (
+          {faultHistory === '2' && (
             <div className={styles.title}>
               <div>故障预警</div>
               <div onClick={this.callBackFans}>返回风机视图</div>
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.highAanlysisReducer.faultSingleFan.toJS(),
     stations: state.common.get('stations'),
-  }
+  };
 };
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: faultSingleFanAction.resetStore }),
@@ -155,4 +155,4 @@ const mapDispatchToProps = (dispatch) => ({
   getList: payload => dispatch({ type: faultWarnListAction.getList, payload }),
   getFanList: payload => dispatch({ type: faultWarnListAction.getFanList, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan)
+export default connect(mapStateToProps, mapDispatchToProps)(FaultSingleFan);

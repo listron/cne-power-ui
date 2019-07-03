@@ -1,7 +1,7 @@
 import {put, takeLatest, call} from 'redux-saga/effects';
 import { deviceAccountAction } from './deviceAccountAction';
-import Path from "../../../../constants/path";
-import axios from "axios";
+import Path from '../../../../constants/path';
+import axios from 'axios';
 
 /***
  * 解析公共头APIBasePath
@@ -17,9 +17,9 @@ const {
       deviceAccountList,
       stationsManufactors,
       deviceModeList,
-      attachmentsList
-    }
-  }
+      attachmentsList,
+    },
+  },
 } = Path;
 
 function* getDeviceAccountList(action) { // 设备台账列表
@@ -31,8 +31,8 @@ function* getDeviceAccountList(action) { // 设备台账列表
       payload: {
         loading: true,
         deviceAccountListLoading: true,
-        ...payload
-      }
+        ...payload,
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -45,7 +45,7 @@ function* getDeviceAccountList(action) { // 设备台账列表
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -54,7 +54,7 @@ function* getDeviceAccountList(action) { // 设备台账列表
       payload: {
         loading: false,
         deviceAccountListLoading: false,
-      }
+      },
     });
   }
 }
@@ -67,7 +67,7 @@ function* getStationsManufactorsList(action) { // 获取电站下的厂家列表
       type: deviceAccountAction.deviceAccountFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -79,7 +79,7 @@ function* getStationsManufactorsList(action) { // 获取电站下的厂家列表
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -87,7 +87,7 @@ function* getStationsManufactorsList(action) { // 获取电站下的厂家列表
       type: deviceAccountAction.deviceAccountFetchSuccess,
       payload: {
         loading: false,
-      }
+      },
     });
   }
 }
@@ -100,7 +100,7 @@ function* getDeviceModeList(action) { // 获取厂家下的设备型号列表
       type: deviceAccountAction.deviceAccountFetchSuccess,
       payload: {
         loading: true,
-      }
+      },
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -112,7 +112,7 @@ function* getDeviceModeList(action) { // 获取厂家下的设备型号列表
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -120,7 +120,7 @@ function* getDeviceModeList(action) { // 获取厂家下的设备型号列表
       type: deviceAccountAction.deviceAccountFetchSuccess,
       payload: {
         loading: false,
-      }
+      },
     });
   }
 }
@@ -138,8 +138,8 @@ function* getDeviceAttachments(action) { // 台账备件列表
         orderFieldDetails: payload.orderField,
         orderMethodDetails: payload.orderMethod,
         pageNumDetails: payload.pageNum,
-        pageSizeDetails: payload.pageSize
-      }
+        pageSizeDetails: payload.pageSize,
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -151,7 +151,7 @@ function* getDeviceAttachments(action) { // 台账备件列表
         },
       });
     }else {
-      throw response.data
+      throw response.data;
     }
   } catch (e) {
     console.log(e);
@@ -159,7 +159,7 @@ function* getDeviceAttachments(action) { // 台账备件列表
       type: deviceAccountAction.deviceAccountFetchSuccess,
       payload: {
         loading: false,
-      }
+      },
     });
   }
 }

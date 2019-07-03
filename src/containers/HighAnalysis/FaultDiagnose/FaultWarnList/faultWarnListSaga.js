@@ -1,7 +1,7 @@
 import {put, takeEvery, call} from 'redux-saga/effects';
 import { faultWarnListAction } from './faultWarnListAction.js';
-import Path from "../../../../constants/path";
-import axios from "axios";
+import Path from '../../../../constants/path';
+import axios from 'axios';
 
 /***
  * 解析公共头APIBasePath
@@ -16,38 +16,38 @@ const {
     highAnalysis: {
       algoModel,
       listView,
-      fanList
-    }
+      fanList,
+    },
   }} = Path;
 // 根据algorithmSort进行排序
 function compare(property){
-  return function(a,b){
+  return function(a, b){
     var value1 = a[property];
     var value2 = b[property];
     return value1 - value2;
-  }
+  };
 }
 // 格式化数据
 function dataFormat(data) {
-  let largeSizeArr = []; // 大部件
-  let natureArr = []; // 性能预警
-  let healthArr = []; // 设备健康
+  const largeSizeArr = []; // 大部件
+  const natureArr = []; // 性能预警
+  const healthArr = []; // 设备健康
   data && data.map(cur => {
-    if (cur.mainModule === "大部件") {
+    if (cur.mainModule === '大部件') {
       largeSizeArr.push(cur);
     }
-    if (cur.mainModule === "性能预警") {
+    if (cur.mainModule === '性能预警') {
       natureArr.push(cur);
     }
-    if (cur.mainModule === "设备健康") {
+    if (cur.mainModule === '设备健康') {
       healthArr.push(cur);
     }
   });
   return {
-    largeSizeList: largeSizeArr.sort(compare("algorithmSort")),
-    natureList: natureArr.sort(compare("algorithmSort")),
-    healthList: healthArr.sort(compare("algorithmSort"))
-  }
+    largeSizeList: largeSizeArr.sort(compare('algorithmSort')),
+    natureList: natureArr.sort(compare('algorithmSort')),
+    healthList: healthArr.sort(compare('algorithmSort')),
+  };
 }
 function* getAlgoModel(action) { // 获取单风场故障预警汇总-按模型
   const { payload } = action;
@@ -56,8 +56,8 @@ function* getAlgoModel(action) { // 获取单风场故障预警汇总-按模型
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -75,8 +75,8 @@ function* getAlgoModel(action) { // 获取单风场故障预警汇总-按模型
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -88,8 +88,8 @@ function* getList(action) { // 获取单风场故障预警汇总-按列表
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
@@ -111,8 +111,8 @@ function* getList(action) { // 获取单风场故障预警汇总-按列表
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }
@@ -124,8 +124,8 @@ function* getFanList(action) { // 获取单风场故障预警汇总-按风机
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: true
-      }
+        loading: true,
+      },
     });
     const response = yield call(axios.post, url);
     if (response.data.code === '10000') {
@@ -143,8 +143,8 @@ function* getFanList(action) { // 获取单风场故障预警汇总-按风机
     yield put({
       type: faultWarnListAction.changeWarnListStore,
       payload: {
-        loading: false
-      }
+        loading: false,
+      },
     });
   }
 }

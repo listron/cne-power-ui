@@ -5,22 +5,22 @@ const initState = Immutable.fromJS({
   loading: false,
   showFlag: false, // 控制展开关闭按钮
   stationDeviceList: [{
-    deviceName: "",
-    connectDeviceFullCode: "",
-    warnId: 1
+    deviceName: '',
+    connectDeviceFullCode: '',
+    warnId: 1,
   }], // 获取单电站所有风机
-  stationCode: "82", // 电站编码
-  deviceName: "", // 设备名称
+  stationCode: '82', // 电站编码
+  deviceName: '', // 设备名称
   faultInfo: {// 获取故障预警任务详情
     endTime: null,
-    stationName: "",
-    algorithmName: "",
+    stationName: '',
+    algorithmName: '',
     deviceDatas: [],
     algModeDatas: [],
-    deviceName: ""
+    deviceName: '',
   },
-  faultDateList: "", // 预警日期-有故障的日期
-  faultDate: "", // 故障详情页选择日期
+  faultDateList: '', // 预警日期-有故障的日期
+  faultDate: '', // 故障详情页选择日期
   preDate: [], // 前驱温度时间选择
   afterDate: [], // 后驱温度时间选择
   diffDate: [], // 后驱温度时间选择
@@ -46,7 +46,7 @@ const initState = Immutable.fromJS({
   heatLoading: true, // 相似性热图loading
   allLoading: true, // 所有风机loading
   warnId: 0, // 有无故障
-  faultInfoMessage: "", //log信息
+  faultInfoMessage: '', //log信息
   faultReportInfo: {}, // 历史任务列表
   pageSize: 10,
   pageNum: 1,
@@ -54,9 +54,9 @@ const initState = Immutable.fromJS({
   similarityList: [], // 获取风机相似性结果
   allFanResultList: {// 获取多机协同模块检测结果-严重程度及识别（所有风机）
     cfResidual: [],
-    cfStd: []
+    cfStd: [],
   },
-  deviceFullCode: "", // 设备全编码
+  deviceFullCode: '', // 设备全编码
   tenMinutesBeforeList: [{// 获取风机10分钟数据-前驱
     dataList: [],
   }],
@@ -76,7 +76,7 @@ const fetchSingleFanReducer = (state = initState, action) => {
     case faultSingleFanAction.fetchSingleFanSuccess:
       return state.merge(Immutable.fromJS(action.payload));
     case faultSingleFanAction.resetStore:
-      return initState
+      return initState;
   }
   return state;
 };
