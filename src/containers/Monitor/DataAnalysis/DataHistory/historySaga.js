@@ -103,12 +103,12 @@ function *getChartHistory(action) { // 历史趋势chart数据获取
       payload: tmpPayload
     })
     const response = yield call(axios.post, url, {
-    //   ...queryParam,
-    //   deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
-    //   startTime: moment(startTime).utc().format(),
-    //   endTime: moment(endTime).utc().format(),
+      ...queryParam,
+      deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
       devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
-    //   enterpriseId: Cookie.get('enterpriseId'),
+      enterpriseId: Cookie.get('enterpriseId'),
     });
     if (response.data.code === '10000') {
       yield put({

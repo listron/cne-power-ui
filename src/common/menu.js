@@ -55,10 +55,6 @@ const menuData = [
             name: '实时数据',
             path: 'realtime',
             rightKey: 'dataAnalysis_realTime',
-          }, {
-            name: '数据导出',
-            path: 'dataExport',
-            rightKey: 'dataAnalysis_historyTrend', // 'dataAnalysis_dataExport',
           }
         ]
       }, {

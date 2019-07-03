@@ -63,12 +63,12 @@ class PointTree extends Component {
       changeHistoryStore({
         queryParam: newQueryParam
       })
-    }else {
+    } else {
       getChartHistory({ queryParam: newQueryParam });
-      // getListHistory({
-      //   queryParam: newQueryParam,
-      //   listParam,
-      // })
+      getListHistory({
+        queryParam: newQueryParam,
+        listParam,
+      })
     }
   }
 
