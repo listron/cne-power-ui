@@ -24,15 +24,15 @@ class MonthPlanPower extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { powerTime } = this.props;
+        const { powerTime, loading } = this.props;
         const preTime = prevProps.dayPowerTime;
-        if (powerTime !== preTime) { // 数据重新请求后重绘。
+        if (powerTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
     drawCharts = (params) => {
-        let { monthPlanPowerData = [], powerUnit,loading } = params;
+        let { monthPlanPowerData = [], powerUnit, loading } = params;
         const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 月发电量
         const filterMonthPower = monthPlanPowerData.filter(e => e.dayPower);
         const monthPlanPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 月计划发电量
@@ -69,11 +69,11 @@ class MonthPlanPower extends Component {
                 itemWidth: 10,
                 itemHeight: 5,
             },
-            grid:{
-                top:95,
-                left:'15%',
-                right:'15%',
-                bottom:40,
+            grid: {
+                top: 95,
+                left: '15%',
+                right: '15%',
+                bottom: 40,
             },
             tooltip: {
                 trigger: 'axis',
@@ -101,7 +101,7 @@ class MonthPlanPower extends Component {
                     type: 'cross',
                 },
             },
-           
+
             calculable: false,
             xAxis: [
                 {
@@ -123,7 +123,7 @@ class MonthPlanPower extends Component {
                     axisTick: { show: false },
                 }
             ],
-            
+
             yAxis: [
                 {
                     name: `发电量(${powerUnit})`,
@@ -143,7 +143,7 @@ class MonthPlanPower extends Component {
                         },
                     },
                     axisTick: {
-                        show:true,
+                        show: true,
                         color: lineColor,
                     },
                     splitLine: {
@@ -182,10 +182,10 @@ class MonthPlanPower extends Component {
                     yAxisIndex: 0,
                     smooth: true,
                     color: '#ceebe0',
-                    areaStyle:{
-                        color:'#ceebe0'
+                    areaStyle: {
+                        color: '#ceebe0'
                     },
-                    symbol:'none',
+                    symbol: 'none',
                 },
                 {
                     name: '计划发电量',
@@ -194,16 +194,16 @@ class MonthPlanPower extends Component {
                     data: getDefaultData(monthPlanPower),
                     yAxisIndex: 0,
                     color: '#fbe6e3',
-                    areaStyle:{
-                        color:'#fbe6e3',
+                    areaStyle: {
+                        color: '#fbe6e3',
                     },
-                    symbol:'none',
+                    symbol: 'none',
                 },
                 {
                     name: '累计辐射',
                     type: 'line',
                     data: getDefaultData(instantaneous),
-                    yAxisIndex: 1,  
+                    yAxisIndex: 1,
                     color: '#f9b600',
                 },
             ]

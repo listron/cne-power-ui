@@ -1,7 +1,6 @@
 import Immutable from 'immutable';
 
 const deviceAction = {
-  GET_DEVICE_FETCH_SUCCESS: Symbol('GET_DEVICE_FETCH_SUCCESS'),
   CHANGE_DEVICE_MONITOR_STORE: Symbol('CHANGE_DEVICE_MONITOR_STORE'),
   RESET_DEVICE_MONITOR_STORE: Symbol('RESET_DEVICE_MONITOR_STORE'),
 
@@ -43,8 +42,6 @@ const initState = Immutable.fromJS({
 
 const deviceMonitor = (state = initState, action) => {
   switch (action.type) {
-    case deviceAction.GET_DEVICE_FETCH_SUCCESS: // api请求成功
-      return state.merge(Immutable.fromJS(action.payload));
     case deviceAction.CHANGE_DEVICE_MONITOR_STORE: // 手动替换数据
       return state.merge(Immutable.fromJS(action.payload));
     case deviceAction.RESET_DEVICE_MONITOR_STORE: // 重置

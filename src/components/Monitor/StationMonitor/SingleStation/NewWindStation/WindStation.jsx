@@ -37,7 +37,6 @@ class WindStation extends Component {
     fanDisplay: PropTypes.string,
     getWindMonitorPower: PropTypes.func,
     windPowerData: PropTypes.array,
-    singleStationScatter: PropTypes.object,
     fanList: PropTypes.object,
     getPowerDataTenMin: PropTypes.func,
     windCapabilityDataTime: PropTypes.number,
@@ -52,6 +51,9 @@ class WindStation extends Component {
     getWorkList: PropTypes.func,
     editData: PropTypes.func,
     stopSingleRealData: PropTypes.func,
+    singleStationScatterLoading: PropTypes.bool,
+    windPowerLoading: PropTypes.bool,
+    capabilityDataLoading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -65,7 +67,7 @@ class WindStation extends Component {
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     const stationType = '0';
-    this.props.getNewDeviceTypeFlow({ stationCode,stationType }); //获取设备类型流程图
+    this.props.getNewDeviceTypeFlow({ stationCode, stationType }); //获取设备类型流程图
     this.getTenSeconds(stationCode, stationType);
     this.getPowerDataTenMin({ stationCode, stationType }); // 发电量
     const main = document.getElementById('main');
@@ -90,7 +92,7 @@ class WindStation extends Component {
       this.getTenSeconds(nextStationCode, nextStationType);
       this.props.changeSingleStationStore({ deviceTypeCode: '101' })
       this.getPowerDataTenMin({ stationCode: nextStationCode, stationType: nextStationType });
-      this.props.getNewDeviceTypeFlow({ stationCode: nextStationCode, stationType: nextStationType  });//获取设备类型流程图
+      this.props.getNewDeviceTypeFlow({ stationCode: nextStationCode, stationType: nextStationType });//获取设备类型流程图
       this.props.stopSingleRealData();
       this.props.getSingleRealChartsData({ // 1小时数据 出力图 等效利用小时
         stationCode: nextStationCode,
@@ -182,7 +184,7 @@ class WindStation extends Component {
 
 
   createFlowButton = (typeCode, typeName, buttonClass, imgClass, clickable = true, alarm = false) => ( // 设备流程生成函数
-    <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={typeCode}>
+    <RadioButton value={typeCode} className={styles[buttonClass]} style={clickable ? null : { pointerEvents: 'none' }} key={Math.random()}>
       <div className={styles.deviceTypeIcon} >
         <i className={getDeviceTypeIcon(+typeCode)} ></i>
         {alarm && <i className="iconfont icon-alarm alarmIcon" ></i>}
@@ -197,13 +199,15 @@ class WindStation extends Component {
 
 
   render() {
-    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, windPowerData, singleStationScatter, windCapabilityData, editData, } = this.props;
+    const { deviceTypeFlow, deviceTypeCode, singleStationData, fanDisplay, windPowerData, singleStationScatter = {}, windCapabilityData, editData, } = this.props;
     const { windCapabilityDataTime, singleStationScattertime, windPowerTime } = this.props;
+    const { singleStationScatterLoading = false, windPowerLoading = false, capabilityDataLoading = false } = this.props;
     const { stationCode } = this.props.match.params;
     const { singleDeviceType } = this.state;
     const deviceType = this.getDeviceTypeFlow([deviceTypeFlow]);
     const alarmList = this.props[getAlarmStatus(deviceTypeCode)];
     let alarmStatus = alarmList ? !(alarmList instanceof Array) && alarmList.deviceList && alarmList.deviceList.some(e => e.alarmNum > 0) || (alarmList.length > 0 && alarmList.some(e => e.warningStatus)) : false;
+
     const stautus = [
       { text: '运行', deviceStatusCode: 400, },
       { text: '待机', deviceStatusCode: 700 },
@@ -268,14 +272,27 @@ class WindStation extends Component {
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={windCapabilityData} yAxisUnit={'MW'} capabilityDataTime={windCapabilityDataTime} />
+                <OutputChart
+                  capabilityData={windCapabilityData}
+                  yAxisUnit={'MW'}
+                  loading={capabilityDataLoading}
+                  capabilityDataTime={windCapabilityDataTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={windPowerData} onChange={this.getPowerDataTenMin} powerTime={windPowerTime} />
+                <PowerDiagram
+                  powerData={windPowerData}
+                  onChange={this.getPowerDataTenMin}
+                  powerTime={windPowerTime}
+                  loading={windPowerLoading}
+                />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={singleStationScatter} type={'singleStation'}
-                  scatterTime={singleStationScattertime} />
+                <SpeedScatter
+                  scatterData={singleStationScatter}
+                  type={'singleStation'}
+                  scatterTime={singleStationScattertime}
+                  loading={singleStationScatterLoading}
+                />
               </div>
             </div>
           }

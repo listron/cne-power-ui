@@ -120,7 +120,7 @@ class MonthPower extends Component {
     }
 
     drawCharts = (params) => {
-        let { powerData = [], powerUnit } = params;
+        let { powerData = [], powerUnit, loading } = params;
         const { intervalTime } = this.state;
         const xData = powerData.map(e => e.time)
         const actualPower = powerData.map(e => chartPowerPoint(divideFormarts(e.actualPower, powerUnit), '--', 2, true));  // 发电量
@@ -133,7 +133,7 @@ class MonthPower extends Component {
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const monthPowerChart = echarts.init(document.getElementById('powerChart'));
-        // loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
+        loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
         monthPowerChart.resize();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';

@@ -35,6 +35,8 @@ class WindDevice extends Component {
     getWindDeviceRealData: PropTypes.func,
     scatterpointTime: PropTypes.number,
     sequencediagramTime: PropTypes.number,
+    scatterpointLoading: PropTypes.bool,
+    sequenceLoading: PropTypes.bool,
   }
 
   constructor(props) {
@@ -141,8 +143,8 @@ class WindDevice extends Component {
   }
 
   render() {
-    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint,stations } = this.props;
-    const { scatterpointTime, sequencediagramTime } = this.props;
+    const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint, stations } = this.props;
+    const { scatterpointTime, sequencediagramTime, scatterpointLoading = false, sequenceLoading = false } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { deviceName, deviceModeCode } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
@@ -170,7 +172,7 @@ class WindDevice extends Component {
               <div className={styles.structure}>
                 <div className={styles.structureTitle}>风机结构图</div>
                 <div className={styles.structureImg}>
-                  {deviceModeCode  && <img src={`${apiUrlReal}/api/v3/images/windturbine/${deviceModeCode}.png`} />}
+                  {deviceModeCode && <img src={`${apiUrlReal}/api/v3/images/windturbine/${deviceModeCode}.png`} />}
                 </div>
               </div>
               <div className={styles.windPointData} >
@@ -225,10 +227,19 @@ class WindDevice extends Component {
                 <Link to={`/monitor/report/powerReport`} > 报表查询  </Link>
               </div>
               <div className={styles.chartsBox}>
-                <OutputChart capabilityData={sequenceChartList} yAxisUnit={'kW'} capabilityDataTime={sequencediagramTime} />
+                <OutputChart
+                  capabilityData={sequenceChartList}
+                  yAxisUnit={'kW'}
+                  loading={sequenceLoading}
+                  capabilityDataTime={sequencediagramTime} />
               </div>
               <div className={styles.chartsBox}>
-                <PointScatter scatterData={scatterpoint} type={'windDevice'} scatterpointTime={scatterpointTime} />
+                <PointScatter
+                  scatterData={scatterpoint}
+                  type={'windDevice'}
+                  scatterpointTime={scatterpointTime}
+                  loading={scatterpointLoading}
+                />
               </div>
             </div>
           </div>
