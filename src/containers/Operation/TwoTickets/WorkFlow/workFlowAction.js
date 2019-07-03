@@ -1,5 +1,5 @@
 export const workFlowAction = {
-    changeWorkFlowStore: Symbol('changeWorkFlowStore'), // 替换reducer参数
+    changeFlowStore: Symbol('changeFlowStore'), // 替换reducer参数
     resetStore: Symbol('resetStore'), // 发起重置数据请求
     getFlowList: Symbol('getFlowList'), 
     getStopRight: Symbol('getStopRight'), 

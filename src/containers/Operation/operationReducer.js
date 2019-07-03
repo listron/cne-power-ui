@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import defect from './Ticket/Defect/defectReducer';
 import inspect from './Ticket/Inspect/inspectReducer';
@@ -14,11 +14,11 @@ import deviceAccount from './Book/DeviceAccount/deviceAccountReducer';
 import warehouse from './Book/Warehouse/warehouseReducer';
 import stockRecords from './Book/StockRecords/stockRecordsReducer';
 import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
-import intelligentExpert from './IntelligentExpert/intelligentExpertReducer'
+import intelligentExpert from './IntelligentExpert/intelligentExpertReducer';
 
 import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
-import  workFlow  from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
-import  operateFlow  from './TwoTickets/OperateFlow/operateFlowReducer'; // 两票 - 操作票
+import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
+import operateFlow from './TwoTickets/OperateFlow/operateFlowReducer'; // 两票 - 操作票
 
 const operationReducer = combineReducers({
   defect,

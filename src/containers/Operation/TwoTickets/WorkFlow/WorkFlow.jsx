@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './workFlow.scss';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { workFlowAction } from './workFlowAction';
 import { commonAction } from '../../../../containers/alphaRedux/commonAction';
 import Header from '../../../../components/Common/CommonBreadcrumb';
@@ -18,14 +18,14 @@ class WorkFlow extends Component {
     }
 
     constructor() {
-        super()
+        super();
         this.state = {
-        }
+        };
 
     }
 
-    componentWillUnmount(){
-        this.props.resetStore()
+    componentWillUnmount() {
+        this.props.resetStore();
     }
 
     render() {
@@ -50,7 +50,7 @@ class WorkFlow extends Component {
                 </div>
                 <Footer />
             </div>
-        )
+        );
     }
 }
 
@@ -59,11 +59,11 @@ const mapStateToProps = (state) => {
     return {
         ...state.operation.workFlow.toJS(),
         stations: state.common.get('stations').toJS(),
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
-    changeWorkFlowStore: payload => dispatch({ type: workFlowAction.changeWorkFlowStore, payload }),
+    changeFlowStore: payload => dispatch({ type: workFlowAction.changeFlowStore, payload }),
     resetStore: () => dispatch({ type: workFlowAction.resetStore }),
     getFlowList: payload => dispatch({ type: workFlowAction.getFlowList, payload }),
     getStopRight: payload => dispatch({ type: workFlowAction.getStopRight, payload }),
@@ -81,10 +81,10 @@ const mapDispatchToProps = (dispatch) => ({
     downLoadFile: payload => dispatch({
         type: commonAction.downLoadFile,
         payload: {
-          ...payload,
-          actionName: workFlowAction.changeWorkFlowStore
-        }
-      })
-})
+            ...payload,
+            actionName: workFlowAction.changeFlowStore,
+        },
+    }),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(WorkFlow)
+export default connect(mapStateToProps, mapDispatchToProps)(WorkFlow);

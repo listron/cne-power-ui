@@ -12,11 +12,11 @@ class WorkFlowSide extends Component {
         form: PropTypes.object,
         docketDetail: PropTypes.object,
         showPage: PropTypes.string,
-        changeWorkFlowStore: PropTypes.func,
+        changeFlowStore: PropTypes.func,
     }
 
     onCancelEdit = () => {
-        this.props.changeWorkFlowStore({ showPage: 'list' });
+        this.props.changeFlowStore({ showPage: 'list' });
     };
 
     render() {
