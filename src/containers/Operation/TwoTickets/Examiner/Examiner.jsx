@@ -21,8 +21,8 @@ class Examiner extends Component {
     getSettableNodes: PropTypes.func,
     changeStore: PropTypes.func,
     resetStore: PropTypes.func,
-  }
-  
+  };
+
   componentDidMount(){
     const { tableParams, getSettingList, getSettableNodes } = this.props;
     getSettingList({ ...tableParams });
@@ -45,12 +45,12 @@ class Examiner extends Component {
       '操作票': 2,
     };
     const newTableParams = {
-      selectedStation: [],
+      stationCodes: [],
       sortField: '', //station_name state, create_time
       sortMethod: '', // 排序规则 "asc"：正序  "desc"：倒序
       pageNum: 1,
       pageSize: 10,
-    }
+    };
     const tabName = tabInfo[innerHTML];
     if (tabName) {
       changeStore({
@@ -61,13 +61,13 @@ class Examiner extends Component {
       getSettingList({ ...newTableParams });
     }
   }
-  
+
   render(){
     const { templateType, editModalShow, detailModalShow } = this.props;
     // WorkExaminer 与 HandleExaminer组件，现完全相同，为防止后期表格或操作异化，暂作两个复制组件
     return (
       <div className={styles.examiner}>
-        <CommonBreadcrumb  breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{name: '审核人设置'}]} style={{ marginLeft: '38px' }} />
         <div className={styles.examinerList}>
           <div className={styles.listContent}>
             <div className={styles.tabs} onClick={this.tabChange}>
@@ -82,14 +82,14 @@ class Examiner extends Component {
           <Footer />
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   ...state.operation.examiner.toJS(),
   stations: state.common.get('stations').toJS(),
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: examinerAction.resetStore }),

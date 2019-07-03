@@ -23,29 +23,54 @@ class SelectModal extends Component {
   static propTypes = {
     hideModal: PropTypes.func,
     showModal: PropTypes.func,
+    queryDataType: PropTypes.func,
     handleOK: PropTypes.func,
     sourceData: PropTypes.array,
-    assetsIds: PropTypes.array,
+    assetsIds: PropTypes.object,
     visiable: PropTypes.bool,
+    multiple: PropTypes.bool,
+    stationType: PropTypes.number,
   }
   constructor(props) {
     super(props);
+
     this.state = {
-      checkedKeys: [...props.assetsIds],
+      // checkedKeys: [...props.assetsIds],
+      checkedKeys: {
+        pv: [...props.pv],
+        wind: [...props.wind],
+      },
       checkedName: '',
-    }
+    };
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({ checkedKeys: nextProps.assetsIds });
+    // this.setState({ checkedKeys: nextProps.assetsIds });
   }
   onCheck = (checkedKeys, e) => {
-    const {multiple}=this.props;
-    let dataRef = e.node.props.dataRef;
-    let { assetsNames, assetsName } = dataRef;
-    let parentNodeName=assetsNames.replace(/,/g,'/');
-    
-    this.setState({ checkedKeys: multiple?checkedKeys.checked:checkedKeys, checkedName: `${parentNodeName}/${assetsName}` });
+    const { multiple, stationType } = this.props;
+    const dataRef = e.node.props.dataRef;
+    const { assetsNames, assetsName } = dataRef;
+    const parentNodeName = assetsNames.replace(/,/g, '/');
+    !multiple && this.setState({ checkedName: `${parentNodeName}/${assetsName}` });
+    const checkValue = multiple ? checkedKeys.checked : checkedKeys;
+    const pv = this.state.checkedKeys.pv;
+    const wind = this.state.checkedKeys.wind;
+    stationType === 1 ?
+      this.setState({
+        checkedKeys: {
+          pv: checkValue,
+          wind,
+        },
+      }) :
+      this.setState({
+        checkedKeys: {
+          wind: checkValue,
+          pv,
+        },
+      });
+
   }
+
   showModal = () => {
     this.props.showModal();
     this.setState({
@@ -53,7 +78,10 @@ class SelectModal extends Component {
     });
   }
   handleOK = () => {
-    const { checkedKeys, checkedName } = this.state;
+    const { checkedName, checkedKeys } = this.state;
+    // const { pv, wind } = checkedKeys;
+    // const check = [...new Set(pv.concat(wind))];
+    // 
     this.props.handleOK(checkedKeys, checkedName);
   }
 
@@ -61,12 +89,12 @@ class SelectModal extends Component {
     this.props.hideModal();
   }
   queryDataType = (value) => {
-    this.props.queryDataType(value)
+    this.props.queryDataType(value);
   }
   renderTreeNodes = data => data.map((item) => {
     if (item.childernNodes) {
       return (
-        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isBuild === 1 || item.isMain === 1 || item.assetsType === 1}  >
+        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1} >
           {this.renderTreeNodes(item.childernNodes)}
         </TreeNode>
       );
@@ -74,9 +102,9 @@ class SelectModal extends Component {
     return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} ></TreeNode>;
   })
   render() {
-    const { visiable, sourceData, stationType, multiple,stationTypeCount } = this.props;
-    const {checkedKeys}=this.state;
-    
+    const { visiable, sourceData, stationType, multiple, stationTypeCount } = this.props;
+    const { checkedKeys } = this.state;
+
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -91,28 +119,29 @@ class SelectModal extends Component {
           wrapClassName={styles.deviceModal}
         >
           <div className={styles.deviceContent}>
-           {stationTypeCount&& <div className={styles.titleType} >
-              <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryDataType(1) }} >光伏</div>
-              <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryDataType(0) }}>风电</div>
+            {stationTypeCount && <div className={styles.titleType} >
+              <div className={stationType === 1 ? styles.selectPv : styles.pv} onClick={() => { this.queryDataType(1); }} >光伏</div>
+              <div className={stationType === 0 ? styles.selectWind : styles.wind} onClick={() => { this.queryDataType(0); }}>风电</div>
             </div>}
             <Tree
               checkable={multiple}
               checkStrictly
-              checkedKeys={checkedKeys}
+              checkedKeys={stationType === 1 ? checkedKeys.pv : checkedKeys.wind}
               autoExpandParent={true}
               // defaultExpandAll={true}
               onCheck={this.onCheck}
               onSelect={this.onCheck}
-              selectedKeys={multiple?[]:checkedKeys}
+              // selectedKeys={multiple ? [] : checkedKeys}
+              selectedKeys={stationType === 1 ? checkedKeys.pv : checkedKeys.wind}
               blockNode={false}
-              
+
             >
               {this.renderTreeNodes(sourceData)}
             </Tree>
           </div>
         </Modal>
       </div>
-    )
+    );
 
   }
 }

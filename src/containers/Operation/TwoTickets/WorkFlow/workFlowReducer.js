@@ -46,7 +46,7 @@ var initState = Immutable.fromJS({
 
 const workFlowReducer = (state = initState, action) => {
     switch (action.type) {
-        case workFlowAction.changeWorkFlowStore:
+        case workFlowAction.changeFlowStore:
             return state.merge(Immutable.fromJS(action.payload))
         case workFlowAction.restStore:
             return initState

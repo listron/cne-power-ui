@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Icon, Form, Select, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 import AddGood from './ManageCommon/AddGood';
+import AddManu from './ManageCommon/AddManu';
+import AddType from './ManageCommon/AddType';
 import AssetsSelectTree from './ManageCommon/AssetsSelectTree';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
@@ -16,22 +18,28 @@ class SpareInsert extends Component {
     insertStatus: PropTypes.string,
     addGoodName: PropTypes.string,
     addGoodStatus: PropTypes.string,
+    addManuStatus: PropTypes.string,
+    addTypeStatus: PropTypes.string,
+    addManufactorId: PropTypes.string,
+    adddModeName: PropTypes.string,
     originInsertInfo: PropTypes.object, // 是否编辑状态唯一标识。null: 新入库, object: 编辑信息
     warehouseList: PropTypes.array,
     insertModes: PropTypes.array,
     goodsList: PropTypes.array,
     assetsManufac: PropTypes.array,
     assetsTree: PropTypes.array,
-    assetsManufac: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
+    addNewManu: PropTypes.func,
+    addNewType: PropTypes.func,
     getGoodsList: PropTypes.func,
     getModes: PropTypes.func,
     getWarehouseStationType: PropTypes.func,
     getAssetsManufacture: PropTypes.func,
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
+    getManufactures: PropTypes.func,
   }
 
   constructor(props){
@@ -41,11 +49,11 @@ class SpareInsert extends Component {
     this.state = {
       spareNumber: inventoryNum,
       saveMode: '',
-    }
+    };
   }
 
   componentDidMount(){
-    const { originInsertInfo, form, getGoodsList } = this.props; 
+    const { originInsertInfo, form, getGoodsList } = this.props;
     getGoodsList({ goodsMaxType: 101 });
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
@@ -56,7 +64,7 @@ class SpareInsert extends Component {
         manufactorName: '',
         supplierName: '',
         assetsIds: originInsertInfo.assetsIds,
-      })
+      });
     }
   }
 
@@ -76,7 +84,7 @@ class SpareInsert extends Component {
           entryNum: '',
           price: '',
           remarks: '',
-        })
+        });
       } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
         form.resetFields();
         changeStore({ assetsTree: [] });
@@ -88,13 +96,13 @@ class SpareInsert extends Component {
     const { spareNumber } = this.state;
     const { form } = this.props;
     this.setState({
-      spareNumber: parseFloat(spareNumber) + parseFloat(form.getFieldValue('entryNum'))
-    })
+      spareNumber: parseFloat(spareNumber) + parseFloat(form.getFieldValue('entryNum')),
+    });
   }
 
   backToList = () => {
     this.props.changeStore({
-      assetsTree: [], 
+      assetsTree: [],
       assetsManufac: [],
       originInsertInfo: null,
     }); // 树清空
@@ -102,7 +110,12 @@ class SpareInsert extends Component {
   }
 
   selectWarehouse = (warehouseId) => { // 仓库 => 下物品 + 所有生产资产
-    const { getWarehouseStationType } = this.props;
+    const { getWarehouseStationType, form } = this.props;
+    form.setFieldsValue({ // 仓库选择后，应清空厂家和型号。
+      assetsIds: [],
+      manufactorId: undefined, // 清除已选择的厂家
+      modeId: undefined, // 清除已选择的型号
+    });
     getWarehouseStationType({ warehouseId });
   }
 
@@ -136,15 +149,17 @@ class SpareInsert extends Component {
   saveInfo = () => {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
-      const assetsIds = values.assetsIds[0];
+      const assetsTotal = values.assetsIds[0] || '';
+      const assetsArr = assetsTotal.split(',').filter(e => !!e);
+      const assetsIds = assetsArr[assetsArr.length - 1];
       !err && insertWarehouse({ ...values, assetsIds });
-    })
+    });
   }
 
   render(){
     const { saveMode, spareNumber } = this.state;
     const {
-      form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus
+      form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus, addNewManu, addManufactorId, addManuStatus, getManufactures, addNewType, addTypeStatus, adddModeName,
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId, assetsIds } = getFieldsValue(['manufactorId', 'assetsIds']);
@@ -154,8 +169,9 @@ class SpareInsert extends Component {
     const numValidator = (text) => (rule, value, callback) => {
       !value && callback(`请填写${text}`);
       isNaN(value) && callback('请填写数字');
+      value > 100000000 && callback('数据过大');
       callback();
-    }
+    };
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
@@ -175,6 +191,7 @@ class SpareInsert extends Component {
           <FormItem label="物品名称">
             {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
               <AddGood
+                goodsType={101}
                 goodsList={goodsList}
                 addNewGood={addNewGood}
                 addGoodName={addGoodName}
@@ -191,28 +208,38 @@ class SpareInsert extends Component {
           </FormItem>
           <FormItem label="厂家">
             {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
-              <Select placeholder="请选择"
+              !!originInsertInfo ? <Select placeholder="请选择"
                 onChange={this.selectManufacturer}
                 style={{width: 200}}
-                disabled={!!originInsertInfo || !assetsIds }
+                disabled
               >
-                {!!originInsertInfo ? 
-                  <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option> // 编辑态, id展示为name
-                  : assetsManufac.map(e => (
-                    <Option key={e.manufactorId} value={e.manufactorId}>{e.manufactorName}</Option>
-                  ))}
-              </Select>
+                <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option>
+              </Select> : <AddManu
+                assetsManufac={assetsManufac}
+                addNewManu={addNewManu}
+                addManufactorId={addManufactorId}
+                addManuStatus={addManuStatus}
+                tabName={tabName}
+                disabled={!assetsIds}
+                assetsIds={assetsIds}
+                getManufactures={getManufactures}
+                getModes={this.selectManufacturer}
+              />
             )}
           </FormItem>
           <FormItem label="型号">
             {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
-              <Select placeholder="请选择" style={{width: 200}} disabled={!manufactorId || !!originInsertInfo}>
-                {!!originInsertInfo ? 
-                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option> // 编辑态, id展示为name
-                  : insertModes.map(e => (
-                    <Option key={e.id} value={e.id}>{e.name}</Option>
-                ))}
-              </Select>
+              !!originInsertInfo ? <Select placeholder="请选择" style={{width: 200}} disabled>
+                <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option>
+              </Select> : <AddType
+                insertModes={insertModes}
+                addNewType={addNewType}
+                addTypeStatus={addTypeStatus}
+                adddModeName={adddModeName}
+                disabled={!manufactorId}
+                assetsId={assetsIds}
+                manufactorInfo={assetsManufac.find(e => e.manufactorId === manufactorId) || {}}
+              />
             )}
           </FormItem>
           <FormItem label="制造商">
@@ -226,7 +253,7 @@ class SpareInsert extends Component {
             )}
           </FormItem>
           <FormItem label="入库数量">
-            {getFieldDecorator('entryNum',{
+            {getFieldDecorator('entryNum', {
               rules: [{
                 required: true,
                 validator: numValidator('入库数量'),
@@ -265,7 +292,7 @@ class SpareInsert extends Component {
           >保存并继续添加</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 

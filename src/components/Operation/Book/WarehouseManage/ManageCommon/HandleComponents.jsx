@@ -52,8 +52,8 @@ export default class HandleComponent extends Component {
     });
     getWarehouseManageList({
       ...tableParams,
-      pageNum: currentPage, 
-      pageSize
+      pageNum: currentPage,
+      pageSize,
     });
   }
 
@@ -86,8 +86,8 @@ export default class HandleComponent extends Component {
     const stockTypeInfo = {
       spares: [101, '备品备件'],
       tools: [200, '工具'],
-      materials: [300, '物资']
-    }
+      materials: [300, '物资'],
+    };
     const warehouseName = warehouseList.find(e => e.warehouseId === selectedManufacturer) || {};
     downLoadFile({
       url,
@@ -99,7 +99,7 @@ export default class HandleComponent extends Component {
         manufactorId: selectedManufacturer,
         modeId: selectedMode,
       },
-    })
+    });
   }
 
   exportTemplete = () => { // 导出模板
@@ -108,14 +108,14 @@ export default class HandleComponent extends Component {
       spares: [101, '备品备件'],
       tools: [200, '工具'],
       materials: [300, '物资'],
-    }
+    };
     const url = `${APIBasePath}${operation.downloadStockTemplete}/${stockTypeInfo[tabName][0]}`;
     downLoadFile({
       url,
       method: 'get',
       loadingName: 'exportTempleteLoading',
       fileName: `${stockTypeInfo[tabName][1]}导入模板.xlsx`,
-    })
+    });
   }
 
   showStockMax = () => this.props.changeStore({ stockMaxShow: true });
@@ -129,7 +129,7 @@ export default class HandleComponent extends Component {
     const { checkedStocks, setStockMax } = this.props;
     setStockMax({
       inventoryIds: checkedStocks.map(e => e.inventoryId).join(','),
-      threshold: stockMaxValue
+      threshold: stockMaxValue,
     });
   }
 
@@ -139,7 +139,7 @@ export default class HandleComponent extends Component {
     const { stockMaxValue, deleteModalShow } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
-      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading, stocksList
+      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading, stocksList,
     } = this.props;
     const { pageSize, pageNum, selectedWarehouse } = tableParams;
     const insertDisable = checkedStocks.length > 1;
@@ -152,7 +152,7 @@ export default class HandleComponent extends Component {
             disabled={insertDisable}
             style={{
               cursor: insertDisable ? 'not-allowed' : 'pointer',
-              borderColor: insertDisable ? '#dfdfdf' : '#199475', 
+              borderColor: insertDisable ? '#dfdfdf' : '#199475',
             }}
           >
             <Icon type="plus"
@@ -169,7 +169,7 @@ export default class HandleComponent extends Component {
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
           >设置阈值</Button>}
-          <Button 
+          <Button
             disabled={!selectedWarehouse || stocksList.length === 0}
             onClick={this.exportStock}
             loading={exportInfoLoading}
@@ -186,6 +186,7 @@ export default class HandleComponent extends Component {
         <Modal
           visible={stockMaxShow}
           title="设置阈值"
+          maskClosable={false}
           onCancel={this.hideStockMax}
           footer={null}
           width={740}
@@ -209,7 +210,7 @@ export default class HandleComponent extends Component {
         {importFileShow && <ImportFile {...this.props} />}
         {deleteModalShow && <WarningTip onOK={this.toDel} onCancel={this.cancelDel} value="是否确认删除?" />}
       </div>
-    )
+    );
   }
 }
 

@@ -39,7 +39,7 @@ class WarehouseManage extends Component {
   state = {
     sideTransform: 0,
   }
-  
+
   componentDidMount(){
     const { tableParams } = this.props;
     this.props.getWarehouses();
@@ -70,7 +70,7 @@ class WarehouseManage extends Component {
       pageNum: 1,
       sortField: '',
       sortMethod: '',
-    }
+    };
     const tabName = tabInfo[innerHTML];
     if (tabName) {
       this.props.changeStore({
@@ -90,13 +90,13 @@ class WarehouseManage extends Component {
     this.setState({ sideTransform: 0 });
     this.props.changeStore({ sideKey: 'list' });
   }
-  
+
   render(){
     const { sideTransform } = this.state;
     const { tabName, sideKey } = this.props;
     return (
       <div className={styles.warehouseManage}>
-        <CommonBreadcrumb  breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{name: '库存管理'}]} style={{ marginLeft: '38px' }} />
         <div className={styles.manageContainer}>
           <div className={styles.listPage}>
             <div className={styles.listContent}>
@@ -127,20 +127,20 @@ class WarehouseManage extends Component {
                 insert: <MaterialInsert {...this.props} backList={this.backList} />,
                 takeout: <MaterialTakeout {...this.props} backList={this.backList} />,
                 reserve: <MaterialReserve {...this.props} backList={this.backList} />,
-              }
+              },
             }[tabName][sideKey]}
             <Footer />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   ...state.operation.warehouseManage.toJS(),
   stations: state.common.get('stations').toJS(),
-})
+});
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: warehouseManageAction.resetStore }),
@@ -154,13 +154,15 @@ const mapDispatchToProps = (dispatch) => ({
     type: commonAction.downLoadFile,
     payload: {
       ...payload,
-      actionName: warehouseManageAction.changeStore
-    }
+      actionName: warehouseManageAction.changeStore,
+    },
   }),
   setStockMax: payload => dispatch({ type: warehouseManageAction.setStockMax, payload }),
   importStockFile: payload => dispatch({ type: warehouseManageAction.importStockFile, payload }),
   getGoodsList: payload => dispatch({ type: warehouseManageAction.getGoodsList, payload }),
   addNewGood: payload => dispatch({ type: warehouseManageAction.addNewGood, payload }),
+  addNewManu: payload => dispatch({ type: warehouseManageAction.addNewManu, payload }),
+  addNewType: payload => dispatch({ type: warehouseManageAction.addNewType, payload }),
   getWarehouseStationType: payload => dispatch({ type: warehouseManageAction.getWarehouseStationType, payload }),
   getAssetsManufacture: payload => dispatch({ type: warehouseManageAction.getAssetsManufacture, payload }),
   insertWarehouse: payload => dispatch({ type: warehouseManageAction.insertWarehouse, payload }),
