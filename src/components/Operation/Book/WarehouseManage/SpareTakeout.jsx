@@ -49,10 +49,10 @@ class SpareTakeout extends Component {
         takeoutWarehouseMaterial({
           inventoryId,
           materialCodes: materialCodes.map(e => e.materialCode).join(','),
-          remarks
+          remarks,
         });
       }
-    })
+    });
   }
 
   render(){
@@ -60,7 +60,7 @@ class SpareTakeout extends Component {
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
-      initialValue
+      initialValue,
     });
     return (
       <section className={styles.takeout}>
@@ -102,7 +102,7 @@ class SpareTakeout extends Component {
               rules: [{
                 required: true,
                 validator: (rule, value, callback) => {
-                  (!value || value.length === 0) && callback(`请选择物资`);
+                  (!value || value.length === 0) && callback('请选择物资');
                   callback();
                 },
               }],
@@ -121,7 +121,7 @@ class SpareTakeout extends Component {
           <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 
