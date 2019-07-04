@@ -1,0 +1,206 @@
+@import '../../../../theme/theme.scss';
+
+.dataExportSearch{
+  padding: 20px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  .dataExportTop{
+    display: flex;
+    flex-wrap: wrap;
+
+    .stationSearch,.deviceTypeSearch,.deviceNameSearch,.pointsNameSearch,.startSelect,.endSelect,.intervalSelect,.dataTypes{
+      display: flex;
+      flex: 0 0 25%;
+      height: 40px;
+      line-height: 40px;
+      align-items: center;
+      .text{
+        margin: 0 8px 0 20px;
+      }
+    }
+    .intervalSelect,.dataTypes{
+      :global{
+        .ant-select{
+          width: 200px;
+          .ant-select-selection__choice{
+            border: 0
+          }
+        }
+      }
+    }
+    .intervalSelect{
+      // :global{
+      //   .ant-select-selection-selected-value{
+      //     color: #dfdfdf;
+      //   }
+      // }
+      .intervaltext{
+        color:red
+      }
+    }
+  }
+  .dataExportBottom{
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    margin-top:18px;
+    .reset{
+      margin-right: 12px;
+    }
+  }
+}
+
+    .pointTrees{
+      overflow-y: auto;
+      height: 300px;
+    }
+
+    .checkedList{
+      display: flex;
+      flex-wrap: wrap;
+      flex: 0 0 320px;
+      overflow-y: auto;
+      align-content: flex-start;
+      flex: 1;
+      border-top: 1px solid $promptColor;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 87px;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        border-radius: 3px;
+        background:rgba(0,0,0,0.5);
+      }
+      .eachDevice{
+        cursor: pointer;
+        background-color: #f1f1f1;
+        border-radius: 4px;
+        width: 135px;
+        height: 24px;
+        line-height: 24px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        color: $darkColor;
+        font-size: 14px;
+        padding-left: 8px;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: flex;
+        :global{
+          .ant-checkbox-wrapper{
+            flex: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            word-break: break-all;
+          }
+        }
+      }
+      .top{
+        display: flex;
+        padding: 0 12px;
+        width: 100%;
+        justify-content: space-between;
+        height: 30px;
+        align-items: center;
+        .clear{
+          cursor: pointer;
+          padding: 4px 8px;
+          &:hover{
+            background-color: #f1f1f1;
+          }
+        }
+      }
+      .checkedInfo{
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb{
+          border-radius: 3px;
+          background:rgba(0,0,0,0.5);
+        }
+      }
+      .eachDevice{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        .cancel{
+          cursor: pointer;
+          padding-right: 4px;
+          padding-left: 4px;
+          border-radius: 4px;
+          &:hover{
+            color: #f9b600;
+          }
+        }
+      }
+    }
+  
+    .pointTree{
+      position: relative;
+      width: 200px;
+      .pointNumDark,.pointNumLight{
+        // border: 1px solid #d9d9d9;
+        // width: 198px;
+        // display: flex;
+        // line-height: 30px;
+        // border-radius: 4px;
+        // padding-left: 15px;
+
+        width: 198px;
+        padding-left: 15px;
+        position: absolute;
+        left: 0;
+      }
+      .pointNumLight{
+        color: #bfbfbf;
+      }
+      .filterIcon{
+        position: absolute;
+        z-index: 10;
+        cursor: pointer;
+        font-size: 18px;
+        right: 8px;
+        top: 4px;
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+    
+.dataExportList{
+  flex: 1;
+  border-top: 10px solid #ececec;
+  .pagination {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+    .text{
+      display: flex;
+      margin-left: 17px;
+    }
+  }
+  .generating{
+    color: #a42b2c;
+  }
+  .fail,.renewal{
+    color: #e08031;
+  }
+  .downloadStyle{
+    color: $themeColor;
+    border: 0;
+  }
+  .renewal{
+    padding-left: 18px;
+  }
+}
