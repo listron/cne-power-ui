@@ -11,6 +11,7 @@ import path from '../../../../constants/path';
 import ReviewForm from '../Common/HandleForm/ReviewForm';
 import CheckForm from '../Common//HandleForm/CheckForm';
 import Obsolete from '../Common/HandleForm/Obsolete';
+import Cookie from 'js-cookie';
 
 
 class TableList extends Component {
@@ -62,29 +63,33 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
-        console.log('record', record)
         if (keys.length > 0) {
-            const { userId } = this.props;
+            const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
+            let review = false, complete = false, obsolete = true;
             record.forEach(e => {
-                if (e.dealUserIds) dealUserIds.push(e.dealUserIds.split(','));
+                if (e.dealUserIds) {
+                    dealUserIds.push(e.dealUserIds.split(','));
+                } else {
+                    obsolete = false;
+                }
             });
             record.forEach(e => {
                 if (e.dealRoleIds) {
                     dealRoleIds.push(e.dealRoleIds.split(','));
                 }
             });
-
+            console.log('dealUserIds', dealUserIds);
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            let review = false, complete = false;
+            console.log('right', right, stateCode);
             if (stateCode.length > 1 || !right) {
                 review = false; complete = false;
             } else {
                 if (stateCode[0] === '101') { review = true; complete = false; }
                 if (stateCode[0] === '103') { review = false; complete = true; }
             }
-            this.setState({ review, complete, obsolete: true });
+            this.setState({ review, complete, obsolete });
         } else {
             this.setState({ review: false, complete: false, obsolete: false });
         }
@@ -100,15 +105,25 @@ class TableList extends Component {
         const taskIds = selectedRows.map(e => e.taskId);
         const docketIds = selectedRows.map(e => e.docketId);
         if (operatType === 'review' || operatType === 'complete') { // 审核 消票 
-            this.props.handleBatch({ taskIds, ...operateReasult });
+            this.props.handleBatch({ taskIds, ...operateReasult, func: this.resetStatus });
         }
         if (operatType === 'obsolete') { // 作废
-            this.props.stopBatch({ docketIds, nodeCode, ...operateReasult });
+            this.props.stopBatch({ docketIds, nodeCode, ...operateReasult, func: this.resetStatus });
         }
         if (operatType === 'del') { // 删除
-            this.props.delDocket({ docketId: delDocketId });
+            this.props.delDocket({
+                docketId: delDocketId, func: () => {
+                    this.setState({ showWarningTip: false });
+                },
+            });
         }
-        this.setState({ showWarningTip: false, batchVisible: false, selectedRows: [] });
+
+    }
+    resetStatus = () => {
+        this.setState({
+            showWarningTip: false, batchVisible: false, selectedRows: [],
+            review: false, complete: false, obsolete: false,
+        });
     }
 
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
@@ -191,13 +206,13 @@ class TableList extends Component {
                 dataIndex: 'createTime',
                 key: 'createTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:MM:SS') || '--'}</div>,
+                render: text => <div className={styles.createTime} >{moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
             }, {
                 title: '完成时间',
                 dataIndex: 'endTime',
                 key: 'endTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:MM:SS')}</div>,
+                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
             }, {
                 title: '状态',
                 dataIndex: 'stateDesc',
@@ -265,14 +280,13 @@ class TableList extends Component {
     render() {
         const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile } = this.props;
         const { selectedRows, review, complete, obsolete, currentImgIndex, showImgModal, downloadHref } = this.state;
-        const docketId = selectedRows.map(e => e.docketId);
         const { showWarningTip, warningTipText, operatType } = this.state;
         const { pageSize, pageNum } = listQueryParams;
         const rowSelection = {
-            docketId,
+            selectedRowKeys: selectedRows.map(e => e.docketId),
             onChange: this.onSelectChange,
         };
-        const dataSource = docketList.map((item, index) => ({ ...item, key: index }));
+        const dataSource = docketList.map((item, index) => ({ ...item, key: item.docketId }));
         const images = newImg.map((item, index) => {
             return {
                 uid: `${item.imgUrl}_${index}`,

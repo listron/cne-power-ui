@@ -9,9 +9,10 @@ function* getFlowList(action) {
     const flowListUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketList}`;
     const flowStatusUrl = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.getDocketStatus}`;
     const { listQueryParams, commonQueryParams } = payload;
-    const startTime = commonQueryParams.createTimeStart || null;
-    const endTime = commonQueryParams.createTimeEnd || null;
-    const IsMy = commonQueryParams.handleUser ? 1 : 0;
+    const { createTimeStart = null, createTimeEnd = null, handleUser, ...params } = commonQueryParams;
+    const startTime = createTimeStart;
+    const endTime = createTimeEnd;
+    const IsMy = handleUser ? 1 : 0;
     try {
         yield put({
             type: operateFlowAction.changeFlowStore,
@@ -20,8 +21,8 @@ function* getFlowList(action) {
             },
         });
         const [flowList, flowStatus] = yield all(
-            [call(axios.post, flowListUrl, { ...listQueryParams, ...commonQueryParams, startTime, endTime, IsMy }),
-            call(axios.post, flowStatusUrl, { ...commonQueryParams, startTime, endTime, IsMy }),
+            [call(axios.post, flowListUrl, { ...listQueryParams, ...params, startTime, endTime, IsMy }),
+            call(axios.post, flowStatusUrl, { ...params, startTime, endTime, IsMy }),
             ]);
         if (flowList.data.code === '10000' && flowStatus.data.code === '10000') {
             const totalNum = flowList.data.data && flowList.data.data.pageDate.pageCount || 0;
@@ -320,9 +321,10 @@ function* getNewImg(action) { // 最新图片
 
 function* handleBatch(action) { // 批量处理
     const { payload } = action;
+    const { func, ...params } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.handleBatch}`;
     try {
-        const response = yield call(axios.post, url, payload);
+        const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('操作成功');
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
@@ -333,13 +335,14 @@ function* handleBatch(action) { // 批量处理
                     showPage: 'list',
                 },
             });
-            yield put({
-                type: operateFlowAction.getFlowList,
-                payload: {
-                    commonQueryParams,
-                    listQueryParams,
-                },
-            });
+            func(),
+                yield put({
+                    type: operateFlowAction.getFlowList,
+                    payload: {
+                        commonQueryParams,
+                        listQueryParams,
+                    },
+                });
         } else { throw response.data; }
     } catch (e) {
         console.log(e);
@@ -349,9 +352,10 @@ function* handleBatch(action) { // 批量处理
 
 function* stopBatch(action) { // 作废
     const { payload } = action;
+    const { func, ...params } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.stopBatch}`;
     try {
-        const response = yield call(axios.post, url, payload);
+        const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('操作成功');
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
@@ -362,13 +366,14 @@ function* stopBatch(action) { // 作废
                     showPage: 'list',
                 },
             });
-            yield put({
-                type: operateFlowAction.getFlowList,
-                payload: {
-                    commonQueryParams,
-                    listQueryParams,
-                },
-            });
+            func(),
+                yield put({
+                    type: operateFlowAction.getFlowList,
+                    payload: {
+                        commonQueryParams,
+                        listQueryParams,
+                    },
+                });
         } else { throw response.data; }
     } catch (e) {
         console.log(e);
@@ -378,14 +383,15 @@ function* stopBatch(action) { // 作废
 
 function* delDocket(action) { // 删除驳回的
     const { payload } = action;
-    const { docketId } = payload;
+    const { docketId, func } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.delDocket}/${docketId}`;
     try {
-        const response = yield call(axios.post, url, payload);
+        const response = yield call(axios.get, url, payload);
         if (response.data.code === '10000') {
             message.success('删除成功');
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
             const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            func();
             yield put({
                 type: operateFlowAction.getFlowList,
                 payload: {

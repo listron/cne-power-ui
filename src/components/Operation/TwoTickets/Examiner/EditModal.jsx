@@ -27,7 +27,7 @@ class EditModal extends Component {
     if (settedDetail) { // 编辑态
       const setValues = {};
       settedDetail.forEach(e => {
-        const userIds = `${e.userIds}` || '';
+        const userIds = `${e.userIds || ''}`;
         setValues[e.nodeCode] = userIds.split(',').filter(e => !!e);
       });
       form.setFieldsValue({ ...setValues });
