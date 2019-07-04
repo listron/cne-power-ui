@@ -222,6 +222,7 @@ class WarehouseWrap extends Component {
                       style={{ width: '200px' }}
                       onOK={this.selectStation}
                       multiple={true}
+                      oneStyleOnly={true}
                       stationShowNumber={true}
                     />
                   )}
