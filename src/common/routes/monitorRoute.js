@@ -78,9 +78,6 @@ const data = [
   }, { //实时监控-数据分析-实时数据
     path: '/monitor/data/realtime',
     component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataRealtime/DataRealtime')),
-  }, { //实时监控-数据分析-数据导出
-    path: '/monitor/data/dataExport',
-    component: lazy(() => import('../../containers/Monitor/DataAnalysis/DataExport/DataExport')),
   },
 ];
 
