@@ -11,7 +11,7 @@ import path from '../../../../constants/path';
 import ReviewForm from '../Common/HandleForm/ReviewForm';
 import CheckForm from '../Common//HandleForm/CheckForm';
 import Obsolete from '../Common/HandleForm/Obsolete';
-
+import Cookie from 'js-cookie';
 
 class TableList extends Component {
     static propTypes = {
@@ -62,7 +62,7 @@ class TableList extends Component {
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
         if (keys.length > 0) { // 选中的超过一条
-            const { userId } = this.props;
+            const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
             record.forEach(e => {
                 if (e.dealUserIds) dealUserIds.push(e.dealUserIds.split(','));
@@ -93,16 +93,27 @@ class TableList extends Component {
         const { operatType, operateReasult, selectedRows, nodeCode, delDocketId } = this.state;
         const taskIds = selectedRows.map(e => e.taskId);
         const docketIds = selectedRows.map(e => e.docketId);
-        if (operatType === 'review') { // 审核 消票 
-            this.props.handleBatch({ taskIds, ...operateReasult });
+        if (operatType === 'review' || operatType === 'complete') { // 审核 消票 
+            this.props.handleBatch({ taskIds, ...operateReasult, func: this.resetStatus });
         }
         if (operatType === 'obsolete') { // 作废
-            this.props.stopBatch({ docketIds, nodeCode, ...operateReasult });
+            this.props.stopBatch({ docketIds, nodeCode, ...operateReasult, func: this.resetStatus });
         }
         if (operatType === 'del') { // 删除
-            this.props.delDocket({ docketId: delDocketId });
+            this.props.delDocket({
+                docketId: delDocketId, func: () => {
+                    this.setState({ showWarningTip: false });
+                },
+            });
         }
-        this.setState({ showWarningTip: false, batchVisible: false, selectedRows: [] });
+
+    }
+
+    resetStatus = () => { // 初始化状态
+        this.setState({
+            showWarningTip: false, batchVisible: false, selectedRows: [],
+            review: false, obsolete: false,
+        });
     }
 
     tableChange = (pagination, filter, sorter) => {// 点击表头 排序
@@ -177,13 +188,13 @@ class TableList extends Component {
                 dataIndex: 'createTime',
                 key: 'createTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:MM:SS') || '--'}</div>,
+                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss') || '--'}</div>,
             }, {
                 title: '完成时间',
                 dataIndex: 'endTime',
                 key: 'endTime',
                 sorter: true,
-                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:MM:SS')}</div>,
+                render: text => <div className={styles.createTime} >{text && moment(text).format('YYYY-MM-DD HH:mm:ss')}</div>,
             }, {
                 title: '状态',
                 dataIndex: 'stateDesc',
@@ -250,14 +261,13 @@ class TableList extends Component {
     render() {
         const { totalNum, loading, docketList, stopRight, newImg, listQueryParams, downLoadFile } = this.props;
         const { selectedRows, review, obsolete, currentImgIndex, showImgModal, downloadHref } = this.state;
-        const docketId = selectedRows.map(e => e.docketId);
         const { showWarningTip, warningTipText, operatType } = this.state;
         const { pageSize, pageNum } = listQueryParams;
         const rowSelection = {
-            docketId,
+            selectedRowKeys: selectedRows.map(e => e.docketId),
             onChange: this.onSelectChange,
         };
-        const dataSource = docketList.map((item, index) => ({ ...item, key: index }));
+        const dataSource = docketList.map((item, index) => ({ ...item, key: item.docketId }));
         const images = newImg.map((item, index) => {
             return {
                 uid: `${item.imgUrl}_${index}`,
