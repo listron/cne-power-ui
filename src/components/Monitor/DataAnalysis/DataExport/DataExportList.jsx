@@ -17,7 +17,6 @@ class DataExportList extends Component{
     downLoadFile: PropTypes.func,
     changeDataExportStore: PropTypes.func,
     status: PropTypes.num,
-    devicePointCodes: PropTypes.array,
     duration: PropTypes.string,
     dataTypes: PropTypes.array,
     getDataExport: PropTypes.func,
@@ -142,9 +141,9 @@ class DataExportList extends Component{
         className: 'status',
         render: (text) => (
           <span>
-            {(text === 1) && <span title={text}>生成中</span>}
+            {(text === 1) && <span title={text} className={styles.generating}>生成中</span>}
             {(text === 2) && <span title={text}>已生成</span>}
-            {(text === 3) && <span title={text}>失败</span>}
+            {(text === 3) && <span title={text} className={styles.fail}>失败</span>}
           </span>
         )
       },{

@@ -190,8 +190,17 @@
       margin-left: 17px;
     }
   }
+  .generating{
+    color: #a42b2c;
+  }
+  .fail,.renewal{
+    color: #e08031;
+  }
   .downloadStyle{
     color: $themeColor;
     border: 0;
+  }
+  .renewal{
+    padding-left: 18px;
   }
 }
