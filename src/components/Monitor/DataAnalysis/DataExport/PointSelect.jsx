@@ -41,29 +41,28 @@ class PointSelect extends Component {
     const prevPoints = prevProps.pointInfo;
     const checkedPoint = pointInfo.filter(e => e.isChecked >= 1).map(e => ({
       key: e.devicePointId,
-      title: e.devicePointName
-    }))
-    const prevPoint = prevPoints.length && prevPoints[0] && prevPoints[0].devicePointCode; 
-    const pointInfos = pointInfo.length && pointInfo[0] && pointInfo[0].devicePointCode; 
+      title: e.devicePointName,
+    }));
+    const prevPoint = prevPoints.length && prevPoints[0] && prevPoints[0].devicePointId; 
+    const pointInfos = pointInfo.length && pointInfo[0] && pointInfo[0].devicePointId; 
 
     if (prevPoints.length === 0 && pointInfo.length > 0) { // 得到初始测点数据
       this.arrTree = checkedPoint; // 备份选中的测点
       changeDataExportStore({
         queryParams: {
           ...queryParams,
-          devicePointCodes: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointCode), // 默认选中测点
+          devicePointIds: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointId), // 默认选中测点
         },
-        pointsSeleted: checkedPoint
+        pointsSeleted: checkedPoint,
       })
-    }
-    else if(!!prevPoint && !!pointInfos && prevPoints[0].devicePointCode !== pointInfo[0].devicePointCode){ // 设备数据切换
+    }else if(!!prevPoint && !!pointInfos && prevPoints[0].devicePointId !== pointInfo[0].devicePointId){ // 设备数据切换
       changeDataExportStore({
         queryParams: {
           ...queryParams,
-          devicePointCodes: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointCode), // 默认选中测点
+          devicePointIds: pointInfo.filter(e => e.isChecked >= 1).map(e => e.devicePointId), // 默认选中测点
         },
-        pointsSeleted: checkedPoint
-      })
+        pointsSeleted: checkedPoint,
+      });
     }
   }
 
@@ -77,10 +76,10 @@ class PointSelect extends Component {
     })
   }
 
-  cancelChecked = (devicePointCode) => { // 取消单个选中设备。
+  cancelChecked = (devicePointId) => { // 取消单个选中设备。
     const { changeDataExportStore, pointsSeleted } = this.props;
     const newPoint = pointsSeleted.filter(e => {
-      if (e.key !== devicePointCode) {
+      if (e.key !== devicePointId) {
         return true
       }
     });
@@ -99,7 +98,7 @@ class PointSelect extends Component {
   };
 
   handleOk = e => { // 确认模态框
-    const { changeDataExportStore,  queryParams } = this.props;
+    const { changeDataExportStore, queryParams } = this.props;
     const { selectedtags, checkPoint } = this.state;
     const pointsSeleted = checkPoint;
     this.setState({
@@ -108,7 +107,7 @@ class PointSelect extends Component {
     changeDataExportStore({
       queryParams: {
         ...queryParams,
-        devicePointCodes: selectedtags
+        devicePointIds: selectedtags
       },
         pointsSeleted
     })

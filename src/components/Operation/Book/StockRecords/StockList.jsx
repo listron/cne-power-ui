@@ -52,7 +52,7 @@ class StockList extends Component {
 
   inColumns = () => { // 展示入库列表
     const columns = [{
-      title: '物品编码',
+      title: '资产编码',
       dataIndex: 'materialCode',
       className: 'materialCode',
       sorter: true,
@@ -268,7 +268,7 @@ class StockList extends Component {
       case 'username': result = 'username'; break;
       default: result = ""; break;
     }
-    return result
+    return result;
   }
 
   changeRadio = (e) => { // 切换按钮
@@ -277,14 +277,12 @@ class StockList extends Component {
     stockRecordsStore({tableType});
     const newParams = {
       ...listParams,
-      pageSize: 10,
-      pageNum:1
-    }
+    };
     tableType === 'inRecord' && getInRecordList({
-      ...newParams
+      ...newParams,
     });
     tableType === 'outRecord' && getOutRecordList({
-      ...newParams
+      ...newParams,
     });
   }
   
