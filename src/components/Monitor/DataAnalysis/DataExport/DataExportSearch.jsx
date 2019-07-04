@@ -181,7 +181,6 @@ class DataExportSearch extends Component{
       timeInterval: interval,
     };
     if (interval === 3) { // 由秒级数据切换至10min数据
-      console.log(123);
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
@@ -194,7 +193,6 @@ class DataExportSearch extends Component{
         timeInterval: interval,
       });
     } else if (timeInterval === 3) { // 10min数据切换至秒级数
-      console.log(456);
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
@@ -207,7 +205,6 @@ class DataExportSearch extends Component{
         timeInterval: interval,
       });
     } else { // 秒级数据( 1s与5s)切换
-      console.log(789);
       changeDataExportStore({ queryParams: {
         ...queryParams,
         timeInterval: interval,
@@ -295,7 +292,6 @@ class DataExportSearch extends Component{
     const { showWarningTip, warningTipText } = this.state;
     const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo } = this.props;
     const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes, devicePointIds } = queryParams;
-    console.log('timeInterval: ', timeInterval);
     const deviceFullCodesStatus = deviceFullCodes.length > 0;
     const devicePointCodesStatus = devicePointIds.length > 0;
     const dataTypesStatus = dataTypes.length > 0;
