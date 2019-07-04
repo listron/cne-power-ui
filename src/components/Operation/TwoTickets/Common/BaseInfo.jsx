@@ -34,11 +34,14 @@ class BasicInfo extends Component {
                     <div className={styles.basicItem}><div>关联工单</div><span>{docketInfo.defectId || '--'}</span></div>
                     <div className={styles.basicItem}><div>{testName}附件</div>
                         <span>
-                            <ImgUploader editable={false} data={annexImg.map(item => ({
-                                uid: item.imgUrl,
-                                rotate: item.rotate,
-                                thumbUrl: `${item.imgUrl}`,
-                            }))}
+                            <ImgUploader editable={false}
+                                imgStyle={{ width: 95, height: 95,marginRight:5 }}
+                                data={annexImg.map(item => ({
+                                    uid: item.imgUrl,
+                                    rotate: item.rotate,
+                                    thumbUrl: `${item.imgUrl}`,
+                                }))}
+
                             />
                         </span>
                     </div>
