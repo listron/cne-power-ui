@@ -42,22 +42,25 @@ export default class DeviceAccountBox extends React.Component {
   }
 
   componentDidMount() {
-    const { getRegion, getDeviceAccountList } = this.props;
-    const params = {
-      regionName: '',
-      stationCodes: [],
-      manufactorId: '',
-      modeId: '',
-      deviceTypeCode: '',
-      assetIds: [],
-      orderField: '',
-      orderMethod: '',
-      pageNum: 1,
-      pageSize: 10,
-    };
+    const {
+      getRegion,
+      // getDeviceAccountList // 首次不调用接口
+    } = this.props;
+    // const params = {
+    //   regionName: '',
+    //   stationCodes: [],
+    //   manufactorId: '',
+    //   modeId: '',
+    //   deviceTypeCode: '',
+    //   assetIds: [],
+    //   orderField: '',
+    //   orderMethod: '',
+    //   pageNum: 1,
+    //   pageSize: 10,
+    // };
     // 接口
     getRegion();
-    getDeviceAccountList(params);
+    // getDeviceAccountList(params);
   }
 
   // 分页
@@ -91,7 +94,7 @@ export default class DeviceAccountBox extends React.Component {
   handleRegionChange = (value) => {
     const { getDeviceAccountList } = this.props;
     const params = {
-      regionName: value,
+      regionName: value === '全部' ? '' : value,
       stationCodes: [],
       manufactorId: '',
       modeId: '',
@@ -262,6 +265,7 @@ export default class DeviceAccountBox extends React.Component {
             style={{ width: 140, paddingTop: '3px', margin: '0 10px' }}
             onChange={this.handleRegionChange}
           >
+            <Option key="全部" value="全部">全部</Option>
             {regionItem}
           </Select>
           <StationSelect
