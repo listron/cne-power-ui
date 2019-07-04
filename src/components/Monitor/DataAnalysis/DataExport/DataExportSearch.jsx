@@ -26,7 +26,7 @@ class DataExportSearch extends Component{
     getPointInfo: PropTypes.func,
     getDataExport: PropTypes.func,
     recordedMinuteEnd: PropTypes.object,
-    devicePointCodes: PropTypes.array,
+    devicePointIds: PropTypes.array,
     dataTypes: PropTypes.array,
     timeZone: PropTypes.string,
     pointsSeleted: PropTypes.array,
@@ -79,7 +79,7 @@ class DataExportSearch extends Component{
         ...queryParams,
         stationCode,
         deviceFullCodes: [],
-        devicePointCodes: [],
+        devicePointIds: [],
         pointsSeleted: [],
       },
       deviceTypeCode: null,
@@ -92,7 +92,7 @@ class DataExportSearch extends Component{
       queryParams:{
         ...queryParams,
         deviceFullCodes: [],
-        devicePointCodes: [],
+        devicePointIds: [],
         pointsSeleted: [],
       },
       deviceTypeCode,
@@ -106,7 +106,7 @@ class DataExportSearch extends Component{
       queryParams:{
         ...queryParams,
         deviceFullCodes: devices,
-        devicePointCodes: [],
+        devicePointIds: [],
         pointsSeleted: [],
       }
     })
@@ -173,16 +173,15 @@ class DataExportSearch extends Component{
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
-    const { queryParams, changeDataExportStore, recordedMinuteStart, recordedMinuteEnd, getPointInfo } = this.props;
+    const { queryParams, changeDataExportStore, recordedMinuteStart, recordedMinuteEnd, getPointInfo, pointsSeleted } = this.props;
     const { timeInterval, deviceFullCodes } = queryParams;
     const tmpQueryParam = {
       ...queryParams,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
-      devicePointCodes: [],
-      pointsSeleted: [],
-    }
-    if (interval === 10) { // 由秒级数据切换至10min数据
+    };
+    if (interval === 3) { // 由秒级数据切换至10min数据
+      console.log(123);
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
@@ -194,7 +193,8 @@ class DataExportSearch extends Component{
         deviceFullCodes,
         timeInterval: interval,
       });
-    } else if (timeInterval === 10) { // 10min数据切换至秒级数
+    } else if (timeInterval === 3) { // 10min数据切换至秒级数
+      console.log(456);
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
@@ -207,7 +207,11 @@ class DataExportSearch extends Component{
         timeInterval: interval,
       });
     } else { // 秒级数据( 1s与5s)切换
-      changeDataExportStore({ timeInterval });
+      console.log(789);
+      changeDataExportStore({ queryParams: {
+        ...queryParams,
+        timeInterval: interval,
+      }});
     }
   }
 
@@ -244,7 +248,7 @@ class DataExportSearch extends Component{
         ...queryParams,
         stationCode: null,
         deviceFullCodes: [],
-        devicePointCodes: [],
+        devicePointIds: [],
         timeInterval: null, 
         startTime: moment().subtract(1, 'month').startOf('day'),
         endTime: moment().subtract(1, 'month').endOf('day'), 
@@ -289,10 +293,11 @@ class DataExportSearch extends Component{
 
   render(){
     const { showWarningTip, warningTipText } = this.state;
-    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo, pointInfo } = this.props;
-    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes, devicePointCodes } = queryParams;
+    const { stations, stationDeviceTypes, deviceTypeCode, queryParams, intervalInfo } = this.props;
+    const { timeInterval, deviceFullCodes, startTime, endTime, stationCode, dataTypes, devicePointIds } = queryParams;
+    console.log('timeInterval: ', timeInterval);
     const deviceFullCodesStatus = deviceFullCodes.length > 0;
-    const devicePointCodesStatus = devicePointCodes.length > 0;
+    const devicePointCodesStatus = devicePointIds.length > 0;
     const dataTypesStatus = dataTypes.length > 0;
     const showGenerateBtn = !!stationCode && !!deviceTypeCode && deviceFullCodesStatus && devicePointCodesStatus && !!timeInterval && dataTypesStatus;
     const showResetBtn = !!stationCode || !!deviceTypeCode || deviceFullCodesStatus || devicePointCodesStatus || !!timeInterval || dataTypesStatus;
@@ -379,17 +384,17 @@ class DataExportSearch extends Component{
             <Select
               placeholder="请选择"
               onChange={this.selectTimeSpace}
-              value={!timeInterval ? undefined: timeInterval}
+              // value={!timeInterval ? undefined : timeInterval}
             >
               {intervalInfo.map(e => (
-                <Option className={styles.intervalText} key={e} value={e}>{e === 10 ? '10分钟' : `${e}秒`}</Option>
+                <Option className={styles.intervalText} key={e} value={e}>{e === 3 ? '10分钟' : (e === 2 ? '5秒' : '1秒')}</Option>
               ))}
             </Select>
           </div>
 
           <div className={styles.dataTypes}>
             <span className={styles.text}>数据类型</span>
-            {timeInterval === 10 ?
+            {timeInterval === 3 ?
               <Select
                 onChange={this.changeDataType}
                 mode="multiple"

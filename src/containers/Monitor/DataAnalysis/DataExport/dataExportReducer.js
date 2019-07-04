@@ -6,7 +6,7 @@ const initState = immutable.fromJS({
   tableLoading: false, // 列表请求的loading
   selectStationType: null, // 选中的电站类型
   stationDeviceTypes: [], // 电站下可选设备类型
-  intervalInfo: [10,5], // 默认支持的时间间隔5s,10min
+  intervalInfo: [3, 2], // 默认支持的时间间隔5s,10min
   reRenderTree: null, // 记录属性控件生成时间
   pointInfo: [], // 选中设备内可选测点信息
   partDataExport: {}, // 表格内 - 分页后的历史数据
@@ -21,7 +21,7 @@ const initState = immutable.fromJS({
     dataTypes: [], // 数据类型(1：平均值（差值），2：最大值（结束值）3：最小值（开始值） 4：瞬时值)
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备
-    devicePointCodes: [], // 选中的测点
+    devicePointIds: [], // 选中的测点
     timeInterval: null, // 数据时间间隔：1-1s,5-5s,10-10min
     startTime: moment().subtract(1, 'month').startOf('day'),
     endTime: moment().subtract(1, 'month').endOf('day'), 

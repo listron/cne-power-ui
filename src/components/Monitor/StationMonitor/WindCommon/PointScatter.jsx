@@ -17,28 +17,28 @@ class PointScatter extends Component {
         super();
     }
     componentDidMount() {
-        this.drawCharts(this.props)
+        this.drawCharts(this.props);
     }
 
     componentDidUpdate(prevProps) {
-        const { scatterpointTime, loading } = this.props;
+        const { scatterpointTime } = this.props;
         const preTime = prevProps.scatterpointTime;
-        if (scatterpointTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
+        if (scatterpointTime !== preTime) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
 
     drawCharts = (params) => {
-        const { scatterData = {}, type, loading } = params;
+        const { scatterData = {}, type } = params;
         let needData = [];
         if (type === 'windDevice') {
             needData = [
                 { name: '近三个月', value: 'monthsChart' },
                 { name: '24小时', value: 'dayChart' },
-            ]
+            ];
         }
-        let series = needData.map((item) => {
+        const series = needData.map((item) => {
             const data = scatterData[item.value] || [];
             return ({
                 name: item.name,
@@ -49,17 +49,17 @@ class PointScatter extends Component {
                 },
                 data: data.map((item) => {
                     const { xData, yData, time, deviceName } = item;
-                    const formatTime = moment(time).format('YYYY-MM-DD HH:MM:SS')
-                    return [dataFormats(xData, '--', 2, true), dataFormats(yData, '--', 2, true), formatTime, deviceName]
-                })
-            })
-        })
+                    const formatTime = moment(time).format('YYYY-MM-DD HH:mm:ss');
+                    return [dataFormats(xData, '--', 2, true), dataFormats(yData, '--', 2, true), formatTime, deviceName];
+                }),
+            });
+        });
         const chartsBox = document.getElementById('SpeedScatterGraph');
         const Graphic = (needData.length === 0) ? showNoData : hiddenNoData;
         const lineColor = '#666';
         const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
-        loading ? SpeedScatterGraph.showLoading('default', { color: '#199475' }) : SpeedScatterGraph.hideLoading();
+        scatterData.monthsChart ? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
         const scatterOption = {
             graphic: Graphic,
             color: ['#c7ceb2', '#199475', '#e08031'],
@@ -96,7 +96,7 @@ class PointScatter extends Component {
                     type: 'cross',
                     label: {
                         backgroundColor: lineColor,
-                    }
+                    },
                 },
                 backgroundColor: '#fff',
                 textStyle: {
@@ -114,8 +114,8 @@ class PointScatter extends Component {
                                 <div class=${styles.tooltipCont}> <span></span> 平均功率 ${dataFormats(params.data[1], '--', 2, true)}</div>
                             </div>
                         </div>`
-                    )
-                }
+                    );
+                },
             },
             xAxis: {
                 type: 'value',
@@ -124,7 +124,7 @@ class PointScatter extends Component {
                 nameTextStyle: {
                     color: lineColor,
                     verticalAlign: 'bottom',
-                    padding: [0, 0, 20, 0]
+                    padding: [0, 0, 20, 0],
                 },
                 axisTick: {
                     show: false,
@@ -143,10 +143,10 @@ class PointScatter extends Component {
                 axisPointer: {
                     label: {
                         show: false,
-                    }
+                    },
                 },
                 splitLine: {
-                    show: false
+                    show: false,
                 },
             },
             yAxis: [
@@ -170,9 +170,9 @@ class PointScatter extends Component {
                     axisTick: {
                         show: false,
                     },
-                }
+                },
             ],
-            series: series
+            series: series,
         };
         SpeedScatterGraph.setOption(scatterOption, 'notMerge');
     }
@@ -180,10 +180,10 @@ class PointScatter extends Component {
     render() {
         return (
             <div id="SpeedScatterGraph" className={styles.SpeedScatterGraph}></div>
-        )
+        );
     }
 }
 
 
 
-export { PointScatter }
+export { PointScatter };
