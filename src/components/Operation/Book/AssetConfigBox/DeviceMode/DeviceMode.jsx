@@ -214,7 +214,7 @@ class DeviceMode extends React.Component {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <span title={text}>{text ? text : '--'}</span>,
       }, {
         title: '操作',
         render: (text, record, index) => {

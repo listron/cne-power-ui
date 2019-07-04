@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./partInfo.scss";
-import { partInfoAction } from "./partInfoAction";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './partInfo.scss';
+import { partInfoAction } from './partInfoAction';
 
-import PartInfoBox from "../../../../../components/Operation/Book/PartInfoBox/PartInfoBox";
-import TransitionContainer from "../../../../../components/Common/TransitionContainer";
-import PartsInfoSide from "../../../../../components/Operation/Book/PartInfoBox/PartsInfoSide";
-import { commonAction } from "../../../../alphaRedux/commonAction";
+import PartInfoBox from '../../../../../components/Operation/Book/PartInfoBox/PartInfoBox';
+import TransitionContainer from '../../../../../components/Common/TransitionContainer';
+import PartsInfoSide from '../../../../../components/Operation/Book/PartInfoBox/PartsInfoSide';
+import { commonAction } from '../../../../alphaRedux/commonAction';
 
-import PropTypes from "prop-types";
-import Cookie from "js-cookie";
+import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class PartInfo extends Component {
   static propTypes = {
@@ -19,22 +19,23 @@ class PartInfo extends Component {
     getStationOfEnterprise: PropTypes.func,
     changeTab: PropTypes.func,
     showPage: PropTypes.string,
-    selectType: PropTypes.string
+    selectType: PropTypes.string,
   };
   constructor(props) {
     super(props);
     this.state = {
-      showSidePage: "list"
+      showSidePage: 'list',
     };
   }
   componentDidMount() {
     const { enterpriseId, getStationOfEnterprise } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
+
   }
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      showSidePage: showPage,
     });
   };
   onShowSideChange = showSidePage => {
@@ -43,6 +44,7 @@ class PartInfo extends Component {
   queryTargetData = value => {
     //此处是改变deviceManage里的reducer，头部组件选择
     this.props.changeTab(value);
+    this.props.resetPartInfoStore();
   };
   render() {
     const { selectType, showPage } = this.props;
@@ -51,23 +53,23 @@ class PartInfo extends Component {
 
     return (
       <div className={styles.deviceManageContainer}>
-        {selectType === "partInfo" && (
+        {selectType === 'partInfo' && (
           <div className={styles.deviceManage}>
             <div className={styles.deviceManageMain}>
               <div className={styles.allStationTitle}>
                 <p
                   className={
-                    selectType === "deviceInfo" ? styles.activeStation : ""
+                    selectType === 'deviceInfo' ? styles.activeStation : ''
                   }
                   onClick={() => {
-                    this.queryTargetData("deviceInfo");
+                    this.queryTargetData('deviceInfo');
                   }}
                 >
                   设备信息
                 </p>
                 <p
                   className={
-                    selectType === "partInfo" ? styles.activeStation : ""
+                    selectType === 'partInfo' ? styles.activeStation : ''
                   }
                 >
                   部件信息
@@ -78,7 +80,7 @@ class PartInfo extends Component {
               </div>
             </div>
             <TransitionContainer
-              show={showPage !== "list"}
+              show={showPage !== 'list'}
               onEnter={this.onToggleSide}
               onExited={this.onToggleSide}
               timeout={500}
@@ -97,10 +99,10 @@ class PartInfo extends Component {
   }
 }
 const mapStateToProps = state => ({
-  enterpriseId: Cookie.get("enterpriseId"),
+  enterpriseId: Cookie.get('enterpriseId'),
   ...state.operation.partInfo.toJS(),
-  stations: state.common.get("stations").toJS(),
-  selectType: state.operation.deviceManage.get("selectType")
+  stations: state.common.get('stations').toJS(),
+  selectType: state.operation.deviceManage.get('selectType'),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -128,16 +130,16 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         params,
         actionName: partInfoAction.changePartInfoStore,
-        resultName: "allStationBaseInfo"
-      }
+        resultName: 'allStationBaseInfo',
+      },
     }),
   downLoadFile: payload =>
     dispatch({
       type: commonAction.downLoadFile,
       payload: {
         ...payload,
-        actionName: partInfoAction.changePartInfoStore
-      }
+        actionName: partInfoAction.changePartInfoStore,
+      },
     }),
   getPartsAssetTree: payload =>
     dispatch({ type: partInfoAction.getPartsAssetTree, payload }), // 台账生产资产树
@@ -152,7 +154,7 @@ const mapDispatchToProps = dispatch => ({
   getDevicePartInfo: payload =>
     dispatch({ type: partInfoAction.getDevicePartInfo, payload }), //通过设备获得组件详情树
   getPartAssetsTree: payload =>
-    dispatch({ type: partInfoAction.getPartAssetsTree, payload }) //通过设备获得组件详情树
+    dispatch({ type: partInfoAction.getPartAssetsTree, payload }), //通过设备获得组件详情树
 });
 
 export default connect(
