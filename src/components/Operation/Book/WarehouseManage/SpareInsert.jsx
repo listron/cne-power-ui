@@ -169,7 +169,7 @@ class SpareInsert extends Component {
     const numValidator = (text) => (rule, value, callback) => {
       !value && callback(`请填写${text}`);
       isNaN(value) && callback('请填写数字');
-      value > 999999999 && callback('数据过大');
+      value >= 1000000000 && callback('数据过大');
       value < 0 && callback('不能为负数');
       callback();
     };
