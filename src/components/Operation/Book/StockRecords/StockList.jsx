@@ -134,7 +134,7 @@ class StockList extends Component {
 
   outColumns = () => { // 展示出库列表
     const columns = [{
-      title: '物品编码',
+      title: '资产编码',
       dataIndex: 'materialCode',
       className: 'materialCode',
       sorter: true,
