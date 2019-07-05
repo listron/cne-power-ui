@@ -72,6 +72,8 @@ class DataExportSearch extends Component{
 
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getAvailableDeviceType, changeDataExportStore, queryParams } = this.props;
+    const { devicePointIds } = queryParams; 
+    
     const { stationCode } = selectedStationInfo[0];
     getAvailableDeviceType({ stationCode });
     changeDataExportStore({ 
@@ -106,8 +108,6 @@ class DataExportSearch extends Component{
       queryParams:{
         ...queryParams,
         deviceFullCodes: devices,
-        devicePointIds: [],
-        pointsSeleted: [],
       }
     })
     getPointInfo({
@@ -263,29 +263,29 @@ class DataExportSearch extends Component{
     if(!inputEdited){
         this.setState({
           showWarningTip: true,
-        })
+        });
       }
     }
 
   confirmWarningTip = () => { // 确定
-    const { getDataExport, queryParams, deviceTypeCode } = this.props;
+    const { getDataExport, queryParams, deviceTypeCode, changeDataExportStore } = this.props;
     this.setState({
-      showWarningTip: false
-    })
+      showWarningTip: false,
+    });
 
     getDataExport({
       deviceTypeCode,
       queryParams: {
         ...queryParams,
         timeZone: moment().zone() / (-60),
-      }
-    })
+      },
+    });
   }
 
   cancelWarningTip = () => { // 取消
     this.setState({
-      showWarningTip: false
-    })
+      showWarningTip: false,
+    });
   }
 
   render(){
