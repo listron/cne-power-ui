@@ -67,8 +67,7 @@ class CreateFlow extends Component {
           isContinueAdd,
           docketId,
         };
-        console.log('params', params);
-        // this.props.addDockect(params);
+        this.props.addDockect(params);
         if (isContinueAdd) {
           this.props.form.resetFields();
         }
