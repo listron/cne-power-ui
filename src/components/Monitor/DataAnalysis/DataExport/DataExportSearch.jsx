@@ -269,8 +269,8 @@ class DataExportSearch extends Component{
   confirmWarningTip = () => { // 确定
     const { getDataExport, queryParams, deviceTypeCode } = this.props;
     this.setState({
-      showWarningTip: false,
-    });
+      showWarningTip: false
+    })
 
     getDataExport({
       deviceTypeCode,
