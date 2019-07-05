@@ -180,14 +180,16 @@ class DeviceFactory extends React.Component {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text, record) => {
+          return (<span title={text}>{text ? text : record.isBuild === 1 ? '系统' : '--'}</span>);
+        },
       }, {
         title: '操作',
         render: (text, record, index) => {
           return (<div>
             <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
 
-            <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span>
+            {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span> : ''}
           </div>);
         },
 
@@ -245,11 +247,11 @@ class DeviceFactory extends React.Component {
             dataSource={deviceFactorsList.map((e, i) => {
               e.assetsNames = [];
               e.assetsIds = [];
-              e.isBuild = [];
+              // e.isBuild = [];
               e.assetsDatas.forEach((item, index) => {
                 e.assetsNames.push(item.assetsNames.replace(/,/g, '/'));
                 e.assetsIds.push(item.assetsIds);
-                e.isBuild.push(item.isBuild);
+                // e.isBuild.push(item.isBuild);
               });
               return { ...e };
             })}

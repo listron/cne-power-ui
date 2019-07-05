@@ -32,21 +32,22 @@ class EditMode extends React.Component {
       const { modeId } = tableRecord;
 
       if (!err) {
-        this.props.editDeviceModes({ 
-          modeId, 
-          deviceModeName: values.editDeviceMode, 
-          assetsId: values.eidtAssetIds.assetsIds.join(), 
-          manufactorId: values.eidtFactor });
+        this.props.editDeviceModes({
+          modeId,
+          deviceModeName: values.editDeviceMode,
+          assetsId: values.eidtAssetIds.assetsIds.join(),
+          manufactorId: values.eidtFactor,
+        });
         this.props.cancleModal();
       }
-     
+
     });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
     const { selectassetsId } = this.state;
     const { showModal, assetList, stationTypeCount, queryDataType, cancleModal, tableRecord, deviceFactorsList } = this.props;
-    const { deviceModeName, assetsId, stationType, manufactorName, assetsName } = tableRecord;
+    const { deviceModeName, assetsId, stationType, manufactorName, assetsName, manufactorId } = tableRecord;
     const pv = stationType === '1' ? [assetsId] : [];
     const wind = stationType === '0' ? [assetsId] : [];
     return (
@@ -89,7 +90,7 @@ class EditMode extends React.Component {
             </FormItem>
             <FormItem label="设备厂家" colon={false} >
               {getFieldDecorator('eidtFactor', {
-                initialValue: manufactorName,
+                initialValue: manufactorId,
                 rules: [
                   { message: '请选择生产资产节点', required: true },
                 ],
