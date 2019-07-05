@@ -72,7 +72,6 @@ class DataExportSearch extends Component{
 
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getAvailableDeviceType, changeDataExportStore, queryParams } = this.props;
-    
     const { stationCode } = selectedStationInfo[0];
     getAvailableDeviceType({ stationCode });
     changeDataExportStore({ 
