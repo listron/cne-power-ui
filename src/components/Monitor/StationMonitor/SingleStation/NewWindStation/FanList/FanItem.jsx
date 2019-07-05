@@ -168,7 +168,7 @@ class FanItem extends React.Component {
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
                 <div>
-                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true, e.quantity)}</span>
+                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true)}</span>
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>
