@@ -163,7 +163,6 @@ class SpareInsert extends Component {
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId, assetsIds } = getFieldsValue(['manufactorId', 'assetsIds']);
-    console.log(assetsIds)
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
