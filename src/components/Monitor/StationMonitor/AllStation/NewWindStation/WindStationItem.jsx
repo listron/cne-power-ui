@@ -69,7 +69,7 @@ class WindStationItem extends React.Component {
         <div className={currentStatus === '400' && styles.poNomal || styles.poInterrupt}>{currentStatus === '400' ? '通讯正常' : '通讯中断'}</div>
         <div className={styles.popCont}>
           {needData.map((e, index) => {
-            const value = e.quantity ? item[e['value']] / e.quantity : item[e['value']];
+            const value = e.quantity ? dataFormats(item[e.value], '--') / e.quantity : item[e.value];
             return (
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
