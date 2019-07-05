@@ -99,7 +99,7 @@ class SelectModal extends Component {
         </TreeNode>
       );
     }
-    return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} ></TreeNode>;
+    return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1} ></TreeNode>;
   })
   render() {
     const { visiable, sourceData, stationType, multiple, stationTypeCount } = this.props;
