@@ -207,7 +207,7 @@ class WindStation extends React.Component {
                   capabilityData={capabilityData}
                   yAxisUnit={'MW'}
                   capabilityDataTime={capabilityDataTime}
-                  capabilityLoading={capabilityLoading}
+                  loading={capabilityLoading}
                 />
               </div>
               <div className={styles.chartsBox}>
