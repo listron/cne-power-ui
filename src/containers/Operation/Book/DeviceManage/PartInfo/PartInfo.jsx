@@ -32,6 +32,9 @@ class PartInfo extends Component {
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
 
   }
+  componentWillUnmount() {
+    this.props.resetPartInfoStore();
+  }
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
