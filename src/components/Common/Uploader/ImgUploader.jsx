@@ -1,9 +1,10 @@
+/* eslint-disable radix */
 import React, { Component } from 'react';
 import { Upload, message, Icon } from 'antd';
 import styles from './uploader.scss';
 import PropTypes from 'prop-types';
 import UploadedImg from './UploadedImg';
-import ImgListModal from './ImgListModal'
+import ImgListModal from './ImgListModal';
 import Cookie from 'js-cookie';
 
 /*
@@ -34,10 +35,10 @@ import Cookie from 'js-cookie';
 
 class ImgUploader extends Component {
   static propTypes = {
-    max: PropTypes.number,//图片最大数量 
-    limitSize: PropTypes.number,//图片大小限制
+    max: PropTypes.number, //图片最大数量 
+    limitSize: PropTypes.number, //图片大小限制
     uploadPath: PropTypes.string, //上传
-    editable : PropTypes.bool, //是否可编辑(右旋+删除)
+    editable: PropTypes.bool, //是否可编辑(右旋+删除)
     data: PropTypes.array, //输入图片信息列表
     onChange: PropTypes.func, //输出
     onOK: PropTypes.func, //输出
@@ -45,102 +46,103 @@ class ImgUploader extends Component {
   }
   static defaultProps = {
     max: 4,
-    limitSize: 2*1024*1024,
+    limitSize: 2 * 1024 * 1024,
     editable: false,
-    imgStyle: {width:'104px',height:'104px'}
+    imgStyle: { width: '104px', height: '104px' },
   }
   constructor(props) {
     super(props);
     this.state = {
       imageListShow: false,
-      currentImgIndex:0,
-      fileList: [],
+      currentImgIndex: 0,
+      fileList: props.data || [],
     };
   }
 
-  componentWillReceiveProps(nextProps){
-    if(!nextProps.data || nextProps.data.length === 0){ // 外界要求清空列表时清空已上传文件列表。
-      this.setState({fileList: []})
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.data || nextProps.data.length === 0) { // 外界要求清空列表时清空已上传文件列表。
+      this.setState({ fileList: [] });
     }
   }
 
-  onOK = (imgList,editFileList) => {
-    const { onChange,onOK } = this.props
+  onOK = (imgList, editFileList) => {
+    const { onChange, onOK } = this.props;
     onOK && onOK(imgList);
     onChange && onChange(imgList);
-    editFileList && this.setState({fileList:editFileList})
+    editFileList && this.setState({ fileList: editFileList });
   }
-  
-  beforeUpload = (file,fileList) => {
+
+  beforeUpload = (file, fileList) => {
     const isIMG = /^image/.test(file.type);
-    const { limitSize, max, data} = this.props;
-    const isLimitSize = file.size  > limitSize;
+    const { limitSize, max, data } = this.props;
+    const isLimitSize = file.size > limitSize;
     const isLimitNum = (fileList.length + (data && data.length || 0)) > max;
-    if(!isIMG){
+    if (!isIMG) {
       message.error('只支持图片上传！');
     }
-    if(isLimitSize){
-      message.error(`图片上传大小不得超过${parseInt(limitSize/1024/1024)}M！`);
+    if (isLimitSize) {
+      message.error(`图片上传大小不得超过${parseInt(limitSize / 1024 / 1024)}M！`);
     }
-    if(isLimitNum){
+    if (isLimitNum) {
       message.error(`图片数量超限，不得超过${max}张！`);
     }
     return isIMG && !isLimitSize && !isLimitNum;
   }
 
-  handleUpload = ({file,fileList}) => {
+  handleUpload = ({ file, fileList }) => {
     const { imgStyle, data } = this.props;
     if (file.status !== 'uploading') {
       const upLoadfiles = fileList.map(e => {
-        let rotateObj = data && data.find(m=>m.uid === e.uid);
-        let rotate = (rotateObj && rotateObj.rotate) || 0;
+        const rotateObj = data && data.find(m => m.uid === e.uid);
+        const rotate = (rotateObj && rotateObj.rotate) || 0;
+        const response = e.thumbUrl || e.response.data.address;
         return {
-          uid:e.uid,
-          name:e.name,
+          uid: e.uid,
+          name: e.name,
           rotate,
-          response:e.response.data.address,
-          thumbUrl:e.response.data.address,
-          status:e.status,
-          imgStyle
-        }
-      })
+          response,
+          thumbUrl: response,
+          status: e.status,
+          imgStyle,
+        };
+      });
       this.onOK(upLoadfiles);
     }
-    this.setState({fileList})
+    this.setState({ fileList });
   }
 
   showImg = (index) => {
     this.setState({
       imageListShow: true,
-      currentImgIndex:index
+      currentImgIndex: index,
     });
   }
 
   hideImg = () => {
     this.setState({
-      imageListShow: false
+      imageListShow: false,
     });
   }
 
   changeCurrentImgIndex = (index) => {
     this.setState({
-      currentImgIndex:index
+      currentImgIndex: index,
     });
   }
 
   render() {
     const authData = localStorage.getItem('authData') || '';
     const { imageListShow, currentImgIndex, fileList } = this.state;
-    const { uploadPath, max,  data, editable, imgStyle } = this.props;
-		const imageProps = {
-			action: `${uploadPath}`,
+    const { uploadPath, max, data, editable, imgStyle } = this.props;
+    const imageProps = {
+      action: `${uploadPath}`,
       onChange: this.handleUpload,
       multiple: true,
       fileList,
-			listType: "picture-card",
-      headers:{'Authorization': 'bearer ' + authData},
-      beforeUpload:this.beforeUpload
-		};
+      listType: 'picture-card',
+      headers: { 'Authorization': 'bearer ' + authData },
+      beforeUpload: this.beforeUpload,
+    };
     const uploadButton = (
       <div className={styles.uploadBtn}>
         <Icon type="plus" className={styles.add} />
@@ -149,33 +151,33 @@ class ImgUploader extends Component {
     );
     return (
       <div className={styles.imgUploader}>
-        {data && data.length > 0 && data.map((e,i)=>(
-          <UploadedImg 
+        {data && data.length > 0 && data.map((e, i) => (
+          <UploadedImg
             editable={editable}
             fileList={fileList}
-            showImg={this.showImg} 
-            key={e.uid} 
-            {...e} 
-            index={i} 
-            data={data} 
+            showImg={this.showImg}
+            key={e.uid}
+            {...e}
+            index={i}
+            data={data}
             onEdit={this.onOK} />
-          ))}
+        ))}
         {editable && <Upload
           className={styles.loaderHandler}
           style={imgStyle}
-          { ...imageProps }
+          {...imageProps}
         >
           {(data && data.length >= max) ? null : uploadButton}
         </Upload>}
-        <ImgListModal 
-          data={data} 
-          imageListShow={imageListShow} 
-          hideImg={this.hideImg} 
-          currentImgIndex={currentImgIndex} 
+        <ImgListModal
+          data={data}
+          imageListShow={imageListShow}
+          hideImg={this.hideImg}
+          currentImgIndex={currentImgIndex}
           changeCurrentImgIndex={this.changeCurrentImgIndex}
         />
       </div>
-    ); 
+    );
   }
 }
 export default ImgUploader;

@@ -4,30 +4,30 @@ import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { powerReportAction } from './powerReportAction';
 import moment from 'moment';
-const APIBasePath=Path.basePaths.APIBasePath;
-const monitor=Path.APISubPaths.monitor
+const APIBasePath = Path.basePaths.APIBasePath;
+const monitor = Path.APISubPaths.monitor;
 
-function *getPowerReportList(action) {  // 请求报表列表
+function* getPowerReportList(action) { // 请求报表列表
   const { payload } = action;
-  const{startTime,endTime,}=payload;
+  const { startTime, endTime } = payload;
   const url =`${APIBasePath}${monitor.getPowerReportList}`;
-  // const url =`/mock/v3/wind/report/fan/gen`;
+  // const url = '/mock/v3/wind/report/fan/gen';
 
-  try{
+  try {
     yield put({
-      type:powerReportAction.changePowerReportStore,
+      type: powerReportAction.changePowerReportStore,
       payload: {
         loading: true,
       },
-    });  
-    const response = yield call(axios.post,url,{
+    });
+    const response = yield call(axios.post, url, {
       ...payload,
       // startTime:moment( startTime).utc().format(''),
       // endTime:moment( endTime).utc().format(''),
-      timeZone:moment().zone() / (-60),
+      timeZone: moment().zone() / (-60),
 
     });
-    if(response.data.code === '10000') {
+    if (response.data.code === '10000') {
       const total = response.data.data.pageCount || 0;
       let { pageNum, pageSize } = payload;
       const maxPage = Math.ceil(total / pageSize);
@@ -37,24 +37,24 @@ function *getPowerReportList(action) {  // 请求报表列表
         pageNum = maxPage;
       }
       yield put({
-        type:powerReportAction.changePowerReportStore,
+        type: powerReportAction.changePowerReportStore,
         payload: {
-          filterTable:payload.summaryType,
-          total:response.data.data.pageCount||0,
-          powerReportList: response.data.data.dataList||[],
-          loading:false,
+          filterTable: payload.summaryType,
+          total: response.data.data.pageCount || 0,
+          powerReportList: response.data.data.dataList || [],
+          loading: false,
           ...payload,
         },
-      });     
-    }else{
-      throw response.data
-    }  
-  }catch(e){
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
     console.log(e);
     yield put({
-      type:powerReportAction.changePowerReportStore,
-      payload: { ...payload, loading: false ,powerReportList:[]},
-    })
+      type: powerReportAction.changePowerReportStore,
+      payload: { ...payload, loading: false, powerReportList: [] },
+    });
   }
 }
 

@@ -121,6 +121,7 @@ class AddGood extends Component {
           onCancel={this.hideModal}
           width={744}
           footer={null}
+          maskClosable={false}
         >
           <Form className={styles.addGoodModal}>
             <FormItem label="物品名称" className={styles.eathItem}>
@@ -144,7 +145,7 @@ class AddGood extends Component {
                   required: true,
                   message: '请选择物品类型',
                 }],
-                initialValue: goodsType
+                initialValue: goodsType,
               })(
                 <Select placeholder="请选择" style={{width: 200}} disabled>
                   {goodTypeInfo.map(e => (
@@ -156,11 +157,12 @@ class AddGood extends Component {
             <FormItem label="计量单位" className={styles.eathItem}>
               {getFieldDecorator('goodsUnit', {
                 rules: [{
-                  message: '不超过30字',
-                  max: 30,
+                  required: true,
+                  message: '请输入不超过6字的计量单位',
+                  max: 6,
                 }],
               })(
-                <Input placeholder="30字以内" />
+                <Input placeholder="6字以内" />
               )}
             </FormItem>
             <div className={styles.confirmRow}>
@@ -178,7 +180,7 @@ class AddGood extends Component {
           </Form>
         </Modal>}
       </div>
-    )
+    );
   }
 }
 

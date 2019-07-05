@@ -1,9 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import eCharts from "echarts";
-import { singleTemperatureOptions } from "../chartsConfig/chartsConfig";
-import styles from "./singleResult.scss";
-import moment from "../PreTemperature/PreTemperature";
+import React from 'react';
+import PropTypes from 'prop-types';
+import eCharts from 'echarts';
+import { singleTemperatureOptions } from '../chartsConfig/chartsConfig';
+import styles from './singleResult.scss';
 
 
 
@@ -19,17 +18,17 @@ export default class SingleResult extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    const  {
+    const {
       singleChart,
       props: {
         standAloneList,
         aloneLoading,
         deviceName,
-        aloneTimeCompare: currentAloneTimeCompare
-      }
+        aloneTimeCompare: currentAloneTimeCompare,
+      },
     } = this;
     const { aloneTimeCompare } = prevProps;
-    const name = localStorage.getItem("deviceName");
+    const name = localStorage.getItem('deviceName');
     // 设备全编码
     const myChart = eCharts.init(singleChart);
     if (aloneLoading) { // loading态控制。

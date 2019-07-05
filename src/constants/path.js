@@ -195,12 +195,12 @@ export default {
       recallReserveInfo: '/v3/inventory/record/reCall', // 撤回库存中某物资的出库
       getWarehouseStationType: '/v3/warehouse/stationType', // 仓库所属电站类型
       // 台账-出入库记录
-      warehouseName: "/v3/warehouse/list", // 用户权限下仓库下拉列表
-      warehouseType: "/v3/manufactor/user", // 规格/型号下拉列表
-      inRecordExport: "/v3/inventory/inRecord/export", // 入库导出
-      outRecordExport: "/v3/inventory/outRecord/export", // 出库导出
-      inRecordList: "/v3/inventory/inRecord/pageList", // 入库记录分页查询
-      outRecordList: "/v3/inventory/outRecord/pageList", // 出库记录分页查询
+      warehouseName: '/v3/warehouse/list', // 用户权限下仓库下拉列表
+      warehouseType: '/v3/manufactor/user', // 规格/型号下拉列表
+      inRecordExport: '/v3/inventory/inRecord/export', // 入库导出
+      outRecordExport: '/v3/inventory/outRecord/export', // 出库导出
+      inRecordList: '/v3/inventory/inRecord/pageList', // 入库记录分页查询
+      outRecordList: '/v3/inventory/outRecord/pageList', // 出库记录分页查询
 
       // 两票 - 审核人设置
       getSettingList: '/v3/workflow/station/distribution/pageList', // 获取设置列表
@@ -404,6 +404,7 @@ export default {
       getListScatterDiagram: "/v3/wind/scatterpoint/fan/list", // 散点图 - 列表数据
       exportScatterDiagram: "/v3/wind/scatterpoint/fan/export", // 导出散点图数据
       getPoints: "/v3/wind/scatterpoint/fan/point", // 散点图X/Y轴测点数据
+      getDataExport: "/v3/wind/analysis/export/task", // 数据导出
 
       getWindMonitorPower: "/v3/wind/monitor/stations/power", // 全部风电站的理论发电量图表
       getWindStation: "/v3/wind/monitor/stations", // 全部风电站

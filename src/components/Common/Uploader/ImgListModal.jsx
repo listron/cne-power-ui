@@ -21,7 +21,7 @@ class ImgListModal extends Component {
   }
 
   preImg = () => {
-    let { currentImgIndex } = this.props;
+    const { currentImgIndex } = this.props;
     if (currentImgIndex <= 0) {
       return;
     }
@@ -29,26 +29,26 @@ class ImgListModal extends Component {
   }
 
   nextImg = () => {
-    let { currentImgIndex, data } = this.props;
+    const { currentImgIndex, data } = this.props;
     if (!data || currentImgIndex >= data.length - 1) {
       return;
     }
     this.props.changeCurrentImgIndex(currentImgIndex + 1);
   }
 
-  download=()=>{
-    const {downLoadFile,downloadHref}=this.props;
+  download = () => {
+    const { downLoadFile, downloadHref } = this.props;
     downLoadFile({
-      url:downloadHref,
-      method:'get'
-    })
-    
+      url: downloadHref,
+      method: 'get',
+    });
+
   }
 
   render() {
-    const { imageListShow, hideImg, data=[], currentImgIndex, downloadHref ,downLoadFile} = this.props;
+    const { imageListShow, hideImg, data = [], currentImgIndex, downloadHref, downLoadFile } = this.props;
     const { imgWidth } = this.state;
-    let listMargin = currentImgIndex * (-imgWidth);
+    const listMargin = currentImgIndex * (-imgWidth);
     return (
       <Modal
         footer={null}
@@ -71,7 +71,7 @@ class ImgListModal extends Component {
               <ul className={styles.imgList} style={{ marginLeft: `${listMargin}px` }}>
                 {data && data.length > 0 && data.map(e => (
                   <li className={styles.eachImg} key={e.uid}>
-                    <img src={e.thumbUrl} alt={e.name} width={imgWidth}  />
+                    <img src={e.thumbUrl} alt={e.name} width={imgWidth} style={{ transform: `rotate(${e.rotate}deg)` }} />
                   </li>
                 ))}
               </ul>

@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./algorithmControl.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './algorithmControl.scss';
 
 export default class AlgorithmModal extends React.Component {
   static propTypes = {
@@ -28,9 +28,9 @@ export default class AlgorithmModal extends React.Component {
     const {
       changeAlgorithmControlStore,
       algoOptionList,
-      getTaskStatusStat
+      getTaskStatusStat,
     } = this.props;
-    let newSameArr = []; // 相同数据
+    const newSameArr = []; // 相同数据
     // 取到相同的数据
     for (let i = 0; i < algoOptionList.length; i++) {
       if (`${algoOptionList[i].algorithmId}` === `${algorithmId}`) {
@@ -38,26 +38,26 @@ export default class AlgorithmModal extends React.Component {
       }
     }
     changeAlgorithmControlStore({
-      viewType: "list",
+      viewType: 'list',
     });
     const { getListView } = this.props;
     const listParams = {
-      stationCode:null,
+      stationCode: null,
       algorithmModalId: [`${algorithmId}`],
-      startTime:"",
-      endTime:"",
-      status:null,
-      pageSize:null,
-      pageNum:null,
-      sortField:"",
-      sortMethod:"",
-      algorithmModalName: newSameArr
+      startTime: '',
+      endTime: '',
+      status: null,
+      pageSize: null,
+      pageNum: null,
+      sortField: '',
+      sortMethod: '',
+      algorithmModalName: newSameArr,
     };
     const statusParams = {
-      stationCodes:null,
+      stationCodes: null,
       algorithmIds: [`${algorithmId}`],
-      startTime:"",
-      endTime:""
+      startTime: '',
+      endTime: '',
     };
     // 列表
     getListView(listParams);
@@ -69,11 +69,11 @@ export default class AlgorithmModal extends React.Component {
     const { algoModelList: {
       healthList,
       largeSizeList,
-      natureList
+      natureList,
     } } = this.props;
     const largeSizeItem = largeSizeList && largeSizeList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId);}}>
           <div>
             {cur.algorithmName}
           </div>
@@ -86,7 +86,7 @@ export default class AlgorithmModal extends React.Component {
     });
     const natureItem = natureList && natureList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId);}}>
           <div>
             {cur.algorithmName}
           </div>
@@ -99,7 +99,7 @@ export default class AlgorithmModal extends React.Component {
     });
     const healthItem = healthList && healthList.map(cur => {
       return (
-        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId)}}>
+        <div className={styles.algorithmItem} key={cur.algorithmId} onClick={() => {return this.detailsFunc(cur.algorithmId);}}>
           <div>
             {cur.algorithmName}
           </div>

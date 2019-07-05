@@ -1,19 +1,19 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./faultWarn.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './faultWarn.scss';
 
 export default class FaultWarn extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
     history: PropTypes.object,
-    faultWarnList: PropTypes.array
+    faultWarnList: PropTypes.array,
   };
 
   faultWarnFunc = (stationCode) => {
     const { faultWarnList } = this.props;
     // 跳转到单风场预警
     //存储单风场故障数量和总数
-    localStorage.setItem("faultAllWarnList", JSON.stringify(faultWarnList));
+    localStorage.setItem('faultAllWarnList', JSON.stringify(faultWarnList));
     this.props.history.push(`/analysis/faultDiagnose/fanWarn/${stationCode}`);
   };
 
@@ -37,7 +37,7 @@ export default class FaultWarn extends React.Component {
                   <div key={item}>
                     {item}
                   </div>
-                )
+                );
               })}
             </div>
           )}

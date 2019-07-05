@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Form, Table} from "antd";
-import moment from "moment";
-import EditableCell from "./EditableCell/EditableCell";
+import {Form, Table} from 'antd';
+import moment from 'moment';
+import EditableCell from './EditableCell/EditableCell';
 
-import styles from "./warehouseWrapTable.scss";
+import styles from './warehouseWrapTable.scss';
 
-const defaultTime = "YYYY-MM-DD HH:mm:ss";
+const defaultTime = 'YYYY-MM-DD HH:mm:ss';
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => {
   return (<EditableContext.Provider value={form}>
     <tr {...props} />
-  </EditableContext.Provider>)
+  </EditableContext.Provider>);
 };
 const EditableFormRow = Form.create()(EditableRow);
 
 class WarehouseWrapTable extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
     form: PropTypes.object,
     stations: PropTypes.object,
     warehouseData: PropTypes.object,
@@ -46,7 +46,7 @@ class WarehouseWrapTable extends Component {
   onSelectChange = selectedRowKeys => {
     const { onSelectedRowKeys } = this.props;
     this.setState({
-      selectedRowKeys
+      selectedRowKeys,
     }, () => {
       onSelectedRowKeys(selectedRowKeys);
     });
@@ -62,17 +62,17 @@ class WarehouseWrapTable extends Component {
     } = this.props;
     // 根据字段匹配
     const fieldData = {
-      warehouseName: "warehouse_name",
-      createTime: "create_time",
-      user: "username"
+      warehouseName: 'warehouse_name',
+      createTime: 'create_time',
+      user: 'username',
     };
     // 参数
-    const params =  {
+    const params = {
       warehouseName,
       pageNum,
       pageSize,
-      sortField: field ? fieldData[field] : "",
-      sortMethod: order === 'ascend' ? (field ? "asc" : "") : (field ? 'desc' : "")
+      sortField: field ? fieldData[field] : '',
+      sortMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
     };
     getWarehouseList(params);
   };
@@ -100,15 +100,15 @@ class WarehouseWrapTable extends Component {
       const params = {
         warehouseId,
         warehouseName,
-        stationCodes: stationCode.join(","),
+        stationCodes: stationCode.join(','),
         pageNum,
         pageSize,
         searchName,
         sortField,
         sortMethod,
         func: () => {
-          this.setState({ editingKey: "" });
-        }
+          this.setState({ editingKey: '' });
+        },
       };
       getWarehouseUpdateList(params);
 
@@ -117,7 +117,6 @@ class WarehouseWrapTable extends Component {
 
   // 编辑
   edit = (key) => {
-    console.log(key, "key");
     this.setState({ editingKey: key });
   };
 
@@ -137,9 +136,9 @@ class WarehouseWrapTable extends Component {
       form,
       stations,
       warehouseData: {
-        dataList : data
+        dataList: data,
       },
-      warehouseListLoading
+      warehouseListLoading,
     } = this.props;
     const { selectedRowKeys } = this.state;
     const components = {
@@ -148,9 +147,9 @@ class WarehouseWrapTable extends Component {
         cell: (...rest) => {
           return (<EditableContext.Consumer>
             {form => {
-              return <EditableCell form={form} data={data} stations={stations} {...rest[0]} />
+              return <EditableCell form={form} data={data} stations={stations} {...rest[0]} />;
             }}
-          </EditableContext.Consumer>)
+          </EditableContext.Consumer>);
         },
       },
     };
@@ -164,22 +163,22 @@ class WarehouseWrapTable extends Component {
         dataIndex: 'warehouseName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         editable: true,
-        render: (text) => <span className={styles.stationName} title={text}>{text}</span>
+        render: (text) => <span className={styles.stationName} title={text}>{text}</span>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>
+        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>,
       }, {
         title: '创建人',
         dataIndex: 'user',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>
+        render: (text) => <span title={text}>{text}</span>,
       }, {
         title: '操作',
         render: (text, record) => {
@@ -194,17 +193,17 @@ class WarehouseWrapTable extends Component {
                       <a
                         onClick={() => this.save(form, record.warehouseId)}
                         style={{ marginRight: 8 }}>
-                        <span style={{marginRight: '4px'}} title="保存" className={"iconfont icon-doned"} />
+                        <span style={{marginRight: '4px'}} title="保存" className={'iconfont icon-doned'} />
                       </a>
-                    )
+                    );
                   }}
                 </EditableContext.Consumer>)
-                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.warehouseId)} ><span style={{ marginRight: '4px' }} title="编辑" className={"iconfont icon-edit"} /></a>
+                : <a disabled={editingKey !== ''} onClick={() => this.edit(record.warehouseId)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} /></a>
               }
-              <span style={{cursor: "pointer"}} title="删除" className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
+              <span style={{cursor: 'pointer'}} title="删除" className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
           </div>
-        )
-        }
+        );
+        },
       },
     ].map((col) => {
       if (!col.editable) {
@@ -231,13 +230,13 @@ class WarehouseWrapTable extends Component {
             columns={columns}
             rowSelection={rowSelection}
             pagination={false}
-            rowKey={(record) => record.warehouseId || "key"}
+            rowKey={(record) => record.warehouseId || 'key'}
             onChange={this.tableChange}
-            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            locale={{emptyText: <img width="223" height="164" src="/img/nodata.png" alt="" />}}
           />
         </EditableContext.Provider>
       </div>
-    )
+    );
   }
 }
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import { Form, Input } from 'antd';
-import StationSelect from "../../../../../../Common/StationSelect/index";
-import PropTypes from "prop-types";
+import StationSelect from '../../../../../../Common/StationSelect/index';
+import PropTypes from 'prop-types';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -20,7 +20,7 @@ class EditableCell extends React.Component {
   getInput = () => {
     const { type, stations } = this.props;
     if (type === 'text') {
-      return <Input maxLength={30} placeholder="仓库名称" />
+      return <Input maxLength={30} placeholder="仓库名称" />;
     }
     return (
       <StationSelect
@@ -28,6 +28,7 @@ class EditableCell extends React.Component {
         style={{ width: '200px' }}
         onOK={this.selectStation}
         multiple={true}
+        oneStyleOnly={true}
         stationShowNumber={true}
       />
     );
@@ -56,7 +57,7 @@ class EditableCell extends React.Component {
                       required: true,
                       message: `请输入${title}!`,
                     }],
-                    initialValue: dataIndex === "warehouseName" ? record[dataIndex] : stations.toJS().filter(e => record["stationCodes"].split(",").includes(`${e.stationCode}`)),
+                    initialValue: dataIndex === 'warehouseName' ? record[dataIndex] : stations.toJS().filter(e => record['stationCodes'].split(',').includes(`${e.stationCode}`)),
                   })(this.getInput())}
                 </FormItem>
               ) : restProps.children}
@@ -67,4 +68,4 @@ class EditableCell extends React.Component {
     );
   }
 }
-export default (EditableCell)
+export default (EditableCell);

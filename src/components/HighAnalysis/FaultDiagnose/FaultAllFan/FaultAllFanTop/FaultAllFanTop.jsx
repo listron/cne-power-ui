@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import FaultAllFanHistory from "./../FaultAllFanHistory/FaultAllFanHistory";
-import FaultResetTask from "./../FaultResetTask/FaualtResetTask";
-import styles from "./faultAllFanTop.scss";
-import Path from "../../../../../constants/path";
-import moment from "moment";
+import FaultAllFanHistory from './../FaultAllFanHistory/FaultAllFanHistory';
+import FaultResetTask from './../FaultResetTask/FaualtResetTask';
+import styles from './faultAllFanTop.scss';
+import Path from '../../../../../constants/path';
+import moment from 'moment';
 
 
 const {
@@ -14,10 +14,10 @@ const {
   },
   APISubPaths: {
     highAnalysis: {
-      downloadFile
-    }
+      downloadFile,
+    },
   }} = Path;
-const defaultFormat = "YYYY-MM-DD HH:mm:ss";
+const defaultFormat = 'YYYY-MM-DD HH:mm:ss';
 export default class FaultAllFanTop extends React.Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -40,13 +40,13 @@ export default class FaultAllFanTop extends React.Component {
 
   onVisible = (flag) => {
     this.setState({
-      visibleFlag: flag
-    })
+      visibleFlag: flag,
+    });
   };
 
   onTaskVisible = (flag) => {
     this.setState({
-      taskFlag: flag
+      taskFlag: flag,
     });
   };
 
@@ -61,18 +61,18 @@ export default class FaultAllFanTop extends React.Component {
   downloadFunc = () => {
     const {
       downLoadFile,
-      faultInfo:{
+      faultInfo: {
         stationName,
         startTime,
         endTime,
-        taskId
-      }
+        taskId,
+      },
     } = this.props;
-    const url  = `${APIBasePath}${downloadFile}/${taskId}`;
+    const url = `${APIBasePath}${downloadFile}/${taskId}`;
     downLoadFile({
       url,
-      method: "get",
-      fileName: `${stationName || ""}_${startTime || ""}_${endTime || ""}.csv`
+      method: 'get',
+      fileName: `${stationName || ''}_${startTime || ''}_${endTime || ''}.csv`,
     });
   };
 
@@ -87,7 +87,7 @@ export default class FaultAllFanTop extends React.Component {
         endTime,
         status,
         startTime,
-        stationName
+        stationName,
       },
       faultInfoMessage } = this.props;
 
@@ -99,31 +99,31 @@ export default class FaultAllFanTop extends React.Component {
               <div>
                 <div>
                   <span>训练开始日期：</span>
-                  <span>{trainningStartTime && moment(trainningStartTime).format("YYYY-MM-DD") || ""}</span>
+                  <span>{trainningStartTime && moment(trainningStartTime).format('YYYY-MM-DD') || ''}</span>
                 </div>
                 <div>
                   <span>任务计划执行时间：</span>
-                  <span>{planExecuteTime && moment(planExecuteTime).format(defaultFormat) || ""}</span>
+                  <span>{planExecuteTime && moment(planExecuteTime).format(defaultFormat) || ''}</span>
                 </div>
               </div>
               <div>
                 <div>
                   <span>检测开始时间：</span>
-                  <span>{startTime && startTime || ""}</span>
+                  <span>{startTime && startTime || ''}</span>
                 </div>
                 <div>
                   <span>任务执行开始时间：</span>
-                  <span>{executeStartTime && moment(executeStartTime).format(defaultFormat) || ""}</span>
+                  <span>{executeStartTime && moment(executeStartTime).format(defaultFormat) || ''}</span>
                 </div>
               </div>
               <div>
                 <div>
                   <span>检测结束时间：</span>
-                  <span>{endTime && endTime || ""}</span>
+                  <span>{endTime && endTime || ''}</span>
                 </div>
                 <div>
                   <span>任务执行结束时间：</span>
-                  <span>{executeEndTime && moment(executeEndTime).format(defaultFormat) || ""}</span>
+                  <span>{executeEndTime && moment(executeEndTime).format(defaultFormat) || ''}</span>
                 </div>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default class FaultAllFanTop extends React.Component {
               </div>
               {(status && status !== 4) && (
                 <div>
-                  <span>{`${stationName || ""}_${startTime || ""}_${endTime || ""}.csv`}</span>
+                  <span>{`${stationName || ''}_${startTime || ''}_${endTime || ''}.csv`}</span>
                   <span className={styles.download} onClick={this.downloadFunc}>
                   下载
                 </span>

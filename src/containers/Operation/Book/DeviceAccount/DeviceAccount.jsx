@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from "./deviceAccount.scss";
+import styles from './deviceAccount.scss';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { deviceAccountAction } from './deviceAccountAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
@@ -10,11 +10,11 @@ import DeviceAccountBox from '../../../../components/Operation/Book/DeviceAccoun
 
 class DeviceAccount extends Component {
   static propTypes = {
-    resetStore:PropTypes.func,
+    resetStore: PropTypes.func,
   };
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   componentWillUnmount() {
@@ -25,11 +25,11 @@ class DeviceAccount extends Component {
   render() {
     const { } = this.props;
     const breadCrumbData = {
-      breadData: [{name: '设备台账',}],
+      breadData: [{name: '设备台账'}],
     };
     return (
       <div className={styles.containerDiv}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
         <div className={styles.containerBg}>
           <div className={styles.container}>
             <DeviceAccountBox {...this.props} />
@@ -37,7 +37,7 @@ class DeviceAccount extends Component {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 
@@ -45,7 +45,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.operation.deviceAccount.toJS(),
     stations: state.common.get('stations').toJS(),
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch) => ({
   getDeviceModeList: payload => dispatch({ type: deviceAccountAction.getDeviceModeList, payload }),
   getDeviceAttachments: payload => dispatch({ type: deviceAccountAction.getDeviceAttachments, payload }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(DeviceAccount)
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceAccount);

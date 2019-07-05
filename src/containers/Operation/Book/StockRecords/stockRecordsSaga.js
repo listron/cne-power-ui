@@ -12,7 +12,7 @@ function *getWarehouseName({ payload = {} }) { // 选择仓库名称
     const url = `${APIBasePath}${operation.warehouseName}`;
     yield put({
       type: stockRecordsAction.stockRecordsStore,
-    })
+    });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
       yield put({
@@ -20,8 +20,8 @@ function *getWarehouseName({ payload = {} }) { // 选择仓库名称
         payload: {
           ...payload,
           warehouseNames: response.data.data || []
-        }
-      })
+        },
+      });
     } else {
       throw response.data;
     }
@@ -38,53 +38,8 @@ function *getInRecordList({ payload = {} }) { // 入库列表
       type: stockRecordsAction.stockRecordsStore,
       payload: {
         tableLoading: true,
-      }
-    })
-    const response = yield call(axios.post, url, {...payload});
-    const { pageCount = 0 } = response.data.data;
-    let { pageNum, pageSize } = payload;
-    const maxPage = Math.ceil(pageCount / pageSize);
-    if (pageCount === 0) {
-      pageNum = 1;
-    } else if (maxPage < pageNum) {
-      pageNum = maxPage;
-    }
-    if (response.data.code === '10000') {
-      yield put({
-        type: stockRecordsAction.GET_STOCKRECORDS_SUCCESS,
-        payload: {
-          listParams:{
-            ...payload,
-            pageNum, 
-            pageSize,
-          },
-          tableLoading: false,
-          inRecordListData: response.data.data.dataList || [],
-          pageCount: response.data.data.pageCount || 0,
-        },
-      });
-    } else {
-      throw response.data
-    }
-  }catch(error) {
-    message.error('获取入库列表信息失败!');
-    yield put({
-      type: stockRecordsAction.stockRecordsStore,
-      payload: { tableLoading: false }
-    })
-    console.log(error);
-  }
-}
-
-function *getOutRecordList({ payload = {} }) { // 出库列表
-  const url = `${APIBasePath}${operation.outRecordList}`;
-  try{
-    yield put({
-      type: stockRecordsAction.stockRecordsStore,
-      payload: {
-        tableLoading: true,
-      }
-    })
+      },
+    });
     const response = yield call(axios.post, url, {...payload});
     const { pageCount = 0 } = response.data.data;
     let { pageNum, pageSize } = payload;
@@ -100,8 +55,53 @@ function *getOutRecordList({ payload = {} }) { // 出库列表
         payload: {
           listParams: {
             ...payload,
-            pageNum, 
-            pageSize
+            pageNum,
+            pageSize,
+          },
+          tableLoading: false,
+          inRecordListData: response.data.data.dataList || [],
+          pageCount: response.data.data.pageCount || 0,
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  }catch(error) {
+    message.error('获取入库列表信息失败!');
+    yield put({
+      type: stockRecordsAction.stockRecordsStore,
+      payload: { tableLoading: false }
+    });
+    console.log(error);
+  }
+}
+
+function *getOutRecordList({ payload = {} }) { // 出库列表
+  const url = `${APIBasePath}${operation.outRecordList}`;
+  try{
+    yield put({
+      type: stockRecordsAction.stockRecordsStore,
+      payload: {
+        tableLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, {...payload});
+    const { pageCount = 0 } = response.data.data;
+    let { pageNum, pageSize } = payload;
+    const maxPage = Math.ceil(pageCount / pageSize);
+    if (pageCount === 0) {
+      pageNum = 1;
+    } else if (maxPage < pageNum) {
+      pageNum = maxPage;
+    }
+    if (response.data.code === '10000') {
+      yield put({
+        type: stockRecordsAction.GET_STOCKRECORDS_SUCCESS,
+        payload: {
+          listParams: {
+            ...payload,
+            pageNum,
+            pageSize,
           },
           tableLoading: false,
           outRecordListData: response.data.data.dataList || [],
@@ -109,14 +109,14 @@ function *getOutRecordList({ payload = {} }) { // 出库列表
         },
       });
     } else {
-      throw response.data
+      throw response.data;
     }
   }catch(error) {
     message.error('获取出库列表信息失败!');
     yield put({
       type: stockRecordsAction.stockRecordsStore,
       payload: { tableLoading: false }
-    })
+    });
     console.log(error);
   }
 }

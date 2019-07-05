@@ -39,17 +39,17 @@ export default class FaultNavList extends React.Component {
       navList: { clientHeight },
       props: {
         onChangeFilter,
-      }
+      },
     } = this;
     onChangeFilter({
-      showFlag: clientHeight > 32
+      showFlag: clientHeight > 32,
     });
   }
 
   componentDidUpdate() {
     const { navList: { clientHeight }, props: {onChangeFilter} } = this;
     onChangeFilter({
-      showFlag: clientHeight > 32
+      showFlag: clientHeight > 32,
     });
   }
 
@@ -57,17 +57,17 @@ export default class FaultNavList extends React.Component {
     const { openFlag } = this.state;
     const { navBox } = this;
     this.setState({
-      openFlag: !openFlag
+      openFlag: !openFlag,
     }, () => {
       if (openFlag) {
         // 改变box
-        navBox.style.height = "auto";
-        navBox.style.paddingBottom = "8px";
+        navBox.style.height = 'auto';
+        navBox.style.paddingBottom = '8px';
       }
       if (!openFlag) {
         // 改变box
-        navBox.style.height = "32px";
-        navBox.style.paddingBottom = "0";
+        navBox.style.height = '32px';
+        navBox.style.paddingBottom = '0';
       }
     });
   };
@@ -76,36 +76,36 @@ export default class FaultNavList extends React.Component {
     const {
       onChangeFilter,
       faultInfo: {
-        endTime
+        endTime,
       },
     } = this.props;
     const { date } = data;
     // 故障日期时间
-    const dateArr = date && date.split(",");
+    const dateArr = date && date.split(',');
     // 判断如果date有数据
     const timeValue = date && date ? dateArr[dateArr.length - 1] : endTime;
     // 目前先不用掉接口
     this.setState({
-      fansFlag: index
+      fansFlag: index,
     }, () => {
       // 改变设备选中
       onChangeFilter({
         warnId,
         faultDate: timeValue, // 故障详情页选择日期
         preDate: [// 前驱温度时间选择
-          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
-          moment(timeValue, "YYYY/MM/DD")
+          moment(timeValue, 'YYYY/MM/DD').subtract(1, 'months'),
+          moment(timeValue, 'YYYY/MM/DD'),
         ],
         afterDate: [// 后驱温度时间选择
-          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
-          moment(timeValue, "YYYY/MM/DD")
+          moment(timeValue, 'YYYY/MM/DD').subtract(1, 'months'),
+          moment(timeValue, 'YYYY/MM/DD'),
         ],
         diffDate: [// 后驱温度时间选择
-          moment(timeValue, "YYYY/MM/DD").subtract(1,'months'),
-          moment(timeValue, "YYYY/MM/DD")
+          moment(timeValue, 'YYYY/MM/DD').subtract(1, 'months'),
+          moment(timeValue, 'YYYY/MM/DD'),
         ],
       });
-    })
+    });
   };
 
 
@@ -114,32 +114,32 @@ export default class FaultNavList extends React.Component {
     const {
       showFlag,
       faultInfo: {
-        algModeDatas
-      }
+        algModeDatas,
+      },
     } = this.props;
-    const deviceFullName = localStorage.getItem("deviceFullName");
+    const deviceFullName = localStorage.getItem('deviceFullName');
     const item = algModeDatas && algModeDatas.map((cur, index) => {
       return (
         <div
           key={`${cur.algorithmName}${index}`}
-          style={deviceFullName === cur.algorithmName ? {backgroundColor: "#ffffff"} :
-            {backgroundColor: (!deviceFullName && index === fansFlag) ?  "#ffffff" : "#199475"}}
+          style={deviceFullName === cur.algorithmName ? {backgroundColor: '#ffffff'} :
+            {backgroundColor: (!deviceFullName && index === fansFlag) ? '#ffffff' : '#199475'}}
           className={Number(cur.type) === 1 ? styles.redWarn : styles.blueWarn}
-          onClick={() => {return this.handlerFansClick(cur, index, Number(cur.type))}}
+          onClick={() => {return this.handlerFansClick(cur, index, Number(cur.type));}}
         >
           {cur.algorithmName}
         </div>
       );
     });
     return (
-      <div className={styles.faultNavList} ref={ref => {this.navBox = ref}}>
-        <div className={styles.navListRight} ref={ ref => {this.navList = ref} }>
+      <div className={styles.faultNavList} ref={ref => {this.navBox = ref;}}>
+        <div className={styles.navListRight} ref={ ref => {this.navList = ref;} }>
           {item}
         </div>
         {(showFlag) && (
           <div className={styles.navListLeft}>
             <div onClick={this.openFunc}>
-              <span>{openFlag ? "展开" : "关闭"}</span><Icon type={openFlag ? "caret-down" : "caret-up"} />
+              <span>{openFlag ? '展开' : '关闭'}</span><Icon type={openFlag ? 'caret-down' : 'caret-up'} />
             </div>
           </div>
         )}

@@ -20,9 +20,9 @@ class DefectCheckForm extends Component {
         this.props.onChange({
           handleResult: 1,
           ...values,
-          annexImg:null,
-          otherImg:null,
-        })
+          annexImg: null,
+          otherImg: null,
+        });
       }
     });
   }
@@ -39,10 +39,10 @@ class DefectCheckForm extends Component {
           {getFieldDecorator('handleDesc', {
             rules: [{
               required: true,
-              message: '请输入处理建议'
-            }]
+              message: '请输入处理建议',
+            }],
           })(
-            <InputLimit placeholder="请描述，不超过999个汉字" />
+            <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
           )}
         </FormItem>
         <div className={styles.actionBar}>

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select, TreeSelect, DatePicker, Button } from 'antd';
 import path from '../../../../constants/path';
-import styles from "./record.scss";
+import styles from './record.scss';
 import moment from 'moment';
 
 const { APIBasePath } = path.basePaths;
@@ -39,109 +39,91 @@ class StockSearch extends Component {
   }
 
   onWarehouseName = (warehouseId = null) => { // 选择仓库名称
-    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
+    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams, tableType } = this.props;
     const newParams = {
       ...listParams,
-      warehouseId
-    }
+      warehouseId,
+    };
     stockRecordsStore({
-      ...newParams
-    })
-    getInRecordList({
-      ...newParams
-    })
-    getOutRecordList({
-      ...newParams
-    })
+      ...newParams,
+    });
+    tableType === 'inRecord' && getInRecordList({
+      ...newParams,
+    });
+    tableType === 'outRecord' && getOutRecordList({
+      ...newParams,
+    });
   }
 
   onManufactor = (goodsType = null) => { // 选择库存类型
-    const { listParams, stockRecordsStore, getInRecordList, getOutRecordList } = this.props;
-    this.setState({ value: goodsType })
+    const { listParams, stockRecordsStore, getInRecordList, getOutRecordList, tableType } = this.props;
+    this.setState({ value: goodsType });
     const newParams = {
       ...listParams,
-      goodsType
-    }
-    stockRecordsStore({ 
-      ...newParams
-    }); 
-    getInRecordList({
-      ...newParams
-    })
-    getOutRecordList({
-      ...newParams
-    })
+      goodsType,
+    };
+    stockRecordsStore({
+      ...newParams,
+    });
+    tableType === 'inRecord' && getInRecordList({
+      ...newParams,
+    });
+    tableType === 'outRecord' && getOutRecordList({
+      ...newParams,
+    });
   }
-  
+
   timeChange = (time) => { // 选择时间
     const timeLength = time.length > 0;
-    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
-    let startTime = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD') : null;
-    let endTime = timeLength ? moment(time[1]).endOf('day').format('YYYY-MM-DD') : null;
+    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams, tableType } = this.props;
+    let startTime = timeLength ? moment(time[0]).startOf('day').utc().format() : null;
+    let endTime = timeLength ? moment(time[1]).endOf('day').utc().format() : null;
     let isToday = moment(endTime).isSame(moment(), 'd');
     isToday ? endTime = moment().format('YYYY-MM-DD') : endTime;
     const newParams = {
       ...listParams,
       startTime,
       endTime,
-    }
+    };
     stockRecordsStore({
-      ...newParams
-    })
-    getInRecordList({
-      ...newParams
-    })
-    getOutRecordList({
-      ...newParams
-    })
+      ...newParams,
+    });
+    tableType === 'inRecord' && getInRecordList({
+      ...newParams,
+    });
+    tableType === 'outRecord' && getOutRecordList({
+      ...newParams,
+    });
   }
 
-  inImport = () => { // 入库导出
+  inImport = () => { // 导出
     const { downLoadFile, listParams } = this.props;
     const url = `${APIBasePath}${operation.inRecordExport}`;
     const { warehouseId, goodsType, startTime, endTime } = listParams;
     const timeZone = moment().zone() / (-60);
     downLoadFile({
       url,
-      fileName: `入库表`,
+      fileName: '表',
       params: {
         warehouseId,
         goodsType,
-        startTime: startTime ? moment(startTime).utc().format() : null, 
-        endTime: endTime ? moment(endTime).utc().format() : null, 
-        timeZone
-      }
-    })
-  }
-
-  outImport = () => { // 出库导出
-    const { downLoadFile, listParams } = this.props;
-    const url = `${APIBasePath}${operation.outRecordExport}`;
-    const { warehouseId, goodsType, startTime, endTime } = listParams;
-    const timeZone = moment().zone() / (-60);
-    downLoadFile({
-      url,
-      fileName: `出库表`,
-      params: {
-        warehouseId,
-        goodsType,
-        startTime: startTime ? moment(startTime).utc().format() : null, 
+        startTime: startTime ? moment(startTime).utc().format() : null,
         endTime: endTime ? moment(endTime).utc().format() : null,
-        timeZone
-      }
-    })
+        timeZone,
+      },
+    });
   }
 
   render() {
-    const { warehouseNames, tableType, listParams } = this.props;
+    const { warehouseNames, listParams } = this.props;
     const { warehouseId, goodsType, startTime, endTime } = listParams;
     return (
       <div className={styles.stockSearch}>
         <div className={styles.searchLeft}>
           <span className={styles.text}>条件查询</span>
-          <Select 
+          <Select
             allowClear
-            placeholder="请选择仓库名称" 
+            placeholder="请选择仓库名称"
             className={styles.warehouseName}
             onChange={this.onWarehouseName}
           >
@@ -181,11 +163,10 @@ class StockSearch extends Component {
           />
         </div>
         <div className={styles.searchRight}>
-          {tableType === 'inRecord' ? <Button onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</Button> : 
-          <Button onClick={this.outImport} className={styles.outImportBtn} disabled={!warehouseId && !goodsType && !RangePicker && !endTime}>导出</Button>}
+          <Button onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</Button>
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -50,10 +50,10 @@ class ToolTakeout extends Component {
           inventoryId,
           entryType,
           materialCodes: materialCodes.map(e => e.materialCode).join(','),
-          remarks
+          remarks,
         });
       }
-    })
+    });
   }
 
   render(){
@@ -61,7 +61,7 @@ class ToolTakeout extends Component {
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
-      initialValue
+      initialValue,
     });
     const goodsInfo = [
       { value: '201', label: '安全工器具' },
@@ -84,7 +84,7 @@ class ToolTakeout extends Component {
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型', originTakeoutInfo.goodsType))(
-              <Select placeholder="请选择" style={{width: 200}}>
+              <Select placeholder="请选择" style={{width: 200}} disabled>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -122,7 +122,7 @@ class ToolTakeout extends Component {
               rules: [{
                 required: true,
                 validator: (rule, value, callback) => {
-                  (!value || value.length === 0) && callback(`请选择物资`);
+                  (!value || value.length === 0) && callback('请选择物资');
                   callback();
                 },
               }],
@@ -141,7 +141,7 @@ class ToolTakeout extends Component {
           <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 

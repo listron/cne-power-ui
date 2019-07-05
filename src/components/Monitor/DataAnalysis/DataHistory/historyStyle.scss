@@ -106,7 +106,7 @@
     .ant-tree{
       max-height: 780px;
       width: 196px;
-      overflow-x: hidden;
+      overflow-x: auto;
       overflow-y: auto;
       li .ant-tree-node-content-wrapper{
         height: auto;
