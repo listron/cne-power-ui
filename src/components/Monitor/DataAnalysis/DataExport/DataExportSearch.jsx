@@ -106,8 +106,6 @@ class DataExportSearch extends Component{
       queryParams:{
         ...queryParams,
         deviceFullCodes: devices,
-        devicePointIds: [],
-        pointsSeleted: [],
       }
     })
     getPointInfo({

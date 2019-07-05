@@ -36,21 +36,21 @@ class MaterialInsert extends Component {
     this.state = {
       materialNumber: inventoryNum,
       saveMode: '',
-    }
+    };
   }
 
   componentDidMount(){
-    const { originInsertInfo, form } = this.props; 
+    const { originInsertInfo, form } = this.props;
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
         warehouseId: originInsertInfo.warehouseId,
-        goodsType: parseInt(originInsertInfo.goodsType),
+        goodsType: parseInt(originInsertInfo.goodsType, 10),
         goodsName: originInsertInfo.goodsName,
         devManufactorName: originInsertInfo.devManufactorName,
         modeName: originInsertInfo.modeName,
         manufactorName: '',
         supplierName: '',
-      })
+      });
     }
   }
 
@@ -70,7 +70,7 @@ class MaterialInsert extends Component {
           entryNum: '',
           price: '',
           remarks: '',
-        })
+        });
       } else if (saveMode === 'more' && !originInsertInfo) { // 新入库 继续添加 => 清除form数据并清空树。
         form.resetFields();
       }
@@ -81,8 +81,8 @@ class MaterialInsert extends Component {
     const { materialNumber } = this.state;
     const { form } = this.props;
     this.setState({
-      materialNumber: parseFloat(materialNumber) + parseFloat(form.getFieldValue('entryNum'))
-    })
+      materialNumber: parseFloat(materialNumber) + parseFloat(form.getFieldValue('entryNum')),
+    });
   }
 
   backToList = () => {
@@ -93,7 +93,7 @@ class MaterialInsert extends Component {
   }
 
   refreshGoodList = (goodsMaxType) => {
-    this.props.getGoodsList({ goodsMaxType })
+    this.props.getGoodsList({ goodsMaxType });
   }
 
   insertSave = () => { // 保存
@@ -110,31 +110,26 @@ class MaterialInsert extends Component {
     const { form, insertWarehouse } = this.props;
     form.validateFieldsAndScroll((err, values) => {
       !err && insertWarehouse({ ...values });
-    })
+    });
   }
 
   render(){
     const { saveMode, materialNumber } = this.state;
     const {
       form, tabName, warehouseList, addNewGood, goodsList, addGoodName,
-      insertStatus, originInsertInfo, addGoodStatus
+      insertStatus, originInsertInfo, addGoodStatus,
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { goodsType } = getFieldsValue(['goodsType']);
     const requireInfoFun = (text) => ({
       rules: [{ required: true, message: text }],
     });
-    const numValidator = (text) => (rule, value, callback) => {
-      !value && callback(`请填写${text}`);
-      isNaN(value) && callback('请填写数字');
-      callback();
-    }
     const goodsInfo = [
       { value: 301, label: '生活物资' },
       { value: 302, label: '办公物资' },
       { value: 303, label: '其他' },
     ];
-    
+
     return (
       <section className={styles.insert}>
         <h3 className={styles.title}>
@@ -194,10 +189,17 @@ class MaterialInsert extends Component {
             )}
           </FormItem>
           <FormItem label="入库数量">
-            {getFieldDecorator('entryNum',{
+            {getFieldDecorator('entryNum', {
               rules: [{
                 required: true,
-                validator: numValidator('入库数量'),
+                validator: (rule, value, callback) => {
+                  !value && callback('请填写入库数量');
+                  isNaN(value) && callback('请填写数字');
+                  value >= 1000 && callback('数据过大');
+                  value.includes('.') && callback('入库数量必须是整数');
+                  value < 0 && callback('不能为负数');
+                  callback();
+                },
               }],
             })(
               <Input placeholder="30字以内" style={{width: 200}} />
@@ -208,7 +210,14 @@ class MaterialInsert extends Component {
             {getFieldDecorator('price', {
               rules: [{
                 required: true,
-                validator: numValidator('单价'),
+                validator: (rule, value, callback) => {
+                  !value && callback('请填写单价');
+                  isNaN(value) && callback('请填写数字');
+                  value >= 1000000000 && callback('数据过大');
+                  value.includes('.') && value.split('.')[1].length > 4 && callback('不可超出4位小数');
+                  value < 0 && callback('不能为负数');
+                  callback();
+                },
               }],
             })(
               <Input placeholder="请输入..." style={{width: 200}} />
@@ -233,7 +242,7 @@ class MaterialInsert extends Component {
           >保存并继续添加</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 
