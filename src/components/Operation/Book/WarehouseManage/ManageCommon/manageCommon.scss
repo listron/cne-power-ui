@@ -23,10 +23,18 @@
 .conditionSearch{ // 顶部通用查询
   display: flex;
   height: 64px;
+  justify-content: space-between;
   align-items: center;
+  .searchParts{
+    display: flex;
+    align-items: center;
+  }
   .title{
     margin-left: 28px;
     color: $darkColor;
+  }
+  .export{
+    margin-right: 24px;
   }
   :global{
     .ant-select{

@@ -67,7 +67,8 @@ class CreateFlow extends Component {
           isContinueAdd,
           docketId,
         };
-        this.props.addDockect(params);
+        console.log('params', params);
+        // this.props.addDockect(params);
         if (isContinueAdd) {
           this.props.form.resetFields();
         }
@@ -87,6 +88,7 @@ class CreateFlow extends Component {
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
     const { annexImg = [], otherImg = [] } = docketInfo;
+    // console.log(getFieldValue('annexImg'));
     const imgDescribe = annexImg.map((item, i) => {
       return {
         uid: i,
