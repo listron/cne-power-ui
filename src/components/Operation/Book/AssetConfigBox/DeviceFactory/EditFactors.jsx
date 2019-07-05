@@ -60,7 +60,7 @@ class EditFactors extends React.Component {
                   { message: '请输入设备厂家名称', required: true },
                 ],
               })(
-                isBuild ? <span>manufactorName</span> : <Input placeholder="请输入..." />
+                isBuild ? <span>{manufactorName}</span> : <Input placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem label="生产资产" colon={false} >

@@ -29,7 +29,7 @@ function* getAssetTree(action) { // 生产资产树
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false, assetList: [] },
+      payload: { loading: false, assetList: [] },
     });
   }
 }
@@ -103,7 +103,7 @@ function* addAssetNode(action) { //台账增加生产资产节点
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -142,7 +142,7 @@ function* deleteAssetNode(action) { //台账删除生产资产树
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -188,7 +188,7 @@ function* editAssetNode(action) { //台账编辑生产资产节点
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -224,7 +224,7 @@ function* getDeviceFactorsList(action) { //获取设备厂家列表
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -299,7 +299,7 @@ function* editDeviceFactors(action) { //编辑设备厂家
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -335,7 +335,7 @@ function* deleteDeviceFactors(action) { //删除设备厂家
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -371,7 +371,7 @@ function* getDeviceModesList(action) { //获取设备型号列表
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -408,7 +408,7 @@ function* addDeviceModes(action) { //新建设备型号
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -446,7 +446,7 @@ function* editDeviceModes(action) { //编辑设备型号
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
@@ -482,7 +482,7 @@ function* deleteDeviceModes(action) { //删除设备型号
     console.log(e);
     yield put({
       type: assetConfigAction.changeAssetConfigStore,
-      payload: { ...payload, loading: false },
+      payload: { loading: false },
     });
   }
 }
