@@ -97,7 +97,7 @@ function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存
         type: warehouseManageAction.fetchSuccess,
         payload: {
           stocksListLoading: false,
-          stocksList: response.data.data.dataList || {},
+          stocksList: response.data.data.dataList || [],
           totalCount: response.data.data.pageCount || 0,
         },
       });
@@ -430,13 +430,19 @@ function *getMaterialDetailsList({ payload }) { // 获取仓库下的物资列�
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,
-        payload: { materialDetailsList: response.data.data || [] },
+        payload: {
+          materialDetailsList: response.data.data.dataList || [],
+          materialListTotal: response.data.data.pageCount || 0,
+        },
       });
     } else { throw response.data; }
   } catch (error) {
     yield put({
       type: warehouseManageAction.changeStore,
-      payload: { materialDetailsList: [] },
+      payload: {
+        materialDetailsList: [],
+        materialListTotal: 0,
+      },
     });
   }
 }
