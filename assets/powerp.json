@@ -13,7 +13,7 @@
 	},
 	"develop": {
 		"htUrl": "http://10.10.11.3",
-    "apiUrlReal": "http://10.10.11.224:80",
+		"apiUrlReal": "http://10.10.15.51",
 		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"local": {
@@ -22,7 +22,7 @@
 	},
 	"test": {
 		"htUrl": "http://10.10.11.3",
-		"apiUrlReal": "http://10.10.15.51",
+		"apiUrlReal": "http://10.10.15.83",
 		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"official": {
