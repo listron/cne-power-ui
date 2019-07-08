@@ -75,11 +75,15 @@ const initState = Immutable.fromJS({
     sortField: 'entry_time', // 单价：price, 入库人：username, 入库时间：entry_time, 出库时间：we_entry_time, 状态：is_entry
     sortMethod: 'desc', // 'asc'：正序  'desc'：倒序
   },
+  materialListParams: { // 库存物资列表表格
+    sortField: '', // 'price'
+    sortMethod: '', // "asc"：正序  "desc"：倒序
+    pageNum: 1,
+    pageSize: 10,
+  },
+  materialListTotal: 0, // 库存物资列表总数.
   reserveListLoading: false, // 库存列表loading
   reserveListInfo: {}, // 库存对象统计列表信息
-  // sparesData: [], // 备品备件表格
-  // toolsData: [], // 工具数据表格
-  // materialsData: [], // 物资数据表格
 });
 
 const warehouseManage = (state = initState, action) => {

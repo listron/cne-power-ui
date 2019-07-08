@@ -16,15 +16,16 @@ class MaterialTakeout extends Component {
     takeoutStatus: PropTypes.string,
     backList: PropTypes.func,
     originTakeoutInfo: PropTypes.object,
+    materialListParams: PropTypes.object,
     changeStore: PropTypes.func,
     getMaterialDetailsList: PropTypes.func,
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
   componentDidMount(){
-    const { getMaterialDetailsList, originTakeoutInfo } = this.props;
+    const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
-    getMaterialDetailsList({ inventoryId }); // 该仓库下的物资列表
+    getMaterialDetailsList({ inventoryId, ...materialListParams }); // 该仓库下的物资列表
   }
 
   componentDidUpdate(preProps){
@@ -117,7 +118,11 @@ class MaterialTakeout extends Component {
                 },
               }],
             })(
-              <MaterialDetailsList materialDetailsList={materialDetailsList} total={originTakeoutInfo.inventoryNum} />
+              <MaterialDetailsList
+                {...this.props}
+                total={originTakeoutInfo.inventoryNum}
+                inventoryId={originTakeoutInfo.inventoryId}
+              />
             )}
           </FormItem>
           <FormItem label="备注">
