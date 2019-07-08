@@ -92,7 +92,6 @@ class ImgUploader extends Component {
   handleUpload = ({ file, fileList }) => {
     const { imgStyle, data } = this.props;
     if (file.status !== 'uploading') {
-      console.log('fileList', fileList);
       const upLoadfiles = fileList.map(e => {
         const rotateObj = data && data.find(m => m.uid === e.uid);
         const rotate = (rotateObj && rotateObj.rotate) || 0;

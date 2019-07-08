@@ -47,16 +47,15 @@ class CreateFlow extends Component {
       if (!err) {
         const { stationCode } = values.stations[0];
         const { docketType, docketCode, docketName, defectList = {} } = values;
-        console.log('values.annexImg', values.annexImg);
         const annexImg = values.annexImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
         const otherImg = values.otherImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
@@ -73,8 +72,7 @@ class CreateFlow extends Component {
           isContinueAdd,
           docketId,
         };
-        console.log('params', params)
-        // this.props.addDockect(params);
+        this.props.addDockect(params);
         if (isContinueAdd) {
           this.props.form.resetFields();
         }
@@ -96,7 +94,7 @@ class CreateFlow extends Component {
     const { annexImg = [], otherImg = [] } = docketInfo;
     const imgDescribe = annexImg.map((item, i) => {
       return {
-        uid: i,
+        uid: `${item.imgUrl}_${i}`,
         rotate: item.rotate,
         thumbUrl: `${item.imgUrl}`,
       };
