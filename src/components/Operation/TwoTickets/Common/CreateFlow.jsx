@@ -22,7 +22,7 @@ class CreateFlow extends Component {
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
     type: PropTypes.string,
-    reject: PropTypes.string,
+    reject: PropTypes.bool,
     docketId: PropTypes.number,
   }
 
@@ -47,6 +47,7 @@ class CreateFlow extends Component {
       if (!err) {
         const { stationCode } = values.stations[0];
         const { docketType, docketCode, docketName, defectList = {} } = values;
+        console.log('values.annexImg', values.annexImg);
         const annexImg = values.annexImg.map(e => {
           return {
             imgUrl: e.response,
@@ -72,7 +73,8 @@ class CreateFlow extends Component {
           isContinueAdd,
           docketId,
         };
-        this.props.addDockect(params);
+        console.log('params', params)
+        // this.props.addDockect(params);
         if (isContinueAdd) {
           this.props.form.resetFields();
         }
