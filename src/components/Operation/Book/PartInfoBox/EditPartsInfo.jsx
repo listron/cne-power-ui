@@ -34,10 +34,10 @@ class EditPartsInfo extends React.Component {
   onChangeAssets = value => {
     const { getPartsFactorsList, deviceTypeCode } = this.props;
     getPartsFactorsList({
-      deviceTypeCode: deviceTypeCode,
+      deviceTypeCode: '',
       orderField: '1',
       orderMethod: 'desc',
-      assetsIds: value,
+      assetsId: value,
     });
   };
   backToList = () => {
@@ -120,13 +120,13 @@ class EditPartsInfo extends React.Component {
       batchNumber,
       supplierName,
       madeName,
-      assetsIds,
+      assetsId,
       partsModeId,
       manufactorId,
       partsModeName,
     } = detailPartInfo;
-    console.log('detailPartInfo: ', detailPartInfo);
-    console.log('assetsIds: ', assetsIds);
+
+
 
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const {
@@ -192,7 +192,7 @@ class EditPartsInfo extends React.Component {
             className={styles.formItemStyle}
           >
             {getFieldDecorator('assetsId', {
-              initialValue: assetsIds,
+              initialValue: assetsId,
               rules: [{ required: true, message: '请正确填写,不超过30字' }],
             })(
               <TreeSelect
@@ -275,7 +275,7 @@ class EditPartsInfo extends React.Component {
                   }
                   return (
                     <Option key={e.modeId} value={e.modeId}>
-                      {e.deviceModeName}
+                      {e.modeName}
                     </Option>
                   );
 
