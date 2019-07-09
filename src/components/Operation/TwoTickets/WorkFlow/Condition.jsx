@@ -52,7 +52,7 @@ class Condition extends Component {
             <div className={styles.condition}>
                 <FilterCondition
                     option={['stationName', 'docketType', 'time', 'myJoin']}
-                    stations={stations.filter(e => e.stationType === 1)}
+                    stations={stations}
                     username={username}
                     docketTypeList={docketTypeList}
                     onChange={this.filterCondition}

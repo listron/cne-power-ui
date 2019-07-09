@@ -22,7 +22,7 @@ class CreateFlow extends Component {
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
     type: PropTypes.string,
-    reject: PropTypes.string,
+    reject: PropTypes.bool,
     docketId: PropTypes.number,
   }
 
@@ -49,13 +49,13 @@ class CreateFlow extends Component {
         const { docketType, docketCode, docketName, defectList = {} } = values;
         const annexImg = values.annexImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
         const otherImg = values.otherImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
@@ -94,7 +94,7 @@ class CreateFlow extends Component {
     const { annexImg = [], otherImg = [] } = docketInfo;
     const imgDescribe = annexImg.map((item, i) => {
       return {
-        uid: i,
+        uid: `${item.imgUrl}_${i}`,
         rotate: item.rotate,
         thumbUrl: `${item.imgUrl}`,
       };
