@@ -16,15 +16,16 @@ class SpareTakeout extends Component {
     takeoutStatus: PropTypes.string,
     backList: PropTypes.func,
     originTakeoutInfo: PropTypes.object,
+    materialListParams: PropTypes.object,
     changeStore: PropTypes.func,
     getMaterialDetailsList: PropTypes.func,
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
   componentDidMount(){
-    const { getMaterialDetailsList, originTakeoutInfo } = this.props;
+    const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
-    getMaterialDetailsList({ inventoryId });
+    getMaterialDetailsList({ inventoryId, ...materialListParams });
   }
 
   componentDidUpdate(preProps){
@@ -56,7 +57,7 @@ class SpareTakeout extends Component {
   }
 
   render(){
-    const { form, originTakeoutInfo, materialDetailsList, takeoutStatus } = this.props;
+    const { form, originTakeoutInfo, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
@@ -107,7 +108,11 @@ class SpareTakeout extends Component {
                 },
               }],
             })(
-              <MaterialDetailsList materialDetailsList={materialDetailsList} total={originTakeoutInfo.inventoryNum} />
+              <MaterialDetailsList
+                {...this.props}
+                total={originTakeoutInfo.inventoryNum}
+                inventoryId={originTakeoutInfo.inventoryId}
+              />
             )}
           </FormItem>
           <FormItem label="备注">

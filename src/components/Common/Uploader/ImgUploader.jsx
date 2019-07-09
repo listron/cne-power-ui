@@ -95,7 +95,7 @@ class ImgUploader extends Component {
       const upLoadfiles = fileList.map(e => {
         const rotateObj = data && data.find(m => m.uid === e.uid);
         const rotate = (rotateObj && rotateObj.rotate) || 0;
-        const response = e.thumbUrl || e.response.data.address;
+        const response = e.response ? e.response.data.address : e.thumbUrl;
         return {
           uid: e.uid,
           name: e.name,

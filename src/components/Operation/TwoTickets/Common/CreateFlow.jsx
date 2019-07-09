@@ -21,6 +21,9 @@ class CreateFlow extends Component {
     addDockect: PropTypes.func,
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
+    type: PropTypes.string,
+    reject: PropTypes.bool,
+    docketId: PropTypes.number,
   }
 
   constructor() {
@@ -32,7 +35,9 @@ class CreateFlow extends Component {
   }
 
   componentDidMount() {
-    this.props.getDocketTypeList();
+    if (this.props.type === 'work') {
+      this.props.getDocketTypeList();
+    }
     this.props.noDistributionList();
   }
 
@@ -44,13 +49,13 @@ class CreateFlow extends Component {
         const { docketType, docketCode, docketName, defectList = {} } = values;
         const annexImg = values.annexImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
         const otherImg = values.otherImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
@@ -81,16 +86,15 @@ class CreateFlow extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stations, docketTypeList, noDistributeList, docketDetail, reject, type } = this.props;
     const { docketInfo = {}, defectInfo, distributionInfo = [] } = docketDetail;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
     const { annexImg = [], otherImg = [] } = docketInfo;
-    // console.log(getFieldValue('annexImg'));
     const imgDescribe = annexImg.map((item, i) => {
       return {
-        uid: i,
+        uid: `${item.imgUrl}_${i}`,
         rotate: item.rotate,
         thumbUrl: `${item.imgUrl}`,
       };
