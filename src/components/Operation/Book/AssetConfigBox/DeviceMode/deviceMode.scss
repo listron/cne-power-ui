@@ -30,6 +30,39 @@
     flex-direction: column;
     flex: 1;
 
+    @mixin textOverflow() {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: keep-all;
+    }
+
+    .deviceModeCode {
+      @include textOverflow();
+      width: 60px,
+    }
+
+    .deviceModeName,
+    .manufactorName {
+      @include textOverflow();
+      width: 150px,
+    }
+
+    .stationType {
+      @include textOverflow();
+      width: 100px,
+    }
+
+    .assetsName {
+      @include textOverflow();
+      width: 200px,
+    }
+
+    .createTime {
+      @include textOverflow();
+      width: 150px,
+    }
+
     :global {
 
       .icon-edit,

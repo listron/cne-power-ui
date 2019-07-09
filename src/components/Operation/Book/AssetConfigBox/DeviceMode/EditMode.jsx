@@ -22,6 +22,7 @@ class EditMode extends React.Component {
       orderField: '1',
       orderMethod: 'desc',
     });
+    this.props.form.setFieldsValue({ 'eidtFactor': '' });
   };
   confirmForm = () => {
     const { validateFieldsAndScroll } = this.props.form;
@@ -48,8 +49,8 @@ class EditMode extends React.Component {
     const { selectassetsId } = this.state;
     const { showModal, assetList, stationTypeCount, queryDataType, cancleModal, tableRecord, deviceFactorsList } = this.props;
     const { deviceModeName, assetsId, stationType, manufactorName, assetsName, manufactorId } = tableRecord;
-    const pv = stationType === '1' ? [assetsId] : [];
-    const wind = stationType === '0' ? [assetsId] : [];
+    const pv = assetsId && stationType === '1' ? [assetsId] : [];
+    const wind = assetsId && stationType === '0' ? [assetsId] : [];
     return (
       <div>
         <Modal

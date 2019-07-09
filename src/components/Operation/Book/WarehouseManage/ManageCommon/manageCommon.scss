@@ -296,6 +296,12 @@
 }
 
 .materialListModal{ // 选择仓库内某物资所有物品列表弹框
+  .pagination{
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   .handle{
     display: flex;
     height: 46px;
@@ -326,7 +332,7 @@
   }
   :global{
     .ant-modal-body{
-      padding: 24px 0 0 0;
+      padding: 0;
     }
     .ant-table-wrapper{
       margin: 0 24px;

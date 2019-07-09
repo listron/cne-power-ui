@@ -36,10 +36,10 @@ class AddPartsInfo extends React.Component {
     const { getPartsFactorsList, deviceTypeCode } = this.props;
 
     getPartsFactorsList({
-      deviceTypeCode: deviceTypeCode,
+      deviceTypeCode: '',
       orderField: '1',
       orderMethod: 'desc',
-      assetsIds: value,
+      assetsId: value,
     });
   };
   confirmWarningTip = () => {
