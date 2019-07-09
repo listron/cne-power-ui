@@ -6,21 +6,27 @@
 		"logoText": "",
 		"needLogin": true,
 		"biUriPrefix": "/bi/",
-		"environment": "develop"
+		"environment": "test"
 	},
 	"demo": {
 		"apiUrlReal": "http://cnedemoapi.chinacloudsites.cn"
 	},
 	"develop": {
-		"apiUrlReal": "http://10.10.15.51"
+		"htUrl": "http://10.10.11.3",
+		"apiUrlReal": "http://10.10.15.51",
+		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"local": {
-		"apiUrlReal": "http://localhost:802"
+		"apiUrlReal": "http://localhost:802",
+		"signalrReal": "http://localhost:802"
 	},
 	"test": {
-		"apiUrlReal": "http://10.10.15.83"
+		"htUrl": "http://10.10.11.3",
+		"apiUrlReal": "http://10.10.15.83",
+		"signalrReal": "http://dev-api.cnecloud.cn"
 	},
 	"official": {
-		"apiUrlReal": "http://pv-api.cnecloud.cn"
+		"apiUrlReal": "http://pv-api.cnecloud.cn",
+		"signalrReal": "http://real-time.cnecloud.cn"
 	}
 }

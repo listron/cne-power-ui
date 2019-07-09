@@ -93,5 +93,42 @@
         }
       }
     }
+
+    @mixin textOverflow() {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: keep-all;
+    }
+
+    .assetsStyle {
+      @include textOverflow();
+      width: 400px,
+    }
+
+    .createTime {
+      @include textOverflow();
+      width: 150px,
+    }
+
+    .manufactorCode {
+      @include textOverflow();
+      width: 60px,
+    }
+
+    .manufactorName {
+      @include textOverflow();
+      width: 250px,
+    }
+
+    .operateUser {
+      @include textOverflow();
+      width: 100px,
+    }
+
+    .editStyle {
+      @include textOverflow();
+      width: 100px,
+    }
   }
 }

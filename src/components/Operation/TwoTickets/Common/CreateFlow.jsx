@@ -21,6 +21,9 @@ class CreateFlow extends Component {
     addDockect: PropTypes.func,
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
+    type: PropTypes.string,
+    reject: PropTypes.string,
+    docketId: PropTypes.number,
   }
 
   constructor() {
@@ -32,7 +35,9 @@ class CreateFlow extends Component {
   }
 
   componentDidMount() {
-    this.props.getDocketTypeList();
+    if (this.props.type === 'work') {
+      this.props.getDocketTypeList();
+    }
     this.props.noDistributionList();
   }
 
@@ -81,13 +86,12 @@ class CreateFlow extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stations, docketTypeList, noDistributeList, docketDetail, reject, type } = this.props;
     const { docketInfo = {}, defectInfo, distributionInfo = [] } = docketDetail;
     const currentStations = getFieldValue('stations'); // 电站
     const stationCode = currentStations && currentStations[0] && currentStations[0].stationCode || null;
     const { annexImg = [], otherImg = [] } = docketInfo;
-    // console.log(getFieldValue('annexImg'));
     const imgDescribe = annexImg.map((item, i) => {
       return {
         uid: i,
