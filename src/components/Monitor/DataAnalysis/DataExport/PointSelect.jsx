@@ -39,7 +39,7 @@ class PointSelect extends Component {
   componentDidUpdate(prevProps){ // 默认选中测点
     const { pointInfo = [], changeDataExportStore, queryParams } = this.props;
     const prevPoints = prevProps.pointInfo;
-    const checkedPoint = pointInfo.filter(e => e.isChecked >= 1).map(e => ({
+    const checkedPoint = pointInfo.filter(e => e.isChecked >= 1).slice(0, 30).map(e => ({
       key: e.devicePointId,
       title: e.devicePointName,
     }));
