@@ -382,7 +382,6 @@ function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
-      console.log(' response.data.data ', response.data.data)
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
