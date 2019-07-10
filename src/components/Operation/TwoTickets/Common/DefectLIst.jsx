@@ -58,6 +58,7 @@ class DefectList extends Component {
   getDefectData = (value) => { // 缺陷列表  什么鬼接口这么多无用的参数
     const { getDefectList, defeactData, stationCode } = this.props;
     const { createTimeStart, createTimeEnd } = this.state;
+    const { pageSize } = defeactData;
     const queryParma = {
       'stationType': '',
       'defectSource': [],
@@ -78,6 +79,7 @@ class DefectList extends Component {
       ...queryParma,
       createTimeStart,
       createTimeEnd,
+      pageSize,
       ...value,
     };
 
@@ -153,7 +155,7 @@ class DefectList extends Component {
   }
 
   filterCondition = (value) => { // 时间筛选
-    this.getDefectData(value);
+    this.getDefectData({ ...value, pageNum: 1 });
   }
 
   handleOk = () => { // 确定
@@ -237,7 +239,7 @@ class DefectList extends Component {
               </div>
               <div>
                 <span className={styles.label}>状态 </span>
-                <span className={styles.text}>{getStatus(selectedData.defectStatus)}</span>
+                <span className={styles.text}>{getStatus(`${selectedData.defectStatus}`)}</span>
               </div>
             </div>}
         </div>
