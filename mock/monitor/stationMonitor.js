@@ -1,5 +1,5 @@
 let stationList = [];
-for (let i = 0; i < 401; i++) {
+for (let i = 0; i < 200; i++) {
   stationList.push({
     "stationCode": i,
     "anomalousBranchNum": "10",
@@ -18,7 +18,7 @@ for (let i = 0; i < 401; i++) {
     "equivalentHours": "4.10443199184921039226",
     "stationUnitCount": "74",
     "stationStatus": 500,
-    "stationName": "山东平原",
+    "stationName": "山东平原" + i,
     "provinceName": "山东省",
     "monthPower": "161140",
     "yearPlanRate": "131.824284905660377358",

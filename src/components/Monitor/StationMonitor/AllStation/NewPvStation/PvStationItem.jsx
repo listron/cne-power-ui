@@ -51,6 +51,8 @@ class PvStationItem extends React.Component {
 
 
 
+
+
   dealData = (stationDataList) => { // 处理数据
     const { sortStatusName, ascend } = this.state;
     const { areaChecked } = this.props;
