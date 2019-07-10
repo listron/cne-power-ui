@@ -158,8 +158,8 @@ function* addDockect(action) {
         const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('添加成功');
-            const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
-            const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            const commonQueryParams = yield select(state => state.operation.operateFlow.toJS().commonQueryParams);
+            const listQueryParams = yield select(state => state.operation.operateFlow.toJS().listQueryParams);
             if (!isContinueAdd) { // 保持并继续添加
                 yield put({
                     type: operateFlowAction.changeFlowStore,
@@ -272,8 +272,8 @@ function* getDocketHandle(action) { // 审核/执行/消票 票据
         const response = yield call(axios.post, url, payload);
         if (response.data.code === '10000') {
             message.success('添加成功');
-            const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
-            const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            const commonQueryParams = yield select(state => state.operation.operateFlow.toJS().commonQueryParams);
+            const listQueryParams = yield select(state => state.operation.operateFlow.toJS().listQueryParams);
             yield put({
                 type: operateFlowAction.changeFlowStore,
                 payload: {
@@ -327,8 +327,8 @@ function* handleBatch(action) { // 批量处理
         const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('操作成功');
-            const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
-            const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            const commonQueryParams = yield select(state => state.operation.operateFlow.toJS().commonQueryParams);
+            const listQueryParams = yield select(state => state.operation.operateFlow.toJS().listQueryParams);
             yield put({
                 type: operateFlowAction.changeFlowStore,
                 payload: {
@@ -358,8 +358,8 @@ function* stopBatch(action) { // 作废
         const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('操作成功');
-            const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
-            const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            const commonQueryParams = yield select(state => state.operation.operateFlow.toJS().commonQueryParams);
+            const listQueryParams = yield select(state => state.operation.operateFlow.toJS().listQueryParams);
             yield put({
                 type: operateFlowAction.changeFlowStore,
                 payload: {
@@ -389,8 +389,8 @@ function* delDocket(action) { // 删除驳回的
         const response = yield call(axios.get, url, payload);
         if (response.data.code === '10000') {
             message.success('删除成功');
-            const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);
-            const listQueryParams = yield select(state => state.operation.workFlow.toJS().listQueryParams);
+            const commonQueryParams = yield select(state => state.operation.operateFlow.toJS().commonQueryParams);
+            const listQueryParams = yield select(state => state.operation.operateFlow.toJS().listQueryParams);
             func();
             yield put({
                 type: operateFlowAction.getFlowList,

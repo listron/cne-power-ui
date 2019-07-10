@@ -76,7 +76,7 @@ class TimeLine extends Component {
                                 <div className={styles.imgDownLoad}>
                                     <div onClick={() => this.showImgs(docketId, item.taskId)} className={styles.imgList}> 票据附件</div>
                                     <div onClick={() => this.download(docketId, item.taskId)} className={styles.imgList}> 下载</div>
-                                </div>
+                                </div> || ''
                             }
                         </div>
                         || ''
