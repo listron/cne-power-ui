@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Select } from 'antd';
+import { Select, Button } from 'antd';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
+import path from '../../../../../constants/path';
 const { Option } = Select;
+const { APIBasePath } = path.basePaths;
+const { operation } = path.APISubPaths;
 
 class ConditionSearch extends Component {
 
@@ -12,6 +16,9 @@ class ConditionSearch extends Component {
     manufacturerList: PropTypes.array,
     modeList: PropTypes.array,
     tableParams: PropTypes.object,
+    stocksList: PropTypes.array,
+    exportInfoLoading: PropTypes.bool,
+    downLoadFile: PropTypes.func,
     getModes: PropTypes.func,
     changeStore: PropTypes.func,
     getWarehouseManageList: PropTypes.func,
@@ -52,45 +59,76 @@ class ConditionSearch extends Component {
     getWarehouseManageList(newParams);
   }
 
+  exportStock = () => { // 导出仓库内各库存信息
+    const { downLoadFile, tabName, tableParams, warehouseList } = this.props;
+    const url = `${APIBasePath}${operation.exportStockFile}`;
+    const { selectedWarehouse, selectedManufacturer, selectedMode } = tableParams;
+    const stockTypeInfo = {
+      spares: [101, '备品备件'],
+      tools: [200, '工具'],
+      materials: [300, '物资'],
+    };
+    const warehouseName = warehouseList.find(e => e.warehouseId === selectedManufacturer) || {};
+    downLoadFile({
+      url,
+      loadingName: 'exportInfoLoading',
+      fileName: `${warehouseName.warehouseName}-${stockTypeInfo[tabName][1]}库${moment().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,
+      params: {
+        goodsMaxType: stockTypeInfo[tabName][0],
+        warehouseId: selectedWarehouse,
+        manufactorId: selectedManufacturer,
+        modeId: selectedMode,
+      },
+    });
+  }
+
   render(){
-    const { warehouseList = [], manufacturerList = [], modeList = [], tableParams = {}, tabName } = this.props;
+    const { warehouseList = [], manufacturerList = [], modeList = [], tableParams = {}, tabName, stocksList = [], exportInfoLoading } = this.props;
     const { selectedWarehouse, selectedManufacturer, selectedMode } = tableParams;
     return (
       <div className={styles.conditionSearch}>
-        <span className={styles.title}>条件查询</span>
-        <Select
-          placeholder="请选择仓库"
-          onChange={this.changeWarehouse}
-          value={selectedWarehouse}
-          disabled={!(warehouseList.length > 0)}
-        >
-          <Option key={null} value={null}>不限仓库</Option>
-          {warehouseList.map(e => (
-            <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
-          ))}
-        </Select>
-        {tabName === 'spares' && <Select
-          placeholder="请选择厂家"
-          onChange={this.changeManufacturer}
-          value={selectedManufacturer}
-          disabled={!(manufacturerList.length > 0)}
-        >
-          <Option key={null} value={null}>不限厂家</Option>
-          {manufacturerList.map(e => (
-            <Option key={e.id} value={e.id}>{e.name}</Option>
-          ))}
-        </Select>}
-        {tabName === 'spares' && <Select
-          placeholder="请选择型号"
-          onChange={this.changeMode}
-          value={selectedMode}
-          disabled={!(modeList.length > 0)}
-        >
-          <Option key={null} value={null}>不限型号</Option>
-          {modeList.map(e => (
-            <Option key={e.id} value={e.id}>{e.name}</Option>
-          ))}
-        </Select>}
+        <div className={styles.searchParts}>
+          <span className={styles.title}>条件查询</span>
+          <Select
+            placeholder="请选择仓库"
+            onChange={this.changeWarehouse}
+            value={selectedWarehouse}
+            disabled={!(warehouseList.length > 0)}
+          >
+            <Option key={null} value={null}>不限仓库</Option>
+            {warehouseList.map(e => (
+              <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
+            ))}
+          </Select>
+          {tabName === 'spares' && <Select
+            placeholder="请选择厂家"
+            onChange={this.changeManufacturer}
+            value={selectedManufacturer}
+            disabled={!(manufacturerList.length > 0)}
+          >
+            <Option key={null} value={null}>不限厂家</Option>
+            {manufacturerList.map(e => (
+              <Option key={e.id} value={e.id}>{e.name}</Option>
+            ))}
+          </Select>}
+          {tabName === 'spares' && <Select
+            placeholder="请选择型号"
+            onChange={this.changeMode}
+            value={selectedMode}
+            disabled={!(modeList.length > 0)}
+          >
+            <Option key={null} value={null}>不限型号</Option>
+            {modeList.map(e => (
+              <Option key={e.id} value={e.id}>{e.name}</Option>
+            ))}
+          </Select>}
+        </div>
+        <Button
+          className={styles.export}
+          disabled={!selectedWarehouse || stocksList.length === 0}
+          onClick={this.exportStock}
+          loading={exportInfoLoading}
+        >导出</Button>
       </div>
     );
   }

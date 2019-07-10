@@ -175,10 +175,10 @@ function* getDefectList(action) { // 缺陷列表
 
 function* addDockect(action) {
     const { payload } = action;
-    const { isContinueAdd } = payload;
+    const { isContinueAdd, ...params } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.addDocket}`;
     try {
-        const response = yield call(axios.post, url, payload);
+        const response = yield call(axios.post, url, params);
         if (response.data.code === '10000') {
             message.success('添加成功');
             const commonQueryParams = yield select(state => state.operation.workFlow.toJS().commonQueryParams);

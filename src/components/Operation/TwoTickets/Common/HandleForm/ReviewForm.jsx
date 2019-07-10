@@ -32,10 +32,10 @@ class DefectReviewForm extends Component {
       if (!err) {
         const { dealResult } = this.state;
         this.props.onChange({
-          handleResult:dealResult==='send'?1:2,
+          handleResult: dealResult === 'send' ? 1 : 2,
           ...values,
-          annexImg:null,
-          otherImg:null,
+          annexImg: null,
+          otherImg: null,
         })
       }
     });
@@ -67,7 +67,7 @@ class DefectReviewForm extends Component {
         {dealResult !== 'reject' && (
           <FormItem colon={false} label="处理建议">
             {getFieldDecorator('handleDesc')(
-              <InputLimit placeholder="请描述，不超过999个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}
@@ -81,7 +81,7 @@ class DefectReviewForm extends Component {
                 message: '请输入驳回原因'
               }],
             })(
-              <InputLimit placeholder="请描述，不超过999个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}

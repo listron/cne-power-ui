@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Modal, Input } from 'antd';
-import moment from 'moment';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
@@ -15,7 +14,6 @@ const { operation } = path.APISubPaths;
 export default class HandleComponent extends Component {
   static propTypes = {
     tabName: PropTypes.string,
-    exportInfoLoading: PropTypes.bool,
     exportTempleteLoading: PropTypes.bool,
     stockMaxShow: PropTypes.bool,
     maxSettingLoading: PropTypes.bool,
@@ -23,7 +21,6 @@ export default class HandleComponent extends Component {
     importFileShow: PropTypes.bool,
     totalCount: PropTypes.number,
     warehouseList: PropTypes.array,
-    stocksList: PropTypes.array,
     checkedStocks: PropTypes.array,
     tableParams: PropTypes.object,
     changeStore: PropTypes.func,
@@ -79,29 +76,6 @@ export default class HandleComponent extends Component {
     deleteWarehouseMaterial({ checkedStocks });
   }
 
-  exportStock = () => { // 导出仓库内各库存信息
-    const { downLoadFile, tabName, tableParams, warehouseList } = this.props;
-    const url = `${APIBasePath}${operation.exportStockFile}`;
-    const { selectedWarehouse, selectedManufacturer, selectedMode } = tableParams;
-    const stockTypeInfo = {
-      spares: [101, '备品备件'],
-      tools: [200, '工具'],
-      materials: [300, '物资'],
-    };
-    const warehouseName = warehouseList.find(e => e.warehouseId === selectedManufacturer) || {};
-    downLoadFile({
-      url,
-      loadingName: 'exportInfoLoading',
-      fileName: `${warehouseName.warehouseName}-${stockTypeInfo[tabName][1]}库${moment().format('YYYY-MM-DD HH:mm:ss')}.xlsx`,
-      params: {
-        goodsMaxType: stockTypeInfo[tabName][0],
-        warehouseId: selectedWarehouse,
-        manufactorId: selectedManufacturer,
-        modeId: selectedMode,
-      },
-    });
-  }
-
   exportTemplete = () => { // 导出模板
     const { downLoadFile, tabName } = this.props;
     const stockTypeInfo = {
@@ -139,9 +113,9 @@ export default class HandleComponent extends Component {
     const { stockMaxValue, deleteModalShow } = this.state;
     const {
       tabName, tableParams, totalCount, checkedStocks, stockMaxShow, importFileShow,
-      delStockLoading, maxSettingLoading, exportInfoLoading, exportTempleteLoading, stocksList,
+      delStockLoading, maxSettingLoading, exportTempleteLoading,
     } = this.props;
-    const { pageSize, pageNum, selectedWarehouse } = tableParams;
+    const { pageSize, pageNum } = tableParams;
     const insertDisable = checkedStocks.length > 1;
     return (
       <div className={styles.handleRow}>
@@ -169,11 +143,6 @@ export default class HandleComponent extends Component {
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
           >设置阈值</Button>}
-          <Button
-            disabled={!selectedWarehouse || stocksList.length === 0}
-            onClick={this.exportStock}
-            loading={exportInfoLoading}
-          >导出</Button>
           <Button onClick={this.toImport}>导入</Button>
           <Button onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</Button>
         </div>

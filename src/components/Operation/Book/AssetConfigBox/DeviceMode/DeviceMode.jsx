@@ -181,40 +181,40 @@ class DeviceMode extends React.Component {
         title: '编码',
         dataIndex: 'deviceModeCode',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <div className={styles.deviceModeCode} title={text}>{text}</div>,
       }, {
         title: '设备型号',
         dataIndex: 'deviceModeName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <div className={styles.deviceModeName} title={text}>{text}</div>,
       }, {
         title: '电站类型',
         dataIndex: 'stationType',
         sorter: true,
-        render: (text) => <span >{text === '0' ? '风电' : '光伏'}</span>,
+        render: (text) => <div className={styles.stationType} >{text === '0' ? '风电' : '光伏'}</div>,
       }, {
         title: '生产资产',
         dataIndex: 'assetsName',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</span>,
+        render: (text) => <div className={styles.assetsName} title={text ? text.replace(/,/g, '/') : ''}>{text ? text.replace(/,/g, '/') : '--'}</div>,
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <div className={styles.manufactorName} title={text}>{text}</div>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        render: (text) => <div className={styles.createTime} title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text) => <div className={styles.stationType} title={text}>{text ? text : '--'}</div>,
       }, {
         title: '操作',
         render: (text, record, index) => {

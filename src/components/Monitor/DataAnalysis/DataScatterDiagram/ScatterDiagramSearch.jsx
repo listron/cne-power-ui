@@ -215,7 +215,7 @@ class ScatterDiagramSearch extends Component{
               onChange={this.xSelectPoints}
               filterOption={(text, option) => option.props.children.toLowerCase().indexOf(text.toLowerCase()) >= 0}
             >
-             {pointsInfo.filter(e => e.devicePointCode !== yPoint).map(e => {
+             {pointsInfo.map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
             })}
           </Select>
@@ -232,7 +232,7 @@ class ScatterDiagramSearch extends Component{
             onChange={this.ySelectPoints}
             filterOption={(text, option) => option.props.children.toLowerCase().indexOf(text.toLowerCase()) >= 0}
           >
-           {pointsInfo.filter(e => e.devicePointCode !== xPoint).map(e => {
+           {pointsInfo.map(e => {
               return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
             })}
           </Select>

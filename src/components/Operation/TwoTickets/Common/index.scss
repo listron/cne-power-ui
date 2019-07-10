@@ -1,7 +1,7 @@
 @import '../../../../theme/theme.scss';
 .workflow {
   .flowForm{
-    width:568px;
+    width:572px;
     margin: 18px auto;
     .tipText {
       color: $promptColor;
@@ -41,6 +41,12 @@
         justify-content:space-between;
         line-height: 30px;
         padding: 0 10px;
+        .resetDefect{
+          cursor: pointer;
+          &:hover{
+            color: #f9b600;
+          }
+        }
       }
       .label{
         font-size: 14px;
@@ -152,16 +158,19 @@
 .basicContent {
   display: flex;
   flex-direction: column;
+  width: 554px;
   .basicItem {
     display: flex;
     flex-direction: row;
-    line-height: 30px;
+    // line-height: 30px;
     align-items: center;
+    margin-bottom: 12px;
     color: $darkColor;
     >div {
       white-space: nowrap;
       width:70px;
       text-align: right;
+      flex: 0 0 100px;
     }
     >span {
       display: inline-block;
