@@ -177,6 +177,7 @@ class DataExportSearch extends Component{
       ...queryParams,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
+      dataTypes: [],
     };
     if (interval === 3) { // 由秒级数据切换至10min数据
       changeDataExportStore({
@@ -206,6 +207,7 @@ class DataExportSearch extends Component{
       changeDataExportStore({ queryParams: {
         ...queryParams,
         timeInterval: interval,
+        dataTypes: [],
       }});
     }
   }
