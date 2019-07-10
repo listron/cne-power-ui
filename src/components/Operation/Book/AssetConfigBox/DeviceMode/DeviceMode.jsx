@@ -20,7 +20,7 @@ class DeviceMode extends React.Component {
     deviceModesList: PropTypes.array,
     pageSize: PropTypes.number,
     pageNum: PropTypes.number,
-    total: PropTypes.number,
+    modePageCount: PropTypes.number,
     orderField: PropTypes.string,
     orderMethod: PropTypes.string,
     deviceModeName: PropTypes.string,
@@ -61,7 +61,7 @@ class DeviceMode extends React.Component {
       orderMethod: 'desc', //排序方式（“asc”：升序，”desc“:降序）
       pageNum: 1, //页码
       pageSize: 10, //每页记录数
-      total: 0,
+      modePageCount: 0,
     });
 
   }
@@ -173,7 +173,10 @@ class DeviceMode extends React.Component {
     });
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
+    const { pageSize, pageNum, modePageCount, deviceFactorsList, deviceModesList, assetList, stationTypeCount, stationType } = this.props;
+    
+    
+    
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditModeModal, tableRecord } = this.state;
     const columns = [
@@ -286,7 +289,7 @@ class DeviceMode extends React.Component {
                 onSearch={this.searchFactory}
               />
             </div>
-            <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} />
+            <Pagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={modePageCount} />
           </div>
           <Table
             loading={false}

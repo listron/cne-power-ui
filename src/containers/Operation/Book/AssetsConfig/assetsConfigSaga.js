@@ -347,11 +347,11 @@ function* getDeviceModesList(action) { //获取设备型号列表
     const response = yield call(axios.post, url, { ...payload });
     if (response.data.code === '10000') {
 
-      const total = response.data.data.pageCount || 0;
+      const modePageCount = response.data.data.pageCount || 0;
       let { pageNum } = payload;
       const { pageSize } = payload;
-      const maxPage = Math.ceil(total / pageSize);
-      if (total === 0) { // 总数为0时，展示0页
+      const maxPage = Math.ceil(modePageCount / pageSize);
+      if (modePageCount === 0) { // 总数为0时，展示0页
         pageNum = 1;
       } else if (maxPage < pageNum) { // 当前页已超出
         pageNum = maxPage;
@@ -361,7 +361,7 @@ function* getDeviceModesList(action) { //获取设备型号列表
         payload: {
           ...payload,
           deviceModesList: response.data.data.dataList || [],
-          total,
+          modePageCount,
         },
       });
     } else {
