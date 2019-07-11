@@ -9,6 +9,8 @@ import OutputTenMin from './OutputTenMin';
 const Option = Select.Option;
 import SingleStaionList from './SingleStaionList';
 import moment from 'moment';
+import { throttle } from 'lodash';
+
 
 
 class Test extends React.Component {
@@ -27,65 +29,95 @@ class Test extends React.Component {
       renderList: [],
       initList: [],
       spliceLength: 12, // 100条数据一渲染。
-      topHeight: 150, // 假设的列表上方高度
+      topHeight: 400, // 假设的列表上方高度
+      stationCodeList: [], // 请求图表数据的code
+      newStationsList: [], // 处理完之后的
     }
   }
 
   componentDidMount() {
-    console.log(this.props.stationDataList)
-    const main = document.getElementById('main');
     const { stationDataList } = this.props;
-    const { sortStatusName, ascend, selectStation, topHeight, renderList } = this.state;
+    const { sortStatusName, ascend, selectStation, } = this.state;
     const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const newStationsList = filterStationList.sort((a, b) => {
       return sortType * (a[sortStatusName] - b[sortStatusName]);
     });
-    // if (this.state.renderList.length < stationDataList.length) {
-    //   setInterval(() => { this.initRender(stationDataList); }, 3000)
-    // }
-    this.initRender(stationDataList);
-    let startTime = moment().unix(); // 开始时间
-    main.addEventListener('scroll', (e) => { // 需要防抖。
-      if (this.timeout !== null) clearTimeout(this.timeout);
-      let curTime = moment().unix(); // 当前时间
-      if (curTime - startTime >= 1000) { // 时间差>=1秒直接执行
+    console.log('newStationsList', newStationsList)
+    this.initRender(newStationsList);
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
         const clientH = document.documentElement.clientHeight; // 客户端高度
         const scrollTop = main.scrollTop; // 卷曲出去的高度
         const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
-        const resHeight = tableHeight - topHeight - scrollTop - clientH;
-        if (resHeight < 20) { //表格内容
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
           if (renderList.length < stationDataList.length) {
+            this.setState({ renderLoading: true, })
             this.initRender(newStationsList);
           }
         }
-        startTime = curTime;
-      } else { // 否则延时执行，像滚动了一下，差值<1秒的那种也要执行
-        this.timeout = setTimeout(() => {
-          const clientH = document.documentElement.clientHeight; // 客户端高度
-          const scrollTop = main.scrollTop; // 卷曲出去的高度
-          const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
-          const resHeight = tableHeight - topHeight - scrollTop - clientH;
-          if (resHeight < 20) { //表格内容
-            if (renderList.length < stationDataList.length) {
-              this.initRender(newStationsList);
-            }
-          }
-        }, 300);
       }
+    }, 1000))
 
+  }
+
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.stationDataList.length > 0) {
+      // this.initRender()
+    }
+  }
+
+
+  initRender = (value) => {
+    const { stationDataList } = this.props;
+    const { sortStatusName, ascend, selectStation, } = this.state;
+    console.log('value', value)
+    console.log('sortStatusName', sortStatusName, ascend)
+    const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
+    const sortType = ascend ? 1 : -1;
+    const newStationsList = filterStationList.sort((a, b) => {
+      return sortType * (a[sortStatusName] - b[sortStatusName]);
     });
+    this.setState({ newStationsList })
+    console.log('newStationsList', newStationsList)
+    this.initRender(newStationsList);
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
+        const clientH = document.documentElement.clientHeight; // 客户端高度
+        const scrollTop = main.scrollTop; // 卷曲出去的高度
+        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
+          if (renderList.length < this.props.stationDataList.length) {
+            this.setState({ renderLoading: true, })
+            this.initRender(newStationsList);
+          }
+        }
+      }
+    }, 1000))
   }
 
-  componentWillUpdate() {
-    console.time()
-  }
-
-  componentDidUpdate() {
-    console.timeEnd()
-  }
 
 
+
+
+
+
+
+
+  // componentWillUpdate() {
+  //   console.time()
+  // }
+
+  // componentDidUpdate() {
+  //   console.timeEnd()
+  // }
 
 
   // getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -99,15 +131,20 @@ class Test extends React.Component {
     this.setState({ selectStation: value })
   }
 
-  sortStatus = (value) => {
+  sortStatus = (value) => {  // 排序
     const { sortStatusName, ascend } = this.state;
     let currentAscend = true;
     if (sortStatusName === value) {
       currentAscend = !ascend
     }
+    console.log(1111)
+    this.initRender(23423)
     this.setState({
       sortStatusName: value,
       ascend: currentAscend
+    }, () => {
+      console.log(234243)
+      this.initRender(2323)
     })
   }
 
@@ -141,13 +178,12 @@ class Test extends React.Component {
   }
 
 
-
-  initRender = (initList) => { // 初次 => todo 若初始数据小于要求分割长度。
-    const { renderList, spliceLength } = this.state;
+  initRender = (initList = []) => { // 初次 => todo 若初始数据小于要求分割长度。
+    const { renderList, spliceLength, stationCodeList } = this.state;
     const tmp = initList.slice(renderList.length, spliceLength + renderList.length);
     this.setState({
       renderList: renderList.concat(tmp),
-      renderLoading: true,
+      stationCodeList: stationCodeList.concat(tmp.map(e => e.stationCode))
     }, () => {
       this.setState({ renderLoading: false });
     });
@@ -156,8 +192,7 @@ class Test extends React.Component {
   render() {
     const { stationDataList, pvCapabilitydiagramsData, monitorPvUnit } = this.props;
     const { sortStatusName, ascend } = this.state;
-    const { renderList, renderLoading } = this.state;
-    console.log('renderList', renderList)
+    const { renderList, renderLoading, stationCodeList } = this.state;
     const sortName = [
       { text: '默认排序', id: 'sort' },
       { text: '日利用小时 ', id: 'equivalentHours' },
@@ -214,6 +249,7 @@ class Test extends React.Component {
               />)
             })}
           </div> || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>}
+          {renderList.length < stationDataList.length && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
           {/* {stationDataList.length > 0 && filteredStation.map((list, key) => {
             const stationStatusList = list.stations.sort((a, b) => {
               return 900 - b.stationStatus === 0 ? -1 : 1
@@ -234,7 +270,7 @@ class Test extends React.Component {
 
           }) || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
           } */}
-          {renderLoading && <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> || null}
+
           <div>
           </div>
         </div>

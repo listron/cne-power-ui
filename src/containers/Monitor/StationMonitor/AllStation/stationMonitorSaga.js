@@ -338,8 +338,8 @@ function* getPvMonitorStation(action) {//获取所有光电站信息
   const { payload } = action;
   const { regionName } = payload;
   const utcTime = moment.utc().format();
-  // const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}/${utcTime}/${regionName}`
-  const url = '/mock/v3/monitor/stations/station';
+  const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}/${utcTime}/${regionName}`
+  // const url = '/mock/v3/monitor/stations/station';
   try {
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
@@ -406,7 +406,7 @@ function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
 function* getPvRealData(action) { // 获取光伏的数据
   const { firtQuery = true, waiting } = action;
   if (waiting) {
-    yield delay(6000000); // 一分钟
+    yield delay(60000); // 一分钟
   }
   if (firtQuery) {
     yield put({
