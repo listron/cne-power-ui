@@ -19,6 +19,7 @@ const Option = Select.Option;
 
   assetsIds:[],默认选中的节点
   checkedName:'',单选节点时默认展示的值。
+  handleEnterprisecodes:[],可操作主设备类型的企业
 
   resetValue:bool,true时重置所选。
 */
@@ -45,6 +46,7 @@ class StationSelect extends Component {
     visiableModal: false,
     stationType: 1,
     stationTypeCount: 'single',
+    handleEnterprisecodes: [],
   }
   constructor(props) {
     super(props);
@@ -54,6 +56,7 @@ class StationSelect extends Component {
       stationType: props.stationType,
       checkedName: props.checkedName,
       stationTypeCount: props.stationTypeCount,
+      handleEnterprisecodes: props.handleEnterprisecodes,
     };
   }
   componentDidMount() {//确保电站类型，和下面的数据数对应。
@@ -121,7 +124,8 @@ class StationSelect extends Component {
   }
   render() {
     const { multiple, assetList } = this.props;
-    const { visiableModal, stationType, assetsIds, checkedName, stationTypeCount } = this.state;
+    const { visiableModal, stationType, assetsIds, checkedName, stationTypeCount, handleEnterprisecodes } = this.state;
+    console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { pv, wind } = assetsIds;
     const selecLen = [...new Set(pv.concat(wind))];
     return (
@@ -165,6 +169,7 @@ class StationSelect extends Component {
           showModal={this.showModal}
           queryDataType={this.queryDataType}
           stationTypeCount={stationTypeCount}
+          handleEnterprisecodes={handleEnterprisecodes}
         />
       </div>
     );

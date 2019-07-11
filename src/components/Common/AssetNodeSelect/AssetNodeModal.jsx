@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Modal, Tree, Checkbox } from 'antd';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
+import cookie from 'js-cookie';
 const { TreeNode } = Tree;
+
 
 
 
@@ -91,10 +93,11 @@ class SelectModal extends Component {
   queryDataType = (value) => {
     this.props.queryDataType(value);
   }
-  renderTreeNodes = data => data.map((item) => {
+  renderTreeNodes = (data, isHandle) => data.map((item) => {
+    //如果包含企业code，所有资产节点都可编辑，否则，主设备和系统都不可编辑
     if (item.childernNodes) {
       return (
-        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1} >
+        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={isHandle && (item.isMain === 1 || item.assetsType === 1)} >
           {this.renderTreeNodes(item.childernNodes)}
         </TreeNode>
       );
@@ -102,9 +105,9 @@ class SelectModal extends Component {
     return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1} ></TreeNode>;
   })
   render() {
-    const { visiable, sourceData, stationType, multiple, stationTypeCount } = this.props;
+    const { visiable, sourceData, stationType, multiple, stationTypeCount, handleEnterprisecodes } = this.props;
     const { checkedKeys } = this.state;
-
+    const isHandle = handleEnterprisecodes.includes(cookie.get('enterpriseCode'));
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -136,7 +139,7 @@ class SelectModal extends Component {
               blockNode={false}
 
             >
-              {this.renderTreeNodes(sourceData)}
+              {this.renderTreeNodes(sourceData, isHandle)}
             </Tree>
           </div>
         </Modal>

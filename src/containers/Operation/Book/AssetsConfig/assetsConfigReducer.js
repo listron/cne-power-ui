@@ -30,6 +30,7 @@ var initState = Immutable.fromJS({
   deviceModeName: '', //设备型号名称(模糊查询)
   deviceFactorsList: [], //设备厂家列表信息
   deviceModesList: [], //设备型号列表
+  handleEnterprisecodes: [], //可操作主设备类型的企业编码
 
 
 
