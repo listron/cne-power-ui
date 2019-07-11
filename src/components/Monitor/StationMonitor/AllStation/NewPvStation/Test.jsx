@@ -10,6 +10,7 @@ const Option = Select.Option;
 import SingleStaionList from './SingleStaionList';
 import moment from 'moment';
 import { throttle } from 'lodash';
+import { isThisSecond } from "date-fns";
 
 
 
@@ -36,15 +37,7 @@ class Test extends React.Component {
   }
 
   componentDidMount() {
-    const { stationDataList } = this.props;
-    const { sortStatusName, ascend, selectStation, } = this.state;
-    const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
-    const sortType = ascend ? 1 : -1;
-    const newStationsList = filterStationList.sort((a, b) => {
-      return sortType * (a[sortStatusName] - b[sortStatusName]);
-    });
-    console.log('newStationsList', newStationsList)
-    this.initRender(newStationsList);
+    this.changeStationData()
     const main = document.getElementById('main');
     main.addEventListener('scroll', throttle(() => {
       if (this.newPinterest) {
@@ -55,7 +48,6 @@ class Test extends React.Component {
         const resHeight = tableHeight + topHeight - scrollTop - clientH;
         if (resHeight < 50) { //表格内容
           if (renderList.length < stationDataList.length) {
-            this.setState({ renderLoading: true, })
             this.initRender(newStationsList);
           }
         }
@@ -72,43 +64,18 @@ class Test extends React.Component {
   }
 
 
-  initRender = (value) => {
+  changeStationData = () => {
     const { stationDataList } = this.props;
     const { sortStatusName, ascend, selectStation, } = this.state;
-    console.log('value', value)
-    console.log('sortStatusName', sortStatusName, ascend)
     const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const newStationsList = filterStationList.sort((a, b) => {
       return sortType * (a[sortStatusName] - b[sortStatusName]);
     });
-    this.setState({ newStationsList })
-    console.log('newStationsList', newStationsList)
-    this.initRender(newStationsList);
-    const main = document.getElementById('main');
-    main.addEventListener('scroll', throttle(() => {
-      if (this.newPinterest) {
-        const { renderList, topHeight } = this.state;
-        const clientH = document.documentElement.clientHeight; // 客户端高度
-        const scrollTop = main.scrollTop; // 卷曲出去的高度
-        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
-        const resHeight = tableHeight + topHeight - scrollTop - clientH;
-        if (resHeight < 50) { //表格内容
-          if (renderList.length < this.props.stationDataList.length) {
-            this.setState({ renderLoading: true, })
-            this.initRender(newStationsList);
-          }
-        }
-      }
-    }, 1000))
+    this.setState({ newStationsList }, () => {
+      this.initRender(newStationsList);
+    })
   }
-
-
-
-
-
-
-
 
 
   // componentWillUpdate() {
@@ -137,14 +104,12 @@ class Test extends React.Component {
     if (sortStatusName === value) {
       currentAscend = !ascend
     }
-    console.log(1111)
-    this.initRender(23423)
     this.setState({
       sortStatusName: value,
       ascend: currentAscend
     }, () => {
       console.log(234243)
-      this.initRender(2323)
+      this.changeStationData(2323)
     })
   }
 
