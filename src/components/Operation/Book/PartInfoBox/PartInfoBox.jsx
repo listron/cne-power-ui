@@ -291,7 +291,7 @@ class PartInfoBox extends React.Component {
       onChange: info => {
         if (info.file.status === 'done') {
           if (info.file.response.code === '10000') {
-            message.success(`${info.file.name} 导入完成`);
+            info.file.response.message ? message.warning(`${info.file.response.message}`) : message.success(`${info.file.name} 导入完成`);
             //请求数据，把导入的组件刷新出来。
           } else {
             message.error(info.file.response.message);

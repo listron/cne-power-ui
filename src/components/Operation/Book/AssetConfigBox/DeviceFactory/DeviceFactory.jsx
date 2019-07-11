@@ -46,7 +46,7 @@ class DeviceFactory extends React.Component {
   }
   componentDidMount() {
     const { getDeviceFactorsList, pageNum, pageSize } = this.props;
-    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum, pageSize });
+    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum: 1, pageSize: 10 });
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
