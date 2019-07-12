@@ -125,7 +125,6 @@ class StationSelect extends Component {
   render() {
     const { multiple, assetList } = this.props;
     const { visiableModal, stationType, assetsIds, checkedName, stationTypeCount, handleEnterprisecodes } = this.state;
-    console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { pv, wind } = assetsIds;
     const selecLen = [...new Set(pv.concat(wind))];
     return (

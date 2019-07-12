@@ -93,21 +93,27 @@ class SelectModal extends Component {
   queryDataType = (value) => {
     this.props.queryDataType(value);
   }
-  renderTreeNodes = (data, isHandle) => data.map((item) => {
-    //如果包含企业code，所有资产节点都可编辑，否则，主设备和系统都不可编辑
-    if (item.childernNodes) {
-      return (
-        <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={isHandle && (item.isMain === 1 || item.assetsType === 1)} >
-          {this.renderTreeNodes(item.childernNodes)}
-        </TreeNode>
-      );
-    }
-    return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={item.isMain === 1 || item.assetsType === 1} ></TreeNode>;
-  })
+  renderTreeNodes = (data) => {
+    const enterpriseCode = cookie.get('enterpriseCode');
+    const isHandle = this.props.handleEnterprisecodes.includes(+enterpriseCode);
+
+    return data.map((item) => {
+      const disableSelect = !isHandle && (item.isMain === 1 || item.assetsType === 1);
+      //如果包含企业code，所有资产节点都可编辑，否则，主设备和系统都不可编辑
+      if (item.childernNodes) {
+        return (
+          <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={disableSelect} >
+            {this.renderTreeNodes(item.childernNodes)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode title={item.assetsName} key={item.assetsId} dataRef={item} disableCheckbox={disableSelect} ></TreeNode>;
+    });
+  }
   render() {
-    const { visiable, sourceData, stationType, multiple, stationTypeCount, handleEnterprisecodes } = this.props;
+    const { visiable, sourceData, stationType, multiple, stationTypeCount } = this.props;
     const { checkedKeys } = this.state;
-    const isHandle = handleEnterprisecodes.includes(cookie.get('enterpriseCode'));
+
     return (
       <div className={styles.deviceSelectModal}>
         <i className="iconfont icon-filter" onClick={this.showModal} />
@@ -139,7 +145,7 @@ class SelectModal extends Component {
               blockNode={false}
 
             >
-              {this.renderTreeNodes(sourceData, isHandle)}
+              {this.renderTreeNodes(sourceData)}
             </Tree>
           </div>
         </Modal>
