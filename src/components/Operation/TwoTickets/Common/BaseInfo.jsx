@@ -27,15 +27,31 @@ class BasicInfo extends Component {
                     <div className={styles.text}> 基本信息  <i className="iconfont icon-content" /> </div>
                 </div>
                 <div className={styles.basicContent}>
-                    <div className={styles.basicItem}><div>{testName}编号</div><span>{docketInfo.docketCode || '--'}</span></div>
-                    {type === 'work' && <div className={styles.basicItem}><div>工作票类型</div><span>{docketInfo.docketTypeName || '--'}</span></div>}
-                    <div className={styles.basicItem}><div>电站名称</div><span>{docketInfo.stationName || '--'}</span></div>
-                    <div className={styles.basicItem}><div>{testName}名称</div><span>{docketInfo.docketName || '--'}</span></div>
-                    <div className={styles.basicItem}><div>关联工单</div><span>{docketInfo.defectId || '--'}</span></div>
-                    <div className={styles.basicItem}><div>{testName}附件</div>
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>{testName}编号</div>
+                        <span>{docketInfo.docketCode || '--'}</span>
+                    </div>
+                    {type === 'work' && <div className={styles.basicItem}>
+                        <div className={styles.label}>工作票类型</div>
+                        <span>{docketInfo.docketTypeName || '--'}</span>
+                    </div>}
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>电站名称</div>
+                        <span>{docketInfo.stationName || '--'}</span>
+                    </div>
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>{testName}名称</div>
+                        <span>{docketInfo.docketName || '--'}</span>
+                    </div>
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>关联工单</div>
+                        <span>{docketInfo.defectId || '--'}</span>
+                    </div>
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>{testName}附件</div>
                         <span>
                             <ImgUploader editable={false}
-                                imgStyle={{ width: 95, height: 95,marginRight:5 }}
+                                imgStyle={{ width: 95, height: 95, marginRight: 5 }}
                                 data={annexImg.map(item => ({
                                     uid: item.imgUrl,
                                     rotate: item.rotate,
@@ -45,7 +61,8 @@ class BasicInfo extends Component {
                             />
                         </span>
                     </div>
-                    <div className={styles.basicItem}><div>其他附件</div>
+                    <div className={styles.basicItem}>
+                        <div className={styles.label}>其他附件</div>
                         <span>
                             <ImgUploader editable={false} data={otherImg.map(item => ({
                                 uid: item.imgUrl,
@@ -57,7 +74,10 @@ class BasicInfo extends Component {
                     </div>
                     {
                         distributionInfo.map(e => {
-                            return (<div className={styles.basicItem} key={e.nodeCode}><div>{e.nodeName}</div><span>{e.userNames || '--'}</span></div>);
+                            return (<div className={styles.basicItem} key={e.nodeCode}>
+                                <div className={styles.label}>{e.nodeName}</div>
+                                <span>{e.userNames || '--'}</span>
+                            </div>);
                         })
                     }
                 </div>
