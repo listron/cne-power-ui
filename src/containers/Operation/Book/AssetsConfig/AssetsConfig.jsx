@@ -22,7 +22,7 @@ class AssetsConfig extends Component {
     super(props, context);
   }
   componentDidMount() {
-
+    this.props.getEnterprisecodes();
   }
 
   queryTargetData = (activeKey) => { //头部tab切换
@@ -31,7 +31,8 @@ class AssetsConfig extends Component {
   }
 
   render() {
-    const { selectType } = this.props;
+    const { selectType, handleEnterprisecodes } = this.props;
+    // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const breadCrumbData = {
       breadData: [
         {
@@ -84,6 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   addDeviceModes: payload => dispatch({ type: assetConfigAction.addDeviceModes, payload }), //新建设备型号
   editDeviceModes: payload => dispatch({ type: assetConfigAction.editDeviceModes, payload }), //编辑设备型号
   deleteDeviceModes: payload => dispatch({ type: assetConfigAction.deleteDeviceModes, payload }), //删除设备型号
+  getEnterprisecodes: payload => dispatch({ type: assetConfigAction.getEnterprisecodes, payload }), //获得主设备类型的企业编码
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AssetsConfig);
