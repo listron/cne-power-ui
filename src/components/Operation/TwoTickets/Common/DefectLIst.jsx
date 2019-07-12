@@ -33,10 +33,19 @@ class DefectList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stationCode } = nextProps;
+    const { stationCode, selectedData } = nextProps;
     if (stationCode && this.props.stationCode !== stationCode) {
       this.getDefectData({ stationCodes: [stationCode] });
+      this.setState({ selectedRowKeys: [] });
+      this.props.onChange({});
     }
+    if (!selectedData.defectId) { // 重置 清空
+      this.setState({ selectedRowKeys: [] });
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('我卸载了');
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 切换列表表头
@@ -50,7 +59,7 @@ class DefectList extends Component {
   onSelectChange = (selectedRowKeys, selectedRows) => {
     this.setState({
       selectedRowKeys: [selectedRowKeys[selectedRowKeys.length - 1]],
-      selectedData: selectedRows[selectedRows.length - 1],
+      initselectedData: selectedRows[selectedRows.length - 1],
     });
   }
 
@@ -58,6 +67,7 @@ class DefectList extends Component {
   getDefectData = (value) => { // 缺陷列表  什么鬼接口这么多无用的参数
     const { getDefectList, defeactData, stationCode } = this.props;
     const { createTimeStart, createTimeEnd } = this.state;
+    const { pageSize } = defeactData;
     const queryParma = {
       'stationType': '',
       'defectSource': [],
@@ -78,6 +88,7 @@ class DefectList extends Component {
       ...queryParma,
       createTimeStart,
       createTimeEnd,
+      pageSize,
       ...value,
     };
 
@@ -153,13 +164,13 @@ class DefectList extends Component {
   }
 
   filterCondition = (value) => { // 时间筛选
-    this.getDefectData(value);
+    this.getDefectData({ ...value, pageNum: 1 });
   }
 
   handleOk = () => { // 确定
-    const { selectedData } = this.state;
+    const { initselectedData } = this.state;
     this.setState({ defectVisible: false });
-    this.props.onChange({ ...selectedData });
+    this.props.onChange({ ...initselectedData });
   }
 
   handleCancel = () => { // 取消
@@ -167,7 +178,7 @@ class DefectList extends Component {
     if (selectedData.defectId) {
       this.setState({
         selectedRowKeys: [selectedData.defectId],
-        selectedData: selectedData,
+        initselectedData: selectedData,
       });
     }
     this.setState({
@@ -183,7 +194,7 @@ class DefectList extends Component {
   resetDefect = () => { // 重新关联工单
     this.setState({
       selectedRowKeys: [],
-      selectedData: {},
+      initselectedData: {},
     });
     this.props.onChange({});
   }
@@ -197,6 +208,7 @@ class DefectList extends Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
+    console.log();
     return (
       <div className={styles.defectList}>
         <div>
@@ -237,7 +249,7 @@ class DefectList extends Component {
               </div>
               <div>
                 <span className={styles.label}>状态 </span>
-                <span className={styles.text}>{getStatus(selectedData.defectStatus)}</span>
+                <span className={styles.text}>{getStatus(`${selectedData.defectStatus}`)}</span>
               </div>
             </div>}
         </div>

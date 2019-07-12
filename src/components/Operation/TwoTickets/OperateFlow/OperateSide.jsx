@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlow.scss';
+import styles from './operate.scss';
 import { Radio, Form, Icon } from 'antd';
 import CreateFlow from '../Common/CreateFlow';
 import DeatilFlow from '../Common/DeatilFlow';
