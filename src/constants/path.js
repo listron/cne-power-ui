@@ -1,5 +1,4 @@
 import config from "../config/apiConfig";
-
 export default {
   basePaths: {
     originUri: config.originUri,
@@ -326,16 +325,23 @@ export default {
       getStationType: "/v3/monitor/stations/",
       stationDeviceList: "/v3/station/devicelist", // 单电站设备列表获取
       seriesinverterDetail: "/v3/monitor/seriesinverter", //组串式逆变器详情
+      inverterSubList: "/v3/monitor/seriesinverter/sublist", // 逆变器下级设备信息
       seriesinverterTenMin: "/v3/monitor/seriesinverter/sequencechart", //组串式逆变器10min时序图
+      seriesBranchTenMin: "/v3/monitor/seriesinverter/sequencechart/zl", // 组串式逆变器下支路电流10min时序图 
       confluenceboxDetail: "/v3/monitor/confluencebox", //汇流箱详情
+      confluenceboxSubList: "/v3/monitor/confluencebox/sublist", // 汇流箱下级设备信息
       confluenceboxTenMin: "/v3/monitor/confluencebox/sequencechart", //汇流箱10min时序图
       boxtransformerDetail: "/v3/monitor/boxtransformer", //箱变详情
+      boxtransformerSubList: "/v3/monitor/boxtransformer/sublist", // 箱变下级设备
       boxtransformerTenMin: "/v3/monitor/boxtransformer/sequencechart", //箱变10min时序图
       weatherstationDetail: "/v3/monitor/weatherstation", //气象站详情
       integrateDetail: "/v3/monitor/collectorline", // 集电线路详情
+      integrateSubList: "/v3/monitor/collectorline/sublist", // 集电线路下级信息
       boosterDetail: "/v3/monitor/boosterstation", // 升压站详情
+      boosterSubList: "/v3/monitor/boosterstation/subList", // 升压站下级信息
       monitorPointData: "/v3/monitor/point", //设备测点数据
       deviceAlarmData: "/v3/alarm/device", // 单设备告警信息
+      monitorEvents: "/v3/monitor/device/eventlist", // 单设备事件
       getRealtimeAlarm: "/v3/alarm/station/alarmlist", //实时告警信息
       exportAlarmStatistic: "/v3/alarm/station/alarmsummary/export", //导出告警统计
 
@@ -348,18 +354,23 @@ export default {
       getPowerNet: "/v3/monitor/powercollection/datalist/", // 电网列表 实时
       getSingleStation: "/v3/monitor/station/", //单电站实时数据
       getSingleWindleStation: "/v3/wind/monitor/station/", // 单电站风电站实时数据
-      getCapabilityDiagram: "/v3/monitor/capabilitydiagram/", //单电站出力图表
+      getSinglePvStation:"/v3/pv/monitor/station/", // 单电站光伏电站实时数据
+      getCapabilityDiagram: "/v3/pv/monitor/station/capabilitychart/",//单电站出力图表
       getMonitorPower: "/v3/monitor/power/", //单电站理论发电量-实际发电量图表
+      getPvMonitorPower:"/v3/pv/monitor/station/power/",// 光伏 发电量
       getStationList: "/v3/station/datalist/", //电站列表
       getWeatherList: "/v3/monitor/weather", //单电站未来天气
       getOperatorList: "/v3/station/user/", //单电站运维人员列表
       getAlarmList: "/v3/alarm/station/alarmnum/", //单电站活动告警数统计
       getWorkList: "/v3/monitor/worklist/", //单电站工单数统计
       getDeviceTypeFlow: "/v3/station/devicetypeflow/", //单电站设备类型流程图
+      getNewDeviceTypeFlow: "/v3/station/typeflow/",//单电站设备类型流程图
+      getSketchmap: "/v3/station/sketchmap/",//单电站设备类型流程图数据
       getStationDeviceList: "/v3/station/devicelist/", //单电站设备列表
       getSingleStationDeviceList: "/v3/wind/monitor/station/devices/", //风单电站设备列表
       editData: "/v3/management/stationgen", //编辑月，年的累计发电量
-
+      radiationchart: "/v3/monitor/weather/radiationchart/",// 获取气象站日辐射图表
+      
       getHistoryAlarm: "/v3/alarm/station/historyalarmlist", //历史告警
       getStationsAlarmStatistic: "/v3/alarm/stations/alarmsummary", //多电站统计
       getSingleStationAlarmStatistic: "/v3/alarm/station/alarmsummary", //单电站统计
@@ -417,6 +428,10 @@ export default {
       getDayPower: "/v3/pv/monitor/stations/daypower/", // 多电站日发电量与等效时图(光伏电站)
       getMonthPower: "/v3/pv/monitor/stations/monthpower/", // 多电站月发电量与等效时图(光伏电站)
       getMonthPalnPower: "/v3/pv/monitor/stations/monthplanpower/", // 多电站月累计与计划发电量图(光伏电站)
+      getSingleMonthPalnPower :"/v3/pv/monitor/station/monthplanpower/",// 多电站月累计与计划发电量图(光伏电站)
+
+      getPvStation:"/v3/pv/monitor/stations", // 全部风电站
+      getPvCapabilitydiagrams:"/v3/pv/monitor/stations/capabilitydiagrams",//光伏多电站出力图列表
 
       //报表
       getPowerReportList: "/v3/wind/report/fan/gen", //电量报表汇总
@@ -573,3 +588,5 @@ export default {
     }
   }
 };
+
+
