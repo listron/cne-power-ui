@@ -29,6 +29,10 @@ class OutputTenMin extends Component {
     this.drawChart(nextProps)
   }
 
+  componentWillUnmount() {
+    // console.log('十分钟数据我卸载了')
+  }
+
 
   drawChart = (param) => {
     const { capabilityData, yAxisUnit, stationCode } = param;
@@ -191,7 +195,7 @@ class OutputTenMin extends Component {
         }
       ]
     }
-    capabilityDiagram.setOption(capabilityOption, 'notMerge');
+    capabilityDiagram.setOption(capabilityOption);
     capabilityDiagram.resize();
   }
 
