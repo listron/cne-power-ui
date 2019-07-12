@@ -25,6 +25,7 @@ class PvStationItem extends React.Component {
 
   }
 
+
   showTip = (currentStatus) => {
     message.destroy();
     if (currentStatus === '900') {
