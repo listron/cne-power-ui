@@ -373,12 +373,10 @@ function* getPvMonitorStation(action) {//获取所有光电站信息
 function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
   const { payload } = action;
   const { regionName, stationCodes = [], nowStationCodes = [] } = payload;
-  // console.log('滚动增加', stationCodes)
   let startTime = moment().startOf('day').utc().format();
   let endTime = moment().endOf('day').utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}`;
   // const url = '/mock/v3/monitor/stations/getPvCapabilitydiagrams';
-  // console.log("stationCodes", stationCodes, "nowStationCodes", nowStationCodes)
   let pvCapabilitydiagramsData = [];
   if (stationCodes.length > 12) {  //  1 存处的数据  原始+新增加的 否则是新添加的数据
     pvCapabilitydiagramsData = yield select(state => {
@@ -386,13 +384,12 @@ function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
     })
   }
   try {
-    // console.log('pvCapabilitydiagramsData', pvCapabilitydiagramsData)
-    const response = yield call(axios.post, url, { regionName, stationCodes, startTime, endTime });
+    const response = yield call(axios.post, url, { regionName, stationCodes:nowStationCodes, startTime, endTime });
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
-          pvCapabilitydiagramsData: response.data.data ? [...pvCapabilitydiagramsData, ...response.data.data] : pvCapabilitydiagramsData,
+          pvCapabilitydiagramsData:  [...pvCapabilitydiagramsData, ...response.data.data],
           pvCapLoading: false
         }
       });
@@ -411,42 +408,41 @@ function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
 }
 
 function* getSingleCharts(action) { // 五分钟获取每一个电站的出力图
-  // console.log(' 五分钟获取每一个电站的出力图')
   const { payload } = action;
   const { regionName } = payload;
   let startTime = moment().startOf('day').utc().format();
   let endTime = moment().endOf('day').utc().format();
   const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}`;
-  let pvCapabilitydiagramsData = yield select(state => { // 获取现在出力图有的数据也是可以的
-    return state.monitor.stationMonitor.get('pvCapabilitydiagramsData').toJS()
-  })
-
-  let stationCodes = yield select(state => { // 获取现在所有的电站 即使现在新增加的也可以
-    return state.monitor.stationMonitor.get('stationCodes').toJS()
-  })
-  var arr2 = [];
-  for (let i = 0; i < stationCodes.length / 12; i++) {
-    arr2.push(stationCodes.slice(i * 12, i * 12 + 12));
-  }
-
-  // console.log('arr2', arr2)
-  for (let i = 0; i < arr2.length; i++) {
-    try {
-      const response = yield call(axios.post, url, { regionName, stationCodes: arr2[i], startTime, endTime });
-      pvCapabilitydiagramsData = pvCapabilitydiagramsData.filter(e => !arr2[i].include(e.stationCode))
-      if (response.data.code === '10000') {
-        yield put({
+    let stationCodes = yield select(state => { // 获取现在所有的电站 即使现在新增加的也可以
+      return state.monitor.stationMonitor.get('stationCodes').toJS()
+    })
+    var arr2 = [];
+    for (let i = 0; i < stationCodes.length / 12; i++) {
+      arr2.push(stationCodes.slice(i * 12, i * 12 + 12));
+    }
+    if (arr2.length > 0) {
+      for (let i = 0; i < arr2.length; i++) {
+        yield delay(2000)
+        try {
+        let pvCapabilitydiagramsData = yield select(state => { // 获取现在出力图有的数据也是可以的
+          return state.monitor.stationMonitor.get('pvCapabilitydiagramsData').toJS()
+        })
+        const response = yield call(axios.post, url, { regionName, stationCodes: arr2[i], startTime, endTime });
+        pvCapabilitydiagramsData = pvCapabilitydiagramsData.filter(e => !arr2[i].includes(e.stationCode));
+        if (response.data.code === '10000') {
+          yield put({
           type: allStationAction.changeMonitorstationStore,
           payload: {
             pvCapabilitydiagramsData: response.data.data ? [...response.data.data, ...pvCapabilitydiagramsData] : pvCapabilitydiagramsData,
-            pvCapLoading: false
-          }
-        });
-      } else { throw response.data }
-    } catch (e) {
-      console.log(e);
-      message.error('获取数据失败，请刷新');
+          pvCapLoading: false
+        }
+      });
+    } else { throw response.data }
+  } catch (e) {
+  console.log(e);
+  message.error('获取数据失败，请刷新');
     }
+  }
   }
 }
 
@@ -454,7 +450,7 @@ function* getSingleCharts(action) { // 五分钟获取每一个电站的出力�
 function* getPvRealChartsData(action) {
   const { waiting } = action;
   if (waiting) {
-    yield delay(60000); // 一分钟
+yield delay(300000); // 五分钟
   }
   yield fork(getSingleCharts, action);
   realPvChartInterval = yield fork(getPvRealChartsData, { ...action, waiting: true });
