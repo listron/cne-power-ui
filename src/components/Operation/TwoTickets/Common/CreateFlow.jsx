@@ -71,11 +71,11 @@ class CreateFlow extends Component {
           otherImg,
           isContinueAdd,
           docketId,
+          func: () => {
+            this.props.form.resetFields();
+          },
         };
         this.props.addDockect(params);
-        if (isContinueAdd) {
-          this.props.form.resetFields();
-        }
       }
     });
   }
@@ -137,7 +137,7 @@ class CreateFlow extends Component {
             {getFieldDecorator('docketCode', {
               rules: [{
                 required: true, message: `请输入${textName}编号(数字、字母及组合)`,
-                pattern: /[a-zA-Z0-9]{1,30}/,
+                pattern: /^[a-zA-Z0-9]+$/g,
               }],
               initialValue: docketInfo.docketCode,
             })(

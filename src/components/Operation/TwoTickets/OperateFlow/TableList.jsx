@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlow.scss';
+import styles from './operate.scss';
 import { connect } from 'react-redux';
 import { Table, Select, Icon, Modal } from 'antd';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
@@ -295,7 +295,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('review'); }}>审核</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${!obsolete && !e.isAbleOpe && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${(!obsolete || !e.isAbleOper) && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                     {e.nodeName}
                                 </div>

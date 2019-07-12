@@ -4,7 +4,7 @@ import styles from './index.scss';
 import moment from 'moment';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
 import path from '../../../../constants/path';
-
+const { APIBasePath } = path.basePaths;
 /*
   时间线组件：
   说明：
@@ -63,7 +63,7 @@ class TimeLine extends Component {
         const { operWinType } = this.props;
         return (
             <div className={styles.processItem} key={index}>
-                <img src={item.iconImg} className={styles.iconImg} />
+                <img src={`${APIBasePath}${item.iconImg}`} className={styles.iconImg} />
                 <div className={`${styles.line} ${operWinType && length - 1 === index && styles.dashedLine} ${!operWinType && length - 1 === index && styles.noLine}`} ></div>
                 <div className={styles.linebox}>
                     <div className={styles.flowName}>{item.nodeName}</div>

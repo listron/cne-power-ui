@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlow.scss';
+import styles from './operate.scss';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import { Radio } from 'antd';
 const RadioButton = Radio.Button;

@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 const { TextArea } = Input;
@@ -36,12 +36,20 @@ class InputLimit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0
+      current: 0,
+    };
+  }
+
+  componentDidMount() {
+    if (this.props.value) {
+      this.setState({
+        current: this.props.value.length,
+      });
     }
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.value && nextProps.value!==this.props.value && nextProps.value.length<=this.props.size){
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value && nextProps.value !== this.props.value && nextProps.value.length <= this.props.size) {
       this.setState({
         current: nextProps.value.length,
       });
@@ -57,17 +65,17 @@ class InputLimit extends Component {
   }
 
   render() {
-    const { numberIsShow,disabled } = this.props;
-    return ( 
+    const { numberIsShow, disabled } = this.props;
+    return (
       <div className={styles.inputLimit} style={this.props.style}>
         <div className={styles.inputCount}>{numberIsShow && <span>{this.state.current}/{this.props.size}字</span>}</div>
-        <TextArea 
+        <TextArea
           value={this.props.value}
           placeholder={this.props.placeholder}
-          onChange={this.checkWord} 
-          maxLength={this.props.size} 
+          onChange={this.checkWord}
+          maxLength={this.props.size}
           disabled={disabled}
-          style={{height: this.props.height, width: this.props.width,}} />
+          style={{ height: this.props.height, width: this.props.width }} />
       </div>
     );
   }

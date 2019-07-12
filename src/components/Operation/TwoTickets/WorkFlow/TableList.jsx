@@ -79,10 +79,8 @@ class TableList extends Component {
                     dealRoleIds.push(e.dealRoleIds.split(','));
                 }
             });
-            console.log('dealUserIds', dealUserIds);
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            console.log('right', right, stateCode);
             if (stateCode.length > 1 || !right) {
                 review = false; complete = false;
             } else {
@@ -317,7 +315,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('complete'); }}>消票</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${!obsolete && !e.isAbleOpe && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${(!obsolete || !e.isAbleOper) && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                     {e.nodeName}
                                 </div>
