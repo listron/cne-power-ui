@@ -175,6 +175,7 @@ export default {
       stationsManufactors: '/v3/ledger/stations/manufactors', // 获取电站下的厂家列表
       deviceModeList: '/v3/ledger/devicemodes', // 获取厂家下的设备型号列表
       attachmentsList: '/v3/ledger/attachments/list', // 台账备件列表
+      regionStation: '/v3/station/region', // 获取区域
 
       // 台账-仓库管理
       getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
@@ -210,7 +211,7 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
-      // 两票管理 
+      // 两票管理
       getDocketList: '/v3/docket/pageList', //列表
       getDocketStatus: '/v3/docket/state/total', //票据状态及总数
       getDocketType: '/v3/docket/typeList', //票据类型

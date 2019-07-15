@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from './deviceAccount.scss';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import { deviceAccountAction } from './deviceAccountAction';
-import { commonAction } from '../../../alphaRedux/commonAction';
 import Footer from '../../../../components/Common/Footer';
 import DeviceAccountBox from '../../../../components/Operation/Book/DeviceAccount/DeviceAccountBox';
 
@@ -50,12 +49,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: deviceAccountAction.resetStore }),
-  getRegion: params => dispatch({ type: commonAction.getRegion, payload: {// 获取用户权限的电站区域
-      params,
-      actionName: deviceAccountAction.changeDeviceAccountStore,
-      resultName: 'regionList',
-    } }),
   changeDeviceAccountStore: payload => dispatch({ type: deviceAccountAction.changeDeviceAccountStore, payload }),
+  getRegionStation: payload => dispatch({ type: deviceAccountAction.getRegionStation, payload }),
   getDeviceAccountList: payload => dispatch({ type: deviceAccountAction.getDeviceAccountList, payload }),
   getStationsManufactorsList: payload => dispatch({ type: deviceAccountAction.getStationsManufactorsList, payload }),
   getDeviceModeList: payload => dispatch({ type: deviceAccountAction.getDeviceModeList, payload }),
