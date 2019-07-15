@@ -175,7 +175,7 @@ function* getDefectList(action) { // 缺陷列表
 
 function* addDockect(action) {
     const { payload } = action;
-    const { isContinueAdd, ...params } = payload;
+    const { isContinueAdd, func, ...params } = payload;
     const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.operation.addDocket}`;
     try {
         const response = yield call(axios.post, url, params);
@@ -191,13 +191,9 @@ function* addDockect(action) {
                     },
                 });
             }
-            yield put({
-                type: workFlowAction.getFlowList,
-                payload: {
-                    commonQueryParams,
-                    listQueryParams,
-                },
-            });
+            if (isContinueAdd) {
+                func();
+            }
             yield put({
                 type: workFlowAction.getFlowList,
                 payload: {

@@ -71,11 +71,11 @@ class CreateFlow extends Component {
           otherImg,
           isContinueAdd,
           docketId,
+          func: () => {
+            this.props.form.resetFields();
+          },
         };
         this.props.addDockect(params);
-        if (isContinueAdd) {
-          this.props.form.resetFields();
-        }
       }
     });
   }
@@ -109,7 +109,10 @@ class CreateFlow extends Component {
     const textName = type === 'work' ? '工作票' : '操作票';
     return (
       <div className={styles.workflow}>
-        <Form className={styles.flowForm}>
+        {reject && <div className={styles.title}>
+          <div className={styles.text}> 基本信息  <i className="iconfont icon-content" /> </div>
+        </div>}
+        <Form className={`${styles.flowForm}  ${reject && styles.rejectFlowForm}`}>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
@@ -137,7 +140,7 @@ class CreateFlow extends Component {
             {getFieldDecorator('docketCode', {
               rules: [{
                 required: true, message: `请输入${textName}编号(数字、字母及组合)`,
-                pattern: /[a-zA-Z0-9]{1,30}/,
+                pattern: /^[a-zA-Z0-9]+$/g,
               }],
               initialValue: docketInfo.docketCode,
             })(
