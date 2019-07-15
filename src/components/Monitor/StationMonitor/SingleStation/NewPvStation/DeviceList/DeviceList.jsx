@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PvmoduleList from './PvmoduleList';
+// import PvmoduleList from './PvmoduleList';
+import PvmoduleList from './NewPvmoduleList';
 import InverterList from './InverterList';
 import ConfluenceBoxList from './ConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
@@ -40,8 +41,8 @@ class DeviceList extends Component {
         {`${deviceTypeCode}` === '101' && <div></div>}
         {`${deviceTypeCode}` === '302' && <IntegrateList {...this.props} />}
         {`${deviceTypeCode}` === '301' && <Boosterstation {...this.props} />}
-        {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />} 
-        {`${deviceTypeCode}` === '203' && <WeatherStation {...this.props} />} 
+        {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />}
+        {`${deviceTypeCode}` === '203' && <WeatherStation {...this.props} />}
       </div>
     )
   }
