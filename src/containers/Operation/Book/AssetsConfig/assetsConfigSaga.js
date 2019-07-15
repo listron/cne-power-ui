@@ -486,6 +486,30 @@ function* deleteDeviceModes(action) { //删除设备型号
     });
   }
 }
+function* getEnterprisecodes(action) { //获得可编辑的的企业code
+  const { payload } = action;
+  const url = `${APIBasePath}${operation.getEnterprisecodes}`;
+  try {
+    const response = yield call(axios.get, url, payload);
+    if (response.data.code === '10000') {
+      yield put({
+        type: assetConfigAction.changeAssetConfigStore,
+        payload: {
+          handleEnterprisecodes: response.data.data || [],
+        },
+      });
+    } else {
+      message.error(`获得可编辑的的企业失败!${response.data.message}`);
+      throw response.data;
+    }
+  } catch (e) {
+    console.log(e);
+    yield put({
+      type: assetConfigAction.changeAssetConfigStore,
+      payload: { loading: false },
+    });
+  }
+}
 
 export function* watchBookAssetsConfig() {
   yield takeLatest(assetConfigAction.getAssetTree, getAssetTree);
@@ -501,4 +525,5 @@ export function* watchBookAssetsConfig() {
   yield takeLatest(assetConfigAction.addDeviceModes, addDeviceModes);
   yield takeLatest(assetConfigAction.editDeviceModes, editDeviceModes);
   yield takeLatest(assetConfigAction.deleteDeviceModes, deleteDeviceModes);
+  yield takeLatest(assetConfigAction.getEnterprisecodes, getEnterprisecodes);
 }

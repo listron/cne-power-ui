@@ -150,7 +150,8 @@ class DeviceFactory extends React.Component {
     });
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType, handleEnterprisecodes } = this.props;
+    // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditFactorModal, tableRecord } = this.state;
     const columns = [
@@ -223,7 +224,7 @@ class DeviceFactory extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} handleEnterprisecodes={handleEnterprisecodes} />
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
