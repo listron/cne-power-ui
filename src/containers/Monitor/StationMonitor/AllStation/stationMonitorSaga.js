@@ -1,4 +1,4 @@
-import { call, put, takeLatest, fork, cancel, cancelled } from 'redux-saga/effects';
+import { call, put, takeLatest, fork, cancel, select, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { delay } from 'redux-saga';
 import Path from '../../../../constants/path';
@@ -9,6 +9,7 @@ let realtimeInterval = null;
 let realChartsInterval = null;
 let realPowerInterval = null;
 let realPvtimeInterval = null;
+let realPvChartInterval = null;
 const baseurl = Path.basePaths.APIBasePath;
 
 function* getMonitorStation(action) {//获取所有/风/光电站信息
@@ -296,7 +297,7 @@ function* monthplanpower(action) { // 多电站月累计与计划发电量图(�
   const endDate = moment().endOf('year').format('YYYY-MM-DD');
   const startDate = moment().startOf('year').format('YYYY-MM-DD');
   const url = `${baseurl + Path.APISubPaths.monitor.getMonthPalnPower}${startDate}/${endDate}/${regionName}`;
-  // const url=`/mock/api/v3/monitor/monthPlanpower`;
+  // const url = `/mock/api/v3/monitor/monthPlanpower`;
   try {
     yield put({
       type: allStationAction.changeMonitorstationStore,
@@ -337,10 +338,11 @@ function* getPvChartsData(action) { // 光伏电站的图表
 function* getPvMonitorStation(action) {//获取所有光电站信息
   const { payload } = action;
   const { regionName } = payload;
-  const utcTime = moment.utc().format();
-  const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}/${utcTime}/${regionName}`
+  const UTCString = moment.utc().format();
+  const url = `${baseurl}${Path.APISubPaths.monitor.getPvStation}`
+  // const url = '/mock/v3/monitor/stations/station';
   try {
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, { UTCString, regionName });
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
@@ -348,6 +350,7 @@ function* getPvMonitorStation(action) {//获取所有光电站信息
           pvMonitorStation: response.data.data || {},
           loading: false,
           stationType: '1',
+          pvUnix: moment().unix()
         },
 
       });
@@ -361,6 +364,7 @@ function* getPvMonitorStation(action) {//获取所有光电站信息
         pvMonitorStation: {},
         stationType: '1',
         loading: false,
+        pvUnix: moment().unix()
       }
     });
   }
@@ -368,23 +372,24 @@ function* getPvMonitorStation(action) {//获取所有光电站信息
 
 function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
   const { payload } = action;
-  const { regionName } = payload;
+  const { regionName, stationCodes = [], nowStationCodes = [] } = payload;
   let startTime = moment().startOf('day').utc().format();
   let endTime = moment().endOf('day').utc().format();
-  const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}/${startTime}/${endTime}/${regionName}`;
+  const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}`;
+  // const url = '/mock/v3/monitor/stations/getPvCapabilitydiagrams';
+  let pvCapabilitydiagramsData = [];
+  if (stationCodes.length > 12) {  //  1 存处的数据  原始+新增加的 否则是新添加的数据
+    pvCapabilitydiagramsData = yield select(state => {
+      return state.monitor.stationMonitor.get('pvCapabilitydiagramsData').toJS()
+    })
+  }
   try {
-    yield put({
-      type: allStationAction.changeMonitorstationStore,
-      payload: {
-        pvCapLoading: true
-      }
-    });
-    const response = yield call(axios.get, url);
+    const response = yield call(axios.post, url, { regionName, stationCodes: nowStationCodes, startTime, endTime });
     if (response.data.code === '10000') {
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
-          pvCapabilitydiagramsData: response.data.data || {},
+          pvCapabilitydiagramsData: [...pvCapabilitydiagramsData, ...response.data.data],
           pvCapLoading: false
         }
       });
@@ -402,6 +407,56 @@ function* getPvCapabilitydiagrams(action) { // 获取每一个的出力图
   }
 }
 
+function* getSingleCharts(action) { // 五分钟获取每一个电站的出力图
+  const { payload } = action;
+  const { regionName } = payload;
+  let startTime = moment().startOf('day').utc().format();
+  let endTime = moment().endOf('day').utc().format();
+  const url = `${baseurl}${Path.APISubPaths.monitor.getPvCapabilitydiagrams}`;
+  let stationCodes = yield select(state => { // 获取现在所有的电站 即使现在新增加的也可以
+    return state.monitor.stationMonitor.get('stationCodes').toJS()
+  })
+  var arr2 = [];
+  for (let i = 0; i < stationCodes.length / 12; i++) {
+    arr2.push(stationCodes.slice(i * 12, i * 12 + 12));
+  }
+  if (arr2.length > 0) {
+    for (let i = 0; i < arr2.length; i++) {
+      yield delay(2000)
+      try {
+        let pvCapabilitydiagramsData = yield select(state => { // 获取现在出力图有的数据也是可以的
+          return state.monitor.stationMonitor.get('pvCapabilitydiagramsData').toJS()
+        })
+        const response = yield call(axios.post, url, { regionName, stationCodes: arr2[i], startTime, endTime });
+        pvCapabilitydiagramsData = pvCapabilitydiagramsData.filter(e => !arr2[i].includes(e.stationCode));
+        if (response.data.code === '10000') {
+          yield put({
+            type: allStationAction.changeMonitorstationStore,
+            payload: {
+              pvCapabilitydiagramsData: [...response.data.data, ...pvCapabilitydiagramsData],
+              pvCapLoading: false
+            }
+          });
+        } else { throw response.data }
+      } catch (e) {
+        console.log(e);
+        message.error('获取数据失败，请刷新');
+      }
+    }
+  }
+}
+
+
+function* getPvRealChartsData(action) {
+  const { waiting } = action;
+  if (waiting) {
+    yield delay(300000); // 五分钟
+  }
+  yield fork(getSingleCharts, action);
+  realPvChartInterval = yield fork(getPvRealChartsData, { ...action, waiting: true });
+}
+
+
 function* getPvRealData(action) { // 获取光伏的数据
   const { firtQuery = true, waiting } = action;
   if (waiting) {
@@ -414,9 +469,11 @@ function* getPvRealData(action) { // 获取光伏的数据
     })
   }
   yield fork(getPvMonitorStation, action);
-  yield fork(getPvCapabilitydiagrams, action);
+  // yield fork(getPvCapabilitydiagrams, action);
   realPvtimeInterval = yield fork(getPvRealData, { ...action, firtQuery: false, waiting: true });
 }
+
+
 
 function* stopRealMonitorData() { // 停止数据定时请求并清空数据(光伏)
   if (realtimeInterval) {
@@ -433,6 +490,9 @@ function* stopRealMonitorData() { // 停止数据定时请求并清空数据(光
     })
     yield cancel(realPvtimeInterval);
   }
+  if (realPvChartInterval) {
+    yield cancel(realPvChartInterval);
+  }
 }
 
 
@@ -445,5 +505,7 @@ export function* watchStationMonitor() {
   yield takeLatest(allStationAction.stopRealCharstData, stopRealCharstData);
   yield takeLatest(allStationAction.getPvChartsData, getPvChartsData);
   yield takeLatest(allStationAction.getPvRealData, getPvRealData);
+  yield takeLatest(allStationAction.getPvCapabilitydiagrams, getPvCapabilitydiagrams);
+  yield takeLatest(allStationAction.getPvRealChartsData, getPvRealChartsData);
 }
 
