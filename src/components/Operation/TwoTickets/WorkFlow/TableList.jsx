@@ -327,7 +327,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('complete'); }}>消票</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${(!obsolete) && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                     {e.nodeName}
                                 </div>
