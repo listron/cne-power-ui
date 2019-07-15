@@ -47,11 +47,6 @@ function* getSettableNodes() { // 获取可配置属性节点
       yield call(easyPut, 'fetchSuccess', {
         settableNodes: response.data.data || [],
       });
-      for(const node of response.data.data ){
-        yield call(getSettableUsers, {
-          payload: { nodeCode: node.nodeCode },
-        });
-      }
     } else { throw response.data; }
   } catch (error) {
     message.error(`配置项获取失败, ${error.message}`);
@@ -108,19 +103,23 @@ function* getSettedInfo({ payload }){ // 查看 电站审核人信息
 }
 
 function* getSettableUsers({ payload }){ // 查看可配置的人员列表 GET
-  const { userGather } = yield select(state => state.operation.examiner.toJS());
-  const { nodeCode } = payload;
-  const url = `${APIBasePath}${operation.getSettableUsers}/${nodeCode}`;
+  const { stationCode, settableNodes } = payload;
   try {
-    const response = yield call(axios.get, url);
-    if (response.data.code === '10000') {
-      yield call(easyPut, 'fetchSuccess', {
-        userGather: {
-          ...userGather,
-          [nodeCode]: response.data.data || [],
-        },
-      });
-    } else { throw response.data; }
+    for(const node of settableNodes ){
+      const { nodeCode } = node || {};
+      const url = `${APIBasePath}${operation.getSettableUsers}/${stationCode}/${nodeCode}`;
+      // const url = `${APIBasePath}${operation.getSettableUsers}/${nodeCode}`;
+      const { userGather } = yield select(state => state.operation.examiner.toJS());
+      const response = yield call(axios.get, url);
+      if (response.data.code === '10000') {
+        yield call(easyPut, 'fetchSuccess', {
+          userGather: {
+            ...userGather,
+            [nodeCode]: response.data.data || [],
+          },
+        });
+      } else { throw response.data; }
+    }
   } catch (error) {
     message.error(`人员信息获取失败, ${error.message}`);
   }

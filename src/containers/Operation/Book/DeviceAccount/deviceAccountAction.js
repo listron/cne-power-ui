@@ -6,6 +6,7 @@ export const deviceAccountAction={
   getStationsManufactorsList: Symbol('getStationsManufactorsList'), // 获取电站下的厂家列表
   getDeviceModeList: Symbol('getDeviceModeList'), // 获取厂家下的设备型号列表
   getDeviceAttachments: Symbol('getDeviceAttachments'), // 台账备件列表
+  getRegionStation: Symbol('getRegionStation'), // 获取区域
 
   resetStore: Symbol('resetStore'), // 发起重置数据请求
 };

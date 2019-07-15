@@ -174,6 +174,7 @@ export default {
       stationsManufactors: "/v3/ledger/stations/manufactors", // 获取电站下的厂家列表
       deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
       attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
+      regionStation: "/v3/station/region", // 获取区域
 
       // 台账-仓库管理
       getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
@@ -588,5 +589,7 @@ export default {
     }
   }
 };
+
+
 
 

@@ -24,6 +24,7 @@ class TableList extends Component {
         handleBatch: PropTypes.func,
         stopBatch: PropTypes.func,
         delDocket: PropTypes.func,
+        stopRight: PropTypes.array,
 
     }
 
@@ -61,6 +62,8 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
+        const { stopRight } = this.props;
+        const rightNodeCode = stopRight.map(e => e.nodeCode); // 作废权限的nodeCode
         if (keys.length > 0) { // 选中的超过一条
             const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
@@ -79,9 +82,13 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
+            const nodeCode = [...new Set(record.map(e => e.nodeCode))];
             if (stateCode.length > 1 || !right) {
                 review = false;
             } else if (stateCode[0] === '101') { review = true; }
+            if (nodeCode.length > 1 || nodeCode[0] !== rightNodeCode[0]) { // 作废的权限
+                obsolete = false;
+            }
             this.setState({ review, obsolete });
         } else {
             this.setState({ review: false, obsolete: false });
@@ -301,7 +308,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('review'); }}>审核</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${(!obsolete || !e.isAbleOper) && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                     {e.nodeName}
                                 </div>
