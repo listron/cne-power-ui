@@ -64,8 +64,13 @@ class TableList extends Component {
         if (keys.length > 0) { // 选中的超过一条
             const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
+            let review = false, obsolete = true;
             record.forEach(e => {
-                if (e.dealUserIds) dealUserIds.push(e.dealUserIds.split(','));
+                if (e.dealUserIds) {
+                    dealUserIds.push(e.dealUserIds.split(','));
+                } else {
+                    obsolete = false;
+                }
             });
             record.forEach(e => {
                 if (e.dealRoleIds) {
@@ -74,16 +79,17 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            let review = false;
             if (stateCode.length > 1 || !right) {
                 review = false;
             } else if (stateCode[0] === '101') { review = true; }
-            this.setState({ review, obsolete: true });
+            this.setState({ review, obsolete });
         } else {
             this.setState({ review: false, obsolete: false });
         }
-
     }
+
+
+
 
     onShowDetail = (value) => {
         this.props.changeFlowStore({ showPage: 'detail', docketId: value.docketId });

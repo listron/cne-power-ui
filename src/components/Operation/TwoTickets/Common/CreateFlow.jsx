@@ -109,7 +109,10 @@ class CreateFlow extends Component {
     const textName = type === 'work' ? '工作票' : '操作票';
     return (
       <div className={styles.workflow}>
-        <Form className={styles.flowForm}>
+        {reject && <div className={styles.title}>
+          <div className={styles.text}> 基本信息  <i className="iconfont icon-content" /> </div>
+        </div>}
+        <Form className={`${styles.flowForm}  ${reject && styles.rejectFlowForm}`}>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
