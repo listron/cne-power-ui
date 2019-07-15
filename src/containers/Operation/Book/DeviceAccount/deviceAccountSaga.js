@@ -95,7 +95,7 @@ function* getStationsManufactorsList(action) { // 获取电站下的厂家列表
 
 function* getDeviceModeList(action) { // 获取厂家下的设备型号列表
   const { payload } = action;
-  const url = `${APIBasePath}${deviceModeList}/${payload.manufactorId}`;
+  const url = `${APIBasePath}${deviceModeList}/${payload.manufactorId}?stationCode=${payload.stationCode}`;
   try {
     yield put({
       type: deviceAccountAction.deviceAccountFetchSuccess,
