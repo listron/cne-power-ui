@@ -12,11 +12,24 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     listLoading: PropTypes.bool,
     stations: PropTypes.array,
     settingList: PropTypes.array,
+    settableNodes: PropTypes.array,
     total: PropTypes.number,
     tableParams: PropTypes.object,
     getSettingList: PropTypes.func,
     changeStore: PropTypes.func,
     getSettedInfo: PropTypes.func,
+    getSettableUsers: PropTypes.func,
+  }
+
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    const { changeStore, tableParams, getSettingList } = this.props;
+    const newParam = {
+      ...tableParams,
+      pageNum: currentPage,
+      pageSize,
+    };
+    changeStore({ tableParams: newParam });
+    getSettingList({ ...newParam });
   }
 
   tableChange = (pagination, filter, sorter) => {
@@ -37,7 +50,6 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     changeStore({ tableParams: newParam });
     getSettingList({ ...newParam });
   }
-
 
   checkStations = ({ stationCodes }) => { // 电站选择
     const { tableParams, changeStore, getSettingList } = this.props;
@@ -75,7 +87,7 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
             <span
               className="iconfont icon-edit"
               onClick={() => {
-                state > 0 ? this.showEdit(distributionId) : this.showCreate(distributionId);
+                state > 0 ? this.showEdit(record) : this.showCreate(record);
               }}
             />
             {state > 0 && <span
@@ -88,12 +100,18 @@ class HandleExaminer extends Component { // 这个页面其实没啥用···只
     },
   ])
 
-  showEdit = (distributionId) => { // 展示编辑弹框
-    this.props.getSettedInfo({ distributionId, modalType: 'editModalShow' });
+  showEdit = (record) => { // 展示编辑弹框
+    const { settableNodes, getSettedInfo, getSettableUsers } = this.props;
+    const { distributionId, stationCode } = record;
+    getSettableUsers({ settableNodes, stationCode });
+    getSettedInfo({ distributionId, modalType: 'editModalShow' });
   }
 
-  showCreate = (handleDistributionId) => { // 展示新设置弹框
-    this.props.changeStore({ editModalShow: true, handleDistributionId });
+  showCreate = (record, handleDistributionId) => { // 展示新设置弹框
+    const { settableNodes, changeStore, getSettableUsers } = this.props;
+    const { distributionId, stationCode } = record;
+    getSettableUsers({ settableNodes, stationCode });
+    changeStore({ editModalShow: true, handleDistributionId: distributionId });
   }
 
   showDetail = (distributionId) => { // 展示详情弹框
