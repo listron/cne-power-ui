@@ -13,8 +13,6 @@ const initState = immutable.fromJS({
   duration: '', // 时间段
   taskId: '', // 行id
   pointsSeleted: [], // 确认时候 => 选中的测点
-  recordedMinuteStart: moment().subtract(1, 'month').startOf('day'), // 记录10min起始时间
-  recordedMinuteEnd: moment().subtract(1, 'month').endOf('day'), // 记录10min终止时间
   deviceTypeCode: null, // 选中的设备类型
   queryParams: {
     timeZone:  moment().zone() / (-60), // 时区
