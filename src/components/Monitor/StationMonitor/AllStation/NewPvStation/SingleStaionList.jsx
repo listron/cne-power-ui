@@ -11,18 +11,17 @@ const Option = Select.Option;
 
 class SingleStaionList extends React.Component {
   static propTypes = {
-
+    singleStation: PropTypes.object,
+    monitorPvUnit: PropTypes.object,
+    filterChartData: PropTypes.array,
   }
 
   constructor(props, context) {
     super(props, context);
-    this.state = {
-
-    }
   }
 
   componentWillUnmount() {
-    console.log('wo 卸载了一次')
+    // console.log('wo 卸载了一次')
   }
 
   showTip = (currentStatus) => {
