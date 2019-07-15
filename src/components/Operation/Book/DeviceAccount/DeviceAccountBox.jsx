@@ -16,7 +16,7 @@ export default class DeviceAccountBox extends React.Component {
     regionList: PropTypes.array,
     stationsManufactorsList: PropTypes.array,
     deviceModeList: PropTypes.array,
-    getRegion: PropTypes.func,
+    getRegionStation: PropTypes.func,
     getStationsManufactorsList: PropTypes.func,
     getDeviceModeList: PropTypes.func,
     getDeviceAccountList: PropTypes.func,
@@ -43,10 +43,10 @@ export default class DeviceAccountBox extends React.Component {
 
   componentDidMount() {
     const {
-      getRegion,
+      getRegionStation,
     } = this.props;
     // 接口
-    getRegion();
+    getRegionStation();
   }
 
   // 分页
@@ -149,6 +149,7 @@ export default class DeviceAccountBox extends React.Component {
     const paramsMode = {
       manufactorId: value === '0' ? '0' : value,
       modeOption: '', // 设备型号
+      stationCode: stationCodes.join(),
     };
     // table列表
     const paramsList = {
