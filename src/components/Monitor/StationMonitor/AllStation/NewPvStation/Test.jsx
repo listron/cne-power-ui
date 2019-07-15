@@ -151,6 +151,7 @@ class Test extends React.Component {
 
   initRender = (noChange) => { //  渲染todolist 的条数
     const { renderList, spliceLength, stationCodeList, newStationsList } = this.state;
+    const { regionName } = this.props;
     const tmp = newStationsList.slice(0, spliceLength + renderList.length);
     const update = newStationsList.slice(0, renderList.length);
     const thisTmp = newStationsList.slice(renderList.length, spliceLength + renderList.length)
@@ -165,7 +166,8 @@ class Test extends React.Component {
       this.props.changeMonitorStationStore({ stationCodes: tmp.map(e => e.stationCode) })
       this.props.getPvCapabilitydiagrams({
         nowStationCodes: thisTmp.map(e => e.stationCode),
-        stationCodes: tmp.map(e => e.stationCode)
+        stationCodes: tmp.map(e => e.stationCode),
+        regionName
       })
     }
   }
