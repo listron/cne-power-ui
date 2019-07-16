@@ -44,10 +44,6 @@ class DefectList extends Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log('我卸载了');
-  }
-
   onPaginationChange = ({ currentPage, pageSize }) => { // 切换列表表头
     this.getDefectData({
       pageNum: currentPage,
