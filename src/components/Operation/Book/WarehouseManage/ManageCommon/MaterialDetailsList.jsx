@@ -9,6 +9,7 @@ import styles from './manageCommon.scss';
 export default class MaterialDetailsList extends Component {
 
   static propTypes = {
+    materialListLoading: PropTypes.bool,
     total: PropTypes.number,
     materialListTotal: PropTypes.number,
     inventoryId: PropTypes.number,
@@ -66,6 +67,7 @@ export default class MaterialDetailsList extends Component {
       title: '单价/元',
       dataIndex: 'price',
       width: 100,
+      sorter: true,
       render: (text) => <span>{dataFormats(text, '--', 2, true)}</span>,
     }, {
       title: '入库人',
@@ -102,13 +104,27 @@ export default class MaterialDetailsList extends Component {
       pageNum: currentPage,
       pageSize,
     };
-    changeStore({ ...newParams });
+    changeStore({ materialListParams: {...newParams} });
+    getMaterialDetailsList({ inventoryId, ...newParams });
+  }
+
+  tableChange = (pagination, filter, sorter) => {
+    const { field, order } = sorter;
+    const { materialListParams, changeStore, getMaterialDetailsList, inventoryId } = this.props;
+    const sortTypeInfo = {
+      descend: 'desc',
+      ascend: 'asc',
+    };
+    const sortField = field ? 'price' : '';
+    const sortMethod = order ? sortTypeInfo[order] : '';
+    const newParams = { ...materialListParams, sortField, sortMethod };
+    changeStore({ materialListParams: newParams });
     getMaterialDetailsList({ inventoryId, ...newParams });
   }
 
   render(){
     const { modalShow, checkedMaterial } = this.state;
-    const { value = [], materialDetailsList, total, materialListParams, materialListTotal } = this.props;
+    const { value = [], materialDetailsList, total, materialListParams, materialListTotal, materialListLoading } = this.props;
     const { pageSize, pageNum } = materialListParams;
     return (
       <div className={styles.materialDetailsList}>
@@ -154,7 +170,9 @@ export default class MaterialDetailsList extends Component {
               columns={this.createColumn()}
               dataSource={materialDetailsList.map(e => ({ ...e, key: e.materialCode }))}
               pagination={false}
+              loading={materialListLoading}
               scroll={{y: 280}}
+              onChange={this.tableChange}
               rowSelection={{
                 selectedRowKeys: checkedMaterial.map(e => e.materialCode),
                 onChange: this.selectMaterial,

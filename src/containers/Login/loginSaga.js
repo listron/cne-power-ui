@@ -150,6 +150,7 @@ function* phoneCodeLogin(action) {
           data.access_token && Cookie.set('authData', JSON.stringify(data.access_token));
           data.access_token && localStorage.setItem('authData', data.access_token);
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
+          data.enterpriseCode && Cookie.set('enterpriseCode', data.enterpriseCode);
           data.enterpriseName && Cookie.set('enterpriseName', data.enterpriseName);
           data.enterpriseLogo && Cookie.set('enterpriseLogo', data.enterpriseLogo);
           data.userId && Cookie.set('userId', data.userId);
