@@ -3,7 +3,7 @@ import path from '../../../../constants/path';
 import styles from './dataExport.scss';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 import WarningTip from './WarningTip/index';
 import CommonPagination from '../../../Common/CommonPagination';
 
@@ -69,6 +69,10 @@ class DataExportList extends Component{
     })
 
     getDataExportList(listParam);
+  }
+
+  onFail = () => { // 状态为4（无数据）
+    message.error('所选时间段内测点无数据，请重新选择！');
   }
 
   confirmWarningTip = () => { // 确定
@@ -155,6 +159,7 @@ class DataExportList extends Component{
               {record.status === 1 && <span></span>}
               {record.status === 2 && <Button className={styles.downloadStyle} href={text} download={text} target="_blank">下载到本地</Button>}
               {record.status === 3 && <span className={styles.renewal} onClick={()=>this.onRenewal(record, index)}>重新生成任务</span>}
+              {record.status === 4 && <span className={styles.renewal} onClick={()=>this.onFail()}>下载到本地</span>}
             </span>
           )
         },
