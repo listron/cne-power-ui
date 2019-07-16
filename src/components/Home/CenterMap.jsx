@@ -25,7 +25,7 @@ class CenterMap extends Component{
       showStationInfo: false,
       starArr: [],
       mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps){
@@ -33,15 +33,15 @@ class CenterMap extends Component{
     const preStations = this.props.mapStation;
     if(mapStation.length > 0 && preStations.length === 0){ // 第一次得到电站数据
       this.setStars(); // 开始渲染星图。
-      let countriesInfo = []; // 国家信息
+      const countriesInfo = []; // 国家信息
       mapStation.forEach(station=>{ // 存储为[{国家，位置}...]结构，一个国家只保存一个坐标即可
         const tmpName = station.country?station.country:'';
-        let hasCountry = countriesInfo.some(country => country && country.countryName === tmpName);
+        const hasCountry = countriesInfo.some(country => country && country.countryName === tmpName);
         if(!hasCountry){
           countriesInfo.push({
             countryName: tmpName,
-            position: [station.longitude, station.latitude]
-          })
+            position: [station.longitude, station.latitude],
+          });
         }
       });
       axios.get('/mapJson/world.json').then(response => {
@@ -49,7 +49,7 @@ class CenterMap extends Component{
         const activeInfo = countriesInfo.find(e=>e.countryName === 'China') || countriesInfo[0] || {}; // 默认中国，或者第一个国家
         this.setWorldMap(countriesInfo, activeInfo);
       }).catch(error=>{
-        console.log(error); 
+        console.log(error);
         // message.error('加载世界地图失败，请重试');
       });
       this.setState({ countriesInfo });
@@ -65,12 +65,12 @@ class CenterMap extends Component{
     const { countriesInfo } = this.state;
     const { mapStation } = this.props;
     if(param.seriesName === 'active'){ // 已选中国家点击无效
-      return
+      return;
     }else if(param.seriesName === 'inactive'){
       const activePosition = param.value;
       const activeInfo = countriesInfo.find(e=>{
         return e.position[0] === activePosition[0] && e.position[1] === activePosition[1];
-      })
+      });
       activeInfo && this.setWorldMap(countriesInfo, activeInfo); // 切换世界激活项
       activeInfo && this.setCountryMap(mapStation, activeInfo.countryName); // 切换国家
     }
@@ -79,20 +79,20 @@ class CenterMap extends Component{
   setWorldMap = (countriesInfo, activeInfo) => { // 国家数组 + 当前激活的国家
     const worldBox = document.getElementById('homeWorldMap');
     const worldChart = echarts.init(worldBox);
-    worldChart.on('click',this.onCountryChange);
+    worldChart.on('click', this.onCountryChange);
     const activeName = activeInfo.countryName || '';
     const activeData = activeInfo.position || [];
     const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e=>e.position);
     worldChart.setOption({
       color: ['#48cf49', '#a6e8ff'],
-      series:[{
+      series: [{
         name: 'active',
         type: 'scatter',
         coordinateSystem: 'geo',
         data: [activeData],
         symbolSize: 15,
         animation: false,
-      },{
+      }, {
         name: 'inactive',
         type: 'scatter',
         coordinateSystem: 'geo',
@@ -101,7 +101,7 @@ class CenterMap extends Component{
         animation: false,
       }],
       geo: {
-        silent:true,
+        silent: true,
         map: 'world',
         roam: false,
         zoom: 1.2,
@@ -109,15 +109,21 @@ class CenterMap extends Component{
           normal: {
             areaColor: '#1866a8',
             borderColor: '#076399',
-            opacity: 0.5
+            opacity: 0.5,
           },
-        }
-      }
+        },
+      },
     });
   }
 
   setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
-    const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
+    let countryStation = [];
+    if (mapName === 'China') {
+      countryStation = mapStation.filter(e => e.timeZone === 8);
+    } else {
+      countryStation = mapStation.filter(e=>e.country && e.country === mapName);
+    }
+    // const countryStation = mapStation.filter(e=>e.country && e.country === mapName);
     const pvStationData = countryStation.filter(e=>e.stationType === 1).map(e => {
       if (e.longitude > -178 && e.longitude < -154 && e.latitude > 18 && e.latitude < 28) { // 更变夏威夷光伏电站坐标
         e.longitude += 20;
@@ -130,7 +136,8 @@ class CenterMap extends Component{
       mapCountInfo: {
         name: countryStation[0] && countryStation[0].countryChineseName,
         wind: windStationData.length,
-        pv: pvStationData.length,},
+        pv: pvStationData.length,
+      },
     });
     const { clientWidth } = document.body;
     let countrySize = 620;
@@ -151,21 +158,21 @@ class CenterMap extends Component{
           left: -140,
           top: 48,
           width: 20,
-        }, 
+        },
         Hawaii: {
           left: -135,
           top: 33,
-          width: 10
+          width: 10,
         },
       });
       countryChart.setOption({
-        series:[{
+        series: [{
           name: 'wind',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: windStationData,
-          symbol: `image:///img/ico_wind.png`,
-          symbolSize: [15,18],
+          symbol: 'image:///img/ico_wind.png',
+          symbolSize: [15, 18],
           itemStyle: {
             color: '#fff',
           },
@@ -173,16 +180,16 @@ class CenterMap extends Component{
             itemStyle: {
               color: '#fff35f',
               opacity: 1,
-            }
-          }
-        },{
+            },
+          },
+        }, {
           name: 'pv',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: `image:///img/ico_pv.png`,
+          symbol: 'image:///img/ico_pv.png',
           symbolRotate: 0,
-          symbolSize: [25,16],
+          symbolSize: [25, 16],
           itemStyle: {
             color: '#fff',
           },
@@ -190,51 +197,51 @@ class CenterMap extends Component{
             itemStyle: {
               color: '#fff35f',
               opacity: 1,
-            }
-          }
+            },
+          },
         }],
         geo: {
-          silent:true,
+          silent: true,
           map: mapName,
           roam: true,
           layoutCenter: ['50%', '55%'],
           scaleLimit: {
-            min: 0.75
+            min: 0.75,
           },
           layoutSize: countrySize,
           itemStyle: {
             normal: {
               areaColor: '#1866a8',
               borderColor: '#076399',
-              opacity: 0.5
+              opacity: 0.5,
             },
-          }
-        }
+          },
+        },
       });
-      countryChart.on('mouseover',(param)=>{
+      countryChart.on('mouseover', (param)=>{
         const checkedPosition = param.value;
         const checkedStation = mapStation.find(e=>e.longitude === checkedPosition[0] && e.latitude === checkedPosition[1]);
         if (!checkedStation) { return; }
         this.setState({ showStationInfo: true });
         this.props.getSingleStation(checkedStation);
       });
-      countryChart.on('mouseout',()=>{
+      countryChart.on('mouseout', ()=>{
         this.props.changeHomepageStore({ singleStation: {} });
         this.setState({ showStationInfo: false });
       });
     }).catch(error=>{
-      console.log(error); 
+      console.log(error);
       message.error('加载国家地图失败，请重试');
-    })
+    });
   }
 
   setStars = () => {
-    let tmpArr = [];
+    const tmpArr = [];
     tmpArr.length = 10;
     tmpArr.fill(0);
-    let starArr = tmpArr.map(e=>[Math.random() * 980, Math.random()*360])
+    const starArr = tmpArr.map(e=>[Math.random() * 980, Math.random()*360]);
     this.setState({ starArr });
-    this.clocker = setTimeout(this.setStars,5*60*1000);
+    this.clocker = setTimeout(this.setStars, 5*60*1000);
   }
 
   render(){
@@ -244,17 +251,17 @@ class CenterMap extends Component{
     const pvStations = mapStation.filter(e=>e.stationType === 1);
     const windResource = windStations.length > 0 ? [
       {
-        src: '/img/ico_wind.png', value: dataFormat(realTimeInfo.windReourse), unit: 'm/s', name: '风资源'
+        src: '/img/ico_wind.png', value: dataFormat(realTimeInfo.windReourse), unit: 'm/s', name: '风资源',
       }, {
-        src: null, value: dataFormat(realTimeInfo.windStationPower), unit: 'MW', name: '风电功率'
-      }
+        src: null, value: dataFormat(realTimeInfo.windStationPower), unit: 'MW', name: '风电功率',
+      },
     ] : [];
     const pvResource = pvStations.length > 0?[
       {
-        src: '/img/ico_pv.png', value: dataFormat(realTimeInfo.pvResource), unit: 'W/㎡', name: '光资源'
+        src: '/img/ico_pv.png', value: dataFormat(realTimeInfo.pvResource), unit: 'W/㎡', name: '光资源',
       }, {
-        src: null, value: dataFormat(realTimeInfo.pvStationPower), unit: 'MW', name: '光伏功率'
-      }
+        src: null, value: dataFormat(realTimeInfo.pvStationPower), unit: 'MW', name: '光伏功率',
+      },
     ]:[];
     const resourceArr = [...windResource, ...pvResource];
     const singleInfo = [
@@ -263,7 +270,7 @@ class CenterMap extends Component{
       {name: '日累计发电量', value: dataFormat(singleStation.dayPower), unit: '万kWh'},
       {name: '月累计发电量', value: dataFormat(singleStation.monthPower), unit: '万kWh'},
       {name: '年累计发电量', value: dataFormat(singleStation.yearPower), unit: '万kWh'},
-    ]
+    ];
     const singleStatus = singleStation.stationStatus || {};
     let mapCountryName = mapCountInfo.name || '--';
     if(mapCountryName === '中国'){
@@ -273,7 +280,7 @@ class CenterMap extends Component{
     const countrySize = {
       width: homeContentDom ? homeContentDom.offsetWidth : 0,
       height: homeContentDom ? homeContentDom.offsetHeight: 0,
-    }
+    };
     return (
       <div className={styles.centerMap}>
         <div className={styles.topData}>
@@ -310,16 +317,16 @@ class CenterMap extends Component{
           </div>
         </div>
         <div className={styles.starBox}>
-          {starArr.map(e=>(<div key={e[0]} 
+          {starArr.map(e=>(<div key={e[0]}
             className={styles.star}
             style={{
               left: e[0],
-              top: e[1]
+              top: e[1],
             }}
           ></div>))}
         </div>
       </div>
-    )
+    );
   }
 }
 

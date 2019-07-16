@@ -53,7 +53,7 @@ class Homepage extends Component {
     super(props);
     this.state = {
       hasMultipleType: false, // 用户是否有多种类型电站。
-    }
+    };
   }
 
   componentDidMount() {
@@ -97,13 +97,13 @@ class Homepage extends Component {
   }
 
   render() {
-    const { 
+    const {
       changeLoginStore, enterpriseId, username, userFullName, userLogo, resetCommonStore,
       realTimeInfo, // 10s实时数据 
       mapStation, // 电站地图
       completeRate, energySaving, operationInfo,
       getMonthPower, monthPower, // 各月发电
-      resetMonitorData
+      resetMonitorData,
     } = this.props;
     const { hasMultipleType } = this.state;
     return (
@@ -121,7 +121,7 @@ class Homepage extends Component {
         <div className={styles.innerContent} id="homepageContent">
           <div className={styles.middleBox}>
             <div className={styles.leftInfo}>
-              <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
+              <StationGeneral hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo} />
               <CompleteRate mapStation={mapStation} completeRate={completeRate} />
               <MonthGenChart
                 monthPower={monthPower}
@@ -136,7 +136,7 @@ class Homepage extends Component {
             <div className={styles.rightInfo}>
               <OutputPower hasMultipleType={hasMultipleType} {...this.props} />
               <OperationInfo operationInfo={operationInfo} />
-              <DeviceStatus hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo}  />
+              <DeviceStatus hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo} />
             </div>
           </div>
           <div className={styles.bottomBox}>

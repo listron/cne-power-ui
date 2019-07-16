@@ -9,6 +9,7 @@ const { Option } = Select;
 class AddManu extends Component {
 
   static propTypes = {
+    addManufactorRight: PropTypes.bool,
     addManufactorId: PropTypes.string,
     addManuStatus: PropTypes.string,
     assetsManufac: PropTypes.array,
@@ -79,7 +80,8 @@ class AddManu extends Component {
 
   render(){
     const { addModalShow, saveMode } = this.state;
-    const { form, assetsManufac, disabled, value, addManuStatus } = this.props;
+    const { form, assetsManufac, disabled, value, addManuStatus, addManufactorRight } = this.props;
+    // addManufactorRight: 是否具有添加厂家权限。
     const { getFieldDecorator } = form;
     return(
       <div className={styles.addManu}>
@@ -95,8 +97,8 @@ class AddManu extends Component {
           ))}
         </Select>
         <span
-          onClick={disabled ? null : this.showModal}
-          className={`${styles.addIcon} ${disabled ? styles.disabled : null}`}
+          onClick={(disabled || !addManufactorRight) ? null : this.showModal}
+          className={`${styles.addIcon} ${(disabled || !addManufactorRight) ? styles.disabled : null}`}
         >+</span>
         {addModalShow && <Modal
           title="添加厂家"
