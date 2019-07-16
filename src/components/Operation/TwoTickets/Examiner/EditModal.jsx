@@ -101,6 +101,9 @@ class EditModal extends Component {
                       style={{width: 200}}
                       maxTagCount={nodeValues.length > 1 ? 0 : 1}
                       mode="multiple"
+                      filterOption={(input, option) => {
+                        return option.props.children.toLowerCase().includes(input.toLowerCase());
+                      }}
                       maxTagPlaceholder={<div>
                         <span>已选{nodeValues.length}/{codeUserData.length}</span>
                         <Icon type="close" onClick={() => this.removeSelect(nodeCode)} />
