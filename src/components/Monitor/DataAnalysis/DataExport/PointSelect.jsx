@@ -45,7 +45,11 @@ class PointSelect extends Component {
     }));
     const prevPoint = prevPoints.length && prevPoints[0] && prevPoints[0].devicePointId;
     const pointInfos = pointInfo.length && pointInfo[0] && pointInfo[0].devicePointId;
-
+    if(pointInfo.length === 0) {
+      changeDataExportStore({
+        pointsSeleted: [],
+      });
+    }
     if (prevPoints.length === 0 && pointInfo.length > 0) { // 得到初始测点数据
       this.arrTree = checkedPoint; // 备份选中的测点
       changeDataExportStore({
