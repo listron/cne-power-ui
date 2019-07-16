@@ -15,6 +15,7 @@ class PvmoduleList extends Component {
     getPvmoduleList: PropTypes.func,
     loading: PropTypes.bool,
     pvLevelNums: PropTypes.object,
+    moduleTime: PropTypes.number,
   }
 
   constructor(props) {
@@ -23,7 +24,7 @@ class PvmoduleList extends Component {
       firstLoad: true,
       pvLevelStatus: '', // 为空的时候
       renderList: [],
-      spliceLength: 30, // 100条数据一渲染。
+      spliceLength: 30, // 30条数据一渲染。
       topHeight: 400, // 假设的列表上方高度
       newList: [],
     }
@@ -42,7 +43,7 @@ class PvmoduleList extends Component {
         const resHeight = tableHeight + topHeight - scrollTop - clientH;
         if (resHeight < 50) { //表格内容
           if (renderList.length < this.props.pvmoduleList.length) {
-            this.initRender();
+            this.initRender(true);
           }
         }
       }
@@ -58,7 +59,7 @@ class PvmoduleList extends Component {
       this.getData(nextStation);
     }
     if (nextProps.moduleTime !== this.props.moduleTime) {
-      this.changeStationData(nextProps.pvmoduleList, true)
+      this.changeStationData(nextProps.pvmoduleList)
     }
   }
 
@@ -78,20 +79,21 @@ class PvmoduleList extends Component {
   }
 
 
-  changeStationData = (pvmoduleList, noChange) => { // 改变数据之后改变
+  changeStationData = (pvmoduleList) => { // 改变数据之后改变
     const { pvLevelStatus } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     this.setState({ newList: tmpPvmoduleList }, () => {
-      this.initRender(noChange)
+      this.initRender()
     })
   }
 
 
-  initRender = (noChange) => { //  渲染todolist 的条数
+  initRender = (initLoad) => { //  渲染todolist 的条数
     const { renderList, spliceLength, newList } = this.state;
     const tmp = newList.slice(0, spliceLength + renderList.length);
+    const updateTmp = newList.slice(0, renderList.length || spliceLength);
     this.setState({
-      renderList: tmp,
+      renderList: initLoad ? tmp : updateTmp
     });
   }
 
@@ -106,11 +108,15 @@ class PvmoduleList extends Component {
 
   buttonClick = (e) => {
     const { pvLevelStatus } = this.state;
-    this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
+    const { pvmoduleList } = this.props;
+    this.setState({
+      pvLevelStatus: e === pvLevelStatus ? '' : e,
+      renderList: []
+    }, () => { this.changeStationData(pvmoduleList) })
   }
 
   render() {
-    const { pvmoduleList, loading, pvLevelNums, deviceTypeCode } = this.props;
+    const { pvmoduleList, loading, pvLevelNums } = this.props;
     const { pvLevelStatus, renderList } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     const pvStatus = [
@@ -169,9 +175,7 @@ class PvmoduleList extends Component {
               </div>
               {(renderList.length < tmpPvmoduleList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
             </React.Fragment>
-
           }
-
         </div>
       </div>
     )
