@@ -28,6 +28,8 @@ var initState = Immutable.fromJS({
   monthPowerData: [], // 多电站月发电量与等效时图
   monthPowerTime: null, // 多电站月发电量与等效时图
   monthPowerLoading: false, // 多电站月发电量与等效时图
+  pvUnix: null,
+  stationCodes: [], //请求出力图的codes
 });
 
 const stationMonitorReducer = (state = initState, action) => {

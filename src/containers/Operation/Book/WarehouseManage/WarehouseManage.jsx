@@ -172,6 +172,7 @@ const mapDispatchToProps = (dispatch) => ({
   getReserveList: payload => dispatch({ type: warehouseManageAction.getReserveList, payload }),
   deleteReserveInfo: payload => dispatch({ type: warehouseManageAction.deleteReserveInfo, payload }),
   recallReserveInfo: payload => dispatch({ type: warehouseManageAction.recallReserveInfo, payload }),
+  getMainDeviceEditCodes: () => dispatch({ type: warehouseManageAction.getMainDeviceEditCodes }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarehouseManage);

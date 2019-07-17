@@ -3,7 +3,12 @@
   .flowForm{
     width:572px;
     margin: 18px auto;
-    .tipText {
+  }
+  .rejectFlowForm{
+    min-width: 514px;
+    margin-left: -8px;
+  }
+   .tipText {
       color: $promptColor;
       margin-left: 12px;
       display: flex;
@@ -90,11 +95,13 @@
         white-space: nowrap;
         width:100px;
         text-align: right;
+        flex: 0 0 100px;
       }
       .userNames {
         display: inline-block;
         color: $darkColor;
         padding-left: 24px;
+         word-break: break-all;
       }
     }
     :global{
@@ -115,7 +122,6 @@
         }
       }
     }
-  }
 }
 
 .detailFlow{
@@ -158,7 +164,7 @@
 .basicContent {
   display: flex;
   flex-direction: column;
-  width: 554px;
+  min-width: 514px;
   .basicItem {
     display: flex;
     flex-direction: row;
@@ -166,16 +172,18 @@
     align-items: center;
     margin-bottom: 12px;
     color: $darkColor;
-    >div {
-      white-space: nowrap;
-      width:70px;
-      text-align: right;
-    }
-    >span {
-      display: inline-block;
-      color: $darkColor;
-      padding-left: 24px;
-    }
+     .label {
+        white-space: nowrap;
+        width:70px;
+        text-align: right;
+        flex: 0 0 100px;
+      }
+      >span {
+        display: inline-block;
+        color: $darkColor;
+        padding-left: 24px;
+        word-break: break-all;
+      }
   }
 }
 
@@ -243,9 +251,11 @@
       .operateTime {
         color: $darkColor;
         margin-right: 12px;
+         flex-shrink: 0;
       }
       .operateUser {
         color: $darkColor;
+        flex-shrink: 0;
       }
       .flowName {
         color: $darkColor;
@@ -256,6 +266,7 @@
         display: flex;
         flex-direction: row;
         margin-bottom: 12px;
+        flex-wrap: wrap;
         .imgList{
           line-height: 21px;
           height: 21px;

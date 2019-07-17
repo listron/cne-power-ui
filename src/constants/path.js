@@ -139,7 +139,8 @@ export default {
       addDeviceModes: "/v3/ledger/devicemodes/add", //新建设备型号
       editDeviceModes: "/v3/ledger/devicemodes/update", //编辑设备型号
       deleteDeviceModes: "/v3/ledger/devicemodes/delete", //删除设备型号
-      //设备管理
+      getEnterprisecodes: "/v3/ledger/operator/enterprisecodes", //获取可操作主设备类型的企业编码
+//设备管理
       getfactorsDeviceMode: "/v3/ledger/devicemodes", //获取某设备厂家下的设备型号
       getDevicePartInfo: "/v3/ledger/device/parts/list", //获取某设备的部件信息
       getDevicefixRecord: "/v3/ledger/device/defect/list", //获取某设备检修记录
@@ -173,6 +174,7 @@ export default {
       stationsManufactors: "/v3/ledger/stations/manufactors", // 获取电站下的厂家列表
       deviceModeList: "/v3/ledger/devicemodes", // 获取厂家下的设备型号列表
       attachmentsList: "/v3/ledger/attachments/list", // 台账备件列表
+      regionStation: "/v3/station/region", // 获取区域
 
       // 台账-仓库管理
       getWarehouses: '/v3/warehouse/list', // 所有仓库下拉项
@@ -587,5 +589,7 @@ export default {
     }
   }
 };
+
+
 
 

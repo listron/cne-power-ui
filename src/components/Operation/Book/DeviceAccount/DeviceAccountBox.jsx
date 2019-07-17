@@ -16,7 +16,7 @@ export default class DeviceAccountBox extends React.Component {
     regionList: PropTypes.array,
     stationsManufactorsList: PropTypes.array,
     deviceModeList: PropTypes.array,
-    getRegion: PropTypes.func,
+    getRegionStation: PropTypes.func,
     getStationsManufactorsList: PropTypes.func,
     getDeviceModeList: PropTypes.func,
     getDeviceAccountList: PropTypes.func,
@@ -43,24 +43,10 @@ export default class DeviceAccountBox extends React.Component {
 
   componentDidMount() {
     const {
-      getRegion,
-      // getDeviceAccountList // 首次不调用接口
+      getRegionStation,
     } = this.props;
-    // const params = {
-    //   regionName: '',
-    //   stationCodes: [],
-    //   manufactorId: '',
-    //   modeId: '',
-    //   deviceTypeCode: '',
-    //   assetIds: [],
-    //   orderField: '',
-    //   orderMethod: '',
-    //   pageNum: 1,
-    //   pageSize: 10,
-    // };
     // 接口
-    getRegion();
-    // getDeviceAccountList(params);
+    getRegionStation();
   }
 
   // 分页
@@ -161,14 +147,14 @@ export default class DeviceAccountBox extends React.Component {
     } = this.props;
     // 设备型号列表
     const paramsMode = {
-      manufactorId: value,
-      modeOption: '', // 设备型号
+      manufactorId: value === '0' ? '0' : value,
+      stationCode: stationCodes.join(),
     };
     // table列表
     const paramsList = {
       regionName,
       stationCodes,
-      manufactorId: value,
+      manufactorId: value === '0' ? '' : value,
       modeId: '',
       deviceTypeCode: '',
       assetIds: [],
@@ -179,6 +165,7 @@ export default class DeviceAccountBox extends React.Component {
     };
     this.setState({
       manufactorsOption: value,
+      modeOption: '', // 设备型号
     }, () => {
       // 接口
       getDeviceAccountList(paramsList);
@@ -199,7 +186,7 @@ export default class DeviceAccountBox extends React.Component {
       regionName,
       stationCodes,
       manufactorId,
-      modeId: value,
+      modeId: value === '0' ? '' : value,
       deviceTypeCode: '',
       assetIds: [],
       orderField: '',
@@ -220,11 +207,17 @@ export default class DeviceAccountBox extends React.Component {
     const { stations } = this.props;
     let arr = [];
     // 选了区域在筛选
+    if (regionOption === '全部') {
+      // 在区域下的电站
+      arr = stations;
+      return arr;
+    }
     if (regionOption) {
       // 在区域下的电站
       arr = stations.filter(cur =>
         cur.regionName === regionOption
       );
+      return arr;
     }
     return arr;
   };
@@ -251,9 +244,11 @@ export default class DeviceAccountBox extends React.Component {
       return <Option key={cur.manufactorId} value={cur.manufactorId}>{cur.manufactorName}</Option>;
     });
     // 是否有数据
-    const deviceList = deviceModeList && deviceModeList[0] && deviceModeList[0].modeDatas && deviceModeList[0].modeDatas;
+    const deviceList = deviceModeList && deviceModeList.map(cur => {
+      return cur.modeDatas;
+    });
     // 设备型号
-    const deviceModeItem = deviceList.map(cur => {
+    const deviceModeItem = deviceList && deviceList.flat(Infinity).map(cur => {
       return <Option key={cur.modeId} value={cur.modeId}>{cur.modeName}</Option>;
     });
     return (
@@ -283,6 +278,7 @@ export default class DeviceAccountBox extends React.Component {
             style={{ width: 180, paddingTop: '3px', marginLeft: '10px' }}
             onChange={this.handleManufactorsChange}
           >
+            <Option key="全部" value="0">全部</Option>
             {manufactorsItem}
           </Select>
           <Select
@@ -292,6 +288,7 @@ export default class DeviceAccountBox extends React.Component {
             style={{ width: 180, paddingTop: '3px', marginLeft: '10px' }}
             onChange={this.handleDeviceModeChange}
           >
+            <Option key="全部" value="0">全部</Option>
             {deviceModeItem}
           </Select>
         </div>

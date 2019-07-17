@@ -28,6 +28,7 @@ class SpareInsert extends Component {
     goodsList: PropTypes.array,
     assetsManufac: PropTypes.array,
     assetsTree: PropTypes.array,
+    mainDeviceEditCodes: PropTypes.array,
     form: PropTypes.object,
     backList: PropTypes.func,
     addNewGood: PropTypes.func,
@@ -40,6 +41,7 @@ class SpareInsert extends Component {
     insertWarehouse: PropTypes.func,
     changeStore: PropTypes.func,
     getManufactures: PropTypes.func,
+    getMainDeviceEditCodes: PropTypes.func,
   }
 
   constructor(props){
@@ -49,11 +51,13 @@ class SpareInsert extends Component {
     this.state = {
       spareNumber: inventoryNum,
       saveMode: '',
+      addManufactorRight: true, // 默认无添加厂家权限。
     };
   }
 
   componentDidMount(){
-    const { originInsertInfo, form, getGoodsList } = this.props;
+    const { originInsertInfo, form, getGoodsList, getMainDeviceEditCodes } = this.props;
+    getMainDeviceEditCodes();
     getGoodsList({ goodsMaxType: 101 });
     if (originInsertInfo) {// 基于originInsertInfo判断是 入库 or edit再入库
       form.setFieldsValue({
@@ -129,6 +133,10 @@ class SpareInsert extends Component {
     this.props.getAssetsManufacture({ assetsIds });
   }
 
+  changeManufactorRight = (addManufactorRight) => { // 选中生产资产时，判断是否可添加厂家。
+    this.setState({ addManufactorRight });
+  }
+
   selectManufacturer = (selectedManufacturer) => { // 选择厂家
     this.props.form.setFieldsValue({
       modeId: undefined, // 清除已选择的型号
@@ -157,9 +165,10 @@ class SpareInsert extends Component {
   }
 
   render(){
-    const { saveMode, spareNumber } = this.state;
+    const { saveMode, spareNumber, addManufactorRight } = this.state;
     const {
       form, tabName, warehouseList, assetsManufac, addNewGood, goodsList, addGoodName, insertModes, assetsTree, insertStatus, originInsertInfo, addGoodStatus, addNewManu, addManufactorId, addManuStatus, getManufactures, addNewType, addTypeStatus, adddModeName,
+      mainDeviceEditCodes,
     } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { manufactorId, assetsIds } = getFieldsValue(['manufactorId', 'assetsIds']);
@@ -197,7 +206,13 @@ class SpareInsert extends Component {
           </FormItem>
           <FormItem label="对应生产资产">
             {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
-              <AssetsSelectTree assetsTree={assetsTree} originInsertInfo={originInsertInfo} onChange={this.selectAssets} />
+              <AssetsSelectTree
+                mainDeviceEditCodes={mainDeviceEditCodes}
+                assetsTree={assetsTree}
+                originInsertInfo={originInsertInfo}
+                onChange={this.selectAssets}
+                changeManufactorRight={this.changeManufactorRight}
+              />
             )}
           </FormItem>
           <FormItem label="厂家">
@@ -209,6 +224,7 @@ class SpareInsert extends Component {
               >
                 <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option>
               </Select> : <AddManu
+                addManufactorRight={addManufactorRight}
                 assetsManufac={assetsManufac}
                 addNewManu={addNewManu}
                 addManufactorId={addManufactorId}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './workFlow.scss';
+import styles from './operate.scss';
 import { connect } from 'react-redux';
 import { Table, Select, Icon, Modal } from 'antd';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
@@ -24,6 +24,7 @@ class TableList extends Component {
         handleBatch: PropTypes.func,
         stopBatch: PropTypes.func,
         delDocket: PropTypes.func,
+        stopRight: PropTypes.array,
 
     }
 
@@ -61,11 +62,18 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
+        const { stopRight } = this.props;
+        const rightNodeCode = stopRight.map(e => e.nodeCode); // 作废权限的nodeCode
         if (keys.length > 0) { // 选中的超过一条
             const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
+            let review = false, obsolete = true;
             record.forEach(e => {
-                if (e.dealUserIds) dealUserIds.push(e.dealUserIds.split(','));
+                if (e.dealUserIds) {
+                    dealUserIds.push(e.dealUserIds.split(','));
+                } else {
+                    obsolete = false;
+                }
             });
             record.forEach(e => {
                 if (e.dealRoleIds) {
@@ -74,16 +82,21 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            let review = false;
+            const ableNodes = [...new Set(record.map(e => e.ableNodes))];
             if (stateCode.length > 1 || !right) {
                 review = false;
             } else if (stateCode[0] === '101') { review = true; }
-            this.setState({ review, obsolete: true });
+            if (ableNodes.length > 1 || ableNodes[0] !== rightNodeCode[0]) { // 作废的权限
+                obsolete = false;
+            }
+            this.setState({ review, obsolete });
         } else {
             this.setState({ review: false, obsolete: false });
         }
-
     }
+
+
+
 
     onShowDetail = (value) => {
         this.props.changeFlowStore({ showPage: 'detail', docketId: value.docketId });
@@ -295,7 +308,7 @@ class TableList extends Component {
                             onClick={() => { this.handleBatch('review'); }}>审核</div>
                         {stopRight.map((e) => {
                             return (
-                                <div className={`${styles.commonButton} ${!obsolete && !e.isAbleOpe && styles.disabled}`}
+                                <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
                                     onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                     {e.nodeName}
                                 </div>
