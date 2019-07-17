@@ -1,0 +1,72 @@
+
+
+.miniHome{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #0c0a3e;
+}
+
+.topParts{
+  flex-basis: 128px;
+  display: flex;
+  justify-content: space-between;
+  .leftTop, .rightTop{
+    flex: 0 0 25%;
+    min-width: 340px;
+  }
+  .leftTop{ // 顶部左块
+    .logo, .text, .save{
+      display: flex;
+      align-items: center;
+    }
+    .logo{
+      height: 56px;
+    }
+    .text{
+      height: 34px;
+      color:#88a6bf;
+      font-size: 12px;
+      align-items: flex-end;
+    }
+    .save{
+      height: 48px;
+      margin-left: 8px;
+      .value{
+        font-size:18px;
+        color:#fff;
+        margin: 0 4px;
+      }
+      .unit{
+        color:#06bdf4;
+        font-size: 12px;
+        margin-top: 4px;
+        margin-right: 30px;
+      }
+    }
+  }
+  .rightTop{
+    .baseInfo{
+      display: flex;
+      justify-content: flex-end;
+      height: 56px;
+      align-items: center;
+    }
+    .timeShow{
+      color:#88a6bf;
+      margin-left: 12px;
+    }
+    .screenHandle{
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .middleTop{
+    .link{
+
+    }
+    .title{
+
+    }
+  }
+}

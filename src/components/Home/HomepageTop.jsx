@@ -24,7 +24,7 @@ class HomepageTop extends Component{
       timeText: moment().format('HH:mm:ss YYYY/MM/DD'),
       weekIndex: moment().day(),
       fullScreen: false,
-    }
+    };
   }
 
   componentDidMount(){
@@ -40,7 +40,7 @@ class HomepageTop extends Component{
       timeText: moment().format('HH:mm:ss YYYY/MM/DD'),
       weekIndex: moment().day(),
     });
-    this.timeClock = setTimeout(this.getCurrentTime,1000);
+    this.timeClock = setTimeout(this.getCurrentTime, 1000);
   }
 
   toggleFullScreen = () => { // 切换全屏。
@@ -52,27 +52,26 @@ class HomepageTop extends Component{
       if(allowFull){
         allowFull.call(documentElement);
       }else{
-        const wscript = window.ActiveXObject && new window.ActiveXObject("WScript.Shell");
-        wscript && wscript.SendKeys("{F11}");
+        const wscript = window.ActiveXObject && new window.ActiveXObject('WScript.Shell');
+        wscript && wscript.SendKeys('{F11}');
       }
+    }
+    if(allowBack){
+      allowBack.call(document);
     }else{
-      if(allowBack){
-        allowBack.call(document);
-      }else{
-        const wscript = window.ActiveXObject && new window.ActiveXObject("WScript.Shell");
-        wscript && wscript.SendKeys("{F11}");
-      }
+      const wscript = window.ActiveXObject && new window.ActiveXObject('WScript.Shell');
+      wscript && wscript.SendKeys('{F11}');
     }
     this.setState({ fullScreen: !fullScreen });
   }
-  
+
   render(){
-    const weekDay = ['日','一','二','三','四','五','六'];
+    const weekDay = ['日', '一', '二', '三', '四', '五', '六'];
     const { timeText, weekIndex, fullScreen } = this.state;
     const {
-      changeLoginStore, realTimeInfo, energySaving, resetMonitorData, resetCommonStore, username, userFullName, userLogo
+      changeLoginStore, realTimeInfo, energySaving, resetMonitorData, resetCommonStore, username, userFullName, userLogo,
     } = this.props;
-    let { enterpriseName } = realTimeInfo;
+    const { enterpriseName } = realTimeInfo;
     const dioxide = dataFormat(energySaving.dioxide);
     const coal = dataFormat(energySaving.coal);
     return (
@@ -121,10 +120,9 @@ class HomepageTop extends Component{
               onClick={this.toggleFullScreen}
             />
           </div>
-          
         </div>
       </div>
-    )
+    );
   }
 }
 
