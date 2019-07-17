@@ -128,8 +128,8 @@ const mapStateToProps = (state) => {
     // realTimePowerPoint: state.common.get('realTimePowerPoint'),
     // realCapacityUnit: state.common.get('realCapacityUnit'),
     // realCapacityPoint: state.common.get('realCapacityPoint'),
-    powerUnit: state.common.get('powerUnit'),
-    powerPoint: state.common.get('powerPoint'),
+    // powerUnit: state.common.get('powerUnit'),
+    // powerPoint: state.common.get('powerPoint'),
     stationTypeCount: state.common.get('stationTypeCount'),
     monitorPvUnit: state.common.toJS().monitorPvUnit,
   })

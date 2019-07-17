@@ -18,6 +18,11 @@ class Test extends React.Component {
     pvCapabilitydiagramsData: PropTypes.array,
     monitorPvUnit: PropTypes.object,
     areaChecked: PropTypes.bool,
+    aralmstatus: PropTypes.bool,
+    stationType: PropTypes.string,
+    regionName: PropTypes.string,
+    changeMonitorStationStore: PropTypes.func,
+    getPvCapabilitydiagrams: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context)
@@ -26,11 +31,9 @@ class Test extends React.Component {
       ascend: true,
       selectStation: null,
       renderList: [],
-      initList: [],
       spliceLength: 12, // 100条数据一渲染。
       topHeight: 400, // 假设的列表上方高度
-      stationCodeList: [], // 请求图表数据的code
-      newStationsList: [], // 处理完之后的
+      newStationsList: [], // 排序完成之后的所有电站
     }
   }
 
@@ -67,6 +70,11 @@ class Test extends React.Component {
       areaChecked: nextPorps.areaChecked,
       noChange,
     })
+  }
+
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', () => { return false }, true);
   }
 
   changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
@@ -150,7 +158,7 @@ class Test extends React.Component {
 
 
   initRender = (noChange) => { //  渲染todolist 的条数
-    const { renderList, spliceLength, stationCodeList, newStationsList } = this.state;
+    const { renderList, spliceLength, newStationsList } = this.state;
     const { regionName } = this.props;
     const tmp = newStationsList.slice(0, spliceLength + renderList.length);
     const update = newStationsList.slice(0, renderList.length);
@@ -175,7 +183,7 @@ class Test extends React.Component {
   render() {
     const { stationDataList, pvCapabilitydiagramsData = [], monitorPvUnit } = this.props;
     const { sortStatusName, ascend, selectStation } = this.state;
-    const { renderList, stationCodeList } = this.state;
+    const { renderList } = this.state;
     // console.log('pvCapabilitydiagramsData', pvCapabilitydiagramsData)
     const sortName = [
       { text: '默认排序', id: 'sort' },
