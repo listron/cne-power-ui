@@ -124,7 +124,7 @@ class TableList extends Component {
 
     resetStatus = () => { // 初始化状态
         this.setState({
-            showWarningTip: false, batchVisible: false, selectedRows: [],
+            showWarningTip: false, batchVisible: false, selectedRows: [], operatType: '',
             review: false, obsolete: false,
         });
     }

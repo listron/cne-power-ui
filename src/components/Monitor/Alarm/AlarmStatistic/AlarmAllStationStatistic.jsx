@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
-import { withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styles from './alarmStatistic.scss';
 import AlarmStatisticByType from './AlarmStatisticByType';
 import AlarmStationSelectModal from './AlarmStationSelectModal';
@@ -29,11 +29,11 @@ class ALarmAllStationStatistic extends React.Component {
     };
   }
   componentDidMount() {
-    if(this.props.showPage === 'multiple') {
+    if (this.props.showPage === 'multiple') {
       const { stationCode, stations, orderField, orderCommand, pageSize, pageNum } = this.props;
       let stationType = this.props.stationType;
       const stationTypeOne = this.stationIsOneType();
-      if(stationTypeOne) {
+      if (stationTypeOne) {
         stationType = stations.getIn([0, 'stationType']);
       }
       this.props.getStationsAlarmStatistic({
@@ -42,14 +42,14 @@ class ALarmAllStationStatistic extends React.Component {
         pageSize,
         pageNum,
         orderField,
-        orderCommand
+        orderCommand,
       });
     }
   }
 
   onChangeFilter = (obj) => {
     const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCode,
       startTime,
@@ -57,15 +57,15 @@ class ALarmAllStationStatistic extends React.Component {
       pageSize,
       pageNum,
       orderField,
-      orderCommand
-    }
-    let newFilter = { ...filter, ...obj, pageNum: 1 };
+      orderCommand,
+    };
+    const newFilter = { ...filter, ...obj, pageNum: 1 };
     this.props.getStationsAlarmStatistic(newFilter);
   }
 
   onTableChange = (params) => {
     const { stationType, stationCode, startTime, endTime, pageSize, pageNum, orderField, orderCommand } = this.props;
-    let filter = {
+    const filter = {
       stationType,
       stationCode,
       startTime,
@@ -73,10 +73,10 @@ class ALarmAllStationStatistic extends React.Component {
       pageSize,
       pageNum,
       orderField,
-      orderCommand
-    }
+      orderCommand,
+    };
     this.props.getStationsAlarmStatistic({
-      ...filter, ...params
+      ...filter, ...params,
     });
   }
 
@@ -84,7 +84,7 @@ class ALarmAllStationStatistic extends React.Component {
     this.props.history.push(`/monitor/alarm/statistic/${stationCode}`);
     this.props.changeAlarmStatisticStore({
       showPage: 'single',
-      singleStationCode: stationCode.toString()
+      singleStationCode: stationCode.toString(),
     });
   }
 
@@ -97,7 +97,7 @@ class ALarmAllStationStatistic extends React.Component {
 
   showStationSelect = () => {
     this.setState({
-      showStationSelect: true
+      showStationSelect: true,
     });
   }
 
@@ -111,46 +111,52 @@ class ALarmAllStationStatistic extends React.Component {
       pageSize,
       pageNum,
       orderField,
-      orderCommand
+      orderCommand,
     });
   }
   render() {
     const operations = (
-      <div className={styles.operation} style={{ marginRight: '50px',color:'#199475' }} onClick={this.showStationSelect}>
+      <div className={styles.operation} style={{ marginRight: '50px', color: '#199475' }} onClick={this.showStationSelect}>
         单电站告警统计
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { stationType, stations }  = this.props;
+    const { stationType, stations } = this.props;
     const { showStationSelect } = this.state;
     const stationTypeOne = this.stationIsOneType();
     // console.log(stationTypeOne);
     return (
       <div className={styles.alarmStatistTabs}>
-        {stationTypeOne ? 
-        <div className={styles.AlarmStatisticByTypeBox} >
-          <div className={styles.singleAlarmFilter} >{operations}</div>
-          <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" />
-        </div>
-         :
-        <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
-          <TabPane tab="风电" key="0">
-            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="windStation" />
-          </TabPane>
-          <TabPane tab="光伏" key="1">
-            <AlarmStatisticByType 
-              {...this.props} 
-              onChangeFilter={this.onChangeFilter} 
-              graphId="pvStation" 
-              onTableChange={this.onTableChange} 
-            />
-          </TabPane>
-        </Tabs>
+        {stationTypeOne ?
+          <div className={styles.AlarmStatisticByTypeBox} >
+            <div className={styles.singleAlarmFilter} >{operations}</div>
+            <AlarmStatisticByType {...this.props} onChangeFilter={this.onChangeFilter} graphId="station" />
+          </div>
+          :
+          <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
+            <TabPane tab="风电" key="0">
+              <AlarmStatisticByType
+                {...this.props}
+                onChangeFilter={this.onChangeFilter}
+                graphId="windStation"
+                stations={this.props.stations.filter(item => item.get('stationType') === 0)}
+              />
+            </TabPane>
+            <TabPane tab="光伏" key="1">
+              <AlarmStatisticByType
+                {...this.props}
+                onChangeFilter={this.onChangeFilter}
+                graphId="pvStation"
+                onTableChange={this.onTableChange}
+                stations={this.props.stations.filter(item => item.get('stationType') === 1)}
+              />
+            </TabPane>
+          </Tabs>
         }
-        {showStationSelect&&
-          <AlarmStationSelectModal 
-            stations={stations} 
-            onClose={()=>this.setState({showStationSelect:false})}
+        {showStationSelect &&
+          <AlarmStationSelectModal
+            stations={stations}
+            onClose={() => this.setState({ showStationSelect: false })}
             onChangeStation={this.onChangeStation} />}
       </div>
     );
