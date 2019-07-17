@@ -2,9 +2,12 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PvmoduleList from './PvmoduleList';
-import InverterList from './InverterList';
-import ConfluenceBoxList from './ConfluenceBoxList';
+// import PvmoduleList from './PvmoduleList';
+import PvmoduleList from './NewPvmoduleList';
+// import InverterList from './InverterList';
+import InverterList from './NewInverterList';
+// import ConfluenceBoxList from './ConfluenceBoxList';
+import ConfluenceBoxList from './NewConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
 import IntegrateList from './IntegrateList';
 import Boosterstation from './Boosterstation';
@@ -29,6 +32,7 @@ class DeviceList extends Component {
     //  207 为交流汇流箱 暂时已经舍去了
     return (
       <div className={styles.deviceListBox}>
+        {/* 1 示意图 509 光伏组件 206(组串) ／201(集中) 逆变器  202/207(交流) 汇流箱  304 箱变 */}
         {`${deviceTypeCode}` === '1' && <Schematic {...this.props} />}
         {`${deviceTypeCode}` === '509' && <PvmoduleList {...this.props} />}
         {`${deviceTypeCode}` === '206' && <InverterList {...this.props} />}
@@ -40,8 +44,8 @@ class DeviceList extends Component {
         {`${deviceTypeCode}` === '101' && <div></div>}
         {`${deviceTypeCode}` === '302' && <IntegrateList {...this.props} />}
         {`${deviceTypeCode}` === '301' && <Boosterstation {...this.props} />}
-        {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />} 
-        {`${deviceTypeCode}` === '203' && <WeatherStation {...this.props} />} 
+        {`${deviceTypeCode}` === '0' && <PowerNet {...this.props} />}
+        {`${deviceTypeCode}` === '203' && <WeatherStation {...this.props} />}
       </div>
     )
   }

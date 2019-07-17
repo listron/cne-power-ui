@@ -10,5 +10,7 @@ export const allStationAction = {
   stopRealCharstData: Symbol('stopRealCharstData'), // 停止计时器
   getPvChartsData: Symbol('getPvChartsData'), // 光伏图表
   getPvRealData: Symbol('getPvRealData'), // 光伏实时数据
+  getPvCapabilitydiagrams: Symbol('getPvCapabilitydiagrams'), // 光伏实时数据
+  getPvRealChartsData: Symbol('getPvRealChartsData'), // 光伏实时数据
 }
 
