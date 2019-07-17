@@ -82,11 +82,11 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            const nodeCode = [...new Set(record.map(e => e.nodeCode))];
+            const ableNodes = [...new Set(record.map(e => e.ableNodes))];
             if (stateCode.length > 1 || !right) {
                 review = false;
             } else if (stateCode[0] === '101') { review = true; }
-            if (nodeCode.length > 1 || nodeCode[0] !== rightNodeCode[0]) { // 作废的权限
+            if (ableNodes.length > 1 || ableNodes[0] !== rightNodeCode[0]) { // 作废的权限
                 obsolete = false;
             }
             this.setState({ review, obsolete });

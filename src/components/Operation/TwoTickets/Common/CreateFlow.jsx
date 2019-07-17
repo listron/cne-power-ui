@@ -107,12 +107,13 @@ class CreateFlow extends Component {
       };
     });
     const textName = type === 'work' ? '工作票' : '操作票';
+    console.log('reject', reject);
     return (
       <div className={styles.workflow}>
         {reject && <div className={styles.title}>
-          <div className={styles.text}> 基本信息  <i className="iconfont icon-content" /> </div>
+          <div className={styles.text}> 基本信息  <i className="iconfont icon-co ntent" /> </div>
         </div>}
-        <Form className={`${styles.flowForm}  ${reject && styles.rejectFlowForm}`}>
+        <Form className={` ${reject && styles.rejectFlowForm || styles.flowForm}`}>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
