@@ -131,7 +131,7 @@ class TableList extends Component {
 
     resetStatus = () => {
         this.setState({
-            showWarningTip: false, batchVisible: false, selectedRows: [],
+            showWarningTip: false, batchVisible: false, selectedRows: [], operatType: '',
             review: false, complete: false, obsolete: false,
         });
     }

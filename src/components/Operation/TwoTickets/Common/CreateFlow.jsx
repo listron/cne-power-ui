@@ -107,7 +107,6 @@ class CreateFlow extends Component {
       };
     });
     const textName = type === 'work' ? '工作票' : '操作票';
-    console.log('reject', reject);
     return (
       <div className={styles.workflow}>
         {reject && <div className={styles.title}>

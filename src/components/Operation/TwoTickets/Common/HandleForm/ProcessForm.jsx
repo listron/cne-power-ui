@@ -14,6 +14,9 @@ class DefectProcessForm extends Component {
     onChange: PropTypes.func,
   }
 
+  componentWillUnmount() {
+    this.props.form.resetFields();
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
