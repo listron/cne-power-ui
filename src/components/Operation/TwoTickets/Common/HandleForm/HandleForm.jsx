@@ -4,7 +4,7 @@ import styles from './handleForm.scss';
 import ReviewForm from './ReviewForm';
 import ProcessForm from './ProcessForm';
 import CheckForm from './CheckForm';
-import { Form, } from "antd";
+import { Form } from 'antd';
 
 class HandleForm extends Component {
   static propTypes = {
@@ -18,13 +18,14 @@ class HandleForm extends Component {
     super(props);
   }
 
+
   onChange = (value) => {
     const { taskId } = this.props;
-    this.props.getDocketHandle({ taskId, ...value })
+    this.props.getDocketHandle({ taskId, ...value });
   }
 
   render() {
-    const { operStatus,operTitle } = this.props;
+    const { operStatus, operTitle } = this.props;
     return (
       <div className={styles.handleForm}>
         <div className={styles.title}>

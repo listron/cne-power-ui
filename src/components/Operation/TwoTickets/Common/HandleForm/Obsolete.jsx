@@ -9,8 +9,12 @@ class DefectCheckForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     getDocketHandle: PropTypes.func,
+    onChange: PropTypes.func,
   }
 
+  componentWillUnmount() {
+    this.props.form.resetFields();
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
