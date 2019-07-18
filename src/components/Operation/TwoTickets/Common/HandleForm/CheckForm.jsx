@@ -9,13 +9,17 @@ class DefectCheckForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     getDocketHandle: PropTypes.func,
+    onChange: PropTypes.func,
     docketId: PropTypes.string,
   }
 
+  componentWillUnmount() {
+    this.props.form.resetFields();
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err, values) => { // 消票
       if (!err) {
         this.props.onChange({
           handleResult: 1,
@@ -31,6 +35,8 @@ class DefectCheckForm extends Component {
     this.props.form.resetFields();
   }
 
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -38,7 +44,7 @@ class DefectCheckForm extends Component {
         <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('handleDesc', {
             rules: [{
-              required: true,
+              required: false,
               message: '请输入处理建议',
             }],
           })(

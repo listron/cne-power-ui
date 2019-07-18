@@ -2,12 +2,12 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PvmoduleList from './PvmoduleList';
-// import PvmoduleList from './NewPvmoduleList';
-import InverterList from './InverterList';
-// import InverterList from './NewInverterList';
-import ConfluenceBoxList from './ConfluenceBoxList';
-// import ConfluenceBoxList from './NewConfluenceBoxList';
+// import PvmoduleList from './PvmoduleList';
+import PvmoduleList from './NewPvmoduleList';
+// import InverterList from './InverterList';
+import InverterList from './NewInverterList';
+// import ConfluenceBoxList from './ConfluenceBoxList';
+import ConfluenceBoxList from './NewConfluenceBoxList';
 import BoxTransformerList from './BoxTransformerList';
 import IntegrateList from './IntegrateList';
 import Boosterstation from './Boosterstation';
