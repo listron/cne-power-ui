@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tree, message, Button } from 'antd';
 import styles from './realtimeStyle.scss';
-// import moment = require('moment');
 import moment from 'moment';
 
 
@@ -41,7 +40,7 @@ class PointTree extends Component {
 
   onPointsQuery = () => {
     const {
-      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore, chartRealtime
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore
     } = this.props;
     const clickStartTime = moment(); // 点击确定按钮的时间
     
@@ -58,7 +57,6 @@ class PointTree extends Component {
 
     changeRealtimeStore({
       startTime: clickStartTime,
-      chartRealtime
     })
   }
 
@@ -92,7 +90,7 @@ class PointTree extends Component {
     const { pointInfo } = this.props;
     const PointsNodes = [];
     const sortNames = [
-      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '逆变器', '汇流箱', '气象站', '汇流箱电流', '集电线路', '箱变', '主变', '站用变', '主进线', '母线分段', '馈线', '功率预测系统', '能量管理', 'SVG', '电能采集', '站内木箱', '全场信息汇', '其他'
+      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '其他'
     ];
     if (pointInfo.length === 0) {
       return null;
