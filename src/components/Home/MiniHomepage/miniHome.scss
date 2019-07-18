@@ -1,5 +1,19 @@
 
 
+
+
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
+  .topParts, .contentParts{
+    padding: 0 1%;
+  }
+}
+
+@media screen and (min-width: 1440px) { // 1440及以上屏
+  .topParts, .contentParts{
+    padding: 0 3%;
+  }
+}
+
 .miniHome{
   height: 100%;
   display: flex;
@@ -7,12 +21,13 @@
   background-color: #0c0a3e;
 }
 
-.topParts{
+.topParts{ // 整个顶部区域
   flex-basis: 128px;
   display: flex;
   justify-content: space-between;
+  background: url('/img/tiltebg.png') no-repeat center 20px;
   .leftTop, .rightTop{
-    flex: 0 0 25%;
+    flex: 0 0 24%;
     min-width: 340px;
   }
   .leftTop{ // 顶部左块
@@ -58,15 +73,43 @@
     }
     .screenHandle{
       display: flex;
+      height: 48px;
+      margin-top: 34px;
+      margin-right: 8px;
       justify-content: flex-end;
     }
   }
   .middleTop{
-    .link{
-
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .back{
+      text-align: center;
+      flex-basis: 40px;
+      line-height: 40px;
     }
     .title{
-
+      font-family: PingFangSC;
+      font-weight: 600;
+      font-size:32px;
+      text-align: center;
+      line-height: 80px;
+      margin-top: 12px;
+      color: #a6e8ff;
+      background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
+      background-clip: text; 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color:transparent; 
+      letter-spacing:1.5px;
     }
+  }
+}
+
+.contentParts{
+  flex: 1;
+  display: flex;
+  .leftBox, .rightBox{
+    display: flex;
+    flex-direction: column;
   }
 }

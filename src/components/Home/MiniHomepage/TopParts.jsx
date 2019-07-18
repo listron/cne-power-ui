@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styles from './miniHome.scss';
 import moment from 'moment';
 import UserInfo from '../../Layout/UserInfo';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Cookie from 'js-cookie';
 import { dataFormat } from '../../../utils/utilFunc';
@@ -14,7 +14,7 @@ class TopParts extends Component{
     username: PropTypes.string,
     userFullName: PropTypes.string,
     userLogo: PropTypes.string,
-    // realTimeInfo: PropTypes.object,
+    realTimeInfo: PropTypes.object,
     energySaving: PropTypes.object,
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
@@ -52,9 +52,6 @@ class TopParts extends Component{
 
   // <div className={styles.infoShow}>
   //         <div className={styles.upperArrow}>
-  //           {/* <Link to="/monitor/station">
-  //             <img width="25px" height="20px" src="/img/back.gif" />
-  //           </Link> */}
   //         </div>
   //         <div className={styles.userShow}>
   //         </div>
@@ -62,15 +59,7 @@ class TopParts extends Component{
   //       <div className={styles.enterpriseTitle}>
   //         {/* 
   //         </div> */}
-  //         {/* <div className={styles.title}>{enterpriseName || '--'}运营监控中心</div> */}
-  //         {/* <div className={styles.sizeImg}>
-  //           <img
-  //             src={`/img/${fullScreen?'small':'big'}.png`}
-  //             height="28px"
-  //             width="28px"
-  //             onClick={this.toggleFullScreen}
-  //           />
-  //         </div> */}
+  //         {/*  */}
   //       </div>
 
   toggleFullScreen = () => { // 切换全屏。
@@ -97,11 +86,10 @@ class TopParts extends Component{
 
   render(){
     const { logoSrc, fullScreen, timeText, weekIndex } = this.state;
-    const { energySaving, changeLoginStore, resetMonitorData, username, userFullName, userLogo, resetCommonStore } = this.props;
-    // const {
-    //   , realTimeInfo, , , , , , ,
-    // } = this.props;
-    // const { enterpriseName } = realTimeInfo;
+    const {
+      energySaving, changeLoginStore, resetMonitorData, username, userFullName, userLogo, realTimeInfo, resetCommonStore,
+    } = this.props;
+    const { enterpriseName } = realTimeInfo;
     return (
       <div className={styles.topParts}>
         <div className={styles.leftTop}>
@@ -119,8 +107,10 @@ class TopParts extends Component{
           </div>
         </div>
         <div className={styles.middleTop}>
-          <span>按钮</span>
-          <span>标题</span>
+          <Link to="/monitor/station" className={styles.back}>
+            <img width="25px" height="20px" src="/img/back.gif" />
+          </Link>
+          <div className={styles.title}>{enterpriseName || '--'}epower智慧运维平台</div>
         </div>
         <div className={styles.rightTop}>
           <div className={styles.baseInfo}>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
 import TopParts from './TopParts';
-// import StationGeneral from '../../components/Home/HomeParts/StationGeneral';
+import ContentParts from './ContentParts';
 // import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
 // import { CompleteRate, OperationInfo } from '../../components/Home/HomeParts/HomeFuncParts';
 // import OutputPower from '../../components/Home/HomeParts/OutputPower';
@@ -20,20 +19,76 @@ import PropTypes from 'prop-types';
 
 export default class MiniHomepage extends Component {
 
-  static propTypes = {}
+  static propTypes = {
+    username: PropTypes.string,
+    userLogo: PropTypes.string,
+    userFullName: PropTypes.string,
+    realTimeInfo: PropTypes.object,
+    energySaving: PropTypes.object,
+    enterpriseId: PropTypes.string,
+    mapStation: PropTypes.array,
+    getMapStation: PropTypes.func,
+    homepageReset: PropTypes.func,
+    getRealTimeData: PropTypes.func,
+    getEnergySaving: PropTypes.func,
+    getMonthPower: PropTypes.func,
+    getOutputDiagram: PropTypes.func,
+    getOperationInfo: PropTypes.func,
+    changeLoginStore: PropTypes.func,
+    resetMonitorData: PropTypes.func,
+    resetCommonStore: PropTypes.func,
+  }
+
+  state = {
+    hasMultipleType: false, // 用户是否有多种类型电站。
+  }
 
   componentDidMount() {
-    console.log('now this page has been did mount');
+    const { getMapStation, enterpriseId, mapStation } = this.props;
+    getMapStation({ enterpriseId }); // 先获取电站信息
+    if (mapStation.length > 0) {
+      this.gettedStationInfo(mapStation);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { mapStation } = nextProps;
+    const preStations = this.props.mapStation;
+    if (preStations.length === 0 && mapStation.length > 0) { // 拿到电站信息后，再请求页面数据
+      this.gettedStationInfo(mapStation);
+    }
+  }
+
+  componentWillUnmount(){
+    this.clocker && clearTimeout(this.clocker);
+    this.props.homepageReset();
+  }
+
+  gettedStationInfo = (mapStation) => {
+    const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
+    this.setState({ hasMultipleType: stationTypeSet.size > 1 });
+    const originType = stationTypeSet.has(0) ? 0 : 1;
+    this.getOriginData(originType);
+    this.getMonitorData();
+  }
+
+  getMonitorData = () => { // 10s实时监控
+    const { enterpriseId } = this.props;
+    this.props.getRealTimeData({ enterpriseId });
+    this.clocker = setTimeout(this.getMonitorData, 10 * 1000); // 10s一刷新
+  }
+
+  getOriginData = (stationType) => { // 首次获取所有页面内初始数据。
+    const { enterpriseId } = this.props;
+    this.props.getEnergySaving({ enterpriseId });
+    this.props.getMonthPower({ enterpriseId, stationType });
+    this.props.getOutputDiagram({ enterpriseId, stationType });
+    this.props.getOperationInfo({ enterpriseId });
   }
 
   render() {
-    const changeLoginStore = () => {};
-    const resetMonitorData = () => {};
-    const resetCommonStore = () => {};
-    const energySaving = {};
-    const username = '阿里';
-    const userLogo = 'jkfwejflkew';
-    const userFullName = '阿里巴巴';
+    const { changeLoginStore, resetMonitorData, resetCommonStore } = this.props;
+    const { username, userLogo, userFullName, realTimeInfo, energySaving } = this.props;
     return (
       <div className={styles.miniHome}>
         <TopParts
@@ -41,11 +96,12 @@ export default class MiniHomepage extends Component {
           resetMonitorData = {resetMonitorData}
           resetCommonStore = {resetCommonStore}
           energySaving = {energySaving}
+          realTimeInfo={realTimeInfo}
           username = {username}
           userLogo = {userLogo}
           userFullName = {userFullName}
         />
-        这个页面应该是后被渲染的那个。
+        <ContentParts {...this.props} />
       </div>
     );
   }

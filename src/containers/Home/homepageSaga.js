@@ -1,6 +1,5 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { message } from 'antd';
 import path from '../../constants/path';
 import { homepageAction } from './homepageAction';
 import moment from 'moment';
@@ -19,8 +18,8 @@ function *getRealTimeData(action){ // 电站概况，实时监控，设备状态
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         realTimeInfo: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -38,8 +37,8 @@ function* getCompleteRate(action){ // 完成率
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         completeRate: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -57,8 +56,8 @@ function* getEnergySaving(action){ // 节能减排
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         energySaving: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -76,8 +75,8 @@ function* getMonthPower(action){ // 每月发电量
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         monthPower: response.data.data || [],
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -95,8 +94,8 @@ function* getEqpHours(action){ // 等效利用小时数
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         eqpHour: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -116,8 +115,8 @@ function* getFaultNumber(action){ // 故障台次
       payload: {
         faultNumber: response.data.data || [],
         faultQueryTime,
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -134,8 +133,8 @@ function* getMapStation(action){ // 地图坐标及统计
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         mapStation: response.data.data || [],
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -153,8 +152,8 @@ function* getSingleStation(action){ // 地图中某电站信息
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         singleStation: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -174,8 +173,8 @@ function* getAlarmList(action){ // 告警列表
       payload: {
         alarmList: response.data.data || [],
         alarmeQueryTime,
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -196,8 +195,8 @@ function* getOutputDiagram(action){ // 出力图表
       payload: {
         outputPower: response.data.data || [],
         outputPowerTime,
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }
@@ -216,8 +215,8 @@ function* getOperationInfo(action){ // 运维情况
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
         operationInfo: response.data.data || {},
-      }
-    })
+      },
+    });
   }catch(error){
     console.log(error);
   }

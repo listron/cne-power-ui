@@ -1,0 +1,91 @@
+
+@import './miniCommon.scss';
+
+.stationGeneral{ // 电站概况
+  @include boxStyle();
+  position: relative;
+  h3{
+    @include titles();
+  }
+  .checkTags{
+    @include typeTags();
+  }
+  .generalBox{
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+  .eachGeneral{
+    flex-basis: 50%;
+    .value,.unit,.name{
+      font-family:PingFangSC-Regular;
+      color:#00baff;
+      margin-left: 24px;
+    }
+    .value{
+      color:#ffffff;
+      font-size: 18px;
+    }
+    .unit{
+      margin-left: 2px;
+    }
+    .name{
+      margin-top: 4px;
+    }
+  }
+}
+
+.monthGen{
+  @include boxStyle();
+  position: relative;
+  h3{
+    @include titles();
+    height: 40px;
+    line-height: 40px;
+  }
+  .checkTags{
+    @include typeTags();
+  } 
+  .monthTool{ // chart图内文字及样式。
+    @include chartTool();
+    width: 88px;
+    height: 60px;
+    line-height: 21px;
+  }
+  .monthChart{
+    flex: 1;
+    z-index: 99;
+    margin: 0 10px;
+  }
+}
+
+.outputPower{ // 电站出力
+  @include boxStyle();
+  position: relative;
+  h3{
+    @include titles();
+  }
+  .outputChart{
+    flex: 1;
+  }
+  .outputTool{
+    @include chartTool();
+    width: 126px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    .time, .text {
+      color:#a6e8ff;
+    }
+    .time{
+      height: 32px;
+      line-height: 32px;
+    }
+    .text{
+      height: 24px;
+      line-height: 24px;
+      text-align: right;
+      margin-right: 12px;
+    }
+  }
+}
