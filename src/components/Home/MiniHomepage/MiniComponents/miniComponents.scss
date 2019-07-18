@@ -1,7 +1,7 @@
 
 @import './miniCommon.scss';
 
-.stationGeneral, .monthGen, .outputPower, .operationInfo{
+.stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
   @include boxStyle();
   position: relative;
   h3{
@@ -112,5 +112,54 @@
   }
   .ticketDoing .circle{
     background: url('/img/round01_img.png') no-repeat center center;
+  }
+}
+
+.deviceStatus{ // 设备状态
+  .statusBox{
+    flex: 1;
+    display: flex;
+    .statusTool{
+      @include chartTool();
+      width: 105px;
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      .status, .percent {
+        display: flex;
+        height: 24px;
+        line-height: 24px;
+        .name, .value{
+          color:#a6e8ff;
+          height: 32px;
+          line-height: 32px;
+        }
+        .name{
+          flex: 0 0 60px;
+        }
+      }
+    }
+    .statusTotal{
+      width: 40%;
+    }
+    .eachStatus{
+      display: flex;
+      height: 34px;
+      align-items: center;
+      .round{
+        flex: 0 0 14px;
+        height: 14px;
+        border-radius: 50%;
+      }
+      .text{
+        flex: 0 0 60px;
+        color:#25c1fe;
+        margin: 0 8px 0 8px;
+      }
+      .value{
+        color:#fff;
+        font-size: 20px;
+      }
+    }
   }
 }

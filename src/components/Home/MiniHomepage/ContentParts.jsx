@@ -1,4 +1,3 @@
-/*eslint new-cap: ["error", { "capIsNewExceptionPattern": "^wscript\.." }]*/
 
 import React, { Component } from 'react';
 import styles from './miniHome.scss';
@@ -7,6 +6,7 @@ import General from './MiniComponents/General';
 import MonthGenChart from './MiniComponents/MonthGenChart';
 import OutputPower from './MiniComponents/OutputPower';
 import { OperationInfo } from './MiniComponents/OperationInfo';
+import DeviceStatus from './MiniComponents/DeviceStatus';
 
 class ContentParts extends Component{
   static propTypes = {
@@ -50,7 +50,7 @@ class ContentParts extends Component{
             getOutputDiagram={getOutputDiagram}
           />
           <OperationInfo operationInfo={operationInfo} />
-          <div>设备状态</div>
+          <DeviceStatus realTimeInfo={realTimeInfo} hasMultipleType={hasMultipleType} />
         </div>
       </div>
     );
