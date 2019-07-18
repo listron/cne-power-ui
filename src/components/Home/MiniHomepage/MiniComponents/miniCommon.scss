@@ -39,11 +39,14 @@
 }
 
 @media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
-  .stationGeneral, .monthGen, .outputPower{
+  .stationGeneral, .monthGen, .outputPower, .operationInfo{
     width: 340px;
   }
   .stationGeneral, .outputPower{
     height: 255px;
+  }
+  .operationInfo{
+    height: 158px; 
   }
   .monthGen{
     height: 192px;

@@ -1,7 +1,7 @@
 
 @import './miniCommon.scss';
 
-.stationGeneral{ // 电站概况
+.stationGeneral, .monthGen, .outputPower, .operationInfo{
   @include boxStyle();
   position: relative;
   h3{
@@ -10,6 +10,9 @@
   .checkTags{
     @include typeTags();
   }
+}
+
+.stationGeneral{ // 电站概况
   .generalBox{
     display: flex;
     flex: 1;
@@ -36,16 +39,10 @@
 }
 
 .monthGen{
-  @include boxStyle();
-  position: relative;
   h3{
-    @include titles();
     height: 40px;
     line-height: 40px;
   }
-  .checkTags{
-    @include typeTags();
-  } 
   .monthTool{ // chart图内文字及样式。
     @include chartTool();
     width: 88px;
@@ -60,11 +57,6 @@
 }
 
 .outputPower{ // 电站出力
-  @include boxStyle();
-  position: relative;
-  h3{
-    @include titles();
-  }
   .outputChart{
     flex: 1;
   }
@@ -87,5 +79,38 @@
       text-align: right;
       margin-right: 12px;
     }
+  }
+}
+
+.operationInfo{ // 运维情况
+  h3{
+    height: 40px;
+    line-height: 40px;
+  }
+  .ticketDetail{
+    display: flex;
+    justify-content: space-around;
+  }
+  .ticketDone, .ticketDoing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h4{
+      color:#06bdf4;
+    }
+  }
+  .circle{
+    width: 82px;
+    height: 82px;
+    line-height: 82px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+  }
+  .ticketDone .circle{
+    background: url('/img/round02_img.png') no-repeat center center;
+  }
+  .ticketDoing .circle{
+    background: url('/img/round01_img.png') no-repeat center center;
   }
 }

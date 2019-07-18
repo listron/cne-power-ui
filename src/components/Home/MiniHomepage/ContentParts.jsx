@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import General from './MiniComponents/General';
 import MonthGenChart from './MiniComponents/MonthGenChart';
 import OutputPower from './MiniComponents/OutputPower';
+import { OperationInfo } from './MiniComponents/OperationInfo';
 
 class ContentParts extends Component{
   static propTypes = {
@@ -16,6 +17,7 @@ class ContentParts extends Component{
     outputPowerTime: PropTypes.number,
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
+    operationInfo: PropTypes.object,
     getMonthPower: PropTypes.func,
     getOutputDiagram: PropTypes.func,
   }
@@ -25,6 +27,7 @@ class ContentParts extends Component{
       hasMultipleType, mapStation, enterpriseId, realTimeInfo,
       monthPower, getMonthPower,
       outputPower, outputPowerTime, getOutputDiagram,
+      operationInfo,
     } = this.props;
     return (
       <div className={styles.contentParts}>
@@ -46,7 +49,7 @@ class ContentParts extends Component{
             outputPower={outputPower}
             getOutputDiagram={getOutputDiagram}
           />
-          <div>运维情况</div>
+          <OperationInfo operationInfo={operationInfo} />
           <div>设备状态</div>
         </div>
       </div>
