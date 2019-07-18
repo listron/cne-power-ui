@@ -140,15 +140,20 @@ class HistorySearch extends Component {
     });
   }
 
-  startChange = (startTime) => {
+  startChange = (nowStartTime) => {
     const { queryParam } = this.props;
-    const { endTime } = queryParam;
-    if (moment().isBefore(startTime, 's')) {
-      startTime = moment();
-    } else if (endTime.isBefore(startTime, 's')) {
-      startTime = moment(endTime);
+    const { endTime, startTime } = queryParam;
+    if (moment().isBefore(nowStartTime, 's')) {
+      nowStartTime = moment();
+    } else if (endTime && endTime.isBefore(nowStartTime, 's')) {
+      nowStartTime = moment(endTime);
     }
-    this.historyDataFetch({ startTime });
+    this.historyDataFetch({ startTime: nowStartTime });
+    const nowTime = moment(nowStartTime).format('YYYY-MM-DD')
+    const oldTime = moment(startTime).format('YYYY-MM-DD')
+    if (!(moment(nowTime).isSame(oldTime))) {
+      this.historyDataFetch({ startTime: nowStartTime, endTime: null });
+    }
   }
 
   endChange = (endTime) => {
@@ -174,13 +179,15 @@ class HistorySearch extends Component {
     const { queryParam } = this.props;
     const { endTime, timeInterval } = queryParam;
     // const disableStart = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
+    if (endTime) {
+      return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
+    }
   }
   
   disableStartTime = (time) => {
     const { queryParam } = this.props;
     const { endTime } = queryParam;
-    if (endTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
+    if (endTime && endTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
       const endHour = endTime.hour();
       const endMinute = endTime.minute();
       const endSecond = endTime.second();
