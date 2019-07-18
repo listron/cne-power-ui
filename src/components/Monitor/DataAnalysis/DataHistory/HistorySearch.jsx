@@ -143,17 +143,15 @@ class HistorySearch extends Component {
   startChange = (nowStartTime) => {
     const { queryParam } = this.props;
     const { endTime, startTime } = queryParam;
+    if (moment(nowStartTime).isSame(startTime,'d')) {
+      return;
+    }
     if (moment().isBefore(nowStartTime, 's')) {
       nowStartTime = moment();
     } else if (endTime && endTime.isBefore(nowStartTime, 's')) {
       nowStartTime = moment(endTime);
     }
-    this.historyDataFetch({ startTime: nowStartTime });
-    const nowTime = moment(nowStartTime).format('YYYY-MM-DD')
-    const oldTime = moment(startTime).format('YYYY-MM-DD')
-    if (!(moment(nowTime).isSame(oldTime))) {
-      this.historyDataFetch({ startTime: nowStartTime, endTime: null });
-    }
+    this.historyDataFetch({ startTime: nowStartTime, endTime: null });
   }
 
   endChange = (endTime) => {
