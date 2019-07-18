@@ -93,6 +93,12 @@ const mapDispatchToProps = (dispatch) => ({
   getOwnStations: payload => dispatch({ type: planAction.getOwnStations, payload }),
   addPlanInfo: payload => dispatch({ type: planAction.addPlanInfo, payload }),
   resetStore: payload => dispatch({ type: planAction.resetStore, payload }), 
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile, payload: {
+      ...payload,
+      actionName: planAction.changePlanStore,
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Plan);
