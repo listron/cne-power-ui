@@ -1,3 +1,5 @@
+/*eslint new-cap: ["error", { "capIsNewExceptionPattern": "^wscript\.." }]*/
+
 import React, { Component } from 'react';
 import styles from './homepageParts.scss';
 import moment from 'moment';
