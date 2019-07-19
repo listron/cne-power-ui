@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import styles from './pvStation.scss';
 import Map from '../Map.jsx';
 import PvStationHeader from './PvStationHeader.jsx';
-import PvStationItem from './PvStationItem.jsx';
+// import PvStationItem from './PvStationItem.jsx';
+import PvStationItem from './Test';
 import { Tabs, Radio, Switch, Spin } from "antd";
 import PvStationList from "./PvStationList";
 import TransitionContainer from '../../../../Common/TransitionContainer';
@@ -45,6 +46,7 @@ class PvStation extends React.Component {
   componentDidMount() {
     const { regionName } = this.props;
     this.props.getPvRealData({ regionName })
+    this.props.getPvRealChartsData({ regionName }) // 五分钟数据开启
   }
 
   onHandleAlarm = (checked) => {
@@ -97,7 +99,7 @@ class PvStation extends React.Component {
         return e.stationStatus === +stationType
       }
     })
-    return newStationDataList
+    return newStationDataList;
   }
 
   pvStationChange = (e) => { // 改变光伏电站展示的状态
@@ -121,7 +123,7 @@ class PvStation extends React.Component {
 
   render() {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible, areaChecked } = this.state;
-    const { pvMonitorStation, loading, monitorPvUnit, history } = this.props;
+    const { pvMonitorStation, loading, monitorPvUnit, history, regionName, pvUnix, getPvCapabilitydiagrams } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
     return (
       <div className={styles.pvStation}>
@@ -157,7 +159,16 @@ class PvStation extends React.Component {
           <div className={styles.pvStationCont}>
             {pvStationShow === 'stationBlock' &&
               (loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-                <PvStationItem {...this.props} stationDataList={this.statusDataList()} areaChecked={areaChecked} />)
+                <PvStationItem {...this.props}
+                  stationDataList={this.statusDataList()}
+                  areaChecked={areaChecked}
+                  stationType={stationType}
+                  aralmstatus={checked}
+                  regionName={regionName}
+                  getPvCapabilitydiagrams={getPvCapabilitydiagrams}
+                  pvUnix={pvUnix}
+                  changeMonitorStationStore={this.props.changeMonitorStationStore}
+                />)
             }
             {pvStationShow === 'stationList' &&
               <PvStationList

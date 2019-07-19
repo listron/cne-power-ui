@@ -56,23 +56,24 @@ class AllStation extends Component {
     this.setState({ showRegion: false })
   }
 
-  regionChange=(value)=>{
-    let curName='';
-    if(!value){
-      curName='全部区域';
-    }else{
-      curName=value;
+  regionChange = (value) => {
+    let curName = '';
+    if (!value) {
+      curName = '全部区域';
+    } else {
+      curName = value;
     }
-    this.props.changeMonitorStationStore({regionName:curName})
+    this.props.changeMonitorStationStore({ regionName: curName })
     this.setState({ showRegion: false });
     this.props.stopRealMonitorData();
-    this.props.getPvRealData({regionName:curName});
-    this.props.getPvChartsData({regionName:curName})
+    this.props.getPvRealData({ regionName: curName });
+    this.props.getPvChartsData({ regionName: curName })
+    this.props.getPvRealChartsData({ regionName: curName })
   }
-  
+
 
   render() {
-    const { stationTypeCount, stationType, stations,regionName } = this.props;
+    const { stationTypeCount, stationType, stations, regionName } = this.props;
     const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
     const { showRegion } = this.state;
     return (
@@ -103,10 +104,10 @@ class AllStation extends Component {
               <div className={styles.regionSelectCont}>
                 <div onClick={() => { this.regionChange('') }} className={`${styles.normal} ${regionName === '全部区域' && styles.active}`}> {'全部区域'}</div>
                 {regionArr.map(e => {
-                  return (<div 
-                  onClick={() => { this.regionChange(e) }} 
-                  key={e}
-                  className={`${styles.normal} ${e === regionName && styles.active}`}> {e}</div>)
+                  return (<div
+                    onClick={() => { this.regionChange(e) }}
+                    key={e}
+                    className={`${styles.normal} ${e === regionName && styles.active}`}> {e}</div>)
                 })}
               </div>
 
@@ -123,13 +124,13 @@ const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
     stations: state.common.get('stations').toJS(),
-    realTimePowerUnit: state.common.get('realTimePowerUnit'),
-    realTimePowerPoint: state.common.get('realTimePowerPoint'),
-    realCapacityUnit: state.common.get('realCapacityUnit'),
-    realCapacityPoint: state.common.get('realCapacityPoint'),
-    powerUnit: state.common.get('powerUnit'),
-    powerPoint: state.common.get('powerPoint'),
-    stationTypeCount: state.common.get('stationTypeCount'), // 旧版本需要保留
+    // realTimePowerUnit: state.common.get('realTimePowerUnit'), // 旧版本需要保留
+    // realTimePowerPoint: state.common.get('realTimePowerPoint'),
+    // realCapacityUnit: state.common.get('realCapacityUnit'),
+    // realCapacityPoint: state.common.get('realCapacityPoint'),
+    // powerUnit: state.common.get('powerUnit'),
+    // powerPoint: state.common.get('powerPoint'),
+    stationTypeCount: state.common.get('stationTypeCount'),
     monitorPvUnit: state.common.toJS().monitorPvUnit,
   })
 }
@@ -144,6 +145,8 @@ const mapDispatchToProps = (dispatch) => ({
   getRealMonitorPower: payload => dispatch({ type: allStationAction.getRealMonitorPower, payload }),
   getPvChartsData: payload => dispatch({ type: allStationAction.getPvChartsData, payload }),
   getPvRealData: payload => dispatch({ type: allStationAction.getPvRealData, payload }),
+  getPvCapabilitydiagrams: payload => dispatch({ type: allStationAction.getPvCapabilitydiagrams, payload }),
+  getPvRealChartsData: payload => dispatch({ type: allStationAction.getPvRealChartsData, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);
