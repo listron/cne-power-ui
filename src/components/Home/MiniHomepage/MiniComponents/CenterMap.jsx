@@ -76,7 +76,7 @@ class CenterMap extends Component{
     worldChart.on('click', this.onCountryChange);
     const activeName = activeInfo.countryName || '';
     const activeData = activeInfo.position || [];
-    const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e=>e.position);
+    const inactiveData = countriesInfo.filter(e=>e.countryName !== activeName).map(e => e.position);
     worldChart.setOption({
       color: ['#48cf49', '#a6e8ff'],
       series: [{
@@ -135,8 +135,10 @@ class CenterMap extends Component{
     });
     const { clientWidth } = document.body;
     let countrySize = 620;
+    let layoutCenter = ['50%', '55%'];
     if (clientWidth < 1440) {
-      countrySize = 550;
+      countrySize = 500;
+      layoutCenter = ['50%', '65%'];
     } else if (clientWidth < 1920) {
       countrySize = 650;
     } else if ( clientWidth >= 1920){
@@ -160,30 +162,32 @@ class CenterMap extends Component{
         },
       });
       countryChart.setOption({
-        series: [{
-          name: 'wind',
-          type: 'scatter',
-          coordinateSystem: 'geo',
-          data: windStationData,
-          symbol: 'image:///img/ico_wind.png',
-          symbolSize: [15, 18],
-          itemStyle: {
-            color: '#fff',
-          },
-          emphasis: {
-            itemStyle: {
-              color: '#fff35f',
-              opacity: 1,
-            },
-          },
-        }, {
+        series: [
+        // {
+        //   name: 'wind',
+        //   type: 'scatter',
+        //   coordinateSystem: 'geo',
+        //   data: windStationData,
+        //   symbol: 'image:///img/ico_wind.png',
+        //   symbolSize: [15, 18],
+        //   itemStyle: {
+        //     color: '#fff',
+        //   },
+        //   emphasis: {
+        //     itemStyle: {
+        //       color: '#fff35f',
+        //       opacity: 1,
+        //     },
+        //   },
+        // },
+        {
           name: 'pv',
           type: 'scatter',
           coordinateSystem: 'geo',
           data: pvStationData,
-          symbol: 'image:///img/ico_pv.png',
+          symbol: 'image:///img/ico_pv copy 21.png',
           symbolRotate: 0,
-          symbolSize: [25, 16],
+          symbolSize: [12, 10],
           itemStyle: {
             color: '#fff',
           },
@@ -198,7 +202,7 @@ class CenterMap extends Component{
           silent: true,
           map: mapName,
           roam: true,
-          layoutCenter: ['50%', '55%'],
+          layoutCenter,
           scaleLimit: {
             min: 0.75,
           },

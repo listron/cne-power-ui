@@ -35,6 +35,7 @@
 .topParts{ // 整个顶部区域
   display: flex;
   justify-content: space-between;
+  z-index: 99;
   .leftTop, .rightTop{
     flex: 0 0 24%;
     min-width: 340px;

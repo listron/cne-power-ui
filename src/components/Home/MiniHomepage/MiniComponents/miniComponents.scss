@@ -5,14 +5,29 @@
   .stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
     width: 340px;
   }
+  .centerMap{
+    .bottomData{
+      margin-bottom: 1%;
+    }
+    .worldMap{
+      width: 170px;
+      height: 100px;
+    }
+  }
 }
 
 @media screen and (min-width: 1440px) { // 1440及以上屏
-
+  .worldMap{
+    width: 268px;
+    height: 168px;
+  }
 }
 
 @media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
-  
+  .worldMap{
+    width: 268px;
+    height: 168px;
+  }
 }
 
 .stationGeneral, .outputPower{
@@ -282,14 +297,9 @@
   .bottomData{
     display: flex;
     align-items: flex-end;
-    .worldMap{
-      width: 268px;
-      height: 168px;
-    }
     .static{
       color:#a6e8ff;
       font-size: 20px;
-      height: 28px;
       display: flex;
       justify-content: center;
       align-items: center;

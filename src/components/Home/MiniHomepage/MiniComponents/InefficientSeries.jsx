@@ -15,7 +15,7 @@ export const InefficientSeries = ({ inefficientList = [] }) => {
           <span className={styles.lost}>电量损失比(%)</span>
         </div>
         <div className={styles.inefficientList}>
-          {false ? inefficientList.slice(0, 3).map(e => (
+          {hasInefficient ? inefficientList.slice(0, 3).map(e => (
             <div key={e.inefficiencyId} className={styles.eachInefficient}>
               <span className={styles.name}>{e.stationName}</span>
               <span className={styles.series}>{e.deviceName}</span>
