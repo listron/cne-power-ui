@@ -9,19 +9,19 @@ import EditDevice from './EditDevice/EditDevice';
 class DeviceSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
-  }
+  };
   constructor(props){
     super(props);
   }
   render(){
-    const { showSidePage,} = this.props;
+    const { showSidePage} = this.props;
     return (
       <div className={styles.deviceSide}>
-        { showSidePage === 'detail' && <DetailDevice {...this.props}  /> }
-        { showSidePage === 'add' && <AddDevice {...this.props} /> } 
+        { showSidePage === 'detail' && <DetailDevice {...this.props} /> }
+        { showSidePage === 'add' && <AddDevice {...this.props} /> }
         { showSidePage === 'edit' && <EditDevice {...this.props} /> }
       </div>
-    )
+    );
   }
 }
 

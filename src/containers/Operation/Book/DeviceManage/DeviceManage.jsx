@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./deviceManage.scss";
-import { deviceManageAction } from "./deviceManageAction";
-import { commonAction } from "../../../alphaRedux/commonAction";
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
-import StationManageTip from "../../../../components/System/Station/Common/StationManageTip";
-import TransitionContainer from "../../../../components/Common/TransitionContainer";
-import DeviceSide from "../../../../components/Operation/Book/DeviceManage/DeviceSide";
-import DeviceManageSearch from "../../../../components/Operation/Book/DeviceManage/DeviceManageSearch";
-import DeviceManageHandle from "../../../../components/Operation/Book/DeviceManage/DeviceManageHandle";
-import DeviceManageList from "../../../../components/Operation/Book/DeviceManage/DeviceManageList";
-import Footer from "../../../../components/Common/Footer";
-import PartInfo from "./PartInfo/PartInfo";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './deviceManage.scss';
+import { deviceManageAction } from './deviceManageAction';
+import { commonAction } from '../../../alphaRedux/commonAction';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import StationManageTip from '../../../../components/System/Station/Common/StationManageTip';
+import TransitionContainer from '../../../../components/Common/TransitionContainer';
+import DeviceSide from '../../../../components/Operation/Book/DeviceManage/DeviceSide';
+import DeviceManageSearch from '../../../../components/Operation/Book/DeviceManage/DeviceManageSearch';
+import DeviceManageHandle from '../../../../components/Operation/Book/DeviceManage/DeviceManageHandle';
+import DeviceManageList from '../../../../components/Operation/Book/DeviceManage/DeviceManageList';
+import Footer from '../../../../components/Common/Footer';
+import PartInfo from './PartInfo/PartInfo';
 
-import PropTypes from "prop-types";
-import Cookie from "js-cookie";
+import PropTypes from 'prop-types';
+import Cookie from 'js-cookie';
 
 class DeviceManage extends Component {
   static propTypes = {
@@ -30,13 +30,13 @@ class DeviceManage extends Component {
     changeDeviceManageStore: PropTypes.func,
     getStationOfEnterprise: PropTypes.func,
     resetStore: PropTypes.func,
-    selectType: PropTypes.func
+    selectType: PropTypes.string,
   };
   constructor(props) {
     super(props);
     this.state = {
       showDeviceTip: true,
-      showSidePage: "add"
+      showSidePage: 'add',
     };
   }
   componentDidMount() {
@@ -44,7 +44,7 @@ class DeviceManage extends Component {
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
     this.timeout = setTimeout(() => {
       this.setState({
-        showDeviceTip: false
+        showDeviceTip: false,
       });
     }, 3000);
   }
@@ -59,13 +59,13 @@ class DeviceManage extends Component {
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
-      showSidePage: showPage
+      showSidePage: showPage,
     });
   };
 
   hideManageTip = () => {
     this.setState({
-      showDeviceTip: false
+      showDeviceTip: false,
     });
   };
   queryTargetData = value => {
@@ -88,7 +88,7 @@ class DeviceManage extends Component {
       pageSize,
       sortField,
       sortMethod,
-      showPage
+      showPage,
     } = this.props;
     const queryParams = {
       stationCode,
@@ -98,15 +98,15 @@ class DeviceManage extends Component {
       pageNum,
       pageSize,
       sortField,
-      sortMethod
+      sortMethod,
     };
     return (
       <div className={styles.deviceManageContainer}>
         <CommonBreadcrumb
-          breadData={[{ name: "设备" }]}
-          style={{ marginLeft: "38px", backgroundColor: "#fff" }}
+          breadData={[{ name: '设备' }]}
+          style={{ marginLeft: '38px', backgroundColor: '#fff' }}
         />
-        {selectType === "deviceInfo" && (
+        {selectType === 'deviceInfo' && (
           <div className={styles.deviceManage}>
             <div className={styles.deviceManageMain}>
               {showDeviceTip && (
@@ -118,17 +118,17 @@ class DeviceManage extends Component {
               <div className={styles.allStationTitle}>
                 <p
                   className={
-                    selectType === "deviceInfo" ? styles.activeStation : ""
+                    selectType === 'deviceInfo' ? styles.activeStation : ''
                   }
                 >
                   设备信息
                 </p>
                 <p
                   className={
-                    selectType === "partInfo" ? styles.activeStation : ""
+                    selectType === 'partInfo' ? styles.activeStation : ''
                   }
                   onClick={() => {
-                    this.queryTargetData("partInfo");
+                    this.queryTargetData('partInfo');
                   }}
                 >
                   部件信息
@@ -141,7 +141,7 @@ class DeviceManage extends Component {
               </div>
             </div>
             <TransitionContainer
-              show={showPage !== "list"}
+              show={showPage !== 'list'}
               onEnter={this.onToggleSide}
               onExited={this.onToggleSide}
               timeout={500}
@@ -156,23 +156,23 @@ class DeviceManage extends Component {
             </TransitionContainer>
           </div>
         )}
-        {selectType === "partInfo" && <PartInfo changeTab={this.changeTab} />}
+        {selectType === 'partInfo' && <PartInfo changeTab={this.changeTab} />}
         <Footer />
       </div>
     );
   }
 }
 const mapStateToProps = state => ({
-  enterpriseId: Cookie.get("enterpriseId"),
+  enterpriseId: Cookie.get('enterpriseId'),
   ...state.operation.deviceManage.toJS(),
-  stations: state.common.get("stations").toJS()
+  stations: state.common.get('stations').toJS(),
 });
 
 const mapDispatchToProps = dispatch => ({
   changeDeviceManageStore: payload =>
     dispatch({
       type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
-      payload
+      payload,
     }),
   getDeviceList: payload =>
     dispatch({ type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload }),
@@ -183,8 +183,8 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         params,
         deviceTypeAction: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-        resultName: "stationDeviceTypes"
-      }
+        resultName: 'stationDeviceTypes',
+      },
     }),
   getDeviceModel: params =>
     dispatch({
@@ -192,8 +192,8 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         params,
         actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-        resultName: "deviceModels"
-      }
+        resultName: 'deviceModels',
+      },
     }),
   getPvDevice: params =>
     dispatch({
@@ -201,8 +201,8 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         params,
         actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-        resultName: "pvDeviceModels"
-      }
+        resultName: 'pvDeviceModels',
+      },
     }),
   getStationOfEnterprise: params =>
     dispatch({
@@ -210,15 +210,15 @@ const mapDispatchToProps = dispatch => ({
       payload: {
         params,
         actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-        resultName: "allStationBaseInfo"
-      }
+        resultName: 'allStationBaseInfo',
+      },
     }),
     exportPoints: payload => dispatch({
       type: commonAction.downLoadFile,
       payload: {
         ...payload,
-        actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS
-      }
+        actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+      },
     }),
   changeCommonStore: payload =>
     dispatch({ type: commonAction.changeCommonStore, payload }),
@@ -265,7 +265,7 @@ const mapDispatchToProps = dispatch => ({
   getDevicefixRecord: payload =>
     dispatch({ type: deviceManageAction.getDevicefixRecord, payload }),
   getDevicehistoryWarning: payload =>
-    dispatch({ type: deviceManageAction.getDevicehistoryWarning, payload })
+    dispatch({ type: deviceManageAction.getDevicehistoryWarning, payload }),
 });
 
 export default connect(
