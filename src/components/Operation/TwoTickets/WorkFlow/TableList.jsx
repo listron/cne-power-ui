@@ -326,12 +326,14 @@ class TableList extends Component {
                         <div className={`${styles.commonButton} ${!complete && styles.disabled}`}
                             onClick={() => { this.handleBatch('complete'); }}>消票</div>
                         {stopRight.map((e) => {
-                            return (
-                                <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
-                                    onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
-                                    {e.nodeName}
-                                </div>
-                            );
+                            if (e.nodeName) {
+                                return (
+                                    <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
+                                        onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
+                                        {e.nodeName}
+                                    </div>
+                                );
+                            }
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
