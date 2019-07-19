@@ -4,7 +4,7 @@ import path from '../../constants/path';
 import { homepageAction } from './homepageAction';
 import moment from 'moment';
 const { basePaths, APISubPaths } = path;
-const { APIBasePath } = basePaths, { homepage } = APISubPaths;
+const { APIBasePath } = basePaths, { homepage, highAnalysis } = APISubPaths;
 
 function *getRealTimeData(action){ // 电站概况，实时监控，设备状态等
   const { payload } = action;
@@ -222,6 +222,31 @@ function* getOperationInfo(action){ // 运维情况
   }
 }
 
+function* getUnhandleList() {
+  const url = `${APIBasePath}${highAnalysis.getUnhandleList}`;
+  try {
+    const response = yield call(axios.post, url, {
+      belongMatrixs: [],
+      inefficiencyStatus: 0,
+      pageNum: 1,
+      pageSize: 10,
+      sortField: 'lost_gen_percent',
+      sortMethod: 'desc',
+      stationCodes: [],
+    });
+    if (response.data.code === '10000') {
+      yield put({
+        type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
+        payload: {
+          inefficientList: response.data.data.list || [],
+        },
+      });
+    } else{ throw response.data; }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* watchHomepage() {
   yield takeLatest(homepageAction.getRealTimeData, getRealTimeData);
   yield takeLatest(homepageAction.getCompleteRate, getCompleteRate);
@@ -234,5 +259,6 @@ export function* watchHomepage() {
   yield takeLatest(homepageAction.getAlarmList, getAlarmList);
   yield takeLatest(homepageAction.getOutputDiagram, getOutputDiagram);
   yield takeLatest(homepageAction.getOperationInfo, getOperationInfo);
+  yield takeLatest(homepageAction.getUnhandleList, getUnhandleList);
 }
 

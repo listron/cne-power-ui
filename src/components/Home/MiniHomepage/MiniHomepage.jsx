@@ -37,6 +37,7 @@ export default class MiniHomepage extends Component {
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
     resetCommonStore: PropTypes.func,
+    getUnhandleList: PropTypes.func,
   }
 
   state = {
@@ -84,6 +85,7 @@ export default class MiniHomepage extends Component {
     this.props.getMonthPower({ enterpriseId, stationType });
     this.props.getOutputDiagram({ enterpriseId, stationType });
     this.props.getOperationInfo({ enterpriseId });
+    this.props.getUnhandleList();
   }
 
   render() {

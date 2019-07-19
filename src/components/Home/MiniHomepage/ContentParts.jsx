@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import styles from './miniHome.scss';
 import PropTypes from 'prop-types';
 import General from './MiniComponents/General';
+import { InefficientSeries } from './MiniComponents/InefficientSeries';
 import MonthGenChart from './MiniComponents/MonthGenChart';
+import CenterMap from './MiniComponents/CenterMap';
 import OutputPower from './MiniComponents/OutputPower';
 import { OperationInfo } from './MiniComponents/OperationInfo';
 import DeviceStatus from './MiniComponents/DeviceStatus';
@@ -12,9 +14,10 @@ class ContentParts extends Component{
   static propTypes = {
     hasMultipleType: PropTypes.bool,
     enterpriseId: PropTypes.string,
+    inefficientList: PropTypes.array,
     monthPower: PropTypes.array,
     outputPower: PropTypes.array,
-    outputPowerTime: PropTypes.number,
+    outputPowerTime: PropTypes.string,
     mapStation: PropTypes.array,
     realTimeInfo: PropTypes.object,
     operationInfo: PropTypes.object,
@@ -26,13 +29,15 @@ class ContentParts extends Component{
     const {
       hasMultipleType, mapStation, enterpriseId, realTimeInfo,
       monthPower, getMonthPower,
+      inefficientList,
       outputPower, outputPowerTime, getOutputDiagram,
       operationInfo,
     } = this.props;
     return (
-      <div className={styles.contentParts}>
+      <div className={styles.contentParts} id="homepageContent">
         <div className={styles.leftBox}>
           <General hasMultipleType={hasMultipleType} realTimeInfo={realTimeInfo} />
+          <InefficientSeries inefficientList={inefficientList} />
           <MonthGenChart
             monthPower={monthPower}
             getMonthPower={getMonthPower}
@@ -40,7 +45,7 @@ class ContentParts extends Component{
             hasMultipleType={hasMultipleType}
           />
         </div>
-        <div>中间地图</div>
+        <CenterMap {...this.props} />
         <div className={styles.rightBox}>
           <OutputPower
             enterpriseId={enterpriseId}

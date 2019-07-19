@@ -64,6 +64,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAlarmList: payload => dispatch({type: homepageAction.getAlarmList, payload}),
   getOutputDiagram: payload => dispatch({type: homepageAction.getOutputDiagram, payload}),
   getOperationInfo: payload => dispatch({type: homepageAction.getOperationInfo, payload}),
+  getUnhandleList: () => dispatch({type: homepageAction.getUnhandleList}),
 
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
   resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),

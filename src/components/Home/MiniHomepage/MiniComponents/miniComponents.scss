@@ -1,7 +1,7 @@
 
 @import './miniCommon.scss';
 
-.stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+.stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
   @include boxStyle();
   position: relative;
   h3{
@@ -34,6 +34,69 @@
     }
     .name{
       margin-top: 4px;
+    }
+  }
+}
+
+.inefficientSeries{ // 低效组串预警
+  h3{
+    height: 40px;
+    line-height: 40px;
+  }
+  .table{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .inefficientList{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    // &::-webkit-scrollbar {
+    //   width: 4px;
+    //   z-index: 9999;
+    // }
+    // &::-webkit-scrollbar-thumb{
+    //   border-radius: 2px;
+    //   background-color: #666;
+    // }
+  }
+  .eachInefficient, .inefficientText{
+    display: flex;
+    align-items: center;
+    .name, .series, .lost{
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #fff;
+    }
+    .name{
+      flex: 0 0 30%;
+    }
+    .lost{
+      flex: 0 0 32%;
+    }
+    .name {
+      padding-left: 20px;
+    }
+    .lost{
+      padding-right: 12px;
+      text-align: center;
+    }
+    .series{
+      padding: 0 8px;
+      flex: 0 0 38%;
+    }
+  }
+  .inefficientText {
+    flex-basis: 30px;
+    line-height: 30px;
+    color:#00baff;
+    .name, .series, .lost{
+      color:#00baff;
     }
   }
 }
@@ -160,6 +223,149 @@
         color:#fff;
         font-size: 20px;
       }
+    }
+  }
+}
+
+.centerMap{ // 中心地图
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  .topData{
+    display: flex;
+    padding-top: 20px;
+    margin-left: 24px;
+  }
+  .bottomData{
+    display: flex;
+    align-items: flex-end;
+    .worldMap{
+      width: 268px;
+      height: 168px;
+    }
+    .static{
+      color:#a6e8ff;
+      font-size: 20px;
+      height: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .count{
+        margin: 0 4px 0 30px;
+      }
+      img{
+        max-width: 24px;
+        max-height: 20px;
+      }
+    }
+  }
+  .countryMap{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .singleStation{
+    z-index: 9999;
+    align-self: center;
+    justify-self: center;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    top: 200px;
+    background-color: rgba(0,0,0,0.70);
+    pointer-events: none;
+    .title{
+      display: flex;
+      margin: 0 12px;
+      height: 62px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #a6e8ff;
+      .titleLeft{
+        display: flex;
+        align-items: center;
+        img{
+          max-width: 50px;
+          max-height: 36px;
+          margin-right: 12px;
+          margin-left: 20px;
+        }
+        .name{
+          color: #a6e8ff;
+          margin-right: 8px;
+          font-size:20px;
+        }
+        .arrow{
+          width: 12px;
+          height: 12px;
+          border: solid 6px #a6e8ff;
+          border-color: transparent transparent transparent #a6e8ff;
+        }
+      }
+      .status{
+        font-size:20px;
+        margin-right: 20px;
+        color:#4dde49;
+      }
+    }
+    .content{
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: 0 36px;
+      .info{
+        display: flex;
+        flex-direction: column;
+        width: 33.33%;
+        align-items: flex-start;
+        justify-content: center;
+        &:nth-child(2){
+          width: 66.66%;
+        }
+      }
+      .value{
+        color:#4dde49;
+        font-size: 28px;
+      }
+      .text{
+        color:#a6e8ff;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.resource{
+  display: flex;
+  height: 45px;
+  margin-right: 16px;
+  img{
+    max-width: 50px;
+    max-height: 36px;
+    margin-right: 12px;
+  }
+  .resourceDetail{
+    display: flex;
+    flex-direction: column;
+    .detailTop{
+      display: flex;
+      height: 28px;
+      align-items: flex-end;
+    }
+    .value {
+      height: 28px;
+      margin-right: 8px;
+      line-height: 28px;
+      font-size:28px;
+      color: #fff;
+      font-family:PingFangSC-Regular;
+    }
+    .unit, .name{
+      color:#06bdf4;
     }
   }
 }
