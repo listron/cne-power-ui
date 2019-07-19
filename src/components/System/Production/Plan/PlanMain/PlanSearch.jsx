@@ -64,7 +64,7 @@ class planSearch extends Component {
           <span className={styles.year}>年份选择</span>
           <Select style={{ width: 105 }} onChange={this.selectYear} placeholder="--" value={planYear}>
             {planYearList.map((year, index) => {
-              return <Option value={String(year)} key={year} selected>{year}</Option>
+              return <Option value={`${year}`} key={year} selected>{year}</Option>
             })}
           </Select>
         </div>

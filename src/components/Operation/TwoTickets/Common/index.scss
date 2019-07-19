@@ -1,9 +1,14 @@
 @import '../../../../theme/theme.scss';
 .workflow {
   .flowForm{
-    min-width:572px;
+    width:572px;
     margin: 18px auto;
-    .tipText {
+  }
+  .rejectFlowForm{
+    min-width: 514px;
+    margin-left: -8px;
+  }
+   .tipText {
       color: $promptColor;
       margin-left: 12px;
       display: flex;
@@ -117,10 +122,6 @@
         }
       }
     }
-  }
-  .rejectFlowForm{
-     margin-left: 10px;
-  }
 }
 
 .detailFlow{
@@ -163,7 +164,7 @@
 .basicContent {
   display: flex;
   flex-direction: column;
-  min-width: 554px;
+  min-width: 514px;
   .basicItem {
     display: flex;
     flex-direction: row;
@@ -250,9 +251,11 @@
       .operateTime {
         color: $darkColor;
         margin-right: 12px;
+         flex-shrink: 0;
       }
       .operateUser {
         color: $darkColor;
+        flex-shrink: 0;
       }
       .flowName {
         color: $darkColor;
@@ -263,6 +266,7 @@
         display: flex;
         flex-direction: row;
         margin-bottom: 12px;
+        flex-wrap: wrap;
         .imgList{
           line-height: 21px;
           height: 21px;
