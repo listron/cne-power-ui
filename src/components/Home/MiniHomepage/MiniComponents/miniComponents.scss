@@ -2,13 +2,21 @@
 @import './miniCommon.scss';
 
 @media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
-  .stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
     width: 340px;
+    margin-bottom: 1.5%;
+  }
+  .stationGeneral, .outputPower{
+    flex: 1 1 40%;
+  }
+  .operationInfo, .inefficientSeries{
+    flex: 1 1 25%;
+  }
+  .monthGen, .deviceStatus{
+    flex: 1 1 30%;
   }
   .centerMap{
-    .bottomData{
-      margin-bottom: 1%;
-    }
+    padding-bottom: 0.3%;
     .worldMap{
       width: 170px;
       height: 100px;
@@ -16,46 +24,71 @@
   }
 }
 
-@media screen and (min-width: 1440px) { // 1440及以上屏
-  .worldMap{
-    width: 268px;
-    height: 168px;
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1440及以上屏
+  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+    width: 340px;
+    margin-bottom: 3.5%;
+  }
+  .stationGeneral, .outputPower{
+    flex: 1 1 38%;
+  }
+  .operationInfo, .inefficientSeries{
+    flex: 1 1 23%;
+  }
+  .monthGen, .deviceStatus{
+    flex: 1 1 27%;
+  }
+  .centerMap{
+    padding-bottom: 1%;
+    .worldMap{
+      width: 268px;
+      height: 168px;
+    }
   }
 }
 
-@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
-  .worldMap{
-    width: 268px;
-    height: 168px;
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920展示
+  .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+    width: 435px;
+    margin-bottom: 3.5%;
+  }
+  .stationGeneral, .outputPower{
+    flex: 1 1 38%;
+  }
+  .operationInfo, .inefficientSeries{
+    flex: 1 1 23%;
+  }
+  .monthGen, .deviceStatus{
+    flex: 1 1 27%;
+  }
+  .centerMap{
+    padding-bottom: 1%;
+    .worldMap{
+      width: 268px;
+      height: 168px;
+    }
   }
 }
 
 .stationGeneral, .outputPower{
-  flex: 1 1 40%;
   h3 {
     flex: 0 0 23.5%;
   }
 }
 .operationInfo, .inefficientSeries{
-  flex: 1 1 25%;
   h3 {
     flex: 0 0 27.5%;
   }
 }
 .monthGen, .deviceStatus{
-  flex: 1 1 30%;
   h3 {
     flex: 0 0 20.8%;
   }
-}
-.deviceStatus .statusChart{
-  width: 55%;
 }
 
 .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
   @include boxStyle();
   position: relative;
-  margin-bottom: 1.5%;
   h3{
     @include titles();
   }
@@ -259,11 +292,13 @@
       }
     }
     .statusTotal{
-      width: 40%;
+      flex-basis: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .eachStatus{
       display: flex;
-      height: 34px;
       align-items: center;
       .round{
         flex: 0 0 14px;
@@ -279,6 +314,9 @@
         color:#fff;
         font-size: 20px;
       }
+    }
+    .statusChart{
+      flex-basis: 55%;
     }
   }
 }

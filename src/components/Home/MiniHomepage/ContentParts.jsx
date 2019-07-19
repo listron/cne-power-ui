@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './miniHome.scss';
 import PropTypes from 'prop-types';
 import General from './MiniComponents/General';
-import { InefficientSeries } from './MiniComponents/InefficientSeries';
+import InefficientSeries from './MiniComponents/InefficientSeries';
 import MonthGenChart from './MiniComponents/MonthGenChart';
 import CenterMap from './MiniComponents/CenterMap';
 import OutputPower from './MiniComponents/OutputPower';

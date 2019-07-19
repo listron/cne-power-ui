@@ -10,7 +10,7 @@
     background: url('/img/tiltebg.png') no-repeat center 15px;
     flex: 0 0 16.6%;
     .title{
-      margin-top: 8px;
+      margin-bottom: 4px;
     }
   }
 }
@@ -22,6 +22,9 @@
   .topParts{
     flex: 0 1 128px;
     background: url('/img/tiltebg.png') no-repeat center 20px;
+    .title{
+      margin-bottom: 12px;
+    }
   }
 }
 
@@ -35,7 +38,6 @@
 .topParts{ // 整个顶部区域
   display: flex;
   justify-content: space-between;
-  z-index: 99;
   .leftTop, .rightTop{
     flex: 0 0 24%;
     min-width: 340px;
@@ -75,6 +77,7 @@
   .rightTop{
     display: flex;
     flex-direction: column;
+    z-index: 99;
     .baseInfo{
       display: flex;
       justify-content: flex-end;
@@ -92,26 +95,31 @@
       margin-right: 8px;
       justify-content: flex-end;
       align-items: flex-end;
+      img{
+        position: relative;
+        z-index: 99;
+        cursor: pointer;
+      }
     }
   }
   .middleTop{
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     .back{
       text-align: center;
       flex-basis: 40px;
       line-height: 40px;
+      position: relative;
+      z-index: 99;
     }
     .title{
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-family: PingFangSC;
       font-weight: 600;
       font-size:32px;
       color: #a6e8ff;
+      text-align: center;
       background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
       background-clip: text; 
       -webkit-background-clip: text; 

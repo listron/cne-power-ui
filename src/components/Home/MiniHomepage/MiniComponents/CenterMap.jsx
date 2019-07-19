@@ -135,14 +135,19 @@ class CenterMap extends Component{
     });
     const { clientWidth } = document.body;
     let countrySize = 620;
-    let layoutCenter = ['50%', '55%'];
+    let layoutCenter = ['50%', '52%'];
+    let symbolSize = [12, 10];
     if (clientWidth < 1440) {
       countrySize = 500;
-      layoutCenter = ['50%', '65%'];
+      layoutCenter = ['50%', '55%'];
+      symbolSize = [12, 10];
     } else if (clientWidth < 1920) {
       countrySize = 650;
+      layoutCenter = ['50%', '53%'];
+      symbolSize = [15, 12];
     } else if ( clientWidth >= 1920){
       countrySize = 900;
+      symbolSize = [18, 15];
     }
     axios.get(`/mapJson/${mapName}.json`).then(response=>{
       const countryBox = document.getElementById('homeCountryMap');
@@ -187,7 +192,7 @@ class CenterMap extends Component{
           data: pvStationData,
           symbol: 'image:///img/ico_pv copy 21.png',
           symbolRotate: 0,
-          symbolSize: [12, 10],
+          symbolSize,
           itemStyle: {
             color: '#fff',
           },
@@ -266,10 +271,9 @@ class CenterMap extends Component{
     if(mapCountryName === '中国'){
       mapCountryName = '国内';
     }
-    const homeContentDom = document.querySelector('#homepageContent');
     const countrySize = {
-      width: homeContentDom ? homeContentDom.offsetWidth : 0,
-      height: homeContentDom ? homeContentDom.offsetHeight: 0,
+      width: document.body.clientWidth,
+      height: document.body.clientHeight,
     };
     return (
       <div className={styles.centerMap}>

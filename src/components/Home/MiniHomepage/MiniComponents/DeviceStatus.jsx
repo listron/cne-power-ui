@@ -72,7 +72,7 @@ class DeviceStatus extends Component {
             label: {
               show: false,
             },
-            radius: ['55%', '80%'],
+            radius: ['35%', '80%'],
             data: statusPieData,
           },
         ],
