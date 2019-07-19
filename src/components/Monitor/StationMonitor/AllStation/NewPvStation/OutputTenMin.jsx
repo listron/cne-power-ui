@@ -36,7 +36,7 @@ class OutputTenMin extends Component {
 
   drawChart = (param) => {
     const { capabilityData, yAxisUnit, stationCode } = param;
-    let yAxisType = `功率(${yAxisUnit})`
+    let yAxisType = `交流侧功率(${yAxisUnit})`
     const capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`));
     const lineColor = '#666';
     const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
@@ -64,7 +64,7 @@ class OutputTenMin extends Component {
       grid: {
         show: false,
         bottom: 25,
-        left: '12%',
+        left: '13%',
         right: '14%',
         top: 32,
       },
@@ -135,6 +135,7 @@ class OutputTenMin extends Component {
           },
           nameTextStyle: {
             color: lineColor,
+            padding: [0, 0, 0, 20],
           },
           axisLine: {
             show: true,

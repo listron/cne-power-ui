@@ -86,6 +86,7 @@ class AddPartsInfo extends React.Component {
     this.props.getfactorsPartsMode({
       manufactorId: value,
       assetsId: '',
+      isConnectDevice: 0,
     });
   };
 
@@ -119,14 +120,14 @@ class AddPartsInfo extends React.Component {
     });
   };
   renderTreeNodes = data =>
-    data.map(item => {
+    data.map((item, index) => {
       const selectType = item.assetsType;
       const isable = selectType ? selectType === 3 : false;
       if (item.assetsData) {
         return (
           <TreeNode
             title={item.assetsName}
-            key={item.assetName}
+            key={index.toString()}
             value={item.assetsId}
             selectable={isable}
           >
@@ -137,7 +138,7 @@ class AddPartsInfo extends React.Component {
       return (
         <TreeNode
           title={item.assetsName}
-          key={item.assetName}
+          key={index.toString()}
           value={item.assetsId}
           selectable={isable}
         />
@@ -272,7 +273,7 @@ class AddPartsInfo extends React.Component {
                     return null;
                   }
                   return (
-                    <Option key={e.manufactorCode} value={e.manufactorId}>
+                    <Option key={i.toString()} value={e.manufactorId}>
                       {e.manufactorName}
                     </Option>
                   );
@@ -315,7 +316,7 @@ class AddPartsInfo extends React.Component {
                     return null;
                   }
                   return (
-                    <Option key={e.modeId} value={e.modeId}>
+                    <Option key={i.toString()} value={e.modeId}>
                       {e.modeName}
                     </Option>
                   );

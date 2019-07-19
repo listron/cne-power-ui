@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styles from './deviceList.scss';
-import classnames from 'classnames';
 import { Spin } from 'antd';
 import { dataFormats } from '../../../../../../utils/utilFunc';
+import { throttle } from 'lodash';
 
 class PvmoduleList extends Component {
   static propTypes = {
@@ -15,6 +15,7 @@ class PvmoduleList extends Component {
     getPvmoduleList: PropTypes.func,
     loading: PropTypes.bool,
     pvLevelNums: PropTypes.object,
+    moduleTime: PropTypes.number,
   }
 
   constructor(props) {
@@ -22,11 +23,31 @@ class PvmoduleList extends Component {
     this.state = {
       firstLoad: true,
       pvLevelStatus: '', // 为空的时候
+      renderList: [],
+      spliceLength: 30, // 30条数据一渲染。
+      topHeight: 400, // 假设的列表上方高度
+      newList: [],
     }
   }
+
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
+        const clientH = document.documentElement.clientHeight; // 客户端高度
+        const scrollTop = main.scrollTop; // 卷曲出去的高度
+        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
+          if (renderList.length < this.props.pvmoduleList.length) {
+            this.initRender(true);
+          }
+        }
+      }
+    }, 1000))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,6 +57,9 @@ class PvmoduleList extends Component {
     if (nextStation !== stationCode) {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
+    }
+    if (nextProps.moduleTime !== this.props.moduleTime) {
+      this.changeStationData(nextProps.pvmoduleList)
     }
   }
 
@@ -54,6 +78,25 @@ class PvmoduleList extends Component {
     }, 60000);
   }
 
+
+  changeStationData = (pvmoduleList) => { // 改变数据之后改变
+    const { pvLevelStatus } = this.state;
+    const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
+    this.setState({ newList: tmpPvmoduleList }, () => {
+      this.initRender()
+    })
+  }
+
+
+  initRender = (initLoad) => { //  渲染todolist 的条数
+    const { renderList, spliceLength, newList } = this.state;
+    const tmp = newList.slice(0, spliceLength + renderList.length);
+    const updateTmp = newList.slice(0, renderList.length || spliceLength);
+    this.setState({
+      renderList: initLoad ? tmp : updateTmp
+    });
+  }
+
   pointStatus = {
     '801': { backgroundColor: '#f9b600', color: '#fff' },// 偏低
     '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
@@ -65,12 +108,16 @@ class PvmoduleList extends Component {
 
   buttonClick = (e) => {
     const { pvLevelStatus } = this.state;
-    this.setState({ pvLevelStatus: e === pvLevelStatus ? '' : e })
+    const { pvmoduleList } = this.props;
+    this.setState({
+      pvLevelStatus: e === pvLevelStatus ? '' : e,
+      renderList: []
+    }, () => { this.changeStationData(pvmoduleList) })
   }
-  render() {
 
-    const { pvmoduleList, loading, pvLevelNums, deviceTypeCode } = this.props;
-    const { pvLevelStatus } = this.state;
+  render() {
+    const { pvmoduleList, loading, pvLevelNums } = this.props;
+    const { pvLevelStatus, renderList } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     const pvStatus = [
       { name: 'normal', text: '正常', useName: 'pvNormalNum', pointStatus: '400' },
@@ -97,17 +144,17 @@ class PvmoduleList extends Component {
                       </p>)
                   })}
               </div>
-              <div className={styles.pvmoduleCont}>
-                {(tmpPvmoduleList.length > 0 ? tmpPvmoduleList.map((item, index) => {
+              <div className={styles.pvmoduleCont} ref={ref => this.newPinterest = ref}>
+                {(tmpPvmoduleList.length > 0 ? renderList.map((item, index) => {
                   const { deviceCode, deviceName } = item;
                   const parentTypeCode = deviceCode && deviceCode.split('M')[1] || '';
                   return (
-                    <div key={index} className={styles.pvmoduleItem} >
+                    <div key={item.deviceCode} className={styles.pvmoduleItem} >
                       <div className={styles.deviceName} >
                         <i className="iconfont icon-nb" ></i>
                         {deviceCode && <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
                           {deviceName}
-                        </Link> ||  deviceName}
+                        </Link> || deviceName}
                       </div>
                       <div className={styles.singlePvmodule}>
                         {item.electricityList.map((e, i) => {
@@ -116,7 +163,7 @@ class PvmoduleList extends Component {
                             <span
                               style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
                               className={styles.commonStyle}
-                              key={i}
+                              key={e.pointName}
                             >
                               {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}
                             </span>)
@@ -126,10 +173,9 @@ class PvmoduleList extends Component {
                   );
                 }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
               </div>
+              {(renderList.length < tmpPvmoduleList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
             </React.Fragment>
-
           }
-
         </div>
       </div>
     )

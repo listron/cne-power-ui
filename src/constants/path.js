@@ -308,6 +308,7 @@ export default {
       addPlanList: "/v3/performance/stationplan", //  添加生产计划
       eddPlanList: "/v3/performance/stationplan", //  编辑生产计划
       getYearList: "/v3/station/yearlist", // 生产计划的年份
+      importPlan: "/v3/performance/plan/import", // 批量导入生产计划
 
       getSeriesData: "/v3/forewarning/conf", //获取低效组串预警配置
       addSeriesData: "/v3/forewarning/conf", //设置低效组串预警配置
@@ -589,6 +590,7 @@ export default {
     }
   }
 };
+
 
 
 
