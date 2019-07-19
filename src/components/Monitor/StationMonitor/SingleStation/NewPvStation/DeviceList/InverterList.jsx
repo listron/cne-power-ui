@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../../utils/utilFunc';
+import { throttle } from 'lodash';
 
 const TabPane = Tabs.TabPane;
 class InverterList extends Component {
@@ -30,12 +31,32 @@ class InverterList extends Component {
       sortName: 'deviceName',
       descend: false,
       firstLoad: true,
+      renderList: [],
+      spliceLength: 18, // 18条数据一渲染。
+      topHeight: 430, // 假设的列表上方高度
+      newList: [],
     }
   }
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
+        const clientH = document.documentElement.clientHeight; // 客户端高度
+        const scrollTop = main.scrollTop; // 卷曲出去的高度
+        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
+          const { deviceList = [] } = this.props.inverterList;
+          if (renderList.length < deviceList.length) {
+            this.initRender(true);
+          }
+        }
+      }
+    }, 1000))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,6 +67,8 @@ class InverterList extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
+    const { deviceList = [] } = nextProps.inverterList;
+    this.changeStationData(deviceList)
   }
 
   componentWillUnmount() {
@@ -53,24 +76,32 @@ class InverterList extends Component {
   }
 
   onChangeStatus = (e) => { // 切换状态
+    const { deviceList = [] } = this.props.inverterList;
     this.setState({
       currentStatus: e.target.value,
       currentPage: 1,
-    })
+      renderList: [],
+    }, () => this.changeStationData(deviceList))
   }
+
   onSwitchAlarm = (e) => { // 切换告警
+    const { deviceList = [] } = this.props.inverterList;
     this.setState({
       alarmSwitch: e,
       currentPage: 1,
-    });
+      renderList: [],
+    }, () => this.changeStationData(deviceList));
   }
 
   onSwitchLow = (e) => { // 切换低效
+    const { deviceList = [] } = this.props.inverterList;
     this.setState({
       lowSwitch: e,
       currentPage: 1,
-    });
+      renderList: [],
+    }, () => this.changeStationData(deviceList));
   }
+
   getData = (stationCode) => {
     const { deviceTypeCode, getInverterList } = this.props;
     const { firstLoad } = this.state;
@@ -82,7 +113,6 @@ class InverterList extends Component {
       this.getData(stationCode);
     }, 60000);
   }
-
 
   getStatusBox = (alarmNum, isLowEfficiency) => {
     let backgroundColor = 'transparent', color = '#666';
@@ -234,131 +264,155 @@ class InverterList extends Component {
     ]
   }
 
-  render() {
-    const { inverterList, deviceTypeCode, loading } = this.props;
-    const { currentStatus, alarmSwitch, currentPage, pageSize, lowSwitch } = this.state;
-    const initDeviceList = inverterList.deviceList && inverterList.deviceList.map((e, i) => ({ ...e, key: i })) || []; // 初始化数据
-    const filteredDeviceList = initDeviceList
+  dealData = (deviceList) => { // 处理数据，筛选之后的数据
+    const { currentStatus, alarmSwitch, lowSwitch } = this.state;
+    const filteredDeviceList = deviceList
       .filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0)))
       .filter(e => (!lowSwitch || (`${e.isLowEfficiency}` === '1')))
       .filter(e => {
         return (currentStatus === 0 || e.deviceStatus === currentStatus);
-      }) // 根据筛选条件处理数据源。
+      })
+      .sort((a, b) => {
+        return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
+      })
+    return filteredDeviceList
+  }
 
-    const sortedParentList = filteredDeviceList.sort((a, b) => {
-      return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
-    })
-
-    const parentDeviceCodeSet = new Set(sortedParentList.map(e => e.parentDeviceCode));
-    const parentDeviceCodes = [...parentDeviceCodeSet];
+  groupData = (deviceList = []) => { // 数据分组 用于网格
+    const parentDeviceCodes = [...new Set(deviceList.map(e => e.parentDeviceCode))];
     const deviceGroupedList = parentDeviceCodes.map(e => {
-      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+      const subDeviceList = deviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList
       // return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
+    return deviceGroupedList
+  }
 
-    const deviceStatus = inverterList.deviceStatusSummary || [];
+  changeStationData = (deviceList) => { // 改变数据之后改变
+    this.setState({ newList: this.dealData(deviceList) }, () => {
+      this.initRender()
+    })
+  }
+
+  initRender = (initLoad = false) => { //  渲染todolist 的条数
+    const { renderList, spliceLength, newList } = this.state;
+    const tmp = newList.slice(0, spliceLength + renderList.length);
+    const updateTmp = newList.slice(0, renderList.length || spliceLength);
+    this.setState({
+      renderList: initLoad ? tmp : updateTmp
+    });
+  }
+
+  render() {
+    const { inverterList, deviceTypeCode, loading } = this.props;
+    const { currentPage, pageSize, renderList = [] } = this.state;
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+    const { deviceList = [], deviceStatusSummary = [] } = inverterList;
+    const filteredDeviceList = this.dealData(deviceList)
+    const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.inverterRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchLow} /> 只看低效逆变器
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} style={{ marginLeft: 8 }} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        {deviceStatus.map(e =>
+        {deviceStatusSummary.map(e =>
           (<Radio.Button key={e.deviceStatusCode} value={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>)
         )}
       </Radio.Group>
     </div>);
-
-    const baseLinkPath = "/hidden/monitorDevice";
-    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.invertDeviceList} >
         <Tabs defaultActiveKey="1" className={styles.deviceListTab} tabBarExtraContent={operations}>
-          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.deviceListBlockBox} >
-            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              <div>
-                <div className={styles.statusTipsWrap}>
-                  {this.statusTips[deviceTypeCode].map((e, i) => {
-                    return (
-                      <div className={styles.statusTips} key={i}>
-                        <span
-                          className={deviceTypeCode === '201' ? styles.rect : styles.round}
-                          style={{ background: deviceTypeCode === '206' ? this.seriesStatus[e.status] : this.confluenceStatus[e.status] }}
-                        />
-                        {e.text}
-                      </div>
-                    )
-                  })}
-                </div>
-                <div className={styles.listWrap}>
-                  {(deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
-                    const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
-                    return (
-                      <div key={index}>
-                        <div className={styles.parentDeviceName} >
-                          <Link to={`/hidden/monitorDevice/${stationCode}/${deviceTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
-                            <i className={'iconfont icon-xb'}></i>
-                            {parentDeviceName}
-                          </Link>
+          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" >
+            <div className={styles.deviceListBlockBox} ref={ref => this.newPinterest = ref}>
+              {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+                <div>
+                  <div className={styles.statusTipsWrap}>
+                    {this.statusTips[deviceTypeCode].map((e, i) => {
+                      return (
+                        <div className={styles.statusTips} key={i}>
+                          <span
+                            className={deviceTypeCode === '201' ? styles.rect : styles.round}
+                            style={{ background: deviceTypeCode === '206' ? this.seriesStatus[e.status] : this.confluenceStatus[e.status] }}
+                          />
+                          {e.text}
                         </div>
-                        <div className={styles.singledeviceItemBox}>
-                          {list.map((item, i) => {
-                            const { branchState = [], deviceStatus, deviceCapacity, devicePower, deviceCode = '' } = item;
-                            const deviceTypeCode = deviceCode.split('M')[1];
-                            let progressPercent = devicePower / deviceCapacity * 100 || 0;
-                            const unconnect = `${deviceStatus}` === '900';
-                            const statusBoxStyle = this.getStatusBox(item.alarmNum, item.isLowEfficiency);
-                            const shadowStyle = deviceStatus && `${this.inverterStatus[`${deviceStatus}`].name || ''}Shadow`;
-                            return (
-                              <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect : ''} ${styles[shadowStyle]}`}>
-                                <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
-                                  <div className={`${styles.statusBox}`} style={{ backgroundColor: statusBoxStyle.backgroundColor }}>
-                                    <div className={styles.deviceItemIcon}>
-                                      <i className={`iconfont icon-nb ${styles.icon}`} />
-                                      {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
-                                    </div>
-                                    <div className={styles.deviceItemR}>
-                                      <div className={styles.deviceBlockName}>
-                                        <span style={{ color: statusBoxStyle.color }}>{item.deviceName}</span>
-                                        <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                      )
+                    })}
+                  </div>
+                  <div className={styles.listWrap}>
+                    {(deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
+                      const { parentDeviceName, parentDeviceCode } = list.length > 0 && list[0];
+                      const praentTypeCode = parentDeviceCode && parentDeviceCode.split('M')[1] || '';
+                      return (
+                        <div key={index}>
+                          <div className={styles.parentDeviceName} >
+                            <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
+                              <i className={'iconfont icon-xb'}></i>
+                              {parentDeviceName}
+                            </Link>
+                          </div>
+                          <div className={styles.singledeviceItemBox}>
+                            {list.map((item, i) => {
+                              const { branchState = [], deviceStatus, deviceCapacity, devicePower, deviceCode = '' } = item;
+                              const deviceTypeCode = deviceCode.split('M')[1];
+                              let progressPercent = devicePower / deviceCapacity * 100 || 0;
+                              const unconnect = `${deviceStatus}` === '900';
+                              const statusBoxStyle = this.getStatusBox(item.alarmNum, item.isLowEfficiency);
+                              const shadowStyle = deviceStatus && `${this.inverterStatus[`${deviceStatus}`].name || ''}Shadow`;
+                              return (
+                                <div key={i} className={`${styles.singledeviceItem} ${unconnect ? styles.unconnect : ''} ${styles[shadowStyle]}`}>
+                                  <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`}>
+                                    <div className={`${styles.statusBox}`} style={{ backgroundColor: statusBoxStyle.backgroundColor }}>
+                                      <div className={styles.deviceItemIcon}>
+                                        <i className={`iconfont icon-nb ${styles.icon}`} />
+                                        {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
                                       </div>
-                                      <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                                      <div className={styles.deviceItemPower}>
-                                        <div className={styles.realDevicePower}>{dataFormats(devicePower, '--', 2)} kW</div>
-                                        <div>{dataFormats(deviceCapacity, '--', 2)} kW</div>
+                                      <div className={styles.deviceItemR}>
+                                        <div className={styles.deviceBlockName}>
+                                          <span style={{ color: statusBoxStyle.color }}>{item.deviceName}</span>
+                                          <span>{dataFormats(item.transferRate, '--', 2, true)}%</span>
+                                        </div>
+                                        <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                                        <div className={styles.deviceItemPower}>
+                                          <div className={styles.realDevicePower}>{dataFormats(devicePower, '--', 2)} kW</div>
+                                          <div>{dataFormats(deviceCapacity, '--', 2)} kW</div>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className={styles.deviceBlockFooter} >
-                                    <div className={styles.eachInfo}>
-                                      <div>日发电量</div>
-                                      <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
+                                    <div className={styles.deviceBlockFooter} >
+                                      <div className={styles.eachInfo}>
+                                        <div>日发电量</div>
+                                        <div className={styles.value}>{dataFormats(item.dayPower, '--', 2)} kWh</div>
+                                      </div>
+                                      <div className={styles.eachInfo}>
+                                        <div>日利用小时</div>
+                                        <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                                      </div>
                                     </div>
-                                    <div className={styles.eachInfo}>
-                                      <div>日利用小时</div>
-                                      <div className={styles.value}>{dataFormats(item.equipmentHours, '--', 2)} h</div>
+                                    <div className={styles.allStatus}>
+                                      <div className={styles.branchStatus}>{branchState && branchState.map((e, i) => (
+                                        <span
+                                          key={i}
+                                          className={deviceTypeCode === '201' ? styles.rect : styles.round}
+                                          style={{ backgroundColor: deviceTypeCode === '206' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
+                                        />
+                                      ))}</div>
+                                      <div style={{ color: deviceStatus && this.inverterStatus[`${deviceStatus}`].color || '' }}>{deviceStatus && this.inverterStatus[`${deviceStatus}`].statusName || ''}</div>
                                     </div>
-                                  </div>
-                                  <div className={styles.allStatus}>
-                                    <div className={styles.branchStatus}>{branchState && branchState.map((e, i) => (
-                                      <span
-                                        key={i}
-                                        className={deviceTypeCode === '201' ? styles.rect : styles.round}
-                                        style={{ backgroundColor: deviceTypeCode === '206' ? this.seriesStatus[e] : this.confluenceStatus[e] }}
-                                      />
-                                    ))}</div>
-                                    <div style={{ color: deviceStatus && this.inverterStatus[`${deviceStatus}`].color || '' }}>{deviceStatus && this.inverterStatus[`${deviceStatus}`].statusName || ''}</div>
-                                  </div>
-                                </Link>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>);
-                  }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
+                                  </Link>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>);
+                    }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
+                  </div>
                 </div>
-              </div>
-            }
+              }
+            </div>
+            {(renderList.length < filteredDeviceList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >
             <div>

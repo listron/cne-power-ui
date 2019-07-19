@@ -84,7 +84,12 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
   const url = `${APIBasePath}${monitor.getPvmoduleList}${stationCode}`;
   try {
     if (firstLoad) {
-      yield put({ type: singleStationAction.singleStationFetch });
+      yield put({
+        type: singleStationAction.singleStationFetch,
+        payload: {
+          moduleLoading: true,
+        }
+      });
     }
     const response = yield call(axios.get, url, payload);
     if (response.data.code === '10000') {
@@ -94,6 +99,7 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
           pvmoduleList: response.data.data.dataList || [],
           pvLevelNums: response.data.data.pvLevelNums || {},
           loading: false,
+          moduleTime: moment().unix(),
         }
       });
     } else { throw 'error' }
@@ -106,6 +112,7 @@ function* getPvmoduleList(action) { // 获取光伏组件列表
         pvAvgValue: '',
         pvLevelNums: {},
         loading: false,
+        moduleTime: moment().unix(),
       }
     });
   }

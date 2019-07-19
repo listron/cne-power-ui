@@ -173,7 +173,7 @@ class Schematic extends Component {
         return (
             <div className={styles.schematic}>
                 <div className={styles.schematicBox}>
-                    <img src="/img/schematic.png" />
+                    <img src="/img/schematic01.png" />
                     <div className={styles.lines}>
                         {deviceTypeArr.includes('509') &&
                             <div className={styles.pvmodule}>
