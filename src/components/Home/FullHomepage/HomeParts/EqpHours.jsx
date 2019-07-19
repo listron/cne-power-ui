@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
-import { dataFormat } from '../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import { dataFormat } from '../../../../utils/utilFunc';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class EqpHours extends Component{
   static propTypes = {

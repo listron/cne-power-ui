@@ -4,8 +4,8 @@ import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
-import { dataFormat } from '../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import { dataFormat } from '../../../../utils/utilFunc';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class OutputPower extends Component{
   static propTypes = {

@@ -4,7 +4,7 @@ import MapResourceData from './MapResourceData';
 import echarts from 'echarts';
 import styles from './homepageParts.scss';
 import axios from 'axios';
-import { dataFormat } from '../../utils/utilFunc';
+import { dataFormat } from '../../../utils/utilFunc';
 import { message } from 'antd';
 // import { windSvgPath, pvSvgPath } from '../../constants/svg/svgFont';
 

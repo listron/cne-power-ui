@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styles from './homepageParts.scss';
 import moment from 'moment';
-import UserInfo from '../Layout/UserInfo';
+import UserInfo from '../../Layout/UserInfo';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { dataFormat } from '../../utils/utilFunc';
+import { dataFormat } from '../../../utils/utilFunc';
 
 class HomepageTop extends Component{
   static propTypes = {
