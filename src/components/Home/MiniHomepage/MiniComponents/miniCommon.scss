@@ -24,9 +24,11 @@
   background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
   background-clip: text; 
   -webkit-background-clip: text; 
-  -webkit-text-fill-color:transparent; 
+  -webkit-text-fill-color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 60px;
-  line-height: 60px;
   width: 100%;
   margin-bottom: 0;
 }
@@ -36,46 +38,6 @@
   font-family:PingFangSC-Regular;
   font-size: 14px;
   border-radius: 2px;
-}
-
-@media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
-  .stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
-    width: 340px;
-  }
-  .stationGeneral, .outputPower{
-    height: 255px;
-  }
-  .operationInfo, .inefficientSeries{
-    height: 158px; 
-  }
-  .monthGen, .deviceStatus{
-    height: 192px;
-  }
-  .deviceStatus .statusChart{
-    width: 55%;
-  }
-}
-
-@media screen and (min-width: 1440px) { // 1440及以上屏
-
-}
-
-@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
-  // .stationGeneral, .completeRate, .monthGen, .operationInfo, .outputPower, .operationInfo, .deviceStatus {
-  //   width: 340px;
-  //   height: 275px;
-  // }
-  // .stationGeneral{
-  //   .value{
-  //     font-size:20px;
-  //   }
-  // }
-  // .eqpHours .hourRectGroup{
-  //   margin: 0 12px;
-  // }
-  // .deviceStatus .statusChart{
-  //   width: 60%;
-  // }
 }
 
 .stationTypeTag{ // 全部,风,光切换样式。

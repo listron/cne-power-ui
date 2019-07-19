@@ -1,9 +1,46 @@
 
 @import './miniCommon.scss';
 
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
+  .stationGeneral, .monthGen, .outputPower, .operationInfo, .deviceStatus{
+    width: 340px;
+  }
+}
+
+@media screen and (min-width: 1440px) { // 1440及以上屏
+
+}
+
+@media screen and (max-width: 1919px) and (min-width: 1440px) { // 1920以下宽度屏按1440px适配
+  
+}
+
+.stationGeneral, .outputPower{
+  flex: 1 1 40%;
+  h3 {
+    flex: 0 0 23.5%;
+  }
+}
+.operationInfo, .inefficientSeries{
+  flex: 1 1 25%;
+  h3 {
+    flex: 0 0 27.5%;
+  }
+}
+.monthGen, .deviceStatus{
+  flex: 1 1 30%;
+  h3 {
+    flex: 0 0 20.8%;
+  }
+}
+.deviceStatus .statusChart{
+  width: 55%;
+}
+
 .stationGeneral, .inefficientSeries, .monthGen, .outputPower, .operationInfo, .deviceStatus{
   @include boxStyle();
   position: relative;
+  margin-bottom: 1.5%;
   h3{
     @include titles();
   }
@@ -39,16 +76,11 @@
 }
 
 .inefficientSeries{ // 低效组串预警
-  h3{
-    height: 40px;
-    line-height: 40px;
-  }
   .table{
     flex: 1;
     display: flex;
     flex-direction: column;
   }
-  
   .inefficientList{
     flex: 1;
     display: flex;
@@ -62,6 +94,21 @@
     //   border-radius: 2px;
     //   background-color: #666;
     // }
+    .noData{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    img{
+      display: flex;
+      flex: 1;
+      align-items: center;
+      width: 40px;
+    }
+    .noneText{
+      margin-bottom: 12px;
+      color: #00baff;
+    }
   }
   .eachInefficient, .inefficientText{
     display: flex;
@@ -102,10 +149,6 @@
 }
 
 .monthGen{
-  h3{
-    height: 40px;
-    line-height: 40px;
-  }
   .monthTool{ // chart图内文字及样式。
     @include chartTool();
     width: 88px;
@@ -146,11 +189,8 @@
 }
 
 .operationInfo{ // 运维情况
-  h3{
-    height: 40px;
-    line-height: 40px;
-  }
   .ticketDetail{
+    flex: 1;
     display: flex;
     justify-content: space-around;
   }
@@ -160,6 +200,7 @@
     align-items: center;
     h4{
       color:#06bdf4;
+      margin-bottom: 0;
     }
   }
   .circle{

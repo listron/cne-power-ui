@@ -6,11 +6,22 @@
   .topParts, .contentParts{
     padding: 0 1%;
   }
+  .topParts{
+    background: url('/img/tiltebg.png') no-repeat center 15px;
+    flex: 0 0 16.6%;
+    .title{
+      margin-top: 8px;
+    }
+  }
 }
 
 @media screen and (min-width: 1440px) { // 1440及以上屏
   .topParts, .contentParts{
     padding: 0 3%;
+  }
+  .topParts{
+    flex: 0 1 128px;
+    background: url('/img/tiltebg.png') no-repeat center 20px;
   }
 }
 
@@ -22,30 +33,30 @@
 }
 
 .topParts{ // 整个顶部区域
-  flex-basis: 128px;
   display: flex;
   justify-content: space-between;
-  background: url('/img/tiltebg.png') no-repeat center 20px;
   .leftTop, .rightTop{
     flex: 0 0 24%;
     min-width: 340px;
   }
   .leftTop{ // 顶部左块
+    display: flex;
+    flex-direction: column;
     .logo, .text, .save{
       display: flex;
       align-items: center;
     }
     .logo{
-      height: 56px;
+      flex: 0 1 45%;
     }
     .text{
-      height: 34px;
+      flex: 0 0 17.5%;
       color:#88a6bf;
       font-size: 12px;
       align-items: flex-end;
     }
     .save{
-      height: 48px;
+      flex: 0 0 37.5%;
       margin-left: 8px;
       .value{
         font-size:18px;
@@ -61,10 +72,12 @@
     }
   }
   .rightTop{
+    display: flex;
+    flex-direction: column;
     .baseInfo{
       display: flex;
       justify-content: flex-end;
-      height: 56px;
+      flex: 0 1 45%;
       align-items: center;
     }
     .timeShow{
@@ -72,11 +85,12 @@
       margin-left: 12px;
     }
     .screenHandle{
+      flex: 1;
       display: flex;
-      height: 48px;
-      margin-top: 34px;
+      margin-bottom: 16px;
       margin-right: 8px;
       justify-content: flex-end;
+      align-items: flex-end;
     }
   }
   .middleTop{
@@ -89,12 +103,13 @@
       line-height: 40px;
     }
     .title{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: PingFangSC;
       font-weight: 600;
       font-size:32px;
-      text-align: center;
-      line-height: 80px;
-      margin-top: 12px;
       color: #a6e8ff;
       background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
       background-clip: text; 
