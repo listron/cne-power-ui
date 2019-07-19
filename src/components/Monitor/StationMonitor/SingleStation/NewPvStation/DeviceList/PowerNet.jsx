@@ -79,8 +79,8 @@ class PowerNet extends Component {
               const netInfoArr = [
                 { name: '正向有功', value: dataFormat(e.forwardActivePower, '--', 2), unit: 'kWh' },
                 { name: '反向有功', value: dataFormat(e.backwardActivePower, '--', 2), unit: 'kWh' },
-                { name: '正向无功', value: dataFormat(e.forwardReactivePower, '--', 2), unit: 'kVarh' },
-                { name: '反向无功', value: dataFormat(e.backwardReactivePower, '--', 2), unit: 'kVarh' },
+                { name: '正向无功', value: dataFormat(e.forwardReactivePower, '--', 2), unit: 'kVar' },
+                { name: '反向无功', value: dataFormat(e.backwardReactivePower, '--', 2), unit: 'kVar' },
               ]
               return (
                 <section className={`${styles.eachDevice} ${e.warningStatus && styles.alarm}`} key={e.deviceCode}>
