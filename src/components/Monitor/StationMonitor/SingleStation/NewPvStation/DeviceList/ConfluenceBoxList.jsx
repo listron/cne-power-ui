@@ -9,6 +9,7 @@ import CommonPagination from '../../../../../Common/CommonPagination/index';
 import TableColumnTitle from '../../../../../Common/TableColumnTitle';
 import { numWithComma, dataFormats } from '../../../../../../utils/utilFunc';
 const TabPane = Tabs.TabPane;
+import { throttle } from 'lodash';
 
 class ConfluenceBoxList extends Component {
   static propTypes = {
@@ -29,12 +30,33 @@ class ConfluenceBoxList extends Component {
       sortName: 'deviceName',
       descend: false,
       firstLoad: true,
+      renderList: [],
+      spliceLength: 24, // 24条数据一渲染。
+      topHeight: 550, // 假设的列表上方高度
+      newList: [],
     }
   }
 
   componentDidMount() {
     const { stationCode } = this.props.match.params;
     this.getData(stationCode);
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
+        const clientH = document.documentElement.clientHeight; // 客户端高度
+        const scrollTop = main.scrollTop; // 卷曲出去的高度
+        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
+          const { deviceList = [] } = this.props.confluenceBoxList;
+          if (renderList.length < deviceList.length) {
+            this.initRender(true);
+          }
+        }
+      }
+    }, 1000))
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +67,8 @@ class ConfluenceBoxList extends Component {
       clearTimeout(this.timeOutId);
       this.getData(nextStation);
     }
+    const { deviceList = [] } = nextProps.confluenceBoxList;
+    this.changeStationData(deviceList)
   }
 
   componentWillUnmount() {
@@ -52,16 +76,24 @@ class ConfluenceBoxList extends Component {
   }
 
   onChangeStatus = (e) => {
+    const { deviceList = [] } = this.props.confluenceBoxList;
     this.setState({
       currentStatus: e.target.value,
       currentPage: 1,
+      renderList: []
+    }, () => {
+      this.changeStationData(deviceList)
     })
   }
 
   onSwitchAlarm = (e) => {
+    const { deviceList = [] } = this.props.confluenceBoxList;
     this.setState({
       alarmSwitch: e,
       currentPage: 1,
+      renderList: [],
+    }, () => {
+      this.changeStationData(deviceList)
     });
   }
 
@@ -164,6 +196,7 @@ class ConfluenceBoxList extends Component {
   changePagination = ({ pageSize, currentPage }) => {
     this.setState({ pageSize, currentPage })
   }
+
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
@@ -187,13 +220,8 @@ class ConfluenceBoxList extends Component {
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
 
- 
-
-
-  render() {
-    const { confluenceBoxList, deviceTypeCode, loading } = this.props;
-    const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
-    const { deviceList = [] } = confluenceBoxList;
+  dealData = (deviceList) => { // 处理数据，筛选之后的数据
+    const { currentStatus, alarmSwitch } = this.state;
     const filteredDeviceList = deviceList
       .filter(e => (!alarmSwitch || (alarmSwitch && e.alarmNum > 0)))
       .filter(e => {
@@ -201,24 +229,47 @@ class ConfluenceBoxList extends Component {
       })
       .sort((a, b) => {
         return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
-      })  // 筛选告警和排序的数据 按照电站名称排序
+      })
+    return filteredDeviceList
+  }
 
-    const parentDeviceCodes = [...new Set(filteredDeviceList.map(e => e.parentDeviceCode))];
+  groupData = (deviceList = []) => { // 数据分组 用于网格
+    const parentDeviceCodes = [...new Set(deviceList.map(e => e.parentDeviceCode))];
     const deviceGroupedList = parentDeviceCodes.map(e => {
-      const subDeviceList = filteredDeviceList.filter(item => item.parentDeviceCode === e);
+      const subDeviceList = deviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
-    }); // 用于网格
+    });
+    return deviceGroupedList
+  }
 
-    const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
+  changeStationData = (deviceList) => { // 改变数据之后改变
+    this.setState({ newList: this.dealData(deviceList) }, () => {
+      this.initRender()
+    })
+  }
 
-    const { deviceStatusSummary = [] } = confluenceBoxList;
+  initRender = (initLoad = false) => { //  渲染todolist 的条数
+    const { renderList, spliceLength, newList } = this.state;
+    const tmp = newList.slice(0, spliceLength + renderList.length);
+    const updateTmp = newList.slice(0, renderList.length || spliceLength);
+    this.setState({
+      renderList: initLoad ? tmp : updateTmp
+    });
+  }
+
+
+  render() {
+    const { confluenceBoxList, deviceTypeCode, loading } = this.props;
+    const { currentPage, pageSize, renderList } = this.state;
+    const { deviceList = [] } = confluenceBoxList;
+    const baseLinkPath = "/hidden/monitorDevice";
+    const { stationCode } = this.props.match.params;
+    const filteredDeviceList = this.dealData(deviceList);
+    const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.deviceRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 只看告警
       <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
         <Radio.Button value={0} >全部</Radio.Button>
-        {/* {deviceStatusSummary.map(e=>{
-          return  <Radio.Button value={e.deviceStatusCode}  key={e.deviceStatusCode}>{e.deviceStatusName} {e.deviceStatusNum}</Radio.Button>
-        })} */}
         <Radio.Button value={400} >正常 {this.getStatusNum(400)}</Radio.Button>
         <Radio.Button value={801} >离散率>10% {this.getStatusNum(801)}</Radio.Button>
         <Radio.Button value={802} >离散率>20% {this.getStatusNum(802)}</Radio.Button>
@@ -226,68 +277,71 @@ class ConfluenceBoxList extends Component {
         <Radio.Button value={900} >未接入 {this.getStatusNum(900)}</Radio.Button>
       </Radio.Group>
     </div>);
-
-    const baseLinkPath = "/hidden/monitorDevice";
-    const { stationCode } = this.props.match.params;
     return (
       <div className={styles.deviceList} >
         <Tabs defaultActiveKey="1" className={styles.deviceListTab} tabBarExtraContent={operations}>
-          <TabPane tab={<span><i className="iconfont icon-grid" ></i></span>} key="1" className={styles.deviceListBlockBox} >
-            {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
-              (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
-                const { parentDeviceName, parentDeviceFullCode } = list.length > 0 && list[0];
-                const praentTypeCode=parentDeviceFullCode && parentDeviceFullCode.split('M')[1] || '';
-                return (
-                  <div key={index}>
-                    <div className={styles.parentDeviceName} >
-                      <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
-                        <i className={'iconfont icon-hl'}></i>
-                        {parentDeviceName}
-                      </Link>
-                    </div>
-                    <div className={styles.singledeviceItemBox}>
-                      {list.map((item, i) => {
-                        const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
-                        const deviceStatus = item.deviceStatus;
-                        const alarm = item.alarmNum && item.alarmNum > 0;
-                        const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
-                        const devicePower = dataFormats(item.devicePower, '--', 2);
-                        let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
-                        const praentTypeCode=item.deviceCode.split('M')[1];
-                        return (
-                          <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
-                            <Link to={`${baseLinkPath}/${stationCode}/${praentTypeCode}/${item.deviceCode}`}>
-                              <div className={`${styles.statusBox}`} >
-                                <div className={styles.deviceItemIcon} >
-                                  {deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
-                                  <i className={`iconfont icon-hl ${styles.icon}`} ></i>
-                                  {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
-                                </div>
-                                <div className={styles.deviceItemR} >
-                                  <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>
-                                  <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
-                                  <div className={styles.deviceItemPower}>
-                                    <div className={styles.realDevicePower}>{devicePower} kW</div>
-                                    <div>{deviceCapacity} kW</div>
+          <TabPane
+            tab={<span><i className="iconfont icon-grid" ></i></span>}
+            key="1"
+          >
+            <div ref={ref => this.newPinterest = ref} className={styles.deviceListBlockBox}>
+              {loading ? <Spin size="large" style={{ height: '100px', margin: '200px auto', width: '100%' }} /> :
+                (deviceGroupedList.length > 0 ? deviceGroupedList.map((list, index) => {
+                  const { parentDeviceName, parentDeviceFullCode } = list.length > 0 && list[0];
+                  const praentTypeCode = parentDeviceFullCode && parentDeviceFullCode.split('M')[1] || '';
+                  return (
+                    <div key={index}>
+                      <div className={styles.parentDeviceName} >
+                        <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceFullCode}`} className={styles.underlin} >
+                          <i className={'iconfont icon-hl'}></i>
+                          {parentDeviceName}
+                        </Link>
+                      </div>
+                      <div className={styles.singledeviceItemBox}>
+                        {list.map((item, i) => {
+                          const statusName = this.getStatusName(`${item.deviceStatus}`)[0].name;
+                          const deviceStatus = item.deviceStatus;
+                          const alarm = item.alarmNum && item.alarmNum > 0;
+                          const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
+                          const devicePower = dataFormats(item.devicePower, '--', 2);
+                          let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                          return (
+                            <div key={item.deviceCode}
+                              className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
+                              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`}>
+                                <div className={`${styles.statusBox}`} >
+                                  <div className={styles.deviceItemIcon} >
+                                    {deviceStatus === 500 && <i className="iconfont icon-outage" ></i> || null}
+                                    <i className={`iconfont icon-hl ${styles.icon}`} ></i>
+                                    {(item.alarmNum && item.alarmNum > 0) && <i className="iconfont icon-alarm" ></i> || null}
+                                  </div>
+                                  <div className={styles.deviceItemR} >
+                                    <div className={styles.deviceBlockName}><span>{item.deviceName}</span></div>
+                                    <Progress className={styles.powerProgress} strokeWidth={3} percent={progressPercent} showInfo={false} />
+                                    <div className={styles.deviceItemPower}>
+                                      <div className={styles.realDevicePower}>{devicePower} kW</div>
+                                      <div>{deviceCapacity} kW</div>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
 
-                              <div className={styles.deviceBlockFooter} >
-                                <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
-                                <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
-                                <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
-                                <div>温度：{dataFormats(item.temp, '--', 2)} ℃</div>
-                              </div>
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </div>
+                                <div className={styles.deviceBlockFooter} >
+                                  <div>电压：{dataFormats(item.voltage, '--', 2)} V</div>
+                                  <div>电流：{dataFormats(item.electricity, '--', 2)} A</div>
+                                  <div className={styles.dispersionRatio}>离散率：{dataFormats(item.dispersionRatio, '--', 2)} %</div>
+                                  <div>温度：{dataFormats(item.temp, '--', 2)} ℃</div>
+                                </div>
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
 
-                  </div>);
-              }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
-            }
+                    </div>);
+                }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
+              }
+            </div>
+            {(renderList.length < filteredDeviceList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
           </TabPane>
 
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >
@@ -296,7 +350,7 @@ class ConfluenceBoxList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table
-                dataSource={currentTableList.map((e, i) => { return { ...e, key: i } })}
+                dataSource={this.createTableSource(filteredDeviceList).map((e, i) => { return { ...e, key: e.deviceCode } })}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
