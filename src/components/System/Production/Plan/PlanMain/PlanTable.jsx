@@ -380,10 +380,10 @@ class PlanTable extends Component {
               <Icon type="plus" />
               <span className={styles.text}>添加</span>
             </Button>
-            // <Upload {...uploadProps} className={styles.importUser}>
-            //   <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
-            // </Upload>
-            // <Button type={'default'} onClick={this.batchImport} loading={this.props.downloading}>导入下载模版</Button>
+            {/* <Upload {...uploadProps} className={styles.importUser}>
+              <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
+            </Upload>
+            <Button type={'default'} onClick={this.batchImport} loading={this.props.downloading}>导入下载模版</Button> */}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
