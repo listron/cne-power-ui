@@ -169,6 +169,7 @@ class DataExportList extends Component {
             {(text === 1) && <span title={text} className={styles.generating}>生成中</span>}
             {(text === 2) && <span title={text}>已生成</span>}
             {(text === 3) && <span title={text} className={styles.fail}>失败</span>}
+            {(text === 4) && <span title={text}>已生成</span>}
           </span>
         ),
       }, {
