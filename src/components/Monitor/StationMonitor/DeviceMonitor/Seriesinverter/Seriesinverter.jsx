@@ -74,7 +74,7 @@ class Seriesinverter extends Component {
     this.timeOutId = setTimeout(() => {
       this.props.getMonitorDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
-    },10000)
+    }, 10000);
   }
 
   getTenMinData = (stationCode, deviceCode, deviceTypeCode) => {
@@ -87,37 +87,36 @@ class Seriesinverter extends Component {
     this.timeOutTenMin = setTimeout(() => {
       this.props.getTenMinDeviceData(params);
       this.getData(stationCode, deviceCode, deviceTypeCode);
-    },600000)
+    }, 600000);
   }
 
   render(){
-    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading,singleStationData } = this.props;
-    const { stationCode, deviceTypeCode,deviceCode } = this.props.match.params;
+    const {devices, deviceDetail, deviceTenMin, deviceAlarmList, devicePointData, loading, singleStationData } = this.props;
+    const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     //console.log(this.props.match.params);
-   
-    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const backData={path: `/monitor/singleStation/${stationCode}`, name: '返回电站'};
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
         name: singleStationData && singleStationData.stationName || '',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
+      }, {
         name: deviceTypeCode==='201'?'集中式逆变器': '组串式逆变器',
       }],
-      iconName: 'iconfont icon-nb'
+      iconName: 'iconfont icon-nb',
     };
     return (
       <div className={styles.seriesinverter}>
-        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor:'#fff'}}  backData={{...backData}} />
+        <CommonBreadcrumb {...breadCrumbData} style={{backgroundColor: '#fff'}} backData={{...backData}} />
         <div className={styles.deviceContent}>
           <InverterHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
           <InverterStatistics deviceDetail={deviceDetail} />
           <InverterTenMin deviceTenMin={deviceTenMin} loading={loading} />
-          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode}  {...this.props} />
-          <DevicePointsData devicePointData={devicePointData}  deviceDetail={deviceDetail} />
+          <DeviceAlarmTable deviceAlarmList={deviceAlarmList} loading={loading} deviceDetail={deviceDetail} stationCode={stationCode} deviceTypeCode={deviceTypeCode} deviceCode={deviceCode} {...this.props} />
+          <DevicePointsData devicePointData={devicePointData} deviceDetail={deviceDetail} />
         </div>
       </div>
-    ) 
+    );
   }
 }
 
