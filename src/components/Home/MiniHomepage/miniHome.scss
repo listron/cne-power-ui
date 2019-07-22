@@ -1,0 +1,142 @@
+
+
+
+
+@media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
+  .topParts, .contentParts{
+    padding: 0 1%;
+  }
+  .topParts{
+    background: url('/img/tiltebg.png') no-repeat center 15px;
+    flex: 0 0 16.6%;
+    .title{
+      margin-bottom: 4px;
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) { // 1440及以上屏
+  .topParts, .contentParts{
+    padding: 0 3%;
+  }
+  .topParts{
+    flex: 0 1 128px;
+    background: url('/img/tiltebg.png') no-repeat center 20px;
+    .title{
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.miniHome{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #0c0a3e;
+}
+
+.topParts{ // 整个顶部区域
+  display: flex;
+  justify-content: space-between;
+  .leftTop, .rightTop{
+    flex: 0 0 24%;
+    min-width: 340px;
+  }
+  .leftTop{ // 顶部左块
+    display: flex;
+    flex-direction: column;
+    .logo, .text, .save{
+      display: flex;
+      align-items: center;
+    }
+    .logo{
+      flex: 0 1 45%;
+    }
+    .text{
+      flex: 0 0 17.5%;
+      color:#88a6bf;
+      font-size: 12px;
+      align-items: flex-end;
+    }
+    .save{
+      flex: 0 0 37.5%;
+      margin-left: 8px;
+      .value{
+        font-size:18px;
+        color:#fff;
+        margin: 0 4px;
+      }
+      .unit{
+        color:#06bdf4;
+        font-size: 12px;
+        margin-top: 4px;
+        margin-right: 30px;
+      }
+    }
+  }
+  .rightTop{
+    display: flex;
+    flex-direction: column;
+    z-index: 99;
+    .baseInfo{
+      display: flex;
+      justify-content: flex-end;
+      flex: 0 1 45%;
+      align-items: center;
+    }
+    .timeShow{
+      color:#88a6bf;
+      margin-left: 12px;
+    }
+    .screenHandle{
+      flex: 1;
+      display: flex;
+      margin-bottom: 16px;
+      margin-right: 8px;
+      justify-content: flex-end;
+      align-items: flex-end;
+      img{
+        position: relative;
+        z-index: 99;
+        cursor: pointer;
+      }
+    }
+  }
+  .middleTop{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .back{
+      text-align: center;
+      flex-basis: 40px;
+      line-height: 40px;
+      position: relative;
+      z-index: 99;
+    }
+    .title{
+      font-family: PingFangSC;
+      font-weight: 600;
+      font-size:32px;
+      color: #a6e8ff;
+      text-align: center;
+      background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
+      background-clip: text; 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color:transparent; 
+      letter-spacing:1.5px;
+    }
+  }
+}
+
+.contentParts{
+  flex: 1;
+  display: flex;
+  .leftBox, .rightBox{
+    display: flex;
+    flex-direction: column;
+  }
+  .middleBox{
+    flex: 1;
+  }
+}
