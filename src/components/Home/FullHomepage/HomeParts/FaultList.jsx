@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import StationTypeTag from './StationTypeTag';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
-import { showNoData, hiddenNoData } from '../../../constants/echartsNoData';
+import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import echarts from 'echarts';
-import { dataFormat } from '../../../utils/utilFunc';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 class FaultList extends Component {
   static propTypes = {
