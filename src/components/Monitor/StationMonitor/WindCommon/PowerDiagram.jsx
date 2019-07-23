@@ -1,4 +1,4 @@
-import React, { useState, useEffect,Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
@@ -10,16 +10,16 @@ import { Radio } from 'antd';
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
-class PowerDiagram extends Component{
+class PowerDiagram extends Component {
     static propTypes = {
         scatterData: PropTypes.object,
         powerTime: PropTypes.number,
-        onChange:PropTypes.func,
+        onChange: PropTypes.func,
     }
     constructor() {
         super();
-        this.state={
-            intervalTime:0,
+        this.state = {
+            intervalTime: 0,
         }
     }
     componentDidMount() {
@@ -27,42 +27,42 @@ class PowerDiagram extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        const { powerTime } = this.props;
+        const { powerTime, loading } = this.props;
         const preTime = prevProps.powerTime;
-        if (powerTime !== preTime) { // 数据重新请求后重绘。
+        if (powerTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
-     onChangeTimePower = (e) => { // 改变 日／月／年
+    onChangeTimePower = (e) => { // 改变 日／月／年
         const intervalTime = e.target.value;
-        this.setState({intervalTime});
-        this.props.onChange({intervalTime})
-        this.drawCharts({powerData:[]})
+        this.setState({ intervalTime });
+        this.props.onChange({ intervalTime })
+        // this.drawCharts({ powerData: [],loading:false })
     }
 
-     unitFormarts = (data, quantity) => {
+    unitFormarts = (data, quantity) => {
         if (isNaN(data) || (!data && data !== 0)) {
             return '--';
         }
         return data / quantity
     }
 
-    drawCharts=(params)=>{
-        let { powerData } = params;
-        const {intervalTime}=this.state;
-        const actualPower = powerData.map(e => dataFormats(this.unitFormarts(e.actualPower,10000), '--', 2, true));  // 实际发电量
+    drawCharts = (params) => {
+        let { powerData, loading } = params;
+        const { intervalTime } = this.state;
+        const actualPower = powerData.map(e => dataFormats(this.unitFormarts(e.actualPower, 10000), '--', 2, true));  // 实际发电量
         const filterActualPower = powerData.filter(e => e.actualPower);
-        const theoryPower = powerData.map(e => dataFormats(this.unitFormarts(e.theoryPower,10000), '--', 2, true)); // 计划发电量
+        const theoryPower = powerData.map(e => dataFormats(this.unitFormarts(e.theoryPower, 10000), '--', 2, true)); // 计划发电量
         const filterTheoryPower = powerData.filter(e => e.theoryPower);
         const instantaneous = powerData.map(e => dataFormats(e.instantaneous, '--', 2, true)); // 风速／累计曝幅值
         const filterInstantaneous = powerData.filter(e => e.instantaneous);
         const completeRate = powerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
-        const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && filterInstantaneous.length === 0
+        const powerGraphic = (filterActualPower.length === 0 && filterTheoryPower.length === 0 && !loading && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const chartsBox = document.getElementById('powerDiagram');
         const powerDiagram = echarts.init(chartsBox);
-        powerData.length > 0 ? powerDiagram.hideLoading() : powerDiagram.showLoading('default', { color: '#199475' });
+        loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
         const lineColor = '#666';
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = { //实际发电量 计划发电量
@@ -86,7 +86,7 @@ class PowerDiagram extends Component{
                 // containLabel:true,
                 right: 60,
                 top: 70,
-                left:68,
+                left: 68,
             },
             legend: {
                 left: 'center',
@@ -110,7 +110,7 @@ class PowerDiagram extends Component{
                     let paramsItem = '';
                     params.forEach(item => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-                        ${item.seriesName} :  ${item.value}${item.seriesName==='完成率' && '%' || ''}</div>`
+                        ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`
                     });
                     return (
                         `<div class=${styles.tooltipBox}>
@@ -155,7 +155,7 @@ class PowerDiagram extends Component{
                     axisLabel: {
                         formatter: '{value}',
                         color: lineColor,
-                        margin:4,
+                        margin: 4,
                     },
                     nameTextStyle: {
                         color: lineColor,
@@ -179,7 +179,7 @@ class PowerDiagram extends Component{
                     axisLabel: {
                         formatter: '{value}',
                         color: lineColor,
-                        margin:4,
+                        margin: 4,
                     },
                     nameTextStyle: {
                         color: lineColor,
@@ -261,7 +261,7 @@ class PowerDiagram extends Component{
         powerDiagram.resize();
     }
 
-    render(){
+    render() {
         const productionAnalysis = `#/statistical/stationaccount/production`;
         return (
             <div className={styles.powerDiagramBox} >

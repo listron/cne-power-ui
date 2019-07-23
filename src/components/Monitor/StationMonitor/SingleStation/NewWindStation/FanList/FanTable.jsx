@@ -11,7 +11,6 @@ class WindStationList extends React.Component {
   static propTypes = {
     fanList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
     cardPointParams: PropTypes.string,
     stationCode: PropTypes.string,
     alarmSwitch: PropTypes.bool,

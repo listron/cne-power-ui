@@ -56,11 +56,16 @@
     background: #fff;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    .buttons{
+      display: flex;
+      button{
+        margin-right: 12px;
+      }
+    }
     .addplan {
       padding: 0;
       margin-left: 24px;
-      margin-right: 12px;
       font-size: 0;
       border: 1px solid $themeColor;
       i {
@@ -113,7 +118,7 @@
       }
       .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td {
         padding: 0 3px;
-        line-height: 1;
+        line-height: 44px;
         min-width: 48px;
       }
       .ant-table .ant-table-thead > tr > th.month, .ant-table .ant-table-tbody > tr > td.month {

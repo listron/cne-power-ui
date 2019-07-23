@@ -1,38 +1,53 @@
 import Immutable from 'immutable';
-import { deviceAction } from './deviceAction';
 
-var initState = Immutable.fromJS({
-  loading: false,
-  // deviceCode: '',  // 暂不用
-  // deviceName: '',  // 暂不用
-  // deviceTypeCode: '',  // 暂不用
-  // deviceTypeName: '',  // 暂不用
-  devices: [],       // 电站下同设备类型的设备列表
-  deviceDetail: {},  // 单设备详情
-  deviceTenMin: [],  // 单设备10min数据
-  devicePointData: [],  // 设备测点数据
-  deviceAlarmList: [],  // 设备告警列表
-  windturbineData:{},   // 单风机详情 
-  sequencechart:{},  // 单风机图表数据
-  scatterpoint:{},// 单风机散点图
-  sequencediagram:{},// 单风机时序图
-  scatterpointTime:null,// 单风机散点图时间
-  sequencediagramTime:null//单风机时序图时间
+const deviceAction = {
+  CHANGE_DEVICE_MONITOR_STORE: Symbol('CHANGE_DEVICE_MONITOR_STORE'),
+  RESET_DEVICE_MONITOR_STORE: Symbol('RESET_DEVICE_MONITOR_STORE'),
+
+  // yield takeLatest(deviceAction.getDevices, getDevices);
+  // yield takeLatest(deviceAction.deviceInfoMonitor, deviceInfoMonitor);
+  // yield takeLatest(deviceAction.deviceChartMonitor, deviceChartMonitor);
+  // yield takeLatest(deviceAction.stopMonitor, stopMonitor);
+  getDevices: Symbol('getDevices'), // 获取同类设备列表
+  getDeviceInfoMonitor: Symbol('deviceInfoMonitor'), // 10s信息
+  getDeviceChartMonitor: Symbol('deviceChartMonitor'), // 1h图表信息
+  stopMonitor: Symbol('stopMonitor'), // 获取同类设备列表
+
+  getwindturbineData: Symbol('getwindturbineData'), // 单风机详情
+  getSequencechartData: Symbol('getSequencechartData'),
+  getWindDeviceCharts: Symbol('getWindDeviceCharts'),
+  stopWindDeviceCharts: Symbol('stopWindDeviceCharts'),
+  getWindDeviceRealData: Symbol('getWindDeviceRealData'),
+}
+
+const initState = Immutable.fromJS({
+  deviceDetail: {}, // 单设备详情
+  devicePointData: [], // 测点数据
+  deviceAlarmList: [], // 单设备告警
+  devices: [], // 设备列表列表
+  deviceTenMin: [], // 设备时序图
+  tenMinUnix: null, // 时序时间记录
+  tenMinChartLoading: false, // chartloading状态
+  subDeviceList: [], // 下级设备信息
+  deviceEvents: [], // 单设备事件信息
+  branchTenMin: [], // 仅组串逆变器下支路电流数组
+  branchTenMinUnix: null, // 仅组串逆变器下支路电流时间记录
+
+  sequencechart: {}, // 风机图表
+  scatterpoint: {}, // 风机散点图
+  scatterpointTime: null, // 风机散点图时间
+  sequencediagram: {}, // 风机时序图
+  sequencediagramTime: null, // 风机时序图时间
 });
 
-const deviceMonitorReducer = (state = initState, action) => {
+const deviceMonitor = (state = initState, action) => {
   switch (action.type) {
-    case deviceAction.MONITOR_DEVICE_FETCH:
-      return state.set('loading',true)
-    case deviceAction.GET_DEVICE_FETCH_SUCCESS :
-      return state.merge(Immutable.fromJS(action.payload)).set('loading',false)
-    case deviceAction.CHANGE_DEVICE_MONITOR_STORE:
-      return state.merge(Immutable.fromJS(action.payload))
-    case deviceAction.RESET_DEVICE_MONITOR_STORE_SUCCESS:
+    case deviceAction.CHANGE_DEVICE_MONITOR_STORE: // 手动替换数据
+      return state.merge(Immutable.fromJS(action.payload));
+    case deviceAction.RESET_DEVICE_MONITOR_STORE: // 重置
       return initState;
   }
   return state;
 }
 
-
-export default deviceMonitorReducer;
+export { deviceMonitor, deviceAction };

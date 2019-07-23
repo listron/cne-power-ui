@@ -54,9 +54,9 @@ class DataHistory extends Component {
 
 const mapStateToProps = state => ({
   ...state.monitor.dataHistory.toJS(),
-  stations: state.common.get('stations').toJS().filter(e => e.stationType === 0),
+  stations: state.common.get('stations').toJS(),
   filterDevices: state.common.get('filterDevices').toJS(),
-  stationTypeCount: 'wind', // state.common.get('stationTypeCount'),
+  stationTypeCount: state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
 

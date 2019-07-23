@@ -56,13 +56,16 @@ class Condition extends Component {
                     username={username}
                     docketTypeList={docketTypeList}
                     onChange={this.filterCondition}
+                    myJoinText={'我的待办'}
                 />
                 <div className={styles.statusGroup}>
                     <div className={styles.text}><span>状</span><span>态</span></div>
                     <RadioGroup onChange={this.onChangeTab} value={stateCode}>
                         <RadioButton value="">全部</RadioButton>
                         {statusList.map(e => {
-                            return (<RadioButton value={e.stateCode} key={e.stateCode}>{e.stateDesc} <span>{e.totalNum}</span></RadioButton>);
+                            return (<RadioButton value={e.stateCode} key={e.stateCode}>{e.stateDesc}
+                                <span>{e.stateDesc !== '已完成' && e.totalNum}</span>
+                            </RadioButton>);
                         })}
                     </RadioGroup>
                 </div>
