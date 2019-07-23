@@ -23,6 +23,10 @@ class CenterMap extends Component{
     mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
   };
 
+  // componentDidMount(){
+  //   window.addEventListener('resize', this.onCountryChartResize);
+  // }
+
   componentWillReceiveProps(nextProps){
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
@@ -53,7 +57,19 @@ class CenterMap extends Component{
 
   componentWillUnmount(){
     this.clocker && clearTimeout(this.clocker);
+    // window.removeEventListener('resize', this.onCountryChartResize);
   }
+
+  // onCountryChartResize = () => {
+  //   const countryBox = document.getElementById('homeCountryMap');
+  //   if (!countryBox){
+  //     return;
+  //   }
+  //   const coutryEharts = echarts.getInstanceByDom(countryBox);
+  //   if(coutryEharts && coutryEharts.resize) {
+  //     coutryEharts.resize();
+  //   }
+  // }
 
   onCountryChange = (param) => { // 切换国家
     const { countriesInfo } = this.state;
@@ -110,7 +126,7 @@ class CenterMap extends Component{
     });
   }
 
-  setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
+  setCountryMap = (mapStation = [], mapName) => { // 国家内各电站位置设定。
     let countryStation = [];
     if (mapName === 'China') {
       countryStation = mapStation.filter(e => e.timeZone === 8);
