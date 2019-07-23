@@ -24,7 +24,7 @@ class OutputPower extends Component{
     const preTime = this.props.outputPowerTime;
     if(outputPowerTime !== preTime ){ // 出力图数据刷新
       this.clocker && clearTimeout(this.clocker);
-      this.setMonthChart(outputPower);
+      this.setData(outputPower);
       this.clocker = setTimeout(this.refreshChart, 10 * 60 * 1000); // 十分钟后继续请求
     }
   }
@@ -33,16 +33,9 @@ class OutputPower extends Component{
     this.clocker && clearTimeout(this.clocker);
   }
 
-  setMonthChart = (outputPower) => {
-    const chartBox = document.getElementById('homeOutputChart');
-    const outputChart = echarts.init(chartBox);
-    const { mapStation, hasMultipleType } = this.props;
-    const { outputType } = this.state;
-    let isWind = false;
-    if(hasMultipleType){
-      outputType === 'wind' && (isWind = true);
-    }else{
-      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
+  setData = (outputPower) => {
+    if (!outputPower || outputPower.length === 0) {
+      return;
     }
     const xAxisArr = [], yPowerData = [], yResourceData = [];
     let hasData = false;
@@ -55,9 +48,21 @@ class OutputPower extends Component{
         hasData = true;
       }
     });
-    const graphic = hasData ? hiddenNoData : showNoData;
+    hasData && this.setMonthChart(xAxisArr, yPowerData, yResourceData, outputPower);
+  }
+
+  setMonthChart = (xAxisArr, yPowerData, yResourceData, outputPower) => {
+    const chartBox = document.getElementById('homeOutputChart');
+    const outputChart = echarts.init(chartBox);
+    const { mapStation, hasMultipleType } = this.props;
+    const { outputType } = this.state;
+    let isWind = false;
+    if(hasMultipleType){
+      outputType === 'wind' && (isWind = true);
+    }else{
+      isWind = mapStation && mapStation.some(e=>e.stationType === 0);
+    }
     const option = {
-        graphic,
         title: {
           show: false,
         },
@@ -209,7 +214,10 @@ class OutputPower extends Component{
         {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={outputType} onChange={this.changeOutputType} />
         </div>}
-        <div id="homeOutputChart" className={styles.outputChart}></div>
+        <div id="homeOutputChart" className={styles.outputChart}>
+          <img src="/img/no data_icon.png" />
+          <span className={styles.noneText}>暂无数据</span>
+        </div>
       </section>
     );
   }

@@ -10,7 +10,8 @@ export default class InefficientSeries extends Component{
   };
 
   render(){
-    const { inefficientList = [] } = this.props;
+    // const { inefficientList = [] } = this.props;
+    const inefficientList = [];
     const hasInefficient = inefficientList.length > 0 ? true : false;
     let maxInefficientNum;
     if (this.listRef) {

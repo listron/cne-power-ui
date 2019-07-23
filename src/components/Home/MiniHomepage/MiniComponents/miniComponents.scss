@@ -143,19 +143,7 @@
     //   background-color: #666;
     // }
     .noData{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    img{
-      display: flex;
-      flex: 1;
-      align-items: center;
-      width: 40px;
-    }
-    .noneText{
-      margin-bottom: 12px;
-      color: #00baff;
+      @include nodataBox();
     }
   }
   .eachInefficient, .inefficientText{
@@ -204,15 +192,14 @@
     line-height: 21px;
   }
   .monthChart{
-    flex: 1;
-    z-index: 99;
+    @include nodataBox();
     margin: 0 10px;
   }
 }
 
 .outputPower{ // 电站出力
   .outputChart{
-    flex: 1;
+    @include nodataBox();
   }
   .outputTool{
     @include chartTool();
