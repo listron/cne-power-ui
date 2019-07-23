@@ -71,7 +71,6 @@ class CenterMap extends Component{
     this.resizeClocker = setTimeout(() => {
       const coutryEharts = echarts.getInstanceByDom(countryBox);
       if(coutryEharts && coutryEharts.resize) {
-        console.log('resize触发。')
         this.forceUpdate();
         coutryEharts.resize();
       }
