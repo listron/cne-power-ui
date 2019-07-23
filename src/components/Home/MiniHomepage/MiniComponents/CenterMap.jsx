@@ -230,9 +230,8 @@ class CenterMap extends Component{
           layoutSize: countrySize,
           itemStyle: {
             normal: {
-              areaColor: '#1866a8',
-              borderColor: '#076399',
-              opacity: 0.5,
+              areaColor: 'rgba(113,154,201,0.12)',
+              borderColor: '#719ac9',
             },
           },
         },
