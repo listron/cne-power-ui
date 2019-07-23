@@ -8,26 +8,29 @@ import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
 // import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/WindStation/WindStation.jsx';
 import WindStation from '../../../../components/Monitor/StationMonitor/AllStation/NewWindStation/WindStation.jsx';
-import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
-// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
+// import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/PvStation/PvStation.jsx';
+import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 class AllStation extends Component {
   static propTypes = {
-    loading: PropTypes.bool,
-    allMonitorStation: PropTypes.object,
-    windMonitorStation: PropTypes.object,
-    pvMonitorStation: PropTypes.object,
-    stationTypes: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
     stopRealMonitorData: PropTypes.func,
     getRealMonitorData: PropTypes.func,
     stationTypeCount: PropTypes.string,
     stationType: PropTypes.string,
     stopRealCharstData: PropTypes.func,
+    changeMonitorstationStore: PropTypes.func,
+    stations: PropTypes.array,
+    regionName: PropTypes.string,
+    getPvRealData: PropTypes.func,
+    getPvChartsData: PropTypes.func,
   }
   constructor(props) {
     super(props);
+    this.state = {
+      showRegion: false,
+    }
   }
 
   componentWillUnmount() {
@@ -43,28 +46,73 @@ class AllStation extends Component {
     const { changeMonitorStationStore, stopRealMonitorData, getRealMonitorData } = this.props;
     changeMonitorStationStore({ stationShowType: 'stationBlock', stationType: activeKey });
     stopRealMonitorData();
-    // getRealMonitorData({ stationType: activeKey })
   }
 
+  showRegionSelect = () => {
+    this.setState({ showRegion: true })
+  }
+
+  hideRegionSelect = () => {
+    this.setState({ showRegion: false })
+  }
+
+  regionChange = (value) => {
+    let curName = '';
+    if (!value) {
+      curName = '全部区域';
+    } else {
+      curName = value;
+    }
+    this.props.changeMonitorStationStore({ regionName: curName })
+    this.setState({ showRegion: false });
+    this.props.stopRealMonitorData();
+    this.props.getPvRealData({ regionName: curName });
+    this.props.getPvChartsData({ regionName: curName })
+    this.props.getPvRealChartsData({ regionName: curName })
+  }
+
+
   render() {
-    const { stationTypeCount, stationType } = this.props;
+    const { stationTypeCount, stationType, stations, regionName } = this.props;
+    const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
+    const { showRegion } = this.state;
     return (
       <div className={styles.stationMonitor}>
         <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
-            <div className={styles.allStationTitle} >
+            <div className={styles.allStationTitle}>
               <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
               <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
               <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
             </div>
           }
+          {(stationType === '1' || stationTypeCount === 'pv') && <div className={styles.allArea} onClick={this.showRegionSelect}>
+            {regionName} <i className={'iconfont icon-content'}></i></div>}
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
           {stationTypeCount === 'wind' && <WindStation {...this.props} />}
           {stationTypeCount === 'pv' && <PvStation {...this.props} />}
           {stationTypeCount === 'none' && <div className={styles.noData}> </div>}
+          {
+            showRegion &&
+            <div className={styles.regionSelect}>
+              <div className={styles.regionSelectTop}>
+                {'全部区域'} <i className={'iconfont icon-content'}></i>
+              </div>
+              <div className={styles.regionSelectCont}>
+                <div onClick={() => { this.regionChange('') }} className={`${styles.normal} ${regionName === '全部区域' && styles.active}`}> {'全部区域'}</div>
+                {regionArr.map(e => {
+                  return (<div
+                    onClick={() => { this.regionChange(e) }}
+                    key={e}
+                    className={`${styles.normal} ${e === regionName && styles.active}`}> {e}</div>)
+                })}
+              </div>
+
+            </div>
+          }
         </div>
         <Footer />
       </div>
@@ -75,14 +123,15 @@ class AllStation extends Component {
 const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
-    realTimePowerUnit: state.common.get('realTimePowerUnit'),
-    realTimePowerPoint: state.common.get('realTimePowerPoint'),
-    realCapacityUnit: state.common.get('realCapacityUnit'),
-    realCapacityPoint: state.common.get('realCapacityPoint'),
-    powerUnit: state.common.get('powerUnit'),
-    powerPoint: state.common.get('powerPoint'),
-    stationTypeCount: state.common.get('stationTypeCount'), // 旧版本需要保留
-    monitorPvUnit:state.common.toJS().monitorPvUnit,
+    stations: state.common.get('stations').toJS(),
+    // realTimePowerUnit: state.common.get('realTimePowerUnit'), // 旧版本需要保留
+    // realTimePowerPoint: state.common.get('realTimePowerPoint'),
+    // realCapacityUnit: state.common.get('realCapacityUnit'),
+    // realCapacityPoint: state.common.get('realCapacityPoint'),
+    // powerUnit: state.common.get('powerUnit'),
+    // powerPoint: state.common.get('powerPoint'),
+    stationTypeCount: state.common.get('stationTypeCount'),
+    monitorPvUnit: state.common.toJS().monitorPvUnit,
   })
 }
 
@@ -95,6 +144,9 @@ const mapDispatchToProps = (dispatch) => ({
   stopRealCharstData: payload => dispatch({ type: allStationAction.stopRealCharstData, payload }),
   getRealMonitorPower: payload => dispatch({ type: allStationAction.getRealMonitorPower, payload }),
   getPvChartsData: payload => dispatch({ type: allStationAction.getPvChartsData, payload }),
+  getPvRealData: payload => dispatch({ type: allStationAction.getPvRealData, payload }),
+  getPvCapabilitydiagrams: payload => dispatch({ type: allStationAction.getPvCapabilitydiagrams, payload }),
+  getPvRealChartsData: payload => dispatch({ type: allStationAction.getPvRealChartsData, payload }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);

@@ -46,7 +46,7 @@ const operateFlowReducer = (state = initState, action) => {
     switch (action.type) {
         case operateFlowAction.changeFlowStore:
             return state.merge(Immutable.fromJS(action.payload));
-        case operateFlowAction.restStore:
+        case operateFlowAction.resetStore:
             return initState;
     }
     return state;

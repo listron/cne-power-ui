@@ -24,7 +24,7 @@ class DeviceManageSearch extends Component {
     changeDeviceManageStore: PropTypes.func,
     getDeviceFactors: PropTypes.func,
     manufactorId: PropTypes.string,
-    deviceFactorsList: PropTypes.array,
+    deviceFactorsData: PropTypes.object,
     stationDevices: PropTypes.array,
     factorsDeviceModeData: PropTypes.array
   };
@@ -113,7 +113,9 @@ class DeviceManageSearch extends Component {
       deviceTypeCode,
       deviceModeCode,
       stationCode,
-      deviceFactorsList,
+      deviceFactorsData: {
+        dataList,
+      },
       manufactorId,
       factorsDeviceModeData,
 
@@ -156,12 +158,12 @@ class DeviceManageSearch extends Component {
           onChange={this.selectfactory}
           value={manufactorId}
           placeholder="请选择设备厂家"
-          disabled={deviceFactorsList.length === 0}
+          disabled={dataList.length === 0}
         >
           <Option key={null} value={null}>
             {"全部厂家"}
           </Option>
-          {deviceFactorsList.map(e => {
+          {dataList.map(e => {
             if (!e) {
               return null;
             }

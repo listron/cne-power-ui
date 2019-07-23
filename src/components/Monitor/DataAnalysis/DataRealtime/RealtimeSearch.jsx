@@ -121,7 +121,7 @@ class RealtimeSearch extends Component {
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
-        devicePoints: [],
+        // devicePoints: [],
       },
       allHistory: {},
       partHistory: {},

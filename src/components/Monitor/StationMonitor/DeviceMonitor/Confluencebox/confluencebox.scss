@@ -1,5 +1,72 @@
 @import '../../../../../theme/theme.scss';
 
-.confluencebox{
-  
+.confluenceStatistics{
+  display: flex;
+  height: 100px;
+  border-top: solid 1px $promptColor;
+  border-bottom: solid 1px $promptColor;
+  justify-content: space-between;
+  .confluenceInfo{
+    display: flex;
+  }
+  .deviceIcon {
+    width: 170px;
+    text-align: center;
+    line-height: 100px;
+    :global {
+      .iconfont {
+        font-size: 24px;
+        color: $themeColor;
+      }
+    }
+  }
+  .line{
+    height: 48px;
+    width: 1px;
+    background-color: $promptColor;
+    margin-top: 30px;
+    margin-left: 12px;
+  }
+  .elecInfo, .statisticsInfo{
+    margin-top: 18px;
+  }
+  .eachRecord{
+    color: $darkColor;
+    line-height: 36px;
+    height: 36px;
+    .text{
+      display: inline-block;
+      width: 68px;
+      padding-left: 12px;
+    }
+    .unit{
+      margin-left: 4px;
+    }
+  }
+  .elecInfo .eachRecord .text{
+    width: 54px;
+  }
+  .seriesCurrent{
+    display: flex;
+    width: 400px;
+    flex-wrap: wrap;
+    &:before{ // 利用伪元素实现高度居中适配。
+      content: '';
+      width: 400px;
+      display: block;
+    }
+    .eachCurrent{
+      width: 40px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      background:#ceebe0;
+      border-radius:2px;
+      margin-right: 6px;
+      color: $themeColor;
+      &:nth-child(4n){
+        margin-right: 20px;
+      }
+    }
+  }
 }

@@ -15,30 +15,12 @@ class pvStationHeader extends React.Component {
   }
 
 
-
-  divideFormarts = (data, unit) => { // 除
-    if (isNaN(data) || (!data && data !== 0)) {
-      return '--';
-    }
-    if (unit === "万kWh") {
-      return data / 10000
-    }
-    return data
-  }
-
-  multiplyFormarts = (data, quantity) => { // 乘
-    if (isNaN(data) || (!data && data !== 0)) {
-      return '--';
-    }
-    return data * quantity
-  }
-
   render() {
     // 默认传过来的数据是 发电量是kW 装机容量 MW 实时功率 kW 小数根据数据计算
     const { pvMonitorStation, monitorPvUnit } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
-    const stationDataSummary = pvMonitorStation.stationDataSummary || {};
-    const stationPower = realTimePowerUnit === 'kW' ? stationDataSummary.stationPower : multiplyFormarts(stationDataSummary.stationPower, 1000);
+    const { stationDataSummary = {} } = pvMonitorStation
+    const stationPower = divideFormarts(stationDataSummary.stationPower, realTimePowerUnit);
     const stationCapacity = realCapacityUnit === 'MW' ? stationDataSummary.stationCapacity : multiplyFormarts(stationDataSummary.stationCapacity, 1000);
     const stationUnitCount = stationDataSummary.stationUnitCount;
     const instantaneous = stationDataSummary.instantaneous;
@@ -48,15 +30,15 @@ class pvStationHeader extends React.Component {
     const monthRate = stationDataSummary.monthRate;
     const equivalentHours = stationDataSummary.equivalentHours;
     const yearRate = stationDataSummary.yearRate;
-    const percent = (stationPower && stationCapacity) ? (stationPower / 1000) / stationCapacity * 100 : 0;
+    const percent = (stationDataSummary.stationPower && stationCapacity) ? (stationDataSummary.stationPower / multiplyFormarts(stationDataSummary.stationCapacity, 1000)) * 100 : 0;
     return (
       <div className={styles.headStation}>
         <div className={styles.leftIcon}></div>
         <div ref={'allStaionStatic'} className={styles.allStaionStatic}></div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span>{realCapacityUnit}</div>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>{realTimePowerUnit}</div>
+            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
+            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
           </div>
           <OwnProgress percent={percent} active={true} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
@@ -67,7 +49,7 @@ class pvStationHeader extends React.Component {
         </div>
         <div className={styles.dataColumn}>
           <div>日发电量  <span className={styles.dataValue}>{DeviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-          <div> 日等效时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
+          <div> 日利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
         </div>
         <div className={styles.dataColumn}>
           <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span> {powerUnit}  </div>

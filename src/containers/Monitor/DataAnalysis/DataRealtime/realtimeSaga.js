@@ -15,7 +15,7 @@ let realtimeListInterval = null;
 function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
   const { stationCode } = payload;
   const sortTypes = [ // 默认排序顺序
-    '风电机组', '集电线路', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '功率预测系统', '能量管理平台'
+    '风电机组', '集中式逆变器', '组串式逆变器','集电线路', '箱变', '汇流箱', '气象站', '站内母线', '主变', '站用变', '接地变', '测风塔', '全场信息汇总', '电能采集', '主进线', '功率预测系统', '能量管理平台', 'SVG', '母线分段', '馈线', '直流屏', '孤岛保护'
   ];
   try {
     const url = `${APIBasePath}${monitor.getAvailableDeviceType}/${stationCode}`;
@@ -33,7 +33,7 @@ function *getAvailableDeviceType({ payload = {} }) { // 获取可用设备类型
         }
         return (tmpIndexA - tmpIndexB);
       })
-      const defaultTypes = stationDeviceTypes.find(e => e.deviceTypeCode === 101); // 默认风电机组
+      const defaultTypes = stationDeviceTypes.find(e => e.deviceTypeCode); // 默认选第一个
       yield put({
         type: realtimeAction.GET_REALTIME_SUCCESS,
         payload: {
@@ -73,7 +73,7 @@ function *getPointInfo({ payload }) { // 获取可选测点
 }
 
 function *realChartInterval({ payload = {} }) { // 请求。=> (推送)处理数据及错误判断
-  const url = `${APIBasePath}${monitor.getRealtimeChart}` // '/mock/monitor/dataAnalysisChartRealtime';
+  const url = `${APIBasePath}${monitor.getRealtimeChart}`; // '/mock/monitor/dataAnalysisChartRealtime'
   const { chartRealtime, dataTime, timeInterval, chartTimeText } = yield select(state => state.monitor.dataRealtime.toJS());
   const maxInfoLength = 30 * 60 / timeInterval; // 规定的最大数据长度30min.
   try {

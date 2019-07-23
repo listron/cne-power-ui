@@ -4,258 +4,304 @@
 .boxtransformer,
 .weatherstation,
 .windDevice, .integrateLine, .boosterStation {
-    background-color: $promptColor;
-    .deviceContent {
-        background-color: #fff;
-        margin: 24px 24px 0;
-        .deviceMonitorHeader {
-            height: 65px;
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            .deviceName {
-                line-height: 65px;
-                .swap {
-                    font-size: 18px;
-                    margin-left: 32px;
-                    color: $themeColor;
-                    cursor: pointer;
-                }
-                .name {
-                    font-size: 18px;
-                    margin-left: 12px;
-                    color: $darkColor;
-                    cursor: pointer;
-                }
-                .weatherStationName {
-                    margin-left: 60px;
-                    font-size: 18px;
-                    color: $darkColor;
-                }
-                .status {
-                    font-size: 14px;
-                    margin-left: 24px;
-                    color: $darkColor;
-                    :global {
-                        .statusIcon {
-                            color: $darkColor;
-                            font-size: 18px;
-                            vertical-align: middle;
-                            margin-right: 4px;
-                            margin-left: 4px;
-                        }
-                        .alarm {
-                            color: #a42b2c
-                        }
-                    }
-                    >p {
-                        display: inline-block;
-                    }
-                }
-                .dispersionRatio {
-                    font-size: 14px;
-                    margin-left: 12px;
-                    color: $darkColor;
-                }
-            }
-            .linkTo {
-                margin-right: 36px;
-                line-height: 65px;
-                .eachLink {
-                    line-height: 65px;
-                    margin-right: 40px;
-                    .linkName {
-                        color: $themeColor;
-                    }
-                    :global {
-                        .linkIcon {
-                            color: $promptColor;
-                            font-size: 18px;
-                            vertical-align: middle;
-                            margin: 0 4px;
-                        }
-                        .icon-upstream,
-                        .icon-downstream {
-                            color: #ceebe0;
-                        }
-                    }
-                }
-            }
+  background-color: $promptColor;
+  .deviceContent {
+    background-color: #fff;
+    margin: 24px 24px 0;
+    .deviceMonitorHeader { // 顶部
+      height: 65px;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      .deviceName {
+        line-height: 65px;
+        .swap {
+          font-size: 18px;
+          margin-left: 32px;
+          color: $themeColor;
+          cursor: pointer;
         }
-        .statisticsBox {
-            display: flex;
-            height: 100px;
-            border-top: solid 1px $promptColor;
-            border-bottom: solid 1px $promptColor;
-            .deviceIcon {
-                width: 170px;
-                text-align: center;
-                line-height: 100px;
-                :global {
-                    .iconfont {
-                        font-size: 24px;
-                        color: $themeColor;
-                    }
-                }
-            }
-            .timerGen,
-            .timerDayGen,
-            .weatherEachData {
-                width: 135px;
-                margin-left: 16px;
-                margin-top: 24px;
-                display: flex;
-                flex-direction: column;
-                .genNum {
-                    font-size: 24px;
-                    height: 24px;
-                    line-height: 24px;
-                    color: $themeColor;
-                    margin-bottom: 8px;
-                }
-                .empty {
-                    height: 10px;
-                }
-                .genText {
-                    color: $darkColor;
-                }
-            }
-            .timerDayGen,
-            .weatherEachData {
-                width: 105px;
-                margin-left: 24px;
-            }
+        .name {
+          font-size: 18px;
+          margin-left: 12px;
+          color: $darkColor;
+          cursor: pointer;
         }
-        .points{
-            display: flex;
-            border-top: 1px solid $promptColor;
+        .weatherStationName {
+          margin-left: 60px;
+          font-size: 18px;
+          color: $darkColor;
         }
+        .status {
+          font-size: 14px;
+          margin-left: 24px;
+          color: $darkColor;
+          :global {
+            .statusIcon {
+              color: $darkColor;
+              font-size: 18px;
+              vertical-align: middle;
+              margin-right: 4px;
+              margin-left: 4px;
+            }
+            .alarm {
+              color: #a42b2c
+            }
+          }
+          >p {
+            display: inline-block;
+          }
+        }
+        .dispersionRatio, .manufactor, .deviceModelName {
+          font-size: 14px;
+          margin-left: 12px;
+          color: $darkColor;
+        }
+        .manufactor, .deviceModelName{
+          margin-left: 40px;
+        }
+      }
+      .linkTo {
+        line-height: 65px;
+        text-align: right;
+        .eachLink {
+          line-height: 65px;
+          margin-right: 28px;
+          cursor: pointer;
+          .linkName {
+            color: $themeColor;
+          }
+          :global {
+            .linkIcon {
+              color: $promptColor;
+              font-size: 18px;
+              vertical-align: middle;
+              margin: 0 4px;
+            }
+            .icon-upstream,
+            .icon-downstream {
+              color: #ceebe0;
+            }
+          }
+        }
+        .backIcon{
+          border-left: 1px solid #dfdfdf;
+          width: 60px;
+          line-height: 65px;
+          text-align: center;
+          color: #666;
+          cursor: pointer;
+          font-size: 18px;
+          display: inline-block;
+        }
+      }
     }
+    .statisticsBox { // 设备信息统计区
+      display: flex;
+      height: 100px;
+      border-top: solid 1px $promptColor;
+      border-bottom: solid 1px $promptColor;
+      .deviceIcon {
+        width: 170px;
+        text-align: center;
+        line-height: 100px;
+        :global {
+          .iconfont {
+            font-size: 24px;
+            color: $themeColor;
+          }
+        }
+      }
+      .timerGen,
+      .timerDayGen,
+      .weatherEachData {
+        width: 135px;
+        margin-left: 16px;
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        .genNum {
+          font-size: 24px;
+          height: 24px;
+          line-height: 24px;
+          color: $themeColor;
+          margin-bottom: 8px;
+        }
+        .empty {
+          height: 10px;
+        }
+        .genText {
+          color: $darkColor;
+        }
+      }
+      .timerDayGen,
+      .weatherEachData {
+          width: 105px;
+          margin-left: 24px;
+      }
+    }
+    .subTitleConfig{
+      padding-left: 48px;
+    }
+    .points{
+      display: flex;
+      border-top: 1px solid $promptColor;
+    }
+  }
+}
+
+.seriesinverter .inverterChartTitle{
+  height: 0px;
+  position: relative;
+  z-index: 999;
+  top: 12px;
+  left: 56px;
+  .single{
+    font-weight: 700;
+  }
+  .tabs{
+    border-radius: 4px;
+    .inactive, .active{
+      padding: 2px 6px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .inactive{
+      color: #666;
+      border:1px solid #dfdfdf;
+    }
+    .active{
+      color: #fff;
+      border:1px solid $themeColor;
+      background-color: $themeColor;
+    }
+  }
 }
 
 .integrateLine, .boosterStation{
-    display: flex;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  .deviceContent{
     flex: 1;
-    flex-direction: column;
-    .deviceContent{
-        flex: 1;
-    }
+  }
 }
 
 .weatherstation {
-    flex: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  .statisticsBox {
+    border-bottom: none;
+  }
+  .deviceContent {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    .statisticsBox {
-        border-bottom: none;
-    }
-    .deviceContent {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-    }
+  }
 }
 
 .boosterStation{ // 升压站单独样式
-    .deviceList{
-        background-color: #f8f8f8;
-        display: flex;
-        height: 40px;
-        align-items: center;
-        .eachDevice{
-            cursor: pointer;
-            line-height: 40px;
-            color: $darkColor;
-            text-align: center;
-            margin: 0 28px;
-        }
+  .deviceList{
+    background-color: #f8f8f8;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    border-top: 1px solid $promptColor;
+    .eachDevice{
+      cursor: pointer;
+      line-height: 40px;
+      color: $darkColor;
+      text-align: center;
+      margin: 0 28px;
     }
+  }
 }
 
 .windDevice {
-    .windChart {
-        display: flex;
-        flex-direction: row;
-        height: 323px;
-        >div {
-            flex: 1;
-            border-right: 1px solid #dfdfdf;
-        }
+  .windChart {
+    display: flex;
+    flex-direction: row;
+    height: 323px;
+    >div {
+      flex: 1;
+      border-right: 1px solid #dfdfdf;
     }
-    .deviceContent {
-        .statisticsBox {
-            .deviceIcon {
-                width: 170px;
-                text-align: center;
-                line-height: 30px;
-                span {
-                    margin-top: 20px;
-                    display: inline-block;
-                }
-                :global {
-                    .iconfont {
-                        font-size: 31px;
-                        color: $themeColor;
-                    }
-                }
-                .deviceCode {
-                    display: block;
-                    color: $themeColor;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-            }
+  }
+  .deviceContent {
+    .statisticsBox {
+      .deviceIcon {
+        width: 170px;
+        text-align: center;
+        line-height: 30px;
+        span {
+          margin-top: 20px;
+          display: inline-block;
         }
+        :global {
+          .iconfont {
+            font-size: 31px;
+            color: $themeColor;
+          }
+        }
+        .deviceCode {
+          display: block;
+          color: $themeColor;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
     }
-    .pointData {
-        background-color: #f8f8f8;
-        padding: 20px 60px 80px 60px;
-        .pointTitle {
+  }
+  .pointData {
+    background-color: #f8f8f8;
+    padding: 20px 60px 80px 60px;
+    .pointTitle {
+      color: $darkColor;
+      margin-left: 20px;
+    }
+    .pointDataList {
+      display: flex;
+      flex-wrap: wrap;
+      .eachGroup {
+        min-width: 20%;
+        max-width: 20%;
+        padding-left: 20px;
+        margin: 16px 0;
+        border-right: dotted 1px $promptColor;
+        position: relative;
+        padding-top: 24px;
+        .groupName {
+          color: $darkColor;
+          background: #f0f0f0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: calc(100% - 20px);
+          margin-left: 20px;
+        }
+        .eachData {
+          margin-bottom: 4px;
+          .pointName {
             color: $darkColor;
-            margin-left: 20px;
+            margin-bottom: 0;
+          }
+          .pointValue {
+            color: #199475;
+            margin-bottom: 0;
+            word-wrap: break-word;
+            padding-right: 20px;
+          }
+          &:hover{
+            background: rgba(206, 235, 224, 0.3); 
+          }
         }
-        .pointDataList {
-            display: flex;
-            flex-wrap: wrap;
-            .eachGroup {
-                min-width: 20%;
-                max-width: 20%;
-                padding-left: 20px;
-                margin: 16px 0;
-                border-right: dotted 1px $promptColor;
-                position: relative;
-                padding-top: 24px;
-                .groupName {
-                    color: $darkColor;
-                    background: #f0f0f0;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: calc(100% - 20px);
-                    margin-left: 20px;
-                }
-                .eachData {
-                    margin-bottom: 4px;
-                    .pointName {
-                        color: $darkColor;
-                        margin-bottom: 0;
-                    }
-                    .pointValue {
-                        color: #199475;
-                        margin-bottom: 0;
-                        word-wrap: break-word;
-                        padding-right: 20px;
-                    }
-                    &:hover{
-                       background: rgba(206, 235, 224, 0.3); 
-                    }
-                }
-            }
-            .eachGroup:last-child {
-                border-right: none;
-            }
-        }
+      }
+      .eachGroup:last-child {
+        border-right: none;
+      }
     }
+  }
 }
 

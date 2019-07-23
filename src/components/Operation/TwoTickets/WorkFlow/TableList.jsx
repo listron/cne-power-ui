@@ -88,14 +88,14 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
-            const nodeCode = [...new Set(record.map(e => e.nodeCode))];
+            const ableNodes = [...new Set(record.map(e => e.ableNodes))];
             if (stateCode.length > 1 || !right) {
                 review = false; complete = false;
             } else {
                 if (stateCode[0] === '101') { review = true; complete = false; }
                 if (stateCode[0] === '103') { review = false; complete = true; }
             }
-            if (nodeCode.length > 1 || nodeCode[0] !== rightNodeCode[0]) { // 作废的权限
+            if (ableNodes.length > 1 || ableNodes[0] !== rightNodeCode[0]) { // 作废的权限
                 obsolete = false;
             }
             this.setState({ review, complete, obsolete });
@@ -131,7 +131,7 @@ class TableList extends Component {
 
     resetStatus = () => {
         this.setState({
-            showWarningTip: false, batchVisible: false, selectedRows: [],
+            showWarningTip: false, batchVisible: false, selectedRows: [], operatType: '',
             review: false, complete: false, obsolete: false,
         });
     }
@@ -326,12 +326,14 @@ class TableList extends Component {
                         <div className={`${styles.commonButton} ${!complete && styles.disabled}`}
                             onClick={() => { this.handleBatch('complete'); }}>消票</div>
                         {stopRight.map((e) => {
-                            return (
-                                <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
-                                    onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
-                                    {e.nodeName}
-                                </div>
-                            );
+                            if (e.nodeName) {
+                                return (
+                                    <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
+                                        onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
+                                        {e.nodeName}
+                                    </div>
+                                );
+                            }
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}

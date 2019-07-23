@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import echarts from 'echarts';
 import { Tabs, DatePicker } from 'antd';
+// import styles from '../../CleanWarning/cleanStyle.scss';
 import styles from './cleanoutRecordDetail.scss';
 import { dataFormat } from '../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
@@ -157,8 +158,8 @@ class DustEffectCharts extends Component {
     dustEffectInfo: PropTypes.object,
     totalEffects: PropTypes.array,
     matrixEffects: PropTypes.array,
-    getMatrixDust: PropTypes.func,
     getStationDust: PropTypes.func,
+    getMatrixDust: PropTypes.func,
   }
 
   constructor(props) {

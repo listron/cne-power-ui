@@ -14,7 +14,7 @@ const historyAction = {
 }
 
 const initState = Immutable.fromJS({
-  selectStationType: null, // 选中的电站类型
+  selectStationType: 0, // 选中的电站类型
   deviceTypeCode: null, // 选中的设备类型
   tableLoading: false, // 列表请求的loading
   chartLoading: false, // chart图表的loading
@@ -44,6 +44,7 @@ const initState = Immutable.fromJS({
   pointInfo: [], // 选中设备内可选测点信息。
   allHistory: {}, // chart图 - 所有历史数据
   partHistory: {}, // 表格内 - 分页后的历史数据
+  logPoint: null, // 请求时暂存的测点数据
 });
 
 const dataHistory = (state = initState, action) => {

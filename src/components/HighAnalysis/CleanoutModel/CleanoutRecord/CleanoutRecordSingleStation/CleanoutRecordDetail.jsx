@@ -173,22 +173,6 @@ class CleanoutRecordDetail extends Component {
                 style={{ height: 410 }}
               >
                 <DustCharts {...this.props} />
-                {/*<div className={styles.dirtBox}>
-              <Button type="primary" disabled className={styles.buttonStyle} >最近30天</Button>
-              <Tabs defaultActiveKey="1" onChange={this.tabsChange} animated={false} >
-                <TabPane tab="全局灰尘影响(基于系统故障)" key="1">
-                  <div className={styles.boxSize}>
-                    <SingleChart data={stationDustData} keyWord="total" id="cleanWarningTotalEffect" />
-                  </div>
-                </TabPane>
-                <TabPane tab="方阵灰尘影响(基于系统故障)" key="2">
-                  <div className={styles.boxSize}>
-                    <SingleChart data={matrixDustData} keyWord="matrix" id="cleanWarningMatrixEffect" />
-                  </div>
-                </TabPane>
-              </Tabs>
-            </div> */}
-
               </Modal> : ''}
             </div>
             <div className={styles.statisticData}>
