@@ -143,19 +143,7 @@
     //   background-color: #666;
     // }
     .noData{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    img{
-      display: flex;
-      flex: 1;
-      align-items: center;
-      width: 40px;
-    }
-    .noneText{
-      margin-bottom: 12px;
-      color: #00baff;
+      @include nodataBox();
     }
   }
   .eachInefficient, .inefficientText{
@@ -204,15 +192,14 @@
     line-height: 21px;
   }
   .monthChart{
-    flex: 1;
-    z-index: 99;
+    @include nodataBox();
     margin: 0 10px;
   }
 }
 
 .outputPower{ // 电站出力
   .outputChart{
-    flex: 1;
+    @include nodataBox();
   }
   .outputTool{
     @include chartTool();
@@ -260,10 +247,10 @@
     color: #fff;
   }
   .ticketDone .circle{
-    background: url('/img/round02_img.png') no-repeat center center;
+    background: url('/img/round01_img.png') no-repeat center center;
   }
   .ticketDoing .circle{
-    background: url('/img/round01_img.png') no-repeat center center;
+    background: url('/img/round02_img.png') no-repeat center center;
   }
 }
 
@@ -292,7 +279,7 @@
       }
     }
     .statusTotal{
-      flex-basis: 40%;
+      flex: 1 0 40%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -316,6 +303,7 @@
       }
     }
     .statusChart{
+      @include nodataBox();
       flex-basis: 55%;
     }
   }

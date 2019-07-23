@@ -25,7 +25,6 @@ class Homepage extends Component {
     const { miniHomepageIds } = data || {};
     const enterpriseId = Cookie.get('enterpriseId');
     const homepageType = miniHomepageIds.includes(enterpriseId) ? 'mini' : 'full';
-    // const homepageType = 'mini';
     this.setState({ homepageType });
   }
 
