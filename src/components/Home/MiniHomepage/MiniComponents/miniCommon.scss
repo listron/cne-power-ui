@@ -1,0 +1,74 @@
+
+
+@mixin typeTags(){
+  position: absolute;
+  z-index: 99;
+  right: 0;
+  top: 0;
+};
+
+@mixin boxStyle(){
+  background:rgba(83,104,241,0.15);
+  border:1px solid rgba(83,104,241,0.60);
+  box-shadow:inset 0 0 5px 2px rgba(83,104,241,0.60);
+  border-radius:4px;
+  display: flex;
+  flex-direction: column;
+};
+
+@mixin titles {
+  text-align: center;
+  font-family:PingFangSC-Regular;
+  font-size: 20px;
+  color:#a6e8ff;
+  background-image:-webkit-linear-gradient(-90deg, #38FCF5 17%, #009CFF 83%);
+  background-clip: text; 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+@mixin chartTool{ // chart图内文字及样式。
+  color:#a6e8ff;
+  font-family:PingFangSC-Regular;
+  font-size: 14px;
+  border-radius: 2px;
+}
+
+@mixin nodataBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img{
+    align-items: center;
+    width: 40px;
+  }
+  .noneText{
+    margin-bottom: 12px;
+    color: #00baff;
+  }
+}
+
+.stationTypeTag{ // 全部,风,光切换样式。
+  display: flex;
+  .text{
+    color: #fff;
+    margin-right: 8px;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

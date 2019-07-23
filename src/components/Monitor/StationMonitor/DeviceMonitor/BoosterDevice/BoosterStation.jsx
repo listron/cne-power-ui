@@ -62,25 +62,25 @@ class BoosterStation extends Component {
   render(){
     const { stations, devices, deviceDetail, deviceAlarmList, subDeviceList } = this.props;
     const { activeIndex } = this.state;
-    let boosterDetail = deviceDetail[activeIndex] || {};
+    const boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
     const { stationCode, deviceTypeCode } = this.props.match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const { stationName, stationType } = currentStation;
-    const backData = {path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const backData = {path: `/monitor/singleStation/${stationCode}`, name: '返回电站'};
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
         name: stationName || '--',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
+      }, {
         name: '升压站',
       }],
       iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
     return (
       <div className={styles.boosterStation}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
+        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor: '#fff' }} backData={{...backData}} />
         <div className={styles.deviceContent}>
           <BoosterHeader
             deviceDetail={boosterDetail}
@@ -115,7 +115,7 @@ class BoosterStation extends Component {
           <SubIntegrate subDeviceList={subDeviceList} deviceDetail={deviceDetail} stationCode={stationCode} />
         </div>
       </div>
-    ) 
+    );
   }
 }
 

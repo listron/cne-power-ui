@@ -1,7 +1,7 @@
 import React from 'react';
 import { Progress } from 'antd';
 import styles from './homeParts.scss';
-import { dataFormat } from '../../../utils/utilFunc';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 export const CompleteRate = ({ mapStation = [], completeRate = 0 }) => { // 计划完成
   const hasPv = mapStation.some(e => e.stationType === 1);

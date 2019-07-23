@@ -24,12 +24,12 @@ export const YcPoints = ({ ycData = [] }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 YcPoints.propTypes = {
   ycData: PropTypes.array,
-}
+};
 
 export const YxPoints = ({ yxData = [] }) => {
   const valueColor = value => {
@@ -37,10 +37,9 @@ export const YxPoints = ({ yxData = [] }) => {
       return { backgroundColor: '#7ed321' };
     } else if (value === '0') {
       return { backgroundColor: '#d0021b' };
-    } else {
-      return { backgroundColor: '#dfdfdf' };
     }
-  }
+    return { backgroundColor: '#dfdfdf' };
+  };
   return (
     <section className={styles.yxInfo}>
       <h3>遥信量(YX)</h3>
@@ -56,24 +55,24 @@ export const YxPoints = ({ yxData = [] }) => {
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 YxPoints.propTypes = {
   yxData: PropTypes.array,
-}
+};
 
 export const YmPoints = ({ data = [], name = 'YM' }) => { //  遥脉测点或ycs展示。
   const groupMax = 10;
-  let groupedData = [];
+  const groupedData = [];
   data.forEach((e, i) => {
-    let groupIndex = parseInt(i / groupMax);
+    const groupIndex = parseInt(i / groupMax, 10);
     if(!groupedData[groupIndex]){
       groupedData[groupIndex] = [e];
     }else{
       groupedData[groupIndex].push(e);
     }
-  })
+  });
   return (
     data.length > 0 ? <section className={styles.ymInfo}>
       <h3>{name}</h3>
@@ -90,10 +89,10 @@ export const YmPoints = ({ data = [], name = 'YM' }) => { //  遥脉测点或ycs
         ))}
       </div>
     </section>: null
-  )
-}
+  );
+};
 
 YmPoints.propTypes = {
   data: PropTypes.array,
   name: PropTypes.string,
-}
+};
