@@ -23,9 +23,9 @@ class CenterMap extends Component{
     mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
   };
 
-  // componentDidMount(){
-  //   window.addEventListener('resize', this.onCountryChartResize);
-  // }
+  componentDidMount(){
+    window.addEventListener('resize', this.onCountryChartResize);
+  }
 
   componentWillReceiveProps(nextProps){
     const { mapStation } = nextProps;
@@ -57,19 +57,26 @@ class CenterMap extends Component{
 
   componentWillUnmount(){
     this.clocker && clearTimeout(this.clocker);
-    // window.removeEventListener('resize', this.onCountryChartResize);
+    window.removeEventListener('resize', this.onCountryChartResize);
   }
 
-  // onCountryChartResize = () => {
-  //   const countryBox = document.getElementById('homeCountryMap');
-  //   if (!countryBox){
-  //     return;
-  //   }
-  //   const coutryEharts = echarts.getInstanceByDom(countryBox);
-  //   if(coutryEharts && coutryEharts.resize) {
-  //     coutryEharts.resize();
-  //   }
-  // }
+  onCountryChartResize = () => {
+    const countryBox = document.getElementById('homeCountryMap');
+    if (!countryBox){
+      return;
+    }
+    if (this.resizeClocker) {
+      clearTimeout(this.resizeClocker);
+    }
+    this.resizeClocker = setTimeout(() => {
+      const coutryEharts = echarts.getInstanceByDom(countryBox);
+      if(coutryEharts && coutryEharts.resize) {
+        console.log('resize触发。')
+        this.forceUpdate();
+        coutryEharts.resize();
+      }
+    }, 500);
+  }
 
   onCountryChange = (param) => { // 切换国家
     const { countriesInfo } = this.state;
@@ -252,6 +259,8 @@ class CenterMap extends Component{
       message.error('加载国家地图失败，请重试');
     });
   }
+
+  resizeClocker = null;
 
   render(){
     const { mapStation, singleStation, realTimeInfo } = this.props;
