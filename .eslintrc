@@ -79,6 +79,7 @@
       "allowArrowFunctions": true,
       "allowBind": false
     }],
+    "react/no-unused-state": 1,
     "react/no-danger": 1,
     "react/no-did-mount-set-state": 1,
     "react/no-did-update-set-state": 1,

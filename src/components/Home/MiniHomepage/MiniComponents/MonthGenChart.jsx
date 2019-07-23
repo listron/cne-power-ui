@@ -3,7 +3,6 @@ import StationTypeTag from './StationTypeTag';
 import styles from './miniComponents.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 class MonthGenChart extends Component{
@@ -23,12 +22,13 @@ class MonthGenChart extends Component{
 
   componentWillReceiveProps(nextProps){
     const { monthPower } = nextProps;
-    this.setMonthChart(monthPower);
+    this.setData(monthPower);
   }
 
-  setMonthChart = (monthPower) => {
-    const chartBox = document.getElementById('homeMonthElec');
-    const monthChart = echarts.init(chartBox);
+  setData = (monthPower) => {
+    if (!monthPower || monthPower.length === 0) {
+      return;
+    }
     const xAxisArr = [], yGenData = [], yRateData = [];
     let hasData = false;
     monthPower.forEach(e=>{
@@ -39,8 +39,13 @@ class MonthGenChart extends Component{
         hasData = true;
       }
     });
+    hasData && this.setMonthChart(xAxisArr, yGenData, yRateData, monthPower);
+  }
+
+  setMonthChart = (xAxisArr, yGenData, yRateData, monthPower) => {
+    const chartBox = document.getElementById('homeMonthElec');
+    const monthChart = echarts.init(chartBox);
     const option = {
-      graphic: hasData ? hiddenNoData : showNoData,
       title: {
         show: false,
       },
@@ -188,7 +193,10 @@ class MonthGenChart extends Component{
         {hasMultipleType && <div className={styles.checkTags}>
           <StationTypeTag showTotal={false} activeType={monthType} onChange={this.changeMonthType} />
         </div>}
-        <div id="homeMonthElec" className={styles.monthChart} ></div>
+        <div id="homeMonthElec" className={styles.monthChart} >
+          <img src="/img/no data_icon.png" />
+          <span className={styles.noneText}>暂无数据</span>
+        </div>
       </section>
     );
   }
