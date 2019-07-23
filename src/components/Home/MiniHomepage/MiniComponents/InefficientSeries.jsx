@@ -41,6 +41,6 @@ export default class InefficientSeries extends Component{
           </div>
         </div>
       </section>
-    )
+    );
   }
 }

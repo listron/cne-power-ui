@@ -3,7 +3,6 @@ import StationTypeTag from './StationTypeTag';
 import styles from './miniComponents.scss';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 import { dataFormat } from '../../../../utils/utilFunc';
 
 class MonthGenChart extends Component{
