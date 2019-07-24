@@ -77,7 +77,6 @@ class AllStation extends Component {
     const { stationTypeCount, stationType, stations, regionName, theme } = this.props;
     const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
     const { showRegion } = this.state;
-    console.log('theme', this.props.theme);
     return (
       <div className={`${styles.stationMonitor} ${theme === 'dark' ? styles.dark : styles.light}`}>
         <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px' }} />
