@@ -1,15 +1,6 @@
 //专门针对antd样式的部分重置：(table)
-
-$darkColor: #00baff;
-$themeColor: #00baff;
-$background: #0c0a3e;
-$light-background: rgba(83, 104, 241, 0.15);
-$border-color: rgba(83, 104, 241, 0.6);
-$font-color: #00baff;
-$button-color-base: #00baff;
-$font-color-invert: #fff;
-$button-color-darker: #205bac;
-$themeColor: #00baff;
+@import "./theme.scss";
+@import "./darkTheme.scss";
 
 :global {
   .ant-table {
@@ -105,12 +96,7 @@ $themeColor: #00baff;
     background-color: $light-background;
     border: 1px solid $border-color;
   }
-  .ant-select:not(.ant-select-disabled)
-    .ant-select-selection
-    .ant-select-selection__rendered
-    .ant-select-selection__placeholder {
-    color: $font-color;
-  }
+
   .ant-select-dropdown-menu-item:hover {
     background-color: #ceebe0;
   }
@@ -118,7 +104,7 @@ $themeColor: #00baff;
     .ant-select-selection {
       .ant-select-selection__rendered {
         .ant-select-selection__placeholder {
-          color: $promptColor;
+          color: $font-color;
         }
       }
       .ant-select-arrow {
@@ -146,7 +132,8 @@ $themeColor: #00baff;
     color: $font-color;
   }
 
-  .ant-select-dropdown-menu-item-selected {
+  .ant-select-dropdown-menu-item-selected,
+  .ant-select-dropdown-menu-item-active {
     background: $themeColor;
     color: $font-color-invert;
   }
@@ -308,14 +295,10 @@ $themeColor: #00baff;
   .ant-btn-dashed::selection {
     color: $darkColor;
   }
-  /*select下拉框背景色*/
-  .ant-select-dropdown-menu-item-active {
-    background-color: #f8f8f8;
-  }
 
   // 加载的spin
   .ant-spin-dot i {
-    background-color: #199475;
+    background-color: $themeColor;
   }
 
   // antd提示语message图标颜色
@@ -332,5 +315,12 @@ $themeColor: #00baff;
         }
       }
     }
+  }
+
+  // ant-radio-button
+  .ant-radio-button-wrapper {
+    background: $button-color-darker;
+    color: $themeColor;
+    border: 1px solid $themeColor;
   }
 }

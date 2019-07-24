@@ -51,19 +51,18 @@
       position: absolute;
       top: 24px;
       right: 24px;
-      line-height: 40px;
+      line-height: 30px;
       cursor: pointer;
       z-index: 19;
+      display: flex;
+      justify-content: space-between;
       i {
-        color: $themeColor;
+        // color: $themeColor;
         font-size: 14px;
         transform: rotate(90deg);
       }
     }
     .regionSelect {
-      background: #ffffff;
-      border: 1px solid #dfdfdf;
-      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
       width: 130px;
       position: absolute;
       top: 24px;
@@ -72,21 +71,16 @@
       height: calc(100vh - 123px);
       z-index: 20;
       .regionSelectTop {
-        color: $themeColor;
         text-align: center;
         line-height: 45px;
       }
       .regionSelectCont {
         text-align: right;
         .active {
-          background: #ceebe0;
         }
         .normal {
           padding: 0 36px;
           cursor: pointer;
-          &:hover {
-            color: $themeColor;
-          }
         }
       }
     }
@@ -99,14 +93,14 @@
   }
   .allStationTitle {
     background: #f8f8f8;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid $borderColor;
     p {
-      border-right: 1px solid #dfdfdf;
-      color: #999999;
+      border-right: 1px solid $borderColor;
+      color: $lightColor;
     }
     .activeStation {
-      background: #fff;
-      color: #000000;
+      background: $pageGround;
+      color: $darkColor;
       &::before {
         background: $themeColor;
       }
@@ -119,15 +113,15 @@
     }
   }
   .regionSelect {
-    background: #ffffff;
-    border: 1px solid #dfdfdf;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    background: $pageGround;
+    border: 1px solid $borderColor;
+    box-shadow: 0 0 4px 0 $box-shadow-color;
     .regionSelectTop {
       color: $themeColor;
     }
     .regionSelectCont {
       .active {
-        background: #ceebe0;
+        background: $slideSelectColor;
       }
       .normal {
         &:hover {
@@ -138,28 +132,26 @@
   }
 }
 
-$backgroundColor: #0c0a3e;
 .dark {
+  @import "../../../../theme//darkTheme.scss";
+  $backgroundColor: #0c0a3e;
   background: $backgroundColor;
   .stationContainer {
     background: $backgroundColor;
-    .noData {
-      background: $backgroundColor;
-    }
     .allStationTitle {
       background: $backgroundColor;
       border: none;
       p {
         border: 1px solid #202470;
-        margin-right: 4px;
         color: #7088c3;
         background: #13134f;
+        margin-right: 4px;
         border-radius: 8px 8px 0 0;
       }
       .activeStation {
         background: rgba(83, 104, 241, 0.15);
-        color: #fff;
         border: 1px solid rgba(83, 104, 241, 0.6);
+        color: $font-color-invert;
         &::before {
           display: none;
         }
@@ -168,36 +160,29 @@ $backgroundColor: #0c0a3e;
   }
 
   .allArea {
+    color: $font-color-invert;
+    background: $button-color-darker;
+    border-radius: 15px;
+    width: 94px;
+    height: 30px;
     i {
-      color: $themeColor;
-      font-size: 14px;
-      transform: rotate(90deg);
+      color: $font-color-invert;
     }
   }
   .regionSelect {
-    background: #ffffff;
-    border: 1px solid #dfdfdf;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
-    width: 130px;
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    line-height: 24px;
-    height: calc(100vh - 123px);
-    z-index: 20;
+    background: $promptColor;
+    border: 1px solid $border-color;
+    box-shadow: inset 0 0 5px 2px $border-shadow-color;
     .regionSelectTop {
-      color: $themeColor;
-      text-align: center;
-      line-height: 45px;
+      color: $font-color-invert;
     }
     .regionSelectCont {
-      text-align: right;
+      color: $font-color-invert;
       .active {
-        background: #ceebe0;
+        color: $themeColor;
+        background: $font-color-hover;
       }
       .normal {
-        padding: 0 36px;
-        cursor: pointer;
         &:hover {
           color: $themeColor;
         }

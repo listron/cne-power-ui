@@ -8,42 +8,15 @@
 .headStation {
   height: 108px;
   display: flex;
-  color: $darkColor;
   flex-direction: row;
   padding: 20px;
   .leftIcon {
     width: 31px;
     height: 60px;
     line-height: 60px;
-    font-size: 31px;
-  }
-  .allStaionStatic {
     :global {
-      .ant-popover-inner-content {
-        background: #f8f8f8;
-        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
-      }
-    }
-    .poverItem {
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
-      min-width: 180px;
-      padding-right: 20px;
-      i {
-        font-style: normal;
-        text-align: right;
-        display: inline-block;
-      }
-      p {
-        text-align: right;
-        margin-bottom: 0;
-      }
-      .unit {
-        width: 27px;
-        display: inline-block;
-        margin-left: 4px;
-        text-align: left;
+      .iconfont {
+        font-size: 20px;
       }
     }
   }
@@ -218,7 +191,6 @@
       .chart {
         height: 176px;
         display: flex;
-        // background: pink;
       }
       .bottom {
         display: flex;
@@ -296,9 +268,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    &:hover {
-      color: $themeColor;
-    }
   }
 
   .stationrovince {
@@ -352,7 +321,7 @@
       color: #fff;
       width: 14px;
       line-height: 20px;
-      z-index: 66;
+      z-index: 19;
     }
     .show {
       transform: translate(-180deg);

@@ -63,9 +63,6 @@ class MonthPlanPower extends Component {
             legend: {
                 left: 'center',
                 top: 35,
-                textStyle: {
-                    color: fontColor,
-                },
                 itemWidth: 10,
                 itemHeight: 5,
             },
@@ -77,9 +74,7 @@ class MonthPlanPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                backgroundColor: '#fff',
                 textStyle: {
-                    color: fontColor,
                     fontSize: 12,
                 },
                 extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
@@ -108,13 +103,7 @@ class MonthPlanPower extends Component {
                     type: 'category',
                     boundaryGap: false,
                     data: monthPlanPowerData && monthPlanPowerData.map(e => e.date),
-                    axisLine: {
-                        lineStyle: {
-                            color: '#dfdfdf',
-                        },
-                    },
                     axisLabel: {
-                        color: fontColor,
                         interval: 0,
                         formatter: (value) => {
                             return moment(value).format('MM');
@@ -131,20 +120,9 @@ class MonthPlanPower extends Component {
                     position: 'left',
                     axisLabel: {
                         formatter: '{value}',
-                        color: fontColor,
                     },
                     nameTextStyle: {
-                        color: fontColor,
                         padding: [0, 0, 0, 30],
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: lineColor,
-                        },
-                    },
-                    axisTick: {
-                        show: true,
-                        color: lineColor,
                     },
                     splitLine: {
                         show: false,
@@ -154,20 +132,9 @@ class MonthPlanPower extends Component {
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
-                        color: fontColor,
                     },
                     nameTextStyle: {
-                        color: fontColor,
                         padding: [0, 30, 0, 0],
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: lineColor,
-                        },
-                    },
-                    axisTick: {
-                        // show: false,
-                        color: lineColor,
                     },
                     splitLine: {
                         show: false,

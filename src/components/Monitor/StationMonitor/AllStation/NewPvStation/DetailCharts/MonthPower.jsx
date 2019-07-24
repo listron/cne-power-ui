@@ -198,15 +198,11 @@ class MonthPower extends Component {
             legend: {
                 left: 'center',
                 top: 42,
-                textStyle: {
-                    color: fontColor,
-                },
                 itemWidth: 10,
                 itemHeight: 5,
             },
             tooltip: {
                 trigger: 'axis',
-                backgroundColor: '#fff',
                 textStyle: {
                     color: fontColor,
                     fontSize: 12,
@@ -237,13 +233,7 @@ class MonthPower extends Component {
                 {
                     type: 'category',
                     data: monthPowerData.map(e => e.date),
-                    axisLine: {
-                        lineStyle: {
-                            color: lineColor,
-                        },
-                    },
                     axisLabel: {
-                        color: fontColor,
                         interval: 0,
                         formatter: (value) => {
                             return moment(value).format('MM');
@@ -260,20 +250,9 @@ class MonthPower extends Component {
                     type: 'value',
                     axisLabel: {
                         formatter: '{value}',
-                        color: fontColor,
                     },
                     nameTextStyle: {
-                        color: fontColor,
                         padding: [0, 30, 0, 0],
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: lineColor,
-                        },
-                    },
-                    axisTick: {
-                        // show: false,
-                        color: lineColor,
                     },
                     splitLine: {
                         show: false,

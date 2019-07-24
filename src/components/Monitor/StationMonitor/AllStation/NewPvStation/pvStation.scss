@@ -9,88 +9,26 @@
     .leftIcon {
       color: $themeColor;
     }
-    .allStaionStatic {
-      :global {
-        .ant-popover-inner-content {
-          background: #f8f8f8;
-          box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
-        }
-      }
-      .poverItem {
-        color: #666666;
-        span {
-          color: $themeColor;
-        }
-        .unit {
-          color: #666666;
-        }
-      }
-    }
 
     .dataColumn {
-      display: flex;
-      flex-direction: column;
-      // line-height: 36px;
-      padding: 0 12px;
       border-right: 1px solid #dfdfdf;
-      min-width: 175px;
-      > span {
-        display: flex;
-        flex-direction: column;
-      }
       &:last-child {
         border: none;
       }
-
       .dataValue {
         color: $themeColor;
-        font-size: 24px;
-        text-align: left;
-        padding: 0 4px;
-        line-height: 30px;
       }
-
       .radiation {
         color: #f9b600;
       }
-
-      .stationPower {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        min-width: 230px;
-        line-height: 30px;
-        > div {
-          margin-right: 10;
-        }
-      }
-    }
-
-    .typeIcon {
-      width: 120px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
     }
   }
   .StationTitle {
-    display: flex;
-    // flex: 1;
-    align-items: center;
-    justify-content: space-between;
-    line-height: 48px;
     border: 1px dashed #dfdfdf;
     :global {
       .iconTab {
-        height: 48px;
-        width: 55px;
         background: #f1f1f1;
         color: #666;
-        display: inline-block;
-        text-align: center;
-        font-size: 16px;
-        cursor: pointer;
         &:hover {
           background: $themeColor;
           color: #fff;
@@ -115,136 +53,44 @@
     }
   }
   .stationCardContainer {
-    margin-bottom: 40px;
     .filterCondition {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin: 17px 31px 0 21px;
       border: 1px solid #dfdfdf;
-      padding: 4px 10px 4px 4px;
       .sortCondition {
         display: flex;
-        .sortStatus {
-          line-height: 30px;
-          padding: 0 12px;
-          cursor: pointer;
-        }
         .activeSortStatus {
           color: $themeColor;
-          position: relative;
           :global {
             .iconfont {
-              display: inline-block;
               color: $themeColor;
-              font-size: 14px;
-              position: absolute;
-              right: -5px;
-              top: 0;
             }
-          }
-          .ascend {
-            transform: rotate(90deg);
-          }
-          .descend {
-            transform: rotate(-90deg);
           }
         }
       }
     }
     .staionsListBox {
-      .staionsList {
-        display: flex;
-        width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-self: flex-start;
-      }
       .regionName {
-        margin: 12px 0 -8px 39px;
         color: #000000;
       }
       .staionCard {
-        margin: 20px 0 0 39px;
-        width: 339px;
-        height: 319px;
-        border-radius: 4px;
         color: $darkColor;
         background: #ffffff;
         border: 1px solid #dfdfdf;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
         &:hover {
           box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
         }
         a {
-          text-decoration: none;
           color: $darkColor;
-        }
-        .linkBox {
-          flex: 1;
-        }
-        .stationTop {
-          line-height: 34px;
-          display: flex;
-          justify-content: space-between;
-          padding: 0 12px;
-          .stationName {
-            width: 100px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          .staionCapacity {
-            display: flex;
-            justify-content: space-around;
-          }
-          .stationUnitCount {
-            margin-left: 8px;
-          }
         }
         .changeNum {
           color: $themeColor;
         }
         .staionCenter {
-          display: flex;
-          justify-content: space-between;
-          margin: 4px 8px;
-          line-height: 30px;
           border-bottom: 1px solid #dfdfdf;
-          .column {
-            display: flex;
-          }
-          .staionCenterLeft {
-            .dataName {
-              width: 60px;
-              margin-right: 6px;
-            }
-          }
-          .staionCenterRight {
-            .dataName {
-              width: 70px;
-              margin-right: 6px;
-            }
-          }
-        }
-        .chart {
-          height: 176px;
-          display: flex;
-          // background: pink;
         }
         .bottom {
-          display: flex;
-          align-items: center;
-          flex: 1;
           border-top: 1px solid #dfdfdf;
-          margin: 0 12px;
           .dataColumn {
-            flex: 1 auto;
-            justify-content: center;
             border-right: 1px solid #dfdfdf;
-            display: flex;
             &:last-child {
               border: none;
             }
@@ -254,7 +100,6 @@
 
       .normal,
       .interrupt {
-        cursor: pointer;
         .stationTop {
           background: #f0f2f5;
         }
@@ -264,7 +109,6 @@
           }
           .grey {
             color: #666666;
-            margin-left: 4px;
           }
         }
       }
@@ -290,11 +134,6 @@
         .stationName {
           color: #fff;
         }
-        :global {
-          .iconfont {
-            margin-left: 4px;
-          }
-        }
       }
 
       .interrupt {
@@ -309,22 +148,14 @@
         .stationName {
           color: #fff;
         }
-        :global {
-          .iconfont {
-            margin-left: 4px;
-          }
-        }
       }
 
       .notConnected {
-        //  通讯中断
         background: #f8f8f8;
-        cursor: default;
-        opacity: 0.6;
-        pointer-events: none;
       }
     }
   }
+
   .pvStationList {
     flex: 1;
     display: flex;
@@ -392,6 +223,7 @@
       @include statusBox();
     }
   }
+
   .pvStationCont {
     position: relative;
     flex: 1 0 auto;
@@ -408,6 +240,7 @@
       }
     }
   }
+
   .pvContainer {
     display: flex;
     flex-direction: row;
@@ -536,17 +369,6 @@
 
 .dark {
   @import "../../../../../theme/antdResetDark.scss";
-  $background: #0c0a3e;
-  $light-background: rgba(83, 104, 241, 0.15);
-  $border-color: rgba(83, 104, 241, 0.6);
-  $font-color: #00baff;
-  $button-color-base: #00baff;
-  $font-color-invert: #fff;
-  $button-color-darker: #205bac;
-  $themeColor: #00baff;
-  $font-color-warn: #f8e71c;
-  $font-color-hover: #00f8ff;
-
   background: $background;
   .headStation {
     border: 1px solid $border-color;
@@ -626,14 +448,12 @@
 
   .stationCardContainer {
     .filterCondition {
-      //   border: 1px solid $border-color;
       border: none;
       .activeSortStatus {
-        color: $themeColor;
-        position: relative;
+        color: $font-color-hover;
         :global {
           .iconfont {
-            color: $themeColor;
+            color: $font-color-hover;
           }
         }
       }
@@ -851,6 +671,7 @@
       @include statusBox();
     }
   }
+
   .pvStationCont {
     position: relative;
     flex: 1 0 auto;
