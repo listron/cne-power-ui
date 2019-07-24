@@ -375,7 +375,8 @@ class PlanTable extends Component {
             {/* <Upload {...uploadProps} className={styles.importUser}>
               <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
             </Upload>
-            <Button type={'default'} onClick={this.batchImport} loading={this.props.downloading}>导入下载模版</Button> */}
+             <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
+            */}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
