@@ -309,15 +309,6 @@ class PlanTable extends Component {
     });
   };
 
-  batchImport = () => { // 批量导入
-    const { downLoadFile } = this.props;
-    downLoadFile({
-      url: `${originUri}/template/proplan.xlsx`,
-      method: 'get',
-      loadingName: 'downloading',
-      fileName: '生产计划下载模版',
-    });
-  }
 
   beforeUpload = (file) => { // 上传前的校验
     const validType = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']; // 暂时不兼容xls : 'application/vnd.ms-excel'
@@ -370,6 +361,7 @@ class PlanTable extends Component {
         }
       },
     };
+    const downloadHref = `${originUri}/template/proplan.xlsx`;
     return (
       <div className={styles.planList}>
         {showWarningTip &&
