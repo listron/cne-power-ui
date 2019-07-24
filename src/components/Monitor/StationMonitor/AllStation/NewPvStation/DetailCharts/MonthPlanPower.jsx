@@ -52,11 +52,6 @@ class MonthPlanPower extends Component {
             color: color,
             title: {
                 text: '月累计与计划发电量（截止昨天）',
-                textStyle: {
-                    color: '#000',
-                    fontSize: 14,
-                    fontWeight: 'normal',
-                },
                 top: 8,
                 left: 10,
             },

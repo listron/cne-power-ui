@@ -46,25 +46,11 @@ class MonthPower extends Component {
     yAxisType = () => { // 左侧y轴的数据
         const { chartType } = this.state;
         const { powerUnit } = this.props;
-        const lineColor = '#dfdfdf';
-        const fontColor = '#666';
         const equipmentHoursObj = [{
             name: '利用小时(h)',
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                color: fontColor,
-            },
-            nameTextStyle: {
-                color: fontColor,
-            },
-            axisLine: {
-                lineStyle: {
-                    color: lineColor,
-                },
-            },
-            axisTick: {
-                color: lineColor,
             },
             splitLine: {
                 show: false,
@@ -77,18 +63,6 @@ class MonthPower extends Component {
                 position: 'left',
                 axisLabel: {
                     formatter: '{value}',
-                    color: fontColor,
-                },
-                nameTextStyle: {
-                    color: fontColor,
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: lineColor,
-                    },
-                },
-                axisTick: {
-                    color: lineColor,
                 },
                 splitLine: {
                     show: false,
@@ -101,20 +75,9 @@ class MonthPower extends Component {
                 position: 'right',
                 axisLabel: {
                     formatter: '{value}%',
-                    color: fontColor,
                 },
                 nameTextStyle: {
-                    color: fontColor,
                     padding: [0, 0, 0, 30],
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: lineColor,
-                    },
-                },
-                axisTick: {
-                    // show: false,
-                    color: lineColor,
                 },
                 splitLine: {
                     show: false,
@@ -181,11 +144,6 @@ class MonthPower extends Component {
             graphic: powerGraphic,
             title: {
                 text: '月发电量与利用小时（截止昨天）',
-                textStyle: {
-                    color: '#000',
-                    fontSize: 14,
-                    fontWeight: 'normal',
-                },
                 top: 8,
                 left: 10,
             },
