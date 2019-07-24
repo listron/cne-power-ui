@@ -34,6 +34,9 @@ class MonthPower extends Component {
         if (powerTime !== preTime) {
             this.drawCharts(nextProps);
         }
+        if (this.props.theme !== nextProps.theme) {
+            this.drawCharts(this.props, true);
+        }
     }
 
     onChangeTimePower = (e) => { // 改变 发电量和等效时
@@ -119,8 +122,8 @@ class MonthPower extends Component {
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
 
-    drawCharts = (params) => {
-        const { monthPowerData = [], powerUnit, loading } = params;
+    drawCharts = (params, themeChange) => {
+        const { monthPowerData = [], powerUnit, loading, theme } = params;
         const { chartType } = this.state;
         const monthPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true)); // 发电量
         const filterMonthPower = monthPowerData.filter(e => e.monthPower);
@@ -133,11 +136,13 @@ class MonthPower extends Component {
         const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true)); // 完成率
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
-        const monthPowerChart = echarts.init(document.getElementById('powerChart'), 'darkTheme');
+        const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
+        let monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
+        if (themeChange) {
+            monthPowerChart.dispose();
+            monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
+        }
         // loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
-        monthPowerChart.resize();
-        const lineColor = '#dfdfdf';
-        const fontColor = '#666';
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         const powerOption = {
@@ -161,11 +166,6 @@ class MonthPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                textStyle: {
-                    color: fontColor,
-                    fontSize: 12,
-                },
-                extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
                 padding: 0,
                 formatter: (params) => {
                     let paramsItem = '';

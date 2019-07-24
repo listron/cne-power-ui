@@ -56,7 +56,7 @@ export const darkTheme = () => { // 数据规范展示
       show: true,
       backgroundColor: backgroundColor,
       textStyle: {
-        fontSize: '12px',
+        fontSize: 12,
         fontColor: contrastfontColor,
       },
       extraCssText: 'box- shadow: 0 0 4px 2px rgba(255,255,255,0.20)',
@@ -228,9 +228,11 @@ export const lightTheme = () => { // 数据规范展示
       show: true,
       backgroundColor: backgroundColor,
       textStyle: {
-        fontSize: '12px',
+        fontSize: 12,
         color: fontColor,
       },
+      borderWidth: 1,
+      borderColor: 'rgba(255,255,255,0.50)',
       extraCssText: 'box- shadow: 0 0 4px 2px rgba(255,255,255,0.20)',
     },
     legend: {

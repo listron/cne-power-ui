@@ -239,6 +239,7 @@ class Test extends React.Component {
                     singleStation={item}
                     filterChartData={filterChartData}
                     monitorPvUnit={monitorPvUnit}
+                    theme={this.props.theme}
                   />);
                 })}
               </div>

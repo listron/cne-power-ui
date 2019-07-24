@@ -15,6 +15,7 @@ class OutputTenMin extends Component {
     yXaisName: PropTypes.string,
     stationCode: PropTypes.number,
     yAxisUnit: PropTypes.string,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -33,19 +34,16 @@ class OutputTenMin extends Component {
     }
   }
 
-  componentWillUnmount() {
-    // console.log('十分钟数据我卸载了')
-  }
-
 
   drawChart = (param, themeChange) => {
-    const { capabilityData, yAxisUnit, stationCode } = param;
+    const { capabilityData, yAxisUnit, stationCode, theme } = param;
+    const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
     const yAxisType = `交流侧功率(${yAxisUnit})`;
-    const capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), 'darkTheme');
+    let capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeColor);
     if (themeChange) {
-
+      capabilityDiagram.dispose();
+      capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeColor);
     }
-    const lineColor = '#666';
     const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
     const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
@@ -54,10 +52,11 @@ class OutputTenMin extends Component {
     let labelInterval = 47; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
-      labelInterval = parseInt(totalLength / 3) - 1;
+      labelInterval = parseInt(totalLength / 3, 10) - 1;
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
+    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '#199475'];
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       legend: {
@@ -88,7 +87,7 @@ class OutputTenMin extends Component {
           );
         },
       },
-      color: ['#c57576', '#199475'],
+      color: color,
       xAxis: {
         type: 'category',
         splitNumber: 4,
@@ -121,16 +120,13 @@ class OutputTenMin extends Component {
           min: minPower < 0 ? minPower : 0,
           axisLabel: {
             formatter: '{value}',
-            // color: lineColor,
           },
           nameTextStyle: {
-            // color: lineColor,
             padding: [0, 0, 0, 20],
           },
           axisLine: {
             show: true,
             lineStyle: {
-              // color: '#dfdfdf',
             },
           },
           splitLine: {
@@ -143,15 +139,6 @@ class OutputTenMin extends Component {
           min: minRadiation < 0 ? minRadiation : 0,
           axisLabel: {
             formatter: '{value}',
-            // color: lineColor,
-          },
-          nameTextStyle: {
-            // color: lineColor,
-          },
-          axisLine: {
-            lineStyle: {
-              // color: '#dfdfdf',
-            },
           },
           splitLine: {
             show: false,

@@ -125,7 +125,6 @@ class PvStation extends React.Component {
     const { pvMonitorStation, loading, monitorPvUnit, history, regionName, pvUnix, getPvCapabilitydiagrams } = this.props;
     const { theme } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
-    console.log('theme', this.props.theme);
     return (
       <div className={`${styles.pvStation} ${theme === 'dark' ? styles.dark : styles.light}`}>
         <PvStationHeader {...this.props} />

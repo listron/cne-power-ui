@@ -24,15 +24,18 @@ class MonthPlanPower extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { powerTime, loading } = this.props;
+        const { powerTime, theme } = this.props;
         const preTime = prevProps.dayPowerTime;
-        if (powerTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
+        if (powerTime !== preTime) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
+        }
+        if (theme !== prevProps.theme) {
+            this.drawCharts(this.props, true);
         }
     }
 
-    drawCharts = (params) => {
-        const { monthPlanPowerData = [], powerUnit, loading } = params;
+    drawCharts = (params, themeChange) => {
+        const { monthPlanPowerData = [], powerUnit, loading, theme } = params;
         const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true)); // 月发电量
         const filterMonthPower = monthPlanPowerData.filter(e => e.dayPower);
         const monthPlanPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 月计划发电量
@@ -41,8 +44,13 @@ class MonthPlanPower extends Component {
         const filterInstantaneous = monthPlanPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
+        const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
         const chartsBox = document.getElementById('monthPlanPowerChart');
-        const powerDiagram = echarts.init(chartsBox, 'darkTheme');
+        let powerDiagram = echarts.init(chartsBox, themeColor);
+        if (themeChange) {
+            powerDiagram.dispose();
+            powerDiagram = echarts.init(chartsBox, themeColor);
+        }
         loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
@@ -69,11 +77,6 @@ class MonthPlanPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                textStyle: {
-                    fontSize: 12,
-                },
-                extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-                padding: 0,
                 formatter: (params) => {
                     let paramsItem = '';
                     params.forEach(item => {
@@ -118,6 +121,9 @@ class MonthPlanPower extends Component {
                     },
                     nameTextStyle: {
                         padding: [0, 0, 0, 30],
+                    },
+                    axisTick: {
+                        show: true,
                     },
                     splitLine: {
                         show: false,

@@ -55,6 +55,7 @@ class DetailCharts extends Component {
                         powerTime={dayPowerTime}
                         powerUnit={powerUnit}
                         loading={this.props.dayPowerLoading}
+                        theme={this.props.theme}
                     />
                 </div>
                 <div className={styles.chartsBox}>
@@ -63,6 +64,7 @@ class DetailCharts extends Component {
                         powerTime={monthPowerTime}
                         powerUnit={powerUnit}
                         loading={this.props.monthPowerLoading}
+                        theme={this.props.theme}
                     />
                 </div>
                 <div className={styles.chartsBox}>
@@ -71,6 +73,7 @@ class DetailCharts extends Component {
                         powerTime={monthPlanPowerTime}
                         powerUnit={powerUnit}
                         loading={this.props.monthPlanPowerLoading}
+                        theme={this.props.theme}
                     />
                 </div>
 
@@ -80,4 +83,4 @@ class DetailCharts extends Component {
 }
 
 export default DetailCharts
-;
+    ;
