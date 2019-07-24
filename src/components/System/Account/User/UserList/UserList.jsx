@@ -452,7 +452,7 @@ class UserList extends Component {
 
   downloadTemplate = () => {
     const { downLoadUserTemplate } = this.props;
-    const url = `${apiUrlReal}/api/v3/user/template`;
+    const url = `${apiUrlReal}/api/v3/user/template/UserInfoTemplate.xlsx`;
     downLoadUserTemplate({
       url,
       method: 'get',
