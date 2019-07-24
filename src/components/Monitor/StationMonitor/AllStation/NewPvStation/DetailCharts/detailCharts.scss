@@ -1,154 +1,363 @@
-@import '../../../../../../theme/theme';
+@import "../../../../../../theme/theme";
 
-
-.showCharts{
+.showCharts {
+  display: flex;
+  width: 464px;
+  height: 1046px;
+  flex: 1 0 auto;
+  margin-left: 6px;
+  margin-top: 90px;
+  flex-direction: column;
+  padding: 8px 12px 24px 12px;
+  position: relative;
+  z-index: 99;
+  .hideDetail {
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 7px;
+    top: 0;
     display: flex;
-    background:#f8f8f8;
-     box-shadow:0 0 6px 0 rgba(0,0,0,0.50);
-     width:464px;
-     height:1046px; 
-     flex: 1 0 auto;
-     margin-left: 6px;
-     margin-top: 90px;
-     flex-direction: column;
-     padding: 8px 12px 24px 12px;
-     position: relative;
-     z-index: 99;
-     .hideDetail{
-         background:$themeColor;
-         border-radius:4px;
-         width:40px;
-         height:40px;  
-         position: absolute;
-         right:7px;
-         top:0;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         cursor: pointer;
-         :global{
-             .iconfont{
-                width: 13px;
-                height: 12px;
-                border-radius: 50%;
-                color: #fff;
-                font-size: 14px;
-                display: inline-block;
-                line-height: 12px;
-             }
-         }
-     }
-     .tags {
-         display: flex;
-         justify-content: flex-start;
-         a {
-             padding: 0 12px;
-             background: #ffffff;
-             border: 1px solid #dfdfdf;
-             border-radius: 4px;
-             height: 30px;
-             line-height: 30px;
-             color: #666;
-             margin-right: 11px;
-         }
-         .noLink{
-             pointer-events: none;
-         }
-     }
-     .deviceStatus {
-         background: #ffffff;
-         border-radius: 4px;
-         line-height: 40px;
-         margin-top: 12px;
-         padding: 0 13px;
-         .deviceStaTitle{
-             display: flex;
-             justify-content: space-between;
-             color: #000;
-         }
-         .deviceStaCont{
-             span{
-                 margin-right: 12px;
-                 display: inline-block;
-             }
-         }
-     }
-     .chartsBox{
-         margin-top: 12px;
-         display: flex;
-         height: 278px;
-         width:100%;
-         background: #fff;
-     }
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    :global {
+      .iconfont {
+        width: 13px;
+        height: 12px;
+        border-radius: 50%;
+        font-size: 14px;
+        display: inline-block;
+        line-height: 12px;
+      }
+    }
+  }
+  .tags {
+    display: flex;
+    justify-content: flex-start;
+    a {
+      padding: 0 12px;
+      border-radius: 4px;
+      height: 30px;
+      line-height: 30px;
+      margin-right: 11px;
+    }
+    .noLink {
+      pointer-events: none;
+    }
+  }
+  .deviceStatus {
+    border-radius: 4px;
+    line-height: 40px;
+    margin-top: 12px;
+    padding: 0 13px;
+    .deviceStaTitle {
+      display: flex;
+      justify-content: space-between;
+    }
+    .deviceStaCont {
+      span {
+        margin-right: 12px;
+        display: inline-block;
+      }
+    }
+  }
+  .chartsBox {
+    margin-top: 12px;
+    display: flex;
+    height: 278px;
+    width: 100%;
+  }
 
-     .tooltipBox {
-        .axisValue {
-            border-bottom: 1px solid #dfdfdf;
-            padding: 0 30px 0 10px;
-            line-height: 26px;
-        }
-        .tooltipContainer {
-            padding: 10px 30px 10px 0;
-        }
-        .tooltipCont {
-            span {
-                display: inline-block;
-                width: 5px;
-                height: 5px;
-                border-radius: 50%;
-                vertical-align: 2px;
-                margin: 0 4px 0 8px;
-            }
-        }
+  .tooltipBox {
+    .axisValue {
+      padding: 0 30px 0 10px;
+      line-height: 26px;
     }
-    
-    .powerDiagramBox {
-        display: flex;
-        flex: 1;
-        position: relative;
-        .powerChart{
-            width: 440px;
-            height: 280px;
-        }
-        .powerRadio {
-            position: absolute;
-            top: 11px;
-            right: 24px;
-            color: $darkColor;
-            :global {
-                .ant-radio-button-wrapper-checked:first-child {
-                    border-color: $themeColor;
-                }
-    
-                .ant-radio-button-wrapper:hover,
-                .ant-radio-button-wrapper-focused {
-                    color: $darkColor;
-                }
-    
-                .ant-radio-button-wrapper-checked {
-                    border-color: $themeColor;
-                    -webkit-box-shadow: -1px 0 0 0 $themeColor;
-                    box-shadow: -1px 0 0 0 $themeColor;
-                    color: #fff;
-                    background: $themeColor;
-                }
-    
-                .ant-radio-button-wrapper-checked:hover {
-                    color: #fff;
-                }
-            }
-        }
-    
-        .link {
-            color: #666666;
-            position: absolute;
-            top: 10px;
-            right: 4px;
-            font-size: 16px;
-            display: inline-block;
-        }
+    .tooltipContainer {
+      padding: 10px 30px 10px 0;
     }
+    .tooltipCont {
+      span {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        vertical-align: 2px;
+        margin: 0 4px 0 8px;
+      }
+    }
+  }
+
+  .powerDiagramBox {
+    display: flex;
+    flex: 1;
+    position: relative;
+    .powerChart {
+      width: 440px;
+      height: 280px;
+    }
+    .powerRadio {
+      position: absolute;
+      top: 11px;
+      right: 24px;
+    }
+
+    .link {
+      position: absolute;
+      top: 10px;
+      right: 4px;
+      font-size: 16px;
+      display: inline-block;
+    }
+  }
 }
-.hideCharts{
- display: none
+.hideCharts {
+  display: none;
+}
+
+.light {
+  display: flex;
+  background: #f8f8f8;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  width: 464px;
+  height: 1046px;
+  flex: 1 0 auto;
+  margin-left: 6px;
+  margin-top: 90px;
+  flex-direction: column;
+  padding: 8px 12px 24px 12px;
+  position: relative;
+  z-index: 99;
+  .hideDetail {
+    background: $themeColor;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 7px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    :global {
+      .iconfont {
+        width: 13px;
+        height: 12px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 14px;
+        display: inline-block;
+        line-height: 12px;
+      }
+    }
+  }
+  .tags {
+    display: flex;
+    justify-content: flex-start;
+    a {
+      padding: 0 12px;
+      background: #ffffff;
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+      height: 30px;
+      line-height: 30px;
+      color: #666;
+      margin-right: 11px;
+    }
+    .noLink {
+      pointer-events: none;
+    }
+  }
+  .deviceStatus {
+    background: #ffffff;
+    border-radius: 4px;
+    line-height: 40px;
+    margin-top: 12px;
+    padding: 0 13px;
+    .deviceStaTitle {
+      display: flex;
+      justify-content: space-between;
+      color: #000;
+    }
+    .deviceStaCont {
+      span {
+        margin-right: 12px;
+        display: inline-block;
+      }
+    }
+  }
+  .chartsBox {
+    margin-top: 12px;
+    display: flex;
+    height: 278px;
+    width: 100%;
+    background: #fff;
+  }
+
+  .tooltipBox {
+    .axisValue {
+      border-bottom: 1px solid #dfdfdf;
+      padding: 0 30px 0 10px;
+      line-height: 26px;
+    }
+    .tooltipContainer {
+      padding: 10px 30px 10px 0;
+    }
+    .tooltipCont {
+      span {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        vertical-align: 2px;
+        margin: 0 4px 0 8px;
+      }
+    }
+  }
+
+  .powerDiagramBox {
+    display: flex;
+    flex: 1;
+    position: relative;
+    .powerChart {
+      width: 440px;
+      height: 280px;
+    }
+    .powerRadio {
+      position: absolute;
+      top: 11px;
+      right: 24px;
+      color: $darkColor;
+      :global {
+        .ant-radio-button-wrapper-checked:first-child {
+          border-color: $themeColor;
+        }
+
+        .ant-radio-button-wrapper:hover,
+        .ant-radio-button-wrapper-focused {
+          color: $darkColor;
+        }
+
+        .ant-radio-button-wrapper-checked {
+          border-color: $themeColor;
+          -webkit-box-shadow: -1px 0 0 0 $themeColor;
+          box-shadow: -1px 0 0 0 $themeColor;
+          color: #fff;
+          background: $themeColor;
+        }
+
+        .ant-radio-button-wrapper-checked:hover {
+          color: #fff;
+        }
+      }
+    }
+
+    .link {
+      color: #666666;
+      position: absolute;
+      top: 10px;
+      right: 4px;
+      font-size: 16px;
+      display: inline-block;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../../theme/darkTheme.scss";
+  $background: #0c0a3e;
+  $light-background: rgba(83, 104, 241, 0.15);
+  $border-color: rgba(83, 104, 241, 0.6);
+  $font-color: #00baff;
+  $button-color-base: #00baff;
+  $font-color-invert: #fff;
+  $button-color-darker: #205bac;
+  $themeColor: #00baff;
+  $font-color-warn: #f8e71c;
+  $font-color-hover: #00f8ff;
+
+  background: #205bac;
+  border: 1px solid #303a99;
+  box-shadow: inset 0 0 5px 2px #00baff;
+  .hideDetail {
+    background: $themeColor;
+    :global {
+      .iconfont {
+        color: #fff;
+      }
+    }
+  }
+
+  .tags {
+    a {
+      padding: 0 12px;
+      background: $button-color-base;
+      border: 1px solid $button-color-base;
+      color: $font-color-invert;
+    }
+  }
+  .deviceStatus {
+    background: #161858;
+    color: $font-color;
+  }
+  .chartsBox {
+    background: #161858;
+  }
+
+  .tooltipBox {
+    color: #c1d4fc;
+    font-size: 12px;
+    .axisValue {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+
+  .powerDiagramBox {
+    display: flex;
+    flex: 1;
+    position: relative;
+    .powerChart {
+      width: 440px;
+      height: 280px;
+    }
+    .powerRadio {
+      color: $darkColor;
+      :global {
+        .ant-radio-button-wrapper {
+          background: $button-color-darker;
+          color: $themeColor;
+          border: 1px solid $themeColor;
+        }
+        .ant-radio-button-wrapper-checked:first-child {
+          border-color: $themeColor;
+          border-right: none;
+        }
+
+        .ant-radio-button-wrapper:hover,
+        .ant-radio-button-wrapper-focused {
+          color: $font-color-invert;
+        }
+
+        .ant-radio-button-wrapper-checked {
+          border-color: $themeColor;
+          -webkit-box-shadow: -1px 0 0 0 $themeColor;
+          box-shadow: -1px 0 0 0 $themeColor;
+          color: $font-color-invert;
+          background: $themeColor;
+        }
+      }
+    }
+
+    .link {
+      color: #666666;
+      position: absolute;
+      top: 10px;
+      right: 4px;
+      font-size: 16px;
+      display: inline-block;
+    }
+  }
 }

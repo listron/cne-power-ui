@@ -1,0 +1,466 @@
+@import "../../../../../theme/theme.scss";
+
+.pvStation {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.headStation {
+  height: 108px;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  .leftIcon {
+    width: 31px;
+    height: 60px;
+    line-height: 60px;
+    :global {
+      .iconfont {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .dataColumn {
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px;
+    min-width: 175px;
+    > span {
+      display: flex;
+      flex-direction: column;
+    }
+    &:last-child {
+      border: none;
+    }
+
+    .dataValue {
+      font-size: 24px;
+      text-align: left;
+      padding: 0 4px;
+      line-height: 30px;
+    }
+
+    .stationPower {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      min-width: 230px;
+      line-height: 30px;
+      > div {
+        margin-right: 10;
+      }
+    }
+  }
+
+  .typeIcon {
+    width: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.StationTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 48px;
+  :global {
+    .iconTab {
+      height: 48px;
+      width: 55px;
+      display: inline-block;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .ant-switch {
+      vertical-align: -5px;
+    }
+    .ant-radio-button-wrapper {
+      height: 24px;
+      line-height: 24px;
+      padding: 0 8px;
+    }
+  }
+}
+.sortCondition {
+  display: flex;
+  .sortStatus {
+    line-height: 30px;
+    padding: 0 12px;
+    cursor: pointer;
+  }
+  .activeSortStatus {
+    position: relative;
+    :global {
+      .iconfont {
+        display: inline-block;
+        font-size: 14px;
+        position: absolute;
+        right: -5px;
+        top: 0;
+      }
+    }
+    .ascend {
+      transform: rotate(90deg);
+    }
+    .descend {
+      transform: rotate(-90deg);
+    }
+  }
+}
+.stationCardContainer {
+  margin-bottom: 40px;
+  .filterCondition {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 17px 31px 0 21px;
+    padding: 4px 10px 4px 4px;
+  }
+
+  .staionsListBox {
+    .staionsList {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-self: flex-start;
+    }
+    .regionName {
+      margin: 12px 0 -8px 39px;
+    }
+    .staionCard {
+      margin: 20px 0 0 39px;
+      width: 339px;
+      height: 319px;
+      border-radius: 4px;
+      color: $darkColor;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      a {
+        text-decoration: none;
+      }
+      .linkBox {
+        flex: 1;
+      }
+      .stationTop {
+        line-height: 34px;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 12px;
+        .stationName {
+          width: 100px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .staionCapacity {
+          display: flex;
+          justify-content: space-around;
+        }
+        .stationUnitCount {
+          margin-left: 8px;
+        }
+      }
+      .staionCenter {
+        display: flex;
+        justify-content: space-between;
+        margin: 4px 8px;
+        line-height: 30px;
+        .column {
+          display: flex;
+        }
+        .staionCenterLeft {
+          .dataName {
+            width: 60px;
+            margin-right: 6px;
+          }
+        }
+        .staionCenterRight {
+          .dataName {
+            width: 70px;
+            margin-right: 6px;
+          }
+        }
+      }
+      .chart {
+        height: 176px;
+        display: flex;
+      }
+      .bottom {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        margin: 0 12px;
+        .dataColumn {
+          flex: 1 auto;
+          justify-content: center;
+          display: flex;
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+    }
+    .normal,
+    .interrupt {
+      cursor: pointer;
+      .bottom {
+        .red {
+          margin-left: 4px;
+        }
+        .grey {
+          margin-left: 4px;
+        }
+      }
+    }
+
+    .alarm {
+      :global {
+        .iconfont {
+          margin-left: 4px;
+        }
+      }
+    }
+
+    .interrupt {
+      // 通讯中断
+      :global {
+        .iconfont {
+          margin-left: 4px;
+        }
+      }
+    }
+
+    .notConnected {
+      //  通讯中断
+      cursor: default;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+}
+.pvStationList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  a {
+    text-decoration: underline;
+  }
+
+  .pagination {
+    a {
+      text-decoration: none;
+    }
+    height: 45px;
+    display: flex;
+    justify-content: flex-end;
+    line-height: 45px;
+  }
+
+  .stationName {
+    width: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stationrovince {
+    width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .numberStyle {
+    text-align: right;
+  }
+  @mixin statusBox {
+    width: 5px;
+    height: 20px;
+    border-radius: 2px;
+  }
+  .currentStation {
+    display: flex;
+    justify-content: center;
+  }
+  .normal {
+    @include statusBox();
+  }
+  .interrupt {
+    @include statusBox();
+  }
+  .notConnected {
+    @include statusBox();
+  }
+}
+
+.pvStationCont {
+  position: relative;
+  flex: 1 0 auto;
+  width: 100%;
+  .detailShow {
+    position: absolute;
+    right: 0;
+    top: 90px;
+    background: #199475;
+    border-radius: 4px;
+    width: 40px;
+    height: 158px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 12px 0;
+    cursor: pointer;
+    .detailShowfont {
+      color: #fff;
+      width: 14px;
+      line-height: 20px;
+      z-index: 19;
+    }
+    .show {
+      transform: translate(-180deg);
+    }
+    :global {
+      .iconfont {
+        width: 14px;
+        height: 18px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+.pvContainer {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  flex: 1;
+}
+
+:global {
+  .ant-table .ant-table-thead > tr > th,
+  .ant-table .ant-table-tbody > tr > td {
+    padding: 0px 5px;
+    height: 40px;
+    line-height: 30px;
+  }
+  .ant-table-placeholder {
+    border: none;
+  }
+}
+
+@mixin propContainer() {
+  // 卡片样式
+  .popover {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+
+    .name {
+      text-align: center;
+      color: #000;
+    }
+
+    .poNomal,
+    .poInterrupt {
+      color: $themeColor;
+      text-align: center;
+      line-height: 33px;
+    }
+
+    .poInterrupt {
+      color: #f9b600;
+    }
+
+    .value {
+      color: $themeColor;
+    }
+
+    & .popColumn:nth-child(2n-1) {
+      background: #fff;
+    }
+
+    & .popColumn:nth-child(2n) {
+      background: #f8f8f8;
+    }
+
+    .popContainer {
+      background: pink;
+    }
+
+    .popColumn {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .unit {
+      width: 27px;
+      display: inline-block;
+      margin-left: 6px;
+    }
+  }
+}
+
+.pvStationMap {
+  // 地图
+  position: relative;
+  .mapChart {
+    display: flex;
+    flex: 1;
+    height: 855px;
+    @include propContainer();
+    z-index: 1;
+    .popover {
+      width: 235px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+  }
+  .backChina {
+    position: absolute;
+    cursor: pointer;
+    right: 20px;
+    top: 20px;
+    z-index: 10;
+  }
+}
+
+.tooltipBox {
+  // 提示框
+  width: 150px;
+  .axisValue {
+    border-bottom: 1px solid #dfdfdf;
+    padding: 0 30px 0 10px;
+    line-height: 26px;
+  }
+  .tooltipContainer {
+    padding: 10px 0;
+  }
+  .tooltipCont {
+    span {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      vertical-align: 2px;
+      margin: 0 4px 0 8px;
+    }
+  }
+}
+
+.noData {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
