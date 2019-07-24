@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tree, message, Button } from 'antd';
 import styles from './realtimeStyle.scss';
+import moment from 'moment';
+
 
 const { TreeNode } = Tree;
 
@@ -17,6 +19,7 @@ class PointTree extends Component {
     getRealtimeList: PropTypes.func,
     stopRealtimeChart: PropTypes.func,
     stopRealtimeList: PropTypes.func,
+    chartRealtime: PropTypes.object,
     changeRealtimeStore: PropTypes.func,
   };
 
@@ -37,8 +40,10 @@ class PointTree extends Component {
 
   onPointsQuery = () => {
     const {
-      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList
+      queryParam, listParam, getRealtimeChart, getRealtimeList, realtimeType, stopRealtimeChart, stopRealtimeList, changeRealtimeStore
     } = this.props;
+    const clickStartTime = moment(); // 点击确定按钮的时间
+    
     if (realtimeType === 'chart') { // 停止计时，重启计时。
       stopRealtimeChart();
       getRealtimeChart({ queryParam });
@@ -49,6 +54,10 @@ class PointTree extends Component {
         listParam,
       });
     }
+
+    changeRealtimeStore({
+      startTime: clickStartTime,
+    })
   }
 
   expandTree = (expandedKeys) => {

@@ -16,7 +16,6 @@ class DataExportList extends Component {
     queryParams: PropTypes.object,
     downLoadFile: PropTypes.func,
     changeDataExportStore: PropTypes.func,
-    status: PropTypes.num,
     duration: PropTypes.string,
     dataTypes: PropTypes.array,
     getDataExport: PropTypes.func,
@@ -130,9 +129,9 @@ class DataExportList extends Component {
         dataIndex: 'devicePointCount',
         className: 'devicePointCount',
         render: (text, record) => {
-          const { devicePointNames = [] } = record;
+          const { devicePointCodeNames = [] } = record;
           return (
-            <Popover content={devicePointNames.map(e => <span key={e}>{e}</span>)}
+            <Popover content={devicePointCodeNames.map(e => <span key={e}>{e}</span>)}
               title="测点名称"
               placement="bottomLeft"
               getPopupContainer={() => this.refs.tableList}
@@ -170,6 +169,7 @@ class DataExportList extends Component {
             {(text === 1) && <span title={text} className={styles.generating}>生成中</span>}
             {(text === 2) && <span title={text}>已生成</span>}
             {(text === 3) && <span title={text} className={styles.fail}>失败</span>}
+            {(text === 4) && <span title={text}>已生成</span>}
           </span>
         ),
       }, {

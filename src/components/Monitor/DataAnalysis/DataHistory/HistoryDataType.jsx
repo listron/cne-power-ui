@@ -73,12 +73,12 @@ class HistoryDataType extends Component {
           <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
-        {historyType === 'list' && <Button
+        <Button
           className={styles.export}
           loading={downloading}
           onClick={this.exportHistory}
           disabled={dataList.length === 0}
-        >导出</Button>}
+        >导出</Button>
       </div>
     )
   }

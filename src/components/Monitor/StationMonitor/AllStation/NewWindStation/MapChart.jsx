@@ -8,7 +8,7 @@ import { dataFormats, numWithComma } from '../../../../../utils/utilFunc';
 
 
 const MapChart = ({ ...data }) => {
-  const { stationDataList = [],history={} } = data;
+  const { stationDataList = [], history = {} } = data;
   const normalData = stationDataList.filter(e => e.stationStatus.stationStatus === '400');
   const interrupt = stationDataList.filter(e => e.stationStatus.stationStatus === '500');
   const notConnected = stationDataList.filter(e => e.stationStatus.stationStatus === '900');
@@ -30,7 +30,7 @@ const MapChart = ({ ...data }) => {
           top: 20,
           itemWidth: 21,
           itemHeight: 28,
-          selectedMode:false,
+          selectedMode: false,
         },
         geo: {
           map: 'china',
@@ -38,13 +38,13 @@ const MapChart = ({ ...data }) => {
           layoutSize: '100%',
           label: {
             normal: {
-                show: false,
+              show: false,
             },
             emphasis: {
-                show: false,
-               
+              show: false,
+
             }
-        },
+          },
           itemStyle: {
             normal: {
               areaColor: '#d8eef6',
@@ -60,20 +60,20 @@ const MapChart = ({ ...data }) => {
           enterable: true,
           backgroundColor: '#fff',
           extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
-          confine:true,
+          confine: true,
           formatter: (params) => {
             const item = params.data;
             const stationStatus = item.stationStatus || {};
             const currentStatus = stationStatus.stationStatus;
-            if(currentStatus==='900'){
+            if (currentStatus === '900') {
               return null
             }
             let needData = [
-              { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW',quantity:1000 },
+              { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW', quantity: 1000 },
               { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
               { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
               { name: '装机容量', value: 'stationCapacity', point: 2, unit: 'MW' },
-              { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW',quantity:1000 },
+              { name: '应发功率', value: 'stationPlanPower', point: 2, unit: 'MW', quantity: 1000 },
               { name: '装机台数', value: 'stationUnitCount', point: 0, unit: '台' },
               { name: '正常运行台数', value: 'normalNum', point: 0, unit: '台' },
               { name: '待机台数', value: 'standbyNum', point: 0, unit: '台' },
@@ -86,7 +86,7 @@ const MapChart = ({ ...data }) => {
             ]
             let paramsItem = '';
             needData.forEach((e, index) => {
-              const value=e.quantity?item[e['value']]/e.quantity:item[e['value']];
+              const value = e.quantity ? dataFormats(item[e.value], '--') / e.quantity : item[e.value];
               return paramsItem += (
                 `<div class=${styles.popColumn} key=${index}>
                   <div>${e.name}</div>
@@ -112,14 +112,14 @@ const MapChart = ({ ...data }) => {
           name: '通讯正常',
           type: 'scatter',
           coordinateSystem: 'geo',
-          z:2,
+          z: 2,
           data: normalData.map((dataItem, index) => {
             return {
               ...dataItem,
               key: index,
               name: dataItem.stationName,
               value: [dataItem.longitude, dataItem.latitude, 10],
-              symbol:dataItem.alarmNum>0?`image:///img/wind02.png`:`image:///img/wind01.png`
+              symbol: dataItem.alarmNum > 0 ? `image:///img/wind02.png` : `image:///img/wind01.png`
             }
           }),
           symbol: `image:///img/wind01.png`,
@@ -129,17 +129,17 @@ const MapChart = ({ ...data }) => {
           name: '通讯中断',
           type: 'scatter',
           coordinateSystem: 'geo',
-          z:3,
+          z: 3,
           data: interrupt.map((dataItem, index) => {
             return {
               ...dataItem,
               key: index,
               name: dataItem.stationName,
               value: [dataItem.longitude, dataItem.latitude, 10],
-              symbol: dataItem.alarmNum>0?`image:///img/windcutdown2.png`:`image:///img/cutdown.png`,
+              symbol: dataItem.alarmNum > 0 ? `image:///img/windcutdown2.png` : `image:///img/cutdown.png`,
             }
           }),
-         symbol: `image:///img/cutdown.png`,
+          symbol: `image:///img/cutdown.png`,
           rotation: () => { let rotation = 0; (rotation += Math.PI / 360) % (Math.PI * 2) },
           symbolSize: [21, 28],
         },
@@ -147,7 +147,7 @@ const MapChart = ({ ...data }) => {
           name: '未接入',
           type: 'scatter',
           coordinateSystem: 'geo',
-          z:1,
+          z: 1,
           data: notConnected.map((dataItem, index) => {
             return {
               ...dataItem,
@@ -162,9 +162,9 @@ const MapChart = ({ ...data }) => {
 
       }
       countryChart.resize();
-      countryChart.setOption(option,'notMerge');
+      countryChart.setOption(option, 'notMerge');
       countryChart.on('click', (params) => {
-        if(!params.seriesType){return false}
+        if (!params.seriesType) { return false }
         if (params.data.stationStatus.stationStatus !== '900') {
           return history.push(`/monitor/singleStation/${params.data.stationCode}`)
         } else {
