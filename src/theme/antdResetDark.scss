@@ -1,5 +1,15 @@
 //专门针对antd样式的部分重置：(table)
-@import "./theme.scss";
+
+$darkColor: #00baff;
+$themeColor: #00baff;
+$background: #0c0a3e;
+$light-background: rgba(83, 104, 241, 0.15);
+$border-color: rgba(83, 104, 241, 0.6);
+$font-color: #00baff;
+$button-color-base: #00baff;
+$font-color-invert: #fff;
+$button-color-darker: #205bac;
+$themeColor: #00baff;
 
 :global {
   .ant-table {
@@ -66,7 +76,6 @@
       color: $themeColor;
     }
   }
-
   .ant-btn-primary,
   .ant-btn-primary:active,
   .ant-btn-primary.active,
@@ -79,6 +88,7 @@
       color: #fff;
     }
   }
+
   .ant-btn-group {
     .ant-btn-primary {
       &:first-child:not(:last-child) {
@@ -88,6 +98,18 @@
         border-left-color: $themeColor;
       }
     }
+  }
+
+  //  选择器
+  .ant-select-selection {
+    background-color: $light-background;
+    border: 1px solid $border-color;
+  }
+  .ant-select:not(.ant-select-disabled)
+    .ant-select-selection
+    .ant-select-selection__rendered
+    .ant-select-selection__placeholder {
+    color: $font-color;
   }
   .ant-select-dropdown-menu-item:hover {
     background-color: #ceebe0;
@@ -105,9 +127,52 @@
       @include highLight($themeColor);
     }
   }
+
+  .ant-select-dropdown {
+    color: $font-color;
+    background: $background;
+    border: 1px solid $border-color;
+  }
+
+  .ant-select-dropdown-menu-item {
+    color: $font-color;
+    &:hover {
+      background: $themeColor;
+      color: $font-color-invert;
+    }
+  }
+
+  .ant-select-selection-selected-value {
+    color: $font-color;
+  }
+
+  .ant-select-dropdown-menu-item-selected {
+    background: $themeColor;
+    color: $font-color-invert;
+  }
+
+  //ant-select-dropdown-menu下拉框选中的√颜色
+  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
+  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
+    color: $font-color;
+    background: $themeColor;
+  }
+
+  // ===============select 下拉框===============
+
+  .ant-switch {
+    background: $button-color-darker;
+  }
   .ant-switch-checked {
     color: $themeColor;
   }
+
+  .ant-switch-loading-icon,
+  .ant-switch::after {
+    background: #161858;
+  }
+
+  // ===============switch===============
 
   .ant-tabs {
     .ant-tabs-ink-bar {
@@ -247,18 +312,12 @@
   .ant-select-dropdown-menu-item-active {
     background-color: #f8f8f8;
   }
-  .ant-switch-checked {
-    background-color: $themeColor;
-  }
+
   // 加载的spin
   .ant-spin-dot i {
     background-color: #199475;
   }
-  //ant-select-dropdown-menu下拉框选中的√颜色
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
-    color: $themeColor;
-  }
+
   // antd提示语message图标颜色
   .ant-message-info .anticon,
   .ant-message-loading .anticon {

@@ -20,7 +20,7 @@ class MonthPlanPower extends Component {
     }
 
     componentDidMount() {
-        this.drawCharts(this.props)
+        this.drawCharts(this.props);
     }
 
     componentDidUpdate(prevProps) {
@@ -32,8 +32,8 @@ class MonthPlanPower extends Component {
     }
 
     drawCharts = (params) => {
-        let { monthPlanPowerData = [], powerUnit, loading } = params;
-        const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 月发电量
+        const { monthPlanPowerData = [], powerUnit, loading } = params;
+        const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true)); // 月发电量
         const filterMonthPower = monthPlanPowerData.filter(e => e.dayPower);
         const monthPlanPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 月计划发电量
         const filterMonthPlanPower = monthPlanPowerData.filter(e => e.equipmentHours);
@@ -42,7 +42,7 @@ class MonthPlanPower extends Component {
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
         const chartsBox = document.getElementById('monthPlanPowerChart');
-        const powerDiagram = echarts.init(chartsBox);
+        const powerDiagram = echarts.init(chartsBox, 'darkTheme');
         loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
@@ -88,14 +88,14 @@ class MonthPlanPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-                        ${item.seriesName} :  ${item.value}</div>`
+                        ${item.seriesName} :  ${item.value}</div>`;
                     });
                     return (
                         `<div class=${styles.tooltipBox}>
                             <div class=${styles.axisValue}>${params[0].name}</div>
                             <div class=${styles.tooltipContainer}> ${paramsItem}</div>
                         </div>`
-                    )
+                    );
                 },
                 axisPointer: {
                     type: 'cross',
@@ -117,11 +117,11 @@ class MonthPlanPower extends Component {
                         color: fontColor,
                         interval: 0,
                         formatter: (value) => {
-                            return moment(value).format('MM')
-                        }
+                            return moment(value).format('MM');
+                        },
                     },
                     axisTick: { show: false },
-                }
+                },
             ],
 
             yAxis: [
@@ -148,7 +148,7 @@ class MonthPlanPower extends Component {
                     },
                     splitLine: {
                         show: false,
-                    }
+                    },
                 }, {
                     name: '累计辐射(MJ/m²)',
                     type: 'value',
@@ -171,8 +171,8 @@ class MonthPlanPower extends Component {
                     },
                     splitLine: {
                         show: false,
-                    }
-                }
+                    },
+                },
             ],
             series: [
                 {
@@ -183,7 +183,7 @@ class MonthPlanPower extends Component {
                     smooth: true,
                     color: '#ceebe0',
                     areaStyle: {
-                        color: '#ceebe0'
+                        color: '#ceebe0',
                     },
                     symbol: 'none',
                 },
@@ -206,17 +206,17 @@ class MonthPlanPower extends Component {
                     yAxisIndex: 1,
                     color: '#f9b600',
                 },
-            ]
-        }
+            ],
+        };
         powerDiagram.setOption(powerOption, 'notMerge');
         powerDiagram.resize();
     }
 
     render() {
-        const productionAnalysis = `#/statistical/stationaccount/production`;
+        const productionAnalysis = '#/statistical/stationaccount/production';
         return (
             <div id="monthPlanPowerChart" style={{ display: 'flex', flex: 1 }}></div>
-        )
+        );
     }
 
 }

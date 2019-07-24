@@ -1,100 +1,190 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { message, Select } from "antd";
+import { message, Select, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 import OutputTenMin from './OutputTenMin';
 const Option = Select.Option;
+import SingleStaionList from './SingleStaionList';
+import { throttle } from 'lodash';
 
-class PvStationItem extends React.Component {
+
+
+class Test extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
     pvCapabilitydiagramsData: PropTypes.array,
     monitorPvUnit: PropTypes.object,
     areaChecked: PropTypes.bool,
+    aralmstatus: PropTypes.bool,
+    stationType: PropTypes.string,
+    regionName: PropTypes.string,
+    changeMonitorStationStore: PropTypes.func,
+    getPvCapabilitydiagrams: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       sortStatusName: 'sort',
       ascend: true,
       selectStation: null,
+      renderList: [],
+      spliceLength: 12, // 100条数据一渲染。
+      topHeight: 400, // 假设的列表上方高度
+      newStationsList: [], // 排序完成之后的所有电站
+    };
+  }
+
+  componentDidMount() {
+    const { stationDataList, areaChecked } = this.props;
+    this.changeStationData({ stationDataList, areaChecked });
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', throttle(() => {
+      if (this.newPinterest) {
+        const { renderList, topHeight } = this.state;
+        const clientH = document.documentElement.clientHeight; // 客户端高度
+        const scrollTop = main.scrollTop; // 卷曲出去的高度
+        const tableHeight = this.newPinterest.clientHeight; // 表格现在的高度。
+        const resHeight = tableHeight + topHeight - scrollTop - clientH;
+        if (resHeight < 50) { //表格内容
+          if (renderList.length < this.props.stationDataList.length) {
+            this.initRender();
+          }
+        }
+      }
+    }, 1000));
+  }
+
+  componentWillReceiveProps(nextPorps) {
+    // console.log('数据推送过来了')
+    let noChange = true; // 数据定时刷新 不增加滚动的列数
+    const { areaChecked, stationType, aralmstatus, regionName } = this.props;
+    if (areaChecked !== nextPorps.areaChecked || stationType !== nextPorps.stationType || aralmstatus !== nextPorps.aralmstatus || regionName !== nextPorps.regionName) { // 切换 区域、告警、状态、按区域分组 
+      this.setState({ renderList: [] });
+      noChange = false;
     }
-
+    this.changeStationData({
+      stationDataList: nextPorps.stationDataList,
+      areaChecked: nextPorps.areaChecked,
+      noChange,
+    });
   }
 
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', () => { return false; }, true);
+  }
 
-  showTip = (currentStatus) => {
-    message.destroy();
-    if (currentStatus === '900') {
-      message.config({ top: 225, maxCount: 1, });
-      message.warning('电站未接入,无法查看详情', 2);
+  changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
+    const { sortStatusName, ascend, selectStation } = this.state;
+    // console.time()
+    // console.time('jisuan')
+    const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
+    const sortType = ascend ? 1 : -1;
+    const stationSortList = filterStationList.sort((a, b) => { // 排序
+      return sortType * (a[sortStatusName] - b[sortStatusName]);
+    });
+
+    let newStationsList = stationSortList.sort((a, b) => { // 状态排序 未接入的放在最后
+      return 900 - b.stationStatus === 0 ? -1 : 1;
+    });
+
+    if (areaChecked) { // 是否分组排序
+      newStationsList = newStationsList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']); });
     }
+    this.setState({ newStationsList }, () => {
+      // console.timeEnd('jisuan')
+      this.initRender(noChange);
+    });
   }
 
-  conditionChange = (value) => {
-    this.setState({ selectStation: value })
+  conditionChange = (value) => { // 条件查询
+    this.setState({ selectStation: value, renderList: [] }, () => {
+      const { stationDataList, areaChecked } = this.props;
+      this.changeStationData({ stationDataList, areaChecked });
+    });
+
   }
 
-  sortStatus = (value) => {
+  sortStatus = (value) => { // 排序
     const { sortStatusName, ascend } = this.state;
     let currentAscend = true;
     if (sortStatusName === value) {
-      currentAscend = !ascend
+      currentAscend = !ascend;
     }
     this.setState({
       sortStatusName: value,
-      ascend: currentAscend
-    })
+      ascend: currentAscend,
+      renderList: [],
+    }, () => {
+      const { stationDataList, areaChecked } = this.props;
+      this.changeStationData({ stationDataList, areaChecked });
+    });
   }
 
 
-
-
-
-  dealData = (stationDataList) => { // 处理数据
-    const { sortStatusName, ascend } = this.state;
+  dealData = (stationDataList) => { //  分组显示
     const { areaChecked } = this.props;
-    const sortType = ascend ? 1 : -1;
-    let filteredStation = [];
+    const filteredStation = [];
     if (stationDataList.length > 0) {
-      const newStationsList = stationDataList.sort((a, b) => {
-        return sortType * (a[sortStatusName] - b[sortStatusName]);
-      });
       if (areaChecked) {
-        const temType = newStationsList.sort((a, b) => { return a['provinceName'].localeCompare(b['provinceName']) });
-        temType.forEach(e => {
+        stationDataList.forEach(e => {
           let findExactStation = false;
           filteredStation.forEach(m => {
             if (m.regionName === e.regionName) {
               findExactStation = true;
               m.stations.push(e);
             }
-          })
+          });
           if (!findExactStation) {
             filteredStation.push({
               regionName: e.regionName,
-              stations: [e]
-            })
+              stations: [e],
+            });
           }
         });
       } else {
         filteredStation.push({
-          stations: newStationsList
-        })
+          regionName: '',
+          stations: stationDataList,
+        });
       }
 
     }
-    return filteredStation
+    return filteredStation;
   }
 
 
+  initRender = (noChange) => { //  渲染todolist 的条数
+    const { renderList, spliceLength, newStationsList } = this.state;
+    const { regionName } = this.props;
+    const tmp = newStationsList.slice(0, spliceLength + renderList.length);
+    const update = newStationsList.slice(0, renderList.length);
+    const thisTmp = newStationsList.slice(renderList.length, spliceLength + renderList.length);
+    if (noChange) { // 一分钟数据只更新数据，不更新处理图的数据
+      this.setState({
+        renderList: update,
+      });
+    } else {
+      this.setState({
+        renderList: tmp,
+      });
+      this.props.changeMonitorStationStore({ stationCodes: tmp.map(e => e.stationCode) });
+      this.props.getPvCapabilitydiagrams({
+        nowStationCodes: thisTmp.map(e => e.stationCode),
+        stationCodes: tmp.map(e => e.stationCode),
+        regionName,
+      });
+    }
+  }
+
   render() {
-    const { stationDataList, monitorPvUnit, pvCapabilitydiagramsData } = this.props;
-    const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
+    const { stationDataList, pvCapabilitydiagramsData = [], monitorPvUnit } = this.props;
     const { sortStatusName, ascend, selectStation } = this.state;
+    const { renderList } = this.state;
+    // console.log('pvCapabilitydiagramsData', pvCapabilitydiagramsData)
     const sortName = [
       { text: '默认排序', id: 'sort' },
       { text: '日利用小时 ', id: 'equivalentHours' },
@@ -105,13 +195,7 @@ class PvStationItem extends React.Component {
       { text: '瞬时辐射', id: 'instantaneous' },
       { text: '实时功率', id: 'stationPower' },
     ];
-    const getStatusName = {
-      '400': 'normal',
-      '500': 'interrupt',
-      '900': 'notConnected',
-    };
-    const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList
-    const filteredStation = this.dealData(filterStationList);
+    const filteredStation = this.dealData(renderList);
     return (
       <div className={styles.stationCardContainer}>
         <div ref={'selectBody'}></div>
@@ -128,109 +212,49 @@ class PvStationItem extends React.Component {
           >
             <Option value={''} key={''}>{'全部电站'}</Option>
             {stationDataList.map(list => {
-              return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>
+              return <Option key={list.stationCode} value={list.stationCode}>{list.stationName}</Option>;
             })}
           </Select>
           <div className={styles.sortCondition}>
             {sortName.map(list => {
-              return (<div onClick={() => { this.sortStatus(list.id) }} key={list.id} className={`${styles.sortStatus}
+              return (<div onClick={() => { this.sortStatus(list.id); }} key={list.id} className={`${styles.sortStatus}
                 ${sortStatusName === list.id && styles['activeSortStatus']}`}>
                 {list.text}
                 {sortStatusName === list.id && ascend && <i className={`iconfont icon-back ${styles.ascend}`}></i>}
                 {sortStatusName === list.id && !ascend && <i className={`iconfont icon-back ${styles.descend}`}></i>}
-              </div>)
+              </div>);
             })}
           </div>
         </div>
-        <div className={styles.staionsListBox}>
+
+        <div className={styles.staionsListBox} ref={ref => this.newPinterest = ref} >
           {stationDataList.length > 0 && filteredStation.map((list, key) => {
-            const stationStatusList = list.stations.sort((a, b) => {
-              return 900 - b.stationStatus === 0 ? -1 : 1
-            })
-            return (<div className={styles.regionList} key={key}>
+            return (<div className={styles.regionList} key={key} >
               <div className={styles.regionName}>{list.regionName}</div>
               <div className={styles.staionsList}>
-                {stationStatusList.map((item, index) => {
-                  const currentStatus = item.stationStatus;
-                  const stationPower = divideFormarts(item.stationPower, realTimePowerUnit);
-                  const stationCapacity = realCapacityUnit === 'MW' ? item.stationCapacity : multiplyFormarts(item.stationCapacity, 1000);
-                  const instantaneous = item.instantaneous;
-                  const dayPower = divideFormarts(item.dayPower, powerUnit);
-                  const equivalentHours = item.equivalentHours;
+                {list.stations.map((item, index) => {
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
-                  const alarm = item.alarmNum > 0;
-                  const invertType = item.lowEffType === 1 ? '201' : '206'
-                  return (
-                    <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus) }} key={item.stationCode} >
-                      <Link to={`/monitor/singleStation/${item.stationCode}`} className={styles.linkBox}>
-                        <div className={styles.stationTop}>
-                          <div className={styles.stationName} title={item.stationName}> {item.stationName}</div>
-                          <div className={styles.staionCapacity}>
-                            <div>
-                              <span className={styles.changeNum}>
-                                <i className={'iconfont icon-da'}></i> {stationCapacity}</span> {realCapacityUnit}
-                            </div>
-                            <div className={styles.stationUnitCount}>
-                              <span className={styles.changeNum}>{item.stationUnitCount}</span> 台
-                            </div>
-                            {`${currentStatus}` === '500' && <i className="iconfont icon-outage" />}
-                            {item.alarmNum > 0 && <i className="iconfont icon-alarm" />}
-                          </div>
-                        </div>
-                        <div className={styles.staionCenter}>
-                          <div className={styles.staionCenterLeft}>
-                            <div className={styles.column}>
-                              <span className={styles.dataName}> 实时功率</span>
-                              <div> <span className={styles.changeNum}> {dataFormats(stationPower, '--', 2, true)}</span> {realTimePowerUnit} </div>
-                            </div>
-                            <div className={styles.column}>
-                              <span className={styles.dataName}> 瞬时辐射</span>
-                              <div> <span className={styles.changeNum}> {dataFormats(instantaneous, '--', 2, true)}</span> W/m² </div>
-                            </div>
-                          </div>
-                          <div className={styles.staionCenterRight}>
-                            <div className={styles.column}>
-                              <span className={styles.dataName}> 日发电量</span>
-                              <div> <span className={styles.changeNum}> {powerPoint(dayPower)}</span> {powerUnit} </div>
-                            </div>
-                            <div className={styles.column}>
-                              <span className={styles.dataName}> 日利用小时</span>
-                              <div> <span className={styles.changeNum}> {dataFormats(equivalentHours, '--', 2, true)}</span> h </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                      <div className={styles.chart}>
-                        <OutputTenMin {...this.props}
-                          yXaisName={'辐射(W/m²)'}
-                          stationCode={item.stationCode}
-                          yAxisUnit={realTimePowerUnit}
-                          capabilityData={filterChartData.length > 0 && filterChartData[0].chartData || []} />
-                      </div>
-                      <div className={styles.bottom}>
-                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${'509'}`} className={styles.dataColumn}>
-                          异常支路数  <span className={styles[`${item.anomalousBranchNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.anomalousBranchNum, '--', 0)}</span>
-                        </Link>
-                        <Link to={`/monitor/singleStation/${item.stationCode}?showPart=${invertType}`} className={styles.dataColumn}>
-                          低效逆变器  <span className={styles[`${item.lowEfficiencyInverterNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.lowEfficiencyInverterNum, '--', 0)}</span>
-                        </Link>
-                        <Link to={`/monitor/alarm/realtime?stationCode=${item.stationCode}`} className={styles.dataColumn}>
-                          <div>
-                            告警  <span className={styles[`${item.alarmNum > 0 ? 'red' : 'grey'}`]}> {dataFormats(item.alarmNum, '--', 0)}</span>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  )
+                  // const filterChartData = [];
+                  return (<SingleStaionList
+                    singleStation={item}
+                    filterChartData={filterChartData}
+                    monitorPvUnit={monitorPvUnit}
+                  />);
                 })}
               </div>
-            </div>)
+            </div>);
 
           }) || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
           }
+          {/* {console.timeEnd()} */}
+          {(renderList.length < stationDataList.length && !selectStation) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
+
+          <div>
+          </div>
         </div>
+
       </div>
-    )
+    );
   }
 }
-export default (PvStationItem)
+export default (Test);

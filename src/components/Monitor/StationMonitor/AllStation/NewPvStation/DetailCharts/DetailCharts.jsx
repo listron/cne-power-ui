@@ -29,16 +29,16 @@ class DetailCharts extends Component {
     }
     render() {
         const { stationDataSummary = {}, monitorPvUnit, detailVisible } = this.props;
-        const { dayPowerTime, dayPowerData, monthPlanPowerData, monthPlanPowerTime, monthPowerData, monthPowerTime } = this.props;
+        const { dayPowerTime, dayPowerData, monthPlanPowerData, monthPlanPowerTime, monthPowerData, monthPowerTime, theme } = this.props;
         const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
         return (
-            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts}`}>
+            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${theme === 'dark' ? styles.dark : styles.light}`} >
                 <div className={styles.tags}>
-                    <Link to={{ pathname: `/monitor/alarm/realtime`, state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
-                    <Link to={`/statistical/stationaccount/allstation`}> 统计分析  </Link>
-                    <Link to={`/statistical/statement/currency`} > 报表查询  </Link>
+                    <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
+                    <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>
+                    <Link to={'/statistical/statement/currency'} > 报表查询  </Link>
                 </div>
-                <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }) }}>
+                <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
                 </div>
                 <div className={styles.deviceStatus}>
@@ -75,8 +75,9 @@ class DetailCharts extends Component {
                 </div>
 
             </div>
-        )
+        );
     }
 }
 
 export default DetailCharts
+;

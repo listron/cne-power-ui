@@ -22,10 +22,10 @@ class MonthPower extends Component {
         super();
         this.state = {
             chartType: 'monthPower',
-        }
+        };
     }
     componentDidMount() {
-        this.drawCharts(this.props)
+        this.drawCharts(this.props);
     }
 
     componentWillReceiveProps(nextProps) { // 数据重新请求后重绘。
@@ -39,7 +39,7 @@ class MonthPower extends Component {
     onChangeTimePower = (e) => { // 改变 发电量和等效时
         const chartType = e.target.value;
         this.setState({ chartType }, () => {
-            this.drawCharts(this.props)
+            this.drawCharts(this.props);
         });
     }
 
@@ -68,8 +68,8 @@ class MonthPower extends Component {
             },
             splitLine: {
                 show: false,
-            }
-        }]
+            },
+        }];
         const monthPowerObj = [
             {
                 name: `发电量(${powerUnit})`,
@@ -92,7 +92,7 @@ class MonthPower extends Component {
                 },
                 splitLine: {
                     show: false,
-                }
+                },
             },
             {
                 name: '完成率',
@@ -118,7 +118,7 @@ class MonthPower extends Component {
                 },
                 splitLine: {
                     show: false,
-                }
+                },
             }];
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
@@ -157,9 +157,9 @@ class MonthPower extends Component {
     }
 
     drawCharts = (params) => {
-        let { monthPowerData = [], powerUnit, loading } = params;
+        const { monthPowerData = [], powerUnit, loading } = params;
         const { chartType } = this.state;
-        const monthPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true));  // 发电量
+        const monthPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true)); // 发电量
         const filterMonthPower = monthPowerData.filter(e => e.monthPower);
         const monthPlanPower = monthPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPlanPower, powerUnit), '--', 2, true)); // 计划发电量
         const filterMonthPlanPower = monthPowerData.filter(e => e.monthPlanPower);
@@ -167,17 +167,17 @@ class MonthPower extends Component {
         const filterEquipmentHours = monthPowerData.filter(e => e.equipmentHours);
         const instantaneous = monthPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = monthPowerData.filter(e => e.instantaneous);
-        const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true));  // 完成率
+        const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true)); // 完成率
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
-        const monthPowerChart = echarts.init(document.getElementById('powerChart'));
+        const monthPowerChart = echarts.init(document.getElementById('powerChart'), 'darkTheme');
         // loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
         monthPowerChart.resize();
         const lineColor = '#dfdfdf';
         const fontColor = '#666';
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
-        let powerOption = {
+        const powerOption = {
             graphic: powerGraphic,
             title: {
                 text: '月发电量与利用小时（截止昨天）',
@@ -217,14 +217,14 @@ class MonthPower extends Component {
                     let paramsItem = '';
                     params.forEach(item => {
                         return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
-                        ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`
+                        ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
                     return (
                         `<div class=${styles.tooltipBox}>
                             <div class=${styles.axisValue}>${params[0].name}</div>
                             <div class=${styles.tooltipContainer}> ${paramsItem}</div>
                         </div>`
-                    )
+                    );
                 },
                 axisPointer: {
                     type: 'shadow',
@@ -246,12 +246,12 @@ class MonthPower extends Component {
                         color: fontColor,
                         interval: 0,
                         formatter: (value) => {
-                            return moment(value).format('MM')
-                        }
+                            return moment(value).format('MM');
+                        },
                     },
                     axisTick: { show: false },
                     boundaryGap: true,
-                }
+                },
             ],
             yAxis: [
                 ...yAxisType,
@@ -277,7 +277,7 @@ class MonthPower extends Component {
                     },
                     splitLine: {
                         show: false,
-                    }
+                    },
                 },
 
             ],
@@ -290,13 +290,13 @@ class MonthPower extends Component {
                     color: '#f9b600',
                     yAxisIndex: 1,
                 },
-            ]
-        }
+            ],
+        };
         monthPowerChart.setOption(powerOption, 'notMerge');
     }
 
     render() {
-        const productionAnalysis = `#/statistical/stationaccount/production`;
+        const productionAnalysis = '#/statistical/stationaccount/production';
         return (
             <div className={styles.powerDiagramBox} >
                 <div id="powerChart" style={{ display: 'flex', flex: 1 }} className={styles.powerChart}></div>
@@ -308,7 +308,7 @@ class MonthPower extends Component {
                 </div>
                 {/* <a href={'javascript:void(0)'} className={styles.link}><i className="iconfont icon-more"></i></a> */}
             </div>
-        )
+        );
     }
 
 }
@@ -317,4 +317,4 @@ class MonthPower extends Component {
 
 
 
-export default MonthPower
+export default MonthPower;
