@@ -1,8 +1,8 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./allstation.scss";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './allstation.scss';
+import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import { allStationAction } from './allStationAction';
 import Allstation from '../../../../components/Monitor/StationMonitor/AllStation/AllStation.jsx';
@@ -12,6 +12,7 @@ import WindStation from '../../../../components/Monitor/StationMonitor/AllStatio
 import PvStation from '../../../../components/Monitor/StationMonitor/AllStation/NewPvStation/PvStation.jsx';
 import Footer from '../../../../components/Common/Footer';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
+import Cookie from 'js-cookie';
 class AllStation extends Component {
   static propTypes = {
     changeMonitorStationStore: PropTypes.func,
@@ -30,7 +31,7 @@ class AllStation extends Component {
     super(props);
     this.state = {
       showRegion: false,
-    }
+    };
   }
 
   componentWillUnmount() {
@@ -49,11 +50,11 @@ class AllStation extends Component {
   }
 
   showRegionSelect = () => {
-    this.setState({ showRegion: true })
+    this.setState({ showRegion: true });
   }
 
   hideRegionSelect = () => {
-    this.setState({ showRegion: false })
+    this.setState({ showRegion: false });
   }
 
   regionChange = (value) => {
@@ -63,32 +64,34 @@ class AllStation extends Component {
     } else {
       curName = value;
     }
-    this.props.changeMonitorStationStore({ regionName: curName })
+    this.props.changeMonitorStationStore({ regionName: curName });
     this.setState({ showRegion: false });
     this.props.stopRealMonitorData();
     this.props.getPvRealData({ regionName: curName });
-    this.props.getPvChartsData({ regionName: curName })
-    this.props.getPvRealChartsData({ regionName: curName })
+    this.props.getPvChartsData({ regionName: curName });
+    this.props.getPvRealChartsData({ regionName: curName });
   }
 
 
   render() {
-    const { stationTypeCount, stationType, stations, regionName } = this.props;
+    const { stationTypeCount, stationType, stations, regionName, theme } = this.props;
     const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
     const { showRegion } = this.state;
     return (
-      <div className={styles.stationMonitor}>
-        <CommonBreadcrumb breadData={[{ name: '电站监控', }]} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.stationMonitor} ${theme === 'dark' ? styles.dark : styles.light}`}>
+        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
             <div className={styles.allStationTitle}>
-              <p className={`${stationType === '2' && styles.activeStation}`} onClick={() => { this.queryTargetData('2') }}>全部</p>
-              <p className={`${stationType === '0' && styles.activeStation}`} onClick={() => { this.queryTargetData('0') }}>风电</p>
-              <p className={`${stationType === '1' && styles.activeStation}`} onClick={() => { this.queryTargetData('1') }}>光伏</p>
+              <p className={`${stationType === '2' && styles.activeStation} `} onClick={() => { this.queryTargetData('2'); }}>全部</p>
+              <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
+              <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
             </div>
           }
-          {(stationType === '1' || stationTypeCount === 'pv') && <div className={styles.allArea} onClick={this.showRegionSelect}>
-            {regionName} <i className={'iconfont icon-content'}></i></div>}
+          {(stationType === '1' || stationTypeCount === 'pv') &&
+            <div className={styles.allArea} onClick={this.showRegionSelect}>
+              {regionName} <i className={'iconfont icon-content'}></i>
+            </div>}
           {stationTypeCount === 'multiple' && stationType === '2' && <Allstation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '0' && <WindStation {...this.props} />}
           {stationTypeCount === 'multiple' && stationType === '1' && <PvStation {...this.props} />}
@@ -102,21 +105,21 @@ class AllStation extends Component {
                 {'全部区域'} <i className={'iconfont icon-content'}></i>
               </div>
               <div className={styles.regionSelectCont}>
-                <div onClick={() => { this.regionChange('') }} className={`${styles.normal} ${regionName === '全部区域' && styles.active}`}> {'全部区域'}</div>
+                <div onClick={() => { this.regionChange(''); }} className={`${styles.normal} ${regionName === '全部区域' && styles.active} `}> {'全部区域'}</div>
                 {regionArr.map(e => {
                   return (<div
-                    onClick={() => { this.regionChange(e) }}
+                    onClick={() => { this.regionChange(e); }}
                     key={e}
-                    className={`${styles.normal} ${e === regionName && styles.active}`}> {e}</div>)
+                    className={`${styles.normal} ${e === regionName && styles.active} `}> {e}</div>);
                 })}
               </div>
 
             </div>
           }
         </div>
-        <Footer />
+        <Footer theme={this.props.theme} />
       </div>
-    )
+    );
   }
 }
 
@@ -124,16 +127,12 @@ const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
     stations: state.common.get('stations').toJS(),
-    // realTimePowerUnit: state.common.get('realTimePowerUnit'), // 旧版本需要保留
-    // realTimePowerPoint: state.common.get('realTimePowerPoint'),
-    // realCapacityUnit: state.common.get('realCapacityUnit'),
-    // realCapacityPoint: state.common.get('realCapacityPoint'),
-    // powerUnit: state.common.get('powerUnit'),
-    // powerPoint: state.common.get('powerPoint'),
+    theme: Cookie.get('theme'),
     stationTypeCount: state.common.get('stationTypeCount'),
+    // stationTypeCount: 'pv',
     monitorPvUnit: state.common.toJS().monitorPvUnit,
-  })
-}
+  });
+};
 
 const mapDispatchToProps = (dispatch) => ({
   changeMonitorStationStore: payload => dispatch({ type: allStationAction.changeMonitorstationStore, payload }),
@@ -147,7 +146,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPvRealData: payload => dispatch({ type: allStationAction.getPvRealData, payload }),
   getPvCapabilitydiagrams: payload => dispatch({ type: allStationAction.getPvCapabilitydiagrams, payload }),
   getPvRealChartsData: payload => dispatch({ type: allStationAction.getPvRealChartsData, payload }),
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStation);
 

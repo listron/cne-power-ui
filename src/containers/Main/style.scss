@@ -25,6 +25,31 @@
                 margin-left: 16px;
                 margin-top: 6px;
             }
+            .changeTheme{
+                min-width: 80px;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+            }
+            .themeMenu{
+                width: 80px;
+                background: #3e97d1;
+                padding: 0;
+                margin-top: -4px;
+                border-radius: 4px;
+                li{
+                    line-height: 35px;
+                    color: #fff;
+                    text-align: center;
+                    padding: 0;
+                    cursor: pointer;
+                    & :hover{
+                         background-color: rgba(0,13,52,0.20);
+                    }
+                }
+            }
         }
     }
     .appMain {
