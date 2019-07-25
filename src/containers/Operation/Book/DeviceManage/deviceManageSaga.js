@@ -254,7 +254,9 @@ function* deleteDevice(action) {
         message.success('删除成功');
         yield put({
           type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-          payload: {},
+          payload: {
+            selectedRowKeys: [],
+          },
         });
       }
 
