@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './style.scss';
-import { Progress } from "antd";
+import { Progress } from 'antd';
 
 
 /**
@@ -20,6 +20,7 @@ class OwnProgress extends React.Component {
         successPercent: PropTypes.any,
         fromRight: PropTypes.bool,
         active: PropTypes.bool,
+        theme: PropTypes.theme,
     }
 
     static defaultProps = {
@@ -30,20 +31,29 @@ class OwnProgress extends React.Component {
     }
 
     constructor(props, context) {
-        super(props, context)
+        super(props, context);
     }
 
+    initColor = {
+        dark: {
+            normalColor: '#00f8ff',
+            overcolor: '#1BD77B',
+        },
+        light: {
+            normalColor: '#199475',
+            overcolor: '#3e97d1',
+        },
+    }
 
     render() {
-        const { percent, successPercent, fromRight, active } = this.props;
+        const { percent, successPercent, fromRight, active = true, theme = 'light' } = this.props;
         const status = fromRight ? { right: 0 } : { left: 0 };
-        const overcolor = '#3e97d1';
-        const normalColor = '#199475';
-        let lineColor = successPercent > 100 ? overcolor : normalColor;
-        let currentSuccessPercent = successPercent > 100 ? 100 : successPercent;
-        let progressColor = percent > 100 ? overcolor : normalColor;
+        const { overcolor, normalColor } = this.initColor[theme];
+        const lineColor = successPercent > 100 ? overcolor : normalColor;
+        const currentSuccessPercent = successPercent > 100 ? 100 : successPercent;
+        const progressColor = percent > 100 ? overcolor : normalColor;
         return (
-            <div className={`${styles.progressOuter}`}>
+            <div className={`${styles.progressOuter} ${styles[theme]}`}>
                 <div className={styles.progressInner}>
                     <div className={`${styles.progressBg} ${active && styles.active}`}
                         style={{ width: Math.abs(percent) + '%', ...status, background: progressColor }} >
@@ -52,7 +62,7 @@ class OwnProgress extends React.Component {
                         <div className={styles.line} style={{ left: currentSuccessPercent + '%', background: lineColor }}></div> || null}
                 </div>
             </div >
-        )
+        );
     }
 }
-export default (OwnProgress)
+export default (OwnProgress);

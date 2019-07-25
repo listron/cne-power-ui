@@ -5,6 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
+import { Gradient1, Gradient2, barRadius } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -34,6 +35,17 @@ class MonthPlanPower extends Component {
         }
     }
 
+    themeColor = {
+        dark: {
+            labelColor: ['#5beda9', '#f47a37', '#f8b14e'],
+            chartColor: [Gradient1, Gradient2, '#f8b14e'],
+        },
+        light: {
+            labelColor: ['#ceebe0', '#fbe6e3', '#f9b600'],
+            chartColor: ['#ceebe0', '#fbe6e3', '#f9b600'],
+        },
+    }
+
     drawCharts = (params, themeChange) => {
         const { monthPlanPowerData = [], powerUnit, loading, theme } = params;
         const monthPower = monthPlanPowerData.map(e => chartPowerPoint(divideFormarts(e.monthPower, powerUnit), '--', 2, true)); // 月发电量
@@ -52,12 +64,8 @@ class MonthPlanPower extends Component {
             powerDiagram = echarts.init(chartsBox, themeColor);
         }
         loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
-        const lineColor = '#dfdfdf';
-        const fontColor = '#666';
-        let color = color = ['#ceebe0', '#fbe6e3', '#f9b600'];
         const powerOption = {
             graphic: powerGraphic,
-            color: color,
             title: {
                 text: '月累计与计划发电量（截止昨天）',
                 top: 8,
@@ -80,7 +88,8 @@ class MonthPlanPower extends Component {
                 formatter: (params) => {
                     let paramsItem = '';
                     params.forEach(item => {
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+                        const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}</div>`;
                     });
                     return (
@@ -94,7 +103,6 @@ class MonthPlanPower extends Component {
                     type: 'cross',
                 },
             },
-
             calculable: false,
             xAxis: [
                 {
@@ -110,7 +118,6 @@ class MonthPlanPower extends Component {
                     axisTick: { show: false },
                 },
             ],
-
             yAxis: [
                 {
                     name: `发电量(${powerUnit})`,
@@ -149,9 +156,10 @@ class MonthPlanPower extends Component {
                     data: getDefaultData(monthPower),
                     yAxisIndex: 0,
                     smooth: true,
-                    color: '#ceebe0',
+                    z: 2,
+                    color: this.themeColor[theme].labelColor[0],
                     areaStyle: {
-                        color: '#ceebe0',
+                        color: this.themeColor[theme].chartColor[0],
                     },
                     symbol: 'none',
                 },
@@ -161,9 +169,10 @@ class MonthPlanPower extends Component {
                     smooth: true,
                     data: getDefaultData(monthPlanPower),
                     yAxisIndex: 0,
-                    color: '#fbe6e3',
+                    z: 1,
+                    color: this.themeColor[theme].labelColor[1],
                     areaStyle: {
-                        color: '#fbe6e3',
+                        color: this.themeColor[theme].chartColor[1],
                     },
                     symbol: 'none',
                 },
@@ -172,7 +181,7 @@ class MonthPlanPower extends Component {
                     type: 'line',
                     data: getDefaultData(instantaneous),
                     yAxisIndex: 1,
-                    color: '#f9b600',
+                    color: this.themeColor[theme].labelColor[2],
                 },
             ],
         };

@@ -32,7 +32,7 @@ class DetailCharts extends Component {
         const { dayPowerTime, dayPowerData, monthPlanPowerData, monthPlanPowerTime, monthPowerData, monthPowerTime, theme } = this.props;
         const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
         return (
-            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${theme === 'dark' ? styles.dark : styles.light}`} >
+            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${styles[theme]}`} >
                 <div className={styles.tags}>
                     <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
                     <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>
