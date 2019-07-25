@@ -56,6 +56,7 @@
     "no-lonely-if": 2,
     "no-else-return": 2,
     "no-mixed-spaces-and-tabs":0,
+    "no-return-assign": 2,
     "no-unused-vars":[1, {"vars": "all", "args": "none"}],
     "prefer-const": 2,
     "quotes": [1, "single"],
@@ -80,6 +81,7 @@
       "allowBind": false
     }],
     "react/no-unused-state": 1,
+    "react/no-unused-prop-types": 1,
     "react/no-danger": 1,
     "react/no-did-mount-set-state": 1,
     "react/no-did-update-set-state": 1,
@@ -95,10 +97,8 @@
         "static-methods",
         "instance-variables",
         "lifecycle",
-        "/^on.+$/",
         "getters",
         "setters",
-        "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
         "instance-methods",
         "everything-else",
         "rendering"
