@@ -614,6 +614,7 @@ function* getDeviceFactors(action) {
         payload: {
           // ...payload,
           deviceFactorsData: response.data.data || {},
+
           total,
         },
       });

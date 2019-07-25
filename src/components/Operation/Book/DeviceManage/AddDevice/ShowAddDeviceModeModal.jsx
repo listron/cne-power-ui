@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Input, Form, Select, Icon, Modal, message } from 'antd';
 import styles from '../deviceSide.scss';
 const FormItem = Form.Item;
@@ -11,7 +11,7 @@ class ShowAddDeviceModeModal extends Component {
     form: PropTypes.object,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   // componentWillReceiveProps(nextProps) {
   //   const { checkDeviceModeOk, addDeviceTypeData, selectStation } = nextProps;
@@ -35,42 +35,43 @@ class ShowAddDeviceModeModal extends Component {
   //   }
   // }
   handleCancel = () => {
-    this.props.cancleDeviceModeModal()
+    this.props.cancleDeviceModeModal();
   }
   confirmForm = (e) => {
     e.preventDefault();
-    const { addDeviceTypeData,addDeviceModes } = this.props;
-    this.props.form.validateFieldsAndScroll(["addDeviceModeCodeName", "addManufacturer", "deviceTypeCode"], (err, values) => {
+    const { addDeviceTypeData, addDeviceModes } = this.props;
+    this.props.form.validateFieldsAndScroll(['addDeviceModeCodeName', 'addManufacturer', 'deviceTypeCode'], (err, values) => {
       if (!err) {
         // this.props.checkDeviceMode({
         //   deviceModeName: values.addDeviceModeCodeName,
         //   deviceTypeCode: addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode
         // })
         this.props.changeDeviceManageStore({
-          manufactorId:values.addManufacturer,
-        })
+          manufactorId: values.addManufacturer,
+        });
         addDeviceModes({
-          assetsId:'',
-          deviceTypeCode:addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode,
-          manufactorId:values.addManufacturer,
-          deviceModeName:values.addDeviceModeCodeName,
-        })
-        this.props.cancleDeviceModeModal()
-       
+          assetsId: '',
+          deviceTypeCode: addDeviceTypeData.deviceTypeCode ? addDeviceTypeData.deviceTypeCode : values.deviceTypeCode,
+          manufactorId: values.addManufacturer,
+          deviceModeName: values.addDeviceModeCodeName,
+        });
+        this.props.cancleDeviceModeModal();
+
 
       }
-    })
+    });
 
   }
   changeFactors = (value) => {
     this.props.getfactorsDeviceMode({
       manufactorId: value,
       assetsId: '',
-    })
+    });
   }
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { showAddDeviceModeModal, manufacturerValue, deviceFactorsList } = this.props;
+    const { showAddDeviceModeModal, manufacturerValue, deviceFactorsData: { dataList: deviceFactorsList } } = this.props;
+
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 10 },
@@ -92,25 +93,25 @@ class ShowAddDeviceModeModal extends Component {
             {getFieldDecorator('addManufacturer', {
               initialValue: manufacturerValue,
               rules: [
-                { message: '不超过30字', required: true, },
-              ]
+                { message: '不超过30字', required: true },
+              ],
             })(
               <Select className={styles.modelSelect} placeholder="请选择生产厂家" onChange={this.changeFactors} disabled={!!manufacturerValue}>
                 <Option key={'all'} value={''}>请选择生产厂家</Option>
                 {deviceFactorsList.map((e, i) => {
-                  if (!e) { return null; } else {
-                    return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>
-                  }
+                  if (!e) { return null; }
+                  return <Option key={e.manufactorCode} value={e.manufactorId}>{e.manufactorName}</Option>;
+
                 })}
               </Select>
             )}
 
           </FormItem>
-          <FormItem label="设备型号" colon={false} {...formItemLayout}  >
+          <FormItem label="设备型号" colon={false} {...formItemLayout} >
             {getFieldDecorator('addDeviceModeCodeName', {
               rules: [
                 { message: '设备型号不超过30字', required: true, type: 'string', max: 30 },
-              ]
+              ],
             })(
               <Input placeholder="请输入..." />
             )}
@@ -119,7 +120,7 @@ class ShowAddDeviceModeModal extends Component {
           <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
         </Form>
       </Modal>
-    )
+    );
   }
 }
-export default Form.create()(ShowAddDeviceModeModal)
+export default Form.create()(ShowAddDeviceModeModal);
