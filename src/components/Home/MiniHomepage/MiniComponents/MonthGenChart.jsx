@@ -102,7 +102,7 @@ class MonthGenChart extends Component{
           nameTextStyle: {
             fontSize: 10,
             color: '#06bdf4',
-            padding: [0, 45, 0, 0],
+            padding: [0, 0, 0, 0],
           },
           nameGap: 8,
           axisLabel: {
@@ -129,7 +129,7 @@ class MonthGenChart extends Component{
           nameTextStyle: {
             fontSize: 10,
             color: '#06bdf4',
-            padding: [0, 0, 0, 35],
+            padding: [0, 0, 0, 10],
           },
           nameGap: 8,
           axisLabel: {
