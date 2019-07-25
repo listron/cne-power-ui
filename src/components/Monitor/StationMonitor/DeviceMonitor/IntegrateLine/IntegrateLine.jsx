@@ -44,20 +44,21 @@ class IntegrateLine extends Component {
     const { stations } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
-    const backData={path: `/monitor/singleStation/${stationCode}`,name: '返回电站'};
+    const { stationName, stationType } = currentStation;
+    const backData={path: `/monitor/singleStation/${stationCode}`, name: '返回电站'};
     const breadCrumbData = {
-      breadData:[{
+      breadData: [{
         link: true,
-        name: currentStation.stationName || '--',
+        name: stationName || '--',
         path: `/monitor/singleStation/${stationCode}`,
-      },{
+      }, {
         name: '集电线路',
       }],
-      iconName: currentStation.stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
+      iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
     };
     return (
       <div className={styles.integrateLine}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor:'#fff' }}  backData={{...backData}} />
+        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor: '#fff' }} backData={{...backData}} />
         <div className={styles.deviceContent}>
           <IntegrateHeader
             {...this.props}
@@ -71,11 +72,11 @@ class IntegrateLine extends Component {
             deviceTypeCode={deviceTypeCode}
             deviceCode={deviceCode}
           />
-          <h3 className={styles.subTitleConfig}>下级设备</h3>
-          <SubBoxtransformer {...this.props} stationCode={stationCode} />
+          {stationType > 0 && <h3 className={styles.subTitleConfig}>下级设备</h3>}
+          {stationType > 0 && <SubBoxtransformer {...this.props} stationCode={stationCode} />}
         </div>
       </div>
-    ) 
+    );
   }
 }
 
