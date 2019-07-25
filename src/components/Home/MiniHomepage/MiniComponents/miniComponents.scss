@@ -193,6 +193,7 @@
   }
   .monthChart{
     @include nodataBox();
+    z-index: 99;
     margin: 0 10px;
   }
 }

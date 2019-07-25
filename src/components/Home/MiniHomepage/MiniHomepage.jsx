@@ -1,21 +1,8 @@
 import React, { Component } from 'react';
 import TopParts from './TopParts';
 import ContentParts from './ContentParts';
-// import MonthGenChart from '../../components/Home/HomeParts/MonthGenChart';
-// import { CompleteRate, OperationInfo } from '../../components/Home/HomeParts/HomeFuncParts';
-// import OutputPower from '../../components/Home/HomeParts/OutputPower';
-// import DeviceStatus from '../../components/Home/HomeParts/DeviceStatus';
-// import EqpHours from '../../components/Home/HomeParts/EqpHours';
-// import FaultList from '../../components/Home/HomeParts/FaultList';
-// import AlarmList from '../../components/Home/HomeParts/AlarmList';
-// import CenterMap from '../../components/Home/CenterMap';
 import styles from './miniHome.scss';
-// import { loginAction } from '../Login/loginAction';
-// import { commonAction } from '../alphaRedux/commonAction';
-// import { homepageAction } from './homepageAction';
-// import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import PropTypes from 'prop-types';
-// import Cookie from 'js-cookie';
 
 export default class MiniHomepage extends Component {
 
@@ -38,10 +25,6 @@ export default class MiniHomepage extends Component {
     resetMonitorData: PropTypes.func,
     resetCommonStore: PropTypes.func,
     getUnhandleList: PropTypes.func,
-  }
-
-  state = {
-    hasMultipleType: false, // 用户是否有多种类型电站。
   }
 
   componentDidMount() {
@@ -67,7 +50,6 @@ export default class MiniHomepage extends Component {
 
   gettedStationInfo = (mapStation) => {
     const stationTypeSet = new Set(mapStation.map(e=>e.stationType));
-    this.setState({ hasMultipleType: stationTypeSet.size > 1 });
     const originType = stationTypeSet.has(0) ? 0 : 1;
     this.getOriginData(originType);
     this.getMonitorData();
