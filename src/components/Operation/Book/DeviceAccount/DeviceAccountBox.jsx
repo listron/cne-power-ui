@@ -16,7 +16,7 @@ export default class DeviceAccountBox extends React.Component {
     regionList: PropTypes.array,
     stationsManufactorsList: PropTypes.array,
     deviceModeList: PropTypes.array,
-    getRegion: PropTypes.func,
+    getRegionStation: PropTypes.func,
     getStationsManufactorsList: PropTypes.func,
     getDeviceModeList: PropTypes.func,
     getDeviceAccountList: PropTypes.func,
@@ -43,10 +43,10 @@ export default class DeviceAccountBox extends React.Component {
 
   componentDidMount() {
     const {
-      getRegion,
+      getRegionStation,
     } = this.props;
     // 接口
-    getRegion();
+    getRegionStation();
   }
 
   // 分页
@@ -148,7 +148,7 @@ export default class DeviceAccountBox extends React.Component {
     // 设备型号列表
     const paramsMode = {
       manufactorId: value === '0' ? '0' : value,
-      modeOption: '', // 设备型号
+      stationCode: stationCodes.join(),
     };
     // table列表
     const paramsList = {
@@ -165,6 +165,7 @@ export default class DeviceAccountBox extends React.Component {
     };
     this.setState({
       manufactorsOption: value,
+      modeOption: '', // 设备型号
     }, () => {
       // 接口
       getDeviceAccountList(paramsList);
@@ -243,9 +244,11 @@ export default class DeviceAccountBox extends React.Component {
       return <Option key={cur.manufactorId} value={cur.manufactorId}>{cur.manufactorName}</Option>;
     });
     // 是否有数据
-    const deviceList = deviceModeList && deviceModeList[0] && deviceModeList[0].modeDatas && deviceModeList[0].modeDatas;
+    const deviceList = deviceModeList && deviceModeList.map(cur => {
+      return cur.modeDatas;
+    });
     // 设备型号
-    const deviceModeItem = deviceList && deviceList.map(cur => {
+    const deviceModeItem = deviceList && deviceList.flat(Infinity).map(cur => {
       return <Option key={cur.modeId} value={cur.modeId}>{cur.modeName}</Option>;
     });
     return (

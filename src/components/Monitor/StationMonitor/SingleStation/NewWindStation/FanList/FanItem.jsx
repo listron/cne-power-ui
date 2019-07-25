@@ -12,7 +12,6 @@ class FanItem extends React.Component {
   static propTypes = {
     fanList: PropTypes.object,
     match: PropTypes.object,
-    deviceTypeCode: PropTypes.number,
     cardPointParams: PropTypes.string,
     stationCode: PropTypes.string,
     deviceList: PropTypes.array,
@@ -150,7 +149,7 @@ class FanItem extends React.Component {
   renderPopover = (item) => {
     let needData = [
       { name: '风速', value: 'windSpeed', point: 2, unit: 'm/s' },
-      { name: '实时功率', value: 'devicePower', point: 2, unit: 'kw' },
+      { name: '实时功率', value: 'devicePower', point: 2, unit: 'kW' },
       { name: '应发功率', value: 'devicePlanPower', point: 2, unit: 'kW' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
       { name: '容量', value: 'deviceCapacity', point: 2, unit: 'kW' },
@@ -169,7 +168,7 @@ class FanItem extends React.Component {
               <div className={styles.popColumn} key={index}>
                 <div>{e.name}</div>
                 <div>
-                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true, e.quantity)}</span>
+                  <span className={styles.value}>{dataFormats(item[e.value], '--', e.point, true)}</span>
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>

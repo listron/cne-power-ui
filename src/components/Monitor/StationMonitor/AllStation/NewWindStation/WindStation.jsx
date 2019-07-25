@@ -33,6 +33,7 @@ class WindStation extends React.Component {
     capabilityDataTime: PropTypes.number,
     powerTime: PropTypes.number,
     capabilityLoading: PropTypes.bool,
+    powerLoading: PropTypes.bool,
   }
   constructor(props, context) {
     super(props, context);
@@ -131,7 +132,7 @@ class WindStation extends React.Component {
   render() {
     const { currentPage, pageSize, checked, stationType } = this.state;
     const { windMonitorStation, loading, stationShowType, capabilityData, powerData, getRealMonitorPower, history, stopRealCharstData, scatterData } = this.props;
-    const { capabilityDataTime, scatterTime, powerTime,capabilityLoading } = this.props;
+    const { capabilityDataTime, scatterTime, powerTime, capabilityLoading } = this.props;
     const { stationDataSummary = {}, stationDataList = {} } = windMonitorStation;
     const deviceStatus = [
       { name: '运行', value: 'normalNum' },
@@ -206,14 +207,23 @@ class WindStation extends React.Component {
                   capabilityData={capabilityData}
                   yAxisUnit={'MW'}
                   capabilityDataTime={capabilityDataTime}
-                  capabilityLoading={capabilityLoading}
+                  loading={capabilityLoading}
                 />
               </div>
               <div className={styles.chartsBox}>
-                <PowerDiagram powerData={powerData} onChange={this.powerDiagramChange} powerTime={powerTime} />
+                <PowerDiagram
+                  powerData={powerData}
+                  onChange={this.powerDiagramChange}
+                  powerTime={powerTime}
+                  loading={this.props.powerLoading} />
               </div>
               <div className={styles.chartsBox}>
-                <SpeedScatter scatterData={scatterData} type={'allStation'} scatterTime={scatterTime} />
+                <SpeedScatter
+                  scatterData={scatterData}
+                  type={'allStation'}
+                  scatterTime={scatterTime}
+                  loading={this.props.scatterLoading || false}
+                />
               </div>
             </div>}
         </div>

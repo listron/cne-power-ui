@@ -115,14 +115,14 @@ class HistorySearch extends Component {
   }
 
   selectedDevice = (devices) => { // 设备选择
-    const { getPointInfo, changeHistoryStore, queryParam } = this.props;
+    const { getPointInfo, changeHistoryStore, queryParam, getListHistory, getChartHistory, listParam } = this.props;
     const { timeInterval } = queryParam;
     changeHistoryStore({
       chartTime: null,
       queryParam: {
         ...queryParam,
         deviceFullCodes: devices,
-        devicePoints: [],
+        // devicePoints: [],
       },
       allHistory: {},
       partHistory: {},
@@ -131,17 +131,33 @@ class HistorySearch extends Component {
       deviceFullCodes: devices,
       timeInterval,
     });
+    getChartHistory({
+      queryParam: {
+        ...queryParam,
+        deviceFullCodes: devices,
+      },
+    });
+    getListHistory({
+      queryParam: {
+        ...queryParam,
+        deviceFullCodes: devices,
+      },
+      listParam
+    });
   }
 
-  startChange = (startTime) => {
+  startChange = (nowStartTime) => {
     const { queryParam } = this.props;
-    const { endTime } = queryParam;
-    if (moment().isBefore(startTime, 's')) {
-      startTime = moment();
-    } else if (endTime.isBefore(startTime, 's')) {
-      startTime = moment(endTime);
+    const { endTime, startTime } = queryParam;
+    if (moment(nowStartTime).isSame(startTime,'d')) {
+      return;
     }
-    this.historyDataFetch({ startTime });
+    if (moment().isBefore(nowStartTime, 's')) {
+      nowStartTime = moment();
+    } else if (endTime && endTime.isBefore(nowStartTime, 's')) {
+      nowStartTime = moment(endTime);
+    }
+    this.historyDataFetch({ startTime: nowStartTime, endTime: null });
   }
 
   endChange = (endTime) => {
@@ -167,13 +183,15 @@ class HistorySearch extends Component {
     const { queryParam } = this.props;
     const { endTime, timeInterval } = queryParam;
     // const disableStart = timeInterval === 10 ? moment(endTime).subtract(1, 'M') : moment(endTime).subtract(1, 'd');
-    return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
+    if (endTime) {
+      return moment().isBefore(date,'D') || endTime.isBefore(date,'D') // || date.isBefore(disableStart, 'D');
+    }
   }
   
   disableStartTime = (time) => {
     const { queryParam } = this.props;
     const { endTime } = queryParam;
-    if (endTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
+    if (endTime && endTime.isSame(time, 'd')){ // 同一天，不可大于结束时间
       const endHour = endTime.hour();
       const endMinute = endTime.minute();
       const endSecond = endTime.second();
@@ -216,13 +234,13 @@ class HistorySearch extends Component {
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
-    const { queryParam, changeHistoryStore, getPointInfo, recordedMinuteStart, recordedMinuteEnd } = this.props;
-    const { timeInterval, deviceFullCodes } = queryParam;
+    const { queryParam, changeHistoryStore, getPointInfo, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory } = this.props;
+    const { timeInterval, deviceFullCodes, devicePoints } = queryParam;
     const tmpQueryParam = {
       ...queryParam,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
-      devicePoints: [],
+      // devicePoints: [],
     }
     if (interval === 10) { // 由秒级数据切换至10min数据
       changeHistoryStore({
@@ -234,12 +252,25 @@ class HistorySearch extends Component {
         allHistory: {},
         partHistory: {},
       });
-      getPointInfo({
-        deviceFullCodes,
-        timeInterval: interval,
+      // getPointInfo({
+      //   deviceFullCodes,
+      //   timeInterval: interval,
+      // });
+      getChartHistory({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: recordedMinuteStart,
+          endTime: recordedMinuteEnd,
+        },
+      });
+      getListHistory({ 
+        queryParam: {
+          ...tmpQueryParam,
+        },
+        listParam 
       });
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
-      message.info('请重新选择设备和时间');
+      // message.info('请重新选择设备和时间');
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
@@ -249,9 +280,22 @@ class HistorySearch extends Component {
         allHistory: {},
         partHistory: {},
       });
-      getPointInfo({
-        deviceFullCodes: deviceFullCodes.slice(0, 2),
-        timeInterval: interval,
+      // getPointInfo({
+      //   deviceFullCodes: deviceFullCodes.slice(0, 2),
+      //   timeInterval: interval,
+      // });
+      getChartHistory({
+        queryParam: {
+          ...tmpQueryParam,
+          startTime: moment().subtract(1, 'day').startOf('day'),
+          endTime: moment().subtract(1, 'day').endOf('day'),
+        },
+      });
+      getListHistory({ 
+        queryParam: {
+          ...tmpQueryParam,
+        },
+        listParam 
       });
     } else { // 秒级数据( 1s与5s)切换
       this.historyDataFetch({ timeInterval });

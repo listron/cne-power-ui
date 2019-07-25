@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './historyStyle.scss';
 import moment from 'moment';
 import path from '../../../../constants/path';
+import cookie from 'js-cookie';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -44,6 +45,7 @@ class HistoryDataType extends Component {
 
   exportHistory = () => { // '导出历史数据excel'
     const { downLoadFile, queryParam, enterpriseId } = this.props;
+    const enterpriseCode = cookie.get('enterpriseCode');
     const url = `${APIBasePath}${monitor.exportHistory}`;
     let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
     startTime = moment(startTime).utc().format();
@@ -57,6 +59,7 @@ class HistoryDataType extends Component {
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         enterpriseId,
+        enterpriseCode,
         timeZone,
         startTime,
         endTime,
@@ -73,12 +76,12 @@ class HistoryDataType extends Component {
           <Icon onClick={this.showChart} type="bar-chart" className={historyType === 'chart'? styles.active : styles.normal} />
           <Icon onClick={this.showList} type="bars" className={historyType === 'list'? styles.active : styles.normal} />
         </div>
-        {historyType === 'list' && <Button
+        <Button
           className={styles.export}
           loading={downloading}
           onClick={this.exportHistory}
           disabled={dataList.length === 0}
-        >导出</Button>}
+        >导出</Button>
       </div>
     )
   }

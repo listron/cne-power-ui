@@ -71,7 +71,7 @@ class DataExportSearch extends Component{
   }
 
   selectStation = (selectedStationInfo) => { // 电站选择。
-    const { getAvailableDeviceType, changeDataExportStore, queryParams } = this.props;
+    const { getAvailableDeviceType, changeDataExportStore, queryParams, pointsSeleted } = this.props;
     const { stationCode } = selectedStationInfo[0];
     getAvailableDeviceType({ stationCode });
     changeDataExportStore({ 
@@ -171,7 +171,7 @@ class DataExportSearch extends Component{
   }
 
   selectTimeSpace = (interval) => { // 间隔时间选择
-    const { queryParams, changeDataExportStore, recordedMinuteStart, recordedMinuteEnd, getPointInfo, pointsSeleted } = this.props;
+    const { queryParams, changeDataExportStore, getPointInfo } = this.props;
     const { timeInterval, deviceFullCodes } = queryParams;
     const tmpQueryParam = {
       ...queryParams,
@@ -183,8 +183,6 @@ class DataExportSearch extends Component{
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
         },
       });
       getPointInfo({
@@ -195,8 +193,6 @@ class DataExportSearch extends Component{
       changeDataExportStore({
         queryParams: {
           ...tmpQueryParam,
-          startTime: moment().subtract(1, 'month').startOf('month'),
-          endTime: moment().subtract(1, 'month').endOf('month'),
         },
       });
       getPointInfo({

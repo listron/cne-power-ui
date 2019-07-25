@@ -14,7 +14,9 @@ import moment from 'moment';
 const FormItem = Form.Item;
 const Option = Select.Option;
 class AddDeviceForm extends Component {
-  static propTypes = {};
+  static propTypes = {
+    deviceFactorsData: PropTypes.object,
+  };
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -209,7 +211,10 @@ class AddDeviceForm extends Component {
       connectDevice,
       addDeviceTypeData,
       addDeviceModeData,
-      deviceFactorsList,
+      deviceFactorsData: {
+        dataList,
+        isOperator,
+      },
       factorsDeviceModeData,
       addmanufactorId,
       addmodeId,
@@ -311,32 +316,31 @@ class AddDeviceForm extends Component {
                     className={styles.modelSelect}
                     placeholder="请选择设备厂家"
                     onChange={this.changeFactors}
-                    disabled={deviceFactorsList.length === 0}
+                    disabled={dataList.length === 0}
                   >
                     <Option key={'all'} value={''}>
                       请选择设备厂家
                     </Option>
-                    {deviceFactorsList.map((e, i) => {
+                    {dataList.map((e, i) => {
                       if (!e) {
                         return null;
-                      } 
-                        return (
-                          <Option key={e.manufactorCode} value={e.manufactorId}>
-                            {e.manufactorName}
-                          </Option>
-                        );
-                      
+                      }
+                      return (
+                        <Option key={i.toString()} value={e.manufactorId}>
+                          {e.manufactorName}
+                        </Option>
+                      );
                     })}
                   </Select>
                 )}
-                {!!showAddfactorIcon && (
-                  <span
+                {
+                  isOperator === '0' && (<span
                     className={styles.fontColor}
                     onClick={this.showAddfactors}
                   >
                     <Icon type="plus-circle" />
-                  </span>
-                )}
+                  </span>)
+                }
               </FormItem>
 
               <FormItem
@@ -361,13 +365,12 @@ class AddDeviceForm extends Component {
                     {factorsDeviceModeData.map((e, i) => {
                       if (!e) {
                         return null;
-                      } 
-                        return (
-                          <Option key={e.modeId} value={e.deviceModeCode}>
-                            {e.modeName}
-                          </Option>
-                        );
-                      
+                      }
+                      return (
+                        <Option key={i.toString()} value={e.deviceModeCode}>
+                          {e.modeName}
+                        </Option>
+                      );
                     })}
                   </Select>
                 )}
@@ -407,16 +410,15 @@ class AddDeviceForm extends Component {
                       {connectDevice.map((e, i) => {
                         if (!e) {
                           return null;
-                        } 
-                          return (
-                            <Option
-                              key={e.deviceFullCode}
-                              value={e.deviceFullCode}
-                            >
-                              {e.deviceName}
-                            </Option>
-                          );
-                        
+                        }
+                        return (
+                          <Option
+                            key={i.toString()}
+                            value={e.deviceFullCode}
+                          >
+                            {e.deviceName}
+                          </Option>
+                        );
                       })}
                     </Select>
                   )}

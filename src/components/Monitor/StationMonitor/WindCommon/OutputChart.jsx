@@ -22,9 +22,9 @@ class OutputChart extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { capabilityDataTime,capabilityLoading } = this.props;
+        const { capabilityDataTime, loading } = this.props;
         const preTime = prevProps.capabilityDataTime;
-        if (capabilityDataTime !== preTime || capabilityLoading!=prevProps.capabilityLoading) { // 数据重新请求后重绘。
+        if (capabilityDataTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
@@ -40,14 +40,14 @@ class OutputChart extends Component {
     }
 
     drawCharts = (params) => {
-        const { capabilityData, yAxisUnit, capabilityLoading } = params;
+        const { capabilityData, yAxisUnit, loading } = params;
         let yAxisType = `功率(${yAxisUnit})`
         const chartsBox = document.getElementById('capabilityDiagram');
         const capabilityPower = capabilityData.map(e => dataFormats(this.unitFormarts(e.stationPower, yAxisUnit), '--', 2, true));
         const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous || e.windSpeed, '--', 2, true));
         const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
         const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous || e.windSpeed);
-        const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) && !capabilityLoading ? showNoData : hiddenNoData;
+        const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) && !loading ? showNoData : hiddenNoData;
         const capabilityDiagram = echarts.init(chartsBox);
         const lineColor = '#666';
         const color = ['#c57576', '#3e97d1'];
@@ -59,7 +59,7 @@ class OutputChart extends Component {
         }
         const minPower = Math.min(...capabilityPower);
         const minRadiation = Math.min(...capabilityRadiation);
-        capabilityLoading ? capabilityDiagram.showLoading('default', { color: '#199475' }) : capabilityDiagram.hideLoading();
+        loading ? capabilityDiagram.showLoading('default', { color: '#199475' }) : capabilityDiagram.hideLoading();
         const capabilityOption = {//出力图
             graphic: capabilityGraphic,
             title: {

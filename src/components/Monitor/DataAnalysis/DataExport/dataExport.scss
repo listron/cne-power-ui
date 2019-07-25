@@ -203,4 +203,18 @@
   .renewal{
     padding-left: 18px;
   }
+  .devicePointCont{
+    :global{
+      .ant-popover-inner-content{
+          width: 354px;
+          max-height: 300px;
+          overflow-y: auto;
+          span{
+            width: 148px;
+            display: inline-block;
+            height: 30px;
+          }
+      }
+    }
+  }
 }

@@ -25,7 +25,12 @@ class TableList extends Component {
         handleBatch: PropTypes.func,
         stopBatch: PropTypes.func,
         delDocket: PropTypes.func,
-
+        downLoadFile: PropTypes.func,
+        stopRight: PropTypes.array,
+        loading: PropTypes.bool,
+        docketList: PropTypes.array,
+        newImg: PropTypes.array,
+        totalNum: PropTypes.number,
     }
 
 
@@ -63,6 +68,8 @@ class TableList extends Component {
 
     onSelectChange = (keys, record) => { // 选择进行操作 判断权限
         this.setState({ selectedRows: record });
+        const { stopRight } = this.props;
+        const rightNodeCode = stopRight.map(e => e.nodeCode); // 作废权限的nodeCode
         if (keys.length > 0) {
             const userId = Cookie.get('userId');
             const dealUserIds = [], dealRoleIds = [];
@@ -81,11 +88,15 @@ class TableList extends Component {
             });
             const right = dealUserIds.every(e => e.includes(userId));
             const stateCode = [...new Set(record.map(e => e.stateCode))];
+            const ableNodes = [...new Set(record.map(e => e.ableNodes))];
             if (stateCode.length > 1 || !right) {
                 review = false; complete = false;
             } else {
                 if (stateCode[0] === '101') { review = true; complete = false; }
                 if (stateCode[0] === '103') { review = false; complete = true; }
+            }
+            if (ableNodes.length > 1 || ableNodes[0] !== rightNodeCode[0]) { // 作废的权限
+                obsolete = false;
             }
             this.setState({ review, complete, obsolete });
         } else {
@@ -117,9 +128,10 @@ class TableList extends Component {
         }
 
     }
+
     resetStatus = () => {
         this.setState({
-            showWarningTip: false, batchVisible: false, selectedRows: [],
+            showWarningTip: false, batchVisible: false, selectedRows: [], operatType: '',
             review: false, complete: false, obsolete: false,
         });
     }
@@ -314,12 +326,14 @@ class TableList extends Component {
                         <div className={`${styles.commonButton} ${!complete && styles.disabled}`}
                             onClick={() => { this.handleBatch('complete'); }}>消票</div>
                         {stopRight.map((e) => {
-                            return (
-                                <div className={`${styles.commonButton} ${(!obsolete || !e.isAbleOper) && styles.disabled}`}
-                                    onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
-                                    {e.nodeName}
-                                </div>
-                            );
+                            if (e.nodeName) {
+                                return (
+                                    <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
+                                        onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
+                                        {e.nodeName}
+                                    </div>
+                                );
+                            }
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}

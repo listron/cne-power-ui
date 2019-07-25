@@ -353,9 +353,7 @@ function* getPartsFactorsList(action) {
 function* getfactorsPartsMode(action) {
   //获取某组件厂家下的设备型号
   const { payload } = action;
-  const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${
-    payload.manufactorId
-    }`;
+  const url = `${APIBasePath}${operation.getfactorsDeviceMode}/${payload.manufactorId}`;
   // const url = `/mock/v3/ledger/devicemodes/manufactorId`;
   try {
     const response = yield call(axios.get, url, { params: { ...payload } });
