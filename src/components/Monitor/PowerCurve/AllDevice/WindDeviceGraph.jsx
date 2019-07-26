@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Switch } from 'antd';
 import styles from './allDeviceCurve.scss';
@@ -17,7 +17,7 @@ class WindDeviceGraph extends Component {
     changeAllDeviceStore: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -31,8 +31,8 @@ class WindDeviceGraph extends Component {
       stationCode,
       startTime: beginTime,
       endTime: stopTime,
-      chartLoading
-    })
+      chartLoading,
+    });
   }
 
   onChange = (checked) => {
@@ -40,16 +40,16 @@ class WindDeviceGraph extends Component {
     const beginTime = moment(startTime).format('YYYY-MM-DD');
     const stopTime = moment(endTime).format('YYYY-MM-DD');
     this.props.changeAllDeviceStore({
-      checkedAll: checked
-    })
+      checkedAll: checked,
+    });
     this.drawChart({
       dataList: (this.props.allData || {}),
       checkedAll: checked,
       stationCode,
       startTime: beginTime,
       endTime: stopTime,
-      chartLoading
-    })
+      chartLoading,
+    });
   }
 
   changeSelect = (checked) => {
@@ -58,59 +58,59 @@ class WindDeviceGraph extends Component {
     theoryDataList.map(item => {
       list.push({
         ...item,
-        deviceName: item.deviceModeName
-      })
-    })
+        deviceName: item.deviceModeName,
+      });
+    });
     const params = [...actualDataList, ...list];
-    let select = {};
+    const select = {};
     params.forEach((e, i) => {
       e.dataList.forEach((item, i) => {
         select[e.deviceName] = checked;
-      })
-    })
-    return select
+      });
+    });
+    return select;
 
   }
 
   compare = (key) => {
     return (a, b) => {
-      let val1 = +a[key];
-      let val2 = +b[key];
+      const val1 = +a[key];
+      const val2 = +b[key];
       if (val1 < val2) { //正序
         return -1;
       } else if (val1 > val2) {
         return 1;
-      } else {
-        return 0;
       }
-    }
+      return 0;
+
+    };
   }
-  drawChart = ({dataList, checkedAll, stationCode, startTime, endTime,chartLoading}) => {
+  drawChart = ({ dataList, checkedAll, stationCode, startTime, endTime, chartLoading }) => {
     const { actualDataList = [], theoryDataList = [] } = dataList;
     const list = [];
     theoryDataList.map(item => {
       list.push({
         ...item,
-        deviceName: item.deviceModeName
-      })
-    })
+        deviceName: item.deviceModeName,
+      });
+    });
     const params = [...actualDataList, ...list];
     const powercurveChart = echarts.init(document.getElementById('powerCurveChart'));
     chartLoading ? powercurveChart.showLoading('default', { color: '#199475' }) : powercurveChart.hideLoading();
     const filterDeviceName = params.map(e => e.deviceName);
     const filterPowerAvg = params.map((e, i) => {
       return e.dataList.map((item, i) => {
-        return item.powerAvg
-      })
+        return item.powerAvg;
+      });
     });
     const hasData = filterPowerAvg.length > 0 ? filterPowerAvg.reduce((pre, next) => {
-      return pre.concat(next)
+      return pre.concat(next);
     }) : [];
-    const inverterTenMinGraphic = ( hasData.length === 0) ? showNoData : hiddenNoData;
+    const inverterTenMinGraphic = (hasData.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     params.forEach((e, i) => {
-      e.dataList.sort(this.compare('windSpeedCenter'))
-    })
+      e.dataList.sort(this.compare('windSpeedCenter'));
+    });
     const option = {
       graphic: inverterTenMinGraphic,
       legend: {
@@ -129,7 +129,7 @@ class WindDeviceGraph extends Component {
           color: lineColor,
           fontSize: 12,
         },
-        selected: this.changeSelect(checkedAll)
+        selected: this.changeSelect(checkedAll),
       },
       grid: {
         top: 90,
@@ -142,7 +142,7 @@ class WindDeviceGraph extends Component {
         show: true,
         formatter: (params) => {
           const info = params.data;
-          const windSpeedInterval = info.windSpeedInterval.replace(',', '~')
+          const windSpeedInterval = info.windSpeedInterval.replace(',', '~');
           if (params.seriesName.search('理论') !== -1) {
             return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
@@ -154,7 +154,7 @@ class WindDeviceGraph extends Component {
             <div class=${styles.lineStyle}>风速区间:${windSpeedInterval}m/s</div>
             <div class=${styles.lineStyle}>风速:  ${dataFormats(+info.windSpeedCenter, '--', 2, true)}m/s</div>
             <div class=${styles.lineStyle}>功率: ${dataFormats(+info.powerAvg, '--', 2, true)}kW</div>
-          </div>`
+          </div>`;
           }
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
@@ -166,16 +166,16 @@ class WindDeviceGraph extends Component {
             <div class=${styles.lineStyle}>型号:  ${info.deviceModeName}</div>
             <div class=${styles.lineStyle}>平均风速:  ${dataFormats(+info.windSpeedAvg, '--', 2, true)}m/s</div>
             <div class=${styles.lineStyle}>平均功率: ${dataFormats(+info.powerAvg, '--', 2, true)}kW</div>
-          </div>`
+          </div>`;
         },
         backgroundColor: '#fff',
         axisPointer: {
           type: 'cross',
           label: {
             backgroundColor: lineColor,
-          }
+          },
         },
-        backgroundColor: '#fff',
+
         padding: 10,
         textStyle: {
           color: 'rgba(0, 0, 0, 0.65)',
@@ -195,7 +195,7 @@ class WindDeviceGraph extends Component {
           lineStyle: {
             color: ['#dfdfdf'],
             type: 'dashed',
-          }
+          },
         },
         axisTick: {
           show: false,
@@ -212,7 +212,7 @@ class WindDeviceGraph extends Component {
         axisPointer: {
           label: {
             show: false,
-          }
+          },
         },
       },
       yAxis: [
@@ -222,9 +222,7 @@ class WindDeviceGraph extends Component {
           nameTextStyle: {
             color: lineColor,
           },
-          splitLine: {
-            show: false
-          },
+
           axisLine: {
             lineStyle: {
               color: '#dfdfdf',
@@ -235,7 +233,7 @@ class WindDeviceGraph extends Component {
             lineStyle: {
               color: ['#dfdfdf'],
               type: 'dashed',
-            }
+            },
           },
           axisLabel: {
             color: lineColor,
@@ -243,31 +241,31 @@ class WindDeviceGraph extends Component {
           axisTick: {
             show: false,
           },
-        }
+        },
       ],
 
       series: params.map((e, i) => {
-        let lineData = [];
-        let sortData = e.dataList.sort(this.compare('windSpeedCenter'));
+        const lineData = [];
+        const sortData = e.dataList.sort(this.compare('windSpeedCenter'));
         sortData.forEach((item, i) => {
           lineData.push({
             value: [item.windSpeedCenter, item.powerAvg],
             ...item,
             ...e,
-          })
-        })
+          });
+        });
         return {
           name: `${e.deviceName}`,
           deviceMode: `${e.deviceFullCode}`,
           type: 'line',
           label: {
             normal: {
-              show: false
-            }
+              show: false,
+            },
           },
           data: lineData,
-        }
-      })
+        };
+      }),
     };
     powercurveChart.setOption(option, 'notMerge');
     powercurveChart.resize();
@@ -276,8 +274,8 @@ class WindDeviceGraph extends Component {
       if (params.seriesName.search('理论') !== -1) {
         return;
       }
-      return stationCode && this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`)
-    })
+      return stationCode && this.props.history.push(`/monitor/powercurve/${stationCode}/${params.data.deviceFullCode}/${startTime}~${endTime}`);
+    });
   }
   render() {
     const { checkedAll } = this.props;
@@ -286,7 +284,7 @@ class WindDeviceGraph extends Component {
         <div id="powerCurveChart" className={styles.powerCurveChart}></div>
         <div className={styles.switchStyle}> <Switch checked={checkedAll} onChange={this.onChange} /> 全部显示</div>
       </div>
-    )
+    );
   }
 }
-export default (WindDeviceGraph)
+export default (WindDeviceGraph);

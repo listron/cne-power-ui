@@ -245,7 +245,7 @@ class AddPartsInfo extends React.Component {
                   key="0"
                   value={'0'}
                   selectable={false}
-                // disabled={true}
+                  disabled={true}
                 >
                   {this.renderTreeNodes(partAssetsTree)}
                 </TreeNode>

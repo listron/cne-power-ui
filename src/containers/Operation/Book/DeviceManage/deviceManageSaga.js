@@ -32,36 +32,44 @@ function* getDeviceList(action) {
     }`;
   try {
     yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        ...payload,
-      },
-    });
     const response = yield call(axios.post, url, {
       ...payload,
       sortField: payload.sortField.replace(/[A-Z]/g, e => `_${e.toLowerCase()}`), //重组字符串
     });
-    const totalNum = response.data.data.totalNum || 0;
-    const { pageSize } = payload;
-    let { pageNum } = payload;
-    const maxPage = Math.ceil(totalNum / pageSize);
-    if (totalNum === 0) {
-      // 总数为0时，展示0页
-      pageNum = 1;
-    } else if (maxPage < pageNum) {
-      // 当前页已超出
-      pageNum = maxPage;
+    if (response.data.code === '10000') {
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          ...payload,
+        },
+      });
+      const totalNum = response.data.data.totalNum || 0;
+      const { pageSize } = payload;
+      let { pageNum } = payload;
+      const maxPage = Math.ceil(totalNum / pageSize);
+      if (totalNum === 0) {
+        // 总数为0时，展示0页
+        pageNum = 1;
+      } else if (maxPage < pageNum) {
+        // 当前页已超出
+        pageNum = maxPage;
+      }
+
+      yield put({
+        type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+        payload: {
+          deviceList: response.data.data.context || [],
+          totalNum,
+          pageNum,
+        },
+      });
+
+
+
     }
 
-    yield put({
-      type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      payload: {
-        deviceList: response.data.data.context || [],
-        totalNum,
-        pageNum,
-      },
-    });
+
+
   } catch (e) {
     console.log(e);
     yield put({
@@ -326,6 +334,7 @@ function* importStationDevice(action) {
     Path.APISubPaths.system.importStationDevice
     }/${payload.stationCode}`;
   try {
+    // yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
     const response = yield call(axios, {
       method: 'post',
       url,

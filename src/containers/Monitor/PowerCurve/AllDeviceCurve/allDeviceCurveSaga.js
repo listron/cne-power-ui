@@ -8,30 +8,31 @@ import moment from 'moment';
 const { APIBasePath } = Path.basePaths;
 const { monitor } = Path.APISubPaths;
 
-function *getAllDeviceCurveData(action) { 
+function* getAllDeviceCurveData(action) {
   const { payload } = action;
+  const { startTime, endTime } = payload;
   try {
-    const url = `${APIBasePath}${monitor.getAllDeviceCurveData}` 
+    const url = `${APIBasePath}${monitor.getAllDeviceCurveData}`;
     //  const url = '/mock/wind/powercurve/fans/chart'; 
     yield put({
-      type:allDeviceCurveAction.changeAllDeviceStore,
+      type: allDeviceCurveAction.changeAllDeviceStore,
       payload: {
         ...payload,
-         chartLoading:true
-      }
-    })
-    const response = yield call(axios.post, url,payload);
+        chartLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, { ...payload, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() });
     if (response.data.code === '10000') {
       yield put({
-        type:allDeviceCurveAction.changeAllDeviceStore,
+        type: allDeviceCurveAction.changeAllDeviceStore,
         payload: {
-          allData:response.data.data||{},
-          allDeviceCurveData:response.data.data.actualDataList||[],
-          theoryDataList:response.data.data.actualDataList||[],
-          chartLoading:false
+          allData: response.data.data || {},
+          allDeviceCurveData: response.data.data.actualDataList || [],
+          theoryDataList: response.data.data.actualDataList || [],
+          chartLoading: false,
           // ...payload
-        }
-      })
+        },
+      });
     } else {
       throw response.data;
     }
@@ -39,22 +40,23 @@ function *getAllDeviceCurveData(action) {
     message.error('获取功率曲线图表失败!');
     console.log(error);
     yield put({
-      type:allDeviceCurveAction.changeAllDeviceStore,
+      type: allDeviceCurveAction.changeAllDeviceStore,
       payload: {
-        allData:{},
-        allDeviceCurveData:[],
-        theoryDataList:[],
-        chartLoading:false
-      }
-    })
+        allData: {},
+        allDeviceCurveData: [],
+        theoryDataList: [],
+        chartLoading: false,
+      },
+    });
   }
 }
-function *getPowerdeviceList(action) { 
+function* getPowerdeviceList(action) {
   const { payload } = action;
+  const { startTime, endTime } = payload;
   try {
     // const url = '/mock/monitor/dataAnalysisSecendInteral'; 
-    const url = `${APIBasePath}${monitor.getPowerdeviceList}` 
-    const response = yield call(axios.post, url,payload);
+    const url = `${APIBasePath}${monitor.getPowerdeviceList}`;
+    const response = yield call(axios.post, url, { ...payload, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() });
     // const total=response.data.data.pageCount||0;
     // let { pageNum, pageSize } = payload;
     // const maxPage = Math.ceil(total / pageSize);
@@ -65,12 +67,12 @@ function *getPowerdeviceList(action) {
     // }
     if (response.data.code === '10000') {
       yield put({
-        type:allDeviceCurveAction.changeAllDeviceStore,
+        type: allDeviceCurveAction.changeAllDeviceStore,
         payload: {
-          powerCurveListData:response.data.data||[],
+          powerCurveListData: response.data.data || [],
           // total,
-        }
-      })
+        },
+      });
     } else {
       throw response.data;
     }
