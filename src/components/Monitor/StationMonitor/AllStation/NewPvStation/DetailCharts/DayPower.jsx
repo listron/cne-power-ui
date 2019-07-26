@@ -5,7 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -69,7 +69,7 @@ class DayPower extends Component {
             powerDiagram.dispose();
             powerDiagram = echarts.init(chartsBox, themeColor);
         }
-        loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
+        chartsLoading(powerDiagram, loading);
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = {
             graphic: powerGraphic,

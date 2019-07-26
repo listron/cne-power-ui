@@ -19,21 +19,24 @@ class GpsMap extends Component {
   }
 
   componentDidMount() {
-    const { testId, personnelGpsData } = this.props;
+    const { testId, personnelGpsData, theme } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, personnelGpsData);
+    this.setMapChart(testChart, personnelGpsData, theme);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { testId, personnelGpsData } = nextProps;
+    const { testId, personnelGpsData, theme } = nextProps;
+    const testChart = echarts.init(document.getElementById(testId));
     if (this.props.personnelGpsData.length !== nextProps.personnelGpsData.length) {
-      const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, personnelGpsData);
+      this.setMapChart(testChart, personnelGpsData, theme);
+    }
+    if (this.props.theme !== nextProps.theme) {
+      this.setMapChart(testChart, personnelGpsData, theme);
     }
   }
 
-  setMapChart = (testChart, personnelGpsData) => {
-    const styleJson = [{
+  setMapChart = (testChart, personnelGpsData, theme) => {
+    const darkStyleJson = [{
       'featureType': 'water',
       'elementType': 'all',
       'stylers': {
@@ -44,12 +47,6 @@ class GpsMap extends Component {
       'elementType': 'all',
       'stylers': {
         'color': '#001568',
-      },
-    }, {
-      'featureType': 'railway',
-      'elementType': 'all',
-      'stylers': {
-        'visibility': 'off',
       },
     }, {
       'featureType': 'highway',
@@ -127,8 +124,104 @@ class GpsMap extends Component {
       'featureType': 'label',
       'elementType': 'labels.text.fill',
       'stylers': {
-        'color': '#00baffFF',
-        'weight': 10,
+        'color': '#666',
+      },
+    }];
+    const lightStyleJson = [{
+      'featureType': 'water',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'land',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#f3f3f3',
+      },
+    }, {
+      'featureType': 'railway',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#fdfdfd',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry.fill',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'poi',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'green',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'subway',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'manmade',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'local',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'boundary',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'building',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'label',
+      'elementType': 'labels.text.fill',
+      'stylers': {
+        'color': '#666',
       },
     }];
     const option = {
@@ -137,7 +230,7 @@ class GpsMap extends Component {
         zoom: 5,
         roam: true, //可放大缩小
         mapStyle: {
-          styleJson: styleJson,
+          styleJson: theme === 'dark' ? darkStyleJson : lightStyleJson,
         }, //地图样式配置
       },
       tooltip: {

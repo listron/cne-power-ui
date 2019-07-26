@@ -5,7 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 import { Radio } from 'antd';
@@ -164,7 +164,7 @@ class MonthPower extends Component {
             monthPowerChart.dispose();
             monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
         }
-        loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
+        chartsLoading(monthPowerChart, loading);
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         const powerOption = {

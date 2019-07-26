@@ -55,7 +55,7 @@ class PersonnelGps extends Component {
 
             </div>
             <div className={styles.createContent}>
-              <GpsMap testId={'personnelGps'} personnelGpsData={data} />
+              <GpsMap testId={'personnelGps'} personnelGpsData={data} theme={theme}/>
             </div>
           </div>
           <Footer theme={theme} />

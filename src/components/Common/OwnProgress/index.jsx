@@ -20,7 +20,7 @@ class OwnProgress extends React.Component {
         successPercent: PropTypes.any,
         fromRight: PropTypes.bool,
         active: PropTypes.bool,
-        theme: PropTypes.theme,
+        theme: PropTypes.string,
     }
 
     static defaultProps = {
