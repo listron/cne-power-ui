@@ -1,18 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import { message, Select, Spin } from 'antd';
-import { Link } from 'react-router-dom';
-import { dataFormats } from '../../../../../utils/utilFunc';
-import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
-import OutputTenMin from './OutputTenMin';
+import { Select, Spin } from 'antd';
 const Option = Select.Option;
 import SingleStaionList from './SingleStaionList';
 import { throttle } from 'lodash';
 
 
 
-class Test extends React.Component {
+class PvStationItem extends React.Component {
   static propTypes = {
     stationDataList: PropTypes.array,
     pvCapabilitydiagramsData: PropTypes.array,
@@ -23,6 +19,7 @@ class Test extends React.Component {
     regionName: PropTypes.string,
     changeMonitorStationStore: PropTypes.func,
     getPvCapabilitydiagrams: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -58,7 +55,6 @@ class Test extends React.Component {
   }
 
   componentWillReceiveProps(nextPorps) {
-    // console.log('数据推送过来了')
     let noChange = true; // 数据定时刷新 不增加滚动的列数
     const { areaChecked, stationType, aralmstatus, regionName } = this.props;
     if (areaChecked !== nextPorps.areaChecked || stationType !== nextPorps.stationType || aralmstatus !== nextPorps.aralmstatus || regionName !== nextPorps.regionName) { // 切换 区域、告警、状态、按区域分组 
@@ -79,8 +75,6 @@ class Test extends React.Component {
 
   changeStationData = ({ stationDataList = [], areaChecked = false, noChange = false }) => { // 处理数据 排序规则
     const { sortStatusName, ascend, selectStation } = this.state;
-    // console.time()
-    // console.time('jisuan')
     const filterStationList = selectStation ? stationDataList.filter(e => e.stationCode === selectStation) : stationDataList;
     const sortType = ascend ? 1 : -1;
     const stationSortList = filterStationList.sort((a, b) => { // 排序
@@ -95,7 +89,6 @@ class Test extends React.Component {
       newStationsList = newStationsList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']); });
     }
     this.setState({ newStationsList }, () => {
-      // console.timeEnd('jisuan')
       this.initRender(noChange);
     });
   }
@@ -184,7 +177,6 @@ class Test extends React.Component {
     const { stationDataList, pvCapabilitydiagramsData = [], monitorPvUnit } = this.props;
     const { sortStatusName, ascend, selectStation } = this.state;
     const { renderList } = this.state;
-    // console.log('pvCapabilitydiagramsData', pvCapabilitydiagramsData)
     const sortName = [
       { text: '默认排序', id: 'sort' },
       { text: '日利用小时 ', id: 'equivalentHours' },
@@ -208,7 +200,6 @@ class Test extends React.Component {
             onChange={this.conditionChange}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             getPopupContainer={() => this.refs.selectBody}
-          // value={selectStation}
           >
             <Option value={''} key={''}>{'全部电站'}</Option>
             {stationDataList.map(list => {
@@ -234,7 +225,6 @@ class Test extends React.Component {
               <div className={styles.staionsList}>
                 {list.stations.map((item, index) => {
                   const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
-                  // const filterChartData = [];
                   return (<SingleStaionList
                     singleStation={item}
                     filterChartData={filterChartData}
@@ -247,7 +237,6 @@ class Test extends React.Component {
 
           }) || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
           }
-          {/* {console.timeEnd()} */}
           {(renderList.length < stationDataList.length && !selectStation) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
 
           <div>
@@ -258,4 +247,4 @@ class Test extends React.Component {
     );
   }
 }
-export default (Test);
+export default (PvStationItem);

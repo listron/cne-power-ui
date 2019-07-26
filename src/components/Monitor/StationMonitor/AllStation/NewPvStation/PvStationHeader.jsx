@@ -39,7 +39,7 @@ class pvStationHeader extends React.Component {
             <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
             <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
           </div>
-          <OwnProgress percent={percent} active={true} />
+          <OwnProgress percent={percent} active={true} theme={theme} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>

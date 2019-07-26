@@ -151,7 +151,7 @@
       .activeStation {
         background: rgba(83, 104, 241, 0.15);
         border: 1px solid rgba(83, 104, 241, 0.6);
-        color: $font-color-invert;
+        color: $fontColor-invert;
         &::before {
           display: none;
         }
@@ -160,13 +160,13 @@
   }
 
   .allArea {
-    color: $font-color-invert;
-    background: $button-color-darker;
+    color: $fontColor-invert;
+    background: $button-primary;
     border-radius: 15px;
     width: 94px;
     height: 30px;
     i {
-      color: $font-color-invert;
+      color: $fontColor-invert;
     }
   }
   .regionSelect {
@@ -174,13 +174,13 @@
     border: 1px solid $border-color;
     box-shadow: inset 0 0 5px 2px $border-shadow-color;
     .regionSelectTop {
-      color: $font-color-invert;
+      color: $fontColor-invert;
     }
     .regionSelectCont {
-      color: $font-color-invert;
+      color: $fontColor-invert;
       .active {
         color: $themeColor;
-        background: $font-color-hover;
+        background: $fontColor-hover;
       }
       .normal {
         &:hover {

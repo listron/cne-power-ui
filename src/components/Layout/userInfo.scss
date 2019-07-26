@@ -1,60 +1,80 @@
-
-.layoutUser{
+.layoutUser {
   height: 100%;
-  .layoutUserContent{
+  .layoutUserContent {
     //max-width: 120px;
     min-width: 80px;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    .userLogo{
+    .userLogo {
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      background:#c7ceb2;
+      background: #c7ceb2;
       color: #fff;
       text-align: center;
       margin-right: 4px;
       line-height: 30px;
     }
-    .username{
+    .username {
       color: #fff;
       margin-right: 4px;
     }
-    .downIcon{
+    .downIcon {
       font-size: 14px;
       color: #fff;
     }
   }
 }
-.layoutUserDropdown{
+.layoutUserDropdown {
   // height: 100px;
   width: 100px;
-  background:#3e97d1;
+  // background: #3e97d1;
   padding: 0;
   margin-top: -4px;
   position: absolute;
-  top:0;
-  right:0;
-  .innerItem{
+  top: 0;
+  right: 0;
+  .innerItem {
     height: 50px;
     line-height: 50px;
-    color:#fff;
+    color: #fff;
     text-align: center;
     padding: 0;
-    .text{
+    .text {
       margin-right: 4px;
     }
-    :global{
-      .iconfont{
+    :global {
+      .iconfont {
         vertical-align: middle;
         margin-right: 4px;
         margin-left: 4px;
       }
     }
   }
-  .innerItem:hover{
-    background-color: rgba(0,13,52,0.20);
+}
+
+.light {
+  .layoutUserDropdown {
+    background: #3e97d1;
+  }
+  .innerItem {
+    color: #fff;
+  }
+  .innerItem:hover {
+    background-color: rgba(0, 13, 52, 0.2);
+  }
+}
+
+.dark {
+  .layoutUserDropdown {
+    background-color: #00baff;
+  }
+  .innerItem {
+    color: #fff;
+  }
+  .innerItem:hover {
+    background-color: #3e97d1;
   }
 }

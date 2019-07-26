@@ -1,15 +1,51 @@
 $background: #0c0a3e;
 $light-background: rgba(83, 104, 241, 0.15);
-$border-color: rgba(83, 104, 241, 0.6);
-$button-color-base: #00baff;
 $themeColor: #00baff;
 $promptColor: #205bac;
+
+// 字体颜色
+$fontColor: #00baff;
+$fontColor-invert: #fff;
+$fontColor-hover: #00f8ff;
+$fontColor-disabled: #205bac;
+$fontColor-warn: #f8e71c;
+
+// 按钮  不全
+$button-primary: #205bac;
+$button-add: #00baff; // 暂时
+$button-delete: #fd6e8f;
+$button-hover: #00baff; // $button-active button-focus
+$button-disabled: #161858;
+
+$border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
 
-$font-color: #00baff;
-$font-color-invert: #fff;
-$button-color-darker: #205bac;
-$font-color-warn: #f8e71c;
-$font-color-hover: #00f8ff;
+// 从左滑出  从上滑出  从下滑出
+$slide-backgound: #205bac;
+$slide-border: #303a99;
+$slide-border-shadow: #00baff;
 
-$darkColor: #00baff;
+// 弹出框
+$modal-background: #161858;
+$modal-border: rgba($light-background, 0.4);
+$modal-border-shadow: #5368f1;
+
+// 下拉框  时间选择器  多选框
+$select-background: #1e246e;
+$select-border: rgba($light-background, 0.4);
+$select-border-shadow: #4d5fe2;
+
+// 输入框
+$input-Background: #161858;
+$input-border: #4d5fe2;
+
+// 侧边栏  上边栏
+$sideBar-background: #161858;
+$sidecolor: #205bac;
+$logo-background: #205bac;
+
+// success
+// info
+// warning
+// error
+//   border  bg  icon

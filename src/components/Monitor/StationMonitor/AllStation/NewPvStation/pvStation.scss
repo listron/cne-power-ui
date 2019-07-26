@@ -372,10 +372,10 @@
   background: $background;
   .headStation {
     border: 1px solid $border-color;
-    color: $font-color;
+    color: $fontColor;
     background: $light-background;
     .leftIcon {
-      color: $font-color-hover;
+      color: $fontColor-hover;
     }
     .dataColumn {
       border-right: 1px solid $border-color;
@@ -383,7 +383,7 @@
         border: none;
       }
       .dataValue {
-        color: $font-color-hover;
+        color: $fontColor-hover;
       }
       .radiation {
         color: #f8b14e;
@@ -395,47 +395,20 @@
     background: $light-background;
     border: 1px solid $border-color;
     margin-top: 10px;
-    color: $font-color;
+    color: $fontColor;
     :global {
       .iconTab {
         background: $light-background;
-        color: $font-color-invert;
+        color: $fontColor-invert;
         &:hover {
-          background: $button-color-base;
-          color: $font-color-invert;
+          background: $button-primary;
+          color: $fontColor-invert;
         }
-      }
-      .ant-switch {
-        background: $button-color-darker;
-      }
-      .ant-switch-checked {
-        background: $button-color-base;
-      }
-
-      .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-        color: $font-color-invert;
-        background: $button-color-base;
-        border-color: $button-color-base;
-      }
-
-      .ant-radio-button-wrapper {
-        background: $button-color-darker;
-        color: $font-color;
-        border-color: $border-color;
-      }
-
-      .ant-radio-button-wrapper:not(:first-child)::before {
-        background-color: $background;
-      }
-
-      .ant-radio-button-wrapper:hover,
-      .ant-radio-button-wrapper-focused {
-        color: $font-color-invert;
       }
     }
     .activeCard {
-      background: $button-color-base;
-      color: $font-color-invert;
+      background: $button-primary;
+      color: $fontColor-invert;
     }
   }
 
@@ -443,17 +416,17 @@
     background: $light-background;
     border: 1px solid $border-color;
     margin-top: 10px;
-    color: $font-color;
+    color: $fontColor;
   }
 
   .stationCardContainer {
     .filterCondition {
       border: none;
       .activeSortStatus {
-        color: $font-color-hover;
+        color: $fontColor-hover;
         :global {
           .iconfont {
-            color: $font-color-hover;
+            color: $fontColor-hover;
           }
         }
       }
@@ -461,21 +434,21 @@
     .staionsListBox {
       .regionName {
         margin: 12px 0 -8px 39px;
-        color: $font-color;
+        color: $fontColor;
       }
 
       .staionCard {
-        color: $font-color;
-        background: $background;
+        color: $fontColor;
+        background: $light-background;
         border: 1px solid $border-color;
         &:hover {
           box-shadow: inset 0 0 5px 2px #5368f1;
         }
         a {
-          color: $font-color;
+          color: $fontColor;
         }
         .changeNum {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
         .staionCenter {
           border-bottom: 1px solid $border-color;
@@ -484,7 +457,7 @@
           padding: 0 5px;
         }
         .bottom {
-          color: $font-color;
+          color: $fontColor;
           border-top: 1px solid $border-color;
           .dataColumn {
             border-right: 1px solid $border-color;
@@ -498,10 +471,10 @@
           background: #f0f2f5;
         }
         .red {
-          color: $font-color-warn;
+          color: $fontColor-warn;
         }
         .grey {
-          color: $font-color;
+          color: $fontColor;
         }
       }
 
@@ -516,7 +489,7 @@
       }
 
       .alarm {
-        color: $font-color-invert;
+        color: $fontColor-invert;
         background: rgba(145, 44, 65, 0.8);
         border: 1px solid #ffa1ac;
         &:hover {
@@ -525,38 +498,38 @@
         // 通讯中断
         .stationTop {
           background: #fd6e8f;
-          color: $font-color-invert;
+          color: $fontColor-invert;
           .changeNum {
-            color: $font-color-hover;
+            color: $fontColor-hover;
           }
         }
         .stationName {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
         .staionCenter {
-          color: $font-color-invert;
+          color: $fontColor-invert;
           border-bottom: 1px solid #fd6e8f;
           .changeNum {
-            color: $font-color-hover;
+            color: $fontColor-hover;
           }
         }
 
         .bottom {
           border-top: 1px solid #fd6e8f;
           a {
-            color: $font-color-invert;
+            color: $fontColor-invert;
           }
           .dataColumn {
             border-right: 1px solid #fd6e8f;
           }
         }
         .grey {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
       }
 
       .interrupt {
-        color: $font-color-invert;
+        color: $fontColor-invert;
         background: #4a4343;
         border: 1px solid #4a4343;
         &:hover {
@@ -565,33 +538,33 @@
         // 通讯中断
         .stationTop {
           background: #f8b14e;
-          color: $font-color-invert;
+          color: $fontColor-invert;
           .changeNum {
-            color: $font-color-hover;
+            color: $fontColor-hover;
           }
         }
         .stationName {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
         .staionCenter {
-          color: $font-color-invert;
+          color: $fontColor-invert;
           border-bottom: 1px solid #af9a40;
           .changeNum {
-            color: $font-color-hover;
+            color: $fontColor-hover;
           }
         }
 
         .bottom {
           border-top: 1px solid #af9a40;
           a {
-            color: $font-color-invert;
+            color: $fontColor-invert;
           }
           .dataColumn {
             border-right: 1px solid #af9a40;
           }
         }
         .grey {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
       }
 
@@ -599,7 +572,7 @@
         opacity: 0.6;
         background: #181a4e;
         border: 1px solid #7088c3;
-        color: $font-color-invert;
+        color: $fontColor-invert;
       }
     }
   }
@@ -677,13 +650,13 @@
     flex: 1 0 auto;
     width: 100%;
     .detailShow {
-      background: $button-color-darker;
+      background: $button-primary;
       .detailShowfont {
-        color: $font-color-invert;
+        color: $fontColor-invert;
       }
       :global {
         .iconfont {
-          color: $font-color-invert;
+          color: $fontColor-invert;
         }
       }
     }

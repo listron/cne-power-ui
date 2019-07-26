@@ -91,72 +91,79 @@
     }
   }
 
-  //  选择器
+  // ===============select 下拉框 start===============
+
   .ant-select-selection {
-    background-color: $light-background;
-    border: 1px solid $border-color;
+    background-color: $input-Background;
+    border: 1px solid $input-border;
   }
 
   .ant-select-dropdown-menu-item:hover {
-    background-color: #ceebe0;
+    background-color: $input-border;
   }
   .ant-select:not(.ant-select-disabled) {
     .ant-select-selection {
       .ant-select-selection__rendered {
         .ant-select-selection__placeholder {
-          color: $font-color;
+          color: $fontColor;
         }
       }
       .ant-select-arrow {
-        color: $darkColor;
+        color: $input-border;
       }
       @include highLight($themeColor);
     }
   }
 
   .ant-select-dropdown {
-    color: $font-color;
+    color: $fontColor;
     background: $background;
     border: 1px solid $border-color;
   }
 
   .ant-select-dropdown-menu-item {
-    color: $font-color;
+    color: $fontColor;
     &:hover {
       background: $themeColor;
-      color: $font-color-invert;
+      color: $fontColor-invert;
     }
   }
 
   .ant-select-selection-selected-value {
-    color: $font-color;
+    color: $fontColor;
   }
 
   .ant-select-dropdown-menu-item-selected,
   .ant-select-dropdown-menu-item-active {
-    background: $themeColor;
-    color: $font-color-invert;
+    background: $button-hover;
+    color: $fontColor-invert;
   }
 
   //ant-select-dropdown-menu下拉框选中的√颜色
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
-    color: $font-color;
+    color: $fontColor;
     background: $themeColor;
   }
 
-  // ===============select 下拉框===============
+  // ===============select 下拉框 end===============
 
   .ant-switch {
-    background: $button-color-darker;
+    background: $button-primary;
   }
+
   .ant-switch-checked {
     color: $themeColor;
+    background: $button-hover;
+  }
+
+  .ant-switch::after {
+    background: $button-disabled;
   }
 
   .ant-switch-loading-icon,
-  .ant-switch::after {
-    background: #161858;
+  .ant-switch-checked::after {
+    background: $fontColor-invert;
   }
 
   // ===============switch===============
@@ -176,19 +183,6 @@
     .ant-tabs-tab {
       color: $darkColor;
     }
-    // .ant-tabs-nav .ant-tabs-tab:hover{
-    //   color: $themeColor;
-    // }
-    // .ant-tabs-tab-active .ant-tabs-tab{
-    //   color: $themeColor;
-    // }
-
-    // .ant-tabs-nav .ant-tabs-tab-active{
-    //   color: $themeColor;
-    // }
-    // .ant-tabs-tab-active .ant-tabs-tab{
-    //   color: $themeColor;
-    // }
   }
 
   .ant-input:not(.ant-input-disabled):hover {
@@ -317,10 +311,30 @@
     }
   }
 
-  // ant-radio-button
+  // ant-radio-button  button-多组
+
   .ant-radio-button-wrapper {
-    background: $button-color-darker;
-    color: $themeColor;
-    border: 1px solid $themeColor;
+    background: $button-primary;
+    color: $fontColor;
+    border: 1px solid $button-primary;
+  }
+
+  .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled),
+  .ant-radio-button-wrapper-checked {
+    color: $fontColor-invert;
+    background: $button-hover;
+    border-color: $button-hover;
+  }
+
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: $background;
+  }
+
+  .ant-radio-button-wrapper:hover,
+  .ant-radio-button-wrapper-focused {
+    color: $fontColor-invert;
+    background: $button-hover;
   }
 }
+
+// ===============ant-radio-button  button-多组 =================
