@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Select, DatePicker, Button, Icon } from 'antd';
 import moment from 'moment';
-import styles from "./allDeviceCurve.scss";
+import styles from './allDeviceCurve.scss';
 import StationSelect from '../../../Common/StationSelect';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
 import path from '../../../../constants/path';
@@ -26,14 +26,14 @@ class DeviceFilter extends Component {
     downLoadFile: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   onOk = (selectdevice) => {
     const deviceFullCode = selectdevice.map((e, i) => e.deviceCode);
     this.props.changeAllDeviceStore({
       deviceFullCode,
-      selectdeviceCode: selectdevice
-    })
+      selectdeviceCode: selectdevice,
+    });
   }
   selectStation = (selectedStationInfo) => { // 电站选择。
     const { getDeviceModel, changeAllDeviceStore } = this.props;
@@ -43,22 +43,25 @@ class DeviceFilter extends Component {
       deviceTypeCode: 101,
     });
     changeAllDeviceStore({
-      stationCode, deviceTypeCode: 101, deviceFullCode: [], selectdeviceCode: []
-    })
+      stationCode, deviceTypeCode: 101, deviceFullCode: [], selectdeviceCode: [],
+    });
   }
 
   seekDeviceData = () => {//查询按钮
     const { stationCode, deviceFullCode, startTime, endTime, getAllDeviceCurveData, getPowerdeviceList, changeAllDeviceStore } = this.props;
-    const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format(), };
-    if (startTime === moment().subtract(1, "days").format('YYYY-MM-DD') && endTime === moment().format('YYYY-MM-DD')) {
-      const preDay = moment().startOf('day').subtract(1, "days");
+    const params = { stationCode, deviceFullCode, startTime, endTime };
+    // const params = { stationCode, deviceFullCode, startTime: moment(startTime).utc().format(), endTime: moment(endTime).utc().format() };
+    if (startTime === moment().subtract(1, 'days').format('YYYY-MM-DD') && endTime === moment().format('YYYY-MM-DD')) {
+      const preDay = moment().startOf('day').subtract(1, 'days');
       const curDay = moment().format('YYYY-MM-DD HH:mm:ss');
-      params.startTime = moment(preDay).utc().format()
-      params.endTime = moment(curDay).utc().format()
+      params.startTime = preDay;
+      params.endTime = curDay;
+      // params.startTime = moment(preDay).utc().format();
+      // params.endTime = moment(curDay).utc().format();
     }
-    getAllDeviceCurveData({ ...params, })
-    getPowerdeviceList({ ...params, })
-    changeAllDeviceStore({ checkedAll: true })
+    getAllDeviceCurveData({ ...params });
+    getPowerdeviceList({ ...params });
+    changeAllDeviceStore({ checkedAll: true });
   }
   timeChange = (time) => {//时间选择
 
@@ -71,13 +74,13 @@ class DeviceFilter extends Component {
     isToday ? endTime = moment().format('YYYY-MM-DD HH:mm:ss') : endTime;
     this.props.changeAllDeviceStore({
       startTime,
-      endTime
-    })
+      endTime,
+    });
   }
   selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
     const { changeAllDeviceStore } = this.props;
-    changeAllDeviceStore({ deviceShowType: type })
-    this.props.onChangeFilter()
+    changeAllDeviceStore({ deviceShowType: type });
+    this.props.onChangeFilter();
 
   }
 
@@ -89,10 +92,11 @@ class DeviceFilter extends Component {
   }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
-    let { startTime, endTime, stationCode, deviceFullCode, stations, downLoadFile } = this.props;
+    let { startTime, endTime } = this.props;
+    const { stationCode, deviceFullCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    let timeZone = moment().zone();
+    const timeZone = moment().zone();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -102,17 +106,17 @@ class DeviceFilter extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone: timeZone / -60
+        timeZone: timeZone / -60,
       },
-    })
+    });
   }
   disabledDate = (current) => { // 不可选时间
 
-    return current && current > moment().endOf('day')
+    return current && current > moment().endOf('day');
 
   }
   render() {
-    const { stations, stationCode, deviceShowType, selectdeviceCode, powerCurveListData } = this.props;
+    const { stations, stationCode, deviceShowType, selectdeviceCode, powerCurveListData, startTime, endTime } = this.props;
     return (
       <div className={styles.filterStyle}>
         <div className={styles.searchPart}>
@@ -144,7 +148,8 @@ class DeviceFilter extends Component {
           <div className={styles.timeSelect}>
             <span className={styles.text}>时间选择</span>
             <RangePicker
-              defaultValue={[moment(moment().startOf('day').subtract(1, "days"), 'YYYY/MM/DD HH:mm:ss'), moment(moment(), 'YYYY/MM/DD HH:mm:ss')]}
+              // defaultValue={[moment(moment().startOf('day').subtract(1, 'days'), 'YYYY/MM/DD HH:mm:ss'), moment(moment(), 'YYYY/MM/DD HH:mm:ss')]}
+              defaultValue={[moment(startTime, 'YYYY/MM/DD HH:mm:ss'), moment(endTime, 'YYYY/MM/DD HH:mm:ss')]}
               format={'YYYY/MM/DD '}
               disabledDate={this.disabledDate}
               onChange={this.timeChange}
@@ -166,7 +171,7 @@ class DeviceFilter extends Component {
 
         </div>
       </div>
-    )
+    );
   }
 }
-export default (DeviceFilter)
+export default (DeviceFilter);
