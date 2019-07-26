@@ -273,7 +273,7 @@ class DataExportSearch extends Component{
       deviceTypeCode,
       queryParams: {
         ...queryParams,
-        timeZone: moment().zone() / (-60),
+        timeZone: moment().utcOffset() / 60,
       }
     })
   }

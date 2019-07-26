@@ -70,7 +70,7 @@ class Main extends Component {
   componentWillReceiveProps(nextProps) {
     const authData = localStorage.getItem('authData') || '';
     const refreshToken = Cookie.get('refresh_token');
-    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
     if (isTokenValid && authData && this.props.history.location.pathname === '/login'
       && Cookie.get('isNotLogin') === '0') {
       this.props.history.push('/monitor/station');
@@ -133,7 +133,7 @@ class Main extends Component {
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
     const rightMenu = Cookie.get('rightMenu');
-    const isTokenValid = moment().isBefore(Cookie.get('expireData'), 'second');
+    const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = 'bearer ' + authData;
     }
