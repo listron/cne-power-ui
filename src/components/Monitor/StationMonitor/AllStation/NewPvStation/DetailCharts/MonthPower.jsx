@@ -5,6 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
+import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 import { Radio } from 'antd';
@@ -35,7 +36,7 @@ class MonthPower extends Component {
             this.drawCharts(nextProps);
         }
         if (this.props.theme !== nextProps.theme) {
-            this.drawCharts(this.props, true);
+            this.drawCharts(nextProps, true);
         }
     }
 
@@ -91,36 +92,57 @@ class MonthPower extends Component {
 
     seriesType = ({ monthPower, monthPlanPower, completeRate, equipmentHours }) => { // 根据不同的类型，series不同
         const { chartType } = this.state;
+        const { theme = 'light' } = this.props;
         const monthPowerObj = [{
             name: '月发电量',
             type: 'bar',
-            color: '#3e97d1',
+            color: this.themeColor[theme].monthPower,
             data: getDefaultData(monthPower),
             yAxisIndex: 0,
             barWidth: 6,
+            ...barRadius,
         }, {
             name: '计划发电量',
             type: 'bar',
-            color: '#fbe6e3',
+            color: this.themeColor[theme].monthPlanPower,
             data: getDefaultData(monthPlanPower),
             yAxisIndex: 0,
             barWidth: 6,
+            ...barRadius,
         }, {
             name: '完成率',
             type: 'line',
-            color: '#199475',
+            color: this.themeColor[theme].completeRate,
             data: getDefaultData(completeRate),
             yAxisIndex: 2,
         }];
         const equipmentHoursObj = [{
             name: '利用小时',
             type: 'bar',
-            color: '#c7ceb2',
+            color: this.themeColor[theme].equipmentHours,
             barWidth: 6,
             data: getDefaultData(equipmentHours),
+            ...barRadius,
         }];
         return chartType === 'monthPower' ? monthPowerObj : equipmentHoursObj;
     }
+
+    themeColor = {
+        dark: {
+            monthPower: Gradient1,
+            monthPlanPower: Gradient2,
+            completeRate: '#4d5fe2',
+            equipmentHoursObj: Gradient2,
+        },
+        light: {
+            monthPower: '#3e97d1',
+            monthPlanPower: '#fbe6e3',
+            completeRate: '#199475',
+            equipmentHoursObj: '#c7ceb2',
+        },
+
+    }
+
 
     drawCharts = (params, themeChange) => {
         const { monthPowerData = [], powerUnit, loading, theme } = params;
@@ -142,7 +164,7 @@ class MonthPower extends Component {
             monthPowerChart.dispose();
             monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
         }
-        // loading ? monthPowerChart.showLoading('default', { color: '#199475' }) : monthPowerChart.hideLoading();
+        chartsLoading(monthPowerChart, loading);
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         const powerOption = {
@@ -166,11 +188,11 @@ class MonthPower extends Component {
             },
             tooltip: {
                 trigger: 'axis',
-                padding: 0,
                 formatter: (params) => {
                     let paramsItem = '';
                     params.forEach(item => {
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+                        const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}${item.seriesName === '完成率' && '%' || ''}</div>`;
                     });
                     return (

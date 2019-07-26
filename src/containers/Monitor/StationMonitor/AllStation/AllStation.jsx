@@ -26,6 +26,7 @@ class AllStation extends Component {
     regionName: PropTypes.string,
     getPvRealData: PropTypes.func,
     getPvChartsData: PropTypes.func,
+    getPvRealChartsData: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -78,8 +79,8 @@ class AllStation extends Component {
     const regionArr = Array.from(new Set(stations.filter(e => e.stationType === 1).map(e => e.regionName)));
     const { showRegion } = this.state;
     return (
-      <div className={`${styles.stationMonitor} ${theme === 'dark' ? styles.dark : styles.light}`}>
-        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.stationMonitor} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} theme={theme} style={{ paddingLeft: '38px' }} />
         <div className={styles.stationContainer}>
           {stationTypeCount === 'multiple' &&
             <div className={styles.allStationTitle}>

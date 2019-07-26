@@ -38,6 +38,7 @@ class Main extends Component {
     resetCommonStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
     changeCommonStore: PropTypes.func,
+    theme: PropTypes.string,
   };
 
   constructor(props) {
@@ -127,7 +128,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme } = this.props;
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -138,8 +139,8 @@ class Main extends Component {
     }
     const themeMenu = (
       <ul className={styles.themeMenu}>
-        <li onClick={() => this.changeTheme('dark')}> 深色 </li>
-        <li onClick={() => this.changeTheme('light')}> 浅色 </li>
+        <li onClick={() => this.changeTheme('dark')} className={`${theme === 'dark' && styles.active}`}> 深色 </li>
+        <li onClick={() => this.changeTheme('light')} className={`${theme === 'light' && styles.active}`}> 浅色 </li>
       </ul>
     );
     if (isTokenValid && authData && (isNotLogin === '0')) {
@@ -147,7 +148,7 @@ class Main extends Component {
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
-        <div className={styles.app}>
+        <div className={`${styles.app} ${styles[theme]}`}>
           {!isHomePage && <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <LogoInfo />
@@ -175,6 +176,7 @@ class Main extends Component {
                 changeLoginStore={changeLoginStore}
                 resetMonitorData={resetMonitorData}
                 resetCommonStore={resetCommonStore}
+                theme={theme}
               />
             </div>
           </div>}
@@ -223,6 +225,7 @@ const mapStateToProps = (state) => {
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
     ...state.common.toJS(),
+    theme: state.common.get('theme'),
     // username: state.common.get('username'),
     // userFullName: state.common.get('userFullName'),
     // userLogo: state.common.get('userLogo'),

@@ -5,6 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
+import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -37,6 +38,20 @@ class DayPower extends Component {
     }
 
 
+    themeColor = {
+        dark: {
+            dayPower: Gradient1,
+            equipmentHours: Gradient2,
+            instantaneous: '#f8b14e',
+        },
+        light: {
+            dayPower: '#199475',
+            equipmentHours: '#c7ceb2',
+            instantaneous: '#f9b600',
+        },
+
+    }
+
     drawCharts = (params, themeChange) => {
         const { dayPowerData = [], powerUnit, loading, theme } = params;
         const dayPower = dayPowerData.map(e => chartPowerPoint(divideFormarts(e.dayPower, powerUnit), '--', 2, true)); // 发电量
@@ -54,7 +69,7 @@ class DayPower extends Component {
             powerDiagram.dispose();
             powerDiagram = echarts.init(chartsBox, themeColor);
         }
-        loading ? powerDiagram.showLoading('default', { color: '#199475' }) : powerDiagram.hideLoading();
+        chartsLoading(powerDiagram, loading);
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = {
             graphic: powerGraphic,
@@ -84,7 +99,8 @@ class DayPower extends Component {
                 formatter: (params) => {
                     let paramsItem = '';
                     params.forEach(item => {
-                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+                        const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+                        return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
                         ${item.seriesName} :  ${item.value}</div>`;
                     });
                     return (
@@ -184,24 +200,26 @@ class DayPower extends Component {
                 {
                     name: '日发电量',
                     type: 'bar',
-                    color: '#199475',
+                    color: this.themeColor[theme].dayPower,
                     data: getDefaultData(dayPower),
                     barWidth: 6,
                     yAxisIndex: 1,
+                    ...barRadius,
                 },
                 {
                     name: '日利用小时',
                     type: 'bar',
                     data: getDefaultData(equipmentHours),
-                    color: '#c7ceb2',
+                    color: this.themeColor[theme].equipmentHours,
                     barWidth: 6,
                     yAxisIndex: 0,
+                    ...barRadius,
                 },
                 {
                     name: '累计辐射',
                     type: 'line',
                     data: getDefaultData(instantaneous),
-                    color: '#f9b600',
+                    color: this.themeColor[theme].instantaneous,
                     yAxisIndex: 2,
                 },
             ],

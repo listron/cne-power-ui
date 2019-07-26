@@ -1,9 +1,9 @@
-@import '../../theme/theme.scss';
+@import "../../theme/theme.scss";
 
-.layoutEnterprise{
+.layoutEnterprise {
   display: flex;
   align-items: center;
-  .logoImg{
+  .logoImg {
     display: flex;
     width: 32px;
     height: 32px;
@@ -12,57 +12,57 @@
     overflow: hidden;
     justify-content: center;
     margin: 0 4px 0 12px;
-    img{
+    img {
       height: 32px;
     }
   }
-  .enterpriseName{
-    color: #ceebe0;
-  }
 }
 
-.layoutUserDropdown{
-  background:#3e97d1;
+.layoutUserDropdown {
+  background: #3e97d1;
   padding: 0;
   margin-top: -4px;
-  .innerItem{
+  .innerItem {
     height: 50px;
     line-height: 50px;
-    color:#fff;
+    color: #fff;
     text-align: center;
     padding: 0;
   }
-  .innerItem:hover{
-    background-color: rgba(0,13,52,0.20);
+  .innerItem:hover {
+    background-color: rgba(0, 13, 52, 0.2);
   }
 }
 
-.topMenu{
+.topMenu {
   height: 59px;
   line-height: 58px;
   width: 700px;
   background-color: transparent;
   border-bottom: none;
-  
-  :global{
-    .ant-menu-item{
+
+  :global {
+    .ant-menu-item {
       color: #fff;
       opacity: 0.7;
       height: 100%;
       border-bottom: none;
-      :local{
-        .eachMenu{
+      :local {
+        .eachMenu {
           display: inline-block;
           height: 100%;
         }
       }
     }
-    .ant-menu-item:hover, .ant-menu-item-active, .ant-menu-item-open, .ant-menu-item-selected {
+    .ant-menu-item:hover,
+    .ant-menu-item-active,
+    .ant-menu-item-open,
+    .ant-menu-item-selected {
       border-bottom: none;
       color: #fff;
       opacity: 1;
-      :local{
-        .eachMenu{
+      :local {
+        .eachMenu {
           border-bottom: 2px solid #fff;
         }
       }
@@ -70,114 +70,57 @@
   }
 }
 
-.sideMenu{
+.sideMenu {
   display: flex;
-  .sideLayout{
+  .sideLayout {
     display: flex;
     flex: 1;
     flex-direction: column;
-    .logo{
+    .logo {
       height: 40px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
-      background:#3f3f3f;
-      border-right: solid 1px $promptColor;
-      //border-bottom: solid 1px $promptColor;
       .iconfont {
-          font-family: "iconfont" !important;
-          font-style: normal;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          align-items: center;
-          cursor: pointer;
-          color: #999993;
+        font-family: "iconfont" !important;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        align-items: center;
+        cursor: pointer;
       }
     }
-    .menuList{
+    .menuList {
       display: flex;
       flex: 1;
       max-height: calc(100vh - 99px);
       flex-direction: column;
       overflow-x: hidden;
       overflow-y: auto;
-      background:#3f3f3f;
-      border-right: solid 1px $promptColor;
+      // background: #3f3f3f;
+      // border-right: solid 1px $promptColor;
       &::-webkit-scrollbar {
         width: 4px;
       }
-      &::-webkit-scrollbar-thumb{
+      &::-webkit-scrollbar-thumb {
         border-radius: 2px;
-        background-color: #ccc;
       }
-      :global{
-        // .iconfont {
-        //   margin-right:5px;
-        // }
+      :global {
         .iconfont {
-          font-family: "iconfont" !important;
           font-size: 16px;
           font-style: normal;
-          margin-right:5px;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-        .ant-menu,.ant-menu-sub,.ant-menu-submenu,.ant-menu-submenu-title,.ant-menu-item{
-          background-color: #3f3f3f;
-	  flex-shrink: 0;
-        }
-        .ant-menu-item:hover{
-          background-color: #ceebe0;
-        }
-        .ant-menu-submenu, .ant-menu-item, .ant-menu-submenu-title {
-          &:hover {
-            color: $themeColor;
-          }
-          color: $slideFontColor;
-          a{
-            color: $slideFontColor;
-          }
-          a:hover {
-            color: $themeColor;
-          }
-          .ant-menu-item {
-            color: $slideFontColor;
-            a{
-              color: $slideFontColor;
-            }
-          }
-        }
-        .ant-menu-item::after{
-          border-color: $themeColor;
-        }
-        .ant-menu-item-selected {
-          background: $slideSelectColor;
-          color: $themeColor;
-          a{
-            color: $themeColor;
-          }
-        }
-        .ant-menu-submenu-active, .ant-menu-submenu-selected {
-          .ant-menu-item-selected, .ant-menu-item-active, .ant-menu-submenu-title {
-            color: $themeColor;
-            a{
-              color: $themeColor;
-            }
-          }
-        }
-        .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after, .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before, .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before{
-          background:$slideSelectColor;
+          margin-right: 5px;
         }
       }
     }
   }
 }
 
-.menuBoard{
+.menuBoard {
   width: 80px;
   margin-left: 8px;
-  .boardIcon{
+  .boardIcon {
     width: 18px;
     height: 18px;
     padding: 2px;
@@ -185,7 +128,7 @@
     cursor: pointer;
     flex-wrap: wrap;
     justify-content: space-between;
-    .eachPart{
+    .eachPart {
       height: 6px;
       width: 6px;
       background-color: #fff;
@@ -194,21 +137,24 @@
   }
 }
 
-.boardWrap{
-  background: url('/img/menuboard.png') no-repeat 0;
+.boardWrap {
+  background: url("/img/menuboard.png") no-repeat 0;
   top: 59px;
-  .menuLinks{
+  .menuLinks {
     display: flex;
-    .left, .middle, .right{
+    .left,
+    .middle,
+    .right {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       margin-right: 24px;
     }
-    .right{
+    .right {
       margin-right: 0;
     }
-    .short, .long{
+    .short,
+    .long {
       width: 364px;
       height: 168px;
       margin-bottom: 12px;
@@ -216,35 +162,213 @@
     .short {
       width: 176px;
     }
-    .eachLink{
+    .eachLink {
       border: 4px solid rgba(255, 255, 255, 0.2);
       color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      .icon{
+      .icon {
         line-height: 120px;
         font-size: 72px;
       }
-      .text{
+      .text {
         align-self: flex-start;
         padding-left: 8px;
         font-size: 24px;
       }
     }
   }
-  :global{
-    .ant-modal-content{
+  :global {
+    .ant-modal-content {
       background-color: transparent;
     }
-    @media screen and (max-width: 1439px)  {
-      .ant-modal{
+    @media screen and (max-width: 1439px) {
+      .ant-modal {
         padding-bottom: 0;
         top: 4%;
       }
     }
-    .ant-modal-body{
+    .ant-modal-body {
       padding: 0;
     }
+  }
+}
+
+.light {
+  .sideLayout {
+    .logo {
+      background: #3f3f3f;
+      .iconfont {
+        color: #999993;
+      }
+    }
+    .menuList {
+      background: #3f3f3f;
+      border-right: solid 1px $promptColor;
+      &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+      }
+      :global {
+        .ant-menu,
+        .ant-menu-sub,
+        .ant-menu-submenu,
+        .ant-menu-submenu-title,
+        .ant-menu-item {
+          background-color: #3f3f3f;
+        }
+        .ant-menu-item:hover {
+          background-color: #ceebe0;
+        }
+        .ant-menu-submenu,
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+          &:hover {
+            color: $themeColor;
+          }
+          color: $slideFontColor;
+          a {
+            color: $slideFontColor;
+          }
+          a:hover {
+            color: $themeColor;
+          }
+          .ant-menu-item {
+            color: $slideFontColor;
+            a {
+              color: $slideFontColor;
+            }
+          }
+        }
+        .ant-menu-item::after {
+          border-color: $themeColor;
+        }
+        .ant-menu-item-selected {
+          background: $slideSelectColor;
+          color: $themeColor;
+          a {
+            color: $themeColor;
+          }
+        }
+        .ant-menu-submenu-active,
+        .ant-menu-submenu-selected {
+          .ant-menu-item-selected,
+          .ant-menu-item-active,
+          .ant-menu-submenu-title {
+            color: $themeColor;
+            a {
+              color: $themeColor;
+            }
+          }
+        }
+        .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after,
+        .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after,
+        .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after,
+        .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:after,
+        .ant-menu-submenu-vertical > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before,
+        .ant-menu-submenu-vertical-left > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before,
+        .ant-menu-submenu-vertical-right > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before,
+        .ant-menu-submenu-inline > .ant-menu-submenu-title:hover .ant-menu-submenu-arrow:before {
+          background: $slideSelectColor;
+        }
+      }
+    }
+  }
+  .enterpriseName {
+    color: #ceebe0;
+  }
+}
+
+.dark {
+  @import "../../theme/darkTheme.scss";
+  .sideLayout {
+    .logo {
+      background: $sideBar-background;
+      .iconfont {
+        color: $fontColor-invert;
+      }
+    }
+    .menuList {
+      background: $sideBar-background;
+      border-right: 1px solid $sideBar-background;
+      &::-webkit-scrollbar-thumb {
+        background-color: #4d5fe2;
+      }
+      :global {
+        .ant-menu,
+        .ant-menu-sub,
+        .ant-menu-submenu,
+        .ant-menu-submenu-title,
+        .ant-menu-item {
+          background-color: $sideBar-background;
+        }
+        .ant-menu-item:hover {
+          background-color: $sidecolor;
+        }
+        .ant-menu-submenu,
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+          &:hover {
+            color: $themeColor;
+          }
+          color: $slideFontColor;
+          a {
+            color: $slideFontColor;
+          }
+          a:hover {
+            color: $themeColor;
+          }
+          .ant-menu-item {
+            color: $slideFontColor;
+            a {
+              color: $slideFontColor;
+            }
+          }
+        }
+
+        .ant-menu-item::after {
+          border-color: $themeColor;
+        }
+
+        .ant-menu-item-selected {
+          background: $sidecolor;
+          color: $themeColor;
+          a {
+            color: $themeColor;
+          }
+        }
+        .ant-menu-submenu-active,
+        .ant-menu-submenu-selected {
+          .ant-menu-item-selected,
+          .ant-menu-item-active,
+          .ant-menu-submenu-title {
+            color: $themeColor;
+            a {
+              color: $themeColor;
+            }
+          }
+        }
+
+        .ant-menu-submenu-arrow:after,
+        .ant-menu-submenu-arrow:before {
+          background: $fontColor-invert;
+        }
+        .ant-menu-inline,
+        .ant-menu-vertical,
+        .ant-menu-vertical-left {
+          border-right: 1px solid $sideBar-background;
+        }
+        .ant-menu-submenu-popup {
+          background: $sideBar-background;
+        }
+
+        .ant-menu-submenu > .ant-menu {
+          background: $sideBar-background;
+        }
+      }
+    }
+  }
+  .enterpriseName {
+    color: $fontColor-invert;
   }
 }
