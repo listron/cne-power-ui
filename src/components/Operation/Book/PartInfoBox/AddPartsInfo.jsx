@@ -130,6 +130,7 @@ class AddPartsInfo extends React.Component {
             key={index.toString()}
             value={item.assetsId}
             selectable={isable}
+            disabled={!isable}
           >
             {this.renderTreeNodes(item.assetsData)}
           </TreeNode>
@@ -141,6 +142,7 @@ class AddPartsInfo extends React.Component {
           key={index.toString()}
           value={item.assetsId}
           selectable={isable}
+          disabled={!isable}
         />
       );
     });
@@ -242,7 +244,8 @@ class AddPartsInfo extends React.Component {
                   title="生产资产"
                   key="0"
                   value={'0'}
-                // selectable={false}
+                  selectable={false}
+                  disabled={true}
                 >
                   {this.renderTreeNodes(partAssetsTree)}
                 </TreeNode>

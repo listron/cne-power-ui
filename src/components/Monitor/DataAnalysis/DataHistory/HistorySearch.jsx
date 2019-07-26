@@ -132,10 +132,16 @@ class HistorySearch extends Component {
       timeInterval,
     });
     getChartHistory({
-      queryParam
+      queryParam: {
+        ...queryParam,
+        deviceFullCodes: devices,
+      },
     });
     getListHistory({
-      queryParam,
+      queryParam: {
+        ...queryParam,
+        deviceFullCodes: devices,
+      },
       listParam
     });
   }

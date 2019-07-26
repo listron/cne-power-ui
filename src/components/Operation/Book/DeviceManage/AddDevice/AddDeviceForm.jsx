@@ -325,23 +325,22 @@ class AddDeviceForm extends Component {
                       if (!e) {
                         return null;
                       }
-                        return (
-                          <Option key={i.toString()} value={e.manufactorId}>
-                            {e.manufactorName}
-                          </Option>
-                        );
-
+                      return (
+                        <Option key={i.toString()} value={e.manufactorId}>
+                          {e.manufactorName}
+                        </Option>
+                      );
                     })}
                   </Select>
                 )}
-                {!!showAddfactorIcon && (
-                  !isOperator && (<span
+                {
+                  isOperator === '0' && (<span
                     className={styles.fontColor}
                     onClick={this.showAddfactors}
                   >
                     <Icon type="plus-circle" />
                   </span>)
-                )}
+                }
               </FormItem>
 
               <FormItem
@@ -367,12 +366,11 @@ class AddDeviceForm extends Component {
                       if (!e) {
                         return null;
                       }
-                        return (
-                          <Option key={i.toString()} value={e.deviceModeCode}>
-                            {e.modeName}
-                          </Option>
-                        );
-
+                      return (
+                        <Option key={i.toString()} value={e.deviceModeCode}>
+                          {e.modeName}
+                        </Option>
+                      );
                     })}
                   </Select>
                 )}
@@ -413,15 +411,14 @@ class AddDeviceForm extends Component {
                         if (!e) {
                           return null;
                         }
-                          return (
-                            <Option
-                              key={i.toString()}
-                              value={e.deviceFullCode}
-                            >
-                              {e.deviceName}
-                            </Option>
-                          );
-
+                        return (
+                          <Option
+                            key={i.toString()}
+                            value={e.deviceFullCode}
+                          >
+                            {e.deviceName}
+                          </Option>
+                        );
                       })}
                     </Select>
                   )}

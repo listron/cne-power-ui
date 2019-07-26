@@ -129,9 +129,9 @@ class DataExportList extends Component {
         dataIndex: 'devicePointCount',
         className: 'devicePointCount',
         render: (text, record) => {
-          const { devicePointNames = [] } = record;
+          const { devicePointCodeNames = [] } = record;
           return (
-            <Popover content={devicePointNames.map(e => <span key={e}>{e}</span>)}
+            <Popover content={devicePointCodeNames.map(e => <span key={e}>{e}</span>)}
               title="测点名称"
               placement="bottomLeft"
               getPopupContainer={() => this.refs.tableList}
