@@ -96,7 +96,7 @@ class DeviceFilter extends Component {
     const { stationCode, deviceFullCode, stations, downLoadFile } = this.props;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    const timeZone = moment().zone();
+    let timeZone = moment().utcOffset();
     const stationInfo = stations.filter((e, i) => e.stationCode)[0];
     downLoadFile({ // 
       url,
@@ -106,7 +106,7 @@ class DeviceFilter extends Component {
         deviceFullCode,
         startTime,
         endTime,
-        timeZone: timeZone / -60,
+        timeZone: timeZone / 60
       },
     });
   }
