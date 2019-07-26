@@ -124,6 +124,7 @@ class OutputPower extends Component{
             nameTextStyle: {
               fontSize: 12,
               color: '#06bdf4',
+              padding: [0, 0, 0, 0],
             },
             axisLabel: {
               color: '#06bdf4',
@@ -142,6 +143,7 @@ class OutputPower extends Component{
             nameTextStyle: {
               fontSize: 12,
               color: '#06bdf4',
+              padding: [0, 0, 0, 10],
             },
             axisLabel: {
               color: '#06bdf4',
