@@ -59,8 +59,8 @@ const menuData = [
             name: '数据导出',
             path: 'dataExport',
             rightKey: 'dataAnalysis_dataExport',
-          }
-        ]
+          },
+        ],
       }, {
         name: '报表查询',
         iconStyle: 'icon-trends',
@@ -305,6 +305,25 @@ const menuData = [
             name: '智能报表',
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
+          },
+        ],
+      }, {
+        name: '绩效分析',
+        path: 'achievement',
+        rightKey: 'statistics_device',
+        children: [
+          {
+            name: '集团绩效分析',
+            path: 'analysis/group',
+            rightKey: 'statistics_device',
+          }, {
+            name: '区域绩效分析',
+            path: 'analysis/area',
+            rightKey: 'statistics_device',
+          }, {
+            name: '电站效能分析',
+            path: 'analysis/station',
+            rightKey: 'statistics_device',
           },
         ],
       },

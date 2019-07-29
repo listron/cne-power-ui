@@ -8,7 +8,7 @@ const query = (options = {}) => axios({
     'Authorization': 'bearer ' + (localStorage.getItem('authData') || ''),
     ...options.headers,
   },
-}); // .then(data => data);
+}).then(data => data.data || {});
 
 const request = (options) => query(options);
 
@@ -29,11 +29,11 @@ request.delete = (options) => query({
   ...options,
 });
 
-request.download = (options) => query({
+request.download = (options) => query({ // 下载。
   responseType: 'blob',
   method: 'post',
   ...options,
-});
+}).then(data => data.data);
 
 export default request;
 

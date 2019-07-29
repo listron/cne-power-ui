@@ -45,14 +45,22 @@ const statement = [ // 统计分析 - 统计报表
   }, { // 统计报表-智能分析报告
     path: '/statistical/statement/intelligentAnalysis',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/IntelligentAnalysis')),
-  },{ // 统计报表-智能报表
+  }, { // 统计报表-智能报表
     path: '/statistical/statement/intelligentReport',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentReport/IntelligentReport')),
   },
-]
+];
+
+const achievement = [
+  { // 集团绩效
+    path: '/statistical/achievement/analysis/:pathKey',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/Achievement/AchievementLayout')),
+  },
+];
 
 export const statisticalRoute = [
   ...stationAccount,
   ...equipment,
-  ...statement
+  ...statement,
+  ...achievement,
 ];
