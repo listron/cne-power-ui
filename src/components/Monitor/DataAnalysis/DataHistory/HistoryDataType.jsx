@@ -50,7 +50,7 @@ class HistoryDataType extends Component {
     let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    const timeZone = moment().zone() / (-60); // utc时区获取
+    const timeZone = moment().utcOffset() / 60; // utc时区获取
     downLoadFile({ // 
       url,
       fileName: `${startTime}至${endTime}历史数据.xlsx`,
