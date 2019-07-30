@@ -1,13 +1,12 @@
 .tooltipBox {
-  width: 160px;
+  // 提示框
+  width: 150px;
   .axisValue {
-    padding: 0 10px;
+    padding: 0 30px 0 10px;
     line-height: 26px;
-    display: flex;
-    justify-content: space-between;
   }
   .tooltipContainer {
-    padding: 10px 30px 10px 0;
+    padding: 10px 0;
   }
   .tooltipCont {
     span {
@@ -16,7 +15,7 @@
       height: 5px;
       border-radius: 50%;
       vertical-align: 2px;
-      margin: 0 4px 0 8px;
+      margin: 0 10px;
     }
   }
 }
@@ -25,10 +24,13 @@
     border-bottom: 1px solid #dfdfdf;
   }
 }
-
 .dark {
-  @import "../../../../../theme/darkTheme.scss";
-  .axisValue {
-    border-bottom: 1px solid $border-color;
+  @import "../../../../../../theme/darkTheme.scss";
+  .tooltipBox {
+    // color: #c1d4fc;
+    font-size: 12px;
+    .axisValue {
+      border-bottom: 1px solid $border-color;
+    }
   }
 }

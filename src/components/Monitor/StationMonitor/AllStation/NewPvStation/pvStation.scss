@@ -44,7 +44,7 @@
       }
       .ant-radio-button-wrapper:hover,
       .ant-radio-button-wrapper-focused {
-        color: #199475;
+        color: $themeColor;
       }
     }
     .activeCard {
@@ -374,6 +374,7 @@
     border: 1px solid $border-color;
     color: $fontColor;
     background: $light-background;
+    border-top: none;
     .leftIcon {
       color: $fontColor-hover;
     }

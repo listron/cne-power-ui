@@ -25,7 +25,7 @@ export const darkTheme = () => { // 数据规范展示
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#aaa',
+          color: 'rgba(77, 95, 226, 0.6)',
         },
       },
       splitArea: {
@@ -59,7 +59,8 @@ export const darkTheme = () => { // 数据规范展示
         fontSize: 12,
         fontColor: contrastfontColor,
       },
-      extraCssText: 'box- shadow: 0 0 4px 2px rgba(255,255,255,0.20)',
+      extraCssText: 'box-shadow: 0 0 3px rgba(255,255,255,0.4)',
+      confine: true, //将 tooltip 框限制在图表的区域内。
     },
     legend: {
       textStyle: {
@@ -231,9 +232,10 @@ export const lightTheme = () => { // 数据规范展示
         fontSize: 12,
         color: fontColor,
       },
-      borderWidth: 1,
+      borderWidth: 3,
       borderColor: 'rgba(255,255,255,0.50)',
-      extraCssText: 'box- shadow: 0 0 4px 2px rgba(255,255,255,0.20)',
+      extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
+      confine: true, //将 tooltip 框限制在图表的区域内。
     },
     legend: {
       textStyle: {

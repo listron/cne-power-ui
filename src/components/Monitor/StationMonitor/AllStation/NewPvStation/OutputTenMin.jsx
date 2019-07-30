@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import { themeConfig } from '../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
     capabilityData: PropTypes.array,
@@ -37,12 +38,11 @@ class OutputTenMin extends Component {
 
   drawChart = (param, themeChange) => {
     const { capabilityData, yAxisUnit, stationCode, theme } = param;
-    const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
     const yAxisType = `交流侧功率(${yAxisUnit})`;
-    let capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeColor);
+    let capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeConfig[theme]);
     if (themeChange) {
       capabilityDiagram.dispose();
-      capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeColor);
+      capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeConfig[theme]);
     }
     const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
     const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
@@ -56,7 +56,7 @@ class OutputTenMin extends Component {
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
-    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '#199475'];
+    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '$themeColor'];
     const capabilityOption = {//出力图
       graphic: capabilityGraphic,
       legend: {

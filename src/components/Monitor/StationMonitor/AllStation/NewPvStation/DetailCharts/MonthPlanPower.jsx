@@ -5,7 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -56,12 +56,11 @@ class MonthPlanPower extends Component {
         const filterInstantaneous = monthPlanPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
-        const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
         const chartsBox = document.getElementById('monthPlanPowerChart');
-        let powerDiagram = echarts.init(chartsBox, themeColor);
+        let powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         if (themeChange) {
             powerDiagram.dispose();
-            powerDiagram = echarts.init(chartsBox, themeColor);
+            powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         }
         chartsLoading(powerDiagram, loading);
         const powerOption = {

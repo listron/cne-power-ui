@@ -5,7 +5,7 @@ import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -45,7 +45,7 @@ class DayPower extends Component {
             instantaneous: '#f8b14e',
         },
         light: {
-            dayPower: '#199475',
+            dayPower: '$themeColor',
             equipmentHours: '#c7ceb2',
             instantaneous: '#f9b600',
         },
@@ -62,15 +62,14 @@ class DayPower extends Component {
         const filterInstantaneous = dayPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterDayPower.length === 0 && filterEquipmentHours.length === 0 && filterInstantaneous.length === 0
         ) ? showNoData : hiddenNoData;
-        const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
         const chartsBox = document.getElementById('powerDiagram');
-        let powerDiagram = echarts.init(chartsBox, themeColor);
+        let powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         if (themeChange) {
             powerDiagram.dispose();
-            powerDiagram = echarts.init(chartsBox, themeColor);
+            powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         }
         chartsLoading(powerDiagram, loading);
-        let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
+        let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '$themeColor'];
         const powerOption = {
             graphic: powerGraphic,
             color: color,

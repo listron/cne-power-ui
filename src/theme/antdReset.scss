@@ -4,14 +4,6 @@
 :global {
   .ant-table {
     //table行高，高亮，背景色调整；
-    .ant-table-column-sorter-up.on .anticon-caret-up {
-      //table表格排序上三角点击后的的颜色
-      color: $themeColor;
-    }
-    .ant-table-column-sorter-down.on .anticon-caret-down {
-      //table表格排序下三角点击后的的颜色
-      color: $themeColor;
-    }
     .ant-table-tbody {
       background: #fff;
       & > tr:hover {
@@ -252,7 +244,7 @@
   }
   // 加载的spin
   .ant-spin-dot i {
-    background-color: #199475;
+    background-color: $themeColor;
   }
   //ant-select-dropdown-menu下拉框选中的√颜色
   .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,

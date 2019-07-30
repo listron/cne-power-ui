@@ -19,7 +19,7 @@
     height: 3px;
     border-radius: 100px;
     position: absolute;
-    background-color: #199475;
+    background-color: $themeColor;
     max-width: 100%;
     transition: all 0.4s cubic-bezier(0.08, 0.82, 0.17, 1) 0s;
   }
@@ -41,7 +41,7 @@
   .line {
     position: absolute;
     top: -3px;
-    background: #199475;
+    background: $themeColor;
     border-radius: 1px;
     width: 2px;
     height: 9px;

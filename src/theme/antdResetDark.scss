@@ -7,17 +7,25 @@
     //table行高，高亮，背景色调整；
     .ant-table-column-sorter-up.on .anticon-caret-up {
       //table表格排序上三角点击后的的颜色
-      color: $themeColor;
+      color: #fd6e8f;
     }
     .ant-table-column-sorter-down.on .anticon-caret-down {
       //table表格排序下三角点击后的的颜色
-      color: $themeColor;
+      color: #fd6e8f;
     }
+    // .ant-table-column-sorter-up.on .anticon-caret-up,
+    // .ant-table-column-sorter-down.on .anticon-caret-up,
+    // .ant-table-column-sorter-up.on .anticon-caret-down,
+    // .ant-table-column-sorter-down.on .anticon-caret-down {
+    //   color: $themeColor;
+    // }
+
     .ant-table-tbody {
-      background: #fff;
+      background: $background;
+      // background: #2a338d;
       & > tr:hover {
         td {
-          background: $tableSelectedBackground;
+          background: #2a338d;
         }
       }
     }
@@ -26,19 +34,37 @@
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
-      color: $darkColor;
+      background: rgba(83, 104, 241, 0.15);
+      color: $fontColor;
     }
+
     .ant-table-thead > tr > th {
-      background: #f4f4f4;
-      color: $darkColor;
+      background: #1f246f;
+      color: #00baff;
+      border: 1px solid #323da1;
     }
-    .ant-table-column-sorter-up.on .anticon-caret-up {
-      //table表格排序上三角点击后的的颜色
-      color: $themeColor;
+
+    .ant-table-placeholder {
+      background: rgba(83, 104, 241, 0.15);
+      border: 1px solid $border-color;
+      color: $fontColor;
     }
-    .ant-table-column-sorter-down.on .anticon-caret-down {
-      //table表格排序下三角点击后的的颜色
-      color: $themeColor;
+    .ant-empty-normal {
+      color: $fontColor;
+    }
+
+    .ant-table-thead > tr > th.ant-table-column-has-actions.ant-table-column-has-sorters:hover {
+      background: #2a338d;
+      color: #00baff;
+    }
+
+    .ant-table-body > table {
+      border: 1px solid $border-color;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      border: 1px solid $border-color;
     }
   }
 
@@ -59,23 +85,27 @@
     }
   }
 
+  // ====button ======
   .ant-btn {
     //antd按钮样式调整-高亮
-    color: $darkColor;
+    color: $fontColor;
+    background: transparent;
+    border: 1px solid $border-color;
     @include highLight($themeColor);
     &:hover {
       color: $themeColor;
     }
   }
+
   .ant-btn-primary,
   .ant-btn-primary:active,
   .ant-btn-primary.active,
   .ant-btn-primary:focus {
-    background-color: $themeColor;
-    color: #fff;
-    border-color: $themeColor;
+    background-color: #205bac;
+    color: #00baff;
+    border-color: #00baff;
     &:hover {
-      background-color: $themeColor;
+      background-color: #00baff;
       color: #fff;
     }
   }
@@ -89,6 +119,13 @@
         border-left-color: $themeColor;
       }
     }
+  }
+
+  /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
+  .ant-btn-dashed:hover,
+  .ant-btn-dashed:focus,
+  .ant-btn-dashed::selection {
+    color: $darkColor;
   }
 
   // ===============select 下拉框 start===============
@@ -168,33 +205,97 @@
 
   // ===============switch===============
 
-  .ant-tabs {
-    .ant-tabs-ink-bar {
-      color: $themeColor;
-      background-color: $themeColor;
-    }
-    .ant-tabs-nav,
-    .ant-tabs-tab-active {
-      color: $themeColor;
-    }
-    .ant-tabs-nav .ant-tabs-tab-active:hover {
-      color: $themeColor;
-    }
-    .ant-tabs-tab {
-      color: $darkColor;
-    }
-  }
+  // =================input ==============
 
   .ant-input:not(.ant-input-disabled):hover {
     border-color: $themeColor;
   }
   .ant-input {
-    background: #ffffff;
-    border: 1px solid $promptColor;
-    border-radius: 4px;
-    width: 198px;
-    height: 31px;
+    background: $input-Background;
+    border: 1px solid $input-border;
+    color: $fontColor;
   }
+
+  // ============ ant-calendar 日历============
+  .ant-calendar-picker-icon {
+    color: $input-icon;
+  }
+
+  .ant-calendar {
+    background: $select-background;
+    border: 1px solid $select-border;
+    box-shadow: 0 0 4px 2px $select-border-shadow;
+    color: $fontColor;
+  }
+
+  .ant-calendar-input {
+    background: $input-Background;
+    color: $fontColor;
+  }
+
+  .ant-calendar-input-wrap {
+    background: $input-Background;
+    color: $fontColor;
+    border-bottom: 1px solid $input-border;
+  }
+
+  .ant-calendar-year-panel {
+    background: $select-background;
+  }
+  .ant-calendar-year-panel-header {
+    border-bottom: 1px solid $input-border;
+    color: $fontColor;
+  }
+  .ant-calendar-year-panel-century-select,
+  .ant-calendar-year-panel-decade-select,
+  .ant-calendar-year-panel-year-select,
+  .ant-calendar-year-panel-month-select {
+    color: $fontColor;
+  }
+  .ant-calendar td {
+    color: $fontColor;
+  }
+  .ant-calendar-year-panel-year {
+    color: #00baff;
+  }
+  .ant-calendar-year-panel-selected-cell .ant-calendar-year-panel-year {
+    background: $button-hover;
+    color: #205bac;
+  }
+  .ant-calendar-year-panel-last-decade-cell .ant-calendar-year-panel-year,
+  .ant-calendar-year-panel-next-decade-cell .ant-calendar-year-panel-year {
+    color: #205bac;
+  }
+
+  .ant-calendar-year-panel-prev-decade-btn,
+  .ant-calendar-year-panel-next-decade-btn {
+    &::after,
+    &:before {
+      border-color: #00baff;
+    }
+  }
+
+  .ant-calendar-year-panel-prev-century-btn:hover,
+  .ant-calendar-year-panel-prev-decade-btn:hover,
+  .ant-calendar-year-panel-prev-year-btn:hover,
+  .ant-calendar-year-panel-next-century-btn:hover,
+  .ant-calendar-year-panel-next-decade-btn:hover,
+  .ant-calendar-year-panel-next-year-btn:hover {
+    &::after,
+    &:before {
+      border-color: #00f8ff;
+    }
+  }
+
+  .ant-calendar-year-panel-header a:hover {
+    color: #205bac;
+  }
+
+  .ant-calendar-year-panel-year:hover {
+    background: $button-hover;
+    color: #205bac;
+  }
+
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
     left: 12px;
@@ -283,12 +384,6 @@
     border-radius: 2px;
     color: $darkColor;
   }
-  /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
-  .ant-btn-dashed:hover,
-  .ant-btn-dashed:focus,
-  .ant-btn-dashed::selection {
-    color: $darkColor;
-  }
 
   // 加载的spin
   .ant-spin-dot i {
@@ -324,6 +419,11 @@
     color: $fontColor-invert;
     background: $button-hover;
     border-color: $button-hover;
+    &:hover {
+      color: $fontColor-invert;
+      background: $button-hover;
+      border-color: $button-hover;
+    }
   }
 
   .ant-radio-button-wrapper:not(:first-child)::before {
@@ -331,10 +431,49 @@
   }
 
   .ant-radio-button-wrapper:hover,
-  .ant-radio-button-wrapper-focused {
+  .ant-radio-button-wrapper-focused:not(.ant-radio-button-wrapper-disabled) {
     color: $fontColor-invert;
     background: $button-hover;
+  }
+
+  .ant-radio-button-wrapper:first-child {
+    border-left: $border-color;
+  }
+
+  .ant-radio-button-wrapper-disabled {
+    background: $button-primary;
+    color: $fontColor-disabled;
+    &:hover {
+      cursor: not-allowed;
+      background: $button-primary;
+      color: $fontColor-disabled;
+    }
   }
 }
 
 // ===============ant-radio-button  button-多组 =================
+.ant-tabs-nav-scroll {
+  background: $light-background;
+}
+.ant-tabs-bar {
+  .ant-tabs-extra-content {
+    background-color: $border-color;
+  }
+}
+
+.ant-tabs {
+  .ant-tabs-ink-bar {
+    color: #00baff;
+    background-color: #00baff;
+  }
+  .ant-tabs-nav,
+  .ant-tabs-tab-active {
+    color: #00baff;
+  }
+  .ant-tabs-nav .ant-tabs-tab-active:hover {
+    color: #00baff;
+  }
+  .ant-tabs-tab {
+    color: #00baff;
+  }
+}

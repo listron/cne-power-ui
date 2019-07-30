@@ -25,7 +25,7 @@
     .allStationTitle {
       display: flex;
       line-height: 40px;
-      overflow: hidden;
+      // overflow: hidden;
       p {
         width: 120px;
         margin-bottom: 0;
@@ -134,24 +134,28 @@
 
 .dark {
   @import "../../../../theme//darkTheme.scss";
-  $backgroundColor: #0c0a3e;
-  background: $backgroundColor;
+  background: $background;
   .stationContainer {
-    background: $backgroundColor;
+    background: $background;
+    // 样式发生变化
     .allStationTitle {
-      background: $backgroundColor;
-      border: none;
+      background: $background;
+      border-bottom: 1px solid $border-color;
+      height: 42px;
       p {
-        border: 1px solid #202470;
-        color: #7088c3;
-        background: #13134f;
+        border: 1px solid $tab-border-color;
+        color: $fontColor-dark;
+        background: $tab-background;
         margin-right: 4px;
         border-radius: 8px 8px 0 0;
+        height: 40px;
       }
       .activeStation {
-        background: rgba(83, 104, 241, 0.15);
-        border: 1px solid rgba(83, 104, 241, 0.6);
+        background: $light-background;
+        border: 1px solid $border-color;
         color: $fontColor-invert;
+        border-bottom: 1px solid $tab-border-bottom;
+        height: 42px;
         &::before {
           display: none;
         }

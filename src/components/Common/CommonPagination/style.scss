@@ -1,21 +1,21 @@
-
 $commonHeight: 28px;
 
-.commonPagination{
+.commonPagination {
   margin-right: 24px;
   display: flex;
   align-items: center;
-  .sizeSelector{
-    margin-left: 12px; 
+  .sizeSelector {
+    margin-left: 12px;
     margin-right: 28px;
-    :global{
-      .ant-select{
+    :global {
+      .ant-select {
         width: 63px;
-        .ant-select-selection{
+        .ant-select-selection {
           height: $commonHeight;
-          &:focus,&:hover{
-            border: 1px solid #199475;
-            box-shadow: 0 0 1px #199475;
+          &:focus,
+          &:hover {
+            border: 1px solid $themeColor;
+            box-shadow: 0 0 1px $themeColor;
           }
         }
         .ant-select-selection__rendered {
@@ -24,34 +24,72 @@ $commonHeight: 28px;
       }
     }
   }
-  .pageSelector{
+  .pageSelector {
     display: flex;
-    :global{
-      .ant-pagination{
+    :global {
+      .ant-pagination {
         line-height: inherit;
         margin-top: -4px;
-        .ant-pagination-prev,.ant-pagination-next{
+        .ant-pagination-prev,
+        .ant-pagination-next {
           vertical-align: middle;
           height: $commonHeight;
           line-height: $commonHeight;
-          .ant-pagination-item-link{ 
+          .ant-pagination-item-link {
             height: $commonHeight;
-            &::after{
+            &::after {
               height: $commonHeight;
               line-height: $commonHeight;
             }
           }
         }
-        .ant-pagination-simple-pager{
-          input{
+        .ant-pagination-simple-pager {
+          input {
             vertical-align: middle;
             height: $commonHeight;
-            &:hover,&:focus{
-              border-color: #199475;
-              box-shadow: 0 0 1px #199475;
+            &:hover,
+            &:focus {
+              border-color: $themeColor;
+              box-shadow: 0 0 1px $themeColor;
             }
           }
-        } 
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../theme/darkTheme.scss";
+  color: $fontColor;
+  :global {
+    .ant-pagination {
+      color: $fontColor;
+    }
+    .ant-pagination-item-link {
+      background: $button-hover;
+      color: $fontColor-invert;
+    }
+    .ant-pagination-disabled .ant-pagination-item-link {
+      background: $button-primary;
+      color: $fontColor-dark;
+    }
+    .ant-pagination-simple .ant-pagination-simple-pager input {
+      background: $input-Background;
+      border: 1px solid $input-border;
+      &:hover,
+      &:focus {
+        border: 1px solid $border-color;
+        box-shadow: 0 0 1px $border-shadow-color;
+      }
+    }
+    .ant-select {
+      .ant-select-selection {
+        &:focus,
+        &:hover {
+          border: 1px solid $border-color;
+          box-shadow: 0 0 1px $border-shadow-color;
+        }
       }
     }
   }

@@ -35,6 +35,13 @@ const chartsLoading = (charts, loading) => {
   return loading ? charts.showLoading('default', { color: '#00baff', maskColor: 'rgba(22, 24, 88, 0.5)' }) : charts.hideLoading();
 };
 
-export { Gradient1, Gradient2, barRadius, chartsLoading };
+const themeConfig = {
+  'dark': 'darkTheme',
+  'light': 'lightTheme',
+};
+
+export { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig };
+
+
 
 
