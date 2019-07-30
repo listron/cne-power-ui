@@ -54,7 +54,6 @@ function* getDeviceList(action) {
         // 当前页已超出
         pageNum = maxPage;
       }
-
       yield put({
         type: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
         payload: {
@@ -63,13 +62,9 @@ function* getDeviceList(action) {
           pageNum,
         },
       });
-
-
-
+    } else {
+      throw response.data;
     }
-
-
-
   } catch (e) {
     console.log(e);
     yield put({
@@ -334,7 +329,7 @@ function* importStationDevice(action) {
     Path.APISubPaths.system.importStationDevice
     }/${payload.stationCode}`;
   try {
-    // yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
+    yield put({ type: deviceManageAction.DEVICE_MANAGE_FETCH });
     const response = yield call(axios, {
       method: 'post',
       url,
@@ -368,9 +363,11 @@ function* importStationDevice(action) {
     } else {
       message.config({ top: 200, duration: 2, maxCount: 3 });
       message.error(response.data.message);
+      throw response.data.data;
     }
   } catch (e) {
     console.log(e);
+    yield put({ type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload: { loading: false } });
   }
 }
 
