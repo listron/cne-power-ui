@@ -51,16 +51,8 @@ const statement = [ // 统计分析 - 统计报表
   },
 ];
 
-const achievement = [
-  { // 集团绩效
-    path: '/statistical/achievement/analysis/:pathKey',
-    component: lazy(() => import('../../containers/StatisticalAnalysis/Achievement/AchievementLayout')),
-  },
-];
-
 export const statisticalRoute = [
   ...stationAccount,
   ...equipment,
   ...statement,
-  ...achievement,
 ];

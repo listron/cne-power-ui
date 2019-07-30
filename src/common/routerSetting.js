@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { Route } from 'react-router-dom';
 // import Loadable from 'react-loadable';
-import styles from './loading.scss'
+import styles from './loading.scss';
 import { Spin } from 'antd';
 import { monitorRoute } from './routes/monitorRoute';
 import { operationRoute } from './routes/operationRoute';
@@ -26,7 +26,7 @@ const routers = [
   { // 隐藏页： 修改账户
     path: '/hidden/user/accountSettings',
     component: lazy(() => import('../containers/Others/AccountSettings')),
-  }, 
+  },
 ];
 
 // const Loading = ({ pastDelay, timedOut, error }) => {
