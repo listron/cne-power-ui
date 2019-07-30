@@ -11,7 +11,7 @@ export default class InefficientSeries extends Component{
 
   render(){
     const { inefficientList = [] } = this.props;
-    const hasInefficient = inefficientList.length > 0 ? true : false;
+    const hasInefficient = inefficientList.length > 0;
     let maxInefficientNum;
     if (this.listRef) {
       const { offsetHeight } = this.listRef;
@@ -26,7 +26,7 @@ export default class InefficientSeries extends Component{
             <span className={styles.series}>电流偏低支路</span>
             <span className={styles.lost}>电量损失比(%)</span>
           </div>
-          <div className={styles.inefficientList} ref={(ref) => this.listRef = ref}>
+          <div className={styles.inefficientList} ref={(ref) => { this.listRef = ref; }}>
             {hasInefficient ? inefficientList.slice(0, maxInefficientNum).map(e => (
               <div key={e.inefficiencyId} className={styles.eachInefficient}>
                 <span className={styles.name}>{e.stationName}</span>
@@ -40,6 +40,6 @@ export default class InefficientSeries extends Component{
           </div>
         </div>
       </section>
-    )
+    );
   }
 }

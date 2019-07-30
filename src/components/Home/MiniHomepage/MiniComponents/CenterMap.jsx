@@ -23,6 +23,10 @@ class CenterMap extends Component{
     mapCountInfo: {}, // 选中国家风电统计{name: '中国', wind: 21, pv: 11}
   };
 
+  componentDidMount(){
+    window.addEventListener('resize', this.onCountryChartResize);
+  }
+
   componentWillReceiveProps(nextProps){
     const { mapStation } = nextProps;
     const preStations = this.props.mapStation;
@@ -53,6 +57,24 @@ class CenterMap extends Component{
 
   componentWillUnmount(){
     this.clocker && clearTimeout(this.clocker);
+    window.removeEventListener('resize', this.onCountryChartResize);
+  }
+
+  onCountryChartResize = () => {
+    const countryBox = document.getElementById('homeCountryMap');
+    if (!countryBox){
+      return;
+    }
+    if (this.resizeClocker) {
+      clearTimeout(this.resizeClocker);
+    }
+    this.resizeClocker = setTimeout(() => {
+      const coutryEharts = echarts.getInstanceByDom(countryBox);
+      if(coutryEharts && coutryEharts.resize) {
+        this.forceUpdate();
+        coutryEharts.resize();
+      }
+    }, 500);
   }
 
   onCountryChange = (param) => { // 切换国家
@@ -110,7 +132,7 @@ class CenterMap extends Component{
     });
   }
 
-  setCountryMap = (mapStation, mapName) => { // 国家内各电站位置设定。
+  setCountryMap = (mapStation = [], mapName) => { // 国家内各电站位置设定。
     let countryStation = [];
     if (mapName === 'China') {
       countryStation = mapStation.filter(e => e.timeZone === 8);
@@ -214,9 +236,8 @@ class CenterMap extends Component{
           layoutSize: countrySize,
           itemStyle: {
             normal: {
-              areaColor: '#1866a8',
-              borderColor: '#076399',
-              opacity: 0.5,
+              areaColor: 'rgba(113,154,201,0.12)',
+              borderColor: '#719ac9',
             },
           },
         },
@@ -237,6 +258,8 @@ class CenterMap extends Component{
       message.error('加载国家地图失败，请重试');
     });
   }
+
+  resizeClocker = null;
 
   render(){
     const { mapStation, singleStation, realTimeInfo } = this.props;

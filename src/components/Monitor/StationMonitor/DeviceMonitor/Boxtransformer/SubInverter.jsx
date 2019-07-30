@@ -28,10 +28,10 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode }) => 
 
   const confluenceStatus = { // 汇流箱设备状态
     '400': '#ceebe0', // 正常
-    '500': '#f1f1f1', // 无通讯
+    '500': '#dfdfdf', // 无通讯
     '900': '#f1f1f1', // 未接入
-    '801': '#fefad2', // 离散率>=10%数
-    '802': '#ffce7f', // 离散率>=20%数
+    '801': '#f9b600', // 离散率>=10%数
+    '802': '#a42b2c', // 离散率>=20%数
   }
 
   const getStatusBox = (alarmNum, isLowEfficiency) => {
@@ -85,7 +85,7 @@ const SubInverter = ({ subDeviceList = [], deviceDetail = {}, stationCode }) => 
                   <span
                     key={i}
                     className={deviceTypeCode === '201' ? styles.rect : styles.round}
-                    style={{backgroundColor: deviceTypeCode === '201' ? seriesStatus[e] : confluenceStatus[e]}}
+                    style={{backgroundColor: deviceTypeCode === '206' ? seriesStatus[e] : confluenceStatus[e]}}
                   />
                 ))}</div>
                 <div style={{color: inverterStatusInfo.color}}>{inverterStatusInfo.statusName}</div>

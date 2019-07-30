@@ -1,13 +1,11 @@
 
 
-
-
 @media screen and (max-width: 1439px) { // 1440以下屏幕，按1366px进行适配。
   .topParts, .contentParts{
     padding: 0 1%;
   }
   .topParts{
-    background: url('/img/tiltebg.png') no-repeat center 15px;
+    background-size: 100% 50%;
     flex: 0 0 16.6%;
     .title{
       margin-bottom: 4px;
@@ -21,7 +19,6 @@
   }
   .topParts{
     flex: 0 1 128px;
-    background: url('/img/tiltebg.png') no-repeat center 20px;
     .title{
       margin-bottom: 12px;
     }
@@ -38,6 +35,8 @@
 .topParts{ // 整个顶部区域
   display: flex;
   justify-content: space-between;
+  background: url('/img/tiltebg.png') no-repeat center 20px;
+  background-size: 100% 100%;
   .leftTop, .rightTop{
     flex: 0 0 24%;
     min-width: 340px;
@@ -83,6 +82,10 @@
       justify-content: flex-end;
       flex: 0 1 45%;
       align-items: center;
+      img{
+        border-radius: 50%;
+        margin-right: 4px;
+      }
     }
     .timeShow{
       color:#88a6bf;

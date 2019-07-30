@@ -71,7 +71,7 @@ class RealtimeDataType extends Component {
   
     const url = `${APIBasePath}${monitor.exportRealtime}`;
     const { deviceFullCodes, devicePoints } = queryParam;
-    const timeZone = moment().zone() / (-60);
+    const timeZone = moment().utcOffset() / 60;
     downLoadFile({
       url,
       timeZone,
