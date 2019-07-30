@@ -12,11 +12,6 @@ $commonHeight: 28px;
         width: 63px;
         .ant-select-selection {
           height: $commonHeight;
-          &:focus,
-          &:hover {
-            border: 1px solid $themeColor;
-            box-shadow: 0 0 1px $themeColor;
-          }
         }
         .ant-select-selection__rendered {
           line-height: 26px;
@@ -47,11 +42,34 @@ $commonHeight: 28px;
           input {
             vertical-align: middle;
             height: $commonHeight;
-            &:hover,
-            &:focus {
-              border-color: $themeColor;
-              box-shadow: 0 0 1px $themeColor;
-            }
+          }
+        }
+      }
+    }
+  }
+}
+.light {
+  @import "../../../theme/theme.scss";
+  .sizeSelector {
+    :global {
+      .ant-select-selection {
+        height: $commonHeight;
+        &:focus,
+        &:hover {
+          border: 1px solid $themeColor;
+          box-shadow: 0 0 1px $themeColor;
+        }
+      }
+    }
+  }
+  .pageSelector {
+    :global {
+      .ant-pagination-simple-pager {
+        input {
+          &:hover,
+          &:focus {
+            border-color: $themeColor;
+            box-shadow: 0 0 1px $themeColor;
           }
         }
       }

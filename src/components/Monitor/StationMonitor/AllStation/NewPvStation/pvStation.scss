@@ -579,70 +579,24 @@
   }
 
   .pvStationList {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    a {
-      text-decoration: underline;
-      color: rgba(0, 0, 0, 0.65);
-
-      &:hover {
-        color: $themeColor;
-      }
-    }
-
-    .pagination {
-      a {
-        text-decoration: none;
-      }
-
-      height: 45px;
-      display: flex;
-      justify-content: flex-end;
-      line-height: 45px;
-    }
-
     .stationName {
-      width: 70px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
+      color: $fontColor;
       &:hover {
-        color: $themeColor;
+        color: $fontColor-hover;
+      }
+      a {
+        text-decoration: underline;
       }
     }
 
-    .stationrovince {
-      width: 50px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .numberStyle {
-      text-align: right;
-    }
-    @mixin statusBox {
-      width: 5px;
-      height: 20px;
-      border-radius: 2px;
-    }
-    .currentStation {
-      display: flex;
-      justify-content: center;
-    }
     .normal {
       background: $themeColor;
-      @include statusBox();
     }
     .interrupt {
       background: #f9b600;
-      @include statusBox();
     }
     .notConnected {
       background: #f8f8f8;
-      @include statusBox();
     }
   }
 

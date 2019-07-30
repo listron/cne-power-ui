@@ -52,13 +52,14 @@ class GpsMap extends Component {
       'featureType': 'highway',
       'elementType': 'all',
       'stylers': {
-        'color': '#fdfdfd',
+        'color': 'rgba(77, 95, 226, 0.6)',
       },
     }, {
       'featureType': 'highway',
       'elementType': 'labels',
       'stylers': {
         'visibility': 'off',
+        'color': '#0065c6',
       },
     }, {
       'featureType': 'arterial',

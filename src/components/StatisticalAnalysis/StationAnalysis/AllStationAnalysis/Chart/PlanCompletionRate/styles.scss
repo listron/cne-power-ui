@@ -62,26 +62,27 @@
 }
 
 .light {
+  @import "../../../../../../theme/theme.scss";
   .allStationDataContainer {
-    border-bottom: 1px solid #ececec;
+    border-bottom: 1px solid $pageBackground;
     .leftPic {
-      border-right: 1px solid #ececec;
+      border-right: 1px solid $pageBackground;
     }
     .stationTargetName {
-      color: #666;
+      color: $darkColor;
     }
 
     .stationTargetValue {
       color: $themeColor;
       .unit {
-        color: #666;
+        color: $darkColor;
       }
     }
   }
 }
 
 .dark {
-  @import "../../../../../../theme/darkTheme";
+  @import "../../../../../../theme/darkTheme.scss";
   background: $light-background;
   border: 1px solid $border-color;
   margin-top: 10px;
