@@ -234,7 +234,7 @@ class AllStationStatistic extends React.Component {
         <i className="iconfont icon-filter"></i>
       </div>
     );
-    const { planSummary = [] } = allStationStatisticData; // 什么sb 传回来的数据结构
+    const planSummary = allStationStatisticData.planSummary || []; // 什么sb 传回来的数据结构
     return (
       <div className={`${styles.allStationTypeTabs} ${styles[theme]}`}>
 

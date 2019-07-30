@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -55,7 +54,8 @@ class MonthPlanPower extends Component {
         const instantaneous = monthPlanPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = monthPlanPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
-        ) ? showNoData : hiddenNoData;
+        );
+        const graphic = chartsNodata(!powerGraphic, theme);
         const chartsBox = document.getElementById('monthPlanPowerChart');
         let powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         if (themeChange) {
@@ -64,7 +64,7 @@ class MonthPlanPower extends Component {
         }
         chartsLoading(powerDiagram, loading);
         const powerOption = {
-            graphic: powerGraphic,
+            graphic: graphic,
             title: {
                 text: '月累计与计划发电量（截止昨天）',
                 top: 8,

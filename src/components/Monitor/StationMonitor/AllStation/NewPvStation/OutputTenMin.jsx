@@ -6,10 +6,9 @@ import styles from './pvStation.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
 import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
 import { dataFormats } from '../../../../../utils/utilFunc';
-import { themeConfig } from '../../../../../utils/darkConfig';
+import { themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
     capabilityData: PropTypes.array,
@@ -48,7 +47,9 @@ class OutputTenMin extends Component {
     const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
-    const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
+    const capabilityGraphic = filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0;
+    const graphic = chartsNodata(!(capabilityGraphic), theme);
+    console.log('graphic', graphic);
     let labelInterval = 47; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
@@ -56,9 +57,9 @@ class OutputTenMin extends Component {
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
-    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '$themeColor'];
+    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '#119475'];
     const capabilityOption = {//出力图
-      graphic: capabilityGraphic,
+      graphic: graphic,
       legend: {
         itemWidth: 24,
         itemHeight: 6,

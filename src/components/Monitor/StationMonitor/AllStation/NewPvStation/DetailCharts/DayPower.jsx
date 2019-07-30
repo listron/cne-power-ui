@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 
@@ -61,7 +60,8 @@ class DayPower extends Component {
         const instantaneous = dayPowerData.map(e => dataFormats(divideFormarts(e.instantaneous, 'MJ'), '--', 2, true)); // 辐射值
         const filterInstantaneous = dayPowerData.filter(e => e.instantaneous);
         const powerGraphic = (filterDayPower.length === 0 && filterEquipmentHours.length === 0 && filterInstantaneous.length === 0
-        ) ? showNoData : hiddenNoData;
+        );
+        const graphic = chartsNodata(!powerGraphic, theme);
         const chartsBox = document.getElementById('powerDiagram');
         let powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         if (themeChange) {
@@ -71,7 +71,7 @@ class DayPower extends Component {
         chartsLoading(powerDiagram, loading);
         let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '$themeColor'];
         const powerOption = {
-            graphic: powerGraphic,
+            graphic: graphic,
             color: color,
             title: {
                 text: '日发电量与利用小时',

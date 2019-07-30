@@ -3,7 +3,7 @@ import styles from './styles.scss';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
-import { Gradient1, Gradient2 } from '../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, chartsNodata } from '../../../../../utils/darkConfig';
 /*
   双柱单折线组件：
   参数:
@@ -205,7 +205,7 @@ class BarGraph extends React.Component {
   getMonthOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphLastYear, barGraphmonth, barGraphYearOnYear, lastYear, currentYear, title, hasData, theme = 'light' } = param;
     const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (chartsNodata(hasData, theme)) || ' ';
     return {
       graphic: confluenceTenMinGraphic,
       color: color,

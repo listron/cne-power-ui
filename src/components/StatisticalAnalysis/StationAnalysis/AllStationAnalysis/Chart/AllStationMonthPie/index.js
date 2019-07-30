@@ -2,7 +2,7 @@ import React from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData';
-import { themeConfig } from '../../../../../../utils/darkConfig';
+import { themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 import styles from './index.scss';
 
 class AllStationMonthPie extends React.Component {
@@ -36,11 +36,11 @@ class AllStationMonthPie extends React.Component {
     const reg = /\((.+)\)/g;
     const unit = reg.exec(yAxisName)[1] || '';
     targetPieChart.resize();
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
+    const graphic = (hasData || hasData === false) && chartsNodata(hasData, theme) || ' ';
     const darkColor = ['#fd6e8f', '#ee635f', '#fa936b', '#f8b14e', '#4a90e2', '#49b5d2', '#35c3ad', '#1bd77b', '#b4e350', '#e4ef85', '#9b9b9b', '#ceebe0'];
     const lightColor = ['#a42b2c', '#d48265', '#91c7af', '#749f83', '#ca8622', '#efc17e', '#d8907a', '#bda29a', '#546570', '#6e7074', '#9b9b9b', '#ceebe0'];
     const targetPieOption = {
-      graphic: confluenceTenMinGraphic,
+      graphic: graphic,
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
