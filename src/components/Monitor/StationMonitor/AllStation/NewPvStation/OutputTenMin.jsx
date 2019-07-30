@@ -49,7 +49,6 @@ class OutputTenMin extends Component {
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
     const capabilityGraphic = filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0;
     const graphic = chartsNodata(!(capabilityGraphic), theme);
-    console.log('graphic', graphic);
     let labelInterval = 47; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
