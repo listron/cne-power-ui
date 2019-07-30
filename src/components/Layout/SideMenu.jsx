@@ -80,13 +80,14 @@ class SideMenu extends Component {
               {collapsed ? <i className="iconfont icon-menu-fold" /> : <i className="iconfont icon-menu-open" />}
             </div>
           </div>
+          <span ref={'test'} />
           <Menu
             mode="inline"
             inlineCollapsed={collapsed}
             className={styles.menuList}
             selectedKeys={[pathname]}
             openKeys={openKeys}
-            theme={theme}
+            // getContainer={() => this.refs.test}
             onOpenChange={this.onOpenChange}>
             {this.renderSideMenu(sideMenuData)}
           </Menu>
@@ -112,7 +113,7 @@ class SideMenu extends Component {
         const menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null : e.name}</span></span>;
         const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.split(',').includes(subItem.rightKey));
         return (
-          <SubMenu title={menuTitle} key={e.path}>
+          <SubMenu title={menuTitle} key={e.path} className={styles.subMenu}>
             {filteredMenu.map(m => {
               return (
                 <Item key={m.path}>

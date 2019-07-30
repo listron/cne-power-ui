@@ -7,8 +7,9 @@ $promptColor: #205bac;
 $fontColor: #00baff;
 $fontColor-invert: #fff;
 $fontColor-hover: #00f8ff;
-$fontColor-disabled: #205bac;
+$fontColor-disabled: #7088c3;
 $fontColor-warn: #f8e71c;
+$fontColor-dark: #7088c3;
 
 // 按钮  不全
 $button-primary: #205bac;
@@ -16,7 +17,6 @@ $button-add: #00baff; // 暂时
 $button-delete: #fd6e8f;
 $button-hover: #00baff; // $button-active button-focus
 $button-disabled: #161858;
-
 $border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
 
@@ -38,11 +38,16 @@ $select-border-shadow: #4d5fe2;
 // 输入框
 $input-Background: #161858;
 $input-border: #4d5fe2;
+$input-icon: #4d5fe2;
 
 // 侧边栏  上边栏
 $sideBar-background: #161858;
 $sidecolor: #205bac;
 $logo-background: #205bac;
+
+$tab-background: #13134f;
+$tab-border-color: #202470;
+$tab-border-bottom: rgba(12, 10, 62, 0.6);
 
 // success
 // info

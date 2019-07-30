@@ -9,7 +9,6 @@
     display: inline-block;
     width: 100%;
     vertical-align: middle;
-    background: #dfdfdf;
     border-radius: 100px;
     display: flex;
     height: 3px;
@@ -19,7 +18,6 @@
     height: 3px;
     border-radius: 100px;
     position: absolute;
-    background-color: #199475;
     max-width: 100%;
     transition: all 0.4s cubic-bezier(0.08, 0.82, 0.17, 1) 0s;
   }
@@ -30,7 +28,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: #fff;
     border-radius: 10px;
     opacity: 0;
     -webkit-animation: ant-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
@@ -41,7 +38,6 @@
   .line {
     position: absolute;
     top: -3px;
-    background: #199475;
     border-radius: 1px;
     width: 2px;
     height: 9px;
@@ -71,6 +67,9 @@
   .progressBg {
     background-color: $themeColor;
   }
+  .active::before {
+    background: #fff;
+  }
 
   .line {
     background: $themeColor;
@@ -80,7 +79,10 @@
 .dark {
   @import "../../../theme/darkTheme.scss";
   .progressInner {
-    background: #00baff;
+    background: $themeColor;
+  }
+  .active::before {
+    background: $fontColor-invert;
   }
 
   .progressBg {

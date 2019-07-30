@@ -196,6 +196,7 @@
 }
 
 .light {
+  $fontColor-dark: #999999;
   .sideLayout {
     .logo {
       background: #3f3f3f;
@@ -226,17 +227,17 @@
           &:hover {
             color: $themeColor;
           }
-          color: $slideFontColor;
+          color: $fontColor-dark;
           a {
-            color: $slideFontColor;
+            color: $fontColor-dark;
           }
           a:hover {
             color: $themeColor;
           }
           .ant-menu-item {
-            color: $slideFontColor;
+            color: $fontColor-dark;
             a {
-              color: $slideFontColor;
+              color: $fontColor-dark;
             }
           }
         }
@@ -281,6 +282,7 @@
 
 .dark {
   @import "../../theme/darkTheme.scss";
+  $fontColor-dark: #7088c3;
   .sideLayout {
     .logo {
       background: $sideBar-background;
@@ -311,17 +313,17 @@
           &:hover {
             color: $themeColor;
           }
-          color: $slideFontColor;
+          color: $fontColor-dark;
           a {
-            color: $slideFontColor;
+            color: $fontColor-dark;
           }
           a:hover {
             color: $themeColor;
           }
           .ant-menu-item {
-            color: $slideFontColor;
+            color: $fontColor-dark;
             a {
-              color: $slideFontColor;
+              color: $fontColor-dark;
             }
           }
         }

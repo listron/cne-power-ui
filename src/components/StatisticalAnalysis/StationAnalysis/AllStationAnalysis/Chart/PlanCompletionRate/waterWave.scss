@@ -1,4 +1,3 @@
-
 .waterWave {
   display: inline-block;
   position: relative;
@@ -10,19 +9,34 @@
     text-align: center;
     width: 100%;
     span {
-      color: rgb(3, 195, 154);
       font-size: 14px;
       line-height: 22px;
     }
     h4 {
-      color: #199475;
-      //font-weight: 700;
       line-height: 32px;
       font-size: 24px;
     }
   }
   .waterWaveCanvasWrapper {
-    transform: scale(.5);
+    transform: scale(0.5);
     transform-origin: 0 0;
+  }
+}
+
+.light {
+  span {
+    color: rgb(3, 195, 154);
+  }
+  h4 {
+    color: #199475;
+  }
+}
+
+.dark {
+  span {
+    color: #00f8ff;
+  }
+  h4 {
+    color: #00f8ff;
   }
 }

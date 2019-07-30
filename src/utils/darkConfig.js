@@ -1,4 +1,5 @@
 
+import { showNoData, hiddenNoData, darkShowNoData } from '../constants/echartsNoData';
 const Gradient1 = {
   type: 'linear',
   x: 0,
@@ -35,6 +36,21 @@ const chartsLoading = (charts, loading) => {
   return loading ? charts.showLoading('default', { color: '#00baff', maskColor: 'rgba(22, 24, 88, 0.5)' }) : charts.hideLoading();
 };
 
-export { Gradient1, Gradient2, barRadius, chartsLoading };
+const chartsNodata = (hasNoData, theme) => {
+  if (!hasNoData) {
+    return theme === 'dark' && darkShowNoData || showNoData;
+  }
+  return hiddenNoData;
+};
+
+const themeConfig = { // 主题切换用于图表
+  'dark': 'darkTheme',
+  'light': 'lightTheme',
+};
+
+
+export { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata };
+
+
 
 

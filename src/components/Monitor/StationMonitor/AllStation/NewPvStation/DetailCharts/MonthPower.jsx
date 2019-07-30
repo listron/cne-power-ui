@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
 import { dataFormats, getDefaultData } from '../../../../../../utils/utilFunc';
-import { showNoData, hiddenNoData } from '../../../../../../constants/echartsNoData.js';
 import { divideFormarts, chartPowerPoint } from '../../../PvCommon/PvDataformat';
-import { Gradient1, Gradient2, barRadius, chartsLoading } from '../../../../../../utils/darkConfig';
+import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata } from '../../../../../../utils/darkConfig';
 import moment from 'moment';
 import styles from './detailCharts.scss';
 import { Radio } from 'antd';
@@ -137,7 +136,7 @@ class MonthPower extends Component {
         light: {
             monthPower: '#3e97d1',
             monthPlanPower: '#fbe6e3',
-            completeRate: '#199475',
+            completeRate: '$themeColor',
             equipmentHoursObj: '#c7ceb2',
         },
 
@@ -157,18 +156,18 @@ class MonthPower extends Component {
         const filterInstantaneous = monthPowerData.filter(e => e.instantaneous);
         const completeRate = monthPowerData.map(e => dataFormats(e.completeRate, '--', 2, true)); // 完成率
         const powerGraphic = (filterMonthPower.length === 0 && filterMonthPlanPower.length === 0 && filterInstantaneous.length === 0
-        ) ? showNoData : hiddenNoData;
-        const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
-        let monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
+        );
+        const graphic = chartsNodata(!powerGraphic, theme);
+        let monthPowerChart = echarts.init(document.getElementById('powerChart'), themeConfig[theme]);
         if (themeChange) {
             monthPowerChart.dispose();
-            monthPowerChart = echarts.init(document.getElementById('powerChart'), themeColor);
+            monthPowerChart = echarts.init(document.getElementById('powerChart'), themeConfig[theme]);
         }
         chartsLoading(monthPowerChart, loading);
         const yAxisType = this.yAxisType(powerUnit);
         const seriesType = this.seriesType({ monthPower, monthPlanPower, completeRate, equipmentHours });
         const powerOption = {
-            graphic: powerGraphic,
+            graphic: graphic,
             title: {
                 text: '月发电量与利用小时（截止昨天）',
                 top: 8,

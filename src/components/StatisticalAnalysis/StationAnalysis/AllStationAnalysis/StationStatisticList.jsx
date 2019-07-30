@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './stationStatisticList.scss';
 import CommonPagination from '../../../Common/CommonPagination';
-import { Table, Radio } from "antd";
+import { Table, Radio } from 'antd';
 import moment from 'moment';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
@@ -39,11 +39,11 @@ class StationStatisticList extends React.Component {
       equivalentHours: 'equivalentHours',
       pr: 'pr',
       lostPower: 'lostPower',
-      limitPowerHours: 'limitPowerHours'
+      limitPowerHours: 'limitPowerHours',
     };
     const sort = sortInfo[field] ? sortInfo[field] : '';
     const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
-    let prams = {
+    const prams = {
       pageNum,
       pageSize,
       year: dateType === 'month' ? year[0] : powerSelectYear,
@@ -52,10 +52,10 @@ class StationStatisticList extends React.Component {
       dateType,
       sort,
       sortType,
-      stationType
-    }
-    getAllStationStatisticTableData(prams)
-    this.props.changeAllStationStore({ sort, sortType })
+      stationType,
+    };
+    getAllStationStatisticTableData(prams);
+    this.props.changeAllStationStore({ sort, sortType });
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
@@ -68,15 +68,15 @@ class StationStatisticList extends React.Component {
       sort,
       month,
       pageNum: currentPage,
-      stationType
-    })
-    this.props.changeAllStationStore({ pageNum: currentPage, pageSize, })
+      stationType,
+    });
+    this.props.changeAllStationStore({ pageNum: currentPage, pageSize });
   }
 
-  handleTime = (e) => {  // 选择月
+  handleTime = (e) => { // 选择月
     const changeMonth = Number(e.target.value);
     const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort, powerSelectYear } = this.props;
-    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth, })
+    changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth });
     getAllStationStatisticTableData(
       {
         year: year[0],
@@ -86,9 +86,9 @@ class StationStatisticList extends React.Component {
         pageSize, // 每页条数
         sortType,
         sort,
-        stationType
+        stationType,
       }
-    )
+    );
   }
 
   handleYearTime = (e) => { // 选择年
@@ -102,10 +102,10 @@ class StationStatisticList extends React.Component {
         pageSize, // 每页条数
         sortType,
         sort,
-        stationType
+        stationType,
       }
-    )
-    changeAllStationStore({ powerSelectYear: changeYear, })
+    );
+    changeAllStationStore({ powerSelectYear: changeYear });
   }
 
   selectYear() { // 计划完成选择年份
@@ -115,43 +115,43 @@ class StationStatisticList extends React.Component {
         <Radio.Group value={`${powerSelectYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
-            } else {
-              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
             }
+            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
+
           }
           )}
         </Radio.Group>
-      )
+      );
     } else if (allStationAvalibaData.length > 0) {
       return (
         <Radio.Group value={+powerSelectMonth} buttonStyle="solid" onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
             if (e.isTrue === true || +e.year === moment().month() + 1) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
-            } else {
-              return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>
+              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>;
             }
-          } )}
+            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>;
+
+          })}
         </Radio.Group>
-      )
+      );
     }
   }
 
   selectStation = (record) => {
-    const stationCode = record.stationCode
+    const stationCode = record.stationCode;
     this.props.history.push(`/statistical/stationaccount/allstation/${stationCode}`);
     this.props.changeAllStationStore({
       showPage: 'single',
-      singleStationCode: `${stationCode}`
+      singleStationCode: `${stationCode}`,
     });
   }
-  
+
   initMonthColumn = () => { // 月table表
     const columns = [
       {
-        title: "电站名称",
-        dataIndex: "stationName",
+        title: '电站名称',
+        dataIndex: 'stationName',
         className: styles.stationName,
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
@@ -161,81 +161,81 @@ class StationStatisticList extends React.Component {
               <a onClick={() => this.selectStation(record)}>
                 <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
               </a>
-            )
-          }
-        }
+            ),
+          };
+        },
       }, {
-        title: "区域",
-        dataIndex: "region",
+        title: '区域',
+        dataIndex: 'region',
         sorter: true,
         render: (value, record, index) => {
           return {
             children: (
               <div className={styles.region}>{record.region}</div>
-            )
-          }
-        }
+            ),
+          };
+        },
       }, {
         title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
-        dataIndex: "genValid",
+        dataIndex: 'genValid',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
-        dataIndex: "planGen",
+        dataIndex: 'planGen',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: "planGenRate",
+        dataIndex: 'planGenRate',
         sorter: true,
-        render(text){ return numWithComma(text); },
-        defaultSortOrder: 'ascend'
+        render(text) { return numWithComma(text); },
+        defaultSortOrder: 'ascend',
       }, {
         title: () => <TableColumnTitle title="发电量同比" unit="%" />,
-        dataIndex: "powerRate",
+        dataIndex: 'powerRate',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: "resourceValue",
+        dataIndex: 'resourceValue',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="资源同比" unit="%" />,
-        dataIndex: "resourceRate",
+        dataIndex: 'resourceRate',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-        dataIndex: "equivalentHours",
+        dataIndex: 'equivalentHours',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: "pr",
+        dataIndex: 'pr',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: "lostPower",
+        dataIndex: 'lostPower',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: "limitPowerHours",
+        dataIndex: 'limitPowerHours',
         sorter: true,
-        render(text){ return numWithComma(text); },
-      }
+        render(text) { return numWithComma(text); },
+      },
     ];
-    return columns
+    return columns;
   }
   //年table表
   initYearColumn = () => {
     const columns = [
       {
-        title: "电站名称",
-        dataIndex: "stationName",
+        title: '电站名称',
+        dataIndex: 'stationName',
         className: styles.stationName,
         onFilter: (value, record) => record.stationName.indexOf(value) === 0,
         sorter: true,
@@ -245,98 +245,99 @@ class StationStatisticList extends React.Component {
               <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
                 <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
               </a >
-            )
-          }
-        }
+            ),
+          };
+        },
       }, {
-        title: "区域",
-        dataIndex: "region",
+        title: '区域',
+        dataIndex: 'region',
         sorter: true,
         render: (value, record, index) => {
           return {
             children: (
               <div className={styles.region}>{record.region}</div>
-            )
-          }
-        }
+            ),
+          };
+        },
       }, {
         title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
-        dataIndex: "genValid",
+        dataIndex: 'genValid',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
-        dataIndex: "planGen",
+        dataIndex: 'planGen',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: "planGenRate",
+        dataIndex: 'planGenRate',
         sorter: true,
-        render(text){ return numWithComma(text); },
-        defaultSortOrder: 'ascend'
+        render(text) { return numWithComma(text); },
+        defaultSortOrder: 'ascend',
       }, {
         title: () => <TableColumnTitle title="发电量环比" unit="%" />,
-        dataIndex: "powerRate",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'powerRate',
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: "resourceValue",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'resourceValue',
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="资源环比" unit="%" />,
-        dataIndex: "resourceRate",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'resourceRate',
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-        dataIndex: "equivalentHours",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'equivalentHours',
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: "pr",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'pr',
+        render(text) { return numWithComma(text); },
         sorter: true,
       }, {
         title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: "lostPower",
+        dataIndex: 'lostPower',
         sorter: true,
-        render(text){ return numWithComma(text); },
+        render(text) { return numWithComma(text); },
       }, {
         title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: "limitPowerHours",
-        render(text){ return numWithComma(text); },
+        dataIndex: 'limitPowerHours',
+        render(text) { return numWithComma(text); },
         sorter: true,
-      }
+      },
     ];
-    return columns
+    return columns;
   }
 
   render() {
-    const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, showPage } = this.props;
+    const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, theme } = this.props;
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     const dataSource = allStationStatisticTableData.map((e, i) => ({ ...e, key: i }));
     return (
-      <div className={styles.stationStatisticList}>
+      <div className={`${styles.stationStatisticList} ${styles[theme]}`}>
         <div className={styles.stationStatisticFilter}>
           <div className={styles.leftTime}>
-            <div>综合指标统计表</div>
+            <div className={styles.gradient}>综合指标统计表</div>
             {this.selectYear()}
           </div>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <div>
           <Table columns={columns}
             dataSource={dataSource}
+            // bordered={true}
             onChange={this.ontableSort}
             pagination={false} />
         </div>
 
       </div>
-    )
+    );
   }
 }
-export default (StationStatisticList)
+export default (StationStatisticList);

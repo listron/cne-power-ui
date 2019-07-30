@@ -52,9 +52,9 @@
 .dark {
   @import "../../../theme/darkTheme.scss";
   .eachPath {
-    color: $fontColor-invert;
+    color: $fontColor-dark;
     a {
-      color: $fontColor-invert;
+      color: $fontColor-dark;
     }
   }
   .rightText {
