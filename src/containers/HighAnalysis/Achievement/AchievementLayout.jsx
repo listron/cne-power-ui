@@ -52,7 +52,7 @@ class AchievementLayout extends Component {
 
   tabChange = (key) => { // 暂存, tab实现, 携带原search字符切换页面。
     const { search } = this.props.location;
-    this.props.history.push(`/statistical/achievement/analysis/${key}${search}`);
+    this.props.history.push(`/analysis/achievement/analysis/${key}${search}`);
   }
 
   closeTab = (key) => {
@@ -79,8 +79,15 @@ class AchievementLayout extends Component {
       <div className={styles.layout}>
         <div className={styles.tabs}>
           {this.tabs.map((e, i) => (
-            <div key={e} className={styles.eachTab} style={{display: pages.includes(e) ? 'block' : 'none'}}>
-              <span className={styles.button} onClick={() => this.tabChange(e)}>{this.tabNames[i]}</span>
+            <div
+              key={e}
+              className={styles.eachTab}
+              style={{display: pages.includes(e) ? 'block' : 'none'}}
+            >
+              <span
+                className={`${styles.button} ${pathKey === e ? styles.actievButton : ''}`}
+                onClick={() => this.tabChange(e)}
+              >{this.tabNames[i]}</span>
               <Icon className={styles.close} type="close" onClick={() => this.closeTab(e)} />
             </div>
           ))}

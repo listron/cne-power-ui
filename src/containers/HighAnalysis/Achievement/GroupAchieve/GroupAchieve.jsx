@@ -6,6 +6,7 @@ import { stringify } from 'qs';
 class GroupAchieve extends Component {
 
   static propTypes = {
+    active: PropTypes.bool,
     location: PropTypes.object,
   }
 
@@ -21,10 +22,10 @@ class GroupAchieve extends Component {
     
   }
 
-  toArea = () => {
-    const info = stringify({group: 'default', area: 50});
-    this.props.history.push(`/statistical/achievement/analysis/area?${info}`);
-  }
+  // toArea = () => {
+  //   const info = stringify({group: 'default', area: 50});
+  //   this.props.history.push(`/statistical/achievement/analysis/area?${info}`);
+  // }
 
   render() {
     return (
