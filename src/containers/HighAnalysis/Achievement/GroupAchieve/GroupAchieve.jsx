@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { stringify } from 'qs';
+import AreaStation from '../../../../components/Common/AreaStation';
 
 class GroupAchieve extends Component {
 
@@ -28,14 +29,32 @@ class GroupAchieve extends Component {
   // }
 
   render() {
+    const { active } = this.props;
+    const data = [{
+      regionName: '山东',
+      stations:	[{
+        stationCode: 56,
+        stationName: '山东平原'
+      }, {
+        stationCode: 560,
+        stationName: '烟台电站'
+      }]	
+    }, {
+      regionName: '河北',
+      stations:	[{
+        stationCode: 360,
+        stationName: '阳光'
+      }]
+    }]
     return (
-      <div style={{display: this.props.show?'block': 'none', backgroundColor: 'lightGreen'}} >
+      <div style={{display: active ? 'block': 'none', backgroundColor: 'lightGreen'}} >
         <div>集团页面</div>
         <div>集团所有信息</div>
         <div>PBA排名</div>
         <button onClick={this.toArea}>
           查看区域信息
         </button>
+        <AreaStation />
       </div>
     );
   }

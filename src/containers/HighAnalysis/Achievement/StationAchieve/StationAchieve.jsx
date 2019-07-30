@@ -6,6 +6,7 @@ import { stringify } from 'qs';
 class StationAchieve extends Component {
 
   static propTypes = {
+    active: PropTypes.bool,
     location: PropTypes.object,
   }
 
@@ -22,8 +23,9 @@ class StationAchieve extends Component {
   }
 
   render() {
+    const { active } = this.props;
     return (
-      <div style={{display: this.props.show?'block': 'none', backgroundColor: 'gray'}}>
+      <div style={{display: active ? 'block': 'none', backgroundColor: 'lightGreen'}} >
         单电站信息-没啥了。
       </div>
     );

@@ -6,6 +6,7 @@ import { stringify } from 'qs';
 class AreaAchieve extends Component {
 
   static propTypes = {
+    active: PropTypes.bool,
     location: PropTypes.object,
   }
 
@@ -28,8 +29,9 @@ class AreaAchieve extends Component {
   }
 
   render() {
+    const { active } = this.props;
     return (
-      <div style={{display: this.props.show?'block': 'none', backgroundColor: 'lightBlue'}}>
+      <div style={{display: active ? 'block': 'none', backgroundColor: 'lightGreen'}} >
         <div>这个就是传说中的区域</div>
         <div>那么大的区域</div>
         <button onClick={this.toStation}>
