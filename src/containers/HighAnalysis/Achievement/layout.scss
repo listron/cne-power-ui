@@ -1,0 +1,43 @@
+
+@import '../../../theme/theme.scss';
+
+.layout{
+  min-height: 100%;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  .tabs{
+    flex: 0 0 55px;
+    margin: 0 24px;
+    display: flex;
+    align-items: flex-end;
+    .eachTab{
+      flex: 0 0 126px;
+      margin-right: 10px;
+      position: relative;
+    }
+    .button{
+      width: 100%;
+      height: 100%;
+    }
+    .close{
+      position: absolute;
+      right: 0;
+      top: 0;
+      border-radius: 50%;
+    }
+  }
+  .contents{
+    display: flex;
+    flex: 1;
+    height: 7000px;
+    padding:0 24px;
+  }
+}
+
+.layout{
+  background-color: #ececec;
+  .tabs .close{
+    border: 1px solid $themeColor;
+  }
+}

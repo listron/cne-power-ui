@@ -85,8 +85,8 @@ const yawAnalysis = [ // 偏航对风分析
 
 const achievement = [
   { // 集团绩效
-    path: '/statistical/achievement/analysis/:pathKey',
-    component: lazy(() => import('../../containers/StatisticalAnalysis/Achievement/AchievementLayout')),
+    path: '/analysis/achievement/analysis/:pathKey',
+    component: lazy(() => import('../../containers/HighAnalysis/Achievement/AchievementLayout')),
   },
 ];
 
