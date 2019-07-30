@@ -22,7 +22,7 @@
         flex: 1;
         height: 24px;
         display: flex;
-        color:#199475;
+        color:$themeColor;
         font-size: 24px;
         font-weight: initial;
         font-family:STHeitiSC-Light;
@@ -59,7 +59,7 @@
       height:25px;
       text-align: center;
       line-height: 25px;
-      color:#199475;
+      color:$themeColor;
       margin-top: 20px;
     }
   }

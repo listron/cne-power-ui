@@ -48,17 +48,15 @@ class SingleStaionList extends React.Component {
     const equivalentHours = singleStation.equivalentHours;
     const alarm = singleStation.alarmNum > 0;
     const invertType = singleStation.lowEffType === 1 ? '201' : '206';
-    const arr = ['fadeIn', 'rotateIn', 'zoomIn'];
-    const animate = parseInt(Math.random() * 3);
     return (
-      <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus); }} key={singleStation.stationCode} style={{ WebkitAnimation: `${arr[animate]} 0.8s ease-in-out 1 0s alternate forwards` }} >
+      <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus); }} key={singleStation.stationCode} >
         <Link to={`/monitor/singleStation/${singleStation.stationCode}`} className={styles.linkBox}>
           <div className={styles.stationTop}>
             <div className={styles.stationName} title={singleStation.stationName}> {singleStation.stationName}</div>
             <div className={styles.staionCapacity}>
               <div>
-                <span className={styles.changeNum}>
-                  <i className={'iconfont icon-da'}></i> {stationCapacity}</span> {realCapacityUnit}
+                <i className={'iconfont icon-da'} />
+                <span className={styles.changeNum}> {dataFormats(stationCapacity, '--', 2)}</span> {realCapacityUnit}
               </div>
               <div className={styles.stationUnitCount}>
                 <span className={styles.changeNum}>{singleStation.stationUnitCount}</span> 台

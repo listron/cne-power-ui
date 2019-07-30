@@ -1,5 +1,5 @@
 import React, {
-  PureComponent
+  PureComponent,
 } from 'react';
 import styles from './waterWave.scss';
 
@@ -19,7 +19,7 @@ class WaterWave extends PureComponent {
     this.resize();
     window.addEventListener('resize', this.resize);
   }
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.renderChart();
   }
 
@@ -33,23 +33,35 @@ class WaterWave extends PureComponent {
 
   resize = () => {
     const {
-      height
+      height,
     } = this.props;
     const {
-      offsetWidth
+      offsetWidth,
     } = this.root.parentNode;
     this.setState({
       radio: offsetWidth < height ? offsetWidth / height : 1,
     });
   }
 
-  renderChart() {
+  themeStyle = {
+    dark: {
+      circleColor: '#009cff',
+      waveColor: ['#1cfcf4', '#009cff'],
+    },
+    light: {
+      circleColor: '$themeColor',
+      waveColor: ['#ffffff', 'rgba(25, 148, 117, 0.8)'],
+    },
+  }
+
+  renderChart = () => {
     const {
-      percent,
-      color = '#199475'
-    } = this.props;
+      percent, theme = 'light' } = this.props;
+
+    const _this = this;
     const data = percent / 100;
     const self = this;
+    const color = _this.themeStyle[theme].circleColor;
 
     if (!this.node || !data) {
       return;
@@ -112,10 +124,10 @@ class WaterWave extends PureComponent {
       ctx.lineTo(xOffset + axisLength, canvasHeight);
       ctx.lineTo(xOffset, canvasHeight);
       ctx.lineTo(startPoint[0], startPoint[1]);
-
+      const [stratColor, endColor] = _this.themeStyle[theme].waveColor;
       const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-      gradient.addColorStop(0, '#ffffff');
-      gradient.addColorStop(1, 'rgba(25, 148, 117, 0.8)');
+      gradient.addColorStop(0, stratColor);
+      gradient.addColorStop(1, endColor);
       ctx.fillStyle = gradient;
       ctx.fill();
       ctx.restore();
@@ -145,7 +157,7 @@ class WaterWave extends PureComponent {
 
           ctx.restore();
           ctx.clip();
-          ctx.fillStyle = '#199475';
+          ctx.fillStyle = color;
         }
       } else {
         if (data >= 0.85) {
@@ -186,24 +198,25 @@ class WaterWave extends PureComponent {
 
   render() {
     const {
-      radio
+      radio,
     } = this.state;
     const {
       percent,
       title,
-      height
+      height,
+      theme,
     } = this.props;
     return (
       <div className={styles.waterWave} ref={n => (this.root = n)} style={{ transform: `scale(${radio})` }}>
         <div style={{ width: height, height, overflow: 'hidden' }}>
           <canvas
-            className={styles.waterWaveCanvasWrapper}
+            className={`${styles.waterWaveCanvasWrapper}`}
             ref={n => (this.node = n)}
-            width={height*2 }
-            height={height*2 }
+            width={height * 2}
+            height={height * 2}
           />
         </div>
-        <div className={styles.waterWaveText} style={{ width: height }}>
+        <div className={`${styles.waterWaveText} ${styles[theme]}`} style={{ width: height }}>
           {
             title && <span>{title}</span>
           }

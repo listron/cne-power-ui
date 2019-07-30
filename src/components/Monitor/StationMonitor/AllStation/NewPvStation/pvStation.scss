@@ -44,7 +44,7 @@
       }
       .ant-radio-button-wrapper:hover,
       .ant-radio-button-wrapper-focused {
-        color: #199475;
+        color: $themeColor;
       }
     }
     .activeCard {
@@ -374,6 +374,7 @@
     border: 1px solid $border-color;
     color: $fontColor;
     background: $light-background;
+    border-top: none;
     .leftIcon {
       color: $fontColor-hover;
     }
@@ -396,19 +397,31 @@
     border: 1px solid $border-color;
     margin-top: 10px;
     color: $fontColor;
+    .tabs {
+      margin-left: 25px;
+    }
     :global {
       .iconTab {
-        background: $light-background;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        background: $button-primary;
         color: $fontColor-invert;
         &:hover {
-          background: $button-primary;
-          color: $fontColor-invert;
+          background: $button-hover;
+          color: $button-primary;
+        }
+        &:first-child {
+          border-radius: 4px 0 0 4px;
+        }
+        &:last-child {
+          border-radius: 0 4px 4px 0;
         }
       }
     }
     .activeCard {
-      background: $button-primary;
-      color: $fontColor-invert;
+      background: $button-hover;
+      color: $button-primary;
     }
   }
 
@@ -419,6 +432,7 @@
     color: $fontColor;
   }
 
+  // 卡片
   .stationCardContainer {
     .filterCondition {
       border: none;
@@ -572,76 +586,36 @@
         opacity: 0.6;
         background: #181a4e;
         border: 1px solid #7088c3;
-        color: $fontColor-invert;
+        color: #bbcef7;
+        .changeNum {
+          color: #bbcef7;
+        }
+        a {
+          color: #bbcef7;
+        }
       }
     }
   }
 
   .pvStationList {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    a {
-      text-decoration: underline;
-      color: rgba(0, 0, 0, 0.65);
-
-      &:hover {
-        color: $themeColor;
-      }
-    }
-
-    .pagination {
-      a {
-        text-decoration: none;
-      }
-
-      height: 45px;
-      display: flex;
-      justify-content: flex-end;
-      line-height: 45px;
-    }
-
     .stationName {
-      width: 70px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
+      color: $fontColor;
       &:hover {
-        color: $themeColor;
+        color: $fontColor-hover;
+      }
+      a {
+        text-decoration: underline;
       }
     }
 
-    .stationrovince {
-      width: 50px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .numberStyle {
-      text-align: right;
-    }
-    @mixin statusBox {
-      width: 5px;
-      height: 20px;
-      border-radius: 2px;
-    }
-    .currentStation {
-      display: flex;
-      justify-content: center;
-    }
     .normal {
       background: $themeColor;
-      @include statusBox();
     }
     .interrupt {
       background: #f9b600;
-      @include statusBox();
     }
     .notConnected {
       background: #f8f8f8;
-      @include statusBox();
     }
   }
 

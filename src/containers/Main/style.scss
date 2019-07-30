@@ -93,7 +93,7 @@
 
 .light {
   .appHeader {
-    background-image: linear-gradient(-90deg, #3e97d1 7%, #199475 50%);
+    background-image: linear-gradient(-90deg, #3e97d1 7%, $themeColor 50%);
     .changeTheme {
       color: #fff;
     }
@@ -114,6 +114,7 @@
 
 .dark {
   @import "../../theme/darkTheme.scss";
+  @import "../../theme/antdResetDark.scss";
   .appHeader {
     background: $sideBar-background;
     .headerRight {

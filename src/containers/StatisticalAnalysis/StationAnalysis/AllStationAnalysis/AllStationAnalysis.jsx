@@ -1,11 +1,11 @@
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import styles from "./allStationAnalysis.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styles from './allStationAnalysis.scss';
 import { allStationAnalysisAction } from './allStationAnalysisAction.js';
 // import { getCookie } from '../../../../utils/index.js';
 import Cookie from 'js-cookie';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import AllStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/AllStationStatistic';
 import SingStationStatistic from '../../../../components/StatisticalAnalysis/StationAnalysis/AllStationAnalysis/SingStationStatistic';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -23,6 +23,7 @@ class AllStationAnalysis extends Component {
     location: PropTypes.object,
     match: PropTypes.object,
     getAllStationAvalibaData: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -31,18 +32,18 @@ class AllStationAnalysis extends Component {
 
 
   render() {
-    const { showPage } = this.props;
-    const breadCrumbData = {breadData: [{ name: '全部电站' }] };
+    const { showPage, theme } = this.props;
+    const breadCrumbData = { breadData: [{ name: '全部电站' }] };
     return (
-      <div className={styles.allStationAnalysisBox} >
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.allStationAnalysisBox} ${styles[theme]}`} >
+        <CommonBreadcrumb {...breadCrumbData} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.allStationStatistic}>
           {showPage === 'multiple' && <AllStationStatistic {...this.props} />}
           {showPage === 'single' && <SingStationStatistic {...this.props} />}
         </div>
-        <Footer />
+        <Footer theme={theme} />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -50,9 +51,10 @@ const mapStateToProps = (state) => {
     ...state.statisticalAnalysisReducer.allStationAnalysis.toJS(),
     stations: state.common.get('stations'),
     userId: Cookie.get('userId'),
-
-  }
-}
+    theme: state.common.get('theme'),
+    stationTypeCount: 'pv',
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   changeAllStationStore: payload => dispatch({ type: allStationAnalysisAction.CHANGE_ALLSTATIONDATA_STORE_SAGA, payload }),
   getAllStationAvalibaData: payload => dispatch({ type: allStationAnalysisAction.getAllStationAvalibaData, payload }),
@@ -71,7 +73,7 @@ const mapDispatchToProps = (dispatch) => ({
   resetStore: payload => dispatch({ type: allStationAnalysisAction.resetStore, payload }),
 
 
-})
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllStationAnalysis);
