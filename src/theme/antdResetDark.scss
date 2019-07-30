@@ -386,8 +386,14 @@
   }
 
   // 加载的spin
-  .ant-spin-dot i {
-    background-color: $themeColor;
+  .ant-spin-dot {
+    color: $fontColor;
+    i {
+      background-color: $themeColor;
+    }
+  }
+  .ant-spin-text {
+    color: $fontColor;
   }
 
   // antd提示语message图标颜色
@@ -489,5 +495,9 @@
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     background-color: #0c0a3e;
+  }
+  ::selection {
+    color: #fff;
+    background: $themeColor;
   }
 }
