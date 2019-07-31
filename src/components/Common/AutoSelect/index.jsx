@@ -90,11 +90,42 @@ class AutoSelect extends Component {
     }],
   }
 
+  constructor(props){
+    super(props);
+    this.state = {
+      checkedList: props.value,
+    };
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { value } = this.props;
+    const nextValue = nextProps.value;
+    const needUpdateValue = this.isSetDiff(value, nextValue);
+    needUpdateValue && this.setState({ // value变化时, state同步
+      checkedList: nextValue,
+    });
+  }
+
+  isSetDiff = (a, b) => { // 比价两个简单值构成的数组
+    const setA = new Set(a);
+    const setB = new Set(b);
+    if(setA.size !== setB.size) {
+      return true;
+    }
+    return Array.from(setA).find(value => !setB.has(value));
+  }
+
+  onValueCheck = (checkedList) => { // 输出
+    this.setState({ checkedList });
+    this.props.onChange(checkedList);
+  }
+
   render() {
+    const { checkedList } = this.state;
     return (
       <div>
-        {<div {...this.props} />}
-        {<div {...this.props} />}
+        {<div {...this.props} checkedList={checkedList} onValueCheck={this.onValueCheck} />}
+        {<div {...this.props} checkedList={checkedList} onValueCheck={this.onValueCheck} />}
       </div>
     );
   }
