@@ -1,4 +1,77 @@
+@import '../../../theme/theme.scss';
 
-.areaStation{
-  
+.multipleButton{
+  width: 200px;
+  border-radius:4px;
+  height:30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.regionBox{
+  border-radius:4px;
+}
+.region{
+  display: flex;
+  cursor: pointer;
+  height: 32px;
+  padding: 0 15px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  .stations{
+    position: absolute;
+    display: none;
+    left: 100%;
+    top: 0px;
+    width: 200px;
+    border-radius:4px;
+    padding: 8px 0;
+  }
+  .all, .group{
+    display: block;
+    padding: 0 12px;
+    width: 100%;
+    cursor: pointer;
+    line-height: 28px;
+  }
+  &:hover{
+    .stations{
+      display: block;
+    }
+  }
+}
+
+
+// 颜色s
+.multipleButton{
+  border:1px solid $promptColor;
+  .values{
+    color: $darkColor;
+  }
+  .holder{
+    color: $promptColor;
+  }
+}
+.regionBox{
+  background-color: #fff;
+  border:1px solid $promptColor;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+}
+.region{
+  color: $darkColor;
+  &:hover{
+    color: $themeColor;
+  }
+}
+.stations{
+  background-color: #fff;
+  border:1px solid $promptColor;
+  box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);
+  .all, .group{
+    color: $darkColor;
+  }
+  .all{
+    border-bottom: 1px solid $promptColor;
+  }
 }

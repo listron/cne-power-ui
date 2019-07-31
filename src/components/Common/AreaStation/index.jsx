@@ -1,10 +1,8 @@
 
 import React, { Component } from 'react';
-import { Select } from 'antd';
-import styles from './style.scss';
 import PropTypes from 'prop-types';
-
-const Option = Select.Option;
+import StationCascader from './StationCascader';
+import StationDropdown from './StationDropdown';
 /*
   区域 - 电站二级选择组件：
   参数:
@@ -18,12 +16,29 @@ const Option = Select.Option;
   }]
   2. 必填 - this.props.onChange (选中电站/区域时触发输出)
   3. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
-  4. 选填 - 手动指定选中的电站(value)(value为stationCode集合的数组)
-  5. 选填 - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
+  4. 选填 - 手动指定选中的电站(value)
+  5. 选填todo - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。
-  7. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
-  8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
-  9. 选填 - stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示的时已选电站 已选电站数量/所有电站数量
+  7. 选填todo - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
+  8. 选填todo - disabled: bool; 默认false， 传入true值时组件为禁用状态。
+  9. 选填todo - stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示的时已选电站 已选电站数量/所有电站数量
+
+  注意: onChange与value指定的格式统一
+  单选: 输入输出均为: [regioNname('山东'), stationCode(56), stationName('山东平原')];
+  多选: 输入输出结构为data数据子集 
+  [{
+    regionName: '山东',
+    stations: [{
+      stationCode: 56,
+      stationName: '山东平原'
+    }]
+  }, {
+    regionName: '内蒙古',
+    stations: [{
+      stationCode: 360,
+      stationName: '齐齐哈尔'
+    }]
+  }]
 */
 
 class AreaStation extends Component {
@@ -31,31 +46,57 @@ class AreaStation extends Component {
     multiple: PropTypes.bool,
     data: PropTypes.array,
     value: PropTypes.array,
+    style: PropTypes.object,
     onChange: PropTypes.func,
+    holderText: PropTypes.string,
   }
 
   static defaultProps = {
-    multiple: false,
-    data: [],
+    multiple: true,
+    value: [],
+    style: {},
+    onChange: () => {},
+    holderText: '请选择',
+    data: [{
+      regionName: '山东',
+      stations:	[{
+        stationCode: 56,
+        stationName: '山东平原',
+      }, {
+        stationCode: 560,
+        stationName: '烟台电站',
+      }],
+    }, {
+      regionName: '河北',
+      stations:	[{
+        stationCode: 360,
+        stationName: '阳光',
+      }],
+    }],
   }
 
   render() {
-    const { multiple, data, value, onChange } = this.props;
+    const { multiple, value, data, holderText, style, onChange } = this.props;
     // 单选模式 = 级联组件
-    // 多选模式 = dropdown嵌套
+    // 多选模式 = dropdown嵌套checkboxes
     return (
-      <div className={styles.areaStation} style={{width: '200px'}}>
-        <Select onChange={(a,b) => console.log(a,b)} style={{width: '200px'}}>
-          <Option value='1' label='试一下'>
-            <div>试试看</div>
-          </Option>
-          <Option value='2' label='这个不知道'>
-            <div>这个是啥</div>
-          </Option>
-        </Select>
+      <div>
+        {!multiple && <StationCascader
+          holderText={holderText}
+          data={data}
+          style={style}
+          value={value}
+          onChange={onChange}
+        />}
+        {multiple && <StationDropdown
+          holderText={holderText}
+          data={data}
+          style={style}
+          value={value}
+          onChange={onChange}
+        />}
       </div>
-    )
-
+    );
   }
 }
 export default AreaStation;
