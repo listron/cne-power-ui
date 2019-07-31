@@ -78,7 +78,7 @@ function *getDataExportList({ payload = {} }) { // 数据导出任务列表
       payload: { tableLoading: false }
     })
     const response = yield call(axios.get, url);
-    const { totalCount = 0 } = response.data.data;
+    const { totalCount = 0 } = response.data.data || {};
     const maxPage = Math.ceil(totalCount / pageSize);
     if (totalCount === 0) { // 总数为0时，展示0页
       pageNum = 1;
