@@ -9,13 +9,16 @@ import StationDropdown from './StationDropdown';
   要求传入的数据格式: 
 
   参数:
-  1. 必填 - 基本数据数组(data),包含信息如下：
+  1. 必填 - 传入前，请自行构造一个简单的高阶组件处理数据结构: 本组件所需基本数据数组(data),包含信息如下：
   [{
     value: 1001123142,
     label: '金风科技',
     children: [{
       value: 'M12011M221M13',
       label: 'SD-13',
+      children: [{
+        ...可无限嵌套
+      }]
     }, {
       value: 'M12011M221M11',
       label: 'SD-11',
@@ -31,34 +34,20 @@ import StationDropdown from './StationDropdown';
       label: 'XD-222',
     }]
   }]
-  2. 必填 - this.props.onChange (选中电站/区域时触发输出)
+  2. 必填 - this.props.onChange输出函数: 输出参数为最底层级的value数组[value1, value2, value3];
   3. 选填 - 选择模式: multiple, 选填，默认为单选(false)。
-  4. 选填 - 手动指定选中项(value)
+  4. 选填 - 手动指定选中项(value)为最底层级的value数组[value1, value2, value3];
   5. 选填todo - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，占位提示文字。
   7. 选填todo - disabledInfo 不可选数组; 默认为[]
   8. 选填todo - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填todo - stationShowNumber:bool; 默认是false
 
-  注意: onChange与value指定的格式统一
-  单选: 输入输出均为: [regioNname('山东'), stationCode(56), stationName('山东平原')];
-  多选: 输入输出结构为data数据子集 
-  [{
-    regionName: '山东',
-    stations: [{
-      stationCode: 56,
-      stationName: '山东平原'
-    }]
-  }, {
-    regionName: '内蒙古',
-    stations: [{
-      stationCode: 360,
-      stationName: '齐齐哈尔'
-    }]
-  }]
+  注意: onChange与value指定的格式统一;
+  输入输出均为最底层级的value集合: [value1, value2];
 */
 
-class AreaStation extends Component {
+class AutoSelect extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
     data: PropTypes.array,
@@ -75,45 +64,39 @@ class AreaStation extends Component {
     onChange: () => {},
     holderText: '请选择',
     data: [{
-      regionName: '山东',
-      stations:	[{
-        stationCode: 56,
-        stationName: '山东平原',
+      value: 1001123142,
+      label: '金风科技',
+      children: [{
+        value: 'M12011M221M13',
+        label: 'SD-13',
+        children: [{
+          value: 'M12#1',
+          label: 'M12#1',
+        }],
       }, {
-        stationCode: 560,
-        stationName: '烟台电站',
+        value: 'M12011M221M11',
+        label: 'SD-11',
       }],
     }, {
-      regionName: '河北',
-      stations:	[{
-        stationCode: 360,
-        stationName: '阳光',
+      value: 10011231445,
+      label: '湘电',
+      children: [{
+        value: 'M35011M221M221',
+        label: 'XD-221',
+      }, {
+        value: 'M35011M221M222',
+        label: 'XD-222',
       }],
     }],
   }
 
   render() {
-    const { multiple, value, data, holderText, style, onChange } = this.props;
-    // 单选模式 = 级联组件
-    // 多选模式 = dropdown嵌套checkboxes
     return (
       <div>
-        {!multiple && <StationCascader
-          holderText={holderText}
-          data={data}
-          style={style}
-          value={value}
-          onChange={onChange}
-        />}
-        {multiple && <StationDropdown
-          holderText={holderText}
-          data={data}
-          style={style}
-          value={value}
-          onChange={onChange}
-        />}
+        {<div {...this.props} />}
+        {<div {...this.props} />}
       </div>
     );
   }
 }
-export default AreaStation;
+export default AutoSelect;
