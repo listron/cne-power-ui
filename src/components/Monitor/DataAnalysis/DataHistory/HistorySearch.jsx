@@ -369,7 +369,7 @@ class HistorySearch extends Component {
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
-              max={timeInterval === 10 ? 5 : 2}
+              // max={timeInterval === 10 ? 5 : 2}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}
