@@ -3,11 +3,71 @@ import axios from 'axios';
 import Path from '../../../../constants/path';
 import { dataAnalysisScatterAction } from './dataAnalysisScatterAction';
 
+function* getScatterName(action) {//获取
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}`;
+  try {
+    yield put({ type: dataAnalysisScatterAction.changeToolStore });
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: dataAnalysisScatterAction.changeToolStore,
+        payload: {
+          scatterNames: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getScatterOtherName(action) {//获取
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}`;
+  try {
+    yield put({ type: dataAnalysisScatterAction.changeToolStore });
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: dataAnalysisScatterAction.changeToolStore,
+        payload: {
+          scatterotherNames: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* getScatterData(action) {//获取
+  const { payload } = action;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
+  try {
+    yield put({ type: dataAnalysisScatterAction.changeToolStore });
+    const response = yield call(axios.get, url, { params: payload });
+    if (response.data.code === '10000') {
+      yield put({
+        type: dataAnalysisScatterAction.changeToolStore,
+        payload: {
+          scatterData: response.data.data || [],
+        },
+      });
+    } else {
+      throw response.data.message;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 
 
 export function* watchDataAnalysisScatterSaga() {
-  // yield takeLatest(dataAnalysisScatterAction.CHANGE_ALLSTATIONDATA_STORE_SAGA, changeAllStationStore);
-
-
+  yield takeLatest(dataAnalysisScatterAction.getScatterName, getScatterName);
+  yield takeLatest(dataAnalysisScatterAction.getScatterOtherName, getScatterOtherName);
+  yield takeLatest(dataAnalysisScatterAction.getScatterData, getScatterData);
 }

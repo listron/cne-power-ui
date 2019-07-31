@@ -42,6 +42,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   changeToolStore: payload => dispatch({ type: dataAnalysisScatterAction.changeToolStore, payload }),
   resetStore: payload => dispatch({ type: dataAnalysisScatterAction.resetStore, payload }),
+  getScatterName: payload => dispatch({ type: dataAnalysisScatterAction.getScatterName, payload }),
+  getScatterOtherName: payload => dispatch({ type: dataAnalysisScatterAction.getScatterOtherName, payload }),
+  getScatterData: payload => dispatch({ type: dataAnalysisScatterAction.getScatterData, payload }),
 
 
 });

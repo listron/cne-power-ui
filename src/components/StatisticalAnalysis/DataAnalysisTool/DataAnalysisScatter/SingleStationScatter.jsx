@@ -95,14 +95,17 @@ class SingleStationScatter extends React.Component {
               defaultValue={[moment(moment().subtract(1, 'months'), dateFormat), moment(moment(), dateFormat)]}
               format={dateFormat}
               onChange={this.changeTime}
+              style={{ width: '240px' }}
             />
           </div>
           <div className={styles.headBottom}>
             <label className={styles.nameStyle}>散点</label>
             <Cascader
               options={options}
+              value={[]}
               loadData={this.loadData}
               onChange={this.onChangeContrast}
+              style={{ width: '400px' }}
             />
             <div className={styles.contrastValue}>
               <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>x轴</Button>

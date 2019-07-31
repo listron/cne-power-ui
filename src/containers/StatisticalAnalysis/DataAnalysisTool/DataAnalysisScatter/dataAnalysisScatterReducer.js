@@ -5,7 +5,11 @@ import { dataAnalysisScatterAction } from './dataAnalysisScatterAction';
 var initState = Immutable.fromJS({
   loading: false,
   stationCode: null,
-  showPage: 'allStation',//allStation显示全部电站，singleStation,显示单电站
+  showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
+  scatterNames: [],
+  scatterotherNames: [],
+  scatterData: [],
+
 
 
 });
@@ -17,5 +21,5 @@ const dataAnalysisScatterReducer = (state = initState, action) => {
       return initState;
   }
   return state;
-}
+};
 export default dataAnalysisScatterReducer;
