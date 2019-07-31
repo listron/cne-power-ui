@@ -109,7 +109,7 @@ class DeviceManageHandle extends Component {
           <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
           <Button className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</Button>
           <Button className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank" >下载设备信息导入模板</Button>
-          <Button className={styles.import} onClick={this.showModal}>导入</Button>
+          <Button className={styles.import} onClick={this.showModal} loading={this.props.loading} >导入</Button>
           <Button
             disabled={deviceList.length === 0}
             className={styles.exportInfo}
