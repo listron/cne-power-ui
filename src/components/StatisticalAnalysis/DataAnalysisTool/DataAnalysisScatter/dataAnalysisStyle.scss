@@ -1,0 +1,16 @@
+@import '../../../../theme/theme.scss';
+
+.allstationBox {
+  padding: 24px;
+  background: #fff;
+  display: flex;
+  flex: 1;
+
+  .boxtitle {
+    color: $themeColor;
+  }
+
+  .boxcard {
+    display: flex;
+  }
+}

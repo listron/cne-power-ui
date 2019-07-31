@@ -59,8 +59,8 @@ const menuData = [
             name: '数据导出',
             path: 'dataExport',
             rightKey: 'dataAnalysis_dataExport',
-          }
-        ]
+          },
+        ],
       }, {
         name: '报表查询',
         iconStyle: 'icon-trends',
@@ -305,6 +305,18 @@ const menuData = [
             name: '智能报表',
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
+          },
+        ],
+      }, {
+        name: '数据分析工具',
+        path: 'analysisTool',
+        iconStyle: 'icon-device-data',
+        rightKey: 'statistics_device',
+        children: [
+          {
+            name: '散点图',
+            path: 'scatter',
+            rightKey: 'statistics_device_performance',
           },
         ],
       },
