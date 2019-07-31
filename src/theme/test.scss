@@ -1,0 +1,167 @@
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+
+.ant-calendar-picker-container {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-calendar-picker {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: #199475;
+}
+.ant-calendar-picker:focus .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: #35a182;
+  box-shadow: 0 0 0 2px rgba(25, 148, 117, 0.2);
+}
+
+.ant-calendar-picker-clear {
+  color: rgba(0, 0, 0, 0.25);
+  background: #fff;
+}
+.ant-calendar-picker-clear:hover {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-calendar-header .ant-calendar-century-select,
+.ant-calendar-header .ant-calendar-decade-select,
+.ant-calendar-header .ant-calendar-year-select,
+.ant-calendar-header .ant-calendar-month-select {
+  display: inline-block;
+  padding: 0 2px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  line-height: 40px;
+}
+.ant-calendar-header .ant-calendar-century-select-arrow,
+.ant-calendar-header .ant-calendar-decade-select-arrow,
+.ant-calendar-header .ant-calendar-year-select-arrow,
+.ant-calendar-header .ant-calendar-month-select-arrow {
+  display: none;
+}
+.ant-calendar-header .ant-calendar-prev-century-btn,
+.ant-calendar-header .ant-calendar-next-century-btn,
+.ant-calendar-header .ant-calendar-prev-decade-btn,
+.ant-calendar-header .ant-calendar-next-decade-btn,
+.ant-calendar-header .ant-calendar-prev-month-btn,
+.ant-calendar-header .ant-calendar-next-month-btn,
+.ant-calendar-header .ant-calendar-prev-year-btn,
+.ant-calendar-header .ant-calendar-next-year-btn {
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  padding: 0 5px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 16px;
+  font-family: Arial, "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Sans Serif", sans-serif;
+  line-height: 40px;
+}
+.ant-calendar-header .ant-calendar-prev-century-btn,
+.ant-calendar-header .ant-calendar-prev-decade-btn,
+.ant-calendar-header .ant-calendar-prev-year-btn {
+  left: 7px;
+  height: 100%;
+}
+.ant-calendar-header .ant-calendar-prev-century-btn::before,
+.ant-calendar-header .ant-calendar-prev-decade-btn::before,
+.ant-calendar-header .ant-calendar-prev-year-btn::before,
+.ant-calendar-header .ant-calendar-prev-century-btn::after,
+.ant-calendar-header .ant-calendar-prev-decade-btn::after,
+.ant-calendar-header .ant-calendar-prev-year-btn::after {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  vertical-align: middle;
+  border: 0 solid #aaa;
+  border-width: 1.5px 0 0 1.5px;
+  border-radius: 1px;
+  transform: rotate(-45deg) scale(0.8);
+  transition: all 0.3s;
+  content: "";
+}
+.ant-calendar-header .ant-calendar-prev-century-btn:hover::before,
+.ant-calendar-header .ant-calendar-prev-decade-btn:hover::before,
+.ant-calendar-header .ant-calendar-prev-year-btn:hover::before,
+.ant-calendar-header .ant-calendar-prev-century-btn:hover::after,
+.ant-calendar-header .ant-calendar-prev-decade-btn:hover::after,
+.ant-calendar-header .ant-calendar-prev-year-btn:hover::after {
+  border-color: rgba(0, 0, 0, 0.65);
+}
+.ant-calendar-header .ant-calendar-prev-century-btn::after,
+.ant-calendar-header .ant-calendar-prev-decade-btn::after,
+.ant-calendar-header .ant-calendar-prev-year-btn::after {
+  display: none;
+}
+.ant-calendar-header .ant-calendar-prev-century-btn::after,
+.ant-calendar-header .ant-calendar-prev-decade-btn::after,
+.ant-calendar-header .ant-calendar-prev-year-btn::after {
+  position: relative;
+  left: -3px;
+  display: inline-block;
+}
+.ant-calendar-header .ant-calendar-next-century-btn,
+.ant-calendar-header .ant-calendar-next-decade-btn,
+.ant-calendar-header .ant-calendar-next-year-btn {
+  right: 7px;
+  height: 100%;
+}
+.ant-calendar-header .ant-calendar-next-century-btn::before,
+.ant-calendar-header .ant-calendar-next-decade-btn::before,
+.ant-calendar-header .ant-calendar-next-year-btn::before,
+.ant-calendar-header .ant-calendar-next-century-btn::after,
+.ant-calendar-header .ant-calendar-next-decade-btn::after,
+.ant-calendar-header .ant-calendar-next-year-btn::after {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  vertical-align: middle;
+  border: 0 solid #aaa;
+  border-width: 1.5px 0 0 1.5px;
+  border-radius: 1px;
+  transform: rotate(-45deg) scale(0.8);
+  transition: all 0.3s;
+  content: "";
+}
+.ant-calendar-header .ant-calendar-next-century-btn:hover::before,
+.ant-calendar-header .ant-calendar-next-decade-btn:hover::before,
+.ant-calendar-header .ant-calendar-next-year-btn:hover::before,
+.ant-calendar-header .ant-calendar-next-century-btn:hover::after,
+.ant-calendar-header .ant-calendar-next-decade-btn:hover::after,
+.ant-calendar-header .ant-calendar-next-year-btn:hover::after {
+  border-color: rgba(0, 0, 0, 0.65);
+}
+.ant-calendar-header .ant-calendar-next-century-btn::after,
+.ant-calendar-header .ant-calendar-next-decade-btn::after,
+.ant-calendar-header .ant-calendar-next-year-btn::after {
+  display: none;
+}
+.ant-calendar-header .ant-calendar-next-century-btn::before,
+.ant-calendar-header .ant-calendar-next-decade-btn::before,
+.ant-calendar-header .ant-calendar-next-year-btn::before,
+.ant-calendar-header .ant-calendar-next-century-btn::after,
+.ant-calendar-header .ant-calendar-next-decade-btn::after,
+.ant-calendar-header .ant-calendar-next-year-btn::after {
+  transform: rotate(135deg) scale(0.8);
+}
+.ant-calendar-header .ant-calendar-next-century-btn::before,
+.ant-calendar-header .ant-calendar-next-decade-btn::before,
+.ant-calendar-header
+  .ant-calendar-next-year-btn::be…
+  .ant-calendar-month-panel-header
+  .ant-calendar-month-panel-prev-century-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-next-century-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-prev-decade-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-next-decade-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-prev-month-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-next-month-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-prev-year-btn,
+.ant-calendar-month-panel-header .ant-calendar-month-panel-next-year-btn {
+}

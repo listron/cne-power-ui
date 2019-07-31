@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { Tabs, Input, DatePicker, Card, Table, Popover, Radio } from 'antd';
 import PropTypes from 'prop-types';
-import styles from "./scoreAnalysis.scss";
+import styles from './scoreAnalysis.scss';
 import StationScoreList from './StationScoreList';
 import TimeSelect from '../../../../components/Common/TimeSelect/TimeSelectIndex';
 import PvStationSelect from '../../../../components/Common/PvStationSelect';
@@ -32,60 +32,60 @@ class PvScoreAnalysis extends Component {
             reportStation: [],
             highToLow: false,
             warningTipText: '数据计算中，请选择其他月份进行查看',
-            showWarningTip: moment().isBefore(moment().format('YYYY-MM') + '-03', 'day'),// 在每个月前两天没有数据提示
-        }
+            showWarningTip: moment().isBefore(moment().format('YYYY-MM') + '-03', 'day'), // 在每个月前两天没有数据提示
+        };
     }
 
     componentDidMount() {
         this.props.getPvStationType();
-        this.getScoreList()
+        this.getScoreList();
     }
 
     onTimeChange = (value) => { // 统计时间选择
         const { startTime, timeStyle } = value;
-        let dataType = timeStyle === 'month' ? 'year' : 'month';
-        this.getScoreList({ dataType, time: startTime })
-        let currentMoth = moment(startTime).add(1, 'months').isBefore(moment(), 'month');
-        let isBefore = !currentMoth && moment().date() < 3
-        dataType === 'month' && this.setState({ showWarningTip: isBefore, })
+        const dataType = timeStyle === 'month' ? 'year' : 'month';
+        this.getScoreList({ dataType, time: startTime });
+        const currentMoth = moment(startTime).add(1, 'months').isBefore(moment(), 'month');
+        const isBefore = !currentMoth && moment().date() < 3;
+        dataType === 'month' && this.setState({ showWarningTip: isBefore });
     }
 
     getScoreList = (param) => {
         const { pvParams, stationType, getScoreList } = this.props;
-        getScoreList({ ...pvParams, stationType, ...param })
+        getScoreList({ ...pvParams, stationType, ...param });
     }
 
     PvStationSelect = (e) => {
         const reportType = e.target.value;
-        this.getScoreList({ reportType, stationCodes: [] })
-        this.setState({ reportStation: [] })
+        this.getScoreList({ reportType, stationCodes: [] });
+        this.setState({ reportStation: [] });
     }
 
     singleDetail = (data) => { // 查看单电站详情
         const stationCode = data.stationCode;
         const { dataType, time } = this.props.pvParams;
-        this.props.singleStaionScore({ dataType, time, stationCode })
+        this.props.singleStaionScore({ dataType, time, stationCode });
     }
 
     stationSelected = (stations) => {
-        this.setState({ reportStation: stations })
+        this.setState({ reportStation: stations });
         const stationCodes = stations.map(e => e.stationCode);
-        this.getScoreList({ stationCodes })
+        this.getScoreList({ stationCodes });
     }
 
     scoreSort = () => { // 分数排序切换
-        const unit = !this.state.highToLow
-        this.setState({ highToLow: unit })
+        const unit = !this.state.highToLow;
+        this.setState({ highToLow: unit });
         const sortMethod = unit ? 'desc' : 'asc';
-        this.getScoreList({ sortMethod })
+        this.getScoreList({ sortMethod });
     }
 
     confirmWarningTip = () => {
-        this.setState({ showWarningTip: false })
+        this.setState({ showWarningTip: false });
     }
 
     render() {
-        const { pvStationType, scoreList, singleScoreData, stations } = this.props;
+        const { pvStationType, scoreList, singleScoreData, stations, theme } = this.props;
         const { reportType } = this.props.pvParams;
         const { reportStation, highToLow } = this.state;
         const PvStations = stations.filter(e => e.stationType === 1);
@@ -93,7 +93,7 @@ class PvScoreAnalysis extends Component {
         const { showWarningTip, warningTipText } = this.state;
         const noReportTypeData = scoreList.filter(e => !e.reportType);
         return (
-            <div className={styles.PvScore}>
+            <div className={`${styles.PvScore} ${styles[theme]}`}>
                 {showWarningTip &&
                     <WarningTip onOK={this.confirmWarningTip} value={warningTipText} style={{ height: '110px', width: '210px' }} />}
                 <div className={styles.stationTypeTab}>
@@ -110,52 +110,57 @@ class PvScoreAnalysis extends Component {
                         </Radio.Group>
                     }
                 </div>
-                <div className={styles.scoreMiddle}>
-                    <div className={styles.scoreFilter}>
-                        <div className={styles.stationFilter}>
-                            <span className={styles.text}>电站筛选</span>
-                            <PvStationSelect
-                                data={PVSelectStations}
-                                value={reportStation}
-                                multiple={true}
-                                onChange={this.stationSelected}
-                            />
+                <div className={styles.scoreBox}>
+                    <div className={styles.scoreMiddle}>
+                        <div className={styles.scoreFilter}>
+                            <div className={styles.stationFilter}>
+                                <span className={styles.text}>电站筛选</span>
+                                <PvStationSelect
+                                    data={PVSelectStations}
+                                    value={reportStation}
+                                    multiple={true}
+                                    onChange={this.stationSelected}
+                                    theme={theme}
+                                />
+                            </div>
+                            <div className={styles.timeSelect}>
+                                <TimeSelect
+                                    showYearPick={false}
+                                    onChange={this.onTimeChange}
+                                    style={{ lineHeight: '42px' }}
+                                    defaultLast={true}
+                                    theme={theme}
+                                    value={{
+                                        timeStyle: 'day',
+                                        startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                                        endTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
+                                    }} />
+                            </div>
                         </div>
-                        <div className={styles.timeSelect}>
-                            <TimeSelect
-                                showYearPick={false}
-                                onChange={this.onTimeChange}
-                                style={{ lineHeight: '42px' }}
-                                defaultLast={true}
-                                value={{
-                                    timeStyle: 'day',
-                                    startTime: moment().subtract(1, 'months').format('YYYY-MM-DD'),
-                                    endTime: moment().subtract(1, 'months').format('YYYY-MM-DD')
-                                }} />
+                        <div className={styles.scoreTranslate}>
+                            <div className={styles.scoreTranslateBtn}>排序</div>
+                            <div onClick={this.scoreSort} className={styles.scoreSort}>
+                                <i className="iconfont icon-mark" />
+                                {highToLow && '分数由高到低' || '分数由低到高'}
+                            </div>
                         </div>
                     </div>
-                    <div className={styles.scoreTranslate}>
-                        <div className={styles.scoreTranslateBtn}>排序</div>
-                        <div onClick={this.scoreSort} className={styles.scoreSort}>
-                            <i className="iconfont icon-mark" />
-                            {highToLow && '分数由高到低' || '分数由低到高'}
-                        </div>
-                    </div>
+                    {
+                        !reportType &&
+                        (<div>
+                            <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} theme={theme} />
+                            <div>
+                                {noReportTypeData.length > 0 && <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>}
+                                <StationScoreList dataList={noReportTypeData} onChange={this.singleDetail} singleData={singleScoreData} hasReportType={false} theme={theme} />
+                            </div>
+                        </div>)
+                        || <StationScoreList dataList={scoreList} onChange={this.singleDetail} singleData={singleScoreData} theme={theme} />
+                    }
                 </div>
-                {
-                    !reportType &&
-                    (<div>
-                        <StationScoreList dataList={scoreList.filter(e => e.reportType)} onChange={this.singleDetail} singleData={singleScoreData} />
-                        <div>
-                            {noReportTypeData.length > 0 && <p className={styles.title}>电站类型未明确电站，建议在电站管理中填写项目类型以分类。</p>}
-                            <StationScoreList dataList={noReportTypeData} onChange={this.singleDetail} singleData={singleScoreData} hasReportType={false} />
-                        </div>
-                    </div>)
-                    || <StationScoreList dataList={scoreList} onChange={this.singleDetail} singleData={singleScoreData} />
-                }
+
 
             </div>
-        )
+        );
     }
 }
 export default PvScoreAnalysis;

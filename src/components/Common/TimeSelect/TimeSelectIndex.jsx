@@ -138,12 +138,14 @@ class TimeSelect extends React.Component {
             {showDayPick && <Radio.Button value="day" >月</Radio.Button>}
           </Radio.Group>
         </div>
+        <span ref={'monthSelect'} />
         {timeStyle === 'day' && <MonthPicker
           // format="YYYY年MM月"
           value={!startTime ? null : moment(startTime)}
           onChange={this.onMonthSelect}
           placeholder="选择月份"
           allowClear={false}
+          getCalendarContainer={() => this.refs.monthSelect}
           disabledDate={this.disabledDate}
         />}
         {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}

@@ -10,6 +10,7 @@ $fontColor-hover: #00f8ff;
 $fontColor-disabled: #7088c3;
 $fontColor-warn: #f8e71c;
 $fontColor-dark: #7088c3;
+$fontColor-noConnect: #bbcef7;
 
 // 按钮  不全
 $button-primary: #205bac;
@@ -17,6 +18,8 @@ $button-add: #00baff; // 暂时
 $button-delete: #fd6e8f;
 $button-hover: #00baff; // $button-active button-focus
 $button-disabled: #161858;
+
+$button-border: #00baff;
 $border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
 

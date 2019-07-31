@@ -114,7 +114,7 @@
 
 .dark {
   @import "../../theme/darkTheme.scss";
-  @import "../../theme/antdResetDark.scss";
+  // @import "../../theme/antdResetDark.scss";
   .appHeader {
     background: $sideBar-background;
     .headerRight {

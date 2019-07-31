@@ -49,7 +49,7 @@ class WaterWave extends PureComponent {
       waveColor: ['#1cfcf4', '#009cff'],
     },
     light: {
-      circleColor: '$themeColor',
+      circleColor: '#199475',
       waveColor: ['#ffffff', 'rgba(25, 148, 117, 0.8)'],
     },
   }
