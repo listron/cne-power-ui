@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getValueSet, isSetDiff, getRoots } from './selectUtil.js';
 import DropDownSelects from './DropDownSelects';
 import AutoModal from './AutoModal';
+import styles from './style.scss';
 /*
   组件功能；由自动选择 + 弹框选择两个构成, 可进行输入搜索或弹框选择
   传入固定层级格式数据，自动解析生成, 支持单选/多选模式, 输入由props.value控制, 输出由props.onChange函数控制
@@ -120,6 +121,8 @@ class AutoSelect extends Component {
   }
 
   onValueCheck = (checkedList) => { // 输出
+    console.log('output')
+    console.log(checkedList)
     this.setState({ checkedList });
     this.props.onChange(checkedList);
   }
@@ -127,7 +130,7 @@ class AutoSelect extends Component {
   render() {
     const { checkedList, infoLists } = this.state;
     return (
-      <div>
+      <div className={styles.autoSelect}>
         <DropDownSelects
           {...this.props}
           infoLists={infoLists}

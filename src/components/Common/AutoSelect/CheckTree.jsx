@@ -8,11 +8,12 @@ export default class CheckTree extends Component{
 
   static propTypes = {
     data: PropTypes.array,
+    checkedTrees: PropTypes.array,
+    onTreeCheck: PropTypes.func,
   }
 
-  onCheck = checkedKeys => {
-    console.log('onCheck', checkedKeys);
-    this.setState({ checkedKeys });
+  onCheck = checkedTrees => {
+    this.props.onTreeCheck(checkedTrees);
   };
 
   renderTreeNodes = data => data.map(item => {
@@ -34,13 +35,12 @@ export default class CheckTree extends Component{
   });
 
   render () {
-    const { data } = this.props;
+    const { data, checkedTrees } = this.props;
     return (
       <Tree
         checkable
         onCheck={this.onCheck}
-        checkedKeys={this.state.checkedKeys}
-        selectedKeys={this.state.selectedKeys}
+        checkedKeys={checkedTrees}
         className={styles.trees}
       >
         {this.renderTreeNodes(data)}

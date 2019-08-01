@@ -10,31 +10,51 @@ import PropTypes from 'prop-types';
 class AutoModal extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
-    holderText: PropTypes.string,
     data: PropTypes.array,
+    infoLists: PropTypes.array,
     checkedList: PropTypes.array,
     onValueCheck: PropTypes.func,
   }
 
   state = {
     isShow: false,
+    checkedTrees: [],
   }
 
-  showModal = () => this.setState({ isShow: true });
+  showModal = () => {
+    const { checkedList = [] } = this.props;
+    this.setState({
+      checkedTrees: checkedList.map(e => e.value),
+      isShow: true,
+    });
+  }
 
-  hideModal = () => this.setState({ isShow: false });
+  hideModal = () => this.setState({
+    checkedTrees: [],
+    isShow: false,
+  });
 
+  onTreeCheck = (checkedTrees) => {
+    this.setState({ checkedTrees });
+  }
 
+  handleOK = () => {
+    const { infoLists, onValueCheck } = this.props;
+    const { checkedTrees } = this.state;
+    const valueResult = infoLists.filter(e => checkedTrees.includes(e.value));
+    this.setState({ isShow: false });
+    onValueCheck(valueResult);
+  }
 
   render() {
     const { data } = this.props;
-    const { isShow } = this.state;
+    const { isShow, checkedTrees } = this.state;
     return (
-      <div>
-        <i className="iconfont icon-filter" onClick={this.showModal} />
+      <div className={styles.autoModal}>
+        <i className={`iconfont icon-filter ${styles.handlIcon}`} onClick={this.showModal} />
         <Modal
           visible={isShow}
-          // onOk={this.handleOK}
+          onOk={this.handleOK}
           onCancel={this.hideModal}
           cancelText="取消"
           okText="确定"
@@ -44,7 +64,7 @@ class AutoModal extends Component {
         >
           <section className={styles.checkModal}>
             <h3></h3>
-            <CheckTree data={data} />
+            <CheckTree data={data} checkedTrees={checkedTrees} onTreeCheck={this.onTreeCheck} />
           </section>
         </Modal>
       </div>
