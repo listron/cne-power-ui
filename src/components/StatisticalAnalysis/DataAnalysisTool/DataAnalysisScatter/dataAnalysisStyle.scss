@@ -120,5 +120,18 @@
     flex: 1;
     margin-top: 24px;
     background: #fff;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+
+    .scatterStyle {
+      display: flex;
+
+      width: 32%;
+      height: 400px;
+      background: pink;
+      margin: 4px;
+
+    }
   }
 }

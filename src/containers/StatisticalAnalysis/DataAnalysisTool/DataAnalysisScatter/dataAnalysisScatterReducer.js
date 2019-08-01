@@ -9,6 +9,10 @@ var initState = Immutable.fromJS({
   scatterNames: [],
   scatterotherNames: [],
   scatterData: [],
+  xPointCode: '',
+  yPointCode: '',
+  startTime: '',
+  endTime: '',
 
 
 

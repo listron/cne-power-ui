@@ -15,9 +15,7 @@ class DataAnalysisScatter extends Component {
   constructor(props, context) {
     super(props, context);
   }
-  componentDidMount() {
-    //请求所有电站
-  }
+
   render() {
     const breadCrumbData = { breadData: [{ name: '散点图' }] };
     const { showPage } = this.props;

@@ -5,7 +5,8 @@ import { dataAnalysisScatterAction } from './dataAnalysisScatterAction';
 
 function* getScatterName(action) {//获取
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}`;
+  const url = '/mock/api/v3/wind/analysis/scatterplot/names';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
     const response = yield call(axios.get, url, { params: payload });
@@ -25,7 +26,8 @@ function* getScatterName(action) {//获取
 }
 function* getScatterOtherName(action) {//获取
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}`;
+  const url = '/mock/api/v3/wind/analysis/scatterplot/xylist';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
     const response = yield call(axios.get, url, { params: payload });
@@ -45,7 +47,8 @@ function* getScatterOtherName(action) {//获取
 }
 function* getScatterData(action) {//获取
   const { payload } = action;
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
+  const url = '/mock/api/v3/wind/analysis/scatterplot/list';
+  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
     const response = yield call(axios.get, url, { params: payload });
