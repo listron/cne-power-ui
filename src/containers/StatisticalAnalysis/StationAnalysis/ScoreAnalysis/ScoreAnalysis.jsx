@@ -44,7 +44,7 @@ class ScoreAnalysis extends Component {
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&
               <div className={styles.allStationTitle}>
-                <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
+                {/* <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p> */}
                 <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
               </div>
             }
