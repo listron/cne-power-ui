@@ -14,28 +14,24 @@
         .iconfont {
           font-size: 20px;
           vertical-align: middle;
-          color: $themeColor;
         }
       }
     }
     .eachPath {
-      // color: $darkColor;
       margin-right: 4px;
-      a {
-        // color: $darkColor;
-      }
     }
   }
   .rightText {
     margin-right: 38px;
-
-    a {
-      // color: $themeColor;
-    }
   }
 }
 
 .light {
+  :global {
+    .iconfont {
+      color: $themeColor;
+    }
+  }
   .eachPath {
     color: $darkColor;
     a {
@@ -51,6 +47,11 @@
 
 .dark {
   @import "../../../theme/darkTheme.scss";
+  :global {
+    .iconfont {
+      color: $themeColor;
+    }
+  }
   .eachPath {
     color: $fontColor-dark;
     a {

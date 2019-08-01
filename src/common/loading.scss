@@ -1,8 +1,13 @@
 .preComponent {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark {
+  background: #0c0a3e;
+  color: #00baff;
 }

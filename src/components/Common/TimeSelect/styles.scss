@@ -42,8 +42,6 @@
 .dark {
   @import "../../../theme/antdResetDark.scss";
   color: $fontColor;
-  background: $light-background;
-  border: 1px solid $border-color;
   .textStyle {
     color: $fontColor;
   }

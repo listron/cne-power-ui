@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Tabs, } from 'antd';
-import styles from "./ScoreAnalysis.scss";
-import { scoreAnalysisAction } from "./scoreAnalysisAction";
-import CommonBreadcrumb from "../../../../components/Common/CommonBreadcrumb";
+import { Tabs } from 'antd';
+import styles from './ScoreAnalysis.scss';
+import { scoreAnalysisAction } from './scoreAnalysisAction';
+import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
 import PvScoreAnalysis from '../../../../components/StatisticalAnalysis/StationAnalysis/ScoreAnalysis/PvScoreAnalysis';
 import Footer from '../../../../components/Common/Footer';
 const TabPane = Tabs.TabPane;
@@ -14,53 +14,60 @@ class ScoreAnalysis extends Component {
   static propTypes = {
     stationTypeCount: PropTypes.string,
     resetStore: PropTypes.func,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: 'pv',//默认显示光伏
-    }
+      activeKey: 'pv', //默认显示光伏
+    };
   }
 
-  componentWillUnmount(){
-    this.props.resetStore()
+  componentWillUnmount() {
+    this.props.resetStore();
   }
 
-  onTabChange=(e)=>{
+  onTabChange = (e) => {
   }
 
+  queryTargetData = (activeKey) => { //切换电站
+    this.props.changeScoreStore({ stationType: activeKey });
+  }
 
   render() {
-    const { stationTypeCount } = this.props;
+    const { stationTypeCount, theme, stationType } = this.props;
     const { activeKey } = this.state;
     return (
-      <div className={styles.stationScore}>
-        <CommonBreadcrumb breadData={[{ name: '电站评分', }]} style={{ paddingLeft: '38px', background: '#fff' }} />
+      <div className={`${styles.stationScore} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '电站评分' }]} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.scoreContainer}>
           <div className={styles.scoreContent}>
             {stationTypeCount === 'multiple' &&
-              <Tabs type="card" onChange={this.onTabChange} activeKey={activeKey}>
-                <TabPane tab="风电" key="wind" disabled><div>风电</div> </TabPane>
-                <TabPane tab="光伏" key="pv"> <PvScoreAnalysis {...this.props} /> </TabPane>
-              </Tabs>
+              <div className={styles.allStationTitle}>
+                {/* <p className={`${stationType === '0' && styles.activeStation} `} onClick={() => { this.queryTargetData('0'); }}>风电</p> */}
+                <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
+              </div>
             }
-            {stationTypeCount === 'pv' &&  <PvScoreAnalysis {...this.props} />}
+            {stationTypeCount === 'multiple' && stationType === '1' && <PvScoreAnalysis {...this.props} />}
+            {stationTypeCount === 'multiple' && stationType === '0' && <div>风电</div>}
+            {stationTypeCount === 'pv' && <PvScoreAnalysis {...this.props} />}
             {stationTypeCount === 'wind' && <div>风电</div>}
           </div>
-          <Footer />
         </div>
+        <Footer theme={theme} />
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return ({
     ...state.statisticalAnalysisReducer.scoreAnalysis.toJS(),
-    stations: state.common.get('stations').toJS(),  
+    stations: state.common.get('stations').toJS(),
     stationTypeCount: state.common.get('stationTypeCount'),
+    theme: state.common.get('theme'),
   });
-}
+};
 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -71,4 +78,4 @@ const mapDispatchToProps = (dispatch) => ({
   getPvStationType: payload => dispatch({ type: scoreAnalysisAction.getPvStationType, payload }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScoreAnalysis)
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreAnalysis);

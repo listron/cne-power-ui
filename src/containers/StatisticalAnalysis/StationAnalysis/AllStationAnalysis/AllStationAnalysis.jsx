@@ -52,7 +52,7 @@ const mapStateToProps = (state) => {
     stations: state.common.get('stations'),
     userId: Cookie.get('userId'),
     theme: state.common.get('theme'),
-    stationTypeCount: 'pv',
+    stationTypeCount: state.common.get('stationTypeCount'),
   };
 };
 const mapDispatchToProps = (dispatch) => ({
