@@ -57,3 +57,14 @@ $tab-border-bottom: rgba(12, 10, 62, 0.6);
 // warning
 // error
 //   border  bg  icon
+
+@mixin contentBoxStyle() {
+  // 页面主内容区常用布局样式。
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background: $background;
+}

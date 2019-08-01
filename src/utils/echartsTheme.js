@@ -196,7 +196,7 @@ export const lightTheme = () => { // 数据规范展示
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#aaa',
+          color: '#f1f1f1',
         },
       },
       splitArea: {

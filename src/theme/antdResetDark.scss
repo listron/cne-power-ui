@@ -5,14 +5,7 @@
 :global {
   .ant-table {
     //table行高，高亮，背景色调整；
-    .ant-table-column-sorter-up.on .anticon-caret-up {
-      //table表格排序上三角点击后的的颜色
-      color: #fd6e8f;
-    }
-    .ant-table-column-sorter-down.on .anticon-caret-down {
-      //table表格排序下三角点击后的的颜色
-      color: #fd6e8f;
-    }
+
     // .ant-table-column-sorter-up.on .anticon-caret-up,
     // .ant-table-column-sorter-down.on .anticon-caret-up,
     // .ant-table-column-sorter-up.on .anticon-caret-down,
@@ -20,6 +13,14 @@
     //   color: $themeColor;
     // }
 
+    .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+    .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+      color: #fd6e8f;
+    }
+    .ant-table-thead > tr > th .ant-table-column-sorter-up,
+    .ant-table-thead > tr > th .ant-table-column-sorter-down {
+      color: $button-active;
+    }
     .ant-table-tbody {
       background: $background;
       // background: #2a338d;
@@ -67,6 +68,9 @@
     .ant-table-tbody > tr > td {
       border: 1px solid $border-color;
     }
+  }
+  .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+    background: transparent;
   }
 
   .ant-tree {
@@ -334,6 +338,13 @@
   .ant-calendar-year-panel-year:hover {
     background: $button-active;
     color: #205bac;
+  }
+
+  .ant-calendar-month-panel-cell-disabled {
+    .ant-calendar-month-panel-month {
+      background: transparent;
+      color: #205bac;
+    }
   }
 
   /*输入框前面的小方块*/

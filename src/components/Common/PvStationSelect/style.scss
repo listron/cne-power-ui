@@ -14,17 +14,6 @@
     display: flex;
     flex-direction: column;
     padding-top: 24px;
-    // :global {
-    //   .ant-radio-button-wrapper {
-    //     color: $darkColor;
-    //   }
-    //   .ant-radio-button-wrapper-checked {
-    //     background-color: $themeColor;
-    //     border: 1px solid $themeColor;
-    //     color: #fff;
-    //   }
-    // }
-
     .provinceList {
       border-bottom: 1px #f1f1f1 solid;
       .provinceItem {
@@ -87,7 +76,7 @@
       border-bottom: 1px solid $border-color;
       .provinceItem {
         .name {
-          color: $darkColor;
+          color: $fontColor;
         }
         .stationList {
           .eachStation {
