@@ -100,7 +100,7 @@ class StockSearch extends Component {
     const { downLoadFile, listParams } = this.props;
     const url = `${APIBasePath}${operation.inRecordExport}`;
     const { warehouseId, goodsType, startTime, endTime } = listParams;
-    const timeZone = moment().zone() / (-60);
+    const timeZone = moment().utcOffset() / 60;
     downLoadFile({
       url,
       fileName: '表',

@@ -1,39 +1,66 @@
+@import "../../../theme/theme.scss";
 
-@import '../../../theme/theme.scss';
-
-.breadcrumb{
+.breadcrumb {
   height: 40px;
   line-height: 40px;
   display: flex;
   justify-content: space-between;
-  
-  
-  .leftText{
-  .breadIcon{
-    margin-left: 12px;
-    margin-right: 8px;
-    :global{
-      .iconfont{
-        font-size: 20px;
-        vertical-align: middle;
-        color: $themeColor
+
+  .leftText {
+    .breadIcon {
+      margin-left: 12px;
+      margin-right: 8px;
+      :global {
+        .iconfont {
+          font-size: 20px;
+          vertical-align: middle;
+        }
       }
     }
-  }
-  .eachPath{
-    color: $darkColor;
-    margin-right: 4px;
-    a{
-      color: $darkColor;
+    .eachPath {
+      margin-right: 4px;
     }
   }
-  }
-  .rightText{
+  .rightText {
     margin-right: 38px;
+  }
+}
 
-    a{
-      color: #199475;
+.light {
+  :global {
+    .iconfont {
+      color: $themeColor;
     }
   }
+  .eachPath {
+    color: $darkColor;
+    a {
+      color: $themeColor;
+    }
+  }
+  .rightText {
+    a {
+      color: $themeColor;
+    }
+  }
+}
 
+.dark {
+  @import "../../../theme/darkTheme.scss";
+  :global {
+    .iconfont {
+      color: $themeColor;
+    }
+  }
+  .eachPath {
+    color: $fontColor-dark;
+    a {
+      color: $fontColor-dark;
+    }
+  }
+  .rightText {
+    a {
+      color: $themeColor;
+    }
+  }
 }

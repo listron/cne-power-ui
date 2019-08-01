@@ -1,6 +1,5 @@
 @import "../../../theme/theme.scss";
 .timeSelect {
-  // height: 100px;
   line-height: 80px;
   display: flex;
   :global {
@@ -11,7 +10,7 @@
       padding: 0 8px;
     }
   }
-  .yearStyle{
+  .yearStyle {
     .yearSelectStyle {
       :global {
         .ant-input {
@@ -20,7 +19,7 @@
       }
     }
   }
-  
+
   align-items: center;
   // border-bottom: 1px solid #ececec;
   .textStyle {
@@ -31,5 +30,19 @@
   }
   .buttonStyle {
     margin-right: 4px;
+  }
+}
+
+.light {
+  .textStyle {
+    color: $lightColor;
+  }
+}
+
+.dark {
+  @import "../../../theme/antdResetDark.scss";
+  color: $fontColor;
+  .textStyle {
+    color: $fontColor;
   }
 }

@@ -127,7 +127,7 @@ class AddForm extends Component {
             initialValue: userDetail && userDetail.phoneNum,
             rules: [{
               message: '请输入正确的手机号',
-              pattern: /^1\d{10}$/,
+              pattern: /^1|9\d{10}$/,
               required: true,
             }]
           })(

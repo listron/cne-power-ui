@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { message } from "antd";
+import { message } from 'antd';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 import styles from './allStation.scss';
@@ -15,7 +15,7 @@ class Map extends Component {
     history: PropTypes.object,
   }
   constructor(props) {
-    super(props)
+    super(props);
     // this.state = {
     //   barData: []
     // }
@@ -30,116 +30,117 @@ class Map extends Component {
   componentWillReceiveProps(nextProps) {
     const { testId, stationDataList } = nextProps;
     //if (this.props.stationDataList.length !== nextProps.stationDataList.length) {
-      const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, stationDataList);
-   // }
+    const testChart = echarts.init(document.getElementById(testId));
+    this.setMapChart(testChart, stationDataList);
+    // }
   }
 
   setMapChart = (testChart, stationDataList) => {
     const option = {
       bmap: {
-        center: [116.46, 39.92],//中心点
+        center: [116.46, 39.92], //中心点
         zoom: 5,
-        roam: true,//可放大缩小
+        roam: true, //可放大缩小
         mapStyle: {
           styleJson: [{
             'featureType': 'water',
             'elementType': 'all',
             'stylers': {
-              'color': '#d1d1d1'
-            }
+              'color': '#d1d1d1',
+            },
           }, {
             'featureType': 'land',
             'elementType': 'all',
             'stylers': {
-              'color': '#f3f3f3'
-            }
+              'color': '#f3f3f3',
+            },
           }, {
             'featureType': 'railway',
             'elementType': 'all',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'highway',
             'elementType': 'all',
             'stylers': {
-              'color': '#fdfdfd'
-            }
+              'color': '#fdfdfd',
+            },
           }, {
             'featureType': 'highway',
             'elementType': 'labels',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'arterial',
             'elementType': 'geometry',
             'stylers': {
-              'color': '#fefefe'
-            }
+              'color': '#fefefe',
+            },
           }, {
             'featureType': 'arterial',
             'elementType': 'geometry.fill',
             'stylers': {
-              'color': '#fefefe'
-            }
+              'color': '#fefefe',
+            },
           }, {
             'featureType': 'poi',
             'elementType': 'all',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'green',
             'elementType': 'all',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'subway',
             'elementType': 'all',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'manmade',
             'elementType': 'all',
             'stylers': {
-              'color': '#d1d1d1'
-            }
+              'color': '#d1d1d1',
+            },
           }, {
             'featureType': 'local',
             'elementType': 'all',
             'stylers': {
-              'color': '#d1d1d1'
-            }
+              'color': '#d1d1d1',
+            },
           }, {
             'featureType': 'arterial',
             'elementType': 'labels',
             'stylers': {
-              'visibility': 'off'
-            }
+              'visibility': 'off',
+            },
           }, {
             'featureType': 'boundary',
             'elementType': 'all',
             'stylers': {
-              'color': '#fefefe'
-            }
+              'color': '#fefefe',
+            },
           }, {
             'featureType': 'building',
             'elementType': 'all',
             'stylers': {
-              'color': '#d1d1d1'
-            }
+              'color': '#d1d1d1',
+            },
           }, {
             'featureType': 'label',
             'elementType': 'labels.text.fill',
             'stylers': {
-              'color': '#666'
-            }
-          }]
-        }//地图样式配置
+              'color': '#666',
+            },
+          }],
+
+        },//地图样式配置
       },
       tooltip: {
         trigger: 'item',
@@ -181,9 +182,9 @@ class Map extends Component {
             <div class='stationCardWindSpeed'>
             <span class='stationMark'>${instantaneous}${params.data.value[2] === '0' ? 'm/s' : 'W/m²'}</span>
             &nbsp;&nbsp;
-            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` :''} 
+            ${angleOfYaw ? `<span><i className="iconfont icon-acb" style='fontSize:14px; color:#199475'></i>${angleOfYaw}°</span>` : ''} 
             </div>             
-          </div>`
+          </div>`;
           },
           // width:'128px',
           // height:'68px',
@@ -199,34 +200,34 @@ class Map extends Component {
         data: stationDataList,
         label: {
           normal: {
-            show: false
+            show: false,
           },
           emphasis: {
-            show: false
-          }
+            show: false,
+          },
         },
         itemStyle: {
           emphasis: {
             borderColor: '#199475',
-            borderWidth: 5
-          }
-        }
-      }]
+            borderWidth: 5,
+          },
+        },
+      }],
     };
-    try{
+    try {
       testChart.setOption(option);
-    }catch(error){
+    } catch (error) {
       message.error('中国地图获取失败,请稍后刷新重试');
       console.log(error);
     }
     testChart.on('click', (params) => {
       if (params.data.stationStatus !== '900') {
         return this.props.history.push(`/monitor/singleStation/${params.data.stationCode}`)
-      } else {
+      } 
         this.showTip();
-      }
+      
 
-    })
+    });
   }
   showTip = (e) => {
     message.destroy();
@@ -241,8 +242,8 @@ class Map extends Component {
   render() {
     const { testId } = this.props;
     return (
-      <div id={testId} style={{display:'flex', flex: 1,}} className={styles.Map} ></div>
-    )
+      <div id={testId} style={{ display: 'flex', flex: 1 }} className={styles.Map} ></div>
+    );
   }
 }
 export default withRouter(Map);

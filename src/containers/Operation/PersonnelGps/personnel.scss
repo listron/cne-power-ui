@@ -1,47 +1,42 @@
-
-
-@import '../../../theme/theme.scss';
-@mixin top(){//详情，编辑通用顶部基础样式
+@import "../../../theme/theme.scss";
+@mixin top() {
+  //详情，编辑通用顶部基础样式
   @include lineheight(64px);
   display: flex;
   padding-left: 32px;
   align-items: center;
-  border-bottom: solid 1px $promptColor;  
+  border-bottom: solid 1px $promptColor;
 }
 
-.ticketBox{
+.ticketBox {
   display: flex;
- flex: 1;
- min-height: 100%;
- flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
 }
+
 .ticket {
   display: flex;
   flex-direction: column;
   flex: 1;
-  // min-height: 100%;
   justify-content: space-between;
   padding: 24px 24px 0;
-  background-color: #ececec;
-  
 }
+
 .inspectCreate {
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: #fff;
   .createTop {
     @include top;
     justify-content: space-between;
-    .text{
-      font-size:18px;
+    .text {
+      font-size: 18px;
       color: $darkColor;
-      letter-spacing:4px;
+      letter-spacing: 4px;
     }
-    .backIcon{
-      color: $darkColor;
+    .backIcon {
       font-size: 20px;
-      border-left: 1px solid $promptColor;
       height: 100%;
       line-height: 64px;
       width: 64px;
@@ -51,8 +46,40 @@
   .createContent {
     display: flex;
     flex-direction: row;
-    // padding: 56px 36px;
     justify-content: center;
     flex: 1;
+  }
+}
+
+.light {
+  .ticket {
+    background-color: #ececec;
+  }
+  .inspectCreate {
+    background-color: #fff;
+    .createTop {
+      .backIcon {
+        color: $darkColor;
+        border-left: 1px solid $promptColor;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../theme/darkTheme.scss";
+  background: $background;
+  .ticket {
+    background: $background;
+  }
+  .inspectCreate {
+    background-color: $light-background;
+    color: $fontColor-invert;
+    .createTop {
+      border-bottom: none;
+      .text {
+        color: $fontColor-invert;
+      }
+    }
   }
 }

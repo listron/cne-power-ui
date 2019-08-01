@@ -1,66 +1,68 @@
-
-
 //专门针对antd样式的部分重置：(table)
-@import './theme.scss';
+@import "./theme.scss";
 
-:global{
-  
-  .ant-table{//table行高，高亮，背景色调整；
-    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
-      color: $themeColor;
-  }
-    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
-      color: $themeColor;
-  }
-    .ant-table-tbody{
+:global {
+  .ant-table {
+    //table行高，高亮，背景色调整；
+    .ant-table-tbody {
       background: #fff;
-      &>tr:hover{
+      & > tr:hover {
         td {
           background: $tableSelectedBackground;
         }
       }
     }
-    .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
       padding: 0 16px;
       height: 40px;
       line-height: 40px;
       color: $darkColor;
     }
-    .ant-table-thead > tr > th{
+    .ant-table-thead > tr > th {
       background: #f4f4f4;
       color: $darkColor;
     }
-    .ant-table-column-sorter-up.on .anticon-caret-up {//table表格排序上三角点击后的的颜色
+    .ant-table-column-sorter-up.on .anticon-caret-up {
+      //table表格排序上三角点击后的的颜色
       color: $themeColor;
     }
-    .ant-table-column-sorter-down.on .anticon-caret-down {//table表格排序下三角点击后的的颜色
-        color: $themeColor;
+    .ant-table-column-sorter-down.on .anticon-caret-down {
+      //table表格排序下三角点击后的的颜色
+      color: $themeColor;
     }
-
   }
 
-  .ant-tree{ // 对antd tree控件的初始化： 高两色调整。
-    .ant-tree-checkbox-checked .ant-tree-checkbox-inner{
+  .ant-tree {
+    // 对antd tree控件的初始化： 高两色调整。
+    .ant-tree-checkbox-checked .ant-tree-checkbox-inner {
       background-color: $themeColor;
       border-color: $themeColor;
     }
-    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner{
+    .ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner {
       background-color: #fff;
       border-color: $themeColor;
     }
-    .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner, .ant-tree-checkbox:hover .ant-tree-checkbox-inner, .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner{
+    .ant-tree-checkbox-wrapper:hover .ant-tree-checkbox-inner,
+    .ant-tree-checkbox:hover .ant-tree-checkbox-inner,
+    .ant-tree-checkbox-input:focus + .ant-tree-checkbox-inner {
       border-color: $themeColor;
     }
   }
-  
-  .ant-btn {   //antd按钮样式调整-高亮
+
+  .ant-btn {
+    //antd按钮样式调整-高亮
     color: $darkColor;
     @include highLight($themeColor);
-    &:hover{
+    &:hover {
       color: $themeColor;
     }
   }
-  .ant-btn-primary, .ant-btn-primary:active, .ant-btn-primary.active, .ant-btn-primary:focus{
+
+  .ant-btn-primary,
+  .ant-btn-primary:active,
+  .ant-btn-primary.active,
+  .ant-btn-primary:focus {
     background-color: $themeColor;
     color: #fff;
     border-color: $themeColor;
@@ -79,65 +81,65 @@
       }
     }
   }
-  .ant-select-dropdown-menu-item:hover{
+  .ant-select-dropdown-menu-item:hover {
     background-color: #ceebe0;
   }
-  .ant-select:not(.ant-select-disabled){
-    .ant-select-selection{
-      .ant-select-selection__rendered{
-        .ant-select-selection__placeholder{
+  .ant-select:not(.ant-select-disabled) {
+    .ant-select-selection {
+      .ant-select-selection__rendered {
+        .ant-select-selection__placeholder {
           color: $promptColor;
         }
       }
-      .ant-select-arrow{
+      .ant-select-arrow {
         color: $darkColor;
       }
       @include highLight($themeColor);
     }
   }
-  .ant-switch-checked{
+  .ant-switch-checked {
     color: $themeColor;
   }
 
-.ant-tabs{
-  .ant-tabs-ink-bar{
-    color: $themeColor;
-    background-color: $themeColor;
-  }
-  .ant-tabs-nav ,.ant-tabs-tab-active {
-    color: $themeColor;
-  }
-  .ant-tabs-nav .ant-tabs-tab-active:hover{
-    color: $themeColor;
-  }
-  .ant-tabs-tab{
-    color: $darkColor;
-  }
-  // .ant-tabs-nav .ant-tabs-tab:hover{
-  //   color: $themeColor;
-  // }
-  // .ant-tabs-tab-active .ant-tabs-tab{
-  //   color: $themeColor;
-  // }
+  .ant-tabs {
+    .ant-tabs-ink-bar {
+      color: $themeColor;
+      background-color: $themeColor;
+    }
+    .ant-tabs-nav,
+    .ant-tabs-tab-active {
+      color: $themeColor;
+    }
+    .ant-tabs-nav .ant-tabs-tab-active:hover {
+      color: $themeColor;
+    }
+    .ant-tabs-tab {
+      color: $darkColor;
+    }
+    // .ant-tabs-nav .ant-tabs-tab:hover{
+    //   color: $themeColor;
+    // }
+    // .ant-tabs-tab-active .ant-tabs-tab{
+    //   color: $themeColor;
+    // }
 
-  // .ant-tabs-nav .ant-tabs-tab-active{
-  //   color: $themeColor;
-  // } 
-  // .ant-tabs-tab-active .ant-tabs-tab{
-  //   color: $themeColor;
-  // }
-}
-
-  .ant-input:not(.ant-input-disabled):hover{
-    border-color:$themeColor;
+    // .ant-tabs-nav .ant-tabs-tab-active{
+    //   color: $themeColor;
+    // }
+    // .ant-tabs-tab-active .ant-tabs-tab{
+    //   color: $themeColor;
+    // }
   }
-  .ant-input{
-    background:#ffffff;
-    border:1px solid $promptColor;
-    border-radius:4px;
-    width:198px;
-    height:31px;
 
+  .ant-input:not(.ant-input-disabled):hover {
+    border-color: $themeColor;
+  }
+  .ant-input {
+    background: #ffffff;
+    border: 1px solid $promptColor;
+    border-radius: 4px;
+    width: 198px;
+    height: 31px;
   }
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
@@ -145,14 +147,15 @@
     height: 28px;
     width: 29px;
     border-radius: 3px 0 0 3px;
-    background:#f1f1f1;
+    background: #f1f1f1;
     margin-left: -11px;
     text-align: center;
     line-height: 200%;
   }
 
   /*上下input输入框的距离*/
-  .ant-form-item, .ant-form-horizontal {
+  .ant-form-item,
+  .ant-form-horizontal {
     margin-bottom: 21px;
   }
   /*input的鼠标移上颜色*/
@@ -162,17 +165,18 @@
   }
 
   /*步骤*/
-  .ant-steps{
+  .ant-steps {
     margin-bottom: 20px;
-      /*步骤的标题的字体大小*/
-    .ant-steps-item-title{
+    /*步骤的标题的字体大小*/
+    .ant-steps-item-title {
       font-size: 12px;
     }
     //字体颜色
-    .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
+    .ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title,
+    .ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
       color: #fff;
     }
-     /*流程步骤的icon大小形状以及对齐*/
+    /*流程步骤的icon大小形状以及对齐*/
     .ant-steps-item-icon {
       border: 1px solid rgba(0, 0, 0, 0.25);
       width: 13px;
@@ -186,17 +190,19 @@
       margin-left: 10px;
     }
     /*流程步骤的icon颜色背景*/
-  .ant-steps-item-process .ant-steps-item-icon,.ant-steps-item-finish .ant-steps-item-icon{
-    border-color: $themeColor;
-    background: #ceebe0;
-    line-height: 13px;
-  }
-  .ant-steps-item-title:after{
-    width: 0;
-  }
-  .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
-    color: $themeColor;
-  }
+    .ant-steps-item-process .ant-steps-item-icon,
+    .ant-steps-item-finish .ant-steps-item-icon {
+      border-color: $themeColor;
+      background: #ceebe0;
+      line-height: 13px;
+    }
+    .ant-steps-item-title:after {
+      width: 0;
+    }
+    .ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon,
+    .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+      color: $themeColor;
+    }
   }
   //控制步骤的背景图的显示问题。
   .ant-steps-horizontal:not(.ant-steps-label-vertical) .ant-steps-item {
@@ -204,25 +210,29 @@
     white-space: nowrap;
   }
 
-  .ant-checkbox-checked .ant-checkbox-inner{
+  .ant-checkbox-checked .ant-checkbox-inner {
     background-color: $themeColor;
     border-color: $themeColor;
   }
-  .ant-checkbox-indeterminate .ant-checkbox-inner{
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
     background-color: #fff;
     border-color: $themeColor;
   }
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color:  $themeColor;
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: $themeColor;
   }
-  .ant-checkbox-disabled .ant-checkbox-inner{
+  .ant-checkbox-disabled .ant-checkbox-inner {
     background-color: #eaeaea;
-    border-color: rgba(0,0,0,0.15);
-    border-radius:2px;
+    border-color: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
     color: $darkColor;
   }
   /*ant-btn-dashed:hover ant-btn-dashed:focus颜色*/
-  .ant-btn-dashed:hover,.ant-btn-dashed:focus,.ant-btn-dashed::selection {
+  .ant-btn-dashed:hover,
+  .ant-btn-dashed:focus,
+  .ant-btn-dashed::selection {
     color: $darkColor;
   }
   /*select下拉框背景色*/
@@ -233,27 +243,27 @@
     background-color: $themeColor;
   }
   // 加载的spin
-  .ant-spin-dot i{
-    background-color: #199475
+  .ant-spin-dot i {
+    background-color: $themeColor;
   }
   //ant-select-dropdown-menu下拉框选中的√颜色
-  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
+  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after,
+  .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after {
     color: $themeColor;
   }
   // antd提示语message图标颜色
-  .ant-message-info .anticon, .ant-message-loading .anticon{
+  .ant-message-info .anticon,
+  .ant-message-loading .anticon {
     color: $themeColor;
   }
   //modal框
   .ant-modal-wrap {
-    .ant-modal{
-      .ant-modal-content{
-        .ant-modal-footer{
+    .ant-modal {
+      .ant-modal-content {
+        .ant-modal-footer {
           border-top: 0;
-              
         }
       }
     }
-    
   }
 }

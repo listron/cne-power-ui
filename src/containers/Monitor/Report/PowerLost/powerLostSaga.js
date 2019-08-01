@@ -24,7 +24,7 @@ function* getPowerLostList(action) {  // 请求报表列表
       ...payload,
       // startTime:moment( startTime).utc().format(''),
       // endTime:moment( endTime).utc().format(''),
-      timeZone:moment().zone() / (-60),
+      timeZone:moment().utcOffset() / 60,
      
     });
     if (response.data.code === '10000') {

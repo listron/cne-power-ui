@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { message } from "antd";
+import { message } from 'antd';
 import echarts from 'echarts';
 import bmap from 'echarts/extension/bmap/bmap';
 
@@ -11,132 +11,228 @@ class GpsMap extends Component {
   static propTypes = {
     testId: PropTypes.string,
     personnelGpsData: PropTypes.array,
-     history: PropTypes.object,
+    history: PropTypes.object,
   }
   constructor(props) {
-    super(props)
-    
+    super(props);
+
   }
-  
+
   componentDidMount() {
-    const { testId, personnelGpsData } = this.props;
+    const { testId, personnelGpsData, theme } = this.props;
     const testChart = echarts.init(document.getElementById(testId));
-    this.setMapChart(testChart, personnelGpsData);
+    this.setMapChart(testChart, personnelGpsData, theme);
   }
-  
+
   componentWillReceiveProps(nextProps) {
-    const { testId, personnelGpsData } = nextProps;
-    if(this.props.personnelGpsData.length !== nextProps.personnelGpsData.length) {
-      const testChart = echarts.init(document.getElementById(testId));
-      this.setMapChart(testChart, personnelGpsData);
+    const { testId, personnelGpsData, theme } = nextProps;
+    const testChart = echarts.init(document.getElementById(testId));
+    if (this.props.personnelGpsData.length !== nextProps.personnelGpsData.length) {
+      this.setMapChart(testChart, personnelGpsData, theme);
+    }
+    if (this.props.theme !== nextProps.theme) {
+      this.setMapChart(testChart, personnelGpsData, theme);
     }
   }
-  
-  setMapChart = (testChart, personnelGpsData) => {
+
+  setMapChart = (testChart, personnelGpsData, theme) => {
+    const darkStyleJson = [{
+      'featureType': 'water',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#142977',
+      },
+    }, {
+      'featureType': 'land',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#001568',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'all',
+      'stylers': {
+        'color': 'rgba(77, 95, 226, 0.6)',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+        'color': '#0065c6',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry',
+      'stylers': {
+        'color': '#0065c6',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry.fill',
+      'stylers': {
+        'color': '#0065c6',
+      },
+    }, {
+      'featureType': 'poi',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'green',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'subway',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'manmade',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#142977',
+      },
+    }, {
+      'featureType': 'local',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#142977',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'boundary',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#0065c6',
+      },
+    }, {
+      'featureType': 'building',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#142977',
+      },
+    }, {
+      'featureType': 'label',
+      'elementType': 'labels.text.fill',
+      'stylers': {
+        'color': '#666',
+      },
+    }];
+    const lightStyleJson = [{
+      'featureType': 'water',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'land',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#f3f3f3',
+      },
+    }, {
+      'featureType': 'railway',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#fdfdfd',
+      },
+    }, {
+      'featureType': 'highway',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'geometry.fill',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'poi',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'green',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'subway',
+      'elementType': 'all',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'manmade',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'local',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'arterial',
+      'elementType': 'labels',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
+      'featureType': 'boundary',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#fefefe',
+      },
+    }, {
+      'featureType': 'building',
+      'elementType': 'all',
+      'stylers': {
+        'color': '#d1d1d1',
+      },
+    }, {
+      'featureType': 'label',
+      'elementType': 'labels.text.fill',
+      'stylers': {
+        'color': '#666',
+      },
+    }];
     const option = {
       bmap: {
-         center: [116, 39.92],//中心点
-         zoom: 5,
-        roam: true,//可放大缩小
+        center: [116, 39.92], //中心点
+        zoom: 5,
+        roam: true, //可放大缩小
         mapStyle: {
-          styleJson: [{
-            'featureType': 'water',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#d1d1d1'
-            }
-          }, {
-            'featureType': 'land',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#f3f3f3'
-            }
-          }, {
-            'featureType': 'railway',
-            'elementType': 'all',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'highway',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#fdfdfd'
-            }
-          }, {
-            'featureType': 'highway',
-            'elementType': 'labels',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'arterial',
-            'elementType': 'geometry',
-            'stylers': {
-              'color': '#fefefe'
-            }
-          }, {
-            'featureType': 'arterial',
-            'elementType': 'geometry.fill',
-            'stylers': {
-              'color': '#fefefe'
-            }
-          }, {
-            'featureType': 'poi',
-            'elementType': 'all',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'green',
-            'elementType': 'all',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'subway',
-            'elementType': 'all',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'manmade',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#d1d1d1'
-            }
-          }, {
-            'featureType': 'local',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#d1d1d1'
-            }
-          }, {
-            'featureType': 'arterial',
-            'elementType': 'labels',
-            'stylers': {
-              'visibility': 'off'
-            }
-          }, {
-            'featureType': 'boundary',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#fefefe'
-            }
-          }, {
-            'featureType': 'building',
-            'elementType': 'all',
-            'stylers': {
-              'color': '#d1d1d1'
-            }
-          }, {
-            'featureType': 'label',
-            'elementType': 'labels.text.fill',
-            'stylers': {
-              'color': '#666'
-            }
-          }]
-        }//地图样式配置
+          styleJson: theme === 'dark' ? darkStyleJson : lightStyleJson,
+        }, //地图样式配置
       },
       tooltip: {
         trigger: 'item',
@@ -154,11 +250,10 @@ class GpsMap extends Component {
         tooltip: {
           enterable: true,
           formatter: (params) => {
-
-            return `<div style='display:flex; flex-direction: row;'><div style='width:30px;height:30px;'><img src='/img/people.png'></div> <div style='height:30px;line-height:30px'>${params.data.name}</div></div>`
+            return `<div style='display:flex; flex-direction: row;'><div style='width:30px;height:30px;'><img src='/img/people.png'></div> <div style='height:30px;line-height:30px'>${params.data.name}</div></div>`;
           },
-          width:'128px',
-          height:'68px',
+          width: '128px',
+          height: '68px',
           backgroundColor: '#fff',
           textStyle: {
             color: '#666',
@@ -172,26 +267,26 @@ class GpsMap extends Component {
         //   { name: 'daliaa' ,value: [117, 39.92]},
         // ],
         data: personnelGpsData,
-        symbolSize:[20,20],
+        symbolSize: [20, 20],
         label: {
           normal: {
-            show: false
+            show: false,
           },
           emphasis: {
-            show: false
-          }
+            show: false,
+          },
         },
         itemStyle: {
           emphasis: {
             borderColor: '#199475',
-            borderWidth: 5
-          }
-        }
-      }]
+            borderWidth: 5,
+          },
+        },
+      }],
     };
-    try{
+    try {
       testChart.setOption(option);
-    }catch(error){
+    } catch (error) {
       message.error('中国地图获取失败,请稍后刷新重试');
       console.log(error);
     }
@@ -201,7 +296,7 @@ class GpsMap extends Component {
     // }else{
     //   this.showTip();
     // }  
-   
+
     // })
   }
   // showTip = (e) => {
@@ -218,11 +313,11 @@ class GpsMap extends Component {
     // const { barData } = this.state;
     const { testId } = this.props;
     return (
-      <div id={testId} style={{ width: "100%",  flex: 1 }} ></div>
-    )
+      <div id={testId} style={{ width: '100%', flex: 1 }} ></div>
+    );
   }
 }
 export default withRouter(GpsMap);
 
 
-  
+
