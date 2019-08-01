@@ -95,7 +95,7 @@
             color: $fontColor;
           }
           .checked {
-            background: $button-hover;
+            background: $button-active;
             color: $fontColor-invert;
             :global {
               .ant-checkbox-wrapper {
@@ -118,7 +118,7 @@
       }
       .innerStationList {
         .eachSelectedStation {
-          background-color: $button-hover;
+          background-color: $button-active;
           color: $fontColor-invert;
           &:hover {
             background: #fd6e8f;

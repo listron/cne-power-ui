@@ -16,14 +16,14 @@ $fontColor-noConnect: #bbcef7;
 $button-primary: #205bac;
 $button-add: #00baff; // 暂时
 $button-delete: #fd6e8f;
-$button-hover: #00baff; // $button-active button-focus
+$button-active: #00baff; // $button-active button-focus
 $button-disabled: #161858;
 
 $button-border: #00baff;
 $border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
 
-// 从左滑出  从上滑出  从下滑出
+// 从左滑出  从上滑出  从下滑出   提示框
 $slide-backgound: #205bac;
 $slide-border: #303a99;
 $slide-border-shadow: #00baff;

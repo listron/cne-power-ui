@@ -1,5 +1,3 @@
-import echarts from 'echarts';
-
 export const darkTheme = () => { // 数据规范展示
   const contrastColor = '#00baff';
   const fontColor = '#009CFF';
