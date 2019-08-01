@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { stringify } from 'qs';
 import AreaStation from '../../../../components/Common/AreaStation';
 import AutoSelect from '../../../../components/Common/AutoSelect';
 
@@ -9,19 +7,18 @@ class GroupAchieve extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    location: PropTypes.object,
   }
 
   componentDidMount(){
-    
+
   }
 
   componentDidUpdate(){
-    
+
   }
 
   componentWillUnmount(){
-    
+
   }
 
   // toArea = () => {
@@ -31,22 +28,6 @@ class GroupAchieve extends Component {
 
   render() {
     const { active } = this.props;
-    const data = [{
-      regionName: '山东',
-      stations:	[{
-        stationCode: 56,
-        stationName: '山东平原'
-      }, {
-        stationCode: 560,
-        stationName: '烟台电站'
-      }]	
-    }, {
-      regionName: '河北',
-      stations:	[{
-        stationCode: 360,
-        stationName: '阳光'
-      }]
-    }]
     return (
       <div style={{display: active ? 'block': 'none', backgroundColor: 'lightGreen'}} >
         <div>集团页面</div>

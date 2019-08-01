@@ -1,15 +1,13 @@
 
 import React, { Component } from 'react';
-import { Checkbox, Modal, Tree } from 'antd';
+import { Modal } from 'antd';
 import CheckTree from './CheckTree';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 
 // todo 弹框组件因单选ui及交互未定, 暂不实现
-// todo 嵌套判定暂时做两层处理, 多层级因checkbox的选中递归数据层级不确定且数据传输不同及ui也未指定。
 class AutoModal extends Component {
   static propTypes = {
-    multiple: PropTypes.bool,
     data: PropTypes.array,
     infoLists: PropTypes.array,
     checkedList: PropTypes.array,

@@ -121,8 +121,6 @@ class AutoSelect extends Component {
   }
 
   onValueCheck = (checkedList) => { // 输出
-    console.log('output')
-    console.log(checkedList)
     this.setState({ checkedList });
     this.props.onChange(checkedList);
   }
