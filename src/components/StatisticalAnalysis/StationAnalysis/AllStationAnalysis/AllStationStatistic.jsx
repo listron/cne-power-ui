@@ -242,7 +242,7 @@ class AllStationStatistic extends React.Component {
           <div className={styles.AlarmStatisticByTypeBox} >
             <div className={styles.singleAlarmFilter} >{operations}</div>
             <div className={styles.componentContainer}>
-              <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
+              <div className={styles.timeSelect}> <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} /></div>
               <PlanCompletionRate
                 dateType={dateType}
                 theme={theme}
@@ -260,18 +260,11 @@ class AllStationStatistic extends React.Component {
           :
           <Tabs type="card" tabBarExtraContent={operations} activeKey={stationType} onChange={this.queryTargetData} >
             <TabPane tab="风电" key={'0'}>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-                background: '#fff',
-                background: 'url(\'/img/undo.png\') no-repeat center #fff',
-              }}>
-              </div>
+              <div className={styles.windContainer} />
             </TabPane>
             <TabPane tab="光伏" key={'1'}>
               <div className={styles.componentContainer}>
-                <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
+                <div className={styles.timeSelect}> <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} /></div>
                 <PlanCompletionRate
                   dateType={dateType}
                   theme={theme}

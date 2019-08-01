@@ -128,9 +128,8 @@ const mapStateToProps = (state) => {
   return ({
     ...state.monitor.stationMonitor.toJS(),
     stations: state.common.get('stations').toJS(),
-    theme: Cookie.get('theme'),
+    theme: state.common.get('theme'),
     stationTypeCount: state.common.get('stationTypeCount'),
-    // stationTypeCount: 'pv',
     monitorPvUnit: state.common.toJS().monitorPvUnit,
   });
 };

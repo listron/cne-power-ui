@@ -89,6 +89,11 @@
     width: 100%;
     flex-direction: column;
   }
+  .windContainer {
+    display: flex;
+    flex: 1;
+    background: url("/img/undo.png") no-repeat center;
+  }
 }
 
 .singleStationType {
@@ -272,6 +277,10 @@
     text-align: center;
     margin-right: 0;
   }
+  .timeSelect {
+    background: $light-background;
+    border: 1px solid $border-color;
+  }
   :global {
     .ant-tabs-nav-scroll {
       background-color: transparent;
@@ -293,5 +302,10 @@
   }
   .singleAlarmFilter {
     background: $background;
+  }
+  .windContainer {
+    background-color: $light-background;
+    border: 1px solid $border-color;
+    border-bottom: none;
   }
 }
