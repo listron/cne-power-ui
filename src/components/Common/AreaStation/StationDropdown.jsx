@@ -149,7 +149,6 @@ class StationDropdown extends Component {
     const { data, holderText } = this.props;
     const { visible, checkedList } = this.state;
     const regions = this.createRegions(data);
-    console.log(checkedList)
     return (
       <Dropdown overlay={regions} trigger={['click']} visible={visible} onVisibleChange={this.onVisibleChange}>
         <Button className={styles.multipleButton} onClick={this.showDropdown}>

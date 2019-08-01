@@ -1,15 +1,16 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import StationCascader from './StationCascader';
-import StationDropdown from './StationDropdown';
+import { getValueSet, isSetDiff, getRoots } from './selectUtil.js';
+import DropDownSelects from './DropDownSelects';
+import AutoModal from './AutoModal';
 /*
   组件功能；由自动选择 + 弹框选择两个构成, 可进行输入搜索或弹框选择
   传入固定层级格式数据，自动解析生成, 支持单选/多选模式, 输入由props.value控制, 输出由props.onChange函数控制
   要求传入的数据格式: 
 
   参数:
-  1. 必填 - 传入前，请自行构造一个简单的高阶组件处理数据结构: 本组件所需基本数据数组(data),包含信息如下：
+  1. 必填 - 传入前，请自行构造一个简单的高阶组件处理数据结构: 本组件所需基本数据数组(data),至少包含信息如下：
   [{
     value: 1001123142,
     label: '金风科技',
@@ -17,7 +18,7 @@ import StationDropdown from './StationDropdown';
       value: 'M12011M221M13',
       label: 'SD-13',
       children: [{
-        ...可无限嵌套
+        ...后续可考虑变为无限嵌套
       }]
     }, {
       value: 'M12011M221M11',
@@ -42,9 +43,11 @@ import StationDropdown from './StationDropdown';
   7. 选填todo - disabledInfo 不可选数组; 默认为[]
   8. 选填todo - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填todo - stationShowNumber:bool; 默认是false
+  10. 选填todo - onlyModal: false; 当不需要下拉框, 只需要筛选弹框时启用.
 
   注意: onChange与value指定的格式统一;
-  输入输出均为最底层级的value集合: [value1, value2];
+  多选时； 输入输出均为最底层级的value集合: [{value1: 1, label1: 'bala'}, {value2: 20, label2: 'gaga'}];
+  单选时: 输出为[{value: 123, lable: '112'}]
 */
 
 class AutoSelect extends Component {
@@ -94,25 +97,26 @@ class AutoSelect extends Component {
     super(props);
     this.state = {
       checkedList: props.value,
+      infoLists: getRoots(props.data) || [],
     };
   }
 
   componentWillReceiveProps(nextProps){
-    const { value } = this.props;
+    const { value, data } = this.props;
     const nextValue = nextProps.value;
-    const needUpdateValue = this.isSetDiff(value, nextValue);
+    const nextData = nextProps.data;
+    if (nextData.length > 0 && data.length === 0) { // 得到组件基础信息
+      this.setState({
+        infoLists: getRoots(data),
+      });
+    }
+    const needUpdateValue = isSetDiff(
+      getValueSet(value, 'value'),
+      getValueSet(nextValue, 'value'),
+    );
     needUpdateValue && this.setState({ // value变化时, state同步
       checkedList: nextValue,
     });
-  }
-
-  isSetDiff = (a, b) => { // 比价两个简单值构成的数组
-    const setA = new Set(a);
-    const setB = new Set(b);
-    if(setA.size !== setB.size) {
-      return true;
-    }
-    return Array.from(setA).find(value => !setB.has(value));
   }
 
   onValueCheck = (checkedList) => { // 输出
@@ -121,11 +125,21 @@ class AutoSelect extends Component {
   }
 
   render() {
-    const { checkedList } = this.state;
+    const { checkedList, infoLists } = this.state;
     return (
       <div>
-        {<div {...this.props} checkedList={checkedList} onValueCheck={this.onValueCheck} />}
-        {<div {...this.props} checkedList={checkedList} onValueCheck={this.onValueCheck} />}
+        <DropDownSelects
+          {...this.props}
+          infoLists={infoLists}
+          checkedList={checkedList}
+          onValueCheck={this.onValueCheck}
+        />
+        <AutoModal
+          {...this.props}
+          infoLists={infoLists}
+          checkedList={checkedList}
+          onValueCheck={this.onValueCheck}
+        />
       </div>
     );
   }

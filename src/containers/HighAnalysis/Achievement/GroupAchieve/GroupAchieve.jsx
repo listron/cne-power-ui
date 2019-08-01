@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { stringify } from 'qs';
 import AreaStation from '../../../../components/Common/AreaStation';
+import AutoSelect from '../../../../components/Common/AutoSelect';
 
 class GroupAchieve extends Component {
 
@@ -55,6 +56,7 @@ class GroupAchieve extends Component {
           查看区域信息
         </button>
         <AreaStation />
+        <AutoSelect />
       </div>
     );
   }
