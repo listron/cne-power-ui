@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { connect } from 'react-redux';
-import searchUtil from './searchUtil';
+import searchUtil from '../../../utils/searchUtil';
 import { achieveAction } from './achieveReducer';
 import GroupAchieve from './GroupAchieve/GroupAchieve';
 import AreaAchieve from './AreaAchieve/AreaAchieve';

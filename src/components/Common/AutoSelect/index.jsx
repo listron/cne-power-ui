@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getValueSet, isSetDiff, getRoots } from './selectUtil.js';
+import { isSetDiff, getRoots } from './selectUtil.js';
 import DropDownSelects from './DropDownSelects';
 import AutoModal from './AutoModal';
 import styles from './style.scss';
@@ -46,9 +46,11 @@ import styles from './style.scss';
   9. 选填todo - stationShowNumber:bool; 默认是false
   10. 选填todo - onlyModal: false; 当不需要下拉框, 只需要筛选弹框时启用.
 
-  注意: onChange与value指定的格式统一;
-  多选时； 输入输出均为最底层级的value集合: [{value1: 1, label1: 'bala'}, {value2: 20, label2: 'gaga'}];
-  单选时: 输出为[{value: 123, lable: '112'}]
+  注意: 
+  多选时； 
+    value输入为[value1, value2, value3]数组
+    onChange输出为最底层级的value集合: [{value1: 1, label1: 'bala'}, {value2: 20, label2: 'gaga'}];
+  单选时: 输出为[{value: 123, lable: '112'}], 输入为[value, value], 因暂无单选模式ui及交互，暂不实现
 */
 
 class AutoSelect extends Component {
@@ -96,9 +98,12 @@ class AutoSelect extends Component {
 
   constructor(props){
     super(props);
+    const { value, data } = props;
+    const infoLists = getRoots(data) || [];
+    const checkedList = infoLists.filter(e => value.includes(e.value));
     this.state = {
-      checkedList: props.value,
-      infoLists: getRoots(props.data) || [],
+      checkedList,
+      infoLists,
     };
   }
 
@@ -106,18 +111,18 @@ class AutoSelect extends Component {
     const { value, data } = this.props;
     const nextValue = nextProps.value;
     const nextData = nextProps.data;
-    if (nextData.length > 0 && data.length === 0) { // 得到组件基础信息
-      this.setState({
-        infoLists: getRoots(data),
-      });
-    }
-    const needUpdateValue = isSetDiff(
-      getValueSet(value, 'value'),
-      getValueSet(nextValue, 'value'),
+    const isGetData = nextData.length > 0 && data.length === 0;
+    const isValueChange = nextData.length > 0 && isSetDiff(
+      new Set(nextValue),
+      new Set(value),
     );
-    needUpdateValue && this.setState({ // value变化时, state同步
-      checkedList: nextValue,
-    });
+    if (isGetData || isValueChange) { // data数据新到 或者 手动指定选中项变化
+      const infoLists = getRoots(nextData) || [];
+      const checkedList = nextValue.length > 0 ? infoLists.filter(e => nextValue.includes(e.value)) : [];
+      const newState = { checkedList };
+      isGetData && (newState.infoLists = infoLists);
+      this.setState(newState);
+    }
   }
 
   onValueCheck = (checkedList) => { // 输出

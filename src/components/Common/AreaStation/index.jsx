@@ -24,8 +24,8 @@ import StationDropdown from './StationDropdown';
   9. 选填todo - stationShowNumber:bool; 默认是false，展示具体的电站名称  传入为true时，显示的时已选电站 已选电站数量/所有电站数量
 
   注意: onChange与value指定的格式统一
-  单选: 输入输出均为: [regioNname('山东'), stationCode(56), stationName('山东平原')];
-  多选: 输入输出结构为data数据子集 
+  单选: onChange输出为: [regioNname('山东'), stationCode(56), stationName('山东平原')], 输入为value: [stationCode];
+  多选: onChange输出结构为data数据子集; value输入为codes合集: [stationCode1, stationCode2, ....]
   [{
     regionName: '山东',
     stations: [{

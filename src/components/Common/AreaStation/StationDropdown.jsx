@@ -15,21 +15,42 @@ class StationDropdown extends Component {
 
   constructor(props){
     super(props);
+    const { value = [], data } = props;
     this.state = {
       visible: false,
-      checkedList: props.value,
+      checkedList: (data.length > 0 && value.length > 0) ? this.getInfoFromData(value, data) : [],
     };
   }
 
   componentWillReceiveProps(nextProps){
-    const { value } = this.props;
+    const { value, data } = this.props;
     const nextValue = nextProps.value;
-    const preStations = this.getStationSet(value);
-    const nextStations = this.getStationSet(nextValue);
-    const needUpdateValue = this.isSetDiff(preStations, nextStations);
-    needUpdateValue && this.setState({ // value变化时, state同步
-      checkedList: nextValue,
+    const nextData = nextProps.data;
+    const isGataGet = data.length === 0 && nextData.length > 0 && value[0];
+    const needUpdateValue = nextData.length > 0 && this.isSetDiff(
+      this.getStationSet(value),
+      this.getStationSet(nextValue),
+    );
+    if (isGataGet || needUpdateValue) {
+      this.setState({ // value变化时, state同步
+        checkedList: nextValue,
+      });
+    }
+  }
+
+  getInfoFromData = (value, data) => { // data中寻找stationCodes匹配的信息
+    const result = data.map(e => {
+      const { stations = [], regionName } = e || {};
+      const filteredStations = stations.filter(m => value.includes(m.stationCode));
+      if (filteredStations.length > 0) {
+        return {
+          regionName,
+          stations: filteredStations,
+        };
+      }
+      return null;
     });
+    return result.filter(e => !!e);
   }
 
   isSetDiff = (a, b) => { // 比价两个电站codes的set集。

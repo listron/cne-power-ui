@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DatePicker, Cascader } from 'antd';
 import styles from './groupStyle.scss';
+import searchUtil from '../../../../utils/searchUtil';
 import AreaStation from '../../../Common/AreaStation';
 import AutoSelect from '../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
@@ -58,36 +59,43 @@ const quotaInfo = [
 class GroupSearch extends Component {
 
   static propTypes = {
+    location: PropTypes.object,
     // areaStation: PropTypes.array,
     // quotaInfo: PropTypes.array,
   }
-  
+
   constructor(props){
     super(props);
-    console.log(props)
+    const { search } = props.location;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     this.state = {
-      areas: [],
-      modes: [],
-      dates: [],
-      quota: [],
-    }
+      stations: groupInfo.stations || [],
+      modes: groupInfo.modes || [],
+      dates: groupInfo.dates || [],
+      quota: groupInfo.quota || [],
+    };
   }
 
   componentWillReceiveProps(nextProps){
+    // 得到区域数据 ==> 请求机型 areaStation
 
+    // 区域, 机型, 时间, 指标, 四个由无到有的那刻 => 自动请求数据 history.push(...)。
   }
 
-  onAreaChange = (areaInfo) => {
-    console.log(areaInfo);
+  onAreaChange = (info) => {
+    const stations = [];
+    info.forEach(e => {
+      const tmp = e.stations || [];
+      tmp.forEach(m => stations.push(m.stationCode));
+    });
+    this.setState({ stations });
+    // 重新请求机型数据
   }
 
-  onModelChange = (a, b, c, d) => {
-    console.log(a, b, c, d);
-  }
+  onModelChange = (modes) => this.setState({ modes: modes.map(e => e.value) });
 
-  onDateChange = (a, b, c, d) => {
-    console.log(a, b, c, d);
-  }
+  onDateChange = ([], [start, end]) => this.setState({ dates: [start, end] });
 
   onQuotaChange = (a, b, c, d) => {
     console.log(a, b, c, d);
@@ -103,6 +111,7 @@ class GroupSearch extends Component {
 
   render() {
     // const { areaStation, modesInfo, quotaInfo } = this.props;
+    console.log(this.state)
     return (
       <div className={styles.topSearch}>
         <div>
@@ -115,7 +124,10 @@ class GroupSearch extends Component {
         </div>
         <div>
           <span>选择时间</span>
-          <RangePicker onChange={this.onDateChange} style={{width: '200px'}} />
+          <RangePicker
+            onChange={this.onDateChange}
+            style={{width: '220px'}}
+          />
         </div>
         <div>
           <span>选择指标</span>

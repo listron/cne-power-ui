@@ -14,7 +14,7 @@ class SearchUtil {
 
   getValue = (key) => { // 输出参数, 获取当前search中某key对应的value
     const infos = parse(this.search) || {};
-    return infos[key] || '';
+    return infos[key];
   }
 
   has = (key) => !!parse(this.search)[key] // 判断search信息中是否有相关关键字

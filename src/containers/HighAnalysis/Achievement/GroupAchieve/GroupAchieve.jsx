@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import searchUtil from '../searchUtil';
+import searchUtil from '../../../../utils/searchUtil';
 import { groupAchieveAction } from './groupAchieveReducer';
 import GroupSearch from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupSearch';
 
@@ -57,7 +57,7 @@ class GroupAchieve extends Component {
   render() {
     return (
       <div style={{width: '100%'}}>
-        <GroupSearch />
+        <GroupSearch {...this.props} />
         <button onClick={this.toAreaPage}>
           查看区域信息
         </button>
