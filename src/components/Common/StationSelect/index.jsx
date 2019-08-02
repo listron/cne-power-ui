@@ -156,14 +156,14 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     const deviceShow = checkedStations.length > 0 && stationShowNumber && {
       maxTagCount: 0,
       maxTagPlaceholder: `已选电站${checkedStations.length}/${data.length}`
     } || {};
     return (
-      <div className={styles.stationSelect} style={this.props.style}>
+      <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style}>
         {multiple ? <Select
           mode="multiple"
           disabled={disabled}

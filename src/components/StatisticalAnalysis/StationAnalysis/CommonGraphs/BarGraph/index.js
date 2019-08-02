@@ -78,8 +78,6 @@ class BarGraph extends React.Component {
   getYearOption = (param) => {
     const { yAxisName, xAxisName, barGraphThatYear, barGraphmonth, barGraphRingRatio, title, hasData, theme = 'light' } = param;
     const color = this.getColor[theme][xAxisName] || ['#dfdfdf', '#3e97d1', '#f9b600'];
-    const lineColor = '#f1f1f1';
-    const fontColor = '#333';
     const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
     return {
       graphic: confluenceTenMinGraphic,
@@ -88,11 +86,7 @@ class BarGraph extends React.Component {
         show: title ? 'show' : false,
         left: '23',
         top: 'top',
-        textStyle: {
-          color: fontColor,
-          fontSize: 14,
-          fontWeight: 'normal',
-        },
+
       },
       tooltip: {
         trigger: 'axis',

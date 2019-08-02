@@ -167,7 +167,7 @@ class Main extends Component {
                 getPopupContainer={() => this.refs.changeTheme}
                 overlayStyle={{ width: '70px' }}
                 placement="bottomCenter">
-                <div className={styles.changeTheme}>换肤</div>
+                <div className={styles.changeTheme}> <span className={'iconfont icon-skinpeel'} /> 换肤</div>
               </Dropdown>
               <UserInfo
                 username={username}

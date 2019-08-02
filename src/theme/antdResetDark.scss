@@ -5,14 +5,7 @@
 :global {
   .ant-table {
     //table行高，高亮，背景色调整；
-    .ant-table-column-sorter-up.on .anticon-caret-up {
-      //table表格排序上三角点击后的的颜色
-      color: #fd6e8f;
-    }
-    .ant-table-column-sorter-down.on .anticon-caret-down {
-      //table表格排序下三角点击后的的颜色
-      color: #fd6e8f;
-    }
+
     // .ant-table-column-sorter-up.on .anticon-caret-up,
     // .ant-table-column-sorter-down.on .anticon-caret-up,
     // .ant-table-column-sorter-up.on .anticon-caret-down,
@@ -20,6 +13,14 @@
     //   color: $themeColor;
     // }
 
+    .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+    .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
+      color: #fd6e8f;
+    }
+    .ant-table-thead > tr > th .ant-table-column-sorter-up,
+    .ant-table-thead > tr > th .ant-table-column-sorter-down {
+      color: $button-active;
+    }
     .ant-table-tbody {
       background: $background;
       // background: #2a338d;
@@ -67,6 +68,9 @@
     .ant-table-tbody > tr > td {
       border: 1px solid $border-color;
     }
+  }
+  .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+    background: transparent;
   }
 
   .ant-tree {
@@ -176,7 +180,7 @@
 
   .ant-select-dropdown-menu-item-selected,
   .ant-select-dropdown-menu-item-active {
-    background: $button-hover;
+    background: $button-active;
     color: $fontColor-invert;
   }
 
@@ -212,7 +216,7 @@
 
   .ant-switch-checked {
     color: $themeColor;
-    background: $button-hover;
+    background: $button-active;
   }
 
   .ant-switch::after {
@@ -300,7 +304,7 @@
   }
   .ant-calendar-month-panel-selected-cell .ant-calendar-month-panel-month,
   .ant-calendar-year-panel-selected-cell .ant-calendar-year-panel-year {
-    background: $button-hover;
+    background: $button-active;
     color: #205bac;
   }
 
@@ -332,8 +336,15 @@
   }
   .ant-calendar-month-panel-month:hover,
   .ant-calendar-year-panel-year:hover {
-    background: $button-hover;
+    background: $button-active;
     color: #205bac;
+  }
+
+  .ant-calendar-month-panel-cell-disabled {
+    .ant-calendar-month-panel-month {
+      background: transparent;
+      color: #205bac;
+    }
   }
 
   /*输入框前面的小方块*/
@@ -575,7 +586,7 @@
   .ant-radio-button-wrapper:hover {
     position: relative;
     color: $fontColor-invert;
-    background: $button-hover;
+    background: $button-active;
   }
   .ant-radio-button-wrapper:focus-within {
     outline: 3px solid rgba(25, 148, 117, 0.06);
@@ -584,15 +595,15 @@
   .ant-radio-button-wrapper-checked {
     box-shadow: -1px 0 0 0 $select-border-shadow;
     color: $fontColor-invert;
-    background: $button-hover;
-    border-color: $button-hover;
+    background: $button-active;
+    border-color: $button-active;
   }
   .ant-radio-button-wrapper-checked::before {
-    background-color: $button-hover !important;
+    background-color: $button-active !important;
     opacity: 0.1;
   }
   .ant-radio-button-wrapper-checked:first-child {
-    border-color: $button-hover;
+    border-color: $button-active;
     box-shadow: none !important;
   }
 
@@ -600,19 +611,19 @@
     outline: 3px solid rgba(25, 148, 117, 0.06);
   }
   .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-    background: $button-hover;
+    background: $button-active;
     border: 1px solid $button-border;
     color: $fontColor-invert;
   }
 
   .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
-    background: $button-hover;
+    background: $button-active;
     border: 1px solid $button-border;
     color: $fontColor-invert;
   }
 
   .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active {
-    background: $button-hover;
+    background: $button-active;
     border: 1px solid $button-border;
     color: $fontColor-invert;
   }
@@ -624,22 +635,22 @@
   // disabled  样式还没有出 基本上不会遇到这种情况
   .ant-radio-button-wrapper-disabled {
     color: #7088c3;
-    background-color: #205bac;
-    border-color: #205bac;
+    background-color: transparent;
+    border-color: #405080;
   }
   .ant-radio-button-wrapper-disabled:first-child,
   .ant-radio-button-wrapper-disabled:hover {
     color: #7088c3;
-    background-color: #205bac;
-    border-color: #205bac;
+    background-color: transparent;
+    border-color: #405080;
   }
   .ant-radio-button-wrapper-disabled:first-child {
-    border-left-color: #205bac;
+    border-left-color: #405080;
   }
   .ant-radio-button-wrapper-disabled.ant-radio-button-wrapper-checked {
     color: #7088c3;
-    background-color: #205bac;
-    border-color: #205bac;
+    background-color: transparent;
+    border-color: #405080;
     box-shadow: none;
   }
 

@@ -31,7 +31,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #fff;
+        span {
+          margin-right: 4px;
+        }
       }
       .themeMenu {
         width: 80px;

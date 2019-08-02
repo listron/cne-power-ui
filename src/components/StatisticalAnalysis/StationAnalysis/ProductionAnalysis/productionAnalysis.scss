@@ -1,138 +1,88 @@
-@import '../../../../theme/theme.scss';
-.singleStationType{
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+@import "../../../../theme/theme.scss";
+@import "./layout.scss";
 
-  .stationTimeFilter{
+.light {
+  .stationTimeFilter {
     background: #fff;
-    display: flex;
-    justify-content: space-between;
-    flex:1;
-    align-items: center;
-    margin-bottom: 20px;
-    .leftFilter{
-      display: flex;
-      flex-direction: row;
-      margin-left: 30px;
-      .stationFilter{
-        display: flex;
-        align-items: center;
-        line-height: 43px;
-        .text{
-          margin-right: 10px;
-        }
-      }
-    }
-    .rightContent{
-      margin-right: 30px;
-      color:$lightColor;
-      letter-spacing: 1px;
-    }
   }
-  .componentContainer{
+  .componentContainer {
     background: #fff;
-    display: flex;
-    flex:1;
-    flex-direction: column;
-    :global{
-      .ant-radio-button-wrapper{
-        height: 19px;
-        line-height: 16px;
-        padding: 0 5px;
-      }
-    }
     .title {
-      display: flex;
-      flex-direction: column;
-      padding-left: 28px;
-      height: 160px;
-      padding-top: 10px;
-      justify-content: space-between;
       border-bottom: 1px solid #ececec;
-     
-      .stationStatus {       
+      .stationStatus {
         color: $darkColor;
-        height: 40px;
-        line-height: 40px;
-        display: flex;
-        flex:1;
-        flex-direction: row;
-        justify-content: space-between;
-        .stationIcon{
-          i{
-            color:$themeColor;
+        .stationIcon {
+          i {
+            color: $themeColor;
           }
         }
-        .status {
-          margin-right: 4px;
-          :global{
-            .iconfont{
-              margin-right: 4px;
-            }
-          }
-        }
-        .rightFont{
-          margin-right: 30px;
-          color:$lightColor;
+        .rightFont {
+          color: $lightColor;
         }
       }
-      .graph{
-        display: flex;
-        .stationTargetData{
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          margin: 20px 30px;
-          .stationTargetValue{
-            font-size: 26px;
-            color:#199475;
-      
-          }
+      .stationTargetData {
+        .stationTargetValue {
+          color: #199475;
         }
       }
-     
     }
-    .targetGraphContainer{
-      .bgStyle{
+    .targetGraphContainer {
+      .bgStyle {
         background: #f1f1f1;
-        .fontStyle{
-          border-top:1px solid #199475;
-          width: 160px;
+        .fontStyle {
+          border-top: 1px solid #199475;
           color: #666;
         }
       }
-      .tabContainer{
-        display: flex;
-        flex:1;
-        flex-direction: column;
-        padding: 20px 0;
+      .tabContainer {
         border-bottom: 1px solid #ececec;
-        .dataGraph{
-          display: flex;    
-          flex-direction: row;
-          height: 300px;
-          margin-right: 24px;
-          >div:nth-child(1){
-            flex: 5;
-          }
-          >div:nth-child(2){
-            flex: 4;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .stationTimeFilter {
+    background: $light-background;
+    border: 1px solid $border-color;
+    color: $fontColor;
+    .rightContent {
+      color: $fontColor;
+    }
+  }
+  .componentContainer {
+    background: $background;
+    .title {
+      border: 1px solid $border-color;
+      background: $light-background;
+      .stationStatus {
+        color: $fontColor;
+        .stationIcon {
+          i {
+            color: $fontColor;
           }
         }
-        .dataGraphs{
-          display: flex;    
-          flex-direction: row;
-          height: 300px;
-          >div:nth-child(1){
-            flex: 1;
-          }
-          >div:nth-child(2){
-            flex: 1;
-          }
+        .rightFont {
+          color: $fontColor;
+        }
+      }
+      .graph {
+        color: $fontColor;
+        .stationTargetValue {
+          color: $fontColor-invert;
+        }
+        .unit {
+          color: $fontColor;
         }
       }
     }
-   
+    .targetGraphContainer {
+      .tabContainer {
+        border: 1px solid $border-color;
+        background: $light-background;
+        margin-top: 10px;
+      }
+    }
   }
-} 
+}
