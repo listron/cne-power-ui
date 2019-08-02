@@ -35,7 +35,7 @@ class GroupAchieve extends Component {
 
   queryCharts = (search) => {
     console.log(search);// todo 将对应的JSON.stringify信息存入reducer;
-    console.log('发起请求的集合');// todo 发起请求图表
+    console.log('发起请求的集合');// todo 发起解析search为json请求后台 => 图表
   }
 
   searchCharts = () => { // 查询按钮

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DatePicker, Cascader } from 'antd';
+import moment from 'moment';
 import styles from './groupStyle.scss';
 import searchUtil from '../../../../utils/searchUtil';
 import AreaStation from '../../../Common/AreaStation';
@@ -53,7 +54,14 @@ const modesInfo = [{
 }];
 
 const quotaInfo = [
-
+  {
+    label: '指标编码',
+    value: '指标名称',
+    children: [2, 3].map(m => ({
+      value: m,
+      label: m,
+    })),
+  },
 ];
 
 class GroupSearch extends Component {
@@ -97,11 +105,12 @@ class GroupSearch extends Component {
 
   onDateChange = ([], [start, end]) => this.setState({ dates: [start, end] });
 
-  onQuotaChange = (a, b, c, d) => {
-    console.log(a, b, c, d);
+  onQuotaChange = (quota) => {
+    this.setState({ quota });
   }
 
   queryCharts = () => {
+    // 组合state参数, 发起history.push操作。
     console.log('请求');
   }
 
@@ -111,20 +120,21 @@ class GroupSearch extends Component {
 
   render() {
     // const { areaStation, modesInfo, quotaInfo } = this.props;
-    console.log(this.state)
+    const { stations, modes, dates, quota } = this.state;
     return (
       <div className={styles.topSearch}>
         <div>
           <span>选择区域</span>
-          <AreaStation data={stationData} onChange={this.onAreaChange} />
+          <AreaStation data={stationData} value={stations} onChange={this.onAreaChange} />
         </div>
         <div>
           <span>选择机型</span>
-          <AutoSelect data={modesInfo} onChange={this.onModelChange} />
+          <AutoSelect data={modesInfo} value={modes} onChange={this.onModelChange} />
         </div>
         <div>
           <span>选择时间</span>
           <RangePicker
+            value={[moment(dates[0]), moment(dates[1])]}
             onChange={this.onDateChange}
             style={{width: '220px'}}
           />
@@ -135,6 +145,7 @@ class GroupSearch extends Component {
             style={{width: '150px'}}
             options={quotaInfo}
             onChange={this.onQuotaChange}
+            value={quota}
           />
         </div>
         <div>
