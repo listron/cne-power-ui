@@ -15,7 +15,7 @@ const initState = immutable.fromJS({
   pointsSeleted: [], // 确认时候 => 选中的测点
   deviceTypeCode: null, // 选中的设备类型
   queryParams: {
-    timeZone:  moment().zone() / (-60), // 时区
+    timeZone:  moment().utcOffset() / 60, // 时区
     dataTypes: [], // 数据类型(1：平均值（差值），2：最大值（结束值）3：最小值（开始值） 4：瞬时值)
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备

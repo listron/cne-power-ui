@@ -372,10 +372,11 @@ class PlanTable extends Component {
               <Icon type="plus" />
               <span className={styles.text}>添加</span>
             </Button>
-            <Upload {...uploadProps} className={styles.importUser}>
+            {/* <Upload {...uploadProps} className={styles.importUser}>
               <Button type={'default'} loading={this.state.importLoading} >批量导入</Button>
             </Upload>
-            <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
+             <Button href={downloadHref} download={downloadHref} target="_blank" >导入下载模版</Button>
+            */}
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         </div>
