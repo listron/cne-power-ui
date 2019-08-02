@@ -1,526 +1,525 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 
 .WindStation {
-    background: #fff;
+  background: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  :global {
+    .ant-progress-inner {
+      background: #dfdfdf;
+    }
+
+    .ant-switch {
+      vertical-align: -5px;
+    }
+
+    .ant-radio-button-wrapper {
+      height: 24px;
+      line-height: 24px;
+      padding: 0 8px;
+    }
+
+    .ant-radio-button-wrapper:hover,
+    .ant-radio-button-wrapper-focused {
+      color: $themeColor;
+    }
+
+    .ant-tabs-nav-container {
+      margin: 0;
+    }
+
+    .ant-tabs.ant-tabs-top.ant-tabs-line {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    //tab的表头的右侧附属
+    .ant-tabs-extra-content {
+      line-height: 48px;
+    }
+
+    .ant-tabs-nav .ant-tabs-tab {
+      display: inline-block;
+      text-align: center;
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      position: relative;
+      -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      text-decoration: none;
+      width: 55px;
+      margin: 0;
+      background: #f1f1f1;
+    }
+
+    .ant-tabs-nav-scroll {
+      background: #fff;
+    }
+
+    .ant-tabs-nav-active {
+      background: $themeColor;
+    }
+
+    .ant-tabs-ink-bar .ant-tabs-ink-bar-animated {
+      width: 0;
+      height: 0;
+    }
+
+    //tableList的头部宽高
+    .ant-table .ant-table-thead > tr > th,
+    .ant-table .ant-table-tbody > tr > td {
+      padding: 0px 6px;
+      height: 40px;
+      line-height: 30px;
+    }
+    .ant-table-placeholder {
+      border: none;
+    }
+  }
+
+  .windContainer {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+  .containerTabs {
+    :global {
+      .ant-tabs-bar {
+        border: none;
+        border-bottom: 1px dashed #dfdfdf;
+      }
+
+      .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
+        background: $themeColor;
+        border-color: $themeColor;
+        color: #fff;
+        margin: 0;
+      }
+
+      .ant-tabs-content.ant-tabs-content-animated {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+      }
+
+      .ant-tabs-tabpane.ant-tabs-tabpane-inactive {
+        max-height: 0;
+      }
+
+      .ant-tabs-tabpane.ant-tabs-tabpane-active {
+        display: flex;
+        flex: 1;
+      }
+    }
+  }
+
+  .headStation {
+    border-bottom: 1px dashed #dfdfdf;
+    height: 108px;
+    display: flex;
+    color: $darkColor;
+    flex-direction: row;
+    padding: 20px;
+    .leftIcon {
+      width: 31px;
+      height: 60px;
+      background: url("/img/wind01.png") no-repeat center;
+    }
+    .allStaionStatic {
+      :global {
+        .ant-popover-inner-content {
+          background: #f8f8f8;
+          box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+        }
+      }
+      .poverItem {
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        color: #666666;
+        min-width: 180px;
+        padding-right: 20px;
+        i {
+          font-style: normal;
+          text-align: right;
+          display: inline-block;
+        }
+        p {
+          text-align: right;
+          margin-bottom: 0;
+        }
+        span {
+          color: $themeColor;
+        }
+        .unit {
+          width: 27px;
+          display: inline-block;
+          margin-left: 4px;
+          text-align: left;
+          color: #666666;
+        }
+      }
+    }
+
+    .dataColumn {
+      display: flex;
+      flex-direction: column;
+      // line-height: 36px;
+      padding: 0 12px;
+      border-right: 1px solid #dfdfdf;
+      min-width: 175px;
+      > span {
+        display: flex;
+        flex-direction: column;
+      }
+      &:last-child {
+        border: none;
+      }
+
+      .dataValue {
+        color: $themeColor;
+        font-size: 24px;
+        text-align: left;
+        padding: 0 4px;
+        line-height: 30px;
+      }
+
+      .speed {
+        color: #3e97d1;
+      }
+
+      .stationPower {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 230px;
+        line-height: 30px;
+        > div {
+          margin-right: 10;
+        }
+      }
+    }
+
+    .typeIcon {
+      width: 120px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @mixin propContainer() {
+    // 卡片样式
+    .popover {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+
+      .name {
+        text-align: center;
+        color: #000;
+      }
+
+      .poNomal,
+      .poInterrupt {
+        color: $themeColor;
+        text-align: center;
+        line-height: 33px;
+      }
+
+      .poInterrupt {
+        color: #f9b600;
+      }
+
+      .value {
+        color: $themeColor;
+      }
+
+      & .popColumn:nth-child(2n-1) {
+        background: #fff;
+      }
+
+      & .popColumn:nth-child(2n) {
+        background: #f8f8f8;
+      }
+
+      .popContainer {
+        background: pink;
+      }
+
+      .popColumn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 16px;
+      }
+
+      .unit {
+        width: 27px;
+        display: inline-block;
+        margin-left: 6px;
+      }
+    }
+  }
+
+  //卡片
+  .stationCardContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-bottom: 20px;
+
+    .regionStation {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+
+      .regionName {
+        margin: 20px 0 0 20px;
+      }
+    }
+
+    .staionsList {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-self: flex-start;
+    }
+
+    .normal,
+    .interrupt,
+    .notConnected {
+      margin: 20px 0 0 24px;
+      padding: 8px;
+      width: 215px;
+      height: 132px;
+      border-radius: 4px;
+      color: $darkColor;
+      background: #ffffff;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+
+      a {
+        text-decoration: none;
+        color: $darkColor;
+      }
+
+      i {
+        font-size: 14px;
+        color: #e08031;
+      }
+
+      .stationMark {
+        color: $themeColor;
+      }
+    }
+
+    .interrupt {
+      border: 1px solid #f9b600;
+      box-shadow: 0 1px 4px 0#f9b600;
+    }
+
+    .notConnected {
+      background: #f8f8f8;
+      cursor: default;
+      opacity: 0.6;
+      pointer-events: none;
+
+      a {
+        pointer-events: none;
+        text-decoration: none;
+        color: $darkColor;
+      }
+    }
+
+    .stationCardTitle {
+      color: $darkColor;
+      height: 26px;
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .stationName {
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .stationCardProgress {
+      height: 10px;
+      display: flex;
+    }
+
+    .stationCardValue,
+    .stationCardEquipmentNum {
+      flex: 1;
+      height: 26px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stationCardWindSpeed {
+      flex: 1;
+      height: 26px;
+    }
+
+    .stationWarning {
+      i {
+        font-size: 14px;
+        color: #a42b2c;
+      }
+
+      color: #a42b2c;
+    }
+
+    .stationCard {
+      width: 235px;
+      height: 393px;
+      cursor: pointer;
+      @include propContainer();
+
+      :global {
+        .ant-popover-inner-content {
+          background: #f8f8f8;
+          box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+    :global {
+      .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow {
+        display: none;
+      }
+      .ant-popover-placement-left > .ant-popover-content > .ant-popover-arrow {
+        display: none;
+      }
+    }
+  }
+
+  //列表
+  .windStationList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      text-decoration: underline;
+      color: rgba(0, 0, 0, 0.65);
+
+      &:hover {
+        color: $themeColor;
+      }
+    }
+
+    .pagination {
+      a {
+        text-decoration: none;
+      }
+
+      height: 45px;
+      display: flex;
+      justify-content: flex-end;
+      line-height: 45px;
+    }
+
+    .stationName {
+      width: 70px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        color: $themeColor;
+      }
+    }
+
+    .stationrovince {
+      width: 50px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .numberStyle {
+      text-align: right;
+    }
+  }
+  // 地图
+  .mapChart {
     display: flex;
     flex: 1;
+    height: 980px;
+    @include propContainer();
+    .popover {
+      width: 235px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+  }
+
+  .windStationChart {
+    display: flex;
+    width: 464px;
+    background: #f8f8f8;
+    padding: 0 12px 20px;
     flex-direction: column;
-    
-    :global {
-        .ant-progress-inner {
-            background: #dfdfdf;
-        }
-
-        .ant-switch {
-            vertical-align: -5px;
-        }
-
-        .ant-radio-button-wrapper {
-            height: 24px;
-            line-height: 24px;
-            padding: 0 8px;
-        }
-
-        .ant-radio-button-wrapper:hover,
-        .ant-radio-button-wrapper-focused {
-            color: $themeColor;
-        }
-
-        .ant-tabs-nav-container {
-            margin: 0;
-        }
-
-        .ant-tabs.ant-tabs-top.ant-tabs-line {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-        }
-
-        //tab的表头的右侧附属
-        .ant-tabs-extra-content {
-            line-height: 48px;
-        }
-
-        .ant-tabs-nav .ant-tabs-tab {
-            display: inline-block;
-            text-align: center;
-            height: 100%;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            position: relative;
-            -webkit-transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-            transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-            cursor: pointer;
-            text-decoration: none;
-            width: 55px;
-            margin: 0;
-            background: #f1f1f1;
-        }
-
-        .ant-tabs-nav-scroll {
-            background: #fff;
-        }
-
-        .ant-tabs-nav-active {
-            background: $themeColor;
-        }
-
-        .ant-tabs-ink-bar .ant-tabs-ink-bar-animated {
-            width: 0;
-            height: 0;
-        }
-
-        //tableList的头部宽高
-        .ant-table .ant-table-thead>tr>th,
-        .ant-table .ant-table-tbody>tr>td {
-            padding: 0px 6px;
-            height: 40px;
-            line-height: 30px;
-        }
-        .ant-table-placeholder {
-            border: none;
-        }
+    .tags {
+      display: flex;
+      justify-content: space-around;
+      margin: 8px 30px;
+      a {
+        padding: 0 12px;
+        background: #ffffff;
+        border: 1px solid #dfdfdf;
+        border-radius: 4px;
+        height: 30px;
+        line-height: 30px;
+        color: #666;
+      }
+      .noLink {
+        pointer-events: none;
+      }
     }
-    
-    .windContainer {
+    .deviceStatus {
+      background: #ffffff;
+      border-radius: 4px;
+      line-height: 40px;
+      padding: 0 12px;
+      .deviceStaTitle {
         display: flex;
-        flex-direction: row;
-        flex: 1;
+        justify-content: space-between;
+        color: #000;
+      }
+      .deviceStaCont {
+        span {
+          margin-right: 12px;
+          display: inline-block;
+        }
+      }
     }
-    .containerTabs {
-        :global {
-            .ant-tabs-bar {
-                border: none;
-                border-bottom: 1px dashed #dfdfdf;
-            }
-
-            .ant-tabs-bar .ant-tabs-tab-active.ant-tabs-tab {
-                background: $themeColor;
-                border-color: $themeColor;
-                color: #fff;
-                margin: 0;
-            }
-
-            .ant-tabs-content.ant-tabs-content-animated {
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-            }
-
-            .ant-tabs-tabpane.ant-tabs-tabpane-inactive {
-                max-height: 0;
-            }
-
-            .ant-tabs-tabpane.ant-tabs-tabpane-active {
-                display: flex;
-                flex: 1;
-            }
-        }
+    .chartsBox {
+      margin-top: 20px;
+      display: flex;
+      height: 260px;
+      width: 100%;
+      background: #fff;
     }
+  }
 
-    .headStation {
-        border-bottom: 1px dashed #dfdfdf;
-        height: 108px;
-        display: flex;
-        color: $darkColor;
-        flex-direction: row;
-        padding: 20px;
-        .leftIcon {
-            width: 31px;
-            height: 60px;
-            background: url('/img/wind01.png') no-repeat center;
-        }
-        .allStaionStatic{
-            :global {
-                .ant-popover-inner-content {
-                    background: #f8f8f8;
-                    box-shadow:0 0 6px 0 rgba(0,0,0,0.30);
-                }
-            }
-            .poverItem{
-                display: flex;
-                flex: 1;
-                justify-content: space-between;
-                color:#666666;
-                min-width: 180px;
-                padding-right: 20px;
-                i{
-                    font-style: normal;
-                    text-align: right;
-                    display: inline-block;
-                }
-                p{
-                    text-align: right;
-                    margin-bottom: 0;
-                }
-                span{
-                    color: $themeColor;
-                }
-                .unit{
-                    width: 27px;
-                    display: inline-block;
-                    margin-left: 4px;
-                    text-align: left;
-                    color:#666666;
-                }
-            }
-        }
-
-        .dataColumn {
-            display: flex;
-            flex-direction: column;
-            // line-height: 36px;
-            padding: 0 12px;
-            border-right: 1px solid #dfdfdf;
-            min-width: 175px;
-            >span{
-                display: flex;
-                flex-direction: column;
-            }
-            &:last-child {
-                border: none
-            }
-
-            .dataValue {
-                color: $themeColor;
-                font-size: 24px;
-                text-align: left;
-                padding: 0 4px;
-                line-height: 30px;
-            }
-
-            .speed {
-                color: #3e97d1;
-            }
-
-            .stationPower {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                min-width: 230px;
-                line-height: 30px;
-                >div {
-                    margin-right: 10
-                }
-            }
-        }
-
-        .typeIcon {
-            width: 120px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-
-    @mixin propContainer() {
-
-        // 卡片样式
-        .popover {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-
-            .name {
-                text-align: center;
-                color: #000;
-            }
-
-            .poNomal,
-            .poInterrupt {
-                color: $themeColor;
-                text-align: center;
-                line-height: 33px;
-            }
-
-            .poInterrupt {
-                color: #f9b600;
-            }
-
-            .value {
-                color: $themeColor;
-            }
-
-            & .popColumn:nth-child(2n-1) {
-                background: #fff;
-            }
-
-            & .popColumn:nth-child(2n) {
-                background: #f8f8f8;
-            }
-
-            .popContainer {
-                background: pink
-            }
-
-            .popColumn {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 0 16px;
-            }
-
-            .unit {
-                width: 27px;
-                display: inline-block;
-                margin-left: 6px;
-            }
-        }
-    }
-
-    //卡片
-    .stationCardContainer {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        margin-bottom: 20px;
-
-        .regionStation {
-            display: flex;
-            width: 100%;
-            flex-direction: column;
-
-            .regionName {
-                margin: 20px 0 0 20px;
-            }
-        }
-
-        .staionsList {
-            display: flex;
-            width: 100%;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-self: flex-start;
-        }
-
-        .normal,
-        .interrupt,
-        .notConnected {
-            margin: 20px 0 0 24px;
-            padding: 8px;
-            width: 215px;
-            height: 132px;
-            border-radius: 4px;
-            color: $darkColor;
-            background: #ffffff;
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-
-            a {
-                text-decoration: none;
-                color: $darkColor;
-            }
-
-            i {
-                font-size: 14px;
-                color: #e08031;
-            }
-
-            .stationMark {
-                color: $themeColor;
-            }
-        }
-
-        .interrupt {
-            border: 1px solid #f9b600;
-            box-shadow: 0 1px 4px 0#f9b600;
-        }
-
-        .notConnected {
-            background: #f8f8f8;
-            cursor: default;
-            opacity: 0.6;
-            pointer-events: none;
-
-            a {
-                pointer-events: none;
-                text-decoration: none;
-                color: $darkColor;
-            }
-        }
-
-        .stationCardTitle {
-            color: $darkColor;
-            height: 26px;
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            .stationName {
-                width: 150px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-
-        .stationCardProgress {
-            height: 10px;
-            display: flex;
-        }
-
-        .stationCardValue,
-        .stationCardEquipmentNum {
-            flex: 1;
-            height: 26px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .stationCardWindSpeed {
-            flex: 1;
-            height: 26px;
-        }
-
-        .stationWarning {
-            i {
-                font-size: 14px;
-                color: #a42b2c;
-            }
-
-            color:#a42b2c;
-        }
-
-        .stationCard {
-            width: 235px;
-            height: 393px;
-            cursor: pointer;
-            @include propContainer();
-
-            :global {
-                .ant-popover-inner-content {
-                    background: #f8f8f8;
-                    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
-                }
-            }
-        }
-        :global {
-            .ant-popover-placement-right > .ant-popover-content > .ant-popover-arrow{
-                display: none
-            }
-            .ant-popover-placement-left > .ant-popover-content > .ant-popover-arrow{
-                display: none
-            }
-        }
-    }
-
-    //列表
-    .windStationList {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-
-        a {
-            text-decoration: underline;
-            color: rgba(0, 0, 0, 0.65);
-
-            &:hover {
-                color: $themeColor;
-            }
-        }
-
-        .pagination {
-            a {
-                text-decoration: none;
-            }
-
-            height: 45px;
-            display: flex;
-            justify-content: flex-end;
-            line-height: 45px;
-        }
-
-        .stationName {
-            width: 70px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            &:hover {
-                color: $themeColor;
-            }
-        }
-
-        .stationrovince {
-            width: 50px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .numberStyle {
-            text-align: right
-        }
-    }
-    // 地图
-    .mapChart {
-        display: flex;
-        flex: 1;
-        @include propContainer();
-        .popover {
-            width: 235px;
-            margin-bottom: 20px;
-            color: #666;
-        }
-    }
-   
-    .windStationChart {
-        display: flex;
-        width: 464px;
-        background: #f8f8f8;
-        padding: 0 12px 20px;
-        flex-direction: column;
-        .tags {
-            display: flex;
-            justify-content: space-around;
-            margin: 8px 30px;
-            a {
-                padding: 0 12px;
-                background: #ffffff;
-                border: 1px solid #dfdfdf;
-                border-radius: 4px;
-                height: 30px;
-                line-height: 30px;
-                color: #666;
-            }
-            .noLink{
-                pointer-events: none;
-            }
-        }
-        .deviceStatus {
-            background: #ffffff;
-            border-radius: 4px;
-            line-height: 40px;
-            padding: 0 12px;
-            .deviceStaTitle{
-                display: flex;
-                justify-content: space-between;
-                color: #000;
-            }
-            .deviceStaCont{
-                span{
-                    margin-right: 12px;
-                    display: inline-block;
-                }
-                
-            }
-        }
-        .chartsBox{
-            margin-top: 20px;
-            display: flex;
-            height: 260px;
-            width:100%;
-            background: #fff;
-        }
-    }
-
-    .noData {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        padding-top: 20px;
-    }
+  .noData {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+  }
 }
