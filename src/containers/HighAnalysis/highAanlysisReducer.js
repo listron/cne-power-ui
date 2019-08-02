@@ -23,6 +23,8 @@ import historyWarnReducer from './FaultDiagnose/HistoryWarn/historyWarnReducer';
 import { achieveLayout } from './Achievement/achieveReducer'; // 风电绩效分析-公用信息
 import { achieveGroup } from './Achievement/GroupAchieve/groupAchieveReducer'; // 风电绩效分析-集团
 import { achieveArea } from './Achievement/AreaAchieve/areaAchieveReducer'; // 风电绩效分析-区域
+import { achieveStation } from './Achievement/StationAchieve/stationAchieveReducer'; // 风电绩效分析-电站
+
 
 const highAnalysisReducer = combineReducers({
   realtimeWarningReducer,
@@ -48,6 +50,7 @@ const highAnalysisReducer = combineReducers({
   achieveLayout,
   achieveGroup,
   achieveArea,
+  achieveStation,
 });
 
 export default highAnalysisReducer;

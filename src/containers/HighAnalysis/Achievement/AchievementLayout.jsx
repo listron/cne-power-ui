@@ -84,7 +84,7 @@ class AchievementLayout extends Component {
   }
 
   render() {
-    const { match, areaStation, quotaInfo } = this.props;
+    const { match } = this.props;
     const { pathKey } = match.params;
     const { pages } = this.state;
     return (
@@ -105,10 +105,9 @@ class AchievementLayout extends Component {
           ))}
         </div>
         <div className={styles.contents}>
-          <h3>这里应该就是内容区域</h3>
-          <GroupAchieve active={pathKey === 'group'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
-          <AreaAchieve active={pathKey === 'area'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
-          <StationAchieve active={pathKey === 'station'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
+          {pathKey === 'group' && <GroupAchieve {...this.props} />}
+          {pathKey === 'area' && <AreaAchieve {...this.props} />}
+          {pathKey === 'station' && <StationAchieve {...this.props} />}
         </div>
       </div>
     );

@@ -12,6 +12,11 @@ class SearchUtil {
 
   stringify = () => this.search; // 输出函数 => 当前实例的字符串格式
 
+  getValue = (key) => { // 输出参数, 获取当前search中某key对应的value
+    const infos = parse(this.search) || {};
+    return infos[key] || '';
+  }
+
   has = (key) => !!parse(this.search)[key] // 判断search信息中是否有相关关键字
 
   add = (addInfo = {}) => { // 在search中添加一条/多条信息:{group: {....}}, 若内容已存在则替换。

@@ -11,8 +11,17 @@ class AreaAchieve extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props)
+    console.log('did mount')
+    console.log(this.props.location)
+    console.log('did mount')
     this.props.testArea();
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log('did componentWillReceiveProps')
+    console.log(nextProps.location)
+    console.log(this.props.location)
+    console.log('did componentWillReceiveProps')
   }
 
   render() {

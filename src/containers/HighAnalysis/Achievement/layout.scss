@@ -8,7 +8,7 @@
   flex-direction: column;
   .tabs{
     flex: 0 0 55px;
-    margin: 0 24px;
+    margin: 0 24px -1px 24px;
     display: flex;
     align-items: flex-end;
     .eachTab{
@@ -42,7 +42,7 @@
   .contents{
     display: flex;
     flex: 1;
-    height: 7000px;
+    width: 100%;
     padding:0 24px;
   }
 }

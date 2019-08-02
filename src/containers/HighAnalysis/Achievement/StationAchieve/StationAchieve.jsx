@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { stringify } from 'qs';
+import { connect } from 'react-redux';
+import { stationAchieveAction } from './stationAchieveReducer';
 
 class StationAchieve extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    location: PropTypes.object,
+    testStation: PropTypes.func,
   }
 
   componentDidMount(){
-    
-  }
-
-  componentDidUpdate(){
-    
-  }
-
-  componentWillUnmount(){
-    
+    console.log(this.props);
+    this.props.testStation();
   }
 
   render() {
@@ -32,5 +25,13 @@ class StationAchieve extends Component {
   }
 }
 
-export default StationAchieve;
+const mapStateToProps = (state) => ({
+  ...state.highAanlysisReducer.achieveStation.toJS(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  testStation: payload => dispatch({type: stationAchieveAction.testStation, payload}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);
 
