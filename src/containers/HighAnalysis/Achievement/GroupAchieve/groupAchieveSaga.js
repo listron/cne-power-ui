@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import request from '../../../utils/request';
+import request from '../../../../utils/request';
 import { message } from 'antd';
 import path from '../../../../constants/path';
 import { groupAchieveAction } from './groupAchieveReducer';
@@ -9,9 +9,8 @@ const { highAnalysis } = path.APISubPaths;
 
 function *testGroup(action) { // 用户所有区域与电站
   try {
-    console.log('test');
     // const url = `${APIBasePath}${highAnalysis.getAreaStation}/0`;
-    // const response = yield call(request.get, url);
+    const response = yield call(console.log, 'test');
     // if (response.data.code === '10000') {
     //   yield put({
     //     type: achieveAction.fetchSuccess,

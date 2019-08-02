@@ -20,7 +20,9 @@ import faultSingleFan from './FaultDiagnose/FaultSingleFan/faultSingleFanReducer
 import algorithm from './FaultDiagnose/AlgorithmControl/algorithmControlReducer';
 import historyWarnReducer from './FaultDiagnose/HistoryWarn/historyWarnReducer';
 
-import { achieveLayout } from './Achievement/achieveReducer'; // 绩效分析-公用信息
+import { achieveLayout } from './Achievement/achieveReducer'; // 风电绩效分析-公用信息
+import { achieveGroup } from './Achievement/GroupAchieve/groupAchieveReducer'; // 风电绩效分析-集团
+import { achieveArea } from './Achievement/AreaAchieve/areaAchieveReducer'; // 风电绩效分析-区域
 
 const highAnalysisReducer = combineReducers({
   realtimeWarningReducer,
@@ -44,7 +46,8 @@ const highAnalysisReducer = combineReducers({
   historyWarnReducer,
 
   achieveLayout,
-
+  achieveGroup,
+  achieveArea,
 });
 
 export default highAnalysisReducer;

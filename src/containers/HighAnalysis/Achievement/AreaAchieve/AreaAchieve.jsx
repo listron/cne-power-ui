@@ -1,31 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { stringify } from 'qs';
+import { connect } from 'react-redux';
+import { areaAchieveAction } from './areaAchieveReducer';
 
 class AreaAchieve extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    location: PropTypes.object,
+    testArea: PropTypes.func,
   }
 
   componentDidMount(){
-    
-  }
-
-  componentDidUpdate(){
-    
-  }
-
-  componentWillUnmount(){
-    
-  }
-
-  toStation = () => {
-    const info = stringify({station: 360, devices: [2, 3, 4, 5]});
-    console.log(info);
-    this.props.history.push(`/statistical/achievement/analysis/station?${info}`);
+    console.log(this.props)
+    this.props.testArea();
   }
 
   render() {
@@ -42,5 +29,13 @@ class AreaAchieve extends Component {
   }
 }
 
-export default AreaAchieve;
+const mapStateToProps = (state) => ({
+  ...state.highAanlysisReducer.achieveArea.toJS(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  testArea: () => dispatch({type: areaAchieveAction.testArea}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AreaAchieve);
 

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { groupAchieveAction } from './groupAchieveReducer';
 import AreaStation from '../../../../components/Common/AreaStation';
 import AutoSelect from '../../../../components/Common/AutoSelect';
 
@@ -7,24 +9,12 @@ class GroupAchieve extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    testGroup: PropTypes.func,
   }
 
   componentDidMount(){
-
+    this.props.testGroup();
   }
-
-  componentDidUpdate(){
-
-  }
-
-  componentWillUnmount(){
-
-  }
-
-  // toArea = () => {
-  //   const info = stringify({group: 'default', area: 50});
-  //   this.props.history.push(`/statistical/achievement/analysis/area?${info}`);
-  // }
 
   render() {
     const { active } = this.props;
@@ -43,5 +33,13 @@ class GroupAchieve extends Component {
   }
 }
 
-export default GroupAchieve;
+const mapStateToProps = (state) => ({
+  ...state.highAanlysisReducer.achieveGroup.toJS(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  testGroup: payload => dispatch({type: groupAchieveAction.testGroup, payload}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupAchieve);
 

@@ -4,13 +4,14 @@ export const groupAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
+  testGroup: Symbol('testGroup'),
 };
 
 const initState = immutable.fromJS({
   testGroup: [],
 });
 
-export const achieveLayout = (state = initState, action) => {
+export const achieveGroup = (state = initState, action) => {
   switch (action.type) {
     case groupAchieveAction.fetchSuccess :
       return state.merge(immutable.fromJS(action.payload));
