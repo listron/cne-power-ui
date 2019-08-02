@@ -189,7 +189,7 @@
   background: $slide-backgound;
   box-shadow: inset 0 0 5px 2px $slide-border-shadow;
   .hideDetail {
-    background: $button-hover;
+    background: $button-active;
     :global {
       .iconfont {
         color: $fontColor-invert;
@@ -198,8 +198,8 @@
   }
   .tags {
     a {
-      background: $button-hover;
-      border: 1px solid $button-hover;
+      background: $button-active;
+      border: 1px solid $button-active;
       color: $fontColor-invert;
     }
   }

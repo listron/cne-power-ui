@@ -16,14 +16,14 @@ $fontColor-noConnect: #bbcef7;
 $button-primary: #205bac;
 $button-add: #00baff; // 暂时
 $button-delete: #fd6e8f;
-$button-hover: #00baff; // $button-active button-focus
+$button-active: #00baff; // $button-active button-focus
 $button-disabled: #161858;
 
 $button-border: #00baff;
 $border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
 
-// 从左滑出  从上滑出  从下滑出
+// 从左滑出  从上滑出  从下滑出   提示框
 $slide-backgound: #205bac;
 $slide-border: #303a99;
 $slide-border-shadow: #00baff;
@@ -57,3 +57,14 @@ $tab-border-bottom: rgba(12, 10, 62, 0.6);
 // warning
 // error
 //   border  bg  icon
+
+@mixin contentBoxStyle() {
+  // 页面主内容区常用布局样式。
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px 24px 0;
+  background: $background;
+}

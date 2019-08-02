@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Icon, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './style.scss'
+import styles from './style.scss';
 
 /*
   全局共用信息提示组件：
@@ -16,51 +16,54 @@ class WarningTip extends Component {
     onOK: PropTypes.func,
     style: PropTypes.object,
     value: PropTypes.string,
-    hiddenCancel: PropTypes.bool
+    hiddenCancel: PropTypes.bool,
   }
   static defaultProps = {
-    style:{width: '210px',height:'88px'},
-    hiddenCancel: false
+    style: { width: '210px', height: '88px' },
+    hiddenCancel: false,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
   onCancel = () => {
-    this.props.onCancel()
+    this.props.onCancel();
   }
   onOK = () => {
-    this.props.onOK()
+    this.props.onOK();
   }
-  
-  render(){
-    const { style,hiddenCancel, value, onCancel, onOK } = this.props;
+
+  render() {
+    const { style, hiddenCancel, value, onCancel, onOK, theme = 'dark' } = this.props;
     return (
-      <Modal
-        onOk={this.onOK}
-        onCancel={this.onCancel}
-        visible={true}
-        footer={null}
-        closable={false}
-        maskClosable={false}
-        maskStyle={{backgroundColor:'rgba(153,153,153,0.2)'}}
-        wrapClassName={styles.warningTipWrapBox}
-        width={style.width}
-      >
-        <div className={styles.warningTip} style={{...style}}>
-          <div className={styles.textArea}>
-            <Icon type="exclamation-circle-o" className={styles.icon} />
-            <span className={styles.text}>{value}</span>
+      <React.Fragment>
+        {/* <span ref={'tooltip'} /> */}
+        <Modal
+          onOk={this.onOK}
+          onCancel={this.onCancel}
+          visible={true}
+          footer={null}
+          closable={false}
+          maskClosable={false}
+          maskStyle={{ backgroundColor: 'rgba(153,153,153,0.2)' }}
+          wrapClassName={`${styles.warningTipWrapBox} ${styles[theme]}`}
+          width={style.width}
+        // getContainer={() => this.refs.tooltip}
+        >
+          <div className={styles.warningTip} style={{ ...style }}>
+            <div className={styles.textArea}>
+              <Icon type="exclamation-circle-o" className={styles.icon} />
+              <span className={styles.text}>{value}</span>
+            </div>
+            <div className={styles.handle}>
+              {(onCancel && !hiddenCancel) && <span onClick={this.onCancel}>取消</span>}
+              {onOK && <span onClick={this.onOK} className={styles.confirmBtn} >确认</span>}
+            </div>
           </div>
-          <div className={styles.handle}>
-            {(onCancel && !hiddenCancel) && <span onClick={this.onCancel}>取消</span>}
-            {onOK&& <span onClick={this.onOK} className={styles.confirmBtn} >确认</span>}
-          </div>
-        </div>
-      </Modal>
-      
-    )
+        </Modal>
+      </React.Fragment>
+    );
   }
 }
 
