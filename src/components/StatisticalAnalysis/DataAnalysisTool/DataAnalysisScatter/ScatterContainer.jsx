@@ -12,14 +12,11 @@ class ScatterContainer extends React.Component {
   }
   render() {
     const { scatterData } = this.props;
-    console.log('this.props: ', this.props);
     return (
       <React.Fragment>
         {scatterData.map((e, i) => {
-          return (<SingleScatter {...this.props} title={e.deviceName} chartData={e.chartData} />);
+          return (<SingleScatter key={i} {...this.props} title={e.deviceName} chartData={e.chartData} />);
         })}
-
-
       </React.Fragment>
     );
   }

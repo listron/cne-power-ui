@@ -5,15 +5,18 @@ module.exports = [
     response: {
       'code': '10000',
       'message': '散点图测点名称列表请求成功',
-      'data': [1, 2, 3, 4].map((e, i) => (
-        {
-          xPointName: `x测点名称${e}`,
-          xPointCode: `X测点编码${e}`,
-          yPointName: `y测点名称${e}`,
-          yPointCode: `y测点编码${e}`,
-          pointsUnionName: `测点联合名称${e}`,
-        }
-      )),
+      'data': [1, 2, 3, 4].map((e, i) => ({
+        pointNameList: [1, 2, 3, 4].map((e, i) => (
+          {
+            xPointName: `x测点名称${e}`,
+            xPointCode: `X测点编码${e}`,
+            yPointName: `y测点名称${e}`,
+            yPointCode: `y测点编码${e}`,
+            pointsUnionName: `测点联合名称${e}`,
+          }
+        )),
+        pointType: e,
+      })),
       'serviceCode': '3.0',
     },
     delay: 1000,

@@ -8,24 +8,24 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 const options = [{
   value: '风速相关',
-  label: '风速相关',
+  pointsUnionName: '风速相关',
   isLeaf: false,
 },
 {
   value: '功率相关',
-  label: '功率相关',
+  pointsUnionName: '功率相关',
   isLeaf: false,
 }, {
   value: '转速相关',
-  label: '转速相关',
+  pointsUnionName: '转速相关',
   isLeaf: false,
 }, {
   value: '震动相关',
-  label: '震动相关',
+  pointsUnionName: '震动相关',
   isLeaf: false,
 }, {
   value: '其他',
-  label: '其他',
+  pointsUnionName: '其他',
   isLeaf: false,
 },
 ];
@@ -43,91 +43,63 @@ class SingleStationScatter extends React.Component {
       isSwap: false,
       options,
       scatterNameValue: [],
-      xPointName: '',
-      yPointName: '',
+
     };
   }
   componentWillReceiveProps(nextProp) {
     const { scatterNames } = nextProp;
     const preScatterName = this.props.scatterNames;
     if (!preScatterName.length && scatterNames.length > 0) {
-      const children = scatterNames.map((e, i) => ({
-        value: `${e.xPointCode}_${e.yPointCode}`,
-        label: `${e.pointsUnionName}`,
-      }));
       const { options } = this.state;
-      const firstOPtion = options.map((e, i) => {
-        if (i === 0) { e.children = children; }
-        return e;
+      const newscatterNames = this.formater(scatterNames);
+      const arr = options.map(e => e.pointsUnionName);
+      const test = newscatterNames.map((e, i) => {
+        return {
+          value: e.pointType,
+          pointsUnionName: arr[i],
+          isLeaf: false,
+          pointNameList: e.pointNameList,
+        };
       });
-      console.log('firstOPtion: ', firstOPtion);
-
-      const { xPointName, yPointName, xPointCode, yPointCode } = scatterNames[0];
-      this.setState({ xPointName, yPointName, scatterNameValue: ['风速相关', `${xPointCode}_${yPointCode}`] });
-
-
+      const otherName = {
+        value: '其他',
+        pointsUnionName: '其他',
+        isLeaf: false,
+      };
+      const { pointNameList } = scatterNames[0];
+      const { xPointName, yPointName, xPointCode, yPointCode } = pointNameList[0];
+      this.setState({ options: [...test, otherName], scatterNameValue: [1, `${xPointCode}_${yPointCode}`] });
+      this.props.changeToolStore({ xPointName, yPointName });
     }
   }
-  // componentDidUpdate(prevProps) {
-  //   console.log('prevProps: ', prevProps);
-  //   console.log('this.props: ', this.props);
-  // }
+  formater = (data) => {
+    return data.map((e, i) => {
+      const pointNameList = e.pointNameList.map((item, index) => ({
+        ...item, value: `${item.xPointCode}_${item.yPointCode}`,
+      }));
+      return { ...e, pointNameList };
+    }
+    );
+  }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
-    console.log('stationCode: ', stationCode);
+
     this.props.changeToolStore({
       stationCode,
     });
 
   }
   changeTime = (date, dateString) => {
-    console.log('dateString: ', dateString);
-    console.log('date: ', date);
+
+
 
   }
-  loadData = (selectedOptions) => {
-    console.log('selectedOptions: ', selectedOptions);
-    const { value } = selectedOptions[0];
-    const typeValue = {
-      '风速相关': 1,
-      '功率相关': 2,
-      '转速相关': 3,
-      '震动相关': 4,
-      '其他': 5,
-    };
-    const { getScatterName, stationCode, scatterNames } = this.props;
-    getScatterName({
-      stationCode,
-      type: typeValue[value],
-    });
-
-    console.log('scatterNames: ', scatterNames);
-    const children = scatterNames.map((e, i) => ({
-      value: `${e.xPointCode}_${e.yPointCode}`,
-      label: `${e.pointsUnionName}`,
-    }));
-
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.loading = true;
-    setTimeout(() => {
-      targetOption.loading = false;
-      targetOption.children = children;
-      this.setState({
-        options: [...this.state.options],
-      });
-    }, 1000);
-  };
-
-
   onChangeContrast = (value, selectedOptions) => {
-    console.log('selectedOptions: ', selectedOptions);
-    console.log('value: ', value);
     const codeValue = value[value.length - 1];
     const { xPointCode, yPointCode } = codeValue.split('_');
     this.props.changeToolStore({
       xPointCode, yPointCode,
     });
-
   }
   getScatterData = () => {
     //请求数据
@@ -144,17 +116,18 @@ class SingleStationScatter extends React.Component {
     //下载照片
   }
   changeSwap = () => {
+    const { changeToolStore, xPointName, yPointName } = this.props;
     this.setState({
       isSwap: !this.state.isSwap,
     });
+    changeToolStore({
+      xPointName: yPointName,
+      yPointName: xPointName,
+    });
   }
   render() {
-    const { stationCode, stations, scatterNames, scatterData } = this.props;
-    console.log('scatterNames: ', scatterNames);
-    const { isSwap, options, scatterNameValue, xPointName, yPointName } = this.state;
-    console.log('xPointName: ', xPointName);
-    console.log('yPointName: ', yPointName);
-
+    const { stationCode, stations, xPointName, yPointName } = this.props;
+    const { isSwap, options, scatterNameValue } = this.state;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => e.stationType === 0);
     return (
@@ -180,14 +153,14 @@ class SingleStationScatter extends React.Component {
             <Cascader
               options={options}
               value={scatterNameValue}
-              loadData={this.loadData}
+              fieldNames={{ label: 'pointsUnionName', value: 'value', children: 'pointNameList' }}
               onChange={this.onChangeContrast}
               style={{ width: '400px' }}
             />
             <div className={styles.contrastValue}>
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>{isSwap ? yPointName : xPointName}</Button>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>{xPointName}</Button>
               <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.downPic}>{isSwap ? xPointName : yPointName}</Button>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.downPic}>{yPointName}</Button>
             </div>
             <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
             <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
@@ -195,7 +168,7 @@ class SingleStationScatter extends React.Component {
           </div>
         </div>
         <div className={styles.scatterBox}>
-          <ScatterContainer {...this.props} xPointName={xPointName} yPointName={yPointName} />
+          <ScatterContainer {...this.props} />
         </div>
 
       </div>

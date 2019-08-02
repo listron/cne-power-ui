@@ -13,6 +13,8 @@ var initState = Immutable.fromJS({
   yPointCode: '',
   startTime: '',
   endTime: '',
+  xPointName: '',
+  yPointName: '',
 
 
 

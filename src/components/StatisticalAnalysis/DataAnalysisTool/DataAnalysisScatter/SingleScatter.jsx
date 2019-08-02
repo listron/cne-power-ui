@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
+import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class SingleScatter extends React.Component {
@@ -9,35 +10,54 @@ class SingleScatter extends React.Component {
     title: PropTypes.string,
     xPointName: PropTypes.string,
     yPointName: PropTypes.string,
-    chartData: PropTypes.array,
+    // chartData: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      saveBtn: false,
+    };
   }
   componentDidMount() {
-    const { chartData } = this.props;
-    this.drawChart((chartData || []));
+    this.drawChart(this.props);
+    console.log('1');
   }
   componentWillReceiveProps(nextProps) {
-    const theoryPowers = nextProps.chartData || [];
-    this.drawChart(theoryPowers);
+    if (nextProps.xPointName !== this.props.xPointName && nextProps.yPointName !== this.props.yPointName) {
+      this.drawChart(nextProps);
+      this.setState({ saveBtn: false });
+      console.log('2');
+    }
   }
 
   drawChart = (params) => {
-    const { title, xPointName, yPointName } = this.props;
+    const { title, xPointName, yPointName, chartData = [] } = params;
     const scatterChart = echarts.init(document.getElementById(title));
-    const filterYaxisData = params.map(e => e.y);
-    const filterXaxisData = params.map(e => e.x);
+    const filterYaxisData = chartData.map(e => e.y);
+    const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
     const lineColor = '#666';
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
-        text: title,
+        text: [`${title}`, '{b|}'].join(''),
         left: '5%',
         textStyle: {
           fontSize: 14,
+          rich: {
+            b: {
+              height: 40,
+              width: 40,
+              align: 'center',
+              backgroundColor: {
+                image: '/img/wind04.png',
+                color: 'yellow',
+              },
+            },
+
+          },
         },
+        triggerEvent: true,
       },
       grid: {
         right: '10%',
@@ -136,7 +156,7 @@ class SingleScatter extends React.Component {
           },
         },
       ],
-      series: params.map((e, i) => {
+      series: chartData.map((e, i) => {
         return {
           name: `${e.deviceName}`,
           type: 'scatter',
@@ -148,12 +168,41 @@ class SingleScatter extends React.Component {
         };
       }),
     };
+    scatterChart.off();
+    scatterChart.on('click', 'title', (params) => {
+      console.log('params: ', params);
+      console.log('saveBtn: ', this.state.saveBtn);
+      this.setState({ saveBtn: !this.state.saveBtn }, scatterChart.setOption({
+        title: {
+          // text: title,
+          text: [`${title}`, '{b|}'].join(''),
+          left: '5%',
+          textStyle: {
+            fontSize: 14,
+            rich: {
+              b: {
+                height: 40,
+                width: 40,
+                align: 'center',
+                backgroundColor: {
+                  image: !this.state.saveBtn ? '/img/wind01.png' : '/img/wind04.png',
+                  color: 'yellow',
+                },
+              },
+
+            },
+          },
+          triggerEvent: true,
+        },
+      }));
+    });
+
     scatterChart.setOption(option, 'notMerge');
     scatterChart.resize();
     const img = new Image();
     // const imgUrl = scatterChart.toDataURL('image/jpeg');
     const imgUrl = scatterChart.getDataURL();
-    console.log('imgUrl: ', imgUrl);
+    // console.log('imgUrl: ', imgUrl);
     img.src = imgUrl;
     var $a = document.createElement('a');
     $a.setAttribute('href', img);
@@ -163,6 +212,13 @@ class SingleScatter extends React.Component {
 
 
   }
+  // savaFun = (params) => {
+  //   console.log('params: ', params);
+  //   const { event: { topTarget: { style: { rich: { b: { textBackgroundColor } } } } } } = params;
+  //   console.log('textBackgroundColor: ', textBackgroundColor);
+  //   console.log('title');
+
+  // }
 
   render() {
     const { title } = this.props;
