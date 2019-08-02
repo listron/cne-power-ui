@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-
 import realtimeWarningReducer from './IntelligentWarning/RealTimeWarning/realtimeWarningReducer';
 import transferFormReducer from './IntelligentWarning/Transfer/transferFormReducer';
 import handleRemoveReducer from './IntelligentWarning/HandleRemove/handleRemoveReducer';
@@ -21,6 +20,7 @@ import faultSingleFan from './FaultDiagnose/FaultSingleFan/faultSingleFanReducer
 import algorithm from './FaultDiagnose/AlgorithmControl/algorithmControlReducer';
 import historyWarnReducer from './FaultDiagnose/HistoryWarn/historyWarnReducer';
 
+import { achieveLayout } from './Achievement/achieveReducer'; // 绩效分析-公用信息
 
 const highAnalysisReducer = combineReducers({
   realtimeWarningReducer,
@@ -41,7 +41,9 @@ const highAnalysisReducer = combineReducers({
   algorithm,
   faultAllFan,
   faultSingleFan,
-  historyWarnReducer
+  historyWarnReducer,
+
+  achieveLayout,
 
 });
 

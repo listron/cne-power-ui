@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
+import { connect } from 'react-redux';
 import searchUtil from './searchUtil';
+import { achieveAction } from './achieveReducer';
 import GroupAchieve from './GroupAchieve/GroupAchieve';
 import AreaAchieve from './AreaAchieve/AreaAchieve';
 import StationAchieve from './StationAchieve/StationAchieve';
@@ -14,6 +16,10 @@ class AchievementLayout extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.object,
+    areaStation: PropTypes.array,
+    quotaInfo: PropTypes.array,
+    getAreaStation: PropTypes.func,
+    getQuotaInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -26,6 +32,12 @@ class AchievementLayout extends Component {
     this.state = {
       pages: pages ? pages.split('_') : [pathKey], // 页面内开启的页面 => tab数量
     };
+  }
+
+  componentDidMount(){
+    // 预请求用户区域-电站信息, 指标信息
+    this.props.getQuotaInfo();
+    this.props.getAreaStation();
   }
 
   componentWillReceiveProps(nextProps){
@@ -72,7 +84,7 @@ class AchievementLayout extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const { match, areaStation, quotaInfo } = this.props;
     const { pathKey } = match.params;
     const { pages } = this.state;
     return (
@@ -94,15 +106,25 @@ class AchievementLayout extends Component {
         </div>
         <div className={styles.contents}>
           <h3>这里应该就是内容区域</h3>
-          <GroupAchieve active={pathKey === 'group'} history={history} />
-          <AreaAchieve active={pathKey === 'area'} history={history} />
-          <StationAchieve active={pathKey === 'station'} history={history} />
+          <GroupAchieve active={pathKey === 'group'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
+          <AreaAchieve active={pathKey === 'area'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
+          <StationAchieve active={pathKey === 'station'} history={history} areaStation={areaStation} quotaInfo={quotaInfo} />
         </div>
       </div>
     );
   }
 }
 
-export default AchievementLayout;
+const mapStateToProps = (state) => ({
+  ...state.highAanlysisReducer.achieveLayout.toJS(),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  // resetStore: () => dispatch({type: achieveAction.resetStore}),
+  getAreaStation: payload => dispatch({type: achieveAction.getAreaStation, payload}),
+  getQuotaInfo: payload => dispatch({type: achieveAction.getQuotaInfo, payload}),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AchievementLayout);
 
 

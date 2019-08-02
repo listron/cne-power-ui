@@ -1,25 +1,22 @@
 import immutable from 'immutable';
 
-export const achieveAction = {
+export const groupAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  getAreaStation: Symbol('getAreaStation'),
-  getQuotaInfo: Symbol('getQuotaInfo'),
 };
 
 const initState = immutable.fromJS({
-  areaStation: [],
-  quotaInfo: [],
+  testGroup: [],
 });
 
 export const achieveLayout = (state = initState, action) => {
   switch (action.type) {
-    case achieveAction.fetchSuccess :
+    case groupAchieveAction.fetchSuccess :
       return state.merge(immutable.fromJS(action.payload));
-    case achieveAction.changeStore:
+    case groupAchieveAction.changeStore:
       return state.merge(immutable.fromJS(action.payload));
-    case achieveAction.resetStore:
+    case groupAchieveAction.resetStore:
       return initState;
   }
   return state;

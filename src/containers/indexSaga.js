@@ -84,6 +84,9 @@ import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/fault
 import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga";
 import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
+import { watchAhieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 高级分析 - 风电分析 - layout
+import { watchGroupAhieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
+
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
 import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
@@ -183,6 +186,9 @@ export default function* rootSaga() {
     watchFaultAllFan(),
     watchFaultWarnHistory(),
     watchFaultSingleFan(),
+
+    watchAhieveLayout(), //  高级分析 - 风电分析 - layout
+    watchGroupAhieve(), // 高级分析 - 风电分析 - 集团
     // 工单
     watchWorkOrder(),
     //operation_Book台账
