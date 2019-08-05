@@ -15,7 +15,7 @@ import StationDropdown from './StationDropdown';
     }]	
   }]
   2. 必填 - this.props.onChange (选中电站/区域时触发输出)
-  3. 选填 - 电站选择是否多选: multiple, 选填，默认为单选(false)。
+  3. 选填 - mode电站选择模式: 'region'(单区域多电站), 'station'(单电站), 'all'(多区域多电站), 选填，默认为region单选区域-多选电站。
   4. 选填 - 手动指定选中的电站(value)
   5. 选填todo - 传递下来的style值，可选填，用于控制筛选组件总体样式 {width:'500px'}
   6. 选填 - holderText: string, 可选填，当用户未选择电站时的占位提示文字。
@@ -43,7 +43,7 @@ import StationDropdown from './StationDropdown';
 
 class AreaStation extends Component {
   static propTypes = {
-    multiple: PropTypes.bool,
+    mode: PropTypes.string,
     data: PropTypes.array,
     value: PropTypes.array,
     style: PropTypes.object,
@@ -52,7 +52,7 @@ class AreaStation extends Component {
   }
 
   static defaultProps = {
-    multiple: true,
+    mode: 'all',
     value: [],
     style: {},
     onChange: () => {},
@@ -76,24 +76,26 @@ class AreaStation extends Component {
   }
 
   render() {
-    const { multiple, value, data, holderText, style, onChange } = this.props;
+    const { mode, value, data, holderText, style, onChange } = this.props;
     // 单选模式 = 级联组件
     // 多选模式 = dropdown嵌套checkboxes
+    const single = mode === 'station';
     return (
       <div>
-        {!multiple && <StationCascader
+        {single && <StationCascader
           holderText={holderText}
           data={data}
           style={style}
           value={value}
           onChange={onChange}
         />}
-        {multiple && <StationDropdown
+        {!single && <StationDropdown
           holderText={holderText}
           data={data}
           style={style}
           value={value}
           onChange={onChange}
+          mode={mode}
         />}
       </div>
     );
