@@ -1,0 +1,21 @@
+@import "../../../../../theme/theme";
+
+.areaBox{
+  width: 49%;
+  height: 530px;
+
+  .areaBoxTitle{
+    width: 100%;
+    padding: 14px 0  25px 24px;
+  }
+
+  .areaChartCenter{
+    width: 100%;
+    height: 420px;
+  }
+}
+
+/*css样式*/
+.areaBox{
+  background-color: $slideFontColor;
+}

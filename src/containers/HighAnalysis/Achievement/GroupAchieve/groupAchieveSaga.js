@@ -22,7 +22,7 @@ function *testGroup(action) { // 用户所有区域与电站
   }
 }
 
-export function* watchGroupAhieve() {
+export function* watchGroupAchieve() {
   yield takeLatest(groupAchieveAction.testGroup, testGroup);
 }
 

@@ -71,18 +71,21 @@ class StationDropdown extends Component {
     return stationSet;
   }
 
-  createRegions = (data = []) => (
-    <ul className={styles.regionBox}>
-      <li className={styles.region} onClick={this.onAllRegions}>全部区域</li>
-      {data.map(e => (
-        <li className={styles.region} key={e.regionName}>
-          <span>{e.regionName}</span>
-          <Icon type="right" />
-          {this.createStations(e)}
-        </li>
-      ))}
-    </ul>
-  )
+  createRegions = (data = []) => {
+    const { mode } = this.props;
+    return (
+      <ul className={styles.regionBox}>
+        {mode === 'all' && <li className={styles.region} onClick={this.onAllRegions}>全部区域</li>}
+        {data.map(e => (
+          <li className={styles.region} key={e.regionName}>
+            <span>{e.regionName}</span>
+            <Icon type="right"/>
+            {this.createStations(e)}
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   getStations = (data = [], regionName) => {
     const tmpInfo = data.find(e => e.regionName === regionName) || {};

@@ -8,7 +8,7 @@ import styles from './style.scss';
 /*
   组件功能；由自动选择 + 弹框选择两个构成, 可进行输入搜索或弹框选择
   传入固定层级格式数据，自动解析生成, 支持单选/多选模式, 输入由props.value控制, 输出由props.onChange函数控制
-  要求传入的数据格式: 
+  要求传入的数据格式:
 
   参数:
   1. 必填 - 传入前，请自行构造一个简单的高阶组件处理数据结构: 本组件所需基本数据数组(data),至少包含信息如下：
@@ -24,7 +24,7 @@ import styles from './style.scss';
     }, {
       value: 'M12011M221M11',
       label: 'SD-11',
-    }]	
+    }]
   },{
     value: 10011231445,
     label: '湘电',
@@ -46,8 +46,8 @@ import styles from './style.scss';
   9. 选填todo - stationShowNumber:bool; 默认是false
   10. 选填todo - onlyModal: false; 当不需要下拉框, 只需要筛选弹框时启用.
 
-  注意: 
-  多选时； 
+  注意:
+  多选时；
     value输入为[value1, value2, value3]数组
     onChange输出为最底层级的value集合: [{value1: 1, label1: 'bala'}, {value2: 20, label2: 'gaga'}];
   单选时: 输出为[{value: 123, lable: '112'}], 输入为[value, value], 因暂无单选模式ui及交互，暂不实现
@@ -131,9 +131,10 @@ class AutoSelect extends Component {
   }
 
   render() {
+    const { style } = this.props;
     const { checkedList, infoLists } = this.state;
     return (
-      <div className={styles.autoSelect}>
+      <div className={styles.autoSelect} style={{...style}}>
         <DropDownSelects
           {...this.props}
           infoLists={infoLists}
