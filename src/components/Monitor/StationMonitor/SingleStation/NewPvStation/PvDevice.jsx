@@ -16,8 +16,8 @@ class PvDevice extends Component {
     constructor() {
         super();
         this.state = {
-            choiceCode: '1'
-        }
+            choiceCode: '1',
+        };
 
     }
 
@@ -25,7 +25,7 @@ class PvDevice extends Component {
         const { deviceTypeCode } = prevProps;
         const { choiceCode } = this.state;
         if (deviceTypeCode !== choiceCode) {
-            this.setState({ choiceCode: deviceTypeCode })
+            this.setState({ choiceCode: deviceTypeCode });
         }
     }
 
@@ -36,17 +36,17 @@ class PvDevice extends Component {
                     deviceTypeCode: e.code,
                     deviceTypeName: e.name,
                     key: e.code,
-                })
+                });
                 if (e.parents) {
-                    this.getDeviceTypeFlow(e.parents, list)
+                    this.getDeviceTypeFlow(e.parents, list);
                 }
             }
-        })
-        return list
+        });
+        return list;
     }
 
     deviceSelect = (value) => {
-        setTimeout(() => { this.setState({ choiceCode: value }) }, 0)
+        setTimeout(() => { this.setState({ choiceCode: value }); }, 0);
         this.props.changeSingleStationStore({ deviceTypeCode: value });
     }
 
@@ -59,20 +59,20 @@ class PvDevice extends Component {
         const { deviceTypeFlow, deviceTypeCode } = this.props;
         const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
         const { choiceCode } = this.state;
-        const values =  deviceTypeList.length>1 ? choiceCode : ''; // 判断从单设备返回来数据显示code
+        const values = deviceTypeList.length > 1 ? choiceCode : ''; // 判断从单设备返回来数据显示code
         return (
-            <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} ${styles.darkContnormal}`}>
+            <div className={`${styles.pvDeviceCont} ${styles.pvDeviceContnormal} `}>
                 <div className={styles.top}>
                     <div ref={'selectBody'}></div>
-                    { deviceTypeList && <Select
+                    {deviceTypeList && <Select
                         value={values}
                         style={{ width: 140 }}
                         onChange={this.deviceSelect}
-                        getPopupContainer={()=>this.refs.selectBody}
+                        getPopupContainer={() => this.refs.selectBody}
                     >
                         <Option value={'1'} key={'1'} >{'示意图'}</Option>
-                        {deviceTypeList.map((item,key) => {
-                            return <Option value={item.deviceTypeCode} key={`${item.deviceTypeCode}_${key}`}>{item.deviceTypeName}</Option>
+                        {deviceTypeList.map((item, key) => {
+                            return <Option value={item.deviceTypeCode} key={`${item.deviceTypeCode}_${key}`}>{item.deviceTypeName}</Option>;
                         })}
                         <Option value={'0'} key={'0'}>{'电能表'}</Option>
                         <Option value={'203'} key={'203'}>{'气象站'}</Option>
@@ -81,8 +81,9 @@ class PvDevice extends Component {
                 </div>
 
             </div>
-        )
+        );
     }
 }
 
 export default PvDevice
+;

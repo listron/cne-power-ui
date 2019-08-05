@@ -27,6 +27,7 @@
 }
 
 .light {
+  background: #fff;
   :global {
     .iconfont {
       color: $themeColor;
@@ -47,6 +48,7 @@
 
 .dark {
   @import "../../../theme/darkTheme.scss";
+  background: transparent;
   :global {
     .iconfont {
       color: $themeColor;

@@ -33,14 +33,15 @@ class PvStation extends Component {
     getNewDeviceTypeFlow: PropTypes.func,
     getSketchmap: PropTypes.func,
     getPvMonitorPower: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       hiddenStationList: false,
-      queryFirst: true
-    }
+      queryFirst: true,
+    };
   }
 
   componentDidMount() {
@@ -50,13 +51,13 @@ class PvStation extends Component {
     const tmpSearchData = search.replace('?', '').split('&').filter(e => e); //  search拆分验证是否有指定展示列表
     const searchData = tmpSearchData.map(e => {
       const subData = e.split('=');
-      return { [subData[0]]: subData[1] }
-    })
+      return { [subData[0]]: subData[1] };
+    });
     const deviceTypeInfo = searchData.find(e => e.showPart > 0);
     if (deviceTypeInfo) {
-      this.props.changeSingleStationStore({ deviceTypeCode: deviceTypeInfo.showPart })
+      this.props.changeSingleStationStore({ deviceTypeCode: deviceTypeInfo.showPart });
     } else {
-      this.props.changeSingleStationStore({ deviceTypeCode: '1' })
+      this.props.changeSingleStationStore({ deviceTypeCode: '1' });
     }
 
     this.getOnceData(stationCode, stationType);
@@ -67,13 +68,13 @@ class PvStation extends Component {
   componentWillReceiveProps(nextProps) {
     const { stationCode } = this.props.match.params;
     const nextStationCode = nextProps.match.params.stationCode;
-    const nextStationType = '1'
+    const nextStationType = '1';
     if (nextStationCode !== stationCode) {
       clearTimeout(this.timeOutId);
       this.getTenSeconds(nextStationCode, nextStationType);
       this.getOnceData(nextStationCode, nextStationType);
-      this.props.changeSingleStationStore({ deviceTypeCode: '1' })
-      this.singelDeatil(nextStationCode)
+      this.props.changeSingleStationStore({ deviceTypeCode: '1' });
+      this.singelDeatil(nextStationCode);
     }
   }
 
@@ -94,7 +95,7 @@ class PvStation extends Component {
     this.props.getWeatherList({ stationCode, dateReport: startTime }); // 天气
     this.props.getWorkList({
       stationCode,
-      startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0, }).utc().format(),
+      startTime: moment().set({ 'hour': 0, 'minute': 0, 'second': 0 }).utc().format(),
       endTime: moment().utc().format(),
     });
     this.props.getNewDeviceTypeFlow({ stationCode, stationType }); //获取设备类型流程图
@@ -103,15 +104,15 @@ class PvStation extends Component {
 
   getPowerDataTenMin = (value) => { // 默认请求intervalTime = 0 的日数据
     const { stationCode, intervalTime = 0 } = value;
-    let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD')// 默认是6天前;
+    let startTime = moment().subtract(30, 'day').format('YYYY-MM-DD');// 默认是6天前;
     let endTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
     if (intervalTime === 1) {
       startTime = moment().startOf('year').format('YYYY-MM-DD');
       endTime = moment().endOf('year').format('YYYY-MM-DD');
     } else if (intervalTime === 2) {
-      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD')
+      startTime = moment().subtract(5, 'year').startOf('year').format('YYYY-MM-DD');
     }
-    this.props.changeSingleStationStore({ powerData: [] })
+    this.props.changeSingleStationStore({ powerData: [] });
     this.props.getPvMonitorPower({ stationCode, intervalTime, startTime, endTime });
   }
 
@@ -122,33 +123,33 @@ class PvStation extends Component {
           deviceTypeCode: e.code,
           deviceTypeName: e.name,
           key: e.code,
-        })
+        });
         if (e.parents) {
-          this.getDeviceTypeFlow(e.parents, list)
+          this.getDeviceTypeFlow(e.parents, list);
         }
       }
-    })
-    return list
+    });
+    return list;
   }
 
   singelDeatil = (stationCode) => { // 右侧单电站详情数据
-    this.props.getCapabilityDiagram({  // 出力图
+    this.props.getCapabilityDiagram({ // 出力图
       stationCode,
       stationType: '1',
       startTime: moment().startOf('day').utc().format(),
-      endTime: moment().endOf('day').utc().format()
+      endTime: moment().endOf('day').utc().format(),
     });
     this.getPowerDataTenMin({ stationCode, stationType: '1' }); // 发电量
     this.props.monthplanpower({ stationCode }); // 月累计与计划发电量
   }
 
   detailShow = () => { // 查看详情
-    this.setState({ detailVisible: true })
+    this.setState({ detailVisible: true });
     const { stationCode } = this.props.match.params;
     const { queryFirst } = this.state;
     if (queryFirst) {
-      this.singelDeatil(stationCode)
-      this.setState({ queryFirst: false })
+      this.singelDeatil(stationCode);
+      this.setState({ queryFirst: false });
     }
   }
 
@@ -159,26 +160,27 @@ class PvStation extends Component {
   }
 
   detailHide = (value) => { // 关闭详情
-    this.setState(value)
+    this.setState(value);
   }
 
   render() {
-    const { singleStationData, editData, monitorPvUnit, deviceTypeFlow } = this.props;
+    const { singleStationData, editData, monitorPvUnit, deviceTypeFlow, theme } = this.props;
     const deviceTypeList = this.getDeviceTypeFlow([deviceTypeFlow]);
     const { detailVisible } = this.state;
     const { stationCode } = this.props.match.params;
     const { alarmNum } = singleStationData;
     return (
-      <div className={styles.pvStationWrap}>
-        <div className={styles.pvStation}  >
+      <div className={`${styles.pvStationWrap} ${styles[theme]}`}>
+        <div className={styles.pvStation} >
           <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
           <PvStationHeader
             singleStationData={singleStationData}
             editData={editData}
             stationCode={stationCode}
             monitorPvUnit={monitorPvUnit}
+            theme={theme}
           />
-          <div>
+          <div className={styles.deviceListWrap}>
             <PvDevice {...this.props} />
             <div className={styles.deviceList} >
               <DeviceList {...this.props} deviceTypeList={deviceTypeList} />
@@ -205,7 +207,7 @@ class PvStation extends Component {
         </TransitionContainer>
       </div>
 
-    )
+    );
   }
 }
 

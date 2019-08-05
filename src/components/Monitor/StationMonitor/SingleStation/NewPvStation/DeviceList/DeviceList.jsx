@@ -18,6 +18,7 @@ class DeviceList extends Component {
     deviceTypeCode: PropTypes.string,
     location: PropTypes.object,
     changeSingleStationStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
@@ -25,12 +26,12 @@ class DeviceList extends Component {
   }
 
   render() {
-    const { deviceTypeCode } = this.props;
+    const { deviceTypeCode,theme } = this.props;
     //  207 为交流汇流箱 暂时已经舍去了
     return (
       <div className={styles.deviceListBox}>
         {/* 1 示意图 509 光伏组件 206(组串) ／201(集中) 逆变器  202/207(交流) 汇流箱  304 箱变 */}
-        {`${deviceTypeCode}` === '1' && <Schematic {...this.props} />}
+        {`${deviceTypeCode}` === '1' && <Schematic {...this.props} theme={theme} />}
         {`${deviceTypeCode}` === '509' && <PvmoduleList {...this.props} />}
         {`${deviceTypeCode}` === '206' && <InverterList {...this.props} />}
         {`${deviceTypeCode}` === '201' && <InverterList {...this.props} />}

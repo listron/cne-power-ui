@@ -19,6 +19,7 @@ class SingleStation extends Component {
     getSingleScatter: PropTypes.func,
     stationList: PropTypes.array,
     stopSingleRealData: PropTypes.func,
+    theme: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -29,18 +30,18 @@ class SingleStation extends Component {
     const { stationList } = this.props;
     const staions = stationList.filter(e => e.stationCode === +stationCode);
     const stationType = staions.length > 0 && `${staions[0].stationType}`;
-    this.props.changeSingleStationStore({ stationType })
+    this.props.changeSingleStationStore({ stationType });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stationCode, } = this.props.match.params;
-    const {stationType}=this.props;
+    const { stationCode } = this.props.match.params;
+    const { stationType } = this.props;
     const nextStationCode = nextProps.match.params.stationCode;
     const { stationList } = nextProps;
     const staions = stationList.filter(e => e.stationCode === +nextStationCode);
     const nextStationType = staions.length > 0 && `${staions[0].stationType}`;
-    if (nextStationCode !== stationCode || stationType!== nextStationType) {
-      this.props.changeSingleStationStore({ stationType:nextStationType})
+    if (nextStationCode !== stationCode || stationType !== nextStationType) {
+      this.props.changeSingleStationStore({ stationType: nextStationType });
     }
   }
 
@@ -50,16 +51,16 @@ class SingleStation extends Component {
 
 
   render() {
-    const { stationType } = this.props;
+    const { stationType, theme } = this.props;
     return (
-      <div className={styles.singleStation}>
-        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ marginLeft: '38px', backgroundColor: '#fff' }} />
+      <div className={`${styles.singleStation} ${styles[theme]}`}>
+        <CommonBreadcrumb breadData={[{ name: '电站监控' }]} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.singleStationContainer} >
           {stationType === '1' && <PvStation {...this.props} />}
           {stationType === '0' && <WindStation {...this.props} />}
-          {!stationType && <div style={{ display: 'flex', flex: 1, backgroundColor: '#fff' }}></div>}
+          {!stationType && <div style={{ display: 'flex', flex: 1, backgroundColor: '#fff' }} />}
         </div>
-        <Footer />
+        <Footer theme={theme} />
       </div>
     );
   }
@@ -69,14 +70,15 @@ const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
     stationList: state.common.get('stations').toJS(),
-    realTimePowerUnit: state.common.get('realTimePowerUnit'),
-    realTimePowerPoint: state.common.get('realTimePowerPoint'),
-    realCapacityUnit: state.common.get('realCapacityUnit'),
-    realCapacityPoint: state.common.get('realCapacityPoint'),
-    powerUnit: state.common.get('powerUnit'),
-    powerPoint: state.common.get('powerPoint'),
+    // realTimePowerUnit: state.common.get('realTimePowerUnit'),
+    // realTimePowerPoint: state.common.get('realTimePowerPoint'),
+    // realCapacityUnit: state.common.get('realCapacityUnit'),
+    // realCapacityPoint: state.common.get('realCapacityPoint'),
+    // powerUnit: state.common.get('powerUnit'),
+    // powerPoint: state.common.get('powerPoint'),
     monitorPvUnit: state.common.toJS().monitorPvUnit,
-  })
+    theme: state.common.get('theme'),
+  });
 };
 
 const mapDispatchToProps = (dispatch) => ({
