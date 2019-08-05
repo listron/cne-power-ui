@@ -14,7 +14,7 @@ const request = (options) => query(options);
 
 request.get = (url, options = {}) => query({ url, ...options });
 
-request.post = (url, data = {}, options) => query({
+request.post = (url, data = {}, options = {}) => query({
   method: 'post',
   url,
   data,
