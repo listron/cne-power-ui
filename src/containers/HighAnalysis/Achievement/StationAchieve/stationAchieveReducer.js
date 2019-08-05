@@ -4,7 +4,6 @@ export const stationAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  testStation: Symbol('resetStore'),
   getLostRank: Symbol('getLostRank'),
   getLostTrend: Symbol('getLostTrend'),
   getLostTypes: Symbol('getLostTypes'),

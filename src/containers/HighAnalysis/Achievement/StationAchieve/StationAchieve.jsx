@@ -11,7 +11,6 @@ class StationAchieve extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    testStation: PropTypes.func,
   }
 
   static propTypes = {
