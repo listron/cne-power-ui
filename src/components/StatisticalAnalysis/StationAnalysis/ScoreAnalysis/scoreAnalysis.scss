@@ -1,214 +1,407 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 .PvScore {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  .stationTypeTab {
+    // margin-bottom: 32px;
+    padding: 10px 32px;
+  }
+  .scoreBox {
+    padding: 0 32px;
     display: flex;
     flex-direction: column;
-    padding: 20px 32px;
+    flex: 1;
+  }
+
+  .scoreMiddle {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0;
+    .scoreFilter {
+      display: flex;
+      .text {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .stationFilter {
+        margin-right: 20px;
+        display: flex;
+        flex-direction: row;
+        line-height: 42px;
+      }
+      .timeSelect {
+        height: auto;
+        line-height: 42px;
+      }
+    }
+    .scoreTranslate {
+      display: flex;
+      flex-direction: row;
+      line-height: 42px;
+      .scoreSort {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        padding: 0 8px;
+      }
+    }
+  }
+
+  .stationCardContainer {
+    display: flex;
+    flex-flow: row wrap;
     width: 100%;
-    .stationTypeTab {
-        margin-bottom: 32px;
+    p {
+      margin-bottom: 0;
     }
-    .scoreMiddle {
+    .stationCard {
+      margin: 0 24px 24px 0;
+      box-sizing: border-box;
+      flex: 0 0 14.5%;
+      border-radius: 2px;
+      align-items: center;
+      cursor: pointer;
+      padding-bottom: 10px;
+      .stationName {
+        padding: 8px 4px 0 8px;
+      }
+      .scoreCircleCon {
+        width: 86px;
+        height: 86px; // background: linear-gradient(66deg, #faff0e, #939417);
+        border-radius: 50%;
+        text-align: center;
+        line-height: 100px;
+        margin: 0 auto;
+        margin-bottom: 14px;
+        .innerBox {
+          width: 76px;
+          height: 76px;
+          border-radius: 50%;
+          margin: 0 auto;
+          margin-top: 4px;
+        }
+        .evaluate {
+          height: 100%;
+          width: 100%;
+          border-radius: 50%;
+          .num {
+            height: 0px;
+            line-height: 56px;
+            font-size: 20px;
+          }
+          .text {
+            height: 0;
+            font-size: 14px;
+          }
+        }
+        .nodata {
+          line-height: 76px;
+        }
+      }
+      .installedCapacity,
+      .equivalent {
         display: flex;
-        justify-content: space-between;
-        .scoreFilter {
-            display: flex;
-            .text {
-                display: inline-block;
-                margin-right: 10px;
-            }
-            .stationFilter {
-                margin-right: 20px;
-                display: flex;
-                flex-direction: row;
-                line-height: 42px;
-            }
-            .timeSelect {
-                height: auto;
-                line-height: 42px;
-            }
+        .name {
+          flex: 1;
+          text-align: right;
+          padding-right: 4px;
         }
-        .scoreTranslate {
-            display: flex;
-            flex-direction: row;
-            line-height: 42px;
-            .scoreSort {
-                cursor: pointer;
-                color: $themeColor;
-                display: flex;
-                flex-direction: row;
-                padding: 0 8px;
-            }
+        .value {
+          flex: 1;
         }
+      }
     }
-    .title {
-        color: $themeColor;
-    }
-    .stationCardContainer {
-        display: flex;
-        flex-flow: row wrap;
-        width: 100%;
-        margin-top: 20px;
-        p {
-            margin-bottom: 0;
-        }
-        .stationCard {
-            margin: 0 24px 24px 0;
-            box-sizing: border-box;
-            flex: 0 0 14.5%;
-            box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.30);
-            border-radius: 2px;
-            // height: 180px;
-            align-items: center;
-            cursor: pointer;
-            color: #666;
-            padding-bottom: 10px;
-            .stationName {
-                padding: 8px 4px 0 8px;
-            }
-            .scoreCircleCon {
-                width: 86px;
-                height: 86px; // background: linear-gradient(66deg, #faff0e, #939417);
-                border-radius: 50%;
-                border: 1px solid #fff;
-                text-align: center;
-                line-height: 100px;
-                margin: 0 auto;
-                margin-bottom: 14px;
-                .innerBox {
-                    width: 76px;
-                    height: 76px;
-                    border-radius: 50%;
-                    background-color: #fff;
-                    margin: 0 auto;
-                    margin-top: 4px;
-                }
-                .evaluate {
-                    height: 100%;
-                    width: 100%;
-                    border-radius: 50%;
-                    background-color: #fff;
-                    .num {
-                        height: 0px;
-                        line-height: 56px;
-                        font-size: 20px;
-                    }
-                    .text {
-                        height: 0;
-                        font-size: 14px;
-                    }
-                }
-                .nodata {
-                    line-height: 76px;
-                }
-            }
-            .installedCapacity,
-            .equivalent {
-                display: flex;
-                .name {
-                    flex: 1;
-                    text-align: right;
-                    padding-right: 4px;
-                }
-                .value {
-                    flex: 1;
-                }
-            }
-        }
-        .excellent {
-            .scoreCircleCon {
-                background: linear-gradient(66deg, #1670a6, #3ea6f6);
-                color: #3e97d1;
-            }
-            &:hover .innerBox .evaluate {
-                background: rgba(62, 166, 246, 0.4)
-            }
-        }
-        .good {
-            .scoreCircleCon {
-                background: linear-gradient(66deg, #08b294, #7ddfb2);
-                color: #199475;
-            }
-            &:hover .evaluate {
-                background: rgba(8, 178, 148, 0.40)
-            }
-        }
-        .qualified {
-            .scoreCircleCon {
-                background: linear-gradient(66deg, #eefc75, #c69037);
-                color: #e08031;
-            }
-            &:hover .evaluate {
-                background: rgba(238, 252, 117, 0.4);
-            }
-        }
-        .poor {
-            .scoreCircleCon {
-                background: linear-gradient(66deg, #ffb8be, #9f041b);
-                color: #a42b2c;
-            }
-            &:hover .evaluate {
-                background: rgba(255, 184, 190, 0.4);
-            }
-        }
-        .uncategorized {
-            .scoreCircleCon {
-                background: $promptColor;
-            }
-        }
-    }
+  }
 }
 
 .card {
-    .scoreTable {
-        width: 700px;
-        height: 435px;
-        display: flex;
-        flex-direction: column;
-        .text {
-            display: flex;
-            justify-content: space-between;
-            p {
-                margin-bottom: 0
-            }
-            .scoreTime {
-                font-size: 16px;
-                color: #232222;
-                line-height: 40px;
-            }
+  .scoreTable {
+    width: 700px;
+    height: 435px;
+    display: flex;
+    flex-direction: column;
+    .text {
+      display: flex;
+      justify-content: space-between;
+      p {
+        margin-bottom: 0;
+      }
+      .scoreTime {
+        font-size: 16px;
+        color: #232222;
+        line-height: 40px;
+      }
+    }
+    .stationScore {
+      font-size: 18px;
+      color: $themeColor;
+      line-height: 40px;
+    }
+  }
+  .excellent {
+    .stationScore,
+    .stationScore a {
+      color: #3e97d1;
+    }
+  }
+  .good {
+    .stationScore,
+    .stationScore a {
+      color: #199475;
+    }
+  }
+  .qualified {
+    .stationScore,
+    .stationScore a {
+      color: #e08031;
+    }
+  }
+  .poor {
+    .stationScore,
+    .stationScore a {
+      color: #a42b2c;
+    }
+  }
+  :global {
+    .ant-popover-inner-content {
+      padding: 10px 28px;
+    }
+  }
+}
+
+.light {
+  .title {
+    color: $themeColor;
+  }
+  .scoreSort {
+    color: $themeColor;
+  }
+
+  .stationCardContainer {
+    .stationCard {
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3);
+      color: #666;
+      .scoreCircleCon {
+        border: 1px solid #fff;
+        .innerBox {
+          background-color: #fff;
         }
-        .stationScore {
-            font-size: 18px;
-            color: $themeColor;
-            line-height: 40px;
+        .evaluate {
+          background-color: #fff;
         }
+      }
     }
     .excellent {
-        .stationScore,
-        .stationScore a {
-            color: #3e97d1;
-        }
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #1670a6, #3ea6f6);
+        color: #3e97d1;
+      }
+      &:hover .innerBox .evaluate {
+        background: rgba(62, 166, 246, 0.4);
+      }
     }
     .good {
-        .stationScore,
-        .stationScore a {
-            color: #199475;
-        }
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #08b294, #7ddfb2);
+        color: #199475;
+      }
+      &:hover .evaluate {
+        background: rgba(8, 178, 148, 0.4);
+      }
     }
     .qualified {
-        .stationScore,
-        .stationScore a {
-            color: #e08031;
-        }
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #eefc75, #c69037);
+        color: #e08031;
+      }
+      &:hover .evaluate {
+        background: rgba(238, 252, 117, 0.4);
+      }
     }
     .poor {
-        .stationScore,
-        .stationScore a {
-            color: #a42b2c;
-        }
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #ffb8be, #9f041b);
+        color: #a42b2c;
+      }
+      &:hover .evaluate {
+        background: rgba(255, 184, 190, 0.4);
+      }
     }
-    :global {
-        .ant-popover-inner-content {
-            padding: 10px 28px;
-        }
+    .uncategorized {
+      .scoreCircleCon {
+        background: $promptColor;
+      }
     }
+  }
+  .card {
+    .scoreTable {
+      .text {
+        .scoreTime {
+          color: #232222;
+        }
+      }
+      .stationScore {
+        color: $themeColor;
+      }
+    }
+    .excellent {
+      .stationScore,
+      .stationScore a {
+        color: #3e97d1;
+      }
+    }
+    .good {
+      .stationScore,
+      .stationScore a {
+        color: #199475;
+      }
+    }
+    .qualified {
+      .stationScore,
+      .stationScore a {
+        color: #e08031;
+      }
+    }
+    .poor {
+      .stationScore,
+      .stationScore a {
+        color: #a42b2c;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  .stationTypeTab {
+    border: 1px solid $border-color;
+    background: $light-background;
+  }
+  .scoreBox {
+    margin-top: 10px;
+    border: 1px solid $border-color;
+    background: $light-background;
+  }
+  .title {
+    color: $themeColor;
+  }
+  .scoreTranslate {
+    color: $themeColor;
+    &:hover {
+      color: $fontColor-invert;
+    }
+  }
+  .stationCardContainer {
+    .stationCard {
+      background: $background;
+      border: 1px solid rgba(83, 104, 241, 0.6);
+      color: $fontColor;
+      &:hover {
+        box-shadow: inset 0 0 5px 2px $border-shadow-color;
+      }
+      .scoreCircleCon {
+        border: 1px solid $border-color;
+        .innerBox {
+          background-color: $background;
+        }
+        .evaluate {
+          background-color: $background;
+        }
+      }
+      .stationName {
+        background-image: -webkit-gradient(linear, 0 0, 0 bottom, from($fontColor-hover), to($fontColor));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+    .excellent {
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #566df5, #6eceea);
+        color: $fontColor-hover;
+      }
+    }
+    .good {
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #5199fd, #5cf8a5);
+        color: #5cf6a7;
+      }
+    }
+    .qualified {
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #f95071, #f47a37);
+        color: #f8b14e;
+      }
+    }
+    .poor {
+      .scoreCircleCon {
+        background: linear-gradient(66deg, #c740c4, #e4475b);
+        color: #fd6e8f;
+      }
+    }
+    .uncategorized {
+      color: $fontColor-noConnect;
+      border: 1px solid #7088c3;
+      &:hover {
+        box-shadow: none;
+      }
+      .scoreCircleCon {
+        background: $fontColor-noConnect;
+      }
+      .stationName {
+        background: none;
+        -webkit-text-fill-color: $fontColor-noConnect;
+      }
+    }
+  }
+  .scoreMiddle {
+    .text {
+      color: $fontColor;
+    }
+  }
+
+  .card {
+    .scoreTable {
+      .text {
+        .scoreTime {
+          color: $fontColor-invert;
+        }
+      }
+      .stationScore {
+        color: $themeColor;
+      }
+    }
+    .excellent {
+      .stationScore,
+      .stationScore a {
+        color: $fontColor-hover;
+      }
+    }
+    .good {
+      .stationScore,
+      .stationScore a {
+        color: #5cf6a7;
+      }
+    }
+    .qualified {
+      .stationScore,
+      .stationScore a {
+        color: #f8b14e;
+      }
+    }
+    .poor {
+      .stationScore,
+      .stationScore a {
+        color: #fd6e8f;
+      }
+    }
+  }
+  :global {
+    .ant-popover-inner-content {
+      background: $background;
+      border: 1px solid $border-color;
+      box-shadow: inset 0 0 5px 2px $border-shadow-color;
+    }
+  }
 }

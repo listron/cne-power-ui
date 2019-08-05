@@ -1,61 +1,85 @@
-@import '../../theme/theme.scss';
+@import "../../theme/theme.scss";
 .app {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  .appHeader {
+    height: 59px; // background-color: #06213E;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .headerLeft {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .headerRight {
+      margin-right: 36px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      .powerConfig {
+        margin-left: 16px;
+        margin-top: 6px;
+      }
+      .changeTheme {
+        min-width: 80px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+      }
+      .themeMenu {
+        width: 80px;
+        background: #3e97d1;
+        padding: 0;
+        margin-top: -4px;
+        border-radius: 4px;
+        li {
+          line-height: 35px;
+          color: #fff;
+          text-align: center;
+          padding: 0;
+          cursor: pointer;
+          & :hover {
+            background-color: rgba(0, 13, 52, 0.2);
+          }
+        }
+      }
+    }
+  }
+  .appMain {
     display: flex;
     flex: 1;
-    flex-direction: column;
-    height: 100%;
-    .appHeader {
-        height: 59px; // background-color: #06213E;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        background: url('/img/topbg.png') no-repeat center / cover;
-        .headerLeft {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-        .headerRight {
-            margin-right: 36px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            .powerConfig {
-                margin-left: 16px;
-                margin-top: 6px;
-            }
-        }
+    .content {
+      height: calc(100vh - 59px);
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden; // margin-bottom: 6rem;
     }
-    .appMain {
-        display: flex;
-        flex: 1;
-        .content {
-            height: calc(100vh - 59px);
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden; // margin-bottom: 6rem;
-        }
-    }
-  
+  }
 }
 
 .userRightTip {
-    .exitSystem {
-        float: right;
-        display: block;
+  .exitSystem {
+    float: right;
+    display: block;
+  }
+  :global {
+    .ant-modal-body {
+      height: 100px;
     }
-    :global {
-        .ant-modal-body {
-            height: 100px;
-        }
-        .ant-btn:hover,
-        .ant-btn:focus {
-            color: $themeColor;
-            background-color: #fff;
-            border-color: $themeColor;
-        }
+    .ant-btn:hover,
+    .ant-btn:focus {
+      color: $themeColor;
+      background-color: #fff;
+      border-color: $themeColor;
     }
+  }
 }
 
 .preComponent {
@@ -65,4 +89,56 @@
   height: 100%;
   align-items: center;
   justify-content: center;
+}
+
+.light {
+  .appHeader {
+    background-image: linear-gradient(-90deg, #3e97d1 7%, $themeColor 50%);
+    .changeTheme {
+      color: #fff;
+    }
+    .themeMenu {
+      background: #3e97d1;
+      li {
+        color: #fff;
+        &:hover {
+          background-color: rgba(0, 13, 52, 0.2);
+        }
+      }
+      .active {
+        background-color: rgba(0, 13, 52, 0.2);
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../theme/darkTheme.scss";
+  // @import "../../theme/antdResetDark.scss";
+  .appHeader {
+    background: $sideBar-background;
+    .headerRight {
+      .changeTheme {
+        color: $fontColor-invert;
+      }
+      .themeMenu {
+        background: #00baff;
+        li {
+          color: $fontColor-invert;
+          &:hover {
+            background-color: #3e97d1;
+          }
+        }
+        .active {
+          background-color: #3e97d1;
+        }
+      }
+    }
+  }
+  .preComponent {
+    background: $background;
+  }
+  .appMain {
+    background: $background;
+  }
 }

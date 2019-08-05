@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, DatePicker, Cascader } from 'antd';
 import moment from 'moment';
-import styles from './groupStyle.scss';
-import searchUtil from '../../../../utils/searchUtil';
-import AreaStation from '../../../Common/AreaStation';
-import AutoSelect from '../../../Common/AutoSelect';
+import styles from './areaSearch.scss';
+import searchUtil from '../../../../../utils/searchUtil';
+import AreaStation from '../../../../Common/AreaStation';
+import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
 const stationData = [{
@@ -64,7 +64,7 @@ const quotaInfo = [
   },
 ];
 
-class GroupSearch extends Component {
+export default class AreaSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
@@ -75,7 +75,7 @@ class GroupSearch extends Component {
   constructor(props){
     super(props);
     const { search } = props.location;
-    const groupInfoStr = searchUtil(search).getValue('group');
+    const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
     this.state = {
       stations: groupInfo.stations || [],
@@ -125,15 +125,16 @@ class GroupSearch extends Component {
       <div className={styles.topSearch}>
         <div>
           <span>选择区域</span>
-          <AreaStation data={stationData} value={stations} onChange={this.onAreaChange} />
+          <AreaStation mode="region" data={stationData} value={stations} onChange={this.onAreaChange} />
         </div>
         <div>
           <span>选择机型</span>
-          <AutoSelect data={modesInfo} value={modes} onChange={this.onModelChange} />
+          <AutoSelect style={{width: '150px'}} data={modesInfo} value={modes} onChange={this.onModelChange} />
         </div>
         <div>
           <span>选择时间</span>
           <RangePicker
+            allowClear={false}
             value={[moment(dates[0]), moment(dates[1])]}
             onChange={this.onDateChange}
             style={{width: '220px'}}
@@ -142,6 +143,7 @@ class GroupSearch extends Component {
         <div>
           <span>选择指标</span>
           <Cascader
+            allowClear={false}
             style={{width: '150px'}}
             options={quotaInfo}
             onChange={this.onQuotaChange}
@@ -149,12 +151,10 @@ class GroupSearch extends Component {
           />
         </div>
         <div>
-          <Button onClick={this.queryCharts}>查询</Button>
+          <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
           <Button onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>
     );
   }
 }
-
-export default GroupSearch;

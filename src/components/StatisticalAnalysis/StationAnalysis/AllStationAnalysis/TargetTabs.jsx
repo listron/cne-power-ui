@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './targetTabs.scss';
 import { Tabs } from 'antd';
 import BarGraph from '../CommonGraphs/BarGraph/index.js';
@@ -22,16 +22,16 @@ class TargetTabs extends React.Component {
     getAllStationMonthBarData: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   queryTargetData = (activeKey) => {
     const { changeAllStationStore, getAllStationMonthBarData, getAllStationMonthPieData, year, dateType, stationType } = this.props;
     const userId = Cookie.get('userId');
-    changeAllStationStore({ targetShowType: activeKey })
-    let changeRangYear = [];
+    changeAllStationStore({ targetShowType: activeKey });
+    const changeRangYear = [];
     if (dateType === 'year') {
       for (let i = Number(this.props.year[0]); i < Number(this.props.year[1]) + 1; i++) {
-        changeRangYear.push(i.toString())
+        changeRangYear.push(i.toString());
       }
     }
     getAllStationMonthBarData({
@@ -39,26 +39,24 @@ class TargetTabs extends React.Component {
       year: dateType === 'year' ? changeRangYear : year,
       dateType,
       stationType,
-      dataType: activeKey
-    })
+      dataType: activeKey,
+    });
   }
 
   render() {
     const TabPane = Tabs.TabPane;
-    const { dateType, year } = this.props;
-    const currentYear = parseInt(year).toString();
-    const lastYear = (parseInt(year) - 1).toString();
-    const { allStationMonthBarData} = this.props;
-
-    const barGraphThatYear = allStationMonthBarData.map(e => e.thatYearData) || [];
-    const barGraphLastYear = allStationMonthBarData.map(e => e.lastYearData) || [];
-    const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`))
-    const barGraphYear = allStationMonthBarData.map((e, i) => (`${e.year}`))
-    const barGraphYearOnYear = allStationMonthBarData.map(e => e.yearOnYear) || [];
-    const barGraphRingRatio = allStationMonthBarData.map(e => e.ringRatio) || [];
-    const hasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0)
-    const pieTargetData = allStationMonthBarData.map((e, i) => ({ value: e.thatYearData, name: `${e.month}月` }))
-    const pieHasData = pieTargetData.map(e => e.value).some(e => e || e === 0)
+    const { dateType, year, theme, allStationMonthBarData = [] } = this.props;
+    const currentYear = `${year}`;
+    const lastYear = `${year - 1}`;
+    const barGraphThatYear = allStationMonthBarData.map(e => e.thatYearData);
+    const barGraphLastYear = allStationMonthBarData.map(e => e.lastYearData);
+    const barGraphmonth = allStationMonthBarData.map((e, i) => (`${e.month}月`));
+    const barGraphYear = allStationMonthBarData.map((e, i) => (`${e.year}`));
+    const barGraphYearOnYear = allStationMonthBarData.map(e => e.yearOnYear);
+    const barGraphRingRatio = allStationMonthBarData.map(e => e.ringRatio);
+    const hasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0);
+    const pieTargetData = allStationMonthBarData.map((e, i) => ({ value: e.thatYearData, name: `${e.month}月` }));
+    const pieHasData = pieTargetData.map(e => e.value).some(e => e || e === 0);
     const TabPaneData = [
       {
         tab: '发电量',
@@ -106,12 +104,12 @@ class TargetTabs extends React.Component {
         yAxisName: '发电量(h)',
         xAxisName: '损失电量等效时',
         pieGraphId: 'lostPowertimePie',
-      }
-    ]
+      },
+    ];
 
 
     return (
-      <div className={styles.targetTabs}>
+      <div className={`${styles.targetTabs} ${styles[theme]}`}>
         <Tabs
           activeKey={this.props.targetShowType}
           animated={false}
@@ -121,7 +119,7 @@ class TargetTabs extends React.Component {
             return (
               <TabPane tab={item.tab} key={item.key}>
                 <div className={styles.tabContainer}>
-                  <div className={styles.dataGraph}>
+                  <div className={`${styles.dataGraph} ${dateType === 'month' && styles.selectMonth}`}>
                     <BarGraph
                       currentYear={currentYear}
                       lastYear={lastYear}
@@ -135,6 +133,7 @@ class TargetTabs extends React.Component {
                       xAxisName={item.xAxisName}
                       dateType={dateType}
                       hasData={hasData}
+                      theme={theme}
                     />
                     {
                       dateType === 'month' &&
@@ -144,16 +143,17 @@ class TargetTabs extends React.Component {
                         xAxisName={item.xAxisName}
                         pieTargetData={pieTargetData}
                         barGraphYearOnYear={barGraphYearOnYear}
+                        theme={theme}
                         hasData={pieHasData} />}
 
                   </div>
                 </div>
               </TabPane>
-            )
+            );
           })}
         </Tabs>
       </div>
-    )
+    );
   }
 }
-export default (TargetTabs)
+export default (TargetTabs);

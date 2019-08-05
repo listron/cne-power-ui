@@ -1,41 +1,37 @@
-@import '../../../../theme/theme.scss';
-.allStationTypeTabs{
+@import "../../../../theme/theme.scss";
+.allStationTypeTabs {
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: #fff;
-  .AlarmStatisticByTypeBox{
+
+  .AlarmStatisticByTypeBox {
     display: flex;
     flex: 1;
     flex-direction: column;
-    .singleAlarmFilter{
-      background:#f8f8f8;
-      width:100%;
-      height:40px;
+    .singleAlarmFilter {
+      width: 100%;
+      height: 40px;
       line-height: 40px;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
     }
-  } 
-  .operation{
-    cursor: pointer;
   }
-  :global{
-    .ant-tabs-nav-scroll{
-      background-color: #f8f8f8;
-    }
-    .ant-tabs-bar{
-      border:none;
+  .operation {
+    cursor: pointer;
+    color: $themeColor;
+    margin-right: 50px;
+  }
+  :global {
+    .ant-tabs-bar {
+      border: none;
       margin-bottom: 0;
-      // background-color: #f8f8f8;
       margin: 0;
-      .ant-tabs-extra-content{
-        background-color: #f8f8f8;
-       .iconfont{
-         margin-left:5px;
-         vertical-align: middle;
-       }
+      .ant-tabs-extra-content {
+        .iconfont {
+          margin-left: 5px;
+          vertical-align: middle;
+        }
       }
     }
     .ant-tabs {
@@ -60,20 +56,20 @@
     .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
       border: 0;
       width: 120px;
-      color: #666;
-      border-right: 1px #dfdfdf solid;
+      // color: #666;
+      // border-right: 1px #dfdfdf solid;
       margin-right: 0px;
       border-radius: 0px;
-  }
+    }
     .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
-      color: #000;
+      // color: #000;
       font-weight: bold;
       margin: 0;
-      border-top:2px #199475 solid;
+      // border-top: 2px $themeColor solid;
     }
 
-    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab:hover{
-      color:#666;
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab:hover {
+      // color: #666;
     }
     .ant-tabs-nav .ant-tabs-tab {
       display: inline-block;
@@ -87,121 +83,229 @@
       width: 120px;
     }
   }
-  .componentContainer{
+  .componentContainer {
     display: flex;
-    flex:1;
-    width: 100%;
-    // height:5000px;
-    flex-direction: column;
-  }
-  }
-  .singleStationType{
-    display: flex;
-    flex-direction: column;
     flex: 1;
-    background: #fff;
-    .componentContainer{
+    width: 100%;
+    flex-direction: column;
+  }
+  .windContainer {
+    display: flex;
+    flex: 1;
+    background: url("/img/undo.png") no-repeat center;
+  }
+}
+
+.singleStationType {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #fff;
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .title {
       display: flex;
-      flex:1;
-      flex-direction: column;
-      .title {
+      position: relative;
+      flex-direction: row;
+      padding-left: 28px;
+      height: 60px;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ececec;
+      .titleLeft {
         display: flex;
-        position: relative;
         flex-direction: row;
-        padding-left: 28px;
-        height: 60px;
+        flex: 1;
         align-items: center;
+      }
+      .stationName {
+        &:hover {
+          color: $themeColor;
+        }
+        .icon {
+          cursor: pointer;
+          color: $themeColor;
+          margin-right: 15px;
+          font-size: 18px;
+        }
+        > span {
+          font-size: 18px;
+        }
+      }
+      .stationStatus {
+        // margin-left: 50px;
+        color: $darkColor;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
         justify-content: space-between;
-        border-bottom: 1px solid #ececec;
-        .titleLeft {
-          display: flex;
-          flex-direction: row;
-          flex:1;
-          align-items: center;
-        }
-        .stationName {
-          &:hover{
-            color: #199475;
-          }
-          .icon {
-            cursor: pointer;
+        .stationIcon {
+          i {
             color: $themeColor;
-            margin-right: 15px;
-            font-size: 18px;
-          }
-          >span {
-            font-size: 18px;
-          }
-        }
-        .stationStatus {
-         // margin-left: 50px;
-          color: $darkColor;
-          display: flex;
-          flex:1;
-          flex-direction: row;
-          justify-content: space-between;
-          .stationIcon{
-            i{
-              color:$themeColor;
-              margin-right: 4px;
-            }
-          }
-          .status {
-            cursor: pointer;
             margin-right: 4px;
           }
-          .time{
-            .gridTime,.deadline{
-              margin-right: 30px;
-              color:$lightColor;
-            }
-          }
         }
-        .backIcon{
-          border-left: 1px solid #dfdfdf;
-          width: 60px;
-          line-height: 60px;
-          text-align: center;
-          // padding: 0 30px;
-          color: $darkColor;
+        .status {
           cursor: pointer;
+          margin-right: 4px;
         }
-      }
-
-      .targetGraphContainer{
-        .bgStyle{
-          background: #f1f1f1;
-          height: 30px;
-          line-height: 30px;
-          .fontStyle{
-            border-top:2px solid #199475;
-            width: 160px;
-            color: #666;
-            padding-left: 30px;
-            // text-align: center;
+        .time {
+          .gridTime,
+          .deadline {
+            margin-right: 30px;
+            color: $lightColor;
           }
         }
-        .tabContainer{
+      }
+      .backIcon {
+        border-left: 1px solid #dfdfdf;
+        width: 60px;
+        line-height: 60px;
+        text-align: center;
+        // padding: 0 30px;
+        color: $darkColor;
+        cursor: pointer;
+      }
+    }
+
+    .targetGraphContainer {
+      .bgStyle {
+        background: #f1f1f1;
+        height: 30px;
+        line-height: 30px;
+        .fontStyle {
+          border-top: 2px solid $themeColor;
+          width: 160px;
+          color: #666;
+          padding-left: 30px;
+          // text-align: center;
+        }
+      }
+      .tabContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px 0;
+        border-bottom: 1px solid #ececec;
+        .dataGraph {
           display: flex;
-          flex:1;
-          flex-direction: column;
-          padding: 20px 0;
-          border-bottom: 1px solid #ececec;
-          .dataGraph{
-            display: flex;
-            flex-direction: row;
-            // flex: 1;
-            height: 300px;
-            margin-right: 24px;
-            >div:nth-child(1){
-              flex: 5;
-            }
-            >div:nth-child(2){
-              flex: 4;
-            }
+          flex-direction: row;
+          // flex: 1;
+          height: 300px;
+          margin-right: 24px;
+          > div:nth-child(1) {
+            flex: 5;
+          }
+          > div:nth-child(2) {
+            flex: 4;
           }
         }
       }
-
     }
   }
+}
+
+.light {
+  background: #fff;
+  .operation {
+    color: $themeColor;
+  }
+  .singleAlarmFilter {
+    background: #f8f8f8;
+  }
+  :global {
+    .ant-tabs-nav-scroll {
+      background-color: #f8f8f8;
+    }
+    .ant-tabs-bar {
+      background-color: #f8f8f8;
+      margin: 0;
+      .ant-tabs-extra-content {
+        background-color: #f8f8f8;
+        .iconfont {
+          margin-left: 5px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+      border: 0;
+      width: 120px;
+      color: #666;
+      border-right: 1px #dfdfdf solid;
+      margin-right: 0px;
+      border-radius: 0px;
+    }
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+      color: #000;
+      font-weight: bold;
+      margin: 0;
+      border-top: 2px $themeColor solid;
+    }
+
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab:hover {
+      color: #666;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      display: inline-block;
+      text-align: center;
+      padding: 12px 16px;
+      margin: 0;
+      box-sizing: border-box;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      width: 120px;
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  background: $background;
+  .operation {
+    // 样式发生变化
+    color: $fontColor-invert;
+    background: $button-primary;
+    border-radius: 15px;
+    width: 119px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-right: 0;
+  }
+  .timeSelect {
+    background: $light-background;
+    border: 1px solid $border-color;
+  }
+  :global {
+    .ant-tabs-nav-scroll {
+      background-color: transparent;
+    }
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+      border: 1px solid $tab-border-color;
+      color: $fontColor-dark;
+      background: $tab-background;
+      margin-right: 4px;
+    }
+    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+      border: 1px solid $border-color;
+      color: $fontColor-invert;
+      border-bottom: none;
+    }
+    .ant-tabs .ant-tabs-ink-bar {
+      display: none;
+    }
+  }
+  .singleAlarmFilter {
+    background: $background;
+  }
+  .windContainer {
+    background-color: $light-background;
+    border: 1px solid $border-color;
+    border-bottom: none;
+  }
+}
