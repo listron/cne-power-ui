@@ -36,8 +36,8 @@ class AchievementLayout extends Component {
 
   componentDidMount(){
     // 预请求用户区域-电站信息, 指标信息
-    // this.props.getQuotaInfo();
-    // this.props.getAreaStation();
+    this.props.getQuotaInfo();
+    this.props.getAreaStation();
   }
 
   componentWillReceiveProps(nextProps){

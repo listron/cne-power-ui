@@ -124,11 +124,11 @@ class StationSearch extends Component {
     return (
       <div className={styles.topSearch}>
         <div>
-          <span>选择区域</span>
+          <span>选择电站</span>
           <AreaStation data={stationData} value={stations} onChange={this.onAreaChange} />
         </div>
         <div>
-          <span>选择机型</span>
+          <span>选择设备</span>
           <AutoSelect data={modesInfo} value={modes} onChange={this.onModelChange} />
         </div>
         <div>
@@ -143,6 +143,7 @@ class StationSearch extends Component {
           <span>选择指标</span>
           <Cascader
             style={{width: '150px'}}
+            placeholder="请选择"
             options={quotaInfo}
             onChange={this.onQuotaChange}
             value={quota}
