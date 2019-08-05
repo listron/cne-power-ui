@@ -14,31 +14,31 @@ const request = (options) => query(options);
 
 request.get = (url, options = {}) => query({ url, ...options });
 
-request.post = (url, options = {}) => query({
+request.post = (url, data = {}, options = {}) => query({
   method: 'post',
   url,
-  data: options.data || {},
+  data,
   ...options,
 });
 
-request.put = (url, options = {}) => query({
+request.put = (url, data = {}, options = {}) => query({
   method: 'put',
   url,
-  data: options.data || {},
+  data,
   ...options,
 });
 
-request.delete = (url, options = {}) => query({
+request.delete = (url, data = {}, options = {}) => query({
   url,
   method: 'delete',
-  data: options.data || {},
+  data,
   ...options,
 });
 
-request.download = (url, options = {}) => query({ // 下载。
+request.download = (url, data = {}, options = {}) => query({ // 下载。
   url,
   responseType: 'blob',
-  data: options.data || {},
+  data,
   method: 'post',
   ...options,
 }).then(data => data.data);
