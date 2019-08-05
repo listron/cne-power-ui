@@ -63,11 +63,10 @@ class StationAchieve extends Component {
 
   render() {
     const { active, changeStore } = this.props;
-    console.log(active)
     return (
       <div className={styles.stationAchieve} >
         <StationSearch {...this.props} />
-        <AnimationBox changeStore={changeStore}>
+        <AnimationBox changeStore={changeStore} active={active}>
           <div
             className={`${styles.eachPage} ${active === 'lost' ? styles.active : styles.inactive}` }
             style={{backgroundColor: 'lightBlue'}}

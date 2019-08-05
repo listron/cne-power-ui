@@ -40,9 +40,18 @@ export default class AnimationBox extends Component {
       <div className={styles.animationBox}>
         {children}
         <div className={styles.sideToggle}>
-          <span onClick={this.toLost}>损失</span>
-          <span onClick={this.toStop}>停机</span>
-          <span onClick={this.toCurve}>曲线</span>
+          <span
+            className={`${styles.eachTab} ${active === 'lost' ? styles.active : null}`}
+            onClick={this.toLost}
+          >损失根源分析</span>
+          <span
+            className={`${styles.eachTab} ${active === 'stop' ? styles.active : null}`}
+            onClick={this.toStop}
+          >停机数据分析</span>
+          <span
+            className={`${styles.eachTab} ${active === 'curve' ? styles.active : null}`}
+            onClick={this.toCurve}
+          >功率曲线分析</span>
         </div>
       </div>
     );
