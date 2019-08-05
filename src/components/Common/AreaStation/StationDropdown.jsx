@@ -8,6 +8,7 @@ const CheckboxGroup = Checkbox.Group;
 class StationDropdown extends Component {
   static propTypes = {
     holderText: PropTypes.string,
+    mode: PropTypes.string,
     data: PropTypes.array,
     value: PropTypes.array,
     onChange: PropTypes.func,
@@ -116,21 +117,46 @@ class StationDropdown extends Component {
   }
 
   onStationCheck = ({ regionName, list }) => { // 如果后续设计要求允许跨区域选择，在此处判定然后确定是否清空其他区域数据即可。
-    const { data } = this.props; // 可能是跨区域选择 => 清空已选中的别的区域。
+    const { data, mode } = this.props;
+    const { checkedList } = this.state;
     const curAllStation = this.getStations(data, regionName); // 当前区域下所有电站。
-    const stations = curAllStation.filter(e => list.includes(e.stationName));
-    const checkedList = [{ regionName, stations }]; // 直接替换当前
-    this.setState({ checkedList });
+    const listInfo = curAllStation.filter(e => list.includes(e.stationName));
+    let newChecked = [];
+    if (mode === 'all') { // 多区域
+      let hasCheckedRegion = false;
+      newChecked = checkedList.map(e => {
+        if (e.regionName === regionName) {
+          hasCheckedRegion = true;
+          return { regionName, stations: listInfo };
+        }
+        return e;
+      });
+      !hasCheckedRegion && newChecked.push({ regionName, stations: listInfo });
+    } else {// 单区域 => 清空已选中的别的区域。
+      newChecked = [{ regionName, stations: listInfo }]; // 直接替换当前
+    }
+    this.setState({ checkedList: newChecked });
   }
 
   onAllCheck = ({ checked }, regionName) => {
-    let checkedList = [];
-    const { data } = this.props;
-    if (checked) {
-      const stations = this.getStations(data, regionName); // 全选区域下所有
-      checkedList = [{ regionName, stations }];
+    const { checkedList } = this.state;
+    const { data, mode } = this.props; // mode = all // 多区域 region // 单区域
+    const stations = this.getStations(data, regionName);
+    let newChecked = [];
+    if (mode === 'all') { // 多区域
+      let hasCheckedRegion = false;
+      newChecked = checkedList.map(e => {
+        if (e.regionName === regionName) {
+          hasCheckedRegion = true;
+          return checked ? { regionName, stations } : { regionName, stations: [] };
+        }
+        return e;
+      });
+      !hasCheckedRegion && checked && newChecked.push({ regionName, stations });
+    } else { // 单区域
+     checked && (newChecked = [{ regionName, stations }]);
     }
-    this.setState({ checkedList });
+    this.setState({ checkedList: newChecked });
   }
 
   onAllRegions = () => { // 全部区域选择
@@ -155,7 +181,9 @@ class StationDropdown extends Component {
   }
 
   getCheckedText = (data, checkedList) => { // 允许多区域时, 该函数需调整展示
-    if(checkedList.length === data.length) { // 允许多区域时, 该函数需调整展示为判定两者调用getStationSet比较
+    const totalStations = this.getStationSet(data);
+    const checkedStations = this.getStationSet(checkedList);
+    if (totalStations.size === checkedStations.size) {
       return '全部区域';
     }
     const textArr = checkedList.map(e => {
