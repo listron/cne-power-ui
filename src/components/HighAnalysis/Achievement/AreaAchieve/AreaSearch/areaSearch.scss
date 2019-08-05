@@ -1,14 +1,23 @@
+@import "../../../../../theme/theme";
 
-.topSearch{
+.topSearch {
   display: flex;
-  justify-content: space-around;
   padding: 0 24px 0 12px;
   height: 76px;
+  justify-content: space-around;
   align-items: center;
+
+  > div {
+    @include lineheight(32px);
+    display: flex;
+    span{
+      margin-right: 5px;
+    }
+  }
 }
 
 // 颜色s
-.topSearch{
+.topSearch {
   background-color: #fff;
-  border:1px solid #e1e2e2;
+  border: 1px solid #e1e2e2;
 }

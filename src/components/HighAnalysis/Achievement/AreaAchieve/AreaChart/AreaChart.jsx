@@ -31,6 +31,7 @@ export default class AreaChart extends Component {
         itemStyle: {
           borderWidth: 1,
         },
+        nodeClick: 'link',
         data: [{
           name: 'nodeA', // First tree
           value: 10,
@@ -45,12 +46,11 @@ export default class AreaChart extends Component {
           name: 'nodeB', // Second tree
           value: 20,
           children: [{
-            name: 'nodeBa', // Son of first tree
-            value: 20,
-            children: [{
-              name: 'nodeBa1', // Granson of first tree
-              value: 20,
-            }],
+            name: 'nodeBa', // First leaf of first tree
+            value: 15,
+          }, {
+            name: 'nodeABb', // Second leaf of first tree
+            value: 5,
           }],
         }],
       }],

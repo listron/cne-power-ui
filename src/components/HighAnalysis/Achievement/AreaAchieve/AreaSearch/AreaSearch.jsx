@@ -125,15 +125,16 @@ export default class AreaSearch extends Component {
       <div className={styles.topSearch}>
         <div>
           <span>选择区域</span>
-          <AreaStation data={stationData} value={stations} onChange={this.onAreaChange} />
+          <AreaStation mode="region" data={stationData} value={stations} onChange={this.onAreaChange} />
         </div>
         <div>
           <span>选择机型</span>
-          <AutoSelect data={modesInfo} value={modes} onChange={this.onModelChange} />
+          <AutoSelect style={{width: '150px'}} data={modesInfo} value={modes} onChange={this.onModelChange} />
         </div>
         <div>
           <span>选择时间</span>
           <RangePicker
+            allowClear={false}
             value={[moment(dates[0]), moment(dates[1])]}
             onChange={this.onDateChange}
             style={{width: '220px'}}
@@ -142,6 +143,7 @@ export default class AreaSearch extends Component {
         <div>
           <span>选择指标</span>
           <Cascader
+            allowClear={false}
             style={{width: '150px'}}
             options={quotaInfo}
             onChange={this.onQuotaChange}
@@ -149,7 +151,7 @@ export default class AreaSearch extends Component {
           />
         </div>
         <div>
-          <Button onClick={this.queryCharts}>查询</Button>
+          <Button style={{marginRight: '20px'}} onClick={this.queryCharts}>查询</Button>
           <Button onClick={this.resetCharts}>恢复图表</Button>
         </div>
       </div>
