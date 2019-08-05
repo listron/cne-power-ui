@@ -12,25 +12,33 @@ const query = (options = {}) => axios({
 
 const request = (options) => query(options);
 
-request.get = (options) => query(options);
+request.get = (url, options = {}) => query({ url, ...options });
 
-request.post = (options) => query({
+request.post = (url, data = {}, options = {}) => query({
   method: 'post',
+  url,
+  data,
   ...options,
 });
 
-request.put = (options) => query({
+request.put = (url, data = {}, options = {}) => query({
   method: 'put',
+  url,
+  data,
   ...options,
 });
 
-request.delete = (options) => query({
+request.delete = (url, data = {}, options = {}) => query({
+  url,
   method: 'delete',
+  data,
   ...options,
 });
 
-request.download = (options) => query({ // 下载。
+request.download = (url, data = {}, options = {}) => query({ // 下载。
+  url,
   responseType: 'blob',
+  data,
   method: 'post',
   ...options,
 }).then(data => data.data);
