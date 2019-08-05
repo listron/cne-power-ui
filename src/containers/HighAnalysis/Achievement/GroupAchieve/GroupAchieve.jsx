@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import searchUtil from '../../../../utils/searchUtil';
 import { groupAchieveAction } from './groupAchieveReducer';
-import GroupSearch from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupSearch';
+import GroupSearch from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupSearch/GroupSearch';
+import GroupAreaChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupAreaChart/GroupAreaChart';
+import GroupStationChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupStationChart/GroupStationChart';
+
+import styles from './groupAchieve.scss';
 
 class GroupAchieve extends Component {
 
   static propTypes = {
     topStringify: PropTypes.string,
-    history: PropTypes.func,
-    location: PropTypes.func,
+    history: PropTypes.object,
+    location: PropTypes.object,
   }
 
   componentDidMount(){
@@ -58,6 +62,12 @@ class GroupAchieve extends Component {
     return (
       <div style={{width: '100%'}}>
         <GroupSearch {...this.props} />
+        <div className={styles.groupChartBox}>
+          <div className={styles.chartTop}>
+            <GroupAreaChart />
+            <GroupStationChart />
+          </div>
+        </div>
         <button onClick={this.toAreaPage}>
           查看区域信息
         </button>
