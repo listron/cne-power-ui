@@ -1,0 +1,32 @@
+@import '../../../theme/theme.scss';
+
+.autoSelect{
+  position: relative;
+}
+.autoModal{
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  height: 32px;
+  cursor: pointer;
+  line-height: 32px;
+  .handlIcon{
+    font-size: 14px;
+  }
+}
+.checkModal{
+  height: 350px;
+  overflow: auto;
+}
+.trees{
+  .lastNode{
+    width: 100%;
+  }
+  .noneChild>ul{
+    display: flex;
+    align-items: center;
+    .lastNode{
+      flex-basis: 33%;
+    }
+  }
+}
