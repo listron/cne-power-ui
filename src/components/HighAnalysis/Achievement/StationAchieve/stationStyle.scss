@@ -1,0 +1,33 @@
+
+
+.topSearch{
+  display: flex;
+  justify-content: space-around;
+  padding: 0 24px 0 12px;
+  flex-basis: 76px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.animationBox{
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  .sideToggle{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    right: 0;
+    top: 40%;
+  }
+}
+
+// 颜色s
+.topSearch{
+  background-color: #fff;
+  border:1px solid #e1e2e2;
+}

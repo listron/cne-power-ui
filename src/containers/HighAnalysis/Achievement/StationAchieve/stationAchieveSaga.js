@@ -22,6 +22,18 @@ function *testStation(action) { // 用户所有区域与电站
   }
 }
 
+function *getIndicatorRank(){ // 指标排名
+
+}
+
+function *getIndicatortrend(){ // 指标趋势
+
+}
+
+function *getLosts(){ // 损失电量分解
+
+}
+
 export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.testStation, testStation);
 }
