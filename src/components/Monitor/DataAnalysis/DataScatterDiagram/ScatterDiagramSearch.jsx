@@ -137,7 +137,7 @@ class ScatterDiagramSearch extends Component{
     const { startTime, endTime, stationCode, deviceFullCode } = queryParam;
     const stationInfo = stationCode[0] || {};
     const deviceInfo = deviceFullCode[0] || {};
-    const timeZone = moment().zone() / (-60);
+    const timeZone = moment().utcOffset() / 60;
 
     downLoadFile({ 
       url,

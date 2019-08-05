@@ -14,11 +14,7 @@ class MapResourceData extends Component{
       nextValue: '--',
       showNextValue: false,
       valueScroll: 0,
-    }
-  }
-
-  componentDidMount(){
-    
+    };
   }
 
   componentWillReceiveProps(nextProps){
@@ -28,9 +24,9 @@ class MapResourceData extends Component{
       this.setState({
         showNextValue: true,
         nextValue: detail.value,
-        valueScroll: 28, 
+        valueScroll: 28,
       });
-      this.clocker = setTimeout(()=>this.resetValue(detail.value),500);
+      this.clocker = setTimeout(()=>this.resetValue(detail.value), 500);
     }
   }
 
@@ -42,7 +38,7 @@ class MapResourceData extends Component{
     this.setState({
       showNextValue: false,
       currentValue,
-      valueScroll: 0, 
+      valueScroll: 0,
     });
   }
 
@@ -56,11 +52,11 @@ class MapResourceData extends Component{
         <div className={styles.resourceDetail}>
           <div className={styles.detailTop}>
             <div className={styles.value}>
-              <div 
-                className={styles.animationBox} 
+              <div
+                className={styles.animationBox}
                 style={{
                   transform: `translateY(${valueScroll*(-1)}px)`,
-                  transitionDuration: `${showNextValue?'0.5s':'0s'}`
+                  transitionDuration: `${showNextValue?'0.5s':'0s'}`,
                 }}
               >
                 <span className={styles.topValue}>{currentValue}</span>
@@ -72,7 +68,7 @@ class MapResourceData extends Component{
           <div className={styles.name}>{detail.name}</div>
         </div>
       </div>
-    )
+    );
   }
 }
 

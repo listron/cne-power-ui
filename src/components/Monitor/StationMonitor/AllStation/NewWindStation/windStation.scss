@@ -293,9 +293,7 @@
       align-self: flex-start;
     }
 
-    .normal,
-    .interrupt,
-    .notConnected {
+    .windCard {
       margin: 20px 0 0 24px;
       padding: 8px;
       width: 215px;
@@ -321,6 +319,11 @@
       .stationMark {
         color: $themeColor;
       }
+    }
+
+    .normal,
+    .interrupt,
+    .notConnected {
     }
 
     .interrupt {
@@ -458,7 +461,6 @@
   .mapChart {
     display: flex;
     flex: 1;
-    height: 980px;
     @include propContainer();
     .popover {
       width: 235px;
