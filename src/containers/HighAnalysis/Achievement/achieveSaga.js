@@ -30,7 +30,7 @@ function *getQuotaInfo(action) { // 可选指标信息
   try {
     const url = `${APIBasePath}${highAnalysis.getQuotaInfo}`;
     // const url = '/mock/cleanWarning/detail';
-    const response = yield call(request.get, { url });
+    const response = yield call(request.get, url);
     if (response.data.code === '10000') {
       yield put({
         type: achieveAction.fetchSuccess,

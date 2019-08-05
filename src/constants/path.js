@@ -591,6 +591,14 @@ export default {
       // 风电分析
       getAreaStation: '/v3/station/regionstaion', // 区域 - 电站信息
       getQuotaInfo: '/v3/fan/efficiency/indicator', // 风机指标信息
+
+      getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名
+      getLostTrend: '/v3/fan/efficiency/origin/indicatortrend', // 损失根源 - 指标趋势
+      getLostTypes: '/v3/fan/efficiency/origin/lostgenhour', // 损失根源 - 损失电量分解
+      getStopElec: '/v3/fan/efficiency/stopgen', // 停机 - 损失电量
+      getStopRank: '/v3/fan/efficiency/stoprank', // 停机 - 设备停机时长及次数
+      getStopTrend: '/v3/fan/efficiency/stoptrend', // 停机 - 日月年 停机时长次数趋势图
+      getStopTypes: '/v3/fan/efficiency/stoptype', // 停机 - 各类停机时长及次数
     },
   },
 };

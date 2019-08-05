@@ -1,0 +1,55 @@
+
+
+.topSearch{
+  display: flex;
+  justify-content: space-around;
+  padding: 0 24px 0 12px;
+  flex-basis: 76px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.animationBox{
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  .sideToggle{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    cursor: pointer;
+    right: 0;
+    top: 200px;
+  }
+  .eachTab{
+    writing-mode:vertical-lr;
+    cursor: pointer;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    height: 120px;
+    border-radius: 10px 0 0 10px;
+    transition: width 0.2s;
+  }
+  .active{
+    line-height: 34px;
+    width: 34px;
+  }
+}
+
+// 颜色s
+.topSearch{
+  background-color: #fff;
+  border:1px solid #e1e2e2;
+}
+
+.animationBox{
+  .eachTab{
+    color:#ffffff;
+    background-image:linear-gradient(-180deg, #fad961 0%, #f76b1c 100%);
+  }
+  .active{
+    background-image:linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+  }
+}
