@@ -33,6 +33,7 @@ class AutoModal extends Component {
   });
 
   onTreeCheck = (checkedTrees) => {
+    console.log(checkedTrees, 'checkedTrees');
     this.setState({ checkedTrees });
   }
 

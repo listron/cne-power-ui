@@ -10,67 +10,14 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
-const stationData = [{
-  regionName: '山东',
-  stations:	[{
-    stationCode: 56,
-    stationName: '山东平原',
-  }, {
-    stationCode: 560,
-    stationName: '烟台电站',
-  }],
-}, {
-  regionName: '河北',
-  stations:	[{
-    stationCode: 360,
-    stationName: '阳光',
-  }],
-}];
-
-const modesInfo = [{
-  value: 1001123142,
-  label: '金风科技',
-  children: [{
-    value: 'M12011M221M13',
-    label: 'SD-13',
-    children: [{
-      value: 'M12#1',
-      label: 'M12#1',
-    }],
-  }, {
-    value: 'M12011M221M11',
-    label: 'SD-11',
-  }],
-}, {
-  value: 10011231445,
-  label: '湘电',
-  children: [{
-    value: 'M35011M221M221',
-    label: 'XD-221',
-  }, {
-    value: 'M35011M221M222',
-    label: 'XD-222',
-  }],
-}];
-
-const quotaInfo = [
-  {
-    label: '指标编码',
-    value: '指标名称',
-    children: [2, 3].map(m => ({
-      value: m,
-      label: m,
-    })),
-  },
-];
-
 export default class AreaSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
-    // areaStation: PropTypes.array,
-    // quotaInfo: PropTypes.array,
-  }
+    areaStation: PropTypes.array,
+    quotaInfo: PropTypes.array,
+    modesInfo: PropTypes.array,
+  };
 
   constructor(props){
     super(props);
@@ -99,7 +46,7 @@ export default class AreaSearch extends Component {
     });
     this.setState({ stations });
     // 重新请求机型数据
-  }
+  };
 
   onModelChange = (modes) => this.setState({ modes: modes.map(e => e.value) });
 
@@ -107,25 +54,30 @@ export default class AreaSearch extends Component {
 
   onQuotaChange = (quota) => {
     this.setState({ quota });
-  }
+  };
 
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     console.log('请求');
-  }
+  };
 
   resetCharts = () => {
     console.log('重置');
-  }
+  };
 
   render() {
-    // const { areaStation, modesInfo, quotaInfo } = this.props;
+    const {
+      areaStation,
+      modesInfo,
+      quotaInfo,
+    } = this.props;
+    console.log(modesInfo, 'modesInfo');
     const { stations, modes, dates, quota } = this.state;
     return (
       <div className={styles.topSearch}>
         <div>
           <span>选择区域</span>
-          <AreaStation mode="region" data={stationData} value={stations} onChange={this.onAreaChange} />
+          <AreaStation mode="region" data={areaStation} value={stations} onChange={this.onAreaChange} />
         </div>
         <div>
           <span>选择机型</span>
