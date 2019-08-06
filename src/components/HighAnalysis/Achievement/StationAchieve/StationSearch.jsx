@@ -14,6 +14,8 @@ class StationSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
+    chartDevice: PropTypes.string, // chart选中的设备
+    chartTime: PropTypes.string, // chart选中的时间
     history: PropTypes.object,
     areaStation: PropTypes.array,
     quotaInfo: PropTypes.array,
@@ -134,40 +136,45 @@ class StationSearch extends Component {
   }
 
   render() {
-    const { areaStation, modeDevices } = this.props;
+    const { areaStation, modeDevices, chartDevice, chartTime } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
-    console.log(searchCode)
+    const recoveryDisable = !chartDevice && !chartTime;
     return (
       <div className={styles.topSearch}>
-        <div>
-          <span>选择电站</span>
-          <AreaStation
-            data={areaStation}
-            value={[searchCode]}
-            onChange={this.onStationChange}
-            mode="station"
-          />
+        <div className={styles.leftPart}>
+          <div className={styles.eachParts}>
+            <span className={styles.text}>选择电站</span>
+            <AreaStation
+              data={areaStation}
+              value={[searchCode]}
+              onChange={this.onStationChange}
+              mode="station"
+            />
+          </div>
+          <div className={styles.eachParts}>
+            <span className={styles.text}>选择设备</span>
+            <AutoSelect
+              data={modeDevices}
+              value={searchDevice}
+              onChange={this.onDeviceChange}
+              style={{width: '150px'}}
+            />
+          </div>
+          <div className={styles.eachParts}>
+            <span className={styles.text}>选择时间</span>
+            <RangePicker
+              value={[moment(searchDates[0]), moment(searchDates[1])]}
+              onChange={this.onDateChange}
+              style={{width: '220px'}}
+            />
+          </div>
+          <Button onClick={this.queryCharts} className={styles.search}>查询</Button>
         </div>
-        <div>
-          <span>选择设备</span>
-          <AutoSelect
-            data={modeDevices}
-            value={searchDevice}
-            onChange={this.onDeviceChange}
-          />
-        </div>
-        <div>
-          <span>选择时间</span>
-          <RangePicker
-            value={[moment(searchDates[0]), moment(searchDates[1])]}
-            onChange={this.onDateChange}
-            style={{width: '220px'}}
-          />
-        </div>
-        <div>
-          <Button onClick={this.queryCharts}>查询</Button>
-          <Button onClick={this.resetCharts}>恢复图表</Button>
-        </div>
+        <Button
+          onClick={this.resetCharts}
+          disabled={recoveryDisable}
+          className={`${styles.recovery} ${recoveryDisable ? styles.disabled : null}`}
+        >恢复图表</Button>
       </div>
     );
   }
