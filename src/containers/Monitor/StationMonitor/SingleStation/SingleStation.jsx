@@ -70,14 +70,9 @@ const mapStateToProps = state => {
   return ({
     ...state.monitor.singleStation.toJS(),
     stationList: state.common.get('stations').toJS(),
-    // realTimePowerUnit: state.common.get('realTimePowerUnit'),
-    // realTimePowerPoint: state.common.get('realTimePowerPoint'),
-    // realCapacityUnit: state.common.get('realCapacityUnit'),
-    // realCapacityPoint: state.common.get('realCapacityPoint'),
-    // powerUnit: state.common.get('powerUnit'),
-    // powerPoint: state.common.get('powerPoint'),
     monitorPvUnit: state.common.toJS().monitorPvUnit,
-    theme: state.common.get('theme'),
+    // theme: state.common.get('theme'),
+    theme: 'light',
   });
 };
 
