@@ -16,8 +16,6 @@ class ScatterContainer extends React.Component {
       imageListShow: false,
       currentImgIndex: 0,
     };
-
-
   }
   saveImgUrl = (title, src) => {//存储批量下载图片的编码
     const srcArr = [];
@@ -46,15 +44,17 @@ class ScatterContainer extends React.Component {
     });
   }
   changeCurrentImgIndex = (index) => {
+    console.log('index: ', index);
     this.setState({
       currentImgIndex: index,
     });
 
   }
   render() {
-    const { scatterData, newSrcUrl } = this.props;
+    const { scatterData, likeArr } = this.props;
+    // console.log('likeArr: ', likeArr);
     const { currentImgIndex, imageListShow } = this.state;
-
+    // console.log('scatterData', scatterData);
     return (
       <React.Fragment>
         {scatterData.map((e, i) => {
@@ -62,6 +62,8 @@ class ScatterContainer extends React.Component {
             {...this.props}
             key={i}
             index={i}
+            saveBtn={likeArr[i]}
+            id={e.deviceName}
             title={e.deviceName}
             chartData={e.chartData}
             showImg={this.showImg}
@@ -71,6 +73,7 @@ class ScatterContainer extends React.Component {
         <span ref={'date'}></span>
         {
           <SingleStationModal
+            {...this.props}
             data={scatterData}
             imageListShow={imageListShow}
             hideImg={this.hideImg}

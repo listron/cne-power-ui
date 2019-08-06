@@ -17,6 +17,7 @@ var initState = Immutable.fromJS({
   yPointName: '',
   srcObj: {},
   newSrcUrl: [],
+  likeArr: [],
 
 
 

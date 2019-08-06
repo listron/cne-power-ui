@@ -7,17 +7,19 @@ import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
 
 class SingleScatter extends React.Component {
   static propTypes = {
-    title: PropTypes.string,
+    // title: PropTypes.string,
     xPointName: PropTypes.string,
     yPointName: PropTypes.string,
+    id: PropTypes.string,
     saveImgUrl: PropTypes.func,
     showImg: PropTypes.func,
+    saveBtn: PropTypes.boolean,
     // chartData: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
     this.state = {
-      saveBtn: false,
+      // saveBtn: false,
     };
   }
   componentDidMount() {
@@ -25,48 +27,40 @@ class SingleScatter extends React.Component {
 
   }
   componentWillReceiveProps(nextProps) {
+
     if (nextProps.xPointName !== this.props.xPointName && nextProps.yPointName !== this.props.yPointName) {
       this.drawChart(nextProps);
-      this.setState({ saveBtn: false });
-
+      // this.setState({ saveBtn: false });
     }
-  }
-  base64Img2Blob = (code) => {
-    if (code) {
-      var parts = code.split(';base64,');
-      var contentType = parts[0].split(':')[1];
-      var raw = window.atob(parts[1]);
-      var rawLength = raw.length;
-      var uInt8Array = new Uint8Array(rawLength);
-      for (var i = 0; i < rawLength; ++i) {
-        uInt8Array[i] = raw.charCodeAt(i);
-      }
-      return new Blob([uInt8Array], { type: contentType });
+    if (nextProps.id !== this.props.id || nextProps.saveBtn !== this.props.saveBtn) {
+      console.log('this.props.saveBtn: ', this.props.saveBtn);
+      console.log('nextProps.saveBtn: ', nextProps.saveBtn);
+      this.drawChart(nextProps, true);
+      // const scatterChart = echarts.init(document.getElementById(this.props.id));
+      // scatterChart.clear();
     }
-    return;
-  }
-  downloadFile = (fileName, content) => {
-    var blob = this.base64Img2Blob(content); //new Blob([content]);
-    var aLink = document.createElement('a');
-    // var evt = document.createEvent('HTMLEvents');
-    // evt.initEvent('click', false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-    const evt = document.createEvent('HTMLEvents');
-    evt.initEvent('click', true, true);
-    aLink.download = fileName;
-    aLink.href = URL.createObjectURL(blob);
-    // aLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-    aLink.click();
 
   }
+
   format = (val) => {
     if (val) {
       return val.split('').join('\n');
     }
     return val;
   }
-  drawChart = (params) => {
-    const { title, xPointName, yPointName, chartData = [] } = params;
-    const scatterChart = echarts.init(document.getElementById(title));
+
+  drawChart = (params, change) => {
+    // console.log('params: ', params);
+    const { title, xPointName, yPointName, chartData = [], saveBtn, likeArr, index, changeToolStore } = params;
+    console.log('index: ', index);
+    // console.log('saveBtn: ', saveBtn);
+    console.log('likeArr: ', likeArr);
+    const scatterChart = echarts.init(this.chartId);
+    // console.log(this.chartId);
+    // if (change) {
+    //   scatterChart.dispose();
+    //   scatterChart = echarts.init(this.chartId);
+    // }
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -84,8 +78,8 @@ class SingleScatter extends React.Component {
               width: 40,
               align: 'center',
               backgroundColor: {
-                image: '/img/wind04.png',
-                color: 'yellow',
+                image: saveBtn ? '/img/wind01.png' : '/img/wind04.png',
+
               },
             },
 
@@ -212,29 +206,36 @@ class SingleScatter extends React.Component {
     };
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
-      this.setState({ saveBtn: !this.state.saveBtn }, scatterChart.setOption({
-        title: {
-          // text: title,
-          text: [`${title}`, '{b|}'].join(''),
-          left: '5%',
-          textStyle: {
-            fontSize: 14,
-            rich: {
-              b: {
-                height: 40,
-                width: 40,
-                align: 'center',
-                backgroundColor: {
-                  image: !this.state.saveBtn ? '/img/wind01.png' : '/img/wind04.png',
-                  color: 'yellow',
-                },
-              },
-            },
-          },
-          triggerEvent: true,
-        },
-      }));
+      likeArr[index] = !saveBtn;
+      changeToolStore({
+        likeArr,
+      });
+      // scatterChart.setOption({
+      //   title: {
+      //     // text: title,
+      //     text: [`${title}`, '{b|}'].join(''),
+      //     left: '5%',
+      //     textStyle: {
+      //       fontSize: 14,
+      //       rich: {
+      //         b: {
+      //           height: 40,
+      //           width: 40,
+      //           align: 'center',
+      //           backgroundColor: {
+      //             image: likeArr[index] ? '/img/wind01.png' : '/img/wind04.png',
+      //             color: 'yellow',
+      //           },
+      //         },
+      //       },
+      //     },
+      //     triggerEvent: true,
+      //   },
+      // });
+
+
     });
+
     scatterChart.setOption(option, 'notMerge');
     scatterChart.resize();
     scatterChart.on('rendered', () => {
@@ -244,14 +245,14 @@ class SingleScatter extends React.Component {
       });
       this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
+
   }
   render() {
-    const { title, index, showImg } = this.props;
-
+    const { id, index, showImg } = this.props;
     return (
       <div className={styles.chartWrap}>
         <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />
-        <div id={title} className={styles.scatterStyle}></div>
+        <div ref={(ref) => { this.chartId = ref; }} className={styles.scatterStyle}></div>
       </div>
     );
   }
