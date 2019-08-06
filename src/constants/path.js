@@ -592,6 +592,7 @@ export default {
       getAreaStation: '/v3/station/regionstaion', // 区域 - 电站信息
       getQuotaInfo: '/v3/fan/efficiency/indicator', // 风机指标信息
 
+      getDevices: '/v3/ledeger/devicetype', // 电站的设备型号+设备列表
       getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名
       getLostTrend: '/v3/fan/efficiency/origin/indicatortrend', // 损失根源 - 指标趋势
       getLostTypes: '/v3/fan/efficiency/origin/lostgenhour', // 损失根源 - 损失电量分解

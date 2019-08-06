@@ -14,6 +14,19 @@ function* easyPut(actionName, payload){
   });
 }
 
+function *getDevices(){
+  const url = `${APIBasePath}${highAnalysis.getDevices}`;
+  try {
+    const response = yield call(request.post, url, {
+      stationCodes: [56],
+      deviceTypeCode: 101,
+    });
+    console.log(response);
+  } catch (error) {
+    return; // 继续吞错误，就是这么任性
+  }
+}
+
 function *getLostRank(){ // 损失根源 - 指标排名
   const url = `${APIBasePath}${highAnalysis.getLostRank}`;
   try {
@@ -130,6 +143,7 @@ function *getStopTypes(){ // 停机 - 各类停机时长及次数
 }
 
 export function* watchStationAhieve() {
+  yield takeLatest(stationAchieveAction.getDevices, getDevices);
   yield takeLatest(stationAchieveAction.getLostRank, getLostRank);
   yield takeLatest(stationAchieveAction.getLostTrend, getLostTrend);
   yield takeLatest(stationAchieveAction.getLostTypes, getLostTypes);
