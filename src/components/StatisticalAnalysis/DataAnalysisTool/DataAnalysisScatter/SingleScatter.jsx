@@ -11,6 +11,7 @@ class SingleScatter extends React.Component {
     xPointName: PropTypes.string,
     yPointName: PropTypes.string,
     saveImgUrl: PropTypes.func,
+    showImg: PropTypes.func,
     // chartData: PropTypes.array,
   }
   constructor(props, context) {
@@ -241,14 +242,15 @@ class SingleScatter extends React.Component {
         pixelRatio: 2,
         backgroundColor: '#fff',
       });
-      this.props.saveImgUrl(title, imgUrl);
+      this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
   }
   render() {
-    const { title } = this.props;
+    const { title, index, showImg } = this.props;
 
     return (
       <React.Fragment>
+        <Icon type="left" onClick={() => showImg(index)} className={styles.showModalInco} />
         <div id={title} className={styles.scatterStyle}></div>
       </React.Fragment>
     );
