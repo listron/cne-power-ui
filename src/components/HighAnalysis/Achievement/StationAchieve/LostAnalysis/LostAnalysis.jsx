@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChartLostRank from './ChartLostRank';
+import ChartLostTrend from './ChartLostTrend';
+import ChartLostTypes from './ChartLostTypes';
 import styles from './lost.scss';
 
 class LostAnalysis extends Component {
@@ -21,10 +23,8 @@ class LostAnalysis extends Component {
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <ChartLostRank lostRank={lostRank} lostRankLoading={lostRankLoading} />
-        <div>
-          <div>pba趋势图</div>
-          <div>损失电量分解图</div>
-        </div>
+        <ChartLostTrend lostRank={lostRank} lostRankLoading={lostRankLoading} />
+        <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} />
       </div>
     );
   }

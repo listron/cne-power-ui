@@ -63,9 +63,34 @@ class StationAchieve extends Component {
 
   render() {
     const { active, changeStore } = this.props;
+    const modeDevices = [{
+      value: 1001123142,
+      label: '金风科技',
+      children: [{
+        value: 'M12011M221M13',
+        label: 'SD-13',
+        children: [{
+          value: 'M12#1',
+          label: 'M12#1',
+        }],
+      }, {
+        value: 'M12011M221M11',
+        label: 'SD-11',
+      }],
+    }, {
+      value: 10011231445,
+      label: '湘电',
+      children: [{
+        value: 'M35011M221M221',
+        label: 'XD-221',
+      }, {
+        value: 'M35011M221M222',
+        label: 'XD-222',
+      }],
+    }];
     return (
       <div className={styles.stationAchieve} >
-        <StationSearch {...this.props} />
+        <StationSearch {...this.props} modeDevices={modeDevices} />
         <AnimationBox changeStore={changeStore} active={active}>
           <LostAnalysis {...this.props} active={active === 'lost'} />
           <div
@@ -84,10 +109,13 @@ class StationAchieve extends Component {
 
 const mapStateToProps = (state) => ({
   ...state.highAanlysisReducer.achieveStation.toJS(),
+  areaStation: state.highAanlysisReducer.achieveLayout.get('areaStation').toJS(),
+  quotaInfo: state.highAanlysisReducer.achieveLayout.get('quotaInfo').toJS(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: stationAchieveAction.changeStore, payload }),
+  getDevices: payload => dispatch({ type: stationAchieveAction.getDevices, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);

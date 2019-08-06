@@ -85,7 +85,7 @@ class ChartLostRank extends Component {
   render() {
     return (
       <div className={styles.lostRank}>
-        <div className={styles.lostTop}>
+        <div className={styles.top}>
           <span className={styles.title}>
             风机pba排名
           </span>
@@ -100,7 +100,7 @@ class ChartLostRank extends Component {
             </span>
           </span>
         </div>
-        <div className={styles.rankChart} ref={(ref)=> {this.rankRef = ref;}} />
+        <div className={styles.chart} ref={(ref)=> {this.rankRef = ref;}} />
       </div>
     );
   }

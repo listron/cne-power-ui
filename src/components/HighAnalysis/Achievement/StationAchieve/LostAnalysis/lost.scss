@@ -1,14 +1,14 @@
 @import '../stationStyle.scss';
 
 .lostAnalysis{
-  .lostRank{
-    display: flex;
-    height: 338px;
+  display: flex;
+  flex-wrap: wrap;
+  .lostRank, .lostTrend, .lostTypes{
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 0 24px;
-    .lostTop{
+    height: 338px;
+    .top{
       width: 100%;
       flex: 0 0 56px;
       display: flex;
@@ -18,6 +18,13 @@
     .title{
       font-weight: 600;
     }
+    .chart{
+      flex: 1;
+      width: 100%;
+    }
+  }
+  .lostRank{
+    width: 100%;
     .handle{
       .eachHandle{
         margin-right: 24px;
@@ -26,20 +33,21 @@
         margin-right: 4px;
       }
     }
-    .rankChart{
-      flex: 1;
-      width: 100%;
-    }
+  }
+  .lostTrend, .lostTypes{
+    width: 50%;
   }
 }
 
 // 颜色
 .lostAnalysis{
   background-color: lightblue;
-  .lostRank .lostTop .title{
-    color: #000;
-  }
-  .lostRank .lostTop .handle{
-    color: #666;
+  .lostRank, .lostTrend, .lostTypes{
+    .top .title{
+      color: #000;
+    }
+    .top .handle{
+      color: #666;
+    }
   }
 }

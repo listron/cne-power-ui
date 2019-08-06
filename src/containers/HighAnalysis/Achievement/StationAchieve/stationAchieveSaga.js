@@ -14,11 +14,12 @@ function* easyPut(actionName, payload){
   });
 }
 
-function *getDevices(){
+function *getDevices({ payload }){
   const url = `${APIBasePath}${highAnalysis.getDevices}`;
   try {
+    const { stationCode } = payload || {};
     const response = yield call(request.post, url, {
-      stationCodes: [56],
+      stationCodes: [stationCode],
       deviceTypeCode: 101,
     });
     console.log(response);

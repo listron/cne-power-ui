@@ -23,7 +23,7 @@ const initState = immutable.fromJS({
   chartTime: null, // chart选中的时间
   chartTimeMode: 'month', // chart选中时间格式 - month year day
 
-  devices: [], // 电站 设备型号+设备集合
+  modeDevices: [], // 电站 设备型号+设备集合
   lostRank: [], // 损失根源 - 指标排名
   lostRankLoading: false,
   lostTrend: [], // 损失根源 - 指标趋势
