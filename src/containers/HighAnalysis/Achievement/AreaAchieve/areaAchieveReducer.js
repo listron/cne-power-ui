@@ -4,11 +4,11 @@ export const areaAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  testArea: Symbol('testArea'),
+  getStationCapacity: Symbol('getStationCapacity'),
 };
 
 const initState = immutable.fromJS({
-  testAreaInfo: [],
+  capacityInfo: [],
 });
 
 export const achieveArea = (state = initState, action) => {
