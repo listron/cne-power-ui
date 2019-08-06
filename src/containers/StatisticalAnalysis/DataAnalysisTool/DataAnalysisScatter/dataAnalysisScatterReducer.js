@@ -15,6 +15,8 @@ var initState = Immutable.fromJS({
   endTime: '',
   xPointName: '',
   yPointName: '',
+  srcObj: {},
+  newSrcUrl: [],
 
 
 

@@ -10,6 +10,7 @@ class SingleScatter extends React.Component {
     title: PropTypes.string,
     xPointName: PropTypes.string,
     yPointName: PropTypes.string,
+    saveImgUrl: PropTypes.func,
     // chartData: PropTypes.array,
   }
   constructor(props, context) {
@@ -20,16 +21,48 @@ class SingleScatter extends React.Component {
   }
   componentDidMount() {
     this.drawChart(this.props);
-    console.log('1');
+
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.xPointName !== this.props.xPointName && nextProps.yPointName !== this.props.yPointName) {
       this.drawChart(nextProps);
       this.setState({ saveBtn: false });
-      console.log('2');
+
     }
   }
+  base64Img2Blob = (code) => {
+    if (code) {
+      var parts = code.split(';base64,');
+      var contentType = parts[0].split(':')[1];
+      var raw = window.atob(parts[1]);
+      var rawLength = raw.length;
+      var uInt8Array = new Uint8Array(rawLength);
+      for (var i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    }
+    return;
+  }
+  downloadFile = (fileName, content) => {
+    var blob = this.base64Img2Blob(content); //new Blob([content]);
+    var aLink = document.createElement('a');
+    // var evt = document.createEvent('HTMLEvents');
+    // evt.initEvent('click', false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+    const evt = document.createEvent('HTMLEvents');
+    evt.initEvent('click', true, true);
+    aLink.download = fileName;
+    aLink.href = URL.createObjectURL(blob);
+    // aLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+    aLink.click();
 
+  }
+  format = (val) => {
+    if (val) {
+      return val.split('').join('\n');
+    }
+    return val;
+  }
   drawChart = (params) => {
     const { title, xPointName, yPointName, chartData = [] } = params;
     const scatterChart = echarts.init(document.getElementById(title));
@@ -99,10 +132,12 @@ class SingleScatter extends React.Component {
         name: xPointName,
         nameTextStyle: {
           color: lineColor,
+          fontSize: 18,
           verticalAlign: 'bottom',
           lineHeight: 40,
           padding: [60, 0, 0, 0],
         },
+        nameLocation: 'center',
         axisTick: {
           show: false,
         },
@@ -127,10 +162,16 @@ class SingleScatter extends React.Component {
       },
       yAxis: [
         {
-          name: yPointName,
+          name: this.format(yPointName),
+          nameRotate: 360,
           type: 'value',
+          nameLocation: 'center',
           nameTextStyle: {
             color: lineColor,
+            fontSize: 18,
+            padding: [0, 20, 60, 20],
+
+
           },
 
           splitLine: {
@@ -170,8 +211,6 @@ class SingleScatter extends React.Component {
     };
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
-      console.log('params: ', params);
-      console.log('saveBtn: ', this.state.saveBtn);
       this.setState({ saveBtn: !this.state.saveBtn }, scatterChart.setOption({
         title: {
           // text: title,
@@ -189,45 +228,41 @@ class SingleScatter extends React.Component {
                   color: 'yellow',
                 },
               },
-
             },
           },
           triggerEvent: true,
         },
       }));
     });
-
     scatterChart.setOption(option, 'notMerge');
     scatterChart.resize();
-    const img = new Image();
-    // const imgUrl = scatterChart.toDataURL('image/jpeg');
-    const imgUrl = scatterChart.getDataURL();
-    // console.log('imgUrl: ', imgUrl);
-    img.src = imgUrl;
-    var $a = document.createElement('a');
-    $a.setAttribute('href', img);
-    $a.setAttribute('download', 'echarts图片下载');
-
-    // $a.click();
-
-
+    scatterChart.on('rendered', () => {
+      const imgUrl = scatterChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      this.props.saveImgUrl(title, imgUrl);
+    });
   }
-  // savaFun = (params) => {
-  //   console.log('params: ', params);
-  //   const { event: { topTarget: { style: { rich: { b: { textBackgroundColor } } } } } } = params;
-  //   console.log('textBackgroundColor: ', textBackgroundColor);
-  //   console.log('title');
-
-  // }
-
   render() {
     const { title } = this.props;
-    return (
 
-      <div id={title} className={styles.scatterStyle}>
-      </div>
+    return (
+      <React.Fragment>
+        <div id={title} className={styles.scatterStyle}></div>
+      </React.Fragment>
     );
   }
 }
-export default (SingleScatter)
-  ;
+export default (SingleScatter);
+
+      // this.downloadFile(title, imgUrl);
+      // const img = new Image();
+      // img.src = scatterChart.getDataURL({
+      // pixelRatio: 2,
+      // backgroundColor: '#fff',
+      // });
+      // var $a = document.createElement('a');
+      // $a.setAttribute('href', img.src);
+      // $a.setAttribute('download', title);
+      // $a.click();

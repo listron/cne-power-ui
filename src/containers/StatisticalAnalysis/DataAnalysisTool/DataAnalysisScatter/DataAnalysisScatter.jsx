@@ -15,6 +15,9 @@ class DataAnalysisScatter extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  componentWillUnmount() {
+    this.props.resetStore();
+  }
 
   render() {
     const breadCrumbData = { breadData: [{ name: '散点图' }] };
