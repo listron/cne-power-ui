@@ -16,7 +16,12 @@ class AreaAchieve extends Component {
     getStationCapacity: PropTypes.func,
     getQuotaInfo: PropTypes.func,
     getModesInfo: PropTypes.func,
+    getLostGenHour: PropTypes.func,
+    getTrendInfo: PropTypes.func,
+    getIndicatorRank: PropTypes.func,
+    getIndicatorRankTotal: PropTypes.func,
     location: PropTypes.object,
+    rankTotal: PropTypes.array,
   };
 
   componentDidMount(){
@@ -28,15 +33,62 @@ class AreaAchieve extends Component {
       regionName: ['河南'],
     };
     const a = {
-      'deviceModes': [55],
-      'regionName': ['山东'],
+      'deviceModes': null,
+      'regionName': ['蒙东'],
       'startTime': '2018-07-01 01:01:01',
       'endTime': '2019-07-31 01:01:01',
+      'stationCodes': [27, 28, 30, 16, 17, 18],
+      'manufactorIds': null,
+    };
+    const b = {
+      'indicatorCode': 101,
+      'stationCodes': [],
+      'startTime': '2014-04-01',
+      'endTime': '2015-01-01',
+      'manufactorIds': [
+        '69',
+      ],
+      'deviceModes': [
+        35,
+      ],
+    };
+    const c = {
+      'regionName': [
+        '安徽',
+      ],
+      'indicatorCode': 101,
+      'stationCodes': [
+        73,
+        74,
+        76,
+      ],
+      'startTime': '2014-01-01 01:01:01',
+      'endTime': '2019-07-31 01:01:01',
+      'type': 2,
+    };
+    const d = {
+      'indicatorCode': 101,
+      'stationCodes': [
+        73,
+      ],
+      'startTime': '2018-07-01 01:01:01',
+      'endTime': '2019-07-31 01:01:01',
+    };
+    const e = {
+      'deviceModes': null,
+      'regionName': ['安徽'],
+      'indicatorCode': '102',
+      'startTime': '2018-07-01',
+      'endTime': '2019-07-31',
       'stationCodes': null,
       'manufactorIds': null,
     };
     this.props.getModesInfo(params);
     this.props.getStationCapacity(a);
+    this.props.getLostGenHour(b);
+    this.props.getTrendInfo(c);
+    this.props.getIndicatorRank(d);
+    this.props.getIndicatorRankTotal(e);
   }
 
   componentWillReceiveProps(nextProps){
@@ -47,20 +99,25 @@ class AreaAchieve extends Component {
   }
 
   render() {
+    const { rankTotal } = this.props;
     return (
       <div className={styles.areaAchieveBox}>
         <AreaSearch {...this.props} />
         <div className={styles.areaTitle}>
-          湖南：PBA 89%
+          {1 === 2 ? (
+            <span>{`${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}`}</span>
+          ) : (
+            <span>{`${rankTotal[0].regionName}: 实发小时数${rankTotal[0].indicatorData.actualGen} 应发小时数${rankTotal[0].indicatorData.theoryGen}`}</span>
+          )}
         </div>
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
             <AreaChart {...this.props} />
-            <StationPBAChart />
+            <StationPBAChart {...this.props} />
           </div>
           <div className={styles.areaBottomChart}>
-            <AreaTrendChart />
-            <AreaLossChart />
+            <AreaTrendChart {...this.props} />
+            <AreaLossChart {...this.props} />
           </div>
         </div>
       </div>
@@ -73,7 +130,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getStationCapacity: () => dispatch({type: areaAchieveAction.getStationCapacity}),
+  getStationCapacity: (payload) => dispatch({type: areaAchieveAction.getStationCapacity, payload}),
+  getLostGenHour: (payload) => dispatch({type: areaAchieveAction.getLostGenHour, payload}),
+  getTrendInfo: (payload) => dispatch({type: areaAchieveAction.getTrendInfo, payload}),
+  getIndicatorRank: (payload) => dispatch({type: areaAchieveAction.getIndicatorRank, payload}),
+  getIndicatorRankTotal: (payload) => dispatch({type: areaAchieveAction.getIndicatorRankTotal, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaAchieve);

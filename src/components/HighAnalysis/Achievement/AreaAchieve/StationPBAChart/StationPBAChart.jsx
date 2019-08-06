@@ -7,6 +7,7 @@ import styles from './stationPBAChart.scss';
 export default class StationPBAChart extends Component {
 
   static propTypes = {
+    indicatorRankInfo: PropTypes.array,
   };
 
   componentDidMount() {
@@ -16,18 +17,37 @@ export default class StationPBAChart extends Component {
   }
 
   drawChart = () => {
+    const { indicatorRankInfo } = this.props;
+    const dataSeries = indicatorRankInfo && indicatorRankInfo.map(cur => {
+      const obj = {};
+      obj.name = cur.stationName;
+      obj.type = 'bar';
+      obj.barWidth = '10';
+      obj.itemStyle = {
+        barBorderRadius: [5, 5, 0, 0],
+      };
+      obj.data = [cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0'];
+      return obj;
+    });
     return {
       color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
-        axisPointer: { // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+        position: function (pt) {
+          return [pt[0], '10%'];
+        },
+        formatter: (params) => {
+          return `<div>
+        <span>${params[0].name}</span><br />${params[0].marker}<span>PBA </span><span>${params[0].value}%</span>
+      </div>`;
         },
       },
       xAxis: [
         {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: indicatorRankInfo && indicatorRankInfo.map(cur => {
+            return cur.stationName || '--';
+          }),
           axisTick: {
             alignWithLabel: true,
           },
@@ -37,6 +57,8 @@ export default class StationPBAChart extends Component {
         {
           type: 'value',
           name: 'PBA',
+          min: 0,
+          max: 100,
         },
       ],
       dataZoom: [{
@@ -51,18 +73,9 @@ export default class StationPBAChart extends Component {
           shadowOffsetX: 2,
           shadowOffsetY: 2,
         },
+        textStyle: false,
       }],
-      series: [
-        {
-          name: '直接访问',
-          type: 'bar',
-          barWidth: '10',
-          itemStyle: {
-            barBorderRadius: [5, 5, 0, 0],
-          },
-          data: [10, 52, 200, 334, 390, 330, 220],
-        },
-      ],
+      series: dataSeries,
     };
   };
 

@@ -8,6 +8,7 @@ import styles from './areaLossChart.scss';
 export default class AreaLossChart extends Component {
 
   static propTypes = {
+    lostGenHourInfo: PropTypes.object,
   };
 
   componentDidMount() {
@@ -17,6 +18,12 @@ export default class AreaLossChart extends Component {
   }
 
   drawChart = () => {
+    const {
+      lostGenHourInfo: {
+        dataArr,
+        basicArr,
+      },
+    } = this.props;
     return {
       color: ['#3398DB'],
       tooltip: {
@@ -36,7 +43,13 @@ export default class AreaLossChart extends Component {
       xAxis: {
         type: 'category',
         splitLine: {show: false},
-        data: ['总费用', '房租', '水电费', '交通费', '伙食费', '日用品数'],
+        data: ['应发小时', '降容损失', '风机故障', '变电故障', '场外因素', '计划停机', '其他损失', '实发小时'],
+        axisLabel: {
+          interval: 0,
+        },
+        axisTick: {
+          alignWithLabel: true,
+        },
       },
       yAxis: [
         {
@@ -60,7 +73,7 @@ export default class AreaLossChart extends Component {
               color: 'rgba(0,0,0,0)',
             },
           },
-          data: [0, 1700, 1400, 1200, 300, 0],
+          data: basicArr,
         },
         {
           name: '生活费',
@@ -73,7 +86,7 @@ export default class AreaLossChart extends Component {
               position: 'top',
             },
           },
-          data: [2900, 1200, 300, 200, 900, 300],
+          data: dataArr,
         },
       ],
     };

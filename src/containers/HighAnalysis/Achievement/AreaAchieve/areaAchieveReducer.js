@@ -5,10 +5,25 @@ export const areaAchieveAction = {
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
   getStationCapacity: Symbol('getStationCapacity'),
+  getLostGenHour: Symbol('getLostGenHour'),
+  getTrendInfo: Symbol('getTrendInfo'),
+  getIndicatorRank: Symbol('getIndicatorRank'),
+  getIndicatorRankTotal: Symbol('getIndicatorRankTotal'),
 };
 
 const initState = immutable.fromJS({
   capacityInfo: [],
+  lostGenHourInfo: {},
+  trendInfo: [],
+  indicatorRankInfo: [],
+  rankTotal: [{
+    regionName: '',
+    indicatorData: {
+      value: 0,
+      actualGen: 0,
+      theoryGen: 0,
+    },
+  }],
 });
 
 export const achieveArea = (state = initState, action) => {

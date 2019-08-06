@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import eCharts from 'echarts';
 import PropTypes from 'prop-types';
+import eCharts from 'echarts';
 
 import styles from './areaChart.scss';
 
@@ -18,6 +18,13 @@ export default class AreaChart extends Component {
 
 
   drawChart = () => {
+    const { capacityInfo } = this.props;
+    const childrenArr = capacityInfo.map(cur => {
+      const obj = {};
+      obj.name = cur.stationName;
+      obj.value = cur.stationCapacity;
+      return obj;
+    });
     return {
       series: [{
         type: 'treemap',
@@ -33,27 +40,7 @@ export default class AreaChart extends Component {
           borderWidth: 1,
         },
         nodeClick: 'link',
-        data: [{
-          name: 'nodeA', // First tree
-          value: 10,
-          children: [{
-            name: 'nodeAa', // First leaf of first tree
-            value: 4,
-          }, {
-            name: 'nodeAb', // Second leaf of first tree
-            value: 6,
-          }],
-        }, {
-          name: 'nodeB', // Second tree
-          value: 20,
-          children: [{
-            name: 'nodeBa', // First leaf of first tree
-            value: 15,
-          }, {
-            name: 'nodeABb', // Second leaf of first tree
-            value: 5,
-          }],
-        }],
+        data: childrenArr,
       }],
     };
   };
