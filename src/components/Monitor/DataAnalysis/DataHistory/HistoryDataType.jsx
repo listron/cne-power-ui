@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './historyStyle.scss';
 import moment from 'moment';
 import path from '../../../../constants/path';
+import cookie from 'js-cookie';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -44,11 +45,12 @@ class HistoryDataType extends Component {
 
   exportHistory = () => { // '导出历史数据excel'
     const { downLoadFile, queryParam, enterpriseId } = this.props;
+    const enterpriseCode = cookie.get('enterpriseCode');
     const url = `${APIBasePath}${monitor.exportHistory}`;
     let { startTime, endTime, deviceFullCodes, devicePoints } = queryParam;
     startTime = moment(startTime).utc().format();
     endTime = moment(endTime).utc().format();
-    const timeZone = moment().zone() / (-60); // utc时区获取
+    const timeZone = moment().utcOffset() / 60; // utc时区获取
     downLoadFile({ // 
       url,
       fileName: `${startTime}至${endTime}历史数据.xlsx`,
@@ -57,6 +59,7 @@ class HistoryDataType extends Component {
         deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
         devicePoints: devicePoints.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
         enterpriseId,
+        enterpriseCode,
         timeZone,
         startTime,
         endTime,

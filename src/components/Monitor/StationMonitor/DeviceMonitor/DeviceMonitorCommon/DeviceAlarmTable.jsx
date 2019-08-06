@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './deviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Button, Table, Icon } from 'antd';
+import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 const warningLevelArray = [{
   levelName: '一级',
-  levelColor: '#a42b2c'
+  levelColor: '#a42b2c',
 }, {
   levelName: '二级',
-  levelColor: '#e08031'
+  levelColor: '#e08031',
 }, {
   levelName: '三级',
-  levelColor: '#f9b600'
+  levelColor: '#f9b600',
 }, {
   levelName: '四级',
-  levelColor: '#fbe6e3'
+  levelColor: '#fbe6e3',
 }];
 class DeviceAlarmTable extends Component {
 
@@ -32,8 +32,8 @@ class DeviceAlarmTable extends Component {
   }
 
   static defaultProps = {
-    titleName:false,
-    style:{ padding: `0px 68px 48px 68px`}
+    titleName: false,
+    style: { padding: '0px 68px 48px 68px'},
   }
 
   constructor(props) {
@@ -43,14 +43,14 @@ class DeviceAlarmTable extends Component {
       currentPage: 1,
       sortName: 'warningLevel',
       descend: false,
-    }
+    };
   }
 
   ontableSort = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
-      descend: sorter.order === 'descend'
-    })
+      descend: sorter.order === 'descend',
+    });
   }
 
   initColumn = () => {
@@ -66,8 +66,8 @@ class DeviceAlarmTable extends Component {
             <span style={{ color: warningInfor.levelColor, border: `1px solid ${warningInfor.levelColor}` }} className={styles.level}>
               {warningInfor.levelName}
             </span>
-          )
-        }
+          );
+        },
       }, {
         title: '告警类型',
         dataIndex: 'warningConfigName',
@@ -82,19 +82,19 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'timeOn',
         key: 'timeOn',
         sorter: true,
-        render: (text) => moment(text).format('YYYY-MM-DD HH:mm')
+        render: (text) => moment(text).format('YYYY-MM-DD HH:mm'),
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
         key: 'durationTime',
         sorter: true,
       },
-    ]
+    ];
     return columns;
   }
 
   changePagination = ({ pageSize, currentPage }) => {
-    this.setState({ pageSize, currentPage })
+    this.setState({ pageSize, currentPage });
   }
 
   createTableSource = (data) => { // 数据源的排序，翻页
@@ -127,7 +127,7 @@ class DeviceAlarmTable extends Component {
     // }else if(maxPage < currentPage){ // 当前页已超出
     //   currentPage = maxPage;
     // }
-    return tableSource
+    return tableSource;
   }
 
   render() {
@@ -135,7 +135,7 @@ class DeviceAlarmTable extends Component {
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
-    const {deviceName}=deviceDetail
+    const {deviceName}=deviceDetail;
     return (
       <div className={styles.alarmTable} style={style}>
         {/* <div className={styles.alarmTip}>
@@ -145,8 +145,8 @@ class DeviceAlarmTable extends Component {
         <h3>实时告警</h3>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
-             <Link to={{pathname:`/monitor/alarm/history`,
-                search:`?stationCode=${stationCode}`,state:{deviceName}}}> 查看历史告警  </Link>
+             <Link to={{pathname: '/monitor/alarm/history',
+                search: `?stationCode=${stationCode}`, state: {deviceName}}}> 查看历史告警  </Link>
           </Button>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={deviceAlarmList.length} />
         </div>
@@ -159,7 +159,7 @@ class DeviceAlarmTable extends Component {
         // loading={loading}
         />
       </div>
-    )
+    );
   }
 
 }

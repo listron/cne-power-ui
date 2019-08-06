@@ -85,7 +85,7 @@ class DeviceStatus extends Component {
     const url = `${APIBasePath}${monitor.exportDeviceStatus}`;
     const { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, downLoadFile } = this.props;
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod };
-    const timeZone = moment().zone();
+    const timeZone = moment().utcOffset();
     // const modeType = ['状态', '区域', '电站', '型号', '风机','设备状态'];
     // const dateTypes = ['日', '日', '月', '年', '自定义'];
     downLoadFile({
@@ -95,7 +95,7 @@ class DeviceStatus extends Component {
         ...params,
         // startTime: moment(startTime).utc().format(),
         // endTime: moment(endTime).utc().format(),
-        timeZone: timeZone / -60,
+        timeZone: timeZone / 60,
       },
     });
   }

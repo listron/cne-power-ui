@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './homeParts.scss';
 import PropTypes from 'prop-types';
-import { dataFormat } from '../../../utils/utilFunc';
+import { dataFormat } from '../../../../utils/utilFunc';
 
 class AlarmList extends Component{
   static propTypes = {

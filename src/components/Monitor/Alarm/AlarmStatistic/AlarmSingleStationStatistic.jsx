@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './alarmStatistic.scss';
 import { Icon, DatePicker, Select, Tabs } from 'antd';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import AlarmSingleStationGraph from './AlarmSingleStationGraph';
 import AlarmSingleStationTable from './AlarmSingleStationTable';
 import ChangeStation from '../../StationMonitor/SingleStation/SingleStationCommon/ChangeStation';
 import moment from 'moment';
+import { dataFormat } from '../../../../utils/utilFunc';
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
 const TabPane = Tabs.TabPane;
@@ -41,7 +42,7 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.showPage === 'single') {
+    if (this.props.showPage === 'single') {
       const { singleStationCode, summaryType, orderField, orderCommand } = this.props;
       const { pageNum, pageSize } = this.state;
       this.props.getSingleStationAlarmStatistic({
@@ -52,7 +53,7 @@ class ALarmSingleStationStatistic extends React.Component {
         pageSize,
         pageNum,
         orderField,
-        orderCommand
+        orderCommand,
       });
     }
   }
@@ -60,7 +61,7 @@ class ALarmSingleStationStatistic extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { startTime, endTime, summaryType, singleStationCode, orderField, orderCommand, showPage } = nextProps;
     const { pageSize, pageNum } = this.state;
-    if(singleStationCode !== this.props.singleStationCode && showPage === 'single') {
+    if (singleStationCode !== this.props.singleStationCode && showPage === 'single') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime: startTime,
@@ -69,7 +70,7 @@ class ALarmSingleStationStatistic extends React.Component {
         pageSize,
         pageNum,
         orderField,
-        orderCommand
+        orderCommand,
       });
     }
   }
@@ -77,30 +78,30 @@ class ALarmSingleStationStatistic extends React.Component {
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.setState({
       pageNum: currentPage,
-      pageSize
-    })
+      pageSize,
+    });
   }
 
   onChangeFilter = (obj) => {
     const { singleStationCode, startTime, endTime, summaryType, orderField, orderCommand } = this.props;
     const { pageSize } = this.state;
-    let filter = {
+    const filter = {
       stationCode: singleStationCode,
       startTime,
       endTime,
       summaryType,
       pageSize,
       orderField,
-      orderCommand
-    }
-    this.setState({ pageNum: 1 })
-    let newFiter = { ...filter, ...obj, pageNum: 1, };
+      orderCommand,
+    };
+    this.setState({ pageNum: 1 });
+    const newFiter = { ...filter, ...obj, pageNum: 1 };
     this.props.getSingleStationAlarmStatistic(newFiter);
   }
 
   onChangeTime = (value, dateString) => {
-    let startTime = value[0].utc().format();
-    let endTime = value[1].utc().format();
+    const startTime = value[0].utc().format();
+    const endTime = value[1].utc().format();
     this.onChangeFilter({
       startTime,
       endTime,
@@ -110,7 +111,7 @@ class ALarmSingleStationStatistic extends React.Component {
   onClose = () => {
     this.props.changeAlarmStatisticStore({
       showPage: 'multiple',
-      singleStationCode: ''
+      singleStationCode: '',
     });
   }
 
@@ -118,51 +119,51 @@ class ALarmSingleStationStatistic extends React.Component {
     this.setState({ key, pageNum: 1 });
     const { singleStationCode, startTime, endTime, summaryType, orderField, orderCommand } = this.props;
     const { pageSize, pageNum } = this.state;
-    if(key === 'graph') {
+    if (key === 'graph') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime,
         endTime,
         summaryType,
         orderField: '',
-        orderCommand: ''
+        orderCommand: '',
       });
-    } else if(key === 'table') {
+    } else if (key === 'table') {
       this.props.getSingleStationAlarmStatistic({
         stationCode: singleStationCode,
         startTime,
         endTime,
         summaryType,
-        pageSize: pageSize?pageSize:10,
-        pageNum: pageNum?pageNum:1,
-        orderField: orderField!==''?orderField:'',
-        orderCommand: orderField!==''?orderCommand:''
+        pageSize: pageSize ? pageSize : 10,
+        pageNum: pageNum ? pageNum : 1,
+        orderField: orderField !== '' ? orderField : '',
+        orderCommand: orderField !== '' ? orderCommand : '',
       });
     }
   }
 
   onChangeDuration = (value) => {
     let startTime, endTime;
-    if(value === 'other') {
-      this.setState({showTimeSelect: true});
+    if (value === 'other') {
+      this.setState({ showTimeSelect: true });
     } else {
-      this.setState({showTimeSelect: false});
-      if(value === 'today') {
+      this.setState({ showTimeSelect: false });
+      if (value === 'today') {
         startTime = moment().hour(0).minute(0).second(0).utc().format();
         endTime = moment().utc().format();
-      } else if(value === 'yesterday') {
+      } else if (value === 'yesterday') {
         startTime = moment().subtract(1, 'days').hour(0).minute(0).second(0).utc().format();
         endTime = moment().subtract(1, 'days').hour(23).minute(59).second(59).utc().format();
-      } else if(value === 'last7') {
+      } else if (value === 'last7') {
         startTime = moment().subtract(7, 'days').utc().format();
         endTime = moment().utc().format();
-      } else if(value === 'last30') {
+      } else if (value === 'last30') {
         startTime = moment().subtract(30, 'days').utc().format();
         endTime = moment().utc().format();
       }
       this.onChangeFilter({
         startTime,
-        endTime
+        endTime,
       });
     }
   }
@@ -175,35 +176,35 @@ class ALarmSingleStationStatistic extends React.Component {
     }
   }
   disabledDate = (current) => {
-    if(this.start) {
+    if (this.start) {
       const end = moment(this.start).add(30, 'days');
       return current > moment.min(moment().endOf('day'), end);
-    } else {
-      return current && current > moment().endOf('day')
     }
+    return current && current > moment().endOf('day');
+
   }
 
   hideStationChange = () => {
     this.setState({
-      showStationSelect: false
+      showStationSelect: false,
     });
   }
 
   renderTitle() {
     const { singleStationCode, singleAlarmSummary, stations } = this.props;
     const { showStationSelect } = this.state;
-    const stationItem = stations.find(station=>station.get('stationCode').toString() === singleStationCode).toJS();
+    const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     return (
       <div className={styles.title}>
-        {showStationSelect && 
+        {showStationSelect &&
           <ChangeStation stations={stations.toJS()} stationName={stationItem.stationName} baseLinkPath="/monitor/alarm/statistic" hideStationChange={this.hideStationChange} />}
         <div className={styles.titleLeft}>
-          <div onClick={()=>this.setState({showStationSelect:true})} className={styles.stationName}>
+          <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
             <Icon className={styles.icon} type="swap" /><span>{stationItem.stationName}</span>
           </div>
           <div className={styles.stationStatus}>
-            <div className={styles.status}>{`电站状态：${singleAlarmSummary && singleAlarmSummary.stationStatusName?singleAlarmSummary.stationStatusName:'- -'}`}</div>
-            <div>{singleAlarmSummary && singleAlarmSummary.stationStatus==='500'&&`时间：${singleAlarmSummary && singleAlarmSummary.interruptTime}`}</div>
+            <div className={styles.status}>{`电站状态：${singleAlarmSummary && singleAlarmSummary.stationStatusName ? singleAlarmSummary.stationStatusName : '- -'}`}</div>
+            <div>{singleAlarmSummary && singleAlarmSummary.stationStatus === '500' && `时间：${singleAlarmSummary && singleAlarmSummary.interruptTime}`}</div>
           </div>
         </div>
         <Link to="/monitor/alarm/statistic"><Icon type="arrow-left" className={styles.backIcon} onClick={this.onClose} /></Link>
@@ -223,7 +224,7 @@ class ALarmSingleStationStatistic extends React.Component {
           <Option value="last30">最近30天</Option>
           <Option value="other">其他时间段</Option>
         </Select>
-        {showTimeSelect&&
+        {showTimeSelect &&
           <RangePicker
             showTime={false}
             disabledDate={this.disabledDate}
@@ -235,29 +236,31 @@ class ALarmSingleStationStatistic extends React.Component {
           />
         }
       </div>
-    )
+    );
   }
 
   renderSummary() {
     const { singleStationCode, singleAlarmSummary, stations } = this.props;
-    const stationItem = stations.find(station=>station.get('stationCode').toString() === singleStationCode).toJS();
+
+    singleAlarmSummary.transferWorkRate = null;
+    const stationItem = stations.find(station => station.get('stationCode').toString() === singleStationCode).toJS();
     return (
       <div className={styles.alarmSummary}>
-        <i className={stationItem.stationType === 0 ? "iconfont icon-summary icon-windlogo" : "iconfont icon-summary icon-pvlogo"} />
+        <i className={stationItem.stationType === 0 ? 'iconfont icon-summary icon-windlogo' : 'iconfont icon-summary icon-pvlogo'} />
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.alarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.alarmNum, '--')}</span>
           <span className={styles.alarmText}>告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.transferWorkAlarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.transferWorkAlarmNum, '--')}</span>
           <span className={styles.alarmText}>转工单告警数</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.transferWorkRate+"%"}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(+singleAlarmSummary.transferWorkRate, '--') + '%'}</span>
           <span className={styles.alarmText}>转工单率</span>
         </div>
         <div className={styles.summaryItem}>
-          <span className={styles.alarmNum}>{singleAlarmSummary && singleAlarmSummary.eliminateAlarmNum}</span>
+          <span className={styles.alarmNum}>{singleAlarmSummary && dataFormat(singleAlarmSummary.eliminateAlarmNum, '--')}</span>
           <span className={styles.alarmText}>告警消除数</span>
         </div>
         <div className={styles.summaryItem}>
@@ -276,16 +279,16 @@ class ALarmSingleStationStatistic extends React.Component {
           tab={<i className="iconfont icon-grid"></i>}
           key="graph"
         >
-          <AlarmSingleStationGraph  {...this.props} />
+          <AlarmSingleStationGraph {...this.props} />
         </TabPane>
         <TabPane
           tab={<i className="iconfont icon-table"></i>}
           key="table"
         >
-          <AlarmSingleStationTable 
-            {...this.props} 
-            pageNum={pageNum} 
-            pageSize={pageSize} 
+          <AlarmSingleStationTable
+            {...this.props}
+            pageNum={pageNum}
+            pageSize={pageSize}
             onPaginationChange={this.onPaginationChange}
           />
         </TabPane>
@@ -294,7 +297,7 @@ class ALarmSingleStationStatistic extends React.Component {
   }
 
   render() {
-    if(this.props.stations.size === 0) {
+    if (this.props.stations.size === 0) {
       return null;
     }
     return (
