@@ -210,7 +210,7 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
-      // 两票管理 
+      // 两票管理
       getDocketList: '/v3/docket/pageList', //列表
       getDocketStatus: '/v3/docket/state/total', //票据状态及总数
       getDocketType: '/v3/docket/typeList', //票据类型
@@ -329,7 +329,7 @@ export default {
       seriesinverterDetail: '/v3/monitor/seriesinverter', //组串式逆变器详情
       inverterSubList: '/v3/monitor/seriesinverter/sublist', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart', //组串式逆变器10min时序图
-      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图 
+      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图
       confluenceboxDetail: '/v3/monitor/confluencebox', //汇流箱详情
       confluenceboxSubList: '/v3/monitor/confluencebox/sublist', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart', //汇流箱10min时序图
@@ -591,6 +591,8 @@ export default {
       // 风电分析
       getAreaStation: '/v3/station/regionstaion', // 区域 - 电站信息
       getQuotaInfo: '/v3/fan/efficiency/indicator', // 风机指标信息
+      getModesInfo: '/v3/ledeger/manufactormode', // 查询指定电站的厂家型号
+      getStationCapacity: '/v3/fan/efficiency/stationcapacity', // 各电站装机容量
 
       getDevices: '/v3/ledeger/devicetype', // 电站的设备型号+设备列表
       getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名

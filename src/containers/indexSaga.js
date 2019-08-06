@@ -84,9 +84,9 @@ import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/fault
 import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga";
 import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
-import { watchAhieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 高级分析 - 风电分析 - layout
+import { watchAchieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 高级分析 - 风电分析 - layout
 import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
-import { watchAreaAhieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
+import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
 
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
@@ -189,9 +189,9 @@ export default function* rootSaga() {
     watchFaultWarnHistory(),
     watchFaultSingleFan(),
 
-    watchAhieveLayout(), //  高级分析 - 风电分析 - layout
+    watchAchieveLayout(), //  高级分析 - 风电分析 - layout
     watchGroupAchieve(), // 高级分析 - 风电分析 - 集团
-    watchAreaAhieve(), // 高级分析 - 风电分析 - 区域
+    watchAreaAchieve(), // 高级分析 - 风电分析 - 区域
     watchStationAhieve(), // 高级分析 - 风电分析 - 电站
     // 工单
     watchWorkOrder(),

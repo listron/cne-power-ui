@@ -13,22 +13,37 @@ import styles from './areaAchieve.scss';
 class AreaAchieve extends Component {
 
   static propTypes = {
-    testArea: PropTypes.func,
+    getStationCapacity: PropTypes.func,
+    getQuotaInfo: PropTypes.func,
+    getModesInfo: PropTypes.func,
     location: PropTypes.object,
   };
 
   componentDidMount(){
-    console.log('did mount');
-    console.log(this.props.location);
-    console.log('did mount');
-    this.props.testArea();
+    // console.log('did mount');
+    // console.log(this.props.location);
+    // console.log('did mount');
+    const params = {
+      stationCodes: [82],
+      regionName: ['河南'],
+    };
+    const a = {
+      'deviceModes': [55],
+      'regionName': ['山东'],
+      'startTime': '2018-07-01 01:01:01',
+      'endTime': '2019-07-31 01:01:01',
+      'stationCodes': null,
+      'manufactorIds': null,
+    };
+    this.props.getModesInfo(params);
+    this.props.getStationCapacity(a);
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('did componentWillReceiveProps');
-    console.log(nextProps.location);
-    console.log(this.props.location);
-    console.log('did componentWillReceiveProps');
+    // console.log('did componentWillReceiveProps');
+    // console.log(nextProps.location);
+    // console.log(this.props.location);
+    // console.log('did componentWillReceiveProps');
   }
 
   render() {
@@ -40,7 +55,7 @@ class AreaAchieve extends Component {
         </div>
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>
-            <AreaChart />
+            <AreaChart {...this.props} />
             <StationPBAChart />
           </div>
           <div className={styles.areaBottomChart}>
@@ -58,7 +73,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  testArea: () => dispatch({type: areaAchieveAction.testArea}),
+  getStationCapacity: () => dispatch({type: areaAchieveAction.getStationCapacity}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaAchieve);

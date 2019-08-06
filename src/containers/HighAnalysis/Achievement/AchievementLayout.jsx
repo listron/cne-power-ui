@@ -20,6 +20,7 @@ class AchievementLayout extends Component {
     quotaInfo: PropTypes.array,
     getAreaStation: PropTypes.func,
     getQuotaInfo: PropTypes.func,
+    getModesInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -36,8 +37,8 @@ class AchievementLayout extends Component {
 
   componentDidMount(){
     // 预请求用户区域-电站信息, 指标信息
-    this.props.getQuotaInfo();
     this.props.getAreaStation();
+    this.props.getQuotaInfo();
   }
 
   componentWillReceiveProps(nextProps){
@@ -122,6 +123,7 @@ const mapDispatchToProps = (dispatch) => ({
   // resetStore: () => dispatch({type: achieveAction.resetStore}),
   getAreaStation: payload => dispatch({type: achieveAction.getAreaStation, payload}),
   getQuotaInfo: payload => dispatch({type: achieveAction.getQuotaInfo, payload}),
+  getModesInfo: payload => dispatch({type: achieveAction.getModesInfo, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AchievementLayout);

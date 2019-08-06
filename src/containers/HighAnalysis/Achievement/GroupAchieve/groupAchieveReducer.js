@@ -17,7 +17,6 @@ const initState = immutable.fromJS({
   areaSelected: {}, // chart选中的区域
   dateSelected: null, // pba趋势
 
-  modesInfo: [], // 厂家 + 型号
   pbaStatistics: [], // 各区域PBA排名信息
   pbaDatesInfo: [], // 区域pba的时间趋势
   powerLostInfo: [], // 损失电量分解图

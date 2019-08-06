@@ -7,6 +7,7 @@ import styles from './areaChart.scss';
 export default class AreaChart extends Component {
 
   static propTypes = {
+    capacityInfo: PropTypes.array,
   };
 
   componentDidMount() {
