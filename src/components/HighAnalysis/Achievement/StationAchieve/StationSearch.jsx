@@ -111,7 +111,9 @@ class StationSearch extends Component {
 
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
-    console.log('请求');
+    const queryInfo = JSON.stringify(this.state);
+    
+    console.log(queryInfo);
   }
 
   resetCharts = () => {

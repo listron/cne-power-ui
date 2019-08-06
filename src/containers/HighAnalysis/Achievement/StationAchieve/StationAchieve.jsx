@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import searchUtil from '../../../../utils/searchUtil';
 import StationSearch from '../../../../components/HighAnalysis/Achievement/StationAchieve/StationSearch';
 import AnimationBox from '../../../../components/HighAnalysis/Achievement/StationAchieve/AnimationBox';
+import LostAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/LostAnalysis/LostAnalysis';
 import { stationAchieveAction } from './stationAchieveReducer';
 import styles from './station.scss';
 
@@ -66,10 +67,7 @@ class StationAchieve extends Component {
       <div className={styles.stationAchieve} >
         <StationSearch {...this.props} />
         <AnimationBox changeStore={changeStore} active={active}>
-          <div
-            className={`${styles.eachPage} ${active === 'lost' ? styles.active : styles.inactive}` }
-            style={{backgroundColor: 'lightBlue'}}
-          >损失根源分析页面</div>
+          <LostAnalysis {...this.props} active={active === 'lost'} />
           <div
             className={`${styles.eachPage} ${active === 'stop' ? styles.active : styles.inactive}`}
             style={{backgroundColor: 'yellowGreen'}}
