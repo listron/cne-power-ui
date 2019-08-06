@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './windStation.scss';
-import { message, Popover } from "antd";
+import { message, Popover } from 'antd';
 import { Link } from 'react-router-dom';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import OwnProgress from '../../../../Common/OwnProgress/index';
@@ -19,7 +19,7 @@ class WindStationItem extends React.Component {
     powerPoint: PropTypes.any,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   getStatusName = (stuats) => {
@@ -35,7 +35,7 @@ class WindStationItem extends React.Component {
   showTip = (currentStatus) => {
     message.destroy();
     if (currentStatus === '900') {
-      message.config({ top: 225, maxCount: 1, });
+      message.config({ top: 225, maxCount: 1 });
       message.warning('电站未接入,无法查看详情', 2);
     }
   }
@@ -46,7 +46,7 @@ class WindStationItem extends React.Component {
   renderPopover = (item) => {
     const stationStatus = item.stationStatus || {};
     const currentStatus = stationStatus.stationStatus;
-    let needData = [
+    const needData = [
       { name: '实时功率', value: 'stationPower', point: 2, unit: 'MW', quantity: 1000 },
       { name: '平均风速', value: 'instantaneous', point: 2, unit: 'm/s' },
       { name: '出力比', value: 'capabilityRate', point: 2, unit: '%' },
@@ -61,7 +61,7 @@ class WindStationItem extends React.Component {
       { name: '通讯中断台数', value: 'interruptNum', point: 0, unit: '台' },
       { name: '未接入台数', value: 'noAccessNum', point: 0, unit: '台' },
       { name: '告警数量', value: 'alarmNum', point: 0, unit: '个' },
-    ]
+    ];
 
     return (
       <div className={styles.popover}>
@@ -78,19 +78,27 @@ class WindStationItem extends React.Component {
                   <span className={styles.unit}>{e.unit}</span>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
 
-    )
+    );
   }
 
   render() {
     const { stationDataList } = this.props;
-    const newStationsList = stationDataList.sort((a, b) => { return a['stationName'].localeCompare(b['stationName']) });
-    const temType = newStationsList.sort((a, b) => { return a['regionName'].localeCompare(b['regionName']) });
-    let filteredStation = [];
+    const newStationsList = stationDataList.sort((a, b) => {
+      a['stationName'] = a['stationName'] && a['stationName'] || '';
+      b['stationName'] = b['stationName'] && b['stationName'] || '';
+      return a['stationName'].localeCompare(b['stationName']);
+    });
+    const temType = newStationsList.sort((a, b) => {
+      a['regionName'] = a['regionName'] && a['regionName'] || '';
+      b['regionName'] = b['regionName'] && b['regionName'] || '';
+      return a['regionName'].localeCompare(b['regionName']);
+    });
+    const filteredStation = [];
     temType.forEach(e => {
       let findExactStation = false;
       filteredStation.forEach(m => {
@@ -98,21 +106,22 @@ class WindStationItem extends React.Component {
           findExactStation = true;
           m.stations.push(e);
         }
-      })
+      });
       if (!findExactStation) {
         filteredStation.push({
           regionName: e.regionName,
-          stations: [e]
-        })
+          stations: [e],
+        });
       }
-    })
+    });
     return (
       <div className={styles.stationCardContainer} >
         <div ref={'popver'}></div>
         {stationDataList.length > 0 && filteredStation.map((list, key) => {
           const stationStatusList = list.stations.sort((a, b) => {
-            return 900 - b.stationStatus.stationStatus === 0 ? -1 : 1
-          })
+            if (!b.stationStatus) return -1;
+            return 900 - b.stationStatus.stationStatus === 0 ? -1 : 1;
+          });
           return (
             <div key={key} className={styles.regionStation}>
               <div className={styles.regionName}>{list.regionName}</div>
@@ -132,7 +141,7 @@ class WindStationItem extends React.Component {
                     trigger="hover"
                     getPopupContainer={() => this.refs.popver}
                   >
-                    <div className={styles[this.getStatusName(currentStatus)]} onClick={() => { this.showTip(currentStatus) }}>
+                    <div className={`${styles.windCard} ${styles[this.getStatusName(currentStatus)]}`} onClick={() => { this.showTip(currentStatus); }}>
                       <Link to={`/monitor/singleStation/${item.stationCode}`} key={item.stationCode}>
                         <div className={styles.stationCardTitle}>
                           <div className={styles.stationName}>{item.stationName || '--'}</div>
@@ -155,15 +164,15 @@ class WindStationItem extends React.Component {
                           <i className="iconfont icon-alarm1"></i>{item.alarmNum}</div></Link> : ''}
                       </div>
                     </div>
-                  </Popover>)
+                  </Popover>);
                 })}
               </div>
             </div>
-          )
+          );
         }) || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
         }
       </div>
-    )
+    );
   }
 }
 export default WindStationItem;

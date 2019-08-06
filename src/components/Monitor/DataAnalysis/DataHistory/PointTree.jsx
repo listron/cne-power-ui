@@ -38,15 +38,15 @@ class PointTree extends Component {
   }
 
   pointSelect = (selectedKeys, { halfCheckedKeys }) => {
-    const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
-    if (valideKeys.length > 4) {
-      const preHalfCheckedKeys = this.state.halfCheckedKeys;
-      message.error('所选测点不得超过4个');
-      this.setState({
-        halfCheckedKeys: preHalfCheckedKeys
-      });
-      return;
-    }
+    // const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
+    // if (valideKeys.length > 4) {
+    //   const preHalfCheckedKeys = this.state.halfCheckedKeys;
+    //   message.error('所选测点不得超过4个');
+    //   this.setState({
+    //     halfCheckedKeys: preHalfCheckedKeys
+    //   });
+    //   return;
+    // }
     this.setState({
       halfCheckedKeys,
     })
