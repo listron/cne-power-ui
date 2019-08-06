@@ -2,10 +2,11 @@
 
 .topSearch {
   display: flex;
-  padding: 0 24px 0 12px;
+  padding-left: 24px;
   height: 76px;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
 
   > div {
     @include lineheight(32px);
@@ -13,6 +14,13 @@
     span{
       margin-right: 5px;
     }
+  }
+  > div:not(:first-child){
+    margin-left: 20px;
+  }
+
+  > div:last-child{
+    margin-left: 10px;
   }
 }
 

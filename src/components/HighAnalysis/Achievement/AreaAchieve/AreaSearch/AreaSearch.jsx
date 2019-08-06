@@ -71,7 +71,6 @@ export default class AreaSearch extends Component {
       modesInfo,
       quotaInfo,
     } = this.props;
-    console.log(modesInfo, 'modesInfo');
     const { stations, modes, dates, quota } = this.state;
     return (
       <div className={styles.topSearch}>
