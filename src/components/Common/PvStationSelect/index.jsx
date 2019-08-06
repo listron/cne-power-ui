@@ -66,6 +66,7 @@ class PvStationSelect extends Component {
     disabled: false,
     data: [],
     disabledStation: [],
+    theme: 'light',
   }
   constructor(props) {
     super(props);

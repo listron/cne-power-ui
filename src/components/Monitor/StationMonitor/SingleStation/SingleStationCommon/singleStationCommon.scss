@@ -1,6 +1,6 @@
-@import '../../../../../theme/theme.scss';
+@import "../../../../../theme/theme.scss";
 
-.stationChange{
+.stationChange {
   position: absolute;
   background-color: #fff;
   border-right: 1px solid $promptColor;
@@ -11,34 +11,33 @@
   width: 300px;
   max-height: calc(100vh - 83px);
   overflow: auto;
-  
-  .stationTitle{
+
+  .stationTitle {
     color: $darkColor;
     font-size: 18px;
     height: 61px;
     line-height: 65px;
     margin-bottom: 0px;
-    .titleIcon{
+    .titleIcon {
       cursor: pointer;
       margin-left: 32px;
       margin-right: 12px;
     }
   }
-  .stationList{
+  .stationList {
     display: flex;
     flex-direction: column;
     padding-left: 42px;
     height: 1000px;
-    .provinceName{
-      color:$darkColor;
-      text-align:left;
+    .provinceName {
+      color: $darkColor;
+      text-align: left;
       line-height: 30px;
       background: #f8f8f8;
       height: 30px;
       text-indent: 1em;
-      
     }
-    .stationName{
+    .stationName {
       display: block;
       float: left;
       width: 120px;
@@ -47,15 +46,15 @@
       text-align: left;
       text-indent: 1em;
       cursor: pointer;
-      color:$darkColor;
-      max-width:120px;
+      color: $darkColor;
+      max-width: 120px;
       word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 14px;
     }
-    .currentStationName{
+    .currentStationName {
       display: block;
       float: left;
       width: 120px;
@@ -65,44 +64,46 @@
       text-indent: 1em;
       cursor: pointer;
       color: $themeColor;
-      max-width:120px;
+      max-width: 120px;
       word-break: break-all;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .stationName:hover,.stationName:focus{
+    .stationName:hover,
+    .stationName:focus {
       color: $themeColor;
     }
-    .eachStation{
+    .eachStation {
       width: 50%;
       padding-left: 40px;
       cursor: pointer;
       color: $darkColor;
       height: 28px;
       line-height: 28px;
-      &:hover{
+      &:hover {
         background-color: #eee;
       }
     }
   }
 }
 
-.powerDiagramBox{
+.powerDiagramBox {
   position: relative;
   width: 50%;
   padding-left: 20px;
-  .powerRadio{
+  .powerRadio {
     position: absolute;
     top: 20px;
     right: 30px;
     color: $darkColor;
-    :global{
+    :global {
       .ant-radio-button-wrapper-checked:first-child {
         border-color: $themeColor;
       }
-      
-      .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
+
+      .ant-radio-button-wrapper:hover,
+      .ant-radio-button-wrapper-focused {
         color: $darkColor;
       }
       .ant-radio-button-wrapper-checked {
@@ -112,38 +113,42 @@
         color: #fff;
         background: $themeColor;
       }
-      .ant-radio-button-wrapper-checked:hover{
+      .ant-radio-button-wrapper-checked:hover {
         color: #fff;
       }
     }
   }
-  :global{
-    .iconfont{
+  :global {
+    .iconfont {
       position: absolute;
       top: 20px;
       right: 5px;
       cursor: pointer;
     }
-    .iconfont:hover{
+    .iconfont:hover {
       color: $themeColor;
     }
   }
 }
-.cardSection{ 
+
+.cardSection {
   text-align: center;
   margin: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   overflow: hidden;
-  .operatorList,.weatherList,.alarmList,.workList{
-    width:23%;
+  .operatorList,
+  .weatherList,
+  .alarmList,
+  .workList {
+    width: 23%;
     display: flex;
     flex-direction: column;
   }
-  .weatherList{
+  .weatherList {
     border: 1px solid #dfdfdf;
-    border-radius:4px;
+    border-radius: 4px;
     height: 140px;
     padding: 20px;
     position: relative;
@@ -151,26 +156,26 @@
     font-size: 12px;
     flex-direction: row;
     justify-content: center;
-    :global{
-      .ant-btn{
+    :global {
+      .ant-btn {
         padding: 0;
       }
     }
-    .noweather{
+    .noweather {
       text-align: center;
       height: 100%;
     }
-    .today{
+    .today {
       color: $themeColor;
     }
 
-    .weatherIcon{
-      img{
+    .weatherIcon {
+      img {
         width: 23px;
         height: 23px;
       }
     }
-    .weatherLeft{
+    .weatherLeft {
       position: absolute;
       left: 20px;
       top: 55px;
@@ -178,7 +183,7 @@
       height: 23px;
       text-align: center;
     }
-    .weatherRight{
+    .weatherRight {
       position: absolute;
       right: 20px;
       top: 55px;
@@ -186,7 +191,7 @@
       height: 23px;
       text-align: center;
     }
-    :global{
+    :global {
       .ant-btn-primary:focus {
         color: #fff;
         background-color: $themeColor;
@@ -194,61 +199,60 @@
       }
     }
   }
-  .operatorList{
+  .operatorList {
     border: 1px solid #dfdfdf;
-    border-radius:4px;
+    border-radius: 4px;
     height: 140px;
     padding: 0 14px;
     position: relative;
-    background: url(/img/blurbg.png)  center 140px no-repeat;
-    .blurbg{
+    background: url(/img/blurbg.png) center 140px no-repeat;
+    .blurbg {
       position: absolute;
       left: 23px;
       bottom: -23px;
     }
-    .nopeople{
-      div{
+    .nopeople {
+      div {
         float: left;
         margin: 0 25px;
         color: $darkColor;
       }
-      img{
+      img {
         margin: 0 20px;
         float: right;
       }
     }
-    .operatorContent{
-      .userInfo{
+    .operatorContent {
+      .userInfo {
         display: flex;
         justify-content: space-around;
         text-align: left;
         color: $darkColor;
-        .userMes{
+        .userMes {
           height: 21px;
           overflow: hidden;
-          white-space:  nowrap;
+          white-space: nowrap;
           text-overflow: ellipsis;
         }
-        .userPhone{
+        .userPhone {
           height: 21px;
         }
-
       }
     }
-    .cardTitle{
+    .cardTitle {
       line-height: 40px;
       text-align: left;
       // padding-left: 20px;
-      
-      :global{
-        .iconfont{
+
+      :global {
+        .iconfont {
           color: $darkColor;
           cursor: pointer;
         }
       }
     }
-    :global{
-      .ant-carousel .slick-dots li button{
+    :global {
+      .ant-carousel .slick-dots li button {
         width: 7px;
         height: 7px;
         background-color: #0e1713;
@@ -258,88 +262,87 @@
         background-color: $themeColor;
         opacity: 1;
       }
-      .ant-carousel .slick-dots{
+      .ant-carousel .slick-dots {
         bottom: -15px;
       }
-      .ant-carousel .slick-dots li{
+      .ant-carousel .slick-dots li {
         margin: 0 6px;
       }
-
     }
   }
-  .alarmList{
+  .alarmList {
     border: 1px solid #dfdfdf;
-    border-radius:4px;
+    border-radius: 4px;
     height: 140px;
     padding: 10px;
-    :global{
-      .iconfont:hover{
+    :global {
+      .iconfont:hover {
         color: $themeColor;
       }
     }
-    .alarmContent{
+    .alarmContent {
       display: flex;
       justify-content: space-around;
       line-height: 30px;
       margin-top: 10px;
-      .oneWarning{
+      .oneWarning {
         border-bottom: 3px solid #a42b2c;
         color: $darkColor;
       }
-      .twoWarning{
+      .twoWarning {
         border-bottom: 3px solid #e08031;
         color: $darkColor;
       }
-      .threeWarning{
+      .threeWarning {
         border-bottom: 3px solid #f9b600;
         color: $darkColor;
       }
-      .fourWarning{
+      .fourWarning {
         border-bottom: 3px solid #fbe6e3;
         color: $darkColor;
       }
     }
-    .cardTitle{
+    .cardTitle {
       line-height: 30px;
       text-align: left;
       display: flex;
       justify-content: space-between;
       padding-left: 20px;
-      :global{
-        .iconfont{
+      :global {
+        .iconfont {
           color: $darkColor;
           cursor: pointer;
         }
       }
     }
   }
-  .workList{
+  .workList {
     padding: 10px;
     border: 1px solid #dfdfdf;
-    border-radius:4px;
+    border-radius: 4px;
     height: 140px;
-    :global{
-      .iconfont:hover{
+    :global {
+      .iconfont:hover {
         color: $themeColor;
       }
     }
-    .workContent{
+    .workContent {
       display: flex;
       justify-content: space-around;
       line-height: 30px;
       margin-top: 10px;
-      .workListRate{
+      .workListRate {
         color: $darkColor;
       }
     }
-    .cardTitle{
+    .cardTitle {
       line-height: 30px;
       text-align: left;
       display: flex;
       justify-content: space-between;
       padding-left: 20px;
-      :global{
-        .iconfont{
+      :global {
+        .iconfont {
           color: $darkColor;
           cursor: pointer;
         }
@@ -347,19 +350,19 @@
     }
   }
 }
-.capabilityDiagramBox{
+
+.capabilityDiagramBox {
   position: relative;
   width: 50%;
-  :global{
-    .iconfont{
+  :global {
+    .iconfont {
       position: absolute;
       top: 20px;
       right: 10px;
       cursor: pointer;
     }
-    .iconfont:hover{
+    .iconfont:hover {
       color: $themeColor;
     }
   }
-  
-} 
+}
