@@ -68,6 +68,7 @@ class ScatterContainer extends React.Component {
             saveImgUrl={this.saveImgUrl}
           />);
         })}
+        <span ref={'date'}></span>
         {
           <SingleStationModal
             data={scatterData}
@@ -75,6 +76,7 @@ class ScatterContainer extends React.Component {
             hideImg={this.hideImg}
             currentImgIndex={currentImgIndex}
             changeCurrentImgIndex={this.changeCurrentImgIndex}
+
           />
 
         }

@@ -19,37 +19,41 @@ class SingleStationModal extends React.Component {
     console.log('chartData: ', chartData);
 
     return (
-      <Modal
-        footer={null}
-        visible={imageListShow}
-        onCancel={hideImg}
-        width={760}
-        wrapClassName={styles.singleStationModal}
-      >
-        <div className={styles.imgBox}>
-          <div className={styles.handleButton}>
-            <Button onClick={this.preImg} disabled={currentImgIndex === 0}>
-              <Icon type="left" />
-            </Button>
-          </div>
-          <div className={styles.imgContainer} >
-            <SingleScatter
-              {...this.props}
-              title={deviceName}
-              chartData={chartData}
-              saveImgUrl={this.saveImgUrl}
+      <React.Fragment>
+        <span ref={'date'}></span>
+        <Modal
+          footer={null}
+          visible={imageListShow}
+          onCancel={hideImg}
+          width={760}
+          wrapClassName={styles.singleStationModal}
+          getContainer={() => this.refs.date}
+        >
+          <div className={styles.imgBox}>
+            <div className={styles.handleButton}>
+              <Button onClick={this.preImg} disabled={currentImgIndex === 0}>
+                <Icon type="left" />
+              </Button>
+            </div>
+            <div className={styles.imgContainer} >
+              <SingleScatter
+                {...this.props}
+                title={deviceName}
+                chartData={chartData}
+                saveImgUrl={this.saveImgUrl}
 
-            />
+              />
+            </div>
+            <div className={styles.handleButton}>
+              <Button onClick={this.nextImg} disabled={!data || currentImgIndex === data.length - 1}>
+                <Icon type="right" />
+              </Button>
+            </div>
           </div>
-          <div className={styles.handleButton}>
-            <Button onClick={this.nextImg} disabled={!data || currentImgIndex === data.length - 1}>
-              <Icon type="right" />
-            </Button>
-          </div>
-        </div>
 
 
-      </Modal>
+        </Modal>
+      </React.Fragment>
     );
   }
 }

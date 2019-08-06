@@ -249,10 +249,10 @@ class SingleScatter extends React.Component {
     const { title, index, showImg } = this.props;
 
     return (
-      <React.Fragment>
-        <Icon type="left" onClick={() => showImg(index)} className={styles.showModalInco} />
+      <div className={styles.chartWrap}>
+        <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />
         <div id={title} className={styles.scatterStyle}></div>
-      </React.Fragment>
+      </div>
     );
   }
 }
