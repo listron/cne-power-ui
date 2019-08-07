@@ -20,7 +20,6 @@ class AchievementLayout extends Component {
     quotaInfo: PropTypes.array,
     getAreaStation: PropTypes.func,
     getQuotaInfo: PropTypes.func,
-    getModesInfo: PropTypes.func,
   }
 
   constructor(props){
@@ -123,7 +122,6 @@ const mapDispatchToProps = (dispatch) => ({
   // resetStore: () => dispatch({type: achieveAction.resetStore}),
   getAreaStation: payload => dispatch({type: achieveAction.getAreaStation, payload}),
   getQuotaInfo: payload => dispatch({type: achieveAction.getQuotaInfo, payload}),
-  getModesInfo: payload => dispatch({type: achieveAction.getModesInfo, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AchievementLayout);

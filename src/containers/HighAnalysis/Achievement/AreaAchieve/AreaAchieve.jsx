@@ -28,67 +28,62 @@ class AreaAchieve extends Component {
     // console.log('did mount');
     // console.log(this.props.location);
     // console.log('did mount');
-    const params = {
-      stationCodes: [82],
-      regionName: ['河南'],
-    };
-    const a = {
-      'deviceModes': null,
-      'regionName': ['蒙东'],
-      'startTime': '2018-07-01 01:01:01',
-      'endTime': '2019-07-31 01:01:01',
-      'stationCodes': [27, 28, 30, 16, 17, 18],
-      'manufactorIds': null,
-    };
-    const b = {
-      'indicatorCode': 101,
-      'stationCodes': [],
-      'startTime': '2014-04-01',
-      'endTime': '2015-01-01',
-      'manufactorIds': [
-        '69',
-      ],
-      'deviceModes': [
-        35,
-      ],
-    };
-    const c = {
-      'regionName': [
-        '安徽',
-      ],
-      'indicatorCode': 101,
-      'stationCodes': [
-        73,
-        74,
-        76,
-      ],
-      'startTime': '2014-01-01 01:01:01',
-      'endTime': '2019-07-31 01:01:01',
-      'type': 2,
-    };
-    const d = {
-      'indicatorCode': 101,
-      'stationCodes': [
-        73,
-      ],
-      'startTime': '2018-07-01 01:01:01',
-      'endTime': '2019-07-31 01:01:01',
-    };
-    const e = {
-      'deviceModes': null,
-      'regionName': ['安徽'],
-      'indicatorCode': '102',
-      'startTime': '2018-07-01',
-      'endTime': '2019-07-31',
-      'stationCodes': null,
-      'manufactorIds': null,
-    };
-    this.props.getModesInfo(params);
-    this.props.getStationCapacity(a);
-    this.props.getLostGenHour(b);
-    this.props.getTrendInfo(c);
-    this.props.getIndicatorRank(d);
-    this.props.getIndicatorRankTotal(e);
+    // const a = {
+    //   'deviceModes': null,
+    //   'regionName': ['蒙东'],
+    //   'startTime': '2018-07-01 01:01:01',
+    //   'endTime': '2019-07-31 01:01:01',
+    //   'stationCodes': [27, 28, 30, 16, 17, 18],
+    //   'manufactorIds': null,
+    // };
+    // const b = {
+    //   'indicatorCode': 101,
+    //   'stationCodes': [],
+    //   'startTime': '2014-04-01',
+    //   'endTime': '2015-01-01',
+    //   'manufactorIds': [
+    //     '69',
+    //   ],
+    //   'deviceModes': [
+    //     35,
+    //   ],
+    // };
+    // const c = {
+    //   'regionName': [
+    //     '安徽',
+    //   ],
+    //   'indicatorCode': 101,
+    //   'stationCodes': [
+    //     73,
+    //     74,
+    //     76,
+    //   ],
+    //   'startTime': '2014-01-01 01:01:01',
+    //   'endTime': '2019-07-31 01:01:01',
+    //   'type': 2,
+    // };
+    // const d = {
+    //   'indicatorCode': 101,
+    //   'stationCodes': [
+    //     73,
+    //   ],
+    //   'startTime': '2018-07-01 01:01:01',
+    //   'endTime': '2019-07-31 01:01:01',
+    // };
+    // const e = {
+    //   'deviceModes': null,
+    //   'regionName': ['安徽'],
+    //   'indicatorCode': '102',
+    //   'startTime': '2018-07-01',
+    //   'endTime': '2019-07-31',
+    //   'stationCodes': null,
+    //   'manufactorIds': null,
+    // };
+    // this.props.getStationCapacity(a);
+    // this.props.getLostGenHour(b);
+    // this.props.getTrendInfo(c);
+    // this.props.getIndicatorRank(d);
+    // this.props.getIndicatorRankTotal(e);
   }
 
   componentWillReceiveProps(nextProps){
@@ -105,7 +100,7 @@ class AreaAchieve extends Component {
         <AreaSearch {...this.props} />
         <div className={styles.areaTitle}>
           {1 === 2 ? (
-            <span>{`${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}`}</span>
+            <span>{`${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}%`}</span>
           ) : (
             <span>{`${rankTotal[0].regionName}: 实发小时数${rankTotal[0].indicatorData.actualGen} 应发小时数${rankTotal[0].indicatorData.theoryGen}`}</span>
           )}
@@ -135,6 +130,7 @@ const mapDispatchToProps = (dispatch) => ({
   getTrendInfo: (payload) => dispatch({type: areaAchieveAction.getTrendInfo, payload}),
   getIndicatorRank: (payload) => dispatch({type: areaAchieveAction.getIndicatorRank, payload}),
   getIndicatorRankTotal: (payload) => dispatch({type: areaAchieveAction.getIndicatorRankTotal, payload}),
+  getModesInfo: (payload) => dispatch({type: areaAchieveAction.getModesInfo, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AreaAchieve);

@@ -6,7 +6,6 @@ export const achieveAction = {
   resetStore: Symbol('resetStore'),
   getAreaStation: Symbol('getAreaStation'),
   getQuotaInfo: Symbol('getQuotaInfo'),
-  getModesInfo: Symbol('getModesInfo'),
 };
 
 const initState = immutable.fromJS({

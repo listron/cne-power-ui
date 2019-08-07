@@ -7,6 +7,50 @@ import {areaAchieveAction} from './areaAchieveReducer';
 const {APIBasePath} = path.basePaths;
 const {highAnalysis} = path.APISubPaths;
 
+function convertKey (arr, keyMap) {
+  let tempString = JSON.stringify(arr);
+  for(const key in keyMap){
+    if(keyMap.hasOwnProperty(key)){
+      const reg = `/"${key}":/g`;
+      tempString = tempString.replace(eval(reg), '"'+keyMap[key]+'":');
+    }
+  }
+  return JSON.parse(tempString);
+}
+
+function* getModesInfo(action) { // 可选机型
+  const { payload = {} } = action;
+  try {
+    const url = `${APIBasePath}${highAnalysis.getModesInfo}`;
+    // const url = '/mock/cleanWarning/detail';
+    const response = yield call(request.post, url, payload);
+    // 替换的键值对映射
+    const keyMap = {
+      'manufactorId': 'value',
+      'manufactorName': 'label',
+      'deviceModesList': 'children',
+      'deviceModeName': 'label',
+      'deviceModeCode': 'value',
+    };
+    if (response.code === '10000') {
+      yield put({
+        type: areaAchieveAction.fetchSuccess,
+        payload: {
+          modesInfo: response.data && response.data.length > 0 ? convertKey(response.data, keyMap) : [],
+        },
+      });
+    } else {
+      throw response.data;
+    }
+  } catch (error) {
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {quotaInfo: []},
+    });
+    message.error('获取机型失败, 请刷新重试!');
+  }
+}
+
 function* getIndicatorRankTotal(action) { // 指标汇总数据
   const {payload} = action;
   try {
@@ -160,5 +204,6 @@ export function* watchAreaAchieve() {
   yield takeLatest(areaAchieveAction.getTrendInfo, getTrendInfo);
   yield takeLatest(areaAchieveAction.getIndicatorRank, getIndicatorRank);
   yield takeLatest(areaAchieveAction.getIndicatorRankTotal, getIndicatorRankTotal);
+  yield takeLatest(areaAchieveAction.getModesInfo, getModesInfo);
 }
 
