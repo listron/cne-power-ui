@@ -4,7 +4,7 @@ export const stationAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  testStation: Symbol('resetStore'),
+  getDevices: Symbol('devices'),
   getLostRank: Symbol('getLostRank'),
   getLostTrend: Symbol('getLostTrend'),
   getLostTypes: Symbol('getLostTypes'),
@@ -17,12 +17,14 @@ export const stationAchieveAction = {
 const initState = immutable.fromJS({
   testStationInfo: [],
   active: 'lost', // lost, stop, curve
-  topStringify: '', // 保存的请求路径信息
+  lostStringify: '', // station - search信息字符串
+  stopTopStringify: '',
 
   chartDevice: null, // chart选中的设备
   chartTime: null, // chart选中的时间
   chartTimeMode: 'month', // chart选中时间格式 - month year day
 
+  modeDevices: [], // 电站 设备型号+设备集合
   lostRank: [], // 损失根源 - 指标排名
   lostRankLoading: false,
   lostTrend: [], // 损失根源 - 指标趋势

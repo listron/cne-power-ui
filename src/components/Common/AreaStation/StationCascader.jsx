@@ -16,7 +16,7 @@ class StationCascader extends Component {
     super(props);
     const { value, data } = props;
     this.state = {
-      value: (data.length > 0 && value.length > 0) ? this.getInfoFromData(value, data) : [],
+      value: (data.length > 0 && value.length > 0) ? this.getInfoFromData(value[0], data) : [],
     };
   }
 
@@ -27,7 +27,7 @@ class StationCascader extends Component {
     const isGataGet = data.length === 0 && nextData.length > 0 && value[0];
     const isValueChange = nextData.length > 0 && value[0] !== nextValue[0];
     (isGataGet || isValueChange) && this.setState({
-      value: this.getInfoFromData(nextValue, nextData),
+      value: this.getInfoFromData(nextValue[0], nextData),
     });
   }
 
