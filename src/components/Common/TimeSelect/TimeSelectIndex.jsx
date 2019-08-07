@@ -1,6 +1,6 @@
 
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { DatePicker, Radio } from 'antd';
 import YearSelect from './YearSelect';
 import styles from './styles.scss';
@@ -21,6 +21,7 @@ const { MonthPicker } = DatePicker;
 4.可选展示参数timerText: string; 默认'统计时间选择'
 5 defaultLast:true 默认是去年
 6 needDefault(bool: 默认true)代表日期组件是否需要默认值进行展示，若false，切换日期组件/style保持无默认值。
+7theme  主题  dark light 默认是light
 */
 
 class TimeSelect extends React.Component {
@@ -35,6 +36,7 @@ class TimeSelect extends React.Component {
     defaultLast: PropTypes.bool,
     onChange: PropTypes.func,
     style: PropTypes.object,
+    theme: PropTypes.string,
   }
 
   static defaultProps = {
@@ -43,7 +45,7 @@ class TimeSelect extends React.Component {
     showMonthPick: true,
     showDayPick: true,
     defaultLast: false,
-    refuseDefault:false,
+    refuseDefault: false,
     value: {
       timeStyle: 'month',
       startTime: moment().format('YYYY-MM-DD'), // 默认今年
@@ -57,7 +59,7 @@ class TimeSelect extends React.Component {
       timeStyle: props.value.timeStyle,
       startTime: props.value.startTime,
       endTime: props.value.endTime,
-    }
+    };
   }
 
   onTimeStyleChange = (e) => { // 时间模式选择
@@ -66,15 +68,13 @@ class TimeSelect extends React.Component {
     const { defaultLast, refuseDefault } = this.props;
     if (refuseDefault) { // 切换时不需要默认值
       params.startTime = params.endTime = null;
-    } else{
-      if (timeStyle === 'year') { // 默认近五年
-        params.startTime = moment().subtract(5, 'year').format('YYYY');
-        params.endTime = moment().format('YYYY');
-      } else if (timeStyle === 'month') { // 默认今年
-        params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
-      } else if (timeStyle === 'day') { // 默认本月
-        params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
-      }
+    } else if (timeStyle === 'year') { // 默认近五年
+      params.startTime = moment().subtract(5, 'year').format('YYYY');
+      params.endTime = moment().format('YYYY');
+    } else if (timeStyle === 'month') { // 默认今年
+      params.endTime = params.startTime = !defaultLast && moment().startOf('year').format('YYYY') || moment().subtract(1, 'year').format('YYYY');
+    } else if (timeStyle === 'day') { // 默认本月
+      params.endTime = params.startTime = !defaultLast && moment().startOf('month').format('YYYY-MM') || moment().subtract(1, 'month').startOf('month').format('YYYY-MM');
     }
     this.setState({ ...params });
     this.props.onChange({ ...params });
@@ -87,7 +87,7 @@ class TimeSelect extends React.Component {
       timeStyle,
       startTime: dateString,
       endTime: dateString,
-    }
+    };
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
@@ -98,7 +98,7 @@ class TimeSelect extends React.Component {
       timeStyle,
       startTime: selectedYear,
       endTime: selectedYear,
-    }
+    };
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
@@ -113,23 +113,23 @@ class TimeSelect extends React.Component {
       timeStyle,
       startTime,
       endTime: selectedYear,
-    }
+    };
     this.setState({ ...params });
     this.props.onChange({ ...params });
   }
 
   disabledDate = (current) => { // 不可以选择的时间
     const { defaultLast } = this.props;
-    return !defaultLast ? current > moment().endOf('day') : current > moment().subtract(1,'month').endOf('day');
+    return !defaultLast ? current > moment().endOf('day') : current > moment().subtract(1, 'month').endOf('day');
   }
 
 
 
   render() {
-    const { timerText, showYearPick, showMonthPick, showDayPick, style } = this.props;
+    const { timerText, showYearPick, showMonthPick, showDayPick, style, theme } = this.props;
     const { timeStyle, startTime, endTime } = this.state;
     return (
-      <div className={styles.timeSelect} style={style}>
+      <div className={`${styles.timeSelect} ${styles[theme]}`} style={style}>
         <div className={styles.textStyle}>{timerText}</div>
         <div className={styles.buttonStyle}>
           <Radio.Group buttonStyle="solid" onChange={this.onTimeStyleChange} value={timeStyle} >
@@ -138,12 +138,14 @@ class TimeSelect extends React.Component {
             {showDayPick && <Radio.Button value="day" >月</Radio.Button>}
           </Radio.Group>
         </div>
+        <span ref={'monthSelect'} />
         {timeStyle === 'day' && <MonthPicker
           // format="YYYY年MM月"
           value={!startTime ? null : moment(startTime)}
           onChange={this.onMonthSelect}
           placeholder="选择月份"
           allowClear={false}
+          getCalendarContainer={() => this.refs.monthSelect}
           disabledDate={this.disabledDate}
         />}
         {timeStyle === 'month' && <YearSelect yearValue={startTime} onYearSelect={this.onYearSelect} />}
@@ -153,8 +155,8 @@ class TimeSelect extends React.Component {
           <YearSelect yearValue={endTime} onYearSelect={this.onEndYearSelect} />
         </span>}
       </div>
-    )
+    );
   }
 }
-export default TimeSelect
+export default TimeSelect;
 

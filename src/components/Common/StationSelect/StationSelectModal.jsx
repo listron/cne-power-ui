@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Modal, Radio  } from 'antd';
+import { Icon, Modal, Radio } from 'antd';
 import ProvinceItem from './ProvinceItem';
 import WarningTip from '../WarningTip';
 import styles from './style.scss';
@@ -23,20 +23,20 @@ class StationSelectModal extends Component {
     super(props);
     this.state = {
       filterStationType: 2,//选中电站类型
-      stationType:[2,0,1],//2所有,0风电，1光伏
+      stationType: [2, 0, 1],//2所有,0风电，1光伏
       selectedStation: props.checkedStations, //暂存选中的电站数组
       showWarningTip: false,
       warningTipText: ''
     }
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const tmpCheckedStations = this.props.checkedStations;
     const { checkedStations } = nextProps;
-    const tmpCodes = tmpCheckedStations.map(e=>e.stationCode);
-    const newCodes = checkedStations.map(e=>e.stationCode);
-    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e=>tmpCodes.includes(e))
-    if(!isCodesSame){ // 电站数据不同。
+    const tmpCodes = tmpCheckedStations.map(e => e.stationCode);
+    const newCodes = checkedStations.map(e => e.stationCode);
+    const isCodesSame = (tmpCodes.length === newCodes.length) && newCodes.every(e => tmpCodes.includes(e))
+    if (!isCodesSame) { // 电站数据不同。
       this.setState({
         selectedStation: checkedStations,
       })
@@ -45,7 +45,7 @@ class StationSelectModal extends Component {
 
   onSelectStationType = (e) => {
     this.setState({
-      filterStationType:e.target.value
+      filterStationType: e.target.value
     })
   }
 
@@ -67,12 +67,12 @@ class StationSelectModal extends Component {
       showWarningTip: false,
     });
     this.setState({
-      selectedStation:[]
+      selectedStation: []
     });
   }
   onDeleteOneStation = (stationInfor) => {
     const { selectedStation } = this.state;
-    const tmpSelectedStation = selectedStation.filter(e=>e.stationCode !== stationInfor.stationCode);
+    const tmpSelectedStation = selectedStation.filter(e => e.stationCode !== stationInfor.stationCode);
     this.setState({
       selectedStation: tmpSelectedStation
     })
@@ -92,32 +92,32 @@ class StationSelectModal extends Component {
   _filterStation = () => {
     const { data, multiple, disabledStation, oneStyleOnly } = this.props;
     const { filterStationType, selectedStation } = this.state;
-    const tmpStations = filterStationType === 2 ? data : data.filter(e=>(e.stationType === filterStationType));
+    const tmpStations = filterStationType === 2 ? data : data.filter(e => (e.stationType === filterStationType));
     let filteredStation = [];
-    tmpStations && tmpStations.length > 0 && tmpStations.forEach(e=>{
+    tmpStations && tmpStations.length > 0 && tmpStations.forEach(e => {
       let findExactStation = false;
-      filteredStation.forEach(m=>{
-        if(m.provinceCode === e.provinceCode){
+      filteredStation.forEach(m => {
+        if (m.provinceCode === e.provinceCode) {
           findExactStation = true;
           m.stations.push(e);
         }
       })
-      if(!findExactStation){
+      if (!findExactStation) {
         filteredStation.push({
           provinceCode: e.provinceCode,
           provinceName: e.provinceName,
-          stations:[e]
+          stations: [e]
         })
       }
     })
-    return filteredStation.map(e=>(
+    return filteredStation.map(e => (
       <ProvinceItem
         key={e.provinceCode}
         oneStyleOnly={oneStyleOnly}
         disabledStation={disabledStation}
         multiple={multiple}
         checkStation={this.checkStation}
-        provinceInfo={{...e}}
+        provinceInfo={{ ...e }}
         selectedStation={selectedStation}
       />
     ))
@@ -128,11 +128,11 @@ class StationSelectModal extends Component {
       <div className={styles.selectedStationList}>
         <div className={styles.selectedStationTitle}>
           <span>已选电站{selectedStation.length}个</span>
-          {selectedStation.length>0&&<span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>}
+          {selectedStation.length > 0 && <span className={styles.clearAll} onClick={this.onClearSelected}>清空</span>}
         </div>
         <div className={styles.innerStationList}>
-          {selectedStation.map(e=>{
-            return <div key={e.stationCode} title={e.stationName} className={styles.eachSelectedStation} > <span>{ e.stationName }</span> <Icon type="close" className={styles.deleteIcon} onClick={()=>this.onDeleteOneStation(e)} /> </div>
+          {selectedStation.map(e => {
+            return <div key={e.stationCode} title={e.stationName} className={styles.eachSelectedStation} > <span>{e.stationName}</span> <Icon type="close" className={styles.deleteIcon} onClick={() => this.onDeleteOneStation(e)} /> </div>
           })}
         </div>
       </div>
@@ -142,12 +142,13 @@ class StationSelectModal extends Component {
   render() {
     const { stationModalShow, hideStationModal, showStationModal, multiple, data } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText } = this.state;
-    const tmpStationSet = new Set(data.map(e=>e.stationType));
+    const tmpStationSet = new Set(data.map(e => e.stationType));
     const hasMultipleType = tmpStationSet.size > 1;
     return (
       <div className={styles.stationSelectModal}>
-        {showWarningTip && <WarningTip style={{marginTop:'250px',width: '210px',height:'88px'}} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
+        {showWarningTip && <WarningTip style={{ marginTop: '250px', width: '210px', height: '88px' }} onCancel={this.onCancelWarningTip} onOK={this.onConfirmWarningTip} value={warningTipText} />}
         <i className="iconfont icon-filter" onClick={showStationModal} />
+        <span ref={'stations'} />
         <Modal
           visible={stationModalShow}
           onOk={this.handleOK}
@@ -156,12 +157,13 @@ class StationSelectModal extends Component {
           okText="确定"
           title="请选择"
           width={625}
+          getContainer={() => this.refs.stations}
           wrapClassName={styles.stationModal}
         >
           <div className={styles.stationStyleModal}>
             {hasMultipleType && <div className={styles.stationType}>
               <RadioGroup onChange={this.onSelectStationType} value={filterStationType}>
-                {stationType.map(e=>(<RadioButton key={e} value={e} >{e===2?'全部':e===1?'光伏':'风电'}</RadioButton>))}
+                {stationType.map(e => (<RadioButton key={e} value={e} >{e === 2 ? '全部' : e === 1 ? '光伏' : '风电'}</RadioButton>))}
               </RadioGroup>
             </div>}
             <div className={styles.provinceList}>

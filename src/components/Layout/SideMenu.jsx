@@ -7,11 +7,13 @@ import styles from './layout.scss';
 import PropTypes from 'prop-types';
 import { menu } from '../../common/menu';
 import { withRouter } from 'react-router-dom';
-const { SubMenu,Item } = Menu;
+const { SubMenu, Item } = Menu;
+import Cookie from 'js-cookie';
 
 class SideMenu extends Component {
   static propTypes = {
     location: PropTypes.object,
+    theme: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -23,95 +25,96 @@ class SideMenu extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { pathname } = this.props.location;
     this.getMenuData(pathname);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { pathname } = nextProps.location;
-    if(pathname !== this.props.location.pathname) {
+    if (pathname !== this.props.location.pathname) {
       this.getMenuData(pathname);
     }
   }
 
   onOpenChange = (openKeys) => {
     this.setState({
-      openKeys
+      openKeys,
     });
   }
 
   getMenuData = (pathname) => {
-    const pathMenuKey = pathname.split('/').filter(e=>e)[0]; // 路径第一个关键字。
-    const currentMenuData = menu.find(e=> pathMenuKey && e.path.replace('/','') === pathMenuKey) || {}; // 当前路径对应的菜单组
+    const pathMenuKey = pathname.split('/').filter(e => e)[0]; // 路径第一个关键字。
+    const currentMenuData = menu.find(e => pathMenuKey && e.path.replace('/', '') === pathMenuKey) || {}; // 当前路径对应的菜单组
     const sideMenuData = currentMenuData.children || []; // 侧边栏数据
-    let openKeys = []; // 菜单展开项
-    sideMenuData.forEach(e=>{
-      if(e.children && e.children.length>0){
+    const openKeys = []; // 菜单展开项
+    sideMenuData.forEach(e => {
+      if (e.children && e.children.length > 0) {
         e.children.forEach(item => {
           pathname.includes(item.path) && openKeys.push(e.path);
-        })
+        });
       }
-    })
+    });
     this.setState({
       sideMenuData,
-      openKeys
-    })
+      openKeys,
+    });
   }
 
   toggleCollapsed = () => {
     const { collapsed } = this.state;
     this.setState({
-      collapsed:  !collapsed
-    })
+      collapsed: !collapsed,
+    });
   }
 
-  _createSideMenu = (sideMenuData) => {
+  _createSideMenu = (sideMenuData, theme) => {
     const { collapsed, openKeys } = this.state;
     const { pathname } = this.props.location;
-    if(sideMenuData.length > 0){//至少拥有二级目录
+    if (sideMenuData.length > 0) {//至少拥有二级目录
       return (
         <div className={styles.sideLayout}>
           <div className={styles.logo}>
-            {!collapsed&&<img src="/img/menubg.png" style={{width:55,height:23}} />}
-            <div className={styles.iconfont} style={{marginTop:10}} onClick={this.toggleCollapsed}>
-              {/* <Icon style={{marginTop:10}} onClick={this.toggleCollapsed} type={collapsed ? 'menu-unfold' : 'menu-fold'} /> */}
-              {collapsed ? <i className="iconfont icon-menu-fold"></i>:<i className="iconfont icon-menu-open" ></i> }
+            {!collapsed && <img src={`/img/${theme === 'dark' ? 'darkmenu' : 'menubg'}.png`} style={{ width: 55, height: 23 }} />}
+            <div className={styles.iconfont} style={{ marginTop: 10 }} onClick={this.toggleCollapsed}>
+              {collapsed ? <i className="iconfont icon-menu-fold" /> : <i className="iconfont icon-menu-open" />}
             </div>
           </div>
+          <span ref={'test'} />
           <Menu
             mode="inline"
             inlineCollapsed={collapsed}
             className={styles.menuList}
             selectedKeys={[pathname]}
             openKeys={openKeys}
+            // getContainer={() => this.refs.test}
             onOpenChange={this.onOpenChange}>
             {this.renderSideMenu(sideMenuData)}
           </Menu>
-      </div>
+        </div>
       );
-    } else{//根目录或只有一级目录
-      return null;
-    }
+    } //根目录或只有一级目录
+    return null;
+
   }
 
   renderSideMenu(sideMenuData) {
     const { collapsed } = this.state;
     const rightMenu = localStorage.getItem('rightMenu');
-    return sideMenuData.map(e=>{
+    return sideMenuData.map(e => {
       const hasNoSubMenu = e && (!e.children || e.children.length === 0) && rightMenu && rightMenu.split(',').includes(e.rightKey);
-      if(hasNoSubMenu){//只有二级目录
+      if (hasNoSubMenu) {//只有二级目录
         return (
           <Item key={e.path}>
-            <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null: e.name}</Link>
+            <Link to={e.path}>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}{collapsed ? null : e.name}</Link>
           </Item>
         );
-      }else if(e && e.children && e.children.length > 0 && rightMenu && rightMenu.split(',').includes(e.rightKey)){ // 有三级目录
-        let menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null: e.name}</span></span>
+      } else if (e && e.children && e.children.length > 0 && rightMenu && rightMenu.split(',').includes(e.rightKey)) { // 有三级目录
+        const menuTitle = <span>{e.iconStyle && <i className={`iconfont ${e.iconStyle}`} />}<span>{collapsed ? null : e.name}</span></span>;
         const filteredMenu = e.children.filter(subItem => rightMenu && rightMenu.split(',').includes(subItem.rightKey));
         return (
-          <SubMenu title={menuTitle} key={e.path}>
-            {filteredMenu.map(m=>{
+          <SubMenu title={menuTitle} key={e.path} className={styles.subMenu}>
+            {filteredMenu.map(m => {
               return (
                 <Item key={m.path}>
                   <Link to={m.path}>{m.name}</Link>
@@ -120,24 +123,25 @@ class SideMenu extends Component {
             })}
           </SubMenu>
         );
-      }else{
-        return null;
       }
-    })
+      return null;
+
+    });
   }
 
   render() {
     const { sideMenuData, collapsed } = this.state;
+    const theme = Cookie.get('theme') || 'light';
     const sideStyle = {
       width: collapsed ? 80 : 180,
-      display: sideMenuData.length > 0?'flex':'none',
+      display: sideMenuData.length > 0 ? 'flex' : 'none',
     };
     return (
-      <div className={styles.sideMenu} style={sideStyle}>
-        {this._createSideMenu(sideMenuData)}
+      <div className={`${styles.sideMenu} ${styles[theme]}`} style={sideStyle} >
+        {this._createSideMenu(sideMenuData, theme)}
       </div>
     );
   }
 }
 
-export default withRouter(SideMenu) ;
+export default withRouter(SideMenu);

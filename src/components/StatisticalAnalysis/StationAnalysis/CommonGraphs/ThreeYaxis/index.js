@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import styles from './index.scss';
 import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
+import { Gradient1, Gradient2, barRadius, chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 
 /* 
   1 必填   graphId 图表的id名
@@ -27,7 +28,7 @@ class PowerEfficency extends React.Component {
   };
 
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
 
   componentDidMount() {
@@ -37,36 +38,44 @@ class PowerEfficency extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.drawChart(nextProps);
   }
+
   getYaxisName = (title) => {
-    let result = " ";
-    switch (title) {
-      case "发电效率":
-        result = ["等效利用小时数(h)", "辐射总量(MJ/㎡)", "PR"];
-        break;
-      case "计划完成率":
-        result = ["发电量(万kWh)", "辐射总量(MJ/㎡)", "完成率"];
-        break;
-      default:
-        result = " ";
-    }
-    return result;
-  };
-
-
-  getColor = (title) => {
-    let result = '';
+    let result = ' ';
     switch (title) {
       case '发电效率':
-        result = ['#199475', '#e08031', '#3e97d1'];
+        result = ['等效利用小时数(h)', '辐射总量(MJ/㎡)', 'PR'];
         break;
       case '计划完成率':
-        result = ['#dfdfdf', '#f9b600', '#e08031', '#3e97d1'];
+        result = ['发电量(万kWh)', '辐射总量(MJ/㎡)', '完成率'];
         break;
       default:
-        result = '';
+        result = ' ';
     }
     return result;
   };
+
+
+
+  getColor = {
+    dark: {
+      'hours': Gradient1,
+      'light': Gradient2,
+      'pr': '#3e97d1',
+      'planPower': Gradient1,
+      'actualPower': Gradient2,
+      'planRate': '#f8b14e',
+      'resourceValue': '#00f8ff',
+    },
+    light: {
+      'hours': '#199475',
+      'light': '#e08031',
+      'pr': '#3e97d1',
+      'planPower': '#dfdfdf',
+      'actualPower': '#f9b600',
+      'planRate': '#e08031',
+      'resourceValue': '#3e97d1',
+    },
+  }
 
   getName = (type) => { // 获取对应的name
     let name = '';
@@ -84,19 +93,20 @@ class PowerEfficency extends React.Component {
 
   getDefaultData = (data) => { // 替换数据，当没有数据的时候，用'--'显示
     const length = data.length;
-    let replaceData = [];
-    for (let i = 0; i < length; i++) { replaceData.push('--') }
-    let realData = data.some(e => e || e === 0) ? data : replaceData;
-    return realData
+    const replaceData = [];
+    for (let i = 0; i < length; i++) { replaceData.push('--'); }
+    const realData = data.some(e => e || e === 0) ? data : replaceData;
+    return realData;
   }
 
   drawChart = (params) => {
-    const { graphId, title, data, hasData } = params;
-    const targetChart = echarts.init(document.getElementById(graphId));
-    let color = this.getColor(title);
-    const lineColor = '#f1f1f1';
-    const fontColor='#333';
-    let seriesData = [];
+    const { graphId, title, data, hasData, theme = 'light' } = params;
+    let targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    if (targetChart) {
+      targetChart.dispose();
+      targetChart = echarts.init(document.getElementById(graphId), themeConfig[theme]);
+    }
+    const seriesData = [];
     const lineData = data && data.yData.lineData;
     const barData = data && data.yData.barData;
     for (var bar in barData) {
@@ -108,16 +118,18 @@ class PowerEfficency extends React.Component {
           barBorderRadius: 3,
         },
         barWidth: 5,
+        color: this.getColor[theme][bar],
       };
       seriesData.push(json);
     }
     for (var line in lineData) {
-      if (line === 'light' || line === "resourceValue") {
+      if (line === 'light' || line === 'resourceValue') {
         var json = {
           name: this.getName(line),
           data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 1,
+          color: this.getColor[theme][line],
         };
       } else {
         var json = {
@@ -125,51 +137,39 @@ class PowerEfficency extends React.Component {
           data: this.getDefaultData(lineData[line]),
           type: 'line',
           yAxisIndex: 2,
-        }
+          color: this.getColor[theme][line],
+        };
       }
       seriesData.push(json);
     }
-    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || " ";
+    const confluenceTenMinGraphic = (hasData || hasData === false) && (hasData === true ? hiddenNoData : showNoData) || ' ';
     const targetMonthOption = {
       graphic: confluenceTenMinGraphic,
       tooltip: {
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
-          label:{  color:fontColor},
         },
-        backgroundColor: '#fff',
-        padding: 10,
-        textStyle: {
-          color: 'rgba(0, 0, 0, 0.65)',
-          fontSize: 12,
-        },
-        extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3)',
         formatter: function (params) {
           let paramsItem = '';
           params.map((item) => {
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+            const color = item.color.colorStops && item.color.colorStops[0].color || item.color;
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
             ${item.seriesName} :${item.value === 0 || item.value ? item.value : '--'}${(item.seriesName === '计划完成率' || item.seriesName === 'PR') && '%' || ''}
-            </div>`
+            </div>`;
           });
           return `<div class=${styles.tooltipTitle}> ${params[0].name}</div>
-           ${paramsItem}`
-        }
+           ${paramsItem}`;
+        },
       },
       title: {
         text: title,
         left: '23',
         top: 'top',
-        textStyle: {
-          color: '#666',
-          fontSize: 14,
-          fontWeight: 'normal',
-        }
       },
-      color: color,
       grid: {
         right: '20%',
-        left: '12%'
+        left: '12%',
       },
       legend: {
         left: 'center',
@@ -180,16 +180,7 @@ class PowerEfficency extends React.Component {
         type: 'category',
         data: data && data.xData,
         axisPointer: {
-          type: 'shadow'
-        },
-        axisLine: {
-          show: true,
-          lineStyle: {
-            color: lineColor,
-          }
-        },
-        axisLabel: {
-          color: fontColor,
+          type: 'shadow',
         },
         axisTick: {
           show: false,
@@ -200,13 +191,9 @@ class PowerEfficency extends React.Component {
           type: 'value',
           name: this.getYaxisName(title)[0],
           position: 'left',
-          axisLabel: { formatter: '{value} ', color: fontColor },
-          nameTextStyle: { color: fontColor },
+          axisLabel: { formatter: '{value} ' },
           axisLine: {
             show: false,
-            lineStyle: {
-              color: lineColor,
-            }
           },
           axisTick: {
             show: false,
@@ -214,9 +201,8 @@ class PowerEfficency extends React.Component {
           splitNumber: 5,
           splitLine: {
             lineStyle: {
-              color: lineColor,
-              type: 'dashed'
-            }
+              type: 'dashed',
+            },
           },
         },
         {
@@ -226,44 +212,41 @@ class PowerEfficency extends React.Component {
           nameTextStyle: {
             textAlign: 'left',
             padding: [0, 40, 0, 0],
-            color: fontColor 
           },
           axisLine: {
             show: false,
             lineStyle: {
-              color: lineColor,
-            }
+            },
           },
           splitNumber: 5,
           axisTick: {
             show: false,
           },
           splitLine: { show: false },
-          axisLabel: { formatter: '{value}',color: fontColor },
+          axisLabel: { formatter: '{value}' },
         }, {
           type: 'value',
           name: this.getYaxisName(title)[2],
-          nameTextStyle: { color: fontColor, padding: [0, 0, 0, 40], },
-          axisLine: { lineStyle: { color: lineColor } },
-          axisLabel: { formatter: '{value}%', color: fontColor },
+          nameTextStyle: { padding: [0, 0, 0, 40] },
+          axisLabel: { formatter: '{value}%' },
           splitLine: { show: false },
           position: 'right',
           splitNumber: 5,
           offset: 50,
-        }
+        },
       ],
-      series: seriesData || []
+      series: seriesData || [],
     };
-    targetChart.setOption(targetMonthOption, { notMerge: true })
+    targetChart.setOption(targetMonthOption, { notMerge: true });
     targetChart.resize();
   }
 
   render() {
-    const { graphId, } = this.props;
+    const { graphId } = this.props;
     return (
       <div id={graphId}></div>
-    )
+    );
   }
 }
 
-export default (PowerEfficency)
+export default (PowerEfficency);

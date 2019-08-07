@@ -23,7 +23,7 @@ class ConfluenceBoxList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStatus: 0,//当前状态值
+      currentStatus: 0, //当前状态值
       alarmSwitch: false,
       pageSize: 10,
       currentPage: 1,
@@ -31,10 +31,10 @@ class ConfluenceBoxList extends Component {
       descend: false,
       firstLoad: true,
       renderList: [],
-      spliceLength: 24, // 24条数据一渲染。
+      spliceLength: 48, // 24条数据一渲染。
       topHeight: 550, // 假设的列表上方高度
       newList: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -55,7 +55,7 @@ class ConfluenceBoxList extends Component {
           }
         }
       }
-    }, 1000))
+    }, 1000));
 
   }
 
@@ -68,7 +68,7 @@ class ConfluenceBoxList extends Component {
       this.getData(nextStation);
     }
     const { deviceList = [] } = nextProps.confluenceBoxList;
-    this.changeStationData(deviceList)
+    this.changeStationData(deviceList);
   }
 
   componentWillUnmount() {
@@ -80,10 +80,10 @@ class ConfluenceBoxList extends Component {
     this.setState({
       currentStatus: e.target.value,
       currentPage: 1,
-      renderList: []
+      renderList: [],
     }, () => {
-      this.changeStationData(deviceList)
-    })
+      this.changeStationData(deviceList);
+    });
   }
 
   onSwitchAlarm = (e) => {
@@ -93,7 +93,7 @@ class ConfluenceBoxList extends Component {
       currentPage: 1,
       renderList: [],
     }, () => {
-      this.changeStationData(deviceList)
+      this.changeStationData(deviceList);
     });
   }
 
@@ -123,27 +123,27 @@ class ConfluenceBoxList extends Component {
 
   getStatusNum = (status) => { // 获取状态的数量
     const { deviceStatusSummary = [] } = this.props.confluenceBoxList;
-    const deviceList = deviceStatusSummary.filter(e => `${e.deviceStatusCode}` === `${status}`)
-    return deviceList.length > 0 && deviceList[0].deviceStatusNum || 0
+    const deviceList = deviceStatusSummary.filter(e => `${e.deviceStatusCode}` === `${status}`);
+    return deviceList.length > 0 && deviceList[0].deviceStatusNum || 0;
   }
 
   tableColumn = () => {
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
-    const { deviceTypeCode, } = this.props;
+    const { deviceTypeCode } = this.props;
     const columns = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
-        defaultSortOrder: "ascend",
+        defaultSortOrder: 'ascend',
         render: (text, record) => {
           return (
             <div className={`${record.deviceStatus}` === '900' && styles.deviceCode || ''} >
-              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link>
-            </div>)
-        }
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+            </div>);
+        },
       }, {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
@@ -194,14 +194,14 @@ class ConfluenceBoxList extends Component {
   }
 
   changePagination = ({ pageSize, currentPage }) => {
-    this.setState({ pageSize, currentPage })
+    this.setState({ pageSize, currentPage });
   }
 
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
-      descend: sorter.order === 'descend'
-    })
+      descend: sorter.order === 'descend',
+    });
   }
 
   createTableSource = (data = []) => { // 排序
@@ -216,7 +216,7 @@ class ConfluenceBoxList extends Component {
         a[sortName] = a[sortName] ? a[sortName] : '';
         return sortType * (a[sortName].localeCompare(b[sortName]));
       }
-    })
+    });
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
 
@@ -229,8 +229,8 @@ class ConfluenceBoxList extends Component {
       })
       .sort((a, b) => {
         return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
-      })
-    return filteredDeviceList
+      });
+    return filteredDeviceList;
   }
 
   groupData = (deviceList = []) => { // 数据分组 用于网格
@@ -239,13 +239,13 @@ class ConfluenceBoxList extends Component {
       const subDeviceList = deviceList.filter(item => item.parentDeviceCode === e);
       return subDeviceList.sort((a, b) => a.deviceName && a.deviceName.localeCompare(b.deviceName));
     });
-    return deviceGroupedList
+    return deviceGroupedList;
   }
 
   changeStationData = (deviceList) => { // 改变数据之后改变
     this.setState({ newList: this.dealData(deviceList) }, () => {
-      this.initRender()
-    })
+      this.initRender();
+    });
   }
 
   initRender = (initLoad = false) => { //  渲染todolist 的条数
@@ -253,7 +253,7 @@ class ConfluenceBoxList extends Component {
     const tmp = newList.slice(0, spliceLength + renderList.length);
     const updateTmp = newList.slice(0, renderList.length || spliceLength);
     this.setState({
-      renderList: initLoad ? tmp : updateTmp
+      renderList: initLoad ? tmp : updateTmp,
     });
   }
 
@@ -262,13 +262,13 @@ class ConfluenceBoxList extends Component {
     const { confluenceBoxList, deviceTypeCode, loading } = this.props;
     const { currentPage, pageSize, renderList } = this.state;
     const { deviceList = [] } = confluenceBoxList;
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
     const filteredDeviceList = this.dealData(deviceList);
     const deviceGroupedList = this.groupData(renderList);
     const operations = (<div className={styles.deviceRight} >
       <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 只看告警
-      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus}  >
+      <Radio.Group defaultValue={0} buttonStyle="solid" className={styles.inverterStatus} onChange={this.onChangeStatus} >
         <Radio.Button value={0} >全部</Radio.Button>
         <Radio.Button value={400} >正常 {this.getStatusNum(400)}</Radio.Button>
         <Radio.Button value={801} >离散率>10% {this.getStatusNum(801)}</Radio.Button>
@@ -304,7 +304,7 @@ class ConfluenceBoxList extends Component {
                           const alarm = item.alarmNum && item.alarmNum > 0;
                           const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
                           const devicePower = dataFormats(item.devicePower, '--', 2);
-                          let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                          const progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
                           return (
                             <div key={item.deviceCode}
                               className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
@@ -350,7 +350,7 @@ class ConfluenceBoxList extends Component {
                 <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
               </div>
               <Table
-                dataSource={this.createTableSource(filteredDeviceList).map((e, i) => { return { ...e, key: e.deviceCode } })}
+                dataSource={this.createTableSource(filteredDeviceList).map((e, i) => { return { ...e, key: e.deviceCode }; })}
                 columns={this.tableColumn()}
                 onChange={this.tableChange}
                 pagination={false}
@@ -362,7 +362,7 @@ class ConfluenceBoxList extends Component {
         </Tabs>
       </div>
 
-    )
+    );
   }
 }
 

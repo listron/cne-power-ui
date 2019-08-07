@@ -1,7 +1,6 @@
+@import "../../../../../theme/theme.scss";
 
-@import '../../../../../theme/theme.scss';
-
-.deviceChange{
+.deviceChange {
   position: absolute;
   background-color: #fff;
   border-right: 1px solid $promptColor;
@@ -12,88 +11,93 @@
   width: 300px;
   height: calc(100vh - 123px);
   overflow: auto;
-  .deviceTitle{
+  .deviceTitle {
     color: $darkColor;
     font-size: 18px;
     height: 65px;
     line-height: 65px;
     margin-bottom: 0px;
     cursor: pointer;
-    .titleIcon{
+    .titleIcon {
       cursor: pointer;
       margin-left: 32px;
       margin-right: 12px;
       color: $themeColor;
     }
   }
-  .deviceList{
+  .deviceList {
     display: flex;
     flex-wrap: wrap;
-    .deviceName{
-      width: 50%;
-      padding-left: 40px;
+    .deviceName {
+      width: 140px;
+      padding-left: 30px;
       cursor: pointer;
       color: $darkColor;
       height: 28px;
       line-height: 28px;
-      &:hover{
+      @include overflowText();
+      &:hover {
         background-color: #eee;
       }
     }
-    .currentDeviceName{
-      width: 50%;
-      padding-left: 40px;
+    .currentDeviceName {
+      width: 140px;
+      padding-left: 30px;
       cursor: pointer;
       height: 28px;
       line-height: 28px;
       color: $themeColor;
+      @include overflowText();
     }
   }
 }
 
-.powerProgress{
+.powerProgress {
   display: flex;
   flex-wrap: wrap;
   width: 215px;
   margin-top: 24px;
   align-content: flex-start;
-  :global{
-    .ant-progress-inner{
+  :global {
+    .ant-progress-inner {
       background-color: #dfdfdf;
     }
   }
-  .progressNum, .progressText{
+  .progressNum,
+  .progressText {
     width: 100%;
     display: flex;
     @include lineheight(24px);
-    .leftText, .rightText {
+    .leftText,
+    .rightText {
       width: 50%;
       color: $themeColor;
       font-size: 24px;
     }
-    .leftText{
+    .leftText {
       text-align: left;
     }
-    .rightText{
+    .rightText {
       text-align: right;
     }
   }
-  .progressText{
+  .progressText {
     @include lineheight(14px);
     height: 14px;
-    .leftText, .rightText {
+    .leftText,
+    .rightText {
       font-size: 14px;
       color: $darkColor;
     }
   }
 }
 
-.alarmTable{
+.alarmTable {
   padding: 0px 68px 48px 68px;
-  .alarmTip{
+  .alarmTip {
     line-height: 20px;
     margin-top: 20px;
-    i{
+    i {
       margin-left: 4px;
       border-radius: 50%;
       background-color: $promptColor;
@@ -104,13 +108,13 @@
     font-weight: 700;
     margin: 20px 0 0 0;
   }
-  .tableHeader{
+  .tableHeader {
     display: flex;
     justify-content: space-between;
     height: 36px;
     line-height: 36px;
     margin-top: 15px;
-    .historyButton{
+    .historyButton {
       height: 26px;
       border: 1px solid $themeColor;
       color: $themeColor;
@@ -119,23 +123,23 @@
         text-decoration: none;
       }
     }
-    .historyButton:hover{
+    .historyButton:hover {
       background: $themeColor;
       color: #fff;
     }
   }
-  .level{
+  .level {
     border-radius: 2px;
     display: inline-block;
     height: 18px;
     line-height: 18px;
     padding: 0 4px;
   }
-  :global{
-    .ant-table{
-      .ant-table-placeholder{
+  :global {
+    .ant-table {
+      .ant-table-placeholder {
         border-bottom: none;
-        img{
+        img {
           margin-top: 15px;
         }
       }
@@ -143,52 +147,54 @@
   }
 }
 
-.pointData{
+.pointData {
   background-color: #f8f8f8;
   padding: 20px 60px 80px 60px;
-  .pointTitle{
+  .pointTitle {
     color: $darkColor;
   }
-  .pointDataList{
+  .pointDataList {
     display: flex;
     flex-wrap: wrap;
-    .eachGroup{
+    .eachGroup {
       min-width: 20%;
       max-width: 20%;
       padding-left: 20px;
       margin: 16px 0;
       border-right: dotted 1px $promptColor;
-      .eachData{
+      .eachData {
         margin-bottom: 4px;
-        .pointName{
+        .pointName {
           color: $darkColor;
           margin-bottom: 0;
         }
-        .pointValue{
+        .pointValue {
           color: #199475;
           margin-bottom: 0;
           word-wrap: break-word;
           padding-right: 20px;
         }
-        &:hover{
-          background: rgba(206, 235, 224, 0.3); 
-       }
+        &:hover {
+          background: rgba(206, 235, 224, 0.3);
+        }
       }
     }
-    .eachGroup:last-child{
+    .eachGroup:last-child {
       border-right: none;
     }
   }
 }
 
-.devicePointsTable{ // 设备测点表格图
+.devicePointsTable {
+  // 设备测点表格图
   display: flex;
   justify-content: space-around;
-  .pointsList, .eventsList{
+  .pointsList,
+  .eventsList {
     flex-basis: 615px;
     border: 1px solid $promptColor;
     height: 240px;
-    h3{
+    h3 {
       padding-left: 8px;
       margin-bottom: 0;
       height: 32px;
@@ -196,11 +202,11 @@
       border-bottom: 1px solid $promptColor;
       font-weight: 700;
     }
-    .listBox{
+    .listBox {
       height: 206px;
       padding: 8px 0 8px 8px;
       overflow-y: auto;
-      .noEvents{
+      .noEvents {
         display: block;
         text-align: center;
         line-height: 190px;
@@ -208,42 +214,45 @@
       &::-webkit-scrollbar {
         width: 4px;
       }
-      &::-webkit-scrollbar-thumb{
+      &::-webkit-scrollbar-thumb {
         border-radius: 2px;
-        background:rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
       }
     }
-    .eachInfo{
+    .eachInfo {
       height: 24px;
       line-height: 24px;
       color: $darkColor;
       padding-left: 24px;
     }
   }
-  .pointsList .eachInfo{
+  .pointsList .eachInfo {
     display: flex;
     justify-content: space-between;
-    .pointValue{
-      .value{
+    .pointValue {
+      .value {
         color: $themeColor;
       }
-      .unit{
+      .unit {
         display: inline-block;
         margin-left: 4px;
         width: 72px;
       }
     }
   }
-  .eventsList .eventDescribe{
+  .eventsList .eventDescribe {
     margin-left: 30px;
   }
 }
 
-.ycInfo, .yxInfo, .ymInfo{ // 升压站，集电线路yc,yx,ym
+.ycInfo,
+.yxInfo,
+.ymInfo {
+  // 升压站，集电线路yc,yx,ym
   display: flex;
   flex-direction: column;
   padding: 0 48px;
-  h3{
+  h3 {
     margin-bottom: 0;
     margin-left: 4px;
     height: 56px;
@@ -252,59 +261,62 @@
   }
 }
 
-.ycInfo{
+.ycInfo {
   flex: 1 0 50%;
-  .ycList{
+  .ycList {
     margin-bottom: 20px;
     border: 1px solid $promptColor;
   }
-  .ycContent{
+  .ycContent {
     overflow: auto;
     height: 240px;
     &::-webkit-scrollbar {
       width: 6px;
       background-color: #f4f4f4;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: #555;
-      opacity: .5;
+      opacity: 0.5;
     }
   }
-  .top, .eachYc{
+  .top,
+  .eachYc {
     display: flex;
     color: $darkColor;
     align-items: center;
-    .name, .value, .unit{
+    .name,
+    .value,
+    .unit {
       flex: 1 0 80px;
       text-align: center;
     }
-    .name{
+    .name {
       padding-left: 4px;
     }
-    .value{
+    .value {
       flex: 1 0 155px;
     }
   }
-  .top{
+  .top {
     height: 30px;
     background-color: #f4f4f4;
     margin-bottom: 4px;
   }
-  .eachYc{
+  .eachYc {
     height: 40px;
     background-color: #fff;
-    &:hover{
-      background:#f0f9f5;
+    &:hover {
+      background: #f0f9f5;
     }
   }
 }
-.yxInfo{
+.yxInfo {
   flex: 1 0 50%;
-  h3{
+  h3 {
     margin-left: 20px;
   }
-  .yxList{
+  .yxList {
     overflow: auto;
     height: 274px;
     display: flex;
@@ -315,25 +327,25 @@
       width: 6px;
       background-color: #f4f4f4;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: #555;
-      opacity: .5;
+      opacity: 0.5;
     }
   }
-  .eachYx{
+  .eachYx {
     flex: 0 0 33.33%;
     display: flex;
     height: 40px;
     align-items: center;
-    .round{
+    .round {
       flex: 0 0 10px;
       height: 10px;
       border-radius: 50%;
       margin-left: 20px;
       margin-right: 4px;
     }
-    .name{
+    .name {
       color: $darkColor;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -343,10 +355,10 @@
   }
 }
 
-.ymInfo{
+.ymInfo {
   border-top: 1px solid $promptColor;
   height: 500px;
-  .ymList{
+  .ymList {
     display: flex;
     overflow: auto;
     height: 274px;
@@ -355,16 +367,16 @@
       width: 6px;
       background-color: #f4f4f4;
     }
-    &::-webkit-scrollbar-thumb{
+    &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: #555;
-      opacity: .5;
+      opacity: 0.5;
     }
   }
-  .ymColumn{
-    border-right: 1px dashed $promptColor; 
+  .ymColumn {
+    border-right: 1px dashed $promptColor;
   }
-  .eachYm{
+  .eachYm {
     padding-left: 12px;
     width: 260px;
     cursor: pointer;
@@ -372,7 +384,7 @@
     flex-direction: column;
     justify-content: center;
     color: $lightColor;
-    &:hover{
+    &:hover {
       background-color: #f1f1f1;
     }
   }

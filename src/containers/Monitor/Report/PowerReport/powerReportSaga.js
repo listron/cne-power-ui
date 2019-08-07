@@ -10,7 +10,7 @@ const monitor = Path.APISubPaths.monitor;
 function* getPowerReportList(action) { // 请求报表列表
   const { payload } = action;
   const { startTime, endTime } = payload;
-  const url =`${APIBasePath}${monitor.getPowerReportList}`;
+  const url = `${APIBasePath}${monitor.getPowerReportList}`;
   // const url = '/mock/v3/wind/report/fan/gen';
 
   try {
@@ -24,7 +24,7 @@ function* getPowerReportList(action) { // 请求报表列表
       ...payload,
       // startTime:moment( startTime).utc().format(''),
       // endTime:moment( endTime).utc().format(''),
-      timeZone: moment().utcOffsetzone() / 60,
+      timeZone: moment().utcOffset() / 60,
 
     });
     if (response.data.code === '10000') {
