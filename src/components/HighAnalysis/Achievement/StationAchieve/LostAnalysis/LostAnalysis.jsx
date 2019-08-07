@@ -10,9 +10,11 @@ class LostAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    lostQuota: PropTypes.string,
     lostStringify: PropTypes.string,
     chartTimeMode: PropTypes.string,
     location: PropTypes.object,
+    quotaInfo: PropTypes.array,
     changeStore: PropTypes.func,
     getLostRank: PropTypes.func,
     getLostTrend: PropTypes.func,
@@ -32,12 +34,30 @@ class LostAnalysis extends Component {
 
   componentWillReceiveProps(nextProps){
     const nextLocation = nextProps.location;
+    const nextQuota = nextProps.quotaInfo;
+    const nextQuotaParam = nextProps.lostQuota;
     const nextSearch = nextLocation.search || '';
-    const { lostStringify } = this.props;
+    const { lostStringify, quotaInfo } = this.props;
     const infoStr = searchUtil(nextSearch).getValue('station');
-    if (infoStr !== lostStringify) { // 搜索信息有变
-      this.queryAllCharts(infoStr);
+    if (infoStr !== lostStringify && nextQuotaParam) { // 搜索信息有变
+      this.queryAllCharts(infoStr, nextQuotaParam);
     }
+    if (quotaInfo.length === 0 && nextQuota.length > 0) { // 得到指标数据
+      this.propsQuotaChange(nextQuota, infoStr);
+    }
+  }
+
+  propsQuotaChange = (quotaInfo, infoStr) => { // 得到指标
+    const { changeStore } = this.props;
+    // 第一个指标作为数据
+    const firstType = quotaInfo[0] || {};
+    const quotas = firstType.children || [];
+    const firstQuota = quotas[0] || {};
+    const lostQuota = firstQuota.value || null;
+    console.log(quotaInfo)
+    console.log(lostQuota)
+    changeStore({ lostQuota });
+    infoStr && this.queryAllCharts(infoStr, lostQuota);
   }
 
   timeMode = {
@@ -46,10 +66,10 @@ class LostAnalysis extends Component {
     year: '3',
   }
 
-  queryAllCharts = (searchStr) => { // 重置3图表
+  queryAllCharts = (infoStr, lostQuota) => { // 重置3图表
     const { changeStore, getLostRank, getLostTrend, getLostTypes, chartTimeMode } = this.props;
-    const searchParam = JSON.parse(searchStr) || {};
-    changeStore({ lostStringify: searchStr }); // 存储路径
+    const searchParam = JSON.parse(infoStr) || {};
+    changeStore({ lostStringify: infoStr }); // 存储路径
     const param = {
       stationCodes: searchParam.searchCode,
       deviceFullcodes: searchParam.searchDevice,
@@ -58,18 +78,18 @@ class LostAnalysis extends Component {
     };
     getLostRank({
       ...param,
-      indicatorCode: searchParam.searchQuota,
+      indicatorCode: lostQuota,
     });
     getLostTrend({
       ...param,
-      indicatorCode: searchParam.searchQuota,
+      indicatorCode: lostQuota,
       type: this.timeMode[chartTimeMode],
     });
     getLostTypes({ ...param });
   }
 
   render() {
-    const { active } = this.props;
+    const { active, quotaInfo, lostQuota } = this.props;
     const lostRank = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
       deviceFullcode: `M${e}M`,
       deviceName: `设备名字${e}`,
@@ -79,7 +99,7 @@ class LostAnalysis extends Component {
     const lostRankLoading = false;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <ChartLostRank lostRank={lostRank} lostRankLoading={lostRankLoading} />
+        <ChartLostRank lostRank={lostRank} lostRankLoading={lostRankLoading} quotaInfo={quotaInfo} lostQuota={lostQuota} />
         <ChartLostTrend lostRank={lostRank} lostRankLoading={lostRankLoading} />
         <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} />
       </div>

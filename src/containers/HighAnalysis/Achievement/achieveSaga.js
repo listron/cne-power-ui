@@ -42,19 +42,19 @@ function convertKey (arr, keyMap) {
 function* getQuotaInfo() { // 可选指标信息
   try {
     const url = `${APIBasePath}${highAnalysis.getQuotaInfo}`;
-    // const url = '/mock/cleanWarning/detail';
     const response = yield call(request.post, url);
-    // 替换的键值对映射
-    const keyMap = {
-      'indicatorCode': 'value',
-      'indicatorName': 'label',
-    };
+    const quotaInfo = response.data.map(e => ({
+      value: e.indicatorCode,
+      label: e.indicatorName,
+      children: (e.children && e.children.length > 0) ? e.children.map(m => ({
+        value: m.indicatorCode,
+        label: m.indicatorName,
+      })) : [],
+    }));
     if (response.code === '10000') {
       yield put({
         type: achieveAction.fetchSuccess,
-        payload: {
-          quotaInfo: convertKey(response.data.dataList, keyMap) || [],
-        },
+        payload: { quotaInfo },
       });
     } else {
       throw response.data;

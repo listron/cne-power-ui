@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
+import { Cascader } from 'antd';
+import IndicateCascader from './IndicateCascader';
 import styles from './lost.scss';
 
 class ChartLostRank extends Component {
 
   static propTypes = {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
+    lostQuota: PropTypes.string,
     lostRankLoading: PropTypes.bool,
+    quotaInfo: PropTypes.array,
   }
 
   componentDidMount(){
@@ -23,6 +27,7 @@ class ChartLostRank extends Component {
       this.setChartLoading();
     }
   }
+
 
   setChartLoading = () => {
     console.log('loading');
@@ -83,16 +88,17 @@ class ChartLostRank extends Component {
   }
 
   render() {
+    const { quotaInfo, lostQuota } = this.props;
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
           <span className={styles.title}>
-            风机pba排名
+            风机PBA排名
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择指标</span>
-              <span>指标下拉</span>
+              <IndicateCascader quotaInfo={quotaInfo} lostQuota={lostQuota} />
             </span>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>

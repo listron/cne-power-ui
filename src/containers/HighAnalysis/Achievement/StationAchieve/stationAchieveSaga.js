@@ -22,21 +22,34 @@ function *getDevices({ payload }){
       stationCodes: [stationCode],
       deviceTypeCode: 101,
     });
-    console.log(response);
+    if (response.code === '10000') {
+      const originData = response.data.dataList || [];
+      const modeDevices = originData.map(e => ({
+        value: e.deviceModeCode,
+        label: e.deviceModeName,
+        children: (e.devices && e.devices.length > 0) ? e.devices.map(m => ({
+          value: m.deviceFullcode,
+          label: m.deviceName,
+        })) : [],
+      }));
+      yield call(easyPut, 'fetchSuccess', { modeDevices });
+    }
   } catch (error) {
-    return; // 继续吞错误，就是这么任性
+    message.error('获取设备失败, 请刷新重试');
   }
 }
 
-function *getLostRank(){ // 损失根源 - 指标排名
+function *getLostRank({ payload }){ // 损失根源 - 指标排名
   const url = `${APIBasePath}${highAnalysis.getLostRank}`;
   try {
     yield call(easyPut, 'changeStore', { lostRankLoading: true });
-    const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
-    });
-    console.log(response);
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        lostRank: response.data || [],
+        lostRankLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       lostRank: [],
@@ -45,15 +58,17 @@ function *getLostRank(){ // 损失根源 - 指标排名
   }
 }
 
-function *getLostTrend(){ // 损失根源 - 指标趋势
+function *getLostTrend({ payload }){ // 损失根源 - 指标趋势
   const url = `${APIBasePath}${highAnalysis.getLostTrend}`;
   try {
     yield call(easyPut, 'changeStore', { lostTrendLoading: true });
-    const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
-    });
-    console.log(response);
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        lostTrend: response.data || [],
+        lostTrendLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       lostTrend: [],
@@ -62,15 +77,17 @@ function *getLostTrend(){ // 损失根源 - 指标趋势
   }
 }
 
-function *getLostTypes(){ // 损失根源 - 损失电量分解
+function *getLostTypes({ payload }){ // 损失根源 - 损失电量分解
   const url = `${APIBasePath}${highAnalysis.getLostTypes}`;
   try {
     yield call(easyPut, 'changeStore', { lostTypesLoading: true });
-    const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
-    });
-    console.log(response);
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        lostTypes: response.data || [],
+        lostTypesLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       lostTypes: [],
@@ -79,7 +96,7 @@ function *getLostTypes(){ // 损失根源 - 损失电量分解
   }
 }
 
-function *getStopElec(){ // 停机 - 损失电量
+function *getStopElec({ payload }){ // 停机 - 损失电量
   const url = `${APIBasePath}${highAnalysis.getStopElec}`;
   try {
     const response = yield call(request.post, url, {
@@ -92,7 +109,7 @@ function *getStopElec(){ // 停机 - 损失电量
   }
 }
 
-function *getStopRank(){ // 停机 - 设备停机时长及次数
+function *getStopRank({ payload }){ // 停机 - 设备停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopRank}`;
   try {
     yield call(easyPut, 'changeStore', { stopRankLoading: true });
@@ -109,7 +126,7 @@ function *getStopRank(){ // 停机 - 设备停机时长及次数
   }
 }
 
-function *getStopTrend(){ // 停机 - 日月年 停机时长次数趋势图
+function *getStopTrend({ payload }){ // 停机 - 日月年 停机时长次数趋势图
   const url = `${APIBasePath}${highAnalysis.getStopTrend}`;
   try {
     yield call(easyPut, 'changeStore', { stopTrendLoading: true });
@@ -126,7 +143,7 @@ function *getStopTrend(){ // 停机 - 日月年 停机时长次数趋势图
   }
 }
 
-function *getStopTypes(){ // 停机 - 各类停机时长及次数
+function *getStopTypes({ payload }){ // 停机 - 各类停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopTypes}`;
   try {
     yield call(easyPut, 'changeStore', { stopTypesLoading: true });
