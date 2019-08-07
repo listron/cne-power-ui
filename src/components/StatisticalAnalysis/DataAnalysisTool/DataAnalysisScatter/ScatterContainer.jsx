@@ -50,11 +50,17 @@ class ScatterContainer extends React.Component {
     });
 
   }
+
+  likeChange = (index, bool) => {
+    console.log('index', index, bool);
+    const { scatterData } = this.props;
+    scatterData[index].likeStatus = bool;
+    this.props.changeToolStore({ scatterData });
+  };
+
   render() {
-    const { scatterData, likeArr } = this.props;
-    // console.log('likeArr: ', likeArr);
+    const { scatterData } = this.props;
     const { currentImgIndex, imageListShow } = this.state;
-    // console.log('scatterData', scatterData);
     return (
       <React.Fragment>
         {scatterData.map((e, i) => {
@@ -62,12 +68,13 @@ class ScatterContainer extends React.Component {
             {...this.props}
             key={i}
             index={i}
-            saveBtn={likeArr[i]}
+            saveBtn={e.likeStatus}
             id={e.deviceName}
             title={e.deviceName}
             chartData={e.chartData}
             showImg={this.showImg}
             saveImgUrl={this.saveImgUrl}
+            onChange={this.likeChange}
           />);
         })}
         <span ref={'date'}></span>
@@ -79,7 +86,7 @@ class ScatterContainer extends React.Component {
             hideImg={this.hideImg}
             currentImgIndex={currentImgIndex}
             changeCurrentImgIndex={this.changeCurrentImgIndex}
-
+            onChange={this.likeChange}
           />
 
         }

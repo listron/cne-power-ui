@@ -53,13 +53,12 @@ function* getScatterData(action) {//获取
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
     const response = yield call(axios.get, url, { params: payload });
     if (response.data.code === '10000') {
-      const scatterData = response.data.data || [];
-      const arrNum = scatterData.length ? scatterData.length : 0;
+      const scatterArr = response.data.data || [];
+      const scatterData = scatterArr.map((e, i) => ({ ...e, likeStatus: false }));
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
           scatterData,
-          likeArr: Array(arrNum).fill(false),
         },
       });
     } else {

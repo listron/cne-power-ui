@@ -21,22 +21,28 @@
     display: flex;
     flex-wrap: wrap;
 
-
     .stationCard {
       margin-left: 20px;
       margin-bottom: 12px;
       font-size: 20px;
       color: $themeColor;
-      width: 200px;
-      height: 100px;
-      line-height: 100px;
+      width: 208px;
+      height: 68px;
+      line-height: 68px;
       text-align: center;
       border: 4px solid;
       border-radius: 4px;
-      border-image: -webkit-linear-gradient(red, $themeColor) 10 10;
+      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.30);
+      border-image: -webkit-linear-gradient(#36c6ad, $themeColor) 10 10;
 
       &:hover {
-        background: linear-gradient(green, $themeColor);
+        // background: linear-gradient(green, $themeColor);
+        background-image: linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30), inset 0 0 4px 2px rgba(255, 255, 255, 0.50);
+        border-radius: 4px;
+        border: none;
+        width: 220px;
+        height: 68px;
         color: #fff;
 
       }
@@ -45,7 +51,6 @@
 }
 
 .singleStationBox {
-
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -55,7 +60,6 @@
     height: 120px;
     display: flex;
     flex-direction: column;
-
 
     .headTop {
       display: flex;
@@ -80,7 +84,7 @@
 
         .defaultStyle {
           width: 120px;
-          background: rgb(206, 235, 224);
+          background: #ceebe0;
           color: $themeColor;
           border: none
         }
@@ -90,13 +94,16 @@
         }
 
         .swapIcon {
-          color: rgb(249, 183, 6);
+          color: #f9b600;
         }
 
         .swapStyle {
           width: 120px;
-          color: rgb(249, 183, 6);
-          background: rgb(252, 255, 229);
+          color: #f9b600;
+          ;
+          background: #fcffe5;
+          // color: rgb(249, 183, 6);
+          // background: rgb(252, 255, 229);
           border: none;
         }
       }
@@ -149,20 +156,19 @@
     .scatterStyle {
       display: flex;
       flex: 1;
-
     }
   }
 }
 
 .singleStationModal {
   .imgBox {
-
     display: flex;
     flex: 1;
     align-items: center;
 
     .handleButton {
       width: 66px;
+      background: $themeColor;
       text-align: center;
 
       button {

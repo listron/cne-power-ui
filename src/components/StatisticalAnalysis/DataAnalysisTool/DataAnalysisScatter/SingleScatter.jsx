@@ -18,49 +18,27 @@ class SingleScatter extends React.Component {
   }
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      // saveBtn: false,
-    };
   }
   componentDidMount() {
     this.drawChart(this.props);
-
   }
   componentWillReceiveProps(nextProps) {
-
     if (nextProps.xPointName !== this.props.xPointName && nextProps.yPointName !== this.props.yPointName) {
       this.drawChart(nextProps);
-      // this.setState({ saveBtn: false });
     }
     if (nextProps.id !== this.props.id || nextProps.saveBtn !== this.props.saveBtn) {
-      console.log('this.props.saveBtn: ', this.props.saveBtn);
-      console.log('nextProps.saveBtn: ', nextProps.saveBtn);
       this.drawChart(nextProps, true);
-      // const scatterChart = echarts.init(document.getElementById(this.props.id));
-      // scatterChart.clear();
     }
-
   }
-
   format = (val) => {
     if (val) {
       return val.split('').join('\n');
     }
     return val;
   }
-
   drawChart = (params, change) => {
-    // console.log('params: ', params);
-    const { title, xPointName, yPointName, chartData = [], saveBtn, likeArr, index, changeToolStore } = params;
-    console.log('index: ', index);
-    // console.log('saveBtn: ', saveBtn);
-    console.log('likeArr: ', likeArr);
+    const { title, xPointName, yPointName, chartData = [], saveBtn, index, onChange } = params;
     const scatterChart = echarts.init(this.chartId);
-    // console.log(this.chartId);
-    // if (change) {
-    //   scatterChart.dispose();
-    //   scatterChart = echarts.init(this.chartId);
-    // }
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -74,12 +52,11 @@ class SingleScatter extends React.Component {
           fontSize: 14,
           rich: {
             b: {
-              height: 40,
-              width: 40,
+              height: 20,
+              width: 20,
               align: 'center',
               backgroundColor: {
-                image: saveBtn ? '/img/wind01.png' : '/img/wind04.png',
-
+                image: saveBtn ? '/img/mark.png' : '/img/unmark.png',
               },
             },
 
@@ -159,6 +136,7 @@ class SingleScatter extends React.Component {
         {
           name: this.format(yPointName),
           nameRotate: 360,
+          nameGap: 20,
           type: 'value',
           nameLocation: 'center',
           nameTextStyle: {
@@ -206,36 +184,8 @@ class SingleScatter extends React.Component {
     };
     scatterChart.off();
     scatterChart.on('click', 'title', (params) => {
-      likeArr[index] = !saveBtn;
-      changeToolStore({
-        likeArr,
-      });
-      // scatterChart.setOption({
-      //   title: {
-      //     // text: title,
-      //     text: [`${title}`, '{b|}'].join(''),
-      //     left: '5%',
-      //     textStyle: {
-      //       fontSize: 14,
-      //       rich: {
-      //         b: {
-      //           height: 40,
-      //           width: 40,
-      //           align: 'center',
-      //           backgroundColor: {
-      //             image: likeArr[index] ? '/img/wind01.png' : '/img/wind04.png',
-      //             color: 'yellow',
-      //           },
-      //         },
-      //       },
-      //     },
-      //     triggerEvent: true,
-      //   },
-      // });
-
-
+      onChange(index, !saveBtn);
     });
-
     scatterChart.setOption(option, 'notMerge');
     scatterChart.resize();
     scatterChart.on('rendered', () => {
@@ -245,7 +195,6 @@ class SingleScatter extends React.Component {
       });
       this.props.saveImgUrl && this.props.saveImgUrl(title, imgUrl);
     });
-
   }
   render() {
     const { id, index, showImg } = this.props;

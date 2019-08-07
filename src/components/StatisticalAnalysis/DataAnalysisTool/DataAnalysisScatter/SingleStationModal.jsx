@@ -27,7 +27,7 @@ class SingleStationModal extends React.Component {
 
   nextImg = () => {
     const { currentImgIndex, data } = this.props;
-    console.log('currentImgIndex: ', currentImgIndex);
+    // console.log('currentImgIndex: ', currentImgIndex);
     if (!data || currentImgIndex >= data.length - 1) {
       return;
     }
@@ -35,16 +35,11 @@ class SingleStationModal extends React.Component {
   }
 
   render() {
-    const { imageListShow, hideImg, data = [], currentImgIndex, likeArr } = this.props;
-    // console.log('likeArr: ', likeArr);
-    // console.log('currentImgIndex: ', currentImgIndex);
+    const { imageListShow, hideImg, data = [], currentImgIndex, likeArr, onChange } = this.props;
     const curChart = data[currentImgIndex];
-    // console.log('curChart: ', curChart);
+    const likeStatus = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';
-    // console.log('deviceName: ', deviceName);
     const chartData = curChart ? curChart.chartData : [];
-    // console.log('chartData: ', chartData);
-
     return (
       <React.Fragment>
         <span ref={'date'}></span>
@@ -52,7 +47,7 @@ class SingleStationModal extends React.Component {
           footer={null}
           visible={imageListShow}
           onCancel={hideImg}
-          width={760}
+          width={980}
           destroyOnClose={true}
           wrapClassName={styles.singleStationModal}
           getContainer={() => this.refs.date}
@@ -66,11 +61,13 @@ class SingleStationModal extends React.Component {
             <div className={styles.imgContainer} >
               <SingleScatter
                 {...this.props}
-                saveBtn={likeArr[currentImgIndex]}
+                saveBtn={likeStatus}
                 id={`${deviceName}_${currentImgIndex}`}
+                index={currentImgIndex}
                 title={deviceName}
                 chartData={chartData}
                 saveImgUrl={this.saveImgUrl}
+                onChange={onChange}
 
               />
             </div>
