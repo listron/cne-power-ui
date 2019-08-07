@@ -17,7 +17,8 @@ export const stationAchieveAction = {
 const initState = immutable.fromJS({
   testStationInfo: [],
   active: 'lost', // lost, stop, curve
-  topStringify: '', // 保存的请求路径信息
+  lostStringify: '', // station - search信息字符串
+  stopTopStringify: '',
 
   chartDevice: null, // chart选中的设备
   chartTime: null, // chart选中的时间
