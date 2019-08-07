@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styles } from './dataAnalysisStyle.scss';
+import styles from './dataAnalysisStyle.scss';
 import SingleScatter from './SingleScatter';
 import SingleStationModal from './SingleStationModal';
 
@@ -9,6 +9,7 @@ class ScatterContainer extends React.Component {
     scatterData: PropTypes.array,
     newSrcUrl: PropTypes.array,
     srcObj: PropTypes.object,
+    changeToolStore: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -52,10 +53,10 @@ class ScatterContainer extends React.Component {
   }
 
   likeChange = (index, bool) => {
-    console.log('index', index, bool);
-    const { scatterData } = this.props;
+    // console.log('index', index, bool);
+    const { scatterData, changeToolStore } = this.props;
     scatterData[index].likeStatus = bool;
-    this.props.changeToolStore({ scatterData });
+    changeToolStore({ scatterData });
   };
 
   render() {

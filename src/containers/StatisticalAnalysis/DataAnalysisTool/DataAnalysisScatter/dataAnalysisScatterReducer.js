@@ -13,8 +13,8 @@ var initState = Immutable.fromJS({
   yPointCode: '',
   startTime: '',
   endTime: '',
-  xPointName: '',
-  yPointName: '',
+  pointCodeNameX: '',
+  pointCodeNameY: '',
   srcObj: {},
   newSrcUrl: [],
 

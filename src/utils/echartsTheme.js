@@ -40,7 +40,7 @@ export const darkTheme = () => { // 数据规范展示
   ];
   var theme = {
     color: colorPalette,
-    // backgroundColor: backgroundColor,
+    backgroundColor: backgroundColor,
     tooltip: {
       axisPointer: {
         lineStyle: {

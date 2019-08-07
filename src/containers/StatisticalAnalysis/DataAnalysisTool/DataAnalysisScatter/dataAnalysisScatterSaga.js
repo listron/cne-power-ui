@@ -5,11 +5,11 @@ import { dataAnalysisScatterAction } from './dataAnalysisScatterAction';
 
 function* getScatterName(action) {//获取
   const { payload } = action;
-  const url = '/mock/api/v3/wind/analysis/scatterplot/names';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}`;
+  // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
-    const response = yield call(axios.get, url, { params: payload });
+    const response = yield call(axios.get, url);// { params: payload }
     if (response.data.code === '10000') {
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
@@ -26,11 +26,11 @@ function* getScatterName(action) {//获取
 }
 function* getScatterOtherName(action) {//获取
   const { payload } = action;
-  const url = '/mock/api/v3/wind/analysis/scatterplot/xylist';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}`;
+  // const url = '/mock/api/v3/wind/analysis/scatterplot/xylist';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterOtherName}/${payload.stationCode}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
-    const response = yield call(axios.get, url, { params: payload });
+    const response = yield call(axios.get, url);//{ params: payload }
     if (response.data.code === '10000') {
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
@@ -47,11 +47,11 @@ function* getScatterOtherName(action) {//获取
 }
 function* getScatterData(action) {//获取
   const { payload } = action;
-  const url = '/mock/api/v3/wind/analysis/scatterplot/list';
-  // const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
+  // const url = '/mock/api/v3/wind/analysis/scatterplot/list';
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
-    const response = yield call(axios.get, url, { params: payload });
+    const response = yield call(axios.post, url, payload);// { params: payload }
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
       const scatterData = scatterArr.map((e, i) => ({ ...e, likeStatus: false }));

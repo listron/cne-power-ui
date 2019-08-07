@@ -11,6 +11,7 @@ class SingleStationModal extends React.Component {
     data: PropTypes.array,
     imageListShow: PropTypes.boolean,
     hideImg: PropTypes.func,
+    onChange: PropTypes.func,
 
   }
   constructor(props, context) {
@@ -35,7 +36,7 @@ class SingleStationModal extends React.Component {
   }
 
   render() {
-    const { imageListShow, hideImg, data = [], currentImgIndex, likeArr, onChange } = this.props;
+    const { imageListShow, hideImg, data = [], currentImgIndex, onChange } = this.props;
     const curChart = data[currentImgIndex];
     const likeStatus = curChart ? curChart.likeStatus : false;
     const deviceName = curChart ? curChart.deviceName : '';

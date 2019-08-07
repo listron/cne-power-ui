@@ -21,15 +21,16 @@ class DataAnalysisScatter extends Component {
 
   render() {
     const breadCrumbData = { breadData: [{ name: '散点图' }] };
-    const { showPage } = this.props;
+    const { showPage, theme } = this.props;
+
     return (
-      <div className={styles.dataAnalysisScatter} >
-        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} />
+      <div className={`${styles.dataAnalysisScatter} ${styles[theme]}`} >
+        <CommonBreadcrumb {...breadCrumbData} style={{ marginLeft: '38px' }} theme={theme} />
         <div className={styles.scatterMain}>
           {showPage === 'allStation' && <DataAnalysisAllStation {...this.props} />}
           {showPage === 'singleStation' && <SingleStationScatter {...this.props} />}
         </div>
-        <Footer />
+        <Footer theme={theme} />
       </div>
     );
   }
@@ -38,6 +39,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.dataAnalysisScatterReducer.toJS(),
     stations: state.common.get('stations').toJS(),
+    theme: state.common.get('theme'),
   };
 };
 const mapDispatchToProps = (dispatch) => ({

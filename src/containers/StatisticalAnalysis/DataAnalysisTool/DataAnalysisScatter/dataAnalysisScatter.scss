@@ -9,10 +9,23 @@
   .scatterMain {
     display: flex;
     flex: 1;
+    background-color: #ececec;
     flex-direction: column;
     justify-content: space-between;
     padding: 24px 24px 0;
-    background-color: #ececec;
   }
-
 }
+
+// .light {
+//   .scatterMain {
+//     background-color: #ececec;
+//   }
+// }
+
+// .dark {
+//   @import "../../../../theme/darkTheme.scss";
+
+//   .scatterMain {
+//     background-color: $background;
+//   }
+// }

@@ -4,6 +4,7 @@ import styles from './dataAnalysisStyle.scss';
 import echarts from 'echarts';
 import { Icon } from 'antd';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { themeConfig } from '../../../../utils/darkConfig';
 
 class SingleScatter extends React.Component {
   static propTypes = {
@@ -23,10 +24,12 @@ class SingleScatter extends React.Component {
     this.drawChart(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.xPointName !== this.props.xPointName && nextProps.yPointName !== this.props.yPointName) {
+    const { xPointName, yPointName, id, saveBtn, theme } = nextProps;
+    if (xPointName !== this.props.xPointName && yPointName !== this.props.yPointName) {
       this.drawChart(nextProps);
     }
-    if (nextProps.id !== this.props.id || nextProps.saveBtn !== this.props.saveBtn) {
+    if (id !== this.props.id || saveBtn !== this.props.saveBtn || theme !== this.props.theme) {
+      console.log(111, theme, this.props.theme);
       this.drawChart(nextProps, true);
     }
   }
@@ -37,8 +40,12 @@ class SingleScatter extends React.Component {
     return val;
   }
   drawChart = (params, change) => {
-    const { title, xPointName, yPointName, chartData = [], saveBtn, index, onChange } = params;
-    const scatterChart = echarts.init(this.chartId);
+    const { title, xPointName, yPointName, chartData = [], saveBtn, index, onChange, theme } = params;
+    let scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+    if (scatterChart) {
+      scatterChart.dispose();
+      scatterChart = echarts.init(this.chartId, themeConfig[theme]);
+    }
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
@@ -86,9 +93,7 @@ class SingleScatter extends React.Component {
         backgroundColor: '#fff',
         axisPointer: {
           // type: 'cross',
-          label: {
-            backgroundColor: lineColor,
-          },
+
         },
 
         padding: 10,
@@ -103,7 +108,6 @@ class SingleScatter extends React.Component {
         nameGap: -40,
         name: xPointName,
         nameTextStyle: {
-          color: lineColor,
           fontSize: 18,
           verticalAlign: 'bottom',
           lineHeight: 40,
@@ -119,9 +123,6 @@ class SingleScatter extends React.Component {
           lineStyle: {
             color: '#dfdfdf',
           },
-        },
-        axisLabel: {
-          color: lineColor,
         },
         axisPointer: {
           label: {
@@ -140,17 +141,12 @@ class SingleScatter extends React.Component {
           type: 'value',
           nameLocation: 'center',
           nameTextStyle: {
-            color: lineColor,
             fontSize: 18,
             padding: [0, 20, 60, 20],
-
-
           },
-
           splitLine: {
             show: true,
             lineStyle: {
-              color: ['#dfdfdf'],
               type: 'dashed',
             },
           },
@@ -158,9 +154,6 @@ class SingleScatter extends React.Component {
             lineStyle: {
               color: '#dfdfdf',
             },
-          },
-          axisLabel: {
-            color: lineColor,
           },
           axisTick: {
             show: true,
@@ -208,13 +201,3 @@ class SingleScatter extends React.Component {
 }
 export default (SingleScatter);
 
-      // this.downloadFile(title, imgUrl);
-      // const img = new Image();
-      // img.src = scatterChart.getDataURL({
-      // pixelRatio: 2,
-      // backgroundColor: '#fff',
-      // });
-      // var $a = document.createElement('a');
-      // $a.setAttribute('href', img.src);
-      // $a.setAttribute('download', title);
-      // $a.click();

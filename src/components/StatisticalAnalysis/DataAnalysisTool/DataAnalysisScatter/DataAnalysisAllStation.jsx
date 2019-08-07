@@ -17,20 +17,20 @@ class DataAnalysisAllStation extends React.Component {
   }
   selectStation = (stationCode) => {
     this.props.changeToolStore({ stationCode, showPage: 'singleStation' });
-    this.props.getScatterName({ stationCode, type: 1 });
+    this.props.getScatterName({ stationCode });
     this.props.getScatterData({
-      stationCode,
-      xPointCode: '',
-      yPointCode: '',
-      startTime: '',
-      endTime: '',
+      'stationCode': 82,
+      'startTime': '2019-01-10T02:37:05Z',
+      'endTime': '2019-01-10T05:37:05Z',
+      'xPointCode': 'GN010',
+      'yPointCode': 'GN011',
     });
   }
   render() {
-    const { stations } = this.props;
+    const { stations, theme } = this.props;
     const dataList = stations.filter(e => e.stationType === 0);
     return (
-      <div className={styles.allstationBox}>
+      <div className={`${styles.allstationBox}  ${styles[theme]} `}>
         <div className={styles.boxtitle}>风电站列表<span>(点击查看电站散点图)</span></div>
         <div className={styles.boxcard}>
           {dataList.map((e, i) => (

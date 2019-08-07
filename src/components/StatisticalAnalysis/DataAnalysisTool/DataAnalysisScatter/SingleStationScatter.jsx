@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
 import ScatterContainer from './ScatterContainer';
-import { Button, DatePicker, Cascader, Icon } from 'antd';
+import { Button, DatePicker, Cascader, Icon, Select } from 'antd';
 import moment from 'moment';
 import { downloadFile } from '../../../../utils/utilFunc';
 
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 const options = [{
   value: '风速相关',
   pointsUnionName: '风速相关',
@@ -45,6 +46,7 @@ class SingleStationScatter extends React.Component {
       isSwap: false,
       options,
       scatterNameValue: [],
+      showOther: false,
 
     };
   }
@@ -70,9 +72,9 @@ class SingleStationScatter extends React.Component {
         isLeaf: false,
       };
       const { pointNameList } = scatterNames[0];
-      const { xPointName, yPointName, xPointCode, yPointCode } = pointNameList[0];
-      this.setState({ options: [...test, otherName], scatterNameValue: [1, `${xPointCode}_${yPointCode}`] });
-      this.props.changeToolStore({ xPointName, yPointName });
+      const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = pointNameList[0];
+      this.setState({ options: [...test, otherName], scatterNameValue: [1, `${pointCodeX}_${pointCodeY}`] });
+      this.props.changeToolStore({ pointCodeNameX, pointCodeNameY });
     }
   }
   componentWillUnmount() {
@@ -81,7 +83,7 @@ class SingleStationScatter extends React.Component {
   formater = (data) => {
     return data.map((e, i) => {
       const pointNameList = e.pointNameList.map((item, index) => ({
-        ...item, value: `${item.xPointCode}_${item.yPointCode}`,
+        ...item, value: `${item.pointCodeX}_${item.pointCodeY}`,
       }));
       return { ...e, pointNameList };
     }
@@ -96,24 +98,39 @@ class SingleStationScatter extends React.Component {
 
   }
   changeTime = (date, dateString) => {
-
-
-
   }
   onChangeContrast = (value, selectedOptions) => {
-    const codeValue = value[value.length - 1];
-    const { xPointCode, yPointCode } = codeValue.split('_');
-    this.props.changeToolStore({
-      xPointCode, yPointCode,
+    // console.log('selectedOptions: ', selectedOptions);
+    const { stationCode } = this.props;
+    const { pointCodeNameX, pointCodeNameY } = selectedOptions[1];
+    // console.log('value: ', value);
+
+    if (value[0] === '其他') {
+      this.setState({
+        showOther: true,
+      });
+      this.props.getScatterOtherName({
+        stationCode,
+      });
+    }
+    this.setState({
+      scatterNameValue: value,
+      showOther: false,
     });
+    const codeValue = value[value.length - 1];
+    const { pointCodeX, pointCodeY } = codeValue.split('_');
+    this.props.changeToolStore({
+      pointCodeX, pointCodeY, pointCodeNameX, pointCodeNameY,
+    });
+
   }
   getScatterData = () => {
     //请求数据
-    const { stationCode, xPointCode, yPointCode, startTime, endTime } = this.props;
+    const { stationCode, pointCodeX, pointCodeY, startTime, endTime } = this.props;
     this.props.getScatterData({
       stationCode,
-      xPointCode,
-      yPointCode,
+      pointCodeX,
+      pointCodeY,
       startTime,
       endTime,
     });
@@ -123,27 +140,27 @@ class SingleStationScatter extends React.Component {
     const { newSrcUrl } = this.props;
     newSrcUrl.forEach((e, i) => {
       downloadFile(e.title, e.src);
-
     });
     //下载照片
   }
   changeSwap = () => {
-    const { changeToolStore, xPointName, yPointName } = this.props;
+    const { changeToolStore, pointCodeNameX, pointCodeNameY } = this.props;
     this.setState({
       isSwap: !this.state.isSwap,
     });
     changeToolStore({
-      xPointName: yPointName,
-      yPointName: xPointName,
+      pointCodeNameX: pointCodeNameY,
+      pointCodeNameY: pointCodeNameX,
     });
   }
   render() {
-    const { stationCode, stations, xPointName, yPointName } = this.props;
-    const { isSwap, options, scatterNameValue } = this.state;
+    const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme } = this.props;
+    // console.log('scatterotherNames: ', scatterotherNames);
+    const { isSwap, options, scatterNameValue, showOther } = this.state;
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => e.stationType === 0);
     return (
-      <div className={styles.singleStationBox}>
+      <div className={`${styles.singleStationBox} ${styles[theme]}`}>
         <div className={styles.headBox}>
           <div className={styles.headTop}>
             <label className={styles.nameStyle}>电站</label>
@@ -151,6 +168,7 @@ class SingleStationScatter extends React.Component {
               onOK={this.selectStationCode}
               data={selectStation}
               value={stations.filter(e => e.stationCode === stationCode)}
+            // theme={theme}
             />
             <label className={styles.nameStyle}>时间</label>
             <RangePicker
@@ -158,6 +176,7 @@ class SingleStationScatter extends React.Component {
               format={dateFormat}
               onChange={this.changeTime}
               style={{ width: '240px' }}
+
             />
           </div>
           <div className={styles.headBottom}>
@@ -169,11 +188,27 @@ class SingleStationScatter extends React.Component {
               onChange={this.onChangeContrast}
               style={{ width: '400px' }}
             />
-            <div className={styles.contrastValue}>
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>{xPointName}</Button>
+            {!showOther && <div className={styles.contrastValue}>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>{pointCodeNameX}</Button>
               <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.downPic}>{yPointName}</Button>
-            </div>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.downPic}>{pointCodeNameY}</Button>
+            </div>}
+            {showOther && <div className={styles.contrastValue}>
+              <Select
+                style={{ width: 120 }}
+                onChange={this.changeXvalue}
+              >
+              </Select>
+              <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
+              <Select
+                style={{ width: 120 }}
+                onChange={this.changeYvalue}
+              >
+                {scatterotherNames.map((e, i) => (
+                  <Option value={e.devicePointCode}>{e.devicePointName}</Option>
+                ))}
+              </Select>
+            </div>}
             <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
             <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
 
