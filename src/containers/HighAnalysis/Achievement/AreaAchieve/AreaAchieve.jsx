@@ -108,9 +108,14 @@ class AreaAchieve extends Component {
     }
     // 首次进来
     if (groupNextInfoStr === groupInfoStr && !groupNextInfoStr) {
-      console.log(modesInfo, quotaInfo, areaStation, '11111');
-      console.log(nextModesInfo, nextQuotaInfo, nextAreaStation, '2222');
-      if (nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0 && nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0) {
+      // console.log(modesInfo, quotaInfo, areaStation, '11111');
+      // console.log(nextModesInfo, nextQuotaInfo, nextAreaStation, '2222');
+      // console.log(nextCapacityTime, 'nextCapacityTime');
+      // console.log(nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0 && nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '+++');
+      // console.log(nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '====');
+      const dataLen = nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0;
+      const timeStamp = nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0;
+      if (dataLen && timeStamp) {
         const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
         const defaultEndTime = moment().format('YYYY-MM-DD');
         const stations = [];
