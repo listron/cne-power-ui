@@ -8,18 +8,32 @@ export default class AreaChart extends Component {
 
   static propTypes = {
     capacityInfo: PropTypes.array,
+    capacityTime: PropTypes.number,
+    capacityLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { areaChart } = this;
+    const { capacityTime, capacityLoading, capacityInfo } = this.props;
+    const { capacityTime: capacityTimePrev } = prevProps;
     const myChart = eCharts.init(areaChart);
-    myChart.setOption(this.drawChart());
+    if (capacityLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!capacityLoading) {
+      myChart.hideLoading();
+    }
+    if(capacityTime && capacityTime !== capacityTimePrev) {
+      eCharts.init(areaChart).clear();//清除
+      const myChart = eCharts.init(areaChart);
+      myChart.setOption(this.drawChart(capacityInfo));
+    }
   }
 
 
-  drawChart = () => {
-    const { capacityInfo } = this.props;
-    const childrenArr = capacityInfo.map(cur => {
+  drawChart = (data) => {
+    const childrenArr = data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
       obj.value = cur.stationCapacity;
