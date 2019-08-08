@@ -21,21 +21,22 @@ class SingleScatter extends React.Component {
     super(props, context);
   }
   componentDidMount() {
-    console.log('didmount11111 ');
     this.drawChart(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    const { pointCodeNameX, pointCodeNameY, id, saveBtn, theme } = nextProps;
-    console.log('nextProps2222222 ');
-    if (pointCodeNameX !== this.props.pointCodeNameX && pointCodeNameY !== this.props.pointCodeNameY||theme !== this.props.theme) {
-      console.log('nextProps33333 ');
+    const { pointCodeNameX, pointCodeNameY, id, saveBtn, theme, scatterDataTime } = nextProps;
+    // if (pointCodeNameX !== this.props.pointCodeNameX && pointCodeNameY !== this.props.pointCodeNameY) {
+    //   console.log('nextProps33333 ');
+    //   this.drawChart(nextProps);
+    // }
+    if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
       this.drawChart(nextProps);
     }
     if (id !== this.props.id || saveBtn !== this.props.saveBtn) {
-      console.log('nextProps44444 ');
       this.drawChart(nextProps, true);
     }
   }
+
   format = (val) => {
     if (val) {
       return val.split('').join('\n');
@@ -43,7 +44,7 @@ class SingleScatter extends React.Component {
     return val;
   }
   drawChart = (params, change) => {
-    const { title, pointCodeNameX, pointCodeNameY, chartData = [], saveBtn, index, onChange, theme } = params;
+    const { title, pointCodeNameX, pointCodeNameY, chartData, saveBtn, index, onChange, theme } = params;
     let scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     if (scatterChart) {
       scatterChart.dispose();

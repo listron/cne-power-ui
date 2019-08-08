@@ -58,18 +58,15 @@ function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime } = payload;
   console.log('startTime: ', startTime);
+  payload.startTime = moment(startTime).utc().format();
+  payload.endTime = moment(endTime).utc().format();
   // const url = '/mock/api/v3/wind/analysis/scatterplot/list';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
-    const response = yield call(axios.post, url, {
-      payload: {
-        ...payload,
-        startTime: moment(startTime).utc().format(),
-        endTime: moment(endTime).utc().format(),
-      },
+    const response = yield call(axios.post, url, { ...payload },
 
-    });// { params: payload }
+    );// { params: payload }
     if (response.data.code === '10000') {
       const scatterArr = response.data.data || [];
       const scatterData = scatterArr.map((e, i) => ({ ...e, likeStatus: false }));
