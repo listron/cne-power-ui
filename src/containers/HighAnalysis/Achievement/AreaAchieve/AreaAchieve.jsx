@@ -27,65 +27,69 @@ class AreaAchieve extends Component {
   };
 
   componentDidMount(){
-    // console.log('did mount');
-    // console.log(this.props.location);
-    // console.log('did mount');
-    // const a = {
-    //   'deviceModes': null,
-    //   'regionName': ['蒙东'],
-    //   'startTime': '2018-07-01 01:01:01',
-    //   'endTime': '2019-07-31 01:01:01',
-    //   'stationCodes': [27, 28, 30, 16, 17, 18],
-    //   'manufactorIds': null,
-    // };
-    // const b = {
-    //   'indicatorCode': 101,
-    //   'stationCodes': [],
-    //   'startTime': '2014-04-01',
-    //   'endTime': '2015-01-01',
-    //   'manufactorIds': [
-    //     '69',
-    //   ],
-    //   'deviceModes': [
-    //     35,
-    //   ],
-    // };
-    // const c = {
-    //   'regionName': [
-    //     '安徽',
-    //   ],
-    //   'indicatorCode': 101,
-    //   'stationCodes': [
-    //     73,
-    //     74,
-    //     76,
-    //   ],
-    //   'startTime': '2014-01-01 01:01:01',
-    //   'endTime': '2019-07-31 01:01:01',
-    //   'type': 2,
-    // };
-    // const d = {
-    //   'indicatorCode': 101,
-    //   'stationCodes': [
-    //     73,
-    //   ],
-    //   'startTime': '2018-07-01 01:01:01',
-    //   'endTime': '2019-07-31 01:01:01',
-    // };
-    // const e = {
-    //   'deviceModes': null,
-    //   'regionName': ['安徽'],
-    //   'indicatorCode': '102',
-    //   'startTime': '2018-07-01',
-    //   'endTime': '2019-07-31',
-    //   'stationCodes': null,
-    //   'manufactorIds': null,
-    // };
-    // this.props.getStationCapacity(a);
-    // this.props.getLostGenHour(b);
-    // this.props.getTrendInfo(c);
-    // this.props.getIndicatorRank(d);
-    // this.props.getIndicatorRankTotal(e);
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+    const {
+      searchCode = [],
+      stations = [],
+      modes = [],
+      dates = [],
+      quota = [],
+      modesInfo = [],
+    } = groupInfo;
+    console.log(modesInfo, 'modesInfo');
+    const dataLen = searchCode.length !== 0 && stations.length !== 0 && modes.length !== 0 && dates.length !== 0 && quota.length !== 0;
+    if(dataLen) {
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsCapacity = {
+        deviceModes: modes,
+        regionName: [stations[0].regionName],
+        startTime: dates[0],
+        endTime: dates[1],
+        stationCodes: searchCode,
+        manufactorIds: modesInfo.map(cur => {
+          return cur.value;
+        }),
+      };
+      const paramsHour = {
+        indicatorCode: quotaValue,
+        stationCodes: paramsCapacity.stationCodes,
+        startTime: paramsCapacity.startTime,
+        endTime: paramsCapacity.endTime,
+        manufactorIds: paramsCapacity.manufactorIds,
+        deviceModes: paramsCapacity.deviceModes,
+      };
+      const paramsTrend = {
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        stationCodes: paramsCapacity.stationCodes,
+        startTime: paramsCapacity.startTime,
+        endTime: paramsCapacity.endTime,
+        type: 2, // 默认按月
+      };
+      const paramsRank = {
+        indicatorCode: quotaValue,
+        stationCodes: paramsCapacity.stationCodes,
+        startTime: paramsCapacity.startTime,
+        endTime: paramsCapacity.endTime,
+      };
+      const paramsTotal = {
+        deviceModes: paramsCapacity.deviceModes,
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        startTime: paramsCapacity.startTime,
+        endTime: paramsCapacity.endTime,
+        stationCodes: paramsCapacity.stationCodes,
+        manufactorIds: paramsCapacity.manufactorIds,
+      };
+      this.props.getStationCapacity(paramsCapacity);
+      this.props.getLostGenHour(paramsHour);
+      this.props.getTrendInfo(paramsTrend);
+      this.props.getIndicatorRank(paramsRank);
+      this.props.getIndicatorRankTotal(paramsTotal);
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -102,8 +106,9 @@ class AreaAchieve extends Component {
     const groupNextInfoStr = searchUtil(nextSearch).getValue('area');
     const groupInfoStr = searchUtil(search).getValue('area');
     // console.log(groupInfoStr, 'groupInfoStr');
-    // console.log(groupNextInfoStr, 'groupNextInfoStr');
+    console.log(groupNextInfoStr, 'groupNextInfoStr');
     if (groupNextInfoStr && groupNextInfoStr === groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupNextInfoStr) : {};
       // console.log(groupNextInfoStr, '1');
     }
     // 首次进来
@@ -118,52 +123,63 @@ class AreaAchieve extends Component {
       if (dataLen && timeStamp) {
         const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
         const defaultEndTime = moment().format('YYYY-MM-DD');
-        const stations = [];
+        const stations = []; // 电站stationCode
         areaStation[0].stations.forEach(e => {
           stations.push(e.stationCode);
         });
+        // 厂家code
+        const manufactorId = nextModesInfo.map(cur => {
+          return cur.value;
+        });
+
+        // 机型code
+        const codes = [];
+        nextModesInfo.forEach(e => {
+          const { children = [] } = e || {};
+          children.forEach(m => {
+            codes.push(m.value);
+          });
+        });
         const paramsCapacity = {
-          deviceModes: null,
-          regionName: areaStation[0].regionName,
+          deviceModes: codes,
+          regionName: [areaStation[0].regionName],
           startTime: defaultStartTime,
           endTime: defaultEndTime,
           stationCodes: stations,
-          manufactorIds: null,
+          manufactorIds: manufactorId,
         };
+        // 默认指标分析
+        const quotaValue = nextQuotaInfo[0].children.length === 0 ? nextQuotaInfo[0].value : nextQuotaInfo[0].children[0].value;
         const paramsHour = {
-            indicatorCode: 101,
+            indicatorCode: quotaValue,
             stationCodes: paramsCapacity.stationCodes,
             startTime: paramsCapacity.startTime,
             endTime: paramsCapacity.endTime,
-            manufactorIds: [
-              '69',
-            ],
-            deviceModes: [
-              35,
-            ],
+            manufactorIds: paramsCapacity.manufactorIds,
+            deviceModes: paramsCapacity.deviceModes,
         };
         const paramsTrend = {
             regionName: paramsCapacity.regionName,
-            indicatorCode: 101,
+            indicatorCode: quotaValue,
             stationCodes: paramsCapacity.stationCodes,
             startTime: paramsCapacity.startTime,
             endTime: paramsCapacity.endTime,
-            type: 2,
+            type: 2, // 默认按月
         };
         const paramsRank = {
-          indicatorCode: 101,
+          indicatorCode: quotaValue,
           stationCodes: paramsCapacity.stationCodes,
           startTime: paramsCapacity.startTime,
           endTime: paramsCapacity.endTime,
         };
         const paramsTotal = {
-          deviceModes: null,
+          deviceModes: paramsCapacity.deviceModes,
           regionName: paramsCapacity.regionName,
-          indicatorCode: '102',
+          indicatorCode: quotaValue,
           startTime: paramsCapacity.startTime,
           endTime: paramsCapacity.endTime,
           stationCodes: paramsCapacity.stationCodes,
-          manufactorIds: null,
+          manufactorIds: paramsCapacity.manufactorIds,
         };
         this.props.getStationCapacity(paramsCapacity);
         this.props.getLostGenHour(paramsHour);
@@ -180,8 +196,8 @@ class AreaAchieve extends Component {
       <div className={styles.areaAchieveBox}>
         <AreaSearch {...this.props} />
         <div className={styles.areaTitle}>
-          {1 === 2 ? (
-            <span>{`${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}%`}</span>
+          {1 === 1 ? (
+            <span>{rankTotal.length > 0 ? `${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}%` : '--:--'}</span>
           ) : (
             <span>{`${rankTotal[0].regionName}: 实发小时数${rankTotal[0].indicatorData.actualGen} 应发小时数${rankTotal[0].indicatorData.theoryGen}`}</span>
           )}

@@ -3,7 +3,7 @@ import request from '../../../../utils/request';
 import {message} from 'antd';
 import path from '../../../../constants/path';
 import {areaAchieveAction} from './areaAchieveReducer';
-import moment from "moment";
+import moment from 'moment';
 
 const {APIBasePath} = path.basePaths;
 const {highAnalysis} = path.APISubPaths;
@@ -85,6 +85,12 @@ function* getStationCapacity(action) { // 各电站装机容量
   try {
     const url = `${APIBasePath}${highAnalysis.getStationCapacity}`;
     const response = yield call(request.post, url, payload);
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        capacityLoading: true,
+      },
+    });
     if (response.code === '10000') {
 
       yield put({
@@ -92,12 +98,25 @@ function* getStationCapacity(action) { // 各电站装机容量
         payload: {
           capacityInfo: response.data,
           capacityTime: moment().unix(),
+          capacityLoading: false,
         },
       });
     } else {
+      yield put({
+        type: areaAchieveAction.changeStore,
+        payload: {
+          capacityLoading: false,
+        },
+      });
       throw response.data;
     }
   } catch (error) {
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        capacityLoading: false,
+      },
+    });
     message.error('获取装机容量失败, 请刷新重试!');
   }
 }
@@ -107,19 +126,37 @@ function* getIndicatorRank(action) { // 风电指标数据 PBA排名
   try {
     const url = `${APIBasePath}${highAnalysis.getIndicatorRank}`;
     const response = yield call(request.post, url, payload);
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        rankLoading: true,
+      },
+    });
     if (response.code === '10000') {
-
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {
           indicatorRankInfo: response.data || [],
           rankTime: moment().unix(),
+          rankLoading: false,
         },
       });
     } else {
+      yield put({
+        type: areaAchieveAction.changeStore,
+        payload: {
+          rankLoading: false,
+        },
+      });
       throw response.data;
     }
   } catch (error) {
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        rankLoading: false,
+      },
+    });
     message.error('获取PBA排名失败, 请刷新重试!');
   }
 }
@@ -130,6 +167,12 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
   try {
     const url = `${APIBasePath}${highAnalysis.getTrendInfo}`;
     const response = yield call(request.post, url, payload);
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        trendLoading: true,
+      },
+    });
     if (response.code === '10000') {
 
       yield put({
@@ -137,12 +180,25 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
         payload: {
           trendInfo: response.data || [],
           trendTime: moment().unix(),
+          trendLoading: false,
         },
       });
     } else {
+      yield put({
+        type: areaAchieveAction.changeStore,
+        payload: {
+          trendLoading: false,
+        },
+      });
       throw response.data;
     }
   } catch (error) {
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        trendLoading: false,
+      },
+    });
     message.error('获取PBA趋势失败, 请刷新重试!');
   }
 }
@@ -193,6 +249,12 @@ function* getLostGenHour(action) { // 损失电量分解图
   try {
     const url = `${APIBasePath}${highAnalysis.getLostGenHour}`;
     const response = yield call(request.post, url, payload);
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        loseLoading: true,
+      },
+    });
     if (response.code === '10000') {
 
       yield put({
@@ -200,12 +262,25 @@ function* getLostGenHour(action) { // 损失电量分解图
         payload: {
           lostGenHourInfo: formatData(response.data) || {},
           lostTime: moment().unix(),
+          loseLoading: false,
         },
       });
     } else {
+      yield put({
+        type: areaAchieveAction.changeStore,
+        payload: {
+          loseLoading: false,
+        },
+      });
       throw response.data;
     }
   } catch (error) {
+    yield put({
+      type: areaAchieveAction.changeStore,
+      payload: {
+        loseLoading: false,
+      },
+    });
     message.error('获取损失电量失败, 请刷新重试!');
   }
 }

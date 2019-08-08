@@ -9,6 +9,8 @@ export default class AreaTrendChart extends Component {
 
   static propTypes = {
     trendInfo: PropTypes.array,
+    trendTime: PropTypes.number,
+    trendLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -18,16 +20,27 @@ export default class AreaTrendChart extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { trendChart } = this;
+    const { trendTime, trendLoading, trendInfo } = this.props;
+    const { trendTime: trendTimePrev } = prevProps;
     const myChart = eCharts.init(trendChart);
-    myChart.setOption(this.drawChart());
+    if (trendLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!trendLoading) {
+      myChart.hideLoading();
+    }
+    if(trendTime && trendTime !== trendTimePrev) {
+      eCharts.init(trendChart).clear();//清除
+      const myChart = eCharts.init(trendChart);
+      myChart.setOption(this.drawChart(trendInfo));
+    }
   }
 
-  drawChart = () => {
-    const { trendInfo } = this.props;
+  drawChart = (data) => {
     return {
-      color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
         position: function (pt) {
@@ -45,7 +58,7 @@ export default class AreaTrendChart extends Component {
       xAxis: [
         {
           type: 'category',
-          data: trendInfo && trendInfo.map(cur => {
+          data: data && data.map(cur => {
             return cur.efficiencyDate || '--';
           }),
           axisTick: {
@@ -86,7 +99,7 @@ export default class AreaTrendChart extends Component {
             barBorderRadius: [5, 5, 0, 0],
           },
           symbol: 'none',
-          data: trendInfo && trendInfo.map(cur => {
+          data: data && data.map(cur => {
             return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0';
           }),
         },
