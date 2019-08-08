@@ -9,23 +9,32 @@ export default class AreaLossChart extends Component {
 
   static propTypes = {
     lostGenHourInfo: PropTypes.object,
+    loseLoading: PropTypes.bool,
+    lostTime: PropTypes.number,
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { lossChart } = this;
+    const { lostTime, loseLoading, lostGenHourInfo } = this.props;
+    const { lostTime: lostTimePrev } = prevProps;
     const myChart = eCharts.init(lossChart);
-    myChart.setOption(this.drawChart());
+    if (loseLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!loseLoading) {
+      myChart.hideLoading();
+    }
+    if(lostTime && lostTime !== lostTimePrev) {
+      eCharts.init(lossChart).clear();//清除
+      const myChart = eCharts.init(lossChart);
+      myChart.setOption(this.drawChart(lostGenHourInfo));
+    }
   }
 
-  drawChart = () => {
-    const {
-      lostGenHourInfo: {
-        dataArr,
-        basicArr,
-      },
-    } = this.props;
+  drawChart = (data) => {
+    const { dataArr, basicArr } = data;
     return {
-      color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效

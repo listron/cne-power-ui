@@ -8,17 +8,31 @@ export default class StationPBAChart extends Component {
 
   static propTypes = {
     indicatorRankInfo: PropTypes.array,
+    rankTime: PropTypes.number,
+    rankLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { sortChart } = this;
+    const { rankTime, rankLoading, indicatorRankInfo } = this.props;
+    const { rankTime: rankTimePrev } = prevProps;
     const myChart = eCharts.init(sortChart);
-    myChart.setOption(this.drawChart());
+    if (rankLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!rankLoading) {
+      myChart.hideLoading();
+    }
+    if(rankTime && rankTime !== rankTimePrev) {
+      eCharts.init(sortChart).clear();//清除
+      const myChart = eCharts.init(sortChart);
+      myChart.setOption(this.drawChart(indicatorRankInfo));
+    }
   }
 
-  drawChart = () => {
-    const { indicatorRankInfo } = this.props;
-    const dataSeries = indicatorRankInfo && indicatorRankInfo.map(cur => {
+  drawChart = (data) => {
+    const dataSeries = data && data.map(cur => {
       const obj = {};
       obj.name = cur.stationName;
       obj.type = 'bar';
@@ -30,7 +44,6 @@ export default class StationPBAChart extends Component {
       return obj;
     });
     return {
-      color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
         position: function (pt) {
@@ -45,7 +58,7 @@ export default class StationPBAChart extends Component {
       xAxis: [
         {
           type: 'category',
-          data: indicatorRankInfo && indicatorRankInfo.map(cur => {
+          data: data && data.map(cur => {
             return cur.stationName || '--';
           }),
           axisTick: {

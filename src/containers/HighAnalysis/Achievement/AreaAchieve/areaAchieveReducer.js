@@ -30,6 +30,10 @@ const initState = immutable.fromJS({
   rankTime: 0,
   trendTime: 0,
   lostTime: 0,
+  rankLoading: false,
+  capacityLoading: false,
+  trendLoading: false,
+  loseLoading: false,
 });
 
 export const achieveArea = (state = initState, action) => {
