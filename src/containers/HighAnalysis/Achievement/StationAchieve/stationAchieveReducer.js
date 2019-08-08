@@ -22,7 +22,7 @@ const initState = immutable.fromJS({
   lostSort: 'name', // 排序方式 name or quota
   stopTopStringify: '',
 
-  chartDevice: null, // chart选中的设备
+  chartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
   chartTime: null, // chart选中的时间
   chartTimeMode: 'month', // chart选中时间格式 - month year day
 

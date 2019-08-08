@@ -60,9 +60,17 @@ function *getLostRank({ payload }){ // 损失根源 - 指标排名
 
 function *getLostTrend({ payload }){ // 损失根源 - 指标趋势
   const url = `${APIBasePath}${highAnalysis.getLostTrend}`;
+  const timeType = {
+    day: '1',
+    month: '2',
+    year: '3',
+  };
   try {
     yield call(easyPut, 'changeStore', { lostTrendLoading: true });
-    const response = yield call(request.post, url, payload);
+    const response = yield call(request.post, url, {
+      ...payload,
+      type: timeType[payload.type],
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         lostTrend: response.data || [],

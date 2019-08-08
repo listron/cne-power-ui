@@ -69,12 +69,6 @@ class LostAnalysis extends Component {
     infoStr && this.queryRank(infoStr, lostQuota);
   }
 
-  timeMode = {
-    day: '1',
-    month: '2',
-    year: '3',
-  }
-
   getQueryParam = (infoStr) => {
     const searchParam = JSON.parse(infoStr) || {};
     return {
@@ -95,7 +89,7 @@ class LostAnalysis extends Component {
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.timeMode[this.props.chartTimeMode],
+      type: this.props.chartTimeMode,
     });
   }
 
@@ -113,7 +107,7 @@ class LostAnalysis extends Component {
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.timeMode[this.props.chartTimeMode],
+      type: this.props.chartTimeMode,
     });
   }
 

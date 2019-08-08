@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
+import searchUtil from '../../../../../utils/searchUtil';
 import IndicateCascader from './IndicateCascader';
 import { getBaseOption } from './chartBaseOption';
 import styles from './lost.scss';
@@ -13,26 +14,42 @@ class ChartLostRank extends Component {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
     quotaName: PropTypes.string,
     lostQuota: PropTypes.string,
+    chartTimeMode: PropTypes.string,
     lostSort: PropTypes.string,
     lostRankLoading: PropTypes.bool,
     quotaInfo: PropTypes.array,
+    location: PropTypes.object,
     onQuotaChange: PropTypes.func,
     changeStore: PropTypes.func,
+    getLostTrend: PropTypes.func,
   }
 
 
   componentDidMount(){
-    this.renderChart(this.props.lostRank);
+    const { lostRank = [], lostSort } = this.props;
+    lostRank.length > 0 && this.renderChart(lostRank, lostSort);
   }
 
   componentWillReceiveProps(nextProps){
-    const { lostRankLoading, lostRank } = nextProps;
+    const { lostRankLoading, lostRank, lostSort } = nextProps;
     const preLoading = this.props.lostRankLoading;
     if (preLoading && !lostRankLoading) { // 请求完毕
-      this.renderChart(lostRank);
+      const sortedLostRank = this.sortRank(lostRank, lostSort);
+      this.renderChart(sortedLostRank);
     } else if (!preLoading && lostRankLoading) { // 请求中
       this.setChartLoading();
     }
+  }
+
+  sortRank = (rankList, sortType = 'name') => {
+    const sortedList = [...rankList].sort((a, b) => {
+      if (sortType = 'name') {
+        return a.deviceName.localeCompare(b.deviceName);
+      }
+      const sortName = Object.keys(a.indicatorData).includes('value') ? 'value' : 'actualGen';
+      return a.indicatorData[sortName] - b.indicatorData[sortName];
+    });
+    return sortedList;
   }
 
   barColor = [
@@ -56,8 +73,10 @@ class ChartLostRank extends Component {
   }
 
   sortChart = (value) => {
-    console.log(value)
-    this.props.changeStore({lostSort: value});
+    const { changeStore, lostRank } = this.props;
+    changeStore({lostSort: value});
+    const sortedLostRank = this.sortRank(lostRank, value);
+    this.renderChart(sortedLostRank);
   }
 
   createSeries = (lostRank = []) => {
@@ -111,10 +130,10 @@ class ChartLostRank extends Component {
     return { dataAxis, series, modeArr, indicatorType };
   }
 
-  renderChart = (lostRank = []) => {
-    const { quotaName } = this.props;
+  renderChart = (sortedLostRank = []) => {
+    const { quotaName, changeStore, location, getLostTrend, lostQuota, chartTimeMode } = this.props;
     const rankChart = echarts.init(this.rankRef);
-    const { dataAxis, series, modeArr } = this.createSeries(lostRank);
+    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = quotaName;
     const option = {
@@ -144,7 +163,42 @@ class ChartLostRank extends Component {
       series,
     };
     rankChart.setOption(option);
+    rankChart.on('click', ({dataIndex}) => {
+      const chartDevice = sortedLostRank[dataIndex] || {};
+      changeStore({ chartDevice });
+      const { search } = location;
+      const infoStr = searchUtil(search).getValue('station');
+      const searchParam = JSON.parse(infoStr) || {};
+      getLostTrend({
+        stationCodes: [searchParam.searchCode],
+        deviceFullcodes: searchParam.searchDevice,
+        startTime: searchParam.searchDates[0],
+        endTime: searchParam.searchDates[1],
+        indicatorCode: lostQuota,
+        type: chartTimeMode,
+      });
+    });
   }
+
+
+  // getQueryParam = (infoStr) => {
+  //   const searchParam = JSON.parse(infoStr) || {};
+  //   return {
+  //     stationCodes: [searchParam.searchCode],
+  //     deviceFullcodes: searchParam.searchDevice,
+  //     startTime: searchParam.searchDates[0],
+  //     endTime: searchParam.searchDates[1],
+  //   };
+  // }
+  // queryTrend = (infoStr, lostQuota) => {
+  //   const baseParam = this.getQueryParam(infoStr);
+  //   this.props.getLostTrend({
+  //     ...baseParam,
+  //     indicatorCode: lostQuota,
+  //     type: this.timeMode[this.props.chartTimeMode],
+  //   });
+  // }
+
 
   render() {
     const { quotaInfo, lostQuota, quotaName, lostSort } = this.props;
