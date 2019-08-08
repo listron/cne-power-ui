@@ -36,9 +36,16 @@ class SingleStationScatter extends React.Component {
   static propTypes = {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
+    newSrcUrl: PropTypes.array,
     scatterNames: PropTypes.array,
     changeToolStore: PropTypes.func,
     getScatterName: PropTypes.func,
+    getScatterOtherName: PropTypes.func,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
+    getScatterData: PropTypes.func,
+    pointCodeX: PropTypes.string,
+    pointCodeY: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -47,19 +54,27 @@ class SingleStationScatter extends React.Component {
       options,
       scatterNameValue: [],
       showOther: false,
+      xName: '',
+      yName: '',
+      xCode: '',
+      yCode: '',
 
     };
   }
 
   componentWillReceiveProps(nextProp) {
-    const { scatterNames } = nextProp;
+    const { scatterNames, getScatterData, stationCode, scatterNameTime } = nextProp;
+    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
+    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
     const preScatterName = this.props.scatterNames;
-    if (!preScatterName.length && scatterNames.length > 0) {
+    if (this.props.scatterNameTime !== scatterNameTime) {
+      // console.log('1');
       const { options } = this.state;
       const newscatterNames = this.formater(scatterNames);
       const arr = options.map(e => e.pointsUnionName);
-      const test = newscatterNames.map((e, i) => {
+      const option = newscatterNames.map((e, i) => {
         return {
+          key: i,
           value: e.pointType,
           pointsUnionName: arr[i],
           isLeaf: false,
@@ -67,14 +82,27 @@ class SingleStationScatter extends React.Component {
         };
       });
       const otherName = {
-        value: '其他',
-        pointsUnionName: '其他',
-        isLeaf: false,
+        // value: '其他',
+        // pointsUnionName: '其他',
+        // isLeaf: false,
       };
-      const { pointNameList } = scatterNames[0];
+      const { pointNameList, pointType } = scatterNames[0];
       const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = pointNameList[0];
-      this.setState({ options: [...test, otherName], scatterNameValue: [1, `${pointCodeX}_${pointCodeY}`] });
-      this.props.changeToolStore({ pointCodeNameX, pointCodeNameY });
+      this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+      this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY });
+      this.setState({
+        xName: pointCodeNameX,
+        yName: pointCodeNameY,
+        xCode: pointCodeX,
+        yCode: pointCodeY,
+      });
+      getScatterData({
+        stationCode,
+        startTime: defaultStartime,
+        endTime: defaultEndtime,
+        xPointCode: pointCodeX,
+        yPointCode: pointCodeY,
+      });
     }
   }
   componentWillUnmount() {
@@ -91,20 +119,21 @@ class SingleStationScatter extends React.Component {
   }
   selectStationCode = (stationCodeArr) => {
     const { stationCode } = stationCodeArr[0];
-
     this.props.changeToolStore({
       stationCode,
     });
-
+    this.props.getScatterName({ stationCode });
   }
+
   changeTime = (date, dateString) => {
+    const { changeToolStore } = this.props;
+    changeToolStore({
+      startTime: dateString[0],
+      endTime: dateString[1],
+    });
   }
   onChangeContrast = (value, selectedOptions) => {
-    // console.log('selectedOptions: ', selectedOptions);
     const { stationCode } = this.props;
-    const { pointCodeNameX, pointCodeNameY } = selectedOptions[1];
-    // console.log('value: ', value);
-
     if (value[0] === '其他') {
       this.setState({
         showOther: true,
@@ -112,27 +141,62 @@ class SingleStationScatter extends React.Component {
       this.props.getScatterOtherName({
         stationCode,
       });
+    } else {
+      const { pointCodeNameX, pointCodeNameY } = selectedOptions[1];
+      const codeValue = value[value.length - 1];
+      const { pointCodeX, pointCodeY } = codeValue.split('_');
+      this.props.changeToolStore({
+        pointCodeX, pointCodeY, pointCodeNameX, pointCodeNameY,
+      });
+      this.setState({
+        scatterNameValue: value,
+        showOther: false,
+      });
     }
+
+
+  }
+  changeSwap = () => {
+    const { xCode, yCode, xName, yName } = this.state;
     this.setState({
-      scatterNameValue: value,
-      showOther: false,
+      isSwap: !this.state.isSwap,
     });
-    const codeValue = value[value.length - 1];
-    const { pointCodeX, pointCodeY } = codeValue.split('_');
-    this.props.changeToolStore({
-      pointCodeX, pointCodeY, pointCodeNameX, pointCodeNameY,
+    this.setState({
+      xName: yName,
+      yName: xName,
+      xCode: yCode,
+      yCode: xCode,
     });
 
   }
   getScatterData = () => {
     //请求数据
-    const { stationCode, pointCodeX, pointCodeY, startTime, endTime } = this.props;
-    this.props.getScatterData({
+    const { getScatterData, changeToolStore, stationCode, startTime, endTime } = this.props;
+    const { xCode, yCode, xName, yName } = this.state;
+    getScatterData({
       stationCode,
-      pointCodeX,
-      pointCodeY,
+      xPointCode: xCode,
+      yPointCode: yCode,
       startTime,
       endTime,
+    });
+    changeToolStore({
+      pointCodeNameX: xName,
+      pointCodeNameY: yName,
+    });
+  }
+  changeXvalue = (value, option) => {
+    const { props: { chidren } } = option;
+    this.props.changeToolStore({
+      pointCodeX: value,
+      pointCodeNameX: chidren,
+    });
+  }
+  changeYvalue = (value, option) => {
+    const { props: { chidren } } = option;
+    this.props.changeToolStore({
+      pointCodeY: value,
+      pointCodeNameY: chidren,
     });
   }
 
@@ -143,20 +207,13 @@ class SingleStationScatter extends React.Component {
     });
     //下载照片
   }
-  changeSwap = () => {
-    const { changeToolStore, pointCodeNameX, pointCodeNameY } = this.props;
-    this.setState({
-      isSwap: !this.state.isSwap,
-    });
-    changeToolStore({
-      pointCodeNameX: pointCodeNameY,
-      pointCodeNameY: pointCodeNameX,
-    });
-  }
+
   render() {
     const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme } = this.props;
     // console.log('scatterotherNames: ', scatterotherNames);
-    const { isSwap, options, scatterNameValue, showOther } = this.state;
+    const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
+    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
+    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
     const dateFormat = 'YYYY.MM.DD';
     const selectStation = stations.filter(e => e.stationType === 0);
     return (
@@ -172,7 +229,7 @@ class SingleStationScatter extends React.Component {
             />
             <label className={styles.nameStyle}>时间</label>
             <RangePicker
-              defaultValue={[moment(moment().subtract(1, 'months'), dateFormat), moment(moment(), dateFormat)]}
+              defaultValue={[moment(defaultStartime, dateFormat), moment(defaultEndtime, dateFormat)]}
               format={dateFormat}
               onChange={this.changeTime}
               style={{ width: '240px' }}
@@ -189,23 +246,28 @@ class SingleStationScatter extends React.Component {
               style={{ width: '400px' }}
             />
             {!showOther && <div className={styles.contrastValue}>
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.getScatterData}>{pointCodeNameX}</Button>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{xName}</Button>
               <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
-              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} onClick={this.downPic}>{pointCodeNameY}</Button>
+              <Button className={isSwap ? styles.swapStyle : styles.defaultStyle} >{yName}</Button>
             </div>}
             {showOther && <div className={styles.contrastValue}>
               <Select
                 style={{ width: 120 }}
                 onChange={this.changeXvalue}
+                value={this.props.pointCodeX}
               >
+                {scatterotherNames.map((e, i) => (
+                  <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
+                ))}
               </Select>
               <Icon type="swap" className={isSwap ? styles.swapIcon : styles.nomalIcon} onClick={this.changeSwap} />
               <Select
                 style={{ width: 120 }}
                 onChange={this.changeYvalue}
+                value={this.props.pointCodeY}
               >
                 {scatterotherNames.map((e, i) => (
-                  <Option value={e.devicePointCode}>{e.devicePointName}</Option>
+                  <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
                 ))}
               </Select>
             </div>}

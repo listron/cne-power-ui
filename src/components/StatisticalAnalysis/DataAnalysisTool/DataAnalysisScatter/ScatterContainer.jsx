@@ -61,6 +61,7 @@ class ScatterContainer extends React.Component {
 
   render() {
     const { scatterData } = this.props;
+    console.log('scatterData: ', scatterData);
     const { currentImgIndex, imageListShow } = this.state;
     return (
       <React.Fragment>

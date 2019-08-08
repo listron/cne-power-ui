@@ -16,15 +16,10 @@ class DataAnalysisAllStation extends React.Component {
     super(props, context);
   }
   selectStation = (stationCode) => {
-    this.props.changeToolStore({ stationCode, showPage: 'singleStation' });
-    this.props.getScatterName({ stationCode });
-    this.props.getScatterData({
-      'stationCode': 82,
-      'startTime': '2019-01-10T02:37:05Z',
-      'endTime': '2019-01-10T05:37:05Z',
-      'xPointCode': 'GN010',
-      'yPointCode': 'GN011',
-    });
+    const { changeToolStore, getScatterName } = this.props;
+    changeToolStore({ stationCode, showPage: 'singleStation' });
+    getScatterName({ stationCode });
+
   }
   render() {
     const { stations, theme } = this.props;

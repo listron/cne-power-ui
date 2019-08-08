@@ -9,7 +9,7 @@ class SingleStationModal extends React.Component {
     currentImgIndex: PropTypes.number,
     changeCurrentImgIndex: PropTypes.func,
     data: PropTypes.array,
-    imageListShow: PropTypes.boolean,
+    imageListShow: PropTypes.bool,
     hideImg: PropTypes.func,
     onChange: PropTypes.func,
 

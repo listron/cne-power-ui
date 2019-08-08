@@ -83,7 +83,7 @@
         margin: 0 24px;
 
         .defaultStyle {
-          width: 120px;
+          width: 140px;
           background: #ceebe0;
           color: $themeColor;
           border: none
@@ -98,7 +98,7 @@
         }
 
         .swapStyle {
-          width: 120px;
+          width: 140px;
           color: #f9b600;
           ;
           background: #fcffe5;
@@ -140,7 +140,7 @@
 
     .showModalInco {
       position: absolute;
-      top: 25%;
+      top: 5%;
       left: 75%;
       font-size: 18px;
       cursor: pointer;
@@ -168,7 +168,7 @@
 
     .handleButton {
       width: 66px;
-      background: $themeColor;
+
       text-align: center;
 
       button {

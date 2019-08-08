@@ -9,27 +9,30 @@ import { themeConfig } from '../../../../utils/darkConfig';
 class SingleScatter extends React.Component {
   static propTypes = {
     // title: PropTypes.string,
-    xPointName: PropTypes.string,
-    yPointName: PropTypes.string,
+    pointCodeNameX: PropTypes.string,
+    pointCodeNameY: PropTypes.string,
     id: PropTypes.string,
     saveImgUrl: PropTypes.func,
     showImg: PropTypes.func,
-    saveBtn: PropTypes.boolean,
+    saveBtn: PropTypes.bool,
     // chartData: PropTypes.array,
   }
   constructor(props, context) {
     super(props, context);
   }
   componentDidMount() {
+    console.log('didmount11111 ');
     this.drawChart(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    const { xPointName, yPointName, id, saveBtn, theme } = nextProps;
-    if (xPointName !== this.props.xPointName && yPointName !== this.props.yPointName) {
+    const { pointCodeNameX, pointCodeNameY, id, saveBtn, theme } = nextProps;
+    console.log('nextProps2222222 ');
+    if (pointCodeNameX !== this.props.pointCodeNameX && pointCodeNameY !== this.props.pointCodeNameY||theme !== this.props.theme) {
+      console.log('nextProps33333 ');
       this.drawChart(nextProps);
     }
-    if (id !== this.props.id || saveBtn !== this.props.saveBtn || theme !== this.props.theme) {
-      console.log(111, theme, this.props.theme);
+    if (id !== this.props.id || saveBtn !== this.props.saveBtn) {
+      console.log('nextProps44444 ');
       this.drawChart(nextProps, true);
     }
   }
@@ -40,7 +43,7 @@ class SingleScatter extends React.Component {
     return val;
   }
   drawChart = (params, change) => {
-    const { title, xPointName, yPointName, chartData = [], saveBtn, index, onChange, theme } = params;
+    const { title, pointCodeNameX, pointCodeNameY, chartData = [], saveBtn, index, onChange, theme } = params;
     let scatterChart = echarts.init(this.chartId, themeConfig[theme]);
     if (scatterChart) {
       scatterChart.dispose();
@@ -49,7 +52,7 @@ class SingleScatter extends React.Component {
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
-    const lineColor = '#666';
+    // const lineColor = '#666';
     const option = {
       graphic: inverterTenMinGraphic,
       title: {
@@ -66,25 +69,23 @@ class SingleScatter extends React.Component {
                 image: saveBtn ? '/img/mark.png' : '/img/unmark.png',
               },
             },
-
           },
         },
         triggerEvent: true,
       },
       grid: {
         right: '10%',
-        top: '70px',
+        top: '50px',
         left: '20%',
 
       },
       tooltip: {
         trigger: 'item',
         enterable: true,
-        show: true,
+        show: false,
         formatter: (params) => {
           return `<div class=${styles.formatStyle}>
             <div class=${styles.topStyle}>
-          
             </div>
             <div  style='background:#dfdfdf;height:1px;
             width:100%;' ></div>
@@ -106,7 +107,7 @@ class SingleScatter extends React.Component {
       xAxis: {
         type: 'value',
         nameGap: -40,
-        name: xPointName,
+        name: pointCodeNameX,
         nameTextStyle: {
           fontSize: 18,
           verticalAlign: 'bottom',
@@ -135,7 +136,7 @@ class SingleScatter extends React.Component {
       },
       yAxis: [
         {
-          name: this.format(yPointName),
+          name: this.format(pointCodeNameY),
           nameRotate: 360,
           nameGap: 20,
           type: 'value',
@@ -193,7 +194,7 @@ class SingleScatter extends React.Component {
     const { id, index, showImg } = this.props;
     return (
       <div className={styles.chartWrap}>
-        <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />
+        {showImg && <Icon type="zoom-in" onClick={() => showImg(index)} className={styles.showModalInco} />}
         <div ref={(ref) => { this.chartId = ref; }} className={styles.scatterStyle}></div>
       </div>
     );

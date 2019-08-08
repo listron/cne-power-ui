@@ -17,6 +17,9 @@ var initState = Immutable.fromJS({
   pointCodeNameY: '',
   srcObj: {},
   newSrcUrl: [],
+  scatterNameTime: null,
+
+
 
 
 
