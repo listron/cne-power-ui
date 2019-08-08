@@ -91,13 +91,13 @@ export default class AreaSearch extends Component {
     }
   };
 
-  propsModeDevicesChange = (modeDevices) => { // 得到电站下设备信息;
-    const { searchCode, dates, quota, modesInfo, stations } = this.state;
+  propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
+    const { searchCode, dates, quota, stations } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
     if (quota.length > 0) { // 已有指标
-      this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
+      this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
-      this.setState({ modes });
+      this.setState({ modes, modesInfo: modeDevices});
     }
   };
 
@@ -177,8 +177,8 @@ export default class AreaSearch extends Component {
       quotaInfo,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
-    console.log(modes, 'modes');
-    console.log(stations, 'stations');
+    // console.log(modes, 'modes');
+    // console.log(stations, 'stations');
     return (
       <div className={styles.topSearch}>
         <div>

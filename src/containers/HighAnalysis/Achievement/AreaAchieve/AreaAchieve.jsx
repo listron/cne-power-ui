@@ -27,7 +27,6 @@ class AreaAchieve extends Component {
   };
 
   componentDidMount(){
-    // console.log('did mount');
     const { search } = this.props.location;
     const groupInfoStr = searchUtil(search).getValue('area');
     const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
@@ -39,8 +38,11 @@ class AreaAchieve extends Component {
       quota = [],
       modesInfo = [],
     } = groupInfo;
+    console.log(modesInfo, 'modesInfo');
     const dataLen = searchCode.length !== 0 && stations.length !== 0 && modes.length !== 0 && dates.length !== 0 && quota.length !== 0;
     if(dataLen) {
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
       const paramsCapacity = {
         deviceModes: modes,
         regionName: [stations[0].regionName],
@@ -52,7 +54,7 @@ class AreaAchieve extends Component {
         }),
       };
       const paramsHour = {
-        indicatorCode: quota,
+        indicatorCode: quotaValue,
         stationCodes: paramsCapacity.stationCodes,
         startTime: paramsCapacity.startTime,
         endTime: paramsCapacity.endTime,
@@ -61,14 +63,14 @@ class AreaAchieve extends Component {
       };
       const paramsTrend = {
         regionName: paramsCapacity.regionName,
-        indicatorCode: quota,
+        indicatorCode: quotaValue,
         stationCodes: paramsCapacity.stationCodes,
         startTime: paramsCapacity.startTime,
         endTime: paramsCapacity.endTime,
         type: 2, // 默认按月
       };
       const paramsRank = {
-        indicatorCode: quota,
+        indicatorCode: quotaValue,
         stationCodes: paramsCapacity.stationCodes,
         startTime: paramsCapacity.startTime,
         endTime: paramsCapacity.endTime,
@@ -76,7 +78,7 @@ class AreaAchieve extends Component {
       const paramsTotal = {
         deviceModes: paramsCapacity.deviceModes,
         regionName: paramsCapacity.regionName,
-        indicatorCode: quota,
+        indicatorCode: quotaValue,
         startTime: paramsCapacity.startTime,
         endTime: paramsCapacity.endTime,
         stationCodes: paramsCapacity.stationCodes,
@@ -104,15 +106,15 @@ class AreaAchieve extends Component {
     const groupNextInfoStr = searchUtil(nextSearch).getValue('area');
     const groupInfoStr = searchUtil(search).getValue('area');
     // console.log(groupInfoStr, 'groupInfoStr');
-    // console.log(groupNextInfoStr, 'groupNextInfoStr');
+    console.log(groupNextInfoStr, 'groupNextInfoStr');
     if (groupNextInfoStr && groupNextInfoStr === groupInfoStr) {
       const groupInfo = groupInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      console.log(groupNextInfoStr, '1');
+      // console.log(groupNextInfoStr, '1');
     }
     // 首次进来
     if (groupNextInfoStr === groupInfoStr && !groupNextInfoStr) {
       // console.log(modesInfo, quotaInfo, areaStation, '11111');
-      console.log(nextModesInfo, nextQuotaInfo, nextAreaStation, '2222');
+      // console.log(nextModesInfo, nextQuotaInfo, nextAreaStation, '2222');
       // console.log(nextCapacityTime, 'nextCapacityTime');
       // console.log(nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0 && nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '+++');
       // console.log(nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '====');
