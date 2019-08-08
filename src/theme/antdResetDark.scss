@@ -6,16 +6,9 @@
   .ant-table {
     //table行高，高亮，背景色调整；
 
-    // .ant-table-column-sorter-up.on .anticon-caret-up,
-    // .ant-table-column-sorter-down.on .anticon-caret-up,
-    // .ant-table-column-sorter-up.on .anticon-caret-down,
-    // .ant-table-column-sorter-down.on .anticon-caret-down {
-    //   color: $themeColor;
-    // }
-
     .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
     .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
-      color: #fd6e8f;
+      color: #fd6e8f !important;
     }
     .ant-table-thead > tr > th .ant-table-column-sorter-up,
     .ant-table-thead > tr > th .ant-table-column-sorter-down {
@@ -150,7 +143,7 @@
   .ant-select-dropdown-menu-item {
     color: $fontColor;
     background-color: $select-background;
-    &:hover {
+    &:hover:not(.ant-select-dropdown-menu-item-disabled) {
       background: $themeColor;
       color: $fontColor-invert;
     }
@@ -178,8 +171,8 @@
     color: $fontColor;
   }
 
-  .ant-select-dropdown-menu-item-selected,
-  .ant-select-dropdown-menu-item-active {
+  .ant-select-dropdown-menu-item-selected:not(.ant-select-dropdown-menu-item-disabled),
+  .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
     background: $button-active;
     color: $fontColor-invert;
   }
@@ -340,11 +333,54 @@
     color: #205bac;
   }
 
-  .ant-calendar-month-panel-cell-disabled {
-    .ant-calendar-month-panel-month {
-      background: transparent;
-      color: #205bac;
+  .ant-calendar-month-panel-cell-disabled .ant-calendar-month-panel-month {
+    background: transparent;
+    color: #205bac;
+  }
+
+  // 带今天的日历
+  .ant-calendar-date {
+    color: $themeColor;
+    &:hover {
+      color: $fontColor-invert;
+      background: $themeColor;
     }
+  }
+
+  .ant-calendar-selected-date .ant-calendar-date {
+    color: $fontColor-invert;
+    background: $themeColor;
+    border: 1px solid transparent;
+  }
+
+  .ant-calendar-last-month-cell .ant-calendar-date,
+  .ant-calendar-next-month-btn-day .ant-calendar-date {
+    color: rgba($themeColor, 0.6);
+    &:hover {
+      color: $fontColor-invert;
+      background: $themeColor;
+    }
+  }
+
+  .ant-calendar-disabled-cell .ant-calendar-date {
+    background: transparent;
+    color: rgba($themeColor, 0.4);
+    &:hover {
+      background: transparent;
+      color: rgba($themeColor, 0.4);
+    }
+  }
+  .ant-calendar-today .ant-calendar-date {
+    border: 1px solid $themeColor;
+    background: transparent;
+  }
+
+  .ant-calendar-header {
+    border-bottom: 1px solid $border-color;
+  }
+
+  .ant-calendar-footer {
+    border-top: 1px solid $border-color;
   }
 
   /*输入框前面的小方块*/

@@ -71,8 +71,8 @@ const mapStateToProps = state => {
     ...state.monitor.singleStation.toJS(),
     stationList: state.common.get('stations').toJS(),
     monitorPvUnit: state.common.toJS().monitorPvUnit,
-    // theme: state.common.get('theme'),
-    theme: 'light',
+    theme: state.common.get('theme'),
+    // theme: 'light',
   });
 };
 

@@ -21,7 +21,7 @@ class Boosterstation extends Component {
     this.state = {
       alarmSwitch: false,
       firstLoad: true,
-    }
+    };
   }
 
   componentDidMount() {
@@ -59,11 +59,11 @@ class Boosterstation extends Component {
   }
 
   render() {
-    const baseLinkPath = "/hidden/monitorDevice";
-    const {boosterList, deviceTypeCode, loading, match } = this.props;
+    const baseLinkPath = '/hidden/monitorDevice';
+    const { boosterList, deviceTypeCode, loading, match } = this.props;
     const { stationCode } = match.params;
     const { alarmSwitch } = this.state;
-    const filteredBooster = boosterList.filter(e => !alarmSwitch || e.warningStatus)
+    const filteredBooster = boosterList.filter(e => !alarmSwitch || e.warningStatus);
     return (
       <div className={styles.pvboosterStation}>
         <div className={styles.top}>
@@ -96,11 +96,11 @@ class Boosterstation extends Component {
                     <span className={styles.eachValue}>Uab : {dataFormat(e.highPressureUab, '--', 2)} kV</span>
                   </div>
                 </Link>
-              )
+              );
             }) : <img src="/img/nodata.png" className={styles.emptyData} />}
           </div>}
       </div>
-    )
+    );
   }
 }
 

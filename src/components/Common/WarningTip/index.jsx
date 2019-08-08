@@ -35,7 +35,7 @@ class WarningTip extends Component {
   }
 
   render() {
-    const { style, hiddenCancel, value, onCancel, onOK, theme = 'dark' } = this.props;
+    const { style, hiddenCancel, value, onCancel, onOK, theme = 'light' } = this.props;
     return (
       <React.Fragment>
         {/* <span ref={'tooltip'} /> */}
