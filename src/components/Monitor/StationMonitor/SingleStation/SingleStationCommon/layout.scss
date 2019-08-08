@@ -1,0 +1,352 @@
+@import "../../../../../theme/theme.scss";
+
+.stationChange {
+  position: absolute;
+  z-index: 9999;
+  left: 0px;
+  top: 0px;
+  width: 300px;
+  max-height: calc(100vh - 83px);
+  overflow: auto;
+
+  .stationTitle {
+    font-size: 18px;
+    height: 61px;
+    line-height: 65px;
+    margin-bottom: 0px;
+    .titleIcon {
+      cursor: pointer;
+      margin-left: 32px;
+      margin-right: 12px;
+    }
+  }
+  .stationList {
+    display: flex;
+    flex-direction: column;
+    min-height: 1000px;
+    width: 250px;
+    margin: 0 auto;
+    .provinceName {
+      text-align: left;
+      line-height: 30px;
+      height: 30px;
+      text-indent: 1em;
+    }
+    .stationName {
+      display: inline-block;
+      width: 120px;
+      height: 30px;
+      line-height: 30px;
+      text-align: left;
+      text-indent: 1em;
+      cursor: pointer;
+      max-width: 120px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+    .currentStationName {
+      display: block;
+      float: left;
+      width: 120px;
+      height: 30px;
+      line-height: 30px;
+      text-align: left;
+      text-indent: 1em;
+      cursor: pointer;
+      max-width: 120px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .eachStation {
+      width: 50%;
+      padding-left: 40px;
+      cursor: pointer;
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+}
+
+.powerDiagramBox {
+  position: relative;
+  width: 50%;
+  padding-left: 20px;
+  .powerRadio {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: $darkColor;
+    :global {
+      .ant-radio-button-wrapper-checked:first-child {
+        border-color: $themeColor;
+      }
+
+      .ant-radio-button-wrapper:hover,
+      .ant-radio-button-wrapper-focused {
+        color: $darkColor;
+      }
+      .ant-radio-button-wrapper-checked {
+        border-color: $themeColor;
+        -webkit-box-shadow: -1px 0 0 0 $themeColor;
+        box-shadow: -1px 0 0 0 $themeColor;
+        color: #fff;
+        background: $themeColor;
+      }
+      .ant-radio-button-wrapper-checked:hover {
+        color: #fff;
+      }
+    }
+  }
+  :global {
+    .iconfont {
+      position: absolute;
+      top: 20px;
+      right: 5px;
+      cursor: pointer;
+    }
+    .iconfont:hover {
+      color: $themeColor;
+    }
+  }
+}
+
+.cardSection {
+  text-align: center;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  overflow: hidden;
+  .operatorList,
+  .weatherList,
+  .alarmList,
+  .workList {
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+  }
+  .weatherList {
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    height: 140px;
+    padding: 20px;
+    position: relative;
+    color: $darkColor;
+    font-size: 12px;
+    flex-direction: row;
+    justify-content: center;
+    :global {
+      .ant-btn {
+        padding: 0;
+      }
+    }
+    .noweather {
+      text-align: center;
+      height: 100%;
+    }
+    .today {
+      color: $themeColor;
+    }
+
+    .weatherIcon {
+      img {
+        width: 23px;
+        height: 23px;
+      }
+    }
+    .weatherLeft {
+      position: absolute;
+      left: 20px;
+      top: 55px;
+      width: 33px;
+      height: 23px;
+      text-align: center;
+    }
+    .weatherRight {
+      position: absolute;
+      right: 20px;
+      top: 55px;
+      width: 33px;
+      height: 23px;
+      text-align: center;
+    }
+    :global {
+      .ant-btn-primary:focus {
+        color: #fff;
+        background-color: $themeColor;
+        border-color: $themeColor;
+      }
+    }
+  }
+  .operatorList {
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    height: 140px;
+    padding: 0 14px;
+    position: relative;
+    background: url(/img/blurbg.png) center 140px no-repeat;
+    .blurbg {
+      position: absolute;
+      left: 23px;
+      bottom: -23px;
+    }
+    .nopeople {
+      div {
+        float: left;
+        margin: 0 25px;
+        color: $darkColor;
+      }
+      img {
+        margin: 0 20px;
+        float: right;
+      }
+    }
+    .operatorContent {
+      .userInfo {
+        display: flex;
+        justify-content: space-around;
+        text-align: left;
+        color: $darkColor;
+        .userMes {
+          height: 21px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .userPhone {
+          height: 21px;
+        }
+      }
+    }
+    .cardTitle {
+      line-height: 40px;
+      text-align: left;
+      // padding-left: 20px;
+
+      :global {
+        .iconfont {
+          color: $darkColor;
+          cursor: pointer;
+        }
+      }
+    }
+    :global {
+      .ant-carousel .slick-dots li button {
+        width: 7px;
+        height: 7px;
+        background-color: #0e1713;
+        border-radius: 7px;
+      }
+      .ant-carousel .slick-dots li.slick-active button {
+        background-color: $themeColor;
+        opacity: 1;
+      }
+      .ant-carousel .slick-dots {
+        bottom: -15px;
+      }
+      .ant-carousel .slick-dots li {
+        margin: 0 6px;
+      }
+    }
+  }
+  .alarmList {
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    height: 140px;
+    padding: 10px;
+    :global {
+      .iconfont:hover {
+        color: $themeColor;
+      }
+    }
+    .alarmContent {
+      display: flex;
+      justify-content: space-around;
+      line-height: 30px;
+      margin-top: 10px;
+      .oneWarning {
+        border-bottom: 3px solid #a42b2c;
+        color: $darkColor;
+      }
+      .twoWarning {
+        border-bottom: 3px solid #e08031;
+        color: $darkColor;
+      }
+      .threeWarning {
+        border-bottom: 3px solid #f9b600;
+        color: $darkColor;
+      }
+      .fourWarning {
+        border-bottom: 3px solid #fbe6e3;
+        color: $darkColor;
+      }
+    }
+    .cardTitle {
+      line-height: 30px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 20px;
+      :global {
+        .iconfont {
+          color: $darkColor;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .workList {
+    padding: 10px;
+    border: 1px solid #dfdfdf;
+    border-radius: 4px;
+    height: 140px;
+    :global {
+      .iconfont:hover {
+        color: $themeColor;
+      }
+    }
+    .workContent {
+      display: flex;
+      justify-content: space-around;
+      line-height: 30px;
+      margin-top: 10px;
+      .workListRate {
+        color: $darkColor;
+      }
+    }
+    .cardTitle {
+      line-height: 30px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 20px;
+      :global {
+        .iconfont {
+          color: $darkColor;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.capabilityDiagramBox {
+  position: relative;
+  width: 50%;
+  :global {
+    .iconfont {
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      cursor: pointer;
+    }
+    .iconfont:hover {
+      color: $themeColor;
+    }
+  }
+}

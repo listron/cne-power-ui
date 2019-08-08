@@ -62,7 +62,7 @@ class MonthPlanPower extends Component {
             powerDiagram.dispose();
             powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         }
-        chartsLoading(powerDiagram, loading);
+        chartsLoading(powerDiagram, loading, theme);
         const powerOption = {
             graphic: graphic,
             title: {
