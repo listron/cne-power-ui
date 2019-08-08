@@ -84,6 +84,11 @@ import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/fault
 import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga";
 import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
 
+import { watchAchieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 高级分析 - 风电分析 - layout
+import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
+import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
+import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
+
 import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
 import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
 import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
@@ -183,6 +188,11 @@ export default function* rootSaga() {
     watchFaultAllFan(),
     watchFaultWarnHistory(),
     watchFaultSingleFan(),
+
+    watchAchieveLayout(), //  高级分析 - 风电分析 - layout
+    watchGroupAchieve(), // 高级分析 - 风电分析 - 集团
+    watchAreaAchieve(), // 高级分析 - 风电分析 - 区域
+    watchStationAhieve(), // 高级分析 - 风电分析 - 电站
     // 工单
     watchWorkOrder(),
     //operation_Book台账
