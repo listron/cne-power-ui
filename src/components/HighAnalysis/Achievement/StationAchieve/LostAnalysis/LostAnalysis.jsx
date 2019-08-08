@@ -21,6 +21,10 @@ class LostAnalysis extends Component {
     getLostTypes: PropTypes.func,
   }
 
+  state = {
+    quotaName: '',
+  }
+
   componentDidMount(){
     const { lostQuota, lostStringify, location } = this.props;
     const { search } = location;
@@ -59,6 +63,7 @@ class LostAnalysis extends Component {
     const quotas = firstType.children || [];
     const firstQuota = quotas[0] || {};
     const lostQuota = firstQuota.value || null;
+    this.setState({ quotaName: firstQuota.label });
     changeStore({ lostQuota });
     infoStr && this.queryRank(infoStr, lostQuota);
     infoStr && this.queryRank(infoStr, lostQuota);
@@ -73,7 +78,7 @@ class LostAnalysis extends Component {
   getQueryParam = (infoStr) => {
     const searchParam = JSON.parse(infoStr) || {};
     return {
-      stationCodes: searchParam.searchCode,
+      stationCodes: [searchParam.searchCode],
       deviceFullcodes: searchParam.searchDevice,
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
@@ -99,20 +104,46 @@ class LostAnalysis extends Component {
     this.props.getLostTypes({ ...baseParam });
   }
 
+  quotaSelect = (lostQuota, quotaName) => { // 指标选择
+    const { search } = this.props.location || {};
+    const infoStr = searchUtil(search).getValue('station');
+    const baseParam = this.getQueryParam(infoStr);
+    this.setState({ quotaName });
+    this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
+    this.props.getLostTrend({
+      ...baseParam,
+      indicatorCode: lostQuota,
+      type: this.timeMode[this.props.chartTimeMode],
+    });
+  }
+
   render() {
     const { active } = this.props;
+    const { quotaName } = this.state;
     const lostRank = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
       deviceFullcode: `M${e}M`,
       deviceName: `设备名字${e}`,
       deviceModeName: `modeName${e}`,
-      indicatorData: parseInt(Math.random() * 10, 10) * e,
+      indicatorData: {
+        theoryGen: parseInt(Math.random() * 10, 10) * e,
+        actualGen: parseInt(Math.random() * 10, 10) * e,
+      },
     }));
-    const lostRankLoading = false;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <ChartLostRank {...this.props} lostRank={lostRank} />
-        <ChartLostTrend lostRank={lostRank} lostRankLoading={lostRankLoading} />
-        <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} />
+        <ChartLostRank
+          {...this.props}
+          quotaName={quotaName}
+          lostRank={lostRank}
+          onQuotaChange={this.quotaSelect}
+        />
+        {/* <ChartLostTrend
+          {...this.props}
+          quotaName={quotaName}
+          lostRank={lostRank}
+          lostRankLoading={lostRankLoading}
+        />
+        <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} /> */}
       </div>
     );
   }

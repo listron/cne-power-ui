@@ -39,9 +39,24 @@
   }
 }
 
+.tooltip{
+  width: 160px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+  }
+  .info{
+    padding: 8px;
+  }
+  .eachItem{
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
 // 颜色
 .lostAnalysis{
-  background-color: lightblue;
   .lostRank, .lostTrend, .lostTypes{
     .top .title{
       color: #000;
@@ -49,5 +64,13 @@
     .top .handle{
       color: #666;
     }
+  }
+}
+.tooltip{ // chart提示
+  min-width: 160px;
+  background-color: #fff;
+  color: #666;
+  .title{
+    border-bottom: 1px solid #dfdfdf;
   }
 }

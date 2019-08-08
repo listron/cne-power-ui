@@ -7,6 +7,7 @@ class IndicateCascader extends Component {
   static propTypes = {
     lostQuota: PropTypes.string,
     quotaInfo: PropTypes.array,
+    onChange: PropTypes.func,
   }
 
   getQuota = (quotaInfo = [], lostQuota) => {
@@ -24,8 +25,8 @@ class IndicateCascader extends Component {
     return quotaResult;
   }
 
-  onQuotaChange = (a, b, c) => {
-    console.log(a, b, c)
+  onQuotaChange = (codes, fullInfo) => {
+    this.props.onChange(codes, fullInfo);
   }
 
   render() {

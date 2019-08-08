@@ -19,6 +19,7 @@ const initState = immutable.fromJS({
   active: 'lost', // lost, stop, curve
   lostStringify: '', // station - search信息字符串
   lostQuota: null, // 指标
+  lostSort: 'name', // 排序方式 name or quota
   stopTopStringify: '',
 
   chartDevice: null, // chart选中的设备
