@@ -86,9 +86,9 @@ class StationSearch extends Component {
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
     const codes = [];
     modeDevices.forEach(e => {
-      const { devices = [] } = e || {};
-      devices.forEach(m => {
-        codes.push(m.deviceFullcode);
+      const { children = [] } = e || {};
+      children.forEach(m => {
+        codes.push(m.value);
       });
     });
     return codes;
@@ -135,6 +135,7 @@ class StationSearch extends Component {
               value={searchDevice}
               onChange={this.onDeviceChange}
               style={{width: '150px'}}
+              maxTagCount={0}
             />
           </div>
           <div className={styles.eachParts}>

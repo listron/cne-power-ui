@@ -22,13 +22,15 @@ class LostAnalysis extends Component {
   }
 
   componentDidMount(){
-    const { lostStringify, location } = this.props;
+    const { lostQuota, lostStringify, location } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
     const originLoad = infoStr && !lostStringify; // // 初次加载
     const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
     if (originLoad || pageBack) {
-      this.queryAllCharts(infoStr);
+      this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
+      pageBack && lostQuota && this.queryRank(infoStr, lostQuota);
+      pageBack && lostQuota && this.queryTrend(infoStr, lostQuota);
     }
   }
 
@@ -37,10 +39,13 @@ class LostAnalysis extends Component {
     const nextQuota = nextProps.quotaInfo;
     const nextQuotaParam = nextProps.lostQuota;
     const nextSearch = nextLocation.search || '';
-    const { lostStringify, quotaInfo } = this.props;
+    const { lostStringify, quotaInfo, changeStore } = this.props;
     const infoStr = searchUtil(nextSearch).getValue('station');
-    if (infoStr !== lostStringify && nextQuotaParam) { // 搜索信息有变
-      this.queryAllCharts(infoStr, nextQuotaParam);
+    if (infoStr && infoStr !== lostStringify && nextQuotaParam) { // 搜索信息有变
+      changeStore({ lostStringify: infoStr });
+      this.queryTypes(infoStr);
+      this.queryRank(infoStr, nextQuotaParam);
+      this.queryTrend(infoStr, nextQuotaParam);
     }
     if (quotaInfo.length === 0 && nextQuota.length > 0) { // 得到指标数据
       this.propsQuotaChange(nextQuota, infoStr);
@@ -54,10 +59,9 @@ class LostAnalysis extends Component {
     const quotas = firstType.children || [];
     const firstQuota = quotas[0] || {};
     const lostQuota = firstQuota.value || null;
-    console.log(quotaInfo)
-    console.log(lostQuota)
     changeStore({ lostQuota });
-    infoStr && this.queryAllCharts(infoStr, lostQuota);
+    infoStr && this.queryRank(infoStr, lostQuota);
+    infoStr && this.queryRank(infoStr, lostQuota);
   }
 
   timeMode = {
@@ -66,30 +70,37 @@ class LostAnalysis extends Component {
     year: '3',
   }
 
-  queryAllCharts = (infoStr, lostQuota) => { // 重置3图表
-    const { changeStore, getLostRank, getLostTrend, getLostTypes, chartTimeMode } = this.props;
+  getQueryParam = (infoStr) => {
     const searchParam = JSON.parse(infoStr) || {};
-    changeStore({ lostStringify: infoStr }); // 存储路径
-    const param = {
+    return {
       stationCodes: searchParam.searchCode,
       deviceFullcodes: searchParam.searchDevice,
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
     };
-    getLostRank({
-      ...param,
+  }
+
+  queryRank = (infoStr, lostQuota) => {
+    const baseParam = this.getQueryParam(infoStr);
+    this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
+  }
+
+  queryTrend = (infoStr, lostQuota) => {
+    const baseParam = this.getQueryParam(infoStr);
+    this.props.getLostTrend({
+      ...baseParam,
       indicatorCode: lostQuota,
+      type: this.timeMode[this.props.chartTimeMode],
     });
-    getLostTrend({
-      ...param,
-      indicatorCode: lostQuota,
-      type: this.timeMode[chartTimeMode],
-    });
-    getLostTypes({ ...param });
+  }
+
+  queryTypes = (infoStr) => {
+    const baseParam = this.getQueryParam(infoStr);
+    this.props.getLostTypes({ ...baseParam });
   }
 
   render() {
-    const { active, quotaInfo, lostQuota } = this.props;
+    const { active } = this.props;
     const lostRank = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
       deviceFullcode: `M${e}M`,
       deviceName: `设备名字${e}`,
@@ -99,7 +110,7 @@ class LostAnalysis extends Component {
     const lostRankLoading = false;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <ChartLostRank lostRank={lostRank} lostRankLoading={lostRankLoading} quotaInfo={quotaInfo} lostQuota={lostQuota} />
+        <ChartLostRank {...this.props} lostRank={lostRank} />
         <ChartLostTrend lostRank={lostRank} lostRankLoading={lostRankLoading} />
         <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} />
       </div>
