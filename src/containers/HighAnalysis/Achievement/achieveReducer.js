@@ -6,13 +6,11 @@ export const achieveAction = {
   resetStore: Symbol('resetStore'),
   getAreaStation: Symbol('getAreaStation'),
   getQuotaInfo: Symbol('getQuotaInfo'),
-  getModesInfo: Symbol('getModesInfo'),
 };
 
 const initState = immutable.fromJS({
   areaStation: [],
   quotaInfo: [],
-  modesInfo: [], // 厂家 + 型号
 });
 
 export const achieveLayout = (state = initState, action) => {

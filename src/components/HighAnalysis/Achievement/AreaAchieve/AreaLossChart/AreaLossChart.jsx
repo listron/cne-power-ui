@@ -55,6 +55,9 @@ export default class AreaLossChart extends Component {
         {
           type: 'value',
           name: '小时数（h）',
+          splitLine: {
+            show: false,
+          },
         },
       ],
       series: [

@@ -59,6 +59,9 @@ export default class AreaTrendChart extends Component {
           name: 'PBA',
           min: 0,
           max: 100,
+          splitLine: {
+            show: false,
+          },
         },
       ],
       dataZoom: [{
