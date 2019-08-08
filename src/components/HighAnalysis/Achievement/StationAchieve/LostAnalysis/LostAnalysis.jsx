@@ -114,30 +114,28 @@ class LostAnalysis extends Component {
   render() {
     const { active } = this.props;
     const { quotaName } = this.state;
-    const lostRank = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(e => ({
-      deviceFullcode: `M${e}M`,
-      deviceName: `设备名字${e}`,
-      deviceModeName: `modeName${e}`,
-      indicatorData: {
-        theoryGen: parseInt(Math.random() * 10, 10) * e,
-        actualGen: parseInt(Math.random() * 10, 10) * e,
-      },
-    }));
+    const lostTypes = {
+      theoryGen: 10000,
+      deratingGen: 150,
+      faultGen: 200,
+      substationGen: 450,
+      planShutdownGen: 370,
+      courtGen: 1120,
+      otherGen: 710,
+      actualGen: 10000 - 150 - 200 - 450 - 370 - 1120 - 710,
+    };
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <ChartLostRank
           {...this.props}
           quotaName={quotaName}
-          lostRank={lostRank}
           onQuotaChange={this.quotaSelect}
         />
-        {/* <ChartLostTrend
+        <ChartLostTrend
           {...this.props}
           quotaName={quotaName}
-          lostRank={lostRank}
-          lostRankLoading={lostRankLoading}
         />
-        <ChartLostTypes lostRank={lostRank} lostRankLoading={lostRankLoading} /> */}
+        <ChartLostTypes {...this.props} lostTypes={lostTypes} />
       </div>
     );
   }

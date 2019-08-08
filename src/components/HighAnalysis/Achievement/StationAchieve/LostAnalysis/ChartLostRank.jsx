@@ -123,7 +123,7 @@ class ChartLostRank extends Component {
       type: 'bar',
       barWidth: '10px',
       itemStyle: {
-        color: '#C1C1C1',
+        color: '#c1c1c1',
       },
       data: secendBarData,
     });
@@ -171,7 +171,7 @@ class ChartLostRank extends Component {
       const searchParam = JSON.parse(infoStr) || {};
       getLostTrend({
         stationCodes: [searchParam.searchCode],
-        deviceFullcodes: searchParam.searchDevice,
+        deviceFullcodes: [chartDevice.deviceFullcode],
         startTime: searchParam.searchDates[0],
         endTime: searchParam.searchDates[1],
         indicatorCode: lostQuota,
@@ -179,25 +179,6 @@ class ChartLostRank extends Component {
       });
     });
   }
-
-
-  // getQueryParam = (infoStr) => {
-  //   const searchParam = JSON.parse(infoStr) || {};
-  //   return {
-  //     stationCodes: [searchParam.searchCode],
-  //     deviceFullcodes: searchParam.searchDevice,
-  //     startTime: searchParam.searchDates[0],
-  //     endTime: searchParam.searchDates[1],
-  //   };
-  // }
-  // queryTrend = (infoStr, lostQuota) => {
-  //   const baseParam = this.getQueryParam(infoStr);
-  //   this.props.getLostTrend({
-  //     ...baseParam,
-  //     indicatorCode: lostQuota,
-  //     type: this.timeMode[this.props.chartTimeMode],
-  //   });
-  // }
 
 
   render() {

@@ -35,6 +35,7 @@ class IndicateCascader extends Component {
     return (
       <Cascader
         allowClear={false}
+        placeholder="请选择"
         style={{width: '150px'}}
         options={quotaInfo}
         onChange={this.onQuotaChange}

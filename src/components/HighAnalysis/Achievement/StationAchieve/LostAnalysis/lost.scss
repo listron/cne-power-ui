@@ -44,13 +44,16 @@
   .title{
     display: flex;
     justify-content: space-between;
-    padding: 8px;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
   }
   .info{
     padding: 8px;
   }
   .eachItem{
     display: flex;
+    line-height: 21px;
     justify-content: space-between;
   }
 }
