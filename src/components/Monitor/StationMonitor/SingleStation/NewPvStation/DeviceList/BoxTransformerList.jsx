@@ -23,14 +23,14 @@ class BoxTransformerList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentStatus: 0,//当前状态值
+      currentStatus: 0, //当前状态值
       alarmSwitch: false,
       pageSize: 10,
       currentPage: 1,
       sortName: '',
       descend: false,
       firstLoad: true,
-    }
+    };
   }
 
   componentDidMount() {
@@ -56,7 +56,7 @@ class BoxTransformerList extends Component {
     this.setState({
       currentStatus: e.target.value,
       currentPage: 1,
-    })
+    });
   }
 
   onSwitchAlarm = (e) => {
@@ -90,22 +90,22 @@ class BoxTransformerList extends Component {
   }
 
   tableColumn = () => {
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
-    const { deviceTypeCode, } = this.props;
+    const { deviceTypeCode } = this.props;
     const columns = [
       {
         title: '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         sorter: true,
-        defaultSortOrder: "ascend",
+        defaultSortOrder: 'ascend',
         render: (text, record) => {
           return (
             <div className={`${record.deviceStatus}` === '900' && styles.deviceCode || ''} >
-              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName}  >{text}</Link>
-            </div>)
-        }
+              <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${record.deviceCode}`} className={styles.tableDeviceName} >{text}</Link>
+            </div>);
+        },
       }, {
         title: () => <TableColumnTitle title="实时功率" unit="kW" />,
         dataIndex: 'devicePower',
@@ -125,20 +125,20 @@ class BoxTransformerList extends Component {
         key: 'alarmNum',
         render: value => numWithComma(value),
         sorter: (a, b) => a.alarmNum - b.alarmNum,
-      }
+      },
     ];
     return columns;
   }
 
   changePagination = ({ pageSize, currentPage }) => {
-    this.setState({ pageSize, currentPage })
+    this.setState({ pageSize, currentPage });
   }
 
   tableChange = (pagination, filters, sorter) => {
     this.setState({
       sortName: sorter.field,
-      descend: sorter.order === 'descend'
-    })
+      descend: sorter.order === 'descend',
+    });
   }
 
   createTableSource = (data) => {
@@ -149,21 +149,19 @@ class BoxTransformerList extends Component {
     })).sort((a, b) => { // 排序
       const sortType = descend ? -1 : 1;
       const arraySort = ['deviceName', 'deviceStatus'];
-      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum',];
+      const arrayNumSort = ['devicePower', 'deviceCapacity', 'alarmNum'];
       if (arrayNumSort.includes(sortName)) {
         return sortType * (a[sortName] - b[sortName]);
       } else if (arraySort.includes(sortName)) {
         a[sortName] = a[sortName] ? a[sortName] : '';
         return sortType * (a[sortName].length - b[sortName].length);
       }
-    })
+    });
     return tableSource.splice((currentPage - 1) * pageSize, pageSize);
   }
 
-
-
   render() {
-    const { boxTransformerList, deviceTypeCode, loading } = this.props;
+    const { boxTransformerList, deviceTypeCode, loading, theme } = this.props;
     const { currentStatus, alarmSwitch, currentPage, pageSize } = this.state;
     const { deviceList = [] } = boxTransformerList;
     const filteredDeviceList = deviceList
@@ -172,7 +170,7 @@ class BoxTransformerList extends Component {
         return (currentStatus === 0 || e.deviceStatus === currentStatus);
       }).sort((a, b) => {
         return a.parentDeviceName && a.parentDeviceName.localeCompare(b.parentDeviceName);
-      })// 根据筛选条件处理数据源。
+      });// 根据筛选条件处理数据源。
 
     const parentDeviceCodes = [...new Set(filteredDeviceList.map(e => e.parentDeviceCode))];
     const deviceGroupedList = parentDeviceCodes.map(e => {
@@ -181,13 +179,11 @@ class BoxTransformerList extends Component {
     });
 
     const currentTableList = this.createTableSource(filteredDeviceList); // 根据分页，排序筛选表格数据
-
     const operations = (
       <div className={styles.deviceRight} >
         <Switch defaultChecked={false} onChange={this.onSwitchAlarm} /> 只看告警
     </div>);
-
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
     return (
       <div className={styles.deviceList} >
@@ -202,7 +198,7 @@ class BoxTransformerList extends Component {
                     {parentDeviceCode && <Link to={`/hidden/monitorDevice/${stationCode}/${praentTypeCode}/${parentDeviceCode}`} className={styles.underlin} >
                       <i className={'iconfont icon-jidian'}></i>
                       {parentDeviceName}
-                    </Link> || <div  className={styles.underlin}>
+                    </Link> || <div className={styles.underlin}>
                         <i className={'iconfont icon-jidian'}></i>
                         {parentDeviceName}
                       </div>}
@@ -213,7 +209,7 @@ class BoxTransformerList extends Component {
                       const alarm = item.alarmNum && item.alarmNum > 0;
                       const devicePower = dataFormats(item.devicePower, '--', 2);
                       const deviceCapacity = dataFormats(item.deviceCapacity, '--', 2);
-                      let progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
+                      const progressPercent = deviceCapacity && devicePower && devicePower / deviceCapacity * 100 || 0;
                       return (
                         <div key={i} className={`${styles.singledeviceItem} ${styles[statusName]} ${alarm && styles.alarm} `}>
                           <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${item.deviceCode}`} >
@@ -242,14 +238,13 @@ class BoxTransformerList extends Component {
                     })}
                   </div>
                 </div>);
-
               }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)
             }
           </TabPane>
           <TabPane tab={<span><i className="iconfont icon-table" ></i></span>} key="2" className={styles.deviceTableBox} >
             <div>
               <div className={styles.pagination} >
-                <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} />
+                <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={filteredDeviceList.length} theme={theme} />
               </div>
               <Table
                 dataSource={currentTableList}
@@ -263,7 +258,7 @@ class BoxTransformerList extends Component {
           </TabPane>
         </Tabs>
       </div>
-    )
+    );
   }
 }
 

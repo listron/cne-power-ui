@@ -23,22 +23,23 @@ class DetailCharts extends Component {
         match: PropTypes.object,
         detailVisible: PropTypes.bool,
         detailChange: PropTypes.func,
+        theme: PropTypes.string,
     }
 
 
 
 
     render() {
-        const { alarmNum, monitorPvUnit, detailVisible, workList } = this.props;
+        const { alarmNum, monitorPvUnit, detailVisible, workList, theme = 'light' } = this.props;
         const { powerUnit, realTimePowerUnit } = monitorPvUnit;
         const { stationCode } = this.props.match.params;
         return (
-            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts}`}>
+            <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${styles[theme]}`}>
                 <div className={styles.tags}>
                     <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(alarmNum, '--')} </Link>
                     <Link to={`/statistical/stationaccount/allstation/${stationCode}`}> 统计分析  </Link>
                 </div>
-                <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }) }}>
+                <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>
                 </div>
                 <div className={styles.deviceStatus}>
@@ -59,6 +60,7 @@ class DetailCharts extends Component {
                         loading={this.props.capabilityLoading}
                         capabilityData={this.props.capabilityData}
                         onChange={this.props.getCapabilityDiagram}
+                        theme={theme}
                     />
                 </div>
                 <div className={styles.chartsBox}>
@@ -69,6 +71,7 @@ class DetailCharts extends Component {
                         loading={this.props.powerDataLoading}
                         onChange={this.props.getPowerDataTenMin}
                         stationCode={stationCode}
+                        theme={theme}
                     />
                 </div>
                 <div className={styles.chartsBox}>
@@ -76,12 +79,13 @@ class DetailCharts extends Component {
                         monthPlanPower={this.props.monthPlanPower}
                         powerUnit={powerUnit}
                         loading={this.props.monthPlanPowerLoading}
+                        theme={theme}
                     />
                 </div>
 
             </div>
-        )
+        );
     }
 }
 
-export default DetailCharts
+export default DetailCharts;

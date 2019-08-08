@@ -1,0 +1,691 @@
+@import "../../../../../../theme/theme.scss";
+
+.deviceListBox {
+  // 光伏组件
+  .pvmodule {
+    .pvmoduleList {
+      .nodata {
+        text-align: center;
+        margin: 89px auto;
+      }
+      .pvmoduleListTop {
+        height: 49px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding-right: 48px;
+        .pvmoduleSelect {
+          height: 24px;
+          line-height: 24px;
+          padding: 0 4px;
+          border-radius: 4px;
+          margin-left: 8px;
+          cursor: pointer;
+          i {
+            font-size: 12px;
+            margin-right: 4px;
+          }
+        }
+      }
+      .pvmoduleCont {
+        padding: 16px 25px;
+        .pvmoduleItem {
+          width: 295px;
+          margin: 0 0 0 12px;
+          display: inline-block;
+          margin-bottom: 20px;
+          .deviceName {
+            font-size: 14px;
+            a {
+              text-decoration: underline;
+            }
+          }
+          .singlePvmodule {
+            display: flex;
+            flex-wrap: wrap;
+          }
+          .commonStyle {
+            width: 32px;
+            height: 18px;
+            display: block;
+            float: left;
+            font-size: 11px;
+            color: $themeColor;
+            margin: 1px;
+            border-radius: 2px;
+            text-align: center;
+            &:nth-child(4n) {
+              margin-right: 12px;
+            }
+          }
+          :global {
+            .iconfont {
+              width: 23px;
+              height: 30px;
+              margin-right: 5px;
+              font-size: 23px;
+              vertical-align: -5px;
+            }
+          }
+          .sightValue {
+            width: 21px;
+            height: 18px;
+            display: inline-block;
+            font-size: 11px;
+            margin: 0 2px;
+            border-radius: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  .deviceList {
+    .deviceListTab {
+      .deviceRight {
+        margin-right: 20px;
+      }
+      .deviceListBlockBox {
+        padding: 0px 20px 20px 24px;
+        color: $darkColor;
+        display: flex;
+        flex-wrap: wrap;
+        .parentDeviceName {
+          margin: 0 0 8px 0;
+          .underlin {
+            text-decoration: underline;
+            i {
+              display: inline-block;
+              font-size: 20px;
+              margin-right: 4px;
+            }
+          }
+        }
+        .nodata {
+          text-align: center;
+          margin: 30px auto;
+        }
+        .singledeviceItemBox {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .singledeviceItem {
+          display: flex;
+          margin-right: 18px;
+          margin-bottom: 20px;
+          width: 222px;
+          height: 121px;
+          border-radius: 4px;
+          font-size: 12px;
+          cursor: pointer;
+          .statusBox {
+            padding: 5px 5px 0px 5px;
+            .deviceItemIcon {
+              display: inline-block;
+              vertical-align: top;
+              margin: 5px;
+              position: relative;
+            }
+            :global {
+              .iconfont {
+                font-size: 22px;
+              }
+              .icon-alarm {
+                position: absolute;
+                bottom: 10px;
+                right: 2px;
+                width: 10px;
+                height: 10px;
+                font-size: 14px;
+              }
+              .icon-outage {
+                position: absolute;
+                bottom: 9px;
+                left: -5px;
+                width: 10px;
+                height: 10px;
+                font-size: 14px;
+              }
+            }
+            .deviceItemR {
+              display: inline-block;
+              width: 165px;
+              .deviceBlockName {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: -4px;
+                margin-top: 7px;
+              }
+              .deviceItemPower {
+                display: flex;
+                justify-content: space-between;
+                margin-top: -4px;
+              }
+              :global {
+                .ant-progress {
+                  line-height: 3px;
+                }
+              }
+            }
+          }
+          .deviceBlockFooter {
+            line-height: 22px;
+            margin-top: 10px;
+            padding-left: 3px;
+            padding: 0 5px 5px 5px;
+            > div {
+              display: inline-block;
+              width: 50%;
+              text-align: left;
+            }
+          }
+        }
+      }
+      .deviceTableBox {
+        .nodata {
+          text-align: center;
+          margin: 30px auto;
+        }
+        .pagination {
+          margin: 10px;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .deviceTable {
+          .deviceCode {
+            pointer-events: none;
+            .tableDeviceName {
+              text-decoration: none;
+            }
+          }
+          .tableDeviceName {
+            text-decoration: underline;
+          }
+          margin-bottom: 60px;
+          :global {
+            .ant-table .ant-table-tbody > tr > td {
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .integrateList,
+  .powerNet,
+  .pvboosterStation {
+    // 集电线路, 升压站，电网基本样式。
+    margin-top: 16px;
+    .top {
+      display: flex;
+      height: 54px;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px dashed $promptColor;
+    }
+    .iconGrid {
+      height: 54px;
+      line-height: 54px;
+      text-align: center;
+      width: 54px;
+      background-color: $themeColor;
+      :global {
+        .icon-grid {
+          font-size: 18px;
+          color: #fff;
+        }
+      }
+    }
+    .warning {
+      margin-right: 36px;
+      display: flex;
+      color: $darkColor;
+      :global {
+        .ant-switch {
+          margin-right: 8px;
+        }
+      }
+    }
+    .deviceList {
+      // 设备列表。
+      display: flex;
+      flex-wrap: wrap;
+      margin: 24px 20px 56px;
+      font-size: 12px;
+      img {
+        margin: 10px auto;
+      }
+    }
+  }
+
+  $arlam: #ff8e9c;
+  .pvboosterStation {
+    // 光伏升压站单独样式
+    .eachDevice {
+      height: 92px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0px 12px 12px 0px;
+      width: 222px;
+      font-size: 12px;
+    }
+
+    .deviceName {
+      height: 35px;
+      margin-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    :global {
+      .icon-alarm {
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        margin-right: 20px;
+      }
+    }
+
+    .deviceValue {
+      margin: 4px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      .eachValue {
+        flex: 0 0 50%;
+      }
+    }
+  }
+
+  .integrateList {
+    // 集电线路单独样式
+    .eachDevice {
+      height: 102px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 0px 12px 12px 0px;
+      width: 222px;
+    }
+    .deviceName {
+      height: 50px;
+      line-height: 50px;
+      margin-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      :global {
+        .icon-jidian {
+          margin-left: 8px;
+          font-size: 32px;
+        }
+        .icon-alarm {
+          position: relative;
+          width: 14px;
+          height: 14px;
+          font-size: 14px;
+          left: -14px;
+          bottom: 8px;
+        }
+      }
+    }
+    .deviceValue {
+      margin: 4px 8px;
+      display: flex;
+      flex-wrap: wrap;
+      .eachValue {
+        flex: 0 0 50%;
+      }
+    }
+  }
+
+  .powerNet {
+    // 电能表
+    .eachDevice {
+      height: 140px;
+      border-radius: 4px;
+      margin: 0px 12px 12px 0px;
+      width: 222px;
+    }
+    .deviceName {
+      height: 35px;
+      margin-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      display: flex;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 12px;
+    }
+    :global {
+      .icon-alarm {
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+      }
+    }
+
+    .deviceValue {
+      display: flex;
+      margin: 8px 12px;
+      flex-direction: column;
+    }
+    .eachValue {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      line-height: 22px;
+      .vlue {
+        margin-right: 4px;
+        display: inline-block;
+      }
+      .unit {
+        width: 33px;
+        text-align: left;
+        display: inline-block;
+      }
+    }
+  }
+
+  .invertDeviceList {
+    // 逆变器
+    .deviceListTab {
+      .deviceRight {
+        margin-right: 20px;
+      }
+      .deviceListBlockBox {
+        padding: 0px 20px 20px 24px;
+        display: flex;
+        flex-direction: column;
+        .statusTipsWrap {
+          display: flex;
+          justify-content: flex-end;
+          .statusTips {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+          }
+          .rect {
+            width: 5px;
+            height: 15px;
+            margin: 0px 4px 4px 0;
+          }
+          .round {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            margin: 0px 4px 4px 0;
+          }
+        }
+        .listWrap {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .parentDeviceName {
+          margin: 0 0 8px 0;
+          .underlin {
+            text-decoration: underline;
+            i {
+              display: inline-block;
+              font-size: 20px;
+              margin-left: 4px;
+            }
+          }
+        }
+        .nodata {
+          text-align: center;
+          margin: 30px auto;
+        }
+        .singledeviceItemBox {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        .singledeviceItem {
+          margin-right: 18px;
+          margin-bottom: 20px;
+          width: 230px;
+          height: 151px;
+          border-radius: 4px;
+          .statusBox {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+          }
+          .deviceItemIcon {
+            align-self: flex-start;
+            margin-top: 5px;
+            flex-basis: 28px;
+            position: relative;
+          }
+          .deviceItemR {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .deviceBlockName,
+            .deviceItemPower {
+              display: flex;
+              justify-content: space-between;
+            }
+            .deviceBlockName {
+              height: 33px;
+              line-height: 33px;
+              margin-bottom: -4px;
+            }
+            .deviceName {
+              display: inline-block;
+              width: 130px;
+              word-break: break-all;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .deviceItemPower {
+              height: 25px;
+              line-height: 25px;
+            }
+          }
+          .deviceBlockFooter {
+            display: flex;
+            padding: 0 12px;
+            flex-direction: column;
+            .eachInfo {
+              flex-basis: 50%;
+              text-align: center;
+              line-height: 24px;
+              display: flex;
+              justify-content: space-between;
+            }
+          }
+          .allStatus {
+            display: flex;
+            justify-content: space-between;
+            height: 28px;
+            padding: 4px 12px;
+            align-items: center;
+            .branchStatus {
+              display: flex;
+              align-items: center;
+              width: 146px;
+            }
+            .rect {
+              width: 5px;
+              height: 15px;
+              margin: 0px 4px 4px 0;
+            }
+            .round {
+              width: 10px;
+              height: 10px;
+              border-radius: 10px;
+              margin: 0px 4px 4px 0;
+            }
+          }
+          :global {
+            .icon-nb {
+              font-size: 22px;
+            }
+            .icon-alarm {
+              position: absolute;
+              bottom: 10px;
+              left: 11px;
+              width: 10px;
+              height: 10px;
+              font-size: 14px;
+            }
+            .ant-progress {
+              line-height: 8px;
+              height: 8px;
+            }
+          }
+        }
+
+        .unconnect {
+          pointer-events: none;
+        }
+      }
+      .deviceTableBox {
+        .nodata {
+          text-align: center;
+          margin: 30px auto;
+        }
+        .pagination {
+          margin: 10px;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .deviceTable {
+          .deviceCode {
+            pointer-events: none;
+            .tableDeviceName {
+              text-decoration: none;
+            }
+          }
+          .tableDeviceName {
+            text-decoration: underline;
+          }
+          margin-bottom: 60px;
+          :global {
+            .ant-table .ant-table-tbody > tr > td {
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .weatherStation {
+    // 气象站
+    display: flex;
+    flex-direction: column;
+    .datailWrap {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 29px 0 21px;
+      margin: 20px 0;
+
+      .detail {
+        width: 237px;
+        height: 236px;
+        .everyDetail {
+          line-height: 28px;
+          display: flex;
+          justify-content: space-between;
+          padding: 0 20px;
+          .detailUnit {
+            width: 47px;
+            text-align: left;
+            display: inline-block;
+            margin-left: 8px;
+          }
+        }
+      }
+
+      .weatherList {
+        border-right: none;
+        height: 236px;
+        display: flex;
+        flex-direction: row;
+        margin-right: -1px;
+        flex: 1;
+        margin-left: 21px;
+        line-height: 28px;
+        .weatherDay {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .weatherDate {
+            line-height: 32px;
+            width: 100%;
+            text-align: center;
+          }
+          .weatherIcon {
+            margin: 16px;
+          }
+          .weatherNoData {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      }
+    }
+    .charts {
+      height: 270px;
+      display: flex;
+    }
+    .tooltipBox {
+      width: 150px;
+      .axisValue {
+        padding: 0 30px 0 10px;
+        line-height: 26px;
+      }
+      .tooltipContainer {
+        padding: 10px 0;
+      }
+      .tooltipCont {
+        span {
+          display: inline-block;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          vertical-align: 2px;
+          margin: 0 4px 0 8px;
+        }
+      }
+    }
+  }
+  :global {
+    .ant-table .ant-table-thead {
+      th > div {
+        height: 60px;
+      }
+    }
+    .ant-table-placeholder {
+      border: none;
+    }
+    .ant-table .ant-table-thead .ant-table-column-sorter {
+      top: 18px;
+    }
+
+    .ant-tabs-extra-content {
+      line-height: 46px;
+    }
+    .ant-radio-group {
+      margin: 0 20px;
+    }
+    .ant-tabs {
+      margin-top: 20px;
+    }
+
+    .ant-radio-button-wrapper {
+      height: 24px;
+      line-height: 24px;
+    }
+    .ant-radio-button-wrapper:hover,
+    .ant-radio-button-wrapper-focused {
+      position: relative;
+    }
+  }
+}

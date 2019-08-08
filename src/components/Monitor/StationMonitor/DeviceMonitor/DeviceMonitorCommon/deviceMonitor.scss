@@ -1,4 +1,5 @@
 @import "../../../../../theme/theme.scss";
+@import "./layout.scss";
 
 .deviceChange {
   position: absolute;
@@ -88,61 +89,6 @@
     .rightText {
       font-size: 14px;
       color: $darkColor;
-    }
-  }
-}
-
-.alarmTable {
-  padding: 0px 68px 48px 68px;
-  .alarmTip {
-    line-height: 20px;
-    margin-top: 20px;
-    i {
-      margin-left: 4px;
-      border-radius: 50%;
-      background-color: $promptColor;
-      color: #fff;
-    }
-  }
-  h3 {
-    font-weight: 700;
-    margin: 20px 0 0 0;
-  }
-  .tableHeader {
-    display: flex;
-    justify-content: space-between;
-    height: 36px;
-    line-height: 36px;
-    margin-top: 15px;
-    .historyButton {
-      height: 26px;
-      border: 1px solid $themeColor;
-      color: $themeColor;
-      text-decoration: none;
-      a:focus {
-        text-decoration: none;
-      }
-    }
-    .historyButton:hover {
-      background: $themeColor;
-      color: #fff;
-    }
-  }
-  .level {
-    border-radius: 2px;
-    display: inline-block;
-    height: 18px;
-    line-height: 18px;
-    padding: 0 4px;
-  }
-  :global {
-    .ant-table {
-      .ant-table-placeholder {
-        border-bottom: none;
-        img {
-          margin-top: 15px;
-        }
-      }
     }
   }
 }
@@ -386,6 +332,37 @@
     color: $lightColor;
     &:hover {
       background-color: #f1f1f1;
+    }
+  }
+}
+
+.alarmTable.light {
+  .tableHeader {
+    .historyButton {
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .historyButton:hover {
+      background: $themeColor;
+      color: #fff;
+    }
+  }
+}
+
+.alarmTable.dark {
+  @import "../../../../../theme/darkTheme.scss";
+  color: $fontColor;
+  h3 {
+    color: $fontColor;
+  }
+  .tableHeader {
+    .historyButton {
+      border: 1px solid $themeColor;
+      color: $themeColor;
+    }
+    .historyButton:hover {
+      background: $themeColor;
+      color: $fontColor-invert;
     }
   }
 }

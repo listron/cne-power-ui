@@ -21,7 +21,7 @@ class IntegrateList extends Component {
     this.state = {
       alarmSwitch: false,
       firstLoad: true,
-    }
+    };
   }
 
   componentDidMount() {
@@ -59,16 +59,17 @@ class IntegrateList extends Component {
   }
 
   getIntegrateDetail = deviceCode => {
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { deviceTypeCode, match } = this.props;
     const { stationCode } = match.params;
     this.props.history.push(`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`);
   }
 
   render() {
-    const { collectorList,loading } = this.props;
+    const { collectorList, loading } = this.props;
     const { alarmSwitch } = this.state;
     const filteredCollection = collectorList.filter(e => !alarmSwitch || e.warningStatus);
+
     return (
       <div className={styles.integrateList}>
         <div className={styles.top}>
@@ -87,11 +88,11 @@ class IntegrateList extends Component {
                 <section className={`${styles.eachDevice} ${e.warningStatus && styles.alarm}`}
                   key={`${e.deviceCode}_${index}`}
                   onClick={() => this.getIntegrateDetail(e.deviceCode)}>
-                  <h3 className={styles.deviceName}>
+                  <div className={styles.deviceName}>
                     <span className="iconfont icon-jidian" />
                     {e.warningStatus && <span className="iconfont icon-alarm" />}
                     <span>{e.deviceName}</span>
-                  </h3>
+                  </div>
                   <div className={styles.deviceValue}>
                     <span className={styles.eachValue}>P : {dataFormat(e.griW, '--', 2)} MW</span>
                     <span className={styles.eachValue}>Cos : {dataFormat(e.griPF, '--', 2)}</span>
@@ -99,11 +100,11 @@ class IntegrateList extends Component {
                     <span className={styles.eachValue}>Uab : {dataFormat(e.griPPhVUab, '--', 2)} kV</span>
                   </div>
                 </section>
-              )
+              );
             }) : <img src="/img/nodata.png" className={styles.emptyData} />}
           </div>}
       </div>
-    )
+    );
   }
 }
 
