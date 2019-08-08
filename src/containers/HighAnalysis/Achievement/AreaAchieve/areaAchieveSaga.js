@@ -3,12 +3,20 @@ import request from '../../../../utils/request';
 import {message} from 'antd';
 import path from '../../../../constants/path';
 import {areaAchieveAction} from './areaAchieveReducer';
+import moment from "moment";
 
 const {APIBasePath} = path.basePaths;
 const {highAnalysis} = path.APISubPaths;
 
 function convertKey (arr, keyMap) {
-  let tempString = JSON.stringify(arr);
+  const data = arr.map(cur => {
+    const obj = {};
+    obj.manufactorId = parseInt(cur.manufactorId, 0);
+    obj.manufactorName = cur.manufactorName;
+    obj.deviceModesList = cur.deviceModesList;
+    return obj;
+  });
+  let tempString = JSON.stringify(data);
   for(const key in keyMap){
     if(keyMap.hasOwnProperty(key)){
       const reg = `/"${key}":/g`;
@@ -83,6 +91,7 @@ function* getStationCapacity(action) { // 各电站装机容量
         type: areaAchieveAction.fetchSuccess,
         payload: {
           capacityInfo: response.data,
+          capacityTime: moment().unix(),
         },
       });
     } else {
@@ -104,6 +113,7 @@ function* getIndicatorRank(action) { // 风电指标数据 PBA排名
         type: areaAchieveAction.fetchSuccess,
         payload: {
           indicatorRankInfo: response.data || [],
+          rankTime: moment().unix(),
         },
       });
     } else {
@@ -126,6 +136,7 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
         type: areaAchieveAction.fetchSuccess,
         payload: {
           trendInfo: response.data || [],
+          trendTime: moment().unix(),
         },
       });
     } else {
@@ -188,6 +199,7 @@ function* getLostGenHour(action) { // 损失电量分解图
         type: areaAchieveAction.fetchSuccess,
         payload: {
           lostGenHourInfo: formatData(response.data) || {},
+          lostTime: moment().unix(),
         },
       });
     } else {

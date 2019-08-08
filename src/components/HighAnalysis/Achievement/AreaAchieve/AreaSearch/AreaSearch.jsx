@@ -51,27 +51,39 @@ export default class AreaSearch extends Component {
     const preDevice = this.props.modesInfo;
     const preQuota = this.props.quotaInfo;
     if (!groupInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
-      console.log('11111');
+      // console.log('11111');
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      console.log('22222');
+      // console.log('22222');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
-      console.log('333333');
+      // console.log('333333');
       this.propsQuotaChange(quotaInfo);
+    }
+    // 默认选中第一个
+    if(!groupInfoStr && areaStation.length > 0) {
+      this.setState({
+        stations: [areaStation[0]],
+      });
+    }
+    // 默认选中第一个
+    if(!groupInfoStr && modesInfo.length > 0) {
+      this.setState({
+        modes: modesInfo,
+      });
     }
   }
 
   propsAreaStationChange = (areaStation = []) => { // 得到电站信息.
-    console.log(areaStation, 'areaStation');
     const { stations = [] } = areaStation[0] || {};
     const firstStation = stations[0] || {};
     this.props.getModesInfo({ stationCodes: [firstStation.stationCode] });
     if (!this.state.searchCode) { // 路径无数据 => 存入state待请求.
       this.setState({
         searchCode: firstStation.stationCode,
+        stations: [areaStation[0]],
       });
     }
   };
@@ -100,11 +112,11 @@ export default class AreaSearch extends Component {
     }
   };
 
-  historyChange = (searchCode, modes, dates, quota) => { // 切换路径 => 托管外部进行请求
+  historyChange = (searchCode, modes, dates, quota, stations) => { // 切换路径 => 托管外部进行请求
     const { location, history } = this.props;
     const { search } = location;
     const newSearch = searchUtil(search).replace({area: JSON.stringify({
-        searchCode, modes, dates, quota,
+        searchCode, modes, dates, quota, stations,
       })}).stringify();
     history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
@@ -126,11 +138,16 @@ export default class AreaSearch extends Component {
       const tmp = e.stations || [];
       tmp.forEach(m => stations.push(m.stationCode));
     });
-    this.setState({ stations });
-    // 重新请求机型数据
+    this.setState({
+      stations: info,
+      searchCode: stations,
+    });
   };
 
-  onModelChange = (modes) => this.setState({ modes: modes.map(e => e.value) });
+  onModelChange = (modes) => {
+    // console.log(modes, 'modes');
+    this.setState({ modes: modes.map(e => e.value) });
+  };
 
   onDateChange = ([], [start, end]) => this.setState({ dates: [start, end] });
 
@@ -140,8 +157,9 @@ export default class AreaSearch extends Component {
 
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
-    const { searchCode, modes, dates, quota } = this.state;
-    this.historyChange(searchCode, modes, dates, quota);
+    const { searchCode, modes, dates, quota, stations } = this.state;
+    // console.log(stations, 'queryCharts');
+    this.historyChange(searchCode, modes, dates, quota, stations);
   };
 
   resetCharts = () => {
@@ -154,9 +172,11 @@ export default class AreaSearch extends Component {
       modesInfo,
       quotaInfo,
     } = this.props;
-    const { modes, dates, quota, searchCode } = this.state;
-    console.log(modes, 'modes');
-    console.log(searchCode, 'searchCode');
+    const { modes, dates, quota, stations } = this.state;
+    // console.log(modes, 'modes');
+    // console.log(stations, 'stations');
+    // console.log(areaStation, 'areaStation');
+    // console.log(modesInfo, 'modesInfo');
     return (
       <div className={styles.topSearch}>
         <div>
@@ -164,13 +184,18 @@ export default class AreaSearch extends Component {
           <AreaStation
             mode="region"
             data={areaStation}
-            value={[searchCode]}
+            value={stations}
             onChange={this.onAreaChange}
           />
         </div>
         <div>
           <span>选择机型</span>
-          <AutoSelect style={{width: '150px'}} data={modesInfo} value={modes} onChange={this.onModelChange} />
+          <AutoSelect
+            style={{width: '150px'}}
+            data={modesInfo}
+            value={modes}
+            onChange={this.onModelChange}
+          />
         </div>
         <div>
           <span>选择时间</span>

@@ -11,7 +11,6 @@ export const achieveAction = {
 const initState = immutable.fromJS({
   areaStation: [],
   quotaInfo: [],
-  modesInfo: [], // 厂家 + 型号
 });
 
 export const achieveLayout = (state = initState, action) => {

@@ -53,7 +53,7 @@ function* getQuotaInfo() { // 可选指标信息
       yield put({
         type: achieveAction.fetchSuccess,
         payload: {
-          quotaInfo: convertKey(response.data.dataList, keyMap) || [],
+          quotaInfo: convertKey(response.data, keyMap) || [],
         },
       });
     } else {

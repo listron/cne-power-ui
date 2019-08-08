@@ -25,6 +25,11 @@ const initState = immutable.fromJS({
       theoryGen: 0,
     },
   }],
+  modesInfo: [], // 厂家 + 型号
+  capacityTime: 0,
+  rankTime: 0,
+  trendTime: 0,
+  lostTime: 0,
 });
 
 export const achieveArea = (state = initState, action) => {
