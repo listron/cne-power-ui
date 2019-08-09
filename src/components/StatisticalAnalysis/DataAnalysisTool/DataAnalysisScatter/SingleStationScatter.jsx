@@ -67,7 +67,7 @@ class SingleStationScatter extends React.Component {
     const { scatterNames, getScatterData, stationCode, scatterNameTime } = nextProp;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
     const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
-    const preScatterName = this.props.scatterNames;
+    // const preScatterName = this.props.scatterNames;
     if (this.props.scatterNameTime !== scatterNameTime) {
       // console.log('1');
       const { options } = this.state;
