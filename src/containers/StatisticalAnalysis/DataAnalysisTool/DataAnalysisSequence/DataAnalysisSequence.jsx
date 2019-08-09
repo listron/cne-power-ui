@@ -45,6 +45,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   changeSquenceStore: payload => dispatch({ type: dataAnalysisSequenceAction.changeSquenceStore, payload }),
   resetStore: payload => dispatch({ type: dataAnalysisSequenceAction.resetStore, payload }),
+  getStationDevice: payload => dispatch({ type: dataAnalysisSequenceAction.getStationDevice, payload }),
+  getSequenceName: payload => dispatch({ type: dataAnalysisSequenceAction.getSequenceName, payload }),
+  getSequenceOtherName: payload => dispatch({ type: dataAnalysisSequenceAction.getSequenceOtherName, payload }),
+  getSequenceData: payload => dispatch({ type: dataAnalysisSequenceAction.getSequenceData, payload }),
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(DataAnalysisSequence);

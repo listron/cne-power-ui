@@ -1,7 +1,8 @@
 export const dataAnalysisSequenceAction = {
   changeSquenceStore: Symbol('changeSquenceStore'),
   resetStore: Symbol('resetStore'),
-  // getScatterName: Symbol('getScatterName'),
-  // getScatterOtherName: Symbol('getScatterOtherName'),
-  // getScatterData: Symbol('getScatterData'),
+  getSequenceName: Symbol('getSequenceName'),
+  getStationDevice: Symbol('getStationDevice'),
+  getSequenceOtherName: Symbol('getSequenceOtherName'),
+  getSequenceData: Symbol('getSequenceData'),
 };

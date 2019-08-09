@@ -5,6 +5,8 @@ import styles from './sequenceStyles.scss';
 class SequenceAllStation extends React.Component {
   static propTypes = {
     changeSquenceStore: PropTypes.func,
+    getSequenceName: PropTypes.func,
+    getStationDevice: PropTypes.func,
     stations: PropTypes.array,
     theme: PropTypes.string,
   }
@@ -12,8 +14,10 @@ class SequenceAllStation extends React.Component {
     super(props, context);
   }
   selectStation = (stationCode) => {
-    const { changeSquenceStore } = this.props;
+    const { changeSquenceStore, getStationDevice, getSequenceName } = this.props;
     changeSquenceStore({ stationCode, showPage: 'singleStation' });
+    getStationDevice({ stationCode });
+    getSequenceName({ stationCode });
   }
   render() {
     const { stations, theme } = this.props;

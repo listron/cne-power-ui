@@ -131,7 +131,20 @@
     margin-top: 24px;
     background: #fff;
     flex-wrap: wrap;
+
     // justify-content: space-around;
+    .chartsContainer {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+
+      .chartStyle {
+        width: 50%;
+        height: 300px;
+        border: 1px solid lightblue;
+        background: pink;
+      }
+    }
 
     .chartWrap {
       position: relative;
@@ -155,10 +168,12 @@
 
     }
 
-
     .scatterStyle {
       display: flex;
       flex: 1;
     }
+
+
+
   }
 }

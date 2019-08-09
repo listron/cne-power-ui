@@ -4,6 +4,13 @@ var initState = Immutable.fromJS({
   loading: false,
   stationCode: null,
   showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
+  deviceList: [],
+  sequenceNames: [],
+  sequenceNameTime: null,
+  sequenceotherNames: [],
+
+
+
 });
 const dataAnalysisSequenceReducer = (state = initState, action) => {
   switch (action.type) {
