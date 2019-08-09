@@ -13,6 +13,8 @@ class LostAnalysis extends Component {
     lostQuota: PropTypes.string,
     lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
+    lostChartDevice: PropTypes.object,
+    lostChartTime: PropTypes.string,
     location: PropTypes.object,
     quotaInfo: PropTypes.array,
     changeStore: PropTypes.func,
@@ -112,18 +114,8 @@ class LostAnalysis extends Component {
   }
 
   render() {
-    const { active } = this.props;
+    const { active, lostChartDevice, lostChartTime } = this.props;
     const { quotaName } = this.state;
-    const lostTypes = {
-      theoryGen: 10000,
-      deratingGen: 150,
-      faultGen: 200,
-      substationGen: 450,
-      planShutdownGen: 370,
-      courtGen: 1120,
-      otherGen: 710,
-      actualGen: 10000 - 150 - 200 - 450 - 370 - 1120 - 710,
-    };
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <ChartLostRank
@@ -135,7 +127,7 @@ class LostAnalysis extends Component {
           {...this.props}
           quotaName={quotaName}
         />
-        <ChartLostTypes {...this.props} lostTypes={lostTypes} />
+        <ChartLostTypes {...this.props} lostChartDevice={lostChartDevice} lostChartTime={lostChartTime} />
       </div>
     );
   }
