@@ -316,7 +316,7 @@ const menuData = [
           {
             name: '散点图',
             path: 'scatter',
-            rightKey: ' analysis_dataTool_scatter',
+            rightKey: 'analysis_dataTool_scatter',
           },
           // {
           //   name: '时序图',
