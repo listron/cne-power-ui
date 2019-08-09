@@ -43,7 +43,7 @@ import styles from './style.scss';
   6. 选填 - holderText: string, 可选填，占位提示文字。
   7. 选填todo - disabledInfo 不可选数组; 默认为[]
   8. 选填todo - disabled: bool; 默认false， 传入true值时组件为禁用状态。
-  9. 选填todo - stationShowNumber:bool; 默认是false
+  9. 选填 - maxTagCount: number; 默认是null - 不开启
   10. 选填todo - onlyModal: false; 当不需要下拉框, 只需要筛选弹框时启用.
 
   注意:
