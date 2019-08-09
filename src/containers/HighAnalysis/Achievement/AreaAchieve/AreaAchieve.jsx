@@ -54,9 +54,8 @@ class AreaAchieve extends Component {
         }),
       };
       const paramsHour = {
-        indicatorCode: quotaValue,
         stationCodes: paramsCapacity.stationCodes,
-        startTime: paramsCapacity.startTime,
+        startTime: '2014-08-08',
         endTime: paramsCapacity.endTime,
         manufactorIds: paramsCapacity.manufactorIds,
         deviceModes: paramsCapacity.deviceModes,
@@ -151,7 +150,6 @@ class AreaAchieve extends Component {
         // 默认指标分析
         const quotaValue = nextQuotaInfo[0].children.length === 0 ? nextQuotaInfo[0].value : nextQuotaInfo[0].children[0].value;
         const paramsHour = {
-            indicatorCode: quotaValue,
             stationCodes: paramsCapacity.stationCodes,
             startTime: paramsCapacity.startTime,
             endTime: paramsCapacity.endTime,

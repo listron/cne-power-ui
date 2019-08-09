@@ -159,10 +159,7 @@ export default class AreaSearch extends Component {
 
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
-    const {
-      modesInfo,
-    } = this.props;
-    const { searchCode, modes, dates, quota, stations } = this.state;
+    const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
