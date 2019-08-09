@@ -1,0 +1,149 @@
+@import '../stationStyle.scss';
+
+.stopAnalysis{
+  display: flex;
+  flex-wrap: wrap;
+  .eleTypes{
+    flex-basis: 100%;
+    height: 60px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .info{
+      width: 860px;
+      display: flex;
+      height: 32px;
+      line-height: 32px;
+      position: relative;
+    }
+    .eachInfo{
+      flex-shrink: 0;
+      flex-grow: 0;
+      text-align: center;
+      cursor: pointer;
+      @include overflowText();
+    }
+    .detail{
+      position: absolute;
+      border-radius: 4px;
+      top: 32px;
+      width: 150px;
+      height: 76px;
+      .title, .eachDetail{
+        padding: 0 8px;
+        height: 24px;
+        line-height: 24px;
+        margin-bottom: 0;
+      }
+      .eachDetail{
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .stopTypeHanlder{
+      margin-right: 4px;
+    }
+  }
+  .stopRank{
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    height: 338px;
+    .top{
+      width: 100%;
+      flex: 0 0 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title{
+      font-weight: 600;
+    }
+    .chart{
+      flex: 1;
+      width: 100%;
+    }
+  }
+  .stopRank{
+    width: 100%;
+    margin-bottom: 8px;
+    .handle{
+      .eachHandle{
+        margin-right: 24px;
+      }
+      .text{
+        margin-right: 4px;
+      }
+    }
+  }
+/*
+  .lostTrend, .lostTypes{
+    width: calc(50% - 5px);
+  }
+  .lostTrend{
+    margin-right: 10px;
+  }
+*/
+  
+}
+
+/*
+.tooltip{
+  width: 160px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+  .info{
+    padding: 8px;
+  }
+  .eachItem{
+    display: flex;
+    line-height: 21px;
+    justify-content: space-between;
+  }
+}
+*/
+.stopAnalysis .eleTypes{
+  background-color: #fff;
+  .eachInfo{
+    color: #fff;
+  }
+  .detail{
+    background-color: #fff;
+    border: 1px solid $promptColor;
+    color: $darkColor;
+    .title{
+      border-bottom: 1px solid $promptColor;
+    }
+  }
+  .active{
+    box-shadow:0 0 4px 2px rgba(0,0,0,0.20);
+  }
+}
+
+
+
+.lostAnalysis{
+  .lostRank, .lostTrend, .lostTypes{
+    background-color: #fff;
+    .top .title{
+      color: #000;
+    }
+    .top .handle{
+      color: #666;
+    }
+  }
+}
+.tooltip{ // chart提示
+  min-width: 160px;
+  background-color: #fff;
+  color: #666;
+  .title{
+    border-bottom: 1px solid #dfdfdf;
+  }
+}
