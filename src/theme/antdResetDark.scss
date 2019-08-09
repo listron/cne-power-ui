@@ -231,6 +231,28 @@
     border: 1px solid $input-border;
     color: $fontColor;
   }
+  .ant-input-number {
+    line-height: 30px;
+    background: transparent;
+    border: 1px solid $input-border;
+  }
+
+  .ant-input-number-input {
+    background: $input-Background;
+    color: $fontColor;
+  }
+
+  .ant-input-number-handler-wrap {
+    color: $fontColor;
+    background: $input-Background;
+    border-left: 1px solid $input-border;
+  }
+  .ant-input-number-handler-down {
+    border-top: 1px solid $input-border;
+  }
+  .ant-input-number-handler:active {
+    background: #fd6e8f;
+  }
 
   // ============ ant-calendar 日历============
 
