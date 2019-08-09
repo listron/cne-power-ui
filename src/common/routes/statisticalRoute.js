@@ -55,6 +55,15 @@ const analysisTool = [
     path: '/statistical/analysisTool/scatter',
     component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')),
   },
+  // {
+  //   path: '/statistical/analysisTool/sequence',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
+  //   ),
+  // }, {
+  //   path: '/statistical/analysisTool/sequence',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
+  //   ),
+  // }
 ];
 
 export const statisticalRoute = [
