@@ -59,7 +59,7 @@ class DeviceAlarmTable extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        sorter: true, // (a,b) => a.warningLevel - b.warningLevel,
+        sorter: true,
         render: (text, record, index) => {
           const warningInfor = text && warningLevelArray[text - 1];
           return (text &&

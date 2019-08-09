@@ -53,46 +53,6 @@
   }
 }
 
-.powerProgress {
-  display: flex;
-  flex-wrap: wrap;
-  width: 215px;
-  margin-top: 24px;
-  align-content: flex-start;
-  :global {
-    .ant-progress-inner {
-      background-color: #dfdfdf;
-    }
-  }
-  .progressNum,
-  .progressText {
-    width: 100%;
-    display: flex;
-    @include lineheight(24px);
-    .leftText,
-    .rightText {
-      width: 50%;
-      color: $themeColor;
-      font-size: 24px;
-    }
-    .leftText {
-      text-align: left;
-    }
-    .rightText {
-      text-align: right;
-    }
-  }
-  .progressText {
-    @include lineheight(14px);
-    height: 14px;
-    .leftText,
-    .rightText {
-      font-size: 14px;
-      color: $darkColor;
-    }
-  }
-}
-
 .pointData {
   background-color: #f8f8f8;
   padding: 20px 60px 80px 60px;
@@ -138,14 +98,12 @@
   .pointsList,
   .eventsList {
     flex-basis: 615px;
-    border: 1px solid $promptColor;
     height: 240px;
     h3 {
       padding-left: 8px;
       margin-bottom: 0;
       height: 32px;
       line-height: 32px;
-      border-bottom: 1px solid $promptColor;
       font-weight: 700;
     }
     .listBox {
@@ -160,15 +118,10 @@
       &::-webkit-scrollbar {
         width: 4px;
       }
-      &::-webkit-scrollbar-thumb {
-        border-radius: 2px;
-        background: rgba(0, 0, 0, 0.5);
-      }
     }
     .eachInfo {
       height: 24px;
       line-height: 24px;
-      color: $darkColor;
       padding-left: 24px;
     }
   }
@@ -176,9 +129,6 @@
     display: flex;
     justify-content: space-between;
     .pointValue {
-      .value {
-        color: $themeColor;
-      }
       .unit {
         display: inline-block;
         margin-left: 4px;
@@ -349,8 +299,56 @@
   }
 }
 
+.powerProgress.light {
+  :global {
+    .ant-progress-success-bg,
+    .ant-progress-bg {
+      background: $themeColor;
+    }
+    .ant-progress-inner {
+      background-color: #dfdfdf;
+    }
+  }
+  .progressNum {
+    color: $themeColor;
+  }
+  .progressText {
+    color: $darkColor;
+  }
+}
+
+.devicePointsTable.light {
+  // 设备测点表格图
+  .pointsList,
+  .eventsList {
+    border: 1px solid $promptColor;
+    h3 {
+      border-bottom: 1px solid $promptColor;
+    }
+    .listBox {
+      &::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+    .eachInfo {
+      color: $darkColor;
+      &:nth-child(2n) {
+        background: #f8f8f8;
+      }
+    }
+  }
+  .pointsList .eachInfo {
+    .pointValue {
+      .value {
+        color: $themeColor;
+      }
+    }
+  }
+}
+
+@import "../../../../../theme/darkTheme.scss";
 .alarmTable.dark {
-  @import "../../../../../theme/darkTheme.scss";
   color: $fontColor;
   h3 {
     color: $fontColor;
@@ -358,11 +356,51 @@
   .tableHeader {
     .historyButton {
       border: 1px solid $themeColor;
-      color: $themeColor;
+      color: $fontColor-invert;
+      background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
     }
     .historyButton:hover {
-      background: $themeColor;
       color: $fontColor-invert;
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.powerProgress.dark {
+  :global {
+    .ant-progress-inner {
+      background-color: $fontColor-hover;
+    }
+  }
+  .progressNum {
+    color: $fontColor-hover;
+  }
+  .progressText {
+    color: $fontColor;
+  }
+}
+
+.devicePointsTable.dark {
+  // 设备测点表格图
+  .pointsList,
+  .eventsList {
+    border: 1px solid $border-color;
+    h3 {
+      border-bottom: 1px solid $border-color;
+      color: $fontColor-hover;
+    }
+    .eachInfo {
+      color: $fontColor;
+      &:nth-child(2n) {
+        background: $light-background;
+      }
+    }
+  }
+  .pointsList .eachInfo {
+    .pointValue {
+      .value {
+        color: $fontColor-hover;
+      }
     }
   }
 }

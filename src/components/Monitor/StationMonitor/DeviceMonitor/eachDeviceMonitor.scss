@@ -1,82 +1,42 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
+@import "./eachDeviceMonitorLayout.scss";
 .seriesinverter,
 .confluencebox,
 .boxtransformer,
 .weatherstation,
-.windDevice, .integrateLine, .boosterStation {
+.windDevice,
+.integrateLine,
+.boosterStation {
   background-color: $promptColor;
   .deviceContent {
     background-color: #fff;
-    margin: 24px 24px 0;
-    .deviceMonitorHeader { // 顶部
-      height: 65px;
-      display: flex;
-      justify-content: space-between;
-      position: relative;
+    .deviceMonitorHeader {
+      // 顶部
       .deviceName {
-        line-height: 65px;
+        color: $darkColor;
         .swap {
-          font-size: 18px;
-          margin-left: 32px;
           color: $themeColor;
-          cursor: pointer;
-        }
-        .name {
-          font-size: 18px;
-          margin-left: 12px;
-          color: $darkColor;
-          cursor: pointer;
-        }
-        .weatherStationName {
-          margin-left: 60px;
-          font-size: 18px;
-          color: $darkColor;
         }
         .status {
-          font-size: 14px;
-          margin-left: 24px;
-          color: $darkColor;
           :global {
             .statusIcon {
+              // 天气
               color: $darkColor;
-              font-size: 18px;
-              vertical-align: middle;
-              margin-right: 4px;
-              margin-left: 4px;
             }
             .alarm {
-              color: #a42b2c
+              color: #a42b2c;
             }
           }
-          >p {
-            display: inline-block;
-          }
-        }
-        .dispersionRatio, .manufactor, .deviceModelName {
-          font-size: 14px;
-          margin-left: 12px;
-          color: $darkColor;
-        }
-        .manufactor, .deviceModelName{
-          margin-left: 40px;
         }
       }
       .linkTo {
-        line-height: 65px;
-        text-align: right;
         .eachLink {
-          line-height: 65px;
-          margin-right: 28px;
-          cursor: pointer;
           .linkName {
             color: $themeColor;
           }
           :global {
             .linkIcon {
               color: $promptColor;
-              font-size: 18px;
-              vertical-align: middle;
-              margin: 0 4px;
             }
             .icon-upstream,
             .icon-downstream {
@@ -84,30 +44,19 @@
             }
           }
         }
-        .backIcon{
+        .backIcon {
           border-left: 1px solid #dfdfdf;
-          width: 60px;
-          line-height: 65px;
-          text-align: center;
           color: #666;
-          cursor: pointer;
-          font-size: 18px;
-          display: inline-block;
         }
       }
     }
-    .statisticsBox { // 设备信息统计区
-      display: flex;
-      height: 100px;
+    .statisticsBox {
+      // 设备信息统计区
       border-top: solid 1px $promptColor;
       border-bottom: solid 1px $promptColor;
       .deviceIcon {
-        width: 170px;
-        text-align: center;
-        line-height: 100px;
         :global {
           .iconfont {
-            font-size: 24px;
             color: $themeColor;
           }
         }
@@ -115,193 +64,198 @@
       .timerGen,
       .timerDayGen,
       .weatherEachData {
-        width: 135px;
-        margin-left: 16px;
-        margin-top: 24px;
-        display: flex;
-        flex-direction: column;
         .genNum {
-          font-size: 24px;
-          height: 24px;
-          line-height: 24px;
           color: $themeColor;
-          margin-bottom: 8px;
-        }
-        .empty {
-          height: 10px;
         }
         .genText {
           color: $darkColor;
         }
       }
-      .timerDayGen,
-      .weatherEachData {
-          width: 105px;
-          margin-left: 24px;
-      }
     }
-    .subTitleConfig{
-      padding-left: 48px;
-    }
-    .points{
-      display: flex;
+    .points {
       border-top: 1px solid $promptColor;
     }
   }
 }
 
-.seriesinverter .inverterChartTitle{
-  height: 0px;
-  position: relative;
-  z-index: 999;
-  top: 12px;
-  left: 56px;
-  .single{
-    font-weight: 700;
-  }
-  .tabs{
-    border-radius: 4px;
-    .inactive, .active{
-      padding: 2px 6px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .inactive{
+.seriesinverter .inverterChartTitle {
+  .tabs {
+    .inactive {
       color: #666;
-      border:1px solid #dfdfdf;
+      border: 1px solid #dfdfdf;
     }
-    .active{
+    .active {
       color: #fff;
-      border:1px solid $themeColor;
+      border: 1px solid $themeColor;
       background-color: $themeColor;
     }
   }
 }
 
-.integrateLine, .boosterStation{
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  .deviceContent{
-    flex: 1;
-  }
-}
-
-.weatherstation {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  .statisticsBox {
-    border-bottom: none;
-  }
-  .deviceContent {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-  }
-}
-
-.boosterStation{ // 升压站单独样式
-  .deviceList{
+.boosterStation {
+  // 升压站单独样式
+  .deviceList {
     background-color: #f8f8f8;
-    display: flex;
-    height: 40px;
-    align-items: center;
     border-top: 1px solid $promptColor;
-    .eachDevice{
-      cursor: pointer;
-      line-height: 40px;
+    .eachDevice {
       color: $darkColor;
-      text-align: center;
-      margin: 0 28px;
     }
   }
 }
 
 .windDevice {
   .windChart {
-    display: flex;
-    flex-direction: row;
-    height: 323px;
-    >div {
-      flex: 1;
+    > div {
       border-right: 1px solid #dfdfdf;
     }
   }
   .deviceContent {
     .statisticsBox {
       .deviceIcon {
-        width: 170px;
-        text-align: center;
-        line-height: 30px;
-        span {
-          margin-top: 20px;
-          display: inline-block;
-        }
         :global {
           .iconfont {
-            font-size: 31px;
             color: $themeColor;
           }
         }
         .deviceCode {
-          display: block;
           color: $themeColor;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
         }
       }
     }
   }
   .pointData {
     background-color: #f8f8f8;
-    padding: 20px 60px 80px 60px;
     .pointTitle {
       color: $darkColor;
-      margin-left: 20px;
     }
     .pointDataList {
-      display: flex;
-      flex-wrap: wrap;
       .eachGroup {
-        min-width: 20%;
-        max-width: 20%;
-        padding-left: 20px;
-        margin: 16px 0;
         border-right: dotted 1px $promptColor;
-        position: relative;
-        padding-top: 24px;
         .groupName {
           color: $darkColor;
           background: #f0f0f0;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: calc(100% - 20px);
-          margin-left: 20px;
         }
         .eachData {
-          margin-bottom: 4px;
           .pointName {
             color: $darkColor;
-            margin-bottom: 0;
           }
           .pointValue {
             color: #199475;
-            margin-bottom: 0;
-            word-wrap: break-word;
-            padding-right: 20px;
           }
-          &:hover{
-            background: rgba(206, 235, 224, 0.3); 
+          &:hover {
+            background: rgba(206, 235, 224, 0.3);
           }
         }
-      }
-      .eachGroup:last-child {
-        border-right: none;
       }
     }
   }
 }
+.tooltipBox {
+  @include tooltipBox($promptColor);
+}
 
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  background-color: $background;
+  .deviceContent {
+    background-color: $background;
+    .deviceMonitorHeader {
+      // 顶部
+      background: $light-background;
+      border: 1px solid $border-color;
+      .deviceName {
+        color: $fontColor;
+        .swap {
+          color: $fontColor-hover;
+        }
+        .status {
+          :global {
+            .statusIcon {
+              // 天气
+              color: $fontColor;
+            }
+            .alarm {
+              color: #fd6e8f;
+            }
+          }
+        }
+      }
+      .linkTo {
+        .eachLink {
+          .linkName {
+            color: $fontColor-hover;
+          }
+          :global {
+            .linkIcon {
+              color: $fontColor-hover;
+            }
+            .icon-upstream,
+            .icon-downstream {
+              color: $fontColor-hover;
+            }
+          }
+        }
+        .backIcon {
+          border-left: 1px solid $border-color;
+          color: $fontColor-hover;
+        }
+      }
+    }
+    .statisticsBox {
+      // 设备信息统计区
+      border: 1px solid $border-color;
+      margin-top: 10px;
+      background: $light-background;
+      .deviceIcon {
+        :global {
+          .iconfont {
+            color: $fontColor-hover;
+          }
+        }
+      }
+      .timerGen,
+      .timerDayGen,
+      .weatherEachData {
+        .genNum {
+          color: $fontColor-hover;
+        }
+        .genText {
+          color: $fontColor;
+        }
+      }
+    }
+    .points {
+      border-top: 1px solid $border-color;
+    }
+  }
+
+  .contWrap {
+    display: flex;
+    flex-direction: column;
+    background: $light-background;
+    border: 1px solid $border-color;
+    margin-top: 10px;
+  }
+
+  .seriesinverter,
+  .inverterChartTitle {
+    .tabs {
+      .inactive {
+        color: $fontColor;
+        border: 1px solid $button-border;
+      }
+      .active {
+        color: #fff;
+        border: 1px solid $button-border;
+        background-color: $button-active;
+      }
+    }
+  }
+  .subTitleConfig {
+    color: $fontColor;
+  }
+
+  .tooltipBox {
+    @include tooltipBox($border-color);
+  }
+}

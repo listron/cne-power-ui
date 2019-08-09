@@ -97,10 +97,10 @@ class BarGraph extends React.Component {
           let paramsItem = '';
           params.forEach(item => {
             const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
-            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
               ${item.seriesName} :  ${item.value || '--'} 
                ${(item.seriesType === 'line' || xAxisName === 'PR') && '%' || ''}</div>`;
-          });
+          }).join('');
           return (
             `<div class=${styles.tooltipBox}>
                   <div class=${styles.axisValue}><span>${params[0].name}</span><span>${xAxisName}</span></div>

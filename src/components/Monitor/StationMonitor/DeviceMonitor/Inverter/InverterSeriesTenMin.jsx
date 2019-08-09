@@ -2,45 +2,48 @@ import React, { Component } from 'react';
 import echarts from 'echarts';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {showNoData, hiddenNoData} from '../../../../../constants/echartsNoData';
+import styles from '../eachDeviceMonitor.scss';
+import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
+
 
 class InverterSeriesTenMin extends Component {
   static propTypes = {
     branchTenMinUnix: PropTypes.number,
     branchTenMin: PropTypes.array,
+    theme: PropTypes.string,
   }
 
   state = {
     HLColors: ['#e08031', '#f9b600', '#fbe6e3', '#999999', '#ceebe0', '#f8e71c', '#50e3c2', '#c7ceb2', '#7ed321', '#d0021b', '#024d22', '#bd10e0', '#8b572a', '#9013fe', '#45a0b3', '#000d34'],
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.renderChart();
   }
 
-  componentDidUpdate(prevProps){
-    const { branchTenMinUnix } = this.props;
+  componentDidUpdate(prevProps) {
+    const { branchTenMinUnix, theme } = this.props;
     const prevTenMinUnix = prevProps.branchTenMinUnix;
-    if (branchTenMinUnix !== prevTenMinUnix) { // 获得数据
+    if (branchTenMinUnix !== prevTenMinUnix || theme !== prevProps.theme) { // 获得数据
       this.renderChart();
     }
   }
 
   renderChart = () => {
-    const { branchTenMin } = this.props;
+    const { branchTenMin, theme } = this.props;
     const { HLColors } = this.state;
     const echartBox = document.getElementById('seriesInverter_monitor_tenMin');
-    const seriesInverterChart = echarts.init(echartBox);
-    const { index = [], time = [], rate = []} = branchTenMin;
+    let seriesInverterChart = echarts.init(echartBox, themeConfig[theme]);
+    if (seriesInverterChart) {
+      seriesInverterChart.dispose();
+      seriesInverterChart = echarts.init(echartBox, themeConfig[theme]);
+    }
+    const { index = [], time = [], rate = [] } = branchTenMin;
     const timeFormatArr = time.map(e => moment(e).format('YYYY-MM-DD HH:mm:ss'));
-    const hlArr = index.filter(e => e > 0 ); // 取出正确的组串标识对应索引。
-    const lineColor = '#666';
+    const hlArr = index.filter(e => e > 0); // 取出正确的组串标识对应索引。
     const hlSeries = hlArr.map(e => {
       return {
         name: `HL#${`${e}`.padStart(2, '0')}`,
-        nameTextStyle: {
-          color: lineColor,
-        },
         type: 'line',
         lineStyle: {
           type: 'solid',
@@ -58,7 +61,7 @@ class InverterSeriesTenMin extends Component {
         data: branchTenMin[e],
       };
     });
-    const seriesInverterGraphic = time.length===0 ? showNoData : hiddenNoData;
+    const seriesInverterGraphic = chartsNodata(!(time.length === 0), theme);
     const option = {
       graphic: seriesInverterGraphic,
       color: ['#3e97d1', ...HLColors],
@@ -73,7 +76,6 @@ class InverterSeriesTenMin extends Component {
         trigger: 'axis',
         axisPointer: {
           crossStyle: {
-            color: '#dfdfdf',
             width: 1,
             type: 'dotted',
           },
@@ -82,23 +84,21 @@ class InverterSeriesTenMin extends Component {
           // 固定在顶部
           return [point[0], '10%'];
         },
-        formatter: (param) => {
-          const HLToolTips = param.map((e, i) => {
-            const { seriesName, value } = e;
-            let hlColor = '';
-            hlArr.forEach((hlName, hlIndex) => {
-              if(`HL#${`${e}`.padStart(2, '0')}` === seriesName){
-                hlColor = HLColors[hlIndex];
-              }
-            });
-            return `<div style="padding-left: 5px;background:#fff; line-height: 20px;height:20px;" ><span style="display: inline-block; background:${hlColor}; width:6px; height:6px; border-radius:100%;"></span> ${seriesName}: ${(value || value === 0)? value: '--'}</div>`;
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            const color = item.color.colorStops && item.color.colorStops[1].color || item.color;
+            paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${color}"> </span> 
+              ${item.seriesName} :  ${item.value || '--'} 
+            </div>`;
           });
-          return `<div style="width: 128px; height: ${15+param.length*20}px;color: #666; line-height: 14px;font-size:12px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;line-height: 25px;height:25px;" >${param && param[0] && param[0].name || '--'}</div>
-            ${HLToolTips.join('')}
-          </div>`;
+          return (
+            `<div class=${styles.tooltipBox}>
+                  <div class=${styles.axisValue}><span>${params[0].name}</span></div>
+                  <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+              </div>`
+          );
         },
-        extraCssText: 'background: rgba(0,0,0,0);',
       },
       grid: {
         top: 95,
@@ -110,21 +110,10 @@ class InverterSeriesTenMin extends Component {
         axisTick: {
           show: false,
         },
-        axisLine: {
-          lineStyle: {
-            color: '#dfdfdf',
-          },
-        },
-        axisLabel: {
-          color: lineColor,
-        },
       },
       yAxis: [
         {
           name: '电流(A)',
-          nameTextStyle: {
-            color: lineColor,
-          },
           splitLine: {
             show: false,
           },
@@ -132,18 +121,12 @@ class InverterSeriesTenMin extends Component {
             lineStyle: {
               color: '#dfdfdf',
             },
-          },
-          axisLabel: {
-            color: lineColor,
           },
           axisTick: {
             show: false,
           },
         }, {
           name: '离散率(%)',
-          nameTextStyle: {
-            color: lineColor,
-          },
           splitLine: {
             show: false,
           },
@@ -151,9 +134,6 @@ class InverterSeriesTenMin extends Component {
             lineStyle: {
               color: '#dfdfdf',
             },
-          },
-          axisLabel: {
-            color: lineColor,
           },
           axisTick: {
             show: false,
@@ -163,9 +143,6 @@ class InverterSeriesTenMin extends Component {
       series: [
         {
           name: '离散率',
-          nameTextStyle: {
-            color: lineColor,
-          },
           type: 'line',
           lineStyle: {
             type: 'dotted',
@@ -202,9 +179,9 @@ class InverterSeriesTenMin extends Component {
     seriesInverterChart.resize();
   }
 
-  render(){
+  render() {
     return (
-      <div id="seriesInverter_monitor_tenMin" style={{height: '335px', marginTop: '20px'}} />
+      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
     );
   }
 }

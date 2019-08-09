@@ -56,11 +56,6 @@
   width: 215px;
   margin-top: 24px;
   align-content: flex-start;
-  :global {
-    .ant-progress-inner {
-      background-color: #dfdfdf;
-    }
-  }
   .progressNum,
   .progressText {
     width: 100%;
@@ -69,7 +64,6 @@
     .leftText,
     .rightText {
       width: 50%;
-      color: $themeColor;
       font-size: 24px;
     }
     .leftText {
@@ -85,7 +79,6 @@
     .leftText,
     .rightText {
       font-size: 14px;
-      color: $darkColor;
     }
   }
 }
