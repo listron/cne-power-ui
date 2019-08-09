@@ -13,7 +13,6 @@
   flex: 1;
   :global {
     a {
-      color: $darkColor;
       cursor: pointer;
     }
   }
@@ -34,10 +33,10 @@
   @import "../../../../theme/darkTheme.scss";
   .singleStationContainer {
     background: $background;
-    :global {
-      a {
-        color: $fontColor;
-      }
-    }
+    // :global {
+    //   a {
+    //     color: $fontColor;
+    //   }
+    // }
   }
 }
