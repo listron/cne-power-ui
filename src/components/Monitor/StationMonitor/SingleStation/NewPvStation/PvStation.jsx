@@ -172,22 +172,19 @@ class PvStation extends Component {
     return (
       <div className={`${styles.pvStationWrap} ${styles[theme]}`}>
         <div className={styles.pvStation} >
-          <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} />
+          <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} theme={theme} />
           <PvStationHeader
             singleStationData={singleStationData}
             editData={editData}
             stationCode={stationCode}
             monitorPvUnit={monitorPvUnit}
-            theme={theme}
-          />
+            theme={theme} />
           <div className={styles.deviceListWrap}>
             <PvDevice {...this.props} />
-            <div className={styles.deviceList} >
-              <DeviceList {...this.props} deviceTypeList={deviceTypeList} />
-            </div>
+            <div className={styles.deviceList} > <DeviceList {...this.props} deviceTypeList={deviceTypeList} /> </div>
           </div>
           <div onClick={this.detailShow} className={styles.detailShow}>
-            <i className={`iconfont icon-go2 ${styles.show}`}></i>
+            <i className={`iconfont icon-go2 ${styles.show}`} />
             <span className={styles.detailShowfont}>查看电站概况</span>
           </div>
         </div>
@@ -201,6 +198,7 @@ class PvStation extends Component {
             workList={this.props.workList}
             detailChange={this.detailHide}
             {...this.props}
+            theme={theme}
             detailVisible={detailVisible}
             getPowerDataTenMin={this.getPowerDataTenMin}
           />

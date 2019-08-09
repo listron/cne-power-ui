@@ -44,7 +44,7 @@ class DayPower extends Component {
             instantaneous: '#f8b14e',
         },
         light: {
-            dayPower: '$themeColor',
+            dayPower: '#199475',
             equipmentHours: '#c7ceb2',
             instantaneous: '#f9b600',
         },
@@ -68,8 +68,8 @@ class DayPower extends Component {
             powerDiagram.dispose();
             powerDiagram = echarts.init(chartsBox, themeConfig[theme]);
         }
-        chartsLoading(powerDiagram, loading);
-        let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '$themeColor'];
+        chartsLoading(powerDiagram, loading, theme);
+        let color = color = ['#a42b2c', '#c7ceb2', '#3e97d1', '#199475'];
         const powerOption = {
             graphic: graphic,
             color: color,

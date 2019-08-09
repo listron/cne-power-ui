@@ -633,6 +633,7 @@
       background: $light-background;
       border: 1px solid $border-color;
       border-top: none;
+      flex: 1;
     }
     .pvDeviceCont {
       .top {
@@ -925,36 +926,15 @@
         }
       }
     }
+
     .detailShow {
-      position: absolute;
-      right: 0;
-      top: 61px;
-      background: $themeColor;
-      border-radius: 4px;
-      width: 40px;
-      height: 158px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 12px 0;
-      cursor: pointer;
+      background: $button-primary;
       .detailShowfont {
-        color: #fff;
-        width: 14px;
-        line-height: 20px;
-        z-index: 66;
-      }
-      .show {
-        transform: translate(-180deg);
+        color: $fontColor-invert;
       }
       :global {
         .iconfont {
-          width: 14px;
-          height: 18px;
-          border-radius: 50%;
-          color: #fff;
-          font-size: 13px;
+          color: $fontColor-invert;
         }
       }
     }
