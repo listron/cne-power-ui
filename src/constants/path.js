@@ -526,6 +526,10 @@ export default {
       exportAreaStation: '/v3/intelligence/analysis/area/export', // 导出同区域电站对比
       getAreaCompare: '/v3/intelligence/analysis/areacompare', // 区域对比分析报告
       exportAreaCompare: '/v3/intelligence/analysis/areacompare/export', // 区域对比分析报告导出
+      //数据分析工具散点图
+      getScatterName: '/v3/wind/analysis/scatterplot/names', //散点图测点名称列表
+      getScatterOtherName: '/v3/wind/analysis/scatterplot/xylist', //散点图自定义测点名称列表
+      getScatterData: '/v3/wind/analysis/scatterplot/list', //散点图列表
     },
     highAnalysis: {
       getCleanWarningList: '/v3/pvclean/warning/list', // 清洗预警列表
@@ -609,6 +613,7 @@ export default {
     },
   },
 };
+
 
 
 

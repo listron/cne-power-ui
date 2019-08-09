@@ -1,0 +1,206 @@
+@import '../../../../theme/theme.scss';
+
+.allstationBox {
+  padding: 24px 24px 24px 4px;
+  background: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .boxtitle {
+    padding: 0 0 24px 20px;
+    font-size: 20px;
+    color: $themeColor;
+
+    span {
+      font-size: 14px
+    }
+  }
+
+  .boxcard {
+    display: flex;
+    flex-wrap: wrap;
+
+    .stationCard {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      font-size: 20px;
+      color: $themeColor;
+      width: 208px;
+      height: 68px;
+      line-height: 68px;
+      text-align: center;
+      border: 4px solid;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.30);
+      border-image: -webkit-linear-gradient(#36c6ad, $themeColor) 10 10;
+
+      &:hover {
+        // background: linear-gradient(green, $themeColor);
+        background-image: linear-gradient(-180deg, #36c6ad 0%, #199475 100%);
+        box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.30), inset 0 0 4px 2px rgba(255, 255, 255, 0.50);
+        border-radius: 4px;
+        border: none;
+        width: 208px;
+        height: 68px;
+        color: #fff;
+
+      }
+    }
+  }
+}
+
+.singleStationBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  .headBox {
+    background: #fff;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+
+    .headTop {
+      display: flex;
+      flex: 1;
+      line-height: 40px;
+      text-align: center;
+      align-items: center;
+    }
+
+    .nameStyle {
+      margin: 0 8px 0 24px;
+    }
+
+    .headBottom {
+      display: flex;
+      flex: 1;
+      line-height: 40px;
+      align-items: center;
+
+      .contrastValue {
+        margin: 0 24px;
+
+        .defaultStyle {
+          width: 140px;
+          background: #ceebe0;
+          color: $themeColor;
+          border: none
+        }
+
+        .nomalIcon {
+          color: $themeColor;
+        }
+
+        .swapIcon {
+          color: #f9b600;
+        }
+
+        .swapStyle {
+          width: 140px;
+          color: #f9b600;
+          ;
+          background: #fcffe5;
+          // color: rgb(249, 183, 6);
+          // background: rgb(252, 255, 229);
+          border: none;
+        }
+      }
+
+      .seachBtn {
+        border: 1px solid $themeColor;
+        color: $themeColor;
+        margin: 0 24px;
+
+        &:hover {
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+
+  .scatterBox {
+    display: flex;
+    flex: 1;
+    margin-top: 24px;
+    background: #fff;
+    flex-wrap: wrap;
+    // justify-content: space-around;
+
+    .chartWrap {
+      position: relative;
+      width: 32%;
+      height: 400px;
+      display: flex;
+      margin: 4px;
+    }
+
+    .showModalInco {
+      position: absolute;
+      top: 5%;
+      left: 75%;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 3;
+
+      &:hover {
+        color: $themeColor;
+      }
+
+    }
+
+
+    .scatterStyle {
+      display: flex;
+      flex: 1;
+    }
+  }
+}
+
+.singleStationModal {
+  .imgBox {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    .handleButton {
+      width: 66px;
+
+      text-align: center;
+
+      button {
+        height: 60px;
+        padding: 0 10px;
+        font-size: 24px;
+      }
+    }
+
+    .imgContainer {
+      display: flex;
+      flex: 1;
+
+      .chartWrap {
+        display: flex;
+        flex: 1;
+        width: 100%;
+      }
+
+    }
+  }
+}
+
+// .light {
+//   .allstationBox {
+//     background: #fff;
+//   }
+// }
+
+// .dark {
+//   @import "../../../../theme/antdResetDark.scss";
+// @import "../../../../theme/darkTheme.scss";
+
+//   .allstationBox {}
+// }
