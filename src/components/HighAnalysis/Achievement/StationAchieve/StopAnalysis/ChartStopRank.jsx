@@ -10,15 +10,14 @@ const { Option } = Select;
 class ChartStopRank extends Component {
 
   static propTypes = {
-    // quotaName: PropTypes.string,
-    // lostChartTimeMode: PropTypes.string,
-    // quotaInfo: PropTypes.array,
-    // location: PropTypes.object,
-    // onQuotaChange: PropTypes.func,
-    // changeStore: PropTypes.func,
-    // getLostTrend: PropTypes.func,
+    stopElecType: PropTypes.string,
+    stopChartTimeMode: PropTypes.string,
+    location: PropTypes.object,
+    changeStore: PropTypes.func,
     stopRank: PropTypes.array,
     stopRankLoading: PropTypes.bool,
+    getStopTrend: PropTypes.func,
+    getStopTypes: PropTypes.func,
   }
 
   state = {
@@ -109,12 +108,10 @@ class ChartStopRank extends Component {
   }
 
   renderChart = (stopRank = [], sortType) => {
-    // const { quotaName, changeStore, location, getLostTrend, lostQuota, lostChartTimeMode } = this.props;
+    const { stopElecType, stopChartTimeMode, location } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const sortedStopRank = this.sortRank(stopRank, sortType)
     const { dataAxis, series, modeArr } = this.createSeries(sortedStopRank);
-    // const baseOption = getBaseOption(dataAxis);
-    // baseOption.yAxis.name = quotaName;
     const option = {
       grid: getBaseGrid(),
       xAxis: getBaseXAxis(dataAxis),
@@ -147,21 +144,21 @@ class ChartStopRank extends Component {
       series,
     };
     rankChart.setOption(option);
-    // rankChart.on('click', ({dataIndex}) => {
-    //   const lostChartDevice = sortedLostRank[dataIndex] || {};
-    //   changeStore({ lostChartDevice });
-    //   const { search } = location;
-    //   const infoStr = searchUtil(search).getValue('station');
-    //   const searchParam = JSON.parse(infoStr) || {};
-    //   getLostTrend({
-    //     stationCodes: [searchParam.searchCode],
-    //     deviceFullcodes: [lostChartDevice.deviceFullcode],
-    //     startTime: searchParam.searchDates[0],
-    //     endTime: searchParam.searchDates[1],
-    //     indicatorCode: lostQuota,
-    //     type: lostChartTimeMode,
-    //   });
-    // });
+    rankChart.on('click', ({dataIndex}) => {
+      const stopChartDevice = sortedStopRank[dataIndex] || {};
+      this.props.changeStore({ stopChartDevice });
+      const { search } = location;
+      const infoStr = searchUtil(search).getValue('station');
+      const searchParam = JSON.parse(infoStr) || {};
+      const param = {
+        stationCodes: [searchParam.searchCode],
+        deviceFullcodes: [stopChartDevice.deviceFullcode],
+        startTime: searchParam.searchDates[0],
+        endTime: searchParam.searchDates[1],
+      };
+      this.props.getStopTrend({ ...param, parentFaultId: stopElecType, type: stopChartTimeMode });
+      this.props.getStopTypes({ ...param });
+    });
   }
 
 
