@@ -12,7 +12,7 @@ class LostAnalysis extends Component {
     active: PropTypes.bool,
     lostQuota: PropTypes.string,
     lostStringify: PropTypes.string,
-    chartTimeMode: PropTypes.string,
+    lostChartTimeMode: PropTypes.string,
     location: PropTypes.object,
     quotaInfo: PropTypes.array,
     changeStore: PropTypes.func,
@@ -89,7 +89,7 @@ class LostAnalysis extends Component {
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.props.chartTimeMode,
+      type: this.props.lostChartTimeMode,
     });
   }
 
@@ -107,7 +107,7 @@ class LostAnalysis extends Component {
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.props.chartTimeMode,
+      type: this.props.lostChartTimeMode,
     });
   }
 

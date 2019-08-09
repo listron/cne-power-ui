@@ -7,6 +7,7 @@ import { achieveAction } from './achieveReducer';
 import GroupAchieve from './GroupAchieve/GroupAchieve';
 import AreaAchieve from './AreaAchieve/AreaAchieve';
 import StationAchieve from './StationAchieve/StationAchieve';
+import Footer from '../../../components/Common/Footer';
 import styles from './layout.scss';
 
 // 页面路径参数结构/{pathKey}?pages=['group','area']&group={a:1,b:2}&area={c:1,d:4}&station={e:2,ff:12};
@@ -109,6 +110,7 @@ class AchievementLayout extends Component {
           {pathKey === 'area' && <AreaAchieve {...this.props} />}
           {pathKey === 'station' && <StationAchieve {...this.props} />}
         </div>
+        <Footer />
       </div>
     );
   }

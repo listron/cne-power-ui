@@ -20,11 +20,11 @@ const initState = immutable.fromJS({
   lostStringify: '', // station - search信息字符串
   lostQuota: null, // 指标
   lostSort: 'name', // 排序方式 name or quota
-  stopTopStringify: '',
+  lostChartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
+  lostChartTime: null, // chart选中的时间
+  lostChartTimeMode: 'month', // chart选中时间格式 - month year day
 
-  chartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
-  chartTime: null, // chart选中的时间
-  chartTimeMode: 'month', // chart选中时间格式 - month year day
+  stopTopStringify: '',
 
   modeDevices: [], // 电站 设备型号+设备集合
   lostRank: [], // 损失根源 - 指标排名

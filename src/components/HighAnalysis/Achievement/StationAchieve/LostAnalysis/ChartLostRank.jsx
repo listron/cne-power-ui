@@ -14,7 +14,7 @@ class ChartLostRank extends Component {
     lostRank: PropTypes.array, // 损失根源 - 指标排名
     quotaName: PropTypes.string,
     lostQuota: PropTypes.string,
-    chartTimeMode: PropTypes.string,
+    lostChartTimeMode: PropTypes.string,
     lostSort: PropTypes.string,
     lostRankLoading: PropTypes.bool,
     quotaInfo: PropTypes.array,
@@ -131,7 +131,7 @@ class ChartLostRank extends Component {
   }
 
   renderChart = (sortedLostRank = []) => {
-    const { quotaName, changeStore, location, getLostTrend, lostQuota, chartTimeMode } = this.props;
+    const { quotaName, changeStore, location, getLostTrend, lostQuota, lostChartTimeMode } = this.props;
     const rankChart = echarts.init(this.rankRef);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
@@ -164,18 +164,18 @@ class ChartLostRank extends Component {
     };
     rankChart.setOption(option);
     rankChart.on('click', ({dataIndex}) => {
-      const chartDevice = sortedLostRank[dataIndex] || {};
-      changeStore({ chartDevice });
+      const lostChartDevice = sortedLostRank[dataIndex] || {};
+      changeStore({ lostChartDevice });
       const { search } = location;
       const infoStr = searchUtil(search).getValue('station');
       const searchParam = JSON.parse(infoStr) || {};
       getLostTrend({
         stationCodes: [searchParam.searchCode],
-        deviceFullcodes: [chartDevice.deviceFullcode],
+        deviceFullcodes: [lostChartDevice.deviceFullcode],
         startTime: searchParam.searchDates[0],
         endTime: searchParam.searchDates[1],
         indicatorCode: lostQuota,
-        type: chartTimeMode,
+        type: lostChartTimeMode,
       });
     });
   }
