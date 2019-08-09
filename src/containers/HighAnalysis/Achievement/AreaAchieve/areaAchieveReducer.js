@@ -34,11 +34,12 @@ const initState = immutable.fromJS({
   capacityLoading: false,
   trendLoading: false,
   loseLoading: false,
+  timeStatus: '2', // 日月年
 });
 
 export const achieveArea = (state = initState, action) => {
   switch (action.type) {
-    case areaAchieveAction.fetchSuccess :
+    case areaAchieveAction.fetchSuccess:
       return state.merge(immutable.fromJS(action.payload));
     case areaAchieveAction.changeStore:
       return state.merge(immutable.fromJS(action.payload));

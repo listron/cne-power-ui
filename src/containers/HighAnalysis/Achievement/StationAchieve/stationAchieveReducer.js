@@ -18,9 +18,11 @@ const initState = immutable.fromJS({
   testStationInfo: [],
   active: 'lost', // lost, stop, curve
   lostStringify: '', // station - search信息字符串
+  lostQuota: null, // 指标
+  lostSort: 'name', // 排序方式 name or quota
   stopTopStringify: '',
 
-  chartDevice: null, // chart选中的设备
+  chartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
   chartTime: null, // chart选中的时间
   chartTimeMode: 'month', // chart选中时间格式 - month year day
 
@@ -29,7 +31,7 @@ const initState = immutable.fromJS({
   lostRankLoading: false,
   lostTrend: [], // 损失根源 - 指标趋势
   lostTrendLoading: false,
-  lostTypes: [], // 损失根源 - 损失电量分解
+  lostTypes: {}, // 损失根源 - 损失电量分解
   lostTypesLoading: false,
   stopElec: [], // 停机 - 损失电量
   stopRank: [], // 停机 - 设备停机时长及次数

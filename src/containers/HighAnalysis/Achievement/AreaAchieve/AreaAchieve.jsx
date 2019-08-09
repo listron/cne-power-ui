@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import { areaAchieveAction } from './areaAchieveReducer';
 import AreaSearch from '../../../../components/HighAnalysis/Achievement/AreaAchieve/AreaSearch/AreaSearch';
@@ -24,64 +23,53 @@ class AreaAchieve extends Component {
     getIndicatorRankTotal: PropTypes.func,
     location: PropTypes.object,
     rankTotal: PropTypes.array,
+    quotaInfo: PropTypes.array,
+    timeStatus: PropTypes.string,
   };
 
   componentDidMount(){
     const { search } = this.props.location;
+    const { timeStatus } = this.props;
     const groupInfoStr = searchUtil(search).getValue('area');
-    const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
-    const {
-      searchCode = [],
-      stations = [],
-      modes = [],
-      dates = [],
-      quota = [],
-      modesInfo = [],
-    } = groupInfo;
-    console.log(modesInfo, 'modesInfo');
-    const dataLen = searchCode.length !== 0 && stations.length !== 0 && modes.length !== 0 && dates.length !== 0 && quota.length !== 0;
-    if(dataLen) {
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const basicParams = this.basicParams(groupInfo);
+      const {
+        stations = [],
+        modes = [],
+        quota = [],
+        modesInfo = [],
+      } = groupInfo;
       // 默认指标分析
       const quotaValue = quota[1] || quota[0];
       const paramsCapacity = {
+        ...basicParams,
         deviceModes: modes,
         regionName: [stations[0].regionName],
-        startTime: dates[0],
-        endTime: dates[1],
-        stationCodes: searchCode,
         manufactorIds: modesInfo.map(cur => {
           return cur.value;
         }),
       };
       const paramsHour = {
-        indicatorCode: quotaValue,
-        stationCodes: paramsCapacity.stationCodes,
-        startTime: paramsCapacity.startTime,
-        endTime: paramsCapacity.endTime,
+        ...basicParams,
         manufactorIds: paramsCapacity.manufactorIds,
         deviceModes: paramsCapacity.deviceModes,
       };
       const paramsTrend = {
+        ...basicParams,
         regionName: paramsCapacity.regionName,
         indicatorCode: quotaValue,
-        stationCodes: paramsCapacity.stationCodes,
-        startTime: paramsCapacity.startTime,
-        endTime: paramsCapacity.endTime,
-        type: 2, // 默认按月
+        type: timeStatus, // 默认按月
       };
       const paramsRank = {
+        ...basicParams,
         indicatorCode: quotaValue,
-        stationCodes: paramsCapacity.stationCodes,
-        startTime: paramsCapacity.startTime,
-        endTime: paramsCapacity.endTime,
       };
       const paramsTotal = {
+        ...basicParams,
         deviceModes: paramsCapacity.deviceModes,
         regionName: paramsCapacity.regionName,
         indicatorCode: quotaValue,
-        startTime: paramsCapacity.startTime,
-        endTime: paramsCapacity.endTime,
-        stationCodes: paramsCapacity.stationCodes,
         manufactorIds: paramsCapacity.manufactorIds,
       };
       this.props.getStationCapacity(paramsCapacity);
@@ -94,113 +82,105 @@ class AreaAchieve extends Component {
 
   componentWillReceiveProps(nextProps){
     const nextSearch = nextProps.location.search;
-    const nextModesInfo = nextProps.modesInfo;
-    const nextQuotaInfo = nextProps.quotaInfo;
-    const nextAreaStation = nextProps.areaStation;
-    const nextCapacityTime = nextProps.capacityTime;
-    const nextRankTime = nextProps.rankTime;
-    const nextTrendTime = nextProps.trendTime;
-    const nextLostTime = nextProps.lostTime;
     const { search } = this.props.location;
-    const { modesInfo, quotaInfo, areaStation } = this.props;
+    const { timeStatus } = this.props;
     const groupNextInfoStr = searchUtil(nextSearch).getValue('area');
     const groupInfoStr = searchUtil(search).getValue('area');
-    // console.log(groupInfoStr, 'groupInfoStr');
-    console.log(groupNextInfoStr, 'groupNextInfoStr');
-    if (groupNextInfoStr && groupNextInfoStr === groupInfoStr) {
-      const groupInfo = groupInfoStr ? JSON.parse(groupNextInfoStr) : {};
-      // console.log(groupNextInfoStr, '1');
-    }
-    // 首次进来
-    if (groupNextInfoStr === groupInfoStr && !groupNextInfoStr) {
-      // console.log(modesInfo, quotaInfo, areaStation, '11111');
-      // console.log(nextModesInfo, nextQuotaInfo, nextAreaStation, '2222');
-      // console.log(nextCapacityTime, 'nextCapacityTime');
-      // console.log(nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0 && nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '+++');
-      // console.log(nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0, '====');
-      const dataLen = nextModesInfo.length > 0 && nextQuotaInfo.length > 0 && nextAreaStation.length > 0;
-      const timeStamp = nextCapacityTime === 0 && nextRankTime === 0 && nextTrendTime === 0 && nextLostTime === 0;
-      if (dataLen && timeStamp) {
-        const defaultStartTime = moment().subtract(1, 'year').format('YYYY-MM-DD');
-        const defaultEndTime = moment().format('YYYY-MM-DD');
-        const stations = []; // 电站stationCode
-        areaStation[0].stations.forEach(e => {
-          stations.push(e.stationCode);
-        });
-        // 厂家code
-        const manufactorId = nextModesInfo.map(cur => {
+    // 发生变化
+    if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
+      const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
+      const basicParams = this.basicParams(groupInfo);
+      const {
+        stations = [],
+        modes = [],
+        quota = [],
+        modesInfo = [],
+      } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsCapacity = {
+        ...basicParams,
+        deviceModes: modes,
+        regionName: [stations[0].regionName],
+        manufactorIds: modesInfo.map(cur => {
           return cur.value;
-        });
-
-        // 机型code
-        const codes = [];
-        nextModesInfo.forEach(e => {
-          const { children = [] } = e || {};
-          children.forEach(m => {
-            codes.push(m.value);
-          });
-        });
-        const paramsCapacity = {
-          deviceModes: codes,
-          regionName: [areaStation[0].regionName],
-          startTime: defaultStartTime,
-          endTime: defaultEndTime,
-          stationCodes: stations,
-          manufactorIds: manufactorId,
-        };
-        // 默认指标分析
-        const quotaValue = nextQuotaInfo[0].children.length === 0 ? nextQuotaInfo[0].value : nextQuotaInfo[0].children[0].value;
-        const paramsHour = {
-            indicatorCode: quotaValue,
-            stationCodes: paramsCapacity.stationCodes,
-            startTime: paramsCapacity.startTime,
-            endTime: paramsCapacity.endTime,
-            manufactorIds: paramsCapacity.manufactorIds,
-            deviceModes: paramsCapacity.deviceModes,
-        };
-        const paramsTrend = {
-            regionName: paramsCapacity.regionName,
-            indicatorCode: quotaValue,
-            stationCodes: paramsCapacity.stationCodes,
-            startTime: paramsCapacity.startTime,
-            endTime: paramsCapacity.endTime,
-            type: 2, // 默认按月
-        };
-        const paramsRank = {
-          indicatorCode: quotaValue,
-          stationCodes: paramsCapacity.stationCodes,
-          startTime: paramsCapacity.startTime,
-          endTime: paramsCapacity.endTime,
-        };
-        const paramsTotal = {
-          deviceModes: paramsCapacity.deviceModes,
-          regionName: paramsCapacity.regionName,
-          indicatorCode: quotaValue,
-          startTime: paramsCapacity.startTime,
-          endTime: paramsCapacity.endTime,
-          stationCodes: paramsCapacity.stationCodes,
-          manufactorIds: paramsCapacity.manufactorIds,
-        };
-        this.props.getStationCapacity(paramsCapacity);
-        this.props.getLostGenHour(paramsHour);
-        this.props.getTrendInfo(paramsTrend);
-        this.props.getIndicatorRank(paramsRank);
-        this.props.getIndicatorRankTotal(paramsTotal);
-      }
+        }),
+      };
+      const paramsHour = {
+        ...basicParams,
+        manufactorIds: paramsCapacity.manufactorIds,
+        deviceModes: paramsCapacity.deviceModes,
+      };
+      const paramsTrend = {
+        ...basicParams,
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        type: timeStatus, // 默认按月
+      };
+      const paramsRank = {
+        ...basicParams,
+        indicatorCode: quotaValue,
+      };
+      const paramsTotal = {
+        ...basicParams,
+        deviceModes: paramsCapacity.deviceModes,
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        manufactorIds: paramsCapacity.manufactorIds,
+      };
+      this.props.getStationCapacity(paramsCapacity);
+      this.props.getLostGenHour(paramsHour);
+      this.props.getTrendInfo(paramsTrend);
+      this.props.getIndicatorRank(paramsRank);
+      this.props.getIndicatorRankTotal(paramsTotal);
     }
   }
 
+  // 基本-公共参数
+  basicParams = (data) => {
+    return {
+      startTime: data.dates[0],
+      endTime: data.dates[1],
+      stationCodes: data.searchCode,
+    };
+  };
+
+  titleFunc = () => {
+    const { rankTotal, quotaInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const { quota = [] } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      let qutaName = ''; //  根据quota的value值遍历名称
+      quotaInfo.forEach(cur => {
+        if(quota[0] === cur.value) {
+          qutaName = cur.label;
+          return false;
+        }
+        cur.children.forEach(item => {
+          if(quota[1] === item.value) {
+            qutaName = item.label;
+          }
+        });
+      });
+      // 等于PBA => 能量可利用率
+      if(quotaValue === '100') {
+        return <span>{rankTotal.length > 0 && `${rankTotal[0].regionName || '--'}: ${qutaName.toString() || ''} ${rankTotal[0].indicatorData.value || '--'}%`}</span>;
+      }
+      return <span>{`${rankTotal[0].regionName || '--'}: 实发小时数${rankTotal[0].indicatorData.actualGen || '--'} 应发小时数${rankTotal[0].indicatorData.theoryGen || '--'}`}</span>;
+    }
+    return <span>--:--</span>;
+  };
+
   render() {
-    const { rankTotal } = this.props;
     return (
       <div className={styles.areaAchieveBox}>
         <AreaSearch {...this.props} />
         <div className={styles.areaTitle}>
-          {1 === 1 ? (
-            <span>{rankTotal.length > 0 ? `${rankTotal[0].regionName}: PBA ${rankTotal[0].indicatorData.value}%` : '--:--'}</span>
-          ) : (
-            <span>{`${rankTotal[0].regionName}: 实发小时数${rankTotal[0].indicatorData.actualGen} 应发小时数${rankTotal[0].indicatorData.theoryGen}`}</span>
-          )}
+          {this.titleFunc()}
         </div>
         <div className={styles.areaChartBox}>
           <div className={styles.areaTopChart}>

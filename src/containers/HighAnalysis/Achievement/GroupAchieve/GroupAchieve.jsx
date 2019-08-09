@@ -6,6 +6,8 @@ import { groupAchieveAction } from './groupAchieveReducer';
 import GroupSearch from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupSearch/GroupSearch';
 import GroupAreaChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupAreaChart/GroupAreaChart';
 import GroupStationChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupStationChart/GroupStationChart';
+import GroupTrendChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupTrendChart/GroupTrendChart';
+import GroupLossChart from '../../../../components/HighAnalysis/Achievement/GroupAchieve/GroupLossChart/GroupLossChart';
 
 import styles from './groupAchieve.scss';
 
@@ -67,10 +69,11 @@ class GroupAchieve extends Component {
             <GroupAreaChart />
             <GroupStationChart />
           </div>
+          <div className={styles.chartBottom}>
+            <GroupTrendChart />
+            <GroupLossChart />
+          </div>
         </div>
-        <button onClick={this.toAreaPage}>
-          查看区域信息
-        </button>
       </div>
     );
   }
@@ -81,7 +84,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  testGroup: payload => dispatch({type: groupAchieveAction.testGroup, payload}),
+  getGroupModesInfo: payload => dispatch({type: groupAchieveAction.getGroupModesInfo, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupAchieve);

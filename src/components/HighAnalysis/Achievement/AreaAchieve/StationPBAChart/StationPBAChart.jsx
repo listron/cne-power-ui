@@ -3,6 +3,7 @@ import eCharts from 'echarts';
 import PropTypes from 'prop-types';
 
 import styles from './stationPBAChart.scss';
+import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 
 export default class StationPBAChart extends Component {
 
@@ -44,6 +45,7 @@ export default class StationPBAChart extends Component {
       return obj;
     });
     return {
+      graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         position: function (pt) {

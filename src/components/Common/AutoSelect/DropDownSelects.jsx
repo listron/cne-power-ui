@@ -7,6 +7,7 @@ const { Option } = Select;
 class DropDownSelects extends Component {
   static propTypes = {
     multiple: PropTypes.bool,
+    maxTagCount: PropTypes.number,
     holderText: PropTypes.string,
     infoLists: PropTypes.array,
     checkedList: PropTypes.array,
@@ -28,7 +29,11 @@ class DropDownSelects extends Component {
   }
 
   render() {
-    const { multiple, holderText, checkedList, infoLists } = this.props;
+    const { multiple, holderText, checkedList, infoLists, maxTagCount } = this.props;
+    const maxTagInfo = (typeof maxTagCount === 'number') ? {
+      maxTagCount,
+      maxTagPlaceholder: `已选${checkedList.length}/${infoLists.length}个`,
+    } : {};
     return (
       <Select
         mode={multiple ? 'multiple' : ''}
@@ -39,6 +44,7 @@ class DropDownSelects extends Component {
         onSearch={this.searching}
         filterOption={this.searchFilter}
         value={checkedList.map(e => e.value)}
+        {...maxTagInfo}
       >
         {infoLists.map(e => (
           <Option key={e.value} value={e.value}>{e.label}</Option>

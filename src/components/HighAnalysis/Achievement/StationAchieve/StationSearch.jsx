@@ -18,7 +18,6 @@ class StationSearch extends Component {
     chartTime: PropTypes.string, // chart选中的时间
     history: PropTypes.object,
     areaStation: PropTypes.array,
-    quotaInfo: PropTypes.array,
     modeDevices: PropTypes.array,
     getDevices: PropTypes.func,
   }
@@ -35,7 +34,6 @@ class StationSearch extends Component {
       searchCode: stationInfo.searchCode,
       searchDevice: stationInfo.searchDevice || [],
       searchDates: stationInfo.searchDates || [defaultStartTime, defaultEndTime],
-      searchQuota: stationInfo.searchQuota || [],
     };
   }
 
@@ -46,19 +44,15 @@ class StationSearch extends Component {
 
   componentWillReceiveProps(nextProps){
     // 得到区域数据 ==> 请求机型 areaStation
-    const { areaStation, modeDevices, quotaInfo } = nextProps;
+    const { areaStation, modeDevices } = nextProps;
     const { stationInfoStr } = this.state;
     const preArea = this.props.areaStation;
     const preDevice = this.props.modeDevices;
-    const preQuota = this.props.quotaInfo;
     if (!stationInfoStr && preArea.length === 0 && areaStation.length > 0) { // 路径无参数时 得到电站数据
       this.propsAreaStationChange(areaStation);
     }
     if (!stationInfoStr && preDevice.length === 0 && modeDevices.length > 0 && !stationInfoStr) { // 路径无参数时  得到设备数据
       this.propsModeDevicesChange(modeDevices);
-    }
-    if (!stationInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !stationInfoStr) { // 路径无参数时  得到指标
-      this.propsQuotaChange(quotaInfo);
     }
   }
 
@@ -74,34 +68,17 @@ class StationSearch extends Component {
   }
 
   propsModeDevicesChange = (modeDevices) => { // 得到电站下设备信息;
-    const { searchCode, searchDates, searchQuota } = this.state;
+    const { searchCode, searchDates } = this.state;
     const searchDevice = this.getAllDeviceCodes(modeDevices);
-    if (searchQuota.length > 0) { // 已有指标
-      this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
-    } else { // 存入state, 得到quota时再请求
-      this.setState({ searchDevice });
-    }
+    this.setState({ searchDevice });
+    this.historyChange(searchCode, searchDevice, searchDates);
   }
 
-  propsQuotaChange = (quotaInfo) => { // 得到指标
-    const { searchCode, searchDevice, searchDates } = this.state;
-    // 第一个指标作为数据
-    const firstType = quotaInfo[0] || {};
-    const quotas = firstType.children || [];
-    const firstQuota = quotas[0] || {};
-    const searchQuota = [firstType.indicatorCode, firstQuota.indicatorCode];
-    if (searchDevice.length > 0) {
-      this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
-    } else { // 存入, 待设备得到再请求
-      this.setState({ searchQuota });
-    }
-  }
-
-  historyChange = (searchCode, searchDevice, searchDates, searchQuota) => { // 切换路径 => 托管外部进行请求
+  historyChange = (searchCode, searchDevice, searchDates) => { // 切换路径 => 托管外部进行请求
     const { location, history } = this.props;
     const { search } = location;
     const newSearch = searchUtil(search).replace({station: JSON.stringify({
-      searchCode, searchDevice, searchDates, searchQuota,
+      searchCode, searchDevice, searchDates,
     })}).stringify();
     history.push(`/analysis/achievement/analysis/station?${newSearch}`);
   }
@@ -109,9 +86,9 @@ class StationSearch extends Component {
   getAllDeviceCodes = (modeDevices = []) => { // 解析所有设备得到codes数组
     const codes = [];
     modeDevices.forEach(e => {
-      const { devices = [] } = e || {};
-      devices.forEach(m => {
-        codes.push(m.deviceFullcode);
+      const { children = [] } = e || {};
+      children.forEach(m => {
+        codes.push(m.value);
       });
     });
     return codes;
@@ -122,13 +99,13 @@ class StationSearch extends Component {
     this.props.getDevices({ stationCode });
   }
 
-  onDeviceChange = (devices) => this.setState({ searchDevice: devices });
+  onDeviceChange = (devices) => this.setState({ searchDevice: devices.map(e => e.value) });
 
   onDateChange = ([], [start, end]) => this.setState({ searchDates: [start, end] });
 
   queryCharts = () => {
-    const { searchCode, searchDevice, searchDates, searchQuota } = this.state;
-    this.historyChange(searchCode, searchDevice, searchDates, searchQuota);
+    const { searchCode, searchDevice, searchDates } = this.state;
+    this.historyChange(searchCode, searchDevice, searchDates);
   }
 
   resetCharts = () => {
@@ -158,6 +135,7 @@ class StationSearch extends Component {
               value={searchDevice}
               onChange={this.onDeviceChange}
               style={{width: '150px'}}
+              maxTagCount={0}
             />
           </div>
           <div className={styles.eachParts}>
