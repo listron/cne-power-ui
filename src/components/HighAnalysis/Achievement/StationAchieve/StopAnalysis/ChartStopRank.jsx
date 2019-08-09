@@ -44,7 +44,7 @@ class ChartStopRank extends Component {
   sortRank = (rankList, sortType = 'deviceName') => {
     const sortedList = [...rankList].sort((a, b) => {
       if (sortType = 'deviceName') {
-        return a[sortType].localeCompare(b[sortType]);
+        return a[sortType] && b[sortType] && a[sortType].localeCompare(b[sortType]);
       }
       return a[sortType] - b[sortType];
     });
@@ -133,7 +133,6 @@ class ChartStopRank extends Component {
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
-          console.log(param)
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${axisValue}</span>
