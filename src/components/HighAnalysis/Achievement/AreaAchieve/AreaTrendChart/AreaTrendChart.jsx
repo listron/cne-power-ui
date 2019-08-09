@@ -4,6 +4,8 @@ import { Radio } from 'antd';
 import PropTypes from 'prop-types';
 
 import styles from './areaTrendChart.scss';
+import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
+import searchUtil from '../../../../../utils/searchUtil';
 
 export default class AreaTrendChart extends Component {
 
@@ -11,14 +13,10 @@ export default class AreaTrendChart extends Component {
     trendInfo: PropTypes.array,
     trendTime: PropTypes.number,
     trendLoading: PropTypes.bool,
+    timeStatus: PropTypes.string,
+    getTrendInfo: PropTypes.func,
+    location: PropTypes.object,
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: '2',
-    };
-  }
 
   componentDidUpdate(prevProps) {
     const { trendChart } = this;
@@ -41,6 +39,7 @@ export default class AreaTrendChart extends Component {
 
   drawChart = (data) => {
     return {
+      graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         position: function (pt) {
@@ -107,13 +106,42 @@ export default class AreaTrendChart extends Component {
     };
   };
 
+
+  // 切换日月年
+  handleStatusChange = (e) => {
+    const { getTrendInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('area');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        stations = [],
+        quota = [],
+        dates = [],
+        searchCode = [],
+      } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsTrend = {
+        startTime: dates[0],
+        endTime: dates[1],
+        stationCodes: searchCode,
+        regionName: [stations[0].regionName],
+        indicatorCode: quotaValue,
+        type: e.target.value, // 默认按月
+      };
+      // 请求趋势数据
+      getTrendInfo(paramsTrend);
+    }
+  };
+
   render() {
-    const { status } = this.state;
+    const { timeStatus } = this.props;
     return (
       <div className={styles.areaTrendBox}>
         <div className={styles.areaTrendTitle}>
           <span>PBA趋势图</span>
-          <Radio.Group value={status} buttonStyle="solid" onChange={this.handleStatusChange}>
+          <Radio.Group value={timeStatus} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>
             <Radio.Button value="2">按月</Radio.Button>
             <Radio.Button value="3">按年</Radio.Button>

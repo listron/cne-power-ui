@@ -191,6 +191,7 @@ export default class GroupSearch extends Component {
             style={{width: '150px'}}
             data={modesInfo}
             value={modes}
+            maxTagCount={0}
             onChange={this.onModelChange}
           />
         </div>

@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import PropTypes from 'prop-types';
 
 import styles from './areaLossChart.scss';
+import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
 
 export default class AreaLossChart extends Component {
 
@@ -25,6 +26,9 @@ export default class AreaLossChart extends Component {
     if (!loseLoading) {
       myChart.hideLoading();
     }
+    console.log(lostTimePrev, 'lostTimePrev');
+    console.log(lostTime, 'lostTime');
+    console.log(prevProps, 'prevProps');
     if(lostTime && lostTime !== lostTimePrev) {
       eCharts.init(lossChart).clear();//清除
       const myChart = eCharts.init(lossChart);
@@ -33,8 +37,10 @@ export default class AreaLossChart extends Component {
   }
 
   drawChart = (data) => {
+    console.log('hahhahahah');
     const { dataArr, basicArr } = data;
     return {
+      graphic: !dataArr || dataArr.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
