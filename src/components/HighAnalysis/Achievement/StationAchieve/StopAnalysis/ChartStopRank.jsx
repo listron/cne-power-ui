@@ -3,49 +3,51 @@ import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
-import styles from './lost.scss';
+import { getBaseGrid, getBaseYAxis, getBaseXAxis } from './chartBaseOption';
+import styles from './stop.scss';
 const { Option } = Select;
 
 class ChartStopRank extends Component {
 
   static propTypes = {
-    // lostRank: PropTypes.array, // 损失根源 - 指标排名
     // quotaName: PropTypes.string,
-    // lostQuota: PropTypes.string,
     // lostChartTimeMode: PropTypes.string,
-    // lostSort: PropTypes.string,
-    // lostRankLoading: PropTypes.bool,
     // quotaInfo: PropTypes.array,
     // location: PropTypes.object,
     // onQuotaChange: PropTypes.func,
     // changeStore: PropTypes.func,
     // getLostTrend: PropTypes.func,
+    stopRank: PropTypes.array,
+    stopRankLoading: PropTypes.bool,
   }
 
+  state = {
+    sortType: 'deviceName',
+  }
 
   componentDidMount(){
-    const { lostRank = [], lostSort } = this.props;
-    lostRank.length > 0 && this.renderChart(lostRank, lostSort);
+    const { stopRank = [] } = this.props;
+    const { sortType } = this.state;
+    stopRank.length > 0 && this.renderChart(stopRank, sortType);
   }
 
   componentWillReceiveProps(nextProps){
-    const { lostRankLoading, lostRank, lostSort } = nextProps;
-    const preLoading = this.props.lostRankLoading;
-    if (preLoading && !lostRankLoading) { // 请求完毕
-      const sortedLostRank = this.sortRank(lostRank, lostSort);
-      this.renderChart(sortedLostRank);
-    } else if (!preLoading && lostRankLoading) { // 请求中
+    const { stopRankLoading, stopRank } = nextProps;
+    const preLoading = this.props.stopRankLoading;
+    const { sortType } = this.state;
+    if (preLoading && !stopRankLoading) { // 请求完毕
+      this.renderChart(stopRank, sortType);
+    } else if (!preLoading && stopRankLoading) { // 请求中
       this.setChartLoading();
     }
   }
 
-  sortRank = (rankList, sortType = 'name') => {
+  sortRank = (rankList, sortType = 'deviceName') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType = 'name') {
-        return a.deviceName.localeCompare(b.deviceName);
+      if (sortType = 'deviceName') {
+        return a[sortType].localeCompare(b[sortType]);
       }
-      const sortName = Object.keys(a.indicatorData).includes('value') ? 'value' : 'actualGen';
-      return a.indicatorData[sortName] - b.indicatorData[sortName];
+      return a[sortType] - b[sortType];
     });
     return sortedList;
   }
@@ -66,34 +68,24 @@ class ChartStopRank extends Component {
     console.log('loading');
   }
 
-  sortChart = (value) => {
-    const { changeStore, lostRank } = this.props;
-    changeStore({lostSort: value});
-    const sortedLostRank = this.sortRank(lostRank, value);
-    this.renderChart(sortedLostRank);
-  }
-
-  createSeries = (lostRank = []) => {
+  createSeries = (stopRank = []) => {
     const dataAxis = [];
-    const firstBarData = [];
-    const secendBarData = [];
+    const countData = [];
+    const hourData = [];
     const series = [];
     const modeSet = new Set();
-    const firstData = lostRank[0] || {};
-    const firstIndicator = firstData.indicatorData || {};
-    const indicatorType = Object.keys(firstIndicator).includes('value') ? 'single' : 'double';
-    lostRank.forEach(e => {
+    stopRank.forEach(e => {
       const { deviceModeName, deviceName } = e || {};
       dataAxis.push(deviceName);
       modeSet.add(deviceModeName);
     });
     const modeArr = [...modeSet];
-    lostRank.forEach(e => {
-      const { deviceModeName, indicatorData = {} } = e || {};
+    stopRank.forEach(e => {
+      const { deviceModeName, stopCount, stopHour } = e || {};
       const colorIndex = modeArr.indexOf(deviceModeName);
-      firstBarData.push({
+      hourData.push({
         name: deviceModeName,
-        value: indicatorType === 'single' ? indicatorData.value : indicatorData.actualGen,
+        value: stopCount,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
             {offset: 0, color: this.barColor[colorIndex][0]},
@@ -101,43 +93,41 @@ class ChartStopRank extends Component {
           ]),
         },
       });
-      if (indicatorType === 'double') {
-        secendBarData.push({
-          name: deviceModeName,
-          value: indicatorData.theoryGen,
-        });
-      }
+      countData.push(stopHour);
     });
     series[0] = {
       type: 'bar',
       barWidth: '10px',
-      data: firstBarData,
+      data: hourData,
     };
-    indicatorType === 'double' && (series[1] = {
-      type: 'bar',
-      barWidth: '10px',
-      itemStyle: {
-        color: '#c1c1c1',
-      },
-      data: secendBarData,
-    });
-    return { dataAxis, series, modeArr, indicatorType };
+    series[1] = {
+      type: 'line',
+      data: countData,
+      yAxisIndex: 1,
+    };
+    return { dataAxis, series, modeArr };
   }
 
-  renderChart = (sortedLostRank = []) => {
-    const { quotaName, changeStore, location, getLostTrend, lostQuota, lostChartTimeMode } = this.props;
+  renderChart = (stopRank = [], sortType) => {
+    // const { quotaName, changeStore, location, getLostTrend, lostQuota, lostChartTimeMode } = this.props;
     const rankChart = echarts.init(this.rankRef);
-    const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
-    const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = quotaName;
+    const sortedStopRank = this.sortRank(stopRank, sortType)
+    const { dataAxis, series, modeArr } = this.createSeries(sortedStopRank);
+    // const baseOption = getBaseOption(dataAxis);
+    // baseOption.yAxis.name = quotaName;
     const option = {
-      ...baseOption,
-      legend: { data: modeArr },
+      grid: getBaseGrid(),
+      xAxis: getBaseXAxis(dataAxis),
+      yAxis: [
+        getBaseYAxis('停机时长(h)'),
+        getBaseYAxis('故障次数(次)'),
+      ],
       tooltip: {
         trigger: 'axis',
         padding: 0,
         formatter: (param) => {
           const { name, axisValue } = param && param[0] || {};
+          console.log(param)
           return `<section class=${styles.tooltip}>
             <h3 class=${styles.title}>
               <span>${axisValue}</span>
@@ -146,7 +136,7 @@ class ChartStopRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? quotaName : '应发小时数'}</span>
+                  <span>${i === 0 ? '停机时长' : '故障次数'}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -157,25 +147,26 @@ class ChartStopRank extends Component {
       series,
     };
     rankChart.setOption(option);
-    rankChart.on('click', ({dataIndex}) => {
-      const lostChartDevice = sortedLostRank[dataIndex] || {};
-      changeStore({ lostChartDevice });
-      const { search } = location;
-      const infoStr = searchUtil(search).getValue('station');
-      const searchParam = JSON.parse(infoStr) || {};
-      getLostTrend({
-        stationCodes: [searchParam.searchCode],
-        deviceFullcodes: [lostChartDevice.deviceFullcode],
-        startTime: searchParam.searchDates[0],
-        endTime: searchParam.searchDates[1],
-        indicatorCode: lostQuota,
-        type: lostChartTimeMode,
-      });
-    });
+    // rankChart.on('click', ({dataIndex}) => {
+    //   const lostChartDevice = sortedLostRank[dataIndex] || {};
+    //   changeStore({ lostChartDevice });
+    //   const { search } = location;
+    //   const infoStr = searchUtil(search).getValue('station');
+    //   const searchParam = JSON.parse(infoStr) || {};
+    //   getLostTrend({
+    //     stationCodes: [searchParam.searchCode],
+    //     deviceFullcodes: [lostChartDevice.deviceFullcode],
+    //     startTime: searchParam.searchDates[0],
+    //     endTime: searchParam.searchDates[1],
+    //     indicatorCode: lostQuota,
+    //     type: lostChartTimeMode,
+    //   });
+    // });
   }
 
 
   render() {
+    const { sortType } = this.state;
     return (
       <div className={styles.stopRank}>
         <div className={styles.top}>
@@ -188,9 +179,11 @@ class ChartStopRank extends Component {
               <Select
                 onChange={this.sortChart}
                 style={{width: '150px'}}
+                value={sortType}
               >
-                <Option value="name">风机名称</Option>
-                <Option value="quota">停机次数</Option>
+                <Option value="deviceName">风机名称</Option>
+                <Option value="stopHour">停机时长</Option>
+                <Option value="stopCount">停机次数</Option>
               </Select>
             </span>
           </span>

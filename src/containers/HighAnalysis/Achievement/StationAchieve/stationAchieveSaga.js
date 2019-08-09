@@ -13,6 +13,15 @@ const timeType = {
   year: '3',
 };
 
+const stopElecType = {
+  all: 0,
+  faultGen: 1,
+  planShutdownGen: 2,
+  substationGen: 3,
+  courtGen: 4,
+  otherGen: 5,
+};
+
 function* easyPut(actionName, payload){
   yield put({
     type: stationAchieveAction[actionName],
@@ -125,7 +134,10 @@ function *getStopRank({ payload }){ // 停机 - 设备停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopRank}`;
   try {
     yield call(easyPut, 'changeStore', { stopRankLoading: true });
-    const response = yield call(request.post, url, payload);
+    const response = yield call(request.post, url, {
+      ...payload,
+      parentFaultId: stopElecType[payload.parentFaultId],
+    });
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         stopRank: response.data || [],

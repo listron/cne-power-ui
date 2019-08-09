@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import searchUtil from '../../../../../utils/searchUtil';
 import StopElecTypes from './StopElecTypes';
+import ChartStopRank from './ChartStopRank';
 import styles from './stop.scss';
 
 class StopAnalysis extends Component {
@@ -66,14 +67,20 @@ class StopAnalysis extends Component {
   render() {
     const { active, lostChartDevice, stopChartTimeMode } = this.props;
     // const { quotaName } = this.state;
+    const stopRank = [1, 2, 3, 4, 5, 6, 7, 8].map(e => ({
+      deviceModeName: `${e}123jkl`,
+      deviceName: `${e}fkwelfwlef`,
+      deviceFullcode: `MMMMM${e}`,
+      stopCount: parseInt(Math.random() * 100, 10),
+      stopHour: parseInt(Math.random() * 100, 10),
+    }))
     return (
       <div className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <StopElecTypes {...this.props} />
-        {/* <ChartStopRank
+        <ChartStopRank
           {...this.props}
-          quotaName={quotaName}
-          onQuotaChange={this.quotaSelect}
-        /> */}
+          stopRank={stopRank}
+        />
         {/* <ChartLostTrend
           {...this.props}
           quotaName={quotaName}
