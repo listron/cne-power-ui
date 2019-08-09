@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import eCharts from 'echarts';
 import PropTypes from 'prop-types';
+import eCharts from 'echarts';
 
 import styles from './areaChart.scss';
 
@@ -8,16 +8,37 @@ export default class AreaChart extends Component {
 
   static propTypes = {
     capacityInfo: PropTypes.array,
+    capacityTime: PropTypes.number,
+    capacityLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { areaChart } = this;
+    const { capacityTime, capacityLoading, capacityInfo } = this.props;
+    const { capacityTime: capacityTimePrev } = prevProps;
     const myChart = eCharts.init(areaChart);
-    myChart.setOption(this.drawChart());
+    if (capacityLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!capacityLoading) {
+      myChart.hideLoading();
+    }
+    if(capacityTime && capacityTime !== capacityTimePrev) {
+      eCharts.init(areaChart).clear();//清除
+      const myChart = eCharts.init(areaChart);
+      myChart.setOption(this.drawChart(capacityInfo));
+    }
   }
 
 
-  drawChart = () => {
+  drawChart = (data) => {
+    const childrenArr = data.map(cur => {
+      const obj = {};
+      obj.name = cur.stationName;
+      obj.value = cur.stationCapacity;
+      return obj;
+    });
     return {
       series: [{
         type: 'treemap',
@@ -33,27 +54,7 @@ export default class AreaChart extends Component {
           borderWidth: 1,
         },
         nodeClick: 'link',
-        data: [{
-          name: 'nodeA', // First tree
-          value: 10,
-          children: [{
-            name: 'nodeAa', // First leaf of first tree
-            value: 4,
-          }, {
-            name: 'nodeAb', // Second leaf of first tree
-            value: 6,
-          }],
-        }, {
-          name: 'nodeB', // Second tree
-          value: 20,
-          children: [{
-            name: 'nodeBa', // First leaf of first tree
-            value: 15,
-          }, {
-            name: 'nodeABb', // Second leaf of first tree
-            value: 5,
-          }],
-        }],
+        data: childrenArr,
       }],
     };
   };

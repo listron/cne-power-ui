@@ -8,6 +8,9 @@ import styles from './areaTrendChart.scss';
 export default class AreaTrendChart extends Component {
 
   static propTypes = {
+    trendInfo: PropTypes.array,
+    trendTime: PropTypes.number,
+    trendLoading: PropTypes.bool,
   };
 
   constructor(props) {
@@ -17,19 +20,36 @@ export default class AreaTrendChart extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { trendChart } = this;
+    const { trendTime, trendLoading, trendInfo } = this.props;
+    const { trendTime: trendTimePrev } = prevProps;
     const myChart = eCharts.init(trendChart);
-    myChart.setOption(this.drawChart());
+    if (trendLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!trendLoading) {
+      myChart.hideLoading();
+    }
+    if(trendTime && trendTime !== trendTimePrev) {
+      eCharts.init(trendChart).clear();//清除
+      const myChart = eCharts.init(trendChart);
+      myChart.setOption(this.drawChart(trendInfo));
+    }
   }
 
-  drawChart = () => {
+  drawChart = (data) => {
     return {
-      color: ['#3398DB'],
       tooltip: {
         trigger: 'axis',
-        axisPointer: { // 坐标轴指示器，坐标轴触发有效
-          type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+        position: function (pt) {
+          return [pt[0], '10%'];
+        },
+        formatter: (params) => {
+          return `<div>
+        <span>${params[0].name}</span><br />${params[0].marker}<span>PBA </span><span>${params[0].value}%</span>
+      </div>`;
         },
       },
       grid: {
@@ -38,7 +58,9 @@ export default class AreaTrendChart extends Component {
       xAxis: [
         {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: data && data.map(cur => {
+            return cur.efficiencyDate || '--';
+          }),
           axisTick: {
             alignWithLabel: true,
           },
@@ -48,6 +70,11 @@ export default class AreaTrendChart extends Component {
         {
           type: 'value',
           name: 'PBA',
+          min: 0,
+          max: 100,
+          splitLine: {
+            show: false,
+          },
         },
       ],
       dataZoom: [{
@@ -65,13 +92,16 @@ export default class AreaTrendChart extends Component {
       }],
       series: [
         {
-          name: '直接访问',
-          type: 'bar',
+          name: 'PBA',
+          type: 'line',
           barWidth: '10',
           itemStyle: {
             barBorderRadius: [5, 5, 0, 0],
           },
-          data: [10, 52, 200, 334, 390, 330, 220],
+          symbol: 'none',
+          data: data && data.map(cur => {
+            return cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0';
+          }),
         },
       ],
     };

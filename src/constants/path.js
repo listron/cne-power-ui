@@ -593,6 +593,10 @@ export default {
       getQuotaInfo: '/v3/fan/efficiency/indicator', // 风机指标信息
       getModesInfo: '/v3/ledeger/manufactormode', // 查询指定电站的厂家型号
       getStationCapacity: '/v3/fan/efficiency/stationcapacity', // 各电站装机容量
+      getLostGenHour: '/v3/fan/efficiency/lostgenhour', // 损失电量分解图
+      getTrendInfo: '/v3/fan/efficiency/indicatortrend', // 风电指标趋势 PBA趋势
+      getIndicatorRank: '/v3/fan/efficiency/indicatorrank', // 风电指标数据 PBA排名
+      getIndicatorRankTotal: '/v3/ledeger/indicatorranktotal', // 风电指标数据 PBA排名
 
       getDevices: '/v3/ledeger/devicetype', // 电站的设备型号+设备列表
       getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名
