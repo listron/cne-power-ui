@@ -59,8 +59,8 @@ const menuData = [
             name: '数据导出',
             path: 'dataExport',
             rightKey: 'dataAnalysis_dataExport',
-          }
-        ]
+          },
+        ],
       }, {
         name: '报表查询',
         iconStyle: 'icon-trends',
@@ -306,6 +306,29 @@ const menuData = [
             path: 'intelligentReport',
             rightKey: 'statistics_report_table',
           },
+        ],
+      }, {
+        name: '数据分析工具',
+        path: 'analysisTool',
+        iconStyle: 'icon-device-data',
+        rightKey: 'analysis_dataTool',
+        children: [
+          {
+            name: '散点图',
+            path: 'scatter',
+            rightKey: ' analysis_dataTool_scatter',
+          },
+          // {
+          //   name: '时序图',
+          //   path: 'sequence',
+          //   rightKey: 'analysis_dataTool_sequence',
+          // }, 
+          // {
+          //   name: '统计图',
+          //   path: 'histogram',
+          //   rightKey: 'analysis_dataTool_histogram',
+
+          // },
         ],
       },
     ],

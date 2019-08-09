@@ -1,17 +1,16 @@
 
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
-import Map from '../Map.jsx';
 import PvStationHeader from './PvStationHeader.jsx';
-// import PvStationItem from './PvStationItem.jsx';
-import PvStationItem from './Test';
-import { Tabs, Radio, Switch, Spin } from "antd";
-import PvStationList from "./PvStationList";
+import PvStationItem from './PvStationItem.jsx';
+import { Tabs, Radio, Switch, Spin } from 'antd';
+import PvStationList from './PvStationList';
 import TransitionContainer from '../../../../Common/TransitionContainer';
 import DetailCharts from './DetailCharts/DetailCharts';
 import PvMapChart from './PvMapChart';
 const RadioButton = Radio.Button;
+
 
 class PvStation extends React.Component {
   static propTypes = {
@@ -38,72 +37,72 @@ class PvStation extends React.Component {
       pvStationShow: 'stationBlock',
       detailVisible: false,
       areaChecked: false,
-      queryFirst: true
-    }
+      queryFirst: true,
+    };
   }
 
 
   componentDidMount() {
     const { regionName } = this.props;
-    this.props.getPvRealData({ regionName })
-    this.props.getPvRealChartsData({ regionName }) // 五分钟数据开启
+    this.props.getPvRealData({ regionName });
+    this.props.getPvRealChartsData({ regionName }); // 五分钟数据开启
   }
 
   onHandleAlarm = (checked) => {
     this.setState({
       checked,
       currentPage: 1,
-    })
+    });
   }
 
   onHandleArea = (checked) => { // 按区域分组显示
     this.setState({
-      areaChecked: checked
-    })
+      areaChecked: checked,
+    });
   }
 
   onHandleStation = (e) => {
     this.setState({
       stationType: e.target.value,
       currentPage: 1,
-    })
+    });
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => {//分页器
     this.setState({
       currentPage,
-      pageSize
-    })
+      pageSize,
+    });
   }
 
   setkey = (activekey) => {
     this.props.changeMonitorStationStore({ stationShowType: activekey });
-    this.setState({ stationType: 'all', currentPage: 1, })
+    this.setState({ stationType: 'all', currentPage: 1 });
   }
 
   getStatusNum = (status) => { // 获取状态的数量
     const { stationDataSummary = {} } = this.props.pvMonitorStation;
     const { stationStatusSummary = [] } = stationDataSummary;
-    const statusList = stationStatusSummary.filter(e => e.stationStatus === +status)
-    return statusList.length > 0 && statusList[0].stationNum || 0
+    const statusList = stationStatusSummary.filter(e => e.stationStatus === +status);
+    return statusList.length > 0 && statusList[0].stationNum || 0;
   }
 
   statusDataList = () => { // 删选数据
-    let { checked, stationType } = this.state;
-    const { pvMonitorStation, } = this.props;
+    const { checked, stationType } = this.state;
+    const { pvMonitorStation } = this.props;
     const { stationDataList = [] } = pvMonitorStation;
-    const newStationDataList = stationDataList.filter(e => { return !checked || (checked && e.alarmNum > 0) }).filter(e => {
+    const newStationDataList = stationDataList.filter(e => { return !checked || (checked && e.alarmNum > 0); }).filter(e => {
       if (stationType === 'all') {
-        return true
-      } else {
-        return e.stationStatus === +stationType
+        return true;
       }
-    })
+      return e.stationStatus === +stationType;
+
+    });
     return newStationDataList;
   }
 
   pvStationChange = (e) => { // 改变光伏电站展示的状态
-    this.setState({ pvStationShow: e, detailVisible: false })
+    this.setState({ pvStationShow: e, detailVisible: false });
   }
 
   detailShow = () => { // 查看详情
@@ -112,28 +111,29 @@ class PvStation extends React.Component {
     const { queryFirst } = this.state;
     if (queryFirst) { // 只请求一次
       this.props.getPvChartsData({ regionName });
-      this.setState({ queryFirst: !queryFirst })
+      this.setState({ queryFirst: !queryFirst });
     }
 
   }
 
   detailHide = (value) => { // 关闭详情
-    this.setState({ detailVisible: false })
+    this.setState({ detailVisible: false });
   }
 
   render() {
     const { currentPage, pageSize, stationType, checked, pvStationShow, detailVisible, areaChecked } = this.state;
     const { pvMonitorStation, loading, monitorPvUnit, history, regionName, pvUnix, getPvCapabilitydiagrams } = this.props;
+    const { theme } = this.props;
     const { stationDataSummary = {} } = pvMonitorStation;
     return (
-      <div className={styles.pvStation}>
+      <div className={`${styles.pvStation} ${styles[theme]}`}>
         <PvStationHeader {...this.props} />
         <div className={styles.StationTitle} >
           <div className={styles.tabs}>
-            <i className={`${"iconfont icon-grid iconTab"} ${pvStationShow === 'stationBlock' && styles.activeCard}`}
-              onClick={() => { this.pvStationChange('stationBlock') }}> </i>
-            <i className={`${"iconfont icon-table iconTab"} ${pvStationShow === 'stationList' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationList') }}></i>
-            <i className={`${"iconfont icon-map iconTab"} ${pvStationShow === 'stationMap' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationMap') }}></i>
+            <i className={`${'iconfont icon-grid iconTab'} ${pvStationShow === 'stationBlock' && styles.activeCard}`}
+              onClick={() => { this.pvStationChange('stationBlock'); }}> </i>
+            <i className={`${'iconfont icon-table iconTab'} ${pvStationShow === 'stationList' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationList'); }}></i>
+            <i className={`${'iconfont icon-map iconTab'} ${pvStationShow === 'stationMap' && styles.activeCard}`} onClick={() => { this.pvStationChange('stationMap'); }}></i>
           </div>
           <div>
             {pvStationShow === 'stationBlock' &&
@@ -210,8 +210,8 @@ class PvStation extends React.Component {
         </div>
 
       </div>
-    )
+    );
   }
 }
-export default PvStation
+export default PvStation;
 

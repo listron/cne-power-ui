@@ -1,7 +1,7 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button, Spin } from 'antd';
+import { message, Modal, Button, Spin, Dropdown } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -38,6 +38,7 @@ class Main extends Component {
     resetCommonStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
     changeCommonStore: PropTypes.func,
+    theme: PropTypes.string,
   };
 
   constructor(props) {
@@ -61,7 +62,7 @@ class Main extends Component {
           const { data } = req || {};
           const { menuBoardRequired, screenAddress } = data || {};
           this.props.changeCommonStore({ menuBoardRequired, screenAddress });
-        })
+        });
       }
     }
   }
@@ -91,12 +92,17 @@ class Main extends Component {
         const enterpriseId = Cookie.get('enterpriseId');
         const menuBoardShow = menuBoardRequired.includes(enterpriseId);
         this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAddress });
-      })
+      });
     }
   }
   componentWillUnmount() {
     this.props.resetMonitorData();
     this.props.resetCommonStore();
+  }
+
+  changeTheme = (themeValue) => {
+    Cookie.set('theme', themeValue);
+    this.props.changeCommonStore({ theme: themeValue });
   }
 
   logout = () => { // 删除登录凭证并退出。
@@ -114,6 +120,7 @@ class Main extends Component {
     Cookie.remove('auto');
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
+    Cookie.remove('theme');
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
@@ -121,7 +128,7 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore } = this.props;
+    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme } = this.props;
     const authData = localStorage.getItem('authData') || '';
     const isNotLogin = Cookie.get('isNotLogin');
     const userRight = Cookie.get('userRight');
@@ -130,12 +137,18 @@ class Main extends Component {
     if (authData && isTokenValid) {
       axios.defaults.headers.common['Authorization'] = 'bearer ' + authData;
     }
+    const themeMenu = (
+      <ul className={styles.themeMenu}>
+        <li onClick={() => this.changeTheme('dark')} className={`${theme === 'dark' && styles.active}`}> 深色 </li>
+        <li onClick={() => this.changeTheme('light')} className={`${theme === 'light' && styles.active}`}> 浅色 </li>
+      </ul>
+    );
     if (isTokenValid && authData && (isNotLogin === '0')) {
       // if(true){
       const homePageArr = ['/homepage'];
       const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
-        <div className={styles.app}>
+        <div className={`${styles.app} ${styles[theme]}`}>
           {!isHomePage && <div className={styles.appHeader}>
             <div className={styles.headerLeft}>
               <LogoInfo />
@@ -149,6 +162,13 @@ class Main extends Component {
             </div>
             <div className={styles.headerRight}>
               <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} />
+              <div ref={'changeTheme'} />
+              {/* <Dropdown overlay={themeMenu}
+                getPopupContainer={() => this.refs.changeTheme}
+                overlayStyle={{ width: '70px' }}
+                placement="bottomCenter">
+                <div className={styles.changeTheme}> <span className={'iconfont icon-skinpeel'} /> 换肤</div>
+              </Dropdown> */}
               <UserInfo
                 username={username}
                 userFullName={userFullName}
@@ -156,6 +176,7 @@ class Main extends Component {
                 changeLoginStore={changeLoginStore}
                 resetMonitorData={resetMonitorData}
                 resetCommonStore={resetCommonStore}
+                theme={theme}
               />
             </div>
           </div>}
@@ -180,22 +201,22 @@ class Main extends Component {
           </Modal>
         </div>
       );
-    } else {
-      return (
-        <Switch>
-          <Route path="/login" exact render={() => (
-            <Suspense fallback={
-              <div className={styles.preComponent}>
-                  <Spin size="large" tip="Loading..." />
-              </div>}
-            >
-              <Login {...this.props} />
-            </Suspense>)}
-          />
-          <Redirect to="/login" />
-        </Switch>
-      );
     }
+    return (
+      <Switch>
+        <Route path="/login" exact render={() => (
+          <Suspense fallback={
+            <div className={styles.preComponent}>
+              <Spin size="large" tip="Loading..." />
+            </div>}
+          >
+            <Login {...this.props} />
+          </Suspense>)}
+        />
+        <Redirect to="/login" />
+      </Switch>
+    );
+
   }
 }
 
@@ -204,13 +225,14 @@ const mapStateToProps = (state) => {
     login: state.login.get('loginData'),
     enterpriseId: state.login.get('enterpriseId'),
     ...state.common.toJS(),
+    theme: state.common.get('theme'),
     // username: state.common.get('username'),
     // userFullName: state.common.get('userFullName'),
     // userLogo: state.common.get('userLogo'),
     // menuBoardShow: state.common.get('menuBoardShow'),
     // menuBoardRequired: state.common.get('menuBoardRequired').toJS(),
   });
-}
+};
 
 const mapDispatchToProps = (dispatch) => ({
   getStations: payload => dispatch({ type: commonAction.getStations, payload }),
@@ -219,7 +241,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeLoginStore: params => dispatch({ type: loginAction.CHANGE_LOGIN_STORE_SAGA, params }),
   resetMonitorData: params => dispatch({ type: allStationAction.resetMonitorData, params }),
   resetCommonStore: params => dispatch({ type: commonAction.resetCommonStore, params }),
-  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload })
+  changeCommonStore: payload => dispatch({ type: commonAction.CHANGE_COMMON_STORE, payload }),
   // refreshToken: payload => dispatch({ type: commonAction.REFRESHTOKEN_SAGA, payload})
 });
 

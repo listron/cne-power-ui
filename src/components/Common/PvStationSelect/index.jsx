@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Select ,AutoComplete, message  } from 'antd';
-import StationSelectModal from './StationSelectModal'
+import { Select, AutoComplete, message } from 'antd';
+import StationSelectModal from './StationSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
@@ -42,6 +42,7 @@ const Option = Select.Option;
   7. 选填 - disabledStation指定的不可选电站codes数组 - int[] ; 默认为[]
   8. 选填 - disabled: bool; 默认false， 传入true值时组件为禁用状态。
   9. 选填 - oneStyleOnly : bool; 默认为false，用于控制用户是否只能选一种类型的电站(默认都可以)。
+  10 选填 - theme 
 */
 
 class PvStationSelect extends Component {
@@ -49,14 +50,14 @@ class PvStationSelect extends Component {
     multiple: PropTypes.bool,
     disabled: PropTypes.bool,
     oneStyleOnly: PropTypes.bool,
-    // holderText: PropTypes.bool,
     holderText: PropTypes.string,
     value: PropTypes.array,
     data: PropTypes.array,
     disabledStation: PropTypes.array,
     onChange: PropTypes.func,
     onOK: PropTypes.func,
-    style: PropTypes.object
+    style: PropTypes.object,
+    theme: PropTypes.string,
   }
   static defaultProps = {
     multiple: false,
@@ -65,6 +66,7 @@ class PvStationSelect extends Component {
     disabled: false,
     data: [],
     disabledStation: [],
+    theme: 'light',
   }
   constructor(props) {
     super(props);
@@ -72,92 +74,92 @@ class PvStationSelect extends Component {
     this.state = {
       stationModalShow: false,
       checkedStations,
-      checkedStationName: checkedStations.map(e=>e.stationName),
+      checkedStationName: checkedStations.map(e => e.stationName),
       filteredSelectedStation: [],
-    }
+    };
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { data, value } = nextProps;
-    if( data && data.length > 0 && value && value.length >= 0){
+    if (data && data.length > 0 && value && value.length >= 0) {
       this.setState({
         checkedStations: nextProps.value,
-        checkedStationName: nextProps.value.map(e=>e.stationName),
-      })
+        checkedStationName: nextProps.value.map(e => e.stationName),
+      });
     }
   }
   onOK = (stations) => {
-    const { onChange,onOK } = this.props
+    const { onChange, onOK } = this.props;
     onOK && onOK(stations);
     onChange && onChange(stations);
   }
 
   onModalHandelOK = (stations) => {
-    const checkedStationName = stations.map(e=>e.stationName);
+    const checkedStationName = stations.map(e => e.stationName);
     this.setState({
       stationModalShow: false,
       checkedStationName,
-      checkedStations:stations
-    })
-    this.onOK(stations)
+      checkedStations: stations,
+    });
+    this.onOK(stations);
   }
-  onSelect = (stationName) =>{
+  onSelect = (stationName) => {
     const { data } = this.props;
-    const checkedStations = data.filter(e=>e.stationName===stationName);
-    const checkedStationName = checkedStations.map(e=>e.stationName);
+    const checkedStations = data.filter(e => e.stationName === stationName);
+    const checkedStationName = checkedStations.map(e => e.stationName);
     this.setState({
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
   hideStationModal = () => {
     this.setState({
       stationModalShow: false,
-    })
+    });
   }
   handleSearch = (text) => {
     const { data, disabledStation } = this.props;
-    let filteredSelectedStation = data.filter(
-      e=> !disabledStation.includes(e.stationCode) // 剔除禁选电站
+    const filteredSelectedStation = data.filter(
+      e => !disabledStation.includes(e.stationCode) // 剔除禁选电站
     ).filter(
-      e=>e.stationName.indexOf(text) >= 0
+      e => e.stationName.indexOf(text) >= 0
     );
     this.setState({
-      checkedStationName:[text],
-      filteredSelectedStation
-    })
+      checkedStationName: [text],
+      filteredSelectedStation,
+    });
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data, oneStyleOnly } = this.props;
-    const checkedStations = data.filter(e=>stations.includes(e.stationName))
-    if(oneStyleOnly){ // 只能选择一种类型电站
+    const checkedStations = data.filter(e => stations.includes(e.stationName));
+    if (oneStyleOnly) { // 只能选择一种类型电站
       const stationTypeSet = new Set();
-      checkedStations.forEach(e=>{stationTypeSet.add(e.reportType)});
-      if(stationTypeSet.size > 1){ // 选择了多种类型电站
-        message.error('请选择同为集中式或分布式的电站!')
+      checkedStations.forEach(e => { stationTypeSet.add(e.reportType); });
+      if (stationTypeSet.size > 1) { // 选择了多种类型电站
+        message.error('请选择同为集中式或分布式的电站!');
         return;
       }
     }
-    const checkedStationName = stations
+    const checkedStationName = stations;
     this.setState({
       stationModalShow: false,
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
-  
+
   showStationModal = () => {
     !this.props.disabled && this.setState({
       stationModalShow: true,
-    })
+    });
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, theme } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     return (
-      <div className={styles.stationSelect} style={this.props.style}>
+      <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style} ref={'stationSelect'}>
         {multiple ? <Select
           mode="multiple"
           disabled={disabled}
@@ -166,11 +168,12 @@ class PvStationSelect extends Component {
           onChange={this.selectStation}
           value={checkedStationName}
           className={styles.stationSelectMainInput}
+          getPopupContainer={() => this.refs.stationSelect}
         >
-          {data.filter(e=>!disabledStation.includes(e.stationCode)).map(e=>(
+          {data.filter(e => !disabledStation.includes(e.stationCode)).map(e => (
             <Option key={e.stationName}>{e.stationName}</Option>
           ))}
-        </Select>:<AutoComplete
+        </Select> : <AutoComplete
           disabled={disabled}
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
@@ -178,23 +181,23 @@ class PvStationSelect extends Component {
           value={checkedStationName}
           placeholder={holderText}
         >
-          {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
-        </AutoComplete>}
-        <StationSelectModal 
+            {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
+          </AutoComplete>}
+        <StationSelectModal
           multiple={multiple}
           oneStyleOnly={oneStyleOnly}
           disabled={disabled}
           disabledStation={disabledStation}
           checkedStations={checkedStations}
-          data={data} 
+          data={data}
           handleOK={this.onModalHandelOK}
           stationModalShow={stationModalShow}
-          hideStationModal={this.hideStationModal} 
+          hideStationModal={this.hideStationModal}
           showStationModal={this.showStationModal}
         />
       </div>
-    )
-    
+    );
+
   }
 }
 export default PvStationSelect;

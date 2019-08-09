@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './pvStation.scss';
 import OwnProgress from '../../../../Common/OwnProgress/index';
-import { Popover, Modal, InputNumber } from 'antd';
-import { dataFormats, numWithComma, unitDataFormat } from '../../../../../utils/utilFunc';
-import { DeviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
+import { Modal, InputNumber } from 'antd';
+import { deviceValueFormat, divideFormarts, multiplyFormarts } from '../../PvCommon/PvDataformat';
 import moment from 'moment';
 
 class PvStationHeader extends React.Component {
@@ -15,12 +14,12 @@ class PvStationHeader extends React.Component {
     monitorPvUnit: PropTypes.object,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       editType: '',
       modalVisiable: false,
-      editValue: null
-    }
+      editValue: null,
+    };
   }
 
 
@@ -29,17 +28,17 @@ class PvStationHeader extends React.Component {
   }
 
   onOk = () => {
-    const { editData, stationCode } = this.props
+    const { editData, stationCode } = this.props;
     const { editType, editValue } = this.state;
     if (!editValue || isNaN(editValue)) {
       return;
     }
     const editTime = moment().subtract(1, 'day').format('YYYY-MM-DD');
-    let editName = editType === 'month' ? { monthGen: editValue } : { yearGen: editValue };
+    const editName = editType === 'month' ? { monthGen: editValue } : { yearGen: editValue };
     editData({
       ...editName,
       date: editTime,
-      stationCode: stationCode
+      stationCode: stationCode,
     });
     this.setState({ modalVisiable: false, editValue: null });
   }
@@ -60,12 +59,12 @@ class PvStationHeader extends React.Component {
     if (isNaN(data) || (!data && data !== 0)) {
       return '--';
     }
-    return data / quantity
+    return data / quantity;
   }
 
 
   render() {
-    const { singleStationData, monitorPvUnit } = this.props;
+    const { singleStationData, monitorPvUnit, theme = 'light' } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const { editInfoError, editType, modalVisiable, editValue } = this.state;
     const stationDataSummary = singleStationData || {};
@@ -84,34 +83,34 @@ class PvStationHeader extends React.Component {
     const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
       <div className={styles.headStation}>
-        <div className={styles.leftIcon}></div>
+        <div className={`${styles.leftIcon}`}> <span className={'iconfont icon-pvlogo'}></span> </div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
-            <div> <span className={styles.dataValue}>{DeviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
+            <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
           </div>
-          <OwnProgress percent={percent} active={true} />
+          <OwnProgress percent={percent} active={true} theme={theme} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 瞬时辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{DeviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
-          <div >  装机台数 <span className={styles.dataValue}>{DeviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
+          <div> 瞬时辐射  <span className={`${styles.dataValue} ${styles.radiation}`}>{deviceValueFormat(instantaneous, '--', 2)}</span> W/m² </div>
+          <div >  装机台数 <span className={styles.dataValue}>{deviceValueFormat(stationUnitCount, '--', 0)} </span> 台</div>
         </div>
         <div className={styles.dataColumn}>
-          <div>日发电量  <span className={styles.dataValue}>{DeviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
-          <div> 日利用小时 <span className={styles.dataValue}>{DeviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
+          <div>日发电量  <span className={styles.dataValue}>{deviceValueFormat(dayPower, '--', 2, true)}</span> {powerUnit}  </div>
+          <div> 日利用小时 <span className={styles.dataValue}>{deviceValueFormat(equivalentHours, '--', 2)}</span> h</div>
         </div>
         <div className={styles.dataColumn}>
-          <div> 月发电量  <span className={styles.dataValue}>{DeviceValueFormat(monthPower, '--', 2, true)}</span>
-            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('month') }} ><i className="iconfont icon-edit"></i></span> : ''}
+          <div> 月发电量  <span className={styles.dataValue}>{deviceValueFormat(monthPower, '--', 2, true)}</span>
+            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('month'); }} ><i className="iconfont icon-edit"></i></span> : ''}
             {powerUnit} </div>
-          <div> 月完成率 <span className={styles.dataValue}>{DeviceValueFormat(monthRate, '--', 2)} </span> %  </div>
+          <div> 月完成率 <span className={styles.dataValue}>{deviceValueFormat(monthRate, '--', 2)} </span> %  </div>
         </div>
         <div className={styles.dataColumn}>
-          <div>年发电量  <span className={styles.dataValue}>{DeviceValueFormat(yearPower, '--', 2, true)}</span>
-            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('yer') }} ><i className="iconfont icon-edit"></i></span> : ''}
+          <div>年发电量  <span className={styles.dataValue}>{deviceValueFormat(yearPower, '--', 2, true)}</span>
+            {powerUpdate ? <span className={styles.iconStyle} onClick={() => { this.setModal('yer'); }} ><i className="iconfont icon-edit"></i></span> : ''}
             {powerUnit}</div>
-          <div> 年完成率 <span className={styles.dataValue}>{DeviceValueFormat(yearRate, '--', 2)} </span> % </div>
+          <div> 年完成率 <span className={styles.dataValue}>{deviceValueFormat(yearRate, '--', 2)} </span> % </div>
         </div>
 
         <Modal
@@ -131,7 +130,7 @@ class PvStationHeader extends React.Component {
           </div>
         </Modal>
       </div >
-    )
+    );
   }
 }
-export default (PvStationHeader)
+export default (PvStationHeader);

@@ -97,7 +97,7 @@ class Schematic extends Component {
 
 
     render() {
-        const { deviceTypeList, sketchmapData } = this.props;
+        const { deviceTypeList, sketchmapData, theme } = this.props;
         const deviceTypeArr = deviceTypeList.map(e => e.deviceTypeCode);
         const commonList = {
             '509': {
@@ -171,9 +171,9 @@ class Schematic extends Component {
         const invertType = deviceTypeArr.includes('206') && deviceTypeArr.includes('201');
         const invertTypeCode = (!invertType && deviceTypeArr.includes('206')) ? '206' : '201';
         return (
-            <div className={styles.schematic}>
+            <div className={`${styles.schematic} ${styles[theme]}`}>
                 <div className={styles.schematicBox}>
-                    <img src="/img/schematic01.png" />
+                    <img src={`${theme === 'dark' ? '/img/schematic02.png' : '/img/schematic01.png'}`} />
                     <div className={styles.lines}>
                         {deviceTypeArr.includes('509') &&
                             <div className={styles.pvmodule}>

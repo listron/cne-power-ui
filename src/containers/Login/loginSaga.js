@@ -67,6 +67,7 @@ function* userNameLogin(action) {
         data.userLogo && Cookie.set('userLogo', data.userLogo);
         data.expires_in && Cookie.set('expireData', moment().add(data.expires_in, 'seconds'));
         data.refresh_token && Cookie.set('refresh_token', data.refresh_token);
+        Cookie.set('theme', 'light');
         Cookie.set('isNotLogin', 0);
         data.auto && Cookie.set('auto', data.auto);
         data.right && Cookie.set('userRight', data.right);

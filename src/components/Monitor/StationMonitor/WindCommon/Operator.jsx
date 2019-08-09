@@ -21,9 +21,9 @@ class Operator extends Component {
 
 
     render() {
-        const { operatorList = [] } = this.props;
+        const { operatorList = [], theme = 'light' } = this.props;
         return (
-            <div className={styles.operator}>
+            <div className={`${styles.operator} ${styles[theme]}`}>
                 {operatorList.length > 0 &&
                     <div className={styles.newOperatorList}>
                         <div className={styles.scrollAnmiate}>
