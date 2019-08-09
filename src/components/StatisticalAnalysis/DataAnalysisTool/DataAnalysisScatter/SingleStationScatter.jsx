@@ -26,11 +26,12 @@ const options = [{
   value: '震动相关',
   pointsUnionName: '震动相关',
   isLeaf: false,
-}, {
-  value: '其他',
-  pointsUnionName: '其他',
-  isLeaf: false,
 },
+  // {
+  //   value: '其他',
+  //   pointsUnionName: '其他',
+  //   isLeaf: false,
+  // },
 ];
 class SingleStationScatter extends React.Component {
   static propTypes = {
@@ -86,24 +87,28 @@ class SingleStationScatter extends React.Component {
         // pointsUnionName: '其他',
         // isLeaf: false,
       };
-      const { pointNameList, pointType } = scatterNames[0];
-      const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = pointNameList[0];
-      this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
-      this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY });
-      this.setState({
-        xName: pointCodeNameX,
-        yName: pointCodeNameY,
-        xCode: pointCodeX,
-        yCode: pointCodeY,
-      });
-      getScatterData({
-        stationCode,
-        startTime: defaultStartime,
-        endTime: defaultEndtime,
-        xPointCode: pointCodeX,
-        yPointCode: pointCodeY,
-      });
+      if (scatterNames[0]) {
+        const { pointNameList, pointType } = scatterNames[0];
+        const firstData = pointNameList ? pointNameList[0] : [];
+        const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
+        this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
+        this.props.changeToolStore({ pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY });
+        this.setState({
+          xName: pointCodeNameX,
+          yName: pointCodeNameY,
+          xCode: pointCodeX,
+          yCode: pointCodeY,
+        });
+        getScatterData({
+          stationCode,
+          startTime: defaultStartime,
+          endTime: defaultEndtime,
+          xPointCode: pointCodeX,
+          yPointCode: pointCodeY,
+        });
+      }
     }
+
   }
   componentWillUnmount() {
     this.props.resetStore();

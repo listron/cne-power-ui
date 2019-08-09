@@ -57,7 +57,6 @@ function* getScatterOtherName(action) {//获取
 function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime } = payload;
-  console.log('startTime: ', startTime);
   payload.startTime = moment(startTime).utc().format();
   payload.endTime = moment(endTime).utc().format();
   // const url = '/mock/api/v3/wind/analysis/scatterplot/list';
