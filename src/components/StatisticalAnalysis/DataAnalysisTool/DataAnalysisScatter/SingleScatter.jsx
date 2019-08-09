@@ -23,12 +23,9 @@ class SingleScatter extends React.Component {
   componentDidMount() {
     this.drawChart(this.props);
   }
+
   componentWillReceiveProps(nextProps) {
     const { pointCodeNameX, pointCodeNameY, id, saveBtn, theme, scatterDataTime } = nextProps;
-    // if (pointCodeNameX !== this.props.pointCodeNameX && pointCodeNameY !== this.props.pointCodeNameY) {
-    //   console.log('nextProps33333 ');
-    //   this.drawChart(nextProps);
-    // }
     if (scatterDataTime !== this.props.scatterDataTime || theme !== this.props.theme) {
       this.drawChart(nextProps);
     }
@@ -53,7 +50,6 @@ class SingleScatter extends React.Component {
     const filterYaxisData = chartData.map(e => e.y);
     const filterXaxisData = chartData.map(e => e.x);
     const inverterTenMinGraphic = (filterYaxisData.length === 0 || filterXaxisData.length === 0) ? showNoData : hiddenNoData;
-    // const lineColor = '#666';
     const option = {
       graphic: inverterTenMinGraphic,
       title: {

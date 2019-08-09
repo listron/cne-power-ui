@@ -6,8 +6,9 @@ import moment from 'moment';
 
 function* getScatterName(action) {//获取
   const { payload } = action;
+  const chartType = 1;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
-  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}`;
+  const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
     yield put({ type: dataAnalysisScatterAction.changeToolStore });
     const response = yield call(axios.get, url);// { params: payload }
@@ -57,13 +58,22 @@ function* getScatterOtherName(action) {//获取
 function* getScatterData(action) {//获取
   const { payload } = action;
   const { startTime, endTime } = payload;
-  payload.startTime = moment(startTime).utc().format();
-  payload.endTime = moment(endTime).utc().format();
+  // payload.startTime = moment(startTime).utc().format();
+  // payload.endTime = moment(endTime).utc().format();
   // const url = '/mock/api/v3/wind/analysis/scatterplot/list';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterData}`;
   try {
-    yield put({ type: dataAnalysisScatterAction.changeToolStore });
-    const response = yield call(axios.post, url, { ...payload },
+    yield put({
+      type: dataAnalysisScatterAction.changeToolStore,
+      payload: {
+        ...payload,
+      },
+    });
+    const response = yield call(axios.post, url, {
+      ...payload,
+      startTime: moment(startTime).utc().format(),
+      endTime: moment(endTime).utc().format(),
+    },
 
     );// { params: payload }
     if (response.data.code === '10000') {
@@ -72,7 +82,6 @@ function* getScatterData(action) {//获取
       yield put({
         type: dataAnalysisScatterAction.changeToolStore,
         payload: {
-          ...payload,
           scatterData,
           scatterDataTime: moment().unix(),
         },
