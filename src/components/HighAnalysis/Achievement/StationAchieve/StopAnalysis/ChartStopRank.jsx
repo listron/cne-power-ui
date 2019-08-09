@@ -103,6 +103,15 @@ class ChartStopRank extends Component {
       type: 'line',
       data: countData,
       yAxisIndex: 1,
+      lineStyle: {
+        normal: {
+          color: '#f9b600',
+          width: 2,
+          shadowColor: 'rgba(0,0,0,0.20)',
+          shadowBlur: 3,
+          shadowOffsetY: 3,
+        },
+      },
     };
     return { dataAxis, series, modeArr };
   }
@@ -160,7 +169,6 @@ class ChartStopRank extends Component {
       this.props.getStopTypes({ ...param });
     });
   }
-
 
   render() {
     const { sortType } = this.state;
