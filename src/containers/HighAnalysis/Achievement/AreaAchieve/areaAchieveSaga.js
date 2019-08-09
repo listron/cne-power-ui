@@ -8,43 +8,25 @@ import moment from 'moment';
 const {APIBasePath} = path.basePaths;
 const {highAnalysis} = path.APISubPaths;
 
-function convertKey (arr, keyMap) {
-  const data = arr.map(cur => {
-    const obj = {};
-    obj.manufactorId = parseInt(cur.manufactorId, 0);
-    obj.manufactorName = cur.manufactorName;
-    obj.deviceModesList = cur.deviceModesList;
-    return obj;
-  });
-  let tempString = JSON.stringify(data);
-  for(const key in keyMap){
-    if(keyMap.hasOwnProperty(key)){
-      const reg = `/"${key}":/g`;
-      tempString = tempString.replace(eval(reg), '"'+keyMap[key]+'":');
-    }
-  }
-  return JSON.parse(tempString);
-}
-
 function* getModesInfo(action) { // 可选机型
   const { payload = {} } = action;
   try {
     const url = `${APIBasePath}${highAnalysis.getModesInfo}`;
     // const url = '/mock/cleanWarning/detail';
     const response = yield call(request.post, url, payload);
-    // 替换的键值对映射
-    const keyMap = {
-      'manufactorId': 'value',
-      'manufactorName': 'label',
-      'deviceModesList': 'children',
-      'deviceModeName': 'label',
-      'deviceModeCode': 'value',
-    };
     if (response.code === '10000') {
+      const modesInfo = response.data && response.data.map(cur => ({
+        value: parseInt(cur.manufactorId, 0),
+        label: cur.manufactorName,
+        children: (cur.deviceModesList && cur.deviceModesList.length > 0) ? cur.deviceModesList.map(m => ({
+          value: m.deviceModeCode,
+          label: m.deviceModeName,
+        })) : [],
+      }));
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {
-          modesInfo: response.data && response.data.length > 0 ? convertKey(response.data, keyMap) : [],
+          modesInfo: modesInfo,
         },
       });
     } else {
@@ -69,7 +51,7 @@ function* getIndicatorRankTotal(action) { // 指标汇总数据
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {
-          rankTotal: response.data.dataList || [],
+          rankTotal: response.data || [],
         },
       });
     } else {
@@ -171,6 +153,7 @@ function* getTrendInfo(action) { // 风电指标趋势 PBA趋势
       type: areaAchieveAction.changeStore,
       payload: {
         trendLoading: true,
+        timeStatus: payload.type,
       },
     });
     if (response.code === '10000') {
@@ -255,8 +238,9 @@ function* getLostGenHour(action) { // 损失电量分解图
         loseLoading: true,
       },
     });
+    console.log(response, 'response');
     if (response.code === '10000') {
-
+      console.log(moment().unix(), 'moment().unix()');
       yield put({
         type: areaAchieveAction.fetchSuccess,
         payload: {

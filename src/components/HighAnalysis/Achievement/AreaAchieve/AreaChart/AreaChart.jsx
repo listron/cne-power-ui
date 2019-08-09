@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData.js';
 
 import styles from './areaChart.scss';
 
@@ -40,6 +41,7 @@ export default class AreaChart extends Component {
       return obj;
     });
     return {
+      graphic: !data || data.length === 0 ? showNoData : hiddenNoData,
       series: [{
         type: 'treemap',
         top: '0%',

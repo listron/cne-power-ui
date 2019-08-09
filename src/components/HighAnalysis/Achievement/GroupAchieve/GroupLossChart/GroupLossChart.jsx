@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import eCharts from 'echarts';
-import { Button } from 'antd';
+import {Button} from 'antd';
 import PropTypes from 'prop-types';
+import eCharts from 'echarts';
 
-import styles from './areaLossChart.scss';
-import {hiddenNoData, showNoData} from '../../../../../constants/echartsNoData';
+import styles from './groupLossChart.scss';
 
-export default class AreaLossChart extends Component {
+export default class GroupLossChart extends Component {
 
   static propTypes = {
     lostGenHourInfo: PropTypes.object,
@@ -15,10 +14,10 @@ export default class AreaLossChart extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { lossChart } = this;
+    const { groupLossChart } = this;
     const { lostTime, loseLoading, lostGenHourInfo } = this.props;
     const { lostTime: lostTimePrev } = prevProps;
-    const myChart = eCharts.init(lossChart);
+    const myChart = eCharts.init(groupLossChart);
     if (loseLoading) { // loading态控制。
       myChart.showLoading();
       return false;
@@ -26,21 +25,16 @@ export default class AreaLossChart extends Component {
     if (!loseLoading) {
       myChart.hideLoading();
     }
-    console.log(lostTimePrev, 'lostTimePrev');
-    console.log(lostTime, 'lostTime');
-    console.log(prevProps, 'prevProps');
     if(lostTime && lostTime !== lostTimePrev) {
-      eCharts.init(lossChart).clear();//清除
-      const myChart = eCharts.init(lossChart);
+      eCharts.init(groupLossChart).clear();//清除
+      const myChart = eCharts.init(groupLossChart);
       myChart.setOption(this.drawChart(lostGenHourInfo));
     }
   }
 
   drawChart = (data) => {
-    console.log('hahhahahah');
     const { dataArr, basicArr } = data;
     return {
-      graphic: !dataArr || dataArr.length === 0 ? showNoData : hiddenNoData,
       tooltip: {
         trigger: 'axis',
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -112,12 +106,12 @@ export default class AreaLossChart extends Component {
 
   render() {
     return (
-      <div className={styles.areaLossBox}>
-        <div className={styles.areaLossTitle}>
+      <div className={styles.groupLossBox}>
+        <div className={styles.groupLossTitle}>
           <span>损失电量分解图</span>
-          <Button>根源分析</Button>
+          <Button>查看区域</Button>
         </div>
-        <div className={styles.areaLossCenter} ref={ref => {this.lossChart = ref;}} />
+        <div className={styles.groupLossCenter} ref={ref => {this.groupLossChart = ref;}} />
       </div>
     );
   }

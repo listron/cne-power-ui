@@ -4,13 +4,11 @@ export const groupAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  testGroup: Symbol('testGroup'),
+  getGroupModesInfo: Symbol('getGroupModesInfo'),
 };
 
 const initState = immutable.fromJS({
-
-  // topAreas: [], // 顶部选中的区域+电站集合信息
-  // topDevices: [], // 顶部选中的机型
+  modesInfo: [], // 顶部选中的机型
   // topDetes: [], // [starttime(Moment), endTime(Moment)]
   // topQuotas: [], // 选中的指标信息
   topStringify: '', // 保存的请求路径信息
