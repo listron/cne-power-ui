@@ -63,9 +63,16 @@ class LostAnalysis extends Component {
     // 第一个指标作为数据
     const firstType = quotaInfo[0] || {};
     const quotas = firstType.children || [];
-    const firstQuota = quotas[0] || {};
-    const lostQuota = firstQuota.value || null;
-    this.setState({ quotaName: firstQuota.label });
+    let lostQuota, quotaName;
+    if(quotas.length > 0){
+      const firstQuota = quotas[0] || {};
+      lostQuota = firstQuota.value || null;
+      quotaName = firstQuota.label || '';
+    } else {
+      lostQuota = firstType.value || null;
+      quotaName = firstType.label || '';
+    }
+    this.setState({ quotaName });
     changeStore({ lostQuota });
     infoStr && this.queryRank(infoStr, lostQuota);
     infoStr && this.queryRank(infoStr, lostQuota);
@@ -105,6 +112,7 @@ class LostAnalysis extends Component {
     const infoStr = searchUtil(search).getValue('station');
     const baseParam = this.getQueryParam(infoStr);
     this.setState({ quotaName });
+    this.props.changeStore({ lostQuota });
     this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
     this.props.getLostTrend({
       ...baseParam,

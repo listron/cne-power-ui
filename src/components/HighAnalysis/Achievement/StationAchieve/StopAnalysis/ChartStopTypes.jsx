@@ -14,66 +14,87 @@ class ChartStopTypes extends Component {
     // stopChartTimeMode: PropTypes.string,
     stopTypes: PropTypes.array,
     location: PropTypes.object,
+    lostChartTime: PropTypes.string,
+    stopChartDevice: PropTypes.object,
     // stopElecType: PropTypes.string,
     stopTypesLoading: PropTypes.bool,
-    // changeStore: PropTypes.func,
+    changeStore: PropTypes.func,
     // getStopTrend: PropTypes.func,
     // getStopTypes: PropTypes.func,
   }
 
+  state = {
+    sortName: 'stopCount',
+  }
+
   componentDidMount(){
     const { stopTypes } = this.props;
-    stopTypes.length > 0 && this.renderChart(stopTypes);
+    const { sortName } = this.state;
+    stopTypes.length > 0 && this.renderChart(stopTypes, sortName);
   }
 
   componentWillReceiveProps(nextProps){
     const { stopTypesLoading, stopTypes } = nextProps;
     const preLoading = this.props.stopTypesLoading;
     if (preLoading && !stopTypesLoading) { // 请求完毕
-      this.renderChart(stopTypes);
+      const { sortName } = this.state;
+      this.renderChart(stopTypes, sortName);
     } else if (!preLoading && stopTypesLoading) { // 请求中
       this.setChartLoading();
     }
   }
 
   setChartLoading = () => {
-    console.log('loading');
+    const typesChart = this.typesRef && echarts.getInstanceByDom(this.typesRef);
+    typesChart && typesChart.showLoading();
   }
 
-  sortChart = () => {
-
+  sortChange = (sortName) => {
+    const { stopTypes } = this.props;
+    this.setState({ sortName }, () => this.renderChart(stopTypes, sortName));
   }
 
-  createSeries = (stopTypes = []) => {
+  sortChart = (stopTypes, sortName) => [...stopTypes].sort((a, b) => b[sortName] - a[sortName]);
+
+  createBaseBar = (data, colors) => ({
+    type: 'bar',
+    barWidth: '10px',
+    data,
+    itemStyle: {
+      color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
+        {offset: 0, color: colors[0]},
+        {offset: 1, color: colors[1]},
+      ]),
+    },
+  })
+
+  createSeries = (sortedTypes = []) => {
     const dataAxis = [];
     const hourData = [];
     const genData = [];
     const countData = [];
-    const series = [];
-    stopTypes.forEach(e => {
-      dataAxis.push(e.efficiencyDate);
+    let series = [];
+    sortedTypes.forEach(e => {
+      dataAxis.push(e.faultName);
       genData.push(e.stopLostGen);
       hourData.push(e.stopHour);
       countData.push(e.stopCount);
     });
-    series[0] = {
-      type: 'bar',
-      data: genData,
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    };
-    series[1] = {
-      type: 'bar',
-      data: hourData,
-      xAxisIndex: 1,
-      yAxisIndex: 1,
-    };
-    series[2] = {
-      type: 'bar',
-      data: countData,
-      xAxisIndex: 2,
-      yAxisIndex: 2,
-    };
+    series = [
+      {
+        ...this.createBaseBar(genData, ['#e024f2', '#bd10e0']),
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+      }, {
+        ...this.createBaseBar(hourData, ['#df7789', '#bc4251']),
+        xAxisIndex: 1,
+        yAxisIndex: 1,
+      }, {
+        ...this.createBaseBar(countData, ['#f2b75f', '#e08031']),
+        xAxisIndex: 2,
+        yAxisIndex: 2,
+      },
+    ];
     return { dataAxis, series };
   }
 
@@ -84,14 +105,15 @@ class ChartStopTypes extends Component {
     return JSON.parse(infoStr) || {};
   }
 
-  renderChart = (stopTypes = []) => {
+  renderChart = (stopTypes = [], sortName) => {
     const typesChart = echarts.init(this.typesRef);
-    const { dataAxis, series } = this.createSeries(stopTypes);
+    const sortedTypes = this.sortChart(stopTypes, sortName);
+    const { dataAxis, series } = this.createSeries(sortedTypes);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 40, height: 120 },
-        { ...getBaseGrid(), top: 180, height: 120 },
-        { ...getBaseGrid(), top: 340, height: 120 },
+        { ...getBaseGrid(), top: 30, height: 110 },
+        { ...getBaseGrid(), top: 160, height: 110 },
+        { ...getBaseGrid(), top: 300, height: 110 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0 },
@@ -103,6 +125,9 @@ class ChartStopTypes extends Component {
         { ...getBaseYAxis('时长(h)'), gridIndex: 1 },
         { ...getBaseYAxis('次数(h)'), gridIndex: 2 },
       ],
+      axisPointer: {
+        link: {xAxisIndex: 'all'},
+      },
       tooltip: {
         trigger: 'axis',
         padding: 0,
@@ -115,7 +140,7 @@ class ChartStopTypes extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 0 ? '故障次数' : '故障时长'}</span>
+                  <span>${['停机电量', '停机次数', '停机市场'][i]}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -125,48 +150,47 @@ class ChartStopTypes extends Component {
       },
       series,
     };
+    typesChart.hideLoading();
     typesChart.setOption(option);
-    // trendChart.on('click', ({dataIndex}) => {
+  // faultName	String	故障名称
+  // faultTypeId	string	故障类型id
+  // stopCount	Integer	故障次数
+  // stopHour	string	故障时长
+  // stopLostGen	string	损失电量（kw）
+    typesChart.on('click', ({ dataIndex }) => {
     //   const { stopChartTimeMode } = this.props;
-    //   const chartTimeInfo = stopTrend[dataIndex] || {};
+      const curFaultInfo = sortedTypes[dataIndex] || {};
+      console.log(curFaultInfo);
     //   const { efficiencyDate } = chartTimeInfo;
     //   const clickStart = moment(efficiencyDate).startOf(stopChartTimeMode);
     //   const clickEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
-    //   const searchParam = this.getSearchInfo();
+      const searchParam = this.getSearchInfo();
     //   const { searchDates } = searchParam;
     //   const startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
     //   const endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
-    //   this.props.changeStore({ lostChartTime: efficiencyDate });
-    //   this.props.getStopTypes({
-    //     stationCodes: [searchParam.searchCode],
-    //     deviceFullcodes: searchParam.searchDevice,
-    //     startTime,
-    //     endTime,
-    //   });
-    // });
+      this.props.changeStore({ stopChartTypes: curFaultInfo });
+    // this.props.getStopRank({ ...originParam, parentFaultId: 'all' });
+    //   this.props.getStopTrend({ ...originParam, parentFaultId: 'all', type: 'month' });
+    //   this.props.getStopTypes({ ...originParam });
+    });
   }
 
   render() {
-    const { stopChartTimeMode } = this.props;
-    const { sortType } = this.state;
-    // faultName	String	故障名称
-    // faultTypeId	string	故障类型id
-    // stopCount	Integer	故障次数
-    // stopHour	string	故障时长
-    // stopLostGen	string	损失电量（kw）
+    const { lostChartTime, stopChartDevice } = this.props;
+    const { sortName } = this.state;
     return (
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            停机时长及次数
+            {`${stopChartDevice ? stopChartDevice.deviceName : ''}-${lostChartTime}-`}停机时长及次数
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>
               <span className={styles.text}>选择排序</span>
               <Select
-                onChange={this.sortChart}
+                onChange={this.sortChange}
                 style={{width: '150px'}}
-                value={sortType}
+                value={sortName}
               >
                 <Option value="stopCount">停机次数</Option>
                 <Option value="stopHour">停机时长</Option>

@@ -94,7 +94,7 @@ class StationSearch extends Component {
   }
 
   onStationChange = ([regionName, stationCode, stationName]) => {
-    this.setState({ searchCode: stationCode });
+    this.setState({ searchCode: stationCode, searchDevice: [] });
     this.props.getDevices({ stationCode });
   }
 

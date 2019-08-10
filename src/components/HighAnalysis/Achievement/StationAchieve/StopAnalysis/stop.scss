@@ -45,7 +45,7 @@
       margin-right: 4px;
     }
   }
-  .stopRank, .stopTrend{
+  .stopRank, .stopTrend, .stopTypes{
     display: flex;
     flex-direction: column;
     padding: 0 24px;
@@ -79,7 +79,7 @@
   }
   .stopTrend, .stopTypes{
     height: 473px;
-    width: calc(50% - 5px);
+    width: calc(50% - 10px);
   }
   .stopTrend{
     margin-right: 10px;

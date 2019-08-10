@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { message } from 'antd';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
 import searchUtil from '../../../../../utils/searchUtil';
 import { getBaseOption } from './chartBaseOption';
@@ -11,6 +12,7 @@ class ChartLostTrend extends Component {
 
   static propTypes = {
     quotaName: PropTypes.string,
+    lostChartTime: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
     lostQuota: PropTypes.string,
     lostTrend: PropTypes.array,
@@ -38,7 +40,8 @@ class ChartLostTrend extends Component {
   }
 
   setChartLoading = () => {
-    console.log('loading');
+    const trendChart = this.trendRef && echarts.getInstanceByDom(this.trendRef);
+    trendChart && trendChart.showLoading();
   }
 
   createSeries = (lostTrend = []) => {
@@ -110,8 +113,36 @@ class ChartLostTrend extends Component {
     });
   }
 
+  chartHandle = ({dataIndex}, lostTrend, chart) => {
+    const { lostChartTimeMode, lostChartDevice, lostChartTime } = this.props;
+    if(!lostChartDevice){
+      message.info('先选择设备后, 才能对时间进行操作');
+    }
+    const chartTimeInfo = lostTrend[dataIndex] || {};
+    const { efficiencyDate } = chartTimeInfo;
+    const searchParam = this.getSearchInfo();
+    const { searchDates } = searchParam;
+    let startTime, endTime;
+    if (efficiencyDate === lostChartTime) {
+      startTime = searchParam.searchDates[0];
+      endTime = searchParam.searchDates[1];
+    } else {
+      const clickStart = moment(efficiencyDate).startOf(lostChartTimeMode);
+      const clickEnd = moment(efficiencyDate).endOf(lostChartTimeMode);
+      this.props.changeStore({ lostChartTime: efficiencyDate });
+      startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
+      endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
+    }
+    this.props.getLostTypes({
+      startTime,
+      endTime,
+      stationCodes: [searchParam.searchCode],
+      deviceFullcodes: [lostChartDevice.deviceFullcode],
+    });
+  }
+
   renderChart = (lostTrend = []) => {
-    const { quotaName, getLostTypes, lostChartTimeMode, changeStore, lostChartDevice } = this.props;
+    const { quotaName } = this.props;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend);
     const baseOption = getBaseOption(dataAxis);
@@ -139,26 +170,10 @@ class ChartLostTrend extends Component {
       },
       series,
     };
+    trendChart.hideLoading();
     trendChart.setOption(option);
-    lostChartDevice && lostChartDevice.deviceFullcode && trendChart.on('click', ({dataIndex}) => {
-      const chartTimeInfo = lostTrend[dataIndex] || {};
-      const { efficiencyDate } = chartTimeInfo;
-      const clickStart = moment(efficiencyDate).startOf(lostChartTimeMode);
-      const clickEnd = moment(efficiencyDate).endOf(lostChartTimeMode);
-      const searchParam = this.getSearchInfo();
-      const { searchDates } = searchParam;
-      const startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
-      const endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
-      changeStore({ lostChartTime: efficiencyDate });
-      getLostTypes({
-        startTime,
-        endTime,
-        stationCodes: [searchParam.searchCode],
-        deviceFullcodes: [lostChartDevice.deviceFullcode],
-      });
-    });
+    trendChart.on('click', (param) => this.chartHandle(param, lostTrend, trendChart));
   }
-
 
   render() {
     const { lostChartTimeMode } = this.props;

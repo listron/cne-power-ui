@@ -36,7 +36,8 @@ class ChartLostTrend extends Component {
   }
 
   setChartLoading = () => {
-    console.log('loading');
+    const trendChart = this.trendRef && echarts.getInstanceByDom(this.trendRef);
+    trendChart && trendChart.showLoading();
   }
 
   createSeries = (stopTrend = []) => {
@@ -120,6 +121,9 @@ class ChartLostTrend extends Component {
         { ...getBaseYAxis('次数(次)'), gridIndex: 0 },
         { ...getBaseYAxis('时长(h)'), gridIndex: 1 },
       ],
+      axisPointer: {
+        link: {xAxisIndex: 'all'},
+      },
       tooltip: {
         trigger: 'axis',
         padding: 0,
@@ -142,8 +146,9 @@ class ChartLostTrend extends Component {
       },
       series,
     };
+    trendChart.hideLoading();
     trendChart.setOption(option);
-    trendChart.on('click', ({dataIndex}) => {
+    trendChart.on('click', ({ dataIndex }) => {
       const { stopChartTimeMode } = this.props;
       const chartTimeInfo = stopTrend[dataIndex] || {};
       const { efficiencyDate } = chartTimeInfo;

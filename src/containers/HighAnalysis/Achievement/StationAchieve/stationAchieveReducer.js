@@ -15,22 +15,21 @@ export const stationAchieveAction = {
 };
 
 const initState = immutable.fromJS({
-  active: 'stop', // lost, stop, curve
+  active: 'lost', // lost, stop, curve
 
   lostStringify: '', // station - 缓存search信息字符串
   lostQuota: null, // 指标
-  lostSort: 'name', // 排序方式 name or quota
   lostChartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
   lostChartTime: null, // chart选中的时间
   lostChartTimeMode: 'month', // chart选中时间格式 - month year day
 
   stopTopStringify: '', // stop - 缓存字符串
-  stopElecType: 'all', // 0:all全部，1:faultGen风机故障，2:planShutdownGen计划停机，3:substationGen变电故障，4:courtGen场外因素，5:otherGen其他损失
+  stopElecType: 'all', // all全部-faultGen风机故障-planShutdownGen计划停机-substationGen变电-courtGen场外-otherGen其他
   stopType: '', // 全部,....
-  stopChartDevice: null, // 图表设备选中
-  stopChartTime: null, // 图表时间选中
+  stopChartDevice: null, // 图表设备选中 {}
+  stopChartTime: null, // 图表时间选中 string
   stopChartTimeMode: 'month', // 图表时间格式选中
-  stopChartTypes: null, // 图表各类停机次数与市场选中
+  stopChartTypes: null, // 图表各类停机次数与时长选中 {}
 
   modeDevices: [], // 电站 设备型号+设备集合
   lostRank: [], // 损失根源 - 指标排名

@@ -44,7 +44,8 @@ class ChartLostTypes extends Component {
   ]
 
   setChartLoading = () => {
-    console.log('loading');
+    const typesChart = this.rankRef && echarts.getInstanceByDom(this.typesRef);
+    typesChart && typesChart.showLoading();
   }
 
   getBarValue = (lostTypes, dataKey) => {
@@ -128,6 +129,7 @@ class ChartLostTypes extends Component {
           })),
       }],
     };
+    typesChart.showLoading();
     typesChart.setOption(option);
   }
 

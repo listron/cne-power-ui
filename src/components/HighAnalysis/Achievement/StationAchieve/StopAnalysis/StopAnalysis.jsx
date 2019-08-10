@@ -4,6 +4,7 @@ import searchUtil from '../../../../../utils/searchUtil';
 import StopElecTypes from './StopElecTypes';
 import ChartStopRank from './ChartStopRank';
 import ChartStopTrend from './ChartStopTrend';
+import ChartStopTypes from './ChartStopTypes';
 import styles from './stop.scss';
 
 class StopAnalysis extends Component {
@@ -67,18 +68,12 @@ class StopAnalysis extends Component {
 
   render() {
     const { active, lostChartDevice, stopChartTimeMode } = this.props;
-    // const { quotaName } = this.state;
-    const stopTrend = [1, 2, 3, 4, 5, 6, 7, 8].map(e => ({
-      efficiencyDate: `${e}123jkl`,
-      stopCount: parseInt(Math.random() * 100, 10),
-      stopHour: parseInt(Math.random() * 100, 10),
-    }))
     return (
       <div className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <StopElecTypes {...this.props} />
         <ChartStopRank {...this.props} />
-        <ChartStopTrend {...this.props} stopTrend={stopTrend} />
-        {/* <ChartLostTypes {...this.props} lostChartDevice={lostChartDevice} lostChartTime={lostChartTime} /> */}
+        <ChartStopTrend {...this.props} />
+        <ChartStopTypes {...this.props} />
       </div>
     );
   }

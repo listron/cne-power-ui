@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
 import IndicateCascader from './IndicateCascader';
 import { getBaseOption } from './chartBaseOption';
@@ -15,27 +15,32 @@ class ChartLostRank extends Component {
     quotaName: PropTypes.string,
     lostQuota: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
-    lostSort: PropTypes.string,
+    lostChartTime: PropTypes.string,
     lostRankLoading: PropTypes.bool,
     quotaInfo: PropTypes.array,
     location: PropTypes.object,
+    lostChartDevice: PropTypes.object,
     onQuotaChange: PropTypes.func,
     changeStore: PropTypes.func,
     getLostTrend: PropTypes.func,
   }
 
+  state= {
+    sortType: 'name',
+  }
 
   componentDidMount(){
-    const { lostRank = [], lostSort } = this.props;
-    lostRank.length > 0 && this.renderChart(lostRank, lostSort);
+    const { lostRank = [] } = this.props;
+    const { sortType } = this.state;
+    lostRank.length > 0 && this.renderChart(lostRank, sortType);
   }
 
   componentWillReceiveProps(nextProps){
-    const { lostRankLoading, lostRank, lostSort } = nextProps;
+    const { lostRankLoading, lostRank } = nextProps;
     const preLoading = this.props.lostRankLoading;
     if (preLoading && !lostRankLoading) { // 请求完毕
-      const sortedLostRank = this.sortRank(lostRank, lostSort);
-      this.renderChart(sortedLostRank);
+      const { sortType } = this.state;
+      this.renderChart(lostRank, sortType);
     } else if (!preLoading && lostRankLoading) { // 请求中
       this.setChartLoading();
     }
@@ -43,7 +48,7 @@ class ChartLostRank extends Component {
 
   sortRank = (rankList, sortType = 'name') => {
     const sortedList = [...rankList].sort((a, b) => {
-      if (sortType = 'name') {
+      if (sortType = 'name' && a.deviceName) {
         return a.deviceName.localeCompare(b.deviceName);
       }
       const sortName = Object.keys(a.indicatorData).includes('value') ? 'value' : 'actualGen';
@@ -65,18 +70,18 @@ class ChartLostRank extends Component {
   ]
 
   setChartLoading = () => {
-    console.log('loading');
+    const rankChart = this.rankRef && echarts.getInstanceByDom(this.rankRef);
+    rankChart && rankChart.showLoading();
   }
 
   cascaderChange = (codes, fullInfo) => {
-    this.props.onQuotaChange(codes[1], fullInfo[1].label);
+    const index = (fullInfo && fullInfo.length > 1) ? 1 : 0;
+    this.props.onQuotaChange(codes[index], fullInfo[index].label);
   }
 
   sortChart = (value) => {
-    const { changeStore, lostRank } = this.props;
-    changeStore({lostSort: value});
-    const sortedLostRank = this.sortRank(lostRank, value);
-    this.renderChart(sortedLostRank);
+    const { lostRank } = this.props;
+    this.renderChart(lostRank, value);
   }
 
   createSeries = (lostRank = []) => {
@@ -94,7 +99,7 @@ class ChartLostRank extends Component {
       modeSet.add(deviceModeName);
     });
     const modeArr = [...modeSet];
-    lostRank.forEach(e => {
+    lostRank.forEach((e) => {
       const { deviceModeName, indicatorData = {} } = e || {};
       const colorIndex = modeArr.indexOf(deviceModeName);
       firstBarData.push({
@@ -102,8 +107,8 @@ class ChartLostRank extends Component {
         value: indicatorType === 'single' ? indicatorData.value : indicatorData.actualGen,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
-            {offset: 0, color: this.barColor[colorIndex][0]},
-            {offset: 1, color: this.barColor[colorIndex][1]},
+            {offset: 0, color: this.barColor[colorIndex][0] },
+            {offset: 1, color: this.barColor[colorIndex][1] },
           ]),
         },
       });
@@ -130,9 +135,37 @@ class ChartLostRank extends Component {
     return { dataAxis, series, modeArr, indicatorType };
   }
 
-  renderChart = (sortedLostRank = []) => {
-    const { quotaName, changeStore, location, getLostTrend, lostQuota, lostChartTimeMode } = this.props;
+  chartHandle = ({dataIndex}, sortedLostRank, chart) => {
+    const { lostQuota, lostChartTimeMode, lostChartTime, location, lostChartDevice } = this.props;
+    if (lostChartTime) {
+      message.info('请先取消下方事件选择, 再选择设备');
+      return;
+    }
+    const selectedInfo = sortedLostRank[dataIndex] || {};
+    const { search } = location;
+    const infoStr = searchUtil(search).getValue('station');
+    const searchParam = JSON.parse(infoStr) || {};
+    let deviceFullcodes;
+    if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
+      deviceFullcodes = searchParam.searchDevice;
+    } else {
+      deviceFullcodes = [selectedInfo.deviceFullcode];
+    }
+    this.props.changeStore({ lostChartDevice });
+    this.props.getLostTrend({
+      stationCodes: [searchParam.searchCode],
+      deviceFullcodes,
+      startTime: searchParam.searchDates[0],
+      endTime: searchParam.searchDates[1],
+      indicatorCode: lostQuota,
+      type: lostChartTimeMode,
+    });
+  }
+
+  renderChart = (lostRank = [], sortType) => {
+    const { quotaName } = this.props;
     const rankChart = echarts.init(this.rankRef);
+    const sortedLostRank = this.sortRank(lostRank, sortType);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
     baseOption.yAxis.name = quotaName;
@@ -162,27 +195,14 @@ class ChartLostRank extends Component {
       },
       series,
     };
+    rankChart.hideLoading();
     rankChart.setOption(option);
-    rankChart.on('click', ({dataIndex}) => {
-      const lostChartDevice = sortedLostRank[dataIndex] || {};
-      changeStore({ lostChartDevice });
-      const { search } = location;
-      const infoStr = searchUtil(search).getValue('station');
-      const searchParam = JSON.parse(infoStr) || {};
-      getLostTrend({
-        stationCodes: [searchParam.searchCode],
-        deviceFullcodes: [lostChartDevice.deviceFullcode],
-        startTime: searchParam.searchDates[0],
-        endTime: searchParam.searchDates[1],
-        indicatorCode: lostQuota,
-        type: lostChartTimeMode,
-      });
-    });
+    rankChart.on('click', (param) => this.chartHandle(param, sortedLostRank, rankChart ));
   }
 
-
   render() {
-    const { quotaInfo, lostQuota, quotaName, lostSort } = this.props;
+    const { quotaInfo, lostQuota, quotaName } = this.props;
+    const { sortType } = this.state;
     return (
       <div className={styles.lostRank}>
         <div className={styles.top}>
@@ -199,7 +219,7 @@ class ChartLostRank extends Component {
               <Select
                 onChange={this.sortChart}
                 style={{width: '150px'}}
-                value={lostSort}
+                value={sortType}
               >
                 <Option value="name">风机名称</Option>
                 <Option value="quota">{quotaName}</Option>

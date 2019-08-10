@@ -64,7 +64,8 @@ class ChartStopRank extends Component {
   ]
 
   setChartLoading = () => {
-    console.log('loading');
+    const rankChart = this.rankRef && echarts.getInstanceByDom(this.rankRef);
+    rankChart && rankChart.showLoading();
   }
 
   createSeries = (stopRank = []) => {
@@ -151,6 +152,7 @@ class ChartStopRank extends Component {
       },
       series,
     };
+    rankChart.hideLoading();
     rankChart.setOption(option);
     rankChart.on('click', ({dataIndex}) => {
       const stopChartDevice = sortedStopRank[dataIndex] || {};
