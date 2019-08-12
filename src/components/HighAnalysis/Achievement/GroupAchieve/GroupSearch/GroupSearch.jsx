@@ -10,7 +10,7 @@ import AreaStation from '../../../../Common/AreaStation';
 import AutoSelect from '../../../../Common/AutoSelect';
 const { RangePicker } = DatePicker;
 
-export default class GroupSearch extends Component {
+export default class AreaSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
@@ -56,23 +56,22 @@ export default class GroupSearch extends Component {
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      console.log('22222');
+      // console.log('22222');
+      // console.log(preDevice, 'preDevice');
+      // console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
-      console.log('333333');
+      // console.log('333333');
       this.propsQuotaChange(quotaInfo);
     }
-    // 默认选中第一个
-    if(!groupInfoStr && areaStation.length > 0) {
+    // 判断选中区域之后机型数据变化
+    if(JSON.stringify(preDevice) && JSON.stringify(preDevice) !== JSON.stringify(modesInfo)) {
+      // console.log('6666666');
+      const modes = this.getAllDeviceCodes(modesInfo);
       this.setState({
-        stations: areaStation,
-      });
-    }
-    // 默认选中第一个
-    if(!groupInfoStr && modesInfo.length > 0) {
-      this.setState({
-        modes: modesInfo,
+        modes,
+        modesInfo,
       });
     }
   }
@@ -94,6 +93,7 @@ export default class GroupSearch extends Component {
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
     const { searchCode, dates, quota, stations } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
+    console.log(modes, 'modes');
     if (quota.length > 0) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
@@ -118,9 +118,10 @@ export default class GroupSearch extends Component {
   historyChange = (searchCode, modes, dates, quota, stations, modesInfo) => { // 切换路径 => 托管外部进行请求
     const { location, history } = this.props;
     const { search } = location;
-    const newSearch = searchUtil(search).replace({area: JSON.stringify({
+    const newSearch = searchUtil(search).replace({group: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
+    console.log(newSearch, 'newSearch111111');
     history.push(`/analysis/achievement/analysis/group?${newSearch}`);
   };
 
@@ -144,6 +145,8 @@ export default class GroupSearch extends Component {
     this.setState({
       stations: info,
       searchCode: stations,
+    }, () => {
+      this.props.getGroupModesInfo({ stationCodes: stations});
     });
   };
 
@@ -160,6 +163,7 @@ export default class GroupSearch extends Component {
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
     const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
+    console.log(modes, 'queryCharts');
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -174,6 +178,9 @@ export default class GroupSearch extends Component {
       quotaInfo,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
+    // console.log(modes, 'modesrender');
+    // console.log(stations, 'stationsrender');
+    // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>
         <div>

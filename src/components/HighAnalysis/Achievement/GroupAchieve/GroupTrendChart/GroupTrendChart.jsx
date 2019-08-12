@@ -2,40 +2,37 @@ import React, { Component } from 'react';
 import {Radio} from 'antd';
 import PropTypes from 'prop-types';
 import eCharts from 'echarts';
+import searchUtil from '../../../../../utils/searchUtil';
 
 import styles from './groupTrendChart.scss';
 
 export default class GroupTrendChart extends Component {
 
   static propTypes = {
-    trendInfo: PropTypes.array,
-    trendTime: PropTypes.number,
-    trendLoading: PropTypes.bool,
+    groupTrendInfo: PropTypes.array,
+    groupTrendTime: PropTypes.number,
+    groupTrendLoading: PropTypes.bool,
+    location: PropTypes.object,
+    getGroupTrendInfo: PropTypes.func,
+    groupTimeStatus: PropTypes.string,
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: '2',
-    };
-  }
 
   componentDidUpdate(prevProps) {
     const { groupTrendChart } = this;
-    const { trendTime, trendLoading, trendInfo } = this.props;
-    const { trendTime: trendTimePrev } = prevProps;
+    const { groupTrendTime, groupTrendLoading, groupTrendInfo } = this.props;
+    const { groupTrendTime: trendTimePrev } = prevProps;
     const myChart = eCharts.init(groupTrendChart);
-    if (trendLoading) { // loading态控制。
+    if (groupTrendLoading) { // loading态控制。
       myChart.showLoading();
       return false;
     }
-    if (!trendLoading) {
+    if (!groupTrendLoading) {
       myChart.hideLoading();
     }
-    if(trendTime && trendTime !== trendTimePrev) {
+    if(groupTrendTime && groupTrendTime !== trendTimePrev) {
       eCharts.init(groupTrendChart).clear();//清除
       const myChart = eCharts.init(groupTrendChart);
-      myChart.setOption(this.drawChart(trendInfo));
+      myChart.setOption(this.drawChart(groupTrendInfo));
     }
   }
 
@@ -107,13 +104,41 @@ export default class GroupTrendChart extends Component {
     };
   };
 
+  // 切换日月年
+  handleStatusChange = (e) => {
+    const { getGroupTrendInfo } = this.props;
+    const { search } = this.props.location;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const {
+        stations = [],
+        quota = [],
+        dates = [],
+        searchCode = [],
+      } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsTrend = {
+        startTime: dates[0],
+        endTime: dates[1],
+        stationCodes: searchCode,
+        regionName: [stations[0].regionName],
+        indicatorCode: quotaValue,
+        type: e.target.value, // 默认按月
+      };
+      // 请求趋势数据
+      getGroupTrendInfo(paramsTrend);
+    }
+  };
+
   render() {
-    const { status } = this.state;
+    const { groupTimeStatus } = this.props;
     return (
       <div className={styles.groupTrendBox}>
         <div className={styles.groupTrendTitle}>
           <span>PBA趋势图</span>
-          <Radio.Group value={status} buttonStyle="solid" onChange={this.handleStatusChange}>
+          <Radio.Group value={groupTimeStatus} buttonStyle="solid" onChange={this.handleStatusChange}>
             <Radio.Button value="1">按日</Radio.Button>
             <Radio.Button value="2">按月</Radio.Button>
             <Radio.Button value="3">按年</Radio.Button>
