@@ -121,6 +121,7 @@ export default class AreaSearch extends Component {
     const newSearch = searchUtil(search).replace({area: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
+    console.log(newSearch, 'newSearch');
     history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
 

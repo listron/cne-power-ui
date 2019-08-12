@@ -8,19 +8,38 @@ import styles from './groupAreaChart.scss';
 export default class GroupAreaChart extends Component {
 
   static propTypes = {
+    groupCapacityInfo: PropTypes.array,
+    groupCapacityTime: PropTypes.number,
+    groupCapacityLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { groupChart } = this;
+    const { groupCapacityTime, groupCapacityLoading, groupCapacityInfo } = this.props;
+    const { groupCapacityTime: groupCapacityTimePrev } = prevProps;
     const myChart = eCharts.init(groupChart);
-    axios.get('/mapJson/China.json').then(response => {
-      console.log(response, 'response');
-      eCharts.registerMap('China', response.data);
-      myChart.setOption(this.drawChart());
-    });
+    if (groupCapacityLoading) { // loading态控制。
+      myChart.showLoading();
+      return false;
+    }
+    if (!groupCapacityLoading) {
+      myChart.hideLoading();
+    }
+    if(groupCapacityTime && groupCapacityTime !== groupCapacityTimePrev) {
+      eCharts.init(groupChart).clear();//清除
+      const myChart = eCharts.init(groupChart);
+      axios.get('/mapJson/China.json').then(response => {
+        eCharts.registerMap('China', response.data);
+        myChart.setOption(this.drawChart(groupCapacityInfo));
+      });
+    }
   }
 
-  drawChart = () => {
+  drawChart = (data) => {
+    const dataMap = data && data.map(cur => ({
+      name: cur.regionName,
+      value: [cur.longitude, cur.latitude, cur.stationCapacity],
+    }));
     return {
       geo: {
         map: 'China',
@@ -47,9 +66,10 @@ export default class GroupAreaChart extends Component {
       },
       series: [
         {
-          name: 'pm2.5',
+          name: '区域分布图',
           type: 'scatter',
           coordinateSystem: 'geo',
+          data: dataMap,
           symbolSize: 12,
           label: {
             normal: {
@@ -74,7 +94,7 @@ export default class GroupAreaChart extends Component {
     return (
       <div className={styles.groupAreaChart}>
         <div className={styles.groupAreaTitle}>
-          各地区分布图
+          各区域分布图
         </div>
         <div className={styles.groupChartCenter} ref={ref => {this.groupChart = ref;}} />
       </div>

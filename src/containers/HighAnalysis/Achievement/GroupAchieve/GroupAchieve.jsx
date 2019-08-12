@@ -17,48 +17,120 @@ class GroupAchieve extends Component {
     topStringify: PropTypes.string,
     history: PropTypes.object,
     location: PropTypes.object,
-  }
+    getGroupCapacity: PropTypes.func,
+    getGroupRank: PropTypes.func,
+    getGroupTrendInfo: PropTypes.func,
+    getGroupLostGenHour: PropTypes.func,
+    groupTimeStatus: PropTypes.string,
+  };
 
   componentDidMount(){
     // 若是上级页面下钻进入 => search中的area与之前记录有变化。
-    const { topStringify, location } = this.props;
-    const { search } = location;
-    const infoStr = searchUtil(search).getValue('area');
-    if (topStringify && infoStr !== topStringify) {
-      this.queryCharts(search);
+    const { search } = this.props.location;
+    const { groupTimeStatus } = this.props;
+    const groupInfoStr = searchUtil(search).getValue('group');
+    console.log(groupInfoStr, '====');
+    if(groupInfoStr) {
+      const groupInfo = groupInfoStr ? JSON.parse(groupInfoStr) : {};
+      const basicParams = this.basicParams(groupInfo);
+      const {
+        stations = [],
+        modes = [],
+        quota = [],
+        modesInfo = [],
+      } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsCapacity = {
+        ...basicParams,
+        deviceModes: modes,
+        regionName: stations.map(cur => {return cur.regionName;}),
+        manufactorIds: modesInfo.map(cur => {
+          return cur.value;
+        }),
+      };
+      const paramsRank = {
+        ...basicParams,
+        indicatorCode: quotaValue,
+      };
+      const paramsTrend = {
+        ...basicParams,
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        type: groupTimeStatus, // 默认按月
+      };
+      const paramsHour = {
+        ...basicParams,
+        manufactorIds: paramsCapacity.manufactorIds,
+        deviceModes: paramsCapacity.deviceModes,
+      };
+      this.props.getGroupCapacity(paramsCapacity);
+      this.props.getGroupRank(paramsRank);
+      this.props.getGroupTrendInfo(paramsTrend);
+      this.props.getGroupLostGenHour(paramsHour);
     }
   }
 
   componentWillReceiveProps(nextProps){ // search中的area字符串对比, 不同 => 解析+请求图表数据.
-    const nextLocation = nextProps.location;
-    const nextSearch = nextLocation.search || '';
-    const { topStringify } = this.props;
-    const infoStr = searchUtil(nextSearch).getValue('area');
-    if (infoStr !== topStringify) {
-      this.queryCharts(nextSearch);
+    const nextSearch = nextProps.location.search;
+    const { search } = this.props.location;
+    const { groupTimeStatus } = this.props;
+    const groupNextInfoStr = searchUtil(nextSearch).getValue('group');
+    const groupInfoStr = searchUtil(search).getValue('group');
+    // 发生变化
+    if (groupNextInfoStr && groupNextInfoStr !== groupInfoStr) {
+      const groupInfo = groupNextInfoStr ? JSON.parse(groupNextInfoStr) : {};
+      const basicParams = this.basicParams(groupInfo);
+      const {
+        stations = [],
+        modes = [],
+        quota = [],
+        modesInfo = [],
+      } = groupInfo;
+      // 默认指标分析
+      const quotaValue = quota[1] || quota[0];
+      const paramsCapacity = {
+        ...basicParams,
+        deviceModes: modes,
+        regionName: stations.map(cur => {return cur.regionName;}),
+        manufactorIds: modesInfo.map(cur => {
+          return cur.value;
+        }),
+      };
+      const paramsRank = {
+        ...basicParams,
+        indicatorCode: quotaValue,
+      };
+      const paramsTrend = {
+        ...basicParams,
+        regionName: paramsCapacity.regionName,
+        indicatorCode: quotaValue,
+        type: groupTimeStatus, // 默认按月
+      };
+      const paramsHour = {
+        ...basicParams,
+        manufactorIds: paramsCapacity.manufactorIds,
+        deviceModes: paramsCapacity.deviceModes,
+      };
+      this.props.getGroupCapacity(paramsCapacity);
+      this.props.getGroupRank(paramsRank);
+      this.props.getGroupTrendInfo(paramsTrend);
+      this.props.getGroupLostGenHour(paramsHour);
     }
   }
 
-  queryCharts = (search) => {
-    console.log(search);// todo 将对应的JSON.stringify信息存入reducer;
-    console.log('发起请求的集合');// todo 发起解析search为json请求后台 => 图表
-  }
-
-  searchCharts = () => { // 查询按钮
-    // 将查询参数进行JSON.stringify后直接存入location.search;
-    // history.push('...newParams');
-  }
-
-  toAreaPage = () => { // 携带选中信息进入区域页面
-    // 页面路径参数结构/{pathKey}?pages=['group','area']&group={a:1,b:2}&area={c:1,d:4}&station={e:2,ff:12};
-    // 其中group, area, station后面的选中内容为JSON.stringify后的字符串
-    const { location, history } = this.props;
-    const { search } = location || {};
-    const areaInfo = {a: Math.random(), b: Math.random};
-    // 新的search: pages参数不变, area参数变为选中项内容集合
-    const newSearch = searchUtil(search).replace({ area: JSON.stringify(areaInfo) }).stringify(); // 删除search中页面的记录信息
-    history.push(`/analysis/achievement/analysis/area?${newSearch}`);
-  }
+  // 基本-公共参数
+  basicParams = (data) => {
+    const { stations = [] } = data.stations || {};
+    const stationCode = stations.map(cur => {
+      return cur.stationCode;
+    });
+    return {
+      startTime: data.dates[0],
+      endTime: data.dates[1],
+      stationCodes: stationCode,
+    };
+  };
 
   render() {
     return (
@@ -66,12 +138,12 @@ class GroupAchieve extends Component {
         <GroupSearch {...this.props} />
         <div className={styles.groupChartBox}>
           <div className={styles.chartTop}>
-            <GroupAreaChart />
-            <GroupStationChart />
+            <GroupAreaChart {...this.props} />
+            <GroupStationChart {...this.props} />
           </div>
           <div className={styles.chartBottom}>
-            <GroupTrendChart />
-            <GroupLossChart />
+            <GroupTrendChart {...this.props} />
+            <GroupLossChart {...this.props} />
           </div>
         </div>
       </div>
@@ -85,6 +157,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getGroupModesInfo: payload => dispatch({type: groupAchieveAction.getGroupModesInfo, payload}),
+  getGroupCapacity: payload => dispatch({type: groupAchieveAction.getGroupCapacity, payload}),
+  getGroupRank: payload => dispatch({type: groupAchieveAction.getGroupRank, payload}),
+  getGroupTrendInfo: payload => dispatch({type: groupAchieveAction.getGroupTrendInfo, payload}),
+  getGroupLostGenHour: payload => dispatch({type: groupAchieveAction.getGroupLostGenHour, payload}),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupAchieve);
