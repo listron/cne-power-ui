@@ -148,10 +148,11 @@ class ChartLostRank extends Component {
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.searchDevice;
+      this.props.changeStore({ lostChartDevice: null });
     } else {
       deviceFullcodes = [selectedInfo.deviceFullcode];
+      this.props.changeStore({ lostChartDevice: selectedInfo });
     }
-    this.props.changeStore({ lostChartDevice });
     this.props.getLostTrend({
       stationCodes: [searchParam.searchCode],
       deviceFullcodes,
