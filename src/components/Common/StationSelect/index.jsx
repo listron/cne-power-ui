@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Select ,AutoComplete, message  } from 'antd';
-import StationSelectModal from './StationSelectModal'
+import { Select, AutoComplete, message } from 'antd';
+import StationSelectModal from './StationSelectModal';
 import styles from './style.scss';
 import PropTypes from 'prop-types';
 const Option = Select.Option;
@@ -67,6 +67,7 @@ class StationSelect extends Component {
     stationShowNumber: false,
     data: [],
     disabledStation: [],
+    theme: 'light',
   }
   constructor(props) {
     super(props);
@@ -74,96 +75,96 @@ class StationSelect extends Component {
     this.state = {
       stationModalShow: false,
       checkedStations,
-      checkedStationName: checkedStations.map(e=>e.stationName),
+      checkedStationName: checkedStations.map(e => e.stationName),
       filteredSelectedStation: [],
-    }
+    };
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { data, value } = nextProps;
-    if( data && data.length > 0 && value && value.length >= 0){
+    if (data && data.length > 0 && value && value.length >= 0) {
       this.setState({
         checkedStations: nextProps.value,
-        checkedStationName: nextProps.value.map(e=>e.stationName),
-      })
+        checkedStationName: nextProps.value.map(e => e.stationName),
+      });
     }
   }
   onOK = (stations) => {
-    const { onChange,onOK } = this.props
+    const { onChange, onOK } = this.props;
     onOK && onOK(stations);
     onChange && onChange(stations);
   }
   onModalHandelOK = (stations) => {
-    const checkedStationName = stations.map(e=>e.stationName);
+    const checkedStationName = stations.map(e => e.stationName);
     this.setState({
       stationModalShow: false,
       checkedStationName,
-      checkedStations:stations
-    })
-    this.onOK(stations)
+      checkedStations: stations,
+    });
+    this.onOK(stations);
   }
-  onSelect = (stationName) =>{
+  onSelect = (stationName) => {
     const { data } = this.props;
-    const checkedStations = data.filter(e=>e.stationName===stationName);
-    const checkedStationName = checkedStations.map(e=>e.stationName);
+    const checkedStations = data.filter(e => e.stationName === stationName);
+    const checkedStationName = checkedStations.map(e => e.stationName);
     this.setState({
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
   hideStationModal = () => {
     this.setState({
       stationModalShow: false,
-    })
+    });
   }
   handleSearch = (text) => {
     const { data, disabledStation } = this.props;
-    let filteredSelectedStation = data.filter(
-      e=> !disabledStation.includes(e.stationCode) // 剔除禁选电站
+    const filteredSelectedStation = data.filter(
+      e => !disabledStation.includes(e.stationCode) // 剔除禁选电站
     ).filter(
-      e=>e.stationName.indexOf(text) >= 0
+      e => e.stationName.indexOf(text) >= 0
     );
     this.setState({
-      checkedStationName:[text],
-      filteredSelectedStation
-    })
+      checkedStationName: [text],
+      filteredSelectedStation,
+    });
   }
   selectStation = (stations) => {//stations:选中的电站名称数组
     const { data, oneStyleOnly } = this.props;
-    let checkedStations=[];
-    stations.forEach(item => { data.forEach(e => e.stationName === item && checkedStations.push(e))})
-    if(oneStyleOnly){ // 只能选择一种类型电站
+    const checkedStations = [];
+    stations.forEach(item => { data.forEach(e => e.stationName === item && checkedStations.push(e)); });
+    if (oneStyleOnly) { // 只能选择一种类型电站
       const stationTypeSet = new Set();
-      checkedStations.forEach(e=>{stationTypeSet.add(e.stationType)});
-      if(stationTypeSet.size > 1){ // 选择了多种类型电站
-        message.error('请选择同为风电或光伏的电站!')
+      checkedStations.forEach(e => { stationTypeSet.add(e.stationType); });
+      if (stationTypeSet.size > 1) { // 选择了多种类型电站
+        message.error('请选择同为风电或光伏的电站!');
         return;
       }
     }
-    const checkedStationName = stations
+    const checkedStationName = stations;
     this.setState({
       stationModalShow: false,
       checkedStationName,
-      checkedStations
-    })
-    this.onOK(checkedStations)
+      checkedStations,
+    });
+    this.onOK(checkedStations);
   }
 
   showStationModal = () => {
     !this.props.disabled && this.setState({
       stationModalShow: true,
-    })
+    });
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'light' } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     const deviceShow = checkedStations.length > 0 && stationShowNumber && {
       maxTagCount: 0,
-      maxTagPlaceholder: `已选电站${checkedStations.length}/${data.length}`
+      maxTagPlaceholder: `已选电站${checkedStations.length}/${data.length}`,
     } || {};
     return (
-      <div className={styles.stationSelect} style={this.props.style}>
+      <div className={`${styles.stationSelect} ${styles[theme]}`} style={this.props.style}>
         {multiple ? <Select
           mode="multiple"
           disabled={disabled}
@@ -174,10 +175,10 @@ class StationSelect extends Component {
           className={styles.stationSelectMainInput}
           {...deviceShow}
         >
-          {data.filter(e=>!disabledStation.includes(e.stationCode)).map(e=>(
+          {data.filter(e => !disabledStation.includes(e.stationCode)).map(e => (
             <Option key={e.stationName}>{e.stationName}</Option>
           ))}
-        </Select>:<AutoComplete
+        </Select> : <AutoComplete
           disabled={disabled}
           style={{ width: '100%' }}
           onSearch={this.handleSearch}
@@ -185,8 +186,8 @@ class StationSelect extends Component {
           value={checkedStationName}
           placeholder={holderText}
         >
-          {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
-        </AutoComplete>}
+            {filteredSelectedStation.map((e) => (<Option key={e.stationName}>{e.stationName}</Option>))}
+          </AutoComplete>}
         <StationSelectModal
           multiple={multiple}
           oneStyleOnly={oneStyleOnly}
@@ -200,7 +201,7 @@ class StationSelect extends Component {
           showStationModal={this.showStationModal}
         />
       </div>
-    )
+    );
 
   }
 }

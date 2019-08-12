@@ -64,7 +64,7 @@ class PvStationHeader extends React.Component {
 
 
   render() {
-    const { singleStationData, monitorPvUnit } = this.props;
+    const { singleStationData, monitorPvUnit, theme = 'light' } = this.props;
     const { powerUnit, realCapacityUnit, realTimePowerUnit } = monitorPvUnit;
     const { editInfoError, editType, modalVisiable, editValue } = this.state;
     const stationDataSummary = singleStationData || {};
@@ -83,13 +83,13 @@ class PvStationHeader extends React.Component {
     const powerUpdate = rightHandler && rightHandler.split(',').includes('monitor_powerUpdate');
     return (
       <div className={styles.headStation}>
-        <div className={styles.leftIcon}></div>
+        <div className={`${styles.leftIcon}`}> <span className={'iconfont icon-pvlogo'}></span> </div>
         <div className={styles.dataColumn}>
           <div className={styles.stationPower}>
             <div> <span className={styles.dataValue}>{deviceValueFormat(stationPower, '--', 2)}</span>{realTimePowerUnit}</div>
             <div> <span className={styles.dataValue}>{deviceValueFormat(stationCapacity, '--', 2)}</span>{realCapacityUnit}</div>
           </div>
-          <OwnProgress percent={percent} active={true} />
+          <OwnProgress percent={percent} active={true} theme={theme} />
           <div className={styles.stationPower}> <span>实时功率</span> <span>装机容量</span></div>
         </div>
         <div className={styles.dataColumn}>

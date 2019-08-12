@@ -219,26 +219,28 @@ class PvStationItem extends React.Component {
         </div>
 
         <div className={styles.staionsListBox} ref={ref => this.newPinterest = ref} >
-          {stationDataList.length > 0 && filteredStation.map((list, key) => {
-            return (<div className={styles.regionList} key={key} >
-              <div className={styles.regionName}>{list.regionName}</div>
-              <div className={styles.staionsList}>
-                {list.stations.map((item, index) => {
-                  const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
-                  return (<SingleStaionList
-                    singleStation={item}
-                    filterChartData={filterChartData}
-                    monitorPvUnit={monitorPvUnit}
-                    theme={this.props.theme}
-                  />);
-                })}
-              </div>
-            </div>);
-
-          }) || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
+          {stationDataList.length > 0 &&
+            <React.Fragment>
+              {filteredStation.map((list, key) => {
+                return (<div className={styles.regionList} key={key} >
+                  <div className={styles.regionName}>{list.regionName}</div>
+                  <div className={styles.staionsList}>
+                    {list.stations.map((item, index) => {
+                      const filterChartData = pvCapabilitydiagramsData.filter(e => e.stationCode === item.stationCode);
+                      return (<SingleStaionList
+                        singleStation={item}
+                        filterChartData={filterChartData}
+                        monitorPvUnit={monitorPvUnit}
+                        theme={this.props.theme}
+                      />);
+                    })}
+                  </div>
+                </div>);
+              })}
+              {(renderList.length < stationDataList.length && !selectStation) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
+            </React.Fragment>
+            || <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div>
           }
-          {(renderList.length < stationDataList.length && !selectStation) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
-
           <div>
           </div>
         </div>

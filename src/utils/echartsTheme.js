@@ -1,5 +1,3 @@
-import echarts from 'echarts';
-
 export const darkTheme = () => { // 数据规范展示
   const contrastColor = '#00baff';
   const fontColor = '#009CFF';
@@ -42,7 +40,7 @@ export const darkTheme = () => { // 数据规范展示
   ];
   var theme = {
     color: colorPalette,
-    // backgroundColor: backgroundColor,
+    backgroundColor: backgroundColor,
     tooltip: {
       axisPointer: {
         lineStyle: {
@@ -198,7 +196,7 @@ export const lightTheme = () => { // 数据规范展示
       splitLine: {
         lineStyle: {
           type: 'dashed',
-          color: '#aaa',
+          color: '#f1f1f1',
         },
       },
       splitArea: {

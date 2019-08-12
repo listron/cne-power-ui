@@ -24,10 +24,10 @@ class PvmoduleList extends Component {
       firstLoad: true,
       pvLevelStatus: '', // 为空的时候
       renderList: [],
-      spliceLength: 30, // 30条数据一渲染。
+      spliceLength: 72, // 30条数据一渲染。
       topHeight: 400, // 假设的列表上方高度
       newList: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -47,7 +47,7 @@ class PvmoduleList extends Component {
           }
         }
       }
-    }, 1000))
+    }, 1000));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,7 +59,7 @@ class PvmoduleList extends Component {
       this.getData(nextStation);
     }
     if (nextProps.moduleTime !== this.props.moduleTime) {
-      this.changeStationData(nextProps.pvmoduleList)
+      this.changeStationData(nextProps.pvmoduleList);
     }
   }
 
@@ -83,8 +83,8 @@ class PvmoduleList extends Component {
     const { pvLevelStatus } = this.state;
     const tmpPvmoduleList = pvLevelStatus ? pvmoduleList.filter(e => e.pvAllLevel.includes(pvLevelStatus)) : pvmoduleList;
     this.setState({ newList: tmpPvmoduleList }, () => {
-      this.initRender()
-    })
+      this.initRender();
+    });
   }
 
 
@@ -93,17 +93,17 @@ class PvmoduleList extends Component {
     const tmp = newList.slice(0, spliceLength + renderList.length);
     const updateTmp = newList.slice(0, renderList.length || spliceLength);
     this.setState({
-      renderList: initLoad ? tmp : updateTmp
+      renderList: initLoad ? tmp : updateTmp,
     });
   }
 
   pointStatus = {
-    '801': { backgroundColor: '#f9b600', color: '#fff' },// 偏低
+    '801': { backgroundColor: '#f9b600', color: '#fff' }, // 偏低
     '802': { backgroundColor: '#3e97d1', color: '#fff' }, // 偏高
     '803': { backgroundColor: '#a42b2c', color: '#fff' }, // 异常
     '400': { backgroundColor: '#ceebe0', color: '#199475' }, // 正常
     '500': { backgroundColor: '#f1f1f1', color: '#fff' }, // 无通讯
-    '900': { backgroundColor: '#f1f1f1', color: '#fff' },// 未接入
+    '900': { backgroundColor: '#f1f1f1', color: '#fff' }, // 未接入
   }
 
   buttonClick = (e) => {
@@ -111,8 +111,8 @@ class PvmoduleList extends Component {
     const { pvmoduleList } = this.props;
     this.setState({
       pvLevelStatus: e === pvLevelStatus ? '' : e,
-      renderList: []
-    }, () => { this.changeStationData(pvmoduleList) })
+      renderList: [],
+    }, () => { this.changeStationData(pvmoduleList); });
   }
 
   render() {
@@ -125,7 +125,7 @@ class PvmoduleList extends Component {
       { name: 'small', text: '偏小', useName: 'pvSmallerNum', pointStatus: '801' },
       { name: 'big', text: '偏大', useName: 'pvBiggerNum', pointStatus: '802' },
     ];
-    const baseLinkPath = "/hidden/monitorDevice";
+    const baseLinkPath = '/hidden/monitorDevice';
     const { stationCode } = this.props.match.params;
     return (
       <div className={styles.pvmodule}>
@@ -137,48 +137,52 @@ class PvmoduleList extends Component {
                   pvStatus.map(item => {
                     return (
                       <p className={`${styles.pvmoduleSelect} ${styles[item.name]} ${pvLevelStatus === item.pointStatus && styles.active}`} key={item.name}
-                        onClick={() => { this.buttonClick(item.pointStatus) }}>
+                        onClick={() => { this.buttonClick(item.pointStatus); }}>
                         {pvLevelStatus !== item.pointStatus && <i className={'iconfont icon-goon'}></i>}
                         {pvLevelStatus === item.pointStatus && <i className={'iconfont icon-done'}></i>}
                         {item.text} {dataFormats(pvLevelNums[item.useName], '--', 0)}
-                      </p>)
+                      </p>);
                   })}
               </div>
               <div className={styles.pvmoduleCont} ref={ref => this.newPinterest = ref}>
-                {(tmpPvmoduleList.length > 0 ? renderList.map((item, index) => {
-                  const { deviceCode, deviceName } = item;
-                  const parentTypeCode = deviceCode && deviceCode.split('M')[1] || '';
-                  return (
-                    <div key={item.deviceCode} className={styles.pvmoduleItem} >
-                      <div className={styles.deviceName} >
-                        <i className="iconfont icon-nb" ></i>
-                        {deviceCode && <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
-                          {deviceName}
-                        </Link> || deviceName}
-                      </div>
-                      <div className={styles.singlePvmodule}>
-                        {item.electricityList.map((e, i) => {
-                          const colorStatus = this.pointStatus[e.pointStatus];
-                          return (
-                            <span
-                              style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
-                              className={styles.commonStyle}
-                              key={e.pointName}
-                            >
-                              {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}
-                            </span>)
-                        })}
-                      </div>
-                    </div>
-                  );
-                }) : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
+                {(tmpPvmoduleList.length > 0 ?
+                  <React.Fragment>
+                    {renderList.map((item, index) => {
+                      const { deviceCode, deviceName } = item;
+                      const parentTypeCode = deviceCode && deviceCode.split('M')[1] || '';
+                      return (
+                        <div key={item.deviceCode} className={styles.pvmoduleItem} >
+                          <div className={styles.deviceName} >
+                            <i className="iconfont icon-nb" ></i>
+                            {deviceCode && <Link to={`${baseLinkPath}/${stationCode}/${parentTypeCode}/${deviceCode}`}>
+                              {deviceName}
+                            </Link> || deviceName}
+                          </div>
+                          <div className={styles.singlePvmodule}>
+                            {item.electricityList.map((e, i) => {
+                              const colorStatus = this.pointStatus[e.pointStatus];
+                              return (
+                                <span
+                                  style={{ backgroundColor: colorStatus.backgroundColor, color: colorStatus.color }}
+                                  className={styles.commonStyle}
+                                  key={e.pointName}
+                                >
+                                  {e.pointStatus !== '900' && dataFormats(e.pointValue, '--', 2, false)}
+                                </span>);
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    {renderList.length > 0 && (renderList.length < tmpPvmoduleList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
+                  </React.Fragment>
+                  : <div className={styles.nodata} ><img src="/img/nodata.png" /></div>)}
               </div>
-              {(renderList.length < tmpPvmoduleList.length) && <Spin size="large" style={{ margin: '30px auto', width: '100%' }} className={styles.loading} />}
             </React.Fragment>
           }
         </div>
       </div>
-    )
+    );
   }
 }
 
