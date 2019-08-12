@@ -175,7 +175,6 @@ class DataExportSearch extends Component{
     const { timeInterval, deviceFullCodes } = queryParams;
     const tmpQueryParam = {
       ...queryParams,
-      deviceFullCodes: deviceFullCodes.slice(0, 2),
       timeInterval: interval,
       dataTypes: [],
     };
@@ -196,7 +195,6 @@ class DataExportSearch extends Component{
         },
       });
       getPointInfo({
-        deviceFullCodes: deviceFullCodes.slice(0, 2),
         timeInterval: interval,
       });
     } else { // 秒级数据( 1s与5s)切换
