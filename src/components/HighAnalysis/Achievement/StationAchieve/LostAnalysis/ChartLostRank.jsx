@@ -195,6 +195,19 @@ class ChartLostRank extends Component {
       },
       series,
     };
+    const endPosition = 30 / lostRank.length >= 1 ? 100 : 3000 / lostRank.length;
+    lostRank.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+      bottom: 15,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     rankChart.hideLoading();
     rankChart.setOption(option);
     rankChart.on('click', (param) => this.chartHandle(param, sortedLostRank, rankChart ));

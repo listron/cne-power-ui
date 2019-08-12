@@ -171,17 +171,26 @@ class ChartLostTrend extends Component {
       series,
     };
     trendChart.hideLoading();
+    lostTrend.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      bottom: 16,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+    }]);
     trendChart.setOption(option);
     trendChart.on('click', (param) => this.chartHandle(param, lostTrend, trendChart));
   }
 
   render() {
-    const { lostChartTimeMode } = this.props;
+    const { lostChartTimeMode, lostChartDevice, quotaName } = this.props;
+    const chartName = lostChartDevice && lostChartDevice.deviceName ? `${lostChartDevice.deviceName}-` : '';
     return (
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            PBA趋势
+            {chartName}{quotaName}
           </span>
           <TimeSelect lostChartTimeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>

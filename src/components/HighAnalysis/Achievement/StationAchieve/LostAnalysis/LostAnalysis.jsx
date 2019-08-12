@@ -122,7 +122,7 @@ class LostAnalysis extends Component {
   }
 
   render() {
-    const { active, lostChartDevice, lostChartTime } = this.props;
+    const { active } = this.props;
     const { quotaName } = this.state;
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
@@ -135,7 +135,10 @@ class LostAnalysis extends Component {
           {...this.props}
           quotaName={quotaName}
         />
-        <ChartLostTypes {...this.props} lostChartDevice={lostChartDevice} lostChartTime={lostChartTime} />
+        <ChartLostTypes
+          {...this.props}
+          quotaName={quotaName}
+        />
       </div>
     );
   }
