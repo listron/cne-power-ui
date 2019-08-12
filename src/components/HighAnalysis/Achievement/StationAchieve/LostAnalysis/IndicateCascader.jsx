@@ -14,6 +14,10 @@ class IndicateCascader extends Component {
     let quotaResult = [];
     quotaInfo.find(e => {
       const { children = [], value } = e || {};
+      if (value === lostQuota && children.length === 0) {
+        quotaResult = [value];
+        return true;
+      }
       return children.find(m => {
         const isThatQuota = m.value === lostQuota;
         if (isThatQuota) {
