@@ -148,10 +148,11 @@ class ChartLostRank extends Component {
     let deviceFullcodes;
     if (lostChartDevice && lostChartDevice.deviceFullcode === selectedInfo.deviceFullcode) { // 取消当前选中项.
       deviceFullcodes = searchParam.searchDevice;
+      this.props.changeStore({ lostChartDevice: null });
     } else {
       deviceFullcodes = [selectedInfo.deviceFullcode];
+      this.props.changeStore({ lostChartDevice: selectedInfo });
     }
-    this.props.changeStore({ lostChartDevice });
     this.props.getLostTrend({
       stationCodes: [searchParam.searchCode],
       deviceFullcodes,
@@ -195,6 +196,19 @@ class ChartLostRank extends Component {
       },
       series,
     };
+    const endPosition = 30 / lostRank.length >= 1 ? 100 : 3000 / lostRank.length;
+    lostRank.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+      bottom: 15,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     rankChart.hideLoading();
     rankChart.setOption(option);
     rankChart.on('click', (param) => this.chartHandle(param, sortedLostRank, rankChart ));

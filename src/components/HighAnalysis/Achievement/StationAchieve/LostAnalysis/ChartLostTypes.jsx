@@ -107,7 +107,7 @@ class ChartLostTypes extends Component {
         },
         data: hideBarData,
       }, {
-          name: '生活费',
+          name: '损失电量',
           type: 'bar',
           stack: '总量',
           barWidth: '10px',
@@ -129,17 +129,27 @@ class ChartLostTypes extends Component {
           })),
       }],
     };
-    typesChart.showLoading();
+    typesChart.hideLoading();
+    lostTypes.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      bottom: 16,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+    }]);
     typesChart.setOption(option);
   }
 
   render() {
     const { lostChartDevice, lostChartTime } = this.props;
+    const chartName = lostChartDevice && lostChartDevice.deviceName ? `${lostChartDevice.deviceName}-` : '';
+    const chartTime = lostChartTime ? `${lostChartTime}-` : '';
     return (
       <div className={styles.lostTypes}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {`${lostChartDevice && lostChartDevice.deviceName}-${lostChartTime || ''}-`}损失电量分解图
+            {chartName}{chartTime}损失电量分解图
           </span>
           <span className={styles.handle}>
             <Button onClick={this.toWorkDetail}>运行数据</Button>
