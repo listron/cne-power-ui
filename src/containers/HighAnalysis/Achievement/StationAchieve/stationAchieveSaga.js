@@ -193,6 +193,120 @@ function *getStopTypes({ payload }){ // 停机 - 各类停机时长及次数
   }
 }
 
+function *getCurveDevices({ payload }) { // 获取各机组曲线
+  const url = `${APIBasePath}${highAnalysis.getCurveDevices}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveDevicesLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveDevices: response.data || [],
+        curveDevicesLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveDevices: [],
+      curveDevicesLoading: false,
+    });
+  }
+}
+
+function *getCurveDevicesAep({ payload }) { // 各机组aep与风速
+  const url = `${APIBasePath}${highAnalysis.getCurveDevicesAep}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveDevicesAepLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveDevicesAep: response.data || [],
+        curveDevicesAepLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveDevicesAep: [],
+      curveDevicesAepLoading: false,
+    });
+  }
+}
+
+function *getCurveDevicesPsd({ payload }) { // 各机组聚合度psd
+  const url = `${APIBasePath}${highAnalysis.getCurveDevicesPsd}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveDevicesPsdLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveDevicesPsd: response.data || [],
+        curveDevicesPsdLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveDevicesPsd: [],
+      curveDevicesPsdLoading: false,
+    });
+  }
+}
+
+function *getCurveMonths({ payload }){ // 某机组各月功率曲线
+  const url = `${APIBasePath}${highAnalysis.getCurveMonths}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveMonthsLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveMonths: response.data || [],
+        curveMonthsLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveMonths: [],
+      curveMonthsLoading: false,
+    });
+  }
+}
+
+function *getCurveMonthAep({ payload }){ // 某机组各月aep及风速
+  const url = `${APIBasePath}${highAnalysis.getCurveMonthAep}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveMonthAepLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveMonthAep: response.data || [],
+        curveMonthAepLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveMonthAep: [],
+      curveMonthAepLoading: false,
+    });
+  }
+}
+
+function *getCurveMonthPsd({ payload }){ // 某机组psd聚合度
+  const url = `${APIBasePath}${highAnalysis.getCurveMonthPsd}`;
+  try {
+    yield call(easyPut, 'changeStore', { curveMonthPsdLoading: true });
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        curveMonthPsd: response.data || [],
+        curveMonthPsdLoading: false,
+      });
+    } else { throw response; }
+  } catch (error) {
+    yield call(easyPut, 'changeStore', {
+      curveMonthPsd: [],
+      curveMonthPsdLoading: false,
+    });
+  }
+}
+
 export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getDevices, getDevices);
   yield takeLatest(stationAchieveAction.getLostRank, getLostRank);
@@ -202,5 +316,11 @@ export function* watchStationAhieve() {
   yield takeLatest(stationAchieveAction.getStopRank, getStopRank);
   yield takeLatest(stationAchieveAction.getStopTrend, getStopTrend);
   yield takeLatest(stationAchieveAction.getStopTypes, getStopTypes);
+  yield takeLatest(stationAchieveAction.getCurveDevices, getCurveDevices);
+  yield takeLatest(stationAchieveAction.getCurveDevicesAep, getCurveDevicesAep);
+  yield takeLatest(stationAchieveAction.getCurveDevicesPsd, getCurveDevicesPsd);
+  yield takeLatest(stationAchieveAction.getCurveMonths, getCurveMonths);
+  yield takeLatest(stationAchieveAction.getCurveMonthAep, getCurveMonthAep);
+  yield takeLatest(stationAchieveAction.getCurveMonthPsd, getCurveMonthPsd);
 }
 

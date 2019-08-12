@@ -1,0 +1,46 @@
+@import '../stationStyle.scss';
+
+.curveAnalysis{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.tooltip{
+  width: 160px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+  .info{
+    padding: 8px;
+  }
+  .eachItem{
+    display: flex;
+    line-height: 21px;
+    justify-content: space-between;
+  }
+}
+
+.curveAnalysis{
+  // .lostRank, .lostTrend, .lostTypes{
+  //   background-color: #fff;
+  //   .top .title{
+  //     color: #000;
+  //   }
+  //   .top .handle{
+  //     color: #666;
+  //   }
+  // }
+}
+.tooltip{ // chart提示
+  min-width: 160px;
+  background-color: #fff;
+  color: #666;
+  .title{
+    border-bottom: 1px solid #dfdfdf;
+  }
+}

@@ -51,6 +51,12 @@ const mapDispatchToProps = (dispatch) => ({
   getStopTrend: payload => dispatch({ type: stationAchieveAction.getStopTrend, payload }),
   getStopTypes: payload => dispatch({ type: stationAchieveAction.getStopTypes, payload }),
 
+  getCurveDevices: payload => dispatch({ type: stationAchieveAction.getCurveDevices, payload }),
+  getCurveDevicesAep: payload => dispatch({ type: stationAchieveAction.getCurveDevicesAep, payload }),
+  getCurveDevicesPsd: payload => dispatch({ type: stationAchieveAction.getCurveDevicesPsd, payload }),
+  getCurveMonths: payload => dispatch({ type: stationAchieveAction.getCurveMonths, payload }),
+  getCurveMonthAep: payload => dispatch({ type: stationAchieveAction.getCurveMonthAep, payload }),
+  getCurveMonthPsd: payload => dispatch({ type: stationAchieveAction.getCurveMonthPsd, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);

@@ -31,7 +31,13 @@ const initState = immutable.fromJS({
   stopChartTimeMode: 'month', // 图表时间格式选中
   stopChartTypes: null, // 图表各类停机次数与时长选中 {}
 
+  curveTopStringify: '', // curve 缓存请求字符串
+  curveDeviceInfo: null, // 选中的设备信息 {deviceFullcode, deviceName}
+  curveDevicesTime: null, // 邻比分析设备选中时间
+  curveEachMonths: [], // 环比分析各月选中时间
+
   modeDevices: [], // 电站 设备型号+设备集合
+
   lostRank: [], // 损失根源 - 指标排名
   lostRankLoading: false,
   lostTrend: [], // 损失根源 - 指标趋势
@@ -46,6 +52,19 @@ const initState = immutable.fromJS({
   stopTrendLoading: false,
   stopTypes: [], // 停机 - 各类停机时长及次数
   stopTypesLoading: false,
+
+  curveDevices: [], // 各机组曲线
+  curveDevicesLoading: false,
+  curveDevicesAep: [], // 机组aep及风速
+  curveDevicesAepLoading: false,
+  curveDevicesPsd: [], // 机组聚合度psd
+  curveDevicesPsdLoading: false,
+  curveMonths: [], // 某机组各月功率曲线
+  curveMonthsLoading: false,
+  curveMonthAep: [], // 某机组各月aep及风速
+  curveMonthAepLoading: false,
+  curveMonthPsd: [], // 某机组psd聚合度
+  curveMonthPsdLoading: false,
 });
 
 export const achieveStation = (state = initState, action) => {
