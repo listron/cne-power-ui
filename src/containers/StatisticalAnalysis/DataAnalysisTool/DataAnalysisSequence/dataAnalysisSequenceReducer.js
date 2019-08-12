@@ -1,13 +1,23 @@
 import Immutable from 'immutable';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
 var initState = Immutable.fromJS({
-  loading: false,
+  chartLoading: false,
+  chartTime: null, //图的时间戳
   stationCode: null,
+  pointY1: '',
+  pointY2: '',
+  startTime: '',
+  endTime: '',
+  deviceFullCode: '',
+  point1Name: '',
+  point2Name: '',
   showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
-  deviceList: [],
-  sequenceNames: [],
-  sequenceNameTime: null,
-  sequenceotherNames: [],
+  deviceList: [], //电站下的设备
+  sequenceNames: [], //测点
+  sequenceNameTime: null, //请求测点的时间戳
+  sequenceotherNames: [], //其他测点名字
+  sequenceData: [], //时序图汇总数据
+  curBigChartData: {}, //当前请求到的时序图
 
 
 

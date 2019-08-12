@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
@@ -28,8 +28,8 @@ function* getStationDevice(action) {//获取
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        scatterNames: [],
-        scatterNameTime: moment().unix(),
+        deviceList: [],
+
       },
     });
   }
@@ -37,7 +37,7 @@ function* getStationDevice(action) {//获取
 
 function* getSequenceName(action) {//获取
   const { payload } = action;
-  const chartType = 2;
+  const chartType = 1;
   // const url = '/mock/api/v3/wind/analysis/scatterplot/names';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getScatterName}/${payload.stationCode}/${chartType}`;
   try {
@@ -88,13 +88,15 @@ function* getSequenceOtherName(action) {//获取
 }
 function* getSequenceData(action) {//获取
   const { payload } = action;
-  const { startTime, endTime } = payload;
+  const { startTime, endTime, interval } = payload;
+  // const url = '/mock/api/v3/wind/analysis/sequencechart';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
         ...payload,
+        chartLoading: true,
       },
     });
     const response = yield call(axios.post, url, {
@@ -103,12 +105,18 @@ function* getSequenceData(action) {//获取
       endTime: moment(endTime).utc().format(),
     });
     if (response.data.code === '10000') {
-      const sequenceData = response.data.data || [];
+      const curChartData = response.data.data || {};
+      curChartData.likeStatus = false;
+      const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
+      console.log('preSequenceData: ', preSequenceData);
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
-          sequenceData,
-          scatterDataTime: moment().unix(),
+          chartTime: moment().unix(), // 用于比较
+          sequenceData: interval === 10 ? [...preSequenceData, curChartData] : preSequenceData,
+          curBigChartData: interval === 60 ? curChartData : {},
+          chartLoading: false,
+
         },
       });
     } else {
@@ -119,8 +127,9 @@ function* getSequenceData(action) {//获取
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        scatterData: [],
-        scatterDataTime: moment().unix(),
+        chartLoading: false,
+        sequenceData: [],
+        chartTime: moment().unix(),
       },
     });
   }

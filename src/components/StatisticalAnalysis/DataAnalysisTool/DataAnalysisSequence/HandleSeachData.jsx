@@ -21,11 +21,12 @@ const options = [{
   value: '控制相关',
   pointsUnionName: '控制相关',
   isLeaf: false,
-}, {
-  value: '其他',
-  pointsUnionName: '其他',
-  isLeaf: false,
 },
+  // {
+  //   value: '其他',
+  //   pointsUnionName: '其他',
+  //   isLeaf: false,
+  // },
 ];
 
 class HandleSeachData extends React.Component {
@@ -49,13 +50,13 @@ class HandleSeachData extends React.Component {
     };
   }
   componentWillReceiveProps(nextProp) {
-    const { scatterNames, getScatterData, stationCode, scatterNameTime } = nextProp;
+    const { sequenceNames, getSequenceData, deviceList, sequenceNameTime } = nextProp;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
     const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
-    // const preScatterName = this.props.scatterNames;
-    if (this.props.scatterNameTime !== scatterNameTime) {
+    // const preScatterName = this.props.sequenceNames;
+    if (this.props.sequenceNameTime !== sequenceNameTime) {
       const { options } = this.state;
-      const newscatterNames = this.formater(scatterNames);
+      const newscatterNames = this.formater(sequenceNames);
       const arr = options.map(e => e.pointsUnionName);
       const option = newscatterNames.map((e, i) => {
         return {
@@ -67,28 +68,31 @@ class HandleSeachData extends React.Component {
         };
       });
       const otherName = {
-        // value: '其他',
-        // pointsUnionName: '其他',
-        // isLeaf: false,
+        value: '其他',
+        pointsUnionName: '其他',
+        isLeaf: false,
       };
-      if (scatterNames[0]) {
-        const { pointNameList, pointType } = scatterNames[0];
+      if (sequenceNames[0] && deviceList.length) {
+        const { pointNameList, pointType } = sequenceNames[0];
+        const fristDevice = deviceList[0];
+        const deviceFullCode = fristDevice.deviceFullCode;
         const firstData = pointNameList ? pointNameList[0] : [];
         const { pointCodeNameX, pointCodeNameY, pointCodeX, pointCodeY } = firstData;
         this.setState({ options: [...option, otherName], scatterNameValue: [pointType, `${pointCodeX}_${pointCodeY}`] });
-        this.props.changeSquenceStore({ pointCodeNameX, pointCodeNameY, xPointCode: pointCodeX, yPointCode: pointCodeY });
+        this.props.changeSquenceStore({ pointCodeNameX, pointCodeNameY, pointY1: pointCodeX, pointY2: pointCodeY });
         this.setState({
           xName: pointCodeNameX,
           yName: pointCodeNameY,
           xCode: pointCodeX,
           yCode: pointCodeY,
         });
-        getScatterData({
-          stationCode,
+        getSequenceData({
+          deviceFullCode,
           startTime: defaultStartime,
           endTime: defaultEndtime,
-          xPointCode: pointCodeX,
-          yPointCode: pointCodeY,
+          pointY1: pointCodeX,
+          pointY2: pointCodeY,
+          interval: 10,
         });
       }
     }
@@ -124,18 +128,19 @@ class HandleSeachData extends React.Component {
       this.setState({
         showOther: true,
       });
-      this.props.getScatterOtherName({
+      this.props.getSequenceOtherName({
         stationCode,
       });
     } else {
-      const { pointCodeNameX, pointCodeNameY } = selectedOptions[1];
+      const selectedOption = selectedOptions[1] ? selectedOptions[1] : [];
+      const { pointCodeNameX, pointCodeNameY } = selectedOption;
       const codeValue = value[value.length - 1];
       const { pointCodeX, pointCodeY } = codeValue.split('_');
       this.props.changeSquenceStore({
         pointCodeNameX,
         pointCodeNameY,
-        xPointCode: pointCodeX,
-        yPointCode: pointCodeY,
+        pointY1: pointCodeX,
+        pointY2: pointCodeY,
       });
       this.setState({
         scatterNameValue: value,
@@ -158,16 +163,20 @@ class HandleSeachData extends React.Component {
     });
 
   }
-  getScatterData = () => {
+  getSequenceData = () => {
     //请求数据
-    const { getScatterData, changeSquenceStore, stationCode, startTime, endTime } = this.props;
+    const { getSequenceData, changeSquenceStore, deviceList, startTime, endTime } = this.props;
     const { xCode, yCode, xName, yName } = this.state;
-    getScatterData({
-      stationCode,
-      xPointCode: xCode,
-      yPointCode: yCode,
+    const fristDevice = deviceList[0];
+    const deviceFullCode = fristDevice.deviceFullCode;
+
+    getSequenceData({
+      deviceFullCode,
+      pointY1: xCode,
+      pointY2: yCode,
       startTime,
       endTime,
+      interval: 10,
     });
     changeSquenceStore({
       pointCodeNameX: xName,
@@ -189,7 +198,7 @@ class HandleSeachData extends React.Component {
     });
   }
   render() {
-    const { stationCode, stations, pointCodeNameX, pointCodeNameY, scatterotherNames, theme } = this.props;
+    const { stationCode, stations, scatterotherNames, theme } = this.props;
     // console.log('scatterotherNames: ', scatterotherNames);
     const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
@@ -282,7 +291,7 @@ class HandleSeachData extends React.Component {
                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
                 onChange={this.changeYmin}
               />
-              <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
+              <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
             </div>
 
           </div>}

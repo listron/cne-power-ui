@@ -142,7 +142,12 @@
         width: 50%;
         height: 300px;
         border: 1px solid lightblue;
-        background: pink;
+
+        // background: pink;
+        .sequenceChart {
+          width: 100%;
+          height: 280px;
+        }
       }
     }
 
