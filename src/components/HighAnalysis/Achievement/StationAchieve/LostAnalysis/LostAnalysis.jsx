@@ -12,7 +12,9 @@ class LostAnalysis extends Component {
     active: PropTypes.bool,
     lostQuota: PropTypes.string,
     lostStringify: PropTypes.string,
-    chartTimeMode: PropTypes.string,
+    lostChartTimeMode: PropTypes.string,
+    lostChartDevice: PropTypes.object,
+    lostChartTime: PropTypes.string,
     location: PropTypes.object,
     quotaInfo: PropTypes.array,
     changeStore: PropTypes.func,
@@ -61,9 +63,16 @@ class LostAnalysis extends Component {
     // 第一个指标作为数据
     const firstType = quotaInfo[0] || {};
     const quotas = firstType.children || [];
-    const firstQuota = quotas[0] || {};
-    const lostQuota = firstQuota.value || null;
-    this.setState({ quotaName: firstQuota.label });
+    let lostQuota, quotaName;
+    if(quotas.length > 0){
+      const firstQuota = quotas[0] || {};
+      lostQuota = firstQuota.value || null;
+      quotaName = firstQuota.label || '';
+    } else {
+      lostQuota = firstType.value || null;
+      quotaName = firstType.label || '';
+    }
+    this.setState({ quotaName });
     changeStore({ lostQuota });
     infoStr && this.queryRank(infoStr, lostQuota);
     infoStr && this.queryRank(infoStr, lostQuota);
@@ -89,7 +98,7 @@ class LostAnalysis extends Component {
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.props.chartTimeMode,
+      type: this.props.lostChartTimeMode,
     });
   }
 
@@ -103,27 +112,18 @@ class LostAnalysis extends Component {
     const infoStr = searchUtil(search).getValue('station');
     const baseParam = this.getQueryParam(infoStr);
     this.setState({ quotaName });
+    this.props.changeStore({ lostQuota });
     this.props.getLostRank({ ...baseParam, indicatorCode: lostQuota });
     this.props.getLostTrend({
       ...baseParam,
       indicatorCode: lostQuota,
-      type: this.props.chartTimeMode,
+      type: this.props.lostChartTimeMode,
     });
   }
 
   render() {
-    const { active } = this.props;
+    const { active, lostChartDevice, lostChartTime } = this.props;
     const { quotaName } = this.state;
-    const lostTypes = {
-      theoryGen: 10000,
-      deratingGen: 150,
-      faultGen: 200,
-      substationGen: 450,
-      planShutdownGen: 370,
-      courtGen: 1120,
-      otherGen: 710,
-      actualGen: 10000 - 150 - 200 - 450 - 370 - 1120 - 710,
-    };
     return (
       <div className={`${styles.lostAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <ChartLostRank
@@ -135,7 +135,7 @@ class LostAnalysis extends Component {
           {...this.props}
           quotaName={quotaName}
         />
-        <ChartLostTypes {...this.props} lostTypes={lostTypes} />
+        <ChartLostTypes {...this.props} lostChartDevice={lostChartDevice} lostChartTime={lostChartTime} />
       </div>
     );
   }

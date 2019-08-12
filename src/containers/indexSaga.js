@@ -90,12 +90,12 @@ import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/group
 import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
 
-import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
-import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
-import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
-import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
-import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
-import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
+import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
+import { watchBookDeviceManage } from './Operation/Book/DeviceManage/deviceManageSaga';
+import { watchBookPartsInfo } from './Operation/Book/DeviceManage/PartInfo/partInfoSaga';
+import { watchDeviceAccount } from './Operation/Book/DeviceAccount/deviceAccountSaga';
+import { watchWarehouse } from './Operation/Book/Warehouse/warehouseSaga';
 import { watchWarehouseManage } from './Operation/Book/WarehouseManage/warehouseManageSaga';
 import { watchStockRecords } from './Operation/Book/StockRecords/stockRecordsSaga';
 import { watchExaminer } from './Operation/TwoTickets/Examiner/examinerSaga';
@@ -210,4 +210,3 @@ export default function* rootSaga() {
     watchWorkFlow(), ////两票 -工作票
   ]);
 }
-

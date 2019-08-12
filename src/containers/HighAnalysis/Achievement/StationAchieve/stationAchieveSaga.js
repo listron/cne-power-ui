@@ -7,6 +7,21 @@ import { stationAchieveAction } from './stationAchieveReducer';
 const { APIBasePath } = path.basePaths;
 const { highAnalysis } = path.APISubPaths;
 
+const timeType = {
+  day: '1',
+  month: '2',
+  year: '3',
+};
+
+const stopElecType = {
+  all: 0,
+  faultGen: 1,
+  planShutdownGen: 2,
+  substationGen: 3,
+  courtGen: 4,
+  otherGen: 5,
+};
+
 function* easyPut(actionName, payload){
   yield put({
     type: stationAchieveAction[actionName],
@@ -60,11 +75,6 @@ function *getLostRank({ payload }){ // 损失根源 - 指标排名
 
 function *getLostTrend({ payload }){ // 损失根源 - 指标趋势
   const url = `${APIBasePath}${highAnalysis.getLostTrend}`;
-  const timeType = {
-    day: '1',
-    month: '2',
-    year: '3',
-  };
   try {
     yield call(easyPut, 'changeStore', { lostTrendLoading: true });
     const response = yield call(request.post, url, {
@@ -92,13 +102,13 @@ function *getLostTypes({ payload }){ // 损失根源 - 损失电量分解
     const response = yield call(request.post, url, payload);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
-        lostTypes: response.data || [],
+        lostTypes: response.data || {},
         lostTypesLoading: false,
       });
     } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
-      lostTypes: [],
+      lostTypes: {},
       lostTypesLoading: false,
     });
   }
@@ -107,13 +117,16 @@ function *getLostTypes({ payload }){ // 损失根源 - 损失电量分解
 function *getStopElec({ payload }){ // 停机 - 损失电量
   const url = `${APIBasePath}${highAnalysis.getStopElec}`;
   try {
-    const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
-    });
-    console.log(response);
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        stopElec: response.data || {},
+      });
+    } else { throw response; }
   } catch (error) {
-    return; // 没错，我就是故意吞了错误，咋地。
+    yield call(easyPut, 'changeStore', {
+      stopElec: {},
+    });
   }
 }
 
@@ -122,10 +135,15 @@ function *getStopRank({ payload }){ // 停机 - 设备停机时长及次数
   try {
     yield call(easyPut, 'changeStore', { stopRankLoading: true });
     const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
+      ...payload,
+      parentFaultId: stopElecType[payload.parentFaultId],
     });
-    console.log(response);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        stopRank: response.data || [],
+        stopRankLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       stopRank: [],
@@ -139,10 +157,15 @@ function *getStopTrend({ payload }){ // 停机 - 日月年 停机时长次数趋
   try {
     yield call(easyPut, 'changeStore', { stopTrendLoading: true });
     const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
+      ...payload,
+      type: timeType[payload.type],
     });
-    console.log(response);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        stopTrend: response.data || [],
+        stopTrendLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       stopTrend: [],
@@ -155,11 +178,13 @@ function *getStopTypes({ payload }){ // 停机 - 各类停机时长及次数
   const url = `${APIBasePath}${highAnalysis.getStopTypes}`;
   try {
     yield call(easyPut, 'changeStore', { stopTypesLoading: true });
-    const response = yield call(request.post, url, {
-      a: 1,
-      b: 2,
-    });
-    console.log(response);
+    const response = yield call(request.post, url, payload);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        stopTypes: response.data || [],
+        stopTypesLoading: false,
+      });
+    } else { throw response; }
   } catch (error) {
     yield call(easyPut, 'changeStore', {
       stopTypes: [],

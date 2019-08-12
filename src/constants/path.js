@@ -140,7 +140,7 @@ export default {
       editDeviceModes: '/v3/ledger/devicemodes/update', //编辑设备型号
       deleteDeviceModes: '/v3/ledger/devicemodes/delete', //删除设备型号
       getEnterprisecodes: '/v3/ledger/operator/enterprisecodes', //获取可操作主设备类型的企业编码
-//设备管理
+      //设备管理
       getfactorsDeviceMode: '/v3/ledger/devicemodes', //获取某设备厂家下的设备型号
       getDevicePartInfo: '/v3/ledger/device/parts/list', //获取某设备的部件信息
       getDevicefixRecord: '/v3/ledger/device/defect/list', //获取某设备检修记录
@@ -210,7 +210,7 @@ export default {
       editSettedInfo: '/v3/workflow/station/distribution/update', // 编辑已配置电站
       getSettedInfo: '/v3/workflow/station/distribution/detail', // 查看已配置电站
       getSettableUsers: '/v3/workflow/node/ableCheckUser', // 查看可配置的人员列表
-      // 两票管理
+      // 两票管理 
       getDocketList: '/v3/docket/pageList', //列表
       getDocketStatus: '/v3/docket/state/total', //票据状态及总数
       getDocketType: '/v3/docket/typeList', //票据类型
@@ -329,7 +329,7 @@ export default {
       seriesinverterDetail: '/v3/monitor/seriesinverter', //组串式逆变器详情
       inverterSubList: '/v3/monitor/seriesinverter/sublist', // 逆变器下级设备信息
       seriesinverterTenMin: '/v3/monitor/seriesinverter/sequencechart', //组串式逆变器10min时序图
-      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图
+      seriesBranchTenMin: '/v3/monitor/seriesinverter/sequencechart/zl', // 组串式逆变器下支路电流10min时序图 
       confluenceboxDetail: '/v3/monitor/confluencebox', //汇流箱详情
       confluenceboxSubList: '/v3/monitor/confluencebox/sublist', // 汇流箱下级设备信息
       confluenceboxTenMin: '/v3/monitor/confluencebox/sequencechart', //汇流箱10min时序图
@@ -613,7 +613,6 @@ export default {
     },
   },
 };
-
 
 
 

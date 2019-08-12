@@ -8,8 +8,10 @@ import styles from './lost.scss';
 class ChartLostTypes extends Component {
 
   static propTypes = {
-    lostTypes: PropTypes.array, // 损失根源 - 指标排名
+    lostTypes: PropTypes.object, // 损失根源 - 指标排名
     lostTypesLoading: PropTypes.bool,
+    lostChartDevice: PropTypes.object,
+    lostChartTime: PropTypes.string,
   }
 
   componentDidMount(){
@@ -42,7 +44,8 @@ class ChartLostTypes extends Component {
   ]
 
   setChartLoading = () => {
-    console.log('loading');
+    const typesChart = this.rankRef && echarts.getInstanceByDom(this.typesRef);
+    typesChart && typesChart.showLoading();
   }
 
   getBarValue = (lostTypes, dataKey) => {
@@ -56,6 +59,10 @@ class ChartLostTypes extends Component {
       barData.push(barValue);
     });
     return { hideBarData, barData };
+  }
+
+  toWorkDetail = () => {
+    console.log('去运行数据分析页');
   }
 
   renderChart = (lostTypes = {}) => {
@@ -122,18 +129,20 @@ class ChartLostTypes extends Component {
           })),
       }],
     };
+    typesChart.showLoading();
     typesChart.setOption(option);
   }
 
   render() {
+    const { lostChartDevice, lostChartTime } = this.props;
     return (
       <div className={styles.lostTypes}>
         <div className={styles.top}>
           <span className={styles.title}>
-            损失电量分解图
+            {`${lostChartDevice && lostChartDevice.deviceName}-${lostChartTime || ''}-`}损失电量分解图
           </span>
           <span className={styles.handle}>
-            <Button>运行数据</Button>
+            <Button onClick={this.toWorkDetail}>运行数据</Button>
           </span>
         </div>
         <div className={styles.chart} ref={(ref)=> {this.typesRef = ref;}} />

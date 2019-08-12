@@ -5,40 +5,40 @@ import styles from './style.scss';
 class TimeSelect extends Component {
 
   static propTypes = {
-    chartTimeMode: PropTypes.string,
+    lostChartTimeMode: PropTypes.string,
     timeModeChange: PropTypes.func,
   }
 
   checkDay = () => {
-    const { chartTimeMode, timeModeChange } = this.props;
-    chartTimeMode !== 'day' && timeModeChange('day');
+    const { lostChartTimeMode, timeModeChange } = this.props;
+    lostChartTimeMode !== 'day' && timeModeChange('day');
   }
 
   checkMonth = () => {
-    const { chartTimeMode, timeModeChange } = this.props;
-    chartTimeMode !== 'month' && timeModeChange('month');
+    const { lostChartTimeMode, timeModeChange } = this.props;
+    lostChartTimeMode !== 'month' && timeModeChange('month');
   }
 
   checkYear = () => {
-    const { chartTimeMode, timeModeChange } = this.props;
-    chartTimeMode !== 'year' && timeModeChange('year');
+    const { lostChartTimeMode, timeModeChange } = this.props;
+    lostChartTimeMode !== 'year' && timeModeChange('year');
   }
 
   render() {
-    const { chartTimeMode } = this.props;
+    const { lostChartTimeMode } = this.props;
     return (
       <div className={styles.timeSelect}>
         <span
           onClick={this.checkDay}
-          className={`${styles.day} ${chartTimeMode === 'day' ? styles.choosed : null}`}
+          className={`${styles.day} ${lostChartTimeMode === 'day' ? styles.choosed : null}`}
         >按日</span>
         <span
           onClick={this.checkMonth}
-          className={`${styles.month} ${chartTimeMode === 'month' ? styles.choosed : null}`}
+          className={`${styles.month} ${lostChartTimeMode === 'month' ? styles.choosed : null}`}
         >按月</span>
         <span
           onClick={this.checkYear}
-          className={`${styles.year} ${chartTimeMode === 'year' ? styles.choosed : null}`}
+          className={`${styles.year} ${lostChartTimeMode === 'year' ? styles.choosed : null}`}
         >按年</span>
       </div>
     );
