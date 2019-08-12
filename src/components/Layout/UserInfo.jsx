@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown, Menu, Icon } from 'antd';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import styles from './userInfo.scss';
@@ -15,10 +15,11 @@ class UserInfo extends Component {
     changeLoginStore: PropTypes.func,
     resetMonitorData: PropTypes.func,
     resetCommonStore: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   accountSettings = () => {
@@ -41,17 +42,17 @@ class UserInfo extends Component {
     Cookie.remove('userRight');
     Cookie.remove('rightMenu');
     localStorage.clear();
-    this.props.changeLoginStore({pageTab: 'login'});
+    this.props.changeLoginStore({ pageTab: 'login' });
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.history.push('/login');
   }
 
   render() {
-    const { userFullName, username, userLogo } = this.props;
+    const { userFullName, username, userLogo, theme } = this.props;
     const defaultUserLogo = username && username[0];
     const DropdowMenu = (
-      <Menu className={styles.layoutUserDropdown}>
+      <Menu className={`${styles.layoutUserDropdown}`}>
         {username !== 'default' &&
           <Menu.Item className={styles.innerItem} onClick={this.accountSettings}>
             <span className="iconfont icon-password1"></span>
@@ -66,8 +67,9 @@ class UserInfo extends Component {
     );
     const nameStyle = this.props.inHomepage ? { color: '#a6e8ff' } : null;
     return (
-      <div className={styles.layoutUser}>
-        <Dropdown overlay={DropdowMenu} placement="bottomRight">
+      <div className={`${styles.layoutUser} ${styles[theme]}`}>
+        <div ref={'changeUser'} />
+        <Dropdown overlay={DropdowMenu} placement="bottomRight" getPopupContainer={() => this.refs.changeUser}>
           <span className={styles.layoutUserContent}>
             {userLogo && <img width="30px" height="30px" src={userLogo} />}
             {!userLogo && <span className={styles.userLogo}>{defaultUserLogo}</span>}
@@ -76,7 +78,7 @@ class UserInfo extends Component {
           </span>
         </Dropdown>
       </div>
-    )
+    );
   }
 }
 

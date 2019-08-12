@@ -137,7 +137,7 @@ class ScatterDiagramSearch extends Component{
     const { startTime, endTime, stationCode, deviceFullCode } = queryParam;
     const stationInfo = stationCode[0] || {};
     const deviceInfo = deviceFullCode[0] || {};
-    const timeZone = moment().zone() / (-60);
+    const timeZone = moment().utcOffset() / 60;
 
     downLoadFile({ 
       url,
@@ -215,7 +215,7 @@ class ScatterDiagramSearch extends Component{
               onChange={this.xSelectPoints}
               filterOption={(text, option) => option.props.children.toLowerCase().indexOf(text.toLowerCase()) >= 0}
             >
-             {pointsInfo.filter(e => e.devicePointCode !== yPoint).map(e => {
+             {pointsInfo.map(e => {
                 return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
             })}
           </Select>
@@ -232,7 +232,7 @@ class ScatterDiagramSearch extends Component{
             onChange={this.ySelectPoints}
             filterOption={(text, option) => option.props.children.toLowerCase().indexOf(text.toLowerCase()) >= 0}
           >
-           {pointsInfo.filter(e => e.devicePointCode !== xPoint).map(e => {
+           {pointsInfo.map(e => {
               return <Option key={e.devicePointCode} value={e.devicePointCode}>{e.devicePointName}</Option>
             })}
           </Select>

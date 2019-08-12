@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -138,7 +137,7 @@ class OrbitMap extends Component {
             }
           }]
         }//地图样式配置
-       },
+      },
       tooltip: {
         trigger: 'item',
         enterable: true,
@@ -159,7 +158,7 @@ class OrbitMap extends Component {
           type: 'lines',
           lineStyle: {
             normal: {
-                width: 3,
+              width: 3,
             }
           },
           mapType: 'none',
@@ -216,9 +215,9 @@ class OrbitMap extends Component {
           coordinateSystem: 'bmap',
           data:data,
           //  data: [
-            // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
+          // [{ coord: ["132.214", "33.32534"] }, { coord: ["133.124", "34.352"] }],
           //  { coords: [['119.4543', '25.9222'],['87.9236', '43.5883']],name:'刘德华1',dateValue:['2017-2018'] },
-            // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
+          // [{ coord: ['87.9236', '43.5883'] }, { coord: ['116.4551', '40.2539'] }],
           // ],
           symbolSize: [8],
           label: {
@@ -255,6 +254,3 @@ class OrbitMap extends Component {
   }
 }
 export default withRouter(OrbitMap);
-
-
-

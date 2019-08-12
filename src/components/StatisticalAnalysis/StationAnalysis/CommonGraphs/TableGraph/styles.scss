@@ -1,33 +1,109 @@
-.TableGraphContainer{
-  .TableGraphContainerTitle{
-    height:31px;
+.TableGraphContainer {
+  .TableGraphContainerTitle {
+    height: 31px;
     // line-height: 40px;
     display: flex;
-    flex:1;
+    flex: 1;
     justify-content: space-between;
-    .unit{
+    .unit {
       color: #999;
     }
   }
   .tableList {
     // width: 520px;
-    width:100%;
+    width: 100%;
     overflow: hidden;
     // border-bottom:1px solid #3b3838;
-    :global{
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th{
+    :global {
+      .ant-table-small
+        > .ant-table-content
+        > .ant-table-scroll
+        > .ant-table-header
+        > table
+        > .ant-table-thead
+        > tr
+        > th {
+        padding: 0 8px;
+      }
+      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td {
+        padding: 0 0 0 8px;
+      }
+    }
+  }
+}
+
+.light {
+  .TableGraphContainerTitle {
+    .unit {
+      color: #999;
+    }
+  }
+  .tableList {
+    :global {
+      .ant-table-small
+        > .ant-table-content
+        > .ant-table-scroll
+        > .ant-table-header
+        > table
+        > .ant-table-thead
+        > tr
+        > th {
         background-color: #199475;
-        color:#fff;
-        padding:0 8px;
+        color: #fff;
+        padding: 0 8px;
       }
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-body > table > .ant-table-tbody > tr > td{
-        padding:0 0 0 8px;
+      .ant-table-small
+        > .ant-table-content
+        > .ant-table-scroll
+        > .ant-table-header
+        > table
+        > .ant-table-thead
+        > tr
+        > th
+        .ant-table-column-sorter {
+        color: #fff;
       }
-      .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th .ant-table-column-sorter{
-        color:#fff;
-      }
-      .ant-table-thead > tr > th .ant-table-column-sorter-up.on, .ant-table-thead > tr > th .ant-table-column-sorter-down.on{
+      .ant-table-thead > tr > th .ant-table-column-sorter-up.on,
+      .ant-table-thead > tr > th .ant-table-column-sorter-down.on {
         color: #ddd;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../../theme/antdResetDark.scss";
+  .TableGraphContainerTitle {
+    .title {
+      display: inline-block;
+      background-image: -webkit-gradient(linear, 0 0, 0 bottom, from($fontColor-hover), to($fontColor));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      height: 19px;
+    }
+    .unit {
+      color: $fontColor;
+    }
+  }
+  .tableList {
+    :global {
+      .ant-table-header {
+        background: transparent;
+      }
+      .ant-table-small {
+        border: none;
+      }
+      .ant-table-small
+        > .ant-table-content
+        > .ant-table-scroll
+        > .ant-table-header
+        > table
+        > .ant-table-thead
+        > tr
+        > th {
+        background-color: transparent;
+        color: $fontColor;
+        padding: 0 8px;
       }
     }
   }

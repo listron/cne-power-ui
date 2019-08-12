@@ -31,13 +31,13 @@
 .dealForm {
   display: flex;
   flex-direction: column;
-  padding: 20px 24px;
+  // padding: 20px 24px;
   flex-shrink: 0;
   :global {
     .ant-form-item {
       display: flex;
       .ant-form-item-label {
-        width: 76px;
+        width: 77px;
         margin-right: 12px;
         display: flex;
         justify-content: flex-end;

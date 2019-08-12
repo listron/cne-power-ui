@@ -16,15 +16,16 @@ class SpareTakeout extends Component {
     takeoutStatus: PropTypes.string,
     backList: PropTypes.func,
     originTakeoutInfo: PropTypes.object,
+    materialListParams: PropTypes.object,
     changeStore: PropTypes.func,
     getMaterialDetailsList: PropTypes.func,
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
   componentDidMount(){
-    const { getMaterialDetailsList, originTakeoutInfo } = this.props;
+    const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
-    getMaterialDetailsList({ inventoryId });
+    getMaterialDetailsList({ inventoryId, ...materialListParams });
   }
 
   componentDidUpdate(preProps){
@@ -49,18 +50,18 @@ class SpareTakeout extends Component {
         takeoutWarehouseMaterial({
           inventoryId,
           materialCodes: materialCodes.map(e => e.materialCode).join(','),
-          remarks
+          remarks,
         });
       }
-    })
+    });
   }
 
   render(){
-    const { form, originTakeoutInfo, materialDetailsList, takeoutStatus } = this.props;
+    const { form, originTakeoutInfo, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
-      initialValue
+      initialValue,
     });
     return (
       <section className={styles.takeout}>
@@ -102,12 +103,16 @@ class SpareTakeout extends Component {
               rules: [{
                 required: true,
                 validator: (rule, value, callback) => {
-                  (!value || value.length === 0) && callback(`请选择物资`);
+                  (!value || value.length === 0) && callback('请选择物资');
                   callback();
                 },
               }],
             })(
-              <MaterialDetailsList materialDetailsList={materialDetailsList} total={originTakeoutInfo.inventoryNum} />
+              <MaterialDetailsList
+                {...this.props}
+                total={originTakeoutInfo.inventoryNum}
+                inventoryId={originTakeoutInfo.inventoryId}
+              />
             )}
           </FormItem>
           <FormItem label="备注">
@@ -121,7 +126,7 @@ class SpareTakeout extends Component {
           <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 

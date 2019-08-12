@@ -96,14 +96,14 @@ class StockSearch extends Component {
     });
   }
 
-  inImport = () => { // 入库导出
+  inImport = () => { // 导出
     const { downLoadFile, listParams } = this.props;
     const url = `${APIBasePath}${operation.inRecordExport}`;
     const { warehouseId, goodsType, startTime, endTime } = listParams;
-    const timeZone = moment().zone() / (-60);
+    const timeZone = moment().utcOffset() / 60;
     downLoadFile({
       url,
-      fileName: '入库表',
+      fileName: '表',
       params: {
         warehouseId,
         goodsType,
@@ -114,26 +114,8 @@ class StockSearch extends Component {
     });
   }
 
-  outImport = () => { // 出库导出
-    const { downLoadFile, listParams } = this.props;
-    const url = `${APIBasePath}${operation.outRecordExport}`;
-    const { warehouseId, goodsType, startTime, endTime } = listParams;
-    const timeZone = moment().zone() / (-60);
-    downLoadFile({
-      url,
-      fileName: '出库表',
-      params: {
-        warehouseId,
-        goodsType,
-        startTime: startTime ? moment(startTime).utc().format() : null, 
-        endTime: endTime ? moment(endTime).utc().format() : null,
-        timeZone,
-      },
-    });
-  }
-
   render() {
-    const { warehouseNames, tableType, listParams } = this.props;
+    const { warehouseNames, listParams } = this.props;
     const { warehouseId, goodsType, startTime, endTime } = listParams;
     return (
       <div className={styles.stockSearch}>
@@ -181,8 +163,7 @@ class StockSearch extends Component {
           />
         </div>
         <div className={styles.searchRight}>
-          {tableType === 'inRecord' ? <Button onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</Button> : 
-          <Button onClick={this.outImport} className={styles.outImportBtn} disabled={!warehouseId && !goodsType && !RangePicker && !endTime}>导出</Button>}
+          <Button onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</Button>
         </div>
       </div>
     );

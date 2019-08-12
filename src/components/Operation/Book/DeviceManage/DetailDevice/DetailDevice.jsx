@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../deviceSide.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import { baseFun, windTowerFun, windTimeFun, selcetbaseFun } from './detailInformation';
@@ -16,27 +16,27 @@ class DetailDevice extends Component {
     changeDeviceManageStore: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
       showWarningTip: false,
       warningTipText: '',
-      tableFilter: 'part'
-    }
+      tableFilter: 'part',
+    };
   }
   onShowSideChange = () => { // 编辑页
     const { getPvDevice, stationDeviceDetail, stationCode, getConnectDevice } = this.props;
-    const { deviceTypeCode, } = stationDeviceDetail;
+    const { deviceTypeCode } = stationDeviceDetail;
     this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.onShowSideChange('edit');
     getConnectDevice({
       stationCode: stationCode,
       deviceTypeCode: deviceTypeCode,
-    })
+    });
     if (deviceTypeCode === '202' || deviceTypeCode === '206') {
       getPvDevice({
         stationCode,
         deviceTypeCode: '509',
-      })
+      });
     }
 
   }
@@ -46,19 +46,21 @@ class DetailDevice extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是第一个!',
-      })
+      });
     } else if (selectedStationIndex === 0 && pageNum > 1) { // 其他页向前翻页
       getOtherPageDeviceDetail({
         ...queryParams,
         pageNum: pageNum - 1,
         selectedStationIndex: pageSize - 1,
-      })
+      });
     } else {
       getStationDeviceDetail({ // 正常请求上一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex - 1,
         deviceFullCode: deviceList[selectedStationIndex - 1].deviceFullCode,
-      })
+      });
+      this.changeTableFilter('part');
+      this.props.getDevicePartInfo({ deviceFullcode: deviceList[selectedStationIndex - 1].deviceFullCode });
     }
   }
 
@@ -72,26 +74,28 @@ class DetailDevice extends Component {
       this.setState({
         showWarningTip: true,
         warningTipText: '这是最后一个!',
-      })
+      });
     } else if (selectedStationIndex === pageSize - 1 && pageNum < maxPage) { // 向后翻页
       getOtherPageDeviceDetail({
         ...queryParams,
         pageNum: pageNum + 1,
         selectedStationIndex: 0,
-      })
+      });
     } else {
       getStationDeviceDetail({ // 请求下一条电站详情数据
         ...queryParams,
         selectedStationIndex: selectedStationIndex + 1,
         deviceFullCode: deviceList[selectedStationIndex + 1]['deviceFullCode'],
-      })
+      });
+      this.changeTableFilter('part');
+      this.props.getDevicePartInfo({ deviceFullcode: deviceList[selectedStationIndex + 1]['deviceFullCode'] });
     }
   }
   confirmWarningTip = () => { // 提示框确认
     this.setState({
       showWarningTip: false,
       warningTipText: '',
-    })
+    });
   }
   backToList = () => { // 返回列表页
     this.props.changeDeviceManageStore({
@@ -101,14 +105,14 @@ class DetailDevice extends Component {
   }
   changeTableFilter = (value) => {
     this.setState({
-      tableFilter: value
-    })
+      tableFilter: value,
+    });
   }
   render() {
     const { stationDeviceDetail } = this.props;
     const deviceTypeCode = stationDeviceDetail.deviceTypeCode;
     const deviceDetailMap = stationDeviceDetail.map;
-    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : []
+    const connectedBranches = deviceDetailMap ? deviceDetailMap.connectedBranches : [];
     const baseInfo = baseFun(stationDeviceDetail);
     const selcetbaseInfo = selcetbaseFun(stationDeviceDetail);
     const windTower = windTowerFun(stationDeviceDetail);
@@ -158,7 +162,7 @@ class DetailDevice extends Component {
                           <div className={(!!e) ? styles.checkedTopName : styles.topName}>第{i + 1}支路</div>
                           <Checkbox className={styles.bottomSelect} checked={!!e} key={i}></Checkbox>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                   <div className={styles.linestyle}>
@@ -183,10 +187,10 @@ class DetailDevice extends Component {
           <RecordTable {...this.props} tableFilter={tableFilter} changeTableFilter={this.changeTableFilter} />
         </div>
       </div>
-    )
+    );
   }
 }
-export default (DetailDevice)
+export default (DetailDevice);
 //(deviceTypeCode === 202||deviceTypeCode === 206)
 // <Col span={3}>
 // <div>第{i + 1}支路</div>

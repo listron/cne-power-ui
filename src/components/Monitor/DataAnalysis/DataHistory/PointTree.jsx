@@ -38,15 +38,15 @@ class PointTree extends Component {
   }
 
   pointSelect = (selectedKeys, { halfCheckedKeys }) => {
-    const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
-    if (valideKeys.length > 4) {
-      const preHalfCheckedKeys = this.state.halfCheckedKeys;
-      message.error('所选测点不得超过4个');
-      this.setState({
-        halfCheckedKeys: preHalfCheckedKeys
-      });
-      return;
-    }
+    // const valideKeys = selectedKeys.filter(e => !e.includes('group_'));
+    // if (valideKeys.length > 4) {
+    //   const preHalfCheckedKeys = this.state.halfCheckedKeys;
+    //   message.error('所选测点不得超过4个');
+    //   this.setState({
+    //     halfCheckedKeys: preHalfCheckedKeys
+    //   });
+    //   return;
+    // }
     this.setState({
       halfCheckedKeys,
     })
@@ -75,7 +75,7 @@ class PointTree extends Component {
     const { pointInfo } = this.props;
     const PointsNodes = [];
     const sortNames = [
-      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '其他'
+      '整机系统', '变桨系统', '传动系统', '发电机', '变频器', '机舱系统', '偏航系统', '塔筒系统', '箱变系统', '事件信息', '逆变器', '汇流箱', '气象站', '汇流箱电流', '集电线路', '箱变', '主变', '站用变', '主进线', '母线分段', '馈线', '功率预测系统', '能量管理', 'SVG', '电能采集', '站内木箱', '全场信息汇', '其他'
     ];
     if (pointInfo.length === 0) {
       return null;
@@ -94,7 +94,6 @@ class PointTree extends Component {
         }))
       }
     });
-
     groupInfo.sort((a, b) => {
       const sortIndexA = sortNames.indexOf(a.devicePointIecName);
       const sortIndexB = sortNames.indexOf(b.devicePointIecName);
@@ -112,7 +111,6 @@ class PointTree extends Component {
       }
       return (sortIndexA - sortIndexB)
     })
-
     groupInfo.forEach(e => {
       PointsNodes.push(
         <TreeNode title={e.devicePointIecName} key={e.devicePointIecCode} >

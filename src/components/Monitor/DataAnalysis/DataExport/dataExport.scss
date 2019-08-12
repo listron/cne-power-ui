@@ -190,8 +190,31 @@
       margin-left: 17px;
     }
   }
+  .generating{
+    color: #a42b2c;
+  }
+  .fail,.renewal{
+    color: #e08031;
+  }
   .downloadStyle{
     color: $themeColor;
     border: 0;
+  }
+  .renewal{
+    padding-left: 18px;
+  }
+  .devicePointCont{
+    :global{
+      .ant-popover-inner-content{
+          width: 354px;
+          max-height: 300px;
+          overflow-y: auto;
+          span{
+            width: 148px;
+            display: inline-block;
+            height: 30px;
+          }
+      }
+    }
   }
 }

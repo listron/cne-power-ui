@@ -1,83 +1,113 @@
 @import "../../../../theme/theme.scss";
 .stationScore {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 100%;
-    background-color: $pageBackground;
-    .scoreContainer {
-        @include contentBoxStyle();
-        .scoreContent {
-            display: flex;
-            flex-direction: row;
-            flex: 1;
-            background: $pageGround;
-            min-height: 100%;
-            overflow: hidden;
-            :global {
-              .ant-switch-checked {
-                  background-color: #199475;
-              }
-              .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-                  background: #199475;
-                  border-color: #199475;
-                  color: #fff;
-              }
-              .ant-progress-bg {
-                  border-radius: 100px;
-                  background-color: #199475;
-              }
-              .ant-tabs-nav-scroll {
-                  background: #f8f8f8;
-              }
-              .ant-tabs.ant-tabs-card .ant-tabs-bar .ant-tabs-tab-active {
-                  background: #fff;
-                  border-color: #e8e8e8;
-                  border-top: 2px solid #199475;
-                  border-left: 0;
-                  border-radius: 0;
-                  color: #199475;
-                  margin: 0;
-              }
-              .ant-tabs-nav .ant-tabs-tab {
-                  display: inline-block;
-                  text-align: center;
-                  height: 100%;
-                  margin: 0;
-                  box-sizing: border-box;
-                  position: relative;
-                  transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-                  cursor: pointer;
-                  text-decoration: none;
-                  width: 120px;
-                  border-top: 0px;
-                  border-radius: 0;
-              }
-              .ant-tabs-bar {
-                  margin-bottom: 0;
-              }
-              .ant-tabs.ant-tabs-top.ant-tabs-card.ant-tabs-no-animation {
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-              }
-              .ant-tabs-content {
-                  display: flex;
-                  flex: 1;
-                  flex-direction: column;
-                  .ant-tabs-tabpane-active {
-                      display: flex;
-                      flex: 1;
-                  }
-                  .ant-tabs-tabpane-inactive {
-                      max-height: 0;
-                  }
-              }
-          }
-            
-        }
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100%;
+  background: #fff;
+  .scoreContainer {
+    @include contentBoxStyle();
+    .scoreContent {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      background: $pageGround;
+      min-height: 100%;
+      overflow: hidden;
     }
+  }
+
+  .allStationTitle {
+    display: flex;
+    line-height: 40px;
+    // overflow: hidden;
+    p {
+      width: 120px;
+      margin-bottom: 0;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: -2px;
+    }
+    .activeStation {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 2px;
+        top: 0;
+        left: -1px;
+      }
+    }
+  }
+}
+.light {
+  background: #fff;
+  .scoreContainer {
+    @include contentBoxStyle();
+    .scoreContent {
+      background: $pageGround;
+      :global {
+        .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+          background: #199475;
+          border-color: #199475;
+          color: #fff;
+        }
+        .ant-progress-bg {
+          border-radius: 100px;
+          background-color: #199475;
+        }
+      }
+    }
+  }
+  .allStationTitle {
+    background: #f8f8f8;
+    border-bottom: 1px solid $borderColor;
+    p {
+      border-right: 1px solid $borderColor;
+      color: $lightColor;
+    }
+    .activeStation {
+      background: $pageGround;
+      color: $darkColor;
+      &::before {
+        background: $themeColor;
+      }
+    }
+  }
 }
 
-
-
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+  background: $background;
+  .scoreContainer {
+    @include contentBoxStyle();
+    background: $background;
+    .scoreContent {
+      background: $background;
+      .allStationTitle {
+        background: $background;
+        border-bottom: 1px solid $border-color;
+        height: 42px;
+        p {
+          border: 1px solid $tab-border-color;
+          color: $fontColor-dark;
+          background: $tab-background;
+          margin-right: 4px;
+          border-radius: 8px 8px 0 0;
+          height: 40px;
+        }
+        .activeStation {
+          background: $light-background;
+          border: 1px solid $border-color;
+          color: $fontColor-invert;
+          border-bottom: 1px solid $tab-border-bottom;
+          height: 42px;
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

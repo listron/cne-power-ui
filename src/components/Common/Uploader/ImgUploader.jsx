@@ -55,7 +55,7 @@ class ImgUploader extends Component {
     this.state = {
       imageListShow: false,
       currentImgIndex: 0,
-      fileList: [],
+      fileList: props.data || [],
     };
   }
 
@@ -66,8 +66,8 @@ class ImgUploader extends Component {
   }
 
   onOK = (imgList, editFileList) => {
-    const { onChange, onOK, data } = this.props;
-    onOK && onOK([...imgList, ...data]);
+    const { onChange, onOK } = this.props;
+    onOK && onOK(imgList);
     onChange && onChange(imgList);
     editFileList && this.setState({ fileList: editFileList });
   }
@@ -95,12 +95,13 @@ class ImgUploader extends Component {
       const upLoadfiles = fileList.map(e => {
         const rotateObj = data && data.find(m => m.uid === e.uid);
         const rotate = (rotateObj && rotateObj.rotate) || 0;
+        const response = e.response ? e.response.data.address : e.thumbUrl;
         return {
           uid: e.uid,
           name: e.name,
           rotate,
-          response: e.response.data.address,
-          thumbUrl: e.response.data.address,
+          response,
+          thumbUrl: response,
           status: e.status,
           imgStyle,
         };

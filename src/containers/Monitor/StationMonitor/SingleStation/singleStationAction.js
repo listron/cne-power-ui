@@ -29,11 +29,21 @@ export const singleStationAction = {
   getNewFanList:Symbol('getNewFanList'),//新的风机实时数据列表
 
   resetStore:Symbol('resetStore'),//重置store状态
-  changeSingleStationStore: Symbol('changeSingleStationStore'),//改变单电站store数据成功
+  changeSingleStationStore: Symbol('changeSingleStationStore2'),//改变单电站store数据成功
   getSingleStationSuccess:Symbol('getSingleStationSuccess'),//请求成功 
   singleStationFetch: Symbol('singleStationFetch'),//loading
   getSingleScatter: Symbol('getSingleScatter'),// 等效散点图数据
   pointparams: Symbol('pointparams'),
   getSingleRealChartsData: Symbol('getSingleRealChartsData'),
   stopSingleRealData: Symbol('stopSingleRealData'),
+
+  getPvSingleStation: Symbol('getPvSingleStation'),
+  getWindSingleStation: Symbol('getWindSingleStation'),
+  monthplanpower: Symbol('monthplanpower'),
+  getPvMonitorPower: Symbol('getPvMonitorPower'),
+  getWeatherDetail: Symbol('getWeatherDetail'),
+  getStationAlarm: Symbol('getStationAlarm'),
+  getRadiationchart: Symbol('getRadiationchart'),
+  getNewDeviceTypeFlow: Symbol('getNewDeviceTypeFlow'),
+  getSketchmap: Symbol('getSketchmap'),
 }

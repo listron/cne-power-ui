@@ -16,7 +16,6 @@ class EditFactors extends React.Component {
     const { validateFieldsAndScroll } = this.props.form;
 
     validateFieldsAndScroll(['editDeviceFactor', 'eidtAssetIds'], (err, values) => {
-      console.log('values: ', values);
       const { tableRecord } = this.props;
       const { manufactorId } = tableRecord;
       if (!err) {
@@ -28,9 +27,8 @@ class EditFactors extends React.Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { showModal, assetList, stationTypeCount, queryDataType, cancleModal, tableRecord } = this.props;
+    const { showModal, assetList, stationTypeCount, queryDataType, cancleModal, tableRecord, handleEnterprisecodes } = this.props;
     const { manufactorName, assetsDatas, isBuild } = tableRecord;
-    console.log('isBuild: ', isBuild);
     const pv = assetsDatas && assetsDatas.filter((e) => e.stationType === 1).map((e) => (e.assetsIds));
     const wind = assetsDatas && assetsDatas.filter((e) => e.stationType === 0).map((e) => (e.assetsIds));
     const stationType = pv.length ? 1 : 0;
@@ -60,7 +58,7 @@ class EditFactors extends React.Component {
                   { message: '请输入设备厂家名称', required: true },
                 ],
               })(
-                isBuild ? <span>manufactorName</span> : <Input placeholder="请输入..." />
+                isBuild ? <span>{manufactorName}</span> : <Input placeholder="请输入..." />
               )}
             </FormItem>
             <FormItem label="生产资产" colon={false} >
@@ -70,7 +68,7 @@ class EditFactors extends React.Component {
                   { message: '请选择生产资产节点', required: true },
                 ],
               })(
-                <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={queryDataType} multiple={true} assetsIds={{ pv, wind }} />
+                <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={queryDataType} multiple={true} assetsIds={{ pv, wind }} handleEnterprisecodes={handleEnterprisecodes} />
               )}
             </FormItem>
             <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>

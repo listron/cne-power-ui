@@ -1,5 +1,3 @@
-
-
 /*
 本文件是针对3.0系统设定的全局主题颜色：普通字体，主题，颜色从此处引入，请谨慎修改；
 1. $themeColor: 常用 ----- #199475;   主题颜色！所有主题，hover,select常用颜色
@@ -13,32 +11,41 @@
 $darkColor: #666;
 $lightColor: #999;
 $promptColor: #dfdfdf;
+$borderColor: #dfdfdf;
 $themeColor: #199475;
-$tableSelectedBackground: rgba(206,235,224,0.3);//表格高亮背景色
+$slideSelectColor: #ceebe0;
+$slideFontColor: #ffffff;
+$tableSelectedBackground: rgba(206, 235, 224, 0.3); //表格高亮背景色
 $pageBackground: #ececec;
-$pageGround:#fff;
-$warnColor:#a42b2c; // 故障color
+$pageGround: #fff;
+$warnColor: #a42b2c; // 故障color
+$box-shadow-color: rgba(0, 0, 0, 0.2);
 
 //常复用代码块：
-@mixin lineheight($height){//创建高度==行高元素
+@mixin lineheight($height) {
+  //创建高度==行高元素
   height: $height;
   line-height: $height;
 }
-@mixin highLight($color){//创建高亮色配置
-  &:hover,&:focus,&::selection{
-    border:1px solid $color;
+@mixin highLight($color) {
+  //创建高亮色配置
+  &:hover,
+  &:focus,
+  &::selection {
+    border: 1px solid $color;
     box-shadow: 0 0 2px $color;
   }
 }
 
-@mixin contentBoxStyle(){ // 页面主内容区常用布局样式。
+@mixin contentBoxStyle() {
+  // 页面主内容区常用布局样式。
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   padding: 24px 24px 0;
-  background:#ececec;
+  background: #ececec;
 }
 
 @mixin overflowText() {

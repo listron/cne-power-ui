@@ -1,23 +1,43 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 
-.singleStation{
+.singleStation {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
 }
-.singleStationContainer{
+.singleStationContainer {
   background: $pageBackground;
   padding: 24px 24px 0;
   display: flex;
   flex: 1;
-  :global{
+  :global {
     a {
       color: $darkColor;
       cursor: pointer;
     }
-    a:hover{
-      color: $themeColor;
+  }
+}
+
+.light {
+  .singleStationContainer {
+    background: $pageBackground;
+    :global {
+      a {
+        color: $darkColor;
+      }
+    }
+  }
+}
+
+.dark {
+  @import "../../../../theme/darkTheme.scss";
+  .singleStationContainer {
+    background: $background;
+    :global {
+      a {
+        color: $fontColor;
+      }
     }
   }
 }

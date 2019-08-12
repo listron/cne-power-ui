@@ -1,8 +1,5 @@
-@import '../../../../theme/theme.scss';
+@import "../../../../theme/theme.scss";
 .stationSelectModal {
-  .title{
-    color:#199475;
-  }
   :global {
     .ant-modal-content {
       display: flex;
@@ -10,9 +7,6 @@
       height: 100%;
       flex-direction: column;
       justify-content: space-between;
-      .ant-modal-footer{
-        background-color: #ececec;
-      }
     }
     .ant-modal-body {
       display: flex;
@@ -30,40 +24,94 @@
       flex-direction: column;
       .provinceName {
         margin-bottom: 12px;
-        color: $darkColor;
       }
       .stationList {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
       }
+
+      .stationItem,
       .selectedStationItem {
-        color: #fff;
         margin-right: 8px;
         margin-bottom: 8px;
-        width: 135px;
-        height: 24px;
-        border-radius: 4px;
-        background-color: $themeColor;
-        display: flex;
-        align-items: center;
-        padding-left: 6px;
-      }
-      .stationItem {
-        color: $darkColor;
-        margin-right: 8px;
-        margin-bottom: 8px;
-        // width: 135px;
         min-width: 130px;
         padding-right: 6px;
         height: 24px;
         border-radius: 4px;
-        background-color: #f1f1f1;
         display: flex;
         align-items: center;
         padding-left: 6px;
         cursor: pointer;
       }
+    }
+  }
+}
+
+.light {
+  .title {
+    color: $themeColor;
+  }
+  :global {
+    .ant-modal-footer {
+      background-color: #ececec;
+    }
+  }
+  .content {
+    .provinceName {
+      color: $darkColor;
+    }
+    .selectedStationItem {
+      color: #fff;
+      background-color: $themeColor;
+    }
+    .stationItem {
+      color: $darkColor;
+      background-color: #f1f1f1;
+    }
+  }
+}
+.dark {
+  @import "../../../../theme/antdResetDark.scss";
+
+  .title {
+    color: $fontColor-invert;
+  }
+  :global {
+    .ant-modal {
+      background: $slide-backgound;
+      border: 1px solid #303a99;
+      box-shadow: inset 0 0 5px 2px;
+    }
+    .ant-modal-content {
+      background: $slide-backgound;
+    }
+    .ant-modal-header {
+      background: $slide-backgound;
+      color: $fontColor-invert;
+      border-bottom: 1px solid #7088c3;
+    }
+    .ant-modal-footer {
+      // background: $button-primary;
+      background: #194992;
+      color: $fontColor-invert;
+    }
+    .ant-modal-close {
+      color: $fontColor-invert;
+    }
+  }
+  .content {
+    .provinceName {
+      color: $fontColor-invert;
+    }
+    .selectedStationItem {
+      color: $fontColor-invert;
+      background-color: $themeColor;
+    }
+    .stationItem {
+      color: $fontColor-invert;
+      // background-color: #f1f1f1;
+      border: 1px solid #7088c3;
     }
   }
 }

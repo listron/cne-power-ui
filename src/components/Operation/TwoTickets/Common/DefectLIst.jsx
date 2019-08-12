@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styles from './index.scss';
 import FilterCondition from '../../../Common/FilterCondition/FilterCondition';
 import CommonPagination from '../../../Common/CommonPagination/index';
@@ -18,11 +18,14 @@ class DefectList extends Component {
   }
 
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
     this.state = {
-      defectVisible: false
-    }
+      defectVisible: false,
+      createTimeStart: null,
+      createTimeEnd: null,
+      selectedRowKeys: [`${props.selectedData.defectId}`] || [],
+    };
   }
 
   componentDidMount() {
@@ -30,16 +33,21 @@ class DefectList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stationCode } = nextProps;
+    const { stationCode, selectedData } = nextProps;
     if (stationCode && this.props.stationCode !== stationCode) {
-      this.getDefectData({ stationCodes: [stationCode] })
+      this.getDefectData({ stationCodes: [stationCode] });
+      this.setState({ selectedRowKeys: [] });
+      this.props.onChange({});
+    }
+    if (!selectedData.defectId) { // 重置 清空
+      this.setState({ selectedRowKeys: [] });
     }
   }
 
   onPaginationChange = ({ currentPage, pageSize }) => { // 切换列表表头
     this.getDefectData({
       pageNum: currentPage,
-      pageSize
+      pageSize,
     });
   }
 
@@ -47,44 +55,50 @@ class DefectList extends Component {
   onSelectChange = (selectedRowKeys, selectedRows) => {
     this.setState({
       selectedRowKeys: [selectedRowKeys[selectedRowKeys.length - 1]],
-      selectedData: selectedRows[selectedRows.length - 1],
-    })
+      initselectedData: selectedRows[selectedRows.length - 1],
+    });
   }
 
 
-  getDefectData = (value) => {  // 缺陷列表  什么鬼接口这么多无用的参数
+  getDefectData = (value) => { // 缺陷列表  什么鬼接口这么多无用的参数
     const { getDefectList, defeactData, stationCode } = this.props;
+    const { createTimeStart, createTimeEnd } = this.state;
+    const { pageSize } = defeactData;
     const queryParma = {
-      "stationType": "",
-      "defectSource": [],
-      "defectLevel": [],
-      "deviceTypeCode": [],
-      "defectTypeCode": [], // 无用的参数
+      'stationType': '',
+      'defectSource': [],
+      'defectLevel': [],
+      'deviceTypeCode': [],
+      'defectTypeCode': [], // 无用的参数
 
-      "createTimeStart": "",
-      "createTimeEnd": "",
-      "pageNum": 1,
-      "pageSize": 10,
-      "stationCodes": [stationCode],
-      "sortField": "create_time",
-      "sortMethod": "desc "
-    }
+      'createTimeStart': '',
+      'createTimeEnd': '',
+      'pageNum': 1,
+      'pageSize': 10,
+      'stationCodes': [stationCode],
+      'sortField': 'create_time',
+      'sortMethod': 'desc ',
+    };
+    this.setState(value);
     const queryList = {
       ...queryParma,
-      ...value
-    }
+      createTimeStart,
+      createTimeEnd,
+      pageSize,
+      ...value,
+    };
 
-    getDefectList({ queryList, defeactData })
+    getDefectList({ queryList, defeactData });
 
   }
 
   initColumn = () => { // 初始的列表头
-    let columns = [{
+    const columns = [{
       title: '缺陷级别',
       dataIndex: 'defectLevel',
       key: 'defectLevel',
       sorter: true,
-      render: (value, record, index) => (<span>{getLevel(value)}</span>)
+      render: (value, record, index) => (<span>{getLevel(value)}</span>),
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
@@ -105,8 +119,8 @@ class DefectList extends Component {
       dataIndex: 'defectDescribe',
       key: 'defectDescribe',
       render: (text, record) => {
-        return <div className={styles.defectDesc} title={text}>{text}</div>
-      }
+        return <div className={styles.defectDesc} title={text}>{text}</div>;
+      },
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
@@ -116,7 +130,7 @@ class DefectList extends Component {
       title: '完成时间',
       dataIndex: 'finishTime',
       key: 'finishTime',
-      render: (text, record) => { return text ? text : '--' },
+      render: (text, record) => { return text ? text : '--'; },
       sorter: true,
     }, {
       title: '状态',
@@ -146,13 +160,13 @@ class DefectList extends Component {
   }
 
   filterCondition = (value) => { // 时间筛选
-    this.getDefectData(value);
+    this.getDefectData({ ...value, pageNum: 1 });
   }
 
   handleOk = () => { // 确定
-    const { selectedData } = this.state;
-    this.setState({ defectVisible: false, })
-    this.props.onChange({ ...selectedData })
+    const { initselectedData } = this.state;
+    this.setState({ defectVisible: false });
+    this.props.onChange({ ...initselectedData });
   }
 
   handleCancel = () => { // 取消
@@ -160,25 +174,25 @@ class DefectList extends Component {
     if (selectedData.defectId) {
       this.setState({
         selectedRowKeys: [selectedData.defectId],
-        selectedData: selectedData
-      })
+        initselectedData: selectedData,
+      });
     }
     this.setState({
       defectVisible: false,
-    })
+    });
 
   }
 
   linkDefect = () => { // 关联工单
-    this.setState({ defectVisible: true })
+    this.setState({ defectVisible: true });
   }
 
-  resetDefect = () => {  // 重新关联工单
+  resetDefect = () => { // 重新关联工单
     this.setState({
       selectedRowKeys: [],
-      selectedData: {}
-    })
-    this.props.onChange({})
+      initselectedData: {},
+    });
+    this.props.onChange({});
   }
 
 
@@ -188,26 +202,30 @@ class DefectList extends Component {
     const { defectLoading, defectList = [], total, pageNum, pageSize } = defeactData;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange
+      onChange: this.onSelectChange,
     };
+    console.log();
     return (
       <div className={styles.defectList}>
         <div>
           <Button onClick={this.linkDefect} disabled={!stationCode}>选择</Button>
           {selectedData.defectId &&
             <div className={styles.defectDetail}>
-              <div className={styles.top}> <span> 已关联工单</span>  <span onClick={this.resetDefect}>X</span></div>
+              <div className={styles.top}>
+                <span> 已关联工单</span>
+                <span onClick={this.resetDefect} className={styles.resetDefect}>X</span>
+              </div>
               <div>
                 <span className={styles.label}>电站名称 </span>
-                <span className={styles.text}>{getLevel(selectedData.defectLevel)}</span>
+                <span className={styles.text}>{selectedData.stationName}</span>
               </div>
               <div>
                 <span className={styles.label}>缺陷级别 </span>
-                <span className={styles.text}> {selectedData.stationName}</span>
+                <span className={styles.text}> {getLevel(`${selectedData.defectLevel}`)}</span>
               </div>
               <div>
                 <span className={styles.label}>设备名称 </span>
-                <span className={styles.text}> {selectedData.deviceTypeName}</span>
+                <span className={styles.text}> {selectedData.deviceName}</span>
               </div>
               <div>
                 <span className={styles.label}>缺陷类型 </span>
@@ -219,7 +237,7 @@ class DefectList extends Component {
               </div>
               <div>
                 <span className={styles.label}>发生时间 </span>
-                <span className={styles.text}>{selectedData.startTime}</span>
+                <span className={styles.text}>{selectedData.startTime || selectedData.createTime}</span>
               </div>
               <div>
                 <span className={styles.label}>完成时间 </span>
@@ -227,7 +245,7 @@ class DefectList extends Component {
               </div>
               <div>
                 <span className={styles.label}>状态 </span>
-                <span className={styles.text}>{getStatus(selectedData.defectStatus)}</span>
+                <span className={styles.text}>{getStatus(`${selectedData.defectStatus}`)}</span>
               </div>
             </div>}
         </div>
@@ -262,7 +280,7 @@ class DefectList extends Component {
         </Modal>
       </div>
 
-    )
+    );
   }
 }
 

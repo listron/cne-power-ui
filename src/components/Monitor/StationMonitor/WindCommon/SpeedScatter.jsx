@@ -1,4 +1,4 @@
-import React ,{Component}from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Link } from 'react-dom';
@@ -8,7 +8,7 @@ import moment from 'moment';
 import styles from './windCommon.scss';
 
 
-class SpeedScatter extends Component{
+class SpeedScatter extends Component {
     static propTypes = {
         scatterData: PropTypes.object,
         scatterTime: PropTypes.number,
@@ -21,15 +21,15 @@ class SpeedScatter extends Component{
     }
 
     componentDidUpdate(prevProps) {
-        const { scatterTime } = this.props;
+        const { scatterTime, loading } = this.props;
         const preTime = prevProps.scatterTime;
-        if (scatterTime !== preTime) { // 数据重新请求后重绘。
+        if (scatterTime !== preTime || loading !== prevProps.loading) { // 数据重新请求后重绘。
             this.drawCharts(this.props);
         }
     }
 
-    drawCharts=(params)=>{
-        const {  scatterData={}, type } =params ;
+    drawCharts = (params) => {
+        const { scatterData = {}, type, loading } = params;
         let needData = [];
         if (type === 'singleStation') {
             needData = [
@@ -46,7 +46,7 @@ class SpeedScatter extends Component{
         }
         // const scatterData={}
         let series = needData.map((item) => {
-            const data=scatterData[item.value] || [];
+            const data = scatterData[item.value] || [];
             return ({
                 name: item.name,
                 type: 'scatter',
@@ -54,25 +54,25 @@ class SpeedScatter extends Component{
                 emphasis: {
                     symbolSize: 8,
                 },
-                data:data.map((item) => {
+                data: data.map((item) => {
                     const { windSpeed, equipmentHours, stationName, date, stationCode } = item;
-                    const NowEquipmentHours=equipmentHours ? +equipmentHours : equipmentHours;
-                    return [dataFormats(windSpeed,'--',2,true), dataFormats(NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
+                    const NowEquipmentHours = equipmentHours ? +equipmentHours : equipmentHours;
+                    return [dataFormats(windSpeed, '--', 2, true), dataFormats(NowEquipmentHours, '--', 2, true), date, stationName, stationCode]
                 })
             })
         })
         const chartsBox = document.getElementById('SpeedScatterGraph');
-        const hasData=needData.some(item=>{
-            return scatterData[item.value] && scatterData[item.value].length>0 
+        const hasData = needData.some(item => {
+            return scatterData[item.value] && scatterData[item.value].length > 0
         })
         const Graphic = !hasData ? showNoData : hiddenNoData;
         const lineColor = '#666';
         const fontColor = '#333';
         const SpeedScatterGraph = echarts.init(chartsBox);
-        needData.some(item=>scatterData[item.value])? SpeedScatterGraph.hideLoading() : SpeedScatterGraph.showLoading('default', { color: '#199475' });
+        loading ? SpeedScatterGraph.showLoading('default', { color: '#199475' }) : SpeedScatterGraph.hideLoading();
         const scatterOption = {
             graphic: Graphic,
-            color: ['#c7ceb2', '#199475','#e08031'],
+            color: ['#c7ceb2', '#199475', '#e08031'],
             title: {
                 text: '日等效利用小时数散点图（近三个月）',
                 textStyle: {
@@ -184,12 +184,12 @@ class SpeedScatter extends Component{
             ],
             series: series
         };
-        SpeedScatterGraph.setOption(scatterOption,'notMerge');
+        SpeedScatterGraph.setOption(scatterOption, 'notMerge');
         SpeedScatterGraph.resize();
     }
 
 
-    render(){
+    render() {
         return (
             <div id="SpeedScatterGraph" className={styles.SpeedScatterGraph}></div>
         )

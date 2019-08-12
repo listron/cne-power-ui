@@ -16,15 +16,16 @@ class ToolTakeout extends Component {
     takeoutStatus: PropTypes.string,
     backList: PropTypes.func,
     originTakeoutInfo: PropTypes.object,
+    materialListParams: PropTypes.object,
     changeStore: PropTypes.func,
     getMaterialDetailsList: PropTypes.func,
     takeoutWarehouseMaterial: PropTypes.func,
   }
 
   componentDidMount(){
-    const { getMaterialDetailsList, originTakeoutInfo } = this.props;
+    const { getMaterialDetailsList, originTakeoutInfo, materialListParams } = this.props;
     const { inventoryId } = originTakeoutInfo;
-    getMaterialDetailsList({ inventoryId }); // 该仓库下的物资列表
+    getMaterialDetailsList({ inventoryId, ...materialListParams }); // 该仓库下的物资列表
   }
 
   componentDidUpdate(preProps){
@@ -50,18 +51,18 @@ class ToolTakeout extends Component {
           inventoryId,
           entryType,
           materialCodes: materialCodes.map(e => e.materialCode).join(','),
-          remarks
+          remarks,
         });
       }
-    })
+    });
   }
 
   render(){
-    const { form, originTakeoutInfo, materialDetailsList, takeoutStatus } = this.props;
+    const { form, originTakeoutInfo, takeoutStatus } = this.props;
     const { getFieldDecorator } = form;
     const requireInfoFun = (text, initialValue) => ({
       rules: [{ required: true, message: text }],
-      initialValue
+      initialValue,
     });
     const goodsInfo = [
       { value: '201', label: '安全工器具' },
@@ -84,7 +85,7 @@ class ToolTakeout extends Component {
           </FormItem>
           <FormItem label="物品类型">
             {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型', originTakeoutInfo.goodsType))(
-              <Select placeholder="请选择" style={{width: 200}}>
+              <Select placeholder="请选择" style={{width: 200}} disabled>
                 {goodsInfo.map(e => (
                   <Option key={e.value} value={e.value}>{e.label}</Option>
                 ))}
@@ -122,12 +123,16 @@ class ToolTakeout extends Component {
               rules: [{
                 required: true,
                 validator: (rule, value, callback) => {
-                  (!value || value.length === 0) && callback(`请选择物资`);
+                  (!value || value.length === 0) && callback('请选择物资');
                   callback();
                 },
               }],
             })(
-              <MaterialDetailsList materialDetailsList={materialDetailsList} total={originTakeoutInfo.inventoryNum} />
+              <MaterialDetailsList
+                {...this.props}
+                total={originTakeoutInfo.inventoryNum}
+                inventoryId={originTakeoutInfo.inventoryId}
+              />
             )}
           </FormItem>
           <FormItem label="备注">
@@ -141,7 +146,7 @@ class ToolTakeout extends Component {
           <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
         </div>
       </section>
-    )
+    );
   }
 }
 

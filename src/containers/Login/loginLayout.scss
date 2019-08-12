@@ -82,9 +82,9 @@
             
           }
           // .joinTop:hover {
-          //   color: #199475;
+          //   color: $themeColor;
           //   .join:hover{
-          //     color: #199475;
+          //     color: $themeColor;
           //   }
           // }
         }
@@ -104,7 +104,7 @@
          
            
             span {
-              color: #199475;
+              color: $themeColor;
               font-weight: 500;
               margin-left: 10px;
               cursor: pointer;

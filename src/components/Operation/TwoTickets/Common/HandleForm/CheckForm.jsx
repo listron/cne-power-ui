@@ -9,20 +9,24 @@ class DefectCheckForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     getDocketHandle: PropTypes.func,
+    onChange: PropTypes.func,
     docketId: PropTypes.string,
   }
 
+  componentWillUnmount() {
+    this.props.form.resetFields();
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err, values) => { // 消票
       if (!err) {
         this.props.onChange({
           handleResult: 1,
           ...values,
-          annexImg:null,
-          otherImg:null,
-        })
+          annexImg: null,
+          otherImg: null,
+        });
       }
     });
   }
@@ -31,6 +35,8 @@ class DefectCheckForm extends Component {
     this.props.form.resetFields();
   }
 
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -38,11 +44,11 @@ class DefectCheckForm extends Component {
         <FormItem label="处理建议" colon={false}>
           {getFieldDecorator('handleDesc', {
             rules: [{
-              required: true,
-              message: '请输入处理建议'
-            }]
+              required: false,
+              message: '请输入处理建议',
+            }],
           })(
-            <InputLimit placeholder="请描述，不超过999个汉字" />
+            <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
           )}
         </FormItem>
         <div className={styles.actionBar}>

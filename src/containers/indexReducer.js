@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
 import common from './alphaRedux/commonReducer';
 import homepage from './Home/homepageReducer';
@@ -16,7 +16,7 @@ const appReducer = combineReducers({
   homepage,
   operation,
   login,
-  system ,
+  system,
   monitor,
   othersReducer,
   // otherReducer,
@@ -25,5 +25,5 @@ const appReducer = combineReducers({
 });
 
 
-export default appReducer
+export default appReducer;
 

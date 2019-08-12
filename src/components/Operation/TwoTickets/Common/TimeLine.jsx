@@ -4,7 +4,7 @@ import styles from './index.scss';
 import moment from 'moment';
 import ImgListModal from '../../../Common/Uploader/ImgListModal';
 import path from '../../../../constants/path';
-
+const { APIBasePath } = path.basePaths;
 /*
   时间线组件：
   说明：
@@ -63,20 +63,20 @@ class TimeLine extends Component {
         const { operWinType } = this.props;
         return (
             <div className={styles.processItem} key={index}>
-                <img src={item.iconImg} className={styles.iconImg} />
+                <img src={`${APIBasePath}${item.iconImg}`} className={styles.iconImg} />
                 <div className={`${styles.line} ${operWinType && length - 1 === index && styles.dashedLine} ${!operWinType && length - 1 === index && styles.noLine}`} ></div>
                 <div className={styles.linebox}>
                     <div className={styles.flowName}>{item.nodeName}</div>
                     {/* 什么鬼设计  先去判断是否有子集 没有子集，且当前操作已完成的状态 */}
                     {!item.childProcess && item.handleResult &&
                         <div className={styles.lineBasic}>
-                            <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                            <div className={styles.operateTime}>{item.handleTime && moment(item.handleTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                             <div className={styles.operateUser}>{item.handleUser}</div>
                             {item.isUploadImg &&
                                 <div className={styles.imgDownLoad}>
                                     <div onClick={() => this.showImgs(docketId, item.taskId)} className={styles.imgList}> 票据附件</div>
                                     <div onClick={() => this.download(docketId, item.taskId)} className={styles.imgList}> 下载</div>
-                                </div>
+                                </div> || ''
                             }
                         </div>
                         || ''
@@ -88,7 +88,7 @@ class TimeLine extends Component {
                                     {e.handleResult &&
                                         <React.Fragment>
                                             <div className={styles.bottomCont}>
-                                                <div className={styles.operateTime}>{e.handleTime && moment(e.handleTime).format('YYYY-MM-DD HH:MM:SS')}</div>
+                                                <div className={styles.operateTime}>{e.handleTime && moment(e.handleTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                 <div className={styles.operateUser}>{e.nodeName} : {e.handleUser}</div>
                                                 {e.isUploadImg &&
                                                     <div className={styles.imgDownLoad}>

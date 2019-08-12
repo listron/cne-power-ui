@@ -158,11 +158,11 @@ class AddGood extends Component {
               {getFieldDecorator('goodsUnit', {
                 rules: [{
                   required: true,
-                  message: '请输入不超过30字的计量单位',
-                  max: 30,
+                  message: '请输入不超过6字的计量单位',
+                  max: 6,
                 }],
               })(
-                <Input placeholder="30字以内" />
+                <Input placeholder="6字以内" />
               )}
             </FormItem>
             <div className={styles.confirmRow}>

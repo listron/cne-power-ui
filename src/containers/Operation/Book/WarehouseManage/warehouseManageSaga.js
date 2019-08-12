@@ -97,7 +97,7 @@ function *getWarehouseManageList({ payload = {} }) { // 获取各类管理库存
         type: warehouseManageAction.fetchSuccess,
         payload: {
           stocksListLoading: false,
-          stocksList: response.data.data.dataList || {},
+          stocksList: response.data.data.dataList || [],
           totalCount: response.data.data.pageCount || 0,
         },
       });
@@ -426,17 +426,29 @@ function *insertWarehouse({ payload }) {// 备品备件/工器具/物资列表 =
 function *getMaterialDetailsList({ payload }) { // 获取仓库下的物资列表
   const url = `${APIBasePath}${operation.getMaterialDetailsList}`;
   try{
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { materialListLoading: true },
+    });
     const response = yield call(axios.post, url, payload);
     if (response.data.code === '10000') {
       yield put({
         type: warehouseManageAction.fetchSuccess,
-        payload: { materialDetailsList: response.data.data || [] },
+        payload: {
+          materialListLoading: false,
+          materialDetailsList: response.data.data.dataList || [],
+          materialListTotal: response.data.data.pageCount || 0,
+        },
       });
     } else { throw response.data; }
   } catch (error) {
     yield put({
       type: warehouseManageAction.changeStore,
-      payload: { materialDetailsList: [] },
+      payload: {
+        materialListLoading: false,
+        materialDetailsList: [],
+        materialListTotal: 0,
+      },
     });
   }
 }
@@ -568,6 +580,24 @@ function *recallReserveInfo({ payload }){ // 撤回库存中某物资的出库
   }
 }
 
+function* getMainDeviceEditCodes() { // 获得可编辑主设备的的企业code
+  const url = `${APIBasePath}${operation.getEnterprisecodes}`;
+  try {
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: warehouseManageAction.fetchSuccess,
+        payload: { mainDeviceEditCodes: response.data.data || [] },
+      });
+    } else { throw response.data; }
+  } catch (err) {
+    yield put({
+      type: warehouseManageAction.changeStore,
+      payload: { mainDeviceEditCodes: [] },
+    });
+  }
+}
+
 export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getWarehouses, getWarehouses);
   yield takeLatest(warehouseManageAction.getManufactures, getManufactures);
@@ -589,4 +619,5 @@ export function* watchWarehouseManage() {
   yield takeLatest(warehouseManageAction.getReserveList, getReserveList);
   yield takeLatest(warehouseManageAction.deleteReserveInfo, deleteReserveInfo);
   yield takeLatest(warehouseManageAction.recallReserveInfo, recallReserveInfo);
+  yield takeLatest(warehouseManageAction.getMainDeviceEditCodes, getMainDeviceEditCodes);
 }

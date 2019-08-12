@@ -13,6 +13,7 @@ class DefectReviewForm extends Component {
   static propTypes = {
     form: PropTypes.object,
     getDocketHandle: PropTypes.func,
+    onChange: PropTypes.func,
     docketId: PropTypes.string,
   }
 
@@ -22,8 +23,12 @@ class DefectReviewForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dealResult: 'send'
+      dealResult: 'send',
     };
+  }
+
+  componentWillUnmount() {
+    this.props.form.resetFields();
   }
 
   onSubmit = (e) => {
@@ -32,11 +37,11 @@ class DefectReviewForm extends Component {
       if (!err) {
         const { dealResult } = this.state;
         this.props.onChange({
-          handleResult:dealResult==='send'?1:2,
+          handleResult: dealResult === 'send' ? 1 : 2,
           ...values,
-          annexImg:null,
-          otherImg:null,
-        })
+          annexImg: null,
+          otherImg: null,
+        });
       }
     });
   }
@@ -46,7 +51,7 @@ class DefectReviewForm extends Component {
   }
 
   changeType = (e) => {
-    this.setState({ dealResult: e.target.value })
+    this.setState({ dealResult: e.target.value });
   }
 
 
@@ -67,21 +72,21 @@ class DefectReviewForm extends Component {
         {dealResult !== 'reject' && (
           <FormItem colon={false} label="处理建议">
             {getFieldDecorator('handleDesc')(
-              <InputLimit placeholder="请描述，不超过999个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}
-        {dealResult === "reject" && (
+        {dealResult === 'reject' && (
           <FormItem
             colon={false}
             label="驳回原因">
             {getFieldDecorator('handleDesc', {
               rules: [{
                 required: true,
-                message: '请输入驳回原因'
+                message: '请输入驳回原因',
               }],
             })(
-              <InputLimit placeholder="请描述，不超过999个汉字" />
+              <InputLimit placeholder="请描述，不超过999个汉字" size={999} />
             )}
           </FormItem>
         )}

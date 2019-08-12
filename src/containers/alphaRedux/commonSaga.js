@@ -11,7 +11,7 @@ function* changeCommonStore(action) {//存储payload指定参数，替换reducer
   yield put({
     type: commonAction.CHANGE_COMMON_STORE,
     payload,
-  })
+  });
 }
 
 function* getStations(action) { // 通用：获取所有电站信息
@@ -108,10 +108,10 @@ function* getStationOfEnterprise(action) { // 根据企业id获取下面所有�
         payload: {
           [resultName]: response.data.data || [],
         }
-      })
+      });
     }
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
 }
 
@@ -127,16 +127,16 @@ function* getStationDeviceTypes(action) { // 新共用接口，获取电站下�
         payload: {
           [resultName]: response.data.data || [],
         }
-      })
-    } else { throw response.data }
+      });
+    } else { throw response.data; }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     yield put({
       type: deviceTypeAction,
       payload: {
         [resultName]: [],
       }
-    })
+    });
   }
 }
 
@@ -238,7 +238,7 @@ function* getMatrixDevices(action) { // 2018-12-24新增，预期删除下面get
             filterDevices: matrixDevices.data.data || [],
             partitions: response.data.data.partitions || [],
           }
-        })
+        });
       }
     }
   } catch (e) {
@@ -268,7 +268,7 @@ function* getSliceDevices(action) { // 新-获取第一个分区光伏组件设�
             firstPartitionCode: partitionCode,
             partitions: response.data.data.partitions || [],
           }
-        })
+        });
       }
     }
   } catch (e) {
@@ -281,7 +281,7 @@ function* getAllDepartment(action) {//获取所有部门基础信息
   // const url = '/mock/system/allDepartments';
   try {
     const { params, actionName, resultName } = payload;
-    const url = `${APIBasePath}${APISubPaths.system.getAllDepartment}/${params.enterpriseId}`
+    const url = `${APIBasePath}${APISubPaths.system.getAllDepartment}/${params.enterpriseId}`;
     const response = yield call(axios.get, url);
     if (response.data.code === "10000") {
       yield put({
@@ -361,7 +361,7 @@ function* getLostGenType(action) { // 根据电站类型等指标查询电站故
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || [] }
-    })
+    });
   } catch (error) {
     message.error('获取故障类型失败!');
   }
@@ -376,7 +376,7 @@ function* getStationBelongTypes(action) { // 获取电站可能的所属的各�
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || {} }
-    })
+    });
   } catch (error) {
     message.error('获取电站分类信息失败!');
   }
@@ -391,7 +391,7 @@ function* getStationTargetInfo(action) { // 获取电站指定分类信息(省,�
     yield put({
       type: actionName,
       payload: { [resultName]: response.data.data || [] }
-    })
+    });
   } catch (error) {
     message.error('获取数据失败!');
   }
@@ -408,7 +408,7 @@ function* getDictionaryInfo(action) { // 获取覆盖类型、并网电压等级
       yield put({
         type: actionName,
         payload: { [resultName]: response.data.data || [] }
-      })
+      });
     }
 
   } catch (error) {
@@ -428,10 +428,10 @@ function* getWeather(action) { // 获取电站天气
         payload: {
           [resultName]: response.data.data || []
         }
-      })
+      });
     } else { throw '天气数据获取失败'; }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -442,7 +442,7 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
     yield put({
       type: actionName,
       payload: { [loadingName]: true }
-    })
+    });
     const response = yield call(axios, {
       method,
       url,
@@ -460,7 +460,7 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
         const fileString = fileNameInfo.split(';')[1];
         const fileNameCode = fileString ? fileString.split('=')[1] : '';
         const fileResult = fileNameCode ? decodeURIComponent(fileNameCode) : '';
-        fileResult && (newFileName = fileResult)
+        fileResult && (newFileName = fileResult);
       }
       if (fileContent) {
         const blob = new Blob([fileContent]);
@@ -483,10 +483,10 @@ function* downLoadFile({ payload }) { // 根据路径，名称生成下载文件
   } catch (error) {
     yield put({
       type: actionName,
-      payload: { downloading: false }
+      payload: { [loadingName]: false },
     })
-    message.warning(`下载失败！请重新尝试`)
-    console.log(error)
+    message.warning('下载失败！请重新尝试');
+    console.log(error);
   }
 }
 function* getRegion(action) { // //获取用户权限的电站区域

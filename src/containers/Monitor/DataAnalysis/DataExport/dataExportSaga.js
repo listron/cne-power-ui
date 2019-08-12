@@ -75,10 +75,10 @@ function *getDataExportList({ payload = {} }) { // 数据导出任务列表
   try{
     yield put({
       type: dataExportAction.changeDataExportStore,
-      payload: { tableLoading: true }
+      payload: { tableLoading: false }
     })
     const response = yield call(axios.get, url);
-    const { totalCount = 0 } = response.data.data;
+    const { totalCount = 0 } = response.data.data || {};
     const maxPage = Math.ceil(totalCount / pageSize);
     if (totalCount === 0) { // 总数为0时，展示0页
       pageNum = 1;
@@ -112,7 +112,7 @@ function *getDataExport({ payload = {} }) { // 生成导出任务
   const { queryParams, deviceTypeCode } = payload;
   const url = `${APIBasePath}${monitor.getDataExport}`;
   try{
-    const { devicePointCodes, startTime, endTime, deviceFullCodes } = queryParams;
+    const { devicePointIds, startTime, endTime, deviceFullCodes } = queryParams;
     const tmpPayload = { queryParams, tableLoading: true };
     yield put({
       type: dataExportAction.changeDataExportStore,
@@ -123,7 +123,7 @@ function *getDataExport({ payload = {} }) { // 生成导出任务
       deviceFullCodes: deviceFullCodes.map(e => e.deviceCode),
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
-      devicePointCodes: devicePointCodes.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
+      devicePointIds: devicePointIds.filter(e => !e.includes('group_')), // 去掉测点的所属分组code
       enterpriseId: Cookie.get('enterpriseId'),
       deviceTypeCode
     });
@@ -195,7 +195,7 @@ function *getSecendInterval(action) { // 用户所在企业数据时间间隔
       yield put({
         type: dataExportAction.GET_DATAEXPORT_SUCCESS,
         payload: {
-          intervalInfo: hasSecond === 1 ? [10, 5, 1] : [10 ,5],
+          intervalInfo: hasSecond === 1 ? [3, 2, 1] : [3, 2],
           queryParam: tmpQueryParam,
         }
       })

@@ -9,7 +9,7 @@ import Footer from '../../../../components/Common/Footer';
 import TransitionContainer from '../../../../components/Common/TransitionContainer';
 import TableList from '../../../../components/Operation/TwoTickets/OperateFlow/TableList';
 import Condition from '../../../../components/Operation/TwoTickets/OperateFlow/Condition';
-import WorkFlowSide from '../../../../components/Operation/TwoTickets/OperateFlow/WorkFlowSide';
+import OperateSide from '../../../../components/Operation/TwoTickets/OperateFlow/OperateSide';
 
 class OperateFlow extends Component {
     static propTypes = {
@@ -44,7 +44,7 @@ class OperateFlow extends Component {
                             timeout={500}
                             effect="side"
                         >
-                            <WorkFlowSide {...this.props} />
+                            <OperateSide {...this.props} />
                         </TransitionContainer>
                     </div>
                 </div>

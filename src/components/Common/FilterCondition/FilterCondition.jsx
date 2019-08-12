@@ -63,9 +63,9 @@ import styles from './filterCondition.scss';
 */
 class FilterCondition extends Component {
   static propTypes = {
-    stations: PropTypes.array,//电站列表
-    defectTypes: PropTypes.array,//缺陷类型列表
-    deviceTypes: PropTypes.array,//设备类型列表 
+    stations: PropTypes.array, //电站列表
+    defectTypes: PropTypes.array, //缺陷类型列表
+    deviceTypes: PropTypes.array, //设备类型列表 
     stationType: PropTypes.array,
     stationCodes: PropTypes.array,
     defectLevel: PropTypes.array,
@@ -78,7 +78,7 @@ class FilterCondition extends Component {
     handleUser: PropTypes.string,
     username: PropTypes.string,
     onChange: PropTypes.func,
-    option: PropTypes.array,// 需要的方式
+    option: PropTypes.array, // 需要的方式
     matrixList: PropTypes.array, // 方阵列表
     warningLevelName: PropTypes.array, // 告警级别名字
     warningStatusName: PropTypes.array, // 处理结果的名字
@@ -86,6 +86,7 @@ class FilterCondition extends Component {
     warningStatus: PropTypes.array, // 处理结果
     defaultValue: PropTypes.object, // 默认数据
     docketTypeList: PropTypes.array, // 两票
+    myJoinText: PropTypes.string, // 两票
   }
 
   constructor(props) {
@@ -127,7 +128,7 @@ class FilterCondition extends Component {
 
   onUserSelect = (value) => { //  用户的切换
     const { username, onChange } = this.props;
-    onChange && onChange({ handleUser: value ? username : '' })
+    onChange && onChange({ handleUser: value ? username : '' });
   }
 
 
@@ -135,7 +136,7 @@ class FilterCondition extends Component {
     this.setState((state) => {
       return {
         state,
-        ...change
+        ...change,
       };
     });
     const { onChange } = this.props;
@@ -143,7 +144,7 @@ class FilterCondition extends Component {
   }
 
   getDefaultName = (type) => { //匹配
-    let result = "";
+    let result = '';
     switch (type) {
       case 'time': result = '发生时间'; break;
       case 'stationType': result = '电站类型'; break;
@@ -161,18 +162,18 @@ class FilterCondition extends Component {
       case 'rangeTime': result = '发生时间'; break;
       case 'endTime': result = '结束时间'; break;
       case 'docketType': result = '两票类型'; break;
-      default: result = ""; break;
+      default: result = ''; break;
     }
-    return result
+    return result;
   }
 
 
 
   render() {
-    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime,docketTypes } = this.state;
+    const { showFilter, createTimeStart, createTimeEnd, stationType, stationCodes, defectLevel, defectSource, deviceTypeCode, defectTypeCode, belongMatrixs, warningLevel, warningStatus, warningConfigName, rangTime, handleUser, endTime, docketTypes } = this.state;
     const { stations = [], option, deviceTypes = [], defectTypes = [], defectSourceName, defectLevelName, matrixList = [], username, warningLevelName, warningStatusName, docketTypeList = [] } = this.props;
     const windStations = stations.map(e => e.stationType === 0);
-    const pvStations = stations.map(e => e.stationType === 1)
+    const pvStations = stations.map(e => e.stationType === 1);
     const hasSelectStation = windStations.length > 0 && pvStations.length > 0;
     return (
       <div className={styles.filterCondition}>
@@ -183,16 +184,16 @@ class FilterCondition extends Component {
               if (item === 'stationType') { // 该设备下之后一种电站 不显示电站类型
                 return (hasSelectStation && <Button onClick={() => this.onFilterShowChange(item)} key={index}>
                   {this.getDefaultName(item)}{showFilter === 'stationType' ? <Icon type="up" /> : <Icon type="down" />}
-                </Button>)
+                </Button>);
               }
               if (item === 'myJoin') {
                 return (<div key={index}>
-                  <Switch onChange={this.onUserSelect} defaultChecked={!!handleUser} /><span>我参与的</span>
-                </div>)
+                  <Switch onChange={this.onUserSelect} defaultChecked={!!handleUser} /><span>{this.props.myJoinText || '我参与的'}</span>
+                </div>);
               }
               return (<Button onClick={() => this.onFilterShowChange(item)} key={index} >
                 {this.getDefaultName(item)}{showFilter === item ? <Icon type="up" /> : <Icon type="down" />}
-              </Button>)
+              </Button>);
             })
           }
         </div>

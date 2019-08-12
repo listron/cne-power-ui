@@ -8,7 +8,7 @@ import styles from './userList.scss';
 import { getCookie } from '../../../../../utils/index.js';
 import Path from '../../../../../constants/path';
 import WarningTip from '../../../../Common/WarningTip';
-import {apiUrlReal} from '../../../../../config/apiConfig';
+import { apiUrlReal } from '../../../../../config/apiConfig';
 
 // to do 可优化项：所有弹框的确认函数，可以使用一个回调函数作为参数进行函数式编程，只需将弹框的文字及下方按钮ui指定。
 // 动态确认/取消后，改回调重置为null。可减少诸多记录状态的变量，利用一个交互函数进行覆盖处理。
@@ -45,8 +45,8 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columnsHandleArr: ['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作' ],
-      selectedUserColumns: new Set(['用户名', '用户姓名','电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
+      columnsHandleArr: ['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作'],
+      selectedUserColumns: new Set(['用户名', '用户姓名', '电话', '角色', '特殊权限', '负责电站', '状态', '操作']),//选中列
       showDeleteTip: false,
       showExamineTip: false,
       deleteWarningTip: '确认要移除么？',
@@ -208,31 +208,31 @@ class UserList extends Component {
     let columns = [
       {
         title: '用户名',
-        width:'200px',
+        width: '200px',
         dataIndex: 'username',
         key: 'username',
         render: (text, record, index) => (<a href={'javascript:void(0)'} className={styles.username} onClick={() => this.showUserDetail(record)} >{text}</a>)
       }, {
         title: '用户姓名',
-        width:'200px',
+        width: '200px',
         dataIndex: 'userFullName',
         key: 'userFullName',
         render: (text, record, index) => (<span>{text}</span>)
       }, {
         title: '电话',
-        width:'200px',
+        width: '200px',
         dataIndex: 'phoneNum',
         key: 'phoneNum',
         render: (text, record) => (<span>{text}</span>),
       }, {
         title: '角色',
-        width:'200px',
+        width: '200px',
         dataIndex: 'roleName',
         key: 'roleName',
         render: (text, record) => (<span>{text}</span>),
       }, {
         title: '特殊权限',
-        width:'200px',
+        width: '200px',
         dataIndex: 'spcialRoleName',
         key: 'spcialRoleName',
         render: (text, record) => (<span>{text}</span>),
@@ -245,7 +245,7 @@ class UserList extends Component {
       // }, 
       {
         title: '负责电站',
-        width:'200px',
+        width: '200px',
         dataIndex: 'stationName',
         key: 'stationName',
         render: (text, record, index) => {
@@ -277,13 +277,13 @@ class UserList extends Component {
         }
       }, {
         title: '状态',
-        width:'200px',
+        width: '200px',
         dataIndex: 'userStatus',
         key: 'userStatus',
         render: (text, record, index) => {
           return (<span>{this.getEnterpriseStatus(record.enterpriseStatus)}</span>);
         },
-      }, 
+      },
     ];
     const rightHandler = localStorage.getItem('rightHandler');
     const userDeleteRight = rightHandler && rightHandler.split(',').includes('account_user_delete');
@@ -291,18 +291,18 @@ class UserList extends Component {
     if (userDeleteRight || userEditRight) { // 至少拥有一个编辑/ 删除权限
       return columns.filter(e => selectedUserColumns.has(e.title)).concat({
         title: '操作',
-        width:'100px',
+        width: '100px',
         dataIndex: 'handler',
         render: (text, record) => (<span>
-            {userEditRight && <i
-              className={`${styles.editUser} iconfont icon-edit`}
-              onClick={() => this.editUser(record)}
-            />}
-            {userDeleteRight && <i
-              className={`${styles.deleteUser} iconfont icon-remove`}
-              onClick={() => this.deleteUser(record)}
-            />}
-          </span>
+          {userEditRight && <i
+            className={`${styles.editUser} iconfont icon-edit`}
+            onClick={() => this.editUser(record)}
+          />}
+          {userDeleteRight && <i
+            className={`${styles.deleteUser} iconfont icon-remove`}
+            onClick={() => this.deleteUser(record)}
+          />}
+        </span>
         )
       })
     }
@@ -342,7 +342,7 @@ class UserList extends Component {
     } else {
       [editable, deletable, usable, unallowable, examinable] = [false, false, false, false, false];
     }
-    
+
     // if (selectedUser.length > 0) {
     //   editable = selectedUser.length === 1;
     //   let newArray = [...new Set(selectedUser.map(e => this.getEnterpriseStatus(e.enterpriseStatus)))];
@@ -452,7 +452,7 @@ class UserList extends Component {
 
   downloadTemplate = () => {
     const { downLoadUserTemplate } = this.props;
-    const url = `${apiUrlReal}/api/v3/user/template`;
+    const url = `${apiUrlReal}/template/UserInfoTemplate.xlsx`;
     downLoadUserTemplate({
       url,
       method: 'get',
@@ -553,12 +553,12 @@ class UserList extends Component {
               <Button>批量导入</Button>
             </Upload>}
             <Button className={styles.templateDown} onClick={this.downloadTemplate} loading={downloading} >导入模板下载</Button>
-            <div className={selectedUser.toJS().length>0 ? styles.selectedOperate : styles.userOperate} >
+            <div className={selectedUser.toJS().length > 0 ? styles.selectedOperate : styles.userOperate} >
               {this._createUserOperate(rightHandler)}
             </div>
             <div className={styles.selectedColumnsBox} >
               <Select
-                dropdownClassName={styles.dropdownMenu} 
+                dropdownClassName={styles.dropdownMenu}
                 className={styles.selectedColumns}
                 showArrow={false}
                 dropdownMatchSelectWidth={false}
@@ -568,16 +568,16 @@ class UserList extends Component {
                   <Checkbox checked={selectedUserColumns.size === columnsHandleArr.length} >全选</Checkbox>
                 </Option>
                 {columnsHandleArr.map(item => (<Option
-                    key={item}
+                  key={item}
+                  value={item}
+                  disabled={requiredColumn.includes(item)}
+                >
+                  <Checkbox
                     value={item}
+                    checked={selectedUserColumns.has(item)}
                     disabled={requiredColumn.includes(item)}
-                  >
-                    <Checkbox
-                      value={item}
-                      checked={selectedUserColumns.has(item)}
-                      disabled={requiredColumn.includes(item)}
-                    >{item}</Checkbox>
-                  </Option>)
+                  >{item}</Checkbox>
+                </Option>)
                 )}
               </Select>
             </div>

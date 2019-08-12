@@ -6,101 +6,102 @@ import styles from './pvStation.scss';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { showNoData, hiddenNoData } from '../../../../../constants/echartsNoData';
-
+import { divideFormarts, multiplyFormarts, powerPoint } from '../../PvCommon/PvDataformat';
+import { dataFormats } from '../../../../../utils/utilFunc';
+import { themeConfig, chartsNodata } from '../../../../../utils/darkConfig';
 class OutputTenMin extends Component {
   static propTypes = {
     capabilityData: PropTypes.array,
     yXaisName: PropTypes.string,
     stationCode: PropTypes.number,
     yAxisUnit: PropTypes.string,
+    theme: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
   }
 
-  componentDidMount(){
-    this.drawChart(this.props)
+  componentDidMount() {
+    this.drawChart(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.drawChart(nextProps)
+    if (nextProps.theme !== this.props.theme) {
+      this.drawChart(nextProps, true);
+    } else {
+      this.drawChart(nextProps);
+    }
   }
 
 
-  drawChart=(param)=>{
-    const { capabilityData, yAxisUnit,stationCode } = param;
-    let yAxisType = `功率(${yAxisUnit})`
-    const capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`));
-    const lineColor = '#666';
-    const capabilityPower = capabilityData.map(e => (yAxisUnit === 'MW' ? (+e.stationPower) : (+e.stationPower * 1000)));
-    const capabilityRadiation = capabilityData.map(e => e.instantaneous);
+  drawChart = (param, themeChange) => {
+    const { capabilityData, yAxisUnit, stationCode, theme } = param;
+    const yAxisType = `交流侧功率(${yAxisUnit})`;
+    let capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeConfig[theme]);
+    if (themeChange) {
+      capabilityDiagram.dispose();
+      capabilityDiagram = echarts.init(document.getElementById(`capabilityDiagram_${stationCode}`), themeConfig[theme]);
+    }
+    const capabilityPower = capabilityData.map(e => dataFormats(divideFormarts(e.stationPower, yAxisUnit), '--', 2, true));
+    const capabilityRadiation = capabilityData.map(e => dataFormats(e.instantaneous, '--', 2, true));
     const filterCapabilityPower = capabilityData.filter(e => e.stationPower);
     const filterCapabilityRadiation = capabilityData.filter(e => e.instantaneous);
-    const capabilityGraphic = (filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0) ? showNoData : hiddenNoData;
-
-    let labelInterval = 47 // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
+    const capabilityGraphic = filterCapabilityPower.length === 0 && filterCapabilityRadiation.length === 0;
+    const graphic = chartsNodata(!(capabilityGraphic), theme);
+    let labelInterval = 47; // 10min数据如果不缺失，此时为6(每小时6条)*8(8小时) - 1(除去间隔本身) = 47 个展示一个
     const totalLength = capabilityData.length;
     if (totalLength < 144 && totalLength > 0) { //假如返回数据不全
-      labelInterval = parseInt(totalLength / 3) - 1;
+      labelInterval = parseInt(totalLength / 3, 10) - 1;
     }
     const minPower = Math.min(...capabilityPower);
     const minRadiation = Math.min(...capabilityRadiation);
+    const color = theme === 'dark' ? ['#a42b2c', '#00f8ff'] : ['#c57576', '#119475'];
     const capabilityOption = {//出力图
-      graphic: capabilityGraphic,
+      graphic: graphic,
       legend: {
-        textStyle: {
-          color: lineColor,
-          fontSize: 12,
-        },
         itemWidth: 24,
         itemHeight: 6,
       },
       grid: {
         show: false,
-        bottom:25,
-        left:'12%',
-        right:'14%',
-        top:32,
+        bottom: 25,
+        left: '13%',
+        right: '14%',
+        top: 32,
       },
       tooltip: {
         trigger: 'axis',
         show: true,
-        backgroundColor: '#fff',
-        textStyle: {
-          color: lineColor,
-          fontSize: '12px',
+        formatter: (params) => {
+          let paramsItem = '';
+          params.forEach(item => {
+            return paramsItem += `<div class=${styles.tooltipCont}> <span style="background:${item.color}"> </span> 
+              ${item.seriesName} :  ${item.value}</div>`;
+          });
+          return (
+            `<div class=${styles.tooltipBox}>
+                  <div class=${styles.axisValue}>${params[0].name}</div>
+                  <div class=${styles.tooltipContainer}> ${paramsItem}</div>
+              </div>`
+          );
         },
-        axisPointer: {
-          type: 'cross',
-          label: {
-            backgroundColor: lineColor,
-          }
-        },
-        formatter: param => {
-          return `<div style="width: 128px; height: 75px;font-size:12px;line-height: 24px;background: #fff;box-shadow:0 1px 4px 0 rgba(0,0,0,0.20);border-radius:2px;">
-            <div style="border-bottom: 1px solid #dfdfdf;padding-left: 5px;" >${param[0] && param[0].name || '--'}</div>
-            ${param.map(e => `<div style="padding-left: 5px;" ><span style="display: inline-block; background:#ffffff; border:1px solid #199475; width:6px; height:6px; border-radius:100%;"></span> ${e.seriesName}: ${e.value || '--'}</div>`).join('')}
-          </div>`;
-        },
-        extraCssText: 'background: rgba(0,0,0,0);',
       },
-      color: ['#c57576', '#199475'],
+      color: color,
       xAxis: {
         type: 'category',
         splitNumber: 4,
         boundaryGap: false,
         data: capabilityData && capabilityData.map(e => {
-          return moment(moment.utc(e.utc)).format('MM-DD HH:mm');
+          return moment(moment.utc(e.utc).toDate()).format('MM-DD HH:mm');
         }),
         axisLine: {
           lineStyle: {
-            color: '#dfdfdf',
+            // color: '#dfdfdf',
           },
         },
         axisLabel: {
-          color: lineColor,
+          // color: lineColor,
           interval: labelInterval,
         },
         axisTick: {
@@ -109,7 +110,7 @@ class OutputTenMin extends Component {
         axisPointer: {
           label: {
             show: false,
-          }
+          },
         },
       },
       yAxis: [
@@ -119,15 +120,13 @@ class OutputTenMin extends Component {
           min: minPower < 0 ? minPower : 0,
           axisLabel: {
             formatter: '{value}',
-            color: lineColor,
           },
           nameTextStyle: {
-            color: lineColor,
+            padding: [0, 0, 0, 20],
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#dfdfdf',
             },
           },
           splitLine: {
@@ -140,20 +139,11 @@ class OutputTenMin extends Component {
           min: minRadiation < 0 ? minRadiation : 0,
           axisLabel: {
             formatter: '{value}',
-            color: lineColor,
-          },
-          nameTextStyle: {
-            color: lineColor,
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#dfdfdf',
-            },
           },
           splitLine: {
             show: false,
           },
-        }
+        },
       ],
       series: [
         {
@@ -162,9 +152,6 @@ class OutputTenMin extends Component {
           smooth: true,
           data: capabilityPower,
           yAxisIndex: 0,
-          areaStyle: {
-            color: '#fff2f2',
-          },
           axisTick: {
             show: false,
           },
@@ -180,20 +167,20 @@ class OutputTenMin extends Component {
           lineStyle: {
             type: 'dotted',
           },
-        }
-      ]
-    }
-    capabilityDiagram.setOption(capabilityOption,'notMerge');
+        },
+      ],
+    };
+    capabilityDiagram.setOption(capabilityOption);
     capabilityDiagram.resize();
   }
 
 
-  
+
   render() {
     const { stationCode } = this.props;
     return (
       <div id={`capabilityDiagram_${stationCode}`} style={{ width: 341, height: 176, color: '#666' }}></div>
-    )
+    );
   }
 }
 

@@ -6,12 +6,7 @@ import Map from './Map.jsx'
 class Allstation extends React.Component {
   static propTypes = {
     allMonitorStation: PropTypes.object,
-    realTimePowerUnit: PropTypes.string,
-    realCapacityUnit: PropTypes.string,
-    powerUnit: PropTypes.string,
-    realTimePowerPoint: PropTypes.any,
-    realCapacityPoint: PropTypes.any,
-    powerPoint: PropTypes.any,
+    monitorPvUnit: PropTypes.object,
     getRealMonitorData: PropTypes.func,
   }
   constructor(props, context) {
@@ -22,7 +17,8 @@ class Allstation extends React.Component {
   }
 
   render() {
-    const { allMonitorStation, realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint } = this.props;
+    const { monitorPvUnit, allMonitorStation } = this.props;
+    const { realTimePowerUnit, realCapacityUnit, realTimePowerPoint, realCapacityPoint, } = monitorPvUnit;
     const stationDataList = allMonitorStation.stationDataList || [];
     let iconArray = [
       {

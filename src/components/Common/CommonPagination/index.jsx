@@ -24,7 +24,8 @@ class CommonPagination extends Component {
     pageSize: PropTypes.number,
     currentPage: PropTypes.number,
     pageSizeArray: PropTypes.array,
-    onPaginationChange: PropTypes.func
+    onPaginationChange: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   static defaultProps = {
@@ -39,7 +40,7 @@ class CommonPagination extends Component {
     this.state = {
       pageSize: props.pageSize,
       currentPage: props.currentPage,
-    }
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,33 +59,37 @@ class CommonPagination extends Component {
   }
 
   onPageSizeChange = (pageSize) => { // 每页条数变化
-    let { currentPage } = this.state;
+    const { currentPage } = this.state;
     const { total } = this.props;
     this.setState({ pageSize });
     this.props.onPaginationChange({
       pageSize,
       currentPage: total / pageSize > currentPage ? currentPage : Math.ceil(total / pageSize),
-    })
+    });
   }
 
   onPageChange = (currentPage) => { // 页码变化
     const { pageSize } = this.state;
-    this.setState({ pageSize })
+    this.setState({ pageSize });
     this.props.onPaginationChange({
       pageSize,
-      currentPage
-    })
+      currentPage,
+    });
   }
 
   render() {
-    const { total, pageSizeArray } = this.props;
+    const { total, pageSizeArray, theme } = this.props;
     const { pageSize, currentPage } = this.state;
     return (
-      <div className={styles.commonPagination}>
+      <div className={`${styles.commonPagination} ${styles[theme]}`}>
         <span>合计：{total}</span>
         <div className={styles.sizeSelector}>
           <span>每页：</span>
-          <Select onChange={this.onPageSizeChange} defaultValue={pageSize}>
+          <span ref={'pageNumber'} />
+          <Select
+            onChange={this.onPageSizeChange}
+            getPopupContainer={() => this.refs.pageNumber}
+            defaultValue={pageSize}>
             {pageSizeArray.map(e => (<Option value={e} key={e}>{e}</Option>))}
           </Select>
         </div>
@@ -93,7 +98,7 @@ class CommonPagination extends Component {
           <Pagination simple current={total === 0 ? 0 : currentPage} total={total} onChange={this.onPageChange} pageSize={pageSize} />
         </div>
       </div>
-    )
+    );
   }
 }
 

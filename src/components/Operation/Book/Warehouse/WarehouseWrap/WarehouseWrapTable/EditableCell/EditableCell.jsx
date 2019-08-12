@@ -28,6 +28,7 @@ class EditableCell extends React.Component {
         style={{ width: '200px' }}
         onOK={this.selectStation}
         multiple={true}
+        oneStyleOnly={true}
         stationShowNumber={true}
       />
     );

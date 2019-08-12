@@ -46,7 +46,7 @@ class DeviceFactory extends React.Component {
   }
   componentDidMount() {
     const { getDeviceFactorsList, pageNum, pageSize } = this.props;
-    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum, pageSize });
+    getDeviceFactorsList({ orderField: '1', orderMethod: 'desc', pageNum: 1, pageSize: 10 });
   }
   componentWillUnmount() {
     this.props.changeAssetConfigStore({
@@ -150,7 +150,8 @@ class DeviceFactory extends React.Component {
     });
   }
   render() {
-    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType } = this.props;
+    const { pageSize, pageNum, total, deviceFactorsList, assetList, stationTypeCount, stationType, handleEnterprisecodes } = this.props;
+    // console.log('handleEnterprisecodes: ', handleEnterprisecodes);
     const { getFieldDecorator } = this.props.form;
     const { showWarningTip, warningTipText, showEditFactorModal, tableRecord } = this.state;
     const columns = [
@@ -158,36 +159,40 @@ class DeviceFactory extends React.Component {
         title: '编码',
         dataIndex: 'manufactorCode',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        width: 80,
+        render: (text) => <div className={styles.manufactorCode} title={text}>{text}</div>,
       }, {
         title: '设备厂家',
         dataIndex: 'manufactorName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>,
+
+        render: (text) => <div className={styles.manufactorName} title={text}>{text}</div>,
       }, {
         title: '生产资产',
         dataIndex: 'assetsNames',
         // sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text.join(',')}</span>,
+        render: (text) => <div className={styles.assetsStyle} title={text}>{text.join(',')}</div>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span>,
+        render: (text) => <div className={styles.createTime} title={text}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</div>,
       }, {
         title: '操作人',
         dataIndex: 'operateUser',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        render: (text, record) => {
+          return (<div className={styles.operateUser} title={text}>{text ? text : record.isBuild === 1 ? '系统' : '--'}</div>);
+        },
       }, {
         title: '操作',
         render: (text, record, index) => {
-          return (<div>
+          return (<div className={styles.editStyle}>
             <a onClick={() => this.editFactors(record)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'}></span></a>
 
-            <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span>
+            {record.isBuild === 0 ? <span title="删除" className={'iconfont icon-del'} onClick={() => this.deleteFactory(record)}></span> : ''}
           </div>);
         },
 
@@ -219,7 +224,7 @@ class DeviceFactory extends React.Component {
                     message: '请选择节点',
                   }],
                 })(
-                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} />
+                  <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} handleEnterprisecodes={handleEnterprisecodes} />
                 )}
               </FormItem>
               <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
@@ -245,11 +250,11 @@ class DeviceFactory extends React.Component {
             dataSource={deviceFactorsList.map((e, i) => {
               e.assetsNames = [];
               e.assetsIds = [];
-              e.isBuild = [];
+              // e.isBuild = [];
               e.assetsDatas.forEach((item, index) => {
                 e.assetsNames.push(item.assetsNames.replace(/,/g, '/'));
                 e.assetsIds.push(item.assetsIds);
-                e.isBuild.push(item.isBuild);
+                // e.isBuild.push(item.isBuild);
               });
               return { ...e };
             })}

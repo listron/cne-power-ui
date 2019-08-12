@@ -1,60 +1,53 @@
-.targetTabs {
+.targetTabs{
   display: flex;
-  flex: 1;
+  flex:1;
   flex-direction: column;
   background-color: #fff;
-
-  .fontColor {
-    color: red
-  }
-
-  :global {
-    .ant-tabs:not(.ant-tabs-vertical)>.ant-tabs-content>.ant-tabs-tabpane {
+  .fontColor{
+    color:red
+    }
+  :global{
+    .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
       //width: 0ch;
       display: flex;
-      justify-content: space-between;
+      justify-content:space-between;
     }
-
-    .ant-tabs-bar {
+    .ant-tabs-bar{
       margin: 0;
     }
-
     .ant-tabs-nav-scroll {
-      background-color: #f8f8f8;
+    background-color: #f8f8f8;
     }
-
-    .iconfont {
-      color: #2d9e81;
+    
+    .iconfont{
+      color:#2d9e81;
       font-size: 14px;
       margin-right: 4px;
     }
-
-  }
-
-  .chartsContainer {
+   
+    }
+  
+  .chartsContainer{
     display: flex;
     flex-direction: column;
     width: 100%;
     overflow: hidden;
-
-    .textStyle {
-      margin: 0 32px 40px 32px;
-      background: #f8f8f8;
-      border-radius: 4px;
+    .textStyle{
+      margin: 0 32px 40px 32px; 
+      background:#f8f8f8;
+      border-radius:4px;
       // height:60px;
       padding-left: 11px;
-
-      div {
+      div{
         height: 30px;
         line-height: 30px;
         font-size: 12px;
       }
-
+      
     }
-
-    .chart {
+    .chart{
       display: flex;
-      // flex: 1;
+      flex:1;
       // flex-direction: column;
       // background: #199475; 
       width: 100%;
@@ -63,12 +56,11 @@
       padding-top: 24px;
       border-top: 1px solid #ececec;
     }
-
-    .chart>div {
+    .chart>div{
       flex: 1;
       height: 320px;
     }
-
+   
   }
 
 }

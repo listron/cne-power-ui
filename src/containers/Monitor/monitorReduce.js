@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import stationMonitor from './StationMonitor/AllStation/stationMonitorReducer';
-import deviceMonitor from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
+import { deviceMonitor } from './StationMonitor/DeviceMonitor/deviceMonitorReducer';
 import singleStation from './StationMonitor/SingleStation/singleStationReducer';
 
 import allDeviceCurveReducer from './PowerCurve/AllDeviceCurve/allDeviceCurveReducer';

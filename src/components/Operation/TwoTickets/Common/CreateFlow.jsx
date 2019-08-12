@@ -21,6 +21,9 @@ class CreateFlow extends Component {
     addDockect: PropTypes.func,
     docketTypeList: PropTypes.array,
     docketDetail: PropTypes.object,
+    type: PropTypes.string,
+    reject: PropTypes.bool,
+    docketId: PropTypes.number,
   }
 
   constructor() {
@@ -32,7 +35,9 @@ class CreateFlow extends Component {
   }
 
   componentDidMount() {
-    this.props.getDocketTypeList();
+    if (this.props.type === 'work') {
+      this.props.getDocketTypeList();
+    }
     this.props.noDistributionList();
   }
 
@@ -44,13 +49,13 @@ class CreateFlow extends Component {
         const { docketType, docketCode, docketName, defectList = {} } = values;
         const annexImg = values.annexImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
         const otherImg = values.otherImg.map(e => {
           return {
-            imgUrl: e.response,
+            imgUrl: e.thumbUrl,
             rotate: e.rotate,
           };
         });
@@ -66,11 +71,11 @@ class CreateFlow extends Component {
           otherImg,
           isContinueAdd,
           docketId,
+          func: () => {
+            this.props.form.resetFields();
+          },
         };
         this.props.addDockect(params);
-        if (isContinueAdd) {
-          this.props.form.resetFields();
-        }
       }
     });
   }
@@ -81,7 +86,7 @@ class CreateFlow extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldValue, setFieldsValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
     const { stations, docketTypeList, noDistributeList, docketDetail, reject, type } = this.props;
     const { docketInfo = {}, defectInfo, distributionInfo = [] } = docketDetail;
     const currentStations = getFieldValue('stations'); // 电站
@@ -89,7 +94,7 @@ class CreateFlow extends Component {
     const { annexImg = [], otherImg = [] } = docketInfo;
     const imgDescribe = annexImg.map((item, i) => {
       return {
-        uid: i,
+        uid: `${item.imgUrl}_${i}`,
         rotate: item.rotate,
         thumbUrl: `${item.imgUrl}`,
       };
@@ -104,7 +109,10 @@ class CreateFlow extends Component {
     const textName = type === 'work' ? '工作票' : '操作票';
     return (
       <div className={styles.workflow}>
-        <Form className={styles.flowForm}>
+        {reject && <div className={styles.title}>
+          <div className={styles.text}> 基本信息  <i className="iconfont icon-co ntent" /> </div>
+        </div>}
+        <Form className={` ${reject && styles.rejectFlowForm || styles.flowForm}`}>
           <FormItem label="电站名称" colon={false}>
             {getFieldDecorator('stations', {
               rules: [{ required: true, message: '请选择电站' }],
@@ -132,7 +140,7 @@ class CreateFlow extends Component {
             {getFieldDecorator('docketCode', {
               rules: [{
                 required: true, message: `请输入${textName}编号(数字、字母及组合)`,
-                pattern: /[a-zA-Z0-9]{1,30}/,
+                pattern: /^[a-zA-Z0-9]+$/g,
               }],
               initialValue: docketInfo.docketCode,
             })(

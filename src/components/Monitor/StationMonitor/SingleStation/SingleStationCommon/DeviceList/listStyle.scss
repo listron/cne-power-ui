@@ -62,19 +62,28 @@
     }
   }
 }
-
+$arlam:#ff8e9c;
 .integrateList{ // 集电线路单独样式
   .eachDevice{
     height:102px;
     cursor: pointer;
+    border:1px solid #dfdfdf;
+    border-radius:4px;
+    &:hover{
+      box-shadow:0px 1px 4px 1px rgba(0,0,0,0.20);
+      .deviceName{
+        color: $themeColor;
+      }
+    }
   }
   .deviceName{
     height: 50px;
     line-height: 50px;
     margin-bottom: 0;
+    color: $promptColor;
+    border-radius:4px 4px 0 0;
     :global{
       .icon-jidian{
-        color: $promptColor;
         margin-left: 8px;
         font-size: 32px;
       }
@@ -89,6 +98,18 @@
       }
     }
   }
+    .alarm{
+      .deviceName{
+        background: $arlam;
+        color: #a42b2c;
+      }
+      &:hover{
+        box-shadow:0px 1px 4px 1px $arlam;
+        .deviceName{
+          color: #a42b2c;
+        }
+      }
+    }
   .deviceValue{
     margin: 0 8px;
     display: flex;

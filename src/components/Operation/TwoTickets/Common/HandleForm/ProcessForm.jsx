@@ -14,31 +14,34 @@ class DefectProcessForm extends Component {
     onChange: PropTypes.func,
   }
 
+  componentWillUnmount() {
+    this.props.form.resetFields();
+  }
 
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        let annexImg = values.annexImg.map((e,i) => {
+        const annexImg = values.annexImg.map((e, i) => {
           return {
             imgUrl: e.response,
             rotate: e.rotate,
             uid: i,
-          }
-        })
-        let otherImg = values.otherImg.map((e,i) => {
+          };
+        });
+        const otherImg = values.otherImg.map((e, i) => {
           return {
             imgUrl: e.response,
             rotate: e.rotate,
-          }
-        })
+          };
+        });
         this.props.onChange({
-          handleResult:1,
-          handleDesc:'',
+          handleResult: 1,
+          handleDesc: '',
           ...values,
           annexImg,
           otherImg,
-        })
+        });
       }
     });
   }
@@ -51,7 +54,7 @@ class DefectProcessForm extends Component {
           <div className={styles.addImg}>
             <div className={styles.maxTip}>最多4张</div>
             {getFieldDecorator('annexImg', {
-              rules: [{ required: false, message: '请上传图片' }],
+              rules: [{ required: true, message: '请上传图片' }],
               initialValue: [],
               valuePropName: 'data',
             })(

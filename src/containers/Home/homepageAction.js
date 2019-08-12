@@ -5,7 +5,7 @@ export const homepageAction = {
   GET_HOMEPAGE_FETCH_SUCCESS: Symbol('GET_HOMEPAGE_FETCH_SUCCESS'), // api请求成功
   changeHomepageStore: Symbol('changeHomepageStore'), // 改变stort
   homepageReset: Symbol('homepageReset'), // 重置数据
-  
+
   getRealTimeData: Symbol('getRealTimeData'), // 实时监控数据
   getCompleteRate: Symbol('getCompleteRate'), // 完成率
   getEnergySaving: Symbol('getEnergySaving'), // 节能减排
@@ -17,7 +17,8 @@ export const homepageAction = {
   getAlarmList: Symbol('getAlarmList'), // 告警列表
   getOutputDiagram: Symbol('getOutputDiagram'), // 出力图表
   getOperationInfo: Symbol('getOperationInfo'), // 运维情况
-}
+  getUnhandleList: Symbol('getUnhandleList'), // 获取待处理预警列表
+};
 
 
 

@@ -94,6 +94,7 @@ class AssetStructure extends React.Component {
     const assetsParentId = tableData.assetsId;
     const assetsName = tableData.assetsName;
     const assetsType = tableData.assetsType;
+    const assetsUnit = tableData.assetsUnit;
     const isBuild = tableData.isBuild;
     //当前节点所处第几级
     const currentLeavel = assetsParentId.split(',').length - 1;
@@ -103,7 +104,7 @@ class AssetStructure extends React.Component {
 
     //保留当前节点的id和name，供编辑节点和新建节点使用
 
-    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, childrenNum, isBuild });
+    this.props.changeAssetConfigStore({ assetsId: assetsParentId, assetsName, assetsUnit, childrenNum, isBuild });
     //请求选中节点的详情
     this.getTreeData({ assetsParentId });
 

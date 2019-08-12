@@ -23,10 +23,18 @@
 .conditionSearch{ // 顶部通用查询
   display: flex;
   height: 64px;
+  justify-content: space-between;
   align-items: center;
+  .searchParts{
+    display: flex;
+    align-items: center;
+  }
   .title{
     margin-left: 28px;
     color: $darkColor;
+  }
+  .export{
+    margin-right: 24px;
   }
   :global{
     .ant-select{
@@ -288,6 +296,12 @@
 }
 
 .materialListModal{ // 选择仓库内某物资所有物品列表弹框
+  .pagination{
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   .handle{
     display: flex;
     height: 46px;
@@ -318,7 +332,7 @@
   }
   :global{
     .ant-modal-body{
-      padding: 24px 0 0 0;
+      padding: 0;
     }
     .ant-table-wrapper{
       margin: 0 24px;

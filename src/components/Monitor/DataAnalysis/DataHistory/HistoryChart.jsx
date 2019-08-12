@@ -215,7 +215,7 @@ class HistoryChart extends Component {
         <h4>
           <span className={styles.eachTitle} />
           <span className={styles.eachTitle}>各设备测点历史数据趋势图</span>
-          <span className={styles.tipTitle}>数据为{timeInterval === 10 ? '均值或累计' : '瞬时'}值</span>
+          <span className={styles.tipTitle}>数据为瞬时值</span>
 
         </h4>
         <div className={styles.innerChart} id="dataHistoryChart" style={{ height: `${chartHeight}px`}} />

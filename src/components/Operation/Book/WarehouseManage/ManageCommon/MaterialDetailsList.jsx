@@ -2,16 +2,23 @@ import React, { Component } from 'react';
 import { Modal, Table, Button, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import CommonPagination from '../../../../Common/CommonPagination';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './manageCommon.scss';
 
 export default class MaterialDetailsList extends Component {
 
   static propTypes = {
+    materialListLoading: PropTypes.bool,
     total: PropTypes.number,
+    materialListTotal: PropTypes.number,
+    inventoryId: PropTypes.number,
     value: PropTypes.array,
+    materialListParams: PropTypes.object,
     materialDetailsList: PropTypes.array,
     onChange: PropTypes.func,
+    changeStore: PropTypes.func,
+    getMaterialDetailsList: PropTypes.func,
   }
 
   constructor(props){
@@ -19,7 +26,19 @@ export default class MaterialDetailsList extends Component {
     this.state = {
       modalShow: false,
       checkedMaterial: props.value || [],
-    }
+    };
+  }
+
+  componentWillUnmount(){ // 卸载组件时, 清空缓存的信息。
+    this.props.changeStore({
+      materialListParams: {
+        sortField: '', // 'price'
+        sortMethod: '', // "asc"：正序  "desc"：倒序
+        pageNum: 1,
+        pageSize: 10,
+      },
+      materialListTotal: 0,
+    });
   }
 
   hideModal = () => this.setState({ modalShow: false });
@@ -48,6 +67,7 @@ export default class MaterialDetailsList extends Component {
       title: '单价/元',
       dataIndex: 'price',
       width: 100,
+      sorter: true,
       render: (text) => <span>{dataFormats(text, '--', 2, true)}</span>,
     }, {
       title: '入库人',
@@ -57,7 +77,7 @@ export default class MaterialDetailsList extends Component {
       title: '备注',
       dataIndex: 'remarks',
       render: (text) => <span title={text} className={styles.remarks} >{text || '--'}</span>,
-    }
+    },
   ]
 
   remove = (materialCode) => { // 移除选中项 且重置表格选中项。
@@ -72,14 +92,40 @@ export default class MaterialDetailsList extends Component {
   }
 
   confirm = () => { // 确认
-    const { checkedMaterial } =  this.state;
+    const { checkedMaterial } = this.state;
     this.setState({ modalShow: false });
     this.props.onChange(checkedMaterial);
   }
 
+  paginationChange = ({ pageSize, currentPage }) => { // 翻页
+    const { materialListParams, getMaterialDetailsList, changeStore, inventoryId } = this.props;
+    const newParams = {
+      ...materialListParams,
+      pageNum: currentPage,
+      pageSize,
+    };
+    changeStore({ materialListParams: {...newParams} });
+    getMaterialDetailsList({ inventoryId, ...newParams });
+  }
+
+  tableChange = (pagination, filter, sorter) => {
+    const { field, order } = sorter;
+    const { materialListParams, changeStore, getMaterialDetailsList, inventoryId } = this.props;
+    const sortTypeInfo = {
+      descend: 'desc',
+      ascend: 'asc',
+    };
+    const sortField = field ? 'price' : '';
+    const sortMethod = order ? sortTypeInfo[order] : '';
+    const newParams = { ...materialListParams, sortField, sortMethod };
+    changeStore({ materialListParams: newParams });
+    getMaterialDetailsList({ inventoryId, ...newParams });
+  }
+
   render(){
     const { modalShow, checkedMaterial } = this.state;
-    const { value = [], materialDetailsList, total } = this.props;
+    const { value = [], materialDetailsList, total, materialListParams, materialListTotal, materialListLoading } = this.props;
+    const { pageSize, pageNum } = materialListParams;
     return (
       <div className={styles.materialDetailsList}>
         <p className={styles.title}>
@@ -112,14 +158,24 @@ export default class MaterialDetailsList extends Component {
           wrapClassName={styles.materialListModal}
         >
           <div>
+            <div className={styles.pagination}>
+              <CommonPagination
+                total={materialListTotal}
+                pageSize={pageSize}
+                currentPage={pageNum}
+                onPaginationChange={this.paginationChange}
+              />
+            </div>
             <Table
               columns={this.createColumn()}
               dataSource={materialDetailsList.map(e => ({ ...e, key: e.materialCode }))}
               pagination={false}
+              loading={materialListLoading}
               scroll={{y: 280}}
+              onChange={this.tableChange}
               rowSelection={{
                 selectedRowKeys: checkedMaterial.map(e => e.materialCode),
-                onChange: this.selectMaterial
+                onChange: this.selectMaterial,
               }}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
             />
@@ -130,6 +186,6 @@ export default class MaterialDetailsList extends Component {
           </div>
         </Modal>
       </div>
-    )
+    );
   }
 }
