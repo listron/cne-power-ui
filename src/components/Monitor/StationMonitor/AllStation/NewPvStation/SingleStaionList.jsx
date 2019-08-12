@@ -49,14 +49,15 @@ class SingleStaionList extends React.Component {
     const alarm = singleStation.alarmNum > 0;
     const invertType = singleStation.lowEffType === 1 ? '201' : '206';
     return (
-      <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus); }} key={singleStation.stationCode} >
+      <div className={`${styles[getStatusName[`${currentStatus}`]]} ${styles.staionCard}  ${alarm && styles.alarm}`} onClick={() => { this.showTip(currentStatus); }} key={singleStation.stationCode}>
         <Link to={`/monitor/singleStation/${singleStation.stationCode}`} className={styles.linkBox}>
           <div className={styles.stationTop}>
             <div className={styles.stationName} title={singleStation.stationName}> {singleStation.stationName}</div>
             <div className={styles.staionCapacity}>
               <div>
                 <i className={'iconfont icon-da'} />
-                <span className={styles.changeNum}> {dataFormats(stationCapacity, '--', 2)}</span> {realCapacityUnit}
+                <span className={styles.changeNum}>
+                  {dataFormats(stationCapacity, '--', 2)}</span> {realCapacityUnit}
               </div>
               <div className={styles.stationUnitCount}>
                 <span className={styles.changeNum}>{singleStation.stationUnitCount}</span> 台

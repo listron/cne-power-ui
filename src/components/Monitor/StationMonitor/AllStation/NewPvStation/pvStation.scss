@@ -408,7 +408,7 @@
         background: $button-primary;
         color: $fontColor-invert;
         &:hover {
-          background: $button-hover;
+          background: $button-active;
           color: $button-primary;
         }
         &:first-child {
@@ -420,7 +420,7 @@
       }
     }
     .activeCard {
-      background: $button-hover;
+      background: $button-active;
       color: $button-primary;
     }
   }

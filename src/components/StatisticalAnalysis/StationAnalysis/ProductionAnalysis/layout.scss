@@ -1,0 +1,124 @@
+.singleStationType {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .stationTimeFilter {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    align-items: center;
+    margin-bottom: 20px;
+    .leftFilter {
+      display: flex;
+      flex-direction: row;
+      margin-left: 30px;
+      .stationFilter {
+        display: flex;
+        align-items: center;
+        line-height: 43px;
+        .text {
+          margin-right: 10px;
+        }
+      }
+    }
+    .rightContent {
+      margin-right: 30px;
+      letter-spacing: 1px;
+    }
+  }
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    :global {
+      .ant-radio-button-wrapper {
+        height: 19px;
+        line-height: 16px;
+        padding: 0 5px;
+      }
+    }
+    .title {
+      display: flex;
+      flex-direction: column;
+      padding-left: 28px;
+      height: 160px;
+      .stationStatus {
+        color: $darkColor;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+        .status {
+          margin-right: 4px;
+          :global {
+            .iconfont {
+              margin-right: 4px;
+            }
+          }
+        }
+        .rightFont {
+          margin-right: 30px;
+        }
+      }
+      .graph {
+        display: flex;
+        .staticWrap {
+          display: flex;
+          flex-wrap: wrap;
+          width: 800px;
+          margin-left: 32px;
+        }
+        .stationTargetData {
+          display: flex;
+          justify-content: space-between;
+          width: 250px;
+          align-items: center;
+          margin-right: 80px;
+          .stationTargetValue {
+            font-size: 24px;
+            .unit {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+    .targetGraphContainer {
+      .bgStyle {
+        .fontStyle {
+          width: 160px;
+        }
+      }
+      .tabContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px 0;
+        .dataGraph {
+          display: flex;
+          flex-direction: row;
+          height: 300px;
+          margin-right: 24px;
+          > div:nth-child(1) {
+            flex: 5;
+          }
+          > div:nth-child(2) {
+            flex: 4;
+          }
+        }
+        .dataGraphs {
+          display: flex;
+          flex-direction: row;
+          height: 300px;
+          > div:nth-child(1) {
+            flex: 1;
+          }
+          > div:nth-child(2) {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}

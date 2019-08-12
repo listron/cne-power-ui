@@ -30,8 +30,8 @@ import { watchSingleStationMonitor } from './Monitor/StationMonitor/SingleStatio
 import { watchDeviceMonitor } from './Monitor/StationMonitor/DeviceMonitor/deviceMonitorSaga';
 import { watchStationMonitor } from './Monitor/StationMonitor/AllStation/stationMonitorSaga';
 
-import {watchAlarmMonitor}  from './Monitor/Alarm/AlarmStatic/alarmSaga';
-import {watchAlarmCount} from './Monitor/Alarm/AlarmCount/alarmCountSaga';
+import { watchAlarmMonitor } from './Monitor/Alarm/AlarmStatic/alarmSaga';
+import { watchAlarmCount } from './Monitor/Alarm/AlarmCount/alarmCountSaga';
 import { watchMonitorRealtimeWarning } from './Monitor/Alarm/RealTimeWarning/realtimeWarningSaga';
 import { watchMonitorTransferForm } from './Monitor/Alarm/Transfer/transferFormSaga';
 import { watchMonitorHandleWarning } from './Monitor/Alarm/HandleRemove/handleRemoveSaga';
@@ -57,49 +57,50 @@ import { watchProductionStationSaga } from './StatisticalAnalysis/StationAnalysi
 import { watchStationResourceStationSaga } from './StatisticalAnalysis/StationAnalysis/StationResourceAnalysis/stationResourceAnalysisSaga';
 import { watchOperateStationSaga } from './StatisticalAnalysis/StationAnalysis/OperateAnalysis/operateAnalysisSaga';
 import { watchStationContrastSaga } from './StatisticalAnalysis/StationAnalysis/StationContrast/stationContrastSaga';
-import { watchPerformanceAnalysisSaga } from "./StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga";
-import { watchManufacturers } from "./StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga";
-import { watchCustomize } from "./StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga";
-import { watchScoreAnalysis } from "./StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga";
-import { watchIntelligentAnalysis } from "./StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga";
+import { watchPerformanceAnalysisSaga } from './StatisticalAnalysis/EquipmentAnalysis/PerformanceAnalysis/performanceAnalysisSaga';
+import { watchManufacturers } from './StatisticalAnalysis/EquipmentAnalysis/Manufacturers/manufacturersSaga';
+import { watchCustomize } from './StatisticalAnalysis/EquipmentAnalysis/Customize/customizeSaga';
+import { watchScoreAnalysis } from './StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga';
+import { watchIntelligentAnalysis } from './StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga';
+import { watchDataAnalysisScatterSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterSaga';
 
 
 
-import { watchRealtimeWarning } from "./HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga";
-import { watchTransferForm } from "./HighAnalysis/IntelligentWarning/Transfer/transferFormSaga";
-import { watchHandleWarning } from "./HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga";
-import { watchHistoryWarning } from "./HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga";
+import { watchRealtimeWarning } from './HighAnalysis/IntelligentWarning/RealTimeWarning/realtimeWarningSaga';
+import { watchTransferForm } from './HighAnalysis/IntelligentWarning/Transfer/transferFormSaga';
+import { watchHandleWarning } from './HighAnalysis/IntelligentWarning/HandleRemove/handleRemoveSaga';
+import { watchHistoryWarning } from './HighAnalysis/IntelligentWarning/HistoryWarning/historyWarningSaga';
 
-import { watchCleanoutRecord } from "./HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga";
-import { watchCleanWarning } from "./HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga";
-import { watchUnhandle } from "./HighAnalysis/EarlyWarning/Unhandle/unhandleSaga";
-import { watchIgnore } from "./HighAnalysis/EarlyWarning/Ignore/ignoreSaga";
-import { watchTransfer } from "./HighAnalysis/EarlyWarning/Transfer/transferSaga";
-import { watchHistory } from "./HighAnalysis/EarlyWarning/HistoryWarn/historyWarnSaga";
+import { watchCleanoutRecord } from './HighAnalysis/CleanoutModel/CleanoutRecord/cleanoutRecordSaga';
+import { watchCleanWarning } from './HighAnalysis/CleanoutModel/CleanWarning/cleanWarningSaga';
+import { watchUnhandle } from './HighAnalysis/EarlyWarning/Unhandle/unhandleSaga';
+import { watchIgnore } from './HighAnalysis/EarlyWarning/Ignore/ignoreSaga';
+import { watchTransfer } from './HighAnalysis/EarlyWarning/Transfer/transferSaga';
+import { watchHistory } from './HighAnalysis/EarlyWarning/HistoryWarn/historyWarnSaga';
 
-import { watchAlgorithmControl } from "./HighAnalysis/FaultDiagnose/AlgorithmControl/algorithmControlSaga";
-import { watchFaultWarn } from "./HighAnalysis/FaultDiagnose/FaultWarn/faultWarnSaga";
-import { watchFaultWarnList } from "./HighAnalysis/FaultDiagnose/FaultWarnList/faultWarnListSaga";
-import { watchFaultAllFan } from "./HighAnalysis/FaultDiagnose/FaultAllFan/faultAllFanSaga";
-import { watchFaultSingleFan } from "./HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga";
-import { watchFaultWarnHistory } from "./HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga";
+import { watchAlgorithmControl } from './HighAnalysis/FaultDiagnose/AlgorithmControl/algorithmControlSaga';
+import { watchFaultWarn } from './HighAnalysis/FaultDiagnose/FaultWarn/faultWarnSaga';
+import { watchFaultWarnList } from './HighAnalysis/FaultDiagnose/FaultWarnList/faultWarnListSaga';
+import { watchFaultAllFan } from './HighAnalysis/FaultDiagnose/FaultAllFan/faultAllFanSaga';
+import { watchFaultSingleFan } from './HighAnalysis/FaultDiagnose/FaultSingleFan/faultSingleFanSaga';
+import { watchFaultWarnHistory } from './HighAnalysis/FaultDiagnose/HistoryWarn/historyWarnSaga';
 
 import { watchAchieveLayout } from './HighAnalysis/Achievement/achieveSaga'; // 高级分析 - 风电分析 - layout
 import { watchGroupAchieve } from './HighAnalysis/Achievement/GroupAchieve/groupAchieveSaga'; // 高级分析-风电分析-集团
 import { watchAreaAchieve } from './HighAnalysis/Achievement/AreaAchieve/areaAchieveSaga'; // 高级分析-风电分析-区域
 import { watchStationAhieve } from './HighAnalysis/Achievement/StationAchieve/stationAchieveSaga'; // 高级分析-风电分析-电站
 
-import { watchWorkOrder } from "./Operation/Ticket/WorkOrder/workOrderSaga";
-import { watchBookAssetsConfig } from "./Operation/Book/AssetsConfig/assetsConfigSaga";
-import { watchBookDeviceManage } from "./Operation/Book/DeviceManage/deviceManageSaga";
-import { watchBookPartsInfo } from "./Operation/Book/DeviceManage/PartInfo/partInfoSaga";
-import { watchDeviceAccount } from "./Operation/Book/DeviceAccount/deviceAccountSaga";
-import { watchWarehouse } from "./Operation/Book/Warehouse/warehouseSaga";
+import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
+import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
+import { watchBookDeviceManage } from './Operation/Book/DeviceManage/deviceManageSaga';
+import { watchBookPartsInfo } from './Operation/Book/DeviceManage/PartInfo/partInfoSaga';
+import { watchDeviceAccount } from './Operation/Book/DeviceAccount/deviceAccountSaga';
+import { watchWarehouse } from './Operation/Book/Warehouse/warehouseSaga';
 import { watchWarehouseManage } from './Operation/Book/WarehouseManage/warehouseManageSaga';
-import { watchStockRecords } from "./Operation/Book/StockRecords/stockRecordsSaga";
-import { watchExaminer } from "./Operation/TwoTickets/Examiner/examinerSaga";
-import { watchOperateFlow } from "./Operation/TwoTickets/OperateFlow/operateFlowSaga";
-import { watchWorkFlow } from "./Operation/TwoTickets/WorkFlow/workFlowSaga";
+import { watchStockRecords } from './Operation/Book/StockRecords/stockRecordsSaga';
+import { watchExaminer } from './Operation/TwoTickets/Examiner/examinerSaga';
+import { watchOperateFlow } from './Operation/TwoTickets/OperateFlow/operateFlowSaga';
+import { watchWorkFlow } from './Operation/TwoTickets/WorkFlow/workFlowSaga';
 
 // root saga
 export default function* rootSaga() {
@@ -109,9 +110,9 @@ export default function* rootSaga() {
     watchHomepage(), // 主页
     //ticket
     watchChangeShowContainer(),
-    watchDefect(),//Defect
-    watchInspect(),// 巡检
-    watchPersonnelGps(),//员工定位
+    watchDefect(), //Defect
+    watchInspect(), // 巡检
+    watchPersonnelGps(), //员工定位
     watchDayReport(), // operation- 日报
     watchIntelligentExper(), // 光伏智能专家库
 
@@ -144,12 +145,12 @@ export default function* rootSaga() {
     watchDataHistoryMonitor(), // 数据分析 - 历史趋势
     watchDataRealtimeMonitor(), // 数据分析 - 实时数据
     watchDataExport(), // 数据分析 - 数据导出
-    watchAllDeviceCurve(),//功率曲线
-    watchSingleDeviceCurve(),//单风机功率曲线
-    watchMonitorPowerReport(),//报表--电量
-    watchMonitorDeviceStatus(),//报表-设备状态
-    watchMonitorMalfunction(),//报表-故障
-    watchMonitorPowerLost(),//报表--电量损失
+    watchAllDeviceCurve(), //功率曲线
+    watchSingleDeviceCurve(), //单风机功率曲线
+    watchMonitorPowerReport(), //报表--电量
+    watchMonitorDeviceStatus(), //报表-设备状态
+    watchMonitorMalfunction(), //报表-故障
+    watchMonitorPowerLost(), //报表--电量损失
 
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
@@ -169,6 +170,7 @@ export default function* rootSaga() {
     watchCustomize(),
     // 统计报表
     watchIntelligentAnalysis(), // 智能分析报告
+    watchDataAnalysisScatterSaga(), //数据分析散点图
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),
@@ -196,15 +198,15 @@ export default function* rootSaga() {
     // 工单
     watchWorkOrder(),
     //operation_Book台账
-    watchBookAssetsConfig(),//资产配置
-    watchBookDeviceManage(),//设备管理
-    watchBookPartsInfo(),//组件信息
-    watchDeviceAccount(),//设备台账
-    watchWarehouse(),//仓库配置
+    watchBookAssetsConfig(), //资产配置
+    watchBookDeviceManage(), //设备管理
+    watchBookPartsInfo(), //组件信息
+    watchDeviceAccount(), //设备台账
+    watchWarehouse(), //仓库配置
     watchWarehouseManage(), // 仓库管理
-    watchStockRecords(),//出入库记录
+    watchStockRecords(), //出入库记录
     watchExaminer(), // 两票 -审核人
-    watchOperateFlow(),//两票 -操作票
-    watchWorkFlow(),////两票 -工作票
-  ])
+    watchOperateFlow(), //两票 -操作票
+    watchWorkFlow(), ////两票 -工作票
+  ]);
 }

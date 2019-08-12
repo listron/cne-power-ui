@@ -62,6 +62,12 @@ class GpsMap extends Component {
         'color': '#0065c6',
       },
     }, {
+      'featureType': 'railway',
+      'elementType': 'geometry',
+      'stylers': {
+        'visibility': 'off',
+      },
+    }, {
       'featureType': 'arterial',
       'elementType': 'geometry',
       'stylers': {
@@ -121,13 +127,39 @@ class GpsMap extends Component {
       'stylers': {
         'color': '#142977',
       },
-    }, {
+    },
+    {
+      'featureType': 'city',
+      'elementType': 'labels.text.stroke',
+      'stylers': {
+        'visibility': 'on',
+        'weight': 1,
+        'color': '#66666600',
+      },
+    },
+    {
       'featureType': 'label',
       'elementType': 'labels.text.fill',
       'stylers': {
         'color': '#666',
       },
-    }];
+    },
+    {
+      'featureType': 'city',
+      'elementType': 'labels.text.fill',
+      'stylers': {
+        'color': '#00baffff',
+        'visibility': 'on',
+        'weight': 30,
+      },
+    }, {
+      "featureType": "district",
+      "elementType": "labels",
+      "stylers": {
+        "visibility": "off"
+      }
+    },
+    ];
     const lightStyleJson = [{
       'featureType': 'water',
       'elementType': 'all',
