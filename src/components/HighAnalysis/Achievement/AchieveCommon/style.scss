@@ -3,6 +3,8 @@
 
 .timeSelect{
   display: flex;
+  flex-basis: 150px;
+  width: 150px;
   .day, .month, .year{
     flex: 0 0 50px;
     height:30px;

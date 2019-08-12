@@ -75,7 +75,7 @@ class SideMenu extends Component {
       return (
         <div className={styles.sideLayout}>
           <div className={styles.logo}>
-            {!collapsed && <img src="/img/menubg.png" style={{ width: 55, height: 23 }} />}
+            {!collapsed && <img src={`/img/${theme === 'dark' ? 'darkmenu' : 'menubg'}.png`} style={{ width: 55, height: 23 }} />}
             <div className={styles.iconfont} style={{ marginTop: 10 }} onClick={this.toggleCollapsed}>
               {collapsed ? <i className="iconfont icon-menu-fold" /> : <i className="iconfont icon-menu-open" />}
             </div>

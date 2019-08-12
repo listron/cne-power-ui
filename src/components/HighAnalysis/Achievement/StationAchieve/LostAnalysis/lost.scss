@@ -25,6 +25,7 @@
   }
   .lostRank{
     width: 100%;
+    margin-bottom: 8px;
     .handle{
       .eachHandle{
         margin-right: 24px;
@@ -35,7 +36,10 @@
     }
   }
   .lostTrend, .lostTypes{
-    width: 50%;
+    width: calc(50% - 5px);
+  }
+  .lostTrend{
+    margin-right: 10px;
   }
 }
 
@@ -61,6 +65,7 @@
 // 颜色
 .lostAnalysis{
   .lostRank, .lostTrend, .lostTypes{
+    background-color: #fff;
     .top .title{
       color: #000;
     }

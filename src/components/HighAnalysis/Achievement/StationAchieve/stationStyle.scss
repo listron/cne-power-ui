@@ -22,8 +22,15 @@
 
 .animationBox{
   flex: 1;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+  }
   .sideToggle{
     display: flex;
     z-index: 9999;
@@ -97,6 +104,9 @@
 }
 
 .animationBox{
+  &::-webkit-scrollbar-thumb{
+    background:rgba(0,0,0,0.5);
+  }
   .eachTab{
     color:#ffffff;
     background-image:linear-gradient(-180deg, #fad961 0%, #f76b1c 100%);

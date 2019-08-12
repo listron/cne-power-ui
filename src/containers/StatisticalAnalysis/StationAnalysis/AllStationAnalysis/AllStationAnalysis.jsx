@@ -33,10 +33,9 @@ class AllStationAnalysis extends Component {
 
   render() {
     const { showPage, theme } = this.props;
-    const breadCrumbData = { breadData: [{ name: '全部电站' }] };
     return (
       <div className={`${styles.allStationAnalysisBox} ${styles[theme]}`} >
-        <CommonBreadcrumb {...breadCrumbData} style={{ paddingLeft: '38px' }} theme={theme} />
+        <CommonBreadcrumb breadData={[{ name: '全部电站' }]} style={{ paddingLeft: '38px' }} theme={theme} />
         <div className={styles.allStationStatistic}>
           {showPage === 'multiple' && <AllStationStatistic {...this.props} />}
           {showPage === 'single' && <SingStationStatistic {...this.props} />}

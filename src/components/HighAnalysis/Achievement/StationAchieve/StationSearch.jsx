@@ -14,8 +14,7 @@ class StationSearch extends Component {
 
   static propTypes = {
     location: PropTypes.object,
-    chartDevice: PropTypes.string, // chart选中的设备
-    chartTime: PropTypes.string, // chart选中的时间
+    lostChartDevice: PropTypes.string, // chart选中的设备
     history: PropTypes.object,
     areaStation: PropTypes.array,
     modeDevices: PropTypes.array,
@@ -95,7 +94,7 @@ class StationSearch extends Component {
   }
 
   onStationChange = ([regionName, stationCode, stationName]) => {
-    this.setState({ searchCode: stationCode });
+    this.setState({ searchCode: stationCode, searchDevice: [] });
     this.props.getDevices({ stationCode });
   }
 
@@ -113,9 +112,9 @@ class StationSearch extends Component {
   }
 
   render() {
-    const { areaStation, modeDevices, chartDevice, chartTime } = this.props;
+    const { areaStation, modeDevices, lostChartDevice } = this.props;
     const { searchCode, searchDevice, searchDates } = this.state;
-    const recoveryDisable = !chartDevice && !chartTime;
+    const recoveryDisable = !lostChartDevice;
     return (
       <div className={styles.topSearch}>
         <div className={styles.leftPart}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import moment from 'moment';
+import { message } from 'antd';
 import TimeSelect from '../../AchieveCommon/TimeSelect';
 import searchUtil from '../../../../../utils/searchUtil';
 import { getBaseOption } from './chartBaseOption';
@@ -11,11 +12,12 @@ class ChartLostTrend extends Component {
 
   static propTypes = {
     quotaName: PropTypes.string,
-    chartTimeMode: PropTypes.string,
+    lostChartTime: PropTypes.string,
+    lostChartTimeMode: PropTypes.string,
     lostQuota: PropTypes.string,
     lostTrend: PropTypes.array,
     location: PropTypes.object,
-    chartDevice: PropTypes.object,
+    lostChartDevice: PropTypes.object,
     lostTrendLoading: PropTypes.bool,
     changeStore: PropTypes.func,
     getLostTrend: PropTypes.func,
@@ -38,7 +40,8 @@ class ChartLostTrend extends Component {
   }
 
   setChartLoading = () => {
-    console.log('loading');
+    const trendChart = this.trendRef && echarts.getInstanceByDom(this.trendRef);
+    trendChart && trendChart.showLoading();
   }
 
   createSeries = (lostTrend = []) => {
@@ -95,10 +98,10 @@ class ChartLostTrend extends Component {
     return JSON.parse(infoStr) || {};
   }
 
-  timeModeChange = (chartTimeMode) => {
+  timeModeChange = (lostChartTimeMode) => {
     const { changeStore, lostQuota, getLostTrend } = this.props;
     // 携带参数重新请求信息
-    changeStore({ chartTimeMode });
+    changeStore({ lostChartTimeMode });
     const searchParam = this.getSearchInfo();
     getLostTrend({
       stationCodes: [searchParam.searchCode],
@@ -106,12 +109,40 @@ class ChartLostTrend extends Component {
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
       indicatorCode: lostQuota,
-      type: chartTimeMode,
+      type: lostChartTimeMode,
+    });
+  }
+
+  chartHandle = ({dataIndex}, lostTrend, chart) => {
+    const { lostChartTimeMode, lostChartDevice, lostChartTime } = this.props;
+    if(!lostChartDevice){
+      message.info('先选择设备后, 才能对时间进行操作');
+    }
+    const chartTimeInfo = lostTrend[dataIndex] || {};
+    const { efficiencyDate } = chartTimeInfo;
+    const searchParam = this.getSearchInfo();
+    const { searchDates } = searchParam;
+    let startTime, endTime;
+    if (efficiencyDate === lostChartTime) {
+      startTime = searchParam.searchDates[0];
+      endTime = searchParam.searchDates[1];
+    } else {
+      const clickStart = moment(efficiencyDate).startOf(lostChartTimeMode);
+      const clickEnd = moment(efficiencyDate).endOf(lostChartTimeMode);
+      this.props.changeStore({ lostChartTime: efficiencyDate });
+      startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
+      endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
+    }
+    this.props.getLostTypes({
+      startTime,
+      endTime,
+      stationCodes: [searchParam.searchCode],
+      deviceFullcodes: [lostChartDevice.deviceFullcode],
     });
   }
 
   renderChart = (lostTrend = []) => {
-    const { quotaName, getLostTypes, chartTimeMode, changeStore, chartDevice } = this.props;
+    const { quotaName } = this.props;
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend);
     const baseOption = getBaseOption(dataAxis);
@@ -139,36 +170,20 @@ class ChartLostTrend extends Component {
       },
       series,
     };
+    trendChart.hideLoading();
     trendChart.setOption(option);
-    chartDevice && chartDevice.deviceFullcode && trendChart.on('click', ({dataIndex}) => {
-      const chartTimeInfo = lostTrend[dataIndex] || {};
-      const { efficiencyDate } = chartTimeInfo;
-      const clickStart = moment(efficiencyDate).startOf(chartTimeMode);
-      const clickEnd = moment(efficiencyDate).endOf(chartTimeMode);
-      const searchParam = this.getSearchInfo();
-      const { searchDates } = searchParam;
-      const startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
-      const endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
-      changeStore({ chartTime: efficiencyDate });
-      getLostTypes({
-        startTime,
-        endTime,
-        stationCodes: [searchParam.searchCode],
-        deviceFullcodes: [chartDevice.deviceFullcode],
-      });
-    });
+    trendChart.on('click', (param) => this.chartHandle(param, lostTrend, trendChart));
   }
 
-
   render() {
-    const { chartTimeMode } = this.props;
+    const { lostChartTimeMode } = this.props;
     return (
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
             PBA趋势
           </span>
-          <TimeSelect chartTimeMode={chartTimeMode} timeModeChange={this.timeModeChange} />
+          <TimeSelect lostChartTimeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
         <div className={styles.chart} ref={(ref)=> {this.trendRef = ref;}} />
       </div>

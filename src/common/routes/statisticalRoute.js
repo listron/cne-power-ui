@@ -50,9 +50,25 @@ const statement = [ // 统计分析 - 统计报表
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentReport/IntelligentReport')),
   },
 ];
+const analysisTool = [
+  {
+    path: '/statistical/analysisTool/scatter',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')),
+  },
+  // {
+  //   path: '/statistical/analysisTool/sequence',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
+  //   ),
+  // }, {
+  //   path: '/statistical/analysisTool/sequence',
+  //   component: lazy(() => import('../../containers/StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/DataAnalysisScatter.jsx')
+  //   ),
+  // }
+];
 
 export const statisticalRoute = [
   ...stationAccount,
   ...equipment,
   ...statement,
+  ...analysisTool,
 ];

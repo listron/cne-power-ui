@@ -24,7 +24,7 @@ class PvStationTop extends Component {
     super(props);
     this.state = {
       showStationList: false,
-    }
+    };
   }
 
   componentDidMount() {
@@ -50,15 +50,15 @@ class PvStationTop extends Component {
   }
 
   render() {
-    const { singleStationData = {}, stationList, weatherList, operatorList,operatorTime } = this.props;
+    const { singleStationData = {}, stationList, weatherList, operatorList, operatorTime, theme } = this.props;
     const { showStationList } = this.state;
-    const baseLinkPath = `/monitor/singleStation`;
-    const pathAllStation = "/monitor/station";
+    const baseLinkPath = '/monitor/singleStation';
+    const pathAllStation = '/monitor/station';
     const currentStationName = singleStationData.stationName;
     const { stationStatus = {} } = singleStationData;
     const { stationStatusName, stationStatusTime } = stationStatus;
-    const todayWeatherData=weatherList.filter(e=>moment(moment()).isSame(e.weatherDate, 'day'))
-    const todayWeather =  todayWeatherData.length>0 && todayWeatherData[0]
+    const todayWeatherData = weatherList.filter(e => moment(moment()).isSame(e.weatherDate, 'day'));
+    const todayWeather = todayWeatherData.length > 0 && todayWeatherData[0];
     return (
       <div className={styles.stationTop} >
         {showStationList && <ChangeStation stations={stationList.filter(e => e.isConnected === 1)} stationName={singleStationData.stationName} baseLinkPath={baseLinkPath} hideStationChange={this.hideStationChange} />}
@@ -74,15 +74,15 @@ class PvStationTop extends Component {
             </div>
           </div>
           <div className={styles.stationRight}>
-            <Operator operatorList={operatorList} operatorTime={operatorTime} />
+            <Operator operatorList={operatorList} operatorTime={operatorTime} theme={theme} />
             <div className={styles.weather}>天气:{todayWeather.weather} {todayWeather.temperature || '暂无天气情况'}</div>
-            <Link to={pathAllStation}  >
+            <Link to={pathAllStation} >
               <Icon type="arrow-left" className={styles.backIcon} />
             </Link>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

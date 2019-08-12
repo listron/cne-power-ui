@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import StationSearch from '../../../../components/HighAnalysis/Achievement/StationAchieve/StationSearch';
 import AnimationBox from '../../../../components/HighAnalysis/Achievement/StationAchieve/AnimationBox';
 import LostAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/LostAnalysis/LostAnalysis';
+import StopAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/StopAnalysis/StopAnalysis';
 import { stationAchieveAction } from './stationAchieveReducer';
 import styles from './station.scss';
 
@@ -21,10 +22,7 @@ class StationAchieve extends Component {
         <StationSearch {...this.props} />
         <AnimationBox changeStore={changeStore} active={active}>
           <LostAnalysis {...this.props} active={active === 'lost'} />
-          <div
-            className={`${styles.eachPage} ${active === 'stop' ? styles.active : styles.inactive}`}
-            style={{backgroundColor: 'yellowGreen'}}
-          >停机数据</div>
+          <StopAnalysis {...this.props} active={active === 'stop'} />
           <div
             className={`${styles.eachPage} ${active === 'curve' ? styles.active : styles.inactive}`}
             style={{backgroundColor: 'gray'}}
@@ -47,6 +45,12 @@ const mapDispatchToProps = (dispatch) => ({
   getLostRank: payload => dispatch({ type: stationAchieveAction.getLostRank, payload }),
   getLostTrend: payload => dispatch({ type: stationAchieveAction.getLostTrend, payload }),
   getLostTypes: payload => dispatch({ type: stationAchieveAction.getLostTypes, payload }),
+
+  getStopElec: payload => dispatch({ type: stationAchieveAction.getStopElec, payload }),
+  getStopRank: payload => dispatch({ type: stationAchieveAction.getStopRank, payload }),
+  getStopTrend: payload => dispatch({ type: stationAchieveAction.getStopTrend, payload }),
+  getStopTypes: payload => dispatch({ type: stationAchieveAction.getStopTypes, payload }),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StationAchieve);
