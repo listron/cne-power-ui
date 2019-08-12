@@ -1,0 +1,30 @@
+@import "../../../../../theme/theme";
+
+.topSearch {
+  display: flex;
+  padding-left: 24px;
+  height: 76px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+
+  > div {
+    @include lineheight(32px);
+    display: flex;
+    span{
+      margin-right: 5px;
+    }
+  }
+  > div:not(:first-child){
+    margin-left: 20px;
+  }
+
+  > div:last-child{
+    margin-left: 10px;
+  }
+}
+
+// 颜色s
+.topSearch {
+  background-color: #fff;
+}

@@ -1,0 +1,24 @@
+
+.stationAchieve{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.eachPage{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  margin-right: 24px;
+  transition: transform 0.5s;
+}
+
+.active{
+  transform: translateX(0);
+  transition-delay: 0s;
+}
+
+.inactive{
+  transform: translateX(100%);
+  transition-delay: 0.5s;
+}

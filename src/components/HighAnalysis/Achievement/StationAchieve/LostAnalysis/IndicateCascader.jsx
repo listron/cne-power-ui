@@ -1,0 +1,53 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Cascader } from 'antd';
+
+class IndicateCascader extends Component {
+
+  static propTypes = {
+    lostQuota: PropTypes.string,
+    quotaInfo: PropTypes.array,
+    onChange: PropTypes.func,
+  }
+
+  getQuota = (quotaInfo = [], lostQuota) => {
+    let quotaResult = [];
+    quotaInfo.find(e => {
+      const { children = [], value } = e || {};
+      if (value === lostQuota && children.length === 0) {
+        quotaResult = [value];
+        return true;
+      }
+      return children.find(m => {
+        const isThatQuota = m.value === lostQuota;
+        if (isThatQuota) {
+          quotaResult = [value, lostQuota];
+        }
+        return isThatQuota;
+      });
+    });
+    return quotaResult;
+  }
+
+  onQuotaChange = (codes, fullInfo) => {
+    this.props.onChange(codes, fullInfo);
+  }
+
+  render() {
+    const { quotaInfo, lostQuota } = this.props;
+    const quotaValue = this.getQuota( quotaInfo, lostQuota);
+    return (
+      <Cascader
+        allowClear={false}
+        placeholder="请选择"
+        style={{width: '150px'}}
+        options={quotaInfo}
+        onChange={this.onQuotaChange}
+        value={(quotaInfo.length > 0 && quotaValue.length > 0) ? quotaValue : []}
+      />
+    );
+  }
+}
+
+export default IndicateCascader;
+

@@ -1,0 +1,84 @@
+@import '../stationStyle.scss';
+
+.lostAnalysis{
+  display: flex;
+  flex-wrap: wrap;
+  .lostRank, .lostTrend, .lostTypes{
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    height: 338px;
+    .top{
+      width: 100%;
+      flex: 0 0 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title{
+      font-weight: 600;
+    }
+    .chart{
+      flex: 1;
+      width: 100%;
+    }
+  }
+  .lostRank{
+    width: 100%;
+    margin-bottom: 8px;
+    .handle{
+      .eachHandle{
+        margin-right: 24px;
+      }
+      .text{
+        margin-right: 4px;
+      }
+    }
+  }
+  .lostTrend, .lostTypes{
+    width: calc(50% - 5px);
+  }
+  .lostTrend{
+    margin-right: 10px;
+  }
+}
+
+.tooltip{
+  width: 160px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-bottom: 0;
+    line-height: 21px;
+  }
+  .info{
+    padding: 8px;
+  }
+  .eachItem{
+    display: flex;
+    line-height: 21px;
+    justify-content: space-between;
+  }
+}
+
+// 颜色
+.lostAnalysis{
+  .lostRank, .lostTrend, .lostTypes{
+    background-color: #fff;
+    .top .title{
+      color: #000;
+    }
+    .top .handle{
+      color: #666;
+    }
+  }
+}
+.tooltip{ // chart提示
+  min-width: 160px;
+  background-color: #fff;
+  color: #666;
+  .title{
+    border-bottom: 1px solid #dfdfdf;
+  }
+}
