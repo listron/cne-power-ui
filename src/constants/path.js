@@ -591,6 +591,25 @@ export default {
       tenMinutesLine: '/v3/wtfdd/pt10m', // 获取风机10分钟数据
       faultInfo: '/v3/wtfdd/task/detail', // 获取故障预警任务详情
       statusInfo: '/v3/wtfdd/task/status', // 获取预警任务状态统计
+
+      // 风电分析
+      getAreaStation: '/v3/station/regionstaion', // 区域 - 电站信息
+      getQuotaInfo: '/v3/fan/efficiency/indicator', // 风机指标信息
+      getModesInfo: '/v3/ledeger/manufactormode', // 查询指定电站的厂家型号
+      getStationCapacity: '/v3/fan/efficiency/stationcapacity', // 各电站装机容量
+      getLostGenHour: '/v3/fan/efficiency/lostgenhour', // 损失电量分解图
+      getTrendInfo: '/v3/fan/efficiency/indicatortrend', // 风电指标趋势 PBA趋势
+      getIndicatorRank: '/v3/fan/efficiency/indicatorrank', // 风电指标数据 PBA排名
+      getIndicatorRankTotal: '/v3/ledeger/indicatorranktotal', // 风电指标数据 PBA排名
+
+      getDevices: '/v3/ledeger/devicetype', // 电站的设备型号+设备列表
+      getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名
+      getLostTrend: '/v3/fan/efficiency/origin/indicatortrend', // 损失根源 - 指标趋势
+      getLostTypes: '/v3/fan/efficiency/origin/lostgenhour', // 损失根源 - 损失电量分解
+      getStopElec: '/v3/fan/efficiency/stopgen', // 停机 - 损失电量
+      getStopRank: '/v3/fan/efficiency/stoprank', // 停机 - 设备停机时长及次数
+      getStopTrend: '/v3/fan/efficiency/stoptrend', // 停机 - 日月年 停机时长次数趋势图
+      getStopTypes: '/v3/fan/efficiency/stoptype', // 停机 - 各类停机时长及次数
     },
   },
 };

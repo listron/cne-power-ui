@@ -1,0 +1,158 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Select } from 'antd';
+import searchUtil from '../../../../../utils/searchUtil';
+import styles from './stop.scss';
+const { Option } = Select;
+
+class StopElecTypes extends Component {
+
+  static propTypes = {
+    stopElecType: PropTypes.string,
+    stopChartTimeMode: PropTypes.string,
+    stopElec: PropTypes.object,
+    location: PropTypes.object,
+    changeStore: PropTypes.func,
+    getStopElec: PropTypes.func,
+    getStopRank: PropTypes.func,
+    getStopTrend: PropTypes.func,
+    getStopTypes: PropTypes.func,
+  }
+
+  state = {
+    showDetail: false,
+    detailInfo: {},
+  }
+
+  typesBase = [{
+    label: '风机故障',
+    key: 'faultGen',
+  }, {
+    label: '计划停机',
+    key: 'planShutdownGen',
+  }, {
+    label: '变电故障',
+    key: 'substationGen',
+  }, {
+    label: '场外因素',
+    key: 'courtGen',
+  }, {
+    label: '其他损失',
+    key: 'otherGen',
+  }];
+
+  resetElecTypes = (stopElecType = {}) => {
+    const colors = [
+      ['#ec8284', '#a42b2c'],
+      ['#e59f2d', '#c66614'],
+      ['#f2c605', '#e4de35'],
+      ['#07c8ec', '#0397d4'],
+      ['#1cb78a', '#0c8052'],
+    ];
+    const elecTypeArr = this.typesBase.map(e => ({
+      value: stopElecType[e.key] > 0 ? parseFloat(stopElecType[e.key]) : 0,
+      key: e.key,
+      label: e.label,
+    })).sort((a, b) => b.value - a.value);
+    const sum = elecTypeArr.reduce((a, b) => (a + b.value), 0);
+    return elecTypeArr.map((e, i) => ({
+      label: e.label,
+      key: e.key,
+      value: e.value,
+      rate: (e.value / sum * 100).toFixed(1),
+      color: colors[i],
+    }));
+  }
+
+  stopTypeChange = (stopElecType) => {
+    const { stopChartTimeMode, location } = this.props;
+    this.props.changeStore({ stopElecType });
+    const { search } = location;
+    const infoStr = searchUtil(search).getValue('station');
+    const tmpParams = JSON.parse(infoStr) || {};
+    const params = {
+      stationCodes: [tmpParams.searchCode],
+      deviceFullcodes: tmpParams.searchDevice,
+      startTime: tmpParams.searchDates[0],
+      endTime: tmpParams.searchDates[1],
+    };
+    this.props.getStopElec({ ...params });
+    this.props.getStopRank({ ...params, parentFaultId: stopElecType });
+    this.props.getStopTrend({ ...params, parentFaultId: stopElecType, type: stopChartTimeMode });
+    this.props.getStopTypes({ ...params });
+  }
+
+  toShowDetail = (detailInfo) => this.setState({
+    showDetail: true,
+    detailInfo,
+  })
+
+  toHideDetail = () => this.setState({
+    showDetail: false,
+    detailInfo: {},
+  })
+
+  render() {
+    const { stopElecType, stopElec } = this.props;
+    const { showDetail, detailInfo } = this.state;
+    const formattedElecs = this.resetElecTypes(stopElec);
+    let detailLeft = 0;
+    formattedElecs.find(e => {
+      if(e.key !== detailInfo.key){
+        detailLeft += parseFloat(e.rate);
+      }
+      return e.key === detailInfo.key;
+    });
+    return (
+      <div className={styles.eleTypes}>
+        <div className={styles.info}>
+          {formattedElecs.map(e => (
+            e.rate > 0 ? <span
+              key={e.key}
+              className={`${styles.eachInfo} ${stopElecType === e.key ? styles.active : null}`}
+              onMouseEnter={() => this.toShowDetail(e)}
+              onMouseOut={() => this.toHideDetail()}
+              style={{
+                flexBasis: `${e.rate}%`,
+                backgroundImage: `linear-gradient(90deg, ${e.color[0]} 0%, ${e.color[1]} 100%)`,
+              }}
+            >
+              {e.label}
+            </span> : null
+          ))}
+          {showDetail && <section className={styles.detail} style={{
+              left: `${detailLeft}%`,
+          }}>
+            <h3 className={styles.title}>{detailInfo.label}</h3>
+            <div className={styles.lostContent}>
+              <p className={styles.eachDetail}>
+                <span>损失电量</span>
+                <span>{detailInfo.value}</span>
+              </p>
+              <p className={styles.eachDetail}>
+                <span>占比</span>
+                <span>{detailInfo.rate}%</span>
+              </p>
+            </div>
+          </section>}
+        </div>
+        <div>
+          <span className={styles.stopTypeHanlder}>停机类型</span>
+          <Select
+            onChange={this.stopTypeChange}
+            value={stopElecType}
+            style={{width: '150px'}}
+          >
+            <Option value="all">全部类型</Option>
+            {this.typesBase.map(e => (
+              <Option key={e.key} value={e.key}>{e.label}</Option>
+            ))}
+          </Select>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default StopElecTypes;
+
