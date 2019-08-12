@@ -597,6 +597,8 @@ export default {
       getTrendInfo: '/v3/fan/efficiency/indicatortrend', // 风电指标趋势 PBA趋势
       getIndicatorRank: '/v3/fan/efficiency/indicatorrank', // 风电指标数据 PBA排名
       getIndicatorRankTotal: '/v3/ledeger/indicatorranktotal', // 风电指标数据 PBA排名
+      getGroupCapacity: '/v3/fan/efficiency/area/stationcapacity', // 各区域分布图
+      getGroupRank: '/v3/fan/efficiency/area/indicatorrank', // 各区域指标-PBA排名
 
       getDevices: '/v3/ledeger/devicetype', // 电站的设备型号+设备列表
       getLostRank: '/v3/fan/efficiency/origin/indicatorrank', // 损失根源 - 指标排名

@@ -7,63 +7,69 @@ import styles from './groupStationChart.scss';
 export default class GroupStationChart extends Component {
 
   static propTypes = {
-    indicatorRankInfo: PropTypes.array,
-    rankTime: PropTypes.number,
-    rankLoading: PropTypes.bool,
+    groupRankInfo: PropTypes.array,
+    groupRankTime: PropTypes.number,
+    groupRankLoading: PropTypes.bool,
   };
 
   componentDidUpdate(prevProps) {
     const { groupSortChart } = this;
-    const { rankTime, rankLoading, indicatorRankInfo } = this.props;
-    const { rankTime: rankTimePrev } = prevProps;
+    const { groupRankTime, groupRankLoading, groupRankInfo } = this.props;
+    const { groupRankTime: rankTimePrev } = prevProps;
     const myChart = eCharts.init(groupSortChart);
-    if (rankLoading) { // loading态控制。
+    if (groupRankLoading) { // loading态控制。
       myChart.showLoading();
       return false;
     }
-    if (!rankLoading) {
+    if (!groupRankLoading) {
       myChart.hideLoading();
     }
-    if(rankTime && rankTime !== rankTimePrev) {
+    if(groupRankTime && groupRankTime !== rankTimePrev) {
       eCharts.init(groupSortChart).clear();//清除
       const myChart = eCharts.init(groupSortChart);
-      myChart.setOption(this.drawChart(indicatorRankInfo));
+      myChart.setOption(this.drawChart(groupRankInfo));
     }
   }
 
   drawChart = (data) => {
     const dataSeries = data && data.map(cur => {
       const obj = {};
-      obj.name = cur.stationName;
+      obj.name = cur.regionName;
       obj.type = 'bar';
       obj.barWidth = '10';
       obj.itemStyle = {
         barBorderRadius: [5, 5, 0, 0],
       };
-      obj.data = [cur.indicatorData.value ? cur.indicatorData.value.toFixed(2) : '0'];
+      obj.data = [cur.indicatorData.value ? cur.indicatorData.value : 0];
       return obj;
     });
+    console.log(dataSeries, 'dataSeries');
+    console.log(data && data.map(cur => {
+      return cur.regionName || '--';
+    }), '=====');
     return {
       tooltip: {
         trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
         position: function (pt) {
           return [pt[0], '10%'];
         },
         formatter: (params) => {
-          return `<div>
-        <span>${params[0].name}</span><br />${params[0].marker}<span>PBA </span><span>${params[0].value}%</span>
+          params.forEach(cur => {
+            return `<div>
+        <span>${cur.name}</span><br />${cur.marker}<span>PBA </span><span>${cur.value}%</span>
       </div>`;
+          });
         },
       },
       xAxis: [
         {
           type: 'category',
           data: data && data.map(cur => {
-            return cur.stationName || '--';
+            return cur.regionName || '--';
           }),
-          axisTick: {
-            alignWithLabel: true,
-          },
         },
       ],
       yAxis: [
