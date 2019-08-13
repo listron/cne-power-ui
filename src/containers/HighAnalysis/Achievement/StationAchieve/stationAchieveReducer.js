@@ -26,7 +26,7 @@ const initState = immutable.fromJS({
 
   lostStringify: '', // station - 缓存search信息字符串
   lostQuota: null, // 指标
-  lostChartDevice: null, // chart选中的设备 {deviceFullcode, deviceName}
+  lostChartDevice: null, // chart选中的设备{deviceFullcode, deviceName}
   lostChartTime: null, // chart选中的时间
   lostChartTimeMode: 'month', // chart选中时间格式 - month year day
 
@@ -39,7 +39,8 @@ const initState = immutable.fromJS({
   stopChartTypes: null, // 图表各类停机次数与时长选中 {}
 
   curveTopStringify: '', // curve 缓存请求字符串
-  curveDeviceInfo: null, // 选中的设备信息 {deviceFullcode, deviceName}
+  curveDeviceFullcode: null, // 选中的设备code
+  curveDeviceName: null, // 选中的设备name
   curveDevicesTime: null, // 邻比分析设备选中时间
   curveEachMonths: [], // 环比分析各月选中时间
 

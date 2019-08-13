@@ -88,9 +88,9 @@ class DevicesChart extends Component {
     };
     devicesChart.setOption(option);
     devicesChart.on('click', ({ seriesIndex }) => {
-      const curveDeviceInfo = totalCurveData[seriesIndex] || {};
-      if (curveDeviceInfo.deviceFullcode) {
-        this.props.selectDevice(curveDeviceInfo);
+      const { deviceFullcode, deviceName } = totalCurveData[seriesIndex] || {};
+      if (deviceFullcode) {
+        this.props.selectDevice({ deviceFullcode, deviceName });
       }
     });
   }

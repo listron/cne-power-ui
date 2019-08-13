@@ -46,12 +46,30 @@ class CurveAnalysis extends Component {
 
   queryAllCharts = (infoStr) => { // 页面所有chart请求。
     const searchParam = this.getSearchParam(infoStr);
-    const defaultMonth = moment(searchParam.startTime).format('YYYY-MM');
+    const { startTime, endTime, deviceFullcodes = [] } = searchParam;
+    const curveDevicesTime = moment(startTime).format('YYYY-MM');
+    const defaultDevice = deviceFullcodes[0];
     const monthParam = {
       ...searchParam,
-      startTime: defaultMonth,
-      endTime: defaultMonth,
+      startTime: curveDevicesTime,
+      endTime: curveDevicesTime,
+      deviceFullcodes: [defaultDevice],
     };
+    const rangeMonths = [];
+    if (moment(startTime) < moment(endTime)) { // 将开始开始 -> 结束按月生成数组.
+      // do{
+      //   const 
+      //   rangeMonths.push(moment(startTime).format('YYYY-MM'));
+      // }while(moment(rangeMonths[rangeMonths.length - 1]) < moment(endTime));
+    }
+    // while(rangeMonths[rangeMonths.length - 1] < moment(endTime)){
+    //   rangeMonths.push(moment(startTime).add(1, 'm'));
+    // }
+    this.props.changeStore({
+      curveDeviceFullcode: defaultDevice, // 选中的设备信息 {deviceFullcode, deviceName} todo 
+      curveDevicesTime, // 邻比分析设备选中时间
+      curveEachMonths: rangeMonths.map(e => e.format('YYYY-MM')), // todo 添加环比分析各月时间
+    });
     this.props.getCurveDevices(monthParam);
     this.props.getCurveDevicesAep(monthParam);
     this.props.getCurveDevicesPsd(monthParam);
@@ -70,34 +88,19 @@ class CurveAnalysis extends Component {
     };
   }
 
-  selectDevice = (curveDeviceInfo) => {
-    this.props.changeStore({ curveDeviceInfo });
-    console.log(curveDeviceInfo);
+  selectDevice = ({ deviceFullcode, deviceName }) => {
+    this.props.changeStore({
+      curveDeviceFullcode: deviceFullcode,
+      curveDeviceName: deviceName,
+    });
+    console.log({ deviceFullcode, deviceName }) // todo 请求下方三个图。
   }
 
   render() {
     const { active } = this.props;
-    //   // DevicesAep // DevicesPsd // DevicesCheckTime
+    // DevicesAep // DevicesPsd // DevicesCheckTime
 
     // MonthsChart  // MonthsAep  // MonthsPsd // MonthsSelector
-    const curveDevices = {
-      actual: [1, 2, 3, 4, 5, 6].map(e => ({
-        deviceFullcode: `${e}M${e}MM${e}MMM`,
-        deviceName: `${e * 10}`,
-        modeName: 'MY2.0Se/110-85_xinguang',
-        devicePowerInfoVos: [50, 60, 70, 80, 90].map(m => ({
-          power: parseInt(m * (1 + e / 10), 10),
-          windSpeed: parseInt((m + e) * 10, 10),
-        })),
-      })),
-      theory: [{
-        modeName: 'MY2.0Se/110-85_xinguang',
-        devicePowerInfoVos: [5, 6, 7, 8, 9].map(m => ({
-          power: parseInt(m * 10, 10),
-          windSpeed: parseInt( m * 10, 10),
-        })),
-      }],
-    };
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <section className={styles.curveAllDevice}>
@@ -108,7 +111,7 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <DevicesChart selectDevice={this.selectDevice} curveDevices={curveDevices} />
+            <DevicesChart selectDevice={this.selectDevice} />
             <div checkDevicesTime={this.checkDevicesTime}>月份选择</div>
             <div selectDevice={this.selectDevice}>chart图两个</div>
           </div>
