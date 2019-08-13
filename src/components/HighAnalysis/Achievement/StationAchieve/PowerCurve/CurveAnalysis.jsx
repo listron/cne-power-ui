@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Tooltip } from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
+import DevicesChart from './DevicesChart';
 import styles from './curve.scss';
 
 class CurveAnalysis extends Component {
@@ -68,27 +70,57 @@ class CurveAnalysis extends Component {
     };
   }
 
+  selectDevice = (curveDeviceInfo) => {
+    this.props.changeStore({ curveDeviceInfo });
+    console.log(curveDeviceInfo);
+  }
+
   render() {
     const { active } = this.props;
+    //   // DevicesAep // DevicesPsd // DevicesCheckTime
+
+    // MonthsChart  // MonthsAep  // MonthsPsd // MonthsSelector
+    const curveDevices = {
+      actual: [1, 2, 3, 4, 5, 6].map(e => ({
+        deviceFullcode: `${e}M${e}MM${e}MMM`,
+        deviceName: `${e * 10}`,
+        modeName: 'MY2.0Se/110-85_xinguang',
+        devicePowerInfoVos: [50, 60, 70, 80, 90].map(m => ({
+          power: parseInt(m * (1 + e / 10), 10),
+          windSpeed: parseInt((m + e) * 10, 10),
+        })),
+      })),
+      theory: [{
+        modeName: 'MY2.0Se/110-85_xinguang',
+        devicePowerInfoVos: [5, 6, 7, 8, 9].map(m => ({
+          power: parseInt(m * 10, 10),
+          windSpeed: parseInt( m * 10, 10),
+        })),
+      }],
+    };
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
-        <section>
-          <h3>
-            <span>功率曲线邻比分析</span>
-            <span>?</span>
+        <section className={styles.curveAllDevice}>
+          <h3 className={styles.title}>
+            <span className={styles.titleText}>功率曲线邻比分析</span>
+            <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
+              <span className={styles.titleTip}>i</span>
+            </Tooltip>
           </h3>
-          <div>
-            <div selectDevice={this.selectDevice}>chart图</div>
+          <div className={styles.content}>
+            <DevicesChart selectDevice={this.selectDevice} curveDevices={curveDevices} />
             <div checkDevicesTime={this.checkDevicesTime}>月份选择</div>
             <div selectDevice={this.selectDevice}>chart图两个</div>
           </div>
         </section>
-        <section>
-          <h3>
-            <span>功率曲线环比分析</span>
-            <span>i</span>
+        <section className={styles.curveEachMonth}>
+          <h3 className={styles.title}>
+            <span className={styles.titleText}>功率曲线环比分析</span>
+            <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
+              <span className={styles.titleTip}>i</span>
+            </Tooltip>
           </h3>
-          <div>
+          <div className={styles.content}>
             <div >chart图</div>
             <div checkEachMonths={this.checkEachMonths}>参数选择</div>
             <div>chart图两个</div>

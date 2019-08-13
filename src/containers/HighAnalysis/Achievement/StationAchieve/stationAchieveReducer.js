@@ -60,7 +60,7 @@ const initState = immutable.fromJS({
   stopTypes: [], // 停机 - 各类停机时长及次数
   stopTypesLoading: false,
 
-  curveDevices: [], // 各机组曲线
+  curveDevices: {}, // 各机组曲线
   curveDevicesLoading: false,
   curveDevicesAep: [], // 机组aep及风速
   curveDevicesAepLoading: false,

@@ -3,11 +3,51 @@
 .curveAnalysis{
   display: flex;
   flex-wrap: wrap;
-
+  .curveAllDevice, .curveEachMonth{
+    height: 494px;
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    .title{
+      flex-basis: 40px;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .titleText{
+        font-weight: 600;
+        padding-left: 24px;
+      }
+      .titleTip{
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        margin-right: 12px;
+        cursor: pointer;
+        font-size: 10px;
+        line-height: 12px;
+        text-align: center;
+      }
+    }
+    .content{
+      display: flex;
+      flex: 1;
+    }
+    .totalChart{
+      flex-basis: calc(50% - 170px);
+    }
+    .timeSelector{
+      flex-basis: 170px;
+    }
+    .indicatorDetail{
+      flex-basis: 50%;
+    }
+  }
 }
 
 .tooltip{
-  width: 160px;
+  width: 206px;
+  border-radius:2px;
   .title{
     display: flex;
     justify-content: space-between;
@@ -23,9 +63,28 @@
     line-height: 21px;
     justify-content: space-between;
   }
+  .modeName{
+    @include overflowText();
+  }
 }
 
+// 颜色部分。
 .curveAnalysis{
+  .curveAllDevice, .curveEachMonth{
+    .title{
+      background-image:linear-gradient(-180deg, #ffffff 0%, #dedede 100%);
+      .titleText{
+        color: #000;
+      }
+      .titleTip{
+        color: #fff;
+        background:#f9b600;
+      }
+    }
+    .content{
+      background-color: #fff;
+    }
+  }
   // .lostRank, .lostTrend, .lostTypes{
   //   background-color: #fff;
   //   .top .title{
@@ -37,9 +96,9 @@
   // }
 }
 .tooltip{ // chart提示
-  min-width: 160px;
   background-color: #fff;
   color: #666;
+  box-shadow:0 0 4px 1px rgba(0,0,0,0.20);
   .title{
     border-bottom: 1px solid #dfdfdf;
   }
