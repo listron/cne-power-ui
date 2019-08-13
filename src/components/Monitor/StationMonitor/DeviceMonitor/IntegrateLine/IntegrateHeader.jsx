@@ -21,17 +21,17 @@ class IntegrateHeader extends Component {
     super(props);
     this.state = {
       showDeviceChangeBox: false,
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const main = document.getElementById('main');
-    main && main.addEventListener('click', this.hideDeviceChange,true);
+    main && main.addEventListener('click', this.hideDeviceChange, true);
   }
 
   componentWillUnmount() {
     const main = document.getElementById('main');
-    main && main.removeEventListener('click', this.hideDeviceChange,true);
+    main && main.removeEventListener('click', this.hideDeviceChange, true);
   }
 
   showDeviceChange = () => {
@@ -56,14 +56,11 @@ class IntegrateHeader extends Component {
     const { devices, deviceDetail, stationCode, deviceTypeCode } = this.props;
     const { showDeviceChangeBox } = this.state;
     const { manufacturer, deviceModeName } = deviceDetail;
-    let parentDevice = deviceDetail.parentDevice || {};
+    const parentDevice = deviceDetail.parentDevice || {};
     const baseLinkPath = `/hidden/monitorDevice/${stationCode}/${deviceTypeCode}`;
     const parentDeviceBaseInfo = PVStationTypes.find(e => parentDevice.deviceTypeCode === e.deviceTypeCode) || {};
     return (
-      <div className={styles.deviceMonitorHeader} style={{
-        borderBottom: '1px solid #dfdfdf',
-        marginBottom: '20px'
-      }}>
+      <div className={styles.deviceMonitorHeader}>
         {showDeviceChangeBox && <HeaderDeviceChange
           devices={devices}
           deviceDetail={deviceDetail}
@@ -102,7 +99,7 @@ class IntegrateHeader extends Component {
           </Link>} */}
         </div>
       </div>
-    )
+    );
   }
 }
 export default IntegrateHeader;

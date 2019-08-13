@@ -141,116 +141,6 @@
   }
 }
 
-.ycInfo,
-.yxInfo,
-.ymInfo {
-  // 升压站，集电线路yc,yx,ym
-  display: flex;
-  flex-direction: column;
-  padding: 0 48px;
-  h3 {
-    margin-bottom: 0;
-    margin-left: 4px;
-    height: 56px;
-    line-height: 56px;
-    font-weight: 700;
-  }
-}
-
-.ycInfo {
-  flex: 1 0 50%;
-  .ycList {
-    margin-bottom: 20px;
-    border: 1px solid $promptColor;
-  }
-  .ycContent {
-    overflow: auto;
-    height: 240px;
-    &::-webkit-scrollbar {
-      width: 6px;
-      background-color: #f4f4f4;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-      background-color: #555;
-      opacity: 0.5;
-    }
-  }
-  .top,
-  .eachYc {
-    display: flex;
-    color: $darkColor;
-    align-items: center;
-    .name,
-    .value,
-    .unit {
-      flex: 1 0 80px;
-      text-align: center;
-    }
-    .name {
-      padding-left: 4px;
-    }
-    .value {
-      flex: 1 0 155px;
-    }
-  }
-  .top {
-    height: 30px;
-    background-color: #f4f4f4;
-    margin-bottom: 4px;
-  }
-  .eachYc {
-    height: 40px;
-    background-color: #fff;
-    &:hover {
-      background: #f0f9f5;
-    }
-  }
-}
-.yxInfo {
-  flex: 1 0 50%;
-  h3 {
-    margin-left: 20px;
-  }
-  .yxList {
-    overflow: auto;
-    height: 274px;
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    border: 1px solid $promptColor;
-    &::-webkit-scrollbar {
-      width: 6px;
-      background-color: #f4f4f4;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-      background-color: #555;
-      opacity: 0.5;
-    }
-  }
-  .eachYx {
-    flex: 0 0 33.33%;
-    display: flex;
-    height: 40px;
-    align-items: center;
-    .round {
-      flex: 0 0 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-left: 20px;
-      margin-right: 4px;
-    }
-    .name {
-      color: $darkColor;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      word-break: break-all;
-    }
-  }
-}
-
 .ymInfo {
   border-top: 1px solid $promptColor;
   height: 500px;
@@ -347,11 +237,50 @@
   }
 }
 
+.ycInfo.light {
+  .ycList {
+    border: 1px solid $promptColor;
+  }
+  .ycContent {
+    &::-webkit-scrollbar {
+      background-color: #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #555;
+    }
+  }
+  .top,
+  .eachYc {
+    color: $darkColor;
+  }
+  .top {
+    background-color: #f4f4f4;
+  }
+  .eachYc {
+    background-color: #fff;
+    &:hover {
+      background: #f0f9f5;
+    }
+  }
+}
+.yxInfo.light {
+  .yxList {
+    border: 1px solid $promptColor;
+    &::-webkit-scrollbar {
+      background-color: #f4f4f4;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #555;
+    }
+  }
+}
+
 @import "../../../../../theme/darkTheme.scss";
 .alarmTable.dark {
   color: $fontColor;
   h3 {
-    color: $fontColor;
+    color: $fontColor-hover;
+    font-weight: 400;
   }
   .tableHeader {
     .historyButton {
@@ -389,6 +318,9 @@
       border-bottom: 1px solid $border-color;
       color: $fontColor-hover;
     }
+    .noEvents {
+      color: $fontColor;
+    }
     .eachInfo {
       color: $fontColor;
       &:nth-child(2n) {
@@ -402,5 +334,36 @@
         color: $fontColor-hover;
       }
     }
+  }
+}
+.ycInfo.dark {
+  h3 {
+    color: $fontColor-hover;
+  }
+  .ycList {
+    border: 1px solid $border-color;
+  }
+  .top,
+  .eachYc {
+    color: $themeColor;
+  }
+  .top {
+    background: #1f246f;
+  }
+  .eachYc {
+    // background-color: #fff;
+    &:hover {
+      background: #212675;
+    }
+  }
+}
+
+.yxInfo.dark {
+  h3 {
+    color: $fontColor-hover;
+  }
+  color: $fontColor;
+  .yxList {
+    border: 1px solid $border-color;
   }
 }

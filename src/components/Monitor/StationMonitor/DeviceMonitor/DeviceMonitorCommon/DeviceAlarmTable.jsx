@@ -131,13 +131,13 @@ class DeviceAlarmTable extends Component {
   }
 
   render() {
-    const { deviceAlarmList, deviceDetail = {}, stationCode, style, theme = 'light' } = this.props;
+    const { deviceAlarmList = [], deviceDetail = {}, stationCode, style, theme = 'light' } = this.props;
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     const { deviceName } = deviceDetail;
     return (
-      <div className={`${styles.alarmTable} ${styles[theme]}`} style={style}>
+      <div className={`${styles.alarmTable} ${styles[theme]}`}>
         <h3>实时告警</h3>
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>

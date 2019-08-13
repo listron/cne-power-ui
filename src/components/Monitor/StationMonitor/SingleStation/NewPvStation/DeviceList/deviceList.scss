@@ -267,7 +267,6 @@
         }
       }
     }
-
     .alarm {
       .deviceName {
         background: #ff8e9c;
@@ -278,6 +277,12 @@
         .deviceName {
           color: #a42b2c;
         }
+      }
+    }
+    .unconnect {
+      .deviceName {
+        background: #ff8e9c;
+        color: #a42b2c;
       }
     }
     :global {

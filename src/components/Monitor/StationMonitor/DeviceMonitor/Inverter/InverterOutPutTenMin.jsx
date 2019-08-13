@@ -139,6 +139,7 @@ class InverterOutPutTenMin extends Component {
         zoomLock: true,
         start: 90,
         end: 100,
+        height: '16px',
       }, {
         type: 'inside',
         start: 90,

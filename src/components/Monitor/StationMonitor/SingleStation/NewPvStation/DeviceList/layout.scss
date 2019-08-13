@@ -118,6 +118,10 @@
           border-radius: 4px;
           font-size: 12px;
           cursor: pointer;
+          a {
+            display: block;
+            width: 100%;
+          }
           .statusBox {
             padding: 5px 5px 0px 5px;
             .deviceItemIcon {
@@ -256,6 +260,9 @@
       img {
         margin: 10px auto;
       }
+    }
+    .unconnect {
+      pointer-events: none;
     }
   }
 

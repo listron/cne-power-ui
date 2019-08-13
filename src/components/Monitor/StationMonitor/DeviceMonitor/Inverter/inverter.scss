@@ -311,9 +311,8 @@ $arlam_color: #a42b2c;
   }
 }
 
-@import "../../../../../theme/darkTheme.scss";
-
 .subConfluence.dark {
+  @import "../../../../../theme/darkTheme.scss";
   $normal: rgba(83, 104, 241, 0.15);
   $normal_color: #00baff;
   $normal_hover_color: rgba(83, 104, 241, 0.15);

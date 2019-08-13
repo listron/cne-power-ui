@@ -11,7 +11,6 @@
     width: 230px;
     height: 151px;
     border-radius: 4px;
-    border: 1px solid #dfdfdf;
     .statusBox {
       display: flex;
       align-items: center;
@@ -29,7 +28,6 @@
       flex-direction: column;
       .deviceBlockName,
       .deviceItemPower {
-        color: $darkColor;
         display: flex;
         justify-content: space-between;
       }
@@ -53,13 +51,9 @@
       .eachInfo {
         flex-basis: 50%;
         text-align: center;
-        color: $darkColor;
         line-height: 24px;
         display: flex;
         justify-content: space-between;
-      }
-      .value {
-        color: $themeColor;
       }
     }
     .allStatus {
@@ -92,15 +86,47 @@
       .icon-alarm {
         position: absolute;
         bottom: 10px;
-        right: 12px;
+        right: 5px;
         width: 10px;
         height: 10px;
-        color: #a42b2c;
         font-size: 14px;
       }
       .ant-progress {
         line-height: 8px;
         height: 8px;
+        margin-top: -4px;
+      }
+    }
+  }
+  .singledeviceItem:hover {
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
+  }
+  .unconnect {
+    pointer-events: none;
+  }
+}
+
+.subInverter.light {
+  // 子汇流箱
+  .singledeviceItem {
+    border: 1px solid #dfdfdf;
+    .deviceItemR {
+      .deviceBlockName,
+      .deviceItemPower {
+        color: $darkColor;
+      }
+    }
+    .deviceBlockFooter {
+      .eachInfo {
+        color: $darkColor;
+      }
+      .value {
+        color: $themeColor;
+      }
+    }
+    :global {
+      .icon-alarm {
+        color: #a42b2c;
       }
       .ant-progress-inner {
         background-color: #dfdfdf;
@@ -114,12 +140,111 @@
   .singledeviceItem:hover {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
   }
+
+  .lowEfficiency {
+    .statusBox {
+      background: #fefad2;
+      color: #e08031;
+    }
+    &:hover {
+      box-shadow: 0 1px 4px 0 #fefad2;
+    }
+  }
+  .alarm {
+    .statusBox {
+      background: #ff8e9c;
+      color: #a42b2c;
+    }
+    &:hover {
+      box-shadow: 0 1px 4px 0 #ff8e9c;
+    }
+  }
   .unconnect {
-    pointer-events: none;
     background: #ededed;
   }
 }
-.boxtransformerTenMin {
-  border-top: 1px solid $promptColor;
-  padding-top: 10px;
+
+.subInverter.dark {
+  @import "../../../../../theme/antdResetDark.scss";
+  // 子汇流箱
+  .singledeviceItem {
+    border: 1px solid $border-color;
+    a {
+      color: $fontColor;
+    }
+    .value {
+      color: $fontColor-hover;
+    }
+    :global {
+      .icon-alarm {
+        color: #a42b2c;
+      }
+      .ant-progress-inner {
+        background-color: #dfdfdf;
+      }
+      .ant-progress-success-bg,
+      .ant-progress-bg {
+        background-color: $themeColor;
+      }
+    }
+  }
+  .singledeviceItem:hover {
+    box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
+  }
+  // .lowEfficiency {
+  //   .statusBox {
+  //     background: #fefad2;
+  //     color: #e08031;
+  //   }
+  //   &:hover {
+  //     box-shadow: 0 1px 4px 0 #fefad2;
+  //   }
+  // }
+  // .alarm {
+  //   .statusBox {
+  //     background: #ff8e9c;
+  //     color: #a42b2c;
+  //   }
+  //   &:hover {
+  //     box-shadow: 0 1px 4px 0 #ff8e9c;
+  //   }
+  // }
+
+  .lowEfficiency {
+    background: #4a4343;
+    a {
+      color: #fff;
+    }
+    border: 1px solid rgba(249, 182, 0, 0.6);
+    &:hover {
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
+    }
+    .value {
+      color: #f8b14e;
+    }
+  }
+  .alarm {
+    background: rgba(145, 44, 65, 0.6);
+    border: 1px solid rgba(145, 44, 65, 1);
+    a {
+      color: #fff;
+    }
+    &:hover {
+      box-shadow: 0 1px 4px 0 #ff8e9c;
+    }
+    .value {
+      color: #fd6e8f;
+    }
+  }
+  .unconnect {
+    color: #bbcef7;
+    background: #181a4e;
+    border: 1px solid #7088c3;
+    a {
+      color: #bbcef7;
+    }
+    .value {
+      color: #bbcef7;
+    }
+  }
 }

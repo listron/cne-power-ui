@@ -9,7 +9,7 @@ import { chartsLoading, themeConfig, chartsNodata } from '../../../../../utils/d
 class InverterSeriesTenMin extends Component {
   static propTypes = {
     branchTenMinUnix: PropTypes.number,
-    branchTenMin: PropTypes.array,
+    branchTenMin: PropTypes.object,
     theme: PropTypes.string,
   }
 
