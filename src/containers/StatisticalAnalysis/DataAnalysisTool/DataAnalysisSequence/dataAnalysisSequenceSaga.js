@@ -104,11 +104,11 @@ function* getSequenceData(action) {//获取
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
     });
+    const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      curChartData.likeStatus = false;
-      const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
-      console.log('preSequenceData: ', preSequenceData);
+      // curChartData.likeStatus = false;
+
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
@@ -120,18 +120,21 @@ function* getSequenceData(action) {//获取
         },
       });
     } else {
+
+      yield put({
+        type: dataAnalysisSequenceAction.changeSquenceStore,
+        payload: {
+          chartLoading: false,
+          sequenceData: [...preSequenceData, null],
+          chartTime: moment().unix(),
+        },
+      });
       throw response.data.message;
+
     }
   } catch (e) {
     console.log(e);
-    yield put({
-      type: dataAnalysisSequenceAction.changeSquenceStore,
-      payload: {
-        chartLoading: false,
-        sequenceData: [],
-        chartTime: moment().unix(),
-      },
-    });
+
   }
 }
 

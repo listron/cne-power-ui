@@ -9,8 +9,8 @@ var initState = Immutable.fromJS({
   startTime: '',
   endTime: '',
   deviceFullCode: '',
-  point1Name: '',
-  point2Name: '',
+  pointCodeNameX: '',
+  pointCodeNameY: '',
   showPage: 'allStation', //allStation显示全部电站，singleStation,显示单电站
   deviceList: [], //电站下的设备
   sequenceNames: [], //测点

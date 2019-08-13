@@ -7,17 +7,28 @@ class SequenceChartContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
+  likeStatusChange = (index, bool) => {
+    // console.log('index', index, bool);
+    const { deviceList, changeSquenceStore } = this.props;
+    deviceList[index].likeStatus = bool;
+    changeSquenceStore({ deviceList });
+  };
   render() {
     const { deviceList, sequenceData } = this.props;
     console.log('sequenceData: ', sequenceData);
     return (
       <div className={styles.chartsContainer}>
-        {sequenceData.map((e, i) => (
+        {deviceList.map((e, i) => (
           <div className={styles.chartStyle} key={i}>
             <div className={styles.sequenceChart} >
-              {e.deviceFullCode}
               {/* <img src={e.likeStatus ? '/img/mark.png' : '/img/unmark.png'} alt="" /> */}
-              <SequenceChart {...this.props} allChartData={e} index={i} />
+              <SequenceChart
+                {...this.props}
+                saveBtn={e.likeStatus}
+                allChartData={sequenceData[i]}
+                index={i}
+                deviceName={e.deviceName}
+                likeStatusChange={this.likeStatusChange} />
             </div>
             <div></div>
           </div>

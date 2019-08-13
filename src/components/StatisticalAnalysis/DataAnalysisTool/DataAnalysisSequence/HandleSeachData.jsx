@@ -34,6 +34,10 @@ class HandleSeachData extends React.Component {
     stationCode: PropTypes.number,
     stations: PropTypes.array,
     changeSquenceStore: PropTypes.func,
+    getScatterName: PropTypes.func,
+    getSequenceOtherName: PropTypes.func,
+    scatterotherNames: PropTypes.array,
+    getSequenceData: PropTypes.func,
   }
   constructor(props, context) {
     super(props, context);
@@ -46,13 +50,12 @@ class HandleSeachData extends React.Component {
       yName: '',
       xCode: '',
       yCode: '',
-
     };
   }
   componentWillReceiveProps(nextProp) {
     const { sequenceNames, getSequenceData, deviceList, sequenceNameTime } = nextProp;
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month');
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
+    const defaultStartime = moment().month(moment().month() - 1).startOf('month').format();
+    const defaultEndtime = moment().month(moment().month() - 1).endOf('month').format();
     // const preScatterName = this.props.sequenceNames;
     if (this.props.sequenceNameTime !== sequenceNameTime) {
       const { options } = this.state;
@@ -86,17 +89,16 @@ class HandleSeachData extends React.Component {
           xCode: pointCodeX,
           yCode: pointCodeY,
         });
-        getSequenceData({
-          deviceFullCode,
-          startTime: defaultStartime,
-          endTime: defaultEndtime,
-          pointY1: pointCodeX,
-          pointY2: pointCodeY,
-          interval: 10,
-        });
+        // getSequenceData({
+        //   deviceFullCode,
+        //   startTime: defaultStartime,
+        //   endTime: defaultEndtime,
+        //   pointY1: pointCodeX,
+        //   pointY2: pointCodeY,
+        //   interval: 10,
+        // });
       }
     }
-
   }
   formater = (data) => {
     return data.map((e, i) => {
@@ -114,7 +116,6 @@ class HandleSeachData extends React.Component {
     });
     this.props.getScatterName({ stationCode });
   }
-
   changeTime = (date, dateString) => {
     const { changeSquenceStore } = this.props;
     changeSquenceStore({
@@ -147,8 +148,6 @@ class HandleSeachData extends React.Component {
         showOther: false,
       });
     }
-
-
   }
   changeSwap = () => {
     const { xCode, yCode, xName, yName } = this.state;
@@ -199,7 +198,6 @@ class HandleSeachData extends React.Component {
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme } = this.props;
-    // console.log('scatterotherNames: ', scatterotherNames);
     const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
     const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
@@ -293,12 +291,8 @@ class HandleSeachData extends React.Component {
               />
               <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
             </div>
-
           </div>}
-
-
           <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
-
         </div>
       </div>
     );
