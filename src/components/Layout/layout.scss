@@ -40,7 +40,7 @@
   width: 700px;
   background-color: transparent;
   border-bottom: none;
-
+  margin-left: 44px;
   :global {
     .ant-menu-item {
       color: #fff;
@@ -118,8 +118,9 @@
 }
 
 .menuBoard {
-  width: 80px;
+  // width: 80px;
   margin-left: 8px;
+  margin-top: 10px;
   .boardIcon {
     width: 18px;
     height: 18px;
