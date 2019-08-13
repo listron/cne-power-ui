@@ -5,6 +5,7 @@ import StationSearch from '../../../../components/HighAnalysis/Achievement/Stati
 import AnimationBox from '../../../../components/HighAnalysis/Achievement/StationAchieve/AnimationBox';
 import LostAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/LostAnalysis/LostAnalysis';
 import StopAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/StopAnalysis/StopAnalysis';
+import CurveAnalysis from '../../../../components/HighAnalysis/Achievement/StationAchieve/PowerCurve/CurveAnalysis';
 import { stationAchieveAction } from './stationAchieveReducer';
 import styles from './station.scss';
 
@@ -23,10 +24,7 @@ class StationAchieve extends Component {
         <AnimationBox changeStore={changeStore} active={active}>
           <LostAnalysis {...this.props} active={active === 'lost'} />
           <StopAnalysis {...this.props} active={active === 'stop'} />
-          <div
-            className={`${styles.eachPage} ${active === 'curve' ? styles.active : styles.inactive}`}
-            style={{backgroundColor: 'gray'}}
-          >功率曲线</div>
+          <CurveAnalysis {...this.props} active={active === 'curve'} />
         </AnimationBox>
       </div>
     );

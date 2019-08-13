@@ -611,10 +611,10 @@ export default {
       getStopTrend: '/v3/fan/efficiency/stoptrend', // 停机 - 日月年 停机时长次数趋势图
       getStopTypes: '/v3/fan/efficiency/stoptype', // 停机 - 各类停机时长及次数
 
-      getCurveDevices: '/v3/', // 功率曲线邻比分析
+      getCurveDevices: '/v3/fan/efficiency/neighbor/analysis', // 功率曲线邻比分析
       getCurveDevicesAep: '/v3/fan/efficiency/device/aepandspeed', // 各机组AEP以及平均风速
       getCurveDevicesPsd: '/v3/fan/efficiency/device/psd', // 各机组曲线聚合度PSD
-      getCurveMonths: '/v3/', // 功率曲线环比分析
+      getCurveMonths: '/v3/fan/efficiency/ratio/analysis', // 功率曲线环比分析
       getCurveMonthAep: '/v3/fan/efficiency/date/aepandspeed', // 设备各月机组AEP以及平均风速
       getCurveMonthPsd: '/v3/fan/efficiency/date/psd', // 停机 - 各类停机时长及次数
     },

@@ -34,6 +34,7 @@ class LostAnalysis extends Component {
     const originLoad = infoStr && !lostStringify; // // 初次加载
     const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
     if (originLoad || pageBack) {
+      this.props.changeStore({ lostStringify: infoStr });
       this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
       pageBack && lostQuota && this.queryRank(infoStr, lostQuota);
       pageBack && lostQuota && this.queryTrend(infoStr, lostQuota);

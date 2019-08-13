@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import searchUtil from '../../../../../utils/searchUtil';
 import styles from './curve.scss';
 
@@ -7,37 +8,64 @@ class CurveAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    curveTopStringify: PropTypes.string,
+    location: PropTypes.object,
+    getCurveDevices: PropTypes.func,
+    getCurveDevicesAep: PropTypes.func,
+    getCurveDevicesPsd: PropTypes.func,
+    getCurveMonths: PropTypes.func,
+    getCurveMonthAep: PropTypes.func,
+    getCurveMonthPsd: PropTypes.func,
+    changeStore: PropTypes.func,
   }
 
   componentDidMount(){
-    // const { lostQuota, lostStringify, location } = this.props;
-    // const { search } = location;
-    // const infoStr = searchUtil(search).getValue('station');
-    // const originLoad = infoStr && !lostStringify; // // 初次加载
-    // const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
-    // if (originLoad || pageBack) {
-    //   this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
-    //   pageBack && lostQuota && this.queryRank(infoStr, lostQuota);
-    //   pageBack && lostQuota && this.queryTrend(infoStr, lostQuota);
-    // }
+    const { curveTopStringify, location } = this.props;
+    const { search } = location;
+    const infoStr = searchUtil(search).getValue('station');
+    const originLoad = infoStr && !curveTopStringify; // // 初次加载
+    const pageBack = curveTopStringify && infoStr && infoStr !== curveTopStringify; // 其他两个页面修改路径信息后返回
+    if (originLoad || pageBack) {
+      this.props.changeStore({ curveTopStringify: infoStr });
+      this.queryAllCharts(infoStr);
+    }
   }
 
   componentWillReceiveProps(nextProps){
-    // const nextLocation = nextProps.location;
-    // const nextQuota = nextProps.quotaInfo;
-    // const nextQuotaParam = nextProps.lostQuota;
-    // const nextSearch = nextLocation.search || '';
-    // const { lostStringify, quotaInfo, changeStore } = this.props;
-    // const infoStr = searchUtil(nextSearch).getValue('station');
-    // if (infoStr && infoStr !== lostStringify && nextQuotaParam) { // 搜索信息有变
-    //   changeStore({ lostStringify: infoStr });
-    //   this.queryTypes(infoStr);
-    //   this.queryRank(infoStr, nextQuotaParam);
-    //   this.queryTrend(infoStr, nextQuotaParam);
-    // }
-    // if (quotaInfo.length === 0 && nextQuota.length > 0) { // 得到指标数据
-    //   this.propsQuotaChange(nextQuota, infoStr);
-    // }
+    const nextLocation = nextProps.location;
+    const nextSearch = nextLocation.search || '';
+    const { curveTopStringify } = this.props;
+    const infoStr = searchUtil(nextSearch).getValue('station');
+    if (infoStr && infoStr !== curveTopStringify) { // 搜索信息有变
+      this.props.changeStore({ curveTopStringify: infoStr });
+      this.queryAllCharts(infoStr);
+    }
+  }
+
+  queryAllCharts = (infoStr) => { // 页面所有chart请求。
+    const searchParam = this.getSearchParam(infoStr);
+    const defaultMonth = moment(searchParam.startTime).format('YYYY-MM');
+    const monthParam = {
+      ...searchParam,
+      startTime: defaultMonth,
+      endTime: defaultMonth,
+    };
+    this.props.getCurveDevices(monthParam);
+    this.props.getCurveDevicesAep(monthParam);
+    this.props.getCurveDevicesPsd(monthParam);
+    this.props.getCurveMonths(searchParam);
+    this.props.getCurveMonthAep(searchParam);
+    this.props.getCurveMonthPsd(searchParam);
+  }
+
+  getSearchParam = (infoStr) => {
+    const searchParam = JSON.parse(infoStr) || {};
+    return {
+      stationCodes: [searchParam.searchCode],
+      deviceFullcodes: searchParam.searchDevice,
+      startTime: searchParam.searchDates[0],
+      endTime: searchParam.searchDates[1],
+    };
   }
 
   render() {

@@ -10,13 +10,9 @@ import styles from './stop.scss';
 class StopAnalysis extends Component {
 
   static propTypes = {
-    // active: PropTypes.bool,
-    // lostQuota: PropTypes.string,
     stopTopStringify: PropTypes.string,
     stopElecType: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
-    // lostChartDevice: PropTypes.object,
-    // lostChartTime: PropTypes.string,
     location: PropTypes.object,
     changeStore: PropTypes.func,
     getStopElec: PropTypes.func,
@@ -33,7 +29,11 @@ class StopAnalysis extends Component {
     const pageBack = stopTopStringify && infoStr && infoStr !== stopTopStringify; // 其他两个页面修改路径信息后返回
     if (originLoad || pageBack) {
       const originParam = this.getQueryParam(infoStr);
-      this.props.changeStore({ stopElecType: 'all', stopChartTimeMode: 'month' });
+      this.props.changeStore({
+        stopElecType: 'all',
+        stopChartTimeMode: 'month',
+        stopTopStringify: infoStr,
+      });
       this.props.getStopElec({ ...originParam });
       this.props.getStopRank({ ...originParam, parentFaultId: 'all' });
       this.props.getStopTrend({ ...originParam, parentFaultId: 'all', type: 'month' });

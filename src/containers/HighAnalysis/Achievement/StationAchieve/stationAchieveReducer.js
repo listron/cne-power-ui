@@ -12,10 +12,17 @@ export const stationAchieveAction = {
   getStopRank: Symbol('getStopRank'),
   getStopTrend: Symbol('getStopTrend'),
   getStopTypes: Symbol('getStopTypes'),
+
+  getCurveDevices: Symbol('getCurveDevices'),
+  getCurveDevicesAep: Symbol('getCurveDevicesAep'),
+  getCurveDevicesPsd: Symbol('getCurveDevicesPsd'),
+  getCurveMonths: Symbol('getCurveMonths'),
+  getCurveMonthAep: Symbol('getCurveMonthAep'),
+  getCurveMonthPsd: Symbol('getCurveMonthPsd'),
 };
 
 const initState = immutable.fromJS({
-  active: 'stop', // lost, stop, curve
+  active: 'curve', // lost, stop, curve
 
   lostStringify: '', // station - 缓存search信息字符串
   lostQuota: null, // 指标
