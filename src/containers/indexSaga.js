@@ -63,7 +63,7 @@ import { watchCustomize } from './StatisticalAnalysis/EquipmentAnalysis/Customiz
 import { watchScoreAnalysis } from './StatisticalAnalysis/StationAnalysis/ScoreAnalysis/scoreAnalysisSaga';
 import { watchIntelligentAnalysis } from './StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/intelligentAnalysisSaga';
 import { watchDataAnalysisScatterSaga } from './StatisticalAnalysis/DataAnalysisTool/DataAnalysisScatter/dataAnalysisScatterSaga';
-// import { watchDailyQuery } from './StatisticalAnalysis/StatisticalReport/DailyQuery/dailyQuerySaga';
+import { watchDailyQuery } from './StatisticalAnalysis/StatisticalReport/DailyQuery/dailyQuerySaga';
 
 
 
@@ -172,7 +172,7 @@ export default function* rootSaga() {
     // 统计报表
     watchIntelligentAnalysis(), // 智能分析报告
     watchDataAnalysisScatterSaga(), //数据分析散点图
-    // watchDailyQuery(), // 日报查询
+    watchDailyQuery(), // 日报查询
     //高级分析>清洗模型>清洗记录+清洗预警
     watchRealtimeWarning(),
     watchTransferForm(),

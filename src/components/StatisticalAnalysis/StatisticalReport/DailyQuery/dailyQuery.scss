@@ -1,7 +1,6 @@
 @import '../../../../theme/theme.scss';
 
 .dailySearch{
-  background-color: #fff;
   .typeCheck{
     display: flex;
     .typeNormal, .typeActive{
@@ -11,22 +10,13 @@
       text-align: center;
       font-size: 14px;
       cursor: pointer;
-      border: 1px solid $promptColor;
       border-left: none;
-      color: $lightColor;
-      background-color: #f8f8f8;
     }
     .typeActive{
-      background-color: #fff;
-      border-top: 2px solid $themeColor;
       border-bottom: none;
-      color: #000;
     }
     .holder{
       flex: 1;
-      background-color: #f8f8f8;
-      border-top: 1px solid $promptColor;
-      border-bottom: 1px solid $promptColor;
     }
   }
   .searchPart{
@@ -50,6 +40,65 @@
         display: flex;
         align-items: center;
       }
+      .faultInformation,.powerInformation,.quotaSelect{
+        display: flex;
+      }
+      .powerInformation,.quotaSelect,.lossElectric{
+        .text{
+          width: 74px;
+          line-height: 32px;
+        }
+      }
+      .stationSelect,.quotaSelect,.lossElectric,.keyword,.powerInformation,.timeSelect,.search,.reset{
+        margin-right: 24px;
+      }
+      .reset{
+        line-height: 32px;
+        cursor: pointer;
+      }
+      .keyword{
+        :global{
+          .ant-input{
+            width: 263px;
+          }
+        }
+      }
     }
   }
+}
+
+.quotaList{
+
+}
+
+// 颜色
+.dailySearch{
+  background-color: #fff;
+  .typeNormal, .typeActive{
+    border: 1px solid $promptColor;
+    color: $lightColor;
+    background-color: #f8f8f8;
+  }
+  .typeActive{
+    background-color: #fff;
+    border-top: 2px solid $themeColor;
+    color: #000;
+  }
+  .holder{
+    background-color: #f8f8f8;
+    border-top: 1px solid $promptColor;
+    border-bottom: 1px solid $promptColor;
+  }
+  .search{
+    color: $themeColor;
+    border-color: $themeColor
+  }
+  .reset{
+    color: $themeColor;
+  }
+}
+
+.quotaList{
+  background-color: #fff;
+  min-height: 100%;
 }
