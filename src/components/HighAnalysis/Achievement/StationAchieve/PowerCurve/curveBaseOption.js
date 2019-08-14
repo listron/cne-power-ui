@@ -15,6 +15,9 @@ const xAxis = {
   axisTick: {
     show: false,
   },
+  splitLine: {
+    show: false,
+  },
   axisLine: {
     lineStyle: {
       color: '#dfdfdf',

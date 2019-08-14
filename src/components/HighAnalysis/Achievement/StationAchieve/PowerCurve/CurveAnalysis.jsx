@@ -7,6 +7,8 @@ import DevicesChart from './DevicesChart';
 import DevicesCheckTime from './DevicesCheckTime';
 import DevicesAep from './DevicesAep';
 import DevicesPsd from './DevicesPsd';
+import MonthsChart from './MonthsChart';
+import MonthsSelector from './MonthsSelector';
 import styles from './curve.scss';
 
 class CurveAnalysis extends Component {
@@ -63,6 +65,19 @@ class CurveAnalysis extends Component {
     }
   }
 
+  getAllMonths = (startTime, endTime) => {
+    if (moment(startTime).isBefore(endTime, 'day') || moment(startTime).isSame(endTime, 'day')) {
+      let configTime = moment(startTime);
+      const allMonths = [configTime.format('YYYY-MM')];
+      while(configTime.isBefore(endTime, 'M')){
+        configTime = configTime.add(1, 'M');
+        allMonths.push(configTime.format('YYYY-MM'));
+      }
+      return allMonths;
+    }
+    return [];
+  }
+
   queryAllCharts = (infoStr) => { // 页面所有chart请求。
     const searchParam = this.getSearchParam(infoStr);
     const { startTime, endTime, deviceFullcodes = [] } = searchParam;
@@ -74,20 +89,12 @@ class CurveAnalysis extends Component {
       endTime: curveDevicesTime,
       deviceFullcodes: [defaultDevice],
     };
-    const rangeMonths = [];
-    if (moment(startTime) < moment(endTime)) { // 将开始开始 -> 结束按月生成数组.
-      // do{
-      //   const 
-      //   rangeMonths.push(moment(startTime).format('YYYY-MM'));
-      // }while(moment(rangeMonths[rangeMonths.length - 1]) < moment(endTime));
-    }
-    // while(rangeMonths[rangeMonths.length - 1] < moment(endTime)){
-    //   rangeMonths.push(moment(startTime).add(1, 'm'));
-    // }
+    const rangeMonths = this.getAllMonths(startTime, endTime);
     this.props.changeStore({
-      curveDeviceFullcode: defaultDevice, // 选中的设备信息 {deviceFullcode, deviceName} todo 
+      curveDeviceFullcode: defaultDevice,
       curveDevicesTime, // 邻比分析设备选中时间
-      curveEachMonths: rangeMonths.map(e => e.format('YYYY-MM')), // todo 添加环比分析各月时间
+      curveAllMonths: rangeMonths,
+      curveCheckedMonths: rangeMonths,
     });
     this.props.getCurveDevices(monthParam);
     this.props.getCurveDevicesAep(monthParam);
@@ -117,7 +124,23 @@ class CurveAnalysis extends Component {
 
   render() {
     const { active } = this.props;
-    // MonthsChart  // MonthsAep  // MonthsPsd // MonthsSelector
+    // MonthsAep  // MonthsPsd // MonthsSelector
+    const curveMonths = {
+      actual: [1, 2, 3, 4, 5].map(e => ({
+        calcDate: `2019-0${e}`,
+        devicePowerInfoVos: [1, 2, 3, 4].map(m => ({
+          power: e * 4,
+          windSpeed: e * (10 + e) + m * e,
+        })),
+      })),
+      theory: [{
+        modeName: 'M2fe_Fe',
+        devicePowerInfoVos: [1, 2, 3, 4].map(e => ({
+          power: e * 4,
+          windSpeed: e * (10 + e) + e,
+        })),
+      }],
+    };
     const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
       deviceName: `${e}MMMM`,
       deviceModeName: `#12${e}-FE`,
@@ -131,6 +154,7 @@ class CurveAnalysis extends Component {
       psd: parseInt(Math.random() * 100, 10),
       deviceFullcode: `${e}FullCode`,
     }));
+    const { curveDevices } = this.props;
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <section className={styles.curveAllDevice}>
@@ -141,7 +165,7 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <DevicesChart selectDevice={this.selectDevice} />
+            <DevicesChart curveDevices={curveDevices} selectDevice={this.selectDevice} />
             <DevicesCheckTime {...this.props} />
             <div className={styles.indicatorDetails}>
               <DevicesAep {...this.props} curveDevicesAep={curveDevicesAep} />
@@ -157,8 +181,8 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <div >chart图</div>
-            <div checkEachMonths={this.checkEachMonths}>参数选择</div>
+            <MonthsChart curveMonths={curveMonths} />
+            <MonthsSelector {...this.props} />
             <div>chart图两个</div>
           </div>
         </section>

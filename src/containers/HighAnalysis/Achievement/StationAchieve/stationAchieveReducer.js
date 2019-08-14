@@ -42,7 +42,8 @@ const initState = immutable.fromJS({
   curveDeviceFullcode: null, // 选中的设备code
   curveDeviceName: null, // 选中的设备name
   curveDevicesTime: null, // 邻比分析设备选中时间
-  curveEachMonths: [], // 环比分析各月选中时间
+  curveCheckedMonths: [], // 环比分析各月选中时间
+  curveAllMonths: [], // 环比分析所有月
 
   modeDevices: [], // 电站 设备型号+设备集合
 
@@ -67,7 +68,7 @@ const initState = immutable.fromJS({
   curveDevicesAepLoading: false,
   curveDevicesPsd: [], // 机组聚合度psd
   curveDevicesPsdLoading: false,
-  curveMonths: [], // 某机组各月功率曲线
+  curveMonths: {}, // 某机组各月功率曲线
   curveMonthsLoading: false,
   curveMonthAep: [], // 某机组各月aep及风速
   curveMonthAepLoading: false,
