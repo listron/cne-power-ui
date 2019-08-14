@@ -8,11 +8,12 @@ class SequenceChartContainer extends React.Component {
     super(props, context);
   }
   likeStatusChange = (index, bool) => {
-    // console.log('index', index, bool);
     const { deviceList, changeSquenceStore } = this.props;
     deviceList[index].likeStatus = bool;
     changeSquenceStore({ deviceList });
   };
+
+
   render() {
     const { deviceList, sequenceData } = this.props;
     return (
@@ -27,11 +28,15 @@ class SequenceChartContainer extends React.Component {
                 allChartData={sequenceData[i]}
                 index={i}
                 deviceName={e.deviceName}
+
                 likeStatusChange={this.likeStatusChange} />
             </div>
-            <div></div>
+            <div>
+
+            </div>
           </div>
         ))}
+
       </div>
     );
   }

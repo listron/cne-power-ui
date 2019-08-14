@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './sequenceStyles.scss';
 import eCharts from 'echarts';
 import { showNoData, hiddenNoData } from '../../../../constants/echartsNoData';
+import { downloadFile } from '../../../../utils/utilFunc';
 import moment from 'moment';
 class SequenceChart extends React.Component {
   static propTypes = {
@@ -135,8 +136,16 @@ class SequenceChart extends React.Component {
     };
     return option;
   }
+
   renderChart = (payload) => {
-    const { allChartData, deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn } = payload;
+    const { allChartData, deviceList, getSequenceData, sequenceData, index, pointY1, pointY2, startTime, endTime, likeStatusChange, saveBtn, deviceName } = payload;
+    const parms = {
+      pointY1,
+      pointY2,
+      startTime,
+      endTime,
+      interval: 10,
+    };
     const { sequenceChart } = this;
     const myChart = eCharts.init(sequenceChart); //构建下一个实例
     // if (!allChartData) { // 空数据销毁后，不进行处理
@@ -147,23 +156,43 @@ class SequenceChart extends React.Component {
     myChart.on('click', 'title', (payload) => {
       likeStatusChange(index, !saveBtn);
     });
-    myChart.setOption(option, 'noMerge');
 
-    // console.log('能否发请求', +sequenceData.length === index + 1 && index + 1 < deviceList.length);
+    let imgUrl = myChart.getDataURL({
+      pixelRatio: 2,
+      backgroundColor: '#fff',
+    });
+    myChart.on('rendered', () => {
+      imgUrl = myChart.getDataURL({
+        pixelRatio: 2,
+        backgroundColor: '#fff',
+      });
+      // if (this.props.down !== payload.down) {
+      //   downloadFile(deviceName, imgUrl);
+      // }
+    });
+
+
     if (+sequenceData.length === index + 1 && index + 1 < deviceList.length) {
-      // console.log('请求的设备全编码', deviceList[index + 1].deviceFullCode);
       myChart.on('finished', () => {
-        console.log('渲染完');
-        getSequenceData({
-          deviceFullCode: deviceList[index + 1].deviceFullCode,
-          pointY1,
-          pointY2,
-          startTime,
-          endTime,
-          interval: 10,
-        });
+        getSequenceData(
+          {
+            ...parms,
+            deviceFullCode: deviceList[index + 1].deviceFullCode,
+            // imgData: { title: deviceName, src: imgUrl },
+          });
       });
     }
+    if (sequenceData.length === deviceList.length && index + 1 === deviceList.length) {
+      myChart.on('finished', () => {
+        getSequenceData(
+          {
+            ...parms,
+            deviceFullCode: deviceList[index].deviceFullCode,
+            // imgData: { title: deviceName, src: imgUrl },
+          });
+      });
+    }
+    myChart.setOption(option, 'noMerge');
   }
   render() {
     return (

@@ -18,6 +18,9 @@ var initState = Immutable.fromJS({
   sequenceotherNames: [], //其他测点名字
   sequenceData: [], //时序图汇总数据
   curBigChartData: {}, //当前请求到的时序图
+  newSrcUrl: [],
+  srcObj: {},
+  down: false,
 
 
 

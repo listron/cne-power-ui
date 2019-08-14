@@ -88,27 +88,40 @@ function* getSequenceOtherName(action) {//获取
 }
 function* getSequenceData(action) {//获取
   const { payload } = action;
-  const { startTime, endTime, interval } = payload;
+  const { deviceFullCode, pointY1, pointY2, startTime, endTime, interval, imgData } = payload;
+  const parmas = { deviceFullCode, pointY1, pointY2, startTime, endTime, interval };
+  const srcObj = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('srcObj').toJS()));
+  const srcArr = [];
+  const newSrcUrl = [];
+  if (imgData) {
+    srcArr.push(imgData);
+    srcArr.forEach((e, i) => {
+      srcObj[e.title] = e.src;
+    });
+  }
+  for (var item in srcObj) {
+    newSrcUrl.push({ title: [item], src: srcObj[item] });
+  }
+
+
   // const url = '/mock/api/v3/wind/analysis/sequencechart';
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.statisticalAnalysis.getSequenceData}`;
   try {
     yield put({
       type: dataAnalysisSequenceAction.changeSquenceStore,
       payload: {
-        ...payload,
+        ...parmas,
         chartLoading: true,
       },
     });
     const response = yield call(axios.post, url, {
-      ...payload,
+      ...parmas,
       startTime: moment(startTime).utc().format(),
       endTime: moment(endTime).utc().format(),
     });
     const preSequenceData = yield select(state => (state.statisticalAnalysisReducer.dataAnalysisSequenceReducer.get('sequenceData').toJS()));
     if (response.data.code === '10000') {
       const curChartData = response.data.data || {};
-      // curChartData.likeStatus = false;
-
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
@@ -116,17 +129,19 @@ function* getSequenceData(action) {//获取
           sequenceData: interval === 10 ? [...preSequenceData, curChartData] : preSequenceData,
           curBigChartData: interval === 60 ? curChartData : {},
           chartLoading: false,
-
+          srcObj,
+          newSrcUrl,
         },
       });
     } else {
-
       yield put({
         type: dataAnalysisSequenceAction.changeSquenceStore,
         payload: {
           chartLoading: false,
           sequenceData: [...preSequenceData, null],
           chartTime: moment().unix(),
+          srcObj,
+          newSrcUrl,
         },
       });
       throw response.data.message;

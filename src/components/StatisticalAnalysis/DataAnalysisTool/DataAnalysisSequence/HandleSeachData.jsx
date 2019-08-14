@@ -196,8 +196,18 @@ class HandleSeachData extends React.Component {
       pointCodeNameY: chidren,
     });
   }
+  downPic = () => {
+    // const { newSrcUrl, startTime, endTime, pointCodeNameX, pointCodeNameY } = this.props;
+    // console.log('newSrcUrl: ', newSrcUrl);
+    // newSrcUrl.forEach((e, i) => {
+    //   downloadFile(`${e.title}_${pointCodeNameX}vs${pointCodeNameY}`, e.src);
+    // });
+    this.props.changeSquenceStore({
+      down: true,
+    });
+  }
   render() {
-    const { stationCode, stations, scatterotherNames, theme } = this.props;
+    const { stationCode, stations, scatterotherNames, theme, newSrcUrl } = this.props;
     const { isSwap, options, scatterNameValue, showOther, xName, yName } = this.state;
     const defaultStartime = moment().month(moment().month() - 1).startOf('month');
     const defaultEndtime = moment().month(moment().month() - 1).endOf('month');
@@ -294,6 +304,7 @@ class HandleSeachData extends React.Component {
           </div>}
           <Button className={styles.seachBtn} onClick={this.downPic}>图片下载</Button>
         </div>
+
       </div>
     );
   }
