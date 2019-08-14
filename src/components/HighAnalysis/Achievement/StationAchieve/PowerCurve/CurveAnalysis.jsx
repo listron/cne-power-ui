@@ -6,6 +6,7 @@ import searchUtil from '../../../../../utils/searchUtil';
 import DevicesChart from './DevicesChart';
 import DevicesCheckTime from './DevicesCheckTime';
 import DevicesAep from './DevicesAep';
+import DevicesPsd from './DevicesPsd';
 import styles from './curve.scss';
 
 class CurveAnalysis extends Component {
@@ -116,13 +117,18 @@ class CurveAnalysis extends Component {
 
   render() {
     const { active } = this.props;
-    // DevicesPsd
     // MonthsChart  // MonthsAep  // MonthsPsd // MonthsSelector
     const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
       deviceName: `${e}MMMM`,
       deviceModeName: `#12${e}-FE`,
       windSpeed: parseInt(Math.random() * 10, 10),
       aep: parseInt(Math.random() * 100, 10),
+      deviceFullcode: `${e}FullCode`,
+    }));
+    const curveDevicesPsd = [1, 2, 3, 4, 5, 6].map(e => ({
+      deviceName: `${e}MMMM`,
+      deviceModeName: `#12${e}-FE`,
+      psd: parseInt(Math.random() * 100, 10),
       deviceFullcode: `${e}FullCode`,
     }));
     return (
@@ -139,6 +145,7 @@ class CurveAnalysis extends Component {
             <DevicesCheckTime {...this.props} />
             <div className={styles.indicatorDetails}>
               <DevicesAep {...this.props} curveDevicesAep={curveDevicesAep} />
+              <DevicesPsd {...this.props} curveDevicesPsd={curveDevicesPsd} />
             </div>
           </div>
         </section>

@@ -2,34 +2,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import echarts from 'echarts';
 import { Select } from 'antd';
-import { getPartsOption } from './curveBaseOption';
+import { getCurveBaseOption } from './curveBaseOption';
 import styles from './curve.scss';
 const { Option } = Select;
 
-class DevicesAep extends Component {
+class DevicesPsd extends Component {
 
   static propTypes = {
-    curveDevicesAep: PropTypes.array,
-    curveDevicesAepLoading: PropTypes.bool,
+    curveDevicesPsd: PropTypes.array,
+    curveDevicesPsdLoading: PropTypes.bool,
   }
 
   state = {
-    sortName: 'deviceName', // windSpeed, aep;
+    sortName: 'deviceName', // psd;
   }
 
   componentDidMount(){
-    const { curveDevicesAep = [] } = this.props;
+    const { curveDevicesPsd = [] } = this.props;
     const { sortName } = this.state;
-    curveDevicesAep.length > 0 && this.renderChart(curveDevicesAep, sortName);
+    curveDevicesPsd.length > 0 && this.renderChart(curveDevicesPsd, sortName);
   }
 
   componentWillReceiveProps(nextProps){
-    const { curveDevicesAepLoading, curveDevicesAep } = nextProps;
+    const { curveDevicesPsdLoading, curveDevicesPsd } = nextProps;
     const { sortName } = this.state;
-    const preLoading = this.props.curveDevicesAepLoading;
-    if (preLoading && !curveDevicesAepLoading) { // 请求完毕
-      this.renderChart(curveDevicesAep, sortName);
-    } else if (!preLoading && curveDevicesAepLoading) { // 请求中
+    const preLoading = this.props.curveDevicesPsdLoading;
+    if (preLoading && !curveDevicesPsdLoading) { // 请求完毕
+      this.renderChart(curveDevicesPsd, sortName);
+    } else if (!preLoading && curveDevicesPsdLoading) { // 请求中
       this.setChartLoading();
     }
   }
@@ -47,11 +47,11 @@ class DevicesAep extends Component {
   ]
 
   setChartLoading = () => {
-    const aepChart = this.aepRef && echarts.getInstanceByDom(this.aepRef);
-    aepChart && aepChart.showLoading();
+    const psdChart = this.psdRef && echarts.getInstanceByDom(this.psdRef);
+    psdChart && psdChart.showLoading();
   }
 
-  sortDeviceAes = (data = [], sorter) => {
+  sortDevicePsd = (data = [], sorter) => {
     return [...data].sort((a, b) => {
       if(sorter === 'deviceName') {
         return a[sorter] && b[sorter] && a[sorter].localeCompare(b[sorter]);
@@ -61,19 +61,19 @@ class DevicesAep extends Component {
   }
 
   sortChart = (sortName) => {
-    const { curveDevicesAep = [] } = this.props;
-    this.renderChart(curveDevicesAep, sortName);
+    const { curveDevicesPsd = [] } = this.props;
+    this.renderChart(curveDevicesPsd, sortName);
   }
 
-  createSeires = (sortedAepData) => {
-    const xData = [], aspData = [], speedData = [], modes = new Set();
-    sortedAepData.forEach(e => {
-      const { deviceName, windSpeed, aep, deviceModeName } = e || {};
+  createSeires = (sortedPsdData) => {
+    const xData = [], psdData = [], modes = new Set();
+    sortedPsdData.forEach(e => {
+      const { deviceName, deviceModeName, psd } = e || {};
       modes.add(deviceModeName);
       xData.push(deviceName);
       const colorIndex = [...modes].indexOf(deviceModeName);
-      aspData.push({
-        value: aep,
+      psdData.push({
+        value: psd,
         name: deviceModeName,
         itemStyle: {
           color: new echarts.graphic.LinearGradient( 0, 0, 0, 1, [
@@ -82,41 +82,23 @@ class DevicesAep extends Component {
           ]),
         },
       });
-      speedData.push(windSpeed);
     });
     const series = [{
       type: 'bar',
       barWidth: '10px',
-      data: aspData,
-    }, {
-      name: 'speed',
-      type: 'line',
-      data: speedData,
-      yAxisIndex: 1,
-      lineStyle: {
-        normal: {
-          color: '#f9b600',
-          width: 2,
-          shadowColor: 'rgba(0,0,0,0.20)',
-          shadowBlur: 3,
-          shadowOffsetY: 3,
-        },
-      },
+      data: psdData,
     }];
     return { series, xData, modeArr: [...modes] };
   }
 
-  renderChart = (curveDevicesAep, sortName) => {
-    const aepChart = echarts.init(this.aepRef);
-    const sortedAepData = this.sortDeviceAes(curveDevicesAep, sortName);
-    const { series, xData, modeArr } = this.createSeires(sortedAepData);
+  renderChart = (curveDevicesPsd, sortName) => {
+    const psdChart = echarts.init(this.psdRef);
+    const sortedPsdData = this.sortDevicePsd(curveDevicesPsd, sortName);
+    const { series, xData, modeArr } = this.createSeires(sortedPsdData);
+    const baseOption = getCurveBaseOption();
+    baseOption.xAxis.data = xData;
     const option = {
-      grid: getPartsOption('grid'),
-      xAxis: { ...getPartsOption('xAxis'), data: xData },
-      yAxis: [
-        { ...getPartsOption('yAxis'), name: 'AEP(万kWh)' },
-        { ...getPartsOption('yAxis'), name: '风速(m/s)' },
-      ],
+      ...baseOption,
       tooltip: {
         trigger: 'axis',
         padding: 0,
@@ -130,7 +112,7 @@ class DevicesAep extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${e.seriesIndex === 0 ? 'AEP' : '风速'}</span>
+                  <span>PSD</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -140,10 +122,10 @@ class DevicesAep extends Component {
       },
       series,
     };
-    aepChart.hideLoading();
-    aepChart.setOption(option);
-    aepChart.on('click', ({ seriesIndex }) => {
-      const clickInfo = sortedAepData[seriesIndex] || {};
+    psdChart.hideLoading();
+    psdChart.setOption(option);
+    psdChart.on('click', ({ seriesIndex }) => {
+      const clickInfo = sortedPsdData[seriesIndex] || {};
       console.log(clickInfo);
     });
   }
@@ -153,7 +135,7 @@ class DevicesAep extends Component {
     return (
       <section className={styles.aep}>
         <h3 className={styles.aepTop}>
-          <span className={styles.aepText}>各机组AEP及平均风速</span>
+          <span className={styles.aepText}>功率曲线聚合度PSD</span>
           <span>
             <span className={styles.sorterText}>选择排序</span>
             <Select
@@ -162,16 +144,15 @@ class DevicesAep extends Component {
               value={sortName}
             >
               <Option value="deviceName">风机名称</Option>
-              <Option value="aep">AEP</Option>
-              <Option value="windSpeed">风速</Option>
+              <Option value="psd">PSD</Option>
             </Select>
           </span>
         </h3>
-        <div className={styles.aepChart} ref={(ref)=> {this.aepRef = ref;}} />
+        <div className={styles.aepChart} ref={(ref)=> {this.psdRef = ref;}} />
       </section>
     );
   }
 }
 
-export default DevicesAep;
+export default DevicesPsd;
 
