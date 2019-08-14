@@ -32,7 +32,7 @@ class DeviceAlarmTable extends Component {
   }
 
   static defaultProps = {
-    titleName: false,
+    titleName: true,
     style: { padding: '0px 68px 48px 68px' },
   }
 
@@ -59,7 +59,7 @@ class DeviceAlarmTable extends Component {
         title: '告警级别',
         dataIndex: 'warningLevel',
         key: 'warningLevel',
-        sorter: true, // (a,b) => a.warningLevel - b.warningLevel,
+        sorter: true,
         render: (text, record, index) => {
           const warningInfor = text && warningLevelArray[text - 1];
           return (text &&
@@ -73,6 +73,7 @@ class DeviceAlarmTable extends Component {
         dataIndex: 'warningConfigName',
         key: 'warningConfigName',
         sorter: true,
+        render: (text) => text > 200 ? '限制告警' : '事件告警',
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
@@ -118,27 +119,18 @@ class DeviceAlarmTable extends Component {
       const endIndex = startIndex + pageSize;
       return (i >= startIndex && i < endIndex);
     });
-    // const { inverterList } = this.props;
-    // const initDeviceList = inverterList.deviceList || [];
-    // const totalNum = initDeviceList.length || 0;
-    // const maxPage = Math.ceil(totalNum / pageSize);
-    // if(totalNum === 0){ // 总数为0时，展示0页
-    //   currentPage = 1;
-    // }else if(maxPage < currentPage){ // 当前页已超出
-    //   currentPage = maxPage;
-    // }
     return tableSource;
   }
 
   render() {
-    const { deviceAlarmList, deviceDetail = {}, stationCode, style, theme = 'light' } = this.props;
+    const { deviceAlarmList = [], deviceDetail = {}, stationCode, style, titleName = 'true', theme = 'light' } = this.props;
     const { pageSize, currentPage } = this.state;
     const tableSource = this.createTableSource(deviceAlarmList);
     const columns = this.initColumn();
     const { deviceName } = deviceDetail;
     return (
       <div className={`${styles.alarmTable} ${styles[theme]}`} style={style}>
-        <h3>实时告警</h3>
+        {titleName && <h3>实时告警</h3>}
         <div className={styles.tableHeader}>
           <Button className={styles.historyButton}>
             <Link to={{

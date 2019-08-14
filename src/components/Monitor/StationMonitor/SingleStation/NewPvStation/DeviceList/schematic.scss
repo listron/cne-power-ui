@@ -354,6 +354,7 @@
 .dark{
     $themeColor:#00f8ff;
     $hotColor:#f8b14e;
+    $buttonColor:#00baff;
      .schematicBox{
         color: $themeColor;
         .detailBox{
@@ -361,13 +362,13 @@
                 color:#f8b14e;
             }
             .singleLine{
-                border-top:2px dotted $themeColor;;
+                border-top:2px dotted $themeColor;
             }
             @mixin  triangle(){
                 content: '';
                 width: 0px;
                 height: 0px;
-                border-left: 16px solid $themeColor;;
+                border-left: 16px solid $themeColor;
                 border-top: 16px solid  #0c0a3e;
                 position: absolute;
                 top: -2px;
@@ -382,16 +383,17 @@
             }
             .inverter{
                 .inverterButton{
-                    border:1px solid $themeColor;;
+                    border:1px solid $themeColor;
+                    
                     span{
-                        border-right:1px solid $themeColor;;
+                        border-right:1px solid $themeColor;
                         &:hover{
-                            background:$themeColor;;
+                            background:  $buttonColor;
                             color: #fff;
                         }
                     }
                     .activeButton{
-                        background:$themeColor;;
+                        background:  $buttonColor;
                         color: #fff;
                     }
                 }

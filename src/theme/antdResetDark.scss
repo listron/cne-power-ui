@@ -86,25 +86,62 @@
   // ====button ======
   .ant-btn {
     //antd按钮样式调整-高亮
-    color: $fontColor;
     background: transparent;
-    border: 1px solid $border-color;
-    @include highLight($themeColor);
-    &:hover {
-      color: $themeColor;
+    color: $fontColor;
+    border: 1px solid $fontColor;
+    &:hover,
+    &:focus,
+    &:active {
+      color: #fff;
+      background: #00baff;
+      box-shadow: inset 0 0 4px 1px #00f8ff;
     }
   }
 
-  .ant-btn-primary,
-  .ant-btn-primary:active,
-  .ant-btn-primary.active,
-  .ant-btn-primary:focus {
-    background-color: #205bac;
-    color: #00baff;
-    border-color: #00baff;
-    &:hover {
-      background-color: #00baff;
+  .ant-btn-default {
+    background: #0fcefa;
+    color: #fff;
+    &:hover,
+    &:focus,
+    &:active {
       color: #fff;
+      background: #00baff;
+      box-shadow: inset 0 0 4px 1px #00f8ff;
+    }
+  }
+
+  .ant-btn-primary {
+    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+    color: #fff;
+    &:hover,
+    &:focus,
+    &:active {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .ant-btn-add {
+    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
+      border: 2px solid #7ed321;
+      width: 18px;
+      height: 18px;
+      border-radius: 100%;
+      display: inline-block;
+      margin-right: 4px;
+      line-height: 12px;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
+      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.6);
     }
   }
 
@@ -230,6 +267,28 @@
     background: $input-Background;
     border: 1px solid $input-border;
     color: $fontColor;
+  }
+  .ant-input-number {
+    line-height: 30px;
+    background: transparent;
+    border: 1px solid $input-border;
+  }
+
+  .ant-input-number-input {
+    background: $input-Background;
+    color: $fontColor;
+  }
+
+  .ant-input-number-handler-wrap {
+    color: $fontColor;
+    background: $input-Background;
+    border-left: 1px solid $input-border;
+  }
+  .ant-input-number-handler-down {
+    border-top: 1px solid $input-border;
+  }
+  .ant-input-number-handler:active {
+    background: #fd6e8f;
   }
 
   // ============ ant-calendar 日历============

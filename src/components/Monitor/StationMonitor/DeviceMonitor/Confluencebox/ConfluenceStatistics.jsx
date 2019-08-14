@@ -5,41 +5,52 @@ import { DeviceValueFormat } from '../../../../Common/UtilComponent';
 import { monitordataFormat, dataFormat } from '../../../../../utils/utilFunc';
 import styles from './confluencebox.scss';
 
-const EachRecord = ({text, value, unit}) => (
+const EachRecord = ({ text, value, unit }) => (
   <div className={styles.eachRecord}>
     <span className={styles.text}>{text}</span>
     <DeviceValueFormat value={value} />
     <span className={styles.unit}>{unit}</span>
   </div>
-)
+);
 
 EachRecord.propTypes = {
   text: PropTypes.string,
   value: PropTypes.string,
   unit: PropTypes.string,
-}
+  theme: PropTypes.string,
+};
 
-function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
+function ConfluenceStatistics({ deviceDetail, subDeviceList = [], theme = 'light' }) {
   const { devicePower, deviceCapacity, voltage, electricity, temperature, dispersionRatio } = deviceDetail;
   if (!subDeviceList.length && subDeviceList.electricityList) {
     subDeviceList = subDeviceList.electricityList || []; // 取出子集组串接口优化后删。
   }
   const statusColor = {
-    '500': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 无通讯
-    '900': { color: 'transparent', backgroundColor: '#f1f1f1'}, // 未接入
-    '802': { color: '#fff', backgroundColor: '#3e97d1'}, // 偏大 - 蓝
-    '400': { color: '#199475', backgroundColor: '#ceebe0'}, // 正常 - 绿
-    '801': { color: '#fff', backgroundColor: '#f9b600'}, // 偏小 - 橙
-    '803': { color: '#fff', backgroundColor: '#a42b2c'}, // 异常 - 红
+    light: {
+      '500': { color: 'transparent', backgroundColor: '#f1f1f1' }, // 无通讯
+      '900': { color: 'transparent', backgroundColor: '#f1f1f1' }, // 未接入
+      '802': { color: '#fff', backgroundColor: '#3e97d1' }, // 偏大 - 蓝
+      '400': { color: '#199475', backgroundColor: '#ceebe0' }, // 正常 - 绿
+      '801': { color: '#fff', backgroundColor: '#f9b600' }, // 偏小 - 橙
+      '803': { color: '#fff', backgroundColor: '#a42b2c' }, // 异常 - 红
+    },
+    dark: {
+      '500': { color: 'transparent', backgroundColor: '#405080' }, // 无通讯
+      '900': { color: 'transparent', backgroundColor: '#405080' }, // 未接入
+      '802': { color: '#fff', backgroundColor: '#4d5fe2' }, // 偏大 - 蓝
+      '400': { color: '#fff', backgroundColor: '#00baff' }, // 正常 - 绿
+      '801': { color: '#fff', backgroundColor: '#f8b14e' }, // 偏小 - 橙
+      '803': { color: '#fff', backgroundColor: '#fd6e8f' }, // 异常 - 红
+    },
   };
 
   return (
-    <div className={styles.confluenceStatistics}>
+    <div className={`${styles.confluenceStatistics} ${styles[theme]}`}>
       <div className={styles.confluenceInfo}>
         <div className={styles.deviceIcon}>
           <span className="iconfont icon-hl" />
         </div>
-        <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} />
+        <PowerProgress devicePower={devicePower} deviceCapacity={deviceCapacity} theme={theme} />
         <div className={styles.line} />
         <div className={styles.elecInfo}>
           <EachRecord text="电压" value={monitordataFormat(voltage, '--')} unit="V" />
@@ -56,18 +67,18 @@ function ConfluenceStatistics({ deviceDetail, subDeviceList = [] }) {
           <span
             className={styles.eachCurrent}
             key={i}
-            style={{ ...statusColor[e.pointStatus] }}
+            style={{ ...statusColor[theme][e.pointStatus] }}
           >{dataFormat(e.pointValue, '--', 2)}</span>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 
 ConfluenceStatistics.propTypes = {
   deviceDetail: PropTypes.object,
   subDeviceList: PropTypes.array,
-}
+};
 
 export default ConfluenceStatistics;
