@@ -15,7 +15,6 @@ class SequenceChartContainer extends React.Component {
   };
   render() {
     const { deviceList, sequenceData } = this.props;
-    console.log('sequenceData: ', sequenceData);
     return (
       <div className={styles.chartsContainer}>
         {deviceList.map((e, i) => (

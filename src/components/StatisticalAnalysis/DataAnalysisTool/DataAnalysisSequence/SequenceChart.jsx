@@ -10,7 +10,11 @@ class SequenceChart extends React.Component {
     index: PropTypes.number,
     chartTime: PropTypes.number,
     sequenceData: PropTypes.array,
+    deviceList: PropTypes.array,
     allChartData: PropTypes.object,
+    getSequenceData: PropTypes.func,
+    pointY1: PropTypes.string,
+    pointY2: PropTypes.string,
   }
   constructor(props, context) {
     super(props, context);
@@ -20,55 +24,55 @@ class SequenceChart extends React.Component {
     const myChart = eCharts.init(sequenceChart); //构建下一个实例
     const option = this.creatOption(this.props);
     myChart.setOption(option);
-    const defaultStartime = moment().month(moment().month() - 1).startOf('month').format();
-    const defaultEndtime = moment().month(moment().month() - 1).endOf('month').format();
-    this.props.getSequenceData({
-      deviceFullCode: '73M101M34M1',
-      startTime: defaultStartime,
-      endTime: defaultEndtime,
-      pointY1: 'NC001',
-      pointY2: 'TR002',
-      interval: 10,
-    });
+    // const { deviceList, pointY1, pointY2 } = this.props;
+    // const fristDevice = deviceList[0];
+    // const deviceFullCode = fristDevice.deviceFullCode;
+    // const defaultStartime = moment().month(moment().month() - 1).startOf('month').format();
+    // const defaultEndtime = moment().month(moment().month() - 1).endOf('month').format();
+    // this.props.getSequenceData({
+    //   deviceFullCode,
+    //   startTime: defaultStartime,
+    //   endTime: defaultEndtime,
+    //   pointY1,
+    //   pointY2,
+    //   interval: 10,
+    // });
+
   }
   componentWillReceiveProps(nextProps) {
     const { chartTime: currentChartTime, chartLoading, index, allChartData, sequenceData, saveBtn } = this.props;
-    console.log('index: ', index);
-    console.log('sequenceData: ', sequenceData, 'nextProps.sequenceData', nextProps.sequenceData);
-    console.log('chartLoading: ', chartLoading);
-    console.log('sequenceData.length: ', sequenceData.length);
-    console.log('loading变化', chartLoading && nextProps.chartLoading !== chartLoading);
+    // console.log('index: ', index);
+    // console.log('sequenceData: ', sequenceData, 'nextProps.sequenceData', nextProps.sequenceData);
+    // console.log('chartLoading: ', chartLoading, 'nextProps.chartLoading', nextProps.chartLoading);
+    // console.log('sequenceData.length: ', sequenceData.length);
+    // console.log('loading变化', chartLoading && nextProps.chartLoading !== chartLoading);
     const { chartTime } = nextProps;
     const { sequenceChart } = this;
     const myChart = eCharts.init(sequenceChart);
-    if (chartLoading && (index) === sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
+    if (chartLoading && (index + 1) === nextProps.sequenceData.length) { // loading态控制。第一次无数据，请求数据的过程
       myChart.showLoading();
     }
-    // if (chartLoading && (index + 1) === sequenceData.length) {
-    //   myChart.showLoading();
-    // }
-    if (!chartLoading) {
+    if (!nextProps.chartLoading) {
       myChart.hideLoading();
     }
-
     if (nextProps.saveBtn !== saveBtn) {
-      console.log('likestatus发生改变重新渲染');
+      // console.log('likestatus发生改变重新渲染');
       this.renderChart(nextProps);
     }
-    if ((index + 1 === sequenceData.length) && (allChartData && allChartData !== nextProps.allChartData)) {
-      console.log('后面的图渲染');
+    if ((index + 1 === nextProps.sequenceData.length) && (allChartData && allChartData !== nextProps.allChartData)) {
+      // console.log('后面的图渲染');
       myChart.clear();//清除
       this.renderChart(nextProps);
     }
     if ((chartLoading && nextProps.chartLoading !== chartLoading)) {
-      console.log('loadding渲染');
-      // eCharts.init(sequenceChart).clear();//清除
+      // console.log('loadding渲染');
+      myChart.clear();//清除
       this.renderChart(nextProps);
     }
 
   }
   creatOption = (payload) => {
-    console.log('payload: ', payload);
+    // console.log('payload: ', payload);
     const { allChartData, deviceName, pointCodeNameX, pointCodeNameY, saveBtn } = payload;
     const { timeLine, point1Data, point2Data } = allChartData ? allChartData : { timeLine: [], point1Data: [], point2Data: [] };
     const option = {
@@ -145,9 +149,9 @@ class SequenceChart extends React.Component {
     });
     myChart.setOption(option, 'noMerge');
 
-    console.log('能否发请求', +sequenceData.length === index + 1 && index + 1 < deviceList.length);
+    // console.log('能否发请求', +sequenceData.length === index + 1 && index + 1 < deviceList.length);
     if (+sequenceData.length === index + 1 && index + 1 < deviceList.length) {
-      console.log('请求的设备全编码', deviceList[index + 1].deviceFullCode);
+      // console.log('请求的设备全编码', deviceList[index + 1].deviceFullCode);
       myChart.on('finished', () => {
         console.log('渲染完');
         getSequenceData({

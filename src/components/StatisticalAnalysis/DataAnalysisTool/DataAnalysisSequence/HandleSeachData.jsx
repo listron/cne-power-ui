@@ -89,14 +89,14 @@ class HandleSeachData extends React.Component {
           xCode: pointCodeX,
           yCode: pointCodeY,
         });
-        // getSequenceData({
-        //   deviceFullCode,
-        //   startTime: defaultStartime,
-        //   endTime: defaultEndtime,
-        //   pointY1: pointCodeX,
-        //   pointY2: pointCodeY,
-        //   interval: 10,
-        // });
+        getSequenceData({
+          deviceFullCode,
+          startTime: defaultStartime,
+          endTime: defaultEndtime,
+          pointY1: pointCodeX,
+          pointY2: pointCodeY,
+          interval: 10,
+        });
       }
     }
   }
