@@ -1,17 +1,19 @@
 $background: #0c0a3e;
 $light-background: rgba(83, 104, 241, 0.15);
 $themeColor: #00baff;
+$warnColor: #fd6e8f;
 
 // 字体颜色
+$fontColor-disabled: #161858;
+$fontColor-dark: #205bac;
+$fontColor-middle: #bbcef7;
 $fontColor: #00baff;
-$fontColor-invert: #fff;
 $fontColor-hover: #00f8ff;
-$fontColor-disabled: #7088c3;
+$fontColor-invert: #fff;
 
 // 按钮  不全
 $button-primary: #205bac;
 $button-add: #00baff; // 暂时
-$button-delete: #fd6e8f;
 $button-active: #00baff; // $button-active button-focus
 $button-disabled: #30406d;
 $button-border: #00baff;
@@ -37,11 +39,12 @@ $select-border-shadow: #4d5fe2;
 $input-Background: #161858;
 $input-border: #4d5fe2;
 $input-icon: #4d5fe2;
+$input-disabled: #405080;
+$input-border-disabled: #7088c3;
 
 // 侧边栏  上边栏
 $sideBar-background: #161858;
 $sidecolor: #205bac;
-$logo-background: #205bac;
 
 $tab-background: #13134f;
 $tab-border-color: #202470;
