@@ -59,18 +59,48 @@
     }
   }
 
-  .ant-btn-primary,
-  .ant-btn-primary:active,
-  .ant-btn-primary.active,
-  .ant-btn-primary:focus {
+  .ant-btn-primary {
     background-color: $themeColor;
     color: #fff;
     border-color: $themeColor;
+    &:active,
+    &:focus,
     &:hover {
       background-color: $themeColor;
       color: #fff;
     }
   }
+
+  .ant-btn-add {
+    border: 1px solid #199475;
+    border-radius: 4px;
+    color: #199475;
+    background-color: #fff;
+    padding: 0;
+    width: 64px;
+    line-height: 32px;
+    margin: -1px;
+    display: flex;
+    i {
+      width: 30px;
+      height: 30px;
+      background-color: #199475;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    &:hover,
+    &:focus,
+    &:active {
+      background: #199475;
+      color: #fff;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
   .ant-btn-group {
     .ant-btn-primary {
       &:first-child:not(:last-child) {

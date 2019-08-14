@@ -19,9 +19,9 @@ class ConfluenceTenMin extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { tenMinUnix, tenMinChartLoading } = this.props;
+    const { tenMinUnix, tenMinChartLoading, theme } = this.props;
     const prevTenMinUnix = prevProps.tenMinUnix;
-    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading) { // 获得数据
+    if (tenMinUnix !== prevTenMinUnix || tenMinChartLoading || theme !== prevProps.theme) { // 获得数据
       this.renderChart();
     }
   }
