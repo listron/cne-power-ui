@@ -8,17 +8,17 @@
     flex-basis: 100%;
     display: flex;
     flex-direction: column;
-    .title{
+    .header{
       flex-basis: 40px;
       margin-bottom: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .titleText{
+      .headerText{
         font-weight: 600;
         padding-left: 24px;
       }
-      .titleTip{
+      .headerTip{
         border-radius: 50%;
         width: 12px;
         height: 12px;
@@ -38,10 +38,42 @@
     }
     .timeSelector{
       flex-basis: 170px;
+      text-align: center;
+      .timeTitle{
+        margin-top: 52px;
+        margin-bottom: 12px;
+      }
     }
-    .indicatorDetail{
+    .indicatorDetails{
+      display: flex;
+      flex-direction: column;
       flex-basis: 50%;
+      .aep{
+        width: 100%;
+        flex-basis: 50%;
+        display: flex;
+        flex-direction: column;
+      }
+      .aepTop{
+        display: flex;
+        justify-content: space-between;
+        flex-basis: 50px;
+        align-items: center;
+        padding: 0 20px;
+        .aepText{
+          font-weight: 600;
+        }
+        .sorterText{
+          margin-right: 4px;
+        }
+      }
+      .aepChart{
+        flex: 1;
+      }
     }
+  }
+  .curveAllDevice{
+    margin-bottom: 10px;
   }
 }
 
@@ -71,18 +103,25 @@
 // 颜色部分。
 .curveAnalysis{
   .curveAllDevice, .curveEachMonth{
-    .title{
+    .header{
       background-image:linear-gradient(-180deg, #ffffff 0%, #dedede 100%);
-      .titleText{
+      .headerText{
         color: #000;
       }
-      .titleTip{
+      .headerTip{
         color: #fff;
         background:#f9b600;
       }
     }
     .content{
       background-color: #fff;
+    }
+  }
+  .timeSelector{
+    border-left:1px solid #e1e2e2;
+    border-right:1px solid #e1e2e2;
+    .timeTitle{
+      color: #666;
     }
   }
   // .lostRank, .lostTrend, .lostTypes{

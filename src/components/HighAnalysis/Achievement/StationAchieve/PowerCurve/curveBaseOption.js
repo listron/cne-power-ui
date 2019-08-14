@@ -1,50 +1,58 @@
 
 
+const grid = {
+  containLabel: true,
+  left: 24,
+  right: 30,
+};
 
+const xAxis = {
+  axisLabel: {
+    textStyle: {
+      color: '#666666',
+    },
+  },
+  axisTick: {
+    show: false,
+  },
+  axisLine: {
+    lineStyle: {
+      color: '#dfdfdf',
+    },
+  },
+  nameTextStyle: {
+    color: '#666666',
+  },
+};
+
+const yAxis = {
+  axisLine: {
+    lineStyle: {
+      color: '#dfdfdf',
+    },
+  },
+  splitLine: {
+    show: false,
+  },
+  axisTick: {
+    show: false,
+  },
+  axisLabel: {
+    textStyle: {
+      color: '#666666',
+    },
+  },
+  nameTextStyle: {
+    color: '#666666',
+  },
+};
 
 export const getCurveBaseOption = () => ({
-  grid: {
-    containLabel: true,
-    left: 24,
-    right: 30,
-  },
-  xAxis: {
-    axisLabel: {
-      textStyle: {
-        color: '#666666',
-      },
-    },
-    axisTick: {
-      show: false,
-    },
-    axisLine: {
-      lineStyle: {
-        color: '#dfdfdf',
-      },
-    },
-    nameTextStyle: {
-      color: '#666666',
-    },
-  },
-  yAxis: {
-    axisLine: {
-      lineStyle: {
-        color: '#dfdfdf',
-      },
-    },
-    splitLine: {
-      show: false,
-    },
-    axisTick: {
-      show: false,
-    },
-    axisLabel: {
-      textStyle: {
-        color: '#666666',
-      },
-    },
-    nameTextStyle: {
-      color: '#666666',
-    },
-  },
+  grid,
+  xAxis,
+  yAxis,
 });
+
+export const getPartsOption = (partName) => {
+  return { grid, xAxis, yAxis }[partName];
+};

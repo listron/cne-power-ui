@@ -4,6 +4,8 @@ import moment from 'moment';
 import { Tooltip } from 'antd';
 import searchUtil from '../../../../../utils/searchUtil';
 import DevicesChart from './DevicesChart';
+import DevicesCheckTime from './DevicesCheckTime';
+import DevicesAep from './DevicesAep';
 import styles from './curve.scss';
 
 class CurveAnalysis extends Component {
@@ -11,6 +13,8 @@ class CurveAnalysis extends Component {
   static propTypes = {
     active: PropTypes.bool,
     curveTopStringify: PropTypes.string,
+    curveDeviceFullcode: PropTypes.string,
+    modeDevices: PropTypes.array,
     location: PropTypes.object,
     getCurveDevices: PropTypes.func,
     getCurveDevicesAep: PropTypes.func,
@@ -36,11 +40,25 @@ class CurveAnalysis extends Component {
   componentWillReceiveProps(nextProps){
     const nextLocation = nextProps.location;
     const nextSearch = nextLocation.search || '';
-    const { curveTopStringify } = this.props;
+    const nextModeDevices = nextProps.modeDevices;
+    const nextCurvecode = nextProps.curveDeviceFullcode;
+    const { curveTopStringify, modeDevices } = this.props;
     const infoStr = searchUtil(nextSearch).getValue('station');
     if (infoStr && infoStr !== curveTopStringify) { // 搜索信息有变
       this.props.changeStore({ curveTopStringify: infoStr });
       this.queryAllCharts(infoStr);
+    }
+    if (nextCurvecode && modeDevices.length === 0 && nextModeDevices.length > 0) { // 得到设备信息时, 若已选设备, 存储设备名
+      let curveDeviceName;
+      nextModeDevices.some(e => {
+        const { children = [] } = e || e;
+        return children.some(m => {
+          const findCurveCode = nextCurvecode === m.value;
+          findCurveCode && (curveDeviceName = m.label);
+          return findCurveCode;
+        });
+      });
+      this.props.changeStore({ curveDeviceName });
     }
   }
 
@@ -98,29 +116,37 @@ class CurveAnalysis extends Component {
 
   render() {
     const { active } = this.props;
-    // DevicesAep // DevicesPsd // DevicesCheckTime
-
+    // DevicesPsd
     // MonthsChart  // MonthsAep  // MonthsPsd // MonthsSelector
+    const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
+      deviceName: `${e}MMMM`,
+      deviceModeName: `#12${e}-FE`,
+      windSpeed: parseInt(Math.random() * 10, 10),
+      aep: parseInt(Math.random() * 100, 10),
+      deviceFullcode: `${e}FullCode`,
+    }));
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <section className={styles.curveAllDevice}>
-          <h3 className={styles.title}>
-            <span className={styles.titleText}>功率曲线邻比分析</span>
+          <h3 className={styles.header}>
+            <span className={styles.headerText}>功率曲线邻比分析</span>
             <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
-              <span className={styles.titleTip}>i</span>
+              <span className={styles.headerTip}>i</span>
             </Tooltip>
           </h3>
           <div className={styles.content}>
             <DevicesChart selectDevice={this.selectDevice} />
-            <div checkDevicesTime={this.checkDevicesTime}>月份选择</div>
-            <div selectDevice={this.selectDevice}>chart图两个</div>
+            <DevicesCheckTime {...this.props} />
+            <div className={styles.indicatorDetails}>
+              <DevicesAep {...this.props} curveDevicesAep={curveDevicesAep} />
+            </div>
           </div>
         </section>
         <section className={styles.curveEachMonth}>
-          <h3 className={styles.title}>
-            <span className={styles.titleText}>功率曲线环比分析</span>
+          <h3 className={styles.header}>
+            <span className={styles.headerText}>功率曲线环比分析</span>
             <Tooltip title="功率曲线所用的均为清洗后的数据" placement="topRight">
-              <span className={styles.titleTip}>i</span>
+              <span className={styles.headerTip}>i</span>
             </Tooltip>
           </h3>
           <div className={styles.content}>
