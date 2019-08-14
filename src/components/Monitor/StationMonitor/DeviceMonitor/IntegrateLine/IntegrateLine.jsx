@@ -14,6 +14,7 @@ class IntegrateLine extends Component {
     resetDeviceStore: PropTypes.func,
     getDeviceInfoMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
+    theme: PropTypes.string,
   }
 
   componentDidMount() {
@@ -26,7 +27,7 @@ class IntegrateLine extends Component {
     const nextParams = nextProps.match.params;
     const nextDevice = nextParams.deviceCode;
     const nextType = nextParams.deviceTypeCode;
-    if( nextDevice !== deviceCode ){ // 集电线路电站切换
+    if (nextDevice !== deviceCode) { // 集电线路电站切换
       this.props.stopMonitor();
       this.props.getDeviceInfoMonitor({
         deviceCode: nextDevice,
@@ -40,12 +41,12 @@ class IntegrateLine extends Component {
     this.props.resetDeviceStore();
   }
 
-  render(){
-    const { stations } = this.props;
+  render() {
+    const { stations, theme = 'light' } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const { stationName, stationType } = currentStation;
-    const backData={path: `/monitor/singleStation/${stationCode}`, name: '返回电站'};
+    const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const breadCrumbData = {
       breadData: [{
         link: true,
@@ -54,26 +55,29 @@ class IntegrateLine extends Component {
       }, {
         name: '集电线路',
       }],
-      iconName: stationType > 0 ? 'iconfont icon-pvlogo' :'iconfont icon-windlogo',
+      iconName: stationType > 0 ? 'iconfont icon-pvlogo' : 'iconfont icon-windlogo',
     };
     return (
-      <div className={styles.integrateLine}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor: '#fff' }} backData={{...backData}} />
+      <div className={`${styles.integrateLine} ${styles[theme]}`}>
+        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
         <div className={styles.deviceContent}>
           <IntegrateHeader
             {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
-          <DevicePointsTable {...this.props} />
-          <DeviceAlarmTable
-            {...this.props}
-            stationCode={stationCode}
-            deviceTypeCode={deviceTypeCode}
-            deviceCode={deviceCode}
-          />
-          {stationType > 0 && <h3 className={styles.subTitleConfig}>下级设备</h3>}
-          {stationType > 0 && <SubBoxtransformer {...this.props} stationCode={stationCode} />}
+          <div className={styles.contWrap}>
+            <div style={{ marginTop: 20 }}></div>
+            <DevicePointsTable {...this.props} />
+            <DeviceAlarmTable
+              {...this.props}
+              stationCode={stationCode}
+              deviceTypeCode={deviceTypeCode}
+              deviceCode={deviceCode}
+            />
+            {stationType > 0 && <h3 className={styles.subTitleConfig}>下级设备</h3>}
+            {stationType > 0 && <SubBoxtransformer {...this.props} stationCode={stationCode} />}
+          </div>
         </div>
       </div>
     );

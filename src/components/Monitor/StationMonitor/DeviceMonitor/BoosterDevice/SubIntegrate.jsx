@@ -7,23 +7,23 @@ import PropTypes from 'prop-types';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './booster.scss';
 
-const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
+const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode, theme }) => {
   const baseLinkPath = '/hidden/monitorDevice';
   return (
-    <div className={styles.subIntergrate}>
+    <div className={`${styles.subIntergrate} ${styles[theme]}`}>
       {subDeviceList.map((item, i) => {
         const { deviceCode, alarmNum } = item;
         const deviceTypeCode = deviceCode.split('M')[1];
         return (
           <div key={i} className={`${styles.singledeviceItem} `}>
             <Link to={`${baseLinkPath}/${stationCode}/${deviceTypeCode}/${deviceCode}`} >
-              <div className={`${styles.statusBox}`} style={{backgroundColor: alarmNum > 0 ? '#ff8e9c' : 'transparent'}}>
+              <div className={`${styles.statusBox}`} style={{ backgroundColor: alarmNum > 0 ? '#ff8e9c' : 'transparent' }}>
                 <div className={styles.deviceItemIcon} >
                   <i className={`iconfont icon-jidian ${styles.icon}`} />
-                  {(alarmNum > 0) && <i className="iconfont icon-alarm" /> }
+                  {(alarmNum > 0) && <i className="iconfont icon-alarm" />}
                 </div>
                 <div className={styles.deviceItemR} >
-                  <span style={{color: alarmNum > 0 ? '#a42b2c' : '#666'}}>{item.deviceName}</span>
+                  <span style={{ color: alarmNum > 0 ? '#a42b2c' : '#666' }}>{item.deviceName}</span>
                 </div>
               </div>
               <div className={styles.deviceBlockFooter}>
@@ -36,13 +36,14 @@ const SubIntegrate = ({ subDeviceList, deviceDetail, stationCode }) => {
           </div>);
       })}
     </div>
-  )
-}
+  );
+};
 
 SubIntegrate.propTypes = {
   subDeviceList: PropTypes.array,
   deviceDetail: PropTypes.object,
   stationCode: PropTypes.string,
-}
+  theme: PropTypes.string,
+};
 
 export default SubIntegrate;

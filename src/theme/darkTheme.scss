@@ -1,25 +1,21 @@
 $background: #0c0a3e;
 $light-background: rgba(83, 104, 241, 0.15);
 $themeColor: #00baff;
-$promptColor: #205bac;
+$warnColor: #fd6e8f;
 
 // 字体颜色
+$fontColor-disabled: #161858;
+$fontColor-dark: #205bac;
+$fontColor-middle: #bbcef7;
 $fontColor: #00baff;
-$fontColor-invert: #fff;
 $fontColor-hover: #00f8ff;
-$fontColor-disabled: #7088c3;
-$fontColor-warn: #f8e71c;
-$fontColor-dark: #7088c3;
-$fontColor-noConnect: #bbcef7;
+$fontColor-invert: #fff;
 
 // 按钮  不全
 $button-primary: #205bac;
 $button-add: #00baff; // 暂时
-$button-delete: #fd6e8f;
 $button-active: #00baff; // $button-active button-focus
-
-$button-disabled: #405080;
-
+$button-disabled: #30406d;
 $button-border: #00baff;
 $border-color: rgba($light-background, 0.4);
 $border-shadow-color: #5368f1;
@@ -28,7 +24,6 @@ $border-shadow-color: #5368f1;
 $slide-backgound: #205bac;
 $slide-border: #303a99;
 $slide-border-shadow: #00baff;
-$slide-cont-background: #161858;
 
 // 弹出框
 $modal-background: #161858;
@@ -44,21 +39,16 @@ $select-border-shadow: #4d5fe2;
 $input-Background: #161858;
 $input-border: #4d5fe2;
 $input-icon: #4d5fe2;
+$input-disabled: #405080;
+$input-border-disabled: #7088c3;
 
 // 侧边栏  上边栏
 $sideBar-background: #161858;
 $sidecolor: #205bac;
-$logo-background: #205bac;
 
 $tab-background: #13134f;
 $tab-border-color: #202470;
 $tab-border-bottom: rgba(12, 10, 62, 0.6);
-
-// success
-// info
-// warning
-// error
-//   border  bg  icon
 
 @mixin contentBoxStyle() {
   // 页面主内容区常用布局样式。
@@ -69,4 +59,25 @@ $tab-border-bottom: rgba(12, 10, 62, 0.6);
   width: 100%;
   padding: 24px 24px 0;
   background: $background;
+}
+
+@mixin tooltipBox($borderColor) {
+  .axisValue {
+    padding: 0 30px 0 10px;
+    line-height: 26px;
+    border-bottom: 1px solid $borderColor;
+  }
+  .tooltipContainer {
+    padding: 10px 30px 10px 0;
+  }
+  .tooltipCont {
+    span {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      vertical-align: 2px;
+      margin: 0 4px 0 8px;
+    }
+  }
 }
