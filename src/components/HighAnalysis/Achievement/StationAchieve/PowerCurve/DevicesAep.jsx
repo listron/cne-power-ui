@@ -9,8 +9,13 @@ const { Option } = Select;
 class DevicesAep extends Component {
 
   static propTypes = {
+    curveTopStringify: PropTypes.string,
     curveDevicesAep: PropTypes.array,
     curveDevicesAepLoading: PropTypes.bool,
+    changeStore: PropTypes.func,
+    getCurveMonths: PropTypes.func,
+    getCurveMonthAep: PropTypes.func,
+    getCurveMonthPsd: PropTypes.func,
   }
 
   state = {
@@ -106,12 +111,35 @@ class DevicesAep extends Component {
     return { series, xData, modeArr: [...modes] };
   }
 
+  deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
+    const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
+    const { curveTopStringify } = this.props;
+    const queryInfo = JSON.parse(curveTopStringify) || {};
+    const param = {
+      stationCodes: [queryInfo.searchCode],
+      deviceFullcodes: [deviceFullcode],
+      startTime: queryInfo.searchDates[0],
+      endTime: queryInfo.searchDates[1],
+    };
+    this.props.changeStore({
+      curveDeviceName: deviceName,
+      curveDeviceFullcode: deviceFullcode,
+    });
+    this.props.getCurveMonths(param);
+    this.props.getCurveMonthAep(param);
+    this.props.getCurveMonthPsd(param);
+  }
+
   renderChart = (curveDevicesAep, sortName) => {
     const aepChart = echarts.init(this.aepRef);
     const sortedAepData = this.sortDeviceAes(curveDevicesAep, sortName);
-    const { series, xData, modeArr } = this.createSeires(sortedAepData);
+    const { series, xData } = this.createSeires(sortedAepData);
     const option = {
-      grid: getPartsOption('grid'),
+      grid: {
+        top: 10,
+        ...getPartsOption('grid'),
+        bottom: 40,
+      },
       xAxis: { ...getPartsOption('xAxis'), data: xData },
       yAxis: [
         { ...getPartsOption('yAxis'), name: 'AEP(万kWh)' },
@@ -140,12 +168,23 @@ class DevicesAep extends Component {
       },
       series,
     };
+    const endPosition = 30 / curveDevicesAep.length >= 1 ? 100 : 3000 / curveDevicesAep.length;
+    curveDevicesAep.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     aepChart.hideLoading();
     aepChart.setOption(option);
-    aepChart.on('click', ({ seriesIndex }) => {
-      const clickInfo = sortedAepData[seriesIndex] || {};
-      console.log(clickInfo);
-    });
+    aepChart.on('click', (param) => this.deviceHandle(param, sortedAepData, aepChart));
   }
 
   render() {

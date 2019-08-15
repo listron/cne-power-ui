@@ -155,24 +155,24 @@ class CurveAnalysis extends Component {
     //     })),
     //   }],
     // };
-    // const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
-    //   deviceName: `${e}MMMM`,
-    //   deviceModeName: `#12${e}-FE`,
-    //   windSpeed: parseInt(Math.random() * 10, 10),
-    //   aep: parseInt(Math.random() * 100, 10),
-    //   deviceFullcode: `${e}FullCode`,
-    // }));
+    const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
+      deviceName: `${e}MMMM`,
+      deviceModeName: `#12${e}-FE`,
+      windSpeed: parseInt(Math.random() * 10, 10),
+      aep: parseInt(Math.random() * 100, 10),
+      deviceFullcode: `${e}FullCode`,
+    }));
     // const curveMonthAep = [1, 2, 3, 4, 5, 6].map(e => ({
     //   windSpeed: parseInt(Math.random() * 10, 10),
     //   aep: parseInt(Math.random() * 100, 10),
     //   efficiencyDate: `2018-0${e}`,
     // }));
-    // const curveDevicesPsd = [1, 2, 3, 4, 5, 6].map(e => ({
-    //   deviceName: `${e}MMMM`,
-    //   deviceModeName: `#12${e}-FE`,
-    //   psd: parseInt(Math.random() * 100, 10),
-    //   deviceFullcode: `${e}FullCode`,
-    // }));
+    const curveDevicesPsd = [1, 2, 3, 4, 5, 6].map(e => ({
+      deviceName: `${e}MMMM`,
+      deviceModeName: `#12${e}-FE`,
+      psd: parseInt(Math.random() * 100, 10),
+      deviceFullcode: `${e}FullCode`,
+    }));
     // const curveMonthPsd = [1, 2, 3, 4, 5, 6].map(e => ({
     //   psd: parseInt(Math.random() * 100, 10),
     //   efficiencyDate: `2019-0${e}`,
@@ -190,8 +190,8 @@ class CurveAnalysis extends Component {
             <DevicesChart {...this.props} curveDevices={curveDevices} />
             <DevicesCheckTime {...this.props} />
             <div className={styles.indicatorDetails}>
-              <DevicesAep {...this.props} />
-              <DevicesPsd {...this.props} />
+              <DevicesAep {...this.props} curveDevicesAep={curveDevicesAep} />
+              <DevicesPsd {...this.props} curveDevicesPsd={curveDevicesPsd} />
             </div>
           </div>
         </section>

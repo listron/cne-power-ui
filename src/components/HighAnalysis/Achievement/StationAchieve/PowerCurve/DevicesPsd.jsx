@@ -9,8 +9,13 @@ const { Option } = Select;
 class DevicesPsd extends Component {
 
   static propTypes = {
+    curveTopStringify: PropTypes.string,
     curveDevicesPsd: PropTypes.array,
     curveDevicesPsdLoading: PropTypes.bool,
+    changeStore: PropTypes.func,
+    getCurveMonths: PropTypes.func,
+    getCurveMonthAep: PropTypes.func,
+    getCurveMonthPsd: PropTypes.func,
   }
 
   state = {
@@ -91,12 +96,33 @@ class DevicesPsd extends Component {
     return { series, xData, modeArr: [...modes] };
   }
 
+  deviceHandle = ({ seriesIndex }, sortedAepData, chart) => {
+    const { deviceFullcode, deviceName } = sortedAepData[seriesIndex] || {};
+    const { curveTopStringify } = this.props;
+    const queryInfo = JSON.parse(curveTopStringify) || {};
+    const param = {
+      stationCodes: [queryInfo.searchCode],
+      deviceFullcodes: [deviceFullcode],
+      startTime: queryInfo.searchDates[0],
+      endTime: queryInfo.searchDates[1],
+    };
+    this.props.changeStore({
+      curveDeviceName: deviceName,
+      curveDeviceFullcode: deviceFullcode,
+    });
+    this.props.getCurveMonths(param);
+    this.props.getCurveMonthAep(param);
+    this.props.getCurveMonthPsd(param);
+  }
+
   renderChart = (curveDevicesPsd, sortName) => {
     const psdChart = echarts.init(this.psdRef);
     const sortedPsdData = this.sortDevicePsd(curveDevicesPsd, sortName);
-    const { series, xData, modeArr } = this.createSeires(sortedPsdData);
+    const { series, xData } = this.createSeires(sortedPsdData);
     const baseOption = getCurveBaseOption();
     baseOption.xAxis.data = xData;
+    baseOption.grid.top = 10;
+    baseOption.grid.bottom = 40;
     const option = {
       ...baseOption,
       tooltip: {
@@ -122,12 +148,23 @@ class DevicesPsd extends Component {
       },
       series,
     };
+    const endPosition = 30 / curveDevicesPsd.length >= 1 ? 100 : 3000 / curveDevicesPsd.length;
+    curveDevicesPsd.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     psdChart.hideLoading();
     psdChart.setOption(option);
-    psdChart.on('click', ({ seriesIndex }) => {
-      const clickInfo = sortedPsdData[seriesIndex] || {};
-      console.log(clickInfo);
-    });
+    psdChart.on('click', (param) => this.deviceHandle(param, sortedPsdData, psdChart));
   }
 
   render() {
