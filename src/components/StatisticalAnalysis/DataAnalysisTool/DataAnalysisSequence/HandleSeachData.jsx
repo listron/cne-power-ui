@@ -197,14 +197,10 @@ class HandleSeachData extends React.Component {
     });
   }
   downPic = () => {
-    // const { newSrcUrl, startTime, endTime, pointCodeNameX, pointCodeNameY } = this.props;
-    // console.log('newSrcUrl: ', newSrcUrl);
-    // newSrcUrl.forEach((e, i) => {
-    //   downloadFile(`${e.title}_${pointCodeNameX}vs${pointCodeNameY}`, e.src);
-    // });
     this.props.changeSquenceStore({
       down: true,
     });
+
   }
   render() {
     const { stationCode, stations, scatterotherNames, theme, newSrcUrl } = this.props;

@@ -166,12 +166,9 @@ class SequenceChart extends React.Component {
         pixelRatio: 2,
         backgroundColor: '#fff',
       });
-      // if (this.props.down !== payload.down) {
-      //   downloadFile(deviceName, imgUrl);
-      // }
+      this.props.saveImgUrl && this.props.saveImgUrl(deviceName, imgUrl);
+
     });
-
-
     if (+sequenceData.length === index + 1 && index + 1 < deviceList.length) {
       myChart.on('finished', () => {
         getSequenceData(
@@ -182,16 +179,16 @@ class SequenceChart extends React.Component {
           });
       });
     }
-    if (sequenceData.length === deviceList.length && index + 1 === deviceList.length) {
-      myChart.on('finished', () => {
-        getSequenceData(
-          {
-            ...parms,
-            deviceFullCode: deviceList[index].deviceFullCode,
-            // imgData: { title: deviceName, src: imgUrl },
-          });
-      });
-    }
+    // if (sequenceData.length === deviceList.length && index + 1 === deviceList.length) {
+    //   myChart.on('finished', () => {
+    //     getSequenceData(
+    //       {
+    //         ...parms,
+    //         deviceFullCode: deviceList[index].deviceFullCode,
+    //         // imgData: { title: deviceName, src: imgUrl },
+    //       });
+    //   });
+    // }
     myChart.setOption(option, 'noMerge');
   }
   render() {
