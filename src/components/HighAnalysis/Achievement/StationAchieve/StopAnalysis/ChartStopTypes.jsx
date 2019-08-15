@@ -154,9 +154,9 @@ class ChartStopTypes extends Component {
         { ...getBaseXAxis(dataAxis), gridIndex: 2 },
       ],
       yAxis: [
-        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 0 },
-        { ...getBaseYAxis('时长(h)'), gridIndex: 1 },
-        { ...getBaseYAxis('次数(h)'), gridIndex: 2 },
+        { ...getBaseYAxis('电量(万kWh)'), gridIndex: 0, min: 0 },
+        { ...getBaseYAxis('时长(h)'), gridIndex: 1, min: 0 },
+        { ...getBaseYAxis('次数(h)'), gridIndex: 2, min: 0 },
       ],
       axisPointer: {
         link: {xAxisIndex: 'all'},

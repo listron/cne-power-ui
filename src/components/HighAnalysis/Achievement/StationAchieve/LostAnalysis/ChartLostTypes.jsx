@@ -70,6 +70,7 @@ class ChartLostTypes extends Component {
     const baseOption = getBaseOption(this.dataAxis);
     const { hideBarData, barData } = this.getBarValue(lostTypes, this.dataKey);
     baseOption.yAxis.name = '小时数(h)';
+    baseOption.yAxis.min = 0;
     const option = {
       ...baseOption,
       tooltip: {
