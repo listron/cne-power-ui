@@ -175,6 +175,7 @@ class ChartLostTrend extends Component {
       type: 'slider',
       filterMode: 'empty',
       bottom: 16,
+      height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',

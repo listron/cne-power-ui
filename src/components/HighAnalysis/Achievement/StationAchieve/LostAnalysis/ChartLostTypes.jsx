@@ -130,14 +130,6 @@ class ChartLostTypes extends Component {
       }],
     };
     typesChart.hideLoading();
-    lostTypes.length > 0 && (option.dataZoom = [{
-      type: 'slider',
-      filterMode: 'empty',
-      bottom: 16,
-    }, {
-      type: 'inside',
-      filterMode: 'empty',
-    }]);
     typesChart.setOption(option);
   }
 
