@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PvStationTop from './PvStationTop';
 import PvStationHeader from './PvStationHeader';
-import PvStationCont from './PvStationCont';
 import PvDevice from './PvDevice';
 import styles from './pvStation.scss';
 import moment from 'moment';

@@ -1,19 +1,5 @@
 @import "../../../../../theme/theme.scss";
-
-$normal: #fff;
-$normal_color: #199475;
-$normal_hover_color: rgba(0, 0, 0, 0.2);
-$moreThanTen: #fefad2;
-$moreThanTen_color: #f9b600;
-$moreThanTwenty: #ffce7f;
-$moreThanTwenty_color: #e08031;
-$noContact: #f0f2f5;
-$noContact_color: #666666;
-$noAccess: #ededed;
-$noAccess_color: #999;
-$noAccess_background_color: #ededed;
-$arlam: #ff8e9c;
-$arlam_color: #a42b2c;
+@import "../../Theme/monitorLight.scss";
 
 .statisticsBox {
   display: flex;
@@ -226,86 +212,36 @@ $arlam_color: #a42b2c;
     }
   }
   .normal {
-    &:hover {
-      box-shadow: 0px 1px 4px 1px $normal_hover_color;
-    }
-    .statusBox {
-      background: $normal;
-      .deviceBlockName,
-      .icon {
-        color: $normal_color;
-      }
-    }
+    @include singleItem($normal, $normal_color, $normal_border, $normal_active);
   }
   .normal.alarm {
-    .statusBox {
-      background: $arlam;
-      .deviceBlockName,
-      .iconHl {
-        color: $arlam_color;
-      }
-    }
-    &:hover {
-      box-shadow: 0px 1px 4px 1px $arlam;
-    }
+    @include singleItem($alarm, $alarm_color, $alarm_border, $alarm_active);
   }
   .moreThanTen {
-    &:hover {
-      box-shadow: 0px 1px 4px 1px $moreThanTen;
-    }
-    .statusBox {
-      background: $moreThanTen;
-      .deviceBlockName,
-      .iconHl {
-        color: $moreThanTen_color;
-      }
-    }
-    .deviceBlockFooter {
-      .dispersionRatio {
-        color: $moreThanTen_color;
-      }
+    @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
+    .dispersionRatio {
+      color: $moreThanTen_color;
     }
   }
   .moreThanTwenty {
-    &:hover {
-      box-shadow: 0px 1px 4px 1px $moreThanTwenty;
-    }
-    .statusBox {
-      background: $moreThanTwenty;
-      .deviceBlockName,
-      .iconHl {
-        color: $moreThanTwenty_color;
-      }
-    }
-    .deviceBlockFooter {
-      .dispersionRatio {
-        color: $moreThanTwenty_color;
-      }
+    @include singleItem($moreThanTwenty, $moreThanTwenty_color, $moreThanTwenty_border, $moreThanTwenty_active);
+    .dispersionRatio {
+      color: $moreThanTwenty_color;
     }
   }
   .noContact {
-    &:hover {
-      box-shadow: 0px 1px 4px 1px $noContact;
-    }
-    .statusBox {
-      background: $noContact;
-      .deviceBlockName,
-      .iconHl {
+    @include singleItem($noContact, $noContact_color, $noContact_border, $noContact_active);
+    :global {
+      .icon-alarm {
         color: $noContact_color;
-      }
-      :global {
-        .icon-alarm {
-          color: $noContact_color;
-        }
       }
     }
   }
   .noAccess {
-    box-shadow: 0 1px 4px 0 $noAccess;
-    background: $noAccess_background_color;
+    @include singleItem($noAccess, $noAccess_color, $noAccess_border, $noAccess_active);
+    background: $noAccess;
     pointer-events: none;
-    .deviceBlockName,
-    .iconHl {
+    a {
       color: $noAccess_color;
     }
   }
@@ -313,20 +249,8 @@ $arlam_color: #a42b2c;
 
 .subConfluence.dark {
   @import "../../../../../theme/darkTheme.scss";
-  $normal: rgba(83, 104, 241, 0.15);
-  $normal_color: #00baff;
-  $normal_hover_color: rgba(83, 104, 241, 0.15);
-  $moreThanTen: rgba(85, 34, 228, 0.3);
-  $moreThanTen_color: #00f8ff;
-  $moreThanTwenty: rgba(95, 35, 112, 0.8);
-  $moreThanTwenty_color: #fd6e8f;
-  $noContact: #4a4343;
-  $noContact_color: #f8b14e;
-  $noAccess_background_color: #181a4e;
-  $noAccess: #181a4e;
-  $noAccess_color: #bbcef7;
-  $arlam: rgba(145, 44, 65, 0.8);
-  $arlam_color: #fd6e8f;
+  @import "../../Theme/monitorDark.scss";
+
   // 子汇流箱
   .singledeviceItem {
     border: 1px solid rgba(83, 104, 241, 0.6);
@@ -356,93 +280,34 @@ $arlam_color: #a42b2c;
     }
   }
   .normal {
-    background: $normal;
-    &:hover {
-      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
-    }
-    .statusBox {
-      .deviceBlockName,
-      .icon {
-        color: $normal_color;
-      }
+    @include singleItem($normal, $normal_color, $normal-border, $normal-active);
+    a {
+      color: $fontColor;
     }
   }
   .normal.alarm {
-    a {
-      color: #fff;
-    }
-    &:hover {
-      box-shadow: 0 0 6px 2px #ffa1ac;
-    }
-    background: $arlam;
-    .statusBox {
-      .deviceBlockName,
-      .iconHl {
-        color: $arlam_color;
-      }
-    }
+    @include singleItem($alarm, $alarm_color, $alarm-border, $alarm-active);
   }
   .moreThanTen {
-    background: $moreThanTen;
-    a {
-      color: #fff;
-    }
-    &:hover {
-      box-shadow: inset 0 0 4px 2px #4d5fe2;
-    }
-    .statusBox {
-      .deviceBlockName,
-      .iconHl {
-        color: $moreThanTen_color;
-      }
-    }
+    @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen-border, $moreThanTen-active);
     .dispersionRatio {
       color: $moreThanTen_color;
     }
   }
   .moreThanTwenty {
-    background: $moreThanTwenty;
-    a {
-      color: #fff;
-    }
-    &:hover {
-      box-shadow: 0 0 6px 2px #ffa1ac;
-    }
-    .statusBox {
-      .deviceBlockName,
-      .iconHl {
-        color: $moreThanTwenty_color;
-      }
-    }
+    @include singleItem($moreThanTwenty, $moreThanTwenty_color, $moreThanTwenty-border, $moreThanTwenty-active);
     .dispersionRatio {
       color: $moreThanTwenty_color;
     }
   }
   .noContact {
-    background: $noContact;
-    a {
-      color: #fff;
-    }
-    border: 1px solid rgba(249, 182, 0, 0.6);
-    &:hover {
-      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
-    }
-    .statusBox {
-      .deviceBlockName,
-      .iconHl {
-        color: $noContact_color;
-      }
-    }
+    @include singleItem($noContact, $noContact_color, $noContact-border, $noContact-active);
   }
+
   .noAccess {
-    box-shadow: 0 1px 4px 0 $noAccess;
-    background: $noAccess_background_color;
     pointer-events: none;
+    @include singleItem($noAccess, $noAccess_color, $noAccess-border, $noAccess-active);
     a {
-      color: $noAccess_color;
-    }
-    .deviceBlockName,
-    .iconHl {
       color: $noAccess_color;
     }
   }
