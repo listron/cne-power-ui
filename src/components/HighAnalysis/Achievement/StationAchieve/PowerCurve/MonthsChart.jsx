@@ -7,6 +7,7 @@ import styles from './curve.scss';
 class MonthsChart extends Component {
 
   static propTypes = {
+    curveCheckedMonths: PropTypes.array,
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
   }
@@ -20,12 +21,29 @@ class MonthsChart extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    const { curveMonthsLoading, curveMonths } = nextProps;
+    const { curveMonthsLoading, curveMonths, curveCheckedMonths } = nextProps;
     const preLoading = this.props.curveMonthsLoading;
+    const preChecked = this.props.curveCheckedMonths;
     if (preLoading && !curveMonthsLoading) { // 请求完毕
       this.renderChart(curveMonths);
     } else if (!preLoading && curveMonthsLoading) { // 请求中
       this.setChartLoading();
+    }
+    if (preChecked.length > 0 && curveCheckedMonths.length !== preChecked.length) {
+      // const monthChart = echarts.getInstanceByDom(this.monthRef);
+      // const lastOption = monthChart.getOption();
+      // const selectedLegend = { '理论功率': true };
+      // curveCheckedMonths.forEach(e => { selectedLegend[e] = true; });
+      // const newOption = {
+      //   ...lastOption,
+      //   legend: {
+      //     ...lastOption.legend[0],
+      //     selected: selectedLegend,
+      //   },
+      // };
+      // console.log(newOption.legend);
+      // monthChart.dispose();
+      // monthChart.setOption(newOption);
     }
   }
 
@@ -44,9 +62,9 @@ class MonthsChart extends Component {
     };
   })
 
-  renderChart = (curveMonths) => {
+  renderChart = (monthsData) => {
     const monthChart = echarts.init(this.monthRef);
-    const { actual = [], theory = [] } = curveMonths;
+    const { actual = [], theory = [] } = monthsData;
     const modeName = theory[0] && theory[0].modeName || '--';
     const totalMonthData = actual.concat(theory.map(e => ({
       calcDate: '理论功率',

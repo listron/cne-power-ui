@@ -139,22 +139,22 @@ class CurveAnalysis extends Component {
         })),
       }],
     };
-    // const curveMonths = {
-    //   actual: [1, 2, 3, 4, 5].map(e => ({
-    //     calcDate: `2019-0${e}`,
-    //     devicePowerInfoVos: [1, 2, 3, 4].map(m => ({
-    //       power: e * 4,
-    //       windSpeed: e * (10 + e) + m * e,
-    //     })),
-    //   })),
-    //   theory: [{
-    //     modeName: 'M2fe_Fe',
-    //     devicePowerInfoVos: [1, 2, 3, 4].map(e => ({
-    //       power: e * 4,
-    //       windSpeed: e * (10 + e) + e,
-    //     })),
-    //   }],
-    // };
+    const curveMonths = {
+      actual: [1, 2, 3, 4, 5].map(e => ({
+        calcDate: `2019-0${e}`,
+        devicePowerInfoVos: [1, 2, 3, 4].map(m => ({
+          power: e * 4,
+          windSpeed: e * (10 + e) + m * e,
+        })),
+      })),
+      theory: [{
+        modeName: 'M2fe_Fe',
+        devicePowerInfoVos: [1, 2, 3, 4].map(e => ({
+          power: e * 2,
+          windSpeed: e * (10 + e) + e,
+        })),
+      }],
+    };
     const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
       deviceName: `${e}MMMM`,
       deviceModeName: `#12${e}-FE`,
@@ -162,21 +162,21 @@ class CurveAnalysis extends Component {
       aep: parseInt(Math.random() * 100, 10),
       deviceFullcode: `${e}FullCode`,
     }));
-    // const curveMonthAep = [1, 2, 3, 4, 5, 6].map(e => ({
-    //   windSpeed: parseInt(Math.random() * 10, 10),
-    //   aep: parseInt(Math.random() * 100, 10),
-    //   efficiencyDate: `2018-0${e}`,
-    // }));
+    const curveMonthAep = [1, 2, 3, 4, 5, 6].map(e => ({
+      windSpeed: parseInt(Math.random() * 10, 10),
+      aep: parseInt(Math.random() * 100, 10),
+      efficiencyDate: `2018-0${e}`,
+    }));
     const curveDevicesPsd = [1, 2, 3, 4, 5, 6].map(e => ({
       deviceName: `${e}MMMM`,
       deviceModeName: `#12${e}-FE`,
       psd: parseInt(Math.random() * 100, 10),
       deviceFullcode: `${e}FullCode`,
     }));
-    // const curveMonthPsd = [1, 2, 3, 4, 5, 6].map(e => ({
-    //   psd: parseInt(Math.random() * 100, 10),
-    //   efficiencyDate: `2019-0${e}`,
-    // }));
+    const curveMonthPsd = [1, 2, 3, 4, 5, 6].map(e => ({
+      psd: parseInt(Math.random() * 100, 10),
+      efficiencyDate: `2019-0${e}`,
+    }));
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <section className={styles.curveAllDevice}>
@@ -203,11 +203,11 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <MonthsChart {...this.props} />
+            <MonthsChart {...this.props} curveMonths={curveMonths} />
             <MonthsSelector {...this.props} />
             <div className={styles.indicatorDetails}>
-              <MonthsAep {...this.props} />
-              <MonthsPsd {...this.props} />
+              <MonthsAep {...this.props} curveMonthAep={curveMonthAep} />
+              <MonthsPsd {...this.props} curveMonthPsd={curveMonthPsd} />
             </div>
           </div>
         </section>
