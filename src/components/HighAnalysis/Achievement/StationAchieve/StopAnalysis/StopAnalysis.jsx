@@ -10,6 +10,8 @@ import styles from './stop.scss';
 class StopAnalysis extends Component {
 
   static propTypes = {
+    active: PropTypes.bool,
+    pageName: PropTypes.string,
     stopTopStringify: PropTypes.string,
     stopElecType: PropTypes.string,
     stopChartTimeMode: PropTypes.string,
@@ -22,12 +24,12 @@ class StopAnalysis extends Component {
   }
 
   componentDidMount(){
-    const { stopTopStringify, location } = this.props;
+    const { stopTopStringify, location, pageName } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
     const originLoad = infoStr && !stopTopStringify; // // 初次加载
     const pageBack = stopTopStringify && infoStr && infoStr !== stopTopStringify; // 其他两个页面修改路径信息后返回
-    if (originLoad || pageBack) {
+    if (pageName === 'stop' && (originLoad || pageBack)) {
       const originParam = this.getQueryParam(infoStr);
       this.props.changeStore({
         stopElecType: 'all',
@@ -67,7 +69,7 @@ class StopAnalysis extends Component {
   }
 
   render() {
-    const { active, lostChartDevice, stopChartTimeMode } = this.props;
+    const { active } = this.props;
     return (
       <div className={`${styles.stopAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <StopElecTypes {...this.props} />

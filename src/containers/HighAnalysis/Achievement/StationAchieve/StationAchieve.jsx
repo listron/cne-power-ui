@@ -12,19 +12,19 @@ import styles from './station.scss';
 class StationAchieve extends Component {
 
   static propTypes = {
-    active: PropTypes.bool,
+    pageName: PropTypes.string,
     changeStore: PropTypes.func,
   }
 
   render() {
-    const { active, changeStore } = this.props;
+    const { pageName, changeStore } = this.props;
     return (
       <div className={styles.stationAchieve} >
         <StationSearch {...this.props} />
-        <AnimationBox changeStore={changeStore} active={active}>
-          <LostAnalysis {...this.props} active={active === 'lost'} />
-          <StopAnalysis {...this.props} active={active === 'stop'} />
-          <CurveAnalysis {...this.props} active={active === 'curve'} />
+        <AnimationBox changeStore={changeStore} pageName={pageName}>
+          <LostAnalysis {...this.props} active={pageName === 'lost'} />
+          <StopAnalysis {...this.props} active={pageName === 'stop'} />
+          <CurveAnalysis {...this.props} active={pageName === 'curve'} />
         </AnimationBox>
       </div>
     );

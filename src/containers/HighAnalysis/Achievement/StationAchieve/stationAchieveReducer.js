@@ -22,7 +22,7 @@ export const stationAchieveAction = {
 };
 
 const initState = immutable.fromJS({
-  active: 'curve', // lost, stop, curve
+  pageName: 'lost', // lost, stop, curve
 
   lostStringify: '', // station - 缓存search信息字符串
   lostQuota: null, // 指标

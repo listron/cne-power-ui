@@ -10,6 +10,7 @@ class LostAnalysis extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
+    pageName: PropTypes.string,
     lostQuota: PropTypes.string,
     lostStringify: PropTypes.string,
     lostChartTimeMode: PropTypes.string,
@@ -28,12 +29,12 @@ class LostAnalysis extends Component {
   }
 
   componentDidMount(){
-    const { lostQuota, lostStringify, location } = this.props;
+    const { lostQuota, lostStringify, location, pageName } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
     const originLoad = infoStr && !lostStringify; // // 初次加载
     const pageBack = lostStringify && infoStr && infoStr !== lostStringify; // 其他两个页面修改路径信息后返回
-    if (originLoad || pageBack) {
+    if (pageName === 'lost' && (originLoad || pageBack)) {
       this.props.changeStore({ lostStringify: infoStr });
       this.queryTypes(infoStr); // 初次加载只重新请求损失电量分解
       pageBack && lostQuota && this.queryRank(infoStr, lostQuota);

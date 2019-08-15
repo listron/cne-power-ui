@@ -16,7 +16,7 @@ import styles from './curve.scss';
 class CurveAnalysis extends Component {
 
   static propTypes = {
-    active: PropTypes.bool,
+    pageName: PropTypes.bool,
     curveTopStringify: PropTypes.string,
     curveDeviceFullcode: PropTypes.string,
     modeDevices: PropTypes.array,
@@ -31,12 +31,12 @@ class CurveAnalysis extends Component {
   }
 
   componentDidMount(){
-    const { curveTopStringify, location } = this.props;
+    const { curveTopStringify, location, pageName } = this.props;
     const { search } = location;
     const infoStr = searchUtil(search).getValue('station');
     const originLoad = infoStr && !curveTopStringify; // // 初次加载
     const pageBack = curveTopStringify && infoStr && infoStr !== curveTopStringify; // 其他两个页面修改路径信息后返回
-    if (originLoad || pageBack) {
+    if (pageName === 'curve' && (originLoad || pageBack)) {
       this.props.changeStore({ curveTopStringify: infoStr });
       this.queryAllCharts(infoStr);
     }
