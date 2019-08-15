@@ -198,6 +198,7 @@ class ChartStopRank extends Component {
       start: 0,
       end: endPosition,
       bottom: 15,
+      height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',

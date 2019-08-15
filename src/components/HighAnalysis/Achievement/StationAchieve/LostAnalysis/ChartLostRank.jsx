@@ -186,7 +186,7 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? quotaName : '应发小时数'}</span>
+                  <span>${i === 1 ? '应发小时数' : quotaName}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -203,6 +203,7 @@ class ChartLostRank extends Component {
       start: 0,
       end: endPosition,
       bottom: 15,
+      height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',
