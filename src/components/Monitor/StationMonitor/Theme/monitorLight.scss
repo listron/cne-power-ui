@@ -1,0 +1,48 @@
+// 正常
+$normal: #fff;
+$normal_color: #199475;
+$normal-border: #dfdfdf;
+$normal-active: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+
+// 告警
+$alarm: #ff8e9c;
+$alarm_color: #a42b2c;
+$alarm-border: #dfdfdf;
+$alarm-active: 0 1px 4px 0 #ff8e9c;
+
+// 无通讯
+$noContact: #f0f2f5;
+$noContact_color: #666;
+$noContact-border: #dfdfdf;
+$noContact-active: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+
+// 未接入
+$noAccess: #ededed;
+$noAccess_color: #999;
+$noAccess-border: #dfdfdf;
+$noAccess-active: none;
+
+// >10%
+$moreThanTen: #fefad2;
+$moreThanTen_color: #f9b600;
+$moreThanTen-border: #dfdfdf;
+$moreThanTen-active: 0 1px 4px 0 #fefad2;
+
+// >20%
+$moreThanTwenty: #ffce7f;
+$moreThanTwenty_color: #e08031;
+$moreThanTwenty-border: #dfdfdf;
+$moreThanTwenty-active: 0 1px 4px 0 #ffce7f;
+@mixin singleItem($stuatus, $stuatus_color, $stuatus_border, $status_active) {
+  border: 1px solid $stuatus_border;
+  .statusBox {
+    background: $stuatus;
+  }
+  .deviceBlockName,
+  .iconHl {
+    color: $stuatus_color;
+  }
+  &:hover {
+    box-shadow: $status_active;
+  }
+}

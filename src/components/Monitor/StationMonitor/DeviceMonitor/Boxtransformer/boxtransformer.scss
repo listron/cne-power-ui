@@ -1,4 +1,5 @@
 @import "../../../../../theme/theme.scss";
+@import "../../Theme/monitorLight.scss";
 
 .subInverter {
   // 子汇流箱
@@ -142,30 +143,22 @@
   }
 
   .lowEfficiency {
-    .statusBox {
-      background: #fefad2;
-      color: #e08031;
-    }
-    &:hover {
-      box-shadow: 0 1px 4px 0 #fefad2;
-    }
+    @include singleItem($moreThanTen, $moreThanTen_color, $moreThanTen_border, $moreThanTen_active);
   }
   .alarm {
-    .statusBox {
-      background: #ff8e9c;
-      color: #a42b2c;
-    }
-    &:hover {
-      box-shadow: 0 1px 4px 0 #ff8e9c;
-    }
+    @include singleItem($alarm, $alarm_color, $alarm_border, $alarm_active);
   }
   .unconnect {
     background: #ededed;
+    .value {
+      color: #999999;
+    }
   }
 }
 
 .subInverter.dark {
   @import "../../../../../theme/antdResetDark.scss";
+  @import "../../Theme/monitorDark.scss";
   // 子汇流箱
   .singledeviceItem {
     border: 1px solid $border-color;
@@ -191,60 +184,19 @@
   .singledeviceItem:hover {
     box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
   }
-  // .lowEfficiency {
-  //   .statusBox {
-  //     background: #fefad2;
-  //     color: #e08031;
-  //   }
-  //   &:hover {
-  //     box-shadow: 0 1px 4px 0 #fefad2;
-  //   }
-  // }
-  // .alarm {
-  //   .statusBox {
-  //     background: #ff8e9c;
-  //     color: #a42b2c;
-  //   }
-  //   &:hover {
-  //     box-shadow: 0 1px 4px 0 #ff8e9c;
-  //   }
-  // }
 
   .lowEfficiency {
-    background: #4a4343;
-    a {
-      color: #fff;
-    }
-    border: 1px solid rgba(249, 182, 0, 0.6);
-    &:hover {
-      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.5);
-    }
-    .value {
-      color: #f8b14e;
-    }
+    @include singleItem($moreThanTwenty, $moreThanTen_color, $moreThanTwenty-border, $moreThanTwenty-active);
   }
   .alarm {
-    background: rgba(145, 44, 65, 0.6);
-    border: 1px solid rgba(145, 44, 65, 1);
-    a {
-      color: #fff;
-    }
-    &:hover {
-      box-shadow: 0 1px 4px 0 #ff8e9c;
-    }
-    .value {
-      color: #fd6e8f;
-    }
+    @include singleItem($alarm, $alarm_color, $alarm-border, $alarm-active);
   }
-  .unconnect {
-    color: #bbcef7;
-    background: #181a4e;
-    border: 1px solid #7088c3;
-    a {
-      color: #bbcef7;
-    }
+  .noAccess {
+    pointer-events: none;
+    @include singleItem($noAccess, $noAccess_color, $noAccess-border, $noAccess-active);
+    a,
     .value {
-      color: #bbcef7;
+      color: $noAccess_color;
     }
   }
 }
