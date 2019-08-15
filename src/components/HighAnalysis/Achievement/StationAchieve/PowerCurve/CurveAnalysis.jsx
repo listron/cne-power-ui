@@ -121,62 +121,6 @@ class CurveAnalysis extends Component {
 
   render() {
     const { active } = this.props;
-    const curveDevices = {
-      actual: [1, 2, 3, 4, 5].map(e => ({
-        deviceName: `${e}风机`,
-        deviceFullcode: `M${e}M${e * e}M${e + 10}`,
-        modeName: `M${e}fe_Fe`,
-        devicePowerInfoVos: [1, 2, 3, 4].map(m => ({
-          power: e * 4,
-          windSpeed: e * (10 + e) + m * e,
-        })),
-      })),
-      theory: [{
-        modeName: 'M2fe_Fe',
-        devicePowerInfoVos: [1, 2, 3, 4].map(e => ({
-          power: e * 3,
-          windSpeed: e * (10 + e) + e,
-        })),
-      }],
-    };
-    const curveMonths = {
-      actual: [1, 2, 3, 4, 5].map(e => ({
-        calcDate: `2019-0${e}`,
-        devicePowerInfoVos: [1, 2, 3, 4].map(m => ({
-          power: e * 4,
-          windSpeed: e * (10 + e) + m * e,
-        })),
-      })),
-      theory: [{
-        modeName: 'M2fe_Fe',
-        devicePowerInfoVos: [1, 2, 3, 4].map(e => ({
-          power: e * 2,
-          windSpeed: e * (10 + e) + e,
-        })),
-      }],
-    };
-    const curveDevicesAep = [1, 2, 3, 4, 5, 6].map(e => ({
-      deviceName: `${e}MMMM`,
-      deviceModeName: `#12${e}-FE`,
-      windSpeed: parseInt(Math.random() * 10, 10),
-      aep: parseInt(Math.random() * 100, 10),
-      deviceFullcode: `${e}FullCode`,
-    }));
-    const curveMonthAep = [1, 2, 3, 4, 5, 6].map(e => ({
-      windSpeed: parseInt(Math.random() * 10, 10),
-      aep: parseInt(Math.random() * 100, 10),
-      efficiencyDate: `2018-0${e}`,
-    }));
-    const curveDevicesPsd = [1, 2, 3, 4, 5, 6].map(e => ({
-      deviceName: `${e}MMMM`,
-      deviceModeName: `#12${e}-FE`,
-      psd: parseInt(Math.random() * 100, 10),
-      deviceFullcode: `${e}FullCode`,
-    }));
-    const curveMonthPsd = [1, 2, 3, 4, 5, 6].map(e => ({
-      psd: parseInt(Math.random() * 100, 10),
-      efficiencyDate: `2019-0${e}`,
-    }));
     return (
       <div className={`${styles.curveAnalysis} ${styles.eachPage} ${active ? styles.active : styles.inactive}`}>
         <section className={styles.curveAllDevice}>
@@ -187,11 +131,11 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <DevicesChart {...this.props} curveDevices={curveDevices} />
+            <DevicesChart {...this.props} />
             <DevicesCheckTime {...this.props} />
             <div className={styles.indicatorDetails}>
-              <DevicesAep {...this.props} curveDevicesAep={curveDevicesAep} />
-              <DevicesPsd {...this.props} curveDevicesPsd={curveDevicesPsd} />
+              <DevicesAep {...this.props} />
+              <DevicesPsd {...this.props} />
             </div>
           </div>
         </section>
@@ -203,11 +147,11 @@ class CurveAnalysis extends Component {
             </Tooltip>
           </h3>
           <div className={styles.content}>
-            <MonthsChart {...this.props} curveMonths={curveMonths} />
+            <MonthsChart {...this.props} />
             <MonthsSelector {...this.props} />
             <div className={styles.indicatorDetails}>
-              <MonthsAep {...this.props} curveMonthAep={curveMonthAep} />
-              <MonthsPsd {...this.props} curveMonthPsd={curveMonthPsd} />
+              <MonthsAep {...this.props} />
+              <MonthsPsd {...this.props} />
             </div>
           </div>
         </section>
