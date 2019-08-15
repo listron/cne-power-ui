@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styles from "./transferForm.scss";
+import styles from './transferForm.scss';
 import { transferFormAction } from './transferFormAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -20,57 +20,50 @@ class TransferForm extends Component {
     defectId: PropTypes.string,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
     this.state = {
-      showPage: false
-    }
+      showPage: false,
+    };
   }
-  componentWillUnmount(){
-    this.props.resetTransferFormStore()
+  componentWillUnmount() {
+    this.props.resetTransferFormStore();
   }
   onEnterToggleSide = () => {//动态切换页面,开
-    this.setState({ showPage: true })
+    this.setState({ showPage: true });
   }
 
   onEndToggleSide = () => {//动态切换页面,关
-    this.setState({ showPage: false })
-    this.props.changeTransferFormStore({defectId:''})
+    this.setState({ showPage: false });
+    this.props.changeTransferFormStore({ defectId: '' });
   }
   prevChange = (value) => { // 切换到当前页
-    this.props.changeTransferFormStore({ ...value })
+    this.props.changeTransferFormStore({ ...value });
   }
   render() {
     const { pageName, defectId } = this.props;
     const { showPage } = this.state;
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '已转工单',
-        }
-      ],
-    };
     return (
       <div className={styles.transfer}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{ name: '已转工单' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.transferColor}>
-        <div className={styles.transferAlarmContainer}>
-          <TransferFormContainer {...this.props} />
-          <TransitionContainer
-            show={pageName === 'detail'}
-            timeout={500}
-            effect="side"
-            onEnter={this.onEnterToggleSide}
-            onExited={this.onEndToggleSide}
-          >
-            <WorkOrder defectId={defectId} otherFrom={true} pageName={'list'} onChange={this.prevChange}
-              showPage={showPage}
-            />
-          </TransitionContainer>
-        </div>
+          <div className={styles.transferAlarmContainer}>
+            <TransferFormContainer {...this.props} />
+            <TransitionContainer
+              show={pageName === 'detail'}
+              timeout={500}
+              effect="side"
+              onEnter={this.onEnterToggleSide}
+              onExited={this.onEndToggleSide}
+            >
+              <WorkOrder defectId={defectId} otherFrom={true} pageName={'list'} onChange={this.prevChange}
+                showPage={showPage}
+              />
+            </TransitionContainer>
+          </div>
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -78,8 +71,9 @@ const mapStateToProps = (state) => {
     ...state.highAanlysisReducer.transferFormReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
-  }
-}
+    theme: state.common.get('theme'),
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   getTransferFormStatistic: payload => dispatch({ type: transferFormAction.getTransferFormStatistic, payload }),
   changeTransferFormStore: payload => dispatch({ type: transferFormAction.changeTransferFormStore, payload }),
@@ -91,8 +85,9 @@ const mapDispatchToProps = (dispatch) => ({
     payload: {
       params,
       actionName: transferFormAction.changeRealtimeWarningStore,
-      resultName: 'defectTypes'
-    }
+      resultName: 'defectTypes',
+    },
   }),
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(TransferForm)
+;

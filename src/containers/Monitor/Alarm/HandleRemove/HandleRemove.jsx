@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import styles from "./handleRemove.scss";
+import { connect } from 'react-redux';
+import styles from './handleRemove.scss';
 import { handleRemoveAction } from './handleRemoveAction';
 import { commonAction } from '../../../alphaRedux/commonAction';
 import CommonBreadcrumb from '../../../../components/Common/CommonBreadcrumb';
@@ -11,35 +11,28 @@ import HandleRemoveContainer from '../../../../components/Monitor/Alarm/HandleRe
 
 class HandleRemove extends Component {
   static propTypes = {
-    getLostGenType:PropTypes.func,
-    resetHandleRemoveStore:PropTypes.func,
+    getLostGenType: PropTypes.func,
+    resetHandleRemoveStore: PropTypes.func,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   componentDidMount() {
     // this.props.getLostGenType({ objectType: 1 })
   }
-  componentWillUnmount(){
-    this.props.resetHandleRemoveStore()
+  componentWillUnmount() {
+    this.props.resetHandleRemoveStore();
   }
   render() {
-    const breadCrumbData = {
-      breadData: [
-        {
-          name: '手动解除',
-        }
-      ],
-    };
     return (
       <div className={styles.handle}>
-        <CommonBreadcrumb  {...breadCrumbData} style={{ marginLeft: '38px' }} />
+        <CommonBreadcrumb breadData={[{ name: '手动解除' }]} style={{ marginLeft: '38px' }} />
         <div className={styles.handleRemoveBox}>
           <HandleRemoveContainer {...this.props} />
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -47,9 +40,10 @@ const mapStateToProps = (state) => {
     ...state.monitor.handleRemoveReducer.toJS(),
     stations: state.common.get('stations').toJS(),
     deviceTypes: state.common.get('deviceTypes').toJS(),
+    theme: state.common.get('theme'),
 
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch) => ({
   getHandleRemoveStatistic: payload => dispatch({ type: handleRemoveAction.getHandleRemoveStatistic, payload }),
   changeHandleRemoveStore: payload => dispatch({ type: handleRemoveAction.changeHandleRemoveStore, payload }),
@@ -63,9 +57,10 @@ const mapDispatchToProps = (dispatch) => ({
     payload: {
       params,
       actionName: handleRemoveAction.changeHandleRemoveStore,
-      resultName: 'defectTypes'
-    }
+      resultName: 'defectTypes',
+    },
   }),
 
-})
+});
 export default connect(mapStateToProps, mapDispatchToProps)(HandleRemove)
+;

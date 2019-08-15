@@ -80,7 +80,9 @@ class MenuBoard extends Component {
     const { linkInfo } = this.state;
     const { menuBoardShow, menuBoardRequired } = this.props;
     const enterpriseId = Cookie.get('enterpriseId');
-    const needBoardIcon = menuBoardRequired.includes(enterpriseId);
+    // const needBoardIcon = menuBoardRequired.includes(enterpriseId);
+    const needBoardIcon =true;
+
     return (
       <div className={styles.menuBoard}>
         {needBoardIcon && <div className={styles.boardIcon} onClick={this.toggleBoard}>
