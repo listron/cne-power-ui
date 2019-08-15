@@ -7,9 +7,13 @@ import styles from './curve.scss';
 class DevicesChart extends Component {
 
   static propTypes = {
+    curveTopStringify: PropTypes.string,
     curveDevices: PropTypes.object,
     curveDevicesLoading: PropTypes.bool,
-    selectDevice: PropTypes.func,
+    changeStore: PropTypes.func,
+    getCurveMonths: PropTypes.func,
+    getCurveMonthAep: PropTypes.func,
+    getCurveMonthPsd: PropTypes.func,
   }
 
   componentDidMount(){
@@ -39,10 +43,32 @@ class DevicesChart extends Component {
     const { devicePowerInfoVos = [], deviceName } = e || {};
     return {
       type: 'line',
+      smooth: true,
       name: deviceName,
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
   })
+
+  deviceHandle = ({ seriesIndex }, totalCurveData, devicesChart) => {
+    const { deviceFullcode, deviceName } = totalCurveData[seriesIndex] || {};
+    if (deviceFullcode) {
+      const { curveTopStringify } = this.props;
+      const queryInfo = JSON.parse(curveTopStringify) || {};
+      const param = {
+        stationCodes: [queryInfo.searchCode],
+        deviceFullcodes: [deviceFullcode],
+        startTime: queryInfo.searchDates[0],
+        endTime: queryInfo.searchDates[1],
+      };
+      this.props.changeStore({
+        curveDeviceName: deviceName,
+        curveDeviceFullcode: deviceFullcode,
+      });
+      this.props.getCurveMonths(param);
+      this.props.getCurveMonthAep(param);
+      this.props.getCurveMonthPsd(param);
+    }
+  }
 
   renderChart = (curveDevices) => {
     const devicesChart = echarts.init(this.devicesRef);
@@ -86,13 +112,9 @@ class DevicesChart extends Component {
       },
       series: this.createSeires(totalCurveData),
     };
+    devicesChart.hideLoading();
     devicesChart.setOption(option);
-    devicesChart.on('click', ({ seriesIndex }) => {
-      const { deviceFullcode, deviceName } = totalCurveData[seriesIndex] || {};
-      if (deviceFullcode) {
-        this.props.selectDevice({ deviceFullcode, deviceName });
-      }
-    });
+    devicesChart.on('click', (param) => this.deviceHandle(param, totalCurveData, devicesChart));
   }
 
   render() {

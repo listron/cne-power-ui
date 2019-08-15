@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { DatePicker, Switch } from 'antd';
+import { Switch } from 'antd';
 import styles from './curve.scss';
 
 class MonthsSelector extends Component {
 
   static propTypes = {
-    // curveTopStringify: PropTypes.string,
-    // curveDevicesTime: PropTypes.string,
-    // getCurveDevicesAep: PropTypes.func,
-    // getCurveDevicesPsd: PropTypes.func,
-    // changeStore: PropTypes.func,
+    changeStore: PropTypes.func,
     curveCheckedMonths: PropTypes.array, // 环比分析各月选中时间
     curveAllMonths: PropTypes.array, // 环比分析所有月
   }
@@ -23,26 +18,22 @@ class MonthsSelector extends Component {
   ]
 
   monthCheck = (month) => {
-    console.log(month);
+    const { curveCheckedMonths } = this.props;
+    const isMonthHide = curveCheckedMonths.includes(month);
+    if (isMonthHide) {
+      this.props.changeStore({ curveCheckedMonths: curveCheckedMonths.filter(e => e !== month) });
+    } else {
+      this.props.changeStore({ curveCheckedMonths: [...curveCheckedMonths, month] });
+    }
   }
 
   onAllChange = (checked) => {
-    console.log(checked);
-    // const { curveTopStringify } = this.props;
-    // const searchParam = JSON.parse(curveTopStringify) || {};
-    // const param = {
-    //   stationCodes: [searchParam.searchCode],
-    //   startTime: stringValue,
-    //   endTime: stringValue,
-    //   deviceFullcodes: searchParam.searchDevice,
-    // };
-    // this.props.changeStore({ curveDevicesTime: stringValue });
-    // this.props.getCurveDevicesAep(param);
-    // this.props.getCurveDevicesPsd(param);
+    const { curveAllMonths } = this.props;
+    this.props.changeStore({ curveCheckedMonths: checked ? curveAllMonths : [] });
   }
 
   getColorStyle = (index, curveAllMonths, curveCheckedMonths) => {
-    const colorIndex = index % (curveAllMonths.length + 1);
+    const colorIndex = index % this.monthColors.length;
     const active = curveCheckedMonths.includes(curveAllMonths[index]);
     return {
       backgroundColor: active ? this.monthColors[colorIndex] : '#fff',
@@ -52,17 +43,30 @@ class MonthsSelector extends Component {
 
   render() {
     const { curveCheckedMonths, curveAllMonths } = this.props;
-
     return (
       <section className={styles.timeSelector}>
         <h3 className={styles.timeTitle}>显示月份</h3>
-        <div>
-          {curveCheckedMonths.map((e, i) => (<div key={e} onClick={() => this.monthCheck(e)}>
-            <span style={this.getColorStyle(i, curveAllMonths, curveCheckedMonths)} />
-            <span>{e}</span>
-          </div>))}
+        <ul className={styles.monthList}>
+          {curveAllMonths.map((e, index) => {
+            const colorIndex = index % this.monthColors.length;
+            const active = curveCheckedMonths.includes(e);
+            const backgroundColor = active ? this.monthColors[colorIndex] : '#fff';
+            const border = active ? `1px solid ${this.monthColors[colorIndex]}` : '1px solid rgb(238,238,238)';
+            const color = active ? '#666' : '#dfdfdf';
+            return (<li
+              className={styles.month}
+              key={e}
+              onClick={() => this.monthCheck(e)}
+            >
+              <span className={styles.round} style={{backgroundColor, border}} />
+              <span className={styles.monthText} style={{color}}>{e}</span>
+            </li>);
+          })}
+        </ul>
+        <div className={styles.allHandler}>
+          <Switch onChange={this.onAllChange} checked={curveCheckedMonths.length > 0} />
+          <span className={styles.allHandlerText}>全部{curveCheckedMonths.length === 0 ? '隐藏' : '显示'}</span>
         </div>
-        <Switch onChange={this.onAllChange} checked={curveCheckedMonths.length === curveAllMonths.length} />
       </section>
     );
   }

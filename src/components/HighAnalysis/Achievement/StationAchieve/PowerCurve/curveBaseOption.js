@@ -51,11 +51,15 @@ const yAxis = {
 };
 
 export const getCurveBaseOption = () => ({
-  grid,
-  xAxis,
-  yAxis,
+  grid: { ...grid },
+  xAxis: { ...xAxis },
+  yAxis: { ...yAxis },
 });
 
 export const getPartsOption = (partName) => {
-  return { grid, xAxis, yAxis }[partName];
+  return {
+    grid: { ...grid },
+    xAxis: { ...xAxis },
+    yAxis: { ...yAxis },
+  }[partName];
 };

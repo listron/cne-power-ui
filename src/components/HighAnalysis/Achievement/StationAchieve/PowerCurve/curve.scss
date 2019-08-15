@@ -43,6 +43,39 @@
         margin-top: 52px;
         margin-bottom: 12px;
       }
+      .monthList{
+        height: 288px;
+        overflow: auto;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+      }
+      .monthList .month{
+        display: flex;
+        height: 24px;
+        width: 100px;
+        margin: 0 auto;
+        cursor: pointer;
+        align-items: center;
+        .round{
+          border-radius: 50%;
+          height: 16px;
+          flex-basis: 16px;
+          margin-right: 12px;
+        }
+      }
+      .allHandler{
+        display: flex;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        .allHandlerText{
+          margin-left: 4px;
+        }
+      }
     }
     .indicatorDetails{
       display: flex;
@@ -122,6 +155,9 @@
     border-right:1px solid #e1e2e2;
     .timeTitle{
       color: #666;
+    }
+    .monthList::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.5);
     }
   }
   // .lostRank, .lostTrend, .lostTypes{
