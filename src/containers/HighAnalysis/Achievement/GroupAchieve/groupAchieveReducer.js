@@ -4,16 +4,31 @@ export const groupAchieveAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
-  testGroup: Symbol('testGroup'),
+  getGroupModesInfo: Symbol('getGroupModesInfo'),
+  getGroupCapacity: Symbol('getGroupCapacity'),
+  getGroupRank: Symbol('getGroupRank'),
+  getGroupTrendInfo: Symbol('getGroupTrendInfo'),
+  getGroupLostGenHour: Symbol('getGroupLostGenHour'),
 };
 
 const initState = immutable.fromJS({
-
-  // topAreas: [], // 顶部选中的区域+电站集合信息
-  // topDevices: [], // 顶部选中的机型
-  // topDetes: [], // [starttime(Moment), endTime(Moment)]
-  // topQuotas: [], // 选中的指标信息
-  topStringify: '', // 保存的请求路径信息
+  modesInfo: [], // 顶部选中的机型
+  capacityInfo: [],
+  capacityTime: 0,
+  capacityLoading: false,
+  groupCapacityInfo: [],
+  groupCapacityLoading: false,
+  groupCapacityTime: 0,
+  groupRankInfo: [],
+  groupRankTime: 0,
+  groupRankLoading: false,
+  groupTrendInfo: [],
+  groupTrendTime: 0,
+  groupTrendLoading: false,
+  groupTimeStatus: '2',
+  groupLostGenHourInfo: {},
+  groupLostTime: 0,
+  groupLoseLoading: false,
   areaSelected: {}, // chart选中的区域
   dateSelected: null, // pba趋势
 

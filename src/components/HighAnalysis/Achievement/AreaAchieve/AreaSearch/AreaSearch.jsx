@@ -56,23 +56,22 @@ export default class AreaSearch extends Component {
       this.propsAreaStationChange(areaStation);
     }
     if (!groupInfoStr && preDevice.length === 0 && modesInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到机型数据
-      console.log('22222');
+      // console.log('22222');
+      console.log(preDevice, 'preDevice');
+      console.log(modesInfo, 'modesInfo');
       this.propsModeDevicesChange(modesInfo);
     }
     if (!groupInfoStr && preQuota.length === 0 && quotaInfo.length > 0 && !groupInfoStr) { // 路径无参数时  得到指标
-      console.log('333333');
+      // console.log('333333');
       this.propsQuotaChange(quotaInfo);
     }
-    // 默认选中第一个
-    if(!groupInfoStr && areaStation.length > 0) {
+    // 判断选中区域之后机型数据变化
+    if(JSON.stringify(preDevice) && JSON.stringify(preDevice) !== JSON.stringify(modesInfo)) {
+      console.log('6666666');
+      const modes = this.getAllDeviceCodes(modesInfo);
       this.setState({
-        stations: [areaStation[0]],
-      });
-    }
-    // 默认选中第一个
-    if(!groupInfoStr && modesInfo.length > 0) {
-      this.setState({
-        modes: modesInfo,
+        modes,
+        modesInfo,
       });
     }
   }
@@ -94,6 +93,7 @@ export default class AreaSearch extends Component {
   propsModeDevicesChange = (modeDevices) => { // 得到电站下机型信息;
     const { searchCode, dates, quota, stations } = this.state;
     const modes = this.getAllDeviceCodes(modeDevices);
+    console.log(modes, 'modes');
     if (quota.length > 0) { // 已有指标
       this.historyChange(searchCode, modes, dates, quota, stations, modeDevices);
     } else { // 存入state, 得到quota时再请求
@@ -121,6 +121,7 @@ export default class AreaSearch extends Component {
     const newSearch = searchUtil(search).replace({area: JSON.stringify({
         searchCode, modes, dates, quota, stations, modesInfo,
       })}).stringify();
+    console.log(newSearch, 'newSearch');
     history.push(`/analysis/achievement/analysis/area?${newSearch}`);
   };
 
@@ -144,6 +145,8 @@ export default class AreaSearch extends Component {
     this.setState({
       stations: info,
       searchCode: stations,
+    }, () => {
+      this.props.getModesInfo({ stationCodes: stations});
     });
   };
 
@@ -159,10 +162,8 @@ export default class AreaSearch extends Component {
 
   queryCharts = () => {
     // 组合state参数, 发起history.push操作。
-    const {
-      modesInfo,
-    } = this.props;
-    const { searchCode, modes, dates, quota, stations } = this.state;
+    const { searchCode, modes, dates, quota, stations, modesInfo } = this.state;
+    console.log(modes, 'queryCharts');
     this.historyChange(searchCode, modes, dates, quota, stations, modesInfo);
   };
 
@@ -177,8 +178,9 @@ export default class AreaSearch extends Component {
       quotaInfo,
     } = this.props;
     const { modes, dates, quota, stations } = this.state;
-    // console.log(modes, 'modes');
-    // console.log(stations, 'stations');
+    // console.log(modes, 'modesrender');
+    // console.log(stations, 'stationsrender');
+    // console.log(modesInfo, 'modesInforender');
     return (
       <div className={styles.topSearch}>
         <div>
@@ -196,6 +198,7 @@ export default class AreaSearch extends Component {
             style={{width: '150px'}}
             data={modesInfo}
             value={modes}
+            maxTagCount={0}
             onChange={this.onModelChange}
           />
         </div>
