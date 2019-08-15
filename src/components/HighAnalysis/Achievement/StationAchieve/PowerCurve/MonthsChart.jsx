@@ -6,7 +6,6 @@ import styles from './curve.scss';
 
 class MonthsChart extends Component {
 
-  // curveMonths: [], // 某机组各月功率曲线
   static propTypes = {
     curveMonths: PropTypes.object,
     curveMonthsLoading: PropTypes.bool,
@@ -39,6 +38,7 @@ class MonthsChart extends Component {
     const { devicePowerInfoVos = [], calcDate } = e || {};
     return {
       type: 'line',
+      smooth: true,
       name: calcDate,
       data: devicePowerInfoVos.map((m = {}) => [m.windSpeed, m.power]),
     };
@@ -87,6 +87,7 @@ class MonthsChart extends Component {
       },
       series: this.createSeires(totalMonthData),
     };
+    monthChart.hideLoading();
     monthChart.setOption(option);
   }
 

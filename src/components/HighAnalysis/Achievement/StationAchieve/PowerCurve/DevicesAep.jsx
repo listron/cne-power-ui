@@ -174,6 +174,7 @@ class DevicesAep extends Component {
       filterMode: 'empty',
       start: 0,
       end: endPosition,
+      showDetail: false,
       height: 20,
       bottom: 10,
     }, {

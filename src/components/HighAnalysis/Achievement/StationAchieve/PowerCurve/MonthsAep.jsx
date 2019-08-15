@@ -95,7 +95,11 @@ class MonthsAep extends Component {
     const sortedAepData = this.sortMonthAes(curveMonthAep, sortName);
     const { series, xData } = this.createSeires(sortedAepData);
     const option = {
-      grid: getPartsOption('grid'),
+      grid: {
+        top: 10,
+        ...getPartsOption('grid'),
+        bottom: 40,
+      },
       xAxis: { ...getPartsOption('xAxis'), data: xData },
       yAxis: [
         { ...getPartsOption('yAxis'), name: 'AEP(万kWh)' },
@@ -123,6 +127,21 @@ class MonthsAep extends Component {
       },
       series,
     };
+    const endPosition = 30 / sortedAepData.length >= 1 ? 100 : 3000 / sortedAepData.length;
+    sortedAepData.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      showDetail: false,
+      start: 0,
+      end: endPosition,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     aepChart.hideLoading();
     aepChart.setOption(option);
   }

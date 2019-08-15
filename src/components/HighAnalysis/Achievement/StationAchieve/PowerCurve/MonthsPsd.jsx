@@ -81,6 +81,8 @@ class MonthsPsd extends Component {
     const { series, xData } = this.createSeires(sortedPsdData);
     const baseOption = getCurveBaseOption();
     baseOption.xAxis.data = xData;
+    baseOption.grid.top = 10;
+    baseOption.grid.bottom = 40;
     const option = {
       ...baseOption,
       tooltip: {
@@ -105,6 +107,21 @@ class MonthsPsd extends Component {
       },
       series,
     };
+    const endPosition = 30 / curveDevicesPsd.length >= 1 ? 100 : 3000 / curveDevicesPsd.length;
+    curveDevicesPsd.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+      showDetail: false,
+      height: 20,
+      bottom: 10,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+      start: 0,
+      end: endPosition,
+    }]);
     psdChart.hideLoading();
     psdChart.setOption(option);
   }
