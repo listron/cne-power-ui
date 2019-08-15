@@ -86,20 +86,25 @@ class InspectOrbit extends Component {
         return e.username === users;
       }
     });
-  
+    // console.log(users);
+    // console.log(inspectTrackData);
+    // console.log(userOrbit);
     let userOrbits = [];
     userOrbits = userOrbit.map((item, index) => {
       for (var i = 0; i < item.pointData.length - 1; i++) {
+        //console.log(i);
         let value = item.pointData[i];
         if(value.longitude == Number.MIN_VALUE){
           item.pointData.splice(i, 1);
+          if(i > 1 || i< item.pointData.length - 1){
+            i--;
+          }
           continue;
         }
 
       }
       return item;
     });
-    //console.log(userOrbits);
     userOrbits.map((item, index) => {
       let startDate=item.pointData[0].trackDate
       let endDate=item.pointData[item.pointData.length-1].trackDate
@@ -152,6 +157,7 @@ class InspectOrbit extends Component {
       })
       )
     })
+    
     // console.log(pointArray, '轨迹线');
     //对每一条轨迹线，进行坐标的处理，起始点于结束点练成一条小线，先后线拼凑成轨迹
     let itemOrbits = pointArray.map((e, i) => {
@@ -167,6 +173,7 @@ class InspectOrbit extends Component {
       // console.log(itemLines);
       return itemLines
     })
+
     let itemOrbit = itemOrbits.length > 0 ? itemOrbits.reduce(function (prev, next) {
       return prev.concat(next);
     }) : [];
