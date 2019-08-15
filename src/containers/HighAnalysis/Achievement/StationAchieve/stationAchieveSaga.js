@@ -14,7 +14,7 @@ const timeType = {
 };
 
 const stopElecType = {
-  all: 0,
+  all: undefined,
   faultGen: 1,
   planShutdownGen: 2,
   substationGen: 3,
@@ -158,6 +158,7 @@ function *getStopTrend({ payload }){ // 停机 - 日月年 停机时长次数趋
     yield call(easyPut, 'changeStore', { stopTrendLoading: true });
     const response = yield call(request.post, url, {
       ...payload,
+      parentFaultId: stopElecType[payload.parentFaultId],
       type: timeType[payload.type],
     });
     if (response.code === '10000') {
