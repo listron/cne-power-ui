@@ -11,13 +11,17 @@ class ChartLostTrend extends Component {
 
   static propTypes = {
     stopChartTimeMode: PropTypes.string,
+    stopChartTime: PropTypes.string,
     stopTrend: PropTypes.array,
     location: PropTypes.object,
+    stopChartDevice: PropTypes.object,
+    stopChartTypes: PropTypes.object,
     stopElecType: PropTypes.string,
     stopTrendLoading: PropTypes.bool,
     changeStore: PropTypes.func,
     getStopTrend: PropTypes.func,
     getStopTypes: PropTypes.func,
+    getStopRank: PropTypes.func,
   }
 
   componentDidMount(){
@@ -91,13 +95,13 @@ class ChartLostTrend extends Component {
   }
 
   timeModeChange = (stopChartTimeMode) => {
-    const { stopElecType } = this.props;
-    this.props.changeStore({ stopChartTimeMode });
+    const { stopElecType, stopChartDevice } = this.props;
     const searchParam = this.getSearchInfo();
-
+    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
+    this.props.changeStore({ stopChartTimeMode, stopChartTime: null });
     this.props.getStopTrend({
       stationCodes: [searchParam.searchCode],
-      deviceFullcodes: searchParam.searchDevice,
+      deviceFullcodes,
       startTime: searchParam.searchDates[0],
       endTime: searchParam.searchDates[1],
       type: stopChartTimeMode,
@@ -105,13 +109,44 @@ class ChartLostTrend extends Component {
     });
   }
 
+  chartHandle = ({dataIndex}, stopTrend, chart) => {
+    const { stopChartTime, stopChartTimeMode, stopElecType, stopChartTypes, stopChartDevice } = this.props;
+    const selectedInfo = stopTrend[dataIndex] || {};
+    const { efficiencyDate } = selectedInfo;
+    const searchParam = this.getSearchInfo();
+    const deviceFullcodes = stopChartDevice ? [stopChartDevice.deviceFullcode] : searchParam.searchDevice;
+    let [startTime, endTime] = searchParam.searchDates;
+    if (stopChartTime !== efficiencyDate) { // 非取消选择
+      const recordStart = moment(efficiencyDate).startOf(stopChartTimeMode);
+      const recordEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
+      startTime = moment.max(recordStart, moment(startTime)).format('YYYY-MM-DD');
+      endTime = moment.min(recordEnd, moment(endTime)).format('YYYY-MM-DD');
+      this.props.changeStore({ stopChartTime: null });
+    } else {
+      this.props.changeStore({ stopChartTime: efficiencyDate });
+    }
+    let faultInfo = {};
+    if (stopChartTypes) {
+      faultInfo = { faultId: stopChartTypes.faultTypeId };
+    }
+    const param = {
+      stationCodes: [searchParam.searchCode],
+      deviceFullcodes,
+      startTime,
+      endTime,
+      parentFaultId: stopElecType,
+    };
+    this.props.getStopRank({ ...param, ...faultInfo });
+    this.props.getStopTypes({ ...param });
+  }
+
   renderChart = (stopTrend = []) => {
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(stopTrend);
     const option = {
       grid: [
-        { ...getBaseGrid(), top: 40, height: 160 },
-        { ...getBaseGrid(), top: 240, height: 160 },
+        { ...getBaseGrid(), top: 40, height: 150 },
+        { ...getBaseGrid(), top: 230, height: 150 },
       ],
       xAxis: [
         { ...getBaseXAxis(dataAxis), gridIndex: 0 },
@@ -146,35 +181,31 @@ class ChartLostTrend extends Component {
       },
       series,
     };
+    stopTrend.length > 0 && (option.dataZoom = [{
+      type: 'slider',
+      filterMode: 'empty',
+      bottom: 16,
+      showDetail: false,
+      height: 20,
+    }, {
+      type: 'inside',
+      filterMode: 'empty',
+    }]);
     trendChart.hideLoading();
     trendChart.setOption(option);
-    trendChart.on('click', ({ dataIndex }) => {
-      const { stopChartTimeMode } = this.props;
-      const chartTimeInfo = stopTrend[dataIndex] || {};
-      const { efficiencyDate } = chartTimeInfo;
-      const clickStart = moment(efficiencyDate).startOf(stopChartTimeMode);
-      const clickEnd = moment(efficiencyDate).endOf(stopChartTimeMode);
-      const searchParam = this.getSearchInfo();
-      const { searchDates } = searchParam;
-      const startTime = moment.max(clickStart, moment(searchDates[0])).format('YYYY-MM-DD');
-      const endTime = moment.min(clickEnd, moment(searchDates[1])).format('YYYY-MM-DD');
-      this.props.changeStore({ lostChartTime: efficiencyDate });
-      this.props.getStopTypes({
-        stationCodes: [searchParam.searchCode],
-        deviceFullcodes: searchParam.searchDevice,
-        startTime,
-        endTime,
-      });
-    });
+    trendChart.on('click', (param) => this.chartHandle(param, stopTrend, trendChart));
   }
 
   render() {
     const { stopChartTimeMode } = this.props;
+    const { stopChartTypes, stopChartDevice } = this.props;
+    const stopDeviceText = stopChartDevice ? `${stopChartDevice.deviceName}-` : '';
+    const stopTypeText = stopChartTypes ? `${stopChartTypes.faultName}-` : '';
     return (
       <div className={styles.stopTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            停机时长及次数
+            {stopDeviceText}{stopTypeText}停机时长及次数
           </span>
           <TimeSelect stopChartTimeMode={stopChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
