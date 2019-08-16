@@ -25,7 +25,7 @@ const initState = immutable.fromJS({
   pageName: 'lost', // lost, stop, curve
 
   lostStringify: '', // station - 缓存search信息字符串
-  lostQuota: null, // 指标
+  selectedQuota: {}, // 选中的指标 {value: 指标code, label: 指标name, unit: 单位}
   lostChartDevice: null, // chart选中的设备{deviceFullcode, deviceName}
   lostChartTime: null, // chart选中的时间
   lostChartTimeMode: 'month', // chart选中时间格式 - month year day
