@@ -169,7 +169,7 @@ class ChartLostRank extends Component {
     const sortedLostRank = this.sortRank(lostRank, sortType);
     const { dataAxis, series, modeArr } = this.createSeries(sortedLostRank);
     const baseOption = getBaseOption(dataAxis);
-    baseOption.yAxis.name = `${selectedQuota.label || '--'}(${selectedQuota.unit || ''})`;
+    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''})`;
     const option = {
       ...baseOption,
       legend: { data: modeArr },
@@ -186,8 +186,8 @@ class ChartLostRank extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label || '--'}(${selectedQuota.unit || ''})`}</span>
-                  <span>${e.value}</span>
+                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label || '--'}`}</span>
+                  <span>${e.value}${selectedQuota.unit || ''}</span>
                 </span>`
               )).join('')}
             </div>
@@ -202,6 +202,7 @@ class ChartLostRank extends Component {
       filterMode: 'empty',
       start: 0,
       end: endPosition,
+      showDetail: false,
       bottom: 15,
       height: 20,
     }, {
@@ -222,7 +223,7 @@ class ChartLostRank extends Component {
       <div className={styles.lostRank}>
         <div className={styles.top}>
           <span className={styles.title}>
-            风机{selectedQuota.label || ''}排名
+            风机{selectedQuota.label || '--'}排名
           </span>
           <span className={styles.handle}>
             <span className={styles.eachHandle}>

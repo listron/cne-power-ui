@@ -173,7 +173,7 @@ class ChartStopTypes extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${['停机电量', '停机次数', '停机市场'][i]}</span>
+                  <span>${['停机电量', '停机时长', '停机次数'][i]}</span>
                   <span>${e.value}</span>
                 </span>`
               )).join('')}
@@ -183,20 +183,13 @@ class ChartStopTypes extends Component {
       },
       series,
     };
-    sortedTypes.length > 0 && (option.dataZoom = [{
-      type: 'slider',
-      filterMode: 'empty',
-      bottom: 16,
-      height: 20,
-    }, {
-      type: 'inside',
-      filterMode: 'empty',
-    }]);
     typesChart.hideLoading();
     sortedTypes.length > 0 && (option.dataZoom = [{
       type: 'slider',
       filterMode: 'empty',
       bottom: 16,
+      showDetail: false,
+      height: 20,
     }, {
       type: 'inside',
       filterMode: 'empty',

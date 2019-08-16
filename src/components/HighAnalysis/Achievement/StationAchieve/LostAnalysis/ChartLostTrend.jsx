@@ -145,6 +145,7 @@ class ChartLostTrend extends Component {
     const trendChart = echarts.init(this.trendRef);
     const { dataAxis, series } = this.createSeries(lostTrend);
     const baseOption = getBaseOption(dataAxis);
+    baseOption.yAxis.name = `${selectedQuota.label || '--'}${selectedQuota.unit ? `(${selectedQuota.unit})` : ''}`;
     const option = {
       ...baseOption,
       tooltip: {
@@ -159,8 +160,10 @@ class ChartLostTrend extends Component {
             <div class=${styles.info}>
               ${param.map((e, i) => (
                 `<span class=${styles.eachItem}>
-                  <span>${i === 1 ? '应发小时数' : `${selectedQuota.label}(${selectedQuota.unit || ''})`}</span>
-                  <span>${e.value}</span>
+                  <span>
+                    ${i === 1 ? '应发小时数' : `${selectedQuota.label}`}
+                  </span>
+                  <span>${e.value}${selectedQuota.unit || ''}</span>
                 </span>`
               )).join('')}
             </div>
@@ -190,7 +193,7 @@ class ChartLostTrend extends Component {
       <div className={styles.lostTrend}>
         <div className={styles.top}>
           <span className={styles.title}>
-            {chartName}{selectedQuota.label || ''}
+            {chartName}{selectedQuota.label || '--'}
           </span>
           <TimeSelect lostChartTimeMode={lostChartTimeMode} timeModeChange={this.timeModeChange} />
         </div>
